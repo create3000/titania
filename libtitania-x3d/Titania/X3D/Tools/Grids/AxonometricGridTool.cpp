@@ -120,7 +120,7 @@ AxonometricGridTool::realize ()
 		auto & set_angle = getToolNode () -> getField <SFVec2d> ("set_angle");
 		angle ()  .addInterest (set_angle);
 		set_angle .addInterest (angle ());
-		set_angle = angle ();
+		set_angle .addEventObject (angle ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 	}
 	catch (const X3DError & error)
 	{ }

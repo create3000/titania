@@ -102,7 +102,7 @@ private:
 
 	virtual
 	void
-	setBrowser (const X3D::BrowserPtr & value) final override;
+	setPage (const NotebookPagePtr & value) final override;
 
 	void
 	set_scene ();

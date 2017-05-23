@@ -51,6 +51,7 @@
 #include "AxonometricGridTool.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
@@ -116,7 +117,7 @@ AxonometricGridTool::set_angle ()
 {
 	setMetaData ("/Titania/" + getName () + "/angle", getTool () -> getField <X3D::SFVec2d> ("angle"));
 
-	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (true);
 }
 
 void

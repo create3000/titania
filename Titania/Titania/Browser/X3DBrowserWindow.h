@@ -153,10 +153,6 @@ protected:
 
 	virtual
 	void
-	setBrowser (const X3D::BrowserPtr &) override;
-
-	virtual
-	void
 	store () override;
 
 

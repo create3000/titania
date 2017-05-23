@@ -436,7 +436,7 @@ ScriptEditor::on_apply_clicked ()
 	apply (undoStep);
 
 	 if (node -> isLive ())
-		 getBrowserWindow () -> addUndoStep (X3D::BrowserPtr (node -> getBrowser ()), undoStep);
+		 getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -483,7 +483,7 @@ ScriptEditor::on_can_undo_changed ()
 		if (node)
 		{
 			setModified (true);
-			getBrowserWindow () -> setModified (X3D::BrowserPtr (node -> getBrowser ()), true);
+			getBrowserWindow () -> setModified (true);
 		}
 	}
 }

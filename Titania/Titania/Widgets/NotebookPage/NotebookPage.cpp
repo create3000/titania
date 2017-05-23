@@ -60,7 +60,12 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
 	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
-	                     url (startUrl)
+	                     url (startUrl),
+	          browserHistory (mainBrowser),
+	             undoHistory (),
+	                modified (false),
+	           saveConfirmed (false),
+	            fileMonitors ()
 {
 	addChildObjects (mainBrowser);
 
@@ -68,6 +73,14 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> isStrict (false);
 	mainBrowser -> show ();
+
+	const auto container = getWidget () .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
+
+	getBox2 () .pack_start (*mainBrowser, true, true, 0);
+	getBox2 () .set_visible (true);
 
 	setup ();
 }
@@ -78,6 +91,12 @@ NotebookPage::initialize ()
 	X3DNotebookPageInterface::initialize ();
 }
 
+int32_t
+NotebookPage::getPageNumber () const
+{
+	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
+}
+
 const basic::uri &
 NotebookPage::getWorldURL () const
 {
@@ -85,6 +104,41 @@ NotebookPage::getWorldURL () const
 	   return mainBrowser -> getWorldURL ();
 
 	return url;
+}
+
+void
+NotebookPage::setModified (const bool value)
+{
+	modified = value;
+}
+
+bool
+NotebookPage::getModified () const
+{
+	return undoHistory .getModified () or modified;
+}
+
+void
+NotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
+{
+	fileMonitors .emplace_back (file, fileMonitor);
+}
+
+void
+NotebookPage::reset ()
+{
+	undoHistory .clear ();
+
+	modified      = false;
+	saveConfirmed = false;
+
+	for (const auto & fileMonitor : fileMonitors)
+	{
+		fileMonitor .second -> cancel ();
+		fileMonitor .first -> remove ();
+	}
+
+	fileMonitors .clear ();
 }
 
 NotebookPage::~NotebookPage ()

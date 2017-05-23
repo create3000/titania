@@ -53,6 +53,7 @@
 #include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Widgets/NotebookPage/NotebookPage.h"
 
 namespace titania {
 namespace puck {
@@ -94,11 +95,11 @@ UndoHistoryEditor::initialize ()
 void
 UndoHistoryEditor::set_browser ()
 {
-	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .removeInterest (&X3D::SFTime::setValue, undoBuffer);
+	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () .removeInterest (&X3D::SFTime::setValue, undoBuffer);
 
 	browser = getCurrentBrowser ();
 
-	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .addInterest (&X3D::SFTime::setValue, undoBuffer, 1);
+	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () .addInterest (&X3D::SFTime::setValue, undoBuffer, 1);
 
 	set_undoHistory ();
 }
@@ -113,7 +114,7 @@ UndoHistoryEditor::set_undoHistory ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
+	const auto & undoHistory = getBrowserWindow () -> getCurrentPage () -> getUndoHistory ();
 
 	size_t number = 1;
 
@@ -162,7 +163,7 @@ void
 UndoHistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	const size_t index       = path .front ();
-	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
+	const auto & undoHistory = getBrowserWindow () -> getCurrentPage () -> getUndoHistory ();
 
 	if (index < undoHistory .getUndoList () .size ())
 	{

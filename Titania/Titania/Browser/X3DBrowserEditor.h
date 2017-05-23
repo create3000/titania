@@ -84,13 +84,6 @@ public:
 	void
 	setEditing (const bool);
 
-	void
-	setModified (const X3D::BrowserPtr & browser, const bool value);
-
-	virtual
-	bool
-	getModified (const X3D::BrowserPtr & browser) const final override;
-
 	/// @name Operations
 
 	void
@@ -102,7 +95,7 @@ public:
 
 	virtual
 	void
-	load (const X3D::BrowserPtr &, const basic::uri &) final override;
+	load (const basic::uri &) final override;
 
 	X3D::MFNode
 	import (const std::vector <basic::uri> &, const X3D::UndoStepPtr & undoStep);
@@ -128,28 +121,20 @@ public:
 
 	/// @name Undo/Redo operations
 
-	X3D::UndoHistory &
-	getUndoHistory (const X3D::BrowserPtr &);
-
-	const X3D::UndoHistory &
-	getUndoHistory (const X3D::BrowserPtr &) const;
+	void
+	setModified (const bool value);
 
 	virtual
 	void
 	addUndoStep (const X3D::UndoStepPtr &) final override;
 
-	void
-	addUndoStep (const X3D::BrowserPtr &, const X3D::UndoStepPtr &);
-
 	virtual
 	void
-	removeUndoStep () final override
-	{ getUndoHistory (getCurrentBrowser ()) .removeUndoStep (); }
+	removeUndoStep () final override;
 
 	virtual
 	const X3D::UndoStepPtr &
-	getUndoStep () const final override
-	{ return getUndoHistory (getCurrentBrowser ()) .getUndoStep (); }
+	getUndoStep () const final override;
 
 	void
 	undo ();
@@ -239,10 +224,10 @@ protected:
 
 	virtual
 	void
-	setBrowser (const X3D::BrowserPtr &) override;
+	setPage (const NotebookPagePtr & value) override;
 
 	void
-	setViewer (const X3D::X3DConstants::NodeType);
+	setViewer (const X3D::X3DConstants::NodeType viewerType);
 
 	/// @name Undo
 
@@ -274,7 +259,7 @@ private:
 	///  @name File handling
 
 	bool
-	isSaved (const X3D::BrowserPtr &);
+	isSaved (const NotebookPagePtr &);
 
 	void
 	setMetaData ();

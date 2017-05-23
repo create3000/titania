@@ -251,7 +251,7 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 	
 	getCurrentScene () -> updateUnit (category, name, value);
 
-	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (true);
 
 	changing = false;
 }

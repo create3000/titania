@@ -1066,7 +1066,6 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\PrecisionPlacementPanel.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DTransformEditor.h" />
     <None Include="Titania\Browser\X3DBrowserWindow.h" />
-    <None Include="Titania\Browser\BrowserUserData.h" />
     <None Include="share\titania\ui\Editors\MaterialEditorPreview.x3dv" />
     <None Include="share\titania\ui\Editors\NormalTool.x3dv" />
     <None Include="share\titania\ui\Editors\RotationTool.x3dv" />

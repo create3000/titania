@@ -51,7 +51,6 @@
 #include "HistoryEditor.h"
 
 #include "../../Base/ScrollFreezer.h"
-#include "../../Browser/BrowserUserData.h"
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"

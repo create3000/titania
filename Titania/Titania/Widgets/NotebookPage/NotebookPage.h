@@ -52,6 +52,9 @@
 #define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
 
 #include "../../UserInterfaces/X3DNotebookPageInterface.h"
+#include "../../Browser/BrowserHistory.h"
+
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {
@@ -67,6 +70,9 @@ public:
 
 	///  @name Member access
 
+	int32_t
+	getPageNumber () const;
+
 	const X3D::BrowserPtr &
 	getMainBrowser () const
 	{ return mainBrowser; }
@@ -74,7 +80,43 @@ public:
 	const basic::uri &
 	getWorldURL () const;
 
+	BrowserHistory &
+	getBrowserHistory ()
+	{	return browserHistory; }
+
+	const BrowserHistory &
+	getBrowserHistory () const
+	{	return browserHistory; }
+
+	X3D::UndoHistory &
+	getUndoHistory ()
+	{	return undoHistory; }
+
+	const X3D::UndoHistory &
+	getUndoHistory () const
+	{	return undoHistory; }
+
+	void
+	setModified (const bool value);
+
+	bool
+	getModified () const;
+
+	void
+	setSaveConfirmed (const bool value)
+	{ saveConfirmed = value; }
+
+	bool
+	getSaveConfirmed () const
+	{ return saveConfirmed; }
+
+	void
+	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
+
 	///  @name Destruction
+
+	void
+	reset ();
 
 	virtual
 	~NotebookPage () final override;
@@ -90,8 +132,14 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr mainBrowser;
-	basic::uri      url; // Start URL
+	X3D::BrowserPtr  mainBrowser;
+	basic::uri       url; // Start URL
+	BrowserHistory   browserHistory;
+	X3D::UndoHistory undoHistory;
+	bool             modified;
+	bool             saveConfirmed;
+
+	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>> fileMonitors;
 
 };
 

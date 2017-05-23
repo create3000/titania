@@ -51,7 +51,6 @@
 #include "X3DBrowserEditor.h"
 
 #include "../Base/X3DEditorObject.h"
-#include "../Browser/BrowserUserData.h"
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
@@ -150,20 +149,26 @@ X3DBrowserEditor::configure ()
 }
 
 void
-X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
+X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 {
-	if (getEditing () and getCurrentBrowser () -> isInitialized ())
-		setMetaData ();
+	if (getCurrentPage ())
+	{
+		if (getEditing () and getCurrentBrowser () -> isInitialized ())
+			setMetaData ();
+	
+		getCurrentPage () -> getUndoHistory () .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
+		getCurrentBrowser () -> shutdown ()  .removeInterest (&X3DBrowserEditor::set_shutdown,    this);
+	}
 
-	getCurrentBrowser () -> shutdown ()   .removeInterest (&X3DBrowserEditor::set_shutdown, this);
-	getUndoHistory (getCurrentBrowser ()) .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
+	X3DBrowserWidget::setPage (value);
 
-	X3DBrowserWidget::setBrowser (value);
-
-	getCurrentBrowser () -> shutdown ()   .addInterest (&X3DBrowserEditor::set_shutdown, this);
-	getUndoHistory (getCurrentBrowser ()) .addInterest (&X3DBrowserEditor::set_undoHistory, this);
-
-	set_undoHistory ();
+	if (getCurrentPage ())
+	{
+		getCurrentPage () -> getUndoHistory () .addInterest (&X3DBrowserEditor::set_undoHistory, this);
+		getCurrentBrowser () -> shutdown ()  .addInterest (&X3DBrowserEditor::set_shutdown,    this);
+	
+		set_undoHistory ();
+	}
 }
 
 void
@@ -188,14 +193,14 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 	}
 	else
 	{
-		if (isSaved (getCurrentBrowser ()))
+		if (isSaved (getCurrentPage ()))
 		{
 			// Shutdown is immediately processed.
 			getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
 			getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
 
-			getUserData (getCurrentBrowser ()) -> dispose ();
-			setModified (getCurrentBrowser (), false);
+			getCurrentPage () -> reset ();
+			setModified (false);
 
 			X3DBrowserWidget::setCurrentContext (value);
 		}
@@ -213,10 +218,10 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 void
 X3DBrowserEditor::set_shutdown ()
 {
-	if (isSaved (getCurrentBrowser ()))
+	if (isSaved (getCurrentPage ()))
 	{
-		getUserData (getCurrentBrowser ()) -> dispose ();
-		setModified (getCurrentBrowser (), false);
+		getCurrentPage () -> reset ();
+		setModified (false);
 	}
 	else
 		// Cancel shutdown, there will be no further shutdown now.
@@ -340,16 +345,14 @@ X3DBrowserEditor::setEditing (const bool value)
 }
 
 bool
-X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
+X3DBrowserEditor::isSaved (const NotebookPagePtr & page)
 {
-	const auto userData = getUserData (browser);
-
-	if (userData -> saveConfirmed)
+	if (page -> getSaveConfirmed ())
 		return true;
 
-	if (getModified (browser))
+	if (page -> getModified ())
 	{
-		const auto pageNumber = getBrowserNotebook () .page_num (*browser);
+		const auto pageNumber = page -> getPageNumber ();
 
 		if (pageNumber < 0)
 			return true;
@@ -363,8 +366,8 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 			case Gtk::RESPONSE_OK:
 			{
 				on_save_activated ();
-				userData -> saveConfirmed = not getModified (browser);
-				return userData -> saveConfirmed;
+				page -> setSaveConfirmed (not page -> getModified ());
+				return page -> getSaveConfirmed ();
 			}
 			case Gtk::RESPONSE_CANCEL:
 			case Gtk::RESPONSE_DELETE_EVENT:
@@ -373,33 +376,13 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 			}
 			default:
 			{
-				userData -> saveConfirmed = true;
+				page -> setSaveConfirmed (true);
 				return true;
 			}
 		}
 	}
 
 	return true;
-}
-
-void
-X3DBrowserEditor::setModified (const X3D::BrowserPtr & browser, const bool value)
-{
-	const auto userData = getUserData (browser);
-
-	userData -> modified      = value;
-	userData -> saveConfirmed = false;
-
-	if (not value)
-		getUndoHistory (browser) .setSaved ();
-
-	setTitle ();
-}
-
-bool
-X3DBrowserEditor::getModified (const X3D::BrowserPtr & browser) const
-{
-	return getUndoHistory (browser) .getModified () or getUserData (browser) -> modified;
 }
 
 void
@@ -534,14 +517,14 @@ X3DBrowserEditor::open (const basic::uri & URL)
 		X3DBrowserWidget::open (URL);
 
 	else
-		load (getCurrentBrowser (), URL);
+		load (URL);
 }
 
 void
-X3DBrowserEditor::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
+X3DBrowserEditor::load (const basic::uri & URL)
 {
-	if (isSaved (browser))
-		X3DBrowserWidget::load (browser, URL);
+	if (isSaved (getCurrentPage ()))
+		X3DBrowserWidget::load (URL);
 }
 
 X3D::MFNode
@@ -635,7 +618,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 	if (saved)
 	{
 		if (not copy)
-			setModified (getCurrentBrowser (), false);
+			setModified (false);
 
 		return true;
 	}
@@ -646,7 +629,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 void
 X3DBrowserEditor::reload ()
 {
-	if (isSaved (getCurrentBrowser ()))
+	if (isSaved (getCurrentPage ()))
 		X3DBrowserWidget::reload ();
 }
 
@@ -655,7 +638,7 @@ X3DBrowserEditor::close (const NotebookPagePtr page)
 {
 	getWidget () .grab_focus ();
 
-	if (isSaved (page -> getMainBrowser ()))
+	if (isSaved (page))
 		X3DBrowserWidget::close (page);
 }
 
@@ -672,11 +655,11 @@ X3DBrowserEditor::quit ()
 
 		for (const auto & page : pages)
 		{
-			if (isSaved (page -> getMainBrowser ()))
+			if (isSaved (page))
 				continue;
 
 			for (const auto & page : getPages ())
-				getUserData (page -> getMainBrowser ()) -> saveConfirmed = false;
+				page -> setSaveConfirmed (false);
 
 			// Cancel quit.
 			return true;
@@ -689,30 +672,34 @@ X3DBrowserEditor::quit ()
 	return X3DBrowserWidget::quit ();
 }
 
-// Undo/Redo operations
-
-X3D::UndoHistory &
-X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser)
+void
+X3DBrowserEditor::setModified (const bool value)
 {
-	return getUserData (browser) -> undoHistory;
-}
+	getCurrentPage () -> setModified (value);
+	getCurrentPage () -> setSaveConfirmed (false);
 
-const X3D::UndoHistory &
-X3DBrowserEditor::getUndoHistory (const X3D::BrowserPtr & browser) const
-{
-	return getUserData (browser) -> undoHistory;
+	if (not value)
+		getCurrentPage () -> getUndoHistory () .setSaved ();
+
+	setTitle ();
 }
 
 void
 X3DBrowserEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
-	getUndoHistory (getCurrentBrowser ()) .addUndoStep (undoStep);
+	getCurrentPage () -> getUndoHistory () .addUndoStep (undoStep);
 }
 
 void
-X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const X3D::UndoStepPtr & undoStep)
+X3DBrowserEditor::removeUndoStep ()
 {
-	getUndoHistory (browser) .addUndoStep (undoStep);
+	getCurrentPage () -> getUndoHistory () .removeUndoStep ();
+}
+
+const X3D::UndoStepPtr &
+X3DBrowserEditor::getUndoStep () const
+{
+	return getCurrentPage () -> getUndoHistory () .getUndoStep ();
 }
 
 void
@@ -721,7 +708,7 @@ X3DBrowserEditor::undo ()
 	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
-	getUndoHistory (getCurrentBrowser ()) .undo ();
+	getCurrentPage () -> getUndoHistory () .undo ();
 }
 
 void
@@ -730,13 +717,13 @@ X3DBrowserEditor::redo ()
 	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
-	getUndoHistory (getCurrentBrowser ()) .redo ();
+	getCurrentPage () -> getUndoHistory ()  .redo ();
 }
 
 void
 X3DBrowserEditor::set_undoHistory ()
 {
-	const auto & undoHistory = getUndoHistory (getCurrentBrowser ());
+	const auto & undoHistory = getCurrentPage () -> getUndoHistory () ;
 
 	if (undoHistory .hasUndo ())
 	{
@@ -986,7 +973,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
 
 	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserEditor::on_source_code_changed), node));
-	getUserData (getCurrentBrowser ()) -> fileMonitors .emplace (file, fileMonitor);
+	getCurrentPage () -> addFileMonitor (file, fileMonitor);
 
 	try
 	{

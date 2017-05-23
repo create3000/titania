@@ -84,10 +84,11 @@ public:
 
 	NotebookPagePtr
 	getCurrentPage () const
-	throw (std::out_of_range);
+	{ return page; }
 
-	NotebookPagePtrArray::const_iterator
-	getPage (const basic::uri &) const;
+	NotebookPagePtr
+	getPage (const basic::uri &) const
+	throw (std::out_of_range);
 
 	const X3D::BrowserPtr &
 	getMasterBrowser () const
@@ -123,23 +124,6 @@ public:
 	bool
 	isLive () const;
 
-	virtual
-	bool
-	getModified (const X3D::BrowserPtr & browser) const
-	{ return false; }
-
-	static
-	std::shared_ptr <BrowserUserData>
-	getUserData (const X3D::BrowserPtr & browser);
-
-	static
-	std::shared_ptr <UserData>
-	getUserData (const X3D::X3DExecutionContextPtr & executionContextPtr);
-
-	static
-	std::shared_ptr <UserData>
-	getUserData (const X3D::SFNode & node);
-
 	std::string
 	getOutputStyle (const X3D::X3DScenePtr & scene) const;
 
@@ -154,7 +138,7 @@ public:
 
 	virtual
 	void
-	load (const X3D::BrowserPtr & browser, const basic::uri & uri);
+	load (const basic::uri & uri);
 
 	NotebookPagePtr
 	append (const basic::uri & URL);
@@ -224,7 +208,7 @@ protected:
 
 	virtual
 	void
-	setBrowser (const X3D::BrowserPtr &);
+	setPage (const NotebookPagePtr & value);
 
 	void
 	setTitle ();
@@ -239,9 +223,6 @@ protected:
 private:
 
 	///  @name Event handlers
-
-	void
-	set_initialized ();
 
 	void
 	set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL);
@@ -280,6 +261,7 @@ private:
 	///  @name Members
 
 	NotebookPagePtrArray            pages;
+	NotebookPagePtr                 page;
 	NotebookPagePtrArray            recentPages;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;

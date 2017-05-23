@@ -109,12 +109,6 @@ X3DBrowserWindow::setEditing (const bool value)
 	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getBoolean ("geometryEditor"));
 }
 
-void
-X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
-{
-	X3DBrowserEditor::setBrowser (value);
-}
-
 const std::shared_ptr <OutlineTreeViewEditor> &
 X3DBrowserWindow::getOutlineTreeView () const
 {

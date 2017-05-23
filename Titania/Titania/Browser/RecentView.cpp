@@ -242,28 +242,26 @@ RecentView::set_url (const X3D::SFString & url)
 	if (URL .is_relative ())
 		URL = basic::uri (os::cwd ()) .transform (URL);
 
-	const auto & pages = getBrowserWindow () -> getPages ();
-	const auto   iter  = getBrowserWindow () -> getPage (URL);
-
-	if (iter not_eq pages .cend ())
+	try
 	{
-		const auto recentPage    = pages .at (getBrowserWindow () -> getBrowserNotebook () .get_current_page ());
+		const auto page          = getBrowserWindow () -> getPage (URL);
+		const auto recentPage    = getBrowserWindow () -> getCurrentPage ();
 		const auto recentBrowser = recentPage -> getBrowser ();
 
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - pages .cbegin ());
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
 		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentPage);
 		recentBrowser -> addEvent ();
 	}
-	else
+	catch (const std::out_of_range &)
 	{
 		if (not getBrowserWindow () -> isLive ())
 			getBrowserWindow () -> getCurrentBrowser () -> endUpdate ();
 
 		getBrowserWindow () -> getSelection () -> setEnabled (getBrowserWindow () -> getSelection () -> getEnabled ());
 
-		getBrowserWindow () -> load (getBrowserWindow () -> getCurrentBrowser (), URL);
+		getBrowserWindow () -> load (URL);
 	}
 }
 

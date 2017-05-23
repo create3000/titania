@@ -67,7 +67,6 @@
 #include "../Widgets/Sidebar/Sidebar.h"
 
 #include "../Browser/BrowserSelection.h"
-#include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
 #include "../Revealer/GeometryEditor/GeometryEditor.h"
 
@@ -219,77 +218,83 @@ BrowserWindow::loadStyles ()
 }
 
 void
-BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
+BrowserWindow::setPage (const NotebookPagePtr & value)
 {
 	// Disconnect
 
-	getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer,            this);
-	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer,       this);
-	getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer,            this);
-	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer,            this);
-	getCurrentBrowser () -> getAvailableViewers () .removeInterest (&BrowserWindow::set_available_viewers, this);
+	if (getCurrentPage ())
+	{
+		getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer,            this);
+		getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer,       this);
+		getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer,            this);
+		getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer,            this);
+		getCurrentBrowser () -> getAvailableViewers () .removeInterest (&BrowserWindow::set_available_viewers, this);
+	
+		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
+		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
+		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
+	
+		getCurrentBrowser () -> getLightTools ()            .removeInterest (&BrowserWindow::set_lightTools,            this);
+		getCurrentBrowser () -> getProximitySensorTools ()  .removeInterest (&BrowserWindow::set_proximitySensorTools,  this);
+		getCurrentBrowser () -> getSoundTools ()            .removeInterest (&BrowserWindow::set_soundTools,            this);
+		getCurrentBrowser () -> getTransformSensorTools ()  .removeInterest (&BrowserWindow::set_transformSensorTools,  this);
+		getCurrentBrowser () -> getVisibilitySensorTools () .removeInterest (&BrowserWindow::set_visibilitySensorTools, this);
+		getCurrentBrowser () -> getViewpointTools ()        .removeInterest (&BrowserWindow::set_viewpointTools,        this);
+	
+		getCurrentPage () -> getBrowserHistory () .removeInterest (&BrowserWindow::set_browserHistory, this);
+	}
 
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
+	// Set page.
 
-	getCurrentBrowser () -> getLightTools ()            .removeInterest (&BrowserWindow::set_lightTools,            this);
-	getCurrentBrowser () -> getProximitySensorTools ()  .removeInterest (&BrowserWindow::set_proximitySensorTools,  this);
-	getCurrentBrowser () -> getSoundTools ()            .removeInterest (&BrowserWindow::set_soundTools,            this);
-	getCurrentBrowser () -> getTransformSensorTools ()  .removeInterest (&BrowserWindow::set_transformSensorTools,  this);
-	getCurrentBrowser () -> getVisibilitySensorTools () .removeInterest (&BrowserWindow::set_visibilitySensorTools, this);
-	getCurrentBrowser () -> getViewpointTools ()        .removeInterest (&BrowserWindow::set_viewpointTools,        this);
+	X3DBrowserWindow::setPage (value);
 
-	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (&BrowserWindow::set_browserHistory, this);
+	// Connect.
 
-	// Set browser
-
-	X3DBrowserWindow::setBrowser (value);
-
-	// Connect
-
-	getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer,       this);
-	getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer,            this);
-	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer,            this);
-	getCurrentBrowser () -> getAvailableViewers () .addInterest (&BrowserWindow::set_available_viewers, this);
-
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
-
-	getCurrentBrowser () -> getLightTools ()            .addInterest (&BrowserWindow::set_lightTools,            this);
-	getCurrentBrowser () -> getProximitySensorTools ()  .addInterest (&BrowserWindow::set_proximitySensorTools,  this);
-	getCurrentBrowser () -> getSoundTools ()            .addInterest (&BrowserWindow::set_soundTools,            this);
-	getCurrentBrowser () -> getTransformSensorTools ()  .addInterest (&BrowserWindow::set_transformSensorTools,  this);
-	getCurrentBrowser () -> getVisibilitySensorTools () .addInterest (&BrowserWindow::set_visibilitySensorTools, this);
-	getCurrentBrowser () -> getViewpointTools ()        .addInterest (&BrowserWindow::set_viewpointTools,        this);
-
-	getUserData (getCurrentBrowser ()) -> browserHistory .addInterest (&BrowserWindow::set_browserHistory, this);
-
-	// Initialize
-
-	set_activeLayer ();
-	set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
-	set_shading          (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
-	set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
-	set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
-	set_viewer ();
-
-	set_lightTools            (getCurrentBrowser () -> getLightTools ());
-	set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
-	set_soundTools            (getCurrentBrowser () -> getSoundTools ());
-	set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
-	set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
-	set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
-
-	set_browserHistory ();
-
-	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
-	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
-
-	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
-
-	on_transform_tool_mode_toggled ();
+	if (getCurrentPage ())
+	{
+		getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer,       this);
+		getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer,            this);
+		getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer,            this);
+		getCurrentBrowser () -> getAvailableViewers () .addInterest (&BrowserWindow::set_available_viewers, this);
+	
+		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
+		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
+		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
+	
+		getCurrentBrowser () -> getLightTools ()            .addInterest (&BrowserWindow::set_lightTools,            this);
+		getCurrentBrowser () -> getProximitySensorTools ()  .addInterest (&BrowserWindow::set_proximitySensorTools,  this);
+		getCurrentBrowser () -> getSoundTools ()            .addInterest (&BrowserWindow::set_soundTools,            this);
+		getCurrentBrowser () -> getTransformSensorTools ()  .addInterest (&BrowserWindow::set_transformSensorTools,  this);
+		getCurrentBrowser () -> getVisibilitySensorTools () .addInterest (&BrowserWindow::set_visibilitySensorTools, this);
+		getCurrentBrowser () -> getViewpointTools ()        .addInterest (&BrowserWindow::set_viewpointTools,        this);
+	
+		getCurrentPage () -> getBrowserHistory () .addInterest (&BrowserWindow::set_browserHistory, this);
+	
+		// Initialize
+	
+		set_activeLayer ();
+		set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
+		set_shading          (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
+		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
+		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
+		set_viewer ();
+	
+		set_lightTools            (getCurrentBrowser () -> getLightTools ());
+		set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
+		set_soundTools            (getCurrentBrowser () -> getSoundTools ());
+		set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
+		set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
+		set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
+	
+		set_browserHistory ();
+	
+		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
+		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
+	
+		getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
+	
+		on_transform_tool_mode_toggled ();
+	}
 }
 
 void
@@ -369,7 +374,7 @@ BrowserWindow::set_executionContext ()
 void
 BrowserWindow::set_browserHistory ()
 {
-	const auto & browserHistory = getUserData (getCurrentBrowser ()) -> browserHistory;
+	const auto & browserHistory = getCurrentPage () -> getBrowserHistory ();
 
 	getPreviousButton () .set_sensitive (browserHistory .hasPreviousPage ());
 	getNextButton ()     .set_sensitive (browserHistory .hasNextPage ());
@@ -855,12 +860,7 @@ BrowserWindow::on_scene_properties_activated ()
 void
 BrowserWindow::on_close_activated ()
 {
-	try
-	{
-		close (getCurrentPage ());
-	}
-	catch (const std::out_of_range &)
-	{ }
+	close (getCurrentPage ());
 }
 
 void
@@ -2191,7 +2191,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
 	getGridTool () -> update ();
-	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (true);
 }
 
 void
@@ -2216,7 +2216,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
 	getAngleTool () -> update ();
-	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (true);
 }
 
 void
@@ -2241,7 +2241,7 @@ BrowserWindow::on_axonometric_layout_tool_toggled ()
 
 	getAxonometricGridTool () -> isEnabled (getAxonometricGridLayoutToolAction () -> get_active ());
 	getAxonometricGridTool () -> update ();
-	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (true);
 }
 
 void
@@ -2279,8 +2279,8 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 	for (const auto & page : getPages ())
 	{
 		const auto & browser  = page -> getMainBrowser ();
-	   const auto & worldURL = page -> getWorldURL ();
-	   const bool   modified = getModified (browser);
+		const auto & worldURL = page -> getWorldURL ();
+		const bool   modified = page -> getModified ();
 		const auto   icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (worldURL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 		auto         menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
 
@@ -2321,19 +2321,19 @@ BrowserWindow::on_info_activated ()
 void
 BrowserWindow::on_home ()
 {
-	load (getCurrentBrowser (), get_page ("about/home.x3dv"));
+	load (get_page ("about/home.x3dv"));
 }
 
 void
 BrowserWindow::on_previous_page ()
 {
-	getUserData (getCurrentBrowser ()) -> browserHistory .previousPage ();
+	getCurrentPage () -> getBrowserHistory () .previousPage ();
 }
 
 void
 BrowserWindow::on_next_page ()
 {
-	getUserData (getCurrentBrowser ()) -> browserHistory .nextPage ();
+	getCurrentPage () -> getBrowserHistory () .nextPage ();
 }
 
 bool
@@ -2342,7 +2342,7 @@ BrowserWindow::on_previous_button_press_event (GdkEventButton* event)
 	if (event -> button not_eq 3)
 		return false;
 
-	auto & browserHistory = getUserData (getCurrentBrowser ()) -> browserHistory;
+	auto & browserHistory = getCurrentPage () -> getBrowserHistory ();
 
 	if (browserHistory .isEmpty ())
 		return false;
@@ -2404,7 +2404,7 @@ BrowserWindow::on_location_key_press_event (GdkEventKey* event)
 {
 	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
 	{
-		load (getCurrentBrowser (), Glib::uri_unescape_string (getLocationEntry () .get_text ()));
+		load (Glib::uri_unescape_string (getLocationEntry () .get_text ()));
 		return true;
 	}
 
