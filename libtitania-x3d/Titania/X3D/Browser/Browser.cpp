@@ -173,8 +173,6 @@ Browser::initialize ()
 
 		//set_focus_on_click (true);
 		set_can_focus (true);
-		grab_focus ();
-
 		setCursor ("default");
 
 		if (get_mapped ())
@@ -269,7 +267,6 @@ Browser::on_map ()
 {
 	OpenGL::Surface::on_map ();
 
-	grab_focus ();
 	queue_draw ();
 	set_cursor (cursor);
 

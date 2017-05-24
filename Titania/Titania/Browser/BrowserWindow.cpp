@@ -64,6 +64,7 @@
 
 #include "../Widgets/Footer/Footer.h"
 #include "../Widgets/NotebookPage/NotebookPage.h"
+#include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/Sidebar/Sidebar.h"
 
 #include "../Browser/BrowserSelection.h"
@@ -516,34 +517,31 @@ BrowserWindow::set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpoint
 void
 BrowserWindow::on_style_updated ()
 {
-//	try
-//	{
-//		const auto styleContext = getWidget () .get_style_context ();
-//		const auto fg_normal    = styleContext -> get_color (Gtk::STATE_FLAG_NORMAL);
-//		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
-//		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-//		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-//
-//		std::string string;
-//
-//		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
-//		string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
-//		string += "}";
-//		string += "";
-//		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView:selected {";
-//		string += "  color: " + fg_selected .to_string () + ";";
-//		string += "  background-color: " + bg_selected .to_string () + ";";
-//		string += "}";
-//		string += "GtkExpander > GtkLabel {";
-//		string += "	border-bottom: 1px solid " + fg_normal .to_string () + ";";
-//		string += "}";
-//
-//		cssProvider -> load_from_data (string);
-//	}
-//	catch (const Glib::Error & error)
-//	{
-//	   __LOG__ << error .what () << std::endl;
-//	}
+	try
+	{
+		const auto styleContext = getOutlineTreeView () -> get_style_context ();
+		const auto fg_normal    = styleContext -> get_color (Gtk::STATE_FLAG_NORMAL);
+		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+
+		std::string string;
+
+		string += ".titania-widget-box {\n";
+		string += "  border-color: " + bg_normal .to_string () + ";\n";
+		string += "}\n";
+		string += ".titania-widget-box-selected {\n";
+		string += "  border-color: " + bg_selected .to_string () + ";\n";
+		string += "}\n";
+
+		cssProvider -> load_from_data (string);
+
+		__LOG__ << string << std::endl;
+	}
+	catch (const Glib::Error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
 }
 
 // Keys

@@ -40,6 +40,14 @@ expander > title > label {
 
 /* Surface */
 
+.titania-widget-box {
+	border: 1px solid transparent;
+}
+
+.titania-widget-box-selected {
+	border: 1px solid red;
+}
+
 .titania-surface {
 }
 

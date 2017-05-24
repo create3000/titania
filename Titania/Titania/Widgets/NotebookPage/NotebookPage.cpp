@@ -53,6 +53,10 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+
 namespace titania {
 namespace puck {
 
@@ -63,7 +67,9 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	              topBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
 	            rightBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
 	            frontBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
-	                browsers ({ mainBrowser, topBrowser, rightBrowser,  frontBrowser }),
+	                browsers ({ topBrowser, mainBrowser, rightBrowser,  frontBrowser }),
+	             activeLayer (),
+	             initialized (0),
 	                     url (startUrl),
 	          browserHistory (mainBrowser),
 	             undoHistory (),
@@ -71,21 +77,30 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	           saveConfirmed (false),
 	            fileMonitors (),
 	                 widgets ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
-	               multiView (false)
+	               multiView (false),
+	               positions ({ X3D::Vector3f (0, 10, 0), X3D::Vector3f (), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
+	            orientations ({ X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
 {
 	addChildObjects (mainBrowser,
 	                 topBrowser,
 	                 rightBrowser,
 	                 frontBrowser,
-	                 browsers);
+	                 browsers,
+	                 activeLayer);
 
 	unparent (getWidget ());
 
-	for (const auto & browser : browsers)
+	mainBrowser -> setNotifyOnLoad (true);
+	mainBrowser -> isStrict (false);
+
+	for (size_t i = 0, size = browsers .size (); i < size; ++ i)
 	{
+		const auto & browser = browsers [i];
+	
+		browser -> signal_focus_out_event () .connect (sigc::bind (sigc::mem_fun (this, &NotebookPage::on_focus_out_event), i));
+		browser -> signal_focus_in_event () .connect (sigc::bind (sigc::mem_fun (this, &NotebookPage::on_focus_in_event), i));
+		browser -> initialized () .addInterest (&NotebookPage::set_initialized, this, i);
 		browser -> setAntialiasing (4);
-		browser -> setNotifyOnLoad (true);
-		browser -> isStrict (false);
 		browser -> show ();
 	}
 
@@ -102,6 +117,110 @@ void
 NotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
+}
+
+void
+NotebookPage::set_initialized (const size_t index)
+{
+	const auto & browser = browsers [index];
+
+	browser -> initialized () .removeInterest (&NotebookPage::set_initialized, this);
+	
+	if (++ initialized < browsers .size ())
+		return;
+
+	// Set up viewpoint.
+
+	for (size_t i = 0, size = browsers .size (); i < size; ++ i)
+	{
+		try
+		{
+			const auto & browser = browsers [i];
+	
+			if (browser == mainBrowser)
+				continue;
+	
+			mainBrowser -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
+
+			const auto viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
+	
+			viewpoint -> position ()    = positions [i];
+			viewpoint -> orientation () = orientations [i];
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	// Connect to active layer.
+
+	mainBrowser -> getActiveLayer () .addInterest (&NotebookPage::set_activeLayer, this);
+
+	set_activeLayer ();
+}
+
+void
+NotebookPage::set_activeLayer ()
+{
+	if (activeLayer)
+	{
+		for (const auto & browser : browsers)
+		{
+			try
+			{
+				if (browser == mainBrowser)
+					continue;
+		
+				auto & children = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group") -> children ();
+		
+				activeLayer -> children () .removeInterest (children);
+			}
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+		}
+	}
+
+	activeLayer = mainBrowser -> getActiveLayer ();
+
+	for (const auto & browser : browsers)
+	{
+		try
+		{
+			if (browser == mainBrowser)
+				continue;
+	
+			auto & children = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group") -> children ();
+		
+			if (activeLayer)
+			{
+				activeLayer -> children () .addInterest (children);
+				children = activeLayer -> children ();
+			}
+			else
+				children .clear ();
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+}
+
+bool
+NotebookPage::on_focus_out_event (GdkEventFocus* event, const size_t index)
+{
+	widgets [index] -> get_style_context () -> remove_class ("titania-widget-box-selected");
+	return false;
+}
+
+bool
+NotebookPage::on_focus_in_event (GdkEventFocus* event, const size_t index)
+{
+	widgets [index] -> get_style_context () -> add_class ("titania-widget-box-selected");
+	return false;
 }
 
 int32_t
@@ -190,12 +309,6 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 			for (size_t i = 0, size = widgets .size (); i < size; ++ i)
 			{
 				widgets [i] -> set_visible (multiView or i == index);
-			}
-
-			for (size_t i = 0, size = browsers .size (); i < size; ++ i)
-			{
-				if (i == index)
-					browsers [i] -> grab_focus ();
 			}
 
 			return true;

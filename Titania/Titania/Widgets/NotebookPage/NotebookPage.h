@@ -132,6 +132,18 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_initialized (const size_t index);
+
+	void
+	set_activeLayer ();
+
+	bool
+	on_focus_out_event (GdkEventFocus* event, const size_t index);
+
+	bool
+	on_focus_in_event (GdkEventFocus* event, const size_t index);
+
 	virtual
 	bool
 	on_box1_key_release_event (GdkEventKey* event) final override;
@@ -158,6 +170,8 @@ private:
 	X3D::BrowserPtr                 rightBrowser;
 	X3D::BrowserPtr                 frontBrowser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;
+	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
+	size_t                          initialized;
 	basic::uri                      url; // Start URL
 	BrowserHistory                  browserHistory;
 	X3D::UndoHistory                undoHistory;
@@ -168,6 +182,8 @@ private:
 
 	std::vector <Gtk::Widget*> widgets;
 	bool                       multiView;
+	X3D::MFVec3f               positions;
+	X3D::MFRotation            orientations;
 
 };
 

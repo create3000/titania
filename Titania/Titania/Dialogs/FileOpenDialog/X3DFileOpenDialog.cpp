@@ -63,6 +63,12 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"))
 {
 	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
+}
+
+void
+X3DFileOpenDialog::configure ()
+{
+	X3DFileOpenDialogInterface::configure ();
 
 	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
 }

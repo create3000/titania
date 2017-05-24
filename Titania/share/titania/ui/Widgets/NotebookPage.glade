@@ -81,6 +81,9 @@
                 <child>
                   <placeholder/>
                 </child>
+                <style>
+                  <class name="titania-widget-box"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -97,6 +100,9 @@
                 <child>
                   <placeholder/>
                 </child>
+                <style>
+                  <class name="titania-widget-box"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -113,6 +119,9 @@
                 <child>
                   <placeholder/>
                 </child>
+                <style>
+                  <class name="titania-widget-box"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -129,6 +138,9 @@
                 <child>
                   <placeholder/>
                 </child>
+                <style>
+                  <class name="titania-widget-box"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">1</property>

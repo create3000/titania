@@ -151,17 +151,19 @@ protected:
 	void
 	initialize () override;
 
+	/// @name Member access
+
+	const std::shared_ptr <OutlineTreeViewEditor> &
+	getOutlineTreeView () const;
+
+	/// @name Destruction
+
 	virtual
 	void
 	store () override;
 
 
 private:
-
-	/// @name Member access
-
-	const std::shared_ptr <OutlineTreeViewEditor> &
-	getOutlineTreeView () const;
 
 	/// @name Operations
 

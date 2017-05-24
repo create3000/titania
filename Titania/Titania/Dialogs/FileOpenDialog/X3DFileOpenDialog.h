@@ -78,6 +78,10 @@ protected:
 
 	X3DFileOpenDialog ();
 
+	virtual
+	void
+	configure () final override;
+
 	///  @name Operations
 
 	bool
