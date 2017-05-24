@@ -95,27 +95,6 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 
 	setTitleBar (getImportDialog (), getImportDialogHeaderBar ());
 
-	// Config
-
-	if (getConfig () -> hasItem ("importType"))
-	{
-		switch (getConfig () -> getInteger ("importType"))
-		{
-			case ImportType::EXTERN_PROTOS:
-				getImportExternProtosButton () .set_active (true);
-				break;
-		   case ImportType::PROTOS:
-				getImportProtosButton () .set_active (true);
-				break;
-		   case ImportType::SCENE:
-				getImportSceneButton () .set_active (true);
-				break;
-		   default:
-				getImportAsInlineButton () .set_active (true);
-				break;
-		}
-	}
-
 	// Set filter name
 
 	getFileFilterAll   () -> set_name (_ (ALL_FILES_FILTER));
@@ -170,6 +149,31 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	getImportDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
 
 	setup ();
+}
+
+void
+FileImportDialog::configure ()
+{
+	X3DFileImportDialogInterface::configure ();
+
+	if (getConfig () -> hasItem ("importType"))
+	{
+		switch (getConfig () -> getInteger ("importType"))
+		{
+			case ImportType::EXTERN_PROTOS:
+				getImportExternProtosButton () .set_active (true);
+				break;
+		   case ImportType::PROTOS:
+				getImportProtosButton () .set_active (true);
+				break;
+		   case ImportType::SCENE:
+				getImportSceneButton () .set_active (true);
+				break;
+		   default:
+				getImportAsInlineButton () .set_active (true);
+				break;
+		}
+	}
 }
 
 basic::uri

@@ -7,30 +7,41 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Camera.x3dv"
-META "modified" "Wed, 24 May 2017 01:16:53 GMT"
+META "modified" "Wed, 24 May 2017 03:06:47 GMT"
 META "titania-add-world-info" "true"
+
+EXTERNPROTO Grid [
+  inputOutput    SFVec3f    translation
+  inputOutput    SFRotation rotation
+  inputOutput    SFVec3f    scale
+  inputOutput    MFInt32    dimension
+  inputOutput    MFInt32    majorLineEvery
+  inputOutput    MFInt32    majorLineOffset
+  inputOutput    SFColor    color
+  inputOutput    SFFloat    transparency
+  inputOutput    SFColor    lineColor
+  inputOutput    SFFloat    lineTransparency
+  inputOutput    SFColor    majorLineColor
+  inputOutput    SFFloat    majorLineTransparency
+  initializeOnly SFBool     solid
+]
+[
+  "../../../../libtitania-x3d/share/titania/tools/library/Grid.x3dv#Grid",
+  "file:///usr/share/titania/tools/library/Grid.x3dv#Grid"
+]
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
     name "Titania"
     reference "http://titania.create3000.de"
     value [
-      DEF AngleGrid MetadataSet {
-        name "AngleGrid"
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
         reference "http://titania.create3000.de"
-        value DEF enabled MetadataBoolean {
-          name "enabled"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
           reference "http://titania.create3000.de"
-          value FALSE
-        }
-      }
-      DEF Grid MetadataSet {
-        name "Grid"
-        reference "http://titania.create3000.de"
-        value DEF enabled_1 MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value TRUE
+          value -1
         }
       }
       DEF NavigationInfo MetadataSet {
@@ -88,72 +99,76 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 Background {
-              skyColor 0.3 0.3 0.3
+            value DEF OrthoViewpoint OrthoViewpoint { }
+          }
+        ]
+      }
+    ]
+  }
+  title "Camera"
+}
+
+Background {
+  skyColor 0.3 0.3 0.3
+}
+
+LayerSet {
+  activeLayer 2
+  order [
+    0,
+    1,
+    2
+  ]
+  layers [
+    DEF GridLayer Layer {
+      children [
+        USE OrthoViewpoint
+        DEF Grid Grid {
+          rotation 1 0 0 1.5707963
+        }
+      ]
+    }
+    DEF Layer Layer {
+      metadata DEF Titania_1 MetadataSet {
+        name "Titania"
+        reference "http://titania.create3000.de"
+        value [
+          DEF AngleGrid MetadataSet {
+            name "AngleGrid"
+            reference "http://titania.create3000.de"
+            value DEF enabled MetadataBoolean {
+              name "enabled"
+              reference "http://titania.create3000.de"
+              value FALSE
+            }
+          }
+          DEF AxonometricGrid MetadataSet {
+            name "AxonometricGrid"
+            reference "http://titania.create3000.de"
+            value DEF enabled_1 MetadataBoolean {
+              name "enabled"
+              reference "http://titania.create3000.de"
+              value FALSE
+            }
+          }
+          DEF Grid_1 MetadataSet {
+            name "Grid"
+            reference "http://titania.create3000.de"
+            value DEF enabled_2 MetadataBoolean {
+              name "enabled"
+              reference "http://titania.create3000.de"
+              value FALSE
             }
           }
         ]
       }
-      DEF LayerSet MetadataSet {
-        name "LayerSet"
-        reference "http://titania.create3000.de"
-        value DEF activeLayer MetadataInteger {
-          name "activeLayer"
-          reference "http://titania.create3000.de"
-          value -1
+      children [
+        DEF _1 NavigationInfo {
+          type "PLANE_create3000.de"
         }
-      }
-    ]
-  }
-}
-
-LayerSet {
-  activeLayer 1
-  order [
-    0,
-    1
-  ]
-  layers DEF Layer Layer {
-    metadata DEF Titania_1 MetadataSet {
-      name "Titania"
-      reference "http://titania.create3000.de"
-      value [
-        DEF AngleGrid_1 MetadataSet {
-          name "AngleGrid"
-          reference "http://titania.create3000.de"
-          value DEF enabled_2 MetadataBoolean {
-            name "enabled"
-            reference "http://titania.create3000.de"
-            value FALSE
-          }
-        }
-        DEF AxonometricGrid MetadataSet {
-          name "AxonometricGrid"
-          reference "http://titania.create3000.de"
-          value DEF enabled_3 MetadataBoolean {
-            name "enabled"
-            reference "http://titania.create3000.de"
-            value FALSE
-          }
-        }
-        DEF Grid_1 MetadataSet {
-          name "Grid"
-          reference "http://titania.create3000.de"
-          value DEF enabled_4 MetadataBoolean {
-            name "enabled"
-            reference "http://titania.create3000.de"
-            value TRUE
-          }
-        }
+        USE OrthoViewpoint
+        DEF Group Group { }
       ]
     }
-    children [
-      NavigationInfo {
-        type "PLANE_create3000.de"
-      }
-      USE _1
-      DEF OrthoViewpoint OrthoViewpoint { }
-      DEF Group Group { }
-    ]
-  }
+  ]
 }

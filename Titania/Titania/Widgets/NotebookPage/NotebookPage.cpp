@@ -143,9 +143,12 @@ NotebookPage::set_initialized (const size_t index)
 			mainBrowser -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 			const auto viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
-	
+			const auto grid      = browser -> getExecutionContext () -> getNamedNode ("Grid");
+
 			viewpoint -> position ()    = positions [i];
 			viewpoint -> orientation () = orientations [i];
+
+			grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [i]);
 		}
 		catch (const X3D::X3DError & error)
 		{
