@@ -151,31 +151,6 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	setup ();
 }
 
-void
-FileImportDialog::configure ()
-{
-	X3DFileImportDialogInterface::configure ();
-
-	if (getConfig () -> hasItem ("importType"))
-	{
-		switch (getConfig () -> getInteger ("importType"))
-		{
-			case ImportType::EXTERN_PROTOS:
-				getImportExternProtosButton () .set_active (true);
-				break;
-		   case ImportType::PROTOS:
-				getImportProtosButton () .set_active (true);
-				break;
-		   case ImportType::SCENE:
-				getImportSceneButton () .set_active (true);
-				break;
-		   default:
-				getImportAsInlineButton () .set_active (true);
-				break;
-		}
-	}
-}
-
 basic::uri
 FileImportDialog::getURL () const
 {
@@ -198,6 +173,25 @@ FileImportDialog::setFilter (const std::string & name)
 void
 FileImportDialog::run ()
 {
+	if (getConfig () -> hasItem ("importType"))
+	{
+		switch (getConfig () -> getInteger ("importType"))
+		{
+			case ImportType::EXTERN_PROTOS:
+				getImportExternProtosButton () .set_active (true);
+				break;
+		   case ImportType::PROTOS:
+				getImportProtosButton () .set_active (true);
+				break;
+		   case ImportType::SCENE:
+				getImportSceneButton () .set_active (true);
+				break;
+		   default:
+				getImportAsInlineButton () .set_active (true);
+				break;
+		}
+	}
+
 	const auto responseId = getImportDialog () .run ();
 
 	getImportDialog () .hide ();

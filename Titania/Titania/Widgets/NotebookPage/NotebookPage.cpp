@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Execution/BindableNodeStack.h>
 #include <Titania/String.h>
 
 namespace titania {
@@ -211,10 +212,16 @@ NotebookPage::set_started (const size_t index)
 		if (browser not_eq mainBrowser)
 		{
 			mainBrowser -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
-	
-			const auto viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
-			const auto grid      = browser -> getExecutionContext () -> getNamedNode ("Grid");
-	
+
+			const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
+			const auto   viewpoint   = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
+			const auto   grid        = browser -> getExecutionContext () -> getNamedNode ("Grid");
+
+			activeLayer -> getNavigationInfoStack () -> setLock (true);
+			activeLayer -> getViewpointStack ()      -> setLock (true);
+			activeLayer -> getBackgroundStack ()     -> setLock (true);
+			activeLayer -> getFogStack ()            -> setLock (true);
+
 			viewpoint -> position ()    = positions [index];
 			viewpoint -> orientation () = orientations [index];
 	

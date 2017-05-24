@@ -154,7 +154,7 @@ X3DBackgroundNode::isTransparent () const
 void
 X3DBackgroundNode::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getBackgroundStack () -> push (this);
+	layer -> getBackgroundStack () -> pushOnTop (this);
 }
 
 void

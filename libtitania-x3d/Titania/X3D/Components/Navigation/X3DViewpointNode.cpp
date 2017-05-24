@@ -262,7 +262,7 @@ X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
 	//std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << ":" << layer << "': " << std::flush;
 
-	layer -> getViewpointStack () -> push (this);
+	layer -> getViewpointStack () -> pushOnTop (this);
 
 	//std::clog << (layer -> getViewpointStack () -> top () == this ? "success." : "rejected.") << std::endl;
 }

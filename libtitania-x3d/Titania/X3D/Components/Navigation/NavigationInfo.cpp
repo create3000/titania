@@ -344,7 +344,7 @@ NavigationInfo::getTransitionType () const
 void
 NavigationInfo::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getNavigationInfoStack () -> push (this);
+	layer -> getNavigationInfoStack () -> pushOnTop (this);
 }
 
 void

@@ -78,12 +78,6 @@ public:
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	configure () final override;
-
 	///  @name Operations
 
 	void

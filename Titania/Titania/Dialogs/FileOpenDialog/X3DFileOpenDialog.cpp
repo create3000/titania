@@ -65,14 +65,6 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
 }
 
-void
-X3DFileOpenDialog::configure ()
-{
-	X3DFileOpenDialogInterface::configure ();
-
-	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
-}
-
 basic::uri
 X3DFileOpenDialog::getUrl () const
 {
@@ -84,6 +76,8 @@ X3DFileOpenDialog::getUrl () const
 bool
 X3DFileOpenDialog::run ()
 {
+	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
+
 	if (getConfig () -> hasItem ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	else

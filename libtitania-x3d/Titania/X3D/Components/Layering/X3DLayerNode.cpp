@@ -205,26 +205,26 @@ X3DLayerNode::getBBox () const
 NavigationInfo*
 X3DLayerNode::getNavigationInfo () const
 {
-	return navigationInfoStack -> top ();
+	return navigationInfoStack -> getTop ();
 }
 
 X3DViewpointNode*
 X3DLayerNode::getViewpoint () const
 {
-	return viewpointStack -> top ();
+	return viewpointStack -> getTop ();
 }
 
 X3DBackgroundNode*
 X3DLayerNode::getBackground () const
 {
-	return backgroundStack -> top ();
+	return backgroundStack -> getTop ();
 }
 
 X3DFogObject*
 X3DLayerNode::getFog () const
 {
 	if (getLocalFogs () .empty ())
-		return fogStack -> top ();
+		return fogStack -> getTop ();
 
 	return getLocalFogs () .back ();
 }
@@ -266,14 +266,14 @@ X3DLayerNode::bind ()
 	if (not getNavigationInfos () -> empty ())
 	{
 		const auto navigationInfo = getNavigationInfos () -> bound ();
-		getNavigationInfoStack () -> force_push (navigationInfo);
+		getNavigationInfoStack () -> forcePushOnTop (navigationInfo);
 		navigationInfo -> addLayer (this);
 	}
 
 	if (not getViewpoints () -> empty ())
 	{
 		const auto viewpoint = getViewpoints () -> bound ();
-		getViewpointStack () -> force_push (viewpoint);
+		getViewpointStack () -> forcePushOnTop (viewpoint);
 		viewpoint -> addLayer (this);
 		viewpoint -> resetUserOffsets ();
 	}
@@ -281,14 +281,14 @@ X3DLayerNode::bind ()
 	if (not getBackgrounds () -> empty ())
 	{
 		const auto background = getBackgrounds () -> bound ();
-		getBackgroundStack () -> force_push (background);
+		getBackgroundStack () -> forcePushOnTop (background);
 		background -> addLayer (this);
 	}
 
 	if (not getFogs () -> empty ())
 	{
 		const auto fog = getFogs () -> bound ();
-		getFogStack () -> force_push (fog);
+		getFogStack () -> forcePushOnTop (fog);
 		fog -> addLayer (this);
 	}
 }

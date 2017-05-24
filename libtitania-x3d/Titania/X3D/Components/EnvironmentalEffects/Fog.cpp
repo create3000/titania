@@ -96,7 +96,7 @@ Fog::initialize ()
 void
 Fog::bindToLayer (X3DLayerNode* const layer)
 {
-	layer -> getFogStack () -> push (this);
+	layer -> getFogStack () -> pushOnTop (this);
 }
 
 void

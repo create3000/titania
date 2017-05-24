@@ -73,7 +73,8 @@ public:
 
 	X3DBindableNodeStack (X3DExecutionContext* const executionContext, const pointer_type & node) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
-		stack ({ node })
+		      stack ({ node }),
+		       lock (false)
 	{
 		node -> shutdown () .addInterest (&X3DBindableNodeStack::erase, this, node);
 	}
@@ -81,7 +82,7 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final override
-	{ return new X3DBindableNodeStack (executionContext, bottom ()); }
+	{ return new X3DBindableNodeStack (executionContext, getBottom ()); }
 
 	///  @name Common members
 
@@ -105,29 +106,40 @@ public:
 
 	///  @name Member access
 
+	void
+	setLock (const bool value)
+	{ lock = value; }
+
+	bool
+	getLock () const
+	{ return lock; }
+
 	const pointer_type &
-	top () const
+	getTop () const
 	{ return stack .top (); }
 
 	const pointer_type &
-	bottom () const
+	getBottom () const
 	{ return stack .bottom (); }
 
 	size_type
-	size () const
+	getSize () const
 	{ return stack .size (); }
 		
 	void
-	force_push (const pointer_type & node)
+	forcePushOnTop (const pointer_type & node)
 	{
 		node -> isBound ()  = true;
 		node -> bindTime () = getCurrentTime ();
-		push (node);
+		pushOnTop (node);
 	}
 
 	void
-	push (const pointer_type & node)
+	pushOnTop (const pointer_type & node)
 	{
+		if (lock)
+			return;
+
 		if (stack .empty ())
 			return;
 
@@ -156,6 +168,9 @@ public:
 	bool
 	pop (const pointer_type & node)
 	{
+		if (lock)
+			return false;
+
 		if (stack .empty ())
 			return false;
 
@@ -206,6 +221,7 @@ private:
 	///  @name Members
 
 	stack_type stack;
+	bool       lock;
 
 };
 

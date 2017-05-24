@@ -147,14 +147,29 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 		{
 			getBrowser () -> getHierarchy () .emplace_back (this);
 		
-			inlineNode -> traverse (type, renderObject);
-		
+			try
+			{
+				inlineNode -> traverse (type, renderObject);
+			}
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+
 			getBrowser () -> getHierarchy () .pop_back ();
 			break;
 		}
 		default:
 		{
-			inlineNode -> traverse (type, renderObject);
+			try
+			{
+				inlineNode -> traverse (type, renderObject);
+			}
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+
 			break;
 		}
 	}
