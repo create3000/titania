@@ -59,6 +59,8 @@
 namespace titania {
 namespace puck {
 
+class BrowserView;
+
 class NotebookPage :
 	virtual public X3DNotebookPageInterface
 {
@@ -139,16 +141,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_started (const size_t index);
-
-	void
 	set_shutdown ();
 
 	void
 	set_initialized ();
-
-	void
-	set_activeLayer ();
 
 	virtual
 	void
@@ -157,12 +153,6 @@ private:
 	virtual
 	void
 	on_unmap () final override;
-
-	bool
-	on_focus_out_event (GdkEventFocus* event, const size_t index);
-
-	bool
-	on_focus_in_event (GdkEventFocus* event, const size_t index);
 
 	virtual
 	bool
@@ -186,12 +176,6 @@ private:
 	///  @name Members
 
 	X3D::BrowserPtr                 mainBrowser;
-	X3D::BrowserPtr                 topBrowser;
-	X3D::BrowserPtr                 rightBrowser;
-	X3D::BrowserPtr                 frontBrowser;
-	X3D::X3DPtrArray <X3D::Browser> browsers;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	size_t                          initialized;
 	basic::uri                      url; // Start URL
 	BrowserHistory                  browserHistory;
 	X3D::UndoHistory                undoHistory;
@@ -200,11 +184,13 @@ private:
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>> fileMonitors;
 
-	std::vector <Gtk::Widget*>      widgets;
-	size_t                          activeView;
-	bool                            multiView;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
+	std::vector <Gtk::Widget*>    widgets;
+	std::unique_ptr <BrowserView> view1;
+	std::unique_ptr <BrowserView> view2;
+	std::unique_ptr <BrowserView> view3;
+	std::unique_ptr <BrowserView> view4;
+	size_t                        activeView;
+	bool                          multiView;
 
 };
 

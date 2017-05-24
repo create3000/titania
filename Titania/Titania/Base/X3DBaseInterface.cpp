@@ -176,44 +176,44 @@ X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
 
 ///  Return the WorldInfo node from the current scene. The node is created if needed.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::createWorldInfo ()
+X3DBaseInterface::createWorldInfo (const X3D::X3DScenePtr & scene)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	try
 	{
-		return getWorldInfo (getAddWorldInfo (getCurrentScene ()));
+		return getWorldInfo (scene, getAddWorldInfo (scene));
 	}
 	catch (const X3D::X3DError &)
 	{
-		return X3D::MakePtr <X3D::WorldInfo> (getCurrentScene ());
+		return X3D::MakePtr <X3D::WorldInfo> (scene);
 	}
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getWorldInfo () const
+X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene) const
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (false);
+	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
 }
 
 ///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
 ///  throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getWorldInfo (const bool create)
+X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	auto worldInfo = getCurrentScene () -> getWorldInfo ();
+	auto worldInfo = scene -> getWorldInfo ();
 
 	if (not worldInfo)
 	{
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
-		worldInfo = getCurrentScene () -> createNode <X3D::WorldInfo> ();
-		worldInfo -> title () = getCurrentScene () -> getWorldURL () .basename (false);
+		worldInfo = scene -> createNode <X3D::WorldInfo> ();
+		worldInfo -> title () = scene-> getWorldURL () .basename (false);
 
-		getCurrentScene () -> getRootNodes () .emplace_front (worldInfo);
+		scene -> getRootNodes () .emplace_front (worldInfo);
 	}
 
 	return worldInfo;

@@ -147,7 +147,7 @@ BrowserSelection::set_execution_context ()
 {
 	try
 	{
-		const auto worldInfo      = getBrowserWindow () -> createWorldInfo ();
+		const auto worldInfo      = getBrowserWindow () -> createWorldInfo (getCurrentScene ());
 		const auto selectGeometry = worldInfo -> getMetaData <X3D::SFBool> ("/Titania/Selection/selectGeometry");
 		const auto current        = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
@@ -175,7 +175,7 @@ BrowserSelection::set_execution_context ()
 void
 BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 {
-	const auto worldInfo = createWorldInfo ();
+	const auto worldInfo = createWorldInfo (getCurrentScene ());
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 	if (nodes == current)
@@ -232,7 +232,7 @@ BrowserSelection::setSelectGeometry (const bool value)
 {
 	selectGeometry = value;
 	browser -> getSelection () -> setSelectGeometry (value);
-	createWorldInfo () -> setMetaData ("/Titania/Selection/selectGeometry", selectGeometry);
+	createWorldInfo (getCurrentScene ()) -> setMetaData ("/Titania/Selection/selectGeometry", selectGeometry);
 }
 
 bool

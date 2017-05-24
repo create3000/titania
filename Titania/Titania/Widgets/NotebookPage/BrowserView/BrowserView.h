@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,92 +48,71 @@
  *
  ******************************************************************************/
 
-#include "X3DWorldInfoEditor.h"
+#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
+#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
 
-#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include "../../../Base/X3DBaseInterface.h"
+
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-X3DWorldInfoEditor::X3DWorldInfoEditor () :
-	X3DScenePropertiesEditorInterface (),
-		                         title (this, getWorldInfoTitleTextView (), "title"),
-		                          info (this, getWorldInfoInfoTextView (),  "info"),
-	                            scene (getCurrentScene ()),
-	                         changing (false)
+class NotebookPage;
+
+enum BrowserViewType :
+	uint8_t
 {
-	getAddWorldInfoButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DWorldInfoEditor::on_add_world_info_activate));
-}
+	MAIN,
+	TOP,
+	RIGHT,
+	FRONT
+};
 
-void
-X3DWorldInfoEditor::initialize ()
-{ }
-
-void
-X3DWorldInfoEditor::on_map ()
+class BrowserView :
+	public X3DBaseInterface
 {
-	getCurrentScene () .addInterest (&X3DWorldInfoEditor::set_current_scene, this);
+public:
 
-	set_current_scene ();
-}
+	///  @name Construction
 
-void
-X3DWorldInfoEditor::on_unmap ()
-{
-	getCurrentScene () .removeInterest (&X3DWorldInfoEditor::set_current_scene, this);
-}
+	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type, Gtk::Box & box);
 
-void
-X3DWorldInfoEditor::on_add_world_info_activate ()
-{
-	if (changing)
-		return;
+	///  @name Destruction
 
-	setAddWorldInfo (scene, getAddWorldInfoButton () .get_active ());
+	~BrowserView ();
 
-	if (getAddWorldInfoButton () .get_active ())
-		createWorldInfo (scene);
 
-	set_node ();
-}
+private:
 
-void
-X3DWorldInfoEditor::set_current_scene ()
-{
-	changing = true;
+	///  @name Event handlers
 
-	scene -> sceneGraph_changed () .removeInterest (&X3DWorldInfoEditor::set_node, this);
+	void
+	set_started ();
 
-	scene = getCurrentScene ();
+	void
+	set_activeLayer ();
 
-	scene -> sceneGraph_changed () .addInterest (&X3DWorldInfoEditor::set_node, this);
+	bool
+	on_focus_out_event (GdkEventFocus* event);
 
-	set_node ();
+	bool
+	on_focus_in_event (GdkEventFocus* event);
 
-	getAddWorldInfoButton () .set_active (getAddWorldInfo (scene));
+	///  @name Members
 
-	changing = false;
-}
+	NotebookPage* const   page;
+	const BrowserViewType type;
+	Gtk::Box &            box;
 
-void
-X3DWorldInfoEditor::set_node ()
-{
-	try
-	{
-		const auto worldInfo = X3D::MFNode ({ getWorldInfo (scene) });
-	
-		title .setNodes (worldInfo);
-		info  .setNodes (worldInfo);
-	}
-	catch (const X3D::X3DError &)
-	{
-		title .setNodes ({ });
-		info  .setNodes ({ });
-	}
-}
+	X3D::BrowserPtr                 browser;
+	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
+	X3D::MFVec3f                    positions;
+	X3D::MFRotation                 orientations;
 
-X3DWorldInfoEditor::~X3DWorldInfoEditor ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif

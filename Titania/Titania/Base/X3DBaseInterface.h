@@ -135,11 +135,11 @@ public:
 	getAddWorldInfo (const X3D::X3DScenePtr & scene);
 
 	X3D::X3DPtr <X3D::WorldInfo>
-	createWorldInfo ()
+	createWorldInfo (const X3D::X3DScenePtr & scene)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo () const
+	getWorldInfo (const X3D::X3DScenePtr & scene) const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/***
@@ -252,7 +252,7 @@ private:
 	/// @name Operations
 	 
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo (const bool create)
+	getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/// @name Event handlers
@@ -276,7 +276,7 @@ X3DBaseInterface::setMetaData (const std::string & key, const Type & value)
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		layerSet -> getActiveLayer () -> setMetaData (key, value);
 	else
-		createWorldInfo () -> setMetaData (key, value);
+		createWorldInfo (getCurrentScene ()) -> setMetaData (key, value);
 }
 
 template <class Type>
@@ -290,7 +290,7 @@ X3DBaseInterface::getMetaData (const std::string & key, const Type & defaultValu
 		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			return layerSet -> getActiveLayer () -> getMetaData <Type> (key, defaultValue);
 	
-		return getWorldInfo () -> getMetaData <Type> (key, defaultValue);
+		return getWorldInfo (getCurrentScene ()) -> getMetaData <Type> (key, defaultValue);
 	}
 	catch (const X3D::X3DError &)
 	{

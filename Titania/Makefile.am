@@ -223,6 +223,7 @@ titania_SOURCES =  \
 	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
+	Titania/Widgets/NotebookPage/BrowserView/BrowserView.cpp \
 	Titania/Widgets/NotebookPage/NotebookPage.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \

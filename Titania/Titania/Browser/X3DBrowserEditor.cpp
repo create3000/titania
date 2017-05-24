@@ -388,7 +388,7 @@ X3DBrowserEditor::isSaved (const NotebookPagePtr & page)
 void
 X3DBrowserEditor::setMetaData ()
 {
-	const auto worldInfo = createWorldInfo ();
+	const auto worldInfo = createWorldInfo (getCurrentScene ());
 
 	//
 
@@ -437,7 +437,7 @@ X3DBrowserEditor::getMetaData ()
 {
 	try
 	{
-		const auto   worldInfo = getWorldInfo ();
+		const auto   worldInfo = getWorldInfo (getCurrentScene ());
 		const auto & world     = getCurrentWorld ();
 		const auto & layerSet  = world -> getLayerSet ();
 
