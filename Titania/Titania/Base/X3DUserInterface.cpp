@@ -250,6 +250,15 @@ X3DUserInterface::setTitleBar (Gtk::Window & window, Gtk::Widget & titlebar)
 }
 
 void
+X3DUserInterface::unparent (Gtk::Widget & widget)
+{
+	const auto container = widget .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
+}
+
+void
 X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);

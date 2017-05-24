@@ -117,12 +117,14 @@ X3DBrowserWidget::initialize ()
 
 	recentView -> initialize ();
 
-	// Restore pages.
+	// Collect already open pages.
 
 	std::set <basic::uri> urlIndex;
 
 	for (const auto & page : pages)
 		urlIndex .emplace (page -> getWorldURL ());
+
+	// Restore pages.
 
 	const auto empty     = pages .empty ();
 	auto       worldURLs = std::vector <std::string> ();
@@ -375,11 +377,11 @@ X3DBrowserWidget::isLive () const
 }
 
 void
-X3DBrowserWidget::setTitle ()
+X3DBrowserWidget::updateTitle ()
 {
 	const auto page      = getCurrentPage ();
 	const bool modified  = getCurrentPage () -> getModified ();
-	const auto title     = getTitle (page);
+	const auto title     = getTitle ();
 	const auto protoPath = getProtoPath (getCurrentContext ());
 
 	getBrowserNotebook () .set_menu_label_text (getCurrentPage () -> getWidget (), title);
@@ -398,12 +400,11 @@ X3DBrowserWidget::setTitle ()
 }
 
 std::string
-X3DBrowserWidget::getTitle (const NotebookPagePtr & page) const
+X3DBrowserWidget::getTitle () const
 {
-	const auto & browser  = page -> getMainBrowser ();
-	const bool   modified = page -> getModified ();
+	const bool modified = getCurrentPage () -> getModified ();
 
-	auto title = browser -> getExecutionContext () -> getTitle ();
+	auto title = getCurrentContext () -> getTitle ();
 
 	if (title .empty ())
 		title = page -> getWorldURL () .basename ();
@@ -657,7 +658,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : recentPages)
 	{
-		const auto & browser = page -> getBrowser ();
+		const auto & browser = page -> getMainBrowser ();
 
 		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
@@ -687,7 +688,8 @@ X3DBrowserWidget::quit ()
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
-	if (pages [currentPage] -> getBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
+	// Check if current scene is an empty scene;
+	if (pages [currentPage] -> getMainBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
 		currentPage = 0;
 
 	getConfig () -> setItem ("currentPage", currentPage);
@@ -731,7 +733,7 @@ X3DBrowserWidget::set_scene ()
 {
 	getIconFactory () -> createIcon (getCurrentScene ());
 
-	setTitle ();
+	updateTitle ();
 }
 
 void
@@ -750,7 +752,7 @@ X3DBrowserWidget::set_executionContext ()
 
 	executionContext = getCurrentBrowser () -> getExecutionContext ();
 
-	setTitle ();
+	updateTitle ();
 }
 
 void

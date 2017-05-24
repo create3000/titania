@@ -2976,6 +2976,7 @@
     <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
     <None Include="Titania\Widgets\NotebookPage\NotebookPage.h" />
+    <None Include="share\titania\ui\Camera.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

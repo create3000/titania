@@ -211,7 +211,7 @@ protected:
 	setPage (const NotebookPagePtr & value);
 
 	void
-	setTitle ();
+	updateTitle ();
 
 	bool
 	getShowTabs () const;
@@ -253,7 +253,7 @@ private:
 	///  @name Operations
 
 	std::string
-	getTitle (const NotebookPagePtr & page) const;
+	getTitle () const;
 
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);

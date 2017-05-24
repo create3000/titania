@@ -130,16 +130,44 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	virtual
+	bool
+	on_box1_key_release_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_box2_key_release_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_box3_key_release_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_box4_key_release_event (GdkEventKey* event) final override;
+
+	bool
+	on_box_key_release_event (GdkEventKey* event, const size_t index);
+
 	///  @name Members
 
-	X3D::BrowserPtr  mainBrowser;
-	basic::uri       url; // Start URL
-	BrowserHistory   browserHistory;
-	X3D::UndoHistory undoHistory;
-	bool             modified;
-	bool             saveConfirmed;
+	X3D::BrowserPtr                 mainBrowser;
+	X3D::BrowserPtr                 topBrowser;
+	X3D::BrowserPtr                 rightBrowser;
+	X3D::BrowserPtr                 frontBrowser;
+	X3D::X3DPtrArray <X3D::Browser> browsers;
+	basic::uri                      url; // Start URL
+	BrowserHistory                  browserHistory;
+	X3D::UndoHistory                undoHistory;
+	bool                            modified;
+	bool                            saveConfirmed;
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>> fileMonitors;
+
+	std::vector <Gtk::Widget*> widgets;
+	bool                       multiView;
 
 };
 

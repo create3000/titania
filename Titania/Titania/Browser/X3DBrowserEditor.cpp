@@ -651,8 +651,6 @@ X3DBrowserEditor::quit ()
 
 	if (not pages .empty ())
 	{
-		const auto & worldURL = getCurrentBrowser () -> getWorldURL ();
-
 		for (const auto & page : pages)
 		{
 			if (isSaved (page))
@@ -664,9 +662,6 @@ X3DBrowserEditor::quit ()
 			// Cancel quit.
 			return true;
 		}
-
-		if (not worldURL .empty ())
-			open (worldURL);
 	}
 
 	return X3DBrowserWidget::quit ();
@@ -681,7 +676,7 @@ X3DBrowserEditor::setModified (const bool value)
 	if (not value)
 		getCurrentPage () -> getUndoHistory () .setSaved ();
 
-	setTitle ();
+	updateTitle ();
 }
 
 void
@@ -763,7 +758,7 @@ X3DBrowserEditor::set_undoHistory ()
 		getRedoButton ()          .set_sensitive (false);
 	}
 
-	setTitle ();
+	updateTitle ();
 }
 
 void

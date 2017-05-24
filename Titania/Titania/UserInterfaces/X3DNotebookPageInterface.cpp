@@ -89,6 +89,12 @@ X3DNotebookPageInterface::create ()
 	m_builder -> get_widget ("Box2", m_Box2);
 	m_builder -> get_widget ("Box3", m_Box3);
 	m_builder -> get_widget ("Box4", m_Box4);
+
+	// Connect object Gtk::Box with id 'Box1'.
+	m_Box1 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box1_key_release_event));
+	m_Box2 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box2_key_release_event));
+	m_Box3 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box3_key_release_event));
+	m_Box4 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box4_key_release_event));
 }
 
 X3DNotebookPageInterface::~X3DNotebookPageInterface ()

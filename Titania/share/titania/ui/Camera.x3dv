@@ -1,0 +1,91 @@
+#X3D V3.3 utf8 Titania V3.0.4
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Tue, 23 May 2017 23:37:53 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "identifier" ""
+META "modified" "Tue, 23 May 2017 23:37:53 GMT"
+META "titania-add-world-info" "true"
+META "titania-output-style" "Nicest"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              5.87788544764696,
+              6.46984938591101,
+              13.8524443931466
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.704047462871212,
+              0.695566762376517,
+              0.143192350010952,
+              0.568941727555854
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              -1.77635683940025e-15,
+              -7.105427357601e-15,
+              3.5527136788005e-15
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF selectGeometry MetadataBoolean {
+          name "selectGeometry"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+    ]
+  }
+}

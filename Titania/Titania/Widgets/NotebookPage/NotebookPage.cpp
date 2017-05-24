@@ -60,26 +60,39 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
 	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	              topBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
+	            rightBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
+	            frontBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
+	                browsers ({ mainBrowser, topBrowser, rightBrowser,  frontBrowser }),
 	                     url (startUrl),
 	          browserHistory (mainBrowser),
 	             undoHistory (),
 	                modified (false),
 	           saveConfirmed (false),
-	            fileMonitors ()
+	            fileMonitors (),
+	                 widgets ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
+	               multiView (false)
 {
-	addChildObjects (mainBrowser);
+	addChildObjects (mainBrowser,
+	                 topBrowser,
+	                 rightBrowser,
+	                 frontBrowser,
+	                 browsers);
 
-	mainBrowser -> setAntialiasing (4);
-	mainBrowser -> setNotifyOnLoad (true);
-	mainBrowser -> isStrict (false);
-	mainBrowser -> show ();
+	unparent (getWidget ());
 
-	const auto container = getWidget () .get_parent ();
+	for (const auto & browser : browsers)
+	{
+		browser -> setAntialiasing (4);
+		browser -> setNotifyOnLoad (true);
+		browser -> isStrict (false);
+		browser -> show ();
+	}
 
-	if (container)
-	   container -> remove (getWidget ());
-
-	getBox2 () .pack_start (*mainBrowser, true, true, 0);
+	getBox1 () .pack_start (*topBrowser,   true, true, 0);
+	getBox2 () .pack_start (*mainBrowser,  true, true, 0);
+	getBox3 () .pack_start (*rightBrowser, true, true, 0);
+	getBox4 () .pack_start (*frontBrowser, true, true, 0);
 	getBox2 () .set_visible (true);
 
 	setup ();
@@ -139,6 +152,59 @@ NotebookPage::reset ()
 	}
 
 	fileMonitors .clear ();
+}
+
+bool
+NotebookPage::on_box1_key_release_event (GdkEventKey* event)
+{
+	return on_box_key_release_event (event, 0);
+}
+
+bool
+NotebookPage::on_box2_key_release_event (GdkEventKey* event)
+{
+	return on_box_key_release_event (event, 1);
+}
+
+bool
+NotebookPage::on_box3_key_release_event (GdkEventKey* event)
+{
+	return on_box_key_release_event (event, 2);
+}
+
+bool
+NotebookPage::on_box4_key_release_event (GdkEventKey* event)
+{
+	return on_box_key_release_event (event, 3);
+}
+
+bool
+NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_space:
+		{
+			multiView = not multiView;
+
+			for (size_t i = 0, size = widgets .size (); i < size; ++ i)
+			{
+				widgets [i] -> set_visible (multiView or i == index);
+			}
+
+			for (size_t i = 0, size = browsers .size (); i < size; ++ i)
+			{
+				if (i == index)
+					browsers [i] -> grab_focus ();
+			}
+
+			return true;
+		}
+		default:
+			return false;
+	}
+
+	return false;
 }
 
 NotebookPage::~NotebookPage ()
