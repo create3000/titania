@@ -536,7 +536,7 @@ BrowserWindow::on_style_updated ()
 
 		cssProvider -> load_from_data (string);
 
-		__LOG__ << string << std::endl;
+		//__LOG__ << string << std::endl;
 	}
 	catch (const Glib::Error & error)
 	{

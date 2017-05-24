@@ -113,6 +113,18 @@ public:
 	removeItem (const std::string & id);
 
 	void
+	setActiveView (const std::string & worldURL, const int32_t activeView);
+	
+	int32_t
+	getActiveView (const std::string & worldURL) const;
+	
+	void
+	setMultiView (const std::string & worldURL, const int32_t multiView);
+	
+	bool
+	getMultiView (const std::string & worldURL) const;
+
+	void
 	setSize (const int32_t months);
 
 	size_t

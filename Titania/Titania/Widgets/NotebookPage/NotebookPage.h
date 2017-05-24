@@ -78,6 +78,9 @@ public:
 	{ return mainBrowser; }
 
 	const basic::uri &
+	getSceneURL () const;
+
+	const basic::uri &
 	getWorldURL () const;
 
 	BrowserHistory &
@@ -118,6 +121,9 @@ public:
 	void
 	reset ();
 
+	void
+	shutdown ();
+
 	virtual
 	~NotebookPage () final override;
 
@@ -133,10 +139,24 @@ private:
 	///  @name Event handlers
 
 	void
-	set_initialized (const size_t index);
+	set_started (const size_t index);
+
+	void
+	set_shutdown ();
+
+	void
+	set_initialized ();
 
 	void
 	set_activeLayer ();
+
+	virtual
+	void
+	on_map () final override;
+	
+	virtual
+	void
+	on_unmap () final override;
 
 	bool
 	on_focus_out_event (GdkEventFocus* event, const size_t index);
@@ -180,10 +200,11 @@ private:
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>> fileMonitors;
 
-	std::vector <Gtk::Widget*> widgets;
-	bool                       multiView;
-	X3D::MFVec3f               positions;
-	X3D::MFRotation            orientations;
+	std::vector <Gtk::Widget*>      widgets;
+	size_t                          activeView;
+	bool                            multiView;
+	X3D::MFVec3f                    positions;
+	X3D::MFRotation                 orientations;
 
 };
 

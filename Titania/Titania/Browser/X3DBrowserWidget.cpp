@@ -629,7 +629,7 @@ X3DBrowserWidget::close (const NotebookPagePtr page)
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
 
-	page -> reset ();
+	page -> shutdown ();
 
 	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
 	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
@@ -683,7 +683,7 @@ X3DBrowserWidget::quit ()
 
 		browserHistories .emplace_back (page -> getBrowserHistory () .toString ());
 
-		page -> reset ();
+		page -> shutdown ();
 	}
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();
@@ -758,8 +758,8 @@ X3DBrowserWidget::set_executionContext ()
 void
 X3DBrowserWidget::set_history ()
 {
-	const std::string title    = getCurrentScene () -> getTitle ();
-	const basic::uri  worldURL = getCurrentScene () -> getWorldURL ();
+	const auto title    = getCurrentScene () -> getTitle ();
+	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (worldURL .empty ())
 		return;

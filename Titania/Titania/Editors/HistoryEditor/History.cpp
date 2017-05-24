@@ -86,6 +86,8 @@ History::History () :
 
 		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
 		database .try_query ("ALTER TABLE History ADD contextPath TEXT");
+		database .try_query ("ALTER TABLE History ADD activeView INTEGER DEFAULT 1");
+		database .try_query ("ALTER TABLE History ADD multiView  INTEGER DEFAULT 0");
 
 		if (not have_history)
 		{
@@ -344,6 +346,84 @@ History::removeItem (const std::string & id)
 	catch (const std::exception & error)
 	{
 		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+History::setActiveView (const std::string & worldURL, const int32_t activeView)
+{
+	try
+	{
+		database .query ("UPDATE History "
+		                 "SET "
+		                 "activeView = " + database .quote (basic::to_string (activeView, std::locale::classic ())) + " "
+		                 "WHERE worldURL = " + database .quote (worldURL));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+int32_t
+History::getActiveView (const std::string & worldURL) const
+{
+	try
+	{
+		const auto & result = database .query_array ("SELECT activeView FROM History WHERE "
+		                                             "worldURL = " + database .quote (worldURL));
+
+		std::istringstream isstream (result .at (0) .at (0));
+
+		int32_t value = 1;
+
+		isstream >> value;
+
+		return value;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return 1;
+	}
+}
+
+void
+History::setMultiView (const std::string & worldURL, const int32_t multiView)
+{
+	try
+	{
+		database .query ("UPDATE History "
+		                 "SET "
+		                 "multiView = " + database .quote (basic::to_string (multiView ? 1 : 0, std::locale::classic ())) + " "
+		                 "WHERE worldURL = " + database .quote (worldURL));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+bool
+History::getMultiView (const std::string & worldURL) const
+{
+	try
+	{
+		const auto & result = database .query_array ("SELECT multiView FROM History WHERE "
+		                                             "worldURL = " + database .quote (worldURL));
+
+		std::istringstream isstream (result .at (0) .at (0));
+
+		int32_t value = false;
+
+		isstream >> value;
+
+		return value;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return false;
 	}
 }
 

@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -77,6 +78,7 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	           saveConfirmed (false),
 	            fileMonitors (),
 	                 widgets ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
+	              activeView (1),
 	               multiView (false),
 	               positions ({ X3D::Vector3f (0, 10, 0), X3D::Vector3f (), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
 	            orientations ({ X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
@@ -90,6 +92,8 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 
 	unparent (getWidget ());
 
+	mainBrowser -> shutdown ()    .addInterest (&NotebookPage::set_shutdown,    this);
+	mainBrowser -> initialized () .addInterest (&NotebookPage::set_initialized, this);
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> isStrict (false);
 
@@ -98,8 +102,8 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 		const auto & browser = browsers [i];
 	
 		browser -> signal_focus_out_event () .connect (sigc::bind (sigc::mem_fun (this, &NotebookPage::on_focus_out_event), i));
-		browser -> signal_focus_in_event () .connect (sigc::bind (sigc::mem_fun (this, &NotebookPage::on_focus_in_event), i));
-		browser -> initialized () .addInterest (&NotebookPage::set_initialized, this, i);
+		browser -> signal_focus_in_event ()  .connect (sigc::bind (sigc::mem_fun (this, &NotebookPage::on_focus_in_event),  i));
+		browser -> initialized () .addInterest (&NotebookPage::set_started, this, i);
 		browser -> setAntialiasing (4);
 		browser -> show ();
 	}
@@ -119,41 +123,107 @@ NotebookPage::initialize ()
 	X3DNotebookPageInterface::initialize ();
 }
 
+int32_t
+NotebookPage::getPageNumber () const
+{
+	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
+}
+
+const basic::uri &
+NotebookPage::getSceneURL () const
+{
+	if (mainBrowser -> isInitialized ())
+	   return mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+
+	return url;
+}
+
+const basic::uri &
+NotebookPage::getWorldURL () const
+{
+	if (mainBrowser -> isInitialized ())
+	   return mainBrowser -> getWorldURL ();
+
+	return url;
+}
+
 void
-NotebookPage::set_initialized (const size_t index)
+NotebookPage::setModified (const bool value)
+{
+	modified = value;
+}
+
+bool
+NotebookPage::getModified () const
+{
+	return undoHistory .getModified () or modified;
+}
+
+void
+NotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
+{
+	fileMonitors .emplace_back (file, fileMonitor);
+}
+
+void
+NotebookPage::reset ()
+{
+	// Reset.
+
+	undoHistory .clear ();
+
+	modified      = false;
+	saveConfirmed = false;
+
+	for (const auto & fileMonitor : fileMonitors)
+	{
+		fileMonitor .second -> cancel ();
+		fileMonitor .first -> remove ();
+	}
+
+	fileMonitors .clear ();
+}
+
+void
+NotebookPage::shutdown ()
+{
+	// Reset.
+
+	reset ();
+
+	// Data base
+
+	const auto worldURL = getSceneURL ();
+
+	getBrowserWindow () -> getHistory () -> setActiveView (worldURL, activeView);
+	getBrowserWindow () -> getHistory () -> setMultiView (worldURL, multiView);
+}
+
+void
+NotebookPage::set_started (const size_t index)
 {
 	const auto & browser = browsers [index];
 
-	browser -> initialized () .removeInterest (&NotebookPage::set_initialized, this);
-	
-	if (++ initialized < browsers .size ())
-		return;
+	browser -> initialized () .removeInterest (&NotebookPage::set_started, this);
 
-	// Set up viewpoint.
-
-	for (size_t i = 0, size = browsers .size (); i < size; ++ i)
+	try
 	{
-		try
+		if (browser not_eq mainBrowser)
 		{
-			const auto & browser = browsers [i];
-	
-			if (browser == mainBrowser)
-				continue;
-	
 			mainBrowser -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
-
+	
 			const auto viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
 			const auto grid      = browser -> getExecutionContext () -> getNamedNode ("Grid");
-
-			viewpoint -> position ()    = positions [i];
-			viewpoint -> orientation () = orientations [i];
-
-			grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [i]);
+	
+			viewpoint -> position ()    = positions [index];
+			viewpoint -> orientation () = orientations [index];
+	
+			grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [index]);
 		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
 	// Connect to active layer.
@@ -161,6 +231,26 @@ NotebookPage::set_initialized (const size_t index)
 	mainBrowser -> getActiveLayer () .addInterest (&NotebookPage::set_activeLayer, this);
 
 	set_activeLayer ();
+}
+
+void
+NotebookPage::set_shutdown ()
+{
+	shutdown ();
+}
+
+void
+NotebookPage::set_initialized ()
+{
+	const auto worldURL = getSceneURL ();
+
+	activeView = getBrowserWindow () -> getHistory () -> getActiveView (worldURL);
+	multiView  = getBrowserWindow () -> getHistory () -> getMultiView (worldURL);
+
+	for (size_t i = 0, size = widgets .size (); i < size; ++ i)
+	{
+		widgets [i] -> set_visible (multiView or i == activeView);
+	}
 }
 
 void
@@ -212,6 +302,18 @@ NotebookPage::set_activeLayer ()
 	}
 }
 
+void
+NotebookPage::on_map ()
+{
+	mainBrowser -> beginUpdate ();
+}
+
+void
+NotebookPage::on_unmap ()
+{
+	mainBrowser -> endUpdate ();
+}
+
 bool
 NotebookPage::on_focus_out_event (GdkEventFocus* event, const size_t index)
 {
@@ -224,56 +326,6 @@ NotebookPage::on_focus_in_event (GdkEventFocus* event, const size_t index)
 {
 	widgets [index] -> get_style_context () -> add_class ("titania-widget-box-selected");
 	return false;
-}
-
-int32_t
-NotebookPage::getPageNumber () const
-{
-	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
-}
-
-const basic::uri &
-NotebookPage::getWorldURL () const
-{
-	if (mainBrowser -> isInitialized ())
-	   return mainBrowser -> getWorldURL ();
-
-	return url;
-}
-
-void
-NotebookPage::setModified (const bool value)
-{
-	modified = value;
-}
-
-bool
-NotebookPage::getModified () const
-{
-	return undoHistory .getModified () or modified;
-}
-
-void
-NotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
-{
-	fileMonitors .emplace_back (file, fileMonitor);
-}
-
-void
-NotebookPage::reset ()
-{
-	undoHistory .clear ();
-
-	modified      = false;
-	saveConfirmed = false;
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
 }
 
 bool
@@ -307,11 +359,12 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 	{
 		case GDK_KEY_space:
 		{
-			multiView = not multiView;
+			activeView = index;
+			multiView  = not multiView;
 
 			for (size_t i = 0, size = widgets .size (); i < size; ++ i)
 			{
-				widgets [i] -> set_visible (multiView or i == index);
+				widgets [i] -> set_visible (multiView or i == activeView);
 			}
 
 			return true;

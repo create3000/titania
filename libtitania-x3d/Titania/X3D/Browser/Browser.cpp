@@ -275,7 +275,8 @@ Browser::on_map ()
 
 	reshape (Vector4i (0, 0, get_width (), get_height ()));
 
-	getExecutionContext () -> beginUpdate ();
+	changed () .removeInterest (&Browser::set_timeout, this);
+	changed () .addInterest (&Browser::set_idle, this);
 }
 
 bool
@@ -305,12 +306,9 @@ Browser::on_unmap ()
 {
 	OpenGL::Surface::on_unmap ();
 
-	if (not isLive ())
-		return;
-
-	getExecutionContext () -> endUpdate ();
-
-	queue_draw ();
+	changed () .removeInterest (&Browser::set_idle, this);
+	changed () .addInterest (&Browser::set_timeout, this);
+	update ();
 }
 
 void
