@@ -53,21 +53,14 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "BrowserView/BrowserView.h"
+#include "../BrowserView/BrowserView.h"
 
 namespace titania {
 namespace puck {
 
 NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
-	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
-	                     url (startUrl),
-	          browserHistory (mainBrowser),
-	             undoHistory (),
-	                modified (false),
-	           saveConfirmed (false),
-	            fileMonitors (),
+	         X3DNotebookPage (startUrl),
 	                 widgets ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
 	                   view1 (),
 	                   view2 (),
@@ -76,14 +69,7 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	              activeView (1),
 	               multiView (false)
 {
-	addChildObjects (mainBrowser);
-
 	unparent (getWidget ());
-
-	mainBrowser -> shutdown ()    .addInterest (&NotebookPage::set_shutdown,    this);
-	mainBrowser -> initialized () .addInterest (&NotebookPage::set_initialized, this);
-	mainBrowser -> setNotifyOnLoad (true);
-	mainBrowser -> isStrict (false);
 
 	setup ();
 }
@@ -91,7 +77,7 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 void
 NotebookPage::initialize ()
 {
-	X3DNotebookPageInterface::initialize ();
+	X3DNotebookPage::initialize ();
 
    view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::TOP,   getBox1 ());
    view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::MAIN,  getBox2 ());
@@ -101,91 +87,11 @@ NotebookPage::initialize ()
 	getBox2 () .set_visible (true);
 }
 
-int32_t
-NotebookPage::getPageNumber () const
-{
-	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
-}
-
-const basic::uri &
-NotebookPage::getSceneURL () const
-{
-	if (mainBrowser -> isInitialized ())
-	   return mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
-
-	return url;
-}
-
-const basic::uri &
-NotebookPage::getWorldURL () const
-{
-	if (mainBrowser -> isInitialized ())
-	   return mainBrowser -> getWorldURL ();
-
-	return url;
-}
-
 void
-NotebookPage::setModified (const bool value)
+NotebookPage::initialized ()
 {
-	modified = value;
-}
+	X3DNotebookPage::initialized ();
 
-bool
-NotebookPage::getModified () const
-{
-	return undoHistory .getModified () or modified;
-}
-
-void
-NotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
-{
-	fileMonitors .emplace_back (file, fileMonitor);
-}
-
-void
-NotebookPage::reset ()
-{
-	// Reset.
-
-	undoHistory .clear ();
-
-	modified      = false;
-	saveConfirmed = false;
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
-}
-
-void
-NotebookPage::shutdown ()
-{
-	// Reset.
-
-	reset ();
-
-	// Data base
-
-	const auto worldURL = getSceneURL ();
-
-	getBrowserWindow () -> getHistory () -> setActiveView (worldURL, activeView);
-	getBrowserWindow () -> getHistory () -> setMultiView (worldURL, multiView);
-}
-
-void
-NotebookPage::set_shutdown ()
-{
-	shutdown ();
-}
-
-void
-NotebookPage::set_initialized ()
-{
 	const auto worldURL = getSceneURL ();
 
 	activeView = getBrowserWindow () -> getHistory () -> getActiveView (worldURL);
@@ -195,18 +101,6 @@ NotebookPage::set_initialized ()
 	{
 		widgets [i] -> set_visible (multiView or i == activeView);
 	}
-}
-
-void
-NotebookPage::on_map ()
-{
-	mainBrowser -> beginUpdate ();
-}
-
-void
-NotebookPage::on_unmap ()
-{
-	mainBrowser -> endUpdate ();
 }
 
 bool
@@ -255,6 +149,19 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 	}
 
 	return false;
+}
+
+void
+NotebookPage::shutdown ()
+{
+	// Data base
+
+	const auto worldURL = getSceneURL ();
+
+	getBrowserWindow () -> getHistory () -> setActiveView (worldURL, activeView);
+	getBrowserWindow () -> getHistory () -> setMultiView (worldURL, multiView);
+
+	X3DNotebookPage::shutdown ();
 }
 
 NotebookPage::~NotebookPage ()

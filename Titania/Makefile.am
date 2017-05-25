@@ -24,6 +24,9 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
+	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
+	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
+	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -223,8 +226,6 @@ titania_SOURCES =  \
 	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
-	Titania/Widgets/NotebookPage/BrowserView/BrowserView.cpp \
-	Titania/Widgets/NotebookPage/NotebookPage.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \

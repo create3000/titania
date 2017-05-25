@@ -224,12 +224,6 @@ private:
 
 	///  @name Event handlers
 
-	void
-	set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL);
-
-	void
-	set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL);
-
 	virtual
 	void
 	on_switch_page (Gtk::Widget*, guint pageNumber) final override;

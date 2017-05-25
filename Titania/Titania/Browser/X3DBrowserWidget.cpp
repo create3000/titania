@@ -54,10 +54,10 @@
 #include "../Browser/RecentView.h"
 #include "../Browser/UserData.h"
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Editors/HistoryEditor/History.h"
-#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
@@ -311,12 +311,7 @@ throw (std::out_of_range)
 {
 	const auto iter = std::find_if (pages .begin (), pages .end (), [&] (const NotebookPagePtr & page)
 	{
-		auto worldURL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
-
-		if (browser -> isInitialized ())
-			return worldURL == URL;
-
-		return page -> getWorldURL () == URL;
+		return page -> getSceneURL () == URL;
 	});
 
 	if (iter == pages .end ())
@@ -452,12 +447,6 @@ X3DBrowserWidget::append (const basic::uri & URL)
 
 	pages .emplace_back (page);
 
-	if (not URL .empty ())
-	{
-		browser -> initialized () .addInterest (&X3DBrowserWidget::set_browser, this, browser, URL);
-		browser -> set_opacity (0);
-	}
-
 	const auto text = URL .empty () ? _ ("New Scene") : URL .basename ();
 
 	page -> getTabImage () .set (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
@@ -479,22 +468,6 @@ X3DBrowserWidget::getShowTabs () const
 	const bool showTabs = isFullscreen () ? getConfig () -> getBoolean ("tabsFullscreen") : getConfig () -> getBoolean ("tabs");
 
 	return pages .size () > 1 and showTabs;
-}
-
-void
-X3DBrowserWidget::set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL)
-{
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
-	browser -> initialized () .addInterest (&X3DBrowserWidget::set_splashScreen, this, browser, URL);
-	browser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
-}
-
-void
-X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
-{
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
-	browser -> set_opacity (1);
-	browser -> loadURL ({ URL .str () }, { });
 }
 
 void
@@ -625,10 +598,6 @@ X3DBrowserWidget::close (const NotebookPagePtr page)
 
 	// Remove browser completely.
 
-	// Important here to remove the interests, because the notebook could make it visible on remove_page.
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
-
 	page -> shutdown ();
 
 	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
@@ -658,12 +627,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : recentPages)
 	{
-		const auto & browser = page -> getMainBrowser ();
-
-		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
-
-		if (not browser -> isInitialized ())
-			URL = page -> getWorldURL ();
+		const auto URL = page -> getSceneURL ();
 
 		if (not URL .empty ())
 			recent .emplace_back (URL);
@@ -671,12 +635,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : pages)
 	{
-		const auto & browser = page -> getMainBrowser ();
-
-		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
-
-		if (not browser -> isInitialized ())
-			URL = page -> getWorldURL ();
+		const auto URL = page -> getSceneURL ();
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
@@ -689,7 +648,7 @@ X3DBrowserWidget::quit ()
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
 	// Check if current scene is an empty scene;
-	if (pages [currentPage] -> getMainBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
+	if (pages [currentPage] -> getSceneURL () .empty ())
 		currentPage = 0;
 
 	getConfig () -> setItem ("currentPage", currentPage);

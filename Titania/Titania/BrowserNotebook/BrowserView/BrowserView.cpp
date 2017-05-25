@@ -50,9 +50,9 @@
 
 #include "BrowserView.h"
 
-#include "../NotebookPage.h"
-#include "../../../Browser/X3DBrowserWindow.h"
-#include "../../../Configuration/config.h"
+#include "../NotebookPage/NotebookPage.h"
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
@@ -74,7 +74,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 {
 	browser -> signal_focus_out_event () .connect (sigc::mem_fun (this, &BrowserView::on_focus_out_event));
 	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &BrowserView::on_focus_in_event));
-	browser -> initialized () .addInterest (&BrowserView::set_started, this);
+	browser -> initialized () .addInterest (&BrowserView::set_browser, this);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -84,15 +84,15 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 }
 
 void
-BrowserView::set_started ()
+BrowserView::set_browser ()
 {
-	browser -> initialized () .removeInterest (&BrowserView::set_started, this);
-
-	if (browser == page -> getMainBrowser ())
-		return;
-
 	try
 	{
+		browser -> initialized () .removeInterest (&BrowserView::set_browser, this);
+	
+		if (browser == page -> getMainBrowser ())
+			return;
+	
 		page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();

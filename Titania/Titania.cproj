@@ -308,8 +308,9 @@
     <Compile Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.cpp" />
     <Compile Include="Titania\Editors\NodeIndex\NodeIndex.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNotebookPageInterface.cpp" />
-    <Compile Include="Titania\Widgets\NotebookPage\NotebookPage.cpp" />
-    <Compile Include="Titania\Widgets\NotebookPage\BrowserView\BrowserView.cpp" />
+    <Compile Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserView\BrowserView.cpp" />
+    <Compile Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2976,9 +2977,10 @@
     <None Include="Titania\Commands\ExportImage.h" />
     <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
-    <None Include="Titania\Widgets\NotebookPage\NotebookPage.h" />
     <None Include="share\titania\ui\Camera.x3dv" />
-    <None Include="Titania\Widgets\NotebookPage\BrowserView\BrowserView.h" />
+    <None Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.h" />
+    <None Include="Titania\BrowserNotebook\BrowserView\BrowserView.h" />
+    <None Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3122,8 +3124,9 @@
     <Folder Include="Titania\Dialogs\MessageDialog\" />
     <Folder Include="Titania\Dialogs\OpenLocationDialog\" />
     <Folder Include="Titania\Editors\NodeIndex\" />
-    <Folder Include="Titania\Widgets\NotebookPage\" />
-    <Folder Include="Titania\Widgets\NotebookPage\BrowserView\" />
+    <Folder Include="Titania\BrowserNotebook\" />
+    <Folder Include="Titania\BrowserNotebook\NotebookPage\" />
+    <Folder Include="Titania\BrowserNotebook\BrowserView\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

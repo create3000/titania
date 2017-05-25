@@ -54,9 +54,9 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
-#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Browser/BrowserOptions.h>

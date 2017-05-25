@@ -52,9 +52,9 @@
 
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
 #include "../Editors/HistoryEditor/History.h"
-#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>

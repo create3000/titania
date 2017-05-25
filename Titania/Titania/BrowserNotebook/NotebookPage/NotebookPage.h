@@ -48,67 +48,77 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
+#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
+#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
 
-#include "../../../Base/X3DBaseInterface.h"
-
-#include <gtkmm.h>
+#include "X3DNotebookPage.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
+class BrowserView;
 
-enum BrowserViewType :
-	uint8_t
-{
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
-
-class BrowserView :
-	public X3DBaseInterface
+class NotebookPage :
+	public X3DNotebookPage
 {
 public:
 
 	///  @name Construction
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type, Gtk::Box & box);
+	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
 
 	///  @name Destruction
 
-	~BrowserView ();
+	virtual
+	void
+	shutdown () final override;
+
+	virtual
+	~NotebookPage () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	initialized () final override;
+
 	///  @name Event handlers
 
-	void
-	set_started ();
+	virtual
+	bool
+	on_box1_key_release_event (GdkEventKey* event) final override;
 
-	void
-	set_activeLayer ();
+	virtual
+	bool
+	on_box2_key_release_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_box3_key_release_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_box4_key_release_event (GdkEventKey* event) final override;
 
 	bool
-	on_focus_out_event (GdkEventFocus* event);
-
-	bool
-	on_focus_in_event (GdkEventFocus* event);
+	on_box_key_release_event (GdkEventKey* event, const size_t index);
 
 	///  @name Members
 
-	NotebookPage* const   page;
-	const BrowserViewType type;
-	Gtk::Box &            box;
-
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
+	std::vector <Gtk::Widget*>    widgets;
+	std::unique_ptr <BrowserView> view1;
+	std::unique_ptr <BrowserView> view2;
+	std::unique_ptr <BrowserView> view3;
+	std::unique_ptr <BrowserView> view4;
+	size_t                        activeView;
+	bool                          multiView;
 
 };
 

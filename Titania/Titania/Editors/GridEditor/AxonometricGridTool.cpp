@@ -51,7 +51,7 @@
 #include "AxonometricGridTool.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Widgets/NotebookPage/NotebookPage.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 

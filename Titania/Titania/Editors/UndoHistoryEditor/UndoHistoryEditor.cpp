@@ -52,8 +52,8 @@
 
 #include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
-#include "../../Widgets/NotebookPage/NotebookPage.h"
 
 namespace titania {
 namespace puck {

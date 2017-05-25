@@ -63,11 +63,11 @@
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
 #include "../Widgets/Footer/Footer.h"
-#include "../Widgets/NotebookPage/NotebookPage.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/Sidebar/Sidebar.h"
 
 #include "../Browser/BrowserSelection.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
 #include "../Revealer/GeometryEditor/GeometryEditor.h"
 

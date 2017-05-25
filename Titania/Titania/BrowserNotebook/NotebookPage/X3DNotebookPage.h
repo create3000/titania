@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
 
 #include "../../UserInterfaces/X3DNotebookPageInterface.h"
 #include "../../Browser/BrowserHistory.h"
@@ -59,16 +59,10 @@
 namespace titania {
 namespace puck {
 
-class BrowserView;
-
-class NotebookPage :
-	virtual public X3DNotebookPageInterface
+class X3DNotebookPage :
+	public X3DNotebookPageInterface
 {
 public:
-
-	///  @name Construction
-
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
 
 	///  @name Member access
 
@@ -87,19 +81,19 @@ public:
 
 	BrowserHistory &
 	getBrowserHistory ()
-	{	return browserHistory; }
+	{ return browserHistory; }
 
 	const BrowserHistory &
 	getBrowserHistory () const
-	{	return browserHistory; }
+	{ return browserHistory; }
 
 	X3D::UndoHistory &
 	getUndoHistory ()
-	{	return undoHistory; }
+	{ return undoHistory; }
 
 	const X3D::UndoHistory &
 	getUndoHistory () const
-	{	return undoHistory; }
+	{ return undoHistory; }
 
 	void
 	setModified (const bool value);
@@ -123,74 +117,66 @@ public:
 	void
 	reset ();
 
+	virtual
 	void
 	shutdown ();
 
 	virtual
-	~NotebookPage () final override;
+	~X3DNotebookPage () override;
 
 
-private:
+protected:
+
+	///  @name Construction
+
+	X3DNotebookPage (const basic::uri & startUrl);
+
+	virtual
+	void
+	initialized ()
+	{ }
+
+
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 	///  @name Event handlers
 
 	void
-	set_shutdown ();
+	set_browser ();
+
+	void
+	set_splashScreen ();
 
 	void
 	set_initialized ();
 
+	void
+	set_shutdown ();
+
 	virtual
 	void
 	on_map () final override;
-	
+
 	virtual
 	void
 	on_unmap () final override;
 
-	virtual
-	bool
-	on_box1_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* event) final override;
-
-	bool
-	on_box_key_release_event (GdkEventKey* event, const size_t index);
-
 	///  @name Members
 
-	X3D::BrowserPtr                 mainBrowser;
-	basic::uri                      url; // Start URL
-	BrowserHistory                  browserHistory;
-	X3D::UndoHistory                undoHistory;
-	bool                            modified;
-	bool                            saveConfirmed;
+	X3D::BrowserPtr  mainBrowser;
+	basic::uri       url; // Start URL
+	BrowserHistory   browserHistory;
+	X3D::UndoHistory undoHistory;
+	bool             modified;
+	bool             saveConfirmed;
 
-	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>> fileMonitors;
-
-	std::vector <Gtk::Widget*>    widgets;
-	std::unique_ptr <BrowserView> view1;
-	std::unique_ptr <BrowserView> view2;
-	std::unique_ptr <BrowserView> view3;
-	std::unique_ptr <BrowserView> view4;
-	size_t                        activeView;
-	bool                          multiView;
+	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 
 };
 
