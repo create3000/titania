@@ -93,7 +93,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_browser ();
+	set_dependent_browser ();
 
 	void
 	set_activeLayer ();

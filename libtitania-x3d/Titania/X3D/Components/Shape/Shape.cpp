@@ -182,8 +182,8 @@ Shape::pointer (X3DRenderObject* const renderObject)
 	if (not renderObject -> getViewVolumes () .back () .intersects (bbox))
 		return;
 
-	getBrowser () -> getHierarchy () .emplace_back (this);
-	getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
+	renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
+	renderObject -> getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
 
 	switch (browser -> getSelectionType ())
 	{
@@ -198,8 +198,8 @@ Shape::pointer (X3DRenderObject* const renderObject)
 			break;
 	}
 
-	getBrowser () -> getHierarchy () .pop_back ();
-	getBrowser () -> getHierarchy () .pop_back ();
+	renderObject -> getBrowser () -> getHierarchy () .pop_back ();
+	renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 }
 
 void

@@ -74,10 +74,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	           orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
 {
 	if (type not_eq BrowserViewType::MAIN)
-	{
-		browser -> initialized () .addInterest (&BrowserView::set_browser, this);
-		browser -> getSelection () -> setEnabled (true);
-	}
+		browser -> initialized () .addInterest (&BrowserView::set_dependent_browser, this);
 
 	browser -> signal_focus_out_event () .connect (sigc::mem_fun (this, &BrowserView::on_focus_out_event));
 	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &BrowserView::on_focus_in_event));
@@ -99,12 +96,18 @@ BrowserView::createBrowser (const BrowserViewType type) const
 }
 
 void
-BrowserView::set_browser ()
+BrowserView::set_dependent_browser ()
 {
 	try
 	{
-		browser -> initialized () .removeInterest (&BrowserView::set_browser, this);	
+		browser -> initialized () .removeInterest (&BrowserView::set_dependent_browser, this);	
+
+		// Setup dependent browser.
+
 		page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
+		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
+
+		// Setup scene.
 
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
 		const auto   viewpoint   = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
@@ -139,9 +142,9 @@ BrowserView::set_activeLayer ()
 	{
 		if (activeLayer)
 		{
-			auto & children = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group") -> children ();
-	
-			activeLayer -> children () .removeInterest (children);
+			const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
+
+			activeLayer -> children () .removeInterest (group -> children ());
 		}
 	}
 	catch (const X3D::X3DError & error)

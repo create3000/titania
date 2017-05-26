@@ -145,7 +145,7 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			getBrowser () -> getHierarchy () .emplace_back (this);
+			renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
 		
 			try
 			{
@@ -156,7 +156,7 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 				__LOG__ << error .what () << std::endl;
 			}
 
-			getBrowser () -> getHierarchy () .pop_back ();
+			renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 			break;
 		}
 		default:

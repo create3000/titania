@@ -154,6 +154,12 @@ X3DBrowserContext::getHeadUpDisplay () const
 	return headUpDisplay -> getLayerSet ();
 }
 
+void
+X3DBrowserContext::setSelection (const SelectionPtr & value)
+{
+	selection = value;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /***

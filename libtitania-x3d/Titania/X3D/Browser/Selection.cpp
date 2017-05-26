@@ -413,14 +413,14 @@ Selection::getChildren ()
 }
 
 bool
-Selection::selectNode ()
+Selection::selectNode (X3DBrowser* const browser)
 {
 	if (not getEnabled ())
 		return false;
 
 	// Selected highest or lowest Node, or clear selection.
 
-	if (getBrowser () -> getHits () .empty ())
+	if (browser -> getHits () .empty ())
 	{
 		if (not selectGeometry)
 			clearNodes ();
@@ -430,7 +430,7 @@ Selection::selectNode ()
 
 	// Get selected node.
 
-	const auto & nearestHit = getBrowser () -> getNearestHit ();
+	const auto & nearestHit = browser -> getNearestHit ();
 	const auto   node       = getTransform (nearestHit -> hierarchy);
 
 	// Select node or remove from selection.
@@ -534,18 +534,18 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 SFNode
 Selection::getTransform (const MFNode & hierarchy) const
 {
-	static const std::set <NodeType> geometryTypes = {
+	static const NodeTypeSet geometryTypes = {
 		X3DConstants::X3DGeometryNode,
 	};
 
-	static const std::set <NodeType> lowestTypes = {
+	static const NodeTypeSet lowestTypes = {
 		X3DConstants::X3DEnvironmentalSensorNode,
 		X3DConstants::X3DLightNode,
 		X3DConstants::X3DTransformNode,
 		X3DConstants::X3DViewpointNode,
 	};
 
-	static const std::set <NodeType> highestTypes = {
+	static const NodeTypeSet highestTypes = {
 		X3DConstants::X3DTransformNode,
 	};
 

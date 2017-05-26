@@ -190,7 +190,7 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent (const double x, const dou
 	// TODO: Sometimes there is no selection.
 	if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, SFTime::now ()) < SELECTION_TIME)
 	{
-		if (getBrowser () -> getSelection () -> selectNode ())
+		if (getBrowser () -> getSelection () -> selectNode (getBrowser ()))
 			return true;
 	}
 

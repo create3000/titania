@@ -1291,12 +1291,12 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 	{
 		case TraverseType::POINTER:
 		{
-			//getBrowser () -> getHierarchy () .emplace_back (this);
-			//getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
+			//renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
+			//renderObject -> getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
 			//
 			//
-			//getBrowser () -> getHierarchy () .pop_back ();
-			//getBrowser () -> getHierarchy () .pop_back ();
+			//renderObject -> getBrowser () -> getHierarchy () .pop_back ();
+			//renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 			break;
 		}
 		case TraverseType::COLLISION:

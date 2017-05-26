@@ -173,7 +173,7 @@ protected:
 	///  @name Operations
 
 	bool
-	selectNode ();
+	selectNode (X3DBrowser* const browser);
 
 
 private:

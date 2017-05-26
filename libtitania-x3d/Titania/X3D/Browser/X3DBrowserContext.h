@@ -156,8 +156,11 @@ public:
 	const X3DPtr <LayerSet> &
 	getHeadUpDisplay () const;
 
+	void
+	setSelection (const SelectionPtr & value);
+
 	const SelectionPtr &
-	getSelection ()
+	getSelection () const
 	{ return selection; }
 
 	const NotificationPtr &
