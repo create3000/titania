@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,65 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
+#ifndef __TITANIA_BASE_X3DDIALOG_INTERFACE_H__
+#define __TITANIA_BASE_X3DDIALOG_INTERFACE_H__
 
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
-
+#include "../Base/X3DUserInterface.h"
+#include "../Configuration/Configuration.h"
 #include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-enum BrowserViewType :
-	uint8_t
-{
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
-
-class BrowserView :
-	public X3DBrowserViewInterface
+class X3DViewInterface :
+	public X3DUserInterface
 {
 public:
 
-	///  @name Construction
+	/// @name Destruction
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type);
+	virtual
+	void
+	dispose () override;
 
-	///  @name Destruction
+	virtual
+	~X3DViewInterface () override;
 
-	~BrowserView ();
+
+protected:
+
+	/// @name Construction
+
+	X3DViewInterface ();
+
+	virtual
+	void
+	initialize () override;
+
+	/// @name Event handlers
+
+	bool
+	on_focus_out_event (GdkEventFocus* event);
+
+	bool
+	on_focus_in_event (GdkEventFocus* event);
 
 
 private:
-
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	///  @name Event handlers
-
-	void
-	set_browser ();
-
-	void
-	set_activeLayer ();
-
-	///  @name Members
-
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
 
 };
 

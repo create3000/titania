@@ -47,70 +47,46 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
-
-#include <gtkmm.h>
+#include "X3DBrowserViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-enum BrowserViewType :
-	uint8_t
+void
+X3DBrowserViewInterface::create (const std::string & filename)
 {
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-class BrowserView :
-	public X3DBrowserViewInterface
+	create ();
+}
+
+void
+X3DBrowserViewInterface::create (std::initializer_list <std::string> filenames)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
-	///  @name Construction
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type);
+	create ();
+}
 
-	///  @name Destruction
+void
+X3DBrowserViewInterface::create ()
+{
+	// Get objects.
 
-	~BrowserView ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+}
 
-
-private:
-
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	///  @name Event handlers
-
-	void
-	set_browser ();
-
-	void
-	set_activeLayer ();
-
-	///  @name Members
-
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
-
-};
+X3DBrowserViewInterface::~X3DBrowserViewInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

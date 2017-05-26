@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Camera.x3dv"
-META "modified" "Wed, 24 May 2017 03:06:47 GMT"
+META "modified" "Fri, 26 May 2017 11:05:32 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -121,6 +121,7 @@ LayerSet {
   ]
   layers [
     DEF GridLayer Layer {
+      isPickable FALSE
       children [
         USE OrthoViewpoint
         DEF Grid Grid {
@@ -163,7 +164,7 @@ LayerSet {
         ]
       }
       children [
-        DEF _1 NavigationInfo {
+        NavigationInfo {
           type "PLANE_create3000.de"
         }
         USE OrthoViewpoint

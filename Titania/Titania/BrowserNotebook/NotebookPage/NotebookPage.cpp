@@ -79,10 +79,15 @@ NotebookPage::initialize ()
 {
 	X3DNotebookPage::initialize ();
 
-   view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::TOP,   getBox1 ());
-   view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::MAIN,  getBox2 ());
-   view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::RIGHT, getBox3 ());
-   view4 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::FRONT, getBox4 ());
+   view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::TOP);
+   view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::MAIN);
+   view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::RIGHT);
+   view4 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::FRONT);
+
+	view1 -> reparent (getBox1 (), getWindow ());
+	view2 -> reparent (getBox2 (), getWindow ());
+	view3 -> reparent (getBox3 (), getWindow ());
+	view4 -> reparent (getBox4 (), getWindow ());
 
 	getBox2 () .set_visible (true);
 }

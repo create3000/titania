@@ -50,7 +50,6 @@
 
 #include "X3DDialogInterface.h"
 
-#include "../Configuration/config.h"
 #include "../Browser/X3DBrowserWindow.h"
 
 namespace titania {

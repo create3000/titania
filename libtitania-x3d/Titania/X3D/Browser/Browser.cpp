@@ -171,7 +171,7 @@ Browser::initialize ()
 		            Gdk::KEY_PRESS_MASK |
 		            Gdk::KEY_RELEASE_MASK);
 
-		//set_focus_on_click (true);
+		set_focus_on_click (true);
 		set_can_focus (true);
 		setCursor ("default");
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,69 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
-
-#include <gtkmm.h>
+#include "X3DViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
+X3DViewInterface::X3DViewInterface () :
+	X3DUserInterface ()
+{ }
 
-enum BrowserViewType :
-	uint8_t
+void
+X3DViewInterface::initialize ()
 {
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
+	X3DUserInterface::initialize ();
+}
 
-class BrowserView :
-	public X3DBrowserViewInterface
+bool
+X3DViewInterface::on_focus_out_event (GdkEventFocus* event)
 {
-public:
+	getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
+	return false;
+}
 
-	///  @name Construction
+bool
+X3DViewInterface::on_focus_in_event (GdkEventFocus* event)
+{
+	getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
+	return false;
+}
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type);
+void
+X3DViewInterface::dispose ()
+{
+	X3DUserInterface::dispose ();
+}
 
-	///  @name Destruction
-
-	~BrowserView ();
-
-
-private:
-
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	///  @name Event handlers
-
-	void
-	set_browser ();
-
-	void
-	set_activeLayer ();
-
-	///  @name Members
-
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
-
-};
+X3DViewInterface::~X3DViewInterface ()
+{ }
 
 } // puck
 } // titania
-
-#endif

@@ -47,66 +47,82 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_BROWSER_VIEW_H__
+#define __TMP_GLAD2CPP_BROWSER_VIEW_H__
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
-
+#include "../Base/X3DViewInterface.h"
 #include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-enum BrowserViewType :
-	uint8_t
-{
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
-
-class BrowserView :
-	public X3DBrowserViewInterface
+/**
+ *  Gtk Interface for BrowserView.
+ */
+class X3DBrowserViewInterface :
+	public X3DViewInterface
 {
 public:
 
 	///  @name Construction
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type);
+	X3DBrowserViewInterface () :
+		X3DViewInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DBrowserViewInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DViewInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DBrowserViewInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DViewInterface (arguments ...)
+	{ create (filenames); }
+
+	///  @name Member access
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	///  @name Signal handlers
 
 	///  @name Destruction
 
-	~BrowserView ();
+	virtual
+	~X3DBrowserViewInterface () override;
 
 
 private:
 
 	///  @name Construction
 
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	///  @name Event handlers
+	void
+	create (const std::string &);
 
 	void
-	set_browser ();
+	create (std::initializer_list <std::string>);
 
 	void
-	set_activeLayer ();
+	create ();
+
+	///  @name Static members
 
 	///  @name Members
 
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
 
 };
 

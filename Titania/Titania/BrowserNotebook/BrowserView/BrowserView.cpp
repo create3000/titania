@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
@@ -62,25 +63,39 @@
 namespace titania {
 namespace puck {
 
-BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type, Gtk::Box & box) :
-	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	            page (page),
-	            type (type),
-	             box (box),
-	         browser (type == BrowserViewType::MAIN ? page -> getMainBrowser () : X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Camera.x3dv") })),
-	     activeLayer (),
-	       positions ({ X3D::Vector3f (), X3D::Vector3f (0, 10, 0), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
-	    orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
+BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type) :
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBrowserViewInterface (get_ui ("Views/BrowserView.glade")),
+	                   page (page),
+	                   type (type),
+	                browser (createBrowser (type)),
+	            activeLayer (),
+	              positions ({ X3D::Vector3f (), X3D::Vector3f (0, 10, 0), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
+	           orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
 {
+	if (type not_eq BrowserViewType::MAIN)
+	{
+		browser -> initialized () .addInterest (&BrowserView::set_browser, this);
+		browser -> getSelection () -> setEnabled (true);
+	}
+
 	browser -> signal_focus_out_event () .connect (sigc::mem_fun (this, &BrowserView::on_focus_out_event));
 	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &BrowserView::on_focus_in_event));
-	browser -> initialized () .addInterest (&BrowserView::set_browser, this);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
-	box .pack_start (*browser, true, true, 0);
+	getWidget () .pack_start (*browser, true, true, 0);
 
 	setup ();
+}
+
+X3D::BrowserPtr
+BrowserView::createBrowser (const BrowserViewType type) const
+{
+	if (type == BrowserViewType::MAIN)
+		return page -> getMainBrowser ();
+
+	return X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("BrowserView.x3dv") });
 }
 
 void
@@ -88,11 +103,7 @@ BrowserView::set_browser ()
 {
 	try
 	{
-		browser -> initialized () .removeInterest (&BrowserView::set_browser, this);
-	
-		if (browser == page -> getMainBrowser ())
-			return;
-	
+		browser -> initialized () .removeInterest (&BrowserView::set_browser, this);	
 		page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
@@ -158,20 +169,6 @@ BrowserView::set_activeLayer ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-bool
-BrowserView::on_focus_out_event (GdkEventFocus* event)
-{
-	box .get_style_context () -> remove_class ("titania-widget-box-selected");
-	return false;
-}
-
-bool
-BrowserView::on_focus_in_event (GdkEventFocus* event)
-{
-	box .get_style_context () -> add_class ("titania-widget-box-selected");
-	return false;
 }
 
 BrowserView::~BrowserView ()

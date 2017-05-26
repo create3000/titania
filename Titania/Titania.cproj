@@ -311,6 +311,8 @@
     <Compile Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserView\BrowserView.cpp" />
     <Compile Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBrowserViewInterface.cpp" />
+    <Compile Include="Titania\Base\X3DViewInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2977,10 +2979,13 @@
     <None Include="Titania\Commands\ExportImage.h" />
     <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
-    <None Include="share\titania\ui\Camera.x3dv" />
     <None Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.h" />
     <None Include="Titania\BrowserNotebook\BrowserView\BrowserView.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.h" />
+    <None Include="Titania\UserInterfaces\X3DBrowserViewInterface.h" />
+    <None Include="Titania\Base\X3DViewInterface.h" />
+    <None Include="share\titania\ui\Views\BrowserView.glade" />
+    <None Include="share\titania\ui\BrowserView.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3127,6 +3132,7 @@
     <Folder Include="Titania\BrowserNotebook\" />
     <Folder Include="Titania\BrowserNotebook\NotebookPage\" />
     <Folder Include="Titania\BrowserNotebook\BrowserView\" />
+    <Folder Include="share\titania\ui\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

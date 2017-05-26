@@ -112,6 +112,7 @@ am_titania_OBJECTS =  \
 	Titania/Base/X3DEditorObject.$(OBJEXT) \
 	Titania/Base/X3DRevealerInterface.$(OBJEXT) \
 	Titania/Base/X3DUserInterface.$(OBJEXT) \
+	Titania/Base/X3DViewInterface.$(OBJEXT) \
 	Titania/Browser/BrowserHistory.$(OBJEXT) \
 	Titania/Browser/BrowserSelection.$(OBJEXT) \
 	Titania/Browser/BrowserWindow.$(OBJEXT) \
@@ -279,6 +280,7 @@ am_titania_OBJECTS =  \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DBrowserViewInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DColorEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DConsoleInterface.$(OBJEXT) \
@@ -604,6 +606,7 @@ titania_SOURCES = \
 	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
+	Titania/Base/X3DViewInterface.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -771,6 +774,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
+	Titania/UserInterfaces/X3DBrowserViewInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
@@ -991,6 +995,8 @@ Titania/Base/X3DRevealerInterface.$(OBJEXT):  \
 	Titania/Base/$(am__dirstamp) \
 	Titania/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/Base/X3DUserInterface.$(OBJEXT): Titania/Base/$(am__dirstamp) \
+	Titania/Base/$(DEPDIR)/$(am__dirstamp)
+Titania/Base/X3DViewInterface.$(OBJEXT): Titania/Base/$(am__dirstamp) \
 	Titania/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Browser
@@ -1739,6 +1745,9 @@ Titania/UserInterfaces/X3DBindableNodeEditorInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DBindableNodeListInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DBrowserViewInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DBrowserWindowInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -2061,6 +2070,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DEditorObject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DRevealerInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DUserInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DViewInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserHistory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserWindow.Po@am__quote@
@@ -2227,6 +2237,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBackgroundEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBindableNodeEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBindableNodeListInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBrowserViewInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBrowserWindowInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DColorEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DConsoleInterface.Po@am__quote@

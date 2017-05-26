@@ -14,6 +14,7 @@ titania_SOURCES =  \
 	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
+	Titania/Base/X3DViewInterface.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -181,6 +182,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
+	Titania/UserInterfaces/X3DBrowserViewInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
