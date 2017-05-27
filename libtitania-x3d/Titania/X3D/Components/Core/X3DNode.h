@@ -259,7 +259,7 @@ private:
 
 	///  @name Metadata handling
 
-	X3DPtr <MetadataSet>
+	MetadataSet*
 	getMetadataSet (const std::vector <std::string> & name, const bool throw_) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,

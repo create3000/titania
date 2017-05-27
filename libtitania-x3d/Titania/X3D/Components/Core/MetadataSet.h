@@ -109,7 +109,7 @@ public:
 	createValue (const std::string & name)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return getValue <Type> (name, false); }
+	{ return X3DPtr <Type> (getValue <Type> (name, false)); }
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
 	template <class Type>
@@ -118,7 +118,7 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return getValue <Type> (name, true); }
+	{ return X3DPtr <Type> (getValue <Type> (name, true)); }
 
 	void
 	removeValue (const std::string & name)
@@ -139,7 +139,7 @@ protected:
 
 	///  Return the metadata with where name is @a name.
 	template <class Type>
-	X3DPtr <Type>
+	Type*
 	getValue (const std::string & name, const bool throw_)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -197,7 +197,7 @@ private:
 
 ///  Return the field with @a name.
 template <class Type>
-X3DPtr <Type>
+Type*
 MetadataSet::getValue (const std::string & name, const bool throw_)
 throw (Error <INVALID_NODE>,
 	    Error <INVALID_NAME>,
@@ -205,7 +205,7 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
-	   const X3DPtr <Type> metadataObject (getObject (name));
+	   const auto metadataObject = dynamic_cast <Type*> (getObject (name));
 
 		if (metadataObject)
 			return metadataObject;

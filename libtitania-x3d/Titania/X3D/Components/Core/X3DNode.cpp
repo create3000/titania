@@ -88,7 +88,7 @@ public:
 	
 		const auto metadataSet = node -> getMetadataSet (names, false);
 	
-		metadataSet -> createValue <Metadata> (names .back ()) -> value () = value;
+		metadataSet -> getValue <Metadata> (names .back (), false) -> value () = value;
 	}
 	
 	template <class Type, class Metadata>
@@ -112,7 +112,7 @@ public:
 		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
 	
 		const auto metadataSet = node -> getMetadataSet (names, false);
-		auto  &    metaValue   = metadataSet -> createValue <Metadata> (names .back ()) -> value ();
+		auto  &    metaValue   = metadataSet -> getValue <Metadata> (names .back (), false) -> value ();
 	
 		metaValue .resize (value .size () * s);
 	
@@ -144,7 +144,7 @@ public:
 			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
 		
 			const auto   metadataSet = node -> getMetadataSet (names, true);
-			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back (), true) -> value ();
 	
 			return metaValue .at (0);
 		}
@@ -179,7 +179,7 @@ public:
 			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
 		
 			const auto   metadataSet = node -> getMetadataSet (names, true);
-			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back (), true) -> value ();
 	
 			return metaValue;
 		}
@@ -222,7 +222,7 @@ public:
 			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
 		
 			const auto   metadataSet = node -> getMetadataSet (names, true);
-			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back (), true) -> value ();
 	
 			Type value (metaValue .size () / s);
 	
@@ -1109,7 +1109,7 @@ throw (Error <DISPOSED>)
  * getMetadataSet
  */
 
-X3DPtr <MetadataSet>
+MetadataSet*
 X3DNode::getMetadataSet (const std::vector <std::string> & names, const bool throw_) const
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -1124,21 +1124,20 @@ throw (Error <INVALID_NODE>,
 	if (names [1] .empty ())
 		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-	X3DPtr <MetadataSet> metadataSet (x3d_cast <MetadataSet*> (metadata ()));
+	auto metadataSet = x3d_cast <MetadataSet*> (metadata ());
 
 	if (not metadataSet or metadataSet -> name () not_eq names [1])
 	{
 		if (throw_)
 			throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-		metadataSet = getExecutionContext () -> createNode <MetadataSet> ();
+		const_cast <X3DNode*> (this) -> metadata () = getExecutionContext () -> createNode <MetadataSet> ();
 
-		const_cast <X3DNode*> (this) -> metadata () = metadataSet;
-
+		metadataSet = x3d_cast <MetadataSet*> (metadata ());
 		metadataSet -> name ()      = names [1];
 		metadataSet -> reference () = getBrowser () -> getProviderUrl ();
 
-		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), metadataSet);
+		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), metadata ());
 	}
 
 	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
@@ -1200,7 +1199,7 @@ throw (Error <DISPOSED>)
 			try
 			{
 				for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
-					metadataSets .emplace_back (metadataSets .back () -> getValue <MetadataSet> (name));
+					metadataSets .emplace_back (metadataSets .back () -> getValue <MetadataSet> (name, true));
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
@@ -1249,7 +1248,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFBool:
 			{
 				auto &       field = static_cast <SFBool &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1257,7 +1256,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFColor:
 			{
 				auto &       field = static_cast <SFColor &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = Color3f (value .at (0), value .at (1), value .at (2));
 				break;
@@ -1265,7 +1264,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFColorRGBA:
 			{
 				auto &       field    = static_cast <SFColorRGBA &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = Color4f (value .at (0), value .at (1), value .at (2), value .at (3));
 				break;
@@ -1273,7 +1272,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFDouble:
 			{
 				auto &       field = static_cast <SFDouble &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1281,7 +1280,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFFloat:
 			{
 				auto &       field = static_cast <SFFloat &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1289,7 +1288,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFInt32:
 			{
 				auto &       field = static_cast <SFInt32 &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1297,7 +1296,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFImage:
 			{
 				auto &       field = static_cast <SFImage &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName (), true) -> value ();
 	
 				SFImage image;
 	
@@ -1314,7 +1313,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFMatrix3d:
 			{
 				auto &       field = static_cast <SFMatrix3d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				SFMatrix3d matrix;
 	
@@ -1327,7 +1326,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFMatrix3f:
 			{
 				auto &       field = static_cast <SFMatrix3f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				SFMatrix3f matrix;
 	
@@ -1340,7 +1339,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFMatrix4d:
 			{
 				auto &       field = static_cast <SFMatrix4d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				SFMatrix4d matrix;
 	
@@ -1353,7 +1352,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFMatrix4f:
 			{
 				auto &       field = static_cast <SFMatrix4f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				SFMatrix4f matrix;
 	
@@ -1366,7 +1365,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFNode:
 			{
 				auto &       field = static_cast <SFNode &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName (), true) -> value ();
 			
 				field = value .at (0);
 				break;
@@ -1374,7 +1373,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFRotation:
 			{
 				auto &       field = static_cast <SFRotation &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = Rotation4d (value .at (0), value .at (1), value .at (2), value .at (3));
 				break;
@@ -1382,7 +1381,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFString:
 			{
 				auto &       field = static_cast <SFString &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1390,7 +1389,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFTime:
 			{
 				auto &       field = static_cast <SFTime &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = value .at (0);
 				break;
@@ -1398,7 +1397,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec2d:
 			{
 				auto &       field = static_cast <SFVec2d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = Vector2d (value .at (0), value .at (1));
 				break;
@@ -1406,7 +1405,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec2f:
 			{
 				auto &       field = static_cast <SFVec2f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = Vector2f (value .at (0), value .at (1));
 				break;
@@ -1414,7 +1413,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec3d:
 			{
 				auto &       field = static_cast <SFVec3d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = Vector3d (value .at (0), value .at (1), value .at (2));
 				break;
@@ -1422,7 +1421,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec3f:
 			{
 				auto &       field = static_cast <SFVec3f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = Vector3f (value .at (0), value .at (1), value .at (2));
 				break;
@@ -1430,7 +1429,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec4d:
 			{
 				auto &       field = static_cast <SFVec4d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = Vector4d (value .at (0), value .at (1), value .at (2), value .at (3));
 				break;
@@ -1438,7 +1437,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::SFVec4f:
 			{
 				auto &       field = static_cast <SFVec4f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = Vector4f (value .at (0), value .at (1), value .at (2), value .at (3));
 				break;
@@ -1446,7 +1445,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFBool:
 			{
 				auto &       field = static_cast <MFBool &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName (), true) -> value ();
 	
 				field = value;
 				break;
@@ -1454,7 +1453,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFColor:
 			{
 				auto &       field = static_cast <MFColor &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFColor array;
 	
@@ -1467,7 +1466,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFColorRGBA:
 			{
 				auto &       field = static_cast <MFColorRGBA &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFColorRGBA array;
 	
@@ -1480,7 +1479,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFDouble:
 			{
 				auto &       field = static_cast <MFDouble &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field = value;
 				break;
@@ -1488,7 +1487,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFFloat:
 			{
 				auto &       field = static_cast <MFFloat &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				field = value;
 				break;
@@ -1496,7 +1495,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFImage:
 			{
 				auto &       field = static_cast <MFImage &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName (), true) -> value ();
 	
 				SFImage image;
 				MFImage images;
@@ -1521,7 +1520,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFInt32:
 			{
 				auto &       field = static_cast <MFInt32 &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName (), true) -> value ();
 	
 				field = value;
 				break;
@@ -1529,7 +1528,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFMatrix3d:
 			{
 				auto &       field = static_cast <MFMatrix3d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFMatrix3d array;
 	
@@ -1550,7 +1549,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFMatrix3f:
 			{
 				auto &       field = static_cast <MFMatrix3f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFMatrix3f array;
 	
@@ -1571,7 +1570,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFMatrix4d:
 			{
 				auto &       field = static_cast <MFMatrix4d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFMatrix4d array;
 	
@@ -1599,7 +1598,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFMatrix4f:
 			{
 				auto &       field = static_cast <MFMatrix4f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFMatrix4f array;
 	
@@ -1627,7 +1626,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFNode:
 			{
 				auto &       field = static_cast <MFNode &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName (), true) -> value ();
 			
 				field = value;
 				break;
@@ -1635,7 +1634,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFRotation:
 			{
 				auto &       field    = static_cast <MFRotation &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFRotation array;
 	
@@ -1648,7 +1647,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFString:
 			{
 				auto &       field = static_cast <MFString &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName (), true) -> value ();
 	
 				field = value;
 				break;
@@ -1656,7 +1655,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFTime:
 			{
 				auto &       field = static_cast <MFTime &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				field .clear ();
 	
@@ -1668,7 +1667,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec2d:
 			{
 				auto &       field = static_cast <MFVec2d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFVec2d array;
 	
@@ -1681,7 +1680,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec2f:
 			{
 				auto &       field = static_cast <MFVec2f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFVec2f array;
 	
@@ -1694,7 +1693,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec3d:
 			{
 				auto &       field = static_cast <MFVec3d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFVec3d array;
 	
@@ -1707,7 +1706,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec3f:
 			{
 				auto &       field = static_cast <MFVec3f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFVec3f array;
 	
@@ -1720,7 +1719,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec4d:
 			{
 				auto &       field = static_cast <MFVec4d &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
 				MFVec4d array;
 	
@@ -1733,7 +1732,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			case X3D::X3DConstants::MFVec4f:
 			{
 				auto &       field = static_cast <MFVec4f &> (*fieldDefinition);
-				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
 				MFVec4f array;
 	
@@ -1754,10 +1753,10 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 void
 X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode) const
 {
-	metadataSetNode -> createValue <MetadataString> ("@typeName") -> value () = { getTypeName () };
+	metadataSetNode -> getValue <MetadataString> ("@typeName", false) -> value () = { getTypeName () };
 
 	if (not getName () .empty ())
-		metadataSetNode -> createValue <MetadataString> ("@name") -> value () = { getName () };
+		metadataSetNode -> getValue <MetadataString> ("@name", false) -> value () = { getName () };
 
 	// Output all fields, thus we can output non-standard nodes.
 
@@ -1773,7 +1772,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFBool:
 		{
 			const auto & field    = static_cast <const SFBool &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataBoolean> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataBoolean> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1781,7 +1780,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFColor:
 		{
 			const auto & field    = static_cast <const SFColor &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field .getRed   (),
 			                         field .getGreen (),
@@ -1792,7 +1791,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFColorRGBA:
 		{
 			const auto & field    = static_cast <const SFColorRGBA &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field .getRed   (),
 			                         field .getGreen (),
@@ -1804,7 +1803,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFDouble:
 		{
 			const auto & field    = static_cast <const SFDouble &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1812,7 +1811,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFFloat:
 		{
 			const auto & field    = static_cast <const SFFloat &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1820,7 +1819,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFInt32:
 		{
 			const auto & field    = static_cast <const SFInt32 &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataInteger> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataInteger> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1828,7 +1827,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFImage:
 		{
 			const auto & field    = static_cast <const SFImage &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataInteger> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataInteger> (field .getName (), false);
 
 			MFInt32 array ({ field .getWidth (),
 			                 field .getHeight (),
@@ -1843,7 +1842,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFMatrix3d:
 		{
 			const auto & field    = static_cast <const SFMatrix3d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble array;
 
@@ -1856,7 +1855,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFMatrix3f:
 		{
 			const auto & field    = static_cast <const SFMatrix3f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat array;
 
@@ -1869,7 +1868,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFMatrix4d:
 		{
 			const auto & field    = static_cast <const SFMatrix4d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble array;
 
@@ -1882,7 +1881,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFMatrix4f:
 		{
 			const auto & field    = static_cast <const SFMatrix4f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat array;
 
@@ -1895,7 +1894,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFNode:
 		{
 			const auto & field    = static_cast <const SFNode &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataSet> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataSet> (field .getName (), false);
 		
 			metadata -> value () = { field };
 			break;
@@ -1903,7 +1902,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFRotation:
 		{
 			const auto & field    = static_cast <const SFRotation &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			SFRotation::value_type x, y, z, angle;
 
@@ -1915,7 +1914,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFString:
 		{
 			const auto & field    = static_cast <const SFString &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataString> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataString> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1923,7 +1922,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFTime:
 		{
 			const auto & field    = static_cast <const SFTime &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = { field };
 			break;
@@ -1931,7 +1930,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec2d:
 		{
 			const auto & field    = static_cast <const SFVec2d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY () };
@@ -1941,7 +1940,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec2f:
 		{
 			const auto & field    = static_cast <const SFVec2f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY () };
@@ -1951,7 +1950,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec3d:
 		{
 			const auto & field    = static_cast <const SFVec3d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY (),
@@ -1962,7 +1961,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec3f:
 		{
 			const auto & field    = static_cast <const SFVec3f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY (),
@@ -1973,7 +1972,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec4d:
 		{
 			const auto & field    = static_cast <const SFVec4d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY (),
@@ -1985,7 +1984,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::SFVec4f:
 		{
 			const auto & field    = static_cast <const SFVec4f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = { field .getX (),
 			                         field .getY (),
@@ -1997,7 +1996,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFBool:
 		{
 			const auto & field    = static_cast <const MFBool &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataBoolean> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataBoolean> (field .getName (), false);
 
 			metadata -> value () = field;
 			break;
@@ -2005,7 +2004,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFColor:
 		{
 			const auto & field    = static_cast <const MFColor &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2021,7 +2020,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFColorRGBA:
 		{
 			const auto & field    = static_cast <const MFColorRGBA &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2038,7 +2037,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFDouble:
 		{
 			const auto & field    = static_cast <const MFDouble &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () = field;
 			break;
@@ -2046,7 +2045,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFFloat:
 		{
 			const auto & field    = static_cast <const MFFloat &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			metadata -> value () = field;
 			break;
@@ -2054,7 +2053,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFImage:
 		{
 			const auto & field    = static_cast <const MFImage &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataInteger> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataInteger> (field .getName (), false);
 
 			MFInt32 & array = metadata -> value ();
 
@@ -2073,7 +2072,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFInt32:
 		{
 			const auto & field    = static_cast <const MFInt32 &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataInteger> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataInteger> (field .getName (), false);
 
 			metadata -> value () = field;
 			break;
@@ -2081,7 +2080,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFMatrix3d:
 		{
 			const auto & field    = static_cast <const MFMatrix3d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2096,7 +2095,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFMatrix3f:
 		{
 			const auto & field    = static_cast <const MFMatrix3f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2111,7 +2110,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFMatrix4d:
 		{
 			const auto & field    = static_cast <const MFMatrix4d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2126,7 +2125,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFMatrix4f:
 		{
 			const auto & field    = static_cast <const MFMatrix4f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2141,7 +2140,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFNode:
 		{
 			const auto & field    = static_cast <const MFNode &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataSet> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataSet> (field .getName (), false);
 		
 			metadata -> value () = field;
 			break;
@@ -2149,7 +2148,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFRotation:
 		{
 			const auto & field    = static_cast <const MFRotation &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2170,7 +2169,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFString:
 		{
 			const auto & field    = static_cast <const MFString &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataString> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataString> (field .getName (), false);
 
 			metadata -> value () = field;
 			break;
@@ -2178,7 +2177,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFTime:
 		{
 			const auto & field    = static_cast <const MFTime &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			metadata -> value () .assign (field .begin (), field .end ());
 			break;
@@ -2186,7 +2185,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec2d:
 		{
 			const auto & field    = static_cast <const MFVec2d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2201,7 +2200,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec2f:
 		{
 			const auto & field    = static_cast <const MFVec2f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2216,7 +2215,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec3d:
 		{
 			const auto & field    = static_cast <const MFVec3d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2232,7 +2231,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec3f:
 		{
 			const auto & field    = static_cast <const MFVec3f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 
@@ -2248,7 +2247,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec4d:
 		{
 			const auto & field    = static_cast <const MFVec4d &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataDouble> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
 			MFDouble & array = metadata -> value ();
 
@@ -2265,7 +2264,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		case X3D::X3DConstants::MFVec4f:
 		{
 			const auto & field    = static_cast <const MFVec4f &> (*fieldDefinition);
-			const auto   metadata = metadataSetNode -> createValue <MetadataFloat> (field .getName ());
+			const auto   metadata = metadataSetNode -> getValue <MetadataFloat> (field .getName (), false);
 
 			MFFloat & array = metadata -> value ();
 

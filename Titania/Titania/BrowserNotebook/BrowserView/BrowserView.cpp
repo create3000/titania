@@ -133,10 +133,13 @@ BrowserView::set_dependent_browser ()
 		activeLayer -> getBackgroundStack ()     -> setLock (true);
 		activeLayer -> getFogStack ()            -> setLock (true);
 
-		viewpoint -> position ()         .addInterest (&BrowserView::set_viewpoint, this);
-		viewpoint -> orientation ()      .addInterest (&BrowserView::set_viewpoint, this);
-		viewpoint -> centerOfRotation () .addInterest (&BrowserView::set_viewpoint, this);
-		viewpoint -> fieldOfViewScale () .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> position ()               .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> positionOffset ()         .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> orientation ()            .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> orientationOffset ()      .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> centerOfRotation ()       .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> centerOfRotationOffset () .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> fieldOfViewScale ()       .addInterest (&BrowserView::set_viewpoint, this);
 
 		viewpoint -> position ()         .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
 		viewpoint -> orientation ()      .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
