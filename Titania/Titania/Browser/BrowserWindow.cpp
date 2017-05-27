@@ -2189,7 +2189,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
 	getGridTool () -> update ();
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void
@@ -2214,7 +2214,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
 	getAngleTool () -> update ();
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void
@@ -2239,7 +2239,7 @@ BrowserWindow::on_axonometric_layout_tool_toggled ()
 
 	getAxonometricGridTool () -> isEnabled (getAxonometricGridLayoutToolAction () -> get_active ());
 	getAxonometricGridTool () -> update ();
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void

@@ -117,7 +117,7 @@ AxonometricGridTool::set_angle ()
 {
 	setMetaData ("/Titania/" + getName () + "/angle", getTool () -> getField <X3D::SFVec2d> ("angle"));
 
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void

@@ -50,8 +50,9 @@
 
 #include "BrowserSelection.h"
 
-#include "UserData.h"
-#include "X3DBrowserWindow.h"
+#include "../Browser/UserData.h"
+#include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
@@ -203,7 +204,7 @@ BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 	worldInfo -> removeMetaData ("/Titania/Selection/previous");
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
 
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void

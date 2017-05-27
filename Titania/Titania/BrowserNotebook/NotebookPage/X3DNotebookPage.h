@@ -73,8 +73,14 @@ public:
 	getMainBrowser () const
 	{ return mainBrowser; }
 
+	X3D::X3DScenePtr
+	getMasterScene () const;
+
+	X3D::X3DScenePtr
+	getScene () const;
+
 	const basic::uri &
-	getSceneURL () const;
+	getMasterSceneURL () const;
 
 	const basic::uri &
 	getWorldURL () const;
@@ -133,8 +139,7 @@ protected:
 
 	virtual
 	void
-	initialized ()
-	{ }
+	initialized ();
 
 
 protected:
@@ -144,6 +149,14 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Operations
+
+	void
+	updateTitle ();
+
+	std::string
+	getTitle () const;
 
 	///  @name Event handlers
 

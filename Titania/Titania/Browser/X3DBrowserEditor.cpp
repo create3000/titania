@@ -200,7 +200,6 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 			getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
 
 			getCurrentPage () -> reset ();
-			setModified (false);
 
 			X3DBrowserWidget::setCurrentContext (value);
 		}
@@ -221,7 +220,6 @@ X3DBrowserEditor::set_shutdown ()
 	if (isSaved (getCurrentPage ()))
 	{
 		getCurrentPage () -> reset ();
-		setModified (false);
 	}
 	else
 		// Cancel shutdown, there will be no further shutdown now.
@@ -618,7 +616,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 	if (saved)
 	{
 		if (not copy)
-			setModified (false);
+			getCurrentPage () -> setModified (false);
 
 		return true;
 	}
@@ -665,18 +663,6 @@ X3DBrowserEditor::quit ()
 	}
 
 	return X3DBrowserWidget::quit ();
-}
-
-void
-X3DBrowserEditor::setModified (const bool value)
-{
-	getCurrentPage () -> setModified (value);
-	getCurrentPage () -> setSaveConfirmed (false);
-
-	if (not value)
-		getCurrentPage () -> getUndoHistory () .setSaved ();
-
-	updateTitle ();
 }
 
 void
@@ -757,8 +743,6 @@ X3DBrowserEditor::set_undoHistory ()
 		getBrowserRedoMenuItem () .set_sensitive (false);
 		getRedoButton ()          .set_sensitive (false);
 	}
-
-	updateTitle ();
 }
 
 void

@@ -98,6 +98,9 @@ private:
 	void
 	set_activeLayer ();
 
+	void
+	set_viewpoint ();
+
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
 
@@ -106,10 +109,13 @@ private:
 	NotebookPage* const   page;
 	const BrowserViewType type;
 
-	X3D::BrowserPtr                 browser;
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
-	X3D::MFVec3f                    positions;
-	X3D::MFRotation                 orientations;
+	X3D::BrowserPtr                   browser;
+	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
+	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
+	X3D::SFNode                       grid;
+	std::vector <std::string>         names;
+	std::vector <X3D::Vector3d>       positions;
+	std::vector <X3D::Rotation4d>     orientations;
 
 };
 

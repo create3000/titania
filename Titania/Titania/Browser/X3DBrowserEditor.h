@@ -121,9 +121,6 @@ public:
 
 	/// @name Undo/Redo operations
 
-	void
-	setModified (const bool value);
-
 	virtual
 	void
 	addUndoStep (const X3D::UndoStepPtr &) final override;

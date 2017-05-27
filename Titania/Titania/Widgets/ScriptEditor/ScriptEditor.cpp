@@ -52,6 +52,7 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 #include "../../Widgets/Console/Console.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
@@ -483,7 +484,7 @@ ScriptEditor::on_can_undo_changed ()
 		if (node)
 		{
 			setModified (true);
-			getBrowserWindow () -> setModified (true);
+			getBrowserWindow () -> getCurrentPage () -> setModified (true);
 		}
 	}
 }

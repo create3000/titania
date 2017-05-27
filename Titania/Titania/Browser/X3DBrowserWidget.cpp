@@ -171,7 +171,6 @@ X3DBrowserWidget::initialize ()
 
 	// 
 
-	getCurrentScene ()  .addInterest (&X3DBrowserWidget::set_scene, this);
 	getCurrentScene ()  .addInterest (&X3DBrowserWidget::set_history, this);
 	worldURL_changed () .addInterest (&X3DBrowserWidget::set_history, this);
 
@@ -311,7 +310,7 @@ throw (std::out_of_range)
 {
 	const auto iter = std::find_if (pages .begin (), pages .end (), [&] (const NotebookPagePtr & page)
 	{
-		return page -> getSceneURL () == URL;
+		return page -> getMasterSceneURL () == URL;
 	});
 
 	if (iter == pages .end ())
@@ -369,48 +368,6 @@ bool
 X3DBrowserWidget::isLive () const
 {
 	return getConfig () -> getBoolean ("isLive");
-}
-
-void
-X3DBrowserWidget::updateTitle ()
-{
-	const auto page      = getCurrentPage ();
-	const bool modified  = getCurrentPage () -> getModified ();
-	const auto title     = getTitle ();
-	const auto protoPath = getProtoPath (getCurrentContext ());
-
-	getBrowserNotebook () .set_menu_label_text (getCurrentPage () -> getWidget (), title);
-
-	page -> getTabImage () .set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-	page -> getTabLabel () .set_text (title);
-	page -> getTabLabel () .set_tooltip_text (title);
-
-	getWindow () .set_title (getCurrentContext () -> getTitle ()
-	                         + " · "
-	                         + getCurrentContext () -> getWorldURL () .filename ()
-	                         + (modified ? "*" : "")
-	                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
-	                         + " · "
-	                         + getCurrentBrowser () -> getName ());
-}
-
-std::string
-X3DBrowserWidget::getTitle () const
-{
-	const bool modified = getCurrentPage () -> getModified ();
-
-	auto title = getCurrentContext () -> getTitle ();
-
-	if (title .empty ())
-		title = page -> getWorldURL () .basename ();
-
-	if (title .empty ())
-		title = _ ("New Scene");
-
-	if (modified)
-		title += "*";
-
-	return title;
 }
 
 void
@@ -627,7 +584,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : recentPages)
 	{
-		const auto URL = page -> getSceneURL ();
+		const auto URL = page -> getMasterSceneURL ();
 
 		if (not URL .empty ())
 			recent .emplace_back (URL);
@@ -635,7 +592,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : pages)
 	{
-		const auto URL = page -> getSceneURL ();
+		const auto URL = page -> getMasterSceneURL ();
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
@@ -648,7 +605,7 @@ X3DBrowserWidget::quit ()
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
 	// Check if current scene is an empty scene;
-	if (pages [currentPage] -> getSceneURL () .empty ())
+	if (pages [currentPage] -> getMasterSceneURL () .empty ())
 		currentPage = 0;
 
 	getConfig () -> setItem ("currentPage", currentPage);
@@ -688,30 +645,17 @@ X3DBrowserWidget::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 }
 
 void
-X3DBrowserWidget::set_scene ()
-{
-	getIconFactory () -> createIcon (getCurrentScene ());
-
-	updateTitle ();
-}
-
-void
 X3DBrowserWidget::set_executionContext ()
 {
 	if (getCurrentBrowser () -> getExecutionContext () == executionContext)
 	   return;
 
-	X3D::X3DScenePtr currentScene (getCurrentBrowser () -> getExecutionContext ());
-
-	if (not currentScene)
-		currentScene = getCurrentBrowser () -> getExecutionContext () -> getScene ();
-
-	if (currentScene not_eq scene)
-		scene = std::move (currentScene);
+	if (getCurrentBrowser () -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene }))
+		scene = getCurrentBrowser () -> getExecutionContext ();
+	else
+		scene = getCurrentBrowser () -> getExecutionContext () -> getScene ();
 
 	executionContext = getCurrentBrowser () -> getExecutionContext ();
-
-	updateTitle ();
 }
 
 void

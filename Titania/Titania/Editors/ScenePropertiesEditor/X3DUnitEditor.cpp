@@ -50,6 +50,7 @@
 
 #include "X3DUnitEditor.h"
 
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -251,7 +252,7 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 	
 	getCurrentScene () -> updateUnit (category, name, value);
 
-	getBrowserWindow () -> setModified (true);
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 
 	changing = false;
 }

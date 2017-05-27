@@ -50,10 +50,13 @@
 
 #include "X3DNotebookPage.h"
 
+#include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include "../BrowserView/BrowserView.h"
+
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -80,6 +83,8 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 		mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_browser, this);
 		mainBrowser -> set_opacity (0);
 	}
+
+	undoHistory .addInterest (&X3DNotebookPage::updateTitle, this);
 }
 
 void
@@ -94,8 +99,23 @@ X3DNotebookPage::getPageNumber () const
 	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
 }
 
+X3D::X3DScenePtr
+X3DNotebookPage::getMasterScene () const
+{
+	return X3D::X3DScenePtr (mainBrowser -> getExecutionContext () -> getMasterScene ());
+}
+
+X3D::X3DScenePtr
+X3DNotebookPage::getScene () const
+{
+	if (mainBrowser -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene }))
+		return X3D::X3DScenePtr (mainBrowser -> getExecutionContext ());
+
+	return X3D::X3DScenePtr (mainBrowser -> getExecutionContext () -> getScene ());
+}
+
 const basic::uri &
-X3DNotebookPage::getSceneURL () const
+X3DNotebookPage::getMasterSceneURL () const
 {
 	if (mainBrowser -> isInitialized ())
 	   return mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
@@ -116,6 +136,13 @@ void
 X3DNotebookPage::setModified (const bool value)
 {
 	modified = value;
+
+	setSaveConfirmed (false);
+
+	if (not value)
+		getUndoHistory () .setSaved ();
+
+	updateTitle ();
 }
 
 bool
@@ -125,9 +152,61 @@ X3DNotebookPage::getModified () const
 }
 
 void
+X3DNotebookPage::updateTitle ()
+{
+	const bool modified  = getModified ();
+	const auto title     = getTitle ();
+	const auto protoPath = getProtoPath (mainBrowser -> getExecutionContext ());
+
+	getBrowserWindow () -> getBrowserNotebook () .set_menu_label_text (getWidget (), title);
+
+	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	getTabLabel () .set_text (title);
+	getTabLabel () .set_tooltip_text (title);
+
+	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
+	{
+		getWindow () .set_title (mainBrowser -> getExecutionContext () -> getTitle ()
+		                         + " · "
+		                         + mainBrowser -> getExecutionContext () -> getWorldURL () .filename ()
+		                         + (modified ? "*" : "")
+		                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
+		                         + " · "
+		                         + mainBrowser -> getName ());
+	}
+}
+
+std::string
+X3DNotebookPage::getTitle () const
+{
+	const bool modified = getModified ();
+
+	auto title = mainBrowser -> getExecutionContext () -> getTitle ();
+
+	if (title .empty ())
+		title = getWorldURL () .basename ();
+
+	if (title .empty ())
+		title = _ ("New Scene");
+
+	if (modified)
+		title += "*";
+
+	return title;
+}
+
+void
 X3DNotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
 {
 	fileMonitors .emplace_back (file, fileMonitor);
+}
+
+void
+X3DNotebookPage::initialized ()
+{
+	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
+
+	updateTitle ();
 }
 
 void

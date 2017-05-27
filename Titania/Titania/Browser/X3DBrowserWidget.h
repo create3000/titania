@@ -210,14 +210,11 @@ protected:
 	void
 	setPage (const NotebookPagePtr & value);
 
-	void
-	updateTitle ();
-
 	bool
 	getShowTabs () const;
 
 	void
-	setTransparent (const bool);
+	setTransparent (const bool value);
 
 
 private:
@@ -233,9 +230,6 @@ private:
 	on_page_reordered (Gtk::Widget* widget, guint pageNumber) final override;
 
 	void
-	set_scene ();
-
-	void
 	set_executionContext ();
 
 	void
@@ -245,9 +239,6 @@ private:
 	set_urlError ();
 
 	///  @name Operations
-
-	std::string
-	getTitle () const;
 
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);

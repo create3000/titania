@@ -97,7 +97,7 @@ NotebookPage::initialized ()
 {
 	X3DNotebookPage::initialized ();
 
-	const auto worldURL = getSceneURL ();
+	const auto worldURL = getMasterSceneURL ();
 
 	activeView = getBrowserWindow () -> getHistory () -> getActiveView (worldURL);
 	multiView  = getBrowserWindow () -> getHistory () -> getMultiView (worldURL);
@@ -161,7 +161,7 @@ NotebookPage::shutdown ()
 {
 	// Data base
 
-	const auto worldURL = getSceneURL ();
+	const auto worldURL = getMasterSceneURL ();
 
 	getBrowserWindow () -> getHistory () -> setActiveView (worldURL, activeView);
 	getBrowserWindow () -> getHistory () -> setMultiView (worldURL, multiView);

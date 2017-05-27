@@ -71,9 +71,17 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	                   type (type),
 	                browser (createBrowser (type)),
 	            activeLayer (),
+	              viewpoint (),
+	                   grid (),
+	                  names ({ "", "Top", "Right", "Front" }),
 	              positions ({ X3D::Vector3f (), X3D::Vector3f (0, 10, 0), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
 	           orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
 {
+	addChildObjects (browser,
+	                 activeLayer,
+	                 viewpoint,
+	                 grid);
+
 	if (type not_eq BrowserViewType::MAIN)
 		browser -> initialized () .addInterest (&BrowserView::set_dependent_browser, this);
 
@@ -111,17 +119,26 @@ BrowserView::set_dependent_browser ()
 
 		// Setup scene.
 
+		const auto   worldInfo   = createWorldInfo (page -> getScene ());
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
-		const auto   viewpoint   = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
-		const auto   grid        = browser -> getExecutionContext () -> getNamedNode ("Grid");
+
+		viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
+		grid      = browser -> getExecutionContext () -> getNamedNode ("Grid");
 
 		activeLayer -> getNavigationInfoStack () -> setLock (true);
 		activeLayer -> getViewpointStack ()      -> setLock (true);
 		activeLayer -> getBackgroundStack ()     -> setLock (true);
 		activeLayer -> getFogStack ()            -> setLock (true);
 
-		viewpoint -> position ()    = positions [type];
-		viewpoint -> orientation () = orientations [type];
+		viewpoint -> position ()         .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> orientation ()      .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> centerOfRotation () .addInterest (&BrowserView::set_viewpoint, this);
+		viewpoint -> fieldOfViewScale () .addInterest (&BrowserView::set_viewpoint, this);
+
+		viewpoint -> position ()         .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
+		viewpoint -> orientation ()      .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
+		viewpoint -> centerOfRotation () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
+		viewpoint -> fieldOfViewScale () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
 	
@@ -174,6 +191,19 @@ BrowserView::set_activeLayer ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+BrowserView::set_viewpoint ()
+{
+	const auto worldInfo = createWorldInfo (page -> getScene ());
+
+	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
+	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+
+	page -> setModified (true);
 }
 
 bool
