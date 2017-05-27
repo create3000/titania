@@ -57,6 +57,7 @@
 #include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
 #include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
@@ -72,8 +73,10 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	                browser (createBrowser (type)),
 	            activeLayer (),
 	              viewpoint (),
+	          gridTransform (),
 	                   grid (),
 	                  names ({ "", "Top", "Right", "Front" }),
+	                   axes ({ X3D::Vector3f (), X3D::Vector3f (0, 1, 0), X3D::Vector3f (1, 0, 0), X3D::Vector3f (0, 0, 1) }),
 	              positions ({ X3D::Vector3f (), X3D::Vector3f (0, 10, 0), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
 	           orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
 {
@@ -121,8 +124,9 @@ BrowserView::set_dependent_browser ()
 		const auto   worldInfo   = createWorldInfo (page -> getScene ());
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
 
-		viewpoint = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
-		grid      = browser -> getExecutionContext () -> getNamedNode ("Grid");
+		viewpoint     = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
+		gridTransform = browser -> getExecutionContext () -> getNamedNode <X3D::Transform> ("GridTransform");
+		grid          = browser -> getExecutionContext () -> getNamedNode ("Grid");
 
 		activeLayer -> getNavigationInfoStack () -> setLock (true);
 		activeLayer -> getViewpointStack ()      -> setLock (true);
@@ -203,6 +207,8 @@ BrowserView::set_viewpoint ()
 	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
 
 	page -> setModified (true);
+
+	gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
 }
 
 void

@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserView.x3dv"
-META "modified" "Fri, 26 May 2017 20:10:44 GMT"
+META "modified" "Sat, 27 May 2017 05:24:58 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -124,8 +124,10 @@ LayerSet {
       isPickable FALSE
       children [
         USE OrthoViewpoint
-        DEF Grid Grid {
-          rotation 1 0 0 1.5707963
+        DEF GridTransform Transform {
+          children DEF Grid Grid {
+            rotation 1 0 0 1.5707963
+          }
         }
       ]
     }

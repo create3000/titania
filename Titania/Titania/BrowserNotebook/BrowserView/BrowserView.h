@@ -120,8 +120,10 @@ private:
 	X3D::BrowserPtr                   browser;
 	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
 	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
+	X3D::X3DPtr <X3D::Transform>      gridTransform;
 	X3D::SFNode                       grid;
 	std::vector <std::string>         names;
+	std::vector <X3D::Vector3d>       axes;
 	std::vector <X3D::Vector3d>       positions;
 	std::vector <X3D::Rotation4d>     orientations;
 
