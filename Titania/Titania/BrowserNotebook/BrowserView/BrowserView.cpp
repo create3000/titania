@@ -113,7 +113,6 @@ BrowserView::set_dependent_browser ()
 
 		// Setup dependent browser.
 
-		page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
 		browser -> signal_draw () .connect (sigc::mem_fun (this, &BrowserView::on_draw));
 
@@ -206,6 +205,15 @@ BrowserView::set_viewpoint ()
 	page -> setModified (true);
 }
 
+void
+BrowserView::on_map ()
+{
+	if (type == BrowserViewType::MAIN)
+		return;
+
+	page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
+}
+
 bool
 BrowserView::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
@@ -218,20 +226,29 @@ BrowserView::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 	switch (type)
 	{
 		case BrowserViewType::MAIN:
-			cairo -> show_text ("Perspective View");  
+			cairo -> show_text (_ ("Perspective View"));  
 			break;
 		case BrowserViewType::TOP:
-			cairo -> show_text ("Top View");  
+			cairo -> show_text (_ ("Top View"));  
 			break;
 		case BrowserViewType::RIGHT:
-			cairo -> show_text ("Right View");  
+			cairo -> show_text (_ ("Right View"));  
 			break;
 		case BrowserViewType::FRONT:
-			cairo -> show_text ("Front View");  
+			cairo -> show_text (_ ("Front View"));  
 			break;
 	}
 
 	return false;
+}
+
+void
+BrowserView::on_unmap ()
+{
+	if (type == BrowserViewType::MAIN)
+		return;
+
+	page -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
 }
 
 BrowserView::~BrowserView ()

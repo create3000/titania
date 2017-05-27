@@ -82,6 +82,10 @@ X3DBrowserViewInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
+
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_unmap));
 }
 
 X3DBrowserViewInterface::~X3DBrowserViewInterface ()

@@ -101,8 +101,16 @@ private:
 	void
 	set_viewpoint ();
 
+	virtual
+	void
+	on_map () final override;
+
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
+
+	virtual
+	void
+	on_unmap () final override;
 
 	///  @name Members
 

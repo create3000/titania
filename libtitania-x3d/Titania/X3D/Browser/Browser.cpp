@@ -294,9 +294,9 @@ Browser::on_configure_event (GdkEventConfigure* const event)
 bool
 Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	update ();
-
 	OpenGL::Surface::on_draw (cairo);
+
+	update ();
 
 	return false;
 }
