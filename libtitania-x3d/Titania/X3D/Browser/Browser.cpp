@@ -294,9 +294,9 @@ Browser::on_configure_event (GdkEventConfigure* const event)
 bool
 Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	OpenGL::Surface::on_draw (cairo);
-
 	update ();
+
+	OpenGL::Surface::on_draw (cairo);
 
 	return false;
 }
@@ -367,7 +367,12 @@ Browser::set_viewer ()
 			}
 			case X3DConstants::PlaneViewer:
 			{
-				viewer .setValue (new PlaneViewer (this));
+				viewer .setValue (new PlaneViewer (this, X3DConstants::PlaneViewer));
+				break;
+			}
+			case X3DConstants::PlaneViewer3D:
+			{
+				viewer .setValue (new PlaneViewer (this, X3DConstants::PlaneViewer3D));
 				break;
 			}
 			case X3DConstants::LookAtViewer:

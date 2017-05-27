@@ -98,6 +98,9 @@ private:
 	void
 	set_activeLayer ();
 
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
+
 	///  @name Members
 
 	NotebookPage* const   page;

@@ -95,6 +95,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Box &
+	getBrowserBox () const
+	{ return *m_BrowserBox; }
+
 	///  @name Signal handlers
 
 	///  @name Destruction
@@ -123,6 +127,7 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::Box* m_BrowserBox;
 
 };
 

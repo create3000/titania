@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	PlaneViewer (X3DExecutionContext* const executionContext);
+	PlaneViewer (X3DExecutionContext* const executionContext, const NodeType type);
 
 	virtual
 	X3DBaseNode*

@@ -132,13 +132,15 @@ void
 NavigationInfo::set_type ()
 {
 	static const std::map <std::string, X3DConstants::NodeType> viewerTypes = {
-		std::make_pair ("EXAMINE",             X3DConstants::ExamineViewer),
-		std::make_pair ("WALK",                X3DConstants::WalkViewer),
-		std::make_pair ("FLY",                 X3DConstants::FlyViewer),
-		std::make_pair ("PLANE",               X3DConstants::PlaneViewer),
-		std::make_pair ("PLANE_create3000.de", X3DConstants::PlaneViewer),
-		std::make_pair ("NONE",                X3DConstants::NoneViewer),
-		std::make_pair ("LOOKAT",              X3DConstants::LookAtViewer)
+		std::make_pair ("EXAMINE",               X3DConstants::ExamineViewer),
+		std::make_pair ("WALK",                  X3DConstants::WalkViewer),
+		std::make_pair ("FLY",                   X3DConstants::FlyViewer),
+		std::make_pair ("PLANE",                 X3DConstants::PlaneViewer),
+		std::make_pair ("PLANE_create3000.de",   X3DConstants::PlaneViewer),
+		std::make_pair ("PLANE3D",               X3DConstants::PlaneViewer3D),
+		std::make_pair ("PLANE3D_create3000.de", X3DConstants::PlaneViewer3D),
+		std::make_pair ("NONE",                  X3DConstants::NoneViewer),
+		std::make_pair ("LOOKAT",                X3DConstants::LookAtViewer)
 	};
 
 	availableViewers .clear ();
@@ -147,6 +149,7 @@ NavigationInfo::set_type ()
 	bool walkViewer    = false;
 	bool flyViewer     = false;
 	bool planeViewer   = false;
+	bool planeViewer3D = false;
 	bool noneViewer    = false;
 	bool lookAt        = false;
 
@@ -187,6 +190,7 @@ NavigationInfo::set_type ()
 		walkViewer    = true;
 		flyViewer     = true;
 		planeViewer   = true;
+		planeViewer3D = true;
 		noneViewer    = true;
 		lookAt        = true;
 	}
@@ -212,6 +216,9 @@ NavigationInfo::set_type ()
 					case X3DConstants::PlaneViewer:
 						planeViewer = true;
 						continue;
+					case X3DConstants::PlaneViewer3D:
+						planeViewer3D = true;
+						continue;
 					case X3DConstants::NoneViewer:
 						noneViewer = true;
 						continue;
@@ -231,6 +238,7 @@ NavigationInfo::set_type ()
 				walkViewer    = true;
 				flyViewer     = true;
 				planeViewer   = true;
+				planeViewer3D = true;
 				noneViewer    = true;
 				lookAt        = true;
 
@@ -254,6 +262,9 @@ NavigationInfo::set_type ()
 
 	if (planeViewer)
 		availableViewers .emplace_back (X3DConstants::PlaneViewer);
+
+	if (planeViewer3D)
+		availableViewers .emplace_back (X3DConstants::PlaneViewer3D);
 
 	if (noneViewer)
 		availableViewers .emplace_back (X3DConstants::NoneViewer);

@@ -531,6 +531,7 @@ enum NodeType : uint16_t
 	LookAtViewer,
 	NoneViewer,
 	PlaneViewer,
+	PlaneViewer3D,
 	WalkViewer,
 	X3DExamineViewer,
 

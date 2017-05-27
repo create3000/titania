@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
 #include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
@@ -81,7 +82,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
-	getWidget () .pack_start (*browser, true, true, 0);
+	getBrowserBox () .pack_start (*browser, true, true, 0);
 
 	setup ();
 }
@@ -106,6 +107,7 @@ BrowserView::set_dependent_browser ()
 
 		page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
+		browser -> signal_draw () .connect (sigc::mem_fun (this, &BrowserView::on_draw));
 
 		// Setup scene.
 
@@ -172,6 +174,34 @@ BrowserView::set_activeLayer ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+bool
+BrowserView::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	cairo -> set_font_size (10);
+	cairo -> move_to (10, 20);
+	cairo -> set_source_rgb (0, 0, 0); 
+
+	cairo -> select_font_face ("sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+
+	switch (type)
+	{
+		case BrowserViewType::MAIN:
+			cairo -> show_text ("Perspective View");  
+			break;
+		case BrowserViewType::TOP:
+			cairo -> show_text ("Top View");  
+			break;
+		case BrowserViewType::RIGHT:
+			cairo -> show_text ("Right View");  
+			break;
+		case BrowserViewType::FRONT:
+			cairo -> show_text ("Front View");  
+			break;
+	}
+
+	return false;
 }
 
 BrowserView::~BrowserView ()

@@ -65,13 +65,16 @@ const ComponentType PlaneViewer::component      = ComponentType::TITANIA;
 const std::string   PlaneViewer::typeName       = "PlaneViewer";
 const std::string   PlaneViewer::containerField = "viewer";
 
-PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext) :
+PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext, const NodeType type) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DViewer (),
 	     fromPoint (),
 	        button (0)
 {
-	addType (X3DConstants::PlaneViewer);
+	if (type == X3DConstants::PlaneViewer3D)
+		addType (X3DConstants::PlaneViewer3D);
+	else
+		addType (X3DConstants::PlaneViewer);
 
 	addField (outputOnly, "isActive",   isActive ());
 	addField (outputOnly, "scrollTime", scrollTime ());
@@ -80,7 +83,7 @@ PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext) :
 X3DBaseNode*
 PlaneViewer::create (X3DExecutionContext* const executionContext) const
 {
-	return new PlaneViewer (executionContext);
+	return new PlaneViewer (executionContext, getType () .back ());
 }
 
 void
@@ -165,16 +168,32 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 {
 	try
 	{
-		const auto & viewpoint = getActiveViewpoint ();
-		const auto   fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+		const auto & viewpoint      = getActiveViewpoint ();
+		const auto   step           = getDistanceToCenter () * SCROLL_FACTOR;
+		const auto   positionOffset = Vector3d (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
+		const auto   fromPoint      = getPointOnCenterPlane (event -> x, event -> y);
 
 		viewpoint -> transitionStop ();
 
-		if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
+		if (getType () .back () == X3DConstants::PlaneViewer3D)
+		{
+			if (getBrowser () -> getShiftKey () and not getBrowser () -> getControlKey ())
+			{
+				if (event -> direction == GDK_SCROLL_UP) // Move backwards.
+				{
+					viewpoint -> positionOffset () -= positionOffset;
+				}
+				else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.
+				{
+					viewpoint -> positionOffset () += positionOffset;
+				}
+			}
+		}
+
+		if (event -> direction == GDK_SCROLL_UP) // Move backwards.
 		{
 			viewpoint -> fieldOfViewScale () = std::max (0.00001, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
 		}
-
 		else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.
 		{
 			viewpoint -> fieldOfViewScale () = viewpoint -> fieldOfViewScale () * (1 + SCROLL_FACTOR);

@@ -51,6 +51,7 @@
 #include "X3DRevealerInterface.h"
 
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 namespace titania {
 namespace puck {
@@ -149,8 +150,8 @@ X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event
 
 	const auto margin = position + X3D::Vector2d (x, y) - pointer;
 
-	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
+	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_width  () - getWidget () .get_width ()));
+	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_height () - getWidget () .get_height ()));
 	return true;
 }
 

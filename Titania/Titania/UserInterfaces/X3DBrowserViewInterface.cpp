@@ -81,6 +81,7 @@ X3DBrowserViewInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
 }
 
 X3DBrowserViewInterface::~X3DBrowserViewInterface ()
