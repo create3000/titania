@@ -92,7 +92,8 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture (this))
+	     background (new BackgroundTexture (this)),
+	     connection ()
 {
 	addType (X3DConstants::Browser);
 
@@ -113,7 +114,8 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture (this))
+	     background (new BackgroundTexture (this)),
+	     connection ()
 {
 	addType (X3DConstants::Browser);
 
@@ -175,6 +177,7 @@ Browser::initialize ()
 		set_can_focus (true);
 		setCursor ("default");
 
+		// As last command connect.
 		connect ();
 	}
 	catch (const std::exception & error)
@@ -187,14 +190,15 @@ void
 Browser::connect ()
 noexcept (true)
 {
-	changed () .removeInterest (&Browser::set_idle,    this);
+	changed () .removeInterest (&Browser::queue_draw, this);
 	changed () .removeInterest (&Browser::set_timeout, this);
 
 	if (get_mapped ())
-		changed () .addInterest (&Browser::set_idle, this);
+		changed () .addInterest (&Browser::queue_draw, this);
 	else
 		changed () .addInterest (&Browser::set_timeout, this);
 
+	queue_draw ();
 	update ();
 }
 
@@ -229,6 +233,9 @@ noexcept (true)
 		return;
 
 	background -> setSize (viewport [2], viewport [3]);
+
+	queue_draw ();
+	update ();
 }
 
 void
@@ -292,8 +299,6 @@ Browser::on_configure_event (GdkEventConfigure* const event)
 
 	reshape (Vector4i (0, 0, get_width (), get_height ()));
 
-	queue_draw ();
-
 	return false;
 }
 
@@ -302,6 +307,16 @@ Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	OpenGL::Surface::on_draw (cairo);
 
+	connection .disconnect ();
+	connection = Glib::signal_idle () .connect (sigc::mem_fun (this, &Browser::on_update), Glib::PRIORITY_DEFAULT_IDLE);
+
+	return false;
+}
+
+bool
+Browser::on_update ()
+{
+	update ();
 	return false;
 }
 
@@ -314,22 +329,10 @@ Browser::on_unmap ()
 }
 
 void
-Browser::set_idle ()
-{
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Browser::on_idle), Glib::PRIORITY_DEFAULT_IDLE);
-}
-
-void
-Browser::on_idle ()
-{
-	queue_draw ();
-	update ();
-}
-
-void
 Browser::set_timeout ()
 {
-	Glib::signal_timeout () .connect_once (sigc::mem_fun (this, &Browser::update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
+	connection .disconnect ();
+	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &Browser::on_update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
 }
 
 void
@@ -416,6 +419,8 @@ Browser::set_viewer ()
 void
 Browser::dispose ()
 {
+	connection .disconnect ();
+
 	X3DBrowser::dispose ();
 	OpenGL::Surface::dispose ();
 }

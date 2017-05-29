@@ -198,14 +198,14 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 
 	getAlphaChannel () .push (alphaChannel);
 	getDisplayTools () .push (false);
-	reshape (Vector4i (0, 0, width, height));
 
+	X3DBrowserContext::reshape (Vector4i (0, 0, width, height));
 	update ();
+	X3DBrowserContext::reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 
 	frameBuffer .readPixels ();
 	frameBuffer .unbind ();
 
-	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 	getDisplayTools () .pop ();
 	getAlphaChannel () .pop ();
 

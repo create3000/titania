@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserView.x3dv"
-META "modified" "Sat, 27 May 2017 05:24:58 GMT"
+META "modified" "Mon, 29 May 2017 04:31:42 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -105,7 +105,6 @@ WorldInfo {
       }
     ]
   }
-  title "Camera"
 }
 
 Background {

@@ -138,7 +138,7 @@ private:
 	loadAsync (const MFString & url);
 
 	void
-	set_scene (const bool addEvent);
+	set_scene ();
 
 	void
 	set_loadCount (const int32_t loadCount);

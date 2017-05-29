@@ -94,6 +94,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	addChildObjects (browser,
 	                 activeLayer,
 	                 viewpoint,
+	                 gridTransform,
 	                 grid);
 
 	if (type not_eq BrowserViewType::MAIN)

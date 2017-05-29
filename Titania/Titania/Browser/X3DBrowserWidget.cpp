@@ -729,13 +729,13 @@ X3DBrowserWidget::setTransparent (const bool value)
 void
 X3DBrowserWidget::dispose ()
 {
-	X3DBrowserWindowInterface::dispose ();
-
 	pages       .clear ();
 	recentPages .clear ();
 	iconFactory .reset ();
 	recentView  .reset ();
 	history     .reset ();
+
+	X3DBrowserWindowInterface::dispose ();
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()

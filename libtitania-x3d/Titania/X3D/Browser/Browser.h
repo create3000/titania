@@ -181,11 +181,8 @@ private:
 	void
 	on_opacity ();
 
-	void
-	set_idle ();
-	
-	void
-	on_idle ();
+	bool
+	on_update ();
 	
 	void
 	set_timeout ();
@@ -203,6 +200,7 @@ private:
 	X3DPtr <PointingDevice>    pointingDevice;
 	SFString                   cursor;
 	X3DPtr <BackgroundTexture> background;
+	sigc::connection           connection;
 
 };
 

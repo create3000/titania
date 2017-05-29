@@ -77,7 +77,7 @@ SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFS
 {
 	addChildObjects (scene);
 
-	getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this, true);
+	getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this);
 	getBrowser () -> addEvent ();
 }
 
@@ -106,8 +106,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this, true);
-
+		getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this);
 		getBrowser () -> addEvent ();
 	}
 }
@@ -193,14 +192,13 @@ SceneFuture::loadAsync (const MFString & url)
 }
 
 void
-SceneFuture::set_scene (const bool addEvent)
+SceneFuture::set_scene ()
 {
 	try
 	{
 		checkForInterrupt ();
 
-		if (addEvent)
-			getBrowser () -> addEvent ();
+		getBrowser () -> addEvent ();
 
 		if (not future .valid ())
 			return;
