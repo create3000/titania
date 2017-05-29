@@ -83,14 +83,17 @@ public:
 
 	void
 	setCursor (const std::string & value)
+	noexcept (true)
 	{ cursor = value; }
 
 	const SFString &
 	getCursor () const
+	noexcept (true)
 	{ return cursor; }
 
 	const X3DPtr <X3DViewer> &
 	getViewer () const
+	noexcept (true)
 	{ return viewer; }
 
 	///  @name Operations
@@ -156,6 +159,10 @@ private:
 
 	///  @name Operations
 
+	void
+	connect ()
+	noexcept (true);
+
 	virtual
 	void
 	reshape (const Vector4i & viewport)
@@ -176,6 +183,9 @@ private:
 
 	void
 	set_idle ();
+	
+	void
+	on_idle ();
 	
 	void
 	set_timeout ();

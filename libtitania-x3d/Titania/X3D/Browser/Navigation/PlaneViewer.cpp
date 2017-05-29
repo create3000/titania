@@ -71,10 +71,7 @@ PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext, const Nod
 	     fromPoint (),
 	        button (0)
 {
-	if (type == X3DConstants::PlaneViewer3D)
-		addType (X3DConstants::PlaneViewer3D);
-	else
-		addType (X3DConstants::PlaneViewer);
+	addType (type == X3DConstants::PlaneViewer3D ? X3DConstants::PlaneViewer3D : X3DConstants::PlaneViewer);
 
 	addField (outputOnly, "isActive",   isActive ());
 	addField (outputOnly, "scrollTime", scrollTime ());

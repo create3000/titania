@@ -175,20 +175,27 @@ Browser::initialize ()
 		set_can_focus (true);
 		setCursor ("default");
 
-		if (get_mapped ())
-		{
-			changed () .addInterest (&Browser::set_idle, this);
-		}
-		else
-		{
-			changed () .addInterest (&Browser::set_timeout, this);
-			update ();
-		}
+		connect ();
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+Browser::connect ()
+noexcept (true)
+{
+	changed () .removeInterest (&Browser::set_idle,    this);
+	changed () .removeInterest (&Browser::set_timeout, this);
+
+	if (get_mapped ())
+		changed () .addInterest (&Browser::set_idle, this);
+	else
+		changed () .addInterest (&Browser::set_timeout, this);
+
+	update ();
 }
 
 void
@@ -275,8 +282,7 @@ Browser::on_map ()
 
 	reshape (Vector4i (0, 0, get_width (), get_height ()));
 
-	changed () .removeInterest (&Browser::set_timeout, this);
-	changed () .addInterest (&Browser::set_idle, this);
+	connect ();
 }
 
 bool
@@ -296,8 +302,6 @@ Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	OpenGL::Surface::on_draw (cairo);
 
-	update ();
-
 	return false;
 }
 
@@ -306,15 +310,20 @@ Browser::on_unmap ()
 {
 	OpenGL::Surface::on_unmap ();
 
-	changed () .removeInterest (&Browser::set_idle, this);
-	changed () .addInterest (&Browser::set_timeout, this);
-	update ();
+	connect ();
 }
 
 void
 Browser::set_idle ()
 {
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE);
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Browser::on_idle), Glib::PRIORITY_DEFAULT_IDLE);
+}
+
+void
+Browser::on_idle ()
+{
+	queue_draw ();
+	update ();
 }
 
 void
