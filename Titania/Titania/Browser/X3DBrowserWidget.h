@@ -221,6 +221,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	on_tab_close_clicked (NotebookPage* const page);
+
 	virtual
 	void
 	on_switch_page (Gtk::Widget*, guint pageNumber) final override;

@@ -216,25 +216,11 @@ Browser::on_realize ()
 void
 Browser::on_map ()
 {
-	try
-	{
-		OpenGL::Surface::on_map ();
+	OpenGL::Surface::on_map ();
 
-		set_cursor (cursor);
+	set_cursor (cursor);
 
-		ContextLock lock (this);
-
-		frameBuffer -> bind ();
-
-		on_reshape (Vector4i (0, 0, get_width (), get_height ()));
-		on_timeout ();
-
-		frameBuffer -> unbind ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	queue_resize ();
 }
 
 bool

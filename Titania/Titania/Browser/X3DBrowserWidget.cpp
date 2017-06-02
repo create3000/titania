@@ -409,7 +409,7 @@ X3DBrowserWidget::append (const basic::uri & URL)
 	page -> getTabImage () .set (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 	page -> getTabLabel () .set_text (text);
 	page -> getTabLabel () .set_tooltip_text (URL .filename () .str ());
-	page -> getTabCloseButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserWidget::close), page));
+	page -> getTabCloseButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserWidget::on_tab_close_clicked), page .get ()));
 
 	getBrowserNotebook () .append_page (page -> getWidget (), page -> getTabWidget ());
 	getBrowserNotebook () .set_tab_reorderable (page -> getWidget (), true);
@@ -531,6 +531,12 @@ void
 X3DBrowserWidget::reload ()
 {
 	load (getCurrentScene () -> getWorldURL ());
+}
+
+void
+X3DBrowserWidget::on_tab_close_clicked (NotebookPage* const page)
+{
+	close (pages [page -> getPageNumber ()]);
 }
 
 void
