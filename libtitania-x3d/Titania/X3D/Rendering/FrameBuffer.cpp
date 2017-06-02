@@ -68,6 +68,7 @@ FrameBuffer::FrameBuffer (X3DBrowserContext* const browser, const size_t width, 
 	             id (0),
 	  colorBufferId (0),
 	  depthBufferId (0),
+	    pixelBuffer (),
 	         pixels (),
 	          depth (width * height),
 	    frameBuffer (0),
@@ -186,7 +187,7 @@ FrameBuffer::unbind ()
 }
 
 const std::vector <uint8_t> &
-FrameBuffer::readPixels ()
+FrameBuffer::readPixels (const GLenum format)
 {
 	pixels .resize (4 * width * height);
 
@@ -194,16 +195,19 @@ FrameBuffer::readPixels ()
 	{
 		try
 		{
-			FrameBuffer frameBuffer (browser, width, height, 0, withColorBuffer);
-	
-			frameBuffer .setup ();
-	
+			if (not pixelBuffer)
+			{
+				// Setup frame buffer with no antialiasing for blit.
+				pixelBuffer .reset (new FrameBuffer (browser, width, height, 0, withColorBuffer));
+				pixelBuffer -> setup ();
+			}
+
 			glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-			glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
+			glBindFramebuffer (GL_DRAW_FRAMEBUFFER, pixelBuffer -> id);
 			glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-			glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
+			glBindFramebuffer (GL_FRAMEBUFFER, pixelBuffer -> id);
 	
-			glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+			glReadPixels (0, 0, width, height, format, GL_UNSIGNED_BYTE, pixels .data ());
 			glBindFramebuffer (GL_FRAMEBUFFER, id);
 		}
 		catch (const std::runtime_error & error)

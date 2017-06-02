@@ -51,10 +51,11 @@
 #ifndef __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
 #define __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
 
-#include <vector>
-
 #include "../Browser/X3DBrowser.h"
 #include "../Rendering/OpenGL.h"
+
+#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -93,7 +94,7 @@ public:
 	{ return depth; }
 
 	const std::vector <uint8_t> &
-	readPixels ();
+	readPixels (const GLenum format = GL_RGBA);
 
 	const std::vector <float> &
 	readDepth ();
@@ -118,18 +119,19 @@ private:
 
 	///  @name Members
 
-	X3DBrowserContext*    browser;
-	size_t                width;
-	size_t                height;
-	size_t                samples;
-	bool                  withColorBuffer;
-	GLuint                id;
-	GLuint                colorBufferId;
-	GLuint                depthBufferId;
-	std::vector <uint8_t> pixels;
-	std::vector <float>   depth;
-	GLint                 frameBuffer;
-	GLint                 viewport [4];
+	X3DBrowserContext*            browser;
+	size_t                        width;
+	size_t                        height;
+	size_t                        samples;
+	bool                          withColorBuffer;
+	GLuint                        id;
+	GLuint                        colorBufferId;
+	GLuint                        depthBufferId;
+	std::unique_ptr <FrameBuffer> pixelBuffer;
+	std::vector <uint8_t>         pixels;
+	std::vector <float>           depth;
+	GLint                         frameBuffer;
+	GLint                         viewport [4];
 
 };
 

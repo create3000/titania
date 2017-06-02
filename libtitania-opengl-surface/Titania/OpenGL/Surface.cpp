@@ -77,15 +77,14 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 	            treadId (std::this_thread::get_id ()),
 	            context (),
 	     sharingContext (sharingContext),
-	   visualAttributes ()
+	       antialiasing (0),
+	        accumBuffer (false)
 {
 	// Enable map event.
 	add_events (Gdk::STRUCTURE_MASK);
-	set_double_buffered (false);
 	set_app_paintable (true);
 
-	// Create off-screen context.
-	setAttributes (0, false);
+	createContext ();
 
 	if (not sharingContext)
 		this -> sharingContext = context;
@@ -94,46 +93,9 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 void
 Surface::createContext ()
 {
-	// Create OpenGL context.
+	// Create visual attributes.
 
-	if (get_mapped ())
-	{
-		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                             sharingContext -> getContext (),
-		                             true,
-		                             visualAttributes));
-	}
-	else
-	{
-		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                      sharingContext ? sharingContext -> getContext () : None,
-		                                      true,
-		                                      visualAttributes,
-	                                         8,
-	                                         8));
-	}
-
-	// Set visual info of widget.
-
-	const auto screen     = gdk_screen_get_default ();
-	const auto visualInfo = context -> getVisualInfo ();
-
-	if (visualInfo)
-	{
-		const auto visual = gdk_x11_screen_lookup_visual (screen, visualInfo -> visualid);
-
-		if (visual)
-			gtk_widget_set_visual (GTK_WIDGET (gobj ()), visual);
-
-		XFree (visualInfo);
-	}
-}
-
-void
-Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
-{
-	visualAttributes = {
+	std::vector <int32_t> visualAttributes = {
 		GLX_RGBA,
 		GLX_DOUBLEBUFFER,     true, 
 		GLX_RED_SIZE,         8,
@@ -162,7 +124,14 @@ Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
 
 	visualAttributes .emplace_back (0);
 
-	createContext ();
+	// Create OpenGL context.
+
+	context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+	                                      sharingContext ? sharingContext -> getContext () : None,
+	                                      true,
+	                                      visualAttributes,
+	                                      8,
+	                                      8));
 }
 
 void
@@ -178,20 +147,9 @@ Surface::makeCurrent ()
 }
 
 void
-Surface::swapBuffers ()
-{
-	context -> swapBuffers ();
-}
-
-void
 Surface::on_map ()
 {
 	Gtk::DrawingArea::on_map ();
-
-	if (not std::dynamic_pointer_cast <OffScreenContext> (context) and context)
-		return;
-
-	createContext ();
 }
 
 void

@@ -199,9 +199,9 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 	getAlphaChannel () .push (alphaChannel);
 	getDisplayTools () .push (false);
 
-	X3DBrowserContext::reshape (Vector4i (0, 0, width, height));
+	reshape (Vector4i (0, 0, width, height));
 	update ();
-	X3DBrowserContext::reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
+	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 
 	frameBuffer .readPixels ();
 	frameBuffer .unbind ();
@@ -266,8 +266,6 @@ noexcept (true)
 {
 	try
 	{
-		ContextLock lock (this);
-
 		// Prepare
 
 		getClock () -> advance ();
@@ -289,23 +287,23 @@ noexcept (true)
 
 		debugRouter ();
 
-		// Display scene
+		// Clear surface.
 
-		renderBackground ();
+		glViewport (getViewport () [0], getViewport () [1], getViewport () [2], getViewport () [3]);
+		glScissor  (getViewport () [0], getViewport () [1], getViewport () [2], getViewport () [3]);
+	
+		glClearColor (0, 0, 0, 0);
+		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Display scene.
 
 		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
 
 		if (getDisplayTools () .top ())
 			getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
 
-		renderForeground ();
-
 		displayed () .processInterests ();
-		swapBuffers ();
-
-		// Finish
-
-		finished () .processInterests ();
+		finished ()  .processInterests ();
 
 		#ifdef TITANIA_DEBUG
 		const GLenum errorNum = glGetError ();

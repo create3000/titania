@@ -58,7 +58,6 @@
 namespace titania {
 namespace X3D {
 
-class BackgroundTexture;
 class KeyDevice;
 class PointingDevice;
 class X3DViewer;
@@ -99,8 +98,11 @@ public:
 	///  @name Operations
 
 	void
-	setAntialiasing (const int32_t samples)
-	noexcept (true);
+	queue_render ();
+
+	const sigc::signal <bool> &
+	signal_render () const
+	{ return render_signal; }
 
 	///  @name Destruction
 
@@ -127,16 +129,11 @@ protected:
 	makeCurrent ()
 	noexcept (true) final override;
 
-	virtual
-	void
-	swapBuffers ()
-	noexcept (true) final override;
-
 	///  @name Event handlers
 
 	virtual
 	void
-	on_style_updated () override;
+	on_realize () override;
 
 	virtual
 	void
@@ -147,8 +144,16 @@ protected:
 	on_configure_event (GdkEventConfigure* const event) override;
 
 	virtual
+	void
+	on_reshape (const Vector4i & viewport);
+
+	virtual
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
+
+	virtual
+	bool
+	on_render ();
 
 	virtual
 	void
@@ -157,35 +162,10 @@ protected:
 
 private:
 
-	///  @name Operations
-
-	void
-	connect ()
-	noexcept (true);
-
-	virtual
-	void
-	reshape (const Vector4i & viewport)
-	noexcept (true) final override;
-
-	virtual
-	void
-	renderBackground () final override;
-
-	virtual
-	void
-	renderForeground () final override;
-
 	///  @name Event handler
-
-	void
-	on_opacity ();
-
-	bool
-	on_update ();
 	
-	void
-	set_timeout ();
+	bool
+	on_timeout ();
 
 	void
 	set_cursor (const String & value);
@@ -195,12 +175,13 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DViewer>         viewer;
-	X3DPtr <KeyDevice>         keyDevice;
-	X3DPtr <PointingDevice>    pointingDevice;
-	SFString                   cursor;
-	X3DPtr <BackgroundTexture> background;
-	sigc::connection           connection;
+	X3DPtr <X3DViewer>            viewer;
+	X3DPtr <KeyDevice>            keyDevice;
+	X3DPtr <PointingDevice>       pointingDevice;
+	SFString                      cursor;
+	std::unique_ptr <FrameBuffer> frameBuffer;
+	sigc::signal <bool>           render_signal;
+	sigc::connection              connection;
 
 };
 

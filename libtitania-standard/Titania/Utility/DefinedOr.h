@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,48 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_LAYOUT_X3DLAYOUT_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_LAYOUT_X3DLAYOUT_CONTEXT_H__
-
-#include "../../Basic/X3DBaseNode.h"
+#ifndef __TITANIA_UTILITY_DEFINED_OR_H__
+#define __TITANIA_UTILITY_DEFINED_OR_H__
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class X3DLayoutNode;
-
-class X3DLayoutContext :
-	virtual public X3DBaseNode
+template <class Type>
+const Type &
+defined_or (const Type & lhs, const Type & rhs)
 {
-public:
+	return lhs ? lhs : rhs;
+}
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-
-protected:
-
-	///  @name Construction
-
-	X3DLayoutContext () :
-		X3DBaseNode ()
-	{ }
-
-	virtual
-	void
-	initialize () override
-	{ }
-
-
-private:
-
-};
-
-} // X3D
+} // basic
 } // titania
 
 #endif

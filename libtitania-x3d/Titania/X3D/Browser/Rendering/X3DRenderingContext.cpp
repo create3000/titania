@@ -116,24 +116,9 @@ X3DRenderingContext::getMaxClipPlanes () const
 
 void
 X3DRenderingContext::reshape (const Vector4i & value)
-noexcept (true)
 {
 	viewport .assign (value .data (), value .data () + value .size ());
 }
-
-void
-X3DRenderingContext::renderBackground ()
-{
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-	glClearColor (0, 0, 0, 0);
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void
-X3DRenderingContext::renderForeground ()
-{ }
 
 X3DRenderingContext::~X3DRenderingContext ()
 { }

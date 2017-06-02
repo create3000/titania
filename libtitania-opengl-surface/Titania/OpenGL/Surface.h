@@ -66,10 +66,29 @@ class Surface :
 {
 public:
 
+	///  @name Construction
+
+	Surface ();
+
+	Surface (const Surface & sharingSurface);
+
 	///  @name Member access
 
 	void
-	setAttributes (const int32_t antialiasing, const bool accumBuffer);
+	setAntialiasing (const size_t value)
+	{ antialiasing = value; createContext (); }
+
+	size_t
+	getAntialiasing () const
+	{ return antialiasing; }
+
+	void
+	setAccumBuffer (const bool value)
+	{ accumBuffer = value; createContext (); }
+
+	bool
+	getAccumBuffer () const
+	{ return accumBuffer; }
 
 	void
 	setSwapInterval (const size_t value);
@@ -78,9 +97,6 @@ public:
 
 	bool
 	makeCurrent ();
-
-	void
-	swapBuffers ();
 
 	///  @name Destruction
 
@@ -93,12 +109,6 @@ public:
 
 
 protected:
-
-	///  @name Construction
-
-	Surface ();
-
-	Surface (const Surface & sharingSurface);
 
 	/// @name OpenGL handler
 
@@ -129,7 +139,8 @@ private:
 	const std::thread::id     treadId;
 	std::shared_ptr <Context> context;
 	std::shared_ptr <Context> sharingContext;
-	std::vector <int32_t>     visualAttributes;
+	size_t                    antialiasing;
+	bool                      accumBuffer;
 
 };
 

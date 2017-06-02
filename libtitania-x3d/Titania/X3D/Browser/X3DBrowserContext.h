@@ -228,11 +228,6 @@ protected:
 	makeCurrent ()
 	noexcept (true) = 0;
 
-	virtual
-	void
-	swapBuffers ()
-	noexcept (true) = 0;
-
 	void
 	update ()
 	noexcept (true);

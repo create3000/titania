@@ -92,12 +92,6 @@ protected:
 	noexcept (true) final override
 	{ return true; }
 
-	virtual
-	void
-	swapBuffers ()
-	noexcept (true) final override
-	{ }
-
 
 private:
 

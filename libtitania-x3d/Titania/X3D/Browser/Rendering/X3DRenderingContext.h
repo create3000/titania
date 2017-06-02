@@ -123,18 +123,8 @@ protected:
 	void
 	initialize () override;
 
-	virtual
 	void
-	reshape (const Vector4i & viewport)
-	noexcept (true);
-
-	virtual
-	void
-	renderBackground ();
-
-	virtual
-	void
-	renderForeground ();
+	reshape (const Vector4i & viewport);
 
 
 private:

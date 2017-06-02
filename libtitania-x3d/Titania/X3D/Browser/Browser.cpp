@@ -60,11 +60,11 @@
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
-#include "../Browser/Rendering/BackgroundTexture.h"
 #include "../Browser/Tools/LightSaber.h"
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
 #include "../Execution/World.h"
+#include "../Rendering/FrameBuffer.h"
 
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -92,7 +92,8 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture (this)),
+	    frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	  render_signal (),
 	     connection ()
 {
 	addType (X3DConstants::Browser);
@@ -100,10 +101,9 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	addChildObjects (viewer,
 	                 keyDevice,
 	                 pointingDevice,
-	                 cursor,
-	                 background);
+	                 cursor);
 
-	setAntialiasing (0);
+	setAccumBuffer (true);
 }
 
 Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
@@ -114,7 +114,8 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture (this)),
+	    frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	  render_signal (),
 	     connection ()
 {
 	addType (X3DConstants::Browser);
@@ -122,10 +123,9 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	addChildObjects (viewer,
 	                 keyDevice,
 	                 pointingDevice,
-	                 cursor,
-	                 background);
+	                 cursor);
 
-	setAntialiasing (0);
+	setAccumBuffer (true);
 }
 
 Browser*
@@ -146,18 +146,12 @@ Browser::initialize ()
 		get_style_context () -> add_class ("background");
 		get_style_context () -> add_class ("titania-surface");
 
-		property_opacity () .signal_changed () .connect (sigc::mem_fun (this, &Browser::on_opacity));
-
 		//swapInterval (0);
-
-		background -> setOpacity (get_opacity ());
-		background -> setSize (get_width (), get_height ());
-		background -> setStyleContext (get_style_context ());
 
 		viewer         -> setup ();
 		keyDevice      -> setup ();
 		pointingDevice -> setup ();
-		background     -> setup ();
+		frameBuffer    -> setup ();
 
 		getCursor ()        .addInterest (&Browser::set_cursor, this);
 		getViewerType ()    .addInterest (&Browser::set_viewer, this);
@@ -178,35 +172,13 @@ Browser::initialize ()
 		setCursor ("default");
 
 		// As last command connect.
-		connect ();
+		changed () .addInterest (&Browser::queue_render, this);
+		queue_render ();
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-Browser::connect ()
-noexcept (true)
-{
-	changed () .removeInterest (&Browser::queue_draw, this);
-	changed () .removeInterest (&Browser::set_timeout, this);
-
-	if (get_mapped ())
-		changed () .addInterest (&Browser::queue_draw, this);
-	else
-		changed () .addInterest (&Browser::set_timeout, this);
-
-	queue_draw ();
-	update ();
-}
-
-void
-Browser::setAntialiasing (const int32_t samples)
-noexcept (true)
-{
-	OpenGL::Surface::setAttributes (samples, true);
 }
 
 bool
@@ -217,106 +189,155 @@ noexcept (true)
 }
 
 void
-Browser::swapBuffers ()
-noexcept (true)
+Browser::queue_render ()
 {
-	OpenGL::Surface::swapBuffers ();
+	connection .disconnect ();
+
+	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &Browser::on_timeout), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
 }
 
 void
-Browser::reshape (const Vector4i & viewport)
-noexcept (true)
+Browser::on_realize ()
 {
-	X3DBrowser::reshape (viewport);
+	try
+	{
+		OpenGL::Surface::on_realize ();
+		
+		ContextLock lock (this);
 
-	if (not isInitialized ())
-		return;
-
-	background -> setSize (viewport [2], viewport [3]);
-
-	queue_draw ();
-	update ();
-}
-
-void
-Browser::renderBackground ()
-{
-	if (getAlphaChannel () .top ())
-		X3DRenderingContext::renderBackground ();
-	else
-		background -> renderBackground ();
-}
-
-void
-Browser::renderForeground ()
-{
-	if (get_opacity () >= 1)
-		return;
-
-	if (getAlphaChannel () .top ())
-		return;
-
-	background -> renderForeground ();
-}
-
-void
-Browser::on_style_updated ()
-{
-	OpenGL::Surface::on_style_updated ();
-
-	if (not isInitialized ())
-		return;
-
-	background -> setStyleContext (get_style_context ());
-}
-
-void
-Browser::on_opacity ()
-{
-	background -> setOpacity (get_opacity ());
+		setup ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 Browser::on_map ()
 {
-	OpenGL::Surface::on_map ();
+	try
+	{
+		OpenGL::Surface::on_map ();
 
-	queue_draw ();
-	set_cursor (cursor);
+		set_cursor (cursor);
 
-	if (not isInitialized ())
-		setup ();
+		ContextLock lock (this);
 
-	reshape (Vector4i (0, 0, get_width (), get_height ()));
+		frameBuffer -> bind ();
 
-	connect ();
+		on_reshape (Vector4i (0, 0, get_width (), get_height ()));
+		on_timeout ();
+
+		frameBuffer -> unbind ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool
 Browser::on_configure_event (GdkEventConfigure* const event)
 {
-	OpenGL::Surface::on_configure_event (event);
+	try
+	{
+		OpenGL::Surface::on_configure_event (event);
 
-	reshape (Vector4i (0, 0, get_width (), get_height ()));
+		if (not get_mapped ())
+			return false;
 
+		ContextLock lock (this);
+
+		frameBuffer .reset (new FrameBuffer (this, get_width (), get_height (), getAntialiasing (), true)),
+		frameBuffer -> setup ();
+		frameBuffer -> bind ();
+
+		on_reshape (Vector4i (0, 0, get_width (), get_height ()));
+		on_timeout ();
+
+		frameBuffer -> unbind ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	return false;
+}
+
+void
+Browser::on_reshape (const Vector4i & viewport)
+{
+	reshape (viewport);
+}
+
+bool
+Browser::on_timeout ()
+{
+	try
+	{
+		ContextLock lock (this);
+
+		frameBuffer -> bind ();
+
+		on_render ();
+		render_signal .emit ();
+
+		frameBuffer -> unbind ();
+
+		queue_draw ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	return false;
+}
+
+bool
+Browser::on_render ()
+{
+	update ();
 	return false;
 }
 
 bool
 Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	OpenGL::Surface::on_draw (cairo);
+	try
+	{
+		OpenGL::Surface::on_draw (cairo);
 
-	connection .disconnect ();
-	connection = Glib::signal_idle () .connect (sigc::mem_fun (this, &Browser::on_update), Glib::PRIORITY_DEFAULT_IDLE);
+		ContextLock lock (this);
 
-	return false;
-}
+		frameBuffer -> bind ();
+		frameBuffer -> readPixels (GL_BGRA);
+		frameBuffer -> unbind ();
 
-bool
-Browser::on_update ()
-{
-	update ();
+		const auto surface = Cairo::ImageSurface::create (const_cast <uint8_t*> (frameBuffer -> getPixels () .data ()),
+		                                                  Cairo::FORMAT_ARGB32,
+		                                                  frameBuffer -> getWidth (),
+		                                                  frameBuffer -> getHeight (),
+		                                                  cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, frameBuffer -> getWidth ()));
+
+		get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
+
+		cairo -> save ();
+		cairo -> set_operator (Cairo::OPERATOR_OVER);
+		cairo -> set_source (surface, 0, 0);
+		cairo -> get_source () -> set_matrix (Cairo::Matrix (1, 0, 0, -1, 0, frameBuffer -> getHeight ()));
+		cairo -> paint_with_alpha (get_opacity ());
+		cairo -> restore ();
+
+		get_style_context () -> render_frame (cairo, 0, 0, get_width (), get_height ());
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
 	return false;
 }
 
@@ -324,15 +345,6 @@ void
 Browser::on_unmap ()
 {
 	OpenGL::Surface::on_unmap ();
-
-	connect ();
-}
-
-void
-Browser::set_timeout ()
-{
-	connection .disconnect ();
-	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &Browser::on_update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
 }
 
 void
