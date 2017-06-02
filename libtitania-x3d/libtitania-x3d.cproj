@@ -935,7 +935,6 @@
     <None Include="Titania\X3D\Fields\X3DWeakPtrArray.h" />
     <None Include="Titania\X3D\Fields\X3DPtrObject.h" />
     <None Include="Titania\X3D\Browser\Tools\SupportedTools.h" />
-    <None Include="Titania\X3D\Browser\Rendering\BackgroundTexture.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\IcosahedronOptions.h" />
@@ -1613,7 +1612,6 @@
     <Compile Include="Titania\X3D\Tools\Rendering\LineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\SupportedTools.cpp" />
-    <Compile Include="Titania\X3D\Browser\Rendering\BackgroundTexture.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\X3DViewpointNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geospatial\GeoViewpointTool.cpp" />
