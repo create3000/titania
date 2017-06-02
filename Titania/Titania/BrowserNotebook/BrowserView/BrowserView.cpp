@@ -98,7 +98,10 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	                 grid);
 
 	if (type not_eq BrowserViewType::MAIN)
+	{
 		browser -> initialized () .addInterest (&BrowserView::set_dependent_browser, this);
+		browser -> set_opacity (0);
+	}
 
 	browser -> signal_focus_out_event () .connect (sigc::mem_fun (this, &BrowserView::on_focus_out_event));
 	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &BrowserView::on_focus_in_event));
@@ -125,6 +128,7 @@ BrowserView::set_dependent_browser ()
 	try
 	{
 		browser -> initialized () .removeInterest (&BrowserView::set_dependent_browser, this);	
+		browser -> set_opacity (1);
 
 		// Setup dependent browser.
 
