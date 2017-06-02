@@ -97,10 +97,10 @@ NotebookPage::initialized ()
 {
 	X3DNotebookPage::initialized ();
 
-	const auto worldURL = getMasterSceneURL ();
+	const auto worldInfo = createWorldInfo (getScene ());
 
-	activeView = getBrowserWindow () -> getHistory () -> getActiveView (worldURL);
-	multiView  = getBrowserWindow () -> getHistory () -> getMultiView (worldURL);
+	activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
+	multiView  = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1);
 
 	for (size_t i = 0, size = widgets .size (); i < size; ++ i)
 	{
@@ -142,6 +142,11 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 			activeView = index;
 			multiView  = not multiView;
 
+			const auto worldInfo = createWorldInfo (getScene ());
+		
+			worldInfo -> setMetaData <int32_t> ("/Titania/Page/activeView", activeView);
+			worldInfo -> setMetaData <int32_t> ("/Titania/Page/multiView",  multiView);
+
 			for (size_t i = 0, size = widgets .size (); i < size; ++ i)
 			{
 				widgets [i] -> set_visible (multiView or i == activeView);
@@ -159,13 +164,6 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 void
 NotebookPage::shutdown ()
 {
-	// Data base
-
-	const auto worldURL = getMasterSceneURL ();
-
-	getBrowserWindow () -> getHistory () -> setActiveView (worldURL, activeView);
-	getBrowserWindow () -> getHistory () -> setMultiView (worldURL, multiView);
-
 	X3DNotebookPage::shutdown ();
 }
 
