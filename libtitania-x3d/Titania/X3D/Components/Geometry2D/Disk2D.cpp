@@ -72,7 +72,7 @@ const std::string   Disk2D::containerField = "geometry";
 Disk2D::Fields::Fields () :
 	innerRadius (new SFFloat ()),
 	outerRadius (new SFFloat (1)),
-	      solid (new SFBool (true)),
+	      solid (new SFBool ()),
 	    options (new SFNode ())
 { }
 

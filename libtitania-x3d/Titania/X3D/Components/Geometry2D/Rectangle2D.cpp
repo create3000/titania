@@ -65,7 +65,7 @@ const std::string   Rectangle2D::containerField = "geometry";
 
 Rectangle2D::Fields::Fields () :
 	 size (new SFVec2f (2, 2)),
-	solid (new SFBool (true))
+	solid (new SFBool ())
 { }
 
 Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :

@@ -66,7 +66,7 @@ const std::string   TriangleSet2D::containerField = "geometry";
 
 TriangleSet2D::Fields::Fields () :
 	vertices (new MFVec2f ()),
-	   solid (new SFBool (true))
+	   solid (new SFBool ())
 { }
 
 TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :

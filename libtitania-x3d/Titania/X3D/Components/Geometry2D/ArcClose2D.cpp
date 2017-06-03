@@ -74,7 +74,7 @@ ArcClose2D::Fields::Fields () :
 	 startAngle (new SFFloat ()),
 	   endAngle (new SFFloat (1.570796)),
 	     radius (new SFFloat (1)),
-	      solid (new SFBool (true)),
+	      solid (new SFBool ()),
 	    options (new SFNode ())
 { }
 
