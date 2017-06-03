@@ -131,31 +131,28 @@ RenderingProperties::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		Vendor ()   = getBrowser () -> getVendor ();
-		Renderer () = getBrowser () -> getRenderer ();
-		Version ()  = getBrowser () -> getGLVersion ();
+	Vendor ()   = getBrowser () -> getVendor ();
+	Renderer () = getBrowser () -> getRenderer ();
+	Version ()  = getBrowser () -> getGLVersion ();
 
-		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
+	GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 
-		glGetIntegerv (GL_RED_BITS,   &glRedBits);
-		glGetIntegerv (GL_GREEN_BITS, &glGreen);
-		glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
-		glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
+	glGetIntegerv (GL_RED_BITS,   &glRedBits);
+	glGetIntegerv (GL_GREEN_BITS, &glGreen);
+	glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
+	glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
 
-		TextureUnits ()   = getBrowser () -> getMaxTextureUnits ();
-		MaxTextureSize () = getBrowser () -> getMaxTextureSize ();
-		TextureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
-		MaxLights ()      = getBrowser () -> getMaxLights ();
-		ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
+	TextureUnits ()   = getBrowser () -> getMaxTextureUnits ();
+	MaxTextureSize () = getBrowser () -> getMaxTextureSize ();
+	TextureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
+	MaxLights ()      = getBrowser () -> getMaxLights ();
+	ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
-		Enabled () .addInterest (&RenderingProperties::set_Enabled, this);
-		Shading () .addInterest (&RenderingProperties::set_Shading, this);
+	Enabled () .addInterest (&RenderingProperties::set_Enabled, this);
+	Shading () .addInterest (&RenderingProperties::set_Shading, this);
 
-		getBrowser () -> initialized () .addInterest (&RenderingProperties::set_Enabled, this);
-		getBrowser () -> getViewport () .addInterest (&RenderingProperties::build, this);
-	}
+	getBrowser () -> initialized () .addInterest (&RenderingProperties::set_Enabled, this);
+	getBrowser () -> getViewport () .addInterest (&RenderingProperties::build, this);
 }
 
 void
@@ -338,23 +335,20 @@ RenderingProperties::build ()
 void
 RenderingProperties::toStream (std::ostream & stream) const
 {
-	if (glXGetCurrentContext ())
-	{
-		stream
-			<< "\tCurrent Graphics Renderer" << std::endl
-			<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
-			<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
-			<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << ", 1.0 es Cobweb (default)" << std::endl
+	stream
+		<< "\tCurrent Graphics Renderer" << std::endl
+		<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
+		<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
+		<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << ", 1.0 es Cobweb (default)" << std::endl
 
-			<< "\tRendering Properties" << std::endl
-			<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
-			<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
-			<< "\t\tMax lights: " << MaxLights () << std::endl
-			<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
-			<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
-			<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
-			<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
-	}
+		<< "\tRendering Properties" << std::endl
+		<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
+		<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
+		<< "\t\tMax lights: " << MaxLights () << std::endl
+		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
+		<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
+		<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
+		<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
 }
 
 void

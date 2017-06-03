@@ -88,6 +88,13 @@ public:
 	getDownloadMutex ();
 
 	void
+	setLoadUrlObjects (const bool value)
+	{ loadUrlObjects = value; }
+
+	bool
+	getLoadUrlObjects () const
+	{ return loadUrlObjects; }
+	void
 	setNotifyOnLoad (const bool value)
 	{ notifyOnLoad = value; }
 
@@ -152,6 +159,7 @@ private:
 	std::mutex                                downloadMutex;
 	std::set <const void*>                    loadingObjects;
 	SFInt32                                   loadCount;
+	bool                                      loadUrlObjects;
 	bool                                      notifyOnLoad;
 
 };

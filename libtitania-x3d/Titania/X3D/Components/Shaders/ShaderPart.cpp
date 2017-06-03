@@ -98,7 +98,7 @@ ShaderPart::initialize ()
 	type () .addInterest (&ShaderPart::set_url, this);
 	url ()  .addInterest (&ShaderPart::set_url, this);
 
-	if (glXGetCurrentContext ())
+	if (getBrowser () -> getLoadUrlObjects ())
 		requestImmediateLoad ();
 }
 

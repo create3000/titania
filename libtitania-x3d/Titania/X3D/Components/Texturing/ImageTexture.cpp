@@ -141,7 +141,7 @@ ImageTexture::requestImmediateLoad ()
 void
 ImageTexture::requestAsyncLoad ()
 {
-	if (not glXGetCurrentContext ())
+	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
 	using namespace std::placeholders;

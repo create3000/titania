@@ -77,8 +77,7 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 	            treadId (std::this_thread::get_id ()),
 	            context (),
 	     sharingContext (sharingContext),
-	       antialiasing (0),
-	        accumBuffer (false)
+	       antialiasing (0)
 {
 	// Enable map event.
 	add_events (Gdk::STRUCTURE_MASK);
@@ -103,26 +102,8 @@ Surface::createContext ()
 		GLX_BLUE_SIZE,        8,
 		GLX_ALPHA_SIZE,       8,
 		GLX_DEPTH_SIZE,       24, 
-		GLX_SAMPLE_BUFFERS,   antialiasing ? 1 : 0,
-		GLX_SAMPLES,          antialiasing,
+		0
 	};
-
-	if (accumBuffer)
-	{
-		visualAttributes .emplace_back (GLX_ACCUM_RED_SIZE);
-		visualAttributes .emplace_back (0);
-
-		visualAttributes .emplace_back (GLX_ACCUM_GREEN_SIZE);
-		visualAttributes .emplace_back (0);
-
-		visualAttributes .emplace_back (GLX_ACCUM_BLUE_SIZE);
-		visualAttributes .emplace_back (0);
-
-		visualAttributes .emplace_back (GLX_ACCUM_ALPHA_SIZE);
-		visualAttributes .emplace_back (0);
-	}
-
-	visualAttributes .emplace_back (0);
 
 	// Create OpenGL context.
 
@@ -132,12 +113,6 @@ Surface::createContext ()
 	                                      visualAttributes,
 	                                      8,
 	                                      8));
-}
-
-void
-Surface::setSwapInterval (const size_t interval)
-{
-	context -> setSwapInterval (interval);
 }
 
 bool

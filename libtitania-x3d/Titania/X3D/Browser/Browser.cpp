@@ -64,7 +64,6 @@
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
 #include "../Execution/World.h"
-#include "../Rendering/FrameBuffer.h"
 
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -85,16 +84,12 @@ namespace titania {
 namespace X3D {
 
 Browser::Browser (const MFString & url, const MFString & parameter) :
-	    X3DBaseNode (this, this),
-	     X3DBrowser (nullptr, url, parameter),
-	OpenGL::Surface (),
-	        viewer  (new NoneViewer (this)),
-	      keyDevice (new KeyDevice (this)),
-	pointingDevice  (new PointingDevice (this)),
-	         cursor ("default"),
-	    frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	  render_signal (),
-	     connection ()
+	        X3DBaseNode (this, this),
+	         X3DBrowser (nullptr, url, parameter),
+	            viewer  (new NoneViewer (this)),
+	          keyDevice (new KeyDevice (this)),
+	    pointingDevice  (new PointingDevice (this)),
+	             cursor ("default")
 {
 	addType (X3DConstants::Browser);
 
@@ -102,21 +97,15 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	                 keyDevice,
 	                 pointingDevice,
 	                 cursor);
-
-	setAccumBuffer (true);
 }
 
 Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
-	    X3DBaseNode (this, this),
-	     X3DBrowser (sharedBrowser, url, parameter),
-	OpenGL::Surface (*sharedBrowser),
-	        viewer  (new NoneViewer (this)),
-	      keyDevice (new KeyDevice (this)),
-	pointingDevice  (new PointingDevice (this)),
-	         cursor ("default"),
-	    frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	  render_signal (),
-	     connection ()
+	        X3DBaseNode (this, this),
+	         X3DBrowser (sharedBrowser, url, parameter),
+	            viewer  (new NoneViewer (this)),
+	          keyDevice (new KeyDevice (this)),
+	    pointingDevice  (new PointingDevice (this)),
+	             cursor ("default")
 {
 	addType (X3DConstants::Browser);
 
@@ -124,8 +113,6 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	                 keyDevice,
 	                 pointingDevice,
 	                 cursor);
-
-	setAccumBuffer (true);
 }
 
 Browser*
@@ -142,21 +129,20 @@ Browser::initialize ()
 		ContextLock lock (this);
 
 		X3DBrowser::initialize ();
-
+	
 		get_style_context () -> add_class ("background");
 		get_style_context () -> add_class ("titania-surface");
-
+	
 		//swapInterval (0);
-
+	
 		viewer         -> setup ();
 		keyDevice      -> setup ();
 		pointingDevice -> setup ();
-		frameBuffer    -> setup ();
-
+	
 		getCursor ()        .addInterest (&Browser::set_cursor, this);
 		getViewerType ()    .addInterest (&Browser::set_viewer, this);
 		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-
+	
 		add_events (Gdk::BUTTON_PRESS_MASK |
 		            Gdk::POINTER_MOTION_MASK |
 		            Gdk::POINTER_MOTION_HINT_MASK |
@@ -166,11 +152,11 @@ Browser::initialize ()
 		            Gdk::SCROLL_MASK |
 		            Gdk::KEY_PRESS_MASK |
 		            Gdk::KEY_RELEASE_MASK);
-
+	
 		set_focus_on_click (true);
 		set_can_focus (true);
 		setCursor ("default");
-
+	
 		// As last command connect.
 		changed () .addInterest (&Browser::queue_render, this);
 		queue_render ();
@@ -181,156 +167,40 @@ Browser::initialize ()
 	}
 }
 
-bool
-Browser::makeCurrent ()
-noexcept (true)
-{
-	return OpenGL::Surface::makeCurrent ();
-}
-
 void
-Browser::queue_render ()
+Browser::on_setup ()
 {
-	connection .disconnect ();
+	X3DBrowser::on_setup ();
 
-	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &Browser::on_timeout), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
-}
-
-void
-Browser::on_realize ()
-{
-	try
-	{
-		OpenGL::Surface::on_realize ();
-		
-		ContextLock lock (this);
-
-		setup ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	setup ();
 }
 
 void
 Browser::on_map ()
 {
-	OpenGL::Surface::on_map ();
+	X3DBrowser::on_map ();
 
 	set_cursor (cursor);
-
-	queue_resize ();
-}
-
-bool
-Browser::on_configure_event (GdkEventConfigure* const event)
-{
-	try
-	{
-		OpenGL::Surface::on_configure_event (event);
-
-		if (not get_mapped ())
-			return false;
-
-		ContextLock lock (this);
-
-		frameBuffer .reset (new FrameBuffer (this, get_width (), get_height (), getAntialiasing (), true)),
-		frameBuffer -> setup ();
-		frameBuffer -> bind ();
-
-		on_reshape (Vector4i (0, 0, get_width (), get_height ()));
-		on_timeout ();
-
-		frameBuffer -> unbind ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
-	return false;
 }
 
 void
-Browser::on_reshape (const Vector4i & viewport)
+Browser::on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height)
 {
-	reshape (viewport);
-}
-
-bool
-Browser::on_timeout ()
-{
-	try
-	{
-		ContextLock lock (this);
-
-		frameBuffer -> bind ();
-
-		on_render ();
-		render_signal .emit ();
-
-		frameBuffer -> unbind ();
-
-		queue_draw ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
-	return false;
+	reshape (Vector4i (x, y, width, height));
 }
 
 bool
 Browser::on_render ()
 {
+	X3DBrowser::on_render ();
 	update ();
-	return false;
-}
-
-bool
-Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	try
-	{
-		OpenGL::Surface::on_draw (cairo);
-
-		ContextLock lock (this);
-
-		frameBuffer -> bind ();
-		frameBuffer -> readPixels (GL_BGRA);
-		frameBuffer -> unbind ();
-
-		const auto surface = Cairo::ImageSurface::create (const_cast <uint8_t*> (frameBuffer -> getPixels () .data ()),
-		                                                  Cairo::FORMAT_ARGB32,
-		                                                  frameBuffer -> getWidth (),
-		                                                  frameBuffer -> getHeight (),
-		                                                  cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, frameBuffer -> getWidth ()));
-
-		get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
-
-		cairo -> save ();
-		cairo -> set_operator (Cairo::OPERATOR_OVER);
-		cairo -> set_source (surface, 0, 0);
-		cairo -> get_source () -> set_matrix (Cairo::Matrix (1, 0, 0, -1, 0, frameBuffer -> getHeight ()));
-		cairo -> paint_with_alpha (get_opacity ());
-		cairo -> restore ();
-
-		get_style_context () -> render_frame (cairo, 0, 0, get_width (), get_height ());
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
 	return false;
 }
 
 void
 Browser::on_unmap ()
 {
-	OpenGL::Surface::on_unmap ();
+	X3DBrowser::on_unmap ();
 }
 
 void
@@ -417,10 +287,7 @@ Browser::set_viewer ()
 void
 Browser::dispose ()
 {
-	connection .disconnect ();
-
 	X3DBrowser::dispose ();
-	OpenGL::Surface::dispose ();
 }
 
 Browser::~Browser ()

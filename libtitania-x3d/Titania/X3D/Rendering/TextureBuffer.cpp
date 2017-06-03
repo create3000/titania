@@ -59,25 +59,22 @@
 namespace titania {
 namespace X3D {
 
-TextureBuffer::TextureBuffer (X3DBrowserContext* const browser, const size_t width, const size_t height, const bool withColorBuffer) :
-	        browser (browser),
-	          width (width),
-	         height (height),
-	withColorBuffer (withColorBuffer),
-	             id (0),
-	 colorTextureId (0),
-	 depthTextureId (0),
-	    frameBuffer (0),
-	       viewport ()
+TextureBuffer::TextureBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const bool withColorBuffer) :
+	renderingSurface (renderingSurface),
+	           width (width),
+	          height (height),
+	 withColorBuffer (withColorBuffer),
+	              id (0),
+	  colorTextureId (0),
+	  depthTextureId (0),
+	     frameBuffer (0),
+	        viewport ()
 { }
 
 void
 TextureBuffer::setup ()
 {
 	// GL_EXT_framebuffer_object
-
-	if (not glXGetCurrentContext ())
-		return;
 
 	// Generate and bind frame buffer.
 	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
@@ -139,7 +136,7 @@ TextureBuffer::~TextureBuffer ()
 {
 	try
 	{
-		ContextLock lock (browser);
+		ContextLock lock (renderingSurface);
 
 		if (colorTextureId)
 			glDeleteTextures (1, &colorTextureId);

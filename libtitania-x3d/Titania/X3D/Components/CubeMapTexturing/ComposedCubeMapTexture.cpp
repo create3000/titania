@@ -106,7 +106,7 @@ ComposedCubeMapTexture::initialize ()
 {
 	X3DEnvironmentTextureNode::initialize ();
 
-	if (glXGetCurrentContext ())
+	if (getBrowser () -> getLoadUrlObjects ())
 	{
 		front ()  .addInterest (&ComposedCubeMapTexture::set_texture_0, this, std::cref (front ()));
 		back ()   .addInterest (&ComposedCubeMapTexture::set_texture_1, this, std::cref (back ()));

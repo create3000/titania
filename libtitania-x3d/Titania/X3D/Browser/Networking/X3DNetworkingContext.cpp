@@ -75,6 +75,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	     downloadMutex (),
 	    loadingObjects (),
 	         loadCount (),
+	    loadUrlObjects (true),
 	      notifyOnLoad (false)
 {
 	addChildObjects (privateScene, loadSensor, loadCount);

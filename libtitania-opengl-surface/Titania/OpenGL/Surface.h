@@ -76,22 +76,11 @@ public:
 
 	void
 	setAntialiasing (const size_t value)
-	{ antialiasing = value; createContext (); }
+	{ antialiasing = value; }
 
 	size_t
 	getAntialiasing () const
 	{ return antialiasing; }
-
-	void
-	setAccumBuffer (const bool value)
-	{ accumBuffer = value; createContext (); }
-
-	bool
-	getAccumBuffer () const
-	{ return accumBuffer; }
-
-	void
-	setSwapInterval (const size_t value);
 
 	///  @name Operations
 
@@ -140,7 +129,6 @@ private:
 	std::shared_ptr <Context> context;
 	std::shared_ptr <Context> sharingContext;
 	size_t                    antialiasing;
-	bool                      accumBuffer;
 
 };
 

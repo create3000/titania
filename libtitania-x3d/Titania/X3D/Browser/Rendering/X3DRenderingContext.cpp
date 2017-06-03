@@ -73,9 +73,6 @@ X3DRenderingContext::X3DRenderingContext () :
 void
 X3DRenderingContext::initialize ()
 {
-	if (not glXGetCurrentContext ())
-		return;
-
 	// Configure context
 
 	glEnable (GL_POINT_SPRITE);

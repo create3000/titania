@@ -64,12 +64,11 @@ namespace titania {
 namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
-	           X3DBaseNode (),
-	                strict (true),
-	                vendor (),
-	              renderer (),
-	               version (),
-	            extensions ()
+	 X3DBaseNode (),
+	      strict (true),
+	      vendor (),
+	    renderer (),
+	     version ()
 {
 	glibtop_init ();
 }
@@ -80,22 +79,9 @@ X3DCoreContext::initialize ()
 	//if (getBrowser () -> get_mapped ())
 	//	XInitThreads ();
 
-	if (glXGetCurrentContext ())
-	{
-		glewInit ();
-
-		vendor   = (const char*) glGetString (GL_VENDOR);
-		renderer = (const char*) glGetString (GL_RENDERER);
-		version  = (const char*) glGetString (GL_VERSION);
-
-		basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
-	}
-}
-
-bool
-X3DCoreContext::isExtensionAvailable (const std::string & name) const
-{
-	return extensions .count (name);
+	vendor   = (const char*) glGetString (GL_VENDOR);
+	renderer = (const char*) glGetString (GL_RENDERER);
+	version  = (const char*) glGetString (GL_VERSION);
 }
 
 size_t

@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Sound/MediaStream.h"
-
 #include "MovieTexture.h"
+
+#include "../../Browser/Sound/MediaStream.h"
 
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
@@ -126,7 +126,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 MovieTexture::requestImmediateLoad ()
 {
-	if (not glXGetCurrentContext ())
+	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

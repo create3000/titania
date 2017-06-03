@@ -48,45 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#include "RenderingContext.h"
 
-#include "../Bits/Error.h"
-
-#include <memory>
+#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
+RenderingContext::RenderingContext (Display* const display,
+                  const GLXDrawable drawable,
+                  const GLXContext sharingContext,
+                  const bool direct,
+                  const std::vector <int32_t> & visualAttributes) :
+	         display (display),
+	        drawable (drawable),
+	visualAttributes (visualAttributes),
+	      visualInfo (getVisualInfo ()),
+	         context (create (sharingContext, direct))
+{ }
 
-class ContextLock
+GLXContext
+RenderingContext::create (const GLXContext sharingContext, const bool direct)
 {
-public:
+	const auto context = glXCreateContext (getDisplay (), visualInfo, sharingContext, direct);
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	if (not context)
+		throw std::runtime_error ("RenderingContext::RenderingContext: Couldn't create context.");
 
-	ContextLock (X3DBrowserContext* const browserContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	return context;
+}
 
-	ContextLock (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+XVisualInfo*
+RenderingContext::getVisualInfo () const
+{
+	return glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <RenderingContext*> (this) -> visualAttributes .data ());
+}
 
-	~ContextLock ();
+int32_t
+RenderingContext::getConfig (const int32_t key) const
+{
+	int32_t value;
 
+	glXGetConfig (display, visualInfo, key, &value);
 
-private:
+	return value;
+}
 
-	class Implementation;
+bool
+RenderingContext::makeCurrent () const
+{
+	return glXMakeCurrent (display, drawable, context);
+}
 
-	std::unique_ptr <Implementation> implementation;
+void
+RenderingContext::swapBuffers () const
+{
+	glXSwapBuffers (display, drawable);
+}
 
-};
+void
+RenderingContext::dispose ()
+{
+	if (context)
+	{
+		if (glXGetCurrentContext () == context)
+			glXMakeCurrent (display, None, nullptr);
+	}
+}
+
+RenderingContext::~RenderingContext ()
+{
+	if (context)
+	{
+		if (glXGetCurrentContext () == context)
+			glXMakeCurrent (display, None, nullptr);
+
+		glXDestroyContext (display, context);
+	}
+
+	if (visualInfo)
+	   XFree (visualInfo);
+}
 
 } // X3D
 } // titania
-
-#endif

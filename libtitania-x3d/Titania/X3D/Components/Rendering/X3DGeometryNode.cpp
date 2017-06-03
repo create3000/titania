@@ -102,19 +102,16 @@ X3DGeometryNode::setup ()
 
 	X3DNode::setup ();
 
-	if (glXGetCurrentContext ())
-	{
-		glGenBuffers (1, &colorBufferId);
-		glGenBuffers (1, &normalBufferId);
-		glGenBuffers (1, &vertexBufferId);
+	glGenBuffers (1, &colorBufferId);
+	glGenBuffers (1, &normalBufferId);
+	glGenBuffers (1, &vertexBufferId);
 
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
-		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
+	getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+	getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
 
-		addInterest (&X3DGeometryNode::update, this);
+	addInterest (&X3DGeometryNode::update, this);
 
-		update ();
-	}
+	update ();
 }
 
 void

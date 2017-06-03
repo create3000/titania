@@ -62,22 +62,19 @@ X3DLightingContext::X3DLightingContext () :
 void
 X3DLightingContext::initialize ()
 {
-	if (glXGetCurrentContext ())
-	{
-		const float light_model_ambient [ ] = { 0, 0, 0, 1 };
+	const float light_model_ambient [ ] = { 0, 0, 0, 1 };
 
-		glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  false);
-		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      true);
-		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
+	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
+	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  false);
+	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      true);
+	glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
 
-		// Lights
+	// Lights
 
-		glGetIntegerv (GL_MAX_LIGHTS, &maxLights);
+	glGetIntegerv (GL_MAX_LIGHTS, &maxLights);
 
-		for (int32_t i = maxLights - 1; i >= 0; -- i)
-			lights .push (GL_LIGHT0 + i);
-	}
+	for (int32_t i = maxLights - 1; i >= 0; -- i)
+		lights .push (GL_LIGHT0 + i);
 }
 
 size_t

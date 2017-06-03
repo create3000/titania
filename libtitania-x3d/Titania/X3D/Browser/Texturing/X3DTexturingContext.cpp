@@ -84,36 +84,33 @@ X3DTexturingContext::X3DTexturingContext () :
 void
 X3DTexturingContext::initialize ()
 {
-	if (glXGetCurrentContext ())
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+
+	if (getBrowser () -> isExtensionAvailable ("GL_NVX_gpu_memory_info"))
 	{
-		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+		int32_t kbytes = 0;
 
-		if (getBrowser () -> isExtensionAvailable ("GL_NVX_gpu_memory_info"))
-		{
-			int32_t kbytes = 0;
+		glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &kbytes);
 
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &kbytes);
-
-			textureMemory = size_t (kbytes) * 1024;
-		}
-
-		int32_t maxTextureCoords;
-
-		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &maxTextureSize);
-		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &maxTextureCoords); // Max multi texture coords
-		glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &maxTextureUnits);
-		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxCombinedTextureUnits);
-
-		maxTextureUnits = std::min (maxCombinedTextureUnits / 2, std::min (maxTextureCoords, maxTextureUnits));
-
-		// For single and multi texturing
-		for (int32_t i = maxTextureUnits - 1; i >= 0; -- i)
-			textureUnits .push (i);                                              // Don't add GL_TEXTURE0
-
-		// For shaders
-		for (int32_t i = maxTextureUnits; i < maxCombinedTextureUnits; ++ i)
-			combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
+		textureMemory = size_t (kbytes) * 1024;
 	}
+
+	int32_t maxTextureCoords;
+
+	glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &maxTextureSize);
+	glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &maxTextureCoords); // Max multi texture coords
+	glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &maxTextureUnits);
+	glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxCombinedTextureUnits);
+
+	maxTextureUnits = std::min (maxCombinedTextureUnits / 2, std::min (maxTextureCoords, maxTextureUnits));
+
+	// For single and multi texturing
+	for (int32_t i = maxTextureUnits - 1; i >= 0; -- i)
+		textureUnits .push (i);                                              // Don't add GL_TEXTURE0
+
+	// For shaders
+	for (int32_t i = maxTextureUnits; i < maxCombinedTextureUnits; ++ i)
+		combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
 
 	defaultTexCoord          -> setup ();
 	defaultTextureProperties -> setup ();

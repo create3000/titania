@@ -48,8 +48,6 @@
  *
  ******************************************************************************/
 
-#include "../../X3D.h"
-
 #include "X3DBrowser.h"
 
 #include "../Browser/BrowserOptions.h"

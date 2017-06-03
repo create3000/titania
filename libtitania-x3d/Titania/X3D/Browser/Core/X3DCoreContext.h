@@ -76,10 +76,6 @@ public:
 	isStrict () const
 	{ return strict; }
 
-	///  Returns true if OpenGL @a extensions is available, otherwise false.
-	bool
-	isExtensionAvailable (const std::string &) const;
-
 	const std::string &
 	getVendor () const
 	{ return vendor; }
@@ -126,11 +122,10 @@ private:
 
 	///  @name Members
 
-	std::atomic <bool>     strict;
-	std::string            vendor;
-	std::string            renderer;
-	std::string            version;
-	std::set <std::string> extensions;
+	std::atomic <bool> strict;
+	std::string        vendor;
+	std::string        renderer;
+	std::string        version;
 
 };
 

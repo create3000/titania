@@ -51,6 +51,7 @@
 #include "ComposedTexture3D.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
@@ -95,7 +96,7 @@ ComposedTexture3D::initialize ()
 {
 	X3DTexture3DNode::initialize ();
 
-	if (glXGetCurrentContext ())
+	if (getBrowser () -> getLoadUrlObjects ())
 	{
 		texture () .addInterest (&ComposedTexture3D::set_texture, this);
 

@@ -73,6 +73,22 @@ public:
 
 	virtual
 	void
+	initialize () final override
+	{
+		try
+		{
+			ContextLock lock (this);
+	
+			X3DBrowser::initialize ();
+		}
+		catch (const std::exception & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	virtual
+	void
 	setViewerType (const X3DConstants::NodeType) final override
 	{ }
 
@@ -80,17 +96,6 @@ public:
 	const SFEnum <X3DConstants::NodeType> &
 	getViewerType () const final override
 	{ return viewer; }
-
-
-protected:
-
-	///  @name Operations
-
-	virtual
-	bool
-	makeCurrent ()
-	noexcept (true) final override
-	{ return true; }
 
 
 private:

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,41 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#ifndef __TITANIA_X3D_RENDERING_SURFACE_OFF_SCREEN_CONTEXT_H__
+#define __TITANIA_X3D_RENDERING_SURFACE_OFF_SCREEN_CONTEXT_H__
 
-#include "../Bits/Error.h"
-
-#include <memory>
+#include "RenderingContext.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
-
-class ContextLock
+class OffScreenContext :
+	public RenderingContext
 {
 public:
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	///  @name Construction
 
-	ContextLock (X3DBrowserContext* const browserContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	OffScreenContext (Display* const display,
+	                  const GLXContext sharingContext,
+	                  const bool direct,
+	                  const std::vector <int32_t> & visualAttributes,
+	                  unsigned int width,
+	                  unsigned int height);
 
-	ContextLock (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	///  @name Destruction
 
-	~ContextLock ();
+	virtual
+	~OffScreenContext () final override;
 
 
 private:
 
-	class Implementation;
+	///  @name Construction
 
-	std::unique_ptr <Implementation> implementation;
+	GLXPixmap
+	createPixmap (Display* display,
+	              unsigned int width,
+	              unsigned int height);
+
+	///  @name Members
+
+	Pixmap pixmap;
 
 };
 

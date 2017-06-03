@@ -286,7 +286,7 @@ throw (Error <NODE_NOT_AVAILABLE>,
 void
 Inline::requestImmediateLoad ()
 {
-	if (not glXGetCurrentContext ())
+	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
@@ -324,7 +324,7 @@ Inline::requestAsyncLoad ()
 {
 	using namespace std::placeholders;
 
-	if (not glXGetCurrentContext ())
+	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

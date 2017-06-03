@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
+#include "../RenderingSurface/X3DRenderingSurface.h"
+
 #include "../Execution/X3DScene.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
@@ -85,6 +87,7 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowserContext :
+	public X3DRenderingSurface,
 	public X3DScene,
 	public X3DCoreContext,
 	public X3DShadersContext,
@@ -222,11 +225,6 @@ protected:
 	{ world = value; }
 
 	///  @name Operations
-
-	virtual
-	bool
-	makeCurrent ()
-	noexcept (true) = 0;
 
 	void
 	update ()

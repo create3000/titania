@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,81 +48,123 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
-#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
+#ifndef __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
+#define __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
 
-#include "../Browser/X3DBrowser.h"
+#include <gtkmm/drawingarea.h>
+
+#include <memory>
+#include <set>
+#include <thread>
 
 namespace titania {
 namespace X3D {
 
-class KeyDevice;
-class PointingDevice;
-class X3DViewer;
-class X3DSelector;
+class FrameBuffer;
+class RenderingContext;
 
-class Browser :
-	public X3DBrowser
+class X3DRenderingSurface :
+	public Gtk::DrawingArea
 {
 public:
 
-	///  @name Construction
-
-	Browser (const MFString & url, const MFString & parameter);
-
-	Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter);
-
-	Browser*
-	create (X3DExecutionContext* const executionContext) const;
-
 	///  @name Member access
 
+	///  Returns true if OpenGL @a extensions is available, otherwise false.
+	bool
+	isExtensionAvailable (const std::string & name) const;
+
 	void
-	setCursor (const std::string & value)
-	noexcept (true)
-	{ cursor = value; }
+	setAntialiasing (const size_t samples)
+	{ antialiasing = samples; }
 
-	const SFString &
-	getCursor () const
-	noexcept (true)
-	{ return cursor; }
+	size_t
+	getAntialiasing () const
+	{ return antialiasing; }
 
-	const X3DPtr <X3DViewer> &
-	getViewer () const
-	noexcept (true)
-	{ return viewer; }
+	void
+	setFrameRate (const size_t value)
+	{ frameRate = value; }
+
+	size_t
+	getFrameRate () const
+	{ return frameRate; }
+
+	///  @name Operations
+
+	void
+	queue_render ();
+
+	///  @name Signals
+
+	const sigc::signal <void> &
+	signal_setup () const
+	{ return setupSignal; }
+
+	const sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> &
+	signal_reshape () const
+	{ return reshapeSignal; }
+
+	const sigc::signal <bool> &
+	signal_render () const
+	{ return renderSignal; }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
-	
+	dispose ();
+
 	virtual
-	~Browser () final override;
+	~X3DRenderingSurface () override;
 
 
 protected:
 
+	///  @name Friends
+
+	friend class ContextLock;
+
 	///  @name Construction
 
-	virtual
-	void
-	initialize () override;
+	X3DRenderingSurface ();
+
+	X3DRenderingSurface (X3DRenderingSurface* const other);
+
+	///  @name Operations
+
+	bool
+	makeCurrent ();
 
 	///  @name Event handlers
 
 	virtual
 	void
-	on_setup () override;
+	on_style_updated () override;
+
+	virtual
+	void
+	on_realize () override;
+
+	virtual
+	void
+	on_setup ();
 
 	virtual
 	void
 	on_map () override;
 
 	virtual
+	bool
+	on_configure_event (GdkEventConfigure* const event) override;
+
+	virtual
 	void
 	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
 
 	virtual
 	bool
@@ -132,23 +174,39 @@ protected:
 	void
 	on_unmap () override;
 
+	virtual
+	void
+	on_unrealize () override;
+
 
 private:
 
+	///  @name Construction
+
+	X3DRenderingSurface (const std::shared_ptr <RenderingContext> & sharingContext);
+
+	void
+	createContext ();
+
 	///  @name Event handler
 
-	void
-	set_cursor (const String & value);
-
-	void
-	set_viewer ();
+	bool
+	on_timeout ();
 
 	///  @name Members
 
-	X3DPtr <X3DViewer>      viewer;
-	X3DPtr <KeyDevice>      keyDevice;
-	X3DPtr <PointingDevice> pointingDevice;
-	SFString                cursor;
+	const std::thread::id              treadId;
+	std::shared_ptr <RenderingContext> context;
+	std::shared_ptr <RenderingContext> sharingContext;
+	std::set <std::string>             extensions;
+
+	size_t                                                  antialiasing;
+	size_t                                                  frameRate;
+	std::unique_ptr <FrameBuffer>                           frameBuffer;
+	sigc::signal <void>                                     setupSignal;
+	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
+	sigc::signal <bool>                                     renderSignal;
+	sigc::connection                                        connection;
 
 };
 

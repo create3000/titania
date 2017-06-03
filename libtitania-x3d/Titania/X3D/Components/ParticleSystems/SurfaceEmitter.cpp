@@ -105,9 +105,6 @@ SurfaceEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
 
-	if (not glXGetCurrentContext ())
-		return;
-
 	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return;
 

@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#include "../../Browser/Sound/MediaStream.h"
-
 #include "AudioClip.h"
 
+#include "../../Browser/Sound/MediaStream.h"
+
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -115,7 +116,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 AudioClip::requestImmediateLoad ()
 {
-	if (not glXGetCurrentContext ())
+	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

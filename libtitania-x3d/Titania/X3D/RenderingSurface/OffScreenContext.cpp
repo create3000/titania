@@ -48,45 +48,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#include "OffScreenContext.h"
 
-#include "../Bits/Error.h"
-
-#include <memory>
+#include <stdexcept>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
+OffScreenContext::OffScreenContext (Display* const display,
+                                    const GLXContext sharingContext,
+                                    const bool direct,
+                                    const std::vector <int32_t> & visualAttributes,
+                                    unsigned int width,
+                                    unsigned int height) :
+	   RenderingContext (display, createPixmap (display, width, height), sharingContext, direct, visualAttributes)
+{ }
 
-class ContextLock
+GLXPixmap
+OffScreenContext::createPixmap (Display* display,
+                                unsigned int width,
+                                unsigned int height)
 {
-public:
+	const std::vector <int32_t> fbAttributes = {
+		GLX_DRAWABLE_TYPE,
+		GLX_PIXMAP_BIT,
+		GLX_X_RENDERABLE, true,
+		GLX_DOUBLEBUFFER, true, 
+		GLX_RED_SIZE,     8,
+		GLX_GREEN_SIZE,   8,
+		GLX_BLUE_SIZE,    8,
+		GLX_ALPHA_SIZE,   8,
+		GLX_DEPTH_SIZE,   24, 
+		None
+	};
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	const auto screen   = XDefaultScreenOfDisplay (display);
+	const auto nscreen  = DefaultScreen (display);
+	const auto drawable = RootWindowOfScreen (screen);
+	const auto depth    = DefaultDepthOfScreen (screen);
 
-	ContextLock (X3DBrowserContext* const browserContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	pixmap = XCreatePixmap (display, drawable, width, height, depth);
 
-	ContextLock (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	if (not pixmap)
+		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create pixmap.");
 
-	~ContextLock ();
+	int32_t count;
 
+	const auto fbConfigs = glXChooseFBConfig (display, nscreen, fbAttributes .data (), &count);
 
-private:
+	if (not fbConfigs)
+		throw std::runtime_error ("OffScreenContext::createPixmap: No frame buffer configuration found.");
 
-	class Implementation;
+	const auto glXPixmap = glXCreatePixmap (display, fbConfigs [0], pixmap, nullptr);
 
-	std::unique_ptr <Implementation> implementation;
+	if (not glXPixmap)
+		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create GLX pixmap.");
+	
+	return glXPixmap;
+}
 
-};
-
+OffScreenContext::~OffScreenContext ()
+{
+	glXDestroyPixmap (getDisplay (), getDrawable ());
+	XFreePixmap (getDisplay (), pixmap);
+}
+	  
 } // X3D
 } // titania
-
-#endif

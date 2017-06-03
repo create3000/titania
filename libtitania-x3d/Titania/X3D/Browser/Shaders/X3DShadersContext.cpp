@@ -92,7 +92,7 @@ X3DShadersContext::X3DShadersContext () :
 void
 X3DShadersContext::initialize ()
 {
-	if (glXGetCurrentContext ())
+	if (getBrowser () -> getLoadUrlObjects ())
 	{
 //		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
 //		// Remove if can handle nouveau.

@@ -549,15 +549,10 @@ ScreenFontStyle::getLineHeight () const
 double
 ScreenFontStyle::getSize () const
 {
-	if (glXGetCurrentContext ())
-	{
-		const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
-		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
+	const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
+	const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
 
-		return point <double> * pointSize () * height / height_m;
-	}
-
-	return 0;
+	return point <double> * pointSize () * height / height_m;
 }
 
 void

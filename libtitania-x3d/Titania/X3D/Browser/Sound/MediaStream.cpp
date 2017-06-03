@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "MediaStream.h"
-
 #include "../../Rendering/OpenGL.h"
+
+#include "MediaStream.h"
 
 namespace titania {
 namespace X3D {

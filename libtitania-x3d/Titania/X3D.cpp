@@ -50,6 +50,8 @@
 
 #include "X3D.h"
 
+#include <gtkmm/main.h>
+
 namespace titania {
 namespace X3D {
 
@@ -61,12 +63,15 @@ throw (Error <BROWSER_UNAVAILABLE>)
 {
 	try
 	{
+		static Gtk::Main kit (0, nullptr);
+
 		static BrowserApplicationPtr browserApplication;
 	
 		if (not browserApplication)
 		{
 			browserApplication = new BrowserApplication ({ }, { });
 	
+			browserApplication -> setLoadUrlObjects (false);
 			browserApplication -> setup ();
 		}
 	

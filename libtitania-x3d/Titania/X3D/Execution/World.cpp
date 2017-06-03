@@ -99,8 +99,7 @@ World::initialize ()
 	layer0 -> setPrivate (true);
 	layer0 -> setup ();
 
-	if (glXGetCurrentContext ())
-		bind ();
+	bind ();
 }
 
 void

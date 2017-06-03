@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
 #define __TITANIA_X3D_RENDERING_FRAME_BUFFER_H__
 
-#include "../Browser/X3DBrowser.h"
 #include "../Rendering/OpenGL.h"
+#include "../RenderingSurface/X3DRenderingSurface.h"
 
 #include <memory>
 #include <vector>
@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	FrameBuffer (X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
+	FrameBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const size_t samples, const bool withColorBuffer = true);
 
 	void
 	setup ();
@@ -74,8 +74,8 @@ public:
 	///  @name Member access
 
 	void
-	setBrowser (X3DBrowserContext* const value)
-	{ browser = value; }
+	setBrowser (X3DRenderingSurface* const value)
+	{ renderingSurface = value; }
 
 	size_t
 	getWidth () const
@@ -119,7 +119,7 @@ private:
 
 	///  @name Members
 
-	X3DBrowserContext*            browser;
+	X3DRenderingSurface*          renderingSurface;
 	size_t                        width;
 	size_t                        height;
 	size_t                        samples;

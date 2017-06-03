@@ -62,6 +62,7 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
+	           X3DRenderingSurface (other),
 	                      X3DScene (),
 	                X3DCoreContext (),
 	             X3DShadersContext (),
@@ -364,7 +365,7 @@ X3DBrowserContext::dispose ()
 	X3DShadersContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DScene::dispose ();
-
+	X3DRenderingSurface::dispose ();
 }
 
 X3DBrowserContext::~X3DBrowserContext ()

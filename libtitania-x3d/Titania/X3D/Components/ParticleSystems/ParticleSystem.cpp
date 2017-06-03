@@ -362,9 +362,6 @@ ParticleSystem::initialize ()
 {
 	X3DShapeNode::initialize ();
 
-	if (not glXGetCurrentContext ())
-		return;
-
 	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,41 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#ifndef __TITANIA_X3D_RENDERING_SURFACE_RENDERING_CONTEXT_H__
+#define __TITANIA_X3D_RENDERING_SURFACE_RENDERING_CONTEXT_H__
 
-#include "../Bits/Error.h"
+#include "../Rendering/OpenGL.h"
 
-#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
-
-class ContextLock
+class RenderingContext
 {
 public:
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	///  @name Construction
 
-	ContextLock (X3DBrowserContext* const browserContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	RenderingContext (Display* const display,
+	                  const GLXDrawable drawable,
+	                  const GLXContext sharingContext,
+	                  const bool direct,
+	                  const std::vector <int32_t> & visualAttributes);
 
-	ContextLock (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	///  @name Member access
 
-	~ContextLock ();
+	Display*
+	getDisplay () const
+	{ return display; }
+
+	GLXDrawable
+	getDrawable () const
+	{ return drawable; }
+
+	XVisualInfo*
+	getVisualInfo () const;
+
+	GLXContext
+	getContext () const
+	{ return context; }
+
+	int32_t
+	getConfig (const int32_t key) const;
+
+	///  @name Operations
+
+	bool
+	makeCurrent () const;
+
+	void
+	swapBuffers () const;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose ();
+
+	virtual
+	~RenderingContext ();
 
 
 private:
 
-	class Implementation;
+	///  @name Construction
 
-	std::unique_ptr <Implementation> implementation;
+	GLXContext
+	create (const GLXContext sharingContext, const bool direct);
+
+	///  @name Members
+
+	Display* const        display;
+	GLXDrawable           drawable;
+	std::vector <int32_t> visualAttributes;
+	XVisualInfo*          visualInfo;
+	GLXContext            context;
 
 };
 

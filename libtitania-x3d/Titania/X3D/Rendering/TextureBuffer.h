@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_RENDERING_TEXTURE_BUFFER_H__
 #define __TITANIA_X3D_RENDERING_TEXTURE_BUFFER_H__
 
-#include "../Browser/X3DBrowserContext.h"
 #include "../Rendering/OpenGL.h"
+#include "../RenderingSurface/X3DRenderingSurface.h"
 
 namespace titania {
 namespace X3D {
@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	TextureBuffer (X3DBrowserContext* const, const size_t, const size_t, const bool = true);
+	TextureBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const bool withColorBuffer = true);
 
 	void
 	setup ();
@@ -71,8 +71,8 @@ public:
 	///  @name Member access
 
 	void
-	setBrowser (X3DBrowserContext* const value)
-	{ browser = value; }
+	setBrowser (X3DRenderingSurface* const value)
+	{ renderingSurface = value; }
 
 	size_t
 	getWidth () const
@@ -111,15 +111,15 @@ private:
 
 	///  @name Members
 
-	X3DBrowserContext* browser;
-	size_t             width;
-	size_t             height;
-	bool               withColorBuffer;
-	GLuint             id;
-	GLuint             colorTextureId;
-	GLuint             depthTextureId;
-	GLint              frameBuffer;
-	GLint              viewport [4];
+	X3DRenderingSurface* renderingSurface;
+	size_t               width;
+	size_t               height;
+	bool                 withColorBuffer;
+	GLuint               id;
+	GLuint               colorTextureId;
+	GLuint               depthTextureId;
+	GLint                frameBuffer;
+	GLint                viewport [4];
 
 };
 

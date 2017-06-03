@@ -950,6 +950,9 @@
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonMode.h" />
+    <None Include="Titania\X3D\RenderingSurface\OffScreenContext.h" />
+    <None Include="Titania\X3D\RenderingSurface\RenderingContext.h" />
+    <None Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1636,6 +1639,9 @@
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonMode.cpp" />
+    <Compile Include="Titania\X3D\RenderingSurface\OffScreenContext.cpp" />
+    <Compile Include="Titania\X3D\RenderingSurface\RenderingContext.cpp" />
+    <Compile Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1735,6 +1741,7 @@
     <Folder Include="Titania\X3D\Tools\Geometry2D\" />
     <Folder Include="Titania\X3D\Tools\NURBS\" />
     <Folder Include="share\titania\ui\" />
+    <Folder Include="Titania\X3D\RenderingSurface\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

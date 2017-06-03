@@ -59,75 +59,76 @@
 namespace titania {
 namespace X3D {
 
-FrameBuffer::FrameBuffer (X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
-	        browser (browser),
-	          width (width),
-	         height (height),
-	        samples (samples_),
-	withColorBuffer (withColorBuffer),
-	             id (0),
-	  colorBufferId (0),
-	  depthBufferId (0),
-	    pixelBuffer (),
-	         pixels (),
-	          depth (width * height),
-	    frameBuffer (0),
-	       viewport ()
+FrameBuffer::FrameBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
+	 renderingSurface (renderingSurface),
+	            width (width),
+	           height (height),
+	          samples (samples_),
+	  withColorBuffer (withColorBuffer),
+	               id (0),
+	    colorBufferId (0),
+	    depthBufferId (0),
+	      pixelBuffer (samples ? new FrameBuffer (renderingSurface, width, height, 0, withColorBuffer) : nullptr),
+	           pixels (),
+	            depth (width * height),
+	      frameBuffer (0),
+	         viewport ()
 { }
 
 void
 FrameBuffer::setup ()
 {
-	if (not browser -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"))
+	if (not renderingSurface -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"))
 		samples = 0;
 
-	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
+	// Setup frame buffer with no antialiasing for blit.
+	if (samples)
+		pixelBuffer -> setup ();
+
+	// Generate and bind frame buffer.
+	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
+	glGenFramebuffers (1, &id);
+	glBindFramebuffer (GL_FRAMEBUFFER, id);
+
+	if (withColorBuffer)
 	{
-		// Generate and bind frame buffer.
-		glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
-		glGenFramebuffers (1, &id);
-		glBindFramebuffer (GL_FRAMEBUFFER, id);
+		// The color buffer
 
-		if (withColorBuffer)
-		{
-			// The color buffer
-
-			glGenRenderbuffers (1, &colorBufferId);
-			glBindRenderbuffer (GL_RENDERBUFFER, colorBufferId);
-
-			if (samples)
-				glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_RGBA8, width, height);
-			else
-				glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
-
-			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBufferId);
-		}
-		else
-			glDrawBuffer (GL_NONE); // No color buffer is drawn to.
-
-		// The depth buffer
-
-		glGenRenderbuffers (1, &depthBufferId);
-		glBindRenderbuffer (GL_RENDERBUFFER, depthBufferId);
+		glGenRenderbuffers (1, &colorBufferId);
+		glBindRenderbuffer (GL_RENDERBUFFER, colorBufferId);
 
 		if (samples)
-			glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_DEPTH_COMPONENT, width, height);
+			glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_RGBA8, width, height);
 		else
-			glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
 
-		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
-
-		// Always check that our framebuffer is ok
-
-		const bool complete = glCheckFramebufferStatus (GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
-
-		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
-
-		if (complete)
-			return;
-
-		throw Error <INSUFFICIENT_CAPABILITIES> ("Couldn't create frame buffer.");
+		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBufferId);
 	}
+	else
+		glDrawBuffer (GL_NONE); // No color buffer is drawn to.
+
+	// The depth buffer
+
+	glGenRenderbuffers (1, &depthBufferId);
+	glBindRenderbuffer (GL_RENDERBUFFER, depthBufferId);
+
+	if (samples)
+		glRenderbufferStorageMultisample (GL_RENDERBUFFER, samples, GL_DEPTH_COMPONENT, width, height);
+	else
+		glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+	glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
+
+	// Always check that our framebuffer is ok
+
+	const bool complete = glCheckFramebufferStatus (GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
+
+	if (complete)
+		return;
+
+	throw Error <INSUFFICIENT_CAPABILITIES> ("Couldn't create frame buffer.");
 }
 
 double
@@ -195,13 +196,6 @@ FrameBuffer::readPixels (const GLenum format)
 	{
 		try
 		{
-			if (not pixelBuffer)
-			{
-				// Setup frame buffer with no antialiasing for blit.
-				pixelBuffer .reset (new FrameBuffer (browser, width, height, 0, withColorBuffer));
-				pixelBuffer -> setup ();
-			}
-
 			glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
 			glBindFramebuffer (GL_DRAW_FRAMEBUFFER, pixelBuffer -> id);
 			glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
@@ -230,14 +224,10 @@ FrameBuffer::readDepth ()
 
 	if (samples)
 	{
-		FrameBuffer frameBuffer (browser, width, height, 0, false);
-
-		frameBuffer .setup ();
-
 		glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
+		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, pixelBuffer -> id);
 		glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
+		glBindFramebuffer (GL_FRAMEBUFFER, pixelBuffer -> id);
 
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
@@ -252,7 +242,7 @@ FrameBuffer::~FrameBuffer ()
 {
 	try
 	{
-		ContextLock lock (browser);
+		ContextLock lock (renderingSurface);
 
 		if (colorBufferId)
 			glDeleteRenderbuffers (1, &colorBufferId);
