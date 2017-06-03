@@ -119,7 +119,7 @@ public:
 
 	virtual
 	Vector4i
-	getRectangle (const int32_t, const int32_t) const final override;
+	getRectangle (const MFInt32 & viewport) const final override;
 
 	///  @name Operations
 

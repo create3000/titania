@@ -68,7 +68,7 @@ public:
 
 	virtual
 	Vector4i
-	getRectangle (const int32_t, const int32_t) const = 0;
+	getRectangle (const MFInt32 & viewport) const = 0;
 
 	virtual
 	void

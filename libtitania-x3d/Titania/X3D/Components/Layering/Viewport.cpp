@@ -87,14 +87,14 @@ Viewport::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector4i
-Viewport::getRectangle (const int32_t width, const int32_t height) const
+Viewport::getRectangle (const MFInt32 & viewport) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	const int32_t left   = width  * getLeft ();
-	const int32_t right  = width  * getRight ();
-	const int32_t bottom = height * getBottom ();
-	const int32_t top    = height * getTop ();
+	const int32_t left   = viewport [0] + viewport [2] * getLeft ();
+	const int32_t right  = viewport [0] + viewport [2] * getRight ();
+	const int32_t bottom = viewport [1] + viewport [3] * getBottom ();
+	const int32_t top    = viewport [1] + viewport [3] * getTop ();
 
 	return Vector4i (left,
 	                 bottom,

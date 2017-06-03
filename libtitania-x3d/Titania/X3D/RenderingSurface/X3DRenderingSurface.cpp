@@ -215,8 +215,23 @@ X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
 		frameBuffer -> setup ();
 		frameBuffer -> bind ();
 
-		on_reshape (0, 0, get_width (), get_height ());
-		reshapeSignal .emit (0, 0, get_width (), get_height ());
+		const auto margin  = get_style_context () -> get_margin ();
+		const auto border  = get_style_context () -> get_border ();
+		const auto padding = get_style_context () -> get_padding ();
+
+		const auto x = margin .get_left ()   + border .get_left ()   + padding .get_left ();
+		const auto y = margin .get_bottom () + border .get_bottom () + padding .get_bottom ();
+		const auto w = get_width ()  - x - (margin .get_right () + border .get_right () + padding .get_right ());
+		const auto h = get_height () - y - (margin .get_top ()   + border .get_top ()   + padding .get_top ());
+
+		glViewport (0, 0, get_width (), get_height ());
+		glScissor  (0, 0, get_width (), get_height ());
+
+		glClearColor (0, 0, 0, 0);
+		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		on_reshape (x, y, w, h);
+		reshapeSignal .emit (x, y, w, h);
 		on_timeout ();
 
 		frameBuffer -> unbind ();
@@ -270,6 +285,7 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 		frameBuffer -> readPixels (GL_BGRA);
 		frameBuffer -> unbind ();
 
+		const auto margin  = get_style_context () -> get_margin ();
 		const auto surface = Cairo::ImageSurface::create (const_cast <uint8_t*> (frameBuffer -> getPixels () .data ()),
 		                                                  Cairo::FORMAT_ARGB32,
 		                                                  frameBuffer -> getWidth (),
@@ -285,7 +301,11 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 		cairo -> paint_with_alpha (get_opacity ());
 		cairo -> restore ();
 
-		get_style_context () -> render_frame (cairo, 0, 0, get_width (), get_height ());
+		get_style_context () -> render_frame (cairo,
+		                                      margin .get_left (),
+		                                      margin .get_top (),
+		                                      get_width ()  - margin .get_left () - margin .get_right (),
+		                                      get_height () - margin .get_top ()  - margin .get_bottom ());
 	}
 	catch (const std::exception & error)
 	{
