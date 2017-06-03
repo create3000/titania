@@ -294,7 +294,7 @@ noexcept (true)
 		glScissor  (getViewport () [0], getViewport () [1], getViewport () [2], getViewport () [3]);
 	
 		glClearColor (0, 0, 0, 0);
-		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear (GL_COLOR_BUFFER_BIT);
 
 		// Display scene.
 

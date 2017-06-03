@@ -37,7 +37,7 @@ relink_command=""
 if test "$libtool_install_magic" = "%%%MAGIC variable%%%"; then
   # install mode needs the following variables:
   generated_by_libtool_version='2.4.6'
-  notinst_deplibs=' ../libtitania-x3d/libtitania-x3d.la ../libtitania-ftgl/libtitania-ftgl.la ../libtitania-opengl-surface/libtitania-opengl-surface.la ../libtitania-sqlite/libtitania-sqlite.la ../libtitania-standard/libtitania-standard.la ../libtitania-stream/libtitania-stream.la'
+  notinst_deplibs=' ../libtitania-x3d/libtitania-x3d.la ../libtitania-ftgl/libtitania-ftgl.la ../libtitania-sqlite/libtitania-sqlite.la ../libtitania-standard/libtitania-standard.la ../libtitania-stream/libtitania-stream.la'
 else
   # When we are sourced in execute mode, $file and $ECHO are already set.
   if test "$libtool_execute_magic" != "%%%MAGIC variable%%%"; then
@@ -188,7 +188,7 @@ func_exec_program ()
 
   if test -f "$progdir/$program"; then
     # Add our own library path to LD_LIBRARY_PATH
-    LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:/home/holger/Projekte/Titania/libtitania-x3d/.libs:/home/holger/Projekte/Titania/libtitania-ftgl/.libs:/home/holger/Projekte/Titania/libtitania-opengl-surface/.libs:/home/holger/Projekte/Titania/libtitania-sqlite/.libs:/home/holger/Projekte/Titania/libtitania-standard/.libs:/home/holger/Projekte/Titania/libtitania-stream/.libs:$LD_LIBRARY_PATH"
+    LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:/home/holger/Projekte/Titania/libtitania-x3d/.libs:/home/holger/Projekte/Titania/libtitania-ftgl/.libs:/home/holger/Projekte/Titania/libtitania-sqlite/.libs:/home/holger/Projekte/Titania/libtitania-standard/.libs:/home/holger/Projekte/Titania/libtitania-stream/.libs:$LD_LIBRARY_PATH"
 
     # Some systems cannot cope with colon-terminated LD_LIBRARY_PATH
     # The second colon is a workaround for a bug in BeOS R4 sed

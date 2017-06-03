@@ -260,7 +260,6 @@ titania_LDADD = $(TITANIA_LIBS) \
 	$(TITANIA_X3D_LIBS)  \
 	$(top_builddir)/libtitania-x3d/libtitania-x3d.la \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
-	$(top_builddir)/libtitania-opengl-surface/libtitania-opengl-surface.la \
 	$(top_builddir)/libtitania-sqlite/libtitania-sqlite.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la
@@ -275,7 +274,6 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	$(TITANIA_X3D_CFLAGS)  \
 	-I$(top_builddir)/libtitania-x3d \
 	-I$(top_builddir)/libtitania-ftgl \
-	-I$(top_builddir)/libtitania-opengl-surface \
 	-I$(top_builddir)/libtitania-sqlite \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream

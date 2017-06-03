@@ -376,7 +376,6 @@ SUBDIRS = \
 	libtitania-standard \
 	libtitania-sqlite \
 	libtitania-stream \
-	libtitania-opengl-surface \
 	libtitania-peaseblossom \
 	libtitania-ftgl \
 	libtitania-x3d \
