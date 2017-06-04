@@ -52,7 +52,6 @@
 
 #include "../Browser/BrowserOptions.h"
 #include "../Browser/BrowserProperties.h"
-#include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/RenderingProperties.h"
 #include "../Components/Layering/X3DLayerNode.h"

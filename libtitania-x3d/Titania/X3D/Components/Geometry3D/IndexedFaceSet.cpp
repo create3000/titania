@@ -51,6 +51,7 @@
 #include "IndexedFaceSet.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geospatial/GeoCoordinate.h"
 #include "../NURBS/CoordinateDouble.h"
@@ -65,7 +66,6 @@
 #include "../Texturing/MultiTextureCoordinate.h"
 #include "../Texturing3D/TextureCoordinate3D.h"
 #include "../Texturing3D/TextureCoordinate4D.h"
-
 
 #include <Titania/Math/Mesh/Tessellator.h>
 

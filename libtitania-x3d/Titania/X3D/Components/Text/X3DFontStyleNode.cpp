@@ -50,7 +50,6 @@
 
 #include "X3DFontStyleNode.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"

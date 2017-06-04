@@ -50,6 +50,7 @@
 
 #include "TextureCoordinate2.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Texturing/TextureCoordinate.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"

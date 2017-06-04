@@ -50,16 +50,11 @@
 
 #include "X3DRenderingSurface.h"
 
-extern "C"
-{
-#include <gdk/gdkx.h>
-}
-
 #include <glibmm/main.h>
 #include <gtkmm/container.h>
 
-#include "../Browser/ContextLock.h"
-#include "../RenderingSurface/OffScreenContext.h"
+#include "../RenderingSurface/ContextLock.h"
+#include "../RenderingSurface/RenderingContext.h"
 #include "../Rendering/FrameBuffer.h"
 
 #include <Titania/String.h>
@@ -73,14 +68,9 @@ X3DRenderingSurface::X3DRenderingSurface () :
 { }
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
-	X3DRenderingSurface (other ? other -> sharingContext : nullptr)
-{ }
-
-X3DRenderingSurface::X3DRenderingSurface (const std::shared_ptr <RenderingContext> & sharingContext) :
 	Gtk::DrawingArea (),
 	         treadId (std::this_thread::get_id ()),
-	         context (),
-	  sharingContext (sharingContext),
+	         context (createContext (other ? other -> context : nullptr)),
 	      extensions (),
 	    antialiasing (0),
 	       frameRate (60),
@@ -90,55 +80,25 @@ X3DRenderingSurface::X3DRenderingSurface (const std::shared_ptr <RenderingContex
 	    renderSignal (),
 	      connection ()
 {
-	try
-	{
-		// Enable map event.
-		add_events (Gdk::STRUCTURE_MASK);
-		set_app_paintable (true);
-	
-		createContext ();
-	
-		if (not sharingContext)
-			this -> sharingContext = context;
-	
-		ContextLock lock (this);
+	ContextLock lock (this);
 
-		glewInit ();
+	// Enable map event.
+	add_events (Gdk::STRUCTURE_MASK);
+	set_app_paintable (true);
 
-		basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
-	
-		frameBuffer -> setup ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	glewInit ();
+
+	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
+
+	frameBuffer -> setup ();
 }
 
-void
-X3DRenderingSurface::createContext ()
+std::shared_ptr <RenderingContext>
+X3DRenderingSurface::createContext (const std::shared_ptr <RenderingContext> & sharedContext)
 {
-	// Create visual attributes.
-
-	const std::vector <int32_t> visualAttributes = {
-		GLX_RGBA,
-		GLX_DOUBLEBUFFER, true, 
-		GLX_RED_SIZE,     8,
-		GLX_GREEN_SIZE,   8,
-		GLX_BLUE_SIZE,    8,
-		GLX_ALPHA_SIZE,   8,
-		GLX_DEPTH_SIZE,   24,
-		0
-	};
-
 	// Create OpenGL context.
 
-	context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-	                                      sharingContext ? sharingContext -> getContext () : None,
-	                                      true,
-	                                      visualAttributes,
-	                                      8,
-	                                      8));
+	return std::make_shared <RenderingContext> (get_display (), sharedContext);
 }
 
 bool
@@ -334,8 +294,7 @@ X3DRenderingSurface::on_unrealize ()
 {
 	// Dispose context.
 
-	context        .reset ();
-	sharingContext .reset ();
+	context .reset ();
 
 	Gtk::DrawingArea::on_unrealize ();
 }
@@ -355,8 +314,7 @@ X3DRenderingSurface::dispose ()
 
 	// Dispose context.
 
-	context        .reset ();
-	sharingContext .reset ();
+	context .reset ();
 }
 
 X3DRenderingSurface::~X3DRenderingSurface ()

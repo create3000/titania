@@ -50,6 +50,7 @@
 
 #include "Normal.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Rendering/Normal.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"

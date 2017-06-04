@@ -54,7 +54,6 @@
 #include "../../Components/Shaders/ComposedShader.h"
 #include "../../Components/Shaders/ShaderPart.h"
 #include "../../Rendering/OpenGL.h"
-#include "../ContextLock.h"
 #include "../Networking/config.h"
 #include "../BrowserOptions.h"
 #include "../X3DBrowser.h"

@@ -50,11 +50,11 @@
 
 #include "Extrusion.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
-
 
 #include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/Utility/Range.h>

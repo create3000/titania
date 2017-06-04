@@ -54,7 +54,6 @@
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/OpenGL.h"
-#include "../ContextLock.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 

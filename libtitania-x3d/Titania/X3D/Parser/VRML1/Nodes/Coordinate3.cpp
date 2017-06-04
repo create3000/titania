@@ -50,6 +50,7 @@
 
 #include "Coordinate3.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Rendering/Coordinate.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"

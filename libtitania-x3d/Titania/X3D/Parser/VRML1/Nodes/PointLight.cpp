@@ -50,6 +50,7 @@
 
 #include "PointLight.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Lighting/PointLight.h"
 #include "../../../Execution/X3DExecutionContext.h"

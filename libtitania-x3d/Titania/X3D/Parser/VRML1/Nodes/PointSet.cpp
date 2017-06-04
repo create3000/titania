@@ -50,6 +50,7 @@
 
 #include "PointSet.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Rendering/Coordinate.h"
 #include "../../../Components/Rendering/PointSet.h"

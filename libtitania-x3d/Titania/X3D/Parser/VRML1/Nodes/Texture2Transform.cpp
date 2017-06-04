@@ -50,6 +50,7 @@
 
 #include "Texture2Transform.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Texturing/TextureTransform.h"
 #include "../../../Execution/X3DExecutionContext.h"

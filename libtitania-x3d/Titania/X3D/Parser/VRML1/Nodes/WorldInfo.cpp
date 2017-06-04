@@ -50,6 +50,7 @@
 
 #include "WorldInfo.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Core/WorldInfo.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"

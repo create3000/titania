@@ -30,7 +30,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
-	Titania/X3D/Browser/ContextLock.cpp \
 	Titania/X3D/Browser/Core/Clipboard.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
@@ -600,7 +599,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderObject.cpp \
 	Titania/X3D/Rendering/X3DShapeContainer.cpp \
-	Titania/X3D/RenderingSurface/OffScreenContext.cpp \
+	Titania/X3D/RenderingSurface/ContextLock.cpp \
 	Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	Titania/X3D/Routing/Route.cpp \

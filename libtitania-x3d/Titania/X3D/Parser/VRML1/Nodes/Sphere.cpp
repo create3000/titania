@@ -50,6 +50,7 @@
 
 #include "Sphere.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Geometry3D/Sphere.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Shape/Appearance.h"

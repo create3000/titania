@@ -50,6 +50,7 @@
 
 #include "LOD.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Navigation/LOD.h"
 #include "../../../Execution/X3DExecutionContext.h"

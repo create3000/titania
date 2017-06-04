@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,46 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_SURFACE_OFF_SCREEN_CONTEXT_H__
-#define __TITANIA_X3D_RENDERING_SURFACE_OFF_SCREEN_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
 
-#include "RenderingContext.h"
+#include "../Bits/Error.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class OffScreenContext :
-	public RenderingContext
+class X3DBrowserContext;
+class X3DExecutionContext;
+class X3DRenderingSurface;
+
+class ContextLock
 {
 public:
 
-	///  @name Construction
+	ContextLock (X3DRenderingSurface* const renderingSurface)
+	throw (Error <INVALID_OPERATION_TIMING>);
 
-	OffScreenContext (Display* const display,
-	                  const GLXContext sharingContext,
-	                  const bool direct,
-	                  const std::vector <int32_t> & visualAttributes,
-	                  unsigned int width,
-	                  unsigned int height);
-
-	///  @name Destruction
-
-	virtual
-	~OffScreenContext () final override;
+	~ContextLock ();
 
 
 private:
 
-	///  @name Construction
+	class Implementation;
 
-	GLXPixmap
-	createPixmap (Display* display,
-	              unsigned int width,
-	              unsigned int height);
-
-	///  @name Members
-
-	Pixmap pixmap;
+	std::unique_ptr <Implementation> implementation;
 
 };
 

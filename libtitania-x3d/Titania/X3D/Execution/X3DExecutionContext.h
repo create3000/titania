@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DBaseNode.h"
-#include "../Browser/ContextLock.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Execution/EncodingType.h"
@@ -61,6 +60,7 @@
 #include "../Fields.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
+#include "../RenderingSurface/ContextLock.h"
 #include "../Routing/Route.h"
 #include "../Routing/RouteArray.h"
 
@@ -714,7 +714,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (getRealized ())
 	{
-		ContextLock lock (this);
+		ContextLock lock (getBrowser ());
 
 		node -> setup ();
 	}

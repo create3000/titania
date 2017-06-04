@@ -50,6 +50,7 @@
 
 #include "X3DIndexedFaceSetLightSaberObject.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"

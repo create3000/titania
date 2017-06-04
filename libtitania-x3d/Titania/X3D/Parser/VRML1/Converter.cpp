@@ -50,6 +50,7 @@
 
 #include "Converter.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Rendering/X3DNormalNode.h"
 #include "../../Components/Rendering/X3DCoordinateNode.h"

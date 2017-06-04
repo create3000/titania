@@ -50,6 +50,7 @@
 
 #include "WWWInline.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Networking/Inline.h"
 #include "../../../Execution/X3DExecutionContext.h"

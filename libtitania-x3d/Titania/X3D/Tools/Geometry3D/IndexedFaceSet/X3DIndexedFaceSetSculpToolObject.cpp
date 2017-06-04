@@ -52,6 +52,7 @@
 
 #include "../../Rendering/CoordinateTool.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"

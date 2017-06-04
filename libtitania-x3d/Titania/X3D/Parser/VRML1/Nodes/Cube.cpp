@@ -50,6 +50,7 @@
 
 #include "Cube.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Geometry3D/Box.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Shape/Appearance.h"

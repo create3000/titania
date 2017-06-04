@@ -183,10 +183,8 @@ private:
 
 	///  @name Construction
 
-	X3DRenderingSurface (const std::shared_ptr <RenderingContext> & sharingContext);
-
-	void
-	createContext ();
+	std::shared_ptr <RenderingContext>
+	createContext (const std::shared_ptr <RenderingContext> & sharedContext);
 
 	///  @name Event handler
 
@@ -197,7 +195,6 @@ private:
 
 	const std::thread::id              treadId;
 	std::shared_ptr <RenderingContext> context;
-	std::shared_ptr <RenderingContext> sharingContext;
 	std::set <std::string>             extensions;
 
 	size_t                                                  antialiasing;

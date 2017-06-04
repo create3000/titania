@@ -50,6 +50,7 @@
 
 #include "WWWAnchor.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Networking/Anchor.h"
 #include "../../../Execution/X3DExecutionContext.h"

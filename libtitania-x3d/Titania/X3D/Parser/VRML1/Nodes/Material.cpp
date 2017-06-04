@@ -50,6 +50,7 @@
 
 #include "Material.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Shape/Material.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"

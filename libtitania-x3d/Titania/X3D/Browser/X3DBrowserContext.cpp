@@ -51,7 +51,6 @@
 #include "X3DBrowserContext.h"
 
 #include "../Browser/Console.h"
-#include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
 #include "../Rendering/FrameBuffer.h"
@@ -307,10 +306,15 @@ noexcept (true)
 		finished ()  .processInterests ();
 
 		#ifdef TITANIA_DEBUG
-		const GLenum errorNum = glGetError ();
+		const auto errorNum = glGetError ();
 
 		if (errorNum not_eq GL_NO_ERROR)
-			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
+		{
+			std::clog
+				<< "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": "
+				<< gluErrorString (errorNum)
+				<< " in " << getWorldURL () << std::endl;
+		}
 		#endif
 	}
 	catch (const std::exception & exception)

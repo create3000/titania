@@ -50,6 +50,7 @@
 
 #include "GeneralCylinder.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Geometry3D/Extrusion.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Shape/Appearance.h"

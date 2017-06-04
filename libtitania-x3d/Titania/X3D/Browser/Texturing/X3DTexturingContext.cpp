@@ -54,7 +54,6 @@
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
 #include "../../Rendering/OpenGL.h"
-#include "../ContextLock.h"
 #include "../X3DBrowser.h"
 
 namespace titania {

@@ -50,6 +50,7 @@
 
 #include "BoxOptions.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/Coordinate.h"

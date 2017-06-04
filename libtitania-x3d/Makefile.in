@@ -157,7 +157,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/BrowserOptions.lo \
 	Titania/X3D/Browser/BrowserProperties.lo \
 	Titania/X3D/Browser/Console.lo \
-	Titania/X3D/Browser/ContextLock.lo \
 	Titania/X3D/Browser/Core/Clipboard.lo \
 	Titania/X3D/Browser/Core/X3DCoreContext.lo \
 	Titania/X3D/Browser/Core/X3DOptionNode.lo \
@@ -717,7 +716,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Rendering/ViewVolume.lo \
 	Titania/X3D/Rendering/X3DRenderObject.lo \
 	Titania/X3D/Rendering/X3DShapeContainer.lo \
-	Titania/X3D/RenderingSurface/OffScreenContext.lo \
+	Titania/X3D/RenderingSurface/ContextLock.lo \
 	Titania/X3D/RenderingSurface/RenderingContext.lo \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.lo \
 	Titania/X3D/Routing/Route.lo Titania/X3D/Routing/RouteArray.lo \
@@ -1092,7 +1091,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
-	Titania/X3D/Browser/ContextLock.cpp \
 	Titania/X3D/Browser/Core/Clipboard.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
@@ -1662,7 +1660,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderObject.cpp \
 	Titania/X3D/Rendering/X3DShapeContainer.cpp \
-	Titania/X3D/RenderingSurface/OffScreenContext.cpp \
+	Titania/X3D/RenderingSurface/ContextLock.cpp \
 	Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	Titania/X3D/Routing/Route.cpp \
@@ -1929,9 +1927,6 @@ Titania/X3D/Browser/BrowserProperties.lo:  \
 	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Console.lo: Titania/X3D/Browser/$(am__dirstamp) \
-	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/ContextLock.lo:  \
-	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Core/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Core
@@ -4086,7 +4081,7 @@ Titania/X3D/RenderingSurface/$(am__dirstamp):
 Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/RenderingSurface/$(DEPDIR)
 	@: > Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/RenderingSurface/OffScreenContext.lo:  \
+Titania/X3D/RenderingSurface/ContextLock.lo:  \
 	Titania/X3D/RenderingSurface/$(am__dirstamp) \
 	Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/RenderingSurface/RenderingContext.lo:  \
@@ -4769,7 +4764,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserProperties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Console.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/ContextLock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Notification.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/RenderingProperties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Selection.Plo@am__quote@
@@ -5339,7 +5333,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/X3DShapeContainer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/RenderingSurface/$(DEPDIR)/OffScreenContext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/RenderingSurface/$(DEPDIR)/ContextLock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/RenderingSurface/$(DEPDIR)/RenderingContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/RenderingSurface/$(DEPDIR)/X3DRenderingSurface.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/Route.Plo@am__quote@

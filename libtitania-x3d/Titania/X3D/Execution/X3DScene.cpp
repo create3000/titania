@@ -51,7 +51,6 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
-#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/WorldInfo.h"
 #include "../Execution/ExportedNode.h"

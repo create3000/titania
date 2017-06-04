@@ -50,6 +50,7 @@
 
 #include "IndexedFaceSet.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"

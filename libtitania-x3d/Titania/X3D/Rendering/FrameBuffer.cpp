@@ -50,8 +50,9 @@
 
 #include "FrameBuffer.h"
 
-#include "../Browser/ContextLock.h"
+#include "../Bits/Error.h"
 #include "../Rendering/ViewVolume.h"
+#include "../RenderingSurface/ContextLock.h"
 
 #include <Titania/LOG.h>
 #include <stdexcept>

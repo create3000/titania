@@ -51,7 +51,6 @@
 #include "Selection.h"
 
 #include "../Bits/Cast.h"
-#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"
 #include "../Components/Layering/LayerSet.h"

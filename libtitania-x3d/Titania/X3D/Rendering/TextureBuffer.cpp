@@ -50,7 +50,8 @@
 
 #include "TextureBuffer.h"
 
-#include "../Browser/ContextLock.h"
+#include "../Bits/Error.h"
+#include "../RenderingSurface/ContextLock.h"
 
 #include <stdexcept>
 

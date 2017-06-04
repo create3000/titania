@@ -624,7 +624,6 @@
     <None Include="Titania\X3D\Tools\Geospatial\GeoLocationTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoTransformTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
-    <None Include="Titania\X3D\Browser\ContextLock.h" />
     <None Include="Titania\X3D\Rendering\FrameBuffer.h" />
     <None Include="Titania\X3D\Tools\Layout\LayoutGroupTool.h" />
     <None Include="Titania\X3D\Tools\Grids\X3DGridTool.h" />
@@ -949,9 +948,9 @@
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonMode.h" />
-    <None Include="Titania\X3D\RenderingSurface\OffScreenContext.h" />
     <None Include="Titania\X3D\RenderingSurface\RenderingContext.h" />
     <None Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.h" />
+    <None Include="Titania\X3D\RenderingSurface\ContextLock.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1461,7 +1460,6 @@
     <Compile Include="Titania\X3D\Editing\Selection\FaceSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\Clipboard.cpp" />
     <Compile Include="Titania\X3D\Base\International.cpp" />
-    <Compile Include="Titania\X3D\Browser\ContextLock.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Sound\SoundTool.cpp" />
@@ -1638,9 +1636,9 @@
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonMode.cpp" />
-    <Compile Include="Titania\X3D\RenderingSurface\OffScreenContext.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\RenderingContext.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.cpp" />
+    <Compile Include="Titania\X3D\RenderingSurface\ContextLock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

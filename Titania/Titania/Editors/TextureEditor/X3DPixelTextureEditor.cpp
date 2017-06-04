@@ -52,8 +52,6 @@
 
 #include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
-
 namespace titania {
 namespace puck {
 

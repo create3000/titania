@@ -50,7 +50,6 @@
 
 #include "X3DCoreContext.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/OpenGL.h"
 

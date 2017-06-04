@@ -127,13 +127,13 @@ BrowserView::set_dependent_browser ()
 {
 	try
 	{
-		browser -> initialized () .removeInterest (&BrowserView::set_dependent_browser, this);	
-		browser -> set_opacity (1);
-
 		// Setup dependent browser.
 
-		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
+		browser -> initialized () .removeInterest (&BrowserView::set_dependent_browser, this);	
 		browser -> signal_draw () .connect (sigc::mem_fun (this, &BrowserView::on_draw));
+		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
+		browser -> setFrameRate (30);
+		browser -> set_opacity (1);
 
 		// Setup scene.
 
@@ -242,8 +242,21 @@ BrowserView::on_map ()
 bool
 BrowserView::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
+	if (browser -> get_width () < 50)
+		return false;
+
+	if (browser -> get_height () < 30)
+		return false;
+
+	const auto state   = browser -> get_style_context () -> get_state ();
+	const auto margin  = browser -> get_style_context () -> get_margin (state);
+	const auto border  = browser -> get_style_context () -> get_border (state);
+	const auto padding = browser -> get_style_context () -> get_padding (state);
+	const auto left    = margin .get_left () + border .get_left () + padding .get_left ();
+	const auto top     = margin .get_top ()  + border .get_top ()  + padding .get_top ();
+
 	cairo -> set_font_size (10);
-	cairo -> move_to (10, 20);
+	cairo -> move_to (left + 10, top + 20);
 	cairo -> set_source_rgb (0, 0, 0); 
 
 	cairo -> select_font_face ("sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);

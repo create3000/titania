@@ -50,6 +50,7 @@
 
 #include "PerspectiveCamera.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Navigation/Viewpoint.h"
 #include "../../../Execution/X3DExecutionContext.h"

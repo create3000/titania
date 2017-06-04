@@ -50,7 +50,6 @@
 
 #include "Browser.h"
 
-#include "../Browser/ContextLock.h"
 #include "../Browser/KeyDeviceSensor/KeyDevice.h"
 #include "../Browser/Navigation/ExamineViewer.h"
 #include "../Browser/Navigation/FlyViewer.h"

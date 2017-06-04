@@ -50,6 +50,7 @@
 
 #include "Separator.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"

@@ -50,38 +50,109 @@
 
 #include "RenderingContext.h"
 
-#include <stdexcept>
+#include "../Bits/Error.h"
+
+extern "C"
+{
+#include <gdk/gdkx.h>
+}
 
 namespace titania {
 namespace X3D {
 
-RenderingContext::RenderingContext (Display* const display,
-                  const GLXDrawable drawable,
-                  const GLXContext sharingContext,
-                  const bool direct,
-                  const std::vector <int32_t> & visualAttributes) :
-	         display (display),
-	        drawable (drawable),
-	visualAttributes (visualAttributes),
-	      visualInfo (getVisualInfo ()),
-	         context (create (sharingContext, direct))
+RenderingContext::RenderingContext (const Glib::RefPtr <Gdk::Display> & display,
+                                    const std::shared_ptr <RenderingContext> & sharedContext) :
+	sharedContext (sharedContext),
+	      display (getDisplay (display)),
+	       pixmap (createPixmap (getDisplay (display), 1, 1)),
+	     drawable (createDrawable (getDisplay (display), pixmap)),
+	   visualInfo (createVisualInfo (getDisplay (display))),
+	      context (createContext (getDisplay (display), visualInfo, sharedContext, true))
 { }
 
-GLXContext
-RenderingContext::create (const GLXContext sharingContext, const bool direct)
+Display*
+RenderingContext::getDisplay (const Glib::RefPtr <Gdk::Display> & display) const
 {
-	const auto context = glXCreateContext (getDisplay (), visualInfo, sharingContext, direct);
+	return gdk_x11_display_get_xdisplay (display -> gobj ());
+}
 
-	if (not context)
-		throw std::runtime_error ("RenderingContext::RenderingContext: Couldn't create context.");
+Pixmap
+RenderingContext::createPixmap (Display* const display,
+                                const size_t width,
+                                const size_t height)
+{
+	const auto screen   = XDefaultScreenOfDisplay (display);
+	const auto drawable = RootWindowOfScreen (screen);
+	const auto depth    = DefaultDepthOfScreen (screen);
+	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
 
-	return context;
+	if (not pixmap)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createPixmap: Couldn't create pixmap.");
+
+	return pixmap;
+}
+
+GLXPixmap
+RenderingContext::createDrawable (Display* const display,
+                                  const Pixmap pixmap)
+{
+	static int32_t fbAttributes [] = {
+		GLX_DRAWABLE_TYPE,
+		GLX_PIXMAP_BIT,
+		GLX_X_RENDERABLE, true,
+		GLX_RED_SIZE,     8,
+		GLX_GREEN_SIZE,   8,
+		GLX_BLUE_SIZE,    8,
+		GLX_ALPHA_SIZE,   8,
+		GLX_DEPTH_SIZE,   24, 
+		None
+	};
+
+	int32_t count;
+
+	const auto nscreen   = DefaultScreen (display);
+	const auto fbConfigs = glXChooseFBConfig (display, nscreen, fbAttributes, &count);
+
+	if (not fbConfigs)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createDrawable: No frame buffer configuration found.");
+
+	const auto drawable = glXCreatePixmap (display, fbConfigs [0], pixmap, nullptr);
+
+	//XFree (fbConfigs);
+
+	if (not drawable)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createDrawable: Couldn't create GLX pixmap.");
+	
+	return drawable;
 }
 
 XVisualInfo*
-RenderingContext::getVisualInfo () const
+RenderingContext::createVisualInfo (Display* const display)
 {
-	return glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <RenderingContext*> (this) -> visualAttributes .data ());
+	// Create visual attributes.
+
+	static int32_t visualAttributes [] = {
+		GLX_RGBA,
+		GLX_RED_SIZE,   8,
+		GLX_GREEN_SIZE, 8,
+		GLX_BLUE_SIZE,  8,
+		GLX_ALPHA_SIZE, 8,
+		GLX_DEPTH_SIZE, 24,
+		0
+	};
+
+	return glXChooseVisual (display, DefaultScreen (display), visualAttributes);
+}
+
+GLXContext
+RenderingContext::createContext (Display* const display, XVisualInfo* const visualInfo, const std::shared_ptr <RenderingContext> & sharedContext, const bool direct)
+{
+	const auto context = glXCreateContext (display, visualInfo, sharedContext ? sharedContext -> context : NULL, direct);
+
+	if (not context)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::RenderingContext: Couldn't create OpenGL context.");
+
+	return context;
 }
 
 int32_t
@@ -95,15 +166,9 @@ RenderingContext::getConfig (const int32_t key) const
 }
 
 bool
-RenderingContext::makeCurrent () const
+RenderingContext::makeCurrent ()
 {
 	return glXMakeCurrent (display, drawable, context);
-}
-
-void
-RenderingContext::swapBuffers () const
-{
-	glXSwapBuffers (display, drawable);
 }
 
 void
@@ -128,6 +193,12 @@ RenderingContext::~RenderingContext ()
 
 	if (visualInfo)
 	   XFree (visualInfo);
+
+	if (drawable)
+		glXDestroyPixmap (display, drawable);
+
+	if (pixmap)
+		XFreePixmap (display, pixmap);
 }
 
 } // X3D

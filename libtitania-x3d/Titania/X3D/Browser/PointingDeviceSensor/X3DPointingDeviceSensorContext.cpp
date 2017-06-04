@@ -56,7 +56,6 @@
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
 
-#include "../ContextLock.h"
 #include "../Selection.h"
 #include "../X3DBrowser.h"
 

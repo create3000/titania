@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"

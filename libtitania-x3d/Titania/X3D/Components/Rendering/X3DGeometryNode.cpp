@@ -50,7 +50,6 @@
 
 #include "X3DGeometryNode.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"

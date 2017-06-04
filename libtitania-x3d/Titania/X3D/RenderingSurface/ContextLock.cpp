@@ -48,45 +48,75 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#include "ContextLock.h"
 
-#include "../Bits/Error.h"
+#include "../RenderingSurface/X3DRenderingSurface.h"
 
-#include <memory>
+#include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
-
-class ContextLock
+class ContextLock::Implementation
 {
 public:
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
+	Implementation (X3DRenderingSurface* const renderingSurface)
 	throw (Error <INVALID_OPERATION_TIMING>);
 
-	ContextLock (X3DBrowserContext* const browserContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
-
-	ContextLock (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>);
-
-	~ContextLock ();
+	~Implementation ();
 
 
 private:
 
-	class Implementation;
-
-	std::unique_ptr <Implementation> implementation;
+	Display* const    xDisplay;
+	const GLXDrawable xDrawable;
+	const GLXContext  xContext;
 
 };
 
+ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface)
+throw (Error <INVALID_OPERATION_TIMING>) :
+	 xDisplay (glXGetCurrentDisplay ()),
+	xDrawable (glXGetCurrentDrawable ()),
+	 xContext (glXGetCurrentContext ())
+{
+	if (renderingSurface -> makeCurrent ())
+	   return;
+
+	// Throw an exception if it cannot make current!  The destructor is then not called.
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+ContextLock::Implementation::~Implementation ()
+{
+	if (xDisplay)
+		glXMakeCurrent (xDisplay, xDrawable, xContext);
+
+	else
+	{
+		// Or use XOpenDisplay (NULL); to get a display;
+		const auto xCurrentDisplay = glXGetCurrentDisplay ();
+
+		if (xCurrentDisplay)
+			glXMakeCurrent (xCurrentDisplay, None, nullptr);
+	}
+}
+
+/**
+ *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
+ *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
+ *
+ *  @param  renderingSurface  A valid X3DRenderingSurface instance.
+ */
+ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface)
+throw (Error <INVALID_OPERATION_TIMING>) :
+	 implementation (new Implementation (renderingSurface))
+{ }
+
+ContextLock::~ContextLock ()
+{ }
+
 } // X3D
 } // titania
-
-#endif
