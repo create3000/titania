@@ -63,16 +63,15 @@ public:
 
 	///  @name Construction
 
-	TextureBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const bool withColorBuffer = true);
+	TextureBuffer (X3DRenderingSurface* const renderingSurface,
+	               const size_t width,
+	               const size_t height,
+	               const bool withColorBuffer = true);
 
 	void
 	setup ();
 
 	///  @name Member access
-
-	void
-	setBrowser (X3DRenderingSurface* const value)
-	{ renderingSurface = value; }
 
 	size_t
 	getWidth () const
@@ -81,10 +80,6 @@ public:
 	size_t
 	getHeight () const
 	{ return height; }
-
-	GLuint
-	getId () const
-	{ return id; }
 
 	GLuint
 	getColorTextureId () const
@@ -111,15 +106,15 @@ private:
 
 	///  @name Members
 
-	X3DRenderingSurface* renderingSurface;
-	size_t               width;
-	size_t               height;
-	bool                 withColorBuffer;
-	GLuint               id;
-	GLuint               colorTextureId;
-	GLuint               depthTextureId;
-	GLint                frameBuffer;
-	GLint                viewport [4];
+	X3DRenderingSurface* const renderingSurface;
+	const size_t               width;
+	const size_t               height;
+	const bool                 withColorBuffer;
+	GLuint                     id;
+	GLuint                     colorTextureId;
+	GLuint                     depthTextureId;
+	GLint                      frameBuffer;
+	GLint                      viewport [4];
 
 };
 

@@ -129,11 +129,6 @@ Browser::initialize ()
 
 		X3DBrowser::initialize ();
 	
-		get_style_context () -> add_class ("background");
-		get_style_context () -> add_class ("titania-surface");
-	
-		//swapInterval (0);
-	
 		viewer         -> setup ();
 		keyDevice      -> setup ();
 		pointingDevice -> setup ();

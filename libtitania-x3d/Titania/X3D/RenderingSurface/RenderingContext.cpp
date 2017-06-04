@@ -62,39 +62,34 @@ namespace X3D {
 
 RenderingContext::RenderingContext (const Glib::RefPtr <Gdk::Display> & display,
                                     const std::shared_ptr <RenderingContext> & sharedContext) :
+	      display (display),
 	sharedContext (sharedContext),
-	      display (getDisplay (display)),
-	       pixmap (createPixmap (getDisplay (display), 1, 1)),
-	     drawable (createDrawable (getDisplay (display), pixmap)),
-	   visualInfo (createVisualInfo (getDisplay (display))),
-	      context (createContext (getDisplay (display), visualInfo, sharedContext, true))
+	     xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())),
+	      xPixmap (createPixmap (xDisplay, 1, 1)),
+	    xDrawable (createDrawable (xDisplay, xPixmap)),
+	  xVisualInfo (createVisualInfo (xDisplay)),
+	     xContext (createContext (xDisplay, xVisualInfo, sharedContext, true))
 { }
 
-Display*
-RenderingContext::getDisplay (const Glib::RefPtr <Gdk::Display> & display) const
-{
-	return gdk_x11_display_get_xdisplay (display -> gobj ());
-}
-
 Pixmap
-RenderingContext::createPixmap (Display* const display,
+RenderingContext::createPixmap (Display* const xDisplay,
                                 const size_t width,
                                 const size_t height)
 {
-	const auto screen   = XDefaultScreenOfDisplay (display);
-	const auto drawable = RootWindowOfScreen (screen);
-	const auto depth    = DefaultDepthOfScreen (screen);
-	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
+	const auto screen    = XDefaultScreenOfDisplay (xDisplay);
+	const auto xDrawable = RootWindowOfScreen (screen);
+	const auto depth     = DefaultDepthOfScreen (screen);
+	const auto xPixmap   = XCreatePixmap (xDisplay, xDrawable, width, height, depth);
 
-	if (not pixmap)
-		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createPixmap: Couldn't create pixmap.");
+	if (not xPixmap)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createPixmap: Couldn't create xPixmap.");
 
-	return pixmap;
+	return xPixmap;
 }
 
 GLXPixmap
-RenderingContext::createDrawable (Display* const display,
-                                  const Pixmap pixmap)
+RenderingContext::createDrawable (Display* const xDisplay,
+                                  const Pixmap xPixmap)
 {
 	static int32_t fbAttributes [] = {
 		GLX_DRAWABLE_TYPE,
@@ -110,24 +105,24 @@ RenderingContext::createDrawable (Display* const display,
 
 	int32_t count;
 
-	const auto nscreen   = DefaultScreen (display);
-	const auto fbConfigs = glXChooseFBConfig (display, nscreen, fbAttributes, &count);
+	const auto nscreen   = DefaultScreen (xDisplay);
+	const auto fbConfigs = glXChooseFBConfig (xDisplay, nscreen, fbAttributes, &count);
 
 	if (not fbConfigs)
 		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createDrawable: No frame buffer configuration found.");
 
-	const auto drawable = glXCreatePixmap (display, fbConfigs [0], pixmap, nullptr);
+	const auto xDrawable = glXCreatePixmap (xDisplay, fbConfigs [0], xPixmap, nullptr);
 
-	//XFree (fbConfigs);
+	XFree (fbConfigs);
 
-	if (not drawable)
-		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createDrawable: Couldn't create GLX pixmap.");
+	if (not xDrawable)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::createDrawable: Couldn't create GLX xPixmap.");
 	
-	return drawable;
+	return xDrawable;
 }
 
 XVisualInfo*
-RenderingContext::createVisualInfo (Display* const display)
+RenderingContext::createVisualInfo (Display* const xDisplay)
 {
 	// Create visual attributes.
 
@@ -141,64 +136,57 @@ RenderingContext::createVisualInfo (Display* const display)
 		0
 	};
 
-	return glXChooseVisual (display, DefaultScreen (display), visualAttributes);
+	return glXChooseVisual (xDisplay, DefaultScreen (xDisplay), visualAttributes);
 }
 
 GLXContext
-RenderingContext::createContext (Display* const display, XVisualInfo* const visualInfo, const std::shared_ptr <RenderingContext> & sharedContext, const bool direct)
+RenderingContext::createContext (Display* const xDisplay,
+                                 XVisualInfo* const xVisualInfo,
+                                 const std::shared_ptr <RenderingContext> & sharedContext,
+                                 const bool direct)
 {
-	const auto context = glXCreateContext (display, visualInfo, sharedContext ? sharedContext -> context : NULL, direct);
+	const auto xContext = glXCreateContext (xDisplay, xVisualInfo, sharedContext ? sharedContext -> xContext : NULL, direct);
 
-	if (not context)
-		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::RenderingContext: Couldn't create OpenGL context.");
+	if (not xContext)
+		throw Error <INSUFFICIENT_CAPABILITIES> ("RenderingContext::RenderingContext: Couldn't create OpenGL xContext.");
 
-	return context;
+	return xContext;
 }
 
-int32_t
-RenderingContext::getConfig (const int32_t key) const
-{
-	int32_t value;
-
-	glXGetConfig (display, visualInfo, key, &value);
-
-	return value;
-}
+//int32_t
+//RenderingContext::getConfig (const int32_t key) const
+//{
+//	int32_t value;
+//
+//	glXGetConfig (xDisplay, xVisualInfo, key, &value);
+//
+//	return value;
+//}
 
 bool
 RenderingContext::makeCurrent ()
 {
-	return glXMakeCurrent (display, drawable, context);
-}
-
-void
-RenderingContext::dispose ()
-{
-	if (context)
-	{
-		if (glXGetCurrentContext () == context)
-			glXMakeCurrent (display, None, nullptr);
-	}
+	return glXMakeCurrent (xDisplay, xDrawable, xContext);
 }
 
 RenderingContext::~RenderingContext ()
 {
-	if (context)
+	if (xContext)
 	{
-		if (glXGetCurrentContext () == context)
-			glXMakeCurrent (display, None, nullptr);
+		if (glXGetCurrentContext () == xContext)
+			glXMakeCurrent (xDisplay, None, nullptr);
 
-		glXDestroyContext (display, context);
+		glXDestroyContext (xDisplay, xContext);
 	}
 
-	if (visualInfo)
-	   XFree (visualInfo);
+	if (xVisualInfo)
+	   XFree (xVisualInfo);
 
-	if (drawable)
-		glXDestroyPixmap (display, drawable);
+	if (xDrawable)
+		glXDestroyPixmap (xDisplay, xDrawable);
 
-	if (pixmap)
-		XFreePixmap (display, pixmap);
+	if (xPixmap)
+		XFreePixmap (xDisplay, xPixmap);
 }
 
 } // X3D

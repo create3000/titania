@@ -66,16 +66,16 @@ public:
 
 	///  @name Construction
 
-	FrameBuffer (X3DRenderingSurface* const renderingSurface, const size_t width, const size_t height, const size_t samples, const bool withColorBuffer = true);
+	FrameBuffer (X3DRenderingSurface* const renderingSurface,
+	             const size_t width,
+	             const size_t height,
+	             const size_t samples,
+	             const bool withColorBuffer = true);
 
 	void
 	setup ();
 
 	///  @name Member access
-
-	void
-	setBrowser (X3DRenderingSurface* const value)
-	{ renderingSurface = value; }
 
 	size_t
 	getWidth () const
@@ -119,11 +119,11 @@ private:
 
 	///  @name Members
 
-	X3DRenderingSurface*          renderingSurface;
-	size_t                        width;
-	size_t                        height;
+	X3DRenderingSurface* const    renderingSurface;
+	const size_t                  width;
+	const size_t                  height;
 	size_t                        samples;
-	bool                          withColorBuffer;
+	const bool                    withColorBuffer;
 	GLuint                        id;
 	GLuint                        colorBufferId;
 	GLuint                        depthBufferId;

@@ -720,7 +720,16 @@ X3DBrowserWidget::setTransparent (const bool value)
 {
 	if (value)
 	{
-		Glib::RefPtr <Gdk::Visual> visual = getWindow () .get_screen () -> get_rgba_visual ();
+		auto visual = getWindow () .get_screen () -> get_rgba_visual ();
+
+		if (not visual)
+			visual = getWindow () .get_screen () -> get_system_visual ();
+
+		gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());
+	}
+	else
+	{
+		const auto visual = getWindow () .get_screen () -> get_system_visual ();
 
 		if (visual)
 			gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());

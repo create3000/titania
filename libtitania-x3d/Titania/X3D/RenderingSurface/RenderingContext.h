@@ -67,15 +67,6 @@ public:
 	RenderingContext (const Glib::RefPtr <Gdk::Display> & display,
 	                  const std::shared_ptr <RenderingContext> & sharedContext);
 
-	///  @name Member access
-
-	int32_t
-	getConfig (const int32_t key) const;
-
-	const std::shared_ptr <RenderingContext> &
-	getSharedContext () const
-	{ return sharedContext; }
-
 	///  @name Operations
 
 	bool
@@ -83,11 +74,6 @@ public:
 
 	///  @name Destruction
 
-	virtual
-	void
-	dispose ();
-
-	virtual
 	~RenderingContext ();
 
 
@@ -95,29 +81,31 @@ private:
 
 	///  @name Construction
 
-	Display*
-	getDisplay (const Glib::RefPtr <Gdk::Display> & display) const;
-
 	Pixmap
-	createPixmap (Display* const display, const size_t width, const size_t height);
+	createPixmap (Display* const xDisplay, const size_t width, const size_t height);
 
 	GLXPixmap
-	createDrawable (Display* const display, const Pixmap pixmap);
+	createDrawable (Display* const xDisplay, const Pixmap xPixmap);
 
 	XVisualInfo*
-	createVisualInfo (Display* const display);
+	createVisualInfo (Display* const xDisplay);
 
 	GLXContext
-	createContext (Display* display, XVisualInfo* const visualInfo, const std::shared_ptr <RenderingContext> & sharedContext, const bool direct);
+	createContext (Display* const xDisplay,
+	               XVisualInfo* const xVisualInfo,
+	               const std::shared_ptr <RenderingContext> & sharedContext,
+	               const bool direct);
 
 	///  @name Members
 
-	std::shared_ptr <RenderingContext> sharedContext;
-	Display* const                     display;
-	Pixmap                             pixmap;
-	GLXDrawable                        drawable;
-	XVisualInfo*                       visualInfo;
-	GLXContext                         context;
+	const Glib::RefPtr <Gdk::Display>        display;
+	const std::shared_ptr <RenderingContext> sharedContext;
+
+	Display* const xDisplay;
+	Pixmap         xPixmap;
+	GLXDrawable    xDrawable;
+	XVisualInfo*   xVisualInfo;
+	GLXContext     xContext;
 
 };
 

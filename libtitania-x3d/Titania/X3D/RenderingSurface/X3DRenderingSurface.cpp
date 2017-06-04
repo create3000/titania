@@ -52,6 +52,7 @@
 
 #include <glibmm/main.h>
 #include <gtkmm/container.h>
+#include <gdkmm/screen.h>
 
 #include "../RenderingSurface/ContextLock.h"
 #include "../RenderingSurface/RenderingContext.h"
@@ -70,7 +71,7 @@ X3DRenderingSurface::X3DRenderingSurface () :
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	Gtk::DrawingArea (),
 	         treadId (std::this_thread::get_id ()),
-	         context (createContext (other ? other -> context : nullptr)),
+	         context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
 	      extensions (),
 	    antialiasing (0),
 	       frameRate (60),
@@ -85,20 +86,13 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	// Enable map event.
 	add_events (Gdk::STRUCTURE_MASK);
 	set_app_paintable (true);
+	get_style_context () -> add_class ("titania-surface");
 
 	glewInit ();
 
 	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
 
 	frameBuffer -> setup ();
-}
-
-std::shared_ptr <RenderingContext>
-X3DRenderingSurface::createContext (const std::shared_ptr <RenderingContext> & sharedContext)
-{
-	// Create OpenGL context.
-
-	return std::make_shared <RenderingContext> (get_display (), sharedContext);
 }
 
 bool

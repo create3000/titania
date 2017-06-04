@@ -74,37 +74,45 @@ public:
 	bool
 	isExtensionAvailable (const std::string & name) const;
 
+	///  Sets the number of antialiasing samples, default is 0.
 	void
 	setAntialiasing (const size_t samples)
 	{ antialiasing = samples; }
 
+	///  Returns the number of antialiasing samples.
 	size_t
 	getAntialiasing () const
 	{ return antialiasing; }
 
+	///  Sets the the disired frame rate, default is 60.
 	void
 	setFrameRate (const size_t value)
 	{ frameRate = value; }
 
+	///  Returns the the disired frame rate.
 	size_t
 	getFrameRate () const
 	{ return frameRate; }
 
 	///  @name Operations
 
+	///  Marks the currently rendered data (if any) as invalid, and queues a redraw of the widget.
 	void
 	queue_render ();
 
 	///  @name Signals
 
+	///  Signal setup.
 	const sigc::signal <void> &
 	signal_setup () const
 	{ return setupSignal; }
 
+	///  Signal reshape.
 	const sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> &
 	signal_reshape () const
 	{ return reshapeSignal; }
 
+	///  Signal render.
 	const sigc::signal <bool> &
 	signal_render () const
 	{ return renderSignal; }
@@ -180,11 +188,6 @@ protected:
 
 
 private:
-
-	///  @name Construction
-
-	std::shared_ptr <RenderingContext>
-	createContext (const std::shared_ptr <RenderingContext> & sharedContext);
 
 	///  @name Event handler
 
