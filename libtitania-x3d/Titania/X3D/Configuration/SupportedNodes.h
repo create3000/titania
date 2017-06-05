@@ -51,11 +51,9 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 
+#include "../Basic/X3DBaseNode.h"
 #include "../Bits/Error.h"
-#include "../Configuration/BaseNodeArray.h"
-
-#include <functional>
-#include <mutex>
+#include "../Configuration/SupportedNodesArray.h"
 
 namespace titania {
 namespace X3D {
@@ -64,33 +62,25 @@ class SupportedNodes
 {
 public:
 
-	///  @name Member types
-
-	using Function = std::function <X3DBaseNode* (X3DExecutionContext* const executionContext)>;
-
 	///  @name Construction
 
 	SupportedNodes (X3DExecutionContext* const executionContext);
 
-	///  @name Operations
+	///  @name Member access
 
 	void
-	addNode (const std::string & typeName, const Function & function)
+	addNode (const std::string & typeName, const X3DBaseNode* const node)
 	throw (Error <INVALID_NAME>);
 
 	const X3DBaseNode*
 	getNode (const std::string & typeName) const
-	throw (Error <INVALID_NAME>);
+	throw (Error <NOT_SUPPORTED>);
 
-	const BaseNodeArray &
+	const SupportedNodesArray &
 	getNodes () const;
 
 	///  @name Destructions
 
-	void
-	dispose ();
-
-	virtual
 	~SupportedNodes ();
 
 
@@ -98,10 +88,7 @@ private:
 
 	///  @name Members
 
-	X3DExecutionContext* const       executionContext;
-	std::map <std::string, Function> functions;
-	BaseNodeArray                    nodes;
-	std::mutex                       mutex;
+	SupportedNodesArray nodes;
 
 };
 

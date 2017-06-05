@@ -31,10 +31,10 @@
 
 #include "../Browser/Console.h"
 #include "../Browser/X3DBrowserContext.h"
-#include "../Configuration/SupportedComponents.h"
-#include "../Configuration/SupportedFields.h"
-#include "../Configuration/SupportedNodes.h"
-#include "../Configuration/SupportedProfiles.h"
+#include "../Configuration/ComponentInfoArray.h"
+#include "../Configuration/ProfileInfoArray.h"
+#include "../Configuration/SupportedFieldsArray.h"
+#include "../Configuration/SupportedNodesArray.h"
 #include "../Types/Speed.h"
 
 #include <Titania/Stream/InputFileStream.h>
@@ -99,35 +99,39 @@ public:
 
 	const X3DFieldDefinition*
 	getSupportedField (const std::string &) const
-	throw (Error <INVALID_NAME>);
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
 
-	const SupporteFieldArray &
+	const SupportedFieldsArray &
 	getSupportedFields () const
 	throw (Error <DISPOSED>);
 
 	const X3DBaseNode*
 	getSupportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>);
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
 
-	const BaseNodeArray &
+	const SupportedNodesArray &
 	getSupportedNodes () const
 	throw (Error <DISPOSED>);
+
+	ComponentInfoPtr
+	getComponent (const std::string &, const size_t) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
 
 	const ComponentInfoArray &
 	getSupportedComponents () const
 	throw (Error <DISPOSED>);
 
+	const ProfileInfoPtr &
+	getProfile (const std::string &) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>);
+
 	const ProfileInfoArray &
 	getSupportedProfiles () const
 	throw (Error <DISPOSED>);
-
-	ComponentInfoPtr
-	getComponent (const std::string &, const size_t) const
-	throw (Error <NOT_SUPPORTED>);
-
-	const ProfileInfoPtr &
-	getProfile (const std::string &) const
-	throw (Error <NOT_SUPPORTED>);
 
 	///  @name Execution context handling
 
@@ -302,7 +306,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowser (const X3DBrowserContextPtr & sharedContext, const MFString &, const MFString &);
+	X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString &, const MFString &);
 
 	virtual
 	void
@@ -362,10 +366,10 @@ private:
 	Speed <double> currentSpeed;
 	double         currentFrameRate;
 
-	SupportedFields     supportedFields;
-	SupportedNodes      supportedNodes;
-	SupportedComponents supportedComponents;
-	SupportedProfiles   supportedProfiles;
+	std::shared_ptr <SupportedFields>     supportedFields;
+	std::shared_ptr <SupportedNodes>      supportedNodes;
+	std::shared_ptr <SupportedComponents> supportedComponents;
+	std::shared_ptr <SupportedProfiles>   supportedProfiles;
 
 	BrowserOptionsPtr      browserOptions;
 	BrowserPropertiesPtr   browserProperties;

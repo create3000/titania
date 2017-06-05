@@ -546,12 +546,9 @@ X3DBrowserWidget::close (const NotebookPagePtr page)
 
 	// Remove browser completely.
 
-	page -> shutdown ();
-
-	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
-	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
-
 	// Open recent browser if browser is the currentBrowser.
+
+	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
 
 	if (browser == getCurrentBrowser ())
 	{
@@ -560,6 +557,11 @@ X3DBrowserWidget::close (const NotebookPagePtr page)
 		if (not recentPages .empty ())
 			getBrowserNotebook () .set_current_page (recentPages .back () -> getPageNumber ());
 	}
+
+	// Remove page.
+
+	page -> shutdown ();
+	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
 
 	if (pages .empty ())
 		openRecent ();
@@ -740,6 +742,7 @@ void
 X3DBrowserWidget::dispose ()
 {
 	pages       .clear ();
+	page        .reset ();
 	recentPages .clear ();
 	iconFactory .reset ();
 	recentView  .reset ();

@@ -169,6 +169,11 @@ NotebookPage::shutdown ()
 
 NotebookPage::~NotebookPage ()
 {
+   view1 .reset ();
+   view2 .reset ();
+   view3 .reset ();
+   view4 .reset ();
+
 	dispose ();
 }
 

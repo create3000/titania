@@ -141,6 +141,10 @@ protected:
 
 	///  @name Operations
 
+	const std::shared_ptr <RenderingContext> &
+	getContext () const
+	{ return context; }
+
 	bool
 	makeCurrent ();
 
@@ -207,6 +211,7 @@ private:
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
 	sigc::signal <bool>                                     renderSignal;
 	sigc::connection                                        connection;
+	bool                                                    rendering;
 
 };
 

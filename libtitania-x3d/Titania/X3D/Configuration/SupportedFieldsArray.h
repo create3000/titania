@@ -48,14 +48,22 @@
  *
  ******************************************************************************/
 
-#include "SupporteFieldArray.h"
+#ifndef __TITANIA_X3D_CONFIGURATION_FIELDS_TYPES_ARRAY_H__
+#define __TITANIA_X3D_CONFIGURATION_FIELDS_TYPES_ARRAY_H__
+
+#include "../Basic/X3DFieldDefinition.h"
+
+#include <map>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-//
+using SupportedFieldsArray = std::map <std::string, const X3DFieldDefinition*>;
 
 } // X3D
 } // titania
 
-template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
+extern template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
+
+#endif

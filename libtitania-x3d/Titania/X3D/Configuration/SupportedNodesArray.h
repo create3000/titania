@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,21 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_CONFIGURATION_FIELD_TYPES_ARRAY_H__
-#define __TITANIA_X3D_CONFIGURATION_FIELD_TYPES_ARRAY_H__
+#ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_ARRAY_H__
+#define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_ARRAY_H__
 
-#include "../Basic/X3DFieldDefinition.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Bits/Error.h"
+
 #include <map>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-using SupporteFieldArray = std::map <std::string, const X3DFieldDefinition*>;
+using SupportedNodesArray = std::map <std::string, const X3DBaseNode*>;
 
 } // X3D
 } // titania
-
-extern template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
 
 #endif

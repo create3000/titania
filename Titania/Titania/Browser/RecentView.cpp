@@ -260,7 +260,6 @@ RecentView::set_url (const X3D::SFString & url)
 			getBrowserWindow () -> getCurrentBrowser () -> endUpdate ();
 
 		getBrowserWindow () -> getSelection () -> setEnabled (getBrowserWindow () -> getSelection () -> getEnabled ());
-
 		getBrowserWindow () -> load (URL);
 	}
 }

@@ -239,23 +239,30 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (typeName);
-
-	//if (not hasComponent (declaration -> getComponent ()))
-	//throw Error <INVALID_NAME> ("Node type '" + typeName + "' not supported by profile or component specification.");
-
-	SFNode node (declaration -> create (this));
-
-	if (getRealized ())
+	try
 	{
-		ContextLock lock (getBrowser ());
-
-		node -> setup ();
+		const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (typeName);
+	
+		//if (not hasComponent (declaration -> getComponent ()))
+		//throw Error <INVALID_NAME> ("Node type '" + typeName + "' not supported by profile or component specification.");
+	
+		SFNode node (declaration -> create (this));
+	
+		if (getRealized ())
+		{
+			ContextLock lock (getBrowser ());
+	
+			node -> setup ();
+		}
+		//else
+		//	addUninitializedNode (node);
+	
+		return node;
 	}
-	//else
-	//	addUninitializedNode (node);
-
-	return node;
+	catch (const Error <NOT_SUPPORTED> & error)
+	{
+		throw Error <INVALID_NAME> (error .what ());
+	}
 }
 
 X3DPrototypeInstancePtr

@@ -169,6 +169,17 @@ RenderingContext::makeCurrent ()
 	return glXMakeCurrent (xDisplay, xDrawable, xContext);
 }
 
+void
+RenderingContext::clearCurrent ()
+{
+	// Or use XOpenDisplay (NULL); to get a display;
+	// Or use Gtk default display
+	const auto xCurrentDisplay = glXGetCurrentDisplay ();
+
+	if (xCurrentDisplay)
+		glXMakeCurrent (xCurrentDisplay, None, nullptr);
+}
+
 RenderingContext::~RenderingContext ()
 {
 	if (xContext)

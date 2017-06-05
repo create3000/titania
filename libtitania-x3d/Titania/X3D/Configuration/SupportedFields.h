@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_FIELDS_H__
 
 #include "../Bits/Error.h"
-#include "../Configuration/SupporteFieldArray.h"
+#include "../Configuration/SupportedFieldsArray.h"
 
 namespace titania {
 namespace X3D {
@@ -61,7 +61,11 @@ class SupportedFields
 {
 public:
 
+	///  @name Construction
+
 	SupportedFields ();
+
+	///  @name Member access
 
 	void
 	addField (X3DFieldDefinition* const field)
@@ -69,21 +73,21 @@ public:
 
 	const X3DFieldDefinition*
 	getField (const std::string & typeName) const
-	throw (Error <INVALID_NAME>);
+	throw (Error <NOT_SUPPORTED>);
 
-	const SupporteFieldArray &
+	const SupportedFieldsArray &
 	getFields () const;
 
-	void
-	dispose ();
+	///  @name Destructions
 
-	virtual
 	~SupportedFields ();
 
 
 private:
 
-	SupporteFieldArray fields;
+	///  @name Members
+
+	SupportedFieldsArray fields;
 
 };
 

@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	SupportedProfiles (const SupportedComponents &);
+	SupportedProfiles (const std::shared_ptr <SupportedComponents> & supportedComponents);
 
 	///  @name Operations
 

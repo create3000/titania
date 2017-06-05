@@ -72,6 +72,10 @@ public:
 	bool
 	makeCurrent ();
 
+	static
+	void
+	clearCurrent ();
+
 	///  @name Destruction
 
 	~RenderingContext ();

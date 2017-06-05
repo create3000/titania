@@ -532,9 +532,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Configuration/ProfileInfoArray.lo \
 	Titania/X3D/Configuration/SupportedComponents.lo \
 	Titania/X3D/Configuration/SupportedFields.lo \
+	Titania/X3D/Configuration/SupportedFieldsArray.lo \
 	Titania/X3D/Configuration/SupportedNodes.lo \
 	Titania/X3D/Configuration/SupportedProfiles.lo \
-	Titania/X3D/Configuration/SupporteFieldArray.lo \
 	Titania/X3D/Configuration/Unit.lo \
 	Titania/X3D/Configuration/UnitArray.lo \
 	Titania/X3D/Configuration/X3DUnitContext.lo \
@@ -1466,9 +1466,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Configuration/ProfileInfoArray.cpp \
 	Titania/X3D/Configuration/SupportedComponents.cpp \
 	Titania/X3D/Configuration/SupportedFields.cpp \
+	Titania/X3D/Configuration/SupportedFieldsArray.cpp \
 	Titania/X3D/Configuration/SupportedNodes.cpp \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
-	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Configuration/X3DUnitContext.cpp \
@@ -3394,13 +3394,13 @@ Titania/X3D/Configuration/SupportedComponents.lo:  \
 Titania/X3D/Configuration/SupportedFields.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Configuration/SupportedFieldsArray.lo:  \
+	Titania/X3D/Configuration/$(am__dirstamp) \
+	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Configuration/SupportedNodes.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Configuration/SupportedProfiles.lo:  \
-	Titania/X3D/Configuration/$(am__dirstamp) \
-	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Configuration/SupporteFieldArray.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Configuration/Unit.lo:  \
@@ -5137,9 +5137,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ComponentInfoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ProfileInfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ProfileInfoArray.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupporteFieldArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedComponents.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedFields.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedFieldsArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedNodes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/SupportedProfiles.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/Unit.Plo@am__quote@

@@ -56,6 +56,10 @@
 #include "../Browser/RenderingProperties.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Networking/LoadSensor.h"
+#include "../Configuration/SupportedComponents.h"
+#include "../Configuration/SupportedFields.h"
+#include "../Configuration/SupportedNodes.h"
+#include "../Configuration/SupportedProfiles.h"
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/FileLoader.h"
@@ -72,18 +76,18 @@ const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
 const std::string   X3DBrowser::typeName       = "Browser";
 const std::string   X3DBrowser::containerField = "browser";
 
-X3DBrowser::X3DBrowser (const X3DBrowserContextPtr & sharedContext, const MFString & url, const MFString & parameter) :
+X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
 	        X3DBaseNode (),
-	  X3DBrowserContext (sharedContext),
+	  X3DBrowserContext (sharedBrowser),
 	                url (url),
 	          parameter (parameter),
 	        description (),
 	       currentSpeed (0),
 	   currentFrameRate (0),
-	    supportedFields (),
-	     supportedNodes (this),
-	supportedComponents (),
-	  supportedProfiles (supportedComponents),
+	    supportedFields (sharedBrowser ? sharedBrowser -> supportedFields     : std::make_shared <SupportedFields> ()),
+	     supportedNodes (sharedBrowser ? sharedBrowser -> supportedNodes      : std::make_shared <SupportedNodes> (this)),
+	supportedComponents (sharedBrowser ? sharedBrowser -> supportedComponents : std::make_shared <SupportedComponents> ()),
+	  supportedProfiles (sharedBrowser ? sharedBrowser -> supportedProfiles   : std::make_shared <SupportedProfiles> (supportedComponents)),
 	     browserOptions (new BrowserOptions (this)),
 	  browserProperties (new BrowserProperties (this)),
 	renderingProperties (new RenderingProperties (this)),
@@ -207,58 +211,86 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 const X3DFieldDefinition*
 X3DBrowser::getSupportedField (const std::string & typeName) const
-throw (Error <INVALID_NAME>)
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
 {
-	return supportedFields .getField (typeName);
+	if (not supportedFields)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedField: Browser is already disposed.");
+
+	return supportedFields -> getField (typeName);
 }
 
-const SupporteFieldArray &
+const SupportedFieldsArray &
 X3DBrowser::getSupportedFields () const
 throw (Error <DISPOSED>)
 {
-	return supportedFields .getFields ();
+	if (not supportedFields)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedFields: Browser is already disposed.");
+
+	return supportedFields -> getFields ();
 }
 
 const X3DBaseNode*
 X3DBrowser::getSupportedNode (const std::string & typeName) const
-throw (Error <INVALID_NAME>)
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
 {
-	return supportedNodes .getNode (typeName);
+	if (not supportedNodes)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedNode: Browser is already disposed.");
+
+	return supportedNodes -> getNode (typeName);
 }
 
-const BaseNodeArray &
+const SupportedNodesArray &
 X3DBrowser::getSupportedNodes () const
 throw (Error <DISPOSED>)
 {
-	return supportedNodes .getNodes ();
+	if (not supportedNodes)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedNodes: Browser is already disposed.");
+
+	return supportedNodes -> getNodes ();
+}
+
+ComponentInfoPtr
+X3DBrowser::getComponent (const std::string & name, const size_t level) const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	if (not supportedComponents)
+		throw Error <DISPOSED> ("X3DBrowser::getComponent: Browser is already disposed.");
+
+	return supportedComponents -> get (name, level);
 }
 
 const ComponentInfoArray &
 X3DBrowser::getSupportedComponents () const
 throw (Error <DISPOSED>)
 {
-	return supportedComponents .get ();
+	if (not supportedComponents)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedComponents: Browser is already disposed.");
+
+	return supportedComponents -> get ();
 }
 
 const ProfileInfoArray &
 X3DBrowser::getSupportedProfiles () const
 throw (Error <DISPOSED>)
 {
-	return supportedProfiles .get ();
-}
+	if (not supportedProfiles)
+		throw Error <DISPOSED> ("X3DBrowser::getSupportedProfiles: Browser is already disposed.");
 
-ComponentInfoPtr
-X3DBrowser::getComponent (const std::string & name, const size_t level) const
-throw (Error <NOT_SUPPORTED>)
-{
-	return supportedComponents .get (name, level);
+	return supportedProfiles -> get ();
 }
 
 const ProfileInfoPtr &
 X3DBrowser::getProfile (const std::string & name) const
-throw (Error <NOT_SUPPORTED>)
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
 {
-	return supportedProfiles .get (name);
+	if (not supportedProfiles)
+		throw Error <DISPOSED> ("X3DBrowser::getProfile: Browser is already disposed.");
+
+	return supportedProfiles -> get (name);
 }
 
 X3DScenePtr
@@ -657,11 +689,13 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	supportedFields     .reset ();
+	supportedNodes      .reset ();
+	supportedComponents .reset ();
+	supportedProfiles   .reset ();
+
 	X3DBrowserContext::dispose ();
 	X3DBaseNode::dispose ();
-
-	supportedFields .dispose ();
-	supportedNodes  .dispose ();
 
 	removeChildObjects (getRootNodes ());
 

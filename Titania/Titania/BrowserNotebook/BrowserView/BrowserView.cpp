@@ -119,7 +119,7 @@ BrowserView::createBrowser (const BrowserViewType type) const
 	if (type == BrowserViewType::MAIN)
 		return page -> getMainBrowser ();
 
-	return X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("BrowserView.x3dv") });
+	return X3D::createBrowser (page -> getMainBrowser (), { get_ui ("BrowserView.x3dv") });
 }
 
 void

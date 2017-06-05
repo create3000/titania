@@ -96,7 +96,10 @@ X3DEditorObject::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & i
 	const std::string text = entry .get_text () .insert (position, insert);
 
 	if (not validateId (text))
+	{
 		entry .signal_insert_text () .emission_stop ();
+		entry .get_display () -> beep ();
+	}
 }
 
 void
@@ -105,7 +108,10 @@ X3DEditorObject::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_
 	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
 
 	if (text .length () and not validateId (text))
+	{
 		entry .signal_delete_text () .emission_stop ();
+		entry .get_display () -> beep ();
+	}
 }
 
 bool

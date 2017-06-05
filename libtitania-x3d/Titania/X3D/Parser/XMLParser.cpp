@@ -581,7 +581,7 @@ XMLParser::fieldElement (xmlpp::Element* const xmlElement)
 	{
 		type = getBrowser () -> getSupportedField (typeCharacters);
 	}
-	catch (const std::out_of_range &)
+	catch (const X3DError &)
 	{
 		return;
 	}

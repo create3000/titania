@@ -105,9 +105,9 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	addType (X3DConstants::X3DBrowserContext);
 
 	addChildObjects (initialized (),
-	                 headUpDisplay,
 	                 sharedContext,
 	                 world,
+	                 headUpDisplay,
 	                 selection,
 	                 notification,
 	                 console);

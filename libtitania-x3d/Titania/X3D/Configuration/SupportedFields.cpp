@@ -61,7 +61,6 @@ SupportedFields::SupportedFields ()
 	//std::clog << "Creating field index:" << std::endl;
 
 	addField (new SFBool      ());
-	addField (new SFBool      ());
 	addField (new SFColor     ());
 	addField (new SFColorRGBA ());
 	addField (new SFDouble    ());
@@ -83,7 +82,6 @@ SupportedFields::SupportedFields ()
 	addField (new SFVec4d     ());
 	addField (new SFVec4f     ());
 
-	addField (new MFBool      ());
 	addField (new MFBool      ());
 	addField (new MFColor     ());
 	addField (new MFColorRGBA ());
@@ -113,12 +111,15 @@ throw (Error <INVALID_NAME>)
 {
 	//std::clog << "\tAdding field type " << field -> getTypeName () << ": " << std::flush;
 
-	fields .emplace (field -> getTypeName (), field);
+	if (fields .emplace (field -> getTypeName (), field) .second)
+		return;
+
+	throw Error <INVALID_NAME> ("Field type '" + field -> getTypeName () + "' already exists.");
 }
 
 const X3DFieldDefinition*
 SupportedFields::getField (const std::string & typeName) const
-throw (Error <INVALID_NAME>)
+throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -126,27 +127,21 @@ throw (Error <INVALID_NAME>)
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <INVALID_NAME> ("Unknown field type '" + typeName + "'.");
+		throw Error <NOT_SUPPORTED> ("Unknown field type '" + typeName + "'.");
 	}
 }
 
-const SupporteFieldArray &
+const SupportedFieldsArray &
 SupportedFields::getFields () const
 {
 	return fields;
 }
 
-void
-SupportedFields::dispose ()
+SupportedFields::~SupportedFields ()
 {
 	for (const auto & pair : fields)
 		delete pair .second;
-
-	fields .clear ();
 }
-
-SupportedFields::~SupportedFields ()
-{ }
 
 } // X3D
 } // titania

@@ -48,76 +48,14 @@
  *
  ******************************************************************************/
 
-#include "ContextLock.h"
-
-#include "../RenderingSurface/RenderingContext.h"
-#include "../RenderingSurface/X3DRenderingSurface.h"
-
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
+#include "SupportedFieldsArray.h"
 
 namespace titania {
 namespace X3D {
 
-class ContextLock::Implementation
-{
-public:
-
-	Implementation (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
-
-	~Implementation ();
-
-
-private:
-
-	static std::shared_ptr <RenderingContext> currentContext;
-
-	std::shared_ptr <RenderingContext> previousContext;
-
-};
-
-std::shared_ptr <RenderingContext> ContextLock::Implementation::currentContext;
-
-ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface)
-throw (Error <INVALID_OPERATION_TIMING>) :
-	 previousContext (currentContext)
-{
-	if (renderingSurface -> makeCurrent ())
-	{
-		currentContext = renderingSurface -> getContext ();
-	   return;
-	}
-
-	// Throw an exception if it cannot make current!  The destructor is then not called.
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-}
-
-ContextLock::Implementation::~Implementation ()
-{
-	currentContext = previousContext;
-
-	if (currentContext and currentContext -> makeCurrent ())
-		return;
-
-	currentContext .reset ();
-
-	RenderingContext::clearCurrent ();
-}
-
-/**
- *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
- *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
- *
- *  @param  renderingSurface  A valid X3DRenderingSurface instance.
- */
-ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface)
-throw (Error <INVALID_OPERATION_TIMING>) :
-	 implementation (new Implementation (renderingSurface))
-{ }
-
-ContextLock::~ContextLock ()
-{ }
+//
 
 } // X3D
 } // titania
+
+template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;

@@ -405,9 +405,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/ProfileInfoArray.cpp \
 	Titania/X3D/Configuration/SupportedComponents.cpp \
 	Titania/X3D/Configuration/SupportedFields.cpp \
+	Titania/X3D/Configuration/SupportedFieldsArray.cpp \
 	Titania/X3D/Configuration/SupportedNodes.cpp \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
-	Titania/X3D/Configuration/SupporteFieldArray.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Configuration/X3DUnitContext.cpp \
