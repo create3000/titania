@@ -111,7 +111,12 @@ X3DRenderingSurface::makeCurrent ()
 void
 X3DRenderingSurface::queue_render ()
 {
-	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), 1000 / frameRate, Glib::PRIORITY_DEFAULT_IDLE);
+	rendering  = true;
+
+	if (not get_mapped ())
+		connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), 1000 / frameRate, Glib::PRIORITY_DEFAULT_IDLE);
+
+	queue_draw ();
 }
 
 void
@@ -206,8 +211,16 @@ X3DRenderingSurface::on_reshape (const int32_t x, const int32_t y, const int32_t
 bool
 X3DRenderingSurface::on_timeout ()
 {
-	rendering = true;
-	queue_draw ();
+	ContextLock lock (this);
+
+	rendering = false;
+	frameBuffer -> bind ();
+
+	on_render ();
+	renderSignal .emit ();
+
+	frameBuffer -> unbind ();
+
 	return false;
 }
 
@@ -218,17 +231,12 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 	{
 		Gtk::DrawingArea::on_draw (cairo);
 
+		if (rendering)
+			on_timeout ();
+
 		ContextLock lock (this);
 
 		frameBuffer -> bind ();
-
-		if (rendering)
-		{
-			rendering = false;
-			on_render ();
-			renderSignal .emit ();
-		}
-
 		frameBuffer -> readPixels (GL_BGRA);
 		frameBuffer -> unbind ();
 
