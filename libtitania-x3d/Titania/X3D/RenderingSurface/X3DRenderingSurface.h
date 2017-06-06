@@ -211,7 +211,6 @@ private:
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
 	sigc::signal <bool>                                     renderSignal;
 	sigc::connection                                        connection;
-	bool                                                    rendering;
 
 };
 

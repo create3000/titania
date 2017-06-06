@@ -55,8 +55,6 @@
 #include "../Browser/Selection.h"
 #include "../Rendering/FrameBuffer.h"
 
-#include "../Components/Layering/X3DLayerNode.h"
-
 namespace titania {
 namespace X3D {
 

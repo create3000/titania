@@ -154,9 +154,9 @@ Console::set_string (const X3D::MFString & value)
 
 	if (scrollToEnd)
 	{
-		// Update TextView and thus we can scoll to iter.
-		while (Gtk::Main::events_pending ())
-			Gtk::Main::iteration ();
+//		// Update TextView and thus we can scoll to iter.
+//		while (Gtk::Main::events_pending ())
+//			Gtk::Main::iteration ();
 
 		auto iter = getTextBuffer () -> end ();
 

@@ -79,8 +79,7 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	     setupSignal (),
 	   reshapeSignal (),
 	    renderSignal (),
-	      connection (),
-	       rendering (false)
+	      connection ()
 {
 	ContextLock lock (this);
 
@@ -111,12 +110,10 @@ X3DRenderingSurface::makeCurrent ()
 void
 X3DRenderingSurface::queue_render ()
 {
-	rendering  = true;
+	if (connection .connected ())
+		return;
 
-	if (not get_mapped ())
-		connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), 1000 / frameRate, Glib::PRIORITY_DEFAULT_IDLE);
-
-	queue_draw ();
+	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), 1000 / frameRate, Glib::PRIORITY_DEFAULT_IDLE);
 }
 
 void
@@ -194,7 +191,7 @@ X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
 
 		frameBuffer -> unbind ();
 
-		queue_draw ();
+		on_timeout ();
 	}
 	catch (const std::exception & error)
 	{
@@ -211,15 +208,25 @@ X3DRenderingSurface::on_reshape (const int32_t x, const int32_t y, const int32_t
 bool
 X3DRenderingSurface::on_timeout ()
 {
-	ContextLock lock (this);
+	try
+	{
+		connection .disconnect ();
+	
+		ContextLock lock (this);
+	
+		frameBuffer -> bind ();
+	
+		on_render ();
+		renderSignal .emit ();
+	
+		frameBuffer -> unbind ();
 
-	rendering = false;
-	frameBuffer -> bind ();
-
-	on_render ();
-	renderSignal .emit ();
-
-	frameBuffer -> unbind ();
+		queue_draw ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 
 	return false;
 }
@@ -230,9 +237,6 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 	try
 	{
 		Gtk::DrawingArea::on_draw (cairo);
-
-		if (rendering)
-			on_timeout ();
 
 		ContextLock lock (this);
 
@@ -304,8 +308,8 @@ X3DRenderingSurface::dispose ()
 
 	// Dispose context.
 
-	context     .reset ();
 	frameBuffer .reset ();
+	context     .reset ();
 }
 
 X3DRenderingSurface::~X3DRenderingSurface ()
