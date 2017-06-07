@@ -225,15 +225,15 @@ private:
 
 	///  @name Members
 
-	bool modified;
+	bool                                         modified;
+	Glib::RefPtr <Gsv::Buffer>                   textBuffer;
+	Gsv::View                                    textView;
+	std::unique_ptr <NodeIndex>                  nodeIndex;
+	std::unique_ptr <Console>                    console;
+	NameEntry                                    nodeName;
 	const std::set <X3D::X3DConstants::NodeType> nodeTypes;
-	Glib::RefPtr <Gsv::Buffer> textBuffer;
-	Gsv::View textView;
-	std::unique_ptr <NodeIndex> nodeIndex;
-	NameEntry nodeName;
-	X3D::SFNode node;
-	size_t index;
-	std::unique_ptr <Console> console;
+	X3D::SFNode                                  node;
+	size_t                                       index;
 
 };
 

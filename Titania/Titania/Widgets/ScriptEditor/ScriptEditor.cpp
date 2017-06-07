@@ -74,16 +74,16 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
 	                  modified (false),
-	                 nodeTypes ({ X3D::X3DConstants::Script,
-	                              X3D::X3DConstants::ShaderPart,
-	                              X3D::X3DConstants::ShaderProgram }),
 	                textBuffer (Gsv::Buffer::create ()),
 	                  textView (textBuffer),
 	                 nodeIndex (new NodeIndex (browserWindow)),
+	                   console (new Console (browserWindow)),
 	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
+	                 nodeTypes ({ X3D::X3DConstants::Script,
+	                              X3D::X3DConstants::ShaderPart,
+	                              X3D::X3DConstants::ShaderProgram }),
 	                      node (),
-	                     index (0),
-	                   console (new Console (browserWindow))
+	                     index (0)
 {
 	Gsv::init ();
 
@@ -91,7 +91,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
-	textView .get_style_context () -> add_class ("titania-console");
+	getTextView () .get_style_context () -> add_class ("titania-console");
+	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
 	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
 
@@ -157,8 +158,6 @@ ScriptEditor::configure ()
 
 	if (getConfig () -> hasItem ("sidePaned"))
 		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
-
-	restore ();
 }
 
 void
@@ -168,17 +167,16 @@ ScriptEditor::restore ()
 	{
 	   if (node)
 	   {
-//			// Update TextView and thus we can scoll to iter.
-//			while (Gtk::Main::events_pending ())
-//				Gtk::Main::iteration ();
+			// Update TextView and thus we can scoll to iter.
+			while (Gtk::Main::events_pending ())
+				Gtk::Main::iteration ();
 
 			ScriptEditorDatabase database;
 
 			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getPathFromNode (node));
-			auto       iter = Gtk::TextIter ();
 
-			getTextView () .get_iter_at_location (iter, std::get <1> (item), std::get <2> (item));
-			getTextView () .scroll_to (iter, 0, 0, 0);
+			getTextView () .get_hadjustment () -> set_value (std::get <1> (item));
+			getTextView () .get_vadjustment () -> set_value (std::get <2> (item));
 		}
 	}
 	catch (const std::exception & error)
@@ -509,17 +507,17 @@ ScriptEditor::set_sourceText ()
 	{
 		switch (type)
 		{
-			case X3D::X3DConstants::Script :
-				{
-					getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
+			case X3D::X3DConstants::Script:
+			{
+				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
-					if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
-						getTextBuffer () -> set_text ("ecmascript:\n");
-					else
-						getTextBuffer () -> set_text (sourceText -> get1Value (index));
+				if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
+					getTextBuffer () -> set_text ("ecmascript:\n");
+				else
+					getTextBuffer () -> set_text (sourceText -> get1Value (index));
 
-					break;
-				}
+				break;
+			}
 			case X3D::X3DConstants::ShaderPart:
 			case X3D::X3DConstants::ShaderProgram:
 			{
@@ -541,7 +539,7 @@ ScriptEditor::set_sourceText ()
 
 	getTextBuffer () -> end_not_undoable_action ();
 
-	restore ();
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &ScriptEditor::restore), Glib::PRIORITY_HIGH + 20);
 }
 
 void
@@ -588,15 +586,10 @@ ScriptEditor::save ()
 		{
 			ScriptEditorDatabase database;
 
-			int x = 0;
-			int y = 0;
-	
-			getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT, 0, 0, x, y);
-
 			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
 			                   getPathFromNode (node),
-			                   x,
-			                   y);
+			                   getTextView () .get_hadjustment () -> get_value (),
+			                   getTextView () .get_vadjustment () -> get_value ());
 		}
 	}
 	catch (const std::exception & error)
