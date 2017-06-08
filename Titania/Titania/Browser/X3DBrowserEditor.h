@@ -82,7 +82,7 @@ public:
 
 	virtual
 	void
-	setEditing (const bool);
+	setEditing (const bool value);
 
 	/// @name Operations
 
@@ -91,21 +91,21 @@ public:
 
 	virtual
 	void
-	open (const basic::uri &) final override;
+	open (const basic::uri & URL) final override;
 
 	virtual
 	void
-	load (const basic::uri &) final override;
+	load (const basic::uri & URL) final override;
 
 	X3D::MFNode
-	import (const std::vector <basic::uri> &, const X3D::UndoStepPtr & undoStep);
+	import (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
 
 	X3D::MFNode
-	importAsInline (const std::vector <basic::uri> &, const X3D::UndoStepPtr & undoStep);
+	importAsInline (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
 
 	virtual
 	bool
-	save (const basic::uri &, const std::string &, const bool) override;
+	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy) override;
 
 	virtual
 	void
@@ -123,7 +123,7 @@ public:
 
 	virtual
 	void
-	addUndoStep (const X3D::UndoStepPtr &) final override;
+	addUndoStep (const X3D::UndoStepPtr & undoStep) final override;
 
 	virtual
 	void
@@ -205,7 +205,7 @@ protected:
 
 	/// @name Construction
 
-	X3DBrowserEditor (const X3D::BrowserPtr &);
+	X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser);
 
 	virtual
 	void
@@ -234,7 +234,7 @@ protected:
 	/// @name Operations
 
 	void
-	translateSelection (const X3D::Vector3f &, const bool, const ToolType);
+	translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool);
 
 
 private:
@@ -248,15 +248,9 @@ private:
 	connectShutdown ();
 
 	void
-	set_scene ();
-
-	void
 	set_executionContext ();
 
 	///  @name File handling
-
-	bool
-	isSaved (const NotebookPagePtr &);
 
 	void
 	setMetaData ();
@@ -277,7 +271,10 @@ private:
 	///  @name Source code handling
 
 	void
-	on_source_code_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
+	on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
+	                        const Glib::RefPtr <Gio::File> &,
+	                        Gio::FileMonitorEvent event,
+	                        const X3D::SFNode & node);
 
 	///  @name Members
 

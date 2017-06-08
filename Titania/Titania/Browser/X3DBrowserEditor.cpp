@@ -56,7 +56,6 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
-#include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Browser/BrowserOptions.h>
@@ -111,7 +110,6 @@ X3DBrowserEditor::initialize ()
 {
 	X3DBrowserWidget::initialize ();
 
-	getCurrentScene ()   .addInterest (&X3DBrowserEditor::set_scene,            this);
 	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
 
 	getBrowserWindow () -> getSelection () -> getNodes ()      .addInterest (&X3DBrowserEditor::set_selection, this);
@@ -193,7 +191,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 	}
 	else
 	{
-		if (isSaved (getCurrentPage ()))
+		if (getCurrentPage () -> isSaved ())
 		{
 			// Shutdown is immediately processed.
 			getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
@@ -217,7 +215,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 void
 X3DBrowserEditor::set_shutdown ()
 {
-	if (isSaved (getCurrentPage ()))
+	if (getCurrentPage () -> isSaved ())
 	{
 		getCurrentPage () -> reset ();
 	}
@@ -231,23 +229,6 @@ X3DBrowserEditor::connectShutdown ()
 {
 	getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::connectShutdown, this);
 	getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::set_shutdown, this);
-}
-
-void
-X3DBrowserEditor::set_scene ()
-{
-	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.x3dv"))
-	{
-	   getCurrentScene () -> setWorldURL ("");
-		getCurrentScene () -> setEncoding (X3D::EncodingType::XML);
-		getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
-		getCurrentScene () -> removeMetaData ("comment");
-		getCurrentScene () -> removeMetaData ("created");
-		getCurrentScene () -> removeMetaData ("creator");
-		getCurrentScene () -> removeMetaData ("generator");
-		getCurrentScene () -> removeMetaData ("identifier");
-		getCurrentScene () -> removeMetaData ("modified");
-	}
 }
 
 void
@@ -340,47 +321,6 @@ X3DBrowserEditor::setEditing (const bool value)
 {
 	editing = value;
 	getConfig () -> setItem ("environment", value ? 1 : 0);
-}
-
-bool
-X3DBrowserEditor::isSaved (const NotebookPagePtr & page)
-{
-	if (page -> getSaveConfirmed ())
-		return true;
-
-	if (page -> getModified ())
-	{
-		const auto pageNumber = page -> getPageNumber ();
-
-		if (pageNumber < 0)
-			return true;
-
-		getBrowserNotebook () .set_current_page (pageNumber);
-
-		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (createDialog ("FileSaveWarningDialog")) -> run ();
-
-		switch (responseId)
-		{
-			case Gtk::RESPONSE_OK:
-			{
-				on_save_activated ();
-				page -> setSaveConfirmed (not page -> getModified ());
-				return page -> getSaveConfirmed ();
-			}
-			case Gtk::RESPONSE_CANCEL:
-			case Gtk::RESPONSE_DELETE_EVENT:
-			{
-				return false;
-			}
-			default:
-			{
-				page -> setSaveConfirmed (true);
-				return true;
-			}
-		}
-	}
-
-	return true;
 }
 
 void
@@ -521,12 +461,12 @@ X3DBrowserEditor::open (const basic::uri & URL)
 void
 X3DBrowserEditor::load (const basic::uri & URL)
 {
-	if (isSaved (getCurrentPage ()))
+	if (getCurrentPage () -> isSaved ())
 		X3DBrowserWidget::load (URL);
 }
 
 X3D::MFNode
-X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::UndoStepPtr & undoStep)
+X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep)
 {
 	// Import into scene graph
 
@@ -536,7 +476,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 	auto         selection = getSelection () -> getNodes ();
 	const auto & layerSet  = getCurrentWorld () -> getLayerSet ();
 
-	for (const auto & worldURL : uris)
+	for (const auto & worldURL : url)
 	{
 		try
 		{
@@ -578,11 +518,11 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 }
 
 X3D::MFNode
-X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X3D::UndoStepPtr & undoStep)
+X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep)
 {
 	// Import As Inline
 
-	for (const auto & worldURL : uris)
+	for (const auto & worldURL : url)
 	{
 		const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (worldURL);
 
@@ -627,7 +567,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 void
 X3DBrowserEditor::reload ()
 {
-	if (isSaved (getCurrentPage ()))
+	if (getCurrentPage () -> isSaved ())
 		X3DBrowserWidget::reload ();
 }
 
@@ -636,7 +576,7 @@ X3DBrowserEditor::close (const NotebookPagePtr page)
 {
 	getWidget () .grab_focus ();
 
-	if (isSaved (page))
+	if (page -> isSaved ())
 		X3DBrowserWidget::close (page);
 }
 
@@ -651,7 +591,7 @@ X3DBrowserEditor::quit ()
 	{
 		for (const auto & page : pages)
 		{
-			if (isSaved (page))
+			if (page -> isSaved ())
 				continue;
 
 			for (const auto & page : getPages ())
@@ -965,7 +905,10 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 }
 
 void
-X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode & node)
+X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
+                                          const Glib::RefPtr <Gio::File> &,
+                                          Gio::FileMonitorEvent event,
+                                          const X3D::SFNode & node)
 {
 	io::multi_line_comment comment ("/*", "*/");
 	io::sequence           whitespaces ("\r\n \t,");

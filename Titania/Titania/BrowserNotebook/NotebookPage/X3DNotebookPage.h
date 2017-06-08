@@ -115,6 +115,9 @@ public:
 	getSaveConfirmed () const
 	{ return saveConfirmed; }
 
+	bool
+	isSaved ();
+
 	void
 	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
 

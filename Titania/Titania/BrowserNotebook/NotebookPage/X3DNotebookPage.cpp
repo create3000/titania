@@ -53,6 +53,7 @@
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 
 #include "../BrowserView/BrowserView.h"
 
@@ -148,6 +149,47 @@ X3DNotebookPage::getModified () const
 	return undoHistory .getModified () or modified;
 }
 
+bool
+X3DNotebookPage::isSaved ()
+{
+	if (getSaveConfirmed ())
+		return true;
+
+	if (getModified ())
+	{
+		const auto pageNumber = getPageNumber ();
+
+		if (pageNumber < 0)
+			return true;
+
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (pageNumber);
+
+		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (createDialog ("FileSaveWarningDialog")) -> run ();
+
+		switch (responseId)
+		{
+			case Gtk::RESPONSE_OK:
+			{
+				getBrowserWindow () -> on_save_activated ();
+				setSaveConfirmed (not getModified ());
+				return getSaveConfirmed ();
+			}
+			case Gtk::RESPONSE_CANCEL:
+			case Gtk::RESPONSE_DELETE_EVENT:
+			{
+				return false;
+			}
+			default:
+			{
+				setSaveConfirmed (true);
+				return true;
+			}
+		}
+	}
+
+	return true;
+}
+
 void
 X3DNotebookPage::updateTitle ()
 {
@@ -202,6 +244,19 @@ void
 X3DNotebookPage::initialized ()
 {
 	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
+
+	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
+	{
+	   getCurrentScene () -> setWorldURL ("");
+		getCurrentScene () -> setEncoding (X3D::EncodingType::XML);
+		getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
+		getCurrentScene () -> removeMetaData ("comment");
+		getCurrentScene () -> removeMetaData ("created");
+		getCurrentScene () -> removeMetaData ("creator");
+		getCurrentScene () -> removeMetaData ("generator");
+		getCurrentScene () -> removeMetaData ("identifier");
+		getCurrentScene () -> removeMetaData ("modified");
+	}
 
 	updateTitle ();
 }

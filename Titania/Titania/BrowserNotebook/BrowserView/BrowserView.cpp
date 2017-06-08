@@ -65,17 +65,6 @@
 namespace titania {
 namespace puck {
 
-//FrontView
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': FrontView
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': RightView
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': View
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': TopView
-
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': View
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': TopView
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': RightView
-//########## Titania/X3D/Browser/X3DBrowserContext.cpp:269: in function 'update': FrontView
-
 BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBrowserViewInterface (get_ui ("Views/BrowserView.glade")),
