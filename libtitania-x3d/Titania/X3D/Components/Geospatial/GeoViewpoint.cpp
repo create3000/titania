@@ -68,7 +68,7 @@ const std::string   GeoViewpoint::containerField = "children";
 GeoViewpoint::Fields::Fields () :
 	        position (new SFVec3d (0, 0, 100000)),
 	centerOfRotation (new SFVec3d ()),
-	     fieldOfView (new SFFloat (0.785398)),
+	     fieldOfView (new SFFloat (0.7854)),
 	     speedFactor (new SFFloat (1)),
 	         navType (new MFString ({ "EXAMINE", "ANY" })),
 	       headlight (new SFBool (true))

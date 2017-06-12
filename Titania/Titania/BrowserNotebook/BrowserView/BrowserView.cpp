@@ -51,16 +51,25 @@
 #include "BrowserView.h"
 
 #include "../NotebookPage/NotebookPage.h"
+
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Editors/GridEditor/AngleTool.h"
+#include "../../Editors/GridEditor/AxonometricGridTool.h"
+#include "../../Editors/GridEditor/GridTool.h"
 
 #include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
 #include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
+
+#include <Titania/X3D/Tools/Grids/GridTool.h>
+#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
 namespace titania {
 namespace puck {
@@ -74,6 +83,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	            activeLayer (),
 	              viewpoint (),
 	          gridTransform (),
+	             gridSwitch (),
 	                   grid (),
 	                  names ({ "", "Top", "Right", "Front" }),
 	                   axes ({ X3D::Vector3f (), X3D::Vector3f (0, 1, 0), X3D::Vector3f (1, 0, 0), X3D::Vector3f (0, 0, 1) }),
@@ -84,6 +94,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	                 activeLayer,
 	                 viewpoint,
 	                 gridTransform,
+	                 gridSwitch,
 	                 grid);
 
 	if (type not_eq BrowserViewType::MAIN)
@@ -129,8 +140,13 @@ BrowserView::set_dependent_browser ()
 		const auto   worldInfo   = createWorldInfo (page -> getScene ());
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
 
+		getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&BrowserView::set_grid, this);
+		getBrowserWindow () -> getAngleTool ()           -> getTool () -> addInterest (&BrowserView::set_grid, this);
+		getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&BrowserView::set_grid, this);
+
 		viewpoint     = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
 		gridTransform = browser -> getExecutionContext () -> getNamedNode <X3D::Transform> ("GridTransform");
+		gridSwitch    = browser -> getExecutionContext () -> getNamedNode <X3D::Switch> ("GridSwitch");
 		grid          = browser -> getExecutionContext () -> getNamedNode ("Grid");
 
 		activeLayer -> getNavigationInfoStack () -> setLock (true);
@@ -158,6 +174,7 @@ BrowserView::set_dependent_browser ()
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&BrowserView::set_activeLayer, this);
 	
 		set_activeLayer ();
+		set_grid ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -217,6 +234,36 @@ BrowserView::set_viewpoint ()
 	page -> setModified (true);
 
 	gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
+}
+
+void
+BrowserView::set_grid ()
+{
+	if (page -> getMainBrowser () -> getExecutionContext () not_eq getCurrentContext ())
+		return;
+
+	if (getBrowserWindow () -> getGridTool () -> getEnabled ())
+	{
+		const auto & gridTool = getBrowserWindow () -> getGridTool () -> getTool ();
+
+		gridSwitch -> whichChoice () = 0;
+	}
+	else if (getBrowserWindow () -> getAngleTool () -> getEnabled ())
+	{
+		const auto & angleTool = getBrowserWindow () -> getAngleTool () -> getTool ();
+
+		gridSwitch -> whichChoice () = 1;
+	}
+	else if (getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ())
+	{
+		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+
+		gridSwitch -> whichChoice () = 2;
+	}
+	else
+	{
+		gridSwitch -> whichChoice () = -1;
+	}
 }
 
 void

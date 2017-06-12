@@ -101,6 +101,9 @@ private:
 	void
 	set_viewpoint ();
 
+	void
+	set_grid ();
+
 	virtual
 	void
 	on_map () final override;
@@ -121,6 +124,7 @@ private:
 	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
 	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
 	X3D::X3DPtr <X3D::Transform>      gridTransform;
+	X3D::X3DPtr <X3D::Switch>         gridSwitch;
 	X3D::SFNode                       grid;
 	std::vector <std::string>         names;
 	std::vector <X3D::Vector3d>       axes;

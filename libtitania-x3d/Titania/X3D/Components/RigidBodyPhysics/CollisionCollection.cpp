@@ -64,15 +64,15 @@ const std::string   CollisionCollection::typeName       = "CollisionCollection";
 const std::string   CollisionCollection::containerField = "collider";
 
 CollisionCollection::Fields::Fields () :
-	                 enabled (new SFBool ()),
+	                 enabled (new SFBool (true)),
 	       appliedParameters (new MFString ({ "BOUNCE" })),
 	                  bounce (new SFFloat ()),
-	          minBounceSpeed (new SFFloat ()),
+	          minBounceSpeed (new SFFloat (0.1)),
 	    frictionCoefficients (new SFVec2f ()),
 	            surfaceSpeed (new SFVec2f ()),
 	             slipFactors (new SFVec2f ()),
-	softnessConstantForceMix (new SFFloat ()),
-	 softnessErrorCorrection (new SFFloat ()),
+	softnessConstantForceMix (new SFFloat (0.0001)),
+	 softnessErrorCorrection (new SFFloat (0.8)),
 	             collidables (new MFNode ())
 { }
 

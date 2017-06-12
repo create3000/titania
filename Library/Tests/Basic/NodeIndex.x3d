@@ -6,435 +6,256 @@
   </head>
   <Scene>
     <Anchor/>
-
     <Appearance/>
-
     <Arc2D/>
-
     <ArcClose2D/>
-
     <AudioClip/>
-
     <Background/>
-
-    <BallJoint/>
-
+    <BallJoint
+        forceOutput=''/>
     <Billboard/>
-
     <BooleanFilter/>
-
     <BooleanSequencer/>
-
     <BooleanToggle/>
-
     <BooleanTrigger/>
-
     <BoundedPhysicsModel/>
-
     <Box/>
-
     <CADAssembly/>
-
     <CADFace/>
-
     <CADLayer/>
-
     <CADPart/>
-
     <Circle2D/>
-
     <ClipPlane/>
-
     <CollidableOffset/>
-
     <CollidableShape/>
-
     <Collision/>
-
-    <CollisionCollection/>
-
+    <CollisionCollection
+        appliedParameters=''/>
     <CollisionSensor/>
-
     <CollisionSpace/>
-
     <Color/>
-
     <ColorDamper/>
-
     <ColorInterpolator/>
-
     <ColorRGBA/>
-
     <ComposedCubeMapTexture/>
-
     <ComposedShader/>
-
     <ComposedTexture3D/>
-
     <Cone/>
-
     <ConeEmitter/>
-
-    <Contact/>
-
+    <Contact
+        appliedParameters=''/>
     <Contour2D/>
-
     <ContourPolyline2D/>
-
     <Coordinate/>
-
     <CoordinateDamper/>
-
     <CoordinateDouble/>
-
     <CoordinateInterpolator/>
-
     <CoordinateInterpolator2D/>
-
     <Cylinder/>
-
     <CylinderSensor/>
-
-    <DISEntityManager/>
-
+    <DISEntityManager
+        applicationID='0'/>
     <DISEntityTypeMapping/>
-
-    <DirectionalLight/>
-
+    <DirectionalLight
+        global='false'/>
     <Disk2D/>
-
-    <DoubleAxisHingeJoint/>
-
+    <DoubleAxisHingeJoint
+        forceOutput=''
+        anchorPoint='0 1 0'
+        axis1='0 1 0'
+        axis2='0 1 0'/>
     <EaseInEaseOut/>
-
-    <ElevationGrid/>
-
-    <EspduTransform/>
-
+    <ElevationGrid
+        xDimension='2'
+        zDimension='2'
+        height='0, 0, 0, 0'/>
+    <EspduTransform
+        applicationID='0'
+        eventApplicationID='0'
+        munitionApplicationID='0'/>
     <ExplosionEmitter/>
-
     <Extrusion/>
-
     <FillProperties/>
-
     <FloatVertexAttribute/>
-
     <Fog/>
-
     <FogCoordinate/>
-
     <FontStyle/>
-
     <GeneratedCubeMapTexture/>
-
     <GeoCoordinate/>
-
-    <GeoElevationGrid/>
-
+    <GeoElevationGrid
+        xDimension='2'
+        zDimension='2'
+        height='0, 0, 0, 0'/>
     <GeoLOD/>
-
     <GeoLocation/>
-
     <GeoMetadata/>
-
     <GeoOrigin/>
-
     <GeoPositionInterpolator/>
-
     <GeoProximitySensor/>
-
     <GeoTouchSensor/>
-
     <GeoTransform/>
-
     <GeoViewpoint/>
-
     <ForcePhysicsModel/>
-
     <Group/>
-
     <HAnimDisplacer/>
-
     <HAnimHumanoid/>
-
-    <HAnimJoint/>
-
+    <HAnimJoint
+        stiffness='1, 1, 1'/>
     <HAnimSegment/>
-
     <HAnimSite/>
-
     <ImageCubeMapTexture/>
-
     <ImageTexture/>
-
     <ImageTexture3D/>
-
     <IndexedFaceSet/>
-
     <IndexedLineSet/>
-
     <IndexedQuadSet/>
-
     <IndexedTriangleFanSet/>
-
     <IndexedTriangleSet/>
-
     <IndexedTriangleStripSet/>
-
     <Inline/>
-
     <IntegerSequencer/>
-
     <IntegerTrigger/>
-
     <KeySensor/>
-
     <LOD/>
-
     <Layer/>
-
     <LayerSet/>
-
-    <Layout/>
-
+    <Layout
+        size='1'/>
     <LayoutGroup/>
-
     <LayoutLayer/>
-
-    <LinePickSensor/>
-
+    <LinePickSensor
+        objectType=''/>
     <LineProperties/>
-
     <LineSet/>
-
     <LoadSensor/>
-
     <LocalFog/>
-
     <Material/>
-
     <Matrix3VertexAttribute/>
-
     <Matrix4VertexAttribute/>
-
     <MetadataBoolean/>
-
     <MetadataDouble/>
-
     <MetadataFloat/>
-
     <MetadataInteger/>
-
     <MetadataSet/>
-
     <MetadataString/>
-
-    <MotorJoint/>
-
+    <MotorJoint
+        forceOutput=''/>
     <MovieTexture/>
-
     <MultiTexture/>
-
     <MultiTextureCoordinate/>
-
     <MultiTextureTransform/>
-
     <NavigationInfo/>
-
     <Normal/>
-
     <NormalInterpolator/>
-
     <NurbsCurve/>
-
     <NurbsCurve2D/>
-
     <NurbsOrientationInterpolator/>
-
     <NurbsPatchSurface/>
-
     <NurbsPositionInterpolator/>
-
     <NurbsSet/>
-
     <NurbsSurfaceInterpolator/>
-
     <NurbsSweptSurface/>
-
     <NurbsSwungSurface/>
-
     <NurbsTextureCoordinate/>
-
     <NurbsTrimmedSurface/>
-
     <OrientationChaser/>
-
     <OrientationDamper/>
-
     <OrientationInterpolator/>
-
     <OrthoViewpoint/>
-
     <PackagedShader/>
-
     <ParticleSystem/>
-
-    <PickableGroup/>
-
+    <PickableGroup
+        objectType=''/>
     <PixelTexture/>
-
     <PixelTexture3D/>
-
     <PlaneSensor/>
-
     <PointEmitter/>
-
     <PointLight/>
-
-    <PointPickSensor/>
-
+    <PointPickSensor
+        objectType=''/>
     <PointSet/>
-
     <Polyline2D/>
-
     <PolylineEmitter/>
-
     <Polypoint2D/>
-
     <PositionChaser/>
-
     <PositionChaser2D/>
-
     <PositionDamper/>
-
     <PositionDamper2D/>
-
     <PositionInterpolator/>
-
     <PositionInterpolator2D/>
-
-    <PrimitivePickSensor/>
-
+    <PrimitivePickSensor
+        objectType=''/>
     <ProgramShader/>
-
     <ProximitySensor/>
-
     <QuadSet/>
-
-    <ReceiverPdu/>
-
+    <ReceiverPdu
+        applicationID='0'
+        transmitterApplicationID='0'/>
     <Rectangle2D/>
-
-    <RigidBody/>
-
+    <RigidBody
+        finiteRotationAxis='0 1 0'/>
     <RigidBodyCollection/>
-
     <ScalarChaser/>
-
     <ScalarInterpolator/>
-
-    <ScreenFontStyle/>
-
+    <ScreenFontStyle
+        pointSize='1'/>
     <ScreenGroup/>
-
     <Script/>
-
     <ShaderPart/>
-
     <ShaderProgram/>
-
     <Shape/>
-
-    <SignalPdu/>
-
-    <SingleAxisHingeJoint/>
-
-    <SliderJoint/>
-
+    <SignalPdu
+        applicationID='0'/>
+    <SingleAxisHingeJoint
+        forceOutput=''/>
+    <SliderJoint
+        forceOutput=''/>
     <Sound/>
-
     <Sphere/>
-
     <SphereSensor/>
-
     <SplinePositionInterpolator/>
-
     <SplinePositionInterpolator2D/>
-
     <SplineScalarInterpolator/>
-
     <SpotLight/>
-
     <SquadOrientationInterpolator/>
-
     <StaticGroup/>
-
     <StringSensor/>
-
     <SurfaceEmitter/>
-
     <Switch/>
-
     <TexCoordDamper2D/>
-
     <Text/>
-
     <TextureBackground/>
-
     <TextureCoordinate/>
-
     <TextureCoordinate3D/>
-
     <TextureCoordinate4D/>
-
     <TextureCoordinateGenerator/>
-
     <TextureProperties/>
-
     <TextureTransform/>
-
     <TextureTransform3D/>
-
     <TextureTransformMatrix3D/>
-
     <TimeSensor/>
-
     <TimeTrigger/>
-
     <TouchSensor/>
-
     <Transform/>
-
     <TransformSensor/>
-
-    <TransmitterPdu/>
-
+    <TransmitterPdu
+        applicationID='0'/>
     <TriangleFanSet/>
-
     <TriangleSet/>
-
     <TriangleSet2D/>
-
     <TriangleStripSet/>
-
     <TwoSidedMaterial/>
-
-    <UniversalJoint/>
-
+    <UniversalJoint
+        forceOutput=''/>
     <Viewpoint/>
-
     <ViewpointGroup/>
-
     <Viewport/>
-
     <VisibilitySensor/>
-
     <VolumeEmitter/>
-
-    <VolumePickSensor/>
-
-    <WindPhysicsModel/>
-
+    <VolumePickSensor
+        objectType=''/>
+    <WindPhysicsModel
+        direction='1 0 0'/>
     <WorldInfo/>
   </Scene>
 </X3D>

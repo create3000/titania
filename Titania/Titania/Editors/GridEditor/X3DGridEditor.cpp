@@ -61,12 +61,6 @@ e Foundation.
 namespace titania {
 namespace puck {
 
-using math::pi;
-
-static const auto X_PLANE_ROTATION = X3D::Rotation4d (0, 0, -1, pi <double> / 2) * X3D::Rotation4d (1, 0, 0, pi <double> / 2);
-static const auto Y_PLANE_ROTATION = X3D::Rotation4d ();
-static const auto Z_PLANE_ROTATION = X3D::Rotation4d (1, 0, 0, pi <double> / 2);
-
 static constexpr int INDICES = 3;
 
 X3DGridEditor::X3DGridEditor () :
@@ -196,20 +190,7 @@ X3DGridEditor::on_grid_plane_changed ()
 	grid -> rotation () .removeInterest (&X3DGridEditor::set_rotation, this);
 	grid -> rotation () .addInterest (&X3DGridEditor::connectRotation, this);
 
-	switch (getGridPlaneComboBoxText () .get_active_row_number ())
-	{
-		case 0:
-			grid -> rotation () = X_PLANE_ROTATION;
-			break;
-		case 1:
-			grid -> rotation () = Y_PLANE_ROTATION;
-			break;
-		case 2:
-			grid -> rotation () = Z_PLANE_ROTATION;
-			break;
-		default:
-			break;
-	}
+	getBrowserWindow () -> getGridTool () -> setPlane (getGridPlaneComboBoxText () .get_active_row_number ());
 
 	addRedoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 }
@@ -219,20 +200,7 @@ X3DGridEditor::set_rotation ()
 {
 	changing = true;
 
-	constexpr float EPS  = math::radians (0.1);
-	const auto &    grid = getBrowserWindow () -> getGridTool () -> getTool ();
-
-	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
-		getGridPlaneComboBoxText () .set_active (0);
-
-	else if (std::abs ((grid -> rotation () * ~Y_PLANE_ROTATION) .angle ()) < EPS)
-		getGridPlaneComboBoxText () .set_active (1);
-
-	else if (std::abs ((grid -> rotation () * ~Z_PLANE_ROTATION) .angle ()) < EPS)
-		getGridPlaneComboBoxText () .set_active (2);
-
-	else
-		getGridPlaneComboBoxText () .set_active (-1);
+	getGridPlaneComboBoxText () .set_active (getBrowserWindow () -> getGridTool () -> getPlane ());
 
 	changing = false;
 }

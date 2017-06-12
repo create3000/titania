@@ -63,6 +63,12 @@
 namespace titania {
 namespace puck {
 
+using math::pi;
+
+static const auto X_PLANE_ROTATION = X3D::Rotation4d (0, 0, -1, pi <double> / 2) * X3D::Rotation4d (1, 0, 0, pi <double> / 2);
+static const auto Y_PLANE_ROTATION = X3D::Rotation4d ();
+static const auto Z_PLANE_ROTATION = X3D::Rotation4d (1, 0, 0, pi <double> / 2);
+
 X3DGridTool::X3DGridTool () :
 	 X3DBaseInterface (),
 	  X3DEditorObject (),
@@ -75,15 +81,57 @@ X3DGridTool::X3DGridTool () :
 }
 
 void
-X3DGridTool::isEnabled (const bool value)
+X3DGridTool::setEnabled (const bool value)
 {
 	setMetaData ("/Titania/" + getName () + "/enabled", value);
+
+	update ();
 }
 
 bool
-X3DGridTool::isEnabled () const
+X3DGridTool::getEnabled () const
 {
 	return getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
+}
+
+void
+X3DGridTool::setPlane (const int32_t index)
+{
+	const auto & grid = getTool ();
+
+	switch (index)
+	{
+		case 0:
+			grid -> rotation () = X_PLANE_ROTATION;
+			break;
+		case 1:
+			grid -> rotation () = Y_PLANE_ROTATION;
+			break;
+		case 2:
+			grid -> rotation () = Z_PLANE_ROTATION;
+			break;
+		default:
+			break;
+	}
+}
+
+int32_t
+X3DGridTool::getPlane () const
+{
+	constexpr float EPS  = math::radians (0.1);
+
+	const auto & grid = getTool ();
+
+	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
+		return 0;
+
+	else if (std::abs ((grid -> rotation () * ~Y_PLANE_ROTATION) .angle ()) < EPS)
+		return 1;
+
+	else if (std::abs ((grid -> rotation () * ~Z_PLANE_ROTATION) .angle ()) < EPS)
+		return 2;
+
+	return -1;
 }
 
 void
@@ -147,7 +195,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 void
 X3DGridTool::update ()
 {
-	if (isEnabled () and getBrowserWindow () -> getEditing ())
+	if (getEnabled () and getBrowserWindow () -> getEditing ())
 	   enable ();
 	else
 		disable ();

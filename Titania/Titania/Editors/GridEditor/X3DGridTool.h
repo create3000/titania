@@ -70,10 +70,16 @@ public:
 	getTool () const = 0;
 
 	void
-	isEnabled (const bool);
+	setEnabled (const bool value);
 
 	bool
-	isEnabled () const;
+	getEnabled () const;
+
+	void
+	setPlane (const int32_t index);
+
+	int32_t
+	getPlane () const;
 
 	void
 	update ();

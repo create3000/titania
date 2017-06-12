@@ -61,7 +61,7 @@ const std::string   CylinderSensor::containerField = "children";
 
 CylinderSensor::Fields::Fields () :
 	    axisRotation (new SFRotation (0, 1, 0, 0)),
-	       diskAngle (new SFFloat (0.261799)),      // PI <float> / 12
+	       diskAngle (new SFFloat (0.261792)),      // PI <float> / 12
 	        minAngle (new SFFloat ()),
 	        maxAngle (new SFFloat (-1)),
 	          offset (new SFFloat ()),

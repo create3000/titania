@@ -63,7 +63,7 @@ const std::string   ConeEmitter::containerField = "emitter";
 ConeEmitter::Fields::Fields () :
 	 position (new SFVec3f ()),
 	direction (new SFVec3f (0, 1, 0)),
-	    angle (new SFFloat (0.785398))
+	    angle (new SFFloat (0.7854))
 { }
 
 ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :

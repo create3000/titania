@@ -62,8 +62,8 @@ const std::string   SingleAxisHingeJoint::containerField = "joints";
 SingleAxisHingeJoint::Fields::Fields () :
 	anchorPoint (new SFVec3f ()),
 	axis (new SFVec3f ()),
-	maxAngle (new SFFloat ()),
-	minAngle (new SFFloat ()),
+	maxAngle (new SFFloat (3.14159)),
+	minAngle (new SFFloat (-3.14159)),
 	stopBounce (new SFFloat ()),
 	stopErrorCorrection (new SFFloat (0.8)),
 	angle (new SFFloat ()),
