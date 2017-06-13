@@ -94,6 +94,8 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "shadowIntensity",  shadowIntensity ());
 	addField (inputOutput,    "shadowDiffusion",  shadowDiffusion ());
 	addField (initializeOnly, "shadowMapSize",    shadowMapSize ());
+
+	global () = false;
 }
 
 X3DBaseNode*
