@@ -74,11 +74,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkBox" id="Box1">
+              <object class="GtkViewport" id="Box1">
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
+                <property name="shadow_type">none</property>
                 <signal name="key-release-event" handler="on_box1_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
@@ -90,11 +90,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="Box2">
+              <object class="GtkViewport" id="Box2">
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
+                <property name="shadow_type">none</property>
                 <signal name="key-release-event" handler="on_box2_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
@@ -106,11 +106,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="Box3">
+              <object class="GtkViewport" id="Box3">
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
+                <property name="shadow_type">none</property>
                 <signal name="key-release-event" handler="on_box3_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
@@ -122,11 +122,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="Box4">
+              <object class="GtkViewport" id="Box4">
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
+                <property name="shadow_type">none</property>
                 <signal name="key-release-event" handler="on_box4_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>

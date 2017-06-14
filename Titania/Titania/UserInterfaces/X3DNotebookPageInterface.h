@@ -111,19 +111,19 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Box &
+	Gtk::Viewport &
 	getBox1 () const
 	{ return *m_Box1; }
 
-	Gtk::Box &
+	Gtk::Viewport &
 	getBox2 () const
 	{ return *m_Box2; }
 
-	Gtk::Box &
+	Gtk::Viewport &
 	getBox3 () const
 	{ return *m_Box3; }
 
-	Gtk::Box &
+	Gtk::Viewport &
 	getBox4 () const
 	{ return *m_Box4; }
 
@@ -139,19 +139,19 @@ public:
 
 	virtual
 	bool
-	on_box1_key_release_event (GdkEventKey* event) = 0;
+	on_box1_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_box2_key_release_event (GdkEventKey* event) = 0;
+	on_box2_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_box3_key_release_event (GdkEventKey* event) = 0;
+	on_box3_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_box4_key_release_event (GdkEventKey* event) = 0;
+	on_box4_key_release_event (GdkEventKey* key_event) = 0;
 
 	///  @name Destruction
 
@@ -183,10 +183,10 @@ private:
 	Gtk::Button* m_TabCloseButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Box* m_Box1;
-	Gtk::Box* m_Box2;
-	Gtk::Box* m_Box3;
-	Gtk::Box* m_Box4;
+	Gtk::Viewport* m_Box1;
+	Gtk::Viewport* m_Box2;
+	Gtk::Viewport* m_Box3;
+	Gtk::Viewport* m_Box4;
 
 };
 

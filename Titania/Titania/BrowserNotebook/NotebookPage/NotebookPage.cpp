@@ -61,7 +61,7 @@ namespace puck {
 NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	         X3DNotebookPage (startUrl),
-	                 widgets ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
+	                   boxes ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
 	                   view1 (),
 	                   view2 (),
 	                   view3 (),
@@ -86,10 +86,10 @@ NotebookPage::initialize ()
    view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::RIGHT);
    view4 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::FRONT);
 
-	view1 -> reparent (getBox1 (), getWindow ());
-	view2 -> reparent (getBox2 (), getWindow ());
-	view3 -> reparent (getBox3 (), getWindow ());
-	view4 -> reparent (getBox4 (), getWindow ());
+	view1 -> getWidget () .reparent (getBox1 ());
+	view2 -> getWidget () .reparent (getBox2 ());
+	view3 -> getWidget () .reparent (getBox3 ());
+	view4 -> getWidget () .reparent (getBox4 ());
 
 	getBox2 () .set_visible (true);
 }
@@ -99,17 +99,23 @@ NotebookPage::initialized ()
 {
 	X3DNotebookPage::initialized ();
 
-	const auto worldInfo = createWorldInfo (getScene ());
+	if (getBrowserWindow () -> getEditing ())
+	{
+		const auto worldInfo = createWorldInfo (getScene ());
 
-	setActiveView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4));
-	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+		setActiveView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4));
+		setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+	}
 }
 
 void
 NotebookPage::set_editing ()
 {
 	if (getMultiView () and not getBrowserWindow () -> getEditing ())
+	{
+		setActiveView (1);
 		setMultiView (not getMultiView ());
+	}
 }
 
 bool
@@ -169,17 +175,19 @@ NotebookPage::setActiveView (const bool value)
 void
 NotebookPage::setMultiView (const bool value)
 {
+	__LOG__ << value << std::endl;
+
 	multiView = value;
 
 	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/multiView", multiView);
 
-	for (size_t i = 0, size = widgets .size (); i < size; ++ i)
+	for (size_t i = 0, size = boxes .size (); i < size; ++ i)
 	{
-		widgets [i] -> set_visible (multiView or i == getActiveView ());
+		boxes [i] -> set_visible (multiView or i == getActiveView ());
 	}
 
-	getWidget () .queue_resize ();
-}
+	__LOG__ << value << std::endl;
+ }
 
 void
 NotebookPage::shutdown ()

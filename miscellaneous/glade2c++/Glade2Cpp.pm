@@ -916,3 +916,5 @@ MenuBar::focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* focus_event);
 FileChooserDialog::response
   virtual void on_response(int response_id);
+Viewport::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);

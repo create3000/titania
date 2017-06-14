@@ -47,9 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_VIEW_INTERFACE_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_VIEW_INTERFACE_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_VIEW_H__
+#define __TMP_GLAD2CPP_BROWSER_VIEW_H__
 
 #include "../Base/X3DViewInterface.h"
 #include <gtkmm.h>

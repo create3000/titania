@@ -129,7 +129,7 @@ private:
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*>    widgets;
+	std::vector <Gtk::Widget*>    boxes;
 	std::unique_ptr <BrowserView> view1;
 	std::unique_ptr <BrowserView> view2;
 	std::unique_ptr <BrowserView> view3;
