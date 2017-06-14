@@ -91,6 +91,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_editing ();
+
 	virtual
 	bool
 	on_box1_key_release_event (GdkEventKey* event) final override;
@@ -109,6 +112,20 @@ private:
 
 	bool
 	on_box_key_release_event (GdkEventKey* event, const size_t index);
+
+	void
+	setActiveView (const bool value);
+
+	bool
+	getActiveView () const
+	{ return activeView; }
+
+	void
+	setMultiView (const bool value);
+
+	bool
+	getMultiView () const
+	{ return multiView; }
 
 	///  @name Members
 

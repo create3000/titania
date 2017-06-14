@@ -79,6 +79,8 @@ NotebookPage::initialize ()
 {
 	X3DNotebookPage::initialize ();
 
+	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
+
    view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::TOP);
    view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::MAIN);
    view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::RIGHT);
@@ -99,13 +101,15 @@ NotebookPage::initialized ()
 
 	const auto worldInfo = createWorldInfo (getScene ());
 
-	activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
-	multiView  = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1);
+	setActiveView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4));
+	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+}
 
-	for (size_t i = 0, size = widgets .size (); i < size; ++ i)
-	{
-		widgets [i] -> set_visible (multiView or i == activeView);
-	}
+void
+NotebookPage::set_editing ()
+{
+	if (getMultiView () and not getBrowserWindow () -> getEditing ())
+		setMultiView (not getMultiView ());
 }
 
 bool
@@ -139,18 +143,11 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 	{
 		case GDK_KEY_space:
 		{
-			activeView = index;
-			multiView  = not multiView;
-
-			const auto worldInfo = createWorldInfo (getScene ());
+			if (not getBrowserWindow () -> getEditing ())
+				return false;
 		
-			worldInfo -> setMetaData <int32_t> ("/Titania/Page/activeView", activeView);
-			worldInfo -> setMetaData <int32_t> ("/Titania/Page/multiView",  multiView);
-
-			for (size_t i = 0, size = widgets .size (); i < size; ++ i)
-			{
-				widgets [i] -> set_visible (multiView or i == activeView);
-			}
+			setActiveView (index);
+			setMultiView (not getMultiView ());
 
 			return true;
 		}
@@ -159,6 +156,29 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 	}
 
 	return false;
+}
+
+void
+NotebookPage::setActiveView (const bool value)
+{
+	activeView = value;
+
+	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/activeView", activeView);
+}
+
+void
+NotebookPage::setMultiView (const bool value)
+{
+	multiView = value;
+
+	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/multiView", multiView);
+
+	for (size_t i = 0, size = widgets .size (); i < size; ++ i)
+	{
+		widgets [i] -> set_visible (multiView or i == getActiveView ());
+	}
+
+	getWidget () .queue_resize ();
 }
 
 void
