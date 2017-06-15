@@ -952,6 +952,7 @@
     <None Include="Titania\X3D\RenderingSurface\ContextLock.h" />
     <None Include="Titania\X3D\Configuration\SupportedNodesArray.h" />
     <None Include="Titania\X3D\Configuration\SupportedFieldsArray.h" />
+    <None Include="share\titania\tools\library\AngleGrid.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
