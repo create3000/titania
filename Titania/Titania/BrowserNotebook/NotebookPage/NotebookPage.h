@@ -114,9 +114,9 @@ private:
 	on_box_key_release_event (GdkEventKey* event, const size_t index);
 
 	void
-	setActiveView (const bool value);
+	setActiveView (const size_t value);
 
-	bool
+	size_t
 	getActiveView () const
 	{ return activeView; }
 

@@ -593,9 +593,6 @@ MFColorButton::on_colors_button_release_event (GdkEventButton* event)
 		const size_t row     = (event -> y - colorsBorder [3] + colorsGap / 2.0) / (colorsSize + colorsGap);
 		const size_t index   = columns * row + column;
 
-__LOG__ << index << std::endl;
-__LOG__ << field .size () << std::endl;
-
 		if (index < field .size ())
 			setIndex (index);
 

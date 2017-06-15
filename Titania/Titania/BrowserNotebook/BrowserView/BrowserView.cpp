@@ -239,28 +239,68 @@ BrowserView::set_viewpoint ()
 void
 BrowserView::set_grid ()
 {
+	static const std::map <std::pair <int32_t, BrowserViewType>, X3D::Vector2i> mappings = {
+		// x-plane
+		std::make_pair (std::make_pair (0, BrowserViewType::TOP),   X3D::Vector2i (1, 0)),
+		std::make_pair (std::make_pair (0, BrowserViewType::RIGHT), X3D::Vector2i (0, 2)),
+		std::make_pair (std::make_pair (0, BrowserViewType::FRONT), X3D::Vector2i (1, 2)),
+		// y-plane
+		std::make_pair (std::make_pair (1, BrowserViewType::TOP),   X3D::Vector2i (0, 2)),
+		std::make_pair (std::make_pair (1, BrowserViewType::RIGHT), X3D::Vector2i (2, 1)),
+		std::make_pair (std::make_pair (1, BrowserViewType::FRONT), X3D::Vector2i (0, 1)),
+		// z-plane
+		std::make_pair (std::make_pair (2, BrowserViewType::TOP),   X3D::Vector2i (0, 1)),
+		std::make_pair (std::make_pair (2, BrowserViewType::RIGHT), X3D::Vector2i (1, 2)),
+		std::make_pair (std::make_pair (2, BrowserViewType::FRONT), X3D::Vector2i (0, 2)),
+	};
+
 	if (page -> getMainBrowser () -> getExecutionContext () not_eq getCurrentContext ())
 		return;
 
-	if (getBrowserWindow () -> getGridTool () -> getEnabled ())
+	try
 	{
-		const auto & gridTool = getBrowserWindow () -> getGridTool () -> getTool ();
+		if (getBrowserWindow () -> getGridTool () -> getEnabled ())
+		{
+			const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
+			const auto   plane   = getBrowserWindow () -> getGridTool () -> getPlane ();
+			const auto   mapping = mappings .at (std::make_pair (plane, type));
+	
+			gridSwitch -> whichChoice () = 0;
 
-		gridSwitch -> whichChoice () = 0;
-	}
-	else if (getBrowserWindow () -> getAngleTool () -> getEnabled ())
-	{
-		const auto & angleTool = getBrowserWindow () -> getAngleTool () -> getTool ();
+			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () [mapping .x ()], 0, tool -> translation () [mapping .y ()]));
+			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       [mapping .x ()], 1, tool -> scale ()       [mapping .y ()]));
+			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   [mapping .x ()], 0, tool -> dimension ()   [mapping .y ()] }));
+		}
+		else if (getBrowserWindow () -> getAngleTool () -> getEnabled ())
+		{
+			const auto & tool    = getBrowserWindow () -> getAngleTool () -> getTool ();
+			const auto   plane   = getBrowserWindow () -> getAngleTool () -> getPlane ();
+			const auto   mapping = mappings .at (std::make_pair (plane, type));
+	
+			gridSwitch -> whichChoice () = 1;
 
-		gridSwitch -> whichChoice () = 1;
-	}
-	else if (getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ())
-	{
-		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () [mapping .x ()], 0, tool -> translation () [mapping .y ()]));
+			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       [mapping .x ()], 1, tool -> scale ()       [mapping .y ()]));
+			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   [mapping .x ()], 0, tool -> dimension ()   [mapping .y ()] }));
+		}
+		else if (getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ())
+		{
+			const auto & tool    = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+			const auto   plane   = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
+			const auto   mapping = mappings .at (std::make_pair (plane, type));
 
-		gridSwitch -> whichChoice () = 2;
+			gridSwitch -> whichChoice () = 2;
+
+			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () [mapping .x ()], 0, tool -> translation () [mapping .y ()]));
+			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       [mapping .x ()], 1, tool -> scale ()       [mapping .y ()]));
+			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   [mapping .x ()], 0, tool -> dimension ()   [mapping .y ()] }));
+		}
+		else
+		{
+			gridSwitch -> whichChoice () = -1;
+		}
 	}
-	else
+	catch (const std::exception & error)
 	{
 		gridSwitch -> whichChoice () = -1;
 	}

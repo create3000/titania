@@ -165,7 +165,7 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 }
 
 void
-NotebookPage::setActiveView (const bool value)
+NotebookPage::setActiveView (const size_t value)
 {
 	activeView = value;
 
@@ -175,8 +175,6 @@ NotebookPage::setActiveView (const bool value)
 void
 NotebookPage::setMultiView (const bool value)
 {
-	__LOG__ << value << std::endl;
-
 	multiView = value;
 
 	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/multiView", multiView);
@@ -185,8 +183,6 @@ NotebookPage::setMultiView (const bool value)
 	{
 		boxes [i] -> set_visible (multiView or i == getActiveView ());
 	}
-
-	__LOG__ << value << std::endl;
  }
 
 void

@@ -3418,7 +3418,6 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="AxonometricGridSnappingScrolledWindow">
-                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
                   <object class="GtkViewport">
