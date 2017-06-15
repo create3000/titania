@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V3.0.4
 
 PROFILE Full
 
@@ -7,10 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Tue, 28 Mar 2017 16:13:26 GMT"
-META "outputStyle" "nicest"
+META "modified" "Thu, 15 Jun 2017 08:56:27 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -58,19 +57,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              2.09263505715033,
-              10.2950345976299,
-              5.43287312370001
+              4.56780354600261,
+              11.2217822253956,
+              18.7082921323744
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.945656817782015,
-              -0.287073410275208,
-              -0.152715552892802,
-              5.17517615049785
+              0.929070358799226,
+              -0.368711826530999,
+              0.0296623899383048,
+              5.7082264393033
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -88,45 +87,45 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-          }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput SFVec3f    translation 0 0 0
-              inputOutput SFRotation rotation 0 0 1 0
-              inputOutput SFVec3f    scale 1 1 1
-              inputOutput MFInt32    dimension [
-                10,
+            value DEF ScaleScript Script {
+              inputOnly   SFVec3f set_translation
+              inputOutput SFVec3f scale 1 1 1
+              inputOutput MFInt32 dimension [
+                5,
                 10
               ]
-              inputOutput SFVec2d    angle 1.047197551196597746154214461093167628065 1.047197551196597746154214461093167628065
-              inputOutput MFInt32    majorLineEvery [
-                5,
-                5,
-                5,
-                5
-              ]
-              inputOutput MFInt32    majorLineOffset [
-                0,
-                1,
-                0,
-                0
-              ]
-              inputOutput SFColor    color 0.5 0.5 0.5
-              inputOutput SFFloat    transparency 0.8
-              inputOutput SFColor    lineColor 1 0.7 0.7
-              inputOutput SFFloat    lineTransparency 0.8
-              inputOutput SFColor    majorLineColor 1 0.7 0.7
-              inputOutput SFFloat    majorLineTransparency 0.6
-              inputOutput SFBool     isActive FALSE
+              outputOnly  SFVec3f translation_changed
 
-              url "ecmascript:
-// Empty body"
+              url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = Math .abs (value .x) / dimension [0];
+	var factor = length / scale .x;
+
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	translation_changed = new SFVec3f (-scale .x * dimension [0], 0, 0);
+}"
             }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
           }
         ]
       }
@@ -188,6 +187,22 @@ WorldInfo {
           value FALSE
         }
       }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
     ]
   }
   title "AxonometricGridTool"
@@ -199,11 +214,9 @@ DEF GridTool Collision {
     DEF Grid_1 TouchGroup {
       enabled FALSE
       children DEF _1 AxonometricGrid {
-        majorLineOffset [
-          0,
-          1,
-          0,
-          0
+        dimension [
+          5,
+          10
         ]
         transparency 0.8
       }
@@ -280,7 +293,7 @@ DEF GridTool Collision {
 DEF DimensionScript Script {
   inputOutput SFVec3f scale 1 1 1
   inputOutput MFInt32 dimension [
-    10,
+    5,
     10
   ]
   inputOnly   SFVec3f set_translation
@@ -295,18 +308,13 @@ function initialize ()
 
 function set_translation (value)
 {
-	var oddX = dimension [0] % 2;
-
 	dimension [0] = Math .round (value .x);
 	dimension [0] = Math .max (dimension [0], 1);
-
-	dimension [0] *= 2;
-	dimension [0] -= oddX;
 }
 
 function eventsProcessed ()
 {
-	translation_changed = new SFVec3f (dimension [0] / 2 , 0, 0);
+	translation_changed = new SFVec3f (dimension [0], 0, 0);
 }
 "
 }
@@ -333,39 +341,40 @@ function set_rotation (value)
 }"
 }
 
-DEF ScaleScript Script {
-  inputOnly   SFVec3f set_translation
-  inputOutput SFVec3f scale 1 1 1
-  inputOutput MFInt32 dimension [
-    10,
+USE ScaleScript
+
+DEF Tool Script {
+  inputOutput SFVec3f    translation 0 0 0
+  inputOutput SFRotation rotation 0 0 1 0
+  inputOutput SFVec3f    scale 1 1 1
+  inputOutput MFInt32    dimension [
+    5,
     10
   ]
-  outputOnly  SFVec3f translation_changed
+  inputOutput SFVec2d    angle 1.0471975511966 1.0471975511966
+  inputOutput MFInt32    majorLineEvery [
+    5,
+    5,
+    5,
+    5
+  ]
+  inputOutput MFInt32    majorLineOffset [
+    0,
+    0,
+    0,
+    0
+  ]
+  inputOutput SFColor    color 0.5 0.5 0.5
+  inputOutput SFFloat    transparency 0.8
+  inputOutput SFColor    lineColor 1 0.7 0.7
+  inputOutput SFFloat    lineTransparency 0.8
+  inputOutput SFColor    majorLineColor 1 0.7 0.7
+  inputOutput SFFloat    majorLineTransparency 0.6
+  inputOutput SFBool     isActive FALSE
 
-  url "javascript:
-
-function initialize ()
-{
-	eventsProcessed ();
+  url "ecmascript:
+// Empty body"
 }
-
-function set_translation (value)
-{
-	var length = 2 * Math .abs (value .x) / dimension [0];
-	var factor = length / scale .x;
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	translation_changed = new SFVec3f (-scale .x * dimension [0] / 2, 0, 0);
-}"
-}
-
-USE Tool
 
 ROUTE DimensionScript.translation_changed TO _6.set_translation
 ROUTE _5.translation_changed TO DimensionScript.set_translation

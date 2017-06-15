@@ -91,7 +91,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 
 	angle () .setUnit (UnitCategory::ANGLE);
 
-	dimension ()       = { 10, 10 };
+	dimension ()       = { 5, 10 };
 	majorLineEvery ()  = { 5, 5, 5, 5 };
 	majorLineOffset () = { 0, 0, 0, 0 };
 }

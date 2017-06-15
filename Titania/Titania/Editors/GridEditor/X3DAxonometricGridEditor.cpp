@@ -196,22 +196,6 @@ X3DAxonometricGridEditor::set_angle ()
 }
 
 void
-X3DAxonometricGridEditor::on_axonometric_grid_uvt_dimension_value_changed ()
-{
-	if (changing)
-		return;
-
-	changing = true;
-
-	const int32_t dimension = getAxonometricGridUVTDimensionAdjustment () -> get_value ();
-
-	if (dimension % 2)
-		getAxonometricGridUVTDimensionAdjustment () -> set_value (dimension + 1);
-
-	changing = false;
-}
-
-void
 X3DAxonometricGridEditor::on_axonometric_grid_toggled ()
 {
 	getAxonometricGridTransformBox ()           .set_sensitive (getAxonometricGridCheckButton () .get_active ());

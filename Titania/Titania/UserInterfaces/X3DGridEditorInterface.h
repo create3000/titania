@@ -863,10 +863,6 @@ public:
 
 	virtual
 	void
-	on_axonometric_grid_uvt_dimension_value_changed () = 0;
-
-	virtual
-	void
 	on_grid_toggled () = 0;
 
 	virtual

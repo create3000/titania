@@ -90,6 +90,9 @@ private:
 	X3D::BrowserPtr
 	createBrowser (const BrowserViewType type) const;
 
+	int32_t
+	getPlane () const;
+
 	///  @name Event handlers
 
 	void

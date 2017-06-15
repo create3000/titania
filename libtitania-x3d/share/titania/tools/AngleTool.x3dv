@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V1.4.9
+#X3D V3.3 utf8 Titania V3.0.4
 
 PROFILE Full
 
@@ -7,414 +7,29 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.1, http://titania.create3000.de"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleTool.x3dv"
-META "modified" "Sun, 10 Apr 2016 02:38:36 GMT"
+META "modified" "Thu, 15 Jun 2017 07:38:26 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
 
-PROTO AngleGrid [
-  inputOutput    SFVec3f    translation 0 0 0
-  inputOutput    SFRotation rotation 0 0 1 0
-  inputOutput    SFVec3f    scale 1 1 1
-  inputOutput    MFInt32    dimension [
-    5,
-    16,
-    10
-  ]
-  inputOutput    MFInt32    majorLineEvery [
-    5,
-    2,
-    5
-  ]
-  inputOutput    MFInt32    majorLineOffset [
-    0,
-    0,
-    0
-  ]
-  inputOutput    SFColor    color 0.5 0.5 0.5
-  inputOutput    SFFloat    transparency 0.8
-  inputOutput    SFColor    lineColor 1 0.7 0.7
-  inputOutput    SFFloat    lineTransparency 0.8
-  inputOutput    SFColor    majorLineColor 1 0.7 0.7
-  inputOutput    SFFloat    majorLineTransparency 0.6
-  initializeOnly SFBool     solid TRUE
+EXTERNPROTO AngleGrid [
+  inputOutput    SFVec3f    translation
+  inputOutput    SFRotation rotation
+  inputOutput    SFVec3f    scale
+  inputOutput    MFInt32    dimension
+  inputOutput    MFInt32    majorLineEvery
+  inputOutput    MFInt32    majorLineOffset
+  inputOutput    SFColor    color
+  inputOutput    SFFloat    transparency
+  inputOutput    SFColor    lineColor
+  inputOutput    SFFloat    lineTransparency
+  inputOutput    SFColor    majorLineColor
+  inputOutput    SFFloat    majorLineTransparency
+  initializeOnly SFBool     solid
 ]
-{
-  Transform {
-    translation IS translation
-    rotation IS rotation
-    scale IS scale
-    children [
-      DEF Disk Transform {
-        rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
-        scale 5 5 1
-        children Shape {
-          appearance Appearance {
-            material DEF Material2 Material {
-              diffuseColor 0 0 0
-              emissiveColor IS color
-              transparency IS transparency
-            }
-          }
-          geometry Disk2D {
-            solid IS solid
-          }
-        }
-      }
-      DEF Rings Transform {
-        rotation 0 0.70710528118436 0.707108281185553 3.14159
-        children [
-          Transform {
-            children Shape {
-              appearance DEF MinorAppearance Appearance {
-                material DEF _1 Material {
-                  emissiveColor IS lineColor
-                  transparency IS lineTransparency
-                }
-              }
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 2 2 2
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 3 3 3
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 4 4 4
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 5 5 5
-            children Shape {
-              appearance DEF MajorAppearance Appearance {
-                material DEF MajorMaterial Material {
-                  emissiveColor IS majorLineColor
-                  transparency IS majorLineTransparency
-                }
-              }
-              geometry Circle2D { }
-            }
-          }
-        ]
-      }
-      DEF MinorLines Shape {
-        appearance USE MinorAppearance
-        geometry DEF MinorLines_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1,
-            0,
-            4,
-            -1,
-            0,
-            5,
-            -1,
-            0,
-            6,
-            -1,
-            0,
-            7,
-            -1,
-            0,
-            8,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              0 0 0,
-              1.91342 0 4.6194,
-              4.6194 0 1.91342,
-              4.6194 0 -1.91342,
-              1.91342 0 -4.6194,
-              -1.91342 0 -4.6194,
-              -4.6194 0 -1.91342,
-              -4.6194 0 1.91342,
-              -1.91342 0 4.6194
-            ]
-          }
-        }
-      }
-      DEF MajorLines Shape {
-        appearance USE MajorAppearance
-        geometry DEF MajorLines_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1,
-            0,
-            4,
-            -1,
-            0,
-            5,
-            -1,
-            0,
-            6,
-            -1,
-            0,
-            7,
-            -1,
-            0,
-            8,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              0 0 0,
-              0 0 5,
-              3.53553 0 3.53553,
-              5 0 3.06162e-16,
-              3.53553 0 -3.53553,
-              6.12323e-16 0 -5,
-              -3.53553 0 -3.53553,
-              -5 0 -9.18485e-16,
-              -3.53553 0 3.53553
-            ]
-          }
-        }
-      }
-      DEF MinorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 4
-          }
-          material USE _1
-        }
-        geometry DEF MinorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -4 0,
-              0 -3 0,
-              0 -2 0,
-              0 -1 0,
-              0 1 0,
-              0 2 0,
-              0 3 0,
-              0 4 0
-            ]
-          }
-        }
-      }
-      DEF MajorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 6
-          }
-          material USE MajorMaterial
-        }
-        geometry DEF MajorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -5 0,
-              0 0 0,
-              0 5 0
-            ]
-          }
-        }
-      }
-    ]
-  }
-
-  DEF AngleGridScript Script {
-    inputOutput    MFInt32 dimension IS dimension
-    inputOutput    MFInt32 majorLineEvery IS majorLineEvery
-    inputOutput    MFInt32 majorLineOffset IS majorLineOffset
-    initializeOnly SFNode  disk USE Disk
-    initializeOnly SFNode  rings USE Rings
-    initializeOnly SFNode  minorLines USE MinorLines_1
-    initializeOnly SFNode  majorLines USE MajorLines_1
-    initializeOnly SFNode  minorPoints USE MinorPoints_1
-    initializeOnly SFNode  majorPoints USE MajorPoints_1
-    initializeOnly SFNode  minorAppearance USE MinorAppearance
-    initializeOnly SFNode  majorAppearance USE MajorAppearance
-
-    url "javascript:
-
-function initialize ()
-{
-	eventsProcessed ();
-}
-
-function eventsProcessed ()
-{
-	var radius = dimension [0];
-
-	// Plane
-
-	disk .scale = new SFVec3f (radius, radius, 1);
-
-	// Radiuses
-
-	generateRadiuses (true,  radius, majorLines);
-	generateRadiuses (false, radius, minorLines);
-
-	// Rings
-
-	generateRings ();
-
-	// Points
-
-	generatePoints (true,  majorPoints .coord .point);
-	generatePoints (false, minorPoints .coord .point);
-}
-
-function generateRadiuses (major, radius, grid)
-{
-	var angle      = 2 * Math .PI / dimension [1];
-	var coordIndex = new MFInt32 ();
-	var point      = grid .coord .point;
-	var p          = 0;
-
-	point [p ++] = new SFVec3f ();
-
-	for (var i = 0, c = 0; i < dimension [1]; ++ i)
-	{
-		if (major - isMajorLine (i, 1))
-			continue;
-	
-		var a = angle * i;
-
-		point [p] = new SFVec3f (radius * Math .sin (a), 0, radius * Math .cos (a));
-
-		coordIndex [c ++] = 0;
-		coordIndex [c ++] = p;
-		coordIndex [c ++] = -1;
-		
-		++ p;
-	}
-
-	point .length = p;
-
-	grid .set_coordIndex = coordIndex;
-}
-
-function generateRings ()
-{
-	var scene = Browser .currentScene;
-	var size  = Math .min (dimension [0], rings .children .length);
-
-	for (var i = 0; i < size; ++ i)
-	{
-		var s         = i + 1;
-		var transform = rings .children [i];
-		var major     = isMajorLine (s, 0);
-
-		transform .children [0] .appearance = major ? majorAppearance : minorAppearance;
-		transform .scale                    = new SFVec3f (s, s, s);
-	}
-
-	for (var i = size; i < dimension [0]; ++ i)
-	{
-		var s         = i + 1;
-		var circle    = scene .createNode (\"Circle2D\");
-		var shape     = scene .createNode (\"Shape\");
-		var transform = scene .createNode (\"Transform\");
-		var major     = isMajorLine (s, 0);
-
-		shape .appearance       = major ? majorAppearance : minorAppearance;
-		shape .geometry         = circle;
-		transform .children [0] = shape;
-		transform .scale        = new SFVec3f (s, s, s);
-		rings .children [i]     = transform;
-	}
-
-	rings .children .length = dimension [0];
-}
-
-function generatePoints (major, point)
-{
-	var scaleY1_2 = -dimension [2] / 2;
-	var p         = 0;
-
-	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
-	{
-		if (major - isMajorLineXYZ (i, 2))
-			continue;
-
-		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
-		++ p;
-	}
-
-	point .length = p;
-}
-
-function isMajorLine (i, index)
-{
-	for (var d = index; d < majorLineEvery .length; d += 3)
-	{
-		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
-			return true;
-	}
-
-	return false;
-}
-
-function isMajor (i, dimension, majorLineEvery, majorLineOffset)
-{
-	if (majorLineEvery)
-	{
-		var index = Math .floor (i - majorLineOffset);
-
-		return !(index % majorLineEvery);
-	}
-
-	return false;
-}
-
-function isMajorLineXYZ (i, index)
-{
-	for (var d = index; d < majorLineEvery .length; d += 3)
-	{
-		if (isMajorXYZ (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
-			return true;
-	}
-
-	return false;
-}
-
-function isMajorXYZ (i, dimension, majorLineEvery, majorLineOffset)
-{
-	if (majorLineEvery)
-	{
-		var index = Math .floor (i - dimension / 2 - majorLineOffset);
-
-		return !(index % majorLineEvery);
-	}
-
-	return false;
-}
-"
-    directOutput TRUE
-    mustEvaluate TRUE
-  }
-}
+"library/AngleGrid.x3dv#AngleGrid"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -438,19 +53,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              2.70062458728663,
+              4.55688810733126,
+              8.48182749269322
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.862931552791345,
+              0.504948038820294,
+              -0.0194065269602071,
+              0.558359179429521
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -486,50 +101,31 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF children MetadataSet {
-            name "children"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
-            value DEF ScaleScript Script {
-              inputOnly   SFVec3f set_translation
-              inputOutput SFVec3f scale 1 1 1
-              inputOutput MFInt32 dimension [
-                5,
-                16,
-                10
-              ]
-              outputOnly  SFVec3f translation_changed
-
-              url "javascript:
-
-function initialize ()
-{
-	eventsProcessed ();
-}
-
-function set_translation (value)
-{
-	var length = new SFVec2f ( value .x / (dimension [0] * Math .cos (Math .PI / 4)),
-	                          -value .z / (dimension [0] * Math .sin (Math .PI / 4))) .length ();
-
-	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
-	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
-	                                   0,
-	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
-}"
-            }
+            value FALSE
           }
-          DEF previous MetadataSet {
-            name "previous"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
+            value DEF GridInstance AngleGrid { }
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -543,20 +139,20 @@ DEF AngleTool Collision {
   children [
     DEF AngleGrid_1 TouchGroup {
       enabled FALSE
-      children DEF _2 AngleGrid { }
+      children USE GridInstance
     }
     DEF Center Transform {
       children [
-        DEF _3 PlaneSensor {
+        DEF _1 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
         }
-        DEF _4 Transform {
+        DEF _2 Transform {
           children ScreenGroup {
             children DEF Sphere Transform {
               scale 4 4 4
               children Shape {
-                appearance DEF _5 Appearance {
+                appearance DEF _3 Appearance {
                   material Material {
                     diffuseColor 1 0.7 0
                   }
@@ -573,19 +169,19 @@ DEF AngleTool Collision {
       children [
         DEF AngleHandle Group {
           children [
-            DEF _6 CylinderSensor {
+            DEF _4 CylinderSensor {
               diskAngle 1.2
               offset 0.392699
             }
             DEF Handle Transform {
               rotation 0 1 0 0.392699092626572
-              children DEF _7 Transform {
+              children DEF _5 Transform {
                 translation 0 0 4
                 children ScreenGroup {
                   children Transform {
                     scale 6 6 6
                     children Shape {
-                      appearance USE _5
+                      appearance USE _3
                       geometry Sphere { }
                     }
                   }
@@ -596,19 +192,19 @@ DEF AngleTool Collision {
         }
         DEF DimensionHandle Group {
           children [
-            DEF _8 PlaneSensor {
+            DEF _6 PlaneSensor {
               axisRotation 1 0 0 1.5708
               autoOffset FALSE
               offset 0 0 5
               maxPosition 0 -1
             }
-            DEF _9 Transform {
+            DEF _7 Transform {
               translation 0 0 5
               children ScreenGroup {
                 children DEF Sphere_1 Transform {
                   scale 6 3 3
                   children Shape {
-                    appearance USE _5
+                    appearance USE _3
                     geometry Box { }
                   }
                 }
@@ -620,12 +216,12 @@ DEF AngleTool Collision {
     }
     DEF ScaleHandle Transform {
       children [
-        DEF _10 PlaneSensor {
+        DEF _8 PlaneSensor {
           axisRotation 1 0 0 1.5708
           autoOffset FALSE
           offset 3.53553 0 -3.53553
         }
-        DEF _11 Transform {
+        DEF _9 Transform {
           translation 3.53553 0 -3.53553
           children ScreenGroup {
             children DEF Box Transform {
@@ -728,7 +324,43 @@ function eventsProcessed ()
 "
 }
 
-USE ScaleScript
+DEF ScaleScript Script {
+  inputOnly   SFVec3f set_translation
+  inputOutput SFVec3f scale 1 1 1
+  inputOutput MFInt32 dimension [
+    5,
+    16,
+    10
+  ]
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = new SFVec2f ( value .x / (dimension [0] * Math .cos (Math .PI / 4)),
+	                          -value .z / (dimension [0] * Math .sin (Math .PI / 4))) .length ();
+
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
+
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
+	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
+	                                   0,
+	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
+}"
+}
 
 DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
@@ -762,47 +394,48 @@ DEF Tool Script {
 }
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
-ROUTE _6.rotation_changed TO AngleScript.set_rotation
+ROUTE _4.rotation_changed TO AngleScript.set_rotation
 ROUTE Tool.translation_changed TO Handles.set_translation
-ROUTE Tool.translation_changed TO _4.set_translation
-ROUTE _3.translation_changed TO Tool.set_translation
-ROUTE Tool.translation_changed TO _3.set_offset
-ROUTE Tool.transparency_changed TO _2.set_transparency
-ROUTE Tool.color_changed TO _2.set_color
-ROUTE Tool.lineColor_changed TO _2.set_lineColor
-ROUTE Tool.lineTransparency_changed TO _2.set_lineTransparency
-ROUTE Tool.majorLineColor_changed TO _2.set_majorLineColor
-ROUTE Tool.majorLineTransparency_changed TO _2.set_majorLineTransparency
-ROUTE Tool.majorLineEvery_changed TO _2.set_majorLineEvery
-ROUTE DimensionScript.angleTranslation_changed TO _7.set_translation
-ROUTE _8.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _9.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_offset
-ROUTE Tool.rotation_changed TO MoveScript.set_rotation
-ROUTE MoveScript.axisOfRotation_changed TO _3.set_axisRotation
-ROUTE Tool.rotation_changed TO Handles.set_rotation
 ROUTE Tool.translation_changed TO _2.set_translation
-ROUTE Tool.rotation_changed TO _2.set_rotation
-ROUTE Tool.scale_changed TO _2.set_scale
+ROUTE _1.translation_changed TO Tool.set_translation
+ROUTE Tool.translation_changed TO _1.set_offset
+ROUTE Tool.transparency_changed TO GridInstance.set_transparency
+ROUTE Tool.color_changed TO GridInstance.set_color
+ROUTE Tool.lineColor_changed TO GridInstance.set_lineColor
+ROUTE Tool.lineTransparency_changed TO GridInstance.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO GridInstance.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO GridInstance.set_majorLineTransparency
+ROUTE Tool.majorLineEvery_changed TO GridInstance.set_majorLineEvery
+ROUTE DimensionScript.angleTranslation_changed TO _5.set_translation
+ROUTE _6.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _7.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _6.set_offset
+ROUTE Tool.rotation_changed TO MoveScript.set_rotation
+ROUTE MoveScript.axisOfRotation_changed TO _1.set_axisRotation
+ROUTE Tool.rotation_changed TO Handles.set_rotation
+ROUTE Tool.translation_changed TO GridInstance.set_translation
+ROUTE Tool.rotation_changed TO GridInstance.set_rotation
+ROUTE Tool.scale_changed TO GridInstance.set_scale
 ROUTE Tool.scale_changed TO Handles.set_scale
-ROUTE AngleScript.angle_changed TO _6.set_offset
+ROUTE AngleScript.angle_changed TO _4.set_offset
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
 ROUTE Tool.dimension_changed TO AngleScript.set_dimension
 ROUTE AngleScript.dimension_changed TO Tool.set_dimension
-ROUTE Tool.dimension_changed TO _2.set_dimension
-ROUTE Tool.majorLineOffset_changed TO _2.set_majorLineOffset
+ROUTE Tool.dimension_changed TO GridInstance.set_dimension
+ROUTE Tool.majorLineOffset_changed TO GridInstance.set_majorLineOffset
 ROUTE Tool.scale_changed TO ScaleScript.set_scale
 ROUTE ScaleScript.scale_changed TO Tool.set_scale
-ROUTE _10.translation_changed TO ScaleScript.set_translation
+ROUTE _8.translation_changed TO ScaleScript.set_translation
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
-ROUTE ScaleScript.translation_changed TO _11.set_translation
-ROUTE ScaleScript.translation_changed TO _10.set_offset
+ROUTE ScaleScript.translation_changed TO _9.set_translation
+ROUTE ScaleScript.translation_changed TO _8.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
-ROUTE _3.isActive TO Tool.set_isActive
+ROUTE _1.isActive TO Tool.set_isActive
+ROUTE _4.isActive TO Tool.set_isActive
 ROUTE _6.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
-ROUTE _10.isActive TO Tool.set_isActive
 
+EXPORT GridInstance
 EXPORT Tool

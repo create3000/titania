@@ -104,10 +104,6 @@ private:
 
 	virtual
 	void
-	on_axonometric_grid_uvt_dimension_value_changed () final override;
-
-	virtual
-	void
 	on_axonometric_grid_toggled () final override;
 
 	virtual

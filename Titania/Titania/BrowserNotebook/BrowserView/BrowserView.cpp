@@ -122,6 +122,24 @@ BrowserView::createBrowser (const BrowserViewType type) const
 	return X3D::createBrowser (page -> getMainBrowser (), { get_ui ("BrowserView.x3dv") });
 }
 
+int32_t
+BrowserView::getPlane () const
+{
+	switch (type)
+	{
+		case BrowserViewType::MAIN:
+			return -1;
+		case BrowserViewType::TOP:
+			return 1;
+		case BrowserViewType::RIGHT:
+			return 0;
+		case BrowserViewType::FRONT:
+			return 2;
+	}
+
+	return -1;
+}
+
 void
 BrowserView::set_dependent_browser ()
 {
@@ -140,6 +158,10 @@ BrowserView::set_dependent_browser ()
 		const auto   worldInfo   = createWorldInfo (page -> getScene ());
 		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
 
+		const auto & gridTool            = getBrowserWindow () -> getGridTool ()            -> getTool ();
+		const auto & angleGridTool       = getBrowserWindow () -> getAngleTool ()           -> getTool ();
+		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+
 		getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&BrowserView::set_grid, this);
 		getBrowserWindow () -> getAngleTool ()           -> getTool () -> addInterest (&BrowserView::set_grid, this);
 		getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&BrowserView::set_grid, this);
@@ -154,6 +176,10 @@ BrowserView::set_dependent_browser ()
 		activeLayer -> getBackgroundStack ()     -> setLock (true);
 		activeLayer -> getFogStack ()            -> setLock (true);
 
+		gridSwitch -> children () .emplace_back (gridTool            -> getTool ());
+		gridSwitch -> children () .emplace_back (angleGridTool       -> getTool ());
+		gridSwitch -> children () .emplace_back (axonometricGridTool -> getTool ());
+
 		viewpoint -> position ()               .addInterest (&BrowserView::set_viewpoint, this);
 		viewpoint -> positionOffset ()         .addInterest (&BrowserView::set_viewpoint, this);
 		viewpoint -> orientation ()            .addInterest (&BrowserView::set_viewpoint, this);
@@ -167,8 +193,8 @@ BrowserView::set_dependent_browser ()
 		viewpoint -> centerOfRotation () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
 		viewpoint -> fieldOfViewScale () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
 
-		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
-	
+		gridTransform -> rotation () = X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type];
+
 		// Connect to active layer.
 	
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&BrowserView::set_activeLayer, this);
@@ -261,77 +287,129 @@ BrowserView::set_grid ()
 	{
 		if (getBrowserWindow () -> getGridTool () -> getEnabled ())
 		{
-			const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
-			const auto   plane   = getBrowserWindow () -> getGridTool () -> getPlane ();
-			const auto   mapping = mappings .at (std::make_pair (plane, type));
+			const auto plane = getBrowserWindow () -> getGridTool () -> getPlane ();
 	
-			gridSwitch -> whichChoice () = 0;
-
-			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       .at (mapping .x ()), 1, tool -> scale ()       .at (mapping .y ())));
-			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   .at (mapping .x ()), 0, tool -> dimension ()   .at (mapping .y ()) }));
-
-			for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
+			if (plane == getPlane ())
 			{
-				grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 0, tool -> majorLineEvery () [i + mapping .x ()]);
-				grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 1, 0);
-				grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 2, tool -> majorLineEvery () [i + mapping .y ()]);
+				gridSwitch -> whichChoice () = 1;
 			}
-
-			for (size_t i = 0; i < tool -> majorLineOffset () .size (); i += 3)
+			else
 			{
-				grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 0, tool -> majorLineOffset () [i + mapping .x ()]);
-				grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 1, 0);
-				grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 2, tool -> majorLineOffset () [i + mapping .y ()]);
+				const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
+				const auto   mapping = mappings .at (std::make_pair (plane, type));
+
+				gridSwitch -> whichChoice () = 0;
+	
+				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       .at (mapping .x ()), 1, tool -> scale ()       .at (mapping .y ())));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   .at (mapping .x ()), 0, tool -> dimension ()   .at (mapping .y ()) }));
+	
+				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 0, tool -> majorLineEvery () .at (i + mapping .x ()));
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 2, tool -> majorLineEvery () .at (i + mapping .y ()));
+				}
+	
+				for (size_t i = 0; i < tool -> majorLineOffset () .size (); i += 3)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 0, tool -> majorLineOffset () .at (i + mapping .x ()));
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 2, tool -> majorLineOffset () .at (i + mapping .y ()));
+				}
+	
+				grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
+				grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
+				grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
+	
+				grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
 			}
-
-			grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
-			grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
-			grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
-
-			grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
 		}
 		else if (getBrowserWindow () -> getAngleTool () -> getEnabled ())
 		{
-			const auto & tool    = getBrowserWindow () -> getAngleTool () -> getTool ();
-			const auto   plane   = getBrowserWindow () -> getAngleTool () -> getPlane ();
-			const auto   mapping = mappings .at (std::make_pair (plane, type));
+			const auto plane = getBrowserWindow () -> getAngleTool () -> getPlane ();
+
+			if (plane == getPlane ())
+			{
+				gridSwitch -> whichChoice () = 2;
+			}
+			else
+			{
+				const auto & tool    = getBrowserWindow () -> getAngleTool () -> getTool ();
+				const auto   mapping = mappings .at (std::make_pair (plane, type));
+
+				gridSwitch -> whichChoice () = 0;
 	
-			gridSwitch -> whichChoice () = 1;
-
-			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       .at (mapping .x ()), 1, tool -> scale ()       .at (mapping .y ())));
-			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   .at (mapping .x ()), 0, tool -> dimension ()   .at (mapping .y ()) }));
-
-			grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
-			grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
-			grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
-
-			grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
+				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (tool -> scale () .at (mapping .x ()) * tool -> dimension () .at (0), 1, tool -> scale () .at (mapping .y ())));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (2) }));
+	
+				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 0, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i + 2, tool -> majorLineEvery () .at (i + 2));
+				}
+	
+				for (size_t i = 0; i < tool -> majorLineOffset () .size (); i += 3)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 0, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i + 2, tool -> majorLineOffset () .at (i + 2));
+				}
+	
+				grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
+				grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
+				grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
+	
+				grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
+			}
 		}
 		else if (getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ())
 		{
-			const auto & tool    = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
-			const auto   plane   = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
-			const auto   mapping = mappings .at (std::make_pair (plane, type));
+			const auto plane = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
 
-			gridSwitch -> whichChoice () = 2;
-
-			grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-			grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       .at (mapping .x ()), 1, tool -> scale ()       .at (mapping .y ())));
-			grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   .at (mapping .x ()), 0, tool -> dimension ()   .at (mapping .y ()) }));
-
-			grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
-			grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
-			grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
-
-			grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
-			grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
+			if (plane == getPlane ())
+			{
+				gridSwitch -> whichChoice () = 3;
+			}
+			else
+			{
+				const auto & tool    = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+				const auto   mapping = mappings .at (std::make_pair (plane, type));
+	
+				gridSwitch -> whichChoice () = 0;
+	
+				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (tool -> scale () .at (mapping .x ()) * tool -> dimension () .at (0), 1, tool -> scale () .at (mapping .y ())));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (1) }));
+	
+				for (size_t i = 0; i < tool -> majorLineEvery () .size () / 4; ++ i)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i * 3 + 0, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i * 3 + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineEvery") .set1Value (i * 3 + 2, tool -> majorLineEvery () .at (i * 4 + 3));
+				}
+	
+				for (size_t i = 0; i < tool -> majorLineOffset () .size () / 4; ++ i)
+				{
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i * 3 + 0, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i * 3 + 1, 0);
+					grid -> getField <X3D::MFInt32> ("majorLineOffset") .set1Value (i * 3 + 2, tool -> majorLineOffset () .at (i * 4 + 3));
+				}
+	
+				grid -> setField <X3D::SFColor> ("color",          X3D::Color3f (tool -> color ()          .getRed (), tool -> color ()          .getGreen (), tool -> color ()          .getBlue ()));
+				grid -> setField <X3D::SFColor> ("lineColor",      X3D::Color3f (tool -> lineColor ()      .getRed (), tool -> lineColor ()      .getGreen (), tool -> lineColor ()      .getBlue ()));
+				grid -> setField <X3D::SFColor> ("majorLineColor", X3D::Color3f (tool -> majorLineColor () .getRed (), tool -> majorLineColor () .getGreen (), tool -> majorLineColor () .getBlue ()));
+	
+				grid -> setField <X3D::SFFloat> ("transparency",          1 - tool -> color ()          .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("lineTransparency",      1 - tool -> lineColor ()      .getAlpha ());
+				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
+			}
 		}
 		else
 		{

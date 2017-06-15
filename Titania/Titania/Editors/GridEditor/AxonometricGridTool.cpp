@@ -97,7 +97,7 @@ AxonometricGridTool::fromMetadata ()
 	getTool () -> translation ()     = getMetaData ("/Titania/" + getName () + "/translation",     X3D::SFVec3f ());
 	getTool () -> rotation ()        = getMetaData ("/Titania/" + getName () + "/rotation",        X3D::SFRotation ());
 	getTool () -> scale ()           = getMetaData ("/Titania/" + getName () + "/scale",           X3D::SFVec3f (1, 1, 1));
-	getTool () -> dimension ()       = getMetaData ("/Titania/" + getName () + "/dimension",       X3D::MFInt32 ({ 10, 10, 10 }));
+	getTool () -> dimension ()       = getMetaData ("/Titania/" + getName () + "/dimension",       X3D::MFInt32 ({ 5, 10}));
 	getTool () -> majorLineEvery ()  = getMetaData ("/Titania/" + getName () + "/majorLineEvery",  X3D::MFInt32 ({ 5, 5, 5 }));
 	getTool () -> majorLineOffset () = getMetaData ("/Titania/" + getName () + "/majorLineOffset", X3D::MFInt32 ({ 0, 0, 0 }));
 	getTool () -> color ()           = getMetaData ("/Titania/" + getName () + "/color",           X3D::SFColorRGBA (0.5, 0.5, 0.5, 0.2));

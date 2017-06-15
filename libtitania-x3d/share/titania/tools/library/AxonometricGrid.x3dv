@@ -19,7 +19,7 @@ PROTO AxonometricGrid [
   inputOutput    SFRotation rotation 0 0 1 0
   inputOutput    SFVec3f    scale 1 1 1
   inputOutput    MFInt32    dimension [
-    10,
+    5,
     10
   ]
   inputOutput    SFVec2d    angle 1.047197551196597746154214461093167628065 1.047197551196597746154214461093167628065
@@ -361,9 +361,9 @@ function eventsProcessed ()
 
 	// Hexagon plane
 
-	hexagon .point [0] = new SFVec3f (v, 0, 0) .multiply (dimension [0] / 2);
-	hexagon .point [1] = new SFRotation (0, 1, 0, angles [0])              .multVec (new SFVec3f (u * dimension [0] / 2, 0, 0));
-	hexagon .point [2] = new SFRotation (0, 1, 0, angles [0] + angles [2]) .multVec (new SFVec3f (t * dimension [0] / 2, 0, 0));
+	hexagon .point [0] = new SFVec3f (v, 0, 0) .multiply (dimension [0]);
+	hexagon .point [1] = new SFRotation (0, 1, 0, angles [0])              .multVec (new SFVec3f (u * dimension [0], 0, 0));
+	hexagon .point [2] = new SFRotation (0, 1, 0, angles [0] + angles [2]) .multVec (new SFVec3f (t * dimension [0], 0, 0));
 	hexagon .point [3] = hexagon .point [0] .negate ();
 	hexagon .point [4] = hexagon .point [1] .negate ();
 	hexagon .point [5] = hexagon .point [2] .negate ();
@@ -386,7 +386,7 @@ function generateGridAxis (axis, angle, angles, sides, heights, major, grid, coo
 {
 	var point     = grid .coord .point;
 	var majorAdd  = major / 4;
-	var scale_2   = dimension [0] / 2;
+	var scale_2   = dimension [0];
 	var rotation  = new SFRotation (0, 1, 0, angle);
 	var height    = heights [axis];
 	var side      = sides [axis];
@@ -397,9 +397,9 @@ function generateGridAxis (axis, angle, angles, sides, heights, major, grid, coo
 	var left      = Math .sqrt (Math .pow (sides [lMap [axis]], 2) - Math .pow (heights [axis], 2));
 	var right     = Math .sqrt (Math .pow (sides [rMap [axis]], 2) - Math .pow (heights [axis], 2));
 
-	for (var n = 0, size = dimension [0] + 1; n < size; ++ n)
+	for (var n = 0, size = dimension [0] * 2 + 1; n < size; ++ n)
 	{
-		if (major - isMajorLine (n, axis, 0))
+		if (major - isMajorLine (n, axis, 0, 2))
 			continue;
 
 		var i = n - scale_2;
@@ -450,7 +450,7 @@ function generatePoints (major, point)
 
 	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
 	{
-		if (major - isMajorLine (i, 3, 1))
+		if (major - isMajorLine (i, 3, 1, 1))
 			continue;
 
 		point [p] = new SFVec3f (0, scaleY_2 + i, 0);
@@ -460,11 +460,11 @@ function generatePoints (major, point)
 	point .length = p;
 }
 
-function isMajorLine (i, index, di)
+function isMajorLine (i, index, di, f)
 {
 	for (var d = index; d < majorLineEvery .length; d += 4)
 	{
-		if (isMajor (i, dimension [di], majorLineEvery [d], majorLineOffset [d]))
+		if (isMajor (i, dimension [di] * f, majorLineEvery [d], majorLineOffset [d]))
 			return true;
 	}
 

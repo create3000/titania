@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserView.x3dv"
-META "modified" "Thu, 08 Jun 2017 02:35:51 GMT"
+META "modified" "Thu, 15 Jun 2017 08:10:41 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -103,6 +103,22 @@ WorldInfo {
           }
         ]
       }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
     ]
   }
 }
@@ -120,14 +136,11 @@ LayerSet {
   ]
   layers [
     DEF GridLayer Layer {
-      isPickable FALSE
       children [
         USE OrthoViewpoint
         DEF GridTransform Transform {
           children DEF GridSwitch Switch {
-            children DEF Grid Grid {
-              rotation 1 0 0 1.5707963
-            }
+            children DEF Grid Grid { }
           }
         }
       ]
