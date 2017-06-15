@@ -156,6 +156,9 @@ public:
 	value_type
 	getZ () const;
 
+	value_type
+	at (const size_type & index) const;
+
 	void
 	set1Value (const size_type & index, const value_type & value);
 
@@ -310,6 +313,14 @@ typename SFVec3 <InternalType>::value_type
 SFVec3 <InternalType>::getZ () const
 {
 	return getValue () .z ();
+}
+
+template <class InternalType>
+inline
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::at (const size_type  & index) const
+{
+	return getValue () .at (index);
 }
 
 template <class InternalType>

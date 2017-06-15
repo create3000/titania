@@ -161,7 +161,9 @@ X3DAxonometricGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
-	gridTool -> rotation () .addInterest (&X3DAxonometricGridEditor::set_rotation, this);
+	gridTool -> rotation ()        .addInterest (&X3DAxonometricGridEditor::set_rotation, this);
+	gridTool -> majorLineEvery ()  .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
+	gridTool -> majorLineOffset () .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
 	gridTool -> getField <X3D::SFVec2d> ("angle") .addInterest (&X3DAxonometricGridEditor::set_angle, this);
 	getCurrentScene () .addInterest (&X3DAxonometricGridEditor::set_angle, this);
 	getCurrentScene () .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
@@ -301,23 +303,39 @@ X3DAxonometricGridEditor::on_axonometric_major_line_grid_upper_changed ()
 void
 X3DAxonometricGridEditor::on_axonometric_add_major_line_grid ()
 {
-	const int size = getAxonometricGridMajorGridAdjustment () -> get_upper () + 1;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Add Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+	const int    size     = getAxonometricGridMajorGridAdjustment () -> get_upper () + 1;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	getAxonometricGridMajorGridAdjustment () -> set_lower (1);
 	getAxonometricGridMajorGridAdjustment () -> set_upper (size);
 	getAxonometricGridMajorGridAdjustment () -> set_value (size);
 	
 	on_axonometric_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DAxonometricGridEditor::on_axonometric_remove_major_line_grid ()
 {
-	const auto & grid  = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
-	const int    size  = getAxonometricGridMajorGridAdjustment () -> get_upper () - 1;
-	const int    index = (getAxonometricGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
-	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
-	const auto   iterO = grid -> majorLineOffset () .begin () + index;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Remove Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+	const int    size     = getAxonometricGridMajorGridAdjustment () -> get_upper () - 1;
+	const int    index    = (getAxonometricGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
+	const auto   iterL    = grid -> majorLineEvery ()  .begin () + index;
+	const auto   iterO    = grid -> majorLineOffset () .begin () + index;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	grid -> majorLineEvery ()  .erase (iterL, iterL + INDICES);
 	grid -> majorLineOffset () .erase (iterO, iterO + INDICES);
@@ -329,16 +347,22 @@ X3DAxonometricGridEditor::on_axonometric_remove_major_line_grid ()
 		getAxonometricGridMajorGridAdjustment () -> set_value (size);
 		
 	on_axonometric_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DAxonometricGridEditor::set_majorLineEvery ()
 {
 	const auto & grid = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+	const auto   size = grid -> majorLineEvery () .size () / INDICES;
 
-	getAxonometricGridMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
-	getAxonometricGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);
-	getAxonometricGridMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
+	getAxonometricGridMajorGridAdjustment () -> set_lower (bool (size));
+	getAxonometricGridMajorGridAdjustment () -> set_upper (size);
+	getAxonometricGridMajorGridAdjustment () -> set_value (std::min <int32_t> (getAxonometricGridMajorGridAdjustment () -> get_value (), size > 0 ? size : 0));
 
 	on_axonometric_major_line_grid_upper_changed ();
 }

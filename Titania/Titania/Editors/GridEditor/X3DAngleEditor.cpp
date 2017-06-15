@@ -150,8 +150,10 @@ X3DAngleEditor::initialize ()
 	snapDistance     .setNodes (angleTools);
 	snapToCenter     .setNodes (angleTools);
 
-	angleTool -> rotation () .addInterest (&X3DAngleEditor::set_rotation, this);
-	getCurrentScene ()       .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
+	angleTool -> rotation ()        .addInterest (&X3DAngleEditor::set_rotation,       this);
+	angleTool -> majorLineEvery ()  .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
+	angleTool -> majorLineOffset () .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
+	getCurrentScene ()              .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
 
 	on_grid_toggled ();
 	set_rotation ();
@@ -254,23 +256,39 @@ X3DAngleEditor::on_angle_major_line_grid_upper_changed ()
 void
 X3DAngleEditor::on_angle_add_major_line_grid ()
 {
-	const int size = getAngleMajorGridAdjustment () -> get_upper () + 1;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Add Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const int    size     = getAngleMajorGridAdjustment () -> get_upper () + 1;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	getAngleMajorGridAdjustment () -> set_lower (1);
 	getAngleMajorGridAdjustment () -> set_upper (size);
 	getAngleMajorGridAdjustment () -> set_value (size);
 
 	on_angle_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DAngleEditor::on_angle_remove_major_line_grid ()
 {
-	const auto & grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
-	const int    size  = getAngleMajorGridAdjustment () -> get_upper () - 1;
-	const int    index = (getAngleMajorGridAdjustment () -> get_value () - 1) * INDICES;
-	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
-	const auto   iterO = grid -> majorLineOffset () .begin () + index;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Remove Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const int    size     = getAngleMajorGridAdjustment () -> get_upper () - 1;
+	const int    index    = (getAngleMajorGridAdjustment () -> get_value () - 1) * INDICES;
+	const auto   iterL    = grid -> majorLineEvery ()  .begin () + index;
+	const auto   iterO    = grid -> majorLineOffset () .begin () + index;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	grid -> majorLineEvery ()  .erase (iterL, iterL + INDICES);
 	grid -> majorLineOffset () .erase (iterO, iterO + INDICES);
@@ -282,16 +300,22 @@ X3DAngleEditor::on_angle_remove_major_line_grid ()
 		getAngleMajorGridAdjustment () -> set_value (size);
 
 	on_angle_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DAngleEditor::set_majorLineEvery ()
 {
 	const auto & grid = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto   size = grid -> majorLineEvery () .size () / INDICES;
 
-	getAngleMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
-	getAngleMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);
-	getAngleMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
+	getAngleMajorGridAdjustment () -> set_lower (bool (size));
+	getAngleMajorGridAdjustment () -> set_upper (size);
+	getAngleMajorGridAdjustment () -> set_value (std::min <int32_t> (getAngleMajorGridAdjustment () -> get_value (), size > 0 ? size : 0));
 
 	on_angle_major_line_grid_upper_changed ();
 }

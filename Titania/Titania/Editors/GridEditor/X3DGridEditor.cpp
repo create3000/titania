@@ -153,8 +153,10 @@ X3DGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
-	gridTool -> rotation () .addInterest (&X3DGridEditor::set_rotation, this);
-	getCurrentScene ()      .addInterest (&X3DGridEditor::set_majorLineEvery, this);
+	gridTool -> rotation ()        .addInterest (&X3DGridEditor::set_rotation,       this);
+	gridTool -> majorLineEvery ()  .addInterest (&X3DGridEditor::set_majorLineEvery, this);
+	gridTool -> majorLineOffset () .addInterest (&X3DGridEditor::set_majorLineEvery, this);
+	getCurrentScene ()             .addInterest (&X3DGridEditor::set_majorLineEvery, this);
 
 	on_grid_toggled ();
 	set_rotation ();
@@ -257,23 +259,39 @@ X3DGridEditor::on_major_line_grid_upper_changed ()
 void
 X3DGridEditor::on_add_major_line_grid ()
 {
-	const int size = getGridMajorGridAdjustment () -> get_upper () + 1;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Add Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getGridTool () -> getTool ();
+	const int    size     = getGridMajorGridAdjustment () -> get_upper () + 1;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	getGridMajorGridAdjustment () -> set_lower (1);
 	getGridMajorGridAdjustment () -> set_upper (size);
 	getGridMajorGridAdjustment () -> set_value (size);
 	
 	on_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DGridEditor::on_remove_major_line_grid ()
 {
-	const auto & grid  = getBrowserWindow () -> getGridTool () -> getTool ();
-	const int    size  = getGridMajorGridAdjustment () -> get_upper () - 1;
-	const int    index = (getGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
-	const auto   iterL = grid -> majorLineEvery ()  .begin () + index;
-	const auto   iterO = grid -> majorLineOffset () .begin () + index;
+	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Remove Major Line Grid");
+	const auto & grid     = getBrowserWindow () -> getGridTool () -> getTool ();
+	const int    size     = getGridMajorGridAdjustment () -> get_upper () - 1;
+	const int    index    = (getGridMajorGridAdjustment () -> get_value () - 1) * INDICES;
+	const auto   iterL    = grid -> majorLineEvery ()  .begin () + index;
+	const auto   iterO    = grid -> majorLineOffset () .begin () + index;
+
+	undoStep -> addObjects (grid);
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
 
 	grid -> majorLineEvery ()  .erase (iterL, iterL + INDICES);
 	grid -> majorLineOffset () .erase (iterO, iterO + INDICES);
@@ -285,16 +303,22 @@ X3DGridEditor::on_remove_major_line_grid ()
 		getGridMajorGridAdjustment () -> set_value (size);
 		
 	on_major_line_grid_upper_changed ();
+
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineEvery ()),  grid -> majorLineEvery ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (grid -> majorLineOffset ()), grid -> majorLineOffset ());
+
+	addUndoStep (undoStep);
 }
 
 void
 X3DGridEditor::set_majorLineEvery ()
 {
 	const auto & grid = getBrowserWindow () -> getGridTool () -> getTool ();
+	const auto   size = grid -> majorLineEvery () .size () / INDICES;
 
-	getGridMajorGridAdjustment () -> set_lower (bool (grid -> majorLineEvery () .size ()));
-	getGridMajorGridAdjustment () -> set_upper (grid -> majorLineEvery () .size () / INDICES);
-	getGridMajorGridAdjustment () -> set_value (grid -> majorLineEvery () .size () > 0);
+	getGridMajorGridAdjustment () -> set_lower (bool (size));
+	getGridMajorGridAdjustment () -> set_upper (size);
+	getGridMajorGridAdjustment () -> set_value (std::min <int32_t> (getGridMajorGridAdjustment () -> get_value (), size > 0 ? size : 0));
 
 	on_major_line_grid_upper_changed ();
 }

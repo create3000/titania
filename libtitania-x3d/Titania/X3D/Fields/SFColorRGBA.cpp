@@ -109,6 +109,12 @@ SFColorRGBA::setAlpha (const value_type & a)
 	addEvent ();
 }
 
+SFColorRGBA::value_type
+SFColorRGBA::at (const size_type & index) const
+{
+	return getValue () .at (index);
+}
+
 void
 SFColorRGBA::set1Value (const size_type & index, const value_type & value)
 {

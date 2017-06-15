@@ -80,7 +80,7 @@ public:
 		index = value;
 		
 		if (not nodes .empty ())
-			set_field ();
+			set_buffer ();
 	}
 
 	int

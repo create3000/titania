@@ -102,6 +102,12 @@ SFColor::setBlue (const value_type & b)
 	addEvent ();
 }
 
+SFColor::value_type
+SFColor::at (const size_type & index) const
+{
+	return getValue () .at (index);
+}
+
 void
 SFColor::set1Value (const size_type & index, const value_type & value)
 {

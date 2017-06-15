@@ -175,7 +175,7 @@ MFColorButton::setIndex (const int32_t value)
 {
 	index = value;
 
-	set_field ();
+	set_buffer ();
 
 	index_changed .emit ();
 }

@@ -137,6 +137,9 @@ public:
 
 	///  @name Member access
 
+	value_type
+	at (const size_type & index) const;
+
 	void
 	set1Value (const size_type & index, const value_type & value);
 
@@ -277,6 +280,17 @@ throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	return new SFMatrix4 (*this);
+}
+
+template <class InternalType>
+inline
+typename SFMatrix4 <InternalType>::value_type
+SFMatrix4 <InternalType>::at (const size_type & index) const
+{
+	if (index > std::tuple_size <InternalType>::value)
+		throw std::out_of_range ("SFMatrix4::at ");
+
+	return getValue () .data () [index];
 }
 
 template <class InternalType>

@@ -158,6 +158,9 @@ public:
 	value_type
 	getAngle () const;
 
+	value_type
+	at (const size_type & index) const;
+
 	void
 	set1Value (const size_type & index, const value_type & value);
 
@@ -342,6 +345,14 @@ typename SFRotation4 <InternalType>::value_type
 SFRotation4 <InternalType>::getAngle () const
 {
 	return getValue () .angle ();
+}
+
+template <class InternalType>
+inline
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::at (const size_type & index) const
+{
+	return getValue () .at (index);
 }
 
 template <class InternalType>

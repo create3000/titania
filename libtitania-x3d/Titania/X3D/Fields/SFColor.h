@@ -136,6 +136,9 @@ public:
 	getBlue () const
 	{ return getValue () .b (); }
 
+	value_type
+	at (const size_type & index) const;
+
 	void
 	set1Value (const size_type & index, const value_type & value);
 
