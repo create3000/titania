@@ -193,8 +193,8 @@ BrowserView::set_dependent_browser ()
 		viewpoint -> centerOfRotation () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
 		viewpoint -> fieldOfViewScale () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
 
-		gridTransform -> rotation () = X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type];
-
+		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
+	
 		// Connect to active layer.
 	
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&BrowserView::set_activeLayer, this);
