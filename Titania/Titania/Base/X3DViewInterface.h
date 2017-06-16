@@ -95,6 +95,9 @@ protected:
 
 private:
 
+	void
+	set_editing ();
+
 };
 
 } // puck

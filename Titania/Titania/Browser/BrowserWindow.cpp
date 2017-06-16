@@ -164,7 +164,21 @@ BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
 
-	loadStyles ();
+	try
+	{
+		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
+
+		fileCssProvider -> load_from_path (get_ui ("style.css"));
+
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider,     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+		on_style_updated ();
+	}
+	catch (const Glib::Error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
 
 	// Drag & drop targets
 	std::vector <Gtk::TargetEntry> targets = {
@@ -198,24 +212,6 @@ BrowserWindow::configure ()
 		getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
 	else
 		getCobwebCompatibilityAction () -> set_active (true);
-}
-
-void
-BrowserWindow::loadStyles () 
-{
-	try
-	{
-		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
-		fileCssProvider -> load_from_path (get_ui ("style.css"));
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-		on_style_updated ();
-	}
-	catch (const Glib::Error & error)
-	{
-	   __LOG__ << error .what () << std::endl;
-	}
 }
 
 void

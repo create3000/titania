@@ -95,9 +95,6 @@ private:
 	void
 	store () final override;
 
-	void
-	loadStyles ();
-
 	///  @name Scene handling
 
 	virtual

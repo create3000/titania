@@ -222,6 +222,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_masterBrowser ();
+
+	void
 	on_tab_close_clicked (NotebookPage* const page);
 
 	virtual

@@ -104,7 +104,9 @@ X3DBrowserWidget::initialize ()
 
 	// Master browser
 
+	masterBrowser -> initialized () .addInterest (&X3DBrowserWidget::set_masterBrowser, this);
 	masterBrowser -> setAntialiasing (4);
+	masterBrowser -> set_opacity (0);
 	masterBrowser -> show ();
 	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
 
@@ -268,6 +270,13 @@ X3DBrowserWidget::configure ()
 		getHPaned () .set_position (getConfig () -> getInteger ("hPaned"));
 
 	getStraightenHorizonButton () .set_active (getConfig () -> getBoolean ("straightenHorizon"));
+}
+
+void
+X3DBrowserWidget::set_masterBrowser ()
+{
+	masterBrowser -> initialized () .removeInterest (&X3DBrowserWidget::set_masterBrowser, this);
+	masterBrowser -> set_opacity (1);
 }
 
 void

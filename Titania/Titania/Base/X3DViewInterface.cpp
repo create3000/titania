@@ -50,6 +50,8 @@
 
 #include "X3DViewInterface.h"
 
+#include "../Browser/X3DBrowserWindow.h"
+
 namespace titania {
 namespace puck {
 
@@ -61,6 +63,20 @@ void
 X3DViewInterface::initialize ()
 {
 	X3DUserInterface::initialize ();
+
+	getBrowserWindow () -> getEditing () .addInterest (&X3DViewInterface::set_editing, this);
+
+	set_editing ();
+}
+
+void
+X3DViewInterface::set_editing ()
+{
+	if (getBrowserWindow () -> getEditing ())
+		getWidget () .get_style_context () -> add_class ("titania-widget-box");
+
+	else
+		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
 }
 
 bool

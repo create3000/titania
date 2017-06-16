@@ -45,7 +45,7 @@ expander > title > label {
 }
 
 .titania-widget-box-selected {
-	border: 1px solid red;
+	border-color: red;
 }
 
 .titania-surface {
