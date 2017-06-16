@@ -74,11 +74,17 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	   downloadMutexes ({ std::make_shared <std::mutex> () }),
 	     downloadMutex (),
 	    loadingObjects (),
+	      loadingTotal (),
 	         loadCount (),
 	    loadUrlObjects (true),
 	      notifyOnLoad (false)
 {
-	addChildObjects (privateScene, loadSensor, loadCount);
+	addChildObjects (privateScene,
+	                 loadSensor,
+	                 loadingTotal,
+	                 loadCount,
+	                 loadUrlObjects,
+	                 notifyOnLoad);
 }
 
 void
@@ -125,8 +131,9 @@ X3DNetworkingContext::addLoadCount (const void* const object)
 	try
 	{
 		loadingObjects .emplace (object);
-		
-		loadCount = loadingObjects .size ();
+
+		loadingTotal = loadingTotal + 1;
+		loadCount    = loadingObjects .size ();
 
 		set_loadCount ();
 	}
@@ -175,7 +182,9 @@ X3DNetworkingContext::set_loadCount ()
 void
 X3DNetworkingContext::resetLoadCount ()
 {
-	loadCount = 0;
+	loadingTotal = 0;
+	loadCount    = 0;
+
 	loadingObjects .clear ();			   
 }
 

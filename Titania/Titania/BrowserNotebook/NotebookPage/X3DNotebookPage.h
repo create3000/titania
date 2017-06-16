@@ -173,6 +173,9 @@ protected:
 	set_initialized ();
 
 	void
+	set_loadCount ();
+
+	void
 	set_shutdown ();
 
 	virtual

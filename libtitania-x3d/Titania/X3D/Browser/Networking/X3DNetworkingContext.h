@@ -91,16 +91,21 @@ public:
 	setLoadUrlObjects (const bool value)
 	{ loadUrlObjects = value; }
 
-	bool
+	const SFBool &
 	getLoadUrlObjects () const
 	{ return loadUrlObjects; }
+
 	void
 	setNotifyOnLoad (const bool value)
 	{ notifyOnLoad = value; }
 
-	bool
+	const SFBool &
 	getNotifyOnLoad () const
 	{ return notifyOnLoad; }
+
+	const SFInt32 &
+	getLoadingTotal () const
+	{ return loadingTotal; }
 
 	const SFInt32 &
 	getLoadCount () const
@@ -158,9 +163,10 @@ private:
 	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;
 	std::mutex                                downloadMutex;
 	std::set <const void*>                    loadingObjects;
+	SFInt32                                   loadingTotal;
 	SFInt32                                   loadCount;
-	bool                                      loadUrlObjects;
-	bool                                      notifyOnLoad;
+	SFBool                                    loadUrlObjects;
+	SFBool                                    notifyOnLoad;
 
 };
 

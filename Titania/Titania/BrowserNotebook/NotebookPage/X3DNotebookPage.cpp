@@ -299,11 +299,14 @@ X3DNotebookPage::set_browser ()
 void
 X3DNotebookPage::set_splashScreen ()
 {
-	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_splashScreen, this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized,     this);
-	mainBrowser -> shutdown ()    .addInterest (&X3DNotebookPage::set_shutdown,        this);
-	mainBrowser -> setNotifyOnLoad (true);
+	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,     this);
+	mainBrowser -> shutdown ()        .addInterest (&X3DNotebookPage::set_shutdown,        this);
+	mainBrowser -> getLoadingTotal () .addInterest (&X3DNotebookPage::set_loadCount,       this);
+	mainBrowser -> getLoadCount ()    .addInterest (&X3DNotebookPage::set_loadCount,       this);
+
 	mainBrowser -> set_opacity (1);
+	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> loadURL ({ url .str () }, { });
 }
 
@@ -311,6 +314,14 @@ void
 X3DNotebookPage::set_initialized ()
 {
 	initialized ();
+}
+
+void
+X3DNotebookPage::set_loadCount ()
+{
+	const auto fraction = double (mainBrowser -> getLoadingTotal () - mainBrowser -> getLoadCount ()) / double (mainBrowser -> getLoadingTotal ());
+
+	getBrowserWindow () -> getLocationEntry () .set_progress_fraction (fraction);
 }
 
 void
