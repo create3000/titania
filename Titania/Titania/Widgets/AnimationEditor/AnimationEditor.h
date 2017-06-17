@@ -854,13 +854,7 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 				std::vector <Type> keyVelocitys;
 	
 				for (size_t i = 0, aiN = iN + a * components; i < keys .size (); ++ i, aiN += components * keySize)
-				{
-					__LOG__ << aiN << std::endl;
 					keyValues .emplace_back (getValue <Type> (keyValue, aiN));
-				}
-
-				for (const auto & k : keyValues)
-					__LOG__ << k << std::endl;
 
 				const bool normalizeVelocity = false;
 				const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
