@@ -1850,21 +1850,22 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 	const auto key      = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key");
 	auto       keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
 	auto       keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+	const auto keySize  = interpolator -> getMetaData <X3D::SFInt32>  ("/Interpolator/keySize", X3D::SFInt32 (1));
 	const auto iter     = std::lower_bound (key .begin (), key .end (), fromFrame);
 	const auto index    = iter - key .begin ();
-	const auto indexN   = index * components;
+	const auto indexN   = index * components * keySize;
 
 	if (iter == key .end () or *iter not_eq fromFrame)
 		return;
 
-	keyValue .resize (key .size () * components);
+	keyValue .resize (key .size () * components * keySize);
 	keyType  .resize (key .size ());
 
 	const auto type = std::string (keyType [index]);
 
 	std::vector <double> value;
 	
-	for (size_t i = 0; i < components; ++ i)
+	for (size_t i = 0, size = components * keySize; i < size; ++ i)
 		value .emplace_back (keyValue [indexN + i]);
 
 	removeKeyframe (X3D::X3DPtr <X3D::X3DNode> (interpolator), components, fromFrame, undoStep);
