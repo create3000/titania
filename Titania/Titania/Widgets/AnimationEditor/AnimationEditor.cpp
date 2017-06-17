@@ -62,6 +62,7 @@
 #include <Titania/X3D/Components/Interpolation/ScalarInterpolator.h>
 #include <Titania/X3D/Components/Interpolation/PositionInterpolator2D.h>
 #include <Titania/X3D/Components/Interpolation/PositionInterpolator.h>
+#include <Titania/X3D/Components/Interpolation/CoordinateInterpolator.h>
 #include <Titania/X3D/Parser/Filter.h>
 
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
@@ -115,7 +116,8 @@ const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolat
 	std::make_pair (X3D::X3DConstants::ScalarInterpolator,      1),
 	std::make_pair (X3D::X3DConstants::OrientationInterpolator, 4),
 	std::make_pair (X3D::X3DConstants::PositionInterpolator2D,  2),
-	std::make_pair (X3D::X3DConstants::PositionInterpolator,    3)
+	std::make_pair (X3D::X3DConstants::PositionInterpolator,    3),
+	std::make_pair (X3D::X3DConstants::CoordinateInterpolator,  3)
 };
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
@@ -791,7 +793,8 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 		X3D::X3DConstants::SFInt32,
 		X3D::X3DConstants::SFRotation,
 		X3D::X3DConstants::SFVec2f,
-		X3D::X3DConstants::SFVec3f
+		X3D::X3DConstants::SFVec3f,
+		X3D::X3DConstants::MFVec3f
 	};
 
 	for (size_t i = 0, size = node -> getFieldDefinitions () .size (); i < size; ++ i)
@@ -1009,7 +1012,7 @@ AnimationEditor::on_copy ()
 			std::vector <double> value;
 
 			for (size_t i = 0; i < components; ++ i)
-					value .emplace_back (keyValue .at (indexN + i));
+				value .emplace_back (keyValue .at (indexN + i));
 
 			copiedFrames .emplace_back (std::get <0> (frame), std::get <1> (frame), std::get <2> (frame), value, keyType .at (index));
 		}
@@ -1339,6 +1342,7 @@ AnimationEditor::on_key_type_changed ()
 				case X3D::X3DConstants::OrientationInterpolator:
 				case X3D::X3DConstants::PositionInterpolator2D:
 				case X3D::X3DConstants::PositionInterpolator:
+				case X3D::X3DConstants::CoordinateInterpolator:
 				{
 					keyType .set1Value (index, activeType);
 					break;
@@ -1649,6 +1653,31 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			setInterpolator (interpolator, undoStep);
 			break;
 		}
+		case X3D::X3DConstants::MFVec3f:
+		{
+			const auto   interpolator = getInterpolator ("CoordinateInterpolator", node, field, undoStep);
+			const auto & array        = *static_cast <const X3D::MFVec3f*> (field);
+			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
+
+			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
+			{
+				// Show warning dialog.
+				return;
+			}
+
+			interpolator -> setMetaData <int32_t> ("/Interpolator/keySize", array .size ());
+
+			for (const auto & vector : array)
+			{
+				value .emplace_back (vector .getX ());
+				value .emplace_back (vector .getY ());
+				value .emplace_back (vector .getZ ());
+			}
+
+			addKeyframe (interpolator, frame, value, activeType, undoStep);
+			setInterpolator (interpolator, undoStep);
+			break;
+		}
 		default:
 			break;
 	}
@@ -1683,7 +1712,7 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
 
 	if (iter == key .end () or frame == key .get1Value (index))
 	{
-		key .set1Value (index, frame);
+		key     .set1Value (index, frame);
 		keyType .set1Value (index, type);
 
 		for (size_t i = 0; i < components; ++ i)
@@ -1691,7 +1720,7 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
 	}
 	else
 	{
-		key .emplace (key .begin () + index, frame);
+		key     .emplace (key .begin () + index, frame);
 		keyType .emplace (keyType .begin () + index, type);
 		
 		for (const auto & v : basic::make_reverse_range (value))
@@ -1982,6 +2011,12 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolato
 			setInterpolator <X3D::PositionInterpolator, X3D::MFVec3f, X3D::Vector3d> (X3D::X3DPtr <X3D::PositionInterpolator> (interpolator), undoStep);
 			break;
 		}
+		case X3D::X3DConstants::CoordinateInterpolator:
+		{
+			resizeInterpolator (interpolator, 3, undoStep);
+			setArrayInterpolator <X3D::CoordinateInterpolator, X3D::MFVec3f, X3D::Vector3d> (X3D::X3DPtr <X3D::CoordinateInterpolator> (interpolator), undoStep);
+			break;
+		}
 		default:
 			break;
 	}
@@ -2265,9 +2300,10 @@ AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpol
 	auto       key      = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key");
 	auto       keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
 	auto       keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+	auto       keySize  = interpolator -> getMetaData <X3D::SFInt32>  ("/Interpolator/keySize", X3D::SFInt32 (1));
 	const auto iter     = std::upper_bound (key .begin (), key .end (), getDuration ());
 	const auto size     = iter - key .begin ();
-	const auto sizeN    = size * components;
+	const auto sizeN    = size * components * keySize;
 
 	// Remove frames greater than duration.
 

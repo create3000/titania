@@ -399,6 +399,10 @@ private:
 	void
 	setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolator> &, const X3D::UndoStepPtr &);
 
+	template <class Interpolator, class Field, class Type>
+	void
+	setArrayInterpolator (const X3D::X3DPtr <Interpolator> &, const X3D::UndoStepPtr &);
+
 	template <class Type>
 	Type
 	getValue (const X3D::MFDouble &, const size_t) const;
@@ -553,32 +557,32 @@ private:
 	 *  @name Members
 	 **/
 
-	Columns columns;
-	Glib::RefPtr <Gtk::TreeStore> treeStore;
+	Columns                             columns;
+	Glib::RefPtr <Gtk::TreeStore>       treeStore;
 	Glib::RefPtr <Gtk::TreeModelFilter> treeModelFilter;
-	std::unique_ptr <NodeIndex> nodeIndex;
-	NameEntry nodeName;
-	X3D::X3DPtr <X3D::Group> animation;
-	X3D::X3DPtr <X3D::TimeSensor> timeSensor;
-	InterpolatorIndex interpolatorIndex;
-	Interpolators interpolators;
-	std::map <size_t, X3D::SFNode> nodes;
-	X3D::Vector2d fromPoint;
-	double translation;
-	double scale;
-	guint button;
-	size_t frameChange;
-	FrameArray frames;
-	std::set <FrameKey> activeFrames;
-	std::set <FrameKey> selectedFrames;
-	std::pair <int32_t, int32_t> selectedBounds;
-	std::pair <int32_t, int32_t> selectedRange;
-	bool activeSelection;
-	std::vector <FrameKey> movedFrames;
-	std::vector <CopiedFrame> copiedFrames;
-	std::string activeType;
-	bool changing;
-	X3D::Keys keys;
+	std::unique_ptr <NodeIndex>         nodeIndex;
+	NameEntry                           nodeName;
+	X3D::X3DPtr <X3D::Group>            animation;
+	X3D::X3DPtr <X3D::TimeSensor>       timeSensor;
+	InterpolatorIndex                   interpolatorIndex;
+	Interpolators                       interpolators;
+	std::map <size_t, X3D::SFNode>      nodes;
+	X3D::Vector2d                       fromPoint;
+	double                              translation;
+	double                              scale;
+	guint                               button;
+	size_t                              frameChange;
+	FrameArray                          frames;
+	std::set <FrameKey>                 activeFrames;
+	std::set <FrameKey>                 selectedFrames;
+	std::pair <int32_t, int32_t>        selectedBounds;
+	std::pair <int32_t, int32_t>        selectedRange;
+	bool                                activeSelection;
+	std::vector <FrameKey>              movedFrames;
+	std::vector <CopiedFrame>           copiedFrames;
+	std::string                         activeType;
+	bool                                changing;
+	X3D::Keys                           keys;
 
 };
 
@@ -598,8 +602,8 @@ AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, 
 	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
 	undoStep -> addUndoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
 
-	size_t       i        = 0;
-	size_t       iN       = 0;
+	size_t       i        = 0; // index in key
+	size_t       iN       = 0; // index in meta data keyValue
 	const size_t size     = key .size ();
 	const auto   duration = getDuration ();
 
@@ -641,8 +645,8 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
 	undoStep -> addUndoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
 
-	size_t       i        = 0;
-	size_t       iN       = 0;
+	size_t       i        = 0; // index in key
+	size_t       iN       = 0; // index in meta data keyValue
 	const size_t size     = key .size ();
 	const auto   duration = getDuration ();
 
@@ -685,7 +689,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 			{
 				const auto value = getValue <Type> (keyValue, iN);
 
-				keys .emplace_back (key [i]);
+				keys      .emplace_back (key [i]);
 				keyValues .emplace_back (value);
 
 				if (keys .size () == 1)
@@ -737,6 +741,164 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 
 		++ i;
 		iN += components;
+	}
+
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addRedoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+}
+
+template <class Interpolator, class Field, class Type>
+void
+AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
+{
+	const auto components = interpolatorComponents .at (interpolator -> getType () .back ());
+	const auto key        = interpolator -> template getMetaData <X3D::MFInt32>  ("/Interpolator/key");
+	auto       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
+	auto       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType");
+	const auto keySize    = interpolator -> template getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
+
+	keyValue .resize (key .size () * components * keySize);
+	keyType  .resize (key .size ());
+
+	undoStep -> addObjects (interpolator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());
+	undoStep -> addUndoFunction (&Field::setValue,        std::ref (interpolator -> keyValue ()), interpolator -> keyValue ());
+
+	size_t       i        = 0; // index in key
+	size_t       iN       = 0; // index in meta data keyValue
+	const size_t size     = key .size ();
+	const auto   duration = getDuration ();
+
+	interpolator -> key ()      .clear ();
+	interpolator -> keyValue () .clear ();
+
+	while (i < size)
+	{
+		if (key [i] < 0 or key [i] > duration)
+			continue;
+
+		const auto fraction = key [i] / (double) duration;
+
+		if (keyType [i] == "CONSTANT")
+		{
+			interpolator -> key () .emplace_back (fraction);
+
+			for (size_t a = 0, size = components * keySize; a < size; a += components)
+				interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
+
+			if (key [i] < duration)
+			{
+				const auto nextFraction = (i == size - 1 ? 1 : key [i + 1] / (double) duration - epsilon);
+
+				interpolator -> key () .emplace_back (nextFraction);
+
+				for (size_t a = 0, size = components * keySize; a < size; a += components)
+					interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
+			}
+		}
+		else if (keyType [i] == "LINEAR")
+		{
+			interpolator -> key () .emplace_back (fraction);
+
+			for (size_t a = 0, size = components * keySize; a < size; a += components)
+				interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
+		}
+		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
+		{
+			const auto start = i;
+
+			// Generate key.
+
+			std::vector <int32_t> keys;
+
+			for (; i < size; ++ i)
+			{
+				keys .emplace_back (key [i]);
+
+				if (keys .size () == 1)
+					continue;
+
+				if (keyType [i] not_eq "SPLINE")
+					break;
+			}
+
+			if (keys .size () < 2)
+			{
+				// This can happen if only the last frame is of type SPLINE.
+				interpolator -> key () .emplace_back (fraction);
+
+				for (size_t a = 0, size = components * keySize; a < size; a += components)
+					interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
+
+				break;
+			}
+
+			for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
+			{
+				const int32_t frames   = keys [k + 1] - keys [k];
+				const double  fraction = keys [k] / (double) duration;
+				const double  distance = frames / (double) duration;
+
+				for (int32_t f = 0; f < frames; ++ f)
+				{
+					const auto weight = f / (double) frames;
+
+					interpolator -> key () .emplace_back (fraction + weight * distance);
+				}
+			}
+
+			// Generate keyValue.
+			for (int32_t a = 0; a < keySize; ++ a)
+			{
+				std::vector <Type> keyValues;
+				std::vector <Type> keyVelocitys;
+	
+				for (size_t i = 0, aiN = iN + a * components; i < keys .size (); ++ i, aiN += components * keySize)
+				{
+					__LOG__ << aiN << std::endl;
+					keyValues .emplace_back (getValue <Type> (keyValue, aiN));
+				}
+
+				for (const auto & k : keyValues)
+					__LOG__ << k << std::endl;
+
+				const bool normalizeVelocity = false;
+				const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
+	
+				const math::catmull_rom_spline_interpolator <Type, double> spline (closed, keys, keyValues, keyVelocitys, normalizeVelocity);
+	
+				for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
+				{
+					const int32_t frames = keys [k + 1] - keys [k];
+	
+					for (int32_t f = 0; f < frames; ++ f)
+					{
+						const auto weight = f / (double) frames;
+						const auto value  = spline .interpolate (k, k + 1, weight, keyValues);
+						const auto index  = start + a + (k * frames + f) * keySize;
+
+						interpolator -> keyValue () .set1Value (index, value);
+					}
+				}
+			}
+
+			if (i == size)
+			{
+				// If this is the last part then we must insert the last keyframe.
+				interpolator -> key () .emplace_back (keys .back () / (double) duration);
+
+				for (size_t i = interpolator -> keyValue () .size () - keySize, size = interpolator -> keyValue () .size (); i < size; ++ i)
+					interpolator -> keyValue () .emplace_back (interpolator -> keyValue () [i]);
+
+				break;
+			}
+
+			iN += components * keySize;
+			continue;
+		}
+
+		++ i;
+		iN += components * keySize;
 	}
 
 	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (interpolator -> key ()),      interpolator -> key ());

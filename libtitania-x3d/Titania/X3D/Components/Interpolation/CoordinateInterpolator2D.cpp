@@ -97,10 +97,10 @@ CoordinateInterpolator2D::set_keyValue ()
 void
 CoordinateInterpolator2D::interpolate (size_t index0, size_t index1, const float weight)
 {
-	size_t size = key () .size () > 1 ? keyValue () .size () / key () .size () : 0;
+	const size_t size = key () .empty () ? 0 : keyValue () .size () / key () .size ();
 
 	index0 *= size;
-	index1  = index0 + size;
+	index1  = index0 + (key () .size () > 1 ? size : 0);
 
 	value_changed () .resize (size);
 
