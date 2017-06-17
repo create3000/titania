@@ -334,6 +334,8 @@ X3DBrowserWidget::setPage (const NotebookPagePtr & value)
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_executionContext, this);
 	browser -> getUrlError () .removeInterest (&X3DBrowserWidget::set_urlError, this);
 
+	browser -> endUpdate ();
+
 	page             = value;
 	browser          = page -> getMainBrowser ();
 	scene            = browser -> getExecutionContext () -> getMasterScene ();

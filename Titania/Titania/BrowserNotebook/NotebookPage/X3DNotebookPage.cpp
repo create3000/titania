@@ -330,18 +330,6 @@ X3DNotebookPage::set_shutdown ()
 	shutdown ();
 }
 
-void
-X3DNotebookPage::on_map ()
-{
-	mainBrowser -> beginUpdate ();
-}
-
-void
-X3DNotebookPage::on_unmap ()
-{
-	mainBrowser -> endUpdate ();
-}
-
 X3DNotebookPage::~X3DNotebookPage ()
 { }
 

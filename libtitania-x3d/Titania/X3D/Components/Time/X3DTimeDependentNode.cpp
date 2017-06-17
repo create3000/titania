@@ -101,13 +101,13 @@ X3DTimeDependentNode::initialize ()
 	isEvenLive () .addInterest (&X3DTimeDependentNode::set_live, this);
 	isLive ()     .addInterest (&X3DTimeDependentNode::set_live, this);
 
-	initialized   .addInterest (&X3DTimeDependentNode::set_loop, this);
-	enabled ()    .addInterest (&X3DTimeDependentNode::set_enabled, this);
-	loop ()       .addInterest (&X3DTimeDependentNode::set_loop, this);
-	startTime ()  .addInterest (&X3DTimeDependentNode::set_startTime, this);
+	initialized   .addInterest (&X3DTimeDependentNode::set_loop,       this);
+	enabled ()    .addInterest (&X3DTimeDependentNode::set_enabled,    this);
+	loop ()       .addInterest (&X3DTimeDependentNode::set_loop,       this);
+	startTime ()  .addInterest (&X3DTimeDependentNode::set_startTime,  this);
 	resumeTime () .addInterest (&X3DTimeDependentNode::set_resumeTime, this);
-	pauseTime ()  .addInterest (&X3DTimeDependentNode::set_pauseTime, this);
-	stopTime ()   .addInterest (&X3DTimeDependentNode::set_stopTime, this);
+	pauseTime ()  .addInterest (&X3DTimeDependentNode::set_pauseTime,  this);
+	stopTime ()   .addInterest (&X3DTimeDependentNode::set_stopTime,   this);
 
 	startTimeValue  = startTime ();
 	resumeTimeValue = resumeTime ();

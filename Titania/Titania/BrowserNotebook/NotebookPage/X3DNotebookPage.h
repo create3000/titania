@@ -178,14 +178,6 @@ protected:
 	void
 	set_shutdown ();
 
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
 	///  @name Members
 
 	X3D::BrowserPtr  mainBrowser;
