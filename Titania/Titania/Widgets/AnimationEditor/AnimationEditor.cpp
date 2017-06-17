@@ -1002,19 +1002,20 @@ AnimationEditor::on_copy ()
 		{
 			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
 			const auto & components   = interpolatorComponents .at (interpolator -> getType () .back ());
-			const auto   key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+			const auto   key          = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key");
 			const auto   keyValue     = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
 			const auto   keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32>  ("/Interpolator/keySize", X3D::SFInt32 (1));
 			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
 			const auto   index        = iter - key .begin ();
-			const auto   indexN       = index * components;
+			const auto   indexN       = index * components * keySize;
 
 			if (iter == key .end ())
 				continue;
 
 			std::vector <double> value;
 
-			for (size_t i = 0; i < components; ++ i)
+			for (size_t i = 0, size = components * keySize; i < size; ++ i)
 				value .emplace_back (keyValue .at (indexN + i));
 
 			copiedFrames .emplace_back (std::get <0> (frame), std::get <1> (frame), std::get <2> (frame), value, keyType .at (index));
