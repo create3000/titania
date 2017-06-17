@@ -1391,7 +1391,7 @@ AnimationEditor::set_key_type ()
 		try
 		{
 			const auto & interpolator = interpolatorIndex .at (std::get <1> (frame));
-			const auto   key          = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key");
+			const auto   key          = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key");
 			const auto   keyType      = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
 			const auto   iter         = std::lower_bound (key .begin (), key .end (), std::get <0> (frame));
 			const auto   index        = iter - key .begin ();
@@ -1661,8 +1661,8 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		case X3D::X3DConstants::MFVec2f:
 		{
 			const auto   interpolator = getInterpolator ("CoordinateInterpolator2D", node, field, undoStep);
-			const auto & array        = *static_cast <const X3D::MFVec2f*> (field);
 			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
+			const auto & array        = *static_cast <const X3D::MFVec2f*> (field);
 
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
@@ -1685,8 +1685,8 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 		case X3D::X3DConstants::MFVec3f:
 		{
 			const auto   interpolator = getInterpolator ("CoordinateInterpolator", node, field, undoStep);
-			const auto & array        = *static_cast <const X3D::MFVec3f*> (field);
 			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
+			const auto & array        = *static_cast <const X3D::MFVec3f*> (field);
 
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
@@ -2353,18 +2353,24 @@ AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpol
 	undoStep -> addUndoFunction (&X3D::X3DNode::setMetaData <X3D::MFInt32>,  interpolator, "/Interpolator/key",      key);
 	undoStep -> addUndoFunction (&X3D::X3DNode::setMetaData <X3D::MFDouble>, interpolator, "/Interpolator/keyValue", keyValue);
 	undoStep -> addUndoFunction (&X3D::X3DNode::setMetaData <X3D::MFString>, interpolator, "/Interpolator/keyType",  keyType);
+	undoStep -> addUndoFunction (&X3D::X3DNode::setMetaData <X3D::SFInt32>,  interpolator, "/Interpolator/keySize",  keySize);
 
 	key      .resize (size);
 	keyValue .resize (sizeN);
 	keyType  .resize (size);
 
+	if (key .empty ())
+		keySize = 0;
+
 	interpolator -> setMetaData <X3D::MFInt32>  ("/Interpolator/key",      key);
 	interpolator -> setMetaData <X3D::MFDouble> ("/Interpolator/keyValue", keyValue);
 	interpolator -> setMetaData <X3D::MFString> ("/Interpolator/keyType",  keyType);
+	interpolator -> setMetaData <X3D::SFInt32>  ("/Interpolator/keySize",  keySize);
 
 	undoStep -> addRedoFunction (&X3D::X3DNode::setMetaData <X3D::MFInt32>,  interpolator, "/Interpolator/key",      key);
 	undoStep -> addRedoFunction (&X3D::X3DNode::setMetaData <X3D::MFDouble>, interpolator, "/Interpolator/keyValue", keyValue);
 	undoStep -> addRedoFunction (&X3D::X3DNode::setMetaData <X3D::MFString>, interpolator, "/Interpolator/keyType",  keyType);
+	undoStep -> addRedoFunction (&X3D::X3DNode::setMetaData <X3D::SFInt32>,  interpolator, "/Interpolator/keySize",  keySize);
 }
 
 X3D::X3DPtr <X3D::X3DNode>
