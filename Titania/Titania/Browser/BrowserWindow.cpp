@@ -2136,7 +2136,7 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 	{
 	   __LOG__ << error .what () << std::endl;
 
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't apply Boolean operation to geometries!"));
@@ -3146,7 +3146,7 @@ BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const 
 	if (not clones)
 		return false;
 
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("This operation is not clone save!"));

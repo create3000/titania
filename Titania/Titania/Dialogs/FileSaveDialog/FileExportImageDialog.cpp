@@ -258,7 +258,7 @@ FileExportImageDialog::save (Magick::Image & image)
 	}
 	catch (const Magick::Exception & error)
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not save image!"));
@@ -268,7 +268,7 @@ FileExportImageDialog::save (Magick::Image & image)
 	}
 	catch (const std::exception & error)
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not generate image!"));

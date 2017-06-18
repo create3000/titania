@@ -482,7 +482,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	}
 	catch (const X3D::Error <X3D::NOT_SUPPORTED> & error)
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't save file!"));
@@ -493,7 +493,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	}
 	catch (const X3D::Error <X3D::INVALID_URL> & error)
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't save file!"));

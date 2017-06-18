@@ -53,6 +53,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/Grouping/Group.h>
@@ -1666,7 +1667,14 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
-				// Show warning dialog.
+				// Show error dialog.
+
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Key size has changed!"));
+				dialog -> setText (_ ("For all key frames the key size must remain equal!"));
+				dialog -> run ();
 				return;
 			}
 
@@ -1690,7 +1698,14 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
-				// Show warning dialog.
+				// Show error dialog.
+
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Key size has changed!"));
+				dialog -> setText (_ ("For all key frames the key size must remain equal!"));
+				dialog -> run ();
 				return;
 			}
 

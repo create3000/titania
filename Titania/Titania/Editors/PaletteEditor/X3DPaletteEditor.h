@@ -690,7 +690,7 @@ X3DPaletteEditor <Type>::on_remove_palette_activate ()
 	{
 		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
 		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-		const auto dialog       = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
+		const auto dialog       = std::dynamic_pointer_cast <MessageDialog> (this -> createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (basic::sprintf (_ ("Do you really want to remove palette »%s«?"), folder -> get_basename () .c_str ()));
@@ -785,7 +785,7 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::on_update_object_in_palette_activate ()
 {
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> createDialog ("MessageDialog"));
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("Do you realy want to update the selected item in this palette?"));
@@ -845,7 +845,7 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 {
 	try
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> createDialog ("MessageDialog"));
 	
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (_ ("Do you realy want to delete the selected item from this palette?"));
