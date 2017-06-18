@@ -1721,16 +1721,17 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
                               const std::string & type,
                               const X3D::UndoStepPtr & undoStep)
 {
-	const size_t components = value .size ();
+	const size_t components = interpolatorComponents .at (interpolator -> getType () .back ());
 
 	auto       key      = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key");
 	auto       keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
 	auto       keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType");
+	auto       keySize  = interpolator -> getMetaData <X3D::SFInt32>  ("/Interpolator/keySize", X3D::SFInt32 (1));
 	const auto iter     = std::lower_bound (key .begin (), key .end (), frame);
 	const auto index    = iter - key .begin ();
-	const auto indexN   = index * components;
+	const auto indexN   = index * components * keySize;
 
-	keyValue .resize (key .size () * components);
+	keyValue .resize (key .size () * components * keySize);
 	keyType  .resize (key .size ());
 
 	// Set meta data
@@ -1744,16 +1745,14 @@ AnimationEditor::addKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator,
 		key     .set1Value (index, frame);
 		keyType .set1Value (index, type);
 
-		for (size_t i = 0; i < components; ++ i)
+		for (size_t i = 0, size = components * keySize; i < size; ++ i)
 			keyValue .set1Value (indexN + i, value [i]);
 	}
 	else
 	{
-		key     .emplace (key .begin () + index, frame);
-		keyType .emplace (keyType .begin () + index, type);
-		
-		for (const auto & v : basic::make_reverse_range (value))
-			keyValue .emplace (keyValue .begin () + indexN, v);
+		key      .emplace (key .begin () + index, frame);
+		keyType  .emplace (keyType .begin () + index, type);
+		keyValue .insert (keyValue .begin () + indexN, value .begin (), value .end ());
 	}
 
 	interpolator -> setMetaData ("/Interpolator/key",      key);
@@ -2190,7 +2189,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 
 			if (i == size)
 			{
-				// If this is the last part then we must insert the last keyframe.
+				// If the last key frame is before end and this is the last part then we must insert the last keyframe.
 				interpolator -> key ()      .emplace_back (keys .back () / (double) duration);
 				interpolator -> keyValue () .emplace_back (keyValues .back ());
 				break;
@@ -2320,7 +2319,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 
 			if (i == size)
 			{
-				// If this is the last part then we must insert the last keyframe.
+				// If the last key frame is before end and this is the last part then we must insert the last keyframe.
 				interpolator -> key ()      .emplace_back (keys .back () / (double) duration);
 				interpolator -> keyValue () .emplace_back (keyValues .back ());
 				break;

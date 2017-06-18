@@ -775,11 +775,18 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 	while (i < size)
 	{
 		if (key [i] < 0 or key [i] > duration)
+		{
+			++ i;
 			continue;
+		}
 
 		const auto fraction = key [i] / (double) duration;
+		auto       iT       = i;
 
-		if (keyType [i] == "CONSTANT")
+		if (keyType [iT] == "SPLIT" and iT + 1 < size)
+			++ iT;
+
+		if (keyType [iT] == "CONSTANT")
 		{
 			interpolator -> key () .emplace_back (fraction);
 
@@ -796,16 +803,16 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 					interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
 			}
 		}
-		else if (keyType [i] == "LINEAR")
+		else if (keyType [iT] == "LINEAR" or keyType [iT] == "SPLIT")
 		{
 			interpolator -> key () .emplace_back (fraction);
 
 			for (size_t a = 0, size = components * keySize; a < size; a += components)
 				interpolator -> keyValue () .emplace_back (getValue <Type> (keyValue, iN + a));
 		}
-		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
+		else if (keyType [iT] == "SPLINE")
 		{
-			const auto start = i;
+			const auto first = interpolator -> keyValue () .size ();
 
 			// Generate key.
 
@@ -838,8 +845,9 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 				const int32_t frames   = keys [k + 1] - keys [k];
 				const double  fraction = keys [k] / (double) duration;
 				const double  distance = frames / (double) duration;
+				const auto    framesN  = k + 1 == size and i == key .size () ? frames + 1 : frames;
 
-				for (int32_t f = 0; f < frames; ++ f)
+				for (int32_t f = 0; f < framesN; ++ f)
 				{
 					const auto weight = f / (double) frames;
 
@@ -861,37 +869,33 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 	
 				const math::catmull_rom_spline_interpolator <Type, double> spline (closed, keys, keyValues, keyVelocitys, normalizeVelocity);
 	
+				size_t totalFrames = 0;
+
 				for (size_t k = 0, size = keys .size () - 1; k < size; ++ k)
 				{
-					const int32_t frames = keys [k + 1] - keys [k];
+					const int32_t frames  = keys [k + 1] - keys [k];
+					const auto    framesN = k + 1 == size and i == key .size () ? frames + 1 : frames;
 	
-					for (int32_t f = 0; f < frames; ++ f)
+					for (int32_t f = 0; f < framesN; ++ f)
 					{
 						const auto weight = f / (double) frames;
 						const auto value  = spline .interpolate (k, k + 1, weight, keyValues);
-						const auto index  = start + a + (k * frames + f) * keySize;
+						const auto index  = first + a + (totalFrames + f) * keySize;
 
 						interpolator -> keyValue () .set1Value (index, value);
 					}
+
+					totalFrames += frames;
 				}
 			}
 
-			if (i == size)
-			{
-				// If this is the last part then we must insert the last keyframe.
-				interpolator -> key () .emplace_back (keys .back () / (double) duration);
+			if (i + 1 not_eq size)
+				i -= 1;
 
-				for (size_t i = interpolator -> keyValue () .size () - keySize, size = interpolator -> keyValue () .size (); i < size; ++ i)
-					interpolator -> keyValue () .emplace_back (interpolator -> keyValue () [i]);
-
-				break;
-			}
-
-			iN += components * keySize;
-			continue;
+			iN += components * keySize * keys .size () - 2;
 		}
 
-		++ i;
+		i  += 1;
 		iN += components * keySize;
 	}
 
