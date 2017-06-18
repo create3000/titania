@@ -896,7 +896,7 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 			if (i + 1 not_eq size)
 				i -= 1;
 
-			iN += components * keySize * keys .size () - 2;
+			iN += components * keySize * (keys .size () - 2);
 		}
 
 		i  += 1;
