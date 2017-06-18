@@ -656,12 +656,19 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 	while (i < size)
 	{
 		if (key [i] < 0 or key [i] > duration)
+		{
+			++ i;
 			continue;
+		}
 
-		const auto fraction = key [i] / (double) duration;
 		const auto value    = getValue <Type> (keyValue, iN);
+		const auto fraction = key [i] / (double) duration;
+		auto       iT       = i;
 
-		if (keyType [i] == "CONSTANT")
+		if (keyType [iT] == "SPLIT" and iT + 1 < size)
+			++ iT;
+
+		if (keyType [iT] == "CONSTANT")
 		{
 			interpolator -> key ()      .emplace_back (fraction);
 			interpolator -> keyValue () .emplace_back (value);
@@ -674,12 +681,12 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 				interpolator -> keyValue () .emplace_back (value);
 			}
 		}
-		else if (keyType [i] == "LINEAR")
+		else if (keyType [iT] == "LINEAR" or keyType [iT] == "SPLIT")
 		{
 			interpolator -> key ()      .emplace_back (fraction);
 			interpolator -> keyValue () .emplace_back (value);
 		}
-		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
+		else if (keyType [iT] == "SPLINE")
 		{
 			std::vector <int32_t> keys;
 			std::vector <Type>    keyValues;
@@ -717,8 +724,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 				const int32_t frames   = keys [k + 1] - keys [k];
 				const double  fraction = keys [k] / (double) duration;
 				const double  distance = frames / (double) duration;
+				const auto    framesN  = k + 1 == size and i == key .size () ? frames + 1 : frames;
 
-				for (int32_t f = 0; f < frames; ++ f)
+				for (int32_t f = 0; f < framesN; ++ f)
 				{
 					const auto weight = f / (double) frames;
 					const auto value  = spline .interpolate (k, k + 1, weight, keyValues);
@@ -728,18 +736,14 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 				}
 			}
 
-			if (i == size)
+			if (i + 1 not_eq size)
 			{
-				// If this is the last part then we must insert the last keyframe.
-				interpolator -> key ()      .emplace_back (keys .back () / (double) duration);
-				interpolator -> keyValue () .emplace_back (keyValues .back ());
-				break;
+				i  -= 1;
+				iN -= components;
 			}
-
-			continue;
 		}
 
-		++ i;
+		i  += 1;
 		iN += components;
 	}
 
