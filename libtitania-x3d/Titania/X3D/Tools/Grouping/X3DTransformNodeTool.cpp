@@ -510,9 +510,19 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 		renderObject -> getModelViewMatrix () .push ();
 		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 	
-		if (type == TraverseType::DISPLAY) // Last chance to process events
-			reshape (renderObject);
-	
+		switch (type)
+		{
+			case TraverseType::POINTER:
+			case TraverseType::DISPLAY:
+			{
+				// Last chance to process events
+				reshape (renderObject);
+				break;
+			}
+			default:
+				break;
+		}
+
 		X3DToolObject::traverse (type, renderObject);
 	
 		renderObject -> getModelViewMatrix () .pop ();

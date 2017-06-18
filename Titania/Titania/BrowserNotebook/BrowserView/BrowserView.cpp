@@ -99,6 +99,7 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 
 	if (type not_eq BrowserViewType::MAIN)
 	{
+		browser -> setName (names [type]);
 		browser -> initialized () .addInterest (&BrowserView::set_dependent_browser, this);
 		browser -> set_opacity (0);
 	}
