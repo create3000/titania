@@ -1665,16 +1665,12 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
 			const auto & array        = *static_cast <const X3D::MFVec2f*> (field);
 
+			if (array .empty ())
+				return;
+
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
-				// Show error dialog.
-
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Key size has changed!"));
-				dialog -> setText (_ ("For all key frames the key size must remain equal!"));
-				dialog -> run ();
+				showArraySizeErrorDialog ();
 				return;
 			}
 
@@ -1696,16 +1692,12 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			const auto   keySize      = interpolator -> getMetaData <X3D::SFInt32> ("/Interpolator/keySize");
 			const auto & array        = *static_cast <const X3D::MFVec3f*> (field);
 
+			if (array .empty ())
+				return;
+
 			if (keySize not_eq 0 and keySize not_eq (int32_t) array .size ())
 			{
-				// Show error dialog.
-
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Key size has changed!"));
-				dialog -> setText (_ ("For all key frames the key size must remain equal!"));
-				dialog -> run ();
+				showArraySizeErrorDialog ();
 				return;
 			}
 
@@ -2434,6 +2426,19 @@ AnimationEditor::getInterpolatorName (const X3D::SFNode & node, const X3D::X3DFi
 	name .replace (0, 1, Glib::ustring (1, name [0]) .uppercase ());
 
 	return X3D::GetDisplayName (node) + name + "Interpolator";
+}
+
+void
+AnimationEditor::showArraySizeErrorDialog () const
+{
+	// Show error dialog.
+
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+	dialog -> setType (Gtk::MESSAGE_ERROR);
+	dialog -> setMessage (_ ("Key size has changed!"));
+	dialog -> setText (_ ("For all key frames the key size must remain equal!"));
+	dialog -> run ();
 }
 
 bool

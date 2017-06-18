@@ -416,6 +416,9 @@ private:
 	std::string
 	getInterpolatorName (const X3D::SFNode &, const X3D::X3DFieldDefinition* const);
 
+	void
+	showArraySizeErrorDialog () const;
+
 	/***
 	 *  Drawing Area
 	 **/
