@@ -47,113 +47,102 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_BROWSER_VIEW_H__
-#define __TMP_GLAD2CPP_BROWSER_VIEW_H__
 
-#include "../Base/X3DViewInterface.h"
-#include <gtkmm.h>
-#include <string>
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
+
+#include "../../UserInterfaces/X3DBrowserViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-/**
- *  Gtk Interface for BrowserView.
- */
-class X3DBrowserViewInterface :
-	public X3DViewInterface
+class NotebookPage;
+
+enum BrowserViewType :
+uint8_t
+{
+	MAIN,
+	TOP,
+	RIGHT,
+	FRONT
+
+};
+
+class X3DBrowserView :
+	virtual public X3DBrowserViewInterface
 {
 public:
 
-	///  @name Construction
-
-	X3DBrowserViewInterface () :
-		X3DViewInterface ()
-	{ }
-
-	template <class ... Arguments>
-	X3DBrowserViewInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
-	{ create (filename); }
-
-	template <class ... Arguments>
-	X3DBrowserViewInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
-	{ create (filenames); }
-
 	///  @name Member access
 
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const
-	{ return m_builder; }
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::ImageMenuItem &
-	getLookAtSelectionMenuItem () const
-	{ return *m_LookAtSelectionMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getLookAtAllMenuItem () const
-	{ return *m_LookAtAllMenuItem; }
-
-	Gtk::Box &
-	getBrowserBox () const
-	{ return *m_BrowserBox; }
-
-	///  @name Signal handlers
-
-	virtual
-	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_unmap () = 0;
-
-	virtual
-	void
-	on_look_at_selection_activate () = 0;
-
-	virtual
-	void
-	on_look_at_all_activate () = 0;
+	const X3D::BrowserPtr &
+	getLocalBrowser () const
+	{ return browser; }
 
 	///  @name Destruction
 
-	virtual
-	~X3DBrowserViewInterface () override;
+	~X3DBrowserView ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserView (NotebookPage* const page, const BrowserViewType type);
+
+	X3DBrowserView ();
 
 
 private:
 
 	///  @name Construction
 
-	void
-	create (const std::string &);
+	X3D::BrowserPtr
+	createBrowser (const BrowserViewType type) const;
+
+	int32_t
+	getPlane () const;
+
+	///  @name Event handlers
 
 	void
-	create (std::initializer_list <std::string>);
+	set_dependent_browser ();
 
 	void
-	create ();
+	set_activeLayer ();
 
-	///  @name Static members
+	void
+	set_viewpoint ();
+
+	void
+	set_grid ();
+
+	virtual
+	void
+	on_map () final override;
+
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
+
+	virtual
+	void
+	on_unmap () final override;
 
 	///  @name Members
 
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;
-	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
-	Gtk::Box* m_BrowserBox;
+	NotebookPage* const   page;
+	const BrowserViewType type;
+
+	X3D::BrowserPtr                   browser;
+	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
+	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
+	X3D::X3DPtr <X3D::Transform>      gridTransform;
+	X3D::X3DPtr <X3D::Switch>         gridSwitch;
+	X3D::SFNode                       grid;
+	std::vector <std::string>         names;
+	std::vector <X3D::Vector3d>       axes;
+	std::vector <X3D::Vector3d>       positions;
+	std::vector <X3D::Rotation4d>     orientations;
 
 };
 

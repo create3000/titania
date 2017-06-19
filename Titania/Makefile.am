@@ -26,6 +26,8 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \

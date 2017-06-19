@@ -108,6 +108,14 @@ public:
 	{ return availableViewers; }
 
 	void
+	setStraightenHorizon (const bool value)
+	{ straightenHorizon = value; }
+
+	const SFBool &
+	getStraightenHorizon () const
+	{ return straightenHorizon; }
+
+	void
 	addCollision (const X3DBaseNode* collision)
 	{ activeCollisions .emplace (collision); }
 
@@ -119,13 +127,13 @@ public:
 	getActiveCollisions () const
 	{ return activeCollisions; }
 
-	void
-	setStraightenHorizon (const bool value)
-	{ straightenHorizon = value; }
+	///  @name Operations
 
-	const SFBool &
-	getStraightenHorizon () const
-	{ return straightenHorizon; }
+	void
+	lookAtSelection ();
+
+	void
+	lookAtAllObjectsInActiveLayer ();
 
 	///  @name Destruction
 
@@ -184,8 +192,8 @@ private:
 	SFEnum <X3DConstants::NodeType>  privateViewer;
 	MFEnum <X3DConstants::NodeType>  availableViewers;
 	X3DWeakPtr <X3DViewpointNode>    activeViewpoint;
-	std::set <const X3DBaseNode*>    activeCollisions;
 	SFBool                           straightenHorizon;
+	std::set <const X3DBaseNode*>    activeCollisions;
 
 };
 

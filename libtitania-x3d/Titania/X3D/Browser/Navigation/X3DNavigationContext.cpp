@@ -50,15 +50,19 @@
 
 #include "X3DNavigationContext.h"
 
+#include "../Selection.h"
+#include "../X3DBrowser.h"
+
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Lighting/DirectionalLight.h"
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Components/Rendering/X3DGeometryNode.h"
 
+#include "../../Editing/X3DEditor.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/LightContainer.h"
-#include "../X3DBrowser.h"
 
 // First include X3DExecutionContext
 #include "../../Execution/BindableNodeStack.h"
@@ -76,8 +80,8 @@ X3DNavigationContext::X3DNavigationContext () :
 	             privateViewer (X3DConstants::DefaultViewer),
 	          availableViewers (),
 	           activeViewpoint (),
-	          activeCollisions (),
-	         straightenHorizon ()
+	         straightenHorizon (),
+	          activeCollisions ()
 {
 	addChildObjects (headlightNode,
 	                 activeLayer,
@@ -106,6 +110,44 @@ X3DNavigationContext::getCurrentViewer () const
 	   return getPrivateViewer ();
 
 	return getViewerType ();
+}
+
+void
+X3DNavigationContext::lookAtSelection ()
+{
+	if (not getActiveLayer ())
+		return;
+
+	const auto & selection = getBrowser () -> getSelection () -> getNodes ();
+
+	if (selection .empty ())
+		return;
+
+	const auto activeViewpoint = getActiveLayer () -> getViewpoint ();
+
+	X3D::Box3d bbox;
+
+	for (const auto & node : selection)
+	{
+		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
+
+		if (boundedObject)
+			bbox += boundedObject -> getBBox () * X3D::X3DEditor::getModelViewMatrix (getBrowser () -> getExecutionContext (), node);
+
+		const auto geometryNode = X3D::x3d_cast <X3D::X3DGeometryNode*> (node);
+
+		if (geometryNode)
+			bbox += geometryNode -> getBBox () * X3D::X3DEditor::getModelViewMatrix (getBrowser () -> getExecutionContext (), node);
+	}
+
+	activeViewpoint -> lookAt (bbox);
+}
+
+void
+X3DNavigationContext::lookAtAllObjectsInActiveLayer ()
+{
+	if (getActiveLayer ())
+		getActiveLayer () -> lookAt ();
 }
 
 void

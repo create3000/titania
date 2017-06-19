@@ -312,6 +312,8 @@
     <Compile Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBrowserViewInterface.cpp" />
     <Compile Include="Titania\Base\X3DViewInterface.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2985,6 +2987,8 @@
     <None Include="Titania\Base\X3DViewInterface.h" />
     <None Include="share\titania\ui\Views\BrowserView.glade" />
     <None Include="share\titania\ui\BrowserView.x3dv" />
+    <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.h" />
+    <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

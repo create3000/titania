@@ -81,7 +81,7 @@ expander > title > label {
 }
 
 #OutlineTreeViewEditor .titania-textview-editable,
-#OutlineTreeViewEditor .titania-textview-editable *
+#OutlineTreeViewEditor .titania-textview-editable *:not(menuitem)
 {
 	margin: 0px;
 	padding: 0px;

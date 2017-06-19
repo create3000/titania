@@ -51,26 +51,15 @@
 #ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
 #define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
 
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
-
-#include <gtkmm.h>
+#include "X3DBrowserView.h"
+#include "X3DBrowserViewMenuBar.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-enum BrowserViewType :
-	uint8_t
-{
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT
-};
-
 class BrowserView :
-	public X3DBrowserViewInterface
+	virtual public X3DBrowserView,
+	public X3DBrowserViewMenuBar
 {
 public:
 
@@ -81,58 +70,6 @@ public:
 	///  @name Destruction
 
 	~BrowserView ();
-
-
-private:
-
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	int32_t
-	getPlane () const;
-
-	///  @name Event handlers
-
-	void
-	set_dependent_browser ();
-
-	void
-	set_activeLayer ();
-
-	void
-	set_viewpoint ();
-
-	void
-	set_grid ();
-
-	virtual
-	void
-	on_map () final override;
-
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
-
-	virtual
-	void
-	on_unmap () final override;
-
-	///  @name Members
-
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
-	X3D::BrowserPtr                   browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
-	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
-	X3D::X3DPtr <X3D::Transform>      gridTransform;
-	X3D::X3DPtr <X3D::Switch>         gridSwitch;
-	X3D::SFNode                       grid;
-	std::vector <std::string>         names;
-	std::vector <X3D::Vector3d>       axes;
-	std::vector <X3D::Vector3d>       positions;
-	std::vector <X3D::Rotation4d>     orientations;
 
 };
 

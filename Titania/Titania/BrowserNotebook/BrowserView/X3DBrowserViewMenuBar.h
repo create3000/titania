@@ -47,113 +47,43 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_BROWSER_VIEW_H__
-#define __TMP_GLAD2CPP_BROWSER_VIEW_H__
 
-#include "../Base/X3DViewInterface.h"
-#include <gtkmm.h>
-#include <string>
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
+
+#include "X3DBrowserView.h"
 
 namespace titania {
 namespace puck {
 
-/**
- *  Gtk Interface for BrowserView.
- */
-class X3DBrowserViewInterface :
-	public X3DViewInterface
+class X3DBrowserViewMenuBar :
+	virtual public X3DBrowserView
 {
 public:
 
-	///  @name Construction
-
-	X3DBrowserViewInterface () :
-		X3DViewInterface ()
-	{ }
-
-	template <class ... Arguments>
-	X3DBrowserViewInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
-	{ create (filename); }
-
-	template <class ... Arguments>
-	X3DBrowserViewInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
-	{ create (filenames); }
-
-	///  @name Member access
-
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const
-	{ return m_builder; }
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::ImageMenuItem &
-	getLookAtSelectionMenuItem () const
-	{ return *m_LookAtSelectionMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getLookAtAllMenuItem () const
-	{ return *m_LookAtAllMenuItem; }
-
-	Gtk::Box &
-	getBrowserBox () const
-	{ return *m_BrowserBox; }
-
-	///  @name Signal handlers
-
-	virtual
-	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_unmap () = 0;
-
-	virtual
-	void
-	on_look_at_selection_activate () = 0;
-
-	virtual
-	void
-	on_look_at_all_activate () = 0;
-
 	///  @name Destruction
 
-	virtual
-	~X3DBrowserViewInterface () override;
+	~X3DBrowserViewMenuBar ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserViewMenuBar ();
 
 
 private:
 
-	///  @name Construction
+	///  @name Event handlers
 
+	virtual
 	void
-	create (const std::string &);
+	on_look_at_selection_activate () final override;
 
+	virtual
 	void
-	create (std::initializer_list <std::string>);
-
-	void
-	create ();
-
-	///  @name Static members
-
-	///  @name Members
-
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;
-	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
-	Gtk::Box* m_BrowserBox;
+	on_look_at_all_activate () final override;
 
 };
 

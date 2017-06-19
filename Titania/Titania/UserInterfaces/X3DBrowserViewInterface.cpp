@@ -81,11 +81,17 @@ X3DBrowserViewInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("LookAtSelectionMenuItem", m_LookAtSelectionMenuItem);
+	m_builder -> get_widget ("LookAtAllMenuItem", m_LookAtAllMenuItem);
 	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_unmap));
+
+	// Connect object Gtk::ImageMenuItem with id 'LookAtSelectionMenuItem'.
+	m_LookAtSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_selection_activate));
+	m_LookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_all_activate));
 }
 
 X3DBrowserViewInterface::~X3DBrowserViewInterface ()

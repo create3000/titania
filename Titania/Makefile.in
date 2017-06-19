@@ -124,6 +124,8 @@ am_titania_OBJECTS =  \
 	Titania/Browser/X3DBrowserWidget.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWindow.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserView/BrowserView.$(OBJEXT) \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserView.$(OBJEXT) \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
@@ -617,6 +619,8 @@ titania_SOURCES = \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
@@ -1037,6 +1041,12 @@ Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/BrowserView/$(DEPDIR)
 	@: > Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/BrowserView/BrowserView.$(OBJEXT):  \
+	Titania/BrowserNotebook/BrowserView/$(am__dirstamp) \
+	Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/BrowserView/X3DBrowserView.$(OBJEXT):  \
+	Titania/BrowserNotebook/BrowserView/$(am__dirstamp) \
+	Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.$(OBJEXT):  \
 	Titania/BrowserNotebook/BrowserView/$(am__dirstamp) \
 	Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/NotebookPage/$(am__dirstamp):
@@ -2079,6 +2089,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/BrowserView.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/X3DBrowserView.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/X3DBrowserViewMenuBar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
