@@ -111,6 +111,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	                 orientationInterpolator,
 	                 scaleInterpolator,
 	                 scaleOrientationInterpolator,
+	                 fieldOfViewInterpolator,
 	                 lockToCamera);
 }
 

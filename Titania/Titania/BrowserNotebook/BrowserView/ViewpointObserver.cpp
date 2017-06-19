@@ -73,7 +73,7 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow, con
 	          moveUndoStep (),
 	        scrollUndoStep ()
 {
-	addChildObjects (browser, viewerNode);
+	addChildObjects (browser, viewerNode, navigationInfo);
 
 	browser -> getViewer ()               .addInterest (&ViewpointObserver::set_viewer,         this);
 	browser -> getActiveNavigationInfo () .addInterest (&ViewpointObserver::set_navigationInfo, this);

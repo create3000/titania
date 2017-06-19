@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserView.x3dv"
-META "modified" "Thu, 15 Jun 2017 09:40:19 GMT"
+META "modified" "Mon, 19 Jun 2017 10:06:55 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -41,7 +41,7 @@ WorldInfo {
         value DEF activeLayer MetadataInteger {
           name "activeLayer"
           reference "http://titania.create3000.de"
-          value 0
+          value 1
         }
       }
       DEF NavigationInfo MetadataSet {
@@ -99,7 +99,11 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF OrthoViewpoint OrthoViewpoint { }
+            value DEF Background Layer {
+              children Background {
+                skyColor 0.21 0.21 0.21
+              }
+            }
           }
         ]
       }
@@ -123,21 +127,19 @@ WorldInfo {
   }
 }
 
-Background {
-  skyColor 0.2 0.2 0.2
-}
-
 LayerSet {
   activeLayer 2
   order [
-    0,
     1,
-    2
+    2,
+    3
   ]
   layers [
+    USE Background
     DEF GridLayer Layer {
+      isPickable FALSE
       children [
-        USE OrthoViewpoint
+        DEF OrthoViewpoint OrthoViewpoint { }
         DEF GridTransform Transform {
           children DEF GridSwitch Switch {
             children DEF Grid Grid { }
@@ -182,6 +184,7 @@ LayerSet {
       children [
         NavigationInfo {
           type "PLANE3D_create3000.de"
+          transitionType "ANIMATE"
         }
         USE OrthoViewpoint
         DEF Group Group { }

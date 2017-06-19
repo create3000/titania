@@ -93,6 +93,16 @@ protected:
 
 	X3DBrowserView ();
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
+
 
 private:
 
@@ -118,16 +128,8 @@ private:
 	void
 	set_grid ();
 
-	virtual
-	void
-	on_map () final override;
-
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
-
-	virtual
-	void
-	on_unmap () final override;
 
 	///  @name Members
 

@@ -90,6 +90,20 @@ BrowserView::dispose ()
 	X3DBrowserView::dispose ();
 }
 
+void
+BrowserView::on_map ()
+{
+	X3DBrowserView::on_map ();
+	X3DBrowserViewMenuBar::on_map ();
+}
+
+void
+BrowserView::on_unmap ()
+{
+	X3DBrowserView::on_unmap ();
+	X3DBrowserViewMenuBar::on_unmap ();
+}
+
 BrowserView::~BrowserView ()
 {
 	dispose ();

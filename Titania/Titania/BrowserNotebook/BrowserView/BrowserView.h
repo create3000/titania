@@ -76,6 +76,17 @@ public:
 	virtual
 	~BrowserView () final override;
 
+
+private:
+
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
 };
 
 } // puck

@@ -65,6 +65,26 @@ X3DBrowserViewMenuBar::X3DBrowserViewMenuBar () :
 }
 
 void
+X3DBrowserViewMenuBar::on_map ()
+{
+	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserViewMenuBar::set_editing, this);
+
+	set_editing ();
+}
+
+void
+X3DBrowserViewMenuBar::on_unmap ()
+{
+	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserViewMenuBar::set_editing, this);
+}
+
+void
+X3DBrowserViewMenuBar::set_editing ()
+{
+	getMenuBar () .set_visible (getBrowserWindow () -> getEditing ());
+}
+
+void
 X3DBrowserViewMenuBar::set_undoHistory ()
 {
 	const auto & undoHistory = viewpointObserver -> getUndoHistory () ;

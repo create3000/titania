@@ -95,6 +95,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::MenuBar &
+	getMenuBar () const
+	{ return *m_MenuBar; }
+
 	Gtk::ImageMenuItem &
 	getUndoViewMenuItem () const
 	{ return *m_UndoViewMenuItem; }
@@ -187,6 +191,7 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::MenuBar* m_MenuBar;
 	Gtk::ImageMenuItem* m_UndoViewMenuItem;
 	Gtk::ImageMenuItem* m_RedoViewMenuItem;
 	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;

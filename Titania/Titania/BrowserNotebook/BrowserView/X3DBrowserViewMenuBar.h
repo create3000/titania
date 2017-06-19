@@ -79,10 +79,23 @@ protected:
 
 	X3DBrowserViewMenuBar ();
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
+
 
 private:
 
 	///  @name Event handlers
+
+	void
+	set_editing ();
 
 	void
 	set_undoHistory ();

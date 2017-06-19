@@ -79,8 +79,6 @@ NotebookPage::initialize ()
 {
 	X3DNotebookPage::initialize ();
 
-	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
-
    view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::TOP);
    view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::MAIN);
    view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, BrowserViewType::RIGHT);
@@ -106,6 +104,20 @@ NotebookPage::initialized ()
 		setActiveView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4));
 		setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
 	}
+}
+
+void
+NotebookPage::on_map ()
+{
+	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
+
+	set_editing ();
+}
+
+void
+NotebookPage::on_unmap ()
+{
+	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
 }
 
 void

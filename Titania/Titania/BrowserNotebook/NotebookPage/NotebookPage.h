@@ -91,6 +91,14 @@ private:
 
 	///  @name Event handlers
 
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
 	void
 	set_editing ();
 

@@ -19,7 +19,7 @@
         <signal name="map" handler="on_map" swapped="no"/>
         <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
-          <object class="GtkMenuBar">
+          <object class="GtkMenuBar" id="MenuBar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -105,7 +105,6 @@
             <child>
               <object class="GtkMenuItem" id="CamerasMenuItem">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
                 <property name="label" translatable="yes">Cameras</property>
@@ -114,7 +113,6 @@
             <child>
               <object class="GtkMenuItem" id="DisplayMenuItem">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
                 <property name="label" translatable="yes">Display</property>

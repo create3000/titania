@@ -81,6 +81,7 @@ X3DBrowserViewInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("MenuBar", m_MenuBar);
 	m_builder -> get_widget ("UndoViewMenuItem", m_UndoViewMenuItem);
 	m_builder -> get_widget ("RedoViewMenuItem", m_RedoViewMenuItem);
 	m_builder -> get_widget ("LookAtSelectionMenuItem", m_LookAtSelectionMenuItem);
