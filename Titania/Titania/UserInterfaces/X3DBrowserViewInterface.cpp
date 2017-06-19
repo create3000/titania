@@ -81,17 +81,26 @@ X3DBrowserViewInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("UndoViewMenuItem", m_UndoViewMenuItem);
+	m_builder -> get_widget ("RedoViewMenuItem", m_RedoViewMenuItem);
 	m_builder -> get_widget ("LookAtSelectionMenuItem", m_LookAtSelectionMenuItem);
 	m_builder -> get_widget ("LookAtAllMenuItem", m_LookAtAllMenuItem);
+	m_builder -> get_widget ("ResetUserOffsetsMenuItem", m_ResetUserOffsetsMenuItem);
+	m_builder -> get_widget ("CamerasMenuItem", m_CamerasMenuItem);
+	m_builder -> get_widget ("DisplayMenuItem", m_DisplayMenuItem);
+	m_builder -> get_widget ("DescriptionMenuItem", m_DescriptionMenuItem);
 	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_unmap));
 
-	// Connect object Gtk::ImageMenuItem with id 'LookAtSelectionMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'UndoViewMenuItem'.
+	m_UndoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::undo_view_activate));
+	m_RedoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::redo_view_activate));
 	m_LookAtSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_selection_activate));
 	m_LookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_all_activate));
+	m_ResetUserOffsetsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_reset_user_offsets_activate));
 }
 
 X3DBrowserViewInterface::~X3DBrowserViewInterface ()

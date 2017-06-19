@@ -69,7 +69,12 @@ public:
 
 	///  @name Destruction
 
-	~BrowserView ();
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~BrowserView () final override;
 
 };
 

@@ -56,6 +56,8 @@
 namespace titania {
 namespace puck {
 
+class ViewpointObserver;
+
 class X3DBrowserViewMenuBar :
 	virtual public X3DBrowserView
 {
@@ -63,7 +65,12 @@ public:
 
 	///  @name Destruction
 
-	~X3DBrowserViewMenuBar ();
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DBrowserViewMenuBar () override;
 
 
 protected:
@@ -77,6 +84,17 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_undoHistory ();
+
+	virtual
+	void
+	undo_view_activate () final override;
+
+	virtual
+	void
+	redo_view_activate () final override;
+
 	virtual
 	void
 	on_look_at_selection_activate () final override;
@@ -84,6 +102,14 @@ private:
 	virtual
 	void
 	on_look_at_all_activate () final override;
+
+	virtual
+	void
+	on_reset_user_offsets_activate () final override;
+
+	///  @name Members
+
+	std::unique_ptr <ViewpointObserver> viewpointObserver;
 
 };
 

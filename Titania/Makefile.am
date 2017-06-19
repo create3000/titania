@@ -21,11 +21,11 @@ titania_SOURCES =  \
 	Titania/Browser/IconFactory.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
-	Titania/Browser/ViewpointObserver.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/ViewpointObserver.cpp \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserView.cpp \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \

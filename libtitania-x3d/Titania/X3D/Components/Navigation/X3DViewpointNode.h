@@ -326,6 +326,9 @@ private:
 	void
 	set_scaleOffset ();
 
+	void
+	set_fieldOfViewOffset ();
+
 	///  @name Member access
 
 	void
@@ -387,6 +390,7 @@ private:
 	X3DPtr <OrientationInterpolator> orientationInterpolator;
 	X3DPtr <PositionInterpolator>    scaleInterpolator;
 	X3DPtr <OrientationInterpolator> scaleOrientationInterpolator;
+	X3DPtr <ScalarInterpolator>      fieldOfViewInterpolator;
 	
 	SFBool lockToCamera;
 

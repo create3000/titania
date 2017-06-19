@@ -81,7 +81,8 @@ public:
 
 	///  @name Destruction
 
-	~X3DBrowserView ();
+	virtual
+	~X3DBrowserView () override;
 
 
 protected:

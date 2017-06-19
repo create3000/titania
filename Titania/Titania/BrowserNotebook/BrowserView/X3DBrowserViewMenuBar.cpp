@@ -50,12 +50,40 @@
 
 #include "X3DBrowserViewMenuBar.h"
 
+#include "ViewpointObserver.h"
+
 namespace titania {
 namespace puck {
 
 X3DBrowserViewMenuBar::X3DBrowserViewMenuBar () :
-	X3DBrowserView ()
-{ }
+	   X3DBrowserView (),
+	viewpointObserver (new ViewpointObserver (getBrowserWindow (), getLocalBrowser ()))
+{
+	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserViewMenuBar::set_undoHistory, this);
+
+	set_undoHistory ();
+}
+
+void
+X3DBrowserViewMenuBar::set_undoHistory ()
+{
+	const auto & undoHistory = viewpointObserver -> getUndoHistory () ;
+
+	getUndoViewMenuItem () .set_sensitive (undoHistory .hasUndo ());
+	getRedoViewMenuItem () .set_sensitive (undoHistory .hasRedo ());
+}
+
+void
+X3DBrowserViewMenuBar::undo_view_activate ()
+{
+	viewpointObserver -> getUndoHistory () .undo ();
+}
+
+void
+X3DBrowserViewMenuBar::redo_view_activate ()
+{
+	viewpointObserver -> getUndoHistory () .redo ();
+}
 
 void
 X3DBrowserViewMenuBar::on_look_at_selection_activate ()
@@ -67,6 +95,23 @@ void
 X3DBrowserViewMenuBar::on_look_at_all_activate ()
 {
 	getLocalBrowser () -> lookAtAllObjectsInActiveLayer ();
+}
+
+void
+X3DBrowserViewMenuBar::on_reset_user_offsets_activate ()
+{
+	if (getLocalBrowser () -> getActiveLayer ())
+	{
+		const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
+
+		viewpoint -> transitionStart (viewpoint);
+	}
+}
+
+void
+X3DBrowserViewMenuBar::dispose ()
+{
+	viewpointObserver .reset ();
 }
 
 X3DBrowserViewMenuBar::~X3DBrowserViewMenuBar ()

@@ -33,6 +33,36 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
+                      <object class="GtkImageMenuItem" id="UndoViewMenuItem">
+                        <property name="label" translatable="yes">_Undo View</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="undo_view_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="RedoViewMenuItem">
+                        <property name="label" translatable="yes">_Redo View</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image4</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="redo_view_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="LookAtSelectionMenuItem">
                         <property name="label" translatable="yes">Look _At Selection</property>
                         <property name="visible">True</property>
@@ -56,8 +86,47 @@
                         <signal name="activate" handler="on_look_at_all_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="ResetUserOffsetsMenuItem">
+                        <property name="label" translatable="yes">Reset User _Offsets</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image5</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_reset_user_offsets_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CamerasMenuItem">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="right_justified">True</property>
+                <property name="label" translatable="yes">Cameras</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="DisplayMenuItem">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="right_justified">True</property>
+                <property name="label" translatable="yes">Display</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="DescriptionMenuItem">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="right_justified">True</property>
+                <property name="label" translatable="yes">Main View</property>
               </object>
             </child>
           </object>
@@ -103,6 +172,24 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-zoom-fit</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-undo</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-redo</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
     <property name="icon_size">1</property>
   </object>
 </interface>

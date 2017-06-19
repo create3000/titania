@@ -58,6 +58,7 @@
 #include "../Interpolation/EaseInEaseOut.h"
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Interpolation/OrientationInterpolator.h"
+#include "../Interpolation/ScalarInterpolator.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Layering/X3DViewportNode.h"
 #include "../Navigation/NavigationInfo.h"
@@ -93,6 +94,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	     orientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
 	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
 	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
+	     fieldOfViewInterpolator (new ScalarInterpolator (getBrowser () -> getPrivateScene ())),
 	                lockToCamera ()
 {
 	addType (X3DConstants::X3DViewpointNode);
@@ -129,11 +131,13 @@ X3DViewpointNode::initialize ()
 	orientationInterpolator      -> key () = { 0, 1 };
 	scaleInterpolator            -> key () = { 0, 1 };
 	scaleOrientationInterpolator -> key () = { 0, 1 };
+	fieldOfViewInterpolator      -> key () = { 0, 1 };
 
 	positionInterpolator         -> setup ();
 	orientationInterpolator      -> setup ();
 	scaleInterpolator            -> setup ();
 	scaleOrientationInterpolator -> setup ();
+	fieldOfViewInterpolator      -> setup ();
 
 	timeSensor -> fraction_changed () .addInterest (easeInEaseOut -> set_fraction ());
 
@@ -141,11 +145,13 @@ X3DViewpointNode::initialize ()
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (orientationInterpolator      -> set_fraction ());
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleInterpolator            -> set_fraction ());
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleOrientationInterpolator -> set_fraction ());
+	easeInEaseOut -> modifiedFraction_changed () .addInterest (fieldOfViewInterpolator      -> set_fraction ());
 
 	positionInterpolator         -> value_changed () .addInterest (&X3DViewpointNode::set_positionOffset, this);
 	orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
 	scaleInterpolator            -> value_changed () .addInterest (&X3DViewpointNode::set_scaleOffset, this);
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
+	fieldOfViewInterpolator      -> value_changed () .addInterest (&X3DViewpointNode::set_fieldOfViewOffset, this);
 
 	isBound () .addInterest (&X3DViewpointNode::set_bind_, this);
 }
@@ -211,6 +217,12 @@ void
 X3DViewpointNode::set_scaleOffset ()
 {
 	scaleOffset () = scaleInterpolator -> value_changed () .getValue ();
+}
+
+void
+X3DViewpointNode::set_fieldOfViewOffset ()
+{
+	fieldOfViewScale () = fieldOfViewInterpolator -> value_changed () .getValue ();
 }
 
 void
@@ -472,6 +484,8 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 	{
 		if (jump ())
 		{
+			const double startFieldOfView = fromViewpoint -> fieldOfViewScale ();
+
 			if (not retainUserOffsets ())
 				resetUserOffsets ();
 
@@ -526,16 +540,19 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			const Rotation4d endOrientation      = orientationOffset ();
 			const Vector3d   endScale            = scaleOffset ();
 			const Rotation4d endScaleOrientation = scaleOrientationOffset ();
+			const double     endFieldOfView      = fieldOfViewScale ();
 
 			positionOffset ()         = startPosition;
 			orientationOffset ()      = startOrientation;
 			scaleOffset ()            = startScale;
 			scaleOrientationOffset () = startScaleOrientation;
+			fieldOfViewScale ()       = startFieldOfView;
 
-			positionInterpolator         -> keyValue () = { startPosition, endPosition };
-			orientationInterpolator      -> keyValue () = { startOrientation, endOrientation };
-			scaleInterpolator            -> keyValue () = { startScale, endScale };
+			positionInterpolator         -> keyValue () = { startPosition,         endPosition };
+			orientationInterpolator      -> keyValue () = { startOrientation,      endOrientation };
+			scaleInterpolator            -> keyValue () = { startScale,            endScale };
 			scaleOrientationInterpolator -> keyValue () = { startScaleOrientation, endScaleOrientation };
+			fieldOfViewInterpolator      -> keyValue () = { startFieldOfView,      endFieldOfView };
 		}
 		else
 		{
@@ -548,6 +565,9 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			orientationOffset ()      = relativeOrientation;
 			scaleOffset ()            = relativeScale;
 			scaleOrientationOffset () = relativeScaleOrientation;
+
+			if (getType () == fromViewpoint -> getType ())
+				fieldOfViewScale () = fromViewpoint -> fieldOfViewScale ();
 		}
 	}
 	catch (const std::domain_error &)

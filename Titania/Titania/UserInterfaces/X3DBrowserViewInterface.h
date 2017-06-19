@@ -96,12 +96,36 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::ImageMenuItem &
+	getUndoViewMenuItem () const
+	{ return *m_UndoViewMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRedoViewMenuItem () const
+	{ return *m_RedoViewMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getLookAtSelectionMenuItem () const
 	{ return *m_LookAtSelectionMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getLookAtAllMenuItem () const
 	{ return *m_LookAtAllMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getResetUserOffsetsMenuItem () const
+	{ return *m_ResetUserOffsetsMenuItem; }
+
+	Gtk::MenuItem &
+	getCamerasMenuItem () const
+	{ return *m_CamerasMenuItem; }
+
+	Gtk::MenuItem &
+	getDisplayMenuItem () const
+	{ return *m_DisplayMenuItem; }
+
+	Gtk::MenuItem &
+	getDescriptionMenuItem () const
+	{ return *m_DescriptionMenuItem; }
 
 	Gtk::Box &
 	getBrowserBox () const
@@ -119,11 +143,23 @@ public:
 
 	virtual
 	void
+	undo_view_activate () = 0;
+
+	virtual
+	void
+	redo_view_activate () = 0;
+
+	virtual
+	void
 	on_look_at_selection_activate () = 0;
 
 	virtual
 	void
 	on_look_at_all_activate () = 0;
+
+	virtual
+	void
+	on_reset_user_offsets_activate () = 0;
 
 	///  @name Destruction
 
@@ -151,8 +187,14 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::ImageMenuItem* m_UndoViewMenuItem;
+	Gtk::ImageMenuItem* m_RedoViewMenuItem;
 	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;
 	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
+	Gtk::ImageMenuItem* m_ResetUserOffsetsMenuItem;
+	Gtk::MenuItem* m_CamerasMenuItem;
+	Gtk::MenuItem* m_DisplayMenuItem;
+	Gtk::MenuItem* m_DescriptionMenuItem;
 	Gtk::Box* m_BrowserBox;
 
 };

@@ -220,7 +220,6 @@
     <Compile Include="Titania\Widgets\Footer\Footer.cpp" />
     <Compile Include="Titania\Base\X3DEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DGeometryEditorInterface.cpp" />
-    <Compile Include="Titania\Browser\ViewpointObserver.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\BindableNodeList\ViewpointList.cpp" />
@@ -314,6 +313,7 @@
     <Compile Include="Titania\Base\X3DViewInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserView\ViewpointObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2299,7 +2299,6 @@
     <None Include="Titania\UserInterfaces\X3DGeometryEditorInterface.h" />
     <None Include="share\titania\ui\icons\Brush.svg" />
     <None Include="share\titania\ui\icons\Lasso.svg" />
-    <None Include="Titania\Browser\ViewpointObserver.h" />
     <None Include="share\titania\ui\icons\RectangleSelection.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.h" />
     <None Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.h" />
@@ -2989,6 +2988,7 @@
     <None Include="share\titania\ui\BrowserView.x3dv" />
     <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.h" />
     <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.h" />
+    <None Include="Titania\BrowserNotebook\BrowserView\ViewpointObserver.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

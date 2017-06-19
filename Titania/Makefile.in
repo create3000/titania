@@ -119,11 +119,11 @@ am_titania_OBJECTS =  \
 	Titania/Browser/IconFactory.$(OBJEXT) \
 	Titania/Browser/MagicImport.$(OBJEXT) \
 	Titania/Browser/RecentView.$(OBJEXT) \
-	Titania/Browser/ViewpointObserver.$(OBJEXT) \
 	Titania/Browser/X3DBrowserEditor.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWidget.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWindow.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserView/BrowserView.$(OBJEXT) \
+	Titania/BrowserNotebook/BrowserView/ViewpointObserver.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserView.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT) \
@@ -614,11 +614,11 @@ titania_SOURCES = \
 	Titania/Browser/IconFactory.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
-	Titania/Browser/ViewpointObserver.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
+	Titania/BrowserNotebook/BrowserView/ViewpointObserver.cpp \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserView.cpp \
 	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
@@ -1022,9 +1022,6 @@ Titania/Browser/MagicImport.$(OBJEXT):  \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/RecentView.$(OBJEXT): Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
-Titania/Browser/ViewpointObserver.$(OBJEXT):  \
-	Titania/Browser/$(am__dirstamp) \
-	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/X3DBrowserEditor.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
@@ -1041,6 +1038,9 @@ Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/BrowserView/$(DEPDIR)
 	@: > Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/BrowserView/BrowserView.$(OBJEXT):  \
+	Titania/BrowserNotebook/BrowserView/$(am__dirstamp) \
+	Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/BrowserView/ViewpointObserver.$(OBJEXT):  \
 	Titania/BrowserNotebook/BrowserView/$(am__dirstamp) \
 	Titania/BrowserNotebook/BrowserView/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/BrowserView/X3DBrowserView.$(OBJEXT):  \
@@ -2084,11 +2084,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/IconFactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/MagicImport.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/RecentView.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/ViewpointObserver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/BrowserView.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/ViewpointObserver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/X3DBrowserView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserView/$(DEPDIR)/X3DBrowserViewMenuBar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po@am__quote@

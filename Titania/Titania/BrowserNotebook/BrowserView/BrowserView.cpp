@@ -83,6 +83,13 @@ BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	setup ();
 }
 
+void
+BrowserView::dispose ()
+{
+	X3DBrowserViewMenuBar::dispose ();
+	X3DBrowserView::dispose ();
+}
+
 BrowserView::~BrowserView ()
 {
 	dispose ();

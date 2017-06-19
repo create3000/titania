@@ -100,6 +100,22 @@ X3DBrowserView::X3DBrowserView (NotebookPage* const page, const BrowserViewType 
 	                 gridSwitch,
 	                 grid);
 
+	switch (type)
+	{
+		case BrowserViewType::MAIN:
+			getDescriptionMenuItem () .set_label (_ ("Main View"));  
+			break;
+		case BrowserViewType::TOP:
+			getDescriptionMenuItem () .set_label (_ ("Top View"));  
+			break;
+		case BrowserViewType::RIGHT:
+			getDescriptionMenuItem () .set_label(_ ("Right View"));  
+			break;
+		case BrowserViewType::FRONT:
+			getDescriptionMenuItem () .set_label (_ ("Front View"));  
+			break;
+	}
+
 	if (type not_eq BrowserViewType::MAIN)
 	{
 		browser -> setName (names [type]);
@@ -154,7 +170,7 @@ X3DBrowserView::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserView::set_dependent_browser, this);	
-		browser -> signal_draw () .connect (sigc::mem_fun (this, &X3DBrowserView::on_draw));
+		//browser -> signal_draw () .connect (sigc::mem_fun (this, &X3DBrowserView::on_draw));
 		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
 		browser -> setFrameRate (30);
 		browser -> set_opacity (1);

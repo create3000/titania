@@ -52,7 +52,6 @@
 
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
-#include "../Browser/ViewpointObserver.h"
 
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/AxonometricGridTool.h"
@@ -84,7 +83,6 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	           gridTool (new GridTool (this)),
 	          angleTool (new AngleTool (this)),
 	axonometricGridTool (new AxonometricGridTool (this)),
-	  viewpointObserver (new ViewpointObserver (this)),
 	               keys (),
 	       accelerators (true)
 { }  
@@ -209,7 +207,6 @@ X3DBrowserWindow::dispose ()
 	gridTool            .reset ();
 	angleTool           .reset ();
 	axonometricGridTool .reset ();
-	viewpointObserver   .reset ();
 
 	X3DBrowserEditor::dispose ();
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_VIEWPOINT_OBSERVER_H__
-#define __TITANIA_BROWSER_VIEWPOINT_OBSERVER_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_VIEWPOINT_OBSERVER_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_VIEWPOINT_OBSERVER_H__
 
-#include "../Base/X3DEditorObject.h"
+#include "../../Base/X3DEditorObject.h"
 
 #include <Titania/X3D/Browser/Navigation/X3DViewer.h>
 
@@ -65,12 +65,9 @@ public:
 
 	/// @name Construction
 
-	ViewpointObserver (X3DBrowserWindow* const browserWindow);
+	ViewpointObserver (X3DBrowserWindow* const browserWindow, const X3D::BrowserPtr & browser);
 
 	/// @name Member access
-
-	void
-	setBrowser (const X3D::BrowserPtr &, const X3D::BrowserPtr &);
 
 	X3D::UndoHistory &
 	getUndoHistory ()
@@ -87,10 +84,16 @@ private:
 	/// @name Viewpoint handling
 
 	void
-	set_browser (const X3D::BrowserPtr &);
+	set_viewer (const X3D::X3DPtr <X3D::X3DViewer> &);
 
 	void
-	set_viewer (const X3D::X3DPtr <X3D::X3DViewer> &);
+	set_navigationInfo ();
+	
+	void
+	set_transitionStart (const bool value);
+	
+	void
+	set_transitionComplete (const bool value);
 
 	void
 	set_active (const bool);
@@ -100,9 +103,6 @@ private:
 
 	void
 	set_offsets ();
-
-	void
-	set_undoHistory ();
 
 	///  @name Operations
 
@@ -123,14 +123,17 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr              browser;
-	X3D::X3DPtr <X3D::X3DViewer> viewerNode;
-	X3D::UndoStepPtr             undoStep;
-	X3D::Vector3d                positionOffset;
-	X3D::Rotation4d              orientationOffset;
-	X3D::Vector3d                centerOfRotationOffset;
-	double                       fieldOfViewScale;
-	X3D::UndoHistory             undoHistory;
+	X3D::BrowserPtr                   browser;
+	X3D::X3DPtr <X3D::X3DViewer>      viewerNode;
+	X3D::X3DPtr <X3D::NavigationInfo> navigationInfo;
+	X3D::Vector3d                     positionOffset;
+	X3D::Rotation4d                   orientationOffset;
+	X3D::Vector3d                     centerOfRotationOffset;
+	double                            fieldOfViewScale;
+	X3D::UndoHistory                  undoHistory;
+	X3D::UndoStepPtr                  transitionUndoStep;
+	X3D::UndoStepPtr                  moveUndoStep;
+	X3D::UndoStepPtr                  scrollUndoStep;
 
 };
 
