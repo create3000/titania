@@ -82,15 +82,25 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
+	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_builder -> get_widget ("UndoViewMenuItem", m_UndoViewMenuItem);
 	m_builder -> get_widget ("RedoViewMenuItem", m_RedoViewMenuItem);
+	m_builder -> get_widget ("StraightenHorizonMenuItem", m_StraightenHorizonMenuItem);
+	m_builder -> get_widget ("StraightenHorizonSeparatorMenuItem", m_StraightenHorizonSeparatorMenuItem);
 	m_builder -> get_widget ("LookAtSelectionMenuItem", m_LookAtSelectionMenuItem);
 	m_builder -> get_widget ("LookAtAllMenuItem", m_LookAtAllMenuItem);
 	m_builder -> get_widget ("ResetUserOffsetsMenuItem", m_ResetUserOffsetsMenuItem);
+	m_builder -> get_widget ("ShadingMenuItem", m_ShadingMenuItem);
+	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
+	m_builder -> get_widget ("GouraudMenuItem", m_GouraudMenuItem);
+	m_builder -> get_widget ("FlatMenuItem", m_FlatMenuItem);
+	m_builder -> get_widget ("WireframeMenuItem", m_WireframeMenuItem);
+	m_builder -> get_widget ("PointsetMenuItem", m_PointsetMenuItem);
 	m_builder -> get_widget ("DisplayMenuItem", m_DisplayMenuItem);
-	m_builder -> get_widget ("PanelMenuItem", m_PanelMenuItem);
+	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("CameraMenuItem", m_CameraMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
+	m_builder -> get_widget ("MainViewSeparatorMenuItem", m_MainViewSeparatorMenuItem);
 	m_builder -> get_widget ("PerspectiveViewMenuItem", m_PerspectiveViewMenuItem);
 	m_builder -> get_widget ("TopViewMenuItem", m_TopViewMenuItem);
 	m_builder -> get_widget ("RightViewMenuItem", m_RightViewMenuItem);
@@ -107,9 +117,21 @@ X3DBrowserPanelInterface::create ()
 	// Connect object Gtk::ImageMenuItem with id 'UndoViewMenuItem'.
 	m_UndoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::undo_view_activate));
 	m_RedoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::redo_view_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'StraightenHorizonMenuItem'.
+	m_StraightenHorizonMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_straighten_horizon_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'LookAtSelectionMenuItem'.
 	m_LookAtSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_look_at_selection_activate));
 	m_LookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_look_at_all_activate));
 	m_ResetUserOffsetsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_reset_user_offsets_activate));
+
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	m_PhongMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_phong_toggled));
+	m_GouraudMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_gouraud_toggled));
+	m_FlatMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_flat_toggled));
+	m_WireframeMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_wireframe_toggled));
+	m_PointsetMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_pointset_toggled));
 
 	// Connect object Gtk::MenuItem with id 'MainViewMenuItem'.
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));

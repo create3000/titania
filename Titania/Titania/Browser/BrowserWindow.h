@@ -833,6 +833,9 @@ private:
 	void
 	on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType);
 
+	void
+	set_straighten_horizon ();
+
 	virtual
 	void
 	on_straighten_clicked () final override;

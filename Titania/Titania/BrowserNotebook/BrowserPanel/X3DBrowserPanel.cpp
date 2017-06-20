@@ -215,9 +215,10 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 
 	if (type not_eq BrowserPanelType::MAIN)
 	{
-		browser -> setName (names [type]);
 		browser -> initialized () .addInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> set_opacity (0);
+		browser -> setName (names [type]);
+		browser -> setFixedPipeline (not getBrowserWindow () -> getCobwebCompatibilityAction () -> get_active ());
 	}
 
 	if (getWidget () .get_mapped ())

@@ -47,7 +47,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem">
+              <object class="GtkMenuItem" id="ViewMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_View</property>
@@ -82,6 +82,21 @@
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="StraightenHorizonMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Straighten _Horzion</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_straighten_horizon_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="StraightenHorizonSeparatorMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
@@ -127,19 +142,89 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="ShadingMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Shading</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="PhongMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">P_hong</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_phong_toggled" swapped="no"/>
+                        <accelerator key="5" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="GouraudMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Gouraud</property>
+                        <property name="use_underline">True</property>
+                        <property name="group">PhongMenuItem</property>
+                        <signal name="toggled" handler="on_gouraud_toggled" swapped="no"/>
+                        <accelerator key="4" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="FlatMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Flat</property>
+                        <property name="use_underline">True</property>
+                        <property name="group">PhongMenuItem</property>
+                        <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
+                        <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="WireframeMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Wireframe</property>
+                        <property name="use_underline">True</property>
+                        <property name="group">PhongMenuItem</property>
+                        <signal name="toggled" handler="on_wireframe_toggled" swapped="no"/>
+                        <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="PointsetMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Pointset</property>
+                        <property name="use_underline">True</property>
+                        <property name="group">PhongMenuItem</property>
+                        <signal name="toggled" handler="on_pointset_toggled" swapped="no"/>
+                        <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="DisplayMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
                 <property name="label" translatable="yes">Display</property>
+                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="PanelMenuItem">
+              <object class="GtkMenuItem" id="PanelsMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
-                <property name="label" translatable="yes">Panel</property>
+                <property name="label" translatable="yes">_Panels</property>
+                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
@@ -162,6 +247,12 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkSeparatorMenuItem" id="MainViewSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="PerspectiveViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -169,6 +260,12 @@
                         <property name="label" translatable="yes">_Perspective View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_perspective_view_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -196,6 +293,12 @@
                         <property name="label" translatable="yes">_Front View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_front_view_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>

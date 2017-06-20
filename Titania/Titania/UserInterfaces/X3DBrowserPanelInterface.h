@@ -99,6 +99,10 @@ public:
 	getMenuBar () const
 	{ return *m_MenuBar; }
 
+	Gtk::MenuItem &
+	getViewMenuItem () const
+	{ return *m_ViewMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getUndoViewMenuItem () const
 	{ return *m_UndoViewMenuItem; }
@@ -106,6 +110,14 @@ public:
 	Gtk::ImageMenuItem &
 	getRedoViewMenuItem () const
 	{ return *m_RedoViewMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getStraightenHorizonMenuItem () const
+	{ return *m_StraightenHorizonMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getStraightenHorizonSeparatorMenuItem () const
+	{ return *m_StraightenHorizonSeparatorMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getLookAtSelectionMenuItem () const
@@ -120,12 +132,36 @@ public:
 	{ return *m_ResetUserOffsetsMenuItem; }
 
 	Gtk::MenuItem &
+	getShadingMenuItem () const
+	{ return *m_ShadingMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getPhongMenuItem () const
+	{ return *m_PhongMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getGouraudMenuItem () const
+	{ return *m_GouraudMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getFlatMenuItem () const
+	{ return *m_FlatMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getWireframeMenuItem () const
+	{ return *m_WireframeMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getPointsetMenuItem () const
+	{ return *m_PointsetMenuItem; }
+
+	Gtk::MenuItem &
 	getDisplayMenuItem () const
 	{ return *m_DisplayMenuItem; }
 
 	Gtk::MenuItem &
-	getPanelMenuItem () const
-	{ return *m_PanelMenuItem; }
+	getPanelsMenuItem () const
+	{ return *m_PanelsMenuItem; }
 
 	Gtk::MenuItem &
 	getCameraMenuItem () const
@@ -134,6 +170,10 @@ public:
 	Gtk::MenuItem &
 	getMainViewMenuItem () const
 	{ return *m_MainViewMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getMainViewSeparatorMenuItem () const
+	{ return *m_MainViewSeparatorMenuItem; }
 
 	Gtk::MenuItem &
 	getPerspectiveViewMenuItem () const
@@ -187,6 +227,10 @@ public:
 
 	virtual
 	void
+	on_straighten_horizon_toggled () = 0;
+
+	virtual
+	void
 	on_look_at_selection_activate () = 0;
 
 	virtual
@@ -196,6 +240,26 @@ public:
 	virtual
 	void
 	on_reset_user_offsets_activate () = 0;
+
+	virtual
+	void
+	on_phong_toggled () = 0;
+
+	virtual
+	void
+	on_gouraud_toggled () = 0;
+
+	virtual
+	void
+	on_flat_toggled () = 0;
+
+	virtual
+	void
+	on_wireframe_toggled () = 0;
+
+	virtual
+	void
+	on_pointset_toggled () = 0;
 
 	virtual
 	void
@@ -256,15 +320,25 @@ private:
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
+	Gtk::MenuItem* m_ViewMenuItem;
 	Gtk::ImageMenuItem* m_UndoViewMenuItem;
 	Gtk::ImageMenuItem* m_RedoViewMenuItem;
+	Gtk::CheckMenuItem* m_StraightenHorizonMenuItem;
+	Gtk::SeparatorMenuItem* m_StraightenHorizonSeparatorMenuItem;
 	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;
 	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
 	Gtk::ImageMenuItem* m_ResetUserOffsetsMenuItem;
+	Gtk::MenuItem* m_ShadingMenuItem;
+	Gtk::RadioMenuItem* m_PhongMenuItem;
+	Gtk::RadioMenuItem* m_GouraudMenuItem;
+	Gtk::RadioMenuItem* m_FlatMenuItem;
+	Gtk::RadioMenuItem* m_WireframeMenuItem;
+	Gtk::RadioMenuItem* m_PointsetMenuItem;
 	Gtk::MenuItem* m_DisplayMenuItem;
-	Gtk::MenuItem* m_PanelMenuItem;
+	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::MenuItem* m_CameraMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
+	Gtk::SeparatorMenuItem* m_MainViewSeparatorMenuItem;
 	Gtk::MenuItem* m_PerspectiveViewMenuItem;
 	Gtk::MenuItem* m_TopViewMenuItem;
 	Gtk::MenuItem* m_RightViewMenuItem;

@@ -111,6 +111,8 @@ private:
 	void
 	set_undoHistory ();
 
+	///  @name View menu
+
 	virtual
 	void
 	undo_view_activate () final override;
@@ -118,6 +120,19 @@ private:
 	virtual
 	void
 	redo_view_activate () final override;
+
+	void
+	set_viewer ();
+
+	void
+	set_straighten_horizon ();
+
+	virtual
+	void
+	on_straighten_horizon_toggled () final override;
+
+	void
+	on_straighten_clicked ();
 
 	virtual
 	void
@@ -130,6 +145,39 @@ private:
 	virtual
 	void
 	on_reset_user_offsets_activate () final override;
+
+	///  @name Shading menu
+
+	virtual
+	void
+	on_phong_toggled () final override;
+	
+	virtual
+	void
+	on_gouraud_toggled () final override;
+	
+	virtual
+	void
+	on_flat_toggled () final override;
+	
+	virtual
+	void
+	on_wireframe_toggled () final override;
+	
+	virtual
+	void
+	on_pointset_toggled () final override;
+
+	void
+	on_shading_changed (const std::string & value);
+	
+	void
+	set_shading (const X3D::SFString & value);
+	
+	void
+	connectShading (const X3D::SFString & field);
+
+	///  @name Camera menu
 
 	virtual
 	void
@@ -166,6 +214,7 @@ private:
 	///  @name Members
 
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
+	bool                                changing;
 
 };
 

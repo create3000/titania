@@ -221,11 +221,12 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 
 	if (getCurrentPage ())
 	{
-		getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer,            this);
-		getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer,       this);
-		getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer,            this);
-		getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer,            this);
-		getCurrentBrowser () -> getAvailableViewers () .removeInterest (&BrowserWindow::set_available_viewers, this);
+		getCurrentBrowser () -> getViewer ()            .removeInterest (&BrowserWindow::set_viewer,             this);
+		getCurrentBrowser () -> getActiveLayer ()       .removeInterest (&BrowserWindow::set_activeLayer,        this);
+		getCurrentBrowser () -> getViewerType ()        .removeInterest (&BrowserWindow::set_viewer,             this);
+		getCurrentBrowser () -> getPrivateViewer ()     .removeInterest (&BrowserWindow::set_viewer,             this);
+		getCurrentBrowser () -> getAvailableViewers ()  .removeInterest (&BrowserWindow::set_available_viewers,  this);
+		getCurrentBrowser () -> getStraightenHorizon () .removeInterest (&BrowserWindow::set_straighten_horizon, this);
 	
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
@@ -249,10 +250,11 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 
 	if (getCurrentPage ())
 	{
-		getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer,       this);
-		getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer,            this);
-		getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer,            this);
-		getCurrentBrowser () -> getAvailableViewers () .addInterest (&BrowserWindow::set_available_viewers, this);
+		getCurrentBrowser () -> getActiveLayer ()       .addInterest (&BrowserWindow::set_activeLayer,        this);
+		getCurrentBrowser () -> getViewerType ()        .addInterest (&BrowserWindow::set_viewer,             this);
+		getCurrentBrowser () -> getPrivateViewer ()     .addInterest (&BrowserWindow::set_viewer,             this);
+		getCurrentBrowser () -> getAvailableViewers ()  .addInterest (&BrowserWindow::set_available_viewers,  this);
+		getCurrentBrowser () -> getStraightenHorizon () .addInterest (&BrowserWindow::set_straighten_horizon, this);
 	
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
@@ -275,7 +277,8 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 		set_viewer ();
-	
+		set_straighten_horizon ();
+
 		set_lightTools            (getCurrentBrowser () -> getLightTools ());
 		set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
 		set_soundTools            (getCurrentBrowser () -> getSoundTools ());
@@ -3058,6 +3061,16 @@ BrowserWindow::on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType)
 		getArrowButton () .set_active (true);
 
 	setViewer (viewerType);
+}
+
+void
+BrowserWindow::set_straighten_horizon ()
+{
+	changing = true;
+
+	getStraightenHorizonButton () .set_active (getCurrentBrowser () -> getStraightenHorizon ());
+
+	changing = false;
 }
 
 void

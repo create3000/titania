@@ -53,12 +53,15 @@
 #include "../NotebookPage/NotebookPage.h"
 #include "ViewpointObserver.h"
 
+#include <Titania/X3D/Browser/BrowserOptions.h>
+
 namespace titania {
 namespace puck {
 
 X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 	   X3DBrowserPanel (),
-	 viewpointObserver ()
+	 viewpointObserver (),
+	          changing (false)
 { }
 
 void
@@ -67,7 +70,15 @@ X3DBrowserPanelMenuBar::initialize ()
 	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
 	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
 
+	getLocalBrowser () -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	getLocalBrowser () -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer, this);
+	getLocalBrowser () -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+
 	on_main_browser_mapped ();
+	set_shading (getLocalBrowser () -> getBrowserOptions () -> Shading ());
+	set_viewer ();
+
+	getStraightenHorizonMenuItem () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
 }
 
 void
@@ -82,7 +93,8 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 void
 X3DBrowserPanelMenuBar::on_main_browser_mapped ()
 {
-	getMainViewMenuItem () .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
+	getMainViewMenuItem ()          .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
+	getMainViewSeparatorMenuItem () .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
 }
 
 void
@@ -127,6 +139,45 @@ X3DBrowserPanelMenuBar::redo_view_activate ()
 }
 
 void
+X3DBrowserPanelMenuBar::set_viewer ()
+{
+	getStraightenHorizonMenuItem ()          .set_visible (getLocalBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+	getStraightenHorizonSeparatorMenuItem () .set_visible (getLocalBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+}
+
+void
+X3DBrowserPanelMenuBar::set_straighten_horizon ()
+{
+	changing = true;
+
+	getStraightenHorizonMenuItem () .set_active (getLocalBrowser () -> getStraightenHorizon ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::on_straighten_horizon_toggled ()
+{
+	if (changing)
+		return;
+
+	getConfig () -> set <bool> ("straightenHorizon", getStraightenHorizonMenuItem () .get_active ());
+	getLocalBrowser () -> setStraightenHorizon (getStraightenHorizonMenuItem () .get_active ());
+
+	if (getStraightenHorizonMenuItem () .get_active ())
+		on_straighten_clicked ();
+}
+
+void
+X3DBrowserPanelMenuBar::on_straighten_clicked ()
+{
+	const auto & activeLayer = getLocalBrowser () -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getViewpoint () -> straighten (getLocalBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+}
+
+void
 X3DBrowserPanelMenuBar::on_look_at_selection_activate ()
 {
 	getLocalBrowser () -> lookAtSelection ();
@@ -147,6 +198,83 @@ X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 	const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
 
 	viewpoint -> transitionStart (viewpoint);
+}
+
+void
+X3DBrowserPanelMenuBar::on_phong_toggled ()
+{
+	if (getPhongMenuItem () .get_active ())
+		on_shading_changed ("PHONG");
+}
+
+void
+X3DBrowserPanelMenuBar::on_gouraud_toggled ()
+{
+	if (getGouraudMenuItem () .get_active ())
+		on_shading_changed ("GOURAUD");
+}
+
+void
+X3DBrowserPanelMenuBar::on_flat_toggled ()
+{
+	if (getFlatMenuItem () .get_active ())
+		on_shading_changed ("FLAT");
+}
+
+void
+X3DBrowserPanelMenuBar::on_wireframe_toggled ()
+{
+	if (getWireframeMenuItem () .get_active ())
+		on_shading_changed ("WIREFRAME");
+}
+
+void
+X3DBrowserPanelMenuBar::on_pointset_toggled ()
+{
+	if (getPointsetMenuItem () .get_active ())
+		on_shading_changed ("POINTSET");
+}
+
+void
+X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
+{
+	if (changing)
+		return;
+
+	getLocalBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	getLocalBrowser () -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::connectShading, this);
+
+	getLocalBrowser () -> getBrowserOptions () -> Shading () = value;
+}
+
+void
+X3DBrowserPanelMenuBar::set_shading (const X3D::SFString & value)
+{
+	changing = true;
+
+	if (value == "PHONG")
+		getPhongMenuItem () .set_active (true);
+
+	else if (value == "FLAT")
+		getFlatMenuItem () .set_active (true);
+
+	else if (value == "WIREFRAME")
+		getWireframeMenuItem () .set_active (true);
+
+	else if (value == "POINTSET")
+		getPointsetMenuItem () .set_active (true);
+
+	else
+		getGouraudMenuItem () .set_active (true);
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::connectShading (const X3D::SFString & field)
+{
+	field .removeInterest (&X3DBrowserPanelMenuBar::connectShading, this);
+	field .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
 }
 
 void
