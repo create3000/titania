@@ -91,6 +91,7 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("PanelMenuItem", m_PanelMenuItem);
 	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
+	m_builder -> get_widget ("PerspectiveViewMenuItem", m_PerspectiveViewMenuItem);
 	m_builder -> get_widget ("TopViewMenuItem", m_TopViewMenuItem);
 	m_builder -> get_widget ("RightViewMenuItem", m_RightViewMenuItem);
 	m_builder -> get_widget ("FrontViewMenuItem", m_FrontViewMenuItem);
@@ -112,6 +113,7 @@ X3DBrowserPanelInterface::create ()
 
 	// Connect object Gtk::MenuItem with id 'MainViewMenuItem'.
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
+	m_PerspectiveViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_perspective_view_activate));
 	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_top_view_activate));
 	m_RightViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_right_view_activate));
 	m_FrontViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_front_view_activate));

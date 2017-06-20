@@ -58,7 +58,7 @@ namespace puck {
 
 X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 	   X3DBrowserPanel (),
-	viewpointObserver ()
+	 viewpointObserver ()
 { }
 
 void
@@ -153,6 +153,12 @@ void
 X3DBrowserPanelMenuBar::on_main_view_activate ()
 {
 	setType (BrowserPanelType::MAIN);
+}
+
+void
+X3DBrowserPanelMenuBar::on_perspective_view_activate ()
+{
+	setType (BrowserPanelType::PERSPECTIVE);
 }
 
 void

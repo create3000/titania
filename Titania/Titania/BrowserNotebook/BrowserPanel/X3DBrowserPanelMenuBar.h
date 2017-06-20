@@ -137,6 +137,10 @@ private:
 
 	virtual
 	void
+	on_perspective_view_activate () final override;
+
+	virtual
+	void
 	on_top_view_activate () final override;
 
 	virtual

@@ -64,7 +64,9 @@
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/NavigationInfo.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
 #include <Titania/X3D/Tools/Grids/GridTool.h>
@@ -76,9 +78,10 @@
 namespace titania {
 namespace puck {
 
-const std::vector <std::string> X3DBrowserPanel::names = { "", "Top", "Right", "Front", "Bottom", "Left", "Back" };
+const std::vector <std::string> X3DBrowserPanel::names = { "", "Perspective", "Top", "Right", "Front", "Bottom", "Left", "Back" };
 
 const std::vector <X3D::Vector3d> X3DBrowserPanel::axes = {
+	X3D::Vector3f (),
 	X3D::Vector3f (),
 	X3D::Vector3f (0, 1, 0),
 	X3D::Vector3f (1, 0, 0),
@@ -90,6 +93,7 @@ const std::vector <X3D::Vector3d> X3DBrowserPanel::axes = {
 
 const std::vector <X3D::Vector3d> X3DBrowserPanel::positions = {
 	X3D::Vector3f (),
+	X3D::Vector3f (0, 0, 10),
 	X3D::Vector3f (0, 10, 0),
 	X3D::Vector3f (10, 0, 0),
 	X3D::Vector3f (0, 0, 10),
@@ -99,6 +103,7 @@ const std::vector <X3D::Vector3d> X3DBrowserPanel::positions = {
 };
 
 const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
+	X3D::Rotation4f (),
 	X3D::Rotation4f (),
 	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2),
 	X3D::Rotation4f (0, 1, 0, math::pi <float> / 2),
@@ -110,14 +115,14 @@ const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 
 X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type) :
 	X3DBrowserPanelInterface (),
-	                   page (page),
-	                   type (type),
-	                browser (page -> getMainBrowser ()),
-	            activeLayer (),
-	              viewpoint (),
-	          gridTransform (),
-	             gridSwitch (),
-	                   grid ()
+	                    page (page),
+	                    type (type),
+	                 browser (page -> getMainBrowser ()),
+	             activeLayer (),
+	               viewpoint (),
+	           gridTransform (),
+	              gridSwitch (),
+	                    grid ()
 {
 	assert (page);
 
@@ -162,6 +167,9 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 	{
 		case BrowserPanelType::MAIN:
 			getBrowserMenuItem () .set_label (_ ("Main View"));  
+			break;
+		case BrowserPanelType::PERSPECTIVE:
+			getBrowserMenuItem () .set_label (_ ("Perspective View"));  
 			break;
 		case BrowserPanelType::TOP:
 			getBrowserMenuItem () .set_label (_ ("Top View"));  
@@ -210,8 +218,8 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	if (getWidget () .get_mapped ())
 		X3DBrowserPanel::on_map ();
 
-	browser -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DBrowserPanel::on_focus_out_event));
-	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DBrowserPanel::on_focus_in_event));
+	browser -> signal_focus_out_event () .connect (sigc::mem_fun (static_cast <X3DPanelInterface*> (this), &X3DBrowserPanel::on_focus_out_event));
+	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (static_cast <X3DPanelInterface*> (this), &X3DBrowserPanel::on_focus_in_event));
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -224,6 +232,7 @@ X3DBrowserPanel::getPlane () const
 	switch (type)
 	{
 		case BrowserPanelType::MAIN:
+		case BrowserPanelType::PERSPECTIVE:
 			return -1;
 		case BrowserPanelType::TOP:
 		case BrowserPanelType::BOTTOM:
@@ -253,8 +262,10 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		// Setup scene.
 
-		const auto   worldInfo   = createWorldInfo (page -> getScene ());
-		const auto & activeLayer = browser -> getWorld () -> getLayerSet () -> getActiveLayer ();
+		const auto   worldInfo        = createWorldInfo (page -> getScene ());
+		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   gridLayer        = executionContext -> getNamedNode <X3D::X3DLayerNode> ("GridLayer");
+		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
 
 		const auto & gridTool            = getBrowserWindow () -> getGridTool ()            -> getTool ();
 		const auto & angleGridTool       = getBrowserWindow () -> getAngleTool ()           -> getTool ();
@@ -264,31 +275,35 @@ X3DBrowserPanel::set_dependent_browser ()
 		getBrowserWindow () -> getAngleTool ()           -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 		getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 
-		viewpoint     = browser -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
-		gridTransform = browser -> getExecutionContext () -> getNamedNode <X3D::Transform> ("GridTransform");
-		gridSwitch    = browser -> getExecutionContext () -> getNamedNode <X3D::Switch> ("GridSwitch");
-		grid          = browser -> getExecutionContext () -> getNamedNode ("Grid");
+		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
+		gridSwitch    = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
+		grid          = executionContext -> getNamedNode ("Grid");
 
-		activeLayer -> getNavigationInfoStack () -> setLock (true);
-		activeLayer -> getViewpointStack ()      -> setLock (true);
-		activeLayer -> getBackgroundStack ()     -> setLock (true);
-		activeLayer -> getFogStack ()            -> setLock (true);
+		layer -> getNavigationInfoStack () -> setLock (true);
+		layer -> getViewpointStack ()      -> setLock (true);
+		layer -> getBackgroundStack ()     -> setLock (true);
+		layer -> getFogStack ()            -> setLock (true);
 
 		gridSwitch -> children () .emplace_back (gridTool            -> getTool ());
 		gridSwitch -> children () .emplace_back (angleGridTool       -> getTool ());
 		gridSwitch -> children () .emplace_back (axonometricGridTool -> getTool ());
 
-		viewpoint -> position ()               .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> positionOffset ()         .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> orientation ()            .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> orientationOffset ()      .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> centerOfRotation ()       .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> centerOfRotationOffset () .addInterest (&X3DBrowserPanel::set_viewpoint, this);
-		viewpoint -> fieldOfViewScale ()       .addInterest (&X3DBrowserPanel::set_viewpoint, this);
+		if (type == BrowserPanelType::PERSPECTIVE)
+		{
+			executionContext -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> type () = { "EXAMINE" };
+			viewpoint = executionContext -> getNamedNode <X3D::Viewpoint> ("PerspectiveViewpoint");
+		}
+		else
+			viewpoint = executionContext -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
 
-		viewpoint -> position ()         .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
-		viewpoint -> orientation ()      .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
-		viewpoint -> centerOfRotation () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
+		gridLayer -> getViewpointStack () -> forcePushOnTop (viewpoint);
+		layer     -> getViewpointStack () -> forcePushOnTop (viewpoint);
+
+		viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
+
+		viewpoint -> setPosition (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
+		viewpoint -> setOrientation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
+		viewpoint -> setCenterOfRotation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
 		viewpoint -> fieldOfViewScale () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
@@ -346,6 +361,15 @@ X3DBrowserPanel::set_activeLayer ()
 }
 
 void
+X3DBrowserPanel::connectViewpoint ()
+{
+	viewpoint -> removeInterest (&X3DBrowserPanel::connectViewpoint, this);
+	viewpoint -> addInterest (&X3DBrowserPanel::set_viewpoint, this);
+
+	browser -> getExecutionContext () -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> transitionType () = { "ANIMATE" };
+}
+
+void
 X3DBrowserPanel::set_viewpoint ()
 {
 	const auto worldInfo = createWorldInfo (page -> getScene ());
@@ -357,7 +381,8 @@ X3DBrowserPanel::set_viewpoint ()
 
 	page -> setModified (true);
 
-	gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
+	if (type not_eq BrowserPanelType::PERSPECTIVE)
+		gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
 }
 
 void
@@ -400,7 +425,7 @@ X3DBrowserPanel::set_grid ()
 		{
 			const auto plane = getBrowserWindow () -> getGridTool () -> getPlane ();
 	
-			if (plane == getPlane ())
+			if (type == BrowserPanelType::PERSPECTIVE or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 1;
 			}
@@ -443,7 +468,7 @@ X3DBrowserPanel::set_grid ()
 		{
 			const auto plane = getBrowserWindow () -> getAngleTool () -> getPlane ();
 
-			if (plane == getPlane ())
+			if (type == BrowserPanelType::PERSPECTIVE or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 2;
 			}
@@ -485,7 +510,7 @@ X3DBrowserPanel::set_grid ()
 		{
 			const auto plane = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
 
-			if (plane == getPlane ())
+			if (type == BrowserPanelType::PERSPECTIVE or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 3;
 			}

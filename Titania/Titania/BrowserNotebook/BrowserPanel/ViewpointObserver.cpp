@@ -138,6 +138,9 @@ ViewpointObserver::set_transitionStart (const bool value)
 void
 ViewpointObserver::set_transitionComplete (const bool value)
 {
+	if (not transitionUndoStep)
+		return;
+
 	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
 
 	transitionUndoStep -> addObjects (viewpoint);

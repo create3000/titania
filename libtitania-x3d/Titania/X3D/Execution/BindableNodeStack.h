@@ -131,13 +131,13 @@ public:
 	{
 		node -> isBound ()  = true;
 		node -> bindTime () = getCurrentTime ();
-		pushOnTop (node);
+		pushOnTop (node, true);
 	}
 
 	void
-	pushOnTop (const pointer_type & node)
+	pushOnTop (const pointer_type & node, const bool force = false)
 	{
-		if (lock)
+		if (lock and not force)
 			return;
 
 		if (stack .empty ())

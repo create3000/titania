@@ -273,11 +273,11 @@ X3DViewpointNode::setCameraSpaceMatrix (const Matrix4d & value)
 void
 X3DViewpointNode::bindToLayer (X3DLayerNode* const layer)
 {
-	//std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << ":" << layer << "': " << std::flush;
+	std::clog << "Trying to bind X3DViewpoint '" << getName () << ":" << description () << "' to layer '" << layer -> getName () << ":" << layer << "': " << std::flush;
 
 	layer -> getViewpointStack () -> pushOnTop (this);
 
-	//std::clog << (layer -> getViewpointStack () -> top () == this ? "success." : "rejected.") << std::endl;
+	std::clog << (layer -> getViewpointStack () -> getTop () == this ? "success." : "rejected.") << std::endl;
 }
 
 void

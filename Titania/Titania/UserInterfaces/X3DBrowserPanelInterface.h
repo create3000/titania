@@ -136,6 +136,10 @@ public:
 	{ return *m_MainViewMenuItem; }
 
 	Gtk::MenuItem &
+	getPerspectiveViewMenuItem () const
+	{ return *m_PerspectiveViewMenuItem; }
+
+	Gtk::MenuItem &
 	getTopViewMenuItem () const
 	{ return *m_TopViewMenuItem; }
 
@@ -199,6 +203,10 @@ public:
 
 	virtual
 	void
+	on_perspective_view_activate () = 0;
+
+	virtual
+	void
 	on_top_view_activate () = 0;
 
 	virtual
@@ -257,6 +265,7 @@ private:
 	Gtk::MenuItem* m_PanelMenuItem;
 	Gtk::MenuItem* m_BrowserMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
+	Gtk::MenuItem* m_PerspectiveViewMenuItem;
 	Gtk::MenuItem* m_TopViewMenuItem;
 	Gtk::MenuItem* m_RightViewMenuItem;
 	Gtk::MenuItem* m_FrontViewMenuItem;

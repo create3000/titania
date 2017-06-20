@@ -162,6 +162,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="PerspectiveViewMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="right_justified">True</property>
+                        <property name="label" translatable="yes">_Perspective View</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_perspective_view_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="TopViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

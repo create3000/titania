@@ -62,6 +62,7 @@ enum BrowserPanelType :
 	int32_t
 {
 	MAIN,
+	PERSPECTIVE,
 	TOP,
 	RIGHT,
 	FRONT,
@@ -150,6 +151,9 @@ private:
 	set_activeLayer ();
 
 	void
+	connectViewpoint ();
+
+	void
 	set_viewpoint ();
 
 	void
@@ -164,14 +168,14 @@ private:
 
 	///  @name Members
 
-	NotebookPage* const               page;
-	BrowserPanelType                   type;
-	X3D::BrowserPtr                   browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
-	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
-	X3D::X3DPtr <X3D::Transform>      gridTransform;
-	X3D::X3DPtr <X3D::Switch>         gridSwitch;
-	X3D::SFNode                       grid;
+	NotebookPage* const                 page;
+	BrowserPanelType                    type;
+	X3D::BrowserPtr                     browser;
+	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
+	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
+	X3D::X3DPtr <X3D::Transform>        gridTransform;
+	X3D::X3DPtr <X3D::Switch>           gridSwitch;
+	X3D::SFNode                         grid;
 
 };
 
