@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserView.x3dv"
-META "modified" "Mon, 19 Jun 2017 10:06:55 GMT"
+META "modified" "Tue, 20 Jun 2017 01:32:10 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -100,6 +100,7 @@ WorldInfo {
             name "nodes"
             reference "http://titania.create3000.de"
             value DEF Background Layer {
+              isPickable FALSE
               children Background {
                 skyColor 0.21 0.21 0.21
               }
@@ -128,7 +129,7 @@ WorldInfo {
 }
 
 LayerSet {
-  activeLayer 2
+  activeLayer 3
   order [
     1,
     2,
@@ -137,7 +138,6 @@ LayerSet {
   layers [
     USE Background
     DEF GridLayer Layer {
-      isPickable FALSE
       children [
         DEF OrthoViewpoint OrthoViewpoint { }
         DEF GridTransform Transform {

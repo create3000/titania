@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type);
+	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserViewType type);
 
 	///  @name Destruction
 
@@ -77,7 +77,22 @@ public:
 	~BrowserView () final override;
 
 
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	setLocalBrowser (const X3D::BrowserPtr & value);
+
+
 private:
+
+	///  @name Event handlers
 
 	virtual
 	void

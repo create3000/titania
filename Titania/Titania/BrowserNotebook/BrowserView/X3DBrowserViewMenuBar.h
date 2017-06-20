@@ -79,6 +79,14 @@ protected:
 
 	X3DBrowserViewMenuBar ();
 
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	setLocalBrowser (const X3D::BrowserPtr & value);
+
 	///  @name Event handlers
 
 	virtual
@@ -93,6 +101,9 @@ protected:
 private:
 
 	///  @name Event handlers
+
+	void
+	on_main_browser_mapped ();
 
 	void
 	set_editing ();
@@ -119,6 +130,34 @@ private:
 	virtual
 	void
 	on_reset_user_offsets_activate () final override;
+
+	virtual
+	void
+	on_main_view_activate () final override;
+
+	virtual
+	void
+	on_top_view_activate () final override;
+
+	virtual
+	void
+	on_right_view_activate () final override;
+
+	virtual
+	void
+	on_front_view_activate () final override;
+
+	virtual
+	void
+	on_bottom_view_activate () final override;
+
+	virtual
+	void
+	on_left_view_activate () final override;
+
+	virtual
+	void
+	on_back_view_activate () final override;
 
 	///  @name Members
 

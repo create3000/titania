@@ -124,6 +124,34 @@ public:
 	{ return *m_CamerasMenuItem; }
 
 	Gtk::MenuItem &
+	getMainViewMenuItem () const
+	{ return *m_MainViewMenuItem; }
+
+	Gtk::MenuItem &
+	getTopViewMenuItem () const
+	{ return *m_TopViewMenuItem; }
+
+	Gtk::MenuItem &
+	getRightViewMenuItem () const
+	{ return *m_RightViewMenuItem; }
+
+	Gtk::MenuItem &
+	getFrontViewMenuItem () const
+	{ return *m_FrontViewMenuItem; }
+
+	Gtk::MenuItem &
+	getBottomViewMenuItem () const
+	{ return *m_BottomViewMenuItem; }
+
+	Gtk::MenuItem &
+	getLeftViewMenuItem () const
+	{ return *m_LeftViewMenuItem; }
+
+	Gtk::MenuItem &
+	getBackViewMenuItem () const
+	{ return *m_BackViewMenuItem; }
+
+	Gtk::MenuItem &
 	getDisplayMenuItem () const
 	{ return *m_DisplayMenuItem; }
 
@@ -165,6 +193,34 @@ public:
 	void
 	on_reset_user_offsets_activate () = 0;
 
+	virtual
+	void
+	on_main_view_activate () = 0;
+
+	virtual
+	void
+	on_top_view_activate () = 0;
+
+	virtual
+	void
+	on_right_view_activate () = 0;
+
+	virtual
+	void
+	on_front_view_activate () = 0;
+
+	virtual
+	void
+	on_bottom_view_activate () = 0;
+
+	virtual
+	void
+	on_left_view_activate () = 0;
+
+	virtual
+	void
+	on_back_view_activate () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -198,6 +254,13 @@ private:
 	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
 	Gtk::ImageMenuItem* m_ResetUserOffsetsMenuItem;
 	Gtk::MenuItem* m_CamerasMenuItem;
+	Gtk::MenuItem* m_MainViewMenuItem;
+	Gtk::MenuItem* m_TopViewMenuItem;
+	Gtk::MenuItem* m_RightViewMenuItem;
+	Gtk::MenuItem* m_FrontViewMenuItem;
+	Gtk::MenuItem* m_BottomViewMenuItem;
+	Gtk::MenuItem* m_LeftViewMenuItem;
+	Gtk::MenuItem* m_BackViewMenuItem;
 	Gtk::MenuItem* m_DisplayMenuItem;
 	Gtk::MenuItem* m_DescriptionMenuItem;
 	Gtk::Box* m_BrowserBox;

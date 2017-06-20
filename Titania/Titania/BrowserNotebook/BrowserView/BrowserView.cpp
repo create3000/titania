@@ -74,20 +74,29 @@
 namespace titania {
 namespace puck {
 
-BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserViewType type) :
+BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserViewType type) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBrowserViewInterface (get_ui ("Views/BrowserView.glade")),
 	         X3DBrowserView (page, type),
 	  X3DBrowserViewMenuBar ()
 {
+	setName ("BrowserView" + id);
+
 	setup ();
 }
 
 void
-BrowserView::dispose ()
+BrowserView::initialize ()
 {
-	X3DBrowserViewMenuBar::dispose ();
-	X3DBrowserView::dispose ();
+	X3DBrowserView::initialize ();
+	X3DBrowserViewMenuBar::initialize ();
+}
+
+void
+BrowserView::setLocalBrowser (const X3D::BrowserPtr & value)
+{
+	X3DBrowserView::setLocalBrowser (value);
+	X3DBrowserViewMenuBar::setLocalBrowser (value);
 }
 
 void
@@ -102,6 +111,13 @@ BrowserView::on_unmap ()
 {
 	X3DBrowserView::on_unmap ();
 	X3DBrowserViewMenuBar::on_unmap ();
+}
+
+void
+BrowserView::dispose ()
+{
+	X3DBrowserViewMenuBar::dispose ();
+	X3DBrowserView::dispose ();
 }
 
 BrowserView::~BrowserView ()

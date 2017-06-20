@@ -111,9 +111,11 @@ X3DUserInterface::setup ()
 	assert (not getWidget () .get_name () .empty ());
 
 	setTypeName (getWidget () .get_name ());
-	X3DBaseInterface::setName (getWidget () .get_name ());
 
-	config .reset (new Configuration (getWidget () .get_name ()));
+	if (getName () .empty ())
+		X3DBaseInterface::setName (getWidget () .get_name ());
+
+	config .reset (new Configuration (getName ()));
 
 	initializeConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
 

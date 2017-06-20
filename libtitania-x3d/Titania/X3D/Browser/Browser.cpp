@@ -166,7 +166,8 @@ Browser::on_setup ()
 {
 	X3DBrowser::on_setup ();
 
-	setup ();
+	if (not isInitialized ())
+		setup ();
 }
 
 void

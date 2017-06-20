@@ -361,6 +361,7 @@ X3DViewpointNode::straighten (const bool horizon)
 	orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
 	scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
 	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
+	fieldOfViewInterpolator      -> keyValue () = { fieldOfViewScale (),                    fieldOfViewScale () };
 
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
@@ -459,6 +460,7 @@ X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const d
 		orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
 		scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
 		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
+		fieldOfViewInterpolator      -> keyValue () = { fieldOfViewScale (),                    fieldOfViewScale () };
 	}
 	else
 	{

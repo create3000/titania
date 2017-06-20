@@ -367,8 +367,6 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 {
 	try
 	{
-__LOG__ << std::endl;
-
 		if (getBrowser () -> getAlphaChannel () .top ())
 			return;
 

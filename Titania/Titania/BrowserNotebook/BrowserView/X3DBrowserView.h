@@ -59,12 +59,15 @@ namespace puck {
 class NotebookPage;
 
 enum BrowserViewType :
-uint8_t
+	int32_t
 {
 	MAIN,
 	TOP,
 	RIGHT,
-	FRONT
+	FRONT,
+	BOTTOM,
+	LEFT,
+	BACK
 
 };
 
@@ -82,6 +85,10 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DBrowserView () override;
 
 
@@ -92,6 +99,24 @@ protected:
 	X3DBrowserView (NotebookPage* const page, const BrowserViewType type);
 
 	X3DBrowserView ();
+
+	virtual
+	void
+	initialize () override;
+
+	NotebookPage*
+	getPage () const
+	{ return page; }
+
+	void
+	setType (const BrowserViewType value);
+
+	BrowserViewType
+	getType () const;
+
+	virtual
+	void
+	setLocalBrowser (const X3D::BrowserPtr & value);
 
 	///  @name Event handlers
 
@@ -111,6 +136,8 @@ private:
 	X3D::BrowserPtr
 	createBrowser (const BrowserViewType type) const;
 
+	///  @name Member access
+
 	int32_t
 	getPlane () const;
 
@@ -128,24 +155,23 @@ private:
 	void
 	set_grid ();
 
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
+	///  @name Static members
+
+	static const std::vector <std::string>     names;
+	static const std::vector <X3D::Vector3d>   axes;
+	static const std::vector <X3D::Vector3d>   positions;
+	static const std::vector <X3D::Rotation4d> orientations;
 
 	///  @name Members
 
-	NotebookPage* const   page;
-	const BrowserViewType type;
-
+	NotebookPage* const               page;
+	BrowserViewType                   type;
 	X3D::BrowserPtr                   browser;
 	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
 	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
 	X3D::X3DPtr <X3D::Transform>      gridTransform;
 	X3D::X3DPtr <X3D::Switch>         gridSwitch;
 	X3D::SFNode                       grid;
-	std::vector <std::string>         names;
-	std::vector <X3D::Vector3d>       axes;
-	std::vector <X3D::Vector3d>       positions;
-	std::vector <X3D::Rotation4d>     orientations;
 
 };
 

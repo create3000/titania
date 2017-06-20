@@ -76,20 +76,48 @@
 namespace titania {
 namespace puck {
 
+const std::vector <std::string> X3DBrowserView::names = { "", "Top", "Right", "Front", "Bottom", "Left", "Back" };
+
+const std::vector <X3D::Vector3d> X3DBrowserView::axes = {
+	X3D::Vector3f (),
+	X3D::Vector3f (0, 1, 0),
+	X3D::Vector3f (1, 0, 0),
+	X3D::Vector3f (0, 0, 1),
+	X3D::Vector3f (0, -1, 0),
+	X3D::Vector3f (-1, 0, 0),
+	X3D::Vector3f (0, 0, -1)
+};
+
+const std::vector <X3D::Vector3d> X3DBrowserView::positions = {
+	X3D::Vector3f (),
+	X3D::Vector3f (0, 10, 0),
+	X3D::Vector3f (10, 0, 0),
+	X3D::Vector3f (0, 0, 10),
+	X3D::Vector3f (0, -10, 0),
+	X3D::Vector3f (-10, 0, 0),
+	X3D::Vector3f (0, 0, -10)
+};
+
+const std::vector <X3D::Rotation4d> X3DBrowserView::orientations = {
+	X3D::Rotation4f (),
+	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2),
+	X3D::Rotation4f (0, 1, 0, math::pi <float> / 2),
+	X3D::Rotation4f (),
+	X3D::Rotation4f (1, 0, 0, math::pi <float> / 2) * X3D::Rotation4f (0, 1, 0, math::pi <float>),
+	X3D::Rotation4f (0, 1, 0, -math::pi <float> / 2),
+	X3D::Rotation4f (0, 1, 0, math::pi <float>)
+};
+
 X3DBrowserView::X3DBrowserView (NotebookPage* const page, const BrowserViewType type) :
 	X3DBrowserViewInterface (),
 	                   page (page),
 	                   type (type),
-	                browser (createBrowser (type)),
+	                browser (page -> getMainBrowser ()),
 	            activeLayer (),
 	              viewpoint (),
 	          gridTransform (),
 	             gridSwitch (),
-	                   grid (),
-	                  names ({ "", "Top", "Right", "Front" }),
-	                   axes ({ X3D::Vector3f (), X3D::Vector3f (0, 1, 0), X3D::Vector3f (1, 0, 0), X3D::Vector3f (0, 0, 1) }),
-	              positions ({ X3D::Vector3f (), X3D::Vector3f (0, 10, 0), X3D::Vector3f (10, 0, 0), X3D::Vector3f (0, 0, 10) }),
-	           orientations ({ X3D::Rotation4f (), X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2), X3D::Rotation4f (0, 1, 0, math::pi <float> / 2), X3D::Rotation4f () })
+	                   grid ()
 {
 	assert (page);
 
@@ -100,40 +128,21 @@ X3DBrowserView::X3DBrowserView (NotebookPage* const page, const BrowserViewType 
 	                 gridSwitch,
 	                 grid);
 
-	switch (type)
-	{
-		case BrowserViewType::MAIN:
-			getDescriptionMenuItem () .set_label (_ ("Main View"));  
-			break;
-		case BrowserViewType::TOP:
-			getDescriptionMenuItem () .set_label (_ ("Top View"));  
-			break;
-		case BrowserViewType::RIGHT:
-			getDescriptionMenuItem () .set_label(_ ("Right View"));  
-			break;
-		case BrowserViewType::FRONT:
-			getDescriptionMenuItem () .set_label (_ ("Front View"));  
-			break;
-	}
-
-	if (type not_eq BrowserViewType::MAIN)
-	{
-		browser -> setName (names [type]);
-		browser -> initialized () .addInterest (&X3DBrowserView::set_dependent_browser, this);
-		browser -> set_opacity (0);
-	}
-
-	browser -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DViewInterface*) this, &X3DBrowserView::on_focus_out_event));
-	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DViewInterface*) this, &X3DBrowserView::on_focus_in_event));
-	browser -> setAntialiasing (4);
-	browser -> show ();
-
-	getBrowserBox () .pack_start (*browser, true, true, 0);
 }
 
 X3DBrowserView::X3DBrowserView () :
 	X3DBrowserView (nullptr, BrowserViewType::MAIN)
 { }
+
+void
+X3DBrowserView::initialize ()
+{
+	X3DBrowserViewInterface::initialize ();
+
+	__LOG__ << getConfig () -> get <int32_t> ("type", type) << std::endl;
+
+	setType (BrowserViewType (math::clamp <int32_t> (getConfig () -> get <int32_t> ("type", type), BrowserViewType::MAIN, BrowserViewType::BACK)));
+}
 
 X3D::BrowserPtr
 X3DBrowserView::createBrowser (const BrowserViewType type) const
@@ -144,6 +153,75 @@ X3DBrowserView::createBrowser (const BrowserViewType type) const
 	return X3D::createBrowser (page -> getMainBrowser (), { get_ui ("BrowserView.x3dv") });
 }
 
+void
+X3DBrowserView::setType (const BrowserViewType value)
+{
+	__LOG__ << int (value) << std::endl;
+
+	type = value;
+
+	getConfig () -> set <int32_t> ("type", type);
+
+	switch (type)
+	{
+		case BrowserViewType::MAIN:
+			getDescriptionMenuItem () .set_label (_ ("Main View"));  
+			break;
+		case BrowserViewType::TOP:
+			getDescriptionMenuItem () .set_label (_ ("Top View"));  
+			break;
+		case BrowserViewType::BOTTOM:
+			getDescriptionMenuItem () .set_label (_ ("Bottom View"));  
+			break;
+		case BrowserViewType::LEFT:
+			getDescriptionMenuItem () .set_label(_ ("Left View"));  
+			break;
+		case BrowserViewType::RIGHT:
+			getDescriptionMenuItem () .set_label(_ ("Right View"));  
+			break;
+		case BrowserViewType::FRONT:
+			getDescriptionMenuItem () .set_label (_ ("Front View"));  
+			break;
+		case BrowserViewType::BACK:
+			getDescriptionMenuItem () .set_label (_ ("Back View"));  
+			break;
+	}
+
+	setLocalBrowser (createBrowser (type));
+}
+
+BrowserViewType
+X3DBrowserView::getType () const
+{
+	return type;
+}
+
+void
+X3DBrowserView::setLocalBrowser (const X3D::BrowserPtr & value)
+{
+	if (browser)
+		getBrowserBox () .remove (*browser);
+
+	browser = value;
+
+	if (type not_eq BrowserViewType::MAIN)
+	{
+		browser -> setName (names [type]);
+		browser -> initialized () .addInterest (&X3DBrowserView::set_dependent_browser, this);
+		browser -> set_opacity (0);
+	}
+
+	if (getWidget () .get_mapped ())
+		X3DBrowserView::on_map ();
+
+	browser -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DViewInterface*) this, &X3DBrowserView::on_focus_out_event));
+	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DViewInterface*) this, &X3DBrowserView::on_focus_in_event));
+	browser -> setAntialiasing (4);
+	browser -> show ();
+
+	getBrowserBox () .pack_start (*browser, true, true, 0);
+}
+
 int32_t
 X3DBrowserView::getPlane () const
 {
@@ -152,10 +230,13 @@ X3DBrowserView::getPlane () const
 		case BrowserViewType::MAIN:
 			return -1;
 		case BrowserViewType::TOP:
+		case BrowserViewType::BOTTOM:
 			return 1;
 		case BrowserViewType::RIGHT:
+		case BrowserViewType::LEFT:
 			return 0;
 		case BrowserViewType::FRONT:
+		case BrowserViewType::BACK:
 			return 2;
 	}
 
@@ -170,7 +251,6 @@ X3DBrowserView::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserView::set_dependent_browser, this);	
-		//browser -> signal_draw () .connect (sigc::mem_fun (this, &X3DBrowserView::on_draw));
 		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
 		browser -> setFrameRate (30);
 		browser -> set_opacity (1);
@@ -287,6 +367,7 @@ X3DBrowserView::set_viewpoint ()
 void
 X3DBrowserView::set_grid ()
 {
+	// <plane, type> = <x, y>
 	static const std::map <std::pair <int32_t, BrowserViewType>, X3D::Vector2i> mappings = {
 		// x-plane
 		std::make_pair (std::make_pair (0, BrowserViewType::TOP),   X3D::Vector2i (1, 0)),
@@ -300,6 +381,18 @@ X3DBrowserView::set_grid ()
 		std::make_pair (std::make_pair (2, BrowserViewType::TOP),   X3D::Vector2i (0, 1)),
 		std::make_pair (std::make_pair (2, BrowserViewType::RIGHT), X3D::Vector2i (1, 2)),
 		std::make_pair (std::make_pair (2, BrowserViewType::FRONT), X3D::Vector2i (0, 2)),
+		// x-plane
+		std::make_pair (std::make_pair (0, BrowserViewType::BOTTOM), X3D::Vector2i (1, 0)),
+		std::make_pair (std::make_pair (0, BrowserViewType::LEFT),   X3D::Vector2i (0, 2)),
+		std::make_pair (std::make_pair (0, BrowserViewType::BACK),   X3D::Vector2i (1, 2)),
+		// y-plane
+		std::make_pair (std::make_pair (1, BrowserViewType::BOTTOM), X3D::Vector2i (0, 2)),
+		std::make_pair (std::make_pair (1, BrowserViewType::LEFT),   X3D::Vector2i (2, 1)),
+		std::make_pair (std::make_pair (1, BrowserViewType::BACK),   X3D::Vector2i (0, 1)),
+		// z-plane
+		std::make_pair (std::make_pair (2, BrowserViewType::BOTTOM), X3D::Vector2i (0, 1)),
+		std::make_pair (std::make_pair (2, BrowserViewType::LEFT),   X3D::Vector2i (1, 2)),
+		std::make_pair (std::make_pair (2, BrowserViewType::BACK),   X3D::Vector2i (0, 2)),
 	};
 
 	if (page -> getMainBrowser () -> getExecutionContext () not_eq getCurrentContext ())
@@ -319,12 +412,13 @@ X3DBrowserView::set_grid ()
 			{
 				const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
 				const auto   mapping = mappings .at (std::make_pair (plane, type));
+				const auto   one     = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
 
 				gridSwitch -> whichChoice () = 0;
-	
-				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (  tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (  tool -> scale ()       .at (mapping .x ()), 1, tool -> scale ()       .at (mapping .y ())));
-				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32  ({ tool -> dimension ()   .at (mapping .x ()), 0, tool -> dimension ()   .at (mapping .y ()) }));
+
+				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ tool -> dimension () .at (mapping .x ()), 0, tool -> dimension () .at (mapping .y ()) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
 				{
@@ -359,13 +453,13 @@ X3DBrowserView::set_grid ()
 			}
 			else
 			{
-				const auto & tool    = getBrowserWindow () -> getAngleTool () -> getTool ();
-				const auto   mapping = mappings .at (std::make_pair (plane, type));
+				const auto & tool = getBrowserWindow () -> getAngleTool () -> getTool ();
+				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
 
 				gridSwitch -> whichChoice () = 0;
 	
-				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (tool -> scale () .at (mapping .x ()) * tool -> dimension () .at (0), 1, tool -> scale () .at (mapping .y ())));
+				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
 				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (2) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
@@ -401,13 +495,13 @@ X3DBrowserView::set_grid ()
 			}
 			else
 			{
-				const auto & tool    = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
-				const auto   mapping = mappings .at (std::make_pair (plane, type));
-	
+				const auto & tool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
+
 				gridSwitch -> whichChoice () = 0;
 	
-				grid -> setField <X3D::SFVec3f> ("translation", X3D::Vector3f (tool -> translation () .at (mapping .x ()), 0, tool -> translation () .at (mapping .y ())));
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (tool -> scale () .at (mapping .x ()) * tool -> dimension () .at (0), 1, tool -> scale () .at (mapping .y ())));
+				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
+				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
 				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (1) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size () / 4; ++ i)
@@ -455,47 +549,6 @@ X3DBrowserView::on_map ()
 	page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 }
 
-bool
-X3DBrowserView::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	if (browser -> get_width () < 50)
-		return false;
-
-	if (browser -> get_height () < 30)
-		return false;
-
-	const auto state   = browser -> get_style_context () -> get_state ();
-	const auto margin  = browser -> get_style_context () -> get_margin (state);
-	const auto border  = browser -> get_style_context () -> get_border (state);
-	const auto padding = browser -> get_style_context () -> get_padding (state);
-	const auto left    = margin .get_left () + border .get_left () + padding .get_left ();
-	const auto top     = margin .get_top ()  + border .get_top ()  + padding .get_top ();
-
-	cairo -> set_font_size (10);
-	cairo -> move_to (left + 10, top + 20);
-	cairo -> set_source_rgb (0, 0, 0); 
-
-	cairo -> select_font_face ("sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
-
-	switch (type)
-	{
-		case BrowserViewType::MAIN:
-			cairo -> show_text (_ ("Perspective View"));  
-			break;
-		case BrowserViewType::TOP:
-			cairo -> show_text (_ ("Top View"));  
-			break;
-		case BrowserViewType::RIGHT:
-			cairo -> show_text (_ ("Right View"));  
-			break;
-		case BrowserViewType::FRONT:
-			cairo -> show_text (_ ("Front View"));  
-			break;
-	}
-
-	return false;
-}
-
 void
 X3DBrowserView::on_unmap ()
 {
@@ -503,6 +556,12 @@ X3DBrowserView::on_unmap ()
 		return;
 
 	page -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
+}
+
+void
+X3DBrowserView::dispose ()
+{
+	X3DBrowserViewInterface::dispose ();
 }
 
 X3DBrowserView::~X3DBrowserView ()

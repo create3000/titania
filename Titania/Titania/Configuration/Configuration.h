@@ -108,7 +108,7 @@ public:
 
 	template <class Type>
 	Type
-	get (const std::string & key) const;
+	get (const std::string & key, const Type & defaultValue = Type ()) const;
 
 	void
 	remove (const std::string & key) const;
@@ -117,6 +117,8 @@ public:
 
 
 private:
+
+	using cstr_type = char*;
 
 	class KeyFile
 	{
@@ -165,19 +167,97 @@ Configuration::set (const std::string & key, const Type & value)
 	setItem (key, osstream .str ());
 }
 
+template <>
+inline
+void
+Configuration::set (const std::string & key, const bool & value)
+{
+	setItem (key, value);
+}
+
+template <>
+inline
+void
+Configuration::set (const std::string & key, const int & value)
+{
+	setItem (key, value);
+}
+
+template <>
+inline
+void
+Configuration::set (const std::string & key, const double & value)
+{
+	setItem (key, value);
+}
+
+template <>
+inline
+void
+Configuration::set (const std::string & key, const std::string & value)
+{
+	setItem (key, value);
+}
+
+template <>
+inline
+void
+Configuration::set (const std::string & key, const cstr_type & value)
+{
+	setItem (key, value);
+}
+
 template <class Type>
 Type
-Configuration::get (const std::string & key) const
+Configuration::get (const std::string & key, const Type & defaultValue) const
 {
-	std::istringstream isstream (getString (key));
+	if (hasItem (key))
+	{
+		std::istringstream isstream (getString (key));
+	
+		isstream .imbue (std::locale::classic ());
+	
+		Type value = Type ();
+	
+		isstream >> value;
+	
+		return value;
+	}
 
-	isstream .imbue (std::locale::classic ());
+	return defaultValue;
+}
 
-	Type value = Type ();
+template <>
+inline
+bool
+Configuration::get (const std::string & key, const bool & defaultValue) const
+{
+	if (hasItem (key))
+		return getBoolean (key);
 
-	isstream >> value;
+	return defaultValue;
+}
 
-	return value;
+template <>
+inline
+double
+Configuration::get (const std::string & key, const double & defaultValue) const
+{
+	if (hasItem (key))
+		return getDouble (key);
+
+	return defaultValue;
+}
+
+template <>
+inline
+Glib::ustring
+Configuration::get (const std::string & key, const Glib::ustring & defaultValue) const
+{
+	if (hasItem (key))
+		return getString (key);
+
+	return defaultValue;
 }
 
 } // puck

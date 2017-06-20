@@ -50,6 +50,7 @@
 
 #include "X3DBrowserViewMenuBar.h"
 
+#include "../NotebookPage/NotebookPage.h"
 #include "ViewpointObserver.h"
 
 namespace titania {
@@ -57,11 +58,31 @@ namespace puck {
 
 X3DBrowserViewMenuBar::X3DBrowserViewMenuBar () :
 	   X3DBrowserView (),
-	viewpointObserver (new ViewpointObserver (getBrowserWindow (), getLocalBrowser ()))
+	viewpointObserver ()
+{ }
+
+void
+X3DBrowserViewMenuBar::initialize ()
 {
+	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserViewMenuBar::on_main_browser_mapped));
+	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewMenuBar::on_main_browser_mapped));
+
+	on_main_browser_mapped ();
+}
+
+void
+X3DBrowserViewMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
+{
+	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), getLocalBrowser ()));
 	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserViewMenuBar::set_undoHistory, this);
 
 	set_undoHistory ();
+}
+
+void
+X3DBrowserViewMenuBar::on_main_browser_mapped ()
+{
+	getMainViewMenuItem () .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
 }
 
 void
@@ -126,6 +147,48 @@ X3DBrowserViewMenuBar::on_reset_user_offsets_activate ()
 
 		viewpoint -> transitionStart (viewpoint);
 	}
+}
+
+void
+X3DBrowserViewMenuBar::on_main_view_activate ()
+{
+	setType (BrowserViewType::MAIN);
+}
+
+void
+X3DBrowserViewMenuBar::on_top_view_activate ()
+{
+	setType (BrowserViewType::TOP);
+}
+
+void
+X3DBrowserViewMenuBar::on_right_view_activate ()
+{
+	setType (BrowserViewType::RIGHT);
+}
+
+void
+X3DBrowserViewMenuBar::on_front_view_activate ()
+{
+	setType (BrowserViewType::FRONT);
+}
+
+void
+X3DBrowserViewMenuBar::on_bottom_view_activate ()
+{
+	setType (BrowserViewType::BOTTOM);
+}
+
+void
+X3DBrowserViewMenuBar::on_left_view_activate ()
+{
+	setType (BrowserViewType::LEFT);
+}
+
+void
+X3DBrowserViewMenuBar::on_back_view_activate ()
+{
+	setType (BrowserViewType::BACK);
 }
 
 void
