@@ -128,8 +128,8 @@ public:
 	{ return *m_PanelMenuItem; }
 
 	Gtk::MenuItem &
-	getBrowserMenuItem () const
-	{ return *m_BrowserMenuItem; }
+	getCameraMenuItem () const
+	{ return *m_CameraMenuItem; }
 
 	Gtk::MenuItem &
 	getMainViewMenuItem () const
@@ -263,7 +263,7 @@ private:
 	Gtk::ImageMenuItem* m_ResetUserOffsetsMenuItem;
 	Gtk::MenuItem* m_DisplayMenuItem;
 	Gtk::MenuItem* m_PanelMenuItem;
-	Gtk::MenuItem* m_BrowserMenuItem;
+	Gtk::MenuItem* m_CameraMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
 	Gtk::MenuItem* m_PerspectiveViewMenuItem;
 	Gtk::MenuItem* m_TopViewMenuItem;

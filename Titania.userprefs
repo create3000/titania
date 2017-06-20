@@ -1,11 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp">
     <Files>
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserView/BrowserView.cpp" Line="100" Column="16" />
-      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="420" Column="26" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1670" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1375" Column="75" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.h" Line="137" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp" Line="149" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="100" Column="93" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="310" Column="92" />
+      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp" Line="92" Column="97" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.h" Line="68" Column="116" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp" Line="80" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

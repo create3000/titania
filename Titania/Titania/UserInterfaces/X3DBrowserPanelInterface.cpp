@@ -89,7 +89,7 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("ResetUserOffsetsMenuItem", m_ResetUserOffsetsMenuItem);
 	m_builder -> get_widget ("DisplayMenuItem", m_DisplayMenuItem);
 	m_builder -> get_widget ("PanelMenuItem", m_PanelMenuItem);
-	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
+	m_builder -> get_widget ("CameraMenuItem", m_CameraMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
 	m_builder -> get_widget ("PerspectiveViewMenuItem", m_PerspectiveViewMenuItem);
 	m_builder -> get_widget ("TopViewMenuItem", m_TopViewMenuItem);

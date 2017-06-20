@@ -113,10 +113,11 @@ const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 	X3D::Rotation4f (0, 1, 0, math::pi <float>)
 };
 
-X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type) :
+X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const std::string & id) :
 	X3DBrowserPanelInterface (),
 	                    page (page),
 	                    type (type),
+	                      id (id),
 	                 browser (page -> getMainBrowser ()),
 	             activeLayer (),
 	               viewpoint (),
@@ -136,7 +137,7 @@ X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelTy
 }
 
 X3DBrowserPanel::X3DBrowserPanel () :
-	X3DBrowserPanel (nullptr, BrowserPanelType::MAIN)
+	X3DBrowserPanel (nullptr, BrowserPanelType::MAIN, "1")
 { }
 
 void
@@ -144,7 +145,10 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	setType (BrowserPanelType (math::clamp <int32_t> (getConfig () -> get <int32_t> ("type", type), BrowserPanelType::MAIN, BrowserPanelType::BACK)));
+	const auto t = getConfig () -> get <int32_t> ("type", type);
+	//const auto t = createWorldInfo (page -> getScene ()) -> getMetaData <int32_t> ("/Titania/BrowserPanel/type" + id, type);
+
+	setType (BrowserPanelType (math::clamp <int32_t> (t, BrowserPanelType::MAIN, BrowserPanelType::BACK)));
 }
 
 X3D::BrowserPtr
@@ -162,32 +166,33 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 	type = value;
 
 	getConfig () -> set <int32_t> ("type", type);
+	//createWorldInfo (page -> getScene ()) -> setMetaData <int32_t> ("/Titania/BrowserPanel/type" + id, type);
 
 	switch (type)
 	{
 		case BrowserPanelType::MAIN:
-			getBrowserMenuItem () .set_label (_ ("Main View"));  
+			getCameraMenuItem () .set_label (_ ("Main View"));  
 			break;
 		case BrowserPanelType::PERSPECTIVE:
-			getBrowserMenuItem () .set_label (_ ("Perspective View"));  
+			getCameraMenuItem () .set_label (_ ("Perspective View"));  
 			break;
 		case BrowserPanelType::TOP:
-			getBrowserMenuItem () .set_label (_ ("Top View"));  
+			getCameraMenuItem () .set_label (_ ("Top View"));  
 			break;
 		case BrowserPanelType::BOTTOM:
-			getBrowserMenuItem () .set_label (_ ("Bottom View"));  
+			getCameraMenuItem () .set_label (_ ("Bottom View"));  
 			break;
 		case BrowserPanelType::LEFT:
-			getBrowserMenuItem () .set_label(_ ("Left View"));  
+			getCameraMenuItem () .set_label(_ ("Left View"));  
 			break;
 		case BrowserPanelType::RIGHT:
-			getBrowserMenuItem () .set_label(_ ("Right View"));  
+			getCameraMenuItem () .set_label(_ ("Right View"));  
 			break;
 		case BrowserPanelType::FRONT:
-			getBrowserMenuItem () .set_label (_ ("Front View"));  
+			getCameraMenuItem () .set_label (_ ("Front View"));  
 			break;
 		case BrowserPanelType::BACK:
-			getBrowserMenuItem () .set_label (_ ("Back View"));  
+			getCameraMenuItem () .set_label (_ ("Back View"));  
 			break;
 	}
 
@@ -301,10 +306,10 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
 
-		viewpoint -> positionOffset ()         = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]) - viewpoint -> getPosition ();
-		viewpoint -> orientationOffset ()      = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]) * ~viewpoint -> getOrientation ();
-		viewpoint -> centerOfRotationOffset () = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()) - viewpoint -> getCenterOfRotation ();
-		viewpoint -> fieldOfViewScale ()       = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
+		viewpoint -> positionOffset ()         = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/position", positions [type]) - viewpoint -> getPosition ();
+		viewpoint -> orientationOffset ()      = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/orientation", orientations [type]) * ~viewpoint -> getOrientation ();
+		viewpoint -> centerOfRotationOffset () = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()) - viewpoint -> getCenterOfRotation ();
+		viewpoint -> fieldOfViewScale ()       = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
 	
@@ -374,10 +379,10 @@ X3DBrowserPanel::set_viewpoint ()
 {
 	const auto worldInfo = createWorldInfo (page -> getScene ());
 
-	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
-	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
-	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
-	worldInfo -> setMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
+	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
 
 	page -> setModified (true);
 

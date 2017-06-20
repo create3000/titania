@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Tue, 20 Jun 2017 08:24:22 GMT"
+META "modified" "Tue, 20 Jun 2017 13:33:15 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -123,45 +123,6 @@ WorldInfo {
             name "multiView"
             reference "http://titania.create3000.de"
             value 0
-          }
-        ]
-      }
-      DEF LeftViewpoint MetadataSet {
-        name "LeftViewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position_1 MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              -10,
-              0,
-              0
-            ]
-          }
-          DEF orientation_1 MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              -0,
-              -1,
-              0,
-              1.5707963267949
-            ]
-          }
-          DEF centerOfRotation_1 MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              0,
-              0
-            ]
-          }
-          DEF fieldOfViewScale MetadataDouble {
-            name "fieldOfViewScale"
-            reference "http://titania.create3000.de"
-            value 1
           }
         ]
       }

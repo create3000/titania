@@ -97,7 +97,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type);
+	X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const std::string & id);
 
 	X3DBrowserPanel ();
 
@@ -170,6 +170,7 @@ private:
 
 	NotebookPage* const                 page;
 	BrowserPanelType                    type;
+	const std::string                   id;
 	X3D::BrowserPtr                     browser;
 	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
