@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Thu, 15 Jun 2017 08:56:27 GMT"
+META "modified" "Tue, 20 Jun 2017 05:05:52 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -214,10 +214,6 @@ DEF GridTool Collision {
     DEF Grid_1 TouchGroup {
       enabled FALSE
       children DEF _1 AxonometricGrid {
-        dimension [
-          5,
-          10
-        ]
         transparency 0.8
       }
     }
@@ -245,45 +241,49 @@ DEF GridTool Collision {
         }
       ]
     }
-    DEF DimensionHandle Transform {
+    DEF _5 Transform {
       children [
-        DEF _5 PlaneSensor {
-          autoOffset FALSE
-          offset 5 0 0
-          maxPosition -1 0
-        }
-        DEF _6 Transform {
-          translation 5 0 0
-          children ScreenGroup {
-            children DEF Edge Transform {
-              scale 6 6 6
-              children Shape {
-                appearance USE _4
-                geometry Sphere { }
+        DEF DimensionHandle Transform {
+          children [
+            DEF _6 PlaneSensor {
+              autoOffset FALSE
+              offset 5 0 0
+              maxPosition -1 0
+            }
+            DEF _7 Transform {
+              translation 5 0 0
+              children ScreenGroup {
+                children DEF Edge Transform {
+                  scale 6 6 6
+                  children Shape {
+                    appearance USE _4
+                    geometry Sphere { }
+                  }
+                }
               }
             }
-          }
+          ]
         }
-      ]
-    }
-    DEF ScaleHandle Transform {
-      children [
-        DEF _7 PlaneSensor {
-          autoOffset FALSE
-          offset -5 0 0
-          maxPosition -1 0
-        }
-        DEF _8 Transform {
-          translation -5 0 0
-          children ScreenGroup {
-            children DEF Box Transform {
-              scale 3 3 3
-              children Shape {
-                appearance USE _4
-                geometry Box { }
+        DEF ScaleHandle Transform {
+          children [
+            DEF _8 PlaneSensor {
+              autoOffset FALSE
+              offset -5 0 0
+              maxPosition -1 0
+            }
+            DEF _9 Transform {
+              translation -5 0 0
+              children ScreenGroup {
+                children DEF Box Transform {
+                  scale 3 3 3
+                  children Shape {
+                    appearance USE _4
+                    geometry Box { }
+                  }
+                }
               }
             }
-          }
+          ]
         }
       ]
     }
@@ -376,15 +376,14 @@ DEF Tool Script {
 // Empty body"
 }
 
-ROUTE DimensionScript.translation_changed TO _6.set_translation
-ROUTE _5.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.translation_changed TO _5.set_offset
+ROUTE DimensionScript.translation_changed TO _7.set_translation
+ROUTE _6.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.translation_changed TO _6.set_offset
 ROUTE _2.translation_changed TO MoveScript.set_translation
 ROUTE Tool.translation_changed TO _2.set_offset
 ROUTE MoveScript.translation_changed TO Tool.set_translation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
-ROUTE Tool.rotation_changed TO DimensionHandle.set_rotation
 ROUTE Tool.translation_changed TO DimensionHandle.set_translation
 ROUTE Tool.translation_changed TO _3.set_translation
 ROUTE MoveScript.axisOfRotation_changed TO _2.set_axisRotation
@@ -404,17 +403,17 @@ ROUTE Tool.translation_changed TO _1.set_translation
 ROUTE Tool.rotation_changed TO _1.set_rotation
 ROUTE Tool.scale_changed TO _1.set_scale
 ROUTE Tool.scale_changed TO DimensionHandle.set_scale
-ROUTE ScaleScript.translation_changed TO _8.set_translation
-ROUTE _7.translation_changed TO ScaleScript.set_translation
+ROUTE ScaleScript.translation_changed TO _9.set_translation
+ROUTE _8.translation_changed TO ScaleScript.set_translation
 ROUTE Tool.scale_changed TO ScaleScript.set_scale
 ROUTE ScaleScript.scale_changed TO Tool.set_scale
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
-ROUTE ScaleScript.translation_changed TO _7.set_offset
+ROUTE ScaleScript.translation_changed TO _8.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
-ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 ROUTE _2.isActive TO Tool.set_isActive
-ROUTE _5.isActive TO Tool.set_isActive
-ROUTE _7.isActive TO Tool.set_isActive
+ROUTE _6.isActive TO Tool.set_isActive
+ROUTE _8.isActive TO Tool.set_isActive
 ROUTE Tool.angle_changed TO _1.set_angle
+ROUTE Tool.rotation_changed TO _5.set_rotation
 
 EXPORT Tool

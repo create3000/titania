@@ -413,7 +413,7 @@ X3DBrowserView::set_grid ()
 				gridSwitch -> whichChoice () = 0;
 
 				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
+				grid -> setField <X3D::SFVec3f> ("scale",       tool -> scale ());
 				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ tool -> dimension () .at (mapping .x ()), 0, tool -> dimension () .at (mapping .y ()) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
@@ -455,7 +455,7 @@ X3DBrowserView::set_grid ()
 				gridSwitch -> whichChoice () = 0;
 	
 				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
+				grid -> setField <X3D::SFVec3f> ("scale",       tool -> scale ());
 				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (2) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
@@ -497,7 +497,7 @@ X3DBrowserView::set_grid ()
 				gridSwitch -> whichChoice () = 0;
 	
 				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
-				grid -> setField <X3D::SFVec3f> ("scale",       X3D::Vector3f (one .x () ? tool -> scale () .getX () : 1, one .y () ? tool -> scale () .getY () : 1, one .z () ? tool -> scale () .getZ () : 1));
+				grid -> setField <X3D::SFVec3f> ("scale",       tool -> scale ());
 				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (1) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size () / 4; ++ i)

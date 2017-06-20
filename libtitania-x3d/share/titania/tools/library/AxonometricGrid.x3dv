@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V3.0.4
 
 PROFILE Full
 
@@ -9,10 +9,9 @@ UNIT angle degree 0.0174532925199432958
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
-META "modified" "Tue, 28 Mar 2017 17:41:01 GMT"
-META "outputStyle" "Nicest"
+META "modified" "Tue, 20 Jun 2017 04:57:37 GMT"
 
 PROTO AxonometricGrid [
   inputOutput    SFVec3f    translation 0 0 0
@@ -22,7 +21,7 @@ PROTO AxonometricGrid [
     5,
     10
   ]
-  inputOutput    SFVec2d    angle 1.047197551196597746154214461093167628065 1.047197551196597746154214461093167628065
+  inputOutput    SFVec2d    angle 1.0471975511966 1.0471975511966
   inputOutput    MFInt32    majorLineEvery [
     5,
     5,
@@ -45,278 +44,280 @@ PROTO AxonometricGrid [
 ]
 {
   Transform {
-    translation IS translation
     rotation IS rotation
-    scale IS scale
-    children [
-      DEF HexagonPlane Shape {
-        appearance Appearance {
-          material DEF Material2 Material {
-            diffuseColor 0 0 0
-            emissiveColor IS color
-            transparency IS transparency
+    children Transform {
+      translation IS translation
+      scale IS scale
+      children [
+        DEF HexagonPlane Shape {
+          appearance Appearance {
+            material DEF Material2 Material {
+              diffuseColor 0 0 0
+              emissiveColor IS color
+              transparency IS transparency
+            }
           }
-        }
-        geometry IndexedFaceSet {
-          solid IS solid
-          coordIndex [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            -1
-          ]
-          coord DEF HexagonCoord Coordinate {
-            point [
-              5 0 0,
-              2.5 0 -4.33015,
-              -2.5 0 -4.33015,
-              -5 -0 -0,
-              -2.5 -0 4.33015,
-              2.5 -0 4.33015
+          geometry IndexedFaceSet {
+            solid IS solid
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              -1
             ]
+            coord DEF HexagonCoord Coordinate {
+              point [
+                5 0 0,
+                2.5 0 -4.33013,
+                -2.5 0 -4.33013,
+                -5 -0 -0,
+                -2.5 -0 4.33013,
+                2.5 -0 4.33013
+              ]
+            }
           }
         }
-      }
-      DEF MajorGrid Shape {
-        appearance Appearance {
-          material DEF MajorMaterial Material {
-            emissiveColor IS majorLineColor
-            transparency IS majorLineTransparency
+        DEF MajorGrid Shape {
+          appearance Appearance {
+            material DEF MajorMaterial Material {
+              emissiveColor IS majorLineColor
+              transparency IS majorLineTransparency
+            }
           }
-        }
-        geometry DEF MajorGrid_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            2,
-            3,
-            -1,
-            4,
-            5,
-            -1,
-            6,
-            7,
-            -1,
-            8,
-            9,
-            -1,
-            10,
-            11,
-            -1,
-            12,
-            13,
-            -1,
-            14,
-            15,
-            -1,
-            16,
-            17,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              -5.125 0 0.216507,
-              -2.375 0 -4.54666,
-              -2.625 0 4.54666,
-              2.625 0 -4.54666,
-              2.375 0 4.54666,
-              5.125 0 -0.216507,
-              -2.75 0 -4.33015,
-              2.75 0 -4.33015,
-              -5.25 0 0,
-              5.25 0 0,
-              -2.75 0 4.33015,
-              2.75 0 4.33015,
-              2.375 0 -4.54666,
-              5.125 0 0.216507,
-              -2.625 0 -4.54666,
-              2.625 0 4.54666,
-              -5.125 0 -0.216507,
-              -2.375 0 4.54666
+          geometry DEF MajorGrid_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
+              -1,
+              12,
+              13,
+              -1,
+              14,
+              15,
+              -1,
+              16,
+              17,
+              -1
             ]
+            coord Coordinate {
+              point [
+                -5.125 0 0.216507,
+                -2.375 0 -4.54663,
+                -2.625 0 4.54663,
+                2.625 0 -4.54663,
+                2.375 0 4.54663,
+                5.125 0 -0.216507,
+                -2.75 0 -4.33013,
+                2.75 0 -4.33013,
+                -5.25 0 0,
+                5.25 0 0,
+                -2.75 0 4.33013,
+                2.75 0 4.33013,
+                2.375 0 -4.54663,
+                5.125 0 0.216507,
+                -2.625 0 -4.54663,
+                2.625 0 4.54663,
+                -5.125 0 -0.216507,
+                -2.375 0 4.54663
+              ]
+            }
           }
         }
-      }
-      DEF MinorGrid Shape {
-        appearance Appearance {
-          material DEF MinorMaterial Material {
-            emissiveColor IS lineColor
-            transparency IS lineTransparency
+        DEF MinorGrid Shape {
+          appearance Appearance {
+            material DEF MinorMaterial Material {
+              emissiveColor IS lineColor
+              transparency IS lineTransparency
+            }
           }
-        }
-        geometry DEF MinorGrid_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            2,
-            3,
-            -1,
-            4,
-            5,
-            -1,
-            6,
-            7,
-            -1,
-            8,
-            9,
-            -1,
-            10,
-            11,
-            -1,
-            12,
-            13,
-            -1,
-            14,
-            15,
-            -1,
-            16,
-            17,
-            -1,
-            18,
-            19,
-            -1,
-            20,
-            21,
-            -1,
-            22,
-            23,
-            -1,
-            24,
-            25,
-            -1,
-            26,
-            27,
-            -1,
-            28,
-            29,
-            -1,
-            30,
-            31,
-            -1,
-            32,
-            33,
-            -1,
-            34,
-            35,
-            -1,
-            36,
-            37,
-            -1,
-            38,
-            39,
-            -1,
-            40,
-            41,
-            -1,
-            42,
-            43,
-            -1,
-            44,
-            45,
-            -1,
-            46,
-            47,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              -4.5 0 0.86603,
-              -1.5 0 -4.33015,
-              -4 0 1.73206,
-              -0.5 0 -4.33015,
-              -3.5 0 2.59809,
-              0.5 0 -4.33015,
-              -3 0 3.46412,
-              1.5 0 -4.33015,
-              -1.5 0 4.33015,
-              3 0 -3.46412,
-              -0.5 0 4.33015,
-              3.5 0 -2.59809,
-              0.5 0 4.33015,
-              4 0 -1.73206,
-              1.5 0 4.33015,
-              4.5 0 -0.86603,
-              -3 0 -3.46412,
-              3 0 -3.46412,
-              -3.5 0 -2.59809,
-              3.5 0 -2.59809,
-              -4 0 -1.73206,
-              4 0 -1.73206,
-              -4.5 0 -0.86603,
-              4.5 0 -0.86603,
-              -4.5 0 0.86603,
-              4.5 0 0.86603,
-              -4 0 1.73206,
-              4 0 1.73206,
-              -3.5 0 2.59809,
-              3.5 0 2.59809,
-              -3 0 3.46412,
-              3 0 3.46412,
-              1.5 0 -4.33015,
-              4.5 0 0.86603,
-              0.5 0 -4.33015,
-              4 0 1.73206,
-              -0.5 0 -4.33015,
-              3.5 0 2.59809,
-              -1.5 0 -4.33015,
-              3 0 3.46412,
-              -3 0 -3.46412,
-              1.5 0 4.33015,
-              -3.5 0 -2.59809,
-              0.5 0 4.33015,
-              -4 0 -1.73206,
-              -0.5 0 4.33015,
-              -4.5 0 -0.86603,
-              -1.5 0 4.33015
+          geometry DEF MinorGrid_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
+              -1,
+              12,
+              13,
+              -1,
+              14,
+              15,
+              -1,
+              16,
+              17,
+              -1,
+              18,
+              19,
+              -1,
+              20,
+              21,
+              -1,
+              22,
+              23,
+              -1,
+              24,
+              25,
+              -1,
+              26,
+              27,
+              -1,
+              28,
+              29,
+              -1,
+              30,
+              31,
+              -1,
+              32,
+              33,
+              -1,
+              34,
+              35,
+              -1,
+              36,
+              37,
+              -1,
+              38,
+              39,
+              -1,
+              40,
+              41,
+              -1,
+              42,
+              43,
+              -1,
+              44,
+              45,
+              -1,
+              46,
+              47,
+              -1
             ]
+            coord Coordinate {
+              point [
+                -4.5 0 0.866026,
+                -1.5 0 -4.33013,
+                -4 0 1.73205,
+                -0.5 0 -4.33013,
+                -3.5 0 2.59808,
+                0.5 0 -4.33013,
+                -3 0 3.4641,
+                1.5 0 -4.33013,
+                -1.5 0 4.33013,
+                3 0 -3.4641,
+                -0.5 0 4.33013,
+                3.5 0 -2.59808,
+                0.5 0 4.33013,
+                4 0 -1.73205,
+                1.5 0 4.33013,
+                4.5 0 -0.866026,
+                -3 0 -3.4641,
+                3 0 -3.4641,
+                -3.5 0 -2.59808,
+                3.5 0 -2.59808,
+                -4 0 -1.73205,
+                4 0 -1.73205,
+                -4.5 0 -0.866025,
+                4.5 0 -0.866025,
+                -4.5 0 0.866025,
+                4.5 0 0.866025,
+                -4 0 1.73205,
+                4 0 1.73205,
+                -3.5 0 2.59808,
+                3.5 0 2.59808,
+                -3 0 3.4641,
+                3 0 3.4641,
+                1.5 0 -4.33013,
+                4.5 0 0.866026,
+                0.5 0 -4.33013,
+                4 0 1.73205,
+                -0.5 0 -4.33013,
+                3.5 0 2.59808,
+                -1.5 0 -4.33013,
+                3 0 3.4641,
+                -3 0 -3.4641,
+                1.5 0 4.33013,
+                -3.5 0 -2.59808,
+                0.5 0 4.33013,
+                -4 0 -1.73205,
+                -0.5 0 4.33013,
+                -4.5 0 -0.866026,
+                -1.5 0 4.33013
+              ]
+            }
           }
         }
-      }
-      DEF MajorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 6
+        DEF MajorPoints Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 6
+            }
+            material USE MajorMaterial
           }
-          material USE MajorMaterial
-        }
-        geometry DEF MajorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -5 0,
-              0 0 0,
-              0 5 0
-            ]
-          }
-        }
-      }
-      DEF MinorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 4
-          }
-          material USE MinorMaterial
-        }
-        geometry DEF MinorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -4 0,
-              0 -3 0,
-              0 -2 0,
-              0 -1 0,
-              0 1 0,
-              0 2 0,
-              0 3 0,
-              0 4 0
-            ]
+          geometry DEF MajorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -5 0,
+                0 0 0,
+                0 5 0
+              ]
+            }
           }
         }
-      }
-    ]
+        DEF MinorPoints Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 4
+            }
+            material USE MinorMaterial
+          }
+          geometry DEF MinorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -4 0,
+                0 -3 0,
+                0 -2 0,
+                0 -1 0,
+                0 1 0,
+                0 2 0,
+                0 3 0,
+                0 4 0
+              ]
+            }
+          }
+        }
+      ]
+    }
   }
 
   DEF GridScript Script {
@@ -507,6 +508,11 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
           }
         ]
       }
@@ -712,6 +718,22 @@ WorldInfo {
               -3.55271e-15,
               0
             ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }

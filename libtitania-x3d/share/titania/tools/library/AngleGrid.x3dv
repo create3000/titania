@@ -7,7 +7,7 @@ META "created" "Thu, 15 Jun 2017 07:19:14 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AngleGrid.x3dv"
-META "modified" "Thu, 15 Jun 2017 07:19:18 GMT"
+META "modified" "Tue, 20 Jun 2017 04:58:34 GMT"
 META "titania-add-world-info" "true"
 
 PROTO AngleGrid [
@@ -39,203 +39,205 @@ PROTO AngleGrid [
 ]
 {
   Transform {
-    translation IS translation
     rotation IS rotation
-    scale IS scale
-    children [
-      DEF Disk Transform {
-        rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
-        scale 5 5 1
-        children Shape {
+    children Transform {
+      translation IS translation
+      scale IS scale
+      children [
+        DEF Disk Transform {
+          rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
+          scale 5 5 1
+          children Shape {
+            appearance Appearance {
+              material DEF Material2 Material {
+                diffuseColor 0 0 0
+                emissiveColor IS color
+                transparency IS transparency
+              }
+            }
+            geometry Disk2D {
+              solid IS solid
+            }
+          }
+        }
+        DEF Rings Transform {
+          rotation 0 0.70710528118436 0.707108281185553 3.14159
+          children [
+            Transform {
+              children Shape {
+                appearance DEF MinorAppearance Appearance {
+                  material DEF _1 Material {
+                    emissiveColor IS lineColor
+                    transparency IS lineTransparency
+                  }
+                }
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 2 2 2
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 3 3 3
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 4 4 4
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 5 5 5
+              children Shape {
+                appearance DEF MajorAppearance Appearance {
+                  material DEF MajorMaterial Material {
+                    emissiveColor IS majorLineColor
+                    transparency IS majorLineTransparency
+                  }
+                }
+                geometry Circle2D { }
+              }
+            }
+          ]
+        }
+        DEF MinorLines Shape {
+          appearance USE MinorAppearance
+          geometry DEF MinorLines_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1,
+              0,
+              4,
+              -1,
+              0,
+              5,
+              -1,
+              0,
+              6,
+              -1,
+              0,
+              7,
+              -1,
+              0,
+              8,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                0 0 0,
+                1.91342 0 4.6194,
+                4.6194 0 1.91342,
+                4.6194 0 -1.91342,
+                1.91342 0 -4.6194,
+                -1.91342 0 -4.6194,
+                -4.6194 0 -1.91342,
+                -4.6194 0 1.91342,
+                -1.91342 0 4.6194
+              ]
+            }
+          }
+        }
+        DEF MajorLines Shape {
+          appearance USE MajorAppearance
+          geometry DEF MajorLines_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1,
+              0,
+              4,
+              -1,
+              0,
+              5,
+              -1,
+              0,
+              6,
+              -1,
+              0,
+              7,
+              -1,
+              0,
+              8,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                0 0 0,
+                0 0 5,
+                3.53553 0 3.53553,
+                5 0 3.06162e-16,
+                3.53553 0 -3.53553,
+                6.12323e-16 0 -5,
+                -3.53553 0 -3.53553,
+                -5 0 -9.18485e-16,
+                -3.53553 0 3.53553
+              ]
+            }
+          }
+        }
+        DEF MinorPoints Shape {
           appearance Appearance {
-            material DEF Material2 Material {
-              diffuseColor 0 0 0
-              emissiveColor IS color
-              transparency IS transparency
+            lineProperties LineProperties {
+              linewidthScaleFactor 4
+            }
+            material USE _1
+          }
+          geometry DEF MinorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -4 0,
+                0 -3 0,
+                0 -2 0,
+                0 -1 0,
+                0 1 0,
+                0 2 0,
+                0 3 0,
+                0 4 0
+              ]
             }
           }
-          geometry Disk2D {
-            solid IS solid
-          }
         }
-      }
-      DEF Rings Transform {
-        rotation 0 0.70710528118436 0.707108281185553 3.14159
-        children [
-          Transform {
-            children Shape {
-              appearance DEF MinorAppearance Appearance {
-                material DEF _1 Material {
-                  emissiveColor IS lineColor
-                  transparency IS lineTransparency
-                }
-              }
-              geometry Circle2D { }
+        DEF MajorPoints Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 6
+            }
+            material USE MajorMaterial
+          }
+          geometry DEF MajorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -5 0,
+                0 0 0,
+                0 5 0
+              ]
             }
           }
-          Transform {
-            scale 2 2 2
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 3 3 3
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 4 4 4
-            children Shape {
-              appearance USE MinorAppearance
-              geometry Circle2D { }
-            }
-          }
-          Transform {
-            scale 5 5 5
-            children Shape {
-              appearance DEF MajorAppearance Appearance {
-                material DEF MajorMaterial Material {
-                  emissiveColor IS majorLineColor
-                  transparency IS majorLineTransparency
-                }
-              }
-              geometry Circle2D { }
-            }
-          }
-        ]
-      }
-      DEF MinorLines Shape {
-        appearance USE MinorAppearance
-        geometry DEF MinorLines_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1,
-            0,
-            4,
-            -1,
-            0,
-            5,
-            -1,
-            0,
-            6,
-            -1,
-            0,
-            7,
-            -1,
-            0,
-            8,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              0 0 0,
-              1.91342 0 4.6194,
-              4.6194 0 1.91342,
-              4.6194 0 -1.91342,
-              1.91342 0 -4.6194,
-              -1.91342 0 -4.6194,
-              -4.6194 0 -1.91342,
-              -4.6194 0 1.91342,
-              -1.91342 0 4.6194
-            ]
-          }
         }
-      }
-      DEF MajorLines Shape {
-        appearance USE MajorAppearance
-        geometry DEF MajorLines_1 IndexedLineSet {
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1,
-            0,
-            4,
-            -1,
-            0,
-            5,
-            -1,
-            0,
-            6,
-            -1,
-            0,
-            7,
-            -1,
-            0,
-            8,
-            -1
-          ]
-          coord Coordinate {
-            point [
-              0 0 0,
-              0 0 5,
-              3.53553 0 3.53553,
-              5 0 3.06162e-16,
-              3.53553 0 -3.53553,
-              6.12323e-16 0 -5,
-              -3.53553 0 -3.53553,
-              -5 0 -9.18485e-16,
-              -3.53553 0 3.53553
-            ]
-          }
-        }
-      }
-      DEF MinorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 4
-          }
-          material USE _1
-        }
-        geometry DEF MinorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -4 0,
-              0 -3 0,
-              0 -2 0,
-              0 -1 0,
-              0 1 0,
-              0 2 0,
-              0 3 0,
-              0 4 0
-            ]
-          }
-        }
-      }
-      DEF MajorPoints Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linewidthScaleFactor 6
-          }
-          material USE MajorMaterial
-        }
-        geometry DEF MajorPoints_1 PointSet {
-          coord Coordinate {
-            point [
-              0 -5 0,
-              0 0 0,
-              0 5 0
-            ]
-          }
-        }
-      }
-    ]
+      ]
+    }
   }
 
   DEF AngleGridScript Script {

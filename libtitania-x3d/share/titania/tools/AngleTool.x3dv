@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleTool.x3dv"
-META "modified" "Thu, 15 Jun 2017 07:38:26 GMT"
+META "modified" "Tue, 20 Jun 2017 05:06:40 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -165,78 +165,82 @@ DEF AngleTool Collision {
         }
       ]
     }
-    DEF Handles Transform {
+    Transform {
       children [
-        DEF AngleHandle Group {
+        DEF Handles Transform {
           children [
-            DEF _4 CylinderSensor {
-              diskAngle 1.2
-              offset 0.392699
-            }
-            DEF Handle Transform {
-              rotation 0 1 0 0.392699092626572
-              children DEF _5 Transform {
-                translation 0 0 4
-                children ScreenGroup {
-                  children Transform {
-                    scale 6 6 6
-                    children Shape {
-                      appearance USE _3
-                      geometry Sphere { }
+            DEF AngleHandle Group {
+              children [
+                DEF _4 CylinderSensor {
+                  diskAngle 1.2
+                  offset 0.392699
+                }
+                DEF Handle Transform {
+                  rotation 0 1 0 0.392699092626572
+                  children DEF _5 Transform {
+                    translation 0 0 4
+                    children ScreenGroup {
+                      children Transform {
+                        scale 6 6 6
+                        children Shape {
+                          appearance USE _3
+                          geometry Sphere { }
+                        }
+                      }
                     }
                   }
                 }
-              }
+              ]
+            }
+            DEF DimensionHandle Group {
+              children [
+                DEF _6 PlaneSensor {
+                  axisRotation 1 0 0 1.5708
+                  autoOffset FALSE
+                  offset 0 0 5
+                  maxPosition 0 -1
+                }
+                DEF _7 Transform {
+                  translation 0 0 5
+                  children ScreenGroup {
+                    children DEF Sphere_1 Transform {
+                      scale 6 3 3
+                      children Shape {
+                        appearance USE _3
+                        geometry Box { }
+                      }
+                    }
+                  }
+                }
+              ]
             }
           ]
         }
-        DEF DimensionHandle Group {
+        DEF ScaleHandle Transform {
           children [
-            DEF _6 PlaneSensor {
+            DEF _8 PlaneSensor {
               axisRotation 1 0 0 1.5708
               autoOffset FALSE
-              offset 0 0 5
-              maxPosition 0 -1
+              offset 3.53553 0 -3.53553
             }
-            DEF _7 Transform {
-              translation 0 0 5
+            DEF _9 Transform {
+              translation 3.53553 0 -3.53553
               children ScreenGroup {
-                children DEF Sphere_1 Transform {
-                  scale 6 3 3
+                children DEF Box Transform {
+                  scale 3 3 3
                   children Shape {
-                    appearance USE _3
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 0.7 0
+                      }
+                      shaders ToolShader { }
+                    }
                     geometry Box { }
                   }
                 }
               }
             }
           ]
-        }
-      ]
-    }
-    DEF ScaleHandle Transform {
-      children [
-        DEF _8 PlaneSensor {
-          axisRotation 1 0 0 1.5708
-          autoOffset FALSE
-          offset 3.53553 0 -3.53553
-        }
-        DEF _9 Transform {
-          translation 3.53553 0 -3.53553
-          children ScreenGroup {
-            children DEF Box Transform {
-              scale 3 3 3
-              children Shape {
-                appearance Appearance {
-                  material Material {
-                    diffuseColor 1 0.7 0
-                  }
-                  shaders ToolShader { }
-                }
-                geometry Box { }
-              }
-            }
-          }
         }
       ]
     }
@@ -412,7 +416,6 @@ ROUTE DimensionScript.dimensionTranslation_changed TO _7.set_translation
 ROUTE DimensionScript.dimensionTranslation_changed TO _6.set_offset
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE MoveScript.axisOfRotation_changed TO _1.set_axisRotation
-ROUTE Tool.rotation_changed TO Handles.set_rotation
 ROUTE Tool.translation_changed TO GridInstance.set_translation
 ROUTE Tool.rotation_changed TO GridInstance.set_rotation
 ROUTE Tool.scale_changed TO GridInstance.set_scale
@@ -431,7 +434,6 @@ ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.translation_changed TO _9.set_translation
 ROUTE ScaleScript.translation_changed TO _8.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
-ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 ROUTE _1.isActive TO Tool.set_isActive
 ROUTE _4.isActive TO Tool.set_isActive
 ROUTE _6.isActive TO Tool.set_isActive
