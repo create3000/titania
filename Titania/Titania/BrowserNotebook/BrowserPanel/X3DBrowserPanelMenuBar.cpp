@@ -60,9 +60,12 @@ namespace puck {
 
 X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 	   X3DBrowserPanel (),
+	           browser (getPage () -> getMainBrowser ()),
 	 viewpointObserver (),
 	          changing (false)
-{ }
+{
+	addChildObjects (browser);
+}
 
 void
 X3DBrowserPanelMenuBar::initialize ()
@@ -70,13 +73,7 @@ X3DBrowserPanelMenuBar::initialize ()
 	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
 	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
 
-	getLocalBrowser () -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
-	getLocalBrowser () -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer, this);
-	getLocalBrowser () -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
-
 	on_main_browser_mapped ();
-	set_shading (getLocalBrowser () -> getBrowserOptions () -> Shading ());
-	set_viewer ();
 
 	getStraightenHorizonMenuItem () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
 }
@@ -84,10 +81,23 @@ X3DBrowserPanelMenuBar::initialize ()
 void
 X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 {
-	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), getLocalBrowser ()));
+	browser -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	browser -> getViewer ()            .removeInterest (&X3DBrowserPanelMenuBar::set_viewer, this);
+	browser -> getStraightenHorizon () .removeInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+
+	browser = value;
+
+	browser -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	browser -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer, this);
+	browser -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+
+	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), browser));
 	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
 
 	set_undoHistory ();
+	set_shading (browser -> getBrowserOptions () -> Shading ());
+	set_viewer ();
+	set_straighten_horizon ();
 }
 
 void

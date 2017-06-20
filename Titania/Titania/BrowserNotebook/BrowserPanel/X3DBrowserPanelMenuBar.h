@@ -213,6 +213,7 @@ private:
 
 	///  @name Members
 
+	X3D::BrowserPtr                     browser;
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
 	bool                                changing;
 
