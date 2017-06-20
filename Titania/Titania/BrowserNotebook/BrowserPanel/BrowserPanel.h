@@ -48,130 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
-#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
+#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
+#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
 
-#include "../../UserInterfaces/X3DBrowserViewInterface.h"
+#include "X3DBrowserPanel.h"
+#include "X3DBrowserPanelMenuBar.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-enum BrowserViewType :
-	int32_t
-{
-	MAIN,
-	TOP,
-	RIGHT,
-	FRONT,
-	BOTTOM,
-	LEFT,
-	BACK
-
-};
-
-class X3DBrowserView :
-	virtual public X3DBrowserViewInterface
+class BrowserPanel :
+	virtual public X3DBrowserPanel,
+	public X3DBrowserPanelMenuBar
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	const X3D::BrowserPtr &
-	getLocalBrowser () const
-	{ return browser; }
+	BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserPanelType type);
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () override;
+	dispose () final override;
 
 	virtual
-	~X3DBrowserView () override;
+	~BrowserPanel () final override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DBrowserView (NotebookPage* const page, const BrowserViewType type);
-
-	X3DBrowserView ();
-
 	virtual
 	void
-	initialize () override;
-
-	NotebookPage*
-	getPage () const
-	{ return page; }
-
-	void
-	setType (const BrowserViewType value);
-
-	BrowserViewType
-	getType () const;
+	initialize () final override;
 
 	virtual
 	void
 	setLocalBrowser (const X3D::BrowserPtr & value);
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () override;
-
-	virtual
-	void
-	on_unmap () override;
-
 
 private:
 
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserViewType type) const;
-
-	///  @name Member access
-
-	int32_t
-	getPlane () const;
-
 	///  @name Event handlers
 
+	virtual
 	void
-	set_dependent_browser ();
+	on_map () final override;
 
+	virtual
 	void
-	set_activeLayer ();
-
-	void
-	set_viewpoint ();
-
-	void
-	set_grid ();
-
-	///  @name Static members
-
-	static const std::vector <std::string>     names;
-	static const std::vector <X3D::Vector3d>   axes;
-	static const std::vector <X3D::Vector3d>   positions;
-	static const std::vector <X3D::Rotation4d> orientations;
-
-	///  @name Members
-
-	NotebookPage* const               page;
-	BrowserViewType                   type;
-	X3D::BrowserPtr                   browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
-	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
-	X3D::X3DPtr <X3D::Transform>      gridTransform;
-	X3D::X3DPtr <X3D::Switch>         gridSwitch;
-	X3D::SFNode                       grid;
+	on_unmap () final override;
 
 };
 

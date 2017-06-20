@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DBrowserViewMenuBar.h"
+#include "X3DBrowserPanelMenuBar.h"
 
 #include "../NotebookPage/NotebookPage.h"
 #include "ViewpointObserver.h"
@@ -56,57 +56,57 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserViewMenuBar::X3DBrowserViewMenuBar () :
-	   X3DBrowserView (),
+X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
+	   X3DBrowserPanel (),
 	viewpointObserver ()
 { }
 
 void
-X3DBrowserViewMenuBar::initialize ()
+X3DBrowserPanelMenuBar::initialize ()
 {
-	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserViewMenuBar::on_main_browser_mapped));
-	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewMenuBar::on_main_browser_mapped));
+	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
+	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
 
 	on_main_browser_mapped ();
 }
 
 void
-X3DBrowserViewMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
+X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 {
 	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), getLocalBrowser ()));
-	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserViewMenuBar::set_undoHistory, this);
+	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
 
 	set_undoHistory ();
 }
 
 void
-X3DBrowserViewMenuBar::on_main_browser_mapped ()
+X3DBrowserPanelMenuBar::on_main_browser_mapped ()
 {
 	getMainViewMenuItem () .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
 }
 
 void
-X3DBrowserViewMenuBar::on_map ()
+X3DBrowserPanelMenuBar::on_map ()
 {
-	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserViewMenuBar::set_editing, this);
+	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
 
 	set_editing ();
 }
 
 void
-X3DBrowserViewMenuBar::on_unmap ()
+X3DBrowserPanelMenuBar::on_unmap ()
 {
-	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserViewMenuBar::set_editing, this);
+	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
 }
 
 void
-X3DBrowserViewMenuBar::set_editing ()
+X3DBrowserPanelMenuBar::set_editing ()
 {
 	getMenuBar () .set_visible (getBrowserWindow () -> getEditing ());
 }
 
 void
-X3DBrowserViewMenuBar::set_undoHistory ()
+X3DBrowserPanelMenuBar::set_undoHistory ()
 {
 	const auto & undoHistory = viewpointObserver -> getUndoHistory () ;
 
@@ -115,31 +115,31 @@ X3DBrowserViewMenuBar::set_undoHistory ()
 }
 
 void
-X3DBrowserViewMenuBar::undo_view_activate ()
+X3DBrowserPanelMenuBar::undo_view_activate ()
 {
 	viewpointObserver -> getUndoHistory () .undo ();
 }
 
 void
-X3DBrowserViewMenuBar::redo_view_activate ()
+X3DBrowserPanelMenuBar::redo_view_activate ()
 {
 	viewpointObserver -> getUndoHistory () .redo ();
 }
 
 void
-X3DBrowserViewMenuBar::on_look_at_selection_activate ()
+X3DBrowserPanelMenuBar::on_look_at_selection_activate ()
 {
 	getLocalBrowser () -> lookAtSelection ();
 }
 
 void
-X3DBrowserViewMenuBar::on_look_at_all_activate ()
+X3DBrowserPanelMenuBar::on_look_at_all_activate ()
 {
 	getLocalBrowser () -> lookAtAllObjectsInActiveLayer ();
 }
 
 void
-X3DBrowserViewMenuBar::on_reset_user_offsets_activate ()
+X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 {
 	if (getLocalBrowser () -> getActiveLayer ())
 	{
@@ -150,54 +150,54 @@ X3DBrowserViewMenuBar::on_reset_user_offsets_activate ()
 }
 
 void
-X3DBrowserViewMenuBar::on_main_view_activate ()
+X3DBrowserPanelMenuBar::on_main_view_activate ()
 {
-	setType (BrowserViewType::MAIN);
+	setType (BrowserPanelType::MAIN);
 }
 
 void
-X3DBrowserViewMenuBar::on_top_view_activate ()
+X3DBrowserPanelMenuBar::on_top_view_activate ()
 {
-	setType (BrowserViewType::TOP);
+	setType (BrowserPanelType::TOP);
 }
 
 void
-X3DBrowserViewMenuBar::on_right_view_activate ()
+X3DBrowserPanelMenuBar::on_right_view_activate ()
 {
-	setType (BrowserViewType::RIGHT);
+	setType (BrowserPanelType::RIGHT);
 }
 
 void
-X3DBrowserViewMenuBar::on_front_view_activate ()
+X3DBrowserPanelMenuBar::on_front_view_activate ()
 {
-	setType (BrowserViewType::FRONT);
+	setType (BrowserPanelType::FRONT);
 }
 
 void
-X3DBrowserViewMenuBar::on_bottom_view_activate ()
+X3DBrowserPanelMenuBar::on_bottom_view_activate ()
 {
-	setType (BrowserViewType::BOTTOM);
+	setType (BrowserPanelType::BOTTOM);
 }
 
 void
-X3DBrowserViewMenuBar::on_left_view_activate ()
+X3DBrowserPanelMenuBar::on_left_view_activate ()
 {
-	setType (BrowserViewType::LEFT);
+	setType (BrowserPanelType::LEFT);
 }
 
 void
-X3DBrowserViewMenuBar::on_back_view_activate ()
+X3DBrowserPanelMenuBar::on_back_view_activate ()
 {
-	setType (BrowserViewType::BACK);
+	setType (BrowserPanelType::BACK);
 }
 
 void
-X3DBrowserViewMenuBar::dispose ()
+X3DBrowserPanelMenuBar::dispose ()
 {
 	viewpointObserver .reset ();
 }
 
-X3DBrowserViewMenuBar::~X3DBrowserViewMenuBar ()
+X3DBrowserPanelMenuBar::~X3DBrowserPanelMenuBar ()
 { }
 
 } // puck

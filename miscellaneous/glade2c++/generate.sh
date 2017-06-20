@@ -62,7 +62,7 @@ echo "\nRevealer\n";
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Revealer/ -maxdepth 1 -name \*.glade;`
 
-echo "\nViews\n";
+echo "\Panels\n";
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
 -e \
@@ -70,9 +70,9 @@ echo "\nViews\n";
 -n titania -n puck \
 -p X3D \
 -s Interface \
--b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DViewInterface.h \
+-b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DPanelInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
-`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Views/ -maxdepth 1 -name \*.glade;`
+`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/ -maxdepth 1 -name \*.glade;`
 
 echo "\nWidgets\n";
 

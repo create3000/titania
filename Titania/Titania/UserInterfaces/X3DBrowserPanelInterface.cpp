@@ -47,13 +47,13 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DBrowserViewInterface.h"
+#include "X3DBrowserPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
 void
-X3DBrowserViewInterface::create (const std::string & filename)
+X3DBrowserPanelInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -62,7 +62,7 @@ X3DBrowserViewInterface::create (const std::string & filename)
 }
 
 void
-X3DBrowserViewInterface::create (std::initializer_list <std::string> filenames)
+X3DBrowserPanelInterface::create (std::initializer_list <std::string> filenames)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
@@ -74,7 +74,7 @@ X3DBrowserViewInterface::create (std::initializer_list <std::string> filenames)
 }
 
 void
-X3DBrowserViewInterface::create ()
+X3DBrowserPanelInterface::create ()
 {
 	// Get objects.
 
@@ -87,7 +87,9 @@ X3DBrowserViewInterface::create ()
 	m_builder -> get_widget ("LookAtSelectionMenuItem", m_LookAtSelectionMenuItem);
 	m_builder -> get_widget ("LookAtAllMenuItem", m_LookAtAllMenuItem);
 	m_builder -> get_widget ("ResetUserOffsetsMenuItem", m_ResetUserOffsetsMenuItem);
-	m_builder -> get_widget ("CamerasMenuItem", m_CamerasMenuItem);
+	m_builder -> get_widget ("DisplayMenuItem", m_DisplayMenuItem);
+	m_builder -> get_widget ("PanelMenuItem", m_PanelMenuItem);
+	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
 	m_builder -> get_widget ("TopViewMenuItem", m_TopViewMenuItem);
 	m_builder -> get_widget ("RightViewMenuItem", m_RightViewMenuItem);
@@ -95,32 +97,30 @@ X3DBrowserViewInterface::create ()
 	m_builder -> get_widget ("BottomViewMenuItem", m_BottomViewMenuItem);
 	m_builder -> get_widget ("LeftViewMenuItem", m_LeftViewMenuItem);
 	m_builder -> get_widget ("BackViewMenuItem", m_BackViewMenuItem);
-	m_builder -> get_widget ("DisplayMenuItem", m_DisplayMenuItem);
-	m_builder -> get_widget ("DescriptionMenuItem", m_DescriptionMenuItem);
 	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_unmap));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_unmap));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoViewMenuItem'.
-	m_UndoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::undo_view_activate));
-	m_RedoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::redo_view_activate));
-	m_LookAtSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_selection_activate));
-	m_LookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_look_at_all_activate));
-	m_ResetUserOffsetsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_reset_user_offsets_activate));
+	m_UndoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::undo_view_activate));
+	m_RedoViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::redo_view_activate));
+	m_LookAtSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_look_at_selection_activate));
+	m_LookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_look_at_all_activate));
+	m_ResetUserOffsetsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_reset_user_offsets_activate));
 
 	// Connect object Gtk::MenuItem with id 'MainViewMenuItem'.
-	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_main_view_activate));
-	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_top_view_activate));
-	m_RightViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_right_view_activate));
-	m_FrontViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_front_view_activate));
-	m_BottomViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_bottom_view_activate));
-	m_LeftViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_left_view_activate));
-	m_BackViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserViewInterface::on_back_view_activate));
+	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
+	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_top_view_activate));
+	m_RightViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_right_view_activate));
+	m_FrontViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_front_view_activate));
+	m_BottomViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_bottom_view_activate));
+	m_LeftViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_left_view_activate));
+	m_BackViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_back_view_activate));
 }
 
-X3DBrowserViewInterface::~X3DBrowserViewInterface ()
+X3DBrowserPanelInterface::~X3DBrowserPanelInterface ()
 {
 	delete m_Window;
 }

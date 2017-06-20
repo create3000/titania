@@ -307,13 +307,13 @@
     <Compile Include="Titania\Editors\NodeIndex\NodeIndex.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNotebookPageInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.cpp" />
-    <Compile Include="Titania\BrowserNotebook\BrowserView\BrowserView.cpp" />
     <Compile Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DBrowserViewInterface.cpp" />
-    <Compile Include="Titania\Base\X3DViewInterface.cpp" />
-    <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.cpp" />
-    <Compile Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.cpp" />
-    <Compile Include="Titania\BrowserNotebook\BrowserView\ViewpointObserver.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBrowserPanelInterface.cpp" />
+    <Compile Include="Titania\Base\X3DPanelInterface.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserPanel\ViewpointObserver.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserPanel\BrowserPanel.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanel.cpp" />
+    <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2980,15 +2980,15 @@
     <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.h" />
-    <None Include="Titania\BrowserNotebook\BrowserView\BrowserView.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.h" />
-    <None Include="Titania\UserInterfaces\X3DBrowserViewInterface.h" />
-    <None Include="Titania\Base\X3DViewInterface.h" />
-    <None Include="share\titania\ui\Views\BrowserView.glade" />
-    <None Include="share\titania\ui\BrowserView.x3dv" />
-    <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserViewMenuBar.h" />
-    <None Include="Titania\BrowserNotebook\BrowserView\X3DBrowserView.h" />
-    <None Include="Titania\BrowserNotebook\BrowserView\ViewpointObserver.h" />
+    <None Include="share\titania\ui\Panels\BrowserPanel.glade" />
+    <None Include="Titania\UserInterfaces\X3DBrowserPanelInterface.h" />
+    <None Include="Titania\Base\X3DPanelInterface.h" />
+    <None Include="Titania\BrowserNotebook\BrowserPanel\ViewpointObserver.h" />
+    <None Include="Titania\BrowserNotebook\BrowserPanel\BrowserPanel.h" />
+    <None Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanel.h" />
+    <None Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.h" />
+    <None Include="share\titania\ui\Panels\BrowserPanel.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3134,8 +3134,8 @@
     <Folder Include="Titania\Editors\NodeIndex\" />
     <Folder Include="Titania\BrowserNotebook\" />
     <Folder Include="Titania\BrowserNotebook\NotebookPage\" />
-    <Folder Include="Titania\BrowserNotebook\BrowserView\" />
-    <Folder Include="share\titania\ui\Views\" />
+    <Folder Include="share\titania\ui\Panels\" />
+    <Folder Include="Titania\BrowserNotebook\BrowserPanel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

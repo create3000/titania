@@ -12,9 +12,9 @@ titania_SOURCES =  \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorInterface.cpp \
 	Titania/Base/X3DEditorObject.cpp \
+	Titania/Base/X3DPanelInterface.cpp \
 	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
-	Titania/Base/X3DViewInterface.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -24,10 +24,10 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
-	Titania/BrowserNotebook/BrowserView/BrowserView.cpp \
-	Titania/BrowserNotebook/BrowserView/ViewpointObserver.cpp \
-	Titania/BrowserNotebook/BrowserView/X3DBrowserView.cpp \
-	Titania/BrowserNotebook/BrowserView/X3DBrowserViewMenuBar.cpp \
+	Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp \
+	Titania/BrowserNotebook/BrowserPanel/ViewpointObserver.cpp \
+	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp \
+	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
@@ -184,7 +184,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
-	Titania/UserInterfaces/X3DBrowserViewInterface.cpp \
+	Titania/UserInterfaces/X3DBrowserPanelInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \

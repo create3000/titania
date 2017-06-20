@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,59 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DVIEW_INTERFACE_H__
-#define __TITANIA_BASE_X3DVIEW_INTERFACE_H__
+#include "BrowserPanel.h"
 
-#include "../Base/X3DUserInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+#include "../NotebookPage/NotebookPage.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
+#include "../../Editors/GridEditor/AngleTool.h"
+#include "../../Editors/GridEditor/AxonometricGridTool.h"
+#include "../../Editors/GridEditor/GridTool.h"
+
+#include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
+#include <Titania/X3D/Browser/Selection.h>
+#include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Execution/BindableNodeStack.h>
+
+#include <Titania/X3D/Tools/Grids/GridTool.h>
+#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
 namespace titania {
 namespace puck {
 
-class X3DViewInterface :
-	public X3DUserInterface
+BrowserPanel::BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserPanelType type) :
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBrowserPanelInterface (get_ui ("Panels/BrowserPanel.glade")),
+	         X3DBrowserPanel (page, type),
+	  X3DBrowserPanelMenuBar ()
 {
-public:
+	setName ("BrowserPanel" + id);
 
-	/// @name Destruction
+	setup ();
+}
 
-	virtual
-	void
-	dispose () override;
+void
+BrowserPanel::initialize ()
+{
+	X3DBrowserPanel::initialize ();
+	X3DBrowserPanelMenuBar::initialize ();
+}
 
-	virtual
-	~X3DViewInterface () override;
+void
+BrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
+{
+	X3DBrowserPanel::setLocalBrowser (value);
+	X3DBrowserPanelMenuBar::setLocalBrowser (value);
+}
 
+void
+BrowserPanel::on_map ()
+{
+	X3DBrowserPanel::on_map ();
+	X3DBrowserPanelMenuBar::on_map ();
+}
 
-protected:
+void
+BrowserPanel::on_unmap ()
+{
+	X3DBrowserPanel::on_unmap ();
+	X3DBrowserPanelMenuBar::on_unmap ();
+}
 
-	/// @name Construction
+void
+BrowserPanel::dispose ()
+{
+	X3DBrowserPanelMenuBar::dispose ();
+	X3DBrowserPanel::dispose ();
+}
 
-	X3DViewInterface ();
-
-	virtual
-	void
-	initialize () override;
-
-	/// @name Event handlers
-
-	bool
-	on_focus_out_event (GdkEventFocus* event);
-
-	bool
-	on_focus_in_event (GdkEventFocus* event);
-
-
-private:
-
-	void
-	set_editing ();
-
-};
+BrowserPanel::~BrowserPanel ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

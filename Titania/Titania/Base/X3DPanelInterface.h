@@ -48,120 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
-#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
+#ifndef __TITANIA_BASE_X3DVIEW_INTERFACE_H__
+#define __TITANIA_BASE_X3DVIEW_INTERFACE_H__
 
-#include "X3DBrowserView.h"
+#include "../Base/X3DUserInterface.h"
+#include "../Configuration/Configuration.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class ViewpointObserver;
-
-class X3DBrowserViewMenuBar :
-	virtual public X3DBrowserView
+class X3DPanelInterface :
+	public X3DUserInterface
 {
 public:
 
-	///  @name Destruction
+	/// @name Destruction
 
 	virtual
 	void
 	dispose () override;
 
 	virtual
-	~X3DBrowserViewMenuBar () override;
+	~X3DPanelInterface () override;
 
 
 protected:
 
-	///  @name Construction
+	/// @name Construction
 
-	X3DBrowserViewMenuBar ();
+	X3DPanelInterface ();
 
 	virtual
 	void
 	initialize () override;
 
-	virtual
-	void
-	setLocalBrowser (const X3D::BrowserPtr & value);
+	/// @name Event handlers
 
-	///  @name Event handlers
+	bool
+	on_focus_out_event (GdkEventFocus* event);
 
-	virtual
-	void
-	on_map () override;
-
-	virtual
-	void
-	on_unmap () override;
+	bool
+	on_focus_in_event (GdkEventFocus* event);
 
 
 private:
 
-	///  @name Event handlers
-
-	void
-	on_main_browser_mapped ();
-
 	void
 	set_editing ();
-
-	void
-	set_undoHistory ();
-
-	virtual
-	void
-	undo_view_activate () final override;
-
-	virtual
-	void
-	redo_view_activate () final override;
-
-	virtual
-	void
-	on_look_at_selection_activate () final override;
-
-	virtual
-	void
-	on_look_at_all_activate () final override;
-
-	virtual
-	void
-	on_reset_user_offsets_activate () final override;
-
-	virtual
-	void
-	on_main_view_activate () final override;
-
-	virtual
-	void
-	on_top_view_activate () final override;
-
-	virtual
-	void
-	on_right_view_activate () final override;
-
-	virtual
-	void
-	on_front_view_activate () final override;
-
-	virtual
-	void
-	on_bottom_view_activate () final override;
-
-	virtual
-	void
-	on_left_view_activate () final override;
-
-	virtual
-	void
-	on_back_view_activate () final override;
-
-	///  @name Members
-
-	std::unique_ptr <ViewpointObserver> viewpointObserver;
 
 };
 

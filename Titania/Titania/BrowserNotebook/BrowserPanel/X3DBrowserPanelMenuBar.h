@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,59 +48,124 @@
  *
  ******************************************************************************/
 
-#include "X3DViewInterface.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_MENU_BAR_H__
 
-#include "../Browser/X3DBrowserWindow.h"
+#include "X3DBrowserPanel.h"
 
 namespace titania {
 namespace puck {
 
-X3DViewInterface::X3DViewInterface () :
-	X3DUserInterface ()
-{ }
+class ViewpointObserver;
 
-void
-X3DViewInterface::initialize ()
+class X3DBrowserPanelMenuBar :
+	virtual public X3DBrowserPanel
 {
-	X3DUserInterface::initialize ();
+public:
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DViewInterface::set_editing, this);
+	///  @name Destruction
 
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DBrowserPanelMenuBar () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserPanelMenuBar ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	setLocalBrowser (const X3D::BrowserPtr & value);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	on_main_browser_mapped ();
+
+	void
 	set_editing ();
-}
 
-void
-X3DViewInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
+	void
+	set_undoHistory ();
 
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-}
+	virtual
+	void
+	undo_view_activate () final override;
 
-bool
-X3DViewInterface::on_focus_out_event (GdkEventFocus* event)
-{
-	getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-	return false;
-}
+	virtual
+	void
+	redo_view_activate () final override;
 
-bool
-X3DViewInterface::on_focus_in_event (GdkEventFocus* event)
-{
-	getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-	return false;
-}
+	virtual
+	void
+	on_look_at_selection_activate () final override;
 
-void
-X3DViewInterface::dispose ()
-{
-	X3DUserInterface::dispose ();
-}
+	virtual
+	void
+	on_look_at_all_activate () final override;
 
-X3DViewInterface::~X3DViewInterface ()
-{ }
+	virtual
+	void
+	on_reset_user_offsets_activate () final override;
+
+	virtual
+	void
+	on_main_view_activate () final override;
+
+	virtual
+	void
+	on_top_view_activate () final override;
+
+	virtual
+	void
+	on_right_view_activate () final override;
+
+	virtual
+	void
+	on_front_view_activate () final override;
+
+	virtual
+	void
+	on_bottom_view_activate () final override;
+
+	virtual
+	void
+	on_left_view_activate () final override;
+
+	virtual
+	void
+	on_back_view_activate () final override;
+
+	///  @name Members
+
+	std::unique_ptr <ViewpointObserver> viewpointObserver;
+
+};
 
 } // puck
 } // titania
+
+#endif

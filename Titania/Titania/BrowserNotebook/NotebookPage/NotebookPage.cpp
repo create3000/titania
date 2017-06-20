@@ -53,7 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "../BrowserView/BrowserView.h"
+#include "../BrowserPanel/BrowserPanel.h"
 
 namespace titania {
 namespace puck {
@@ -62,10 +62,10 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	         X3DNotebookPage (startUrl),
 	                   boxes ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
-	                   view1 (),
-	                   view2 (),
-	                   view3 (),
-	                   view4 (),
+	                  panel1 (),
+	                  panel2 (),
+	                  panel3 (),
+	                  panel4 (),
 	              activeView (1),
 	               multiView (false)
 {
@@ -88,15 +88,15 @@ NotebookPage::loaded ()
 	getBox3 () .remove ();
 	getBox4 () .remove ();
 
-   view1 = std::make_unique <BrowserView> (getBrowserWindow (), this, "1", BrowserViewType::TOP);
-   view2 = std::make_unique <BrowserView> (getBrowserWindow (), this, "2", BrowserViewType::MAIN);
-   view3 = std::make_unique <BrowserView> (getBrowserWindow (), this, "3", BrowserViewType::RIGHT);
-   view4 = std::make_unique <BrowserView> (getBrowserWindow (), this, "4", BrowserViewType::FRONT);
+   panel1 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, "1", BrowserPanelType::TOP);
+   panel2 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, "2", BrowserPanelType::MAIN);
+   panel3 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, "3", BrowserPanelType::RIGHT);
+   panel4 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, "4", BrowserPanelType::FRONT);
 
-	view1 -> getWidget () .reparent (getBox1 ());
-	view2 -> getWidget () .reparent (getBox2 ());
-	view3 -> getWidget () .reparent (getBox3 ());
-	view4 -> getWidget () .reparent (getBox4 ());
+	panel1 -> getWidget () .reparent (getBox1 ());
+	panel2 -> getWidget () .reparent (getBox2 ());
+	panel3 -> getWidget () .reparent (getBox3 ());
+	panel4 -> getWidget () .reparent (getBox4 ());
 }
 
 void
@@ -212,10 +212,10 @@ NotebookPage::shutdown ()
 
 NotebookPage::~NotebookPage ()
 {
-   view1 .reset ();
-   view2 .reset ();
-   view3 .reset ();
-   view4 .reset ();
+   panel1 .reset ();
+   panel2 .reset ();
+   panel3 .reset ();
+   panel4 .reset ();
 
 	dispose ();
 }

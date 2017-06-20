@@ -47,10 +47,10 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_BROWSER_VIEW_H__
-#define __TMP_GLAD2CPP_BROWSER_VIEW_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_PANEL_H__
+#define __TMP_GLAD2CPP_BROWSER_PANEL_H__
 
-#include "../Base/X3DViewInterface.h"
+#include "../Base/X3DPanelInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -58,27 +58,27 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for BrowserView.
+ *  Gtk Interface for BrowserPanel.
  */
-class X3DBrowserViewInterface :
-	public X3DViewInterface
+class X3DBrowserPanelInterface :
+	public X3DPanelInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DBrowserViewInterface () :
-		X3DViewInterface ()
+	X3DBrowserPanelInterface () :
+		X3DPanelInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DBrowserViewInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
+	X3DBrowserPanelInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DBrowserViewInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DViewInterface (arguments ...)
+	X3DBrowserPanelInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -120,8 +120,16 @@ public:
 	{ return *m_ResetUserOffsetsMenuItem; }
 
 	Gtk::MenuItem &
-	getCamerasMenuItem () const
-	{ return *m_CamerasMenuItem; }
+	getDisplayMenuItem () const
+	{ return *m_DisplayMenuItem; }
+
+	Gtk::MenuItem &
+	getPanelMenuItem () const
+	{ return *m_PanelMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserMenuItem () const
+	{ return *m_BrowserMenuItem; }
 
 	Gtk::MenuItem &
 	getMainViewMenuItem () const
@@ -150,14 +158,6 @@ public:
 	Gtk::MenuItem &
 	getBackViewMenuItem () const
 	{ return *m_BackViewMenuItem; }
-
-	Gtk::MenuItem &
-	getDisplayMenuItem () const
-	{ return *m_DisplayMenuItem; }
-
-	Gtk::MenuItem &
-	getDescriptionMenuItem () const
-	{ return *m_DescriptionMenuItem; }
 
 	Gtk::Box &
 	getBrowserBox () const
@@ -224,7 +224,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserViewInterface () override;
+	~X3DBrowserPanelInterface () override;
 
 
 private:
@@ -253,7 +253,9 @@ private:
 	Gtk::ImageMenuItem* m_LookAtSelectionMenuItem;
 	Gtk::ImageMenuItem* m_LookAtAllMenuItem;
 	Gtk::ImageMenuItem* m_ResetUserOffsetsMenuItem;
-	Gtk::MenuItem* m_CamerasMenuItem;
+	Gtk::MenuItem* m_DisplayMenuItem;
+	Gtk::MenuItem* m_PanelMenuItem;
+	Gtk::MenuItem* m_BrowserMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
 	Gtk::MenuItem* m_TopViewMenuItem;
 	Gtk::MenuItem* m_RightViewMenuItem;
@@ -261,8 +263,6 @@ private:
 	Gtk::MenuItem* m_BottomViewMenuItem;
 	Gtk::MenuItem* m_LeftViewMenuItem;
 	Gtk::MenuItem* m_BackViewMenuItem;
-	Gtk::MenuItem* m_DisplayMenuItem;
-	Gtk::MenuItem* m_DescriptionMenuItem;
 	Gtk::Box* m_BrowserBox;
 
 };

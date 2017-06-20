@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-class BrowserView;
+class BrowserPanel;
 
 class NotebookPage :
 	public X3DNotebookPage
@@ -141,13 +141,13 @@ private:
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*>    boxes;
-	std::unique_ptr <BrowserView> view1;
-	std::unique_ptr <BrowserView> view2;
-	std::unique_ptr <BrowserView> view3;
-	std::unique_ptr <BrowserView> view4;
-	size_t                        activeView;
-	bool                          multiView;
+	std::vector <Gtk::Widget*>     boxes;
+	std::unique_ptr <BrowserPanel> panel1;
+	std::unique_ptr <BrowserPanel> panel2;
+	std::unique_ptr <BrowserPanel> panel3;
+	std::unique_ptr <BrowserPanel> panel4;
+	size_t                         activeView;
+	bool                           multiView;
 
 };
 

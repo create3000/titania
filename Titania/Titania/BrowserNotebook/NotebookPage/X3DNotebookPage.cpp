@@ -55,7 +55,7 @@
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 
-#include "../BrowserView/BrowserView.h"
+#include "../BrowserPanel/BrowserPanel.h"
 
 #include <Titania/String.h>
 

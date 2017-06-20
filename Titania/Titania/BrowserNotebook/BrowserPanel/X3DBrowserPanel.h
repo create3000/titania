@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,82 +48,134 @@
  *
  ******************************************************************************/
 
-#include "BrowserView.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
 
-#include "../NotebookPage/NotebookPage.h"
-
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-#include "../../Editors/GridEditor/AngleTool.h"
-#include "../../Editors/GridEditor/AxonometricGridTool.h"
-#include "../../Editors/GridEditor/GridTool.h"
-
-#include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
-#include <Titania/X3D/Browser/Selection.h>
-#include <Titania/X3D/Components/Grouping/Group.h>
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
-#include <Titania/X3D/Execution/BindableNodeStack.h>
-
-#include <Titania/X3D/Tools/Grids/GridTool.h>
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
-#include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
+#include "../../UserInterfaces/X3DBrowserPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-BrowserView::BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserViewType type) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DBrowserViewInterface (get_ui ("Views/BrowserView.glade")),
-	         X3DBrowserView (page, type),
-	  X3DBrowserViewMenuBar ()
-{
-	setName ("BrowserView" + id);
+class NotebookPage;
 
-	setup ();
-}
-
-void
-BrowserView::initialize ()
+enum BrowserPanelType :
+	int32_t
 {
-	X3DBrowserView::initialize ();
-	X3DBrowserViewMenuBar::initialize ();
-}
+	MAIN,
+	TOP,
+	RIGHT,
+	FRONT,
+	BOTTOM,
+	LEFT,
+	BACK
 
-void
-BrowserView::setLocalBrowser (const X3D::BrowserPtr & value)
-{
-	X3DBrowserView::setLocalBrowser (value);
-	X3DBrowserViewMenuBar::setLocalBrowser (value);
-}
+};
 
-void
-BrowserView::on_map ()
+class X3DBrowserPanel :
+	virtual public X3DBrowserPanelInterface
 {
-	X3DBrowserView::on_map ();
-	X3DBrowserViewMenuBar::on_map ();
-}
+public:
 
-void
-BrowserView::on_unmap ()
-{
-	X3DBrowserView::on_unmap ();
-	X3DBrowserViewMenuBar::on_unmap ();
-}
+	///  @name Member access
 
-void
-BrowserView::dispose ()
-{
-	X3DBrowserViewMenuBar::dispose ();
-	X3DBrowserView::dispose ();
-}
+	const X3D::BrowserPtr &
+	getLocalBrowser () const
+	{ return browser; }
 
-BrowserView::~BrowserView ()
-{
-	dispose ();
-}
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DBrowserPanel () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type);
+
+	X3DBrowserPanel ();
+
+	virtual
+	void
+	initialize () override;
+
+	NotebookPage*
+	getPage () const
+	{ return page; }
+
+	void
+	setType (const BrowserPanelType value);
+
+	BrowserPanelType
+	getType () const;
+
+	virtual
+	void
+	setLocalBrowser (const X3D::BrowserPtr & value);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
+
+
+private:
+
+	///  @name Construction
+
+	X3D::BrowserPtr
+	createBrowser (const BrowserPanelType type) const;
+
+	///  @name Member access
+
+	int32_t
+	getPlane () const;
+
+	///  @name Event handlers
+
+	void
+	set_dependent_browser ();
+
+	void
+	set_activeLayer ();
+
+	void
+	set_viewpoint ();
+
+	void
+	set_grid ();
+
+	///  @name Static members
+
+	static const std::vector <std::string>     names;
+	static const std::vector <X3D::Vector3d>   axes;
+	static const std::vector <X3D::Vector3d>   positions;
+	static const std::vector <X3D::Rotation4d> orientations;
+
+	///  @name Members
+
+	NotebookPage* const               page;
+	BrowserPanelType                   type;
+	X3D::BrowserPtr                   browser;
+	X3D::X3DPtr <X3D::X3DLayerNode>   activeLayer;
+	X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint;
+	X3D::X3DPtr <X3D::Transform>      gridTransform;
+	X3D::X3DPtr <X3D::Switch>         gridSwitch;
+	X3D::SFNode                       grid;
+
+};
 
 } // puck
 } // titania
+
+#endif

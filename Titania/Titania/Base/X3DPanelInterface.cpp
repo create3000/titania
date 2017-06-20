@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,63 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_BROWSER_VIEW_BROWSER_VIEW_H__
+#include "X3DPanelInterface.h"
 
-#include "X3DBrowserView.h"
-#include "X3DBrowserViewMenuBar.h"
+#include "../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserView :
-	virtual public X3DBrowserView,
-	public X3DBrowserViewMenuBar
+X3DPanelInterface::X3DPanelInterface () :
+	X3DUserInterface ()
+{ }
+
+void
+X3DPanelInterface::initialize ()
 {
-public:
+	X3DUserInterface::initialize ();
 
-	///  @name Construction
+	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
 
-	BrowserView (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const std::string & id, const BrowserViewType type);
+	set_editing ();
+}
 
-	///  @name Destruction
+void
+X3DPanelInterface::set_editing ()
+{
+	if (getBrowserWindow () -> getEditing ())
+		getWidget () .get_style_context () -> add_class ("titania-widget-box");
 
-	virtual
-	void
-	dispose () final override;
+	else
+		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
+}
 
-	virtual
-	~BrowserView () final override;
+bool
+X3DPanelInterface::on_focus_out_event (GdkEventFocus* event)
+{
+	getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
+	return false;
+}
 
+bool
+X3DPanelInterface::on_focus_in_event (GdkEventFocus* event)
+{
+	getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
+	return false;
+}
 
-protected:
+void
+X3DPanelInterface::dispose ()
+{
+	X3DUserInterface::dispose ();
+}
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	setLocalBrowser (const X3D::BrowserPtr & value);
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-};
+X3DPanelInterface::~X3DPanelInterface ()
+{ }
 
 } // puck
 } // titania
-
-#endif

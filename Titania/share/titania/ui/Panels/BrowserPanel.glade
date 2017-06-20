@@ -8,11 +8,35 @@
     <property name="stock">gtk-jump-to</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-zoom-fit</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-undo</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-redo</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="Widget">
-        <property name="name">BrowserView</property>
+        <property name="name">BrowserPanel</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
@@ -103,11 +127,27 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="CamerasMenuItem">
+              <object class="GtkMenuItem" id="DisplayMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
-                <property name="label" translatable="yes">Cameras</property>
+                <property name="label" translatable="yes">Display</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="PanelMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="right_justified">True</property>
+                <property name="label" translatable="yes">Panel</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="BrowserMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="right_justified">True</property>
+                <property name="label" translatable="yes">Main View</property>
                 <child type="submenu">
                   <object class="GtkMenu">
                     <property name="visible">True</property>
@@ -176,23 +216,6 @@
                 </child>
               </object>
             </child>
-            <child>
-              <object class="GtkMenuItem" id="DisplayMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="right_justified">True</property>
-                <property name="label" translatable="yes">Display</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="DescriptionMenuItem">
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="right_justified">True</property>
-                <property name="label" translatable="yes">Main View</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -231,29 +254,5 @@
         </style>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-zoom-fit</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-undo</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-redo</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-delete</property>
-    <property name="icon_size">1</property>
   </object>
 </interface>
