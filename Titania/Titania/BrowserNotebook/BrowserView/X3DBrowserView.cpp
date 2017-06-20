@@ -139,8 +139,6 @@ X3DBrowserView::initialize ()
 {
 	X3DBrowserViewInterface::initialize ();
 
-	__LOG__ << getConfig () -> get <int32_t> ("type", type) << std::endl;
-
 	setType (BrowserViewType (math::clamp <int32_t> (getConfig () -> get <int32_t> ("type", type), BrowserViewType::MAIN, BrowserViewType::BACK)));
 }
 
@@ -156,8 +154,6 @@ X3DBrowserView::createBrowser (const BrowserViewType type) const
 void
 X3DBrowserView::setType (const BrowserViewType value)
 {
-	__LOG__ << int (value) << std::endl;
-
 	type = value;
 
 	getConfig () -> set <int32_t> ("type", type);

@@ -89,6 +89,9 @@ void
 X3DNotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
+
+	getBox1 () .add (*getMainBrowser ());
+	getBox1 () .show_all ();
 }
 
 int32_t
@@ -241,6 +244,10 @@ X3DNotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Gl
 }
 
 void
+X3DNotebookPage::loaded ()
+{ }
+
+void
 X3DNotebookPage::initialized ()
 {
 	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
@@ -291,6 +298,7 @@ X3DNotebookPage::shutdown ()
 void
 X3DNotebookPage::set_browser ()
 {
+__LOG__ << std::endl;
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser, this);
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_splashScreen, this);
 	mainBrowser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
@@ -299,8 +307,9 @@ X3DNotebookPage::set_browser ()
 void
 X3DNotebookPage::set_splashScreen ()
 {
+__LOG__ << std::endl;
 	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
-	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,     this);
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,          this);
 	mainBrowser -> shutdown ()        .addInterest (&X3DNotebookPage::set_shutdown,        this);
 	mainBrowser -> getLoadingTotal () .addInterest (&X3DNotebookPage::set_loadCount,       this);
 	mainBrowser -> getLoadCount ()    .addInterest (&X3DNotebookPage::set_loadCount,       this);
@@ -311,8 +320,20 @@ X3DNotebookPage::set_splashScreen ()
 }
 
 void
+X3DNotebookPage::set_loaded ()
+{
+__LOG__ << std::endl;
+	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
+	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
+
+	loaded ();
+	initialized ();
+}
+
+void
 X3DNotebookPage::set_initialized ()
 {
+__LOG__ << std::endl;
 	initialized ();
 }
 

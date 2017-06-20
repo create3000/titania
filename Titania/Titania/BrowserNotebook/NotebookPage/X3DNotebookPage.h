@@ -142,6 +142,10 @@ protected:
 
 	virtual
 	void
+	loaded ();
+
+	virtual
+	void
 	initialized ();
 
 
@@ -168,6 +172,9 @@ protected:
 
 	void
 	set_splashScreen ();
+
+	void
+	set_loaded ();
 
 	void
 	set_initialized ();

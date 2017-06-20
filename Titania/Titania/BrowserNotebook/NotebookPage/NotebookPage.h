@@ -87,6 +87,10 @@ private:
 
 	virtual
 	void
+	loaded () final override;
+
+	virtual
+	void
 	initialized () final override;
 
 	///  @name Event handlers
