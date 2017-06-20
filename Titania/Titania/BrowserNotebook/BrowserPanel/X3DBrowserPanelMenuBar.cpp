@@ -141,12 +141,12 @@ X3DBrowserPanelMenuBar::on_look_at_all_activate ()
 void
 X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 {
-	if (getLocalBrowser () -> getActiveLayer ())
-	{
-		const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
+	if (not getLocalBrowser () -> getActiveLayer ())
+		return;
 
-		viewpoint -> transitionStart (viewpoint);
-	}
+	const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
+
+	viewpoint -> transitionStart (viewpoint);
 }
 
 void

@@ -93,7 +93,7 @@ const std::vector <X3D::Vector3d> X3DBrowserPanel::axes = {
 
 const std::vector <X3D::Vector3d> X3DBrowserPanel::positions = {
 	X3D::Vector3f (),
-	X3D::Vector3f (0, 0, 10),
+	X3D::Vector3f (8.48219, 12, 8.48219),
 	X3D::Vector3f (0, 10, 0),
 	X3D::Vector3f (10, 0, 0),
 	X3D::Vector3f (0, 0, 10),
@@ -104,7 +104,7 @@ const std::vector <X3D::Vector3d> X3DBrowserPanel::positions = {
 
 const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 	X3D::Rotation4f (),
-	X3D::Rotation4f (),
+	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 4) * X3D::Rotation4f (0, 1, 0, math::pi <float> / 4),
 	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2),
 	X3D::Rotation4f (0, 1, 0, math::pi <float> / 2),
 	X3D::Rotation4f (),
@@ -304,7 +304,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		viewpoint -> setPosition (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
 		viewpoint -> setOrientation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
 		viewpoint -> setCenterOfRotation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
-		viewpoint -> fieldOfViewScale () .set (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
+		viewpoint -> fieldOfViewScale () .setValue (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
 	

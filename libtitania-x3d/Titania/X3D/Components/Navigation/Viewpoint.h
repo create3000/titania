@@ -159,7 +159,7 @@ private:
 	double
 	getFieldOfView () const;
 
-	double
+	std::pair <double, double>
 	getLookAtDistance (const Box3d &) const;
 
 	///  @name Static members

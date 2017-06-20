@@ -406,7 +406,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
-		lookAt (point, minDistance, factor, straighten, cycleInterval);
+		lookAt (point, std::make_pair (minDistance, fieldOfViewScale ()), factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -425,18 +425,19 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 	{
 		bbox *= inverse (getTransformationMatrix ());
 
-		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
+		const double minDistance    = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
+		const auto   lookAtDistance = getLookAtDistance (bbox);
 
-		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten, cycleInterval);
+		lookAt (bbox .center (), std::make_pair (std::max (minDistance, lookAtDistance .first), lookAtDistance .second), factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }
 }
 
 void
-X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten, const time_type cycleInterval)
+X3DViewpointNode::lookAt (const Vector3d & point, const std::pair <double, double> & distance, const double factor, const bool straighten, const time_type cycleInterval)
 {
-   const auto offset      = point + Vector3d (0, 0, distance) * getUserOrientation () - getPosition ();
+   const auto offset      = point + Vector3d (0, 0, distance .first) * getUserOrientation () - getPosition ();
 	const auto translation = lerp <Vector3d> (positionOffset (), offset, factor);
 	const auto direction   = getPosition () + translation - point;
 	auto       rotation    = orientationOffset () * Rotation4d (zAxis * getUserOrientation (), direction);
@@ -460,12 +461,13 @@ X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const d
 		orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
 		scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
 		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
-		fieldOfViewInterpolator      -> keyValue () = { fieldOfViewScale (),                    fieldOfViewScale () };
+		fieldOfViewInterpolator      -> keyValue () = { fieldOfViewScale (),                    distance .second };
 	}
 	else
 	{
 		positionOffset ()    = translation;
 		orientationOffset () = rotation;
+		fieldOfViewScale ()  = distance .second;
 
 		set_isActive (false);
 	}

@@ -348,10 +348,10 @@ private:
 	                           Rotation4d & relativeScaleOrientation) const;
 
 	void
-	lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten, const time_type cycleInterval);
+	lookAt (const Vector3d & point, const std::pair <double, double> & distance, const double factor, const bool straighten, const time_type cycleInterval);
 
 	virtual
-	double
+	std::pair <double, double>
 	getLookAtDistance (const Box3d & bbox) const = 0;
 
 	void

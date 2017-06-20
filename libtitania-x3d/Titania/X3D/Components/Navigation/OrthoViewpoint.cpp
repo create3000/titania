@@ -169,10 +169,18 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 	return Vector2d (sizeX, sizeX / aspect);
 }
 
-double
+std::pair <double, double>
 OrthoViewpoint::getLookAtDistance (const Box3d & bbox) const
 {
-	return abs (bbox .size ()) / 2 + 10;
+	const auto s  = abs (bbox .size ()) / 2;
+	const auto s1 = s * 1.05;
+
+	const auto fovs = std::max ({ s1 / std::abs (getMinimumX () / fieldOfViewScale ()),
+	                              s1 / std::abs (getMinimumY () / fieldOfViewScale ()),
+	                              s1 / std::abs (getMaximumX () / fieldOfViewScale ()), 
+	                              s1 / std::abs (getMaximumY () / fieldOfViewScale ()) });
+
+	return std::make_pair (s + 10, fovs);
 }
 
 Matrix4d

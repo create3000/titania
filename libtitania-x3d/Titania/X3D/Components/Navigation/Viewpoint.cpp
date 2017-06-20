@@ -125,10 +125,10 @@ Viewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) co
 	return Vector3d (size, size, size);
 }
 
-double
+std::pair <double, double>
 Viewpoint::getLookAtDistance (const Box3d & bbox) const
 {
-	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
+	return std::make_pair ((abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2), fieldOfViewScale ());
 }
 
 Matrix4d

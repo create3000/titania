@@ -260,10 +260,10 @@ GeoViewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport)
 }
 
 ///  Same as in Viewpoint
-double
+std::pair <double, double>
 GeoViewpoint::getLookAtDistance (const Box3d & bbox) const
 {
-	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
+	return std::make_pair ((abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2), fieldOfViewScale ());
 }
 
 void

@@ -178,7 +178,7 @@ private:
 	getSizeY () const;
 
 	virtual
-	double
+	std::pair <double, double>
 	getLookAtDistance (const Box3d &) const final override;
 
 	///  @name Static members
