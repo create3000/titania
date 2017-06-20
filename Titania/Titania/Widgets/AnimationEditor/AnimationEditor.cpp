@@ -2437,7 +2437,7 @@ AnimationEditor::showArraySizeErrorDialog () const
 
 	dialog -> setType (Gtk::MESSAGE_ERROR);
 	dialog -> setMessage (_ ("Key size has changed!"));
-	dialog -> setText (_ ("For all key frames the key size must remain equal!"));
+	dialog -> setText (_ ("The number of values of the key frames must remain equal for the whole animation."));
 	dialog -> run ();
 }
 

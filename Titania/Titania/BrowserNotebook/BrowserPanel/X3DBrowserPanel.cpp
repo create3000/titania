@@ -301,10 +301,10 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
 
-		viewpoint -> setPosition (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]));
-		viewpoint -> setOrientation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]));
-		viewpoint -> setCenterOfRotation (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()));
-		viewpoint -> fieldOfViewScale () .setValue (worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0));
+		viewpoint -> positionOffset ()         = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/position", positions [type]) - viewpoint -> getPosition ();
+		viewpoint -> orientationOffset ()      = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/orientation", orientations [type]) * ~viewpoint -> getOrientation ();
+		viewpoint -> centerOfRotationOffset () = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()) - viewpoint -> getCenterOfRotation ();
+		viewpoint -> fieldOfViewScale ()       = worldInfo -> getMetaData ("/Titania/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
 	
