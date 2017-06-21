@@ -198,7 +198,7 @@ LayerEditor::set_layers ()
 	{
 	   if (layer)
 		{
-			layer -> name_changed () .removeInterest (&LayerEditor::set_treeView, this);
+			layer -> name_changed () .removeInterest (&LayerEditor::set_name, this);
 	      layer -> isPickable ()   .removeInterest (&LayerEditor::set_treeView, this);
 		}
 	}
@@ -211,6 +211,9 @@ LayerEditor::set_layers ()
 void
 LayerEditor::set_treeView ()
 {
+	if (X3D::MFNode (layers) not_eq layerSet -> layers ())
+		return;
+
 	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
