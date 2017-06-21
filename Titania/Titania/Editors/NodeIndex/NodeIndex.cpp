@@ -140,7 +140,7 @@ NodeIndex::initialize ()
 void
 NodeIndex::configure ()
 {
-	if (getConfig () -> hasItem ("sortColumn"))
+	if (getConfig () -> hasKey ("sortColumn"))
 	{
 		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
 		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");

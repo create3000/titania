@@ -86,7 +86,7 @@ HistoryEditor::configure ()
 {
 	X3DHistoryEditorInterface::configure ();
 
-	if (getConfig () -> hasItem ("sortColumn"))
+	if (getConfig () -> hasKey ("sortColumn"))
 	{
 		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
 		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
@@ -124,13 +124,13 @@ HistoryEditor::configure ()
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
 		getBrowserWindow () -> getIconFactory () -> createIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
 
-	if (getConfig () -> hasItem ("titleColumnSize"))
+	if (getConfig () -> hasKey ("titleColumnSize"))
 		getTitleColumn () -> set_fixed_width (getConfig () -> getInteger ("titleColumnSize"));
 
-	if (getConfig () -> hasItem ("worldURLColumnSize"))
+	if (getConfig () -> hasKey ("worldURLColumnSize"))
 		getWorlURLColumn () -> set_fixed_width (getConfig () -> getInteger ("worldURLColumnSize"));
 
-	if (getConfig () -> hasItem ("lastAccessColumnSize"))
+	if (getConfig () -> hasKey ("lastAccessColumnSize"))
 		getLastAccessColumn () -> set_fixed_width (getConfig () -> getInteger ("lastAccessColumnSize"));
 }
 

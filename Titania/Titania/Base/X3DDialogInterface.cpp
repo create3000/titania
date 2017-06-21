@@ -88,7 +88,7 @@ X3DDialogInterface::restoreExpanders (Gtk::Widget & widget)
 		if (expander -> get_name () .empty ())
 			continue;
 
-		if (not getConfig () -> hasItem (expander -> get_name ()))
+		if (not getConfig () -> hasKey (expander -> get_name ()))
 			continue;
 
 		expander -> set_expanded (getConfig () -> getBoolean (expander -> get_name ()));

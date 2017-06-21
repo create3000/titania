@@ -112,7 +112,7 @@ NavigationInfoEditor::configure ()
 {
 	X3DNavigationInfoEditorInterface::configure ();
 
-	if (getConfig () -> hasItem ("paned"))
+	if (getConfig () -> hasKey ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 }
 

@@ -199,7 +199,7 @@ FileExportImageDialog::save (Magick::Image & image)
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
-	if (getConfig () -> hasItem ("currentFolder"))
+	if (getConfig () -> hasKey ("currentFolder"))
 		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 	else
 		getWindow () .set_current_folder (os::home ());
@@ -291,18 +291,18 @@ FileExportImageDialog::options ()
 
 	// Restore image options.
 
-	if (getConfig () -> hasItem ("imageWidth"))
+	if (getConfig () -> hasKey ("imageWidth"))
 		getImageWidthAdjustment () -> set_value (getConfig () -> getInteger ("imageWidth"));
 
-	if (getConfig () -> hasItem ("imageHeight"))
+	if (getConfig () -> hasKey ("imageHeight"))
 		getImageHeightAdjustment () -> set_value (getConfig () -> getInteger ("imageHeight"));
 
 	getImageAlphaChannelSwitch () .set_active (getConfig () -> getBoolean ("imageAlphaChannel"));
 
-	if (getConfig () -> hasItem ("imageAntialiasing"))
+	if (getConfig () -> hasKey ("imageAntialiasing"))
 		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getInteger ("imageAntialiasing"), antialiasing));
 
-	if (getConfig () -> hasItem ("imageCompression"))
+	if (getConfig () -> hasKey ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
 
 	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));

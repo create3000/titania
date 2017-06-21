@@ -153,10 +153,10 @@ ScriptEditor::configure ()
 
 	// Config
 
-	if (getConfig () -> hasItem ("paned"))
+	if (getConfig () -> hasKey ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
-	if (getConfig () -> hasItem ("sidePaned"))
+	if (getConfig () -> hasKey ("sidePaned"))
 		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
 }
 

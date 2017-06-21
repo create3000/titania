@@ -95,7 +95,7 @@ SculpToolEditor::configure ()
 	X3DSculpToolEditorInterface::configure ();
 	X3DSculpToolBrushEditor::configure ();
 
-	if (getConfig () -> hasItem ("paned"))
+	if (getConfig () -> hasKey ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));

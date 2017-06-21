@@ -113,25 +113,25 @@ OutlineEditor::initialize ()
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
-	if (not getConfig () -> hasItem ("showExternProtos"))
+	if (not getConfig () -> hasKey ("showExternProtos"))
 		getConfig () -> setItem ("showExternProtos", true);
 
-	if (not getConfig () -> hasItem ("showPrototypes"))
+	if (not getConfig () -> hasKey ("showPrototypes"))
 		getConfig () -> setItem ("showPrototypes", true);
 
-	if (not getConfig () -> hasItem ("showImportedNodes"))
+	if (not getConfig () -> hasKey ("showImportedNodes"))
 		getConfig () -> setItem ("showImportedNodes", true);
 
-	if (not getConfig () -> hasItem ("showExportedNodes"))
+	if (not getConfig () -> hasKey ("showExportedNodes"))
 		getConfig () -> setItem ("showExportedNodes", true);
 
-	if (not getConfig () -> hasItem ("expandExternProtos"))
+	if (not getConfig () -> hasKey ("expandExternProtos"))
 		getConfig () -> setItem ("expandExternProtos", true);
 
-	if (not getConfig () -> hasItem ("expandPrototypeInstances"))
+	if (not getConfig () -> hasKey ("expandPrototypeInstances"))
 		getConfig () -> setItem ("expandPrototypeInstances", true);
 
-	if (not getConfig () -> hasItem ("expandInlineNodes"))
+	if (not getConfig () -> hasKey ("expandInlineNodes"))
 		getConfig () -> setItem ("expandInlineNodes", true);
 
 	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getBoolean ("showExternProtos"));
@@ -142,7 +142,7 @@ OutlineEditor::initialize ()
 	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () -> getBoolean ("expandPrototypeInstances"));
 	getExpandInlineNodesMenuItem ()        .set_active (getConfig () -> getBoolean ("expandInlineNodes"));
 
-	if (getConfig () -> hasItem ("useLocale"))
+	if (getConfig () -> hasKey ("useLocale"))
 	 getUseLocaleMenuItem () .set_active (getConfig () -> getBoolean ("useLocale"));
 
 	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene, this);

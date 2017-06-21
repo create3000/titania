@@ -173,7 +173,7 @@ FileImportDialog::setFilter (const std::string & name)
 void
 FileImportDialog::run ()
 {
-	if (getConfig () -> hasItem ("importType"))
+	if (getConfig () -> hasKey ("importType"))
 	{
 		switch (getConfig () -> getInteger ("importType"))
 		{
@@ -198,7 +198,7 @@ FileImportDialog::run ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		if (getConfig () -> hasItem ("currentFolder"))
+		if (getConfig () -> hasKey ("currentFolder"))
 			getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 		else
 			getWindow () .set_current_folder (os::home ());

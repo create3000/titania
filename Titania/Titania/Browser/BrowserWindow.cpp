@@ -144,7 +144,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	//if (getConfig () -> getBoolean ("transparent"))
 	//	setTransparent (true);
 
-	//if (not getConfig () -> hasItem ("maximized"))
+	//if (not getConfig () -> hasKey ("maximized"))
 	//	getWindow () .maximize ();
 
 	setup ();
@@ -208,7 +208,7 @@ BrowserWindow::configure ()
 
 	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
 
-	if (getConfig () -> hasItem ("cobwebCompatibility"))
+	if (getConfig () -> hasKey ("cobwebCompatibility"))
 		getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
 	else
 		getCobwebCompatibilityAction () -> set_active (true);

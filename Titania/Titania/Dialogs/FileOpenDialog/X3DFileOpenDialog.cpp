@@ -78,7 +78,7 @@ X3DFileOpenDialog::run ()
 {
 	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
 
-	if (getConfig () -> hasItem ("currentFolder"))
+	if (getConfig () -> hasKey ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	else
 		getWindow () .set_current_folder (os::home ());

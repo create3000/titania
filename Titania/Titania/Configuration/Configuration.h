@@ -62,14 +62,14 @@ class Configuration
 {
 public:
 
-	typedef std::vector <Configuration> Array;
+	///  @name Construction
 
 	Configuration (const std::string & = "");
 
 	/// @name Key lockup
 
 	bool
-	hasItem (const std::string & key) const;
+	hasKey (const std::string & key) const;
 
 	/// @name Set configuration value
 
@@ -110,8 +110,12 @@ public:
 	Type
 	get (const std::string & key, const Type & defaultValue = Type ()) const;
 
+	/// @name Remove configuration value
+
 	void
-	remove (const std::string & key) const;
+	removeKey (const std::string & key) const;
+
+	///  @name Destruction
 
 	~Configuration ();
 
@@ -211,7 +215,7 @@ template <class Type>
 Type
 Configuration::get (const std::string & key, const Type & defaultValue) const
 {
-	if (hasItem (key))
+	if (hasKey (key))
 	{
 		std::istringstream isstream (getString (key));
 	
@@ -232,7 +236,7 @@ inline
 bool
 Configuration::get (const std::string & key, const bool & defaultValue) const
 {
-	if (hasItem (key))
+	if (hasKey (key))
 		return getBoolean (key);
 
 	return defaultValue;
@@ -243,7 +247,7 @@ inline
 double
 Configuration::get (const std::string & key, const double & defaultValue) const
 {
-	if (hasItem (key))
+	if (hasKey (key))
 		return getDouble (key);
 
 	return defaultValue;
@@ -254,7 +258,7 @@ inline
 Glib::ustring
 Configuration::get (const std::string & key, const Glib::ustring & defaultValue) const
 {
-	if (hasItem (key))
+	if (hasKey (key))
 		return getString (key);
 
 	return defaultValue;

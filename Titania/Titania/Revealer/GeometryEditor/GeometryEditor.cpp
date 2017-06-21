@@ -141,13 +141,13 @@ GeometryEditor::configure ()
 
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
-	if (getConfig () -> hasItem ("normalLength"))
+	if (getConfig () -> hasKey ("normalLength"))
 		normalEditor -> setField <X3D::SFFloat> ("length", getConfig () -> get <X3D::SFFloat> ("normalLength"));
 
-	if (getConfig () -> hasItem ("normalColor"))
+	if (getConfig () -> hasKey ("normalColor"))
 		normalEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("normalColor"));
 
-	if (getConfig () -> hasItem ("edgeColor"))
+	if (getConfig () -> hasKey ("edgeColor"))
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 
 	coordEditor -> setField <X3D::SFString> ("selectionType", getConfig () -> get <X3D::SFString> ("selectionType"));
@@ -162,9 +162,9 @@ GeometryEditor::configure ()
 	getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
-	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
+	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasKey ("axisAlignedBoundingBox"));
 	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
-	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
+	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasKey ("cutSnapping"));
 }
 
 void

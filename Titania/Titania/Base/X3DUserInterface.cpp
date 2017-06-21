@@ -363,7 +363,7 @@ X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
 
-	if (getConfig () -> hasItem ("x") and getConfig () -> hasItem ("y"))
+	if (getConfig () -> hasKey ("x") and getConfig () -> hasKey ("y"))
 	{
 		getWindow () .move (getConfig () -> getInteger ("x"),
 		                    getConfig () -> getInteger ("y"));
@@ -438,7 +438,9 @@ X3DUserInterface::store ()
 	if (not dialogNames .empty ())
 		dialogNames .resize (dialogNames .size () - 1);
 
-	if (not dialogNames .empty ())
+	if (dialogNames .empty ())
+		getConfig () -> removeKey ("dialogs");
+	else
 		getConfig () -> set ("dialogs", dialogNames);
 
 	// Close dialogs

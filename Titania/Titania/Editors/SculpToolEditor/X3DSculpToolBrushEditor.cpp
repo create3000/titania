@@ -115,7 +115,7 @@ X3DSculpToolBrushEditor::set_initalized ()
 			getMasterBrowser () -> getExecutionContext () -> updateNamedNode ("SculpToolBrush", brush);
 			getMasterBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (brush);
 
-			if (getConfig () -> hasItem ("brushType"))
+			if (getConfig () -> hasKey ("brushType"))
 			{
 				brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
 				brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));

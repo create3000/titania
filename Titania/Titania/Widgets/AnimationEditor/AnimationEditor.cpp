@@ -188,7 +188,7 @@ AnimationEditor::initialize ()
 
 	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
 
-	if (getConfig () -> hasItem ("hPaned"))
+	if (getConfig () -> hasKey ("hPaned"))
 		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
 
 	getCurrentBrowser ()  .addInterest (&AnimationEditor::set_animation, this, nullptr);

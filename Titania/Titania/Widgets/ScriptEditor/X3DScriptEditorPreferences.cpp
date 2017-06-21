@@ -80,44 +80,44 @@ X3DScriptEditorPreferences::initialize ()
 {
 	// View
 
-	if (getConfig () -> hasItem ("showLineNumbers"))
+	if (getConfig () -> hasKey ("showLineNumbers"))
 		 getShowLineNumbersCheckButton () .set_active (getConfig () -> getBoolean ("showLineNumbers"));
 	else
 		 getShowLineNumbersCheckButton () .set_active (true);
 
-	if (getConfig () -> hasItem ("showRightMargin"))
+	if (getConfig () -> hasKey ("showRightMargin"))
 		 getShowRightMarginCheckButton () .set_active (getConfig () -> getBoolean ("showRightMargin"));
 	else
 		getShowRightMarginCheckButton () .set_active (true);
 
-	if (getConfig () -> hasItem ("rightMarginPosition"))
+	if (getConfig () -> hasKey ("rightMarginPosition"))
 		 getRightMarginSpinButton () .set_value (getConfig () -> getInteger ("rightMarginPosition"));
 	else
 		getRightMarginSpinButton () .set_value (100);
 	
-	if (getConfig () -> hasItem ("wrapMode"))
+	if (getConfig () -> hasKey ("wrapMode"))
 		getWrapModeComboBoxText () .set_active (getConfig () -> getInteger ("wrapMode"));
 	else
 		getWrapModeComboBoxText () .set_active (0);
 
-	if (getConfig () -> hasItem ("highlightCurrentLine"))
+	if (getConfig () -> hasKey ("highlightCurrentLine"))
 		getHighlightCurrentLineCheckButton () .set_active (getConfig () -> getBoolean ("highlightCurrentLine"));
 	else
 		getHighlightCurrentLineCheckButton () .set_active (false);
 	
-	if (getConfig () -> hasItem ("highlightMatchingBrackets"))
+	if (getConfig () -> hasKey ("highlightMatchingBrackets"))
 		getHighlightMatchingBracketsCheckButton () .set_active (getConfig () -> getBoolean ("highlightMatchingBrackets"));
 	else
 		getHighlightMatchingBracketsCheckButton () .set_active (true);
 
 	// Editor
 
-	if (getConfig () -> hasItem ("tabWidth"))
+	if (getConfig () -> hasKey ("tabWidth"))
 		getTabWidthSpinButton () .set_value (getConfig () -> getInteger ("tabWidth"));
 	else
 		getTabWidthSpinButton () .set_value (3);
 	
-	if (getConfig () -> hasItem ("insertSpacesInsteadOfTabs"))
+	if (getConfig () -> hasKey ("insertSpacesInsteadOfTabs"))
 		getInsertSpacesInsteadOfTabsCheckButton () .set_active (getConfig () -> getBoolean ("insertSpacesInsteadOfTabs"));
 	else
 		getInsertSpacesInsteadOfTabsCheckButton () .set_active (false);
@@ -126,7 +126,7 @@ X3DScriptEditorPreferences::initialize ()
 
 	std::string themeId = "tango";
 	
-	if (getConfig () -> hasItem ("colorTheme"))
+	if (getConfig () -> hasKey ("colorTheme"))
 		themeId = getConfig () -> getString ("colorTheme");
 
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));

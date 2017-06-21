@@ -99,7 +99,7 @@ ViewpointEditor::configure ()
 {
 	X3DViewpointEditorInterface::configure ();
 
-	if (getConfig () -> hasItem ("paned"))
+	if (getConfig () -> hasKey ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 }
 

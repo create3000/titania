@@ -107,7 +107,7 @@ X3DFileSaveDialog::run (const basic::uri & url)
 {
 	if (not url .empty () and url .is_local ())
 	{
-		if (getConfig () -> hasItem ("currentFolder"))
+		if (getConfig () -> hasKey ("currentFolder"))
 		{
 			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 			getWindow () .set_current_name (url .basename ());
@@ -120,7 +120,7 @@ X3DFileSaveDialog::run (const basic::uri & url)
 	}
 	else
 	{
-		if (getConfig () -> hasItem ("currentFolder"))
+		if (getConfig () -> hasKey ("currentFolder"))
 			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 		else
 			getWindow () .set_current_folder (os::home ());
