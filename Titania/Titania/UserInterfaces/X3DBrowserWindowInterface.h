@@ -96,10 +96,6 @@ public:
 	{ return m_AxonometricGridLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getBackgroundsAction () const
-	{ return m_BackgroundsAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getBrowserAction () const
 	{ return m_BrowserAction; }
 
@@ -116,10 +112,6 @@ public:
 	{ return m_FlatAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getFogsAction () const
-	{ return m_FogsAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFollowPrimarySelectionAction () const
 	{ return m_FollowPrimarySelectionAction; }
 
@@ -134,10 +126,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getGridLayoutToolAction () const
 	{ return m_GridLayoutToolAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getLightsAction () const
-	{ return m_LightsAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getMenubarAction () const
@@ -164,10 +152,6 @@ public:
 	{ return m_PrimitiveQualityMediumAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getProximitySensorsAction () const
-	{ return m_ProximitySensorsAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getRenderingPropertiesAction () const
 	{ return m_RenderingPropertiesAction; }
 
@@ -182,10 +166,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getSidebarAction () const
 	{ return m_SidebarAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getSoundsAction () const
-	{ return m_SoundsAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTabsAction () const
@@ -208,20 +188,8 @@ public:
 	{ return m_ToolbarAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getTransformSensorsAction () const
-	{ return m_TransformSensorsAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTransformToolModeAction () const
 	{ return m_TransformToolModeAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getViewpointsAction () const
-	{ return m_ViewpointsAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getVisibilitySensorsAction () const
-	{ return m_VisibilitySensorsAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getWireframeAction () const
@@ -562,50 +530,6 @@ public:
 	Gtk::CheckMenuItem &
 	getBrowserTextureQualityLowMenuItem () const
 	{ return *m_BrowserTextureQualityLowMenuItem; }
-
-	Gtk::MenuItem &
-	getBrowserShowHideEnvironmentalEffectsMenuItem () const
-	{ return *m_BrowserShowHideEnvironmentalEffectsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserBackgroundsMenuItem () const
-	{ return *m_BrowserBackgroundsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserFogsMenuItem () const
-	{ return *m_BrowserFogsMenuItem; }
-
-	Gtk::MenuItem &
-	getBrowserIconicObjectsMenuItem () const
-	{ return *m_BrowserIconicObjectsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserLightsMenuItem () const
-	{ return *m_BrowserLightsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserProximitySensorsMenuItem () const
-	{ return *m_BrowserProximitySensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserTransformSensorsMenuItem () const
-	{ return *m_BrowserTransformSensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserSoundsMenuItem () const
-	{ return *m_BrowserSoundsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserVisibilitySensorsMenuItem () const
-	{ return *m_BrowserVisibilitySensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserViewpointsMenuItem () const
-	{ return *m_BrowserViewpointsMenuItem; }
-
-	Gtk::MenuItem &
-	getBrowserHideAllObjectIconsMenuItem () const
-	{ return *m_BrowserHideAllObjectIconsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getBrowserRubberbandMenuItem () const
@@ -1063,50 +987,6 @@ public:
 	getTextureQualityLowMenuItem () const
 	{ return *m_TextureQualityLowMenuItem; }
 
-	Gtk::MenuItem &
-	getShowHideEnvironmentalEffectsMenuItem () const
-	{ return *m_ShowHideEnvironmentalEffectsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBackgroundsMenuItem () const
-	{ return *m_BackgroundsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getFogsMenuItem () const
-	{ return *m_FogsMenuItem; }
-
-	Gtk::MenuItem &
-	getIconicObjectsMenuItem () const
-	{ return *m_IconicObjectsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getLightsMenuItem () const
-	{ return *m_LightsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getProximitySensorsMenuItem () const
-	{ return *m_ProximitySensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getSoundsMenuItem () const
-	{ return *m_SoundsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getTransformSensorsMenuItem () const
-	{ return *m_TransformSensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getVisibilitySensorsMenuItem () const
-	{ return *m_VisibilitySensorsMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getViewpointsMenuItem () const
-	{ return *m_ViewpointsMenuItem; }
-
-	Gtk::MenuItem &
-	getHideAllObjectIconsMenuItem () const
-	{ return *m_HideAllObjectIconsMenuItem; }
-
 	Gtk::CheckMenuItem &
 	getRubberbandMenuItem () const
 	{ return *m_RubberbandMenuItem; }
@@ -1527,10 +1407,6 @@ public:
 
 	virtual
 	void
-	on_backgrounds_toggled () = 0;
-
-	virtual
-	void
 	on_browser_toggled () = 0;
 
 	virtual
@@ -1547,10 +1423,6 @@ public:
 
 	virtual
 	void
-	on_fogs_toggled () = 0;
-
-	virtual
-	void
 	on_follow_primary_selection_toggled () = 0;
 
 	virtual
@@ -1564,10 +1436,6 @@ public:
 	virtual
 	void
 	on_grid_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_lights_toggled () = 0;
 
 	virtual
 	void
@@ -1595,10 +1463,6 @@ public:
 
 	virtual
 	void
-	on_proximity_sensors_toggled () = 0;
-
-	virtual
-	void
 	on_rendering_properties_toggled () = 0;
 
 	virtual
@@ -1612,10 +1476,6 @@ public:
 	virtual
 	void
 	on_sidebar_toggled () = 0;
-
-	virtual
-	void
-	on_sounds_toggled () = 0;
 
 	virtual
 	void
@@ -1639,19 +1499,7 @@ public:
 
 	virtual
 	void
-	on_transform_sensors_toggled () = 0;
-
-	virtual
-	void
 	on_transform_tool_mode_toggled () = 0;
-
-	virtual
-	void
-	on_viewpoints_toggled () = 0;
-
-	virtual
-	void
-	on_visibility_sensors_toggled () = 0;
 
 	virtual
 	void
@@ -1848,10 +1696,6 @@ public:
 	virtual
 	void
 	on_motion_blur_activated () = 0;
-
-	virtual
-	void
-	on_hide_all_object_icons_activated () = 0;
 
 	virtual
 	void
@@ -2159,38 +2003,30 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_AxonometricGridLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_CobwebCompatibilityAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_FogsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_LightsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PointsetAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityHighAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityLowAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityMediumAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_ProximitySensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RenderingPropertiesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SidebarAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_SoundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TabsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityHighAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityLowAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_TransformSensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformToolModeAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_ViewpointsAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_VisibilitySensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
 	Gtk::Image* m_FileImportImage;
 	Gtk::Image* m_FileImportImage1;
@@ -2276,17 +2112,6 @@ private:
 	Gtk::CheckMenuItem* m_BrowserTextureQualityHighMenuItem;
 	Gtk::CheckMenuItem* m_BrowserTextureQualityMediumMenuItem;
 	Gtk::CheckMenuItem* m_BrowserTextureQualityLowMenuItem;
-	Gtk::MenuItem* m_BrowserShowHideEnvironmentalEffectsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserBackgroundsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserFogsMenuItem;
-	Gtk::MenuItem* m_BrowserIconicObjectsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserLightsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserProximitySensorsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserTransformSensorsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserSoundsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserVisibilitySensorsMenuItem;
-	Gtk::CheckMenuItem* m_BrowserViewpointsMenuItem;
-	Gtk::MenuItem* m_BrowserHideAllObjectIconsMenuItem;
 	Gtk::CheckMenuItem* m_BrowserRubberbandMenuItem;
 	Gtk::CheckMenuItem* m_BrowserRenderingPropertiesMenuItem;
 	Gtk::ImageMenuItem* m_BrowserFullScreenMenuItem;
@@ -2401,17 +2226,6 @@ private:
 	Gtk::CheckMenuItem* m_TextureQualityHighMenuItem;
 	Gtk::CheckMenuItem* m_TextureQualityMediumMenuItem;
 	Gtk::CheckMenuItem* m_TextureQualityLowMenuItem;
-	Gtk::MenuItem* m_ShowHideEnvironmentalEffectsMenuItem;
-	Gtk::CheckMenuItem* m_BackgroundsMenuItem;
-	Gtk::CheckMenuItem* m_FogsMenuItem;
-	Gtk::MenuItem* m_IconicObjectsMenuItem;
-	Gtk::CheckMenuItem* m_LightsMenuItem;
-	Gtk::CheckMenuItem* m_ProximitySensorsMenuItem;
-	Gtk::CheckMenuItem* m_SoundsMenuItem;
-	Gtk::CheckMenuItem* m_TransformSensorsMenuItem;
-	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
-	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
-	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
 	Gtk::CheckMenuItem* m_RubberbandMenuItem;
 	Gtk::CheckMenuItem* m_RenderingPropertiesMenuItem;
 	Gtk::ImageMenuItem* m_FullScreenMenuItem;

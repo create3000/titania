@@ -102,9 +102,6 @@ private:
 	setPage (const NotebookPagePtr & value) final override;
 
 	void
-	set_scene ();
-
-	void
 	set_activeLayer ();
 
 	void
@@ -121,24 +118,6 @@ private:
 	virtual
 	void
 	set_selection (const X3D::MFNode & children) final override;
-
-	void
-	set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools);
-	
-	void
-	set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools);
-	
-	void
-	set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools);
-	
-	void
-	set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools);
-	
-	void
-	set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools);
-	
-	void
-	set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools);
 
 	///  @name Key events
 
@@ -489,44 +468,6 @@ private:
 	void
 	connectTextureQuality (const X3D::SFString &);
 
-	///  @name Object Icons
-
-	virtual
-	void
-	on_fogs_toggled () final override;
-
-	virtual
-	void
-	on_backgrounds_toggled () final override;
-
-	virtual
-	void
-	on_lights_toggled () final override;
-
-	virtual
-	void
-	on_proximity_sensors_toggled () final override;
-
-	virtual
-	void
-	on_sounds_toggled () final override;
-
-	virtual
-	void
-	on_transform_sensors_toggled () final override;
-
-	virtual
-	void
-	on_visibility_sensors_toggled () final override;
-
-	virtual
-	void
-	on_viewpoints_toggled () final override;
-
-	virtual
-	void
-	on_hide_all_object_icons_activated () final override;
-
 	virtual
 	void
 	on_rubberband_toggled () final override;
@@ -861,10 +802,6 @@ private:
 
 	void
 	toggleActions (const Glib::RefPtr <Gtk::ToggleAction> &, const std::vector <Glib::RefPtr <Gtk::ToggleAction>> &);
-
-	///  @name Members
-
-	static const std::set <X3D::X3DConstants::NodeType> proximitySensors;
 
 	///  @name Members
 

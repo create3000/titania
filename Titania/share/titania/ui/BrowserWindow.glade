@@ -10,10 +10,6 @@
     <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
     <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="BackgroundsAction">
-    <property name="label" translatable="yes">_Backgounds</property>
-    <signal name="toggled" handler="on_backgrounds_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="BrowserAction">
     <property name="label" translatable="yes">_Browser</property>
     <property name="draw_as_radio">True</property>
@@ -44,10 +40,6 @@
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="FogsAction">
-    <property name="label" translatable="yes">_Fogs</property>
-    <signal name="toggled" handler="on_fogs_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="FollowPrimarySelectionAction">
     <property name="label" translatable="yes">Follow Primary Selection</property>
     <signal name="toggled" handler="on_follow_primary_selection_toggled" swapped="no"/>
@@ -77,10 +69,6 @@
         <property name="use_stock">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkToggleAction" id="LightsAction">
-    <property name="label" translatable="yes">_Lights</property>
-    <signal name="toggled" handler="on_lights_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="MenubarAction">
     <property name="label" translatable="yes">Menubar</property>
@@ -124,10 +112,6 @@
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_primitive_quality_medium_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="ProximitySensorsAction">
-    <property name="label" translatable="yes">_ProximitySensors</property>
-    <signal name="toggled" handler="on_proximity_sensors_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="RenderingPropertiesAction">
     <property name="label" translatable="yes">_Rendering Properties</property>
     <signal name="toggled" handler="on_rendering_properties_toggled" swapped="no"/>
@@ -143,11 +127,6 @@
   <object class="GtkToggleAction" id="SidebarAction">
     <property name="label" translatable="yes">Sidebar</property>
     <signal name="toggled" handler="on_sidebar_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="SoundsAction">
-    <property name="label" translatable="yes">_Sounds</property>
-    <property name="short_label" translatable="yes">_Sounds</property>
-    <signal name="toggled" handler="on_sounds_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="TabsAction">
     <property name="label" translatable="yes">Tabs</property>
@@ -172,20 +151,8 @@
     <property name="label" translatable="yes">Toolbar</property>
     <signal name="toggled" handler="on_toolbar_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="TransformSensorsAction">
-    <property name="label" translatable="yes">_TransformSensors</property>
-    <signal name="toggled" handler="on_transform_sensors_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="TransformToolModeAction">
     <signal name="toggled" handler="on_transform_tool_mode_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="ViewpointsAction">
-    <property name="label" translatable="yes">_Viewpoints</property>
-    <signal name="toggled" handler="on_viewpoints_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="VisibilitySensorsAction">
-    <property name="label" translatable="yes">V_isibilitySensors</property>
-    <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="WireframeAction">
     <property name="label" translatable="yes">_Wireframe</property>
@@ -1284,126 +1251,6 @@
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
                         <accelerator key="F1" signal="activate"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="BrowserShowHideEnvironmentalEffectsMenuItem">
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Show/Hide Environmental Effects</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu24">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserBackgroundsMenuItem">
-                        <property name="related_action">BackgroundsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Backgrounds</property>
-                        <property name="use_underline">True</property>
-                        <property name="active">True</property>
-                        <accelerator key="b" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserFogsMenuItem">
-                        <property name="related_action">FogsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Fogs</property>
-                        <property name="use_underline">True</property>
-                        <property name="active">True</property>
-                        <accelerator key="f" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="BrowserIconicObjectsMenuItem">
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Show/Hide Iconic Objects</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu25">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserLightsMenuItem">
-                        <property name="related_action">LightsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Lights</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="u" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserProximitySensorsMenuItem">
-                        <property name="related_action">ProximitySensorsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_ProximitySensors</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="p" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserTransformSensorsMenuItem">
-                        <property name="related_action">TransformSensorsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_TransformSensor</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserSoundsMenuItem">
-                        <property name="related_action">SoundsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Sounds</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserVisibilitySensorsMenuItem">
-                        <property name="related_action">VisibilitySensorsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">V_isibilitySensors</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="i" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="BrowserViewpointsMenuItem">
-                        <property name="related_action">ViewpointsAction</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Viewpoints</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="k" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem33">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="BrowserHideAllObjectIconsMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Hide All Object Icons</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -2797,127 +2644,6 @@
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
                                         <accelerator key="F1" signal="activate"/>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkMenuItem" id="ShowHideEnvironmentalEffectsMenuItem">
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Show/Hide Environmental Effects</property>
-                                <property name="use_underline">True</property>
-                                <child type="submenu">
-                                  <object class="GtkMenu" id="menu12">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="BackgroundsMenuItem">
-                                        <property name="related_action">BackgroundsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_Backgrounds</property>
-                                        <property name="use_underline">True</property>
-                                        <property name="active">True</property>
-                                        <accelerator key="b" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="FogsMenuItem">
-                                        <property name="related_action">FogsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_Fogs</property>
-                                        <property name="use_underline">True</property>
-                                        <property name="active">True</property>
-                                        <accelerator key="f" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkMenuItem" id="IconicObjectsMenuItem">
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Show/Hide Iconic Objects</property>
-                                <property name="use_underline">True</property>
-                                <child type="submenu">
-                                  <object class="GtkMenu" id="menu100">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="LightsMenuItem">
-                                        <property name="related_action">LightsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_Lights</property>
-                                        <property name="use_underline">True</property>
-                                        <accelerator key="u" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="ProximitySensorsMenuItem">
-                                        <property name="related_action">ProximitySensorsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_ProximitySensors</property>
-                                        <property name="use_underline">True</property>
-                                        <accelerator key="p" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="SoundsMenuItem">
-                                        <property name="related_action">SoundsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_Sounds</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="TransformSensorsMenuItem">
-                                        <property name="related_action">TransformSensorsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_TransformSensor</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="VisibilitySensorsMenuItem">
-                                        <property name="related_action">VisibilitySensorsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">V_isibilitySensors</property>
-                                        <property name="use_underline">True</property>
-                                        <accelerator key="i" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckMenuItem" id="ViewpointsMenuItem">
-                                        <property name="related_action">ViewpointsAction</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">_Viewpoints</property>
-                                        <property name="use_underline">True</property>
-                                        <accelerator key="k" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkMenuItem" id="HideAllObjectIconsMenuItem">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Hide All Object Icons</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>

@@ -77,14 +77,9 @@
 #include <Titania/X3D/Browser/Tools/TransformToolOptions.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
-#include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
-#include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>
-#include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Components/Lighting/X3DLightNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
-#include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Editing/Combine.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Parser/Filter.h>
@@ -96,12 +91,6 @@
 
 namespace titania {
 namespace puck {
-
-const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
-	X3D::X3DConstants::ProximitySensor,
-	X3D::X3DConstants::GeoProximitySensor,
-	X3D::X3DConstants::ViewpointGroup
-};
 
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	         X3DBaseInterface (this, defaultBrowser),
@@ -191,7 +180,6 @@ BrowserWindow::initialize ()
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Browser events
-	getCurrentScene ()   .addInterest (&BrowserWindow::set_scene, this);
 	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
 	getSelection () -> getHierarchy () .addInterest (&BrowserWindow::set_hierarchy, this);
@@ -232,13 +220,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
 	
-		getCurrentBrowser () -> getLightTools ()            .removeInterest (&BrowserWindow::set_lightTools,            this);
-		getCurrentBrowser () -> getProximitySensorTools ()  .removeInterest (&BrowserWindow::set_proximitySensorTools,  this);
-		getCurrentBrowser () -> getSoundTools ()            .removeInterest (&BrowserWindow::set_soundTools,            this);
-		getCurrentBrowser () -> getTransformSensorTools ()  .removeInterest (&BrowserWindow::set_transformSensorTools,  this);
-		getCurrentBrowser () -> getVisibilitySensorTools () .removeInterest (&BrowserWindow::set_visibilitySensorTools, this);
-		getCurrentBrowser () -> getViewpointTools ()        .removeInterest (&BrowserWindow::set_viewpointTools,        this);
-	
 		getCurrentPage () -> getBrowserHistory () .removeInterest (&BrowserWindow::set_browserHistory, this);
 	}
 
@@ -259,14 +240,7 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
-	
-		getCurrentBrowser () -> getLightTools ()            .addInterest (&BrowserWindow::set_lightTools,            this);
-		getCurrentBrowser () -> getProximitySensorTools ()  .addInterest (&BrowserWindow::set_proximitySensorTools,  this);
-		getCurrentBrowser () -> getSoundTools ()            .addInterest (&BrowserWindow::set_soundTools,            this);
-		getCurrentBrowser () -> getTransformSensorTools ()  .addInterest (&BrowserWindow::set_transformSensorTools,  this);
-		getCurrentBrowser () -> getVisibilitySensorTools () .addInterest (&BrowserWindow::set_visibilitySensorTools, this);
-		getCurrentBrowser () -> getViewpointTools ()        .addInterest (&BrowserWindow::set_viewpointTools,        this);
-	
+		
 		getCurrentPage () -> getBrowserHistory () .addInterest (&BrowserWindow::set_browserHistory, this);
 	
 		// Initialize
@@ -278,13 +252,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 		set_viewer ();
 		set_straighten_horizon ();
-
-		set_lightTools            (getCurrentBrowser () -> getLightTools ());
-		set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
-		set_soundTools            (getCurrentBrowser () -> getSoundTools ());
-		set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
-		set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
-		set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
 	
 		set_browserHistory ();
 	
@@ -295,19 +262,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 	
 		on_transform_tool_mode_toggled ();
 	}
-}
-
-void
-BrowserWindow::set_scene ()
-{
-	// View Menu
-
-	changing = true;
-
-	getBackgroundsAction () -> set_active (true);
-	getFogsAction ()        -> set_active (true);
-
-	changing = false;
 }
 
 void
@@ -449,66 +403,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	// Dashboard
 
 	getLookAtSelectionButton () .set_sensitive (haveSelection);
-}
-
-void
-BrowserWindow::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools)
-{
-	changing = true;
-
-	getLightsAction () -> set_active (tools .size ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools)
-{
-	changing = true;
-
-	getProximitySensorsAction () -> set_active (tools .size ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools)
-{
-	changing = true;
-
-	getSoundsAction () -> set_active (tools .size ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools)
-{
-	changing = true;
-
-	getTransformSensorsAction () -> set_active (tools .size ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools)
-{
-	changing = true;
-
-	getVisibilitySensorsAction () -> set_active (tools .size ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools)
-{
-	changing = true;
-
-	getViewpointsAction () -> set_active (tools .size ());
-
-	changing = false;
 }
 
 // Style
@@ -1306,13 +1200,6 @@ BrowserWindow::on_browser_toggled ()
 
 		getSelection () -> setNodes ({ });
 
-		if (not getBackgroundsAction () -> get_active ())
-			getBackgroundsAction () -> set_active (true);
-
-		if (not getFogsAction () -> get_active ())
-			getFogsAction () -> set_active (true);
-
-		on_hide_all_object_icons_activated ();
 		on_show_all_objects_activated ();
 	}
 }
@@ -1333,33 +1220,29 @@ BrowserWindow::setEditing (const bool enabled)
 {
 	X3DBrowserWindow::setEditing (enabled);
 
-	getOpenRecentMenuItem ()                   .set_visible (enabled);
-	getImportMenuItem ()                       .set_visible (enabled);
-	getSaveMenuItem ()                         .set_visible (enabled);
-	getRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
-	getEditMenuItem ()                         .set_visible (enabled);
-	getBrowserOptionsSeparator ()              .set_visible (enabled);
-	getMotionBlurMenuItem ()                   .set_visible (enabled);
-	getShadingMenuItem ()                      .set_visible (enabled);
-	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
-	getIconicObjectsMenuItem ()                .set_visible (enabled);
-	getSelectionMenuItem ()                    .set_visible (enabled);
-	getGeometryMenuItem ()                     .set_visible (enabled);
-	getLayoutMenuItem ()                       .set_visible (enabled);
+	getOpenRecentMenuItem ()             .set_visible (enabled);
+	getImportMenuItem ()                 .set_visible (enabled);
+	getSaveMenuItem ()                   .set_visible (enabled);
+	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
+	getEditMenuItem ()                   .set_visible (enabled);
+	getBrowserOptionsSeparator ()        .set_visible (enabled);
+	getMotionBlurMenuItem ()             .set_visible (enabled);
+	getShadingMenuItem ()                .set_visible (enabled);
+	getSelectionMenuItem ()              .set_visible (enabled);
+	getGeometryMenuItem ()               .set_visible (enabled);
+	getLayoutMenuItem ()                 .set_visible (enabled);
 
-	getBrowserOpenRecentMenuItem ()                   .set_visible (enabled);
-	getBrowserImportMenuItem ()                       .set_visible (enabled);
-	getBrowserSaveMenuItem ()                         .set_visible (enabled);
-	getBrowserRemoveUnusedPrototypesMenuItem ()       .set_visible (enabled);
-	getBrowserEditMenuItem ()                         .set_visible (enabled);
-	getBrowserBrowserOptionsSeparator ()              .set_visible (enabled);
-	getBrowserMotionBlurMenuItem ()                   .set_visible (enabled);
-	getBrowserShadingMenuItem ()                      .set_visible (enabled);
-	getBrowserShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
-	getBrowserIconicObjectsMenuItem ()                .set_visible (enabled);
-	getBrowserSelectionMenuItem ()                    .set_visible (enabled);
-	getBrowserGeometryMenuItem ()                     .set_visible (enabled);
-	getBrowserLayoutMenuItem ()                       .set_visible (enabled);
+	getBrowserOpenRecentMenuItem ()             .set_visible (enabled);
+	getBrowserImportMenuItem ()                 .set_visible (enabled);
+	getBrowserSaveMenuItem ()                   .set_visible (enabled);
+	getBrowserRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
+	getBrowserEditMenuItem ()                   .set_visible (enabled);
+	getBrowserBrowserOptionsSeparator ()        .set_visible (enabled);
+	getBrowserMotionBlurMenuItem ()             .set_visible (enabled);
+	getBrowserShadingMenuItem ()                .set_visible (enabled);
+	getBrowserSelectionMenuItem ()              .set_visible (enabled);
+	getBrowserGeometryMenuItem ()               .set_visible (enabled);
+	getBrowserLayoutMenuItem ()                 .set_visible (enabled);
 
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
@@ -1646,252 +1529,6 @@ BrowserWindow::connectTextureQuality (const X3D::SFString & field)
 {
 	field .removeInterest (&BrowserWindow::connectPrimitiveQuality, this);
 	field .addInterest (&BrowserWindow::set_primitiveQuality, this);
-}
-
-// Object Icons
-
-void
-BrowserWindow::on_backgrounds_toggled ()
-{
-	if (changing)
-		return;
-
-	const bool hidden = not getBackgroundsAction () -> get_active ();
-
-	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-	{
-		const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
-		
-		if (background)
-			background -> isHidden (hidden);
-		
-		return true;
-	},
-	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-}
-
-void
-BrowserWindow::on_fogs_toggled ()
-{
-	if (changing)
-		return;
-
-	const bool hidden = not getFogsAction () -> get_active ();
-
-	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-	{
-		const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
-		
-		if (fog)
-			fog -> isHidden (hidden);
-		
-		return true;
-	},
-	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-}
-
-// Object Icons
-
-void
-BrowserWindow::on_lights_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getLightsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_proximity_sensors_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getProximitySensorsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (node -> isType (proximitySensors))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (node -> isType (proximitySensors))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_sounds_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getSoundsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_transform_sensors_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getTransformSensorsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_visibility_sensors_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getVisibilitySensorsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_viewpoints_toggled ()
-{
-	if (changing)
-		return;
-
-	if (getViewpointsAction () -> get_active ())
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
-				node -> addTool ();
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-	else
-	{
-		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		{
-			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
-				node -> removeTool (true);
-			
-			return true;
-		},
-		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-	}
-}
-
-void
-BrowserWindow::on_hide_all_object_icons_activated ()
-{
-	if (getLightsAction () -> get_active ())
-		getLightsAction () -> set_active (false);
-
-	if (getProximitySensorsAction () -> get_active ())
-		getProximitySensorsAction () -> set_active (false);
-
-	if (getSoundsAction () -> get_active ())
-		getSoundsAction () -> set_active (false);
-
-	if (getTransformSensorsAction () -> get_active ())
-		getTransformSensorsAction () -> set_active (false);
-
-	if (getVisibilitySensorsAction () -> get_active ())
-		getVisibilitySensorsAction () -> set_active (false);
-
-	if (getViewpointsAction () -> get_active ())
-		getViewpointsAction () -> set_active (false);
 }
 
 void

@@ -79,38 +79,30 @@ X3DBrowserWindowInterface::create ()
 	// Get objects.
 	m_AngleLayoutToolAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
 	m_AxonometricGridLayoutToolAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AxonometricGridLayoutToolAction"));
-	m_BackgroundsAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BackgroundsAction"));
 	m_BrowserAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
 	m_CobwebCompatibilityAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("CobwebCompatibilityAction"));
 	m_EditorAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
 	m_FlatAction                      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
-	m_FogsAction                      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FogsAction"));
 	m_FollowPrimarySelectionAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_GouraudAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
 	m_GridLayoutToolAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
-	m_LightsAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LightsAction"));
 	m_MenubarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
 	m_PhongAction                     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
 	m_PointsetAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
 	m_PrimitiveQualityHighAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
 	m_PrimitiveQualityLowAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityLowAction"));
 	m_PrimitiveQualityMediumAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityMediumAction"));
-	m_ProximitySensorsAction          = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ProximitySensorsAction"));
 	m_RenderingPropertiesAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RenderingPropertiesAction"));
 	m_RubberbandAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
 	m_SelectLowestAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
 	m_SidebarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SidebarAction"));
-	m_SoundsAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SoundsAction"));
 	m_TabsAction                      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TabsAction"));
 	m_TextureQualityHighAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityHighAction"));
 	m_TextureQualityLowAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityLowAction"));
 	m_TextureQualityMediumAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
 	m_ToolbarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
-	m_TransformSensorsAction          = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformSensorsAction"));
 	m_TransformToolModeAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
-	m_ViewpointsAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ViewpointsAction"));
-	m_VisibilitySensorsAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("VisibilitySensorsAction"));
 	m_WireframeAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
 
 	// Get widgets.
@@ -198,17 +190,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserTextureQualityHighMenuItem", m_BrowserTextureQualityHighMenuItem);
 	m_builder -> get_widget ("BrowserTextureQualityMediumMenuItem", m_BrowserTextureQualityMediumMenuItem);
 	m_builder -> get_widget ("BrowserTextureQualityLowMenuItem", m_BrowserTextureQualityLowMenuItem);
-	m_builder -> get_widget ("BrowserShowHideEnvironmentalEffectsMenuItem", m_BrowserShowHideEnvironmentalEffectsMenuItem);
-	m_builder -> get_widget ("BrowserBackgroundsMenuItem", m_BrowserBackgroundsMenuItem);
-	m_builder -> get_widget ("BrowserFogsMenuItem", m_BrowserFogsMenuItem);
-	m_builder -> get_widget ("BrowserIconicObjectsMenuItem", m_BrowserIconicObjectsMenuItem);
-	m_builder -> get_widget ("BrowserLightsMenuItem", m_BrowserLightsMenuItem);
-	m_builder -> get_widget ("BrowserProximitySensorsMenuItem", m_BrowserProximitySensorsMenuItem);
-	m_builder -> get_widget ("BrowserTransformSensorsMenuItem", m_BrowserTransformSensorsMenuItem);
-	m_builder -> get_widget ("BrowserSoundsMenuItem", m_BrowserSoundsMenuItem);
-	m_builder -> get_widget ("BrowserVisibilitySensorsMenuItem", m_BrowserVisibilitySensorsMenuItem);
-	m_builder -> get_widget ("BrowserViewpointsMenuItem", m_BrowserViewpointsMenuItem);
-	m_builder -> get_widget ("BrowserHideAllObjectIconsMenuItem", m_BrowserHideAllObjectIconsMenuItem);
 	m_builder -> get_widget ("BrowserRubberbandMenuItem", m_BrowserRubberbandMenuItem);
 	m_builder -> get_widget ("BrowserRenderingPropertiesMenuItem", m_BrowserRenderingPropertiesMenuItem);
 	m_builder -> get_widget ("BrowserFullScreenMenuItem", m_BrowserFullScreenMenuItem);
@@ -323,17 +304,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("TextureQualityHighMenuItem", m_TextureQualityHighMenuItem);
 	m_builder -> get_widget ("TextureQualityMediumMenuItem", m_TextureQualityMediumMenuItem);
 	m_builder -> get_widget ("TextureQualityLowMenuItem", m_TextureQualityLowMenuItem);
-	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
-	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
-	m_builder -> get_widget ("FogsMenuItem", m_FogsMenuItem);
-	m_builder -> get_widget ("IconicObjectsMenuItem", m_IconicObjectsMenuItem);
-	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
-	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
-	m_builder -> get_widget ("SoundsMenuItem", m_SoundsMenuItem);
-	m_builder -> get_widget ("TransformSensorsMenuItem", m_TransformSensorsMenuItem);
-	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
-	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
-	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_builder -> get_widget ("RubberbandMenuItem", m_RubberbandMenuItem);
 	m_builder -> get_widget ("RenderingPropertiesMenuItem", m_RenderingPropertiesMenuItem);
 	m_builder -> get_widget ("FullScreenMenuItem", m_FullScreenMenuItem);
@@ -440,38 +410,30 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
 	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 	m_AxonometricGridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
-	m_BackgroundsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
 	m_BrowserAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_toggled));
 	m_CobwebCompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_cobweb_compatibility_toggled));
 	m_EditorAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_editor_toggled));
 	m_FlatAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_flat_toggled));
-	m_FogsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fogs_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_GouraudAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_gouraud_toggled));
 	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_LightsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_lights_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_menubar_toggled));
 	m_PhongAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_phong_toggled));
 	m_PointsetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_pointset_toggled));
 	m_PrimitiveQualityHighAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_high_toggled));
 	m_PrimitiveQualityLowAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_low_toggled));
 	m_PrimitiveQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_medium_toggled));
-	m_ProximitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_proximity_sensors_toggled));
 	m_RenderingPropertiesAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 	m_RubberbandAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 	m_SelectLowestAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
 	m_SidebarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_sidebar_toggled));
-	m_SoundsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_sounds_toggled));
 	m_TabsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_tabs_toggled));
 	m_TextureQualityHighAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_high_toggled));
 	m_TextureQualityLowAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_low_toggled));
 	m_TextureQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_medium_toggled));
 	m_ToolbarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_toggled));
-	m_TransformSensorsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_sensors_toggled));
 	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
-	m_ViewpointsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
-	m_VisibilitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
 	m_WireframeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_wireframe_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
@@ -535,11 +497,6 @@ X3DBrowserWindowInterface::create ()
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserMotionBlurMenuItem'.
 	m_BrowserMotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_motion_blur_activated));
-
-	// Connect object Gtk::MenuItem with id 'BrowserHideAllObjectIconsMenuItem'.
-	m_BrowserHideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activated));
-
-	// Connect object Gtk::ImageMenuItem with id 'BrowserFullScreenMenuItem'.
 	m_BrowserFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fullscreen_activated));
 	m_BrowserUnFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_unfullscreen_activated));
 	m_BrowserSelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_all_activated));
@@ -640,11 +597,6 @@ X3DBrowserWindowInterface::create ()
 
 	// Connect object Gtk::ImageMenuItem with id 'MotionBlurMenuItem'.
 	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_motion_blur_activated));
-
-	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
-	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_hide_all_object_icons_activated));
-
-	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
 	m_FullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fullscreen_activated));
 	m_UnFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_unfullscreen_activated));
 	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_all_activated));

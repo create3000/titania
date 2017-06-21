@@ -103,10 +103,13 @@ private:
 	///  @name Event handlers
 
 	void
-	on_main_browser_mapped ();
+	set_editing ();
 
 	void
-	set_editing ();
+	set_scene ();
+
+	void
+	on_main_browser_mapped ();
 
 	void
 	set_undoHistory ();
@@ -176,6 +179,64 @@ private:
 	
 	void
 	connectShading (const X3D::SFString & field);
+
+	///  @name Show menu
+
+	void
+	set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools);
+	
+	void
+	set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools);
+	
+	void
+	set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools);
+	
+	void
+	set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools);
+	
+	void
+	set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools);
+	
+	void
+	set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools);
+
+	///  @name Object Icons
+
+	virtual
+	void
+	on_backgrounds_toggled () final override;
+
+	virtual
+	void
+	on_fogs_toggled () final override;
+
+	virtual
+	void
+	on_lights_toggled () final override;
+
+	virtual
+	void
+	on_proximity_sensors_toggled () final override;
+
+	virtual
+	void
+	on_sounds_toggled () final override;
+
+	virtual
+	void
+	on_transform_sensors_toggled () final override;
+
+	virtual
+	void
+	on_visibility_sensors_toggled () final override;
+
+	virtual
+	void
+	on_viewpoints_toggled () final override;
+
+	virtual
+	void
+	on_hide_all_object_icons_activated () final override;
 
 	///  @name Camera menu
 

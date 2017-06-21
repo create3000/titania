@@ -210,11 +210,131 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="DisplayMenuItem">
+              <object class="GtkMenuItem" id="ShowMenuItem">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
-                <property name="label" translatable="yes">Display</property>
+                <property name="label" translatable="yes">Sho_w</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="ShowHideEnvironmentalEffectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Show/Hide Environmental Effects</property>
+                        <property name="use_underline">True</property>
+                        <style>
+                          <class name="titania-small"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="BackgroundsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Backgrounds</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_backgrounds_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="FogsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Fogs</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_fogs_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="IconicObjectsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Show/Hide Iconic Objects</property>
+                        <property name="use_underline">True</property>
+                        <style>
+                          <class name="titania-small"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="LightsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Lights</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_lights_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ProximitySensorsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_ProximitySensors</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_proximity_sensors_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="SoundsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Sounds</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_sounds_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="TransformSensorsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_TransformSensor</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_transform_sensors_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="VisibilitySensorsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">V_isibilitySensors</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ViewpointsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Viewpoints</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_viewpoints_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="HideAllObjectIconsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Hide All Object Icons</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>

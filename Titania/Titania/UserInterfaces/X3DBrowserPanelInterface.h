@@ -156,12 +156,68 @@ public:
 	{ return *m_PointsetMenuItem; }
 
 	Gtk::MenuItem &
-	getDisplayMenuItem () const
-	{ return *m_DisplayMenuItem; }
+	getShowMenuItem () const
+	{ return *m_ShowMenuItem; }
+
+	Gtk::MenuItem &
+	getShowHideEnvironmentalEffectsMenuItem () const
+	{ return *m_ShowHideEnvironmentalEffectsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBackgroundsMenuItem () const
+	{ return *m_BackgroundsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getFogsMenuItem () const
+	{ return *m_FogsMenuItem; }
+
+	Gtk::MenuItem &
+	getIconicObjectsMenuItem () const
+	{ return *m_IconicObjectsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getLightsMenuItem () const
+	{ return *m_LightsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getProximitySensorsMenuItem () const
+	{ return *m_ProximitySensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getSoundsMenuItem () const
+	{ return *m_SoundsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getTransformSensorsMenuItem () const
+	{ return *m_TransformSensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getVisibilitySensorsMenuItem () const
+	{ return *m_VisibilitySensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getViewpointsMenuItem () const
+	{ return *m_ViewpointsMenuItem; }
+
+	Gtk::MenuItem &
+	getHideAllObjectIconsMenuItem () const
+	{ return *m_HideAllObjectIconsMenuItem; }
 
 	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserPanelMenuItem () const
+	{ return *m_BrowserPanelMenuItem; }
+
+	Gtk::MenuItem &
+	getColorEditorPanelMenuItem () const
+	{ return *m_ColorEditorPanelMenuItem; }
+
+	Gtk::MenuItem &
+	getTextureMappingPanelMenuItem () const
+	{ return *m_TextureMappingPanelMenuItem; }
 
 	Gtk::MenuItem &
 	getCameraMenuItem () const
@@ -263,6 +319,42 @@ public:
 
 	virtual
 	void
+	on_backgrounds_toggled () = 0;
+
+	virtual
+	void
+	on_fogs_toggled () = 0;
+
+	virtual
+	void
+	on_lights_toggled () = 0;
+
+	virtual
+	void
+	on_proximity_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_sounds_toggled () = 0;
+
+	virtual
+	void
+	on_transform_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_visibility_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_viewpoints_toggled () = 0;
+
+	virtual
+	void
+	on_hide_all_object_icons_activated () = 0;
+
+	virtual
+	void
 	on_main_view_activate () = 0;
 
 	virtual
@@ -334,8 +426,22 @@ private:
 	Gtk::RadioMenuItem* m_FlatMenuItem;
 	Gtk::RadioMenuItem* m_WireframeMenuItem;
 	Gtk::RadioMenuItem* m_PointsetMenuItem;
-	Gtk::MenuItem* m_DisplayMenuItem;
+	Gtk::MenuItem* m_ShowMenuItem;
+	Gtk::MenuItem* m_ShowHideEnvironmentalEffectsMenuItem;
+	Gtk::CheckMenuItem* m_BackgroundsMenuItem;
+	Gtk::CheckMenuItem* m_FogsMenuItem;
+	Gtk::MenuItem* m_IconicObjectsMenuItem;
+	Gtk::CheckMenuItem* m_LightsMenuItem;
+	Gtk::CheckMenuItem* m_ProximitySensorsMenuItem;
+	Gtk::CheckMenuItem* m_SoundsMenuItem;
+	Gtk::CheckMenuItem* m_TransformSensorsMenuItem;
+	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
+	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
+	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
+	Gtk::MenuItem* m_BrowserPanelMenuItem;
+	Gtk::MenuItem* m_ColorEditorPanelMenuItem;
+	Gtk::MenuItem* m_TextureMappingPanelMenuItem;
 	Gtk::MenuItem* m_CameraMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
 	Gtk::SeparatorMenuItem* m_MainViewSeparatorMenuItem;
