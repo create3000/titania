@@ -1226,8 +1226,8 @@ BrowserWindow::setEditing (const bool enabled)
 	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
 	getEditMenuItem ()                   .set_visible (enabled);
 	getBrowserOptionsSeparator ()        .set_visible (enabled);
-	getMotionBlurMenuItem ()             .set_visible (enabled);
-	getShadingMenuItem ()                .set_visible (enabled);
+	//getMotionBlurMenuItem ()             .set_visible (enabled);
+	//getShadingMenuItem ()                .set_visible (enabled);
 	getSelectionMenuItem ()              .set_visible (enabled);
 	getGeometryMenuItem ()               .set_visible (enabled);
 	getLayoutMenuItem ()                 .set_visible (enabled);
@@ -1238,8 +1238,8 @@ BrowserWindow::setEditing (const bool enabled)
 	getBrowserRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
 	getBrowserEditMenuItem ()                   .set_visible (enabled);
 	getBrowserBrowserOptionsSeparator ()        .set_visible (enabled);
-	getBrowserMotionBlurMenuItem ()             .set_visible (enabled);
-	getBrowserShadingMenuItem ()                .set_visible (enabled);
+	//getBrowserMotionBlurMenuItem ()             .set_visible (enabled);
+	//getBrowserShadingMenuItem ()                .set_visible (enabled);
 	getBrowserSelectionMenuItem ()              .set_visible (enabled);
 	getBrowserGeometryMenuItem ()               .set_visible (enabled);
 	getBrowserLayoutMenuItem ()                 .set_visible (enabled);

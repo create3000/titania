@@ -143,6 +143,56 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
+		std::is_arithmetic <T>::value,
+		value_type
+	>
+	operator ++ ()
+	{
+		++ get ();
+		addEvent ();
+		return getValue ();
+	}
+
+	template <class T = InternalType>
+	std::enable_if_t <
+		std::is_arithmetic <T>::value,
+		value_type
+	>
+	operator ++ (int)
+	{
+		const auto tmp = getValue ();
+		++ get ();
+		addEvent ();
+		return tmp;
+	}
+
+	template <class T = InternalType>
+	std::enable_if_t <
+		std::is_arithmetic <T>::value,
+		value_type
+	>
+	operator -- ()
+	{
+		-- get ();
+		addEvent ();
+		return getValue ();
+	}
+
+	template <class T = InternalType>
+	std::enable_if_t <
+		std::is_arithmetic <T>::value,
+		value_type
+	>
+	operator -- (int)
+	{
+		const auto tmp = getValue ();
+		-- get ();
+		addEvent ();
+		return tmp;
+	}
+
+	template <class T = InternalType>
+	std::enable_if_t <
 		std::is_integral <T>::value,
 		X3DScalar &
 	>

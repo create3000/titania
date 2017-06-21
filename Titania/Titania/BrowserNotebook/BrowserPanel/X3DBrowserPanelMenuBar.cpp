@@ -120,6 +120,13 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	set_shading (browser -> getBrowserOptions () -> Shading ());
 	set_viewer ();
 	set_straighten_horizon ();
+
+	if (browser not_eq getPage () -> getMainBrowser ())
+	{
+		getShowHideEnvironmentalEffectsMenuItem () .set_visible (false);
+		getBackgroundsMenuItem ()                  .set_visible (false);
+		getFogsMenuItem ()                         .set_visible (false);
+	}
 }
 
 void
@@ -172,6 +179,10 @@ X3DBrowserPanelMenuBar::on_unmap ()
 {
 	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
 }
+
+/*
+ *  View menu
+ */
 
 void
 X3DBrowserPanelMenuBar::set_undoHistory ()
@@ -256,6 +267,10 @@ X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 	viewpoint -> transitionStart (viewpoint);
 }
 
+/*
+ *  Shading menu
+ */
+
 void
 X3DBrowserPanelMenuBar::on_phong_toggled ()
 {
@@ -332,6 +347,10 @@ X3DBrowserPanelMenuBar::connectShading (const X3D::SFString & field)
 	field .removeInterest (&X3DBrowserPanelMenuBar::connectShading, this);
 	field .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
 }
+
+/*
+ *  Show menu
+ */
 
 void
 X3DBrowserPanelMenuBar::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools)
@@ -645,6 +664,10 @@ X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
 		getViewpointsMenuItem () .set_active (false);
 }
 
+/*
+ *  Camera menu
+ */
+
 void
 X3DBrowserPanelMenuBar::on_main_view_activate ()
 {
@@ -692,6 +715,10 @@ X3DBrowserPanelMenuBar::on_back_view_activate ()
 {
 	setType (BrowserPanelType::BACK);
 }
+
+/*
+ *  Destruction menu
+ */
 
 void
 X3DBrowserPanelMenuBar::dispose ()

@@ -701,7 +701,9 @@ LayerEditor::on_remove_layer_button_clicked ()
 	if (selectedIndex == 0)
 	   return;
 
-	-- selectedIndex;
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Layer"));
+
+	undoStep -> addObjects (layerSet);
 
 	// Remove from tree view
 
@@ -715,12 +717,45 @@ LayerEditor::on_remove_layer_button_clicked ()
 		   row -> set_value (Columns::INDEX, index ++);
 	}
 
+	// Update active layer
+
+	if (selectedIndex < layerSet -> activeLayer ())
+	{
+		disconnectActiveLayer ();
+		undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+		-- layerSet -> activeLayer ();
+		undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+	}
+	else if (selectedIndex == layerSet -> activeLayer ())
+	{
+		disconnectActiveLayer ();
+		undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+		layerSet -> activeLayer () = -1;
+		undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+	}
+
+	// Update private active layer
+
+	if (selectedIndex < layerSet -> privateActiveLayer ())
+	{
+		disconnectPrivateActiveLayer ();
+		undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+		-- layerSet -> privateActiveLayer ();
+		undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+	}
+	else if (selectedIndex == layerSet -> privateActiveLayer ())
+	{
+		disconnectPrivateActiveLayer ();
+		undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+		layerSet -> privateActiveLayer () = -1;
+		undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+	}
+
 	// Remove from  LayerSet
 
 	disconnectLayers ();
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Layer"));
-	X3D::X3DEditor::removeNode (getCurrentContext (), layerSet, layerSet -> layers (), selectedIndex, undoStep);
+	X3D::X3DEditor::removeNode (getCurrentContext (), layerSet, layerSet -> layers (), selectedIndex - 1, undoStep);
 	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -730,7 +765,7 @@ LayerEditor::on_top_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer To Top"));
 
-	disconnectLayers ();
+	undoStep -> addObjects (layerSet);
 
 	// Move to top
 	{
@@ -762,6 +797,48 @@ LayerEditor::on_top_clicked ()
 
 		// Move layer
 		{
+			// Update active layer
+		
+			if (layerSet -> activeLayer () < 0)
+				;
+			else if (selectedIndex > layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				++ layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+			else if (selectedIndex == layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				layerSet -> activeLayer () = 1;
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+
+			// Update private active layer
+
+			if (layerSet -> privateActiveLayer () < 0)
+				;
+			else if (selectedIndex > layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				++ layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+			else if (selectedIndex == layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				layerSet -> privateActiveLayer () = 1;
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+
+			// Move layer within layer set
+
+			disconnectLayers ();
+
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, 0, undoStep);
@@ -783,8 +860,6 @@ LayerEditor::on_up_clicked ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer Up"));
 
 	undoStep -> addObjects (layerSet);
-
-	disconnectLayers ();
 
 	// Move to top
 	{
@@ -819,6 +894,48 @@ LayerEditor::on_up_clicked ()
 
 		// Move layer
 		{
+			// Update active layer
+		
+			if (layerSet -> activeLayer () < 0)
+				;
+			else if (selectedIndex == layerSet -> activeLayer () + 1)
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				++ layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+			else if (selectedIndex == layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				-- layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+
+			// Update private active layer
+
+			if (layerSet -> privateActiveLayer () < 0)
+				;
+			else if (selectedIndex == layerSet -> privateActiveLayer () + 1)
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				++ layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+			else if (selectedIndex == layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				-- layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+
+			// Move layer within layer set
+
+			disconnectLayers ();
+
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex - 1, undoStep);
@@ -839,7 +956,7 @@ LayerEditor::on_down_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer Down"));
 
-	disconnectLayers ();
+	undoStep -> addObjects (layerSet);
 
 	// Move to top
 	{
@@ -878,6 +995,48 @@ LayerEditor::on_down_clicked ()
 
 		// Move layer
 		{
+			// Update active layer
+		
+			if (layerSet -> activeLayer () < 0)
+				;
+			else if (selectedIndex == layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				++ layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+			else if (selectedIndex + 1 == layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				-- layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+		
+			// Update private active layer
+		
+			if (layerSet -> privateActiveLayer () < 0)
+				;
+			else if (selectedIndex == layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				++ layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+			else if (selectedIndex + 1 == layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				-- layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+
+			// Move layer within layer set
+
+			disconnectLayers ();
+
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex + 2, undoStep);
@@ -898,7 +1057,7 @@ LayerEditor::on_bottom_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Layer To Bottom"));
 
-	disconnectLayers ();
+	undoStep -> addObjects (layerSet);
 
 	// Move to bottom
 	{
@@ -924,11 +1083,55 @@ LayerEditor::on_bottom_clicked ()
 
 		// Move layer
 		{
+			// Update active layer
+		
+			if (layerSet -> activeLayer () < 0)
+				;
+			else if (selectedIndex < layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				-- layerSet -> activeLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+			else if (selectedIndex == layerSet -> activeLayer ())
+			{
+				disconnectActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+				layerSet -> activeLayer () = layerSet -> layers () .size ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
+			}
+
+			// Update private active layer
+		
+			if (layerSet -> privateActiveLayer () < 0)
+				;
+			else if (selectedIndex < layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				-- layerSet -> privateActiveLayer ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+			else if (selectedIndex == layerSet -> privateActiveLayer ())
+			{
+				disconnectPrivateActiveLayer ();
+				undoStep -> addUndoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+				layerSet -> privateActiveLayer () = layerSet -> layers () .size ();
+				undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
+			}
+
+			// Move layer within layer set
+
+			disconnectLayers ();
+
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, layerSet -> layers () .size (), undoStep);
 		}
 	}
+
+	set_order (undoStep);
 
 	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
 
