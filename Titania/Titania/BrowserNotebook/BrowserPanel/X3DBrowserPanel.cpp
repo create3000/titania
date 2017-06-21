@@ -307,14 +307,16 @@ X3DBrowserPanel::set_dependent_browser ()
 		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
 
 		viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
+		viewpoint -> setPosition (positions [type]);
+		viewpoint -> setOrientation (orientations [type]);
 
-		viewpoint -> positionOffset ()         = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/position", positions [type]) - viewpoint -> getPosition ();
-		viewpoint -> orientationOffset ()      = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/orientation", orientations [type]) * ~viewpoint -> getOrientation ();
-		viewpoint -> centerOfRotationOffset () = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ()) - viewpoint -> getCenterOfRotation ();
-		viewpoint -> fieldOfViewScale ()       = worldInfo -> getMetaData ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
+		viewpoint -> positionOffset ()         = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/position", positions [type]) - viewpoint -> getPosition ();
+		viewpoint -> orientationOffset ()      = ~viewpoint -> getOrientation () * worldInfo -> getMetaData <X3D::Rotation4d> ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/orientation", orientations [type]);
+		viewpoint -> centerOfRotationOffset () = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/centerOfRotation") - viewpoint -> getCenterOfRotation ();
+		viewpoint -> fieldOfViewScale ()       = worldInfo -> getMetaData <double>          ("/Titania/BrowserPanel/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
 
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
-	
+
 		// Connect to active layer.
 	
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
