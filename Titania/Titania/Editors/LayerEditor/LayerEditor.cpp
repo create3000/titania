@@ -196,16 +196,13 @@ LayerEditor::set_layers ()
 	for (const auto & layer : layers)
 	{
 	   if (layer)
-	      layer -> isPickable () .removeInterest (&LayerEditor::set_treeView, this);
+		{
+			layer -> name_changed () .removeInterest (&LayerEditor::set_treeView, this);
+	      layer -> isPickable ()   .removeInterest (&LayerEditor::set_treeView, this);
+		}
 	}
 
 	layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
-
-	for (const auto & layer : layers)
-	{
-	   if (layer)
-	      layer -> isPickable () .addInterest (&LayerEditor::set_treeView, this);
-	}
 
 	set_treeView ();
 }
@@ -242,12 +239,18 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 	const bool   visible     = std::find (order .begin (), order .end (), index) not_eq order .end ();
 	const bool   activeLayer = (index == layerSet -> activeLayer ());
 
+	if (layer)
+	{
+		layer -> name_changed () .addInterest (&LayerEditor::set_treeView, this);
+		layer -> isPickable ()   .addInterest (&LayerEditor::set_treeView, this);
+	}
+
 	row -> set_value (Columns::INDEX,              index);
 	row -> set_value (Columns::VISIBLE,            visible);
 	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
 	row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Hand" : "gtk-stop"));
-	row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
-	row -> set_value (Columns::NAME,               layer -> isLayer0 () ? _ ("Default Layer") : node -> getName ());
+	row -> set_value (Columns::TYPE_NAME,          node ? node -> getTypeName () : "");
+	row -> set_value (Columns::NAME,               layer ? (layer -> isLayer0 () ? _ ("Default Layer") : node -> getName ()) : "NULL");
 	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
 	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 		
@@ -755,8 +758,16 @@ LayerEditor::on_remove_layer_button_clicked ()
 
 	disconnectLayers ();
 
-	X3D::X3DEditor::removeNode (getCurrentContext (), layerSet, layerSet -> layers (), selectedIndex - 1, undoStep);
+	-- selectedIndex;
+
+	X3D::X3DEditor::removeNode (getCurrentContext (), layerSet, layerSet -> layers (), selectedIndex, undoStep);
+
+	layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
+
+	set_order (undoStep);
+
 	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -842,6 +853,8 @@ LayerEditor::on_top_clicked ()
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, 0, undoStep);
+
+			layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
 		}
 	}
 
@@ -939,6 +952,8 @@ LayerEditor::on_up_clicked ()
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex - 1, undoStep);
+
+			layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
 		}
 	}
 
@@ -1040,6 +1055,8 @@ LayerEditor::on_down_clicked ()
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex + 2, undoStep);
+
+			layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
 		}
 	}
 
@@ -1128,6 +1145,8 @@ LayerEditor::on_bottom_clicked ()
 			-- selectedIndex;
 
 			X3D::X3DEditor::moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, layerSet -> layers () .size (), undoStep);
+
+			layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
 		}
 	}
 
