@@ -242,6 +242,12 @@ private:
 
 	virtual
 	void
+	on_background_image_activate () final override;
+
+	///  @name Camera menu
+
+	virtual
+	void
 	on_main_view_activate () final override;
 
 	virtual

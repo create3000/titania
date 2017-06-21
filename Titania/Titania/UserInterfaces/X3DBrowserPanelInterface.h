@@ -204,6 +204,14 @@ public:
 	{ return *m_HideAllObjectIconsMenuItem; }
 
 	Gtk::MenuItem &
+	getLayoutMenuItem () const
+	{ return *m_LayoutMenuItem; }
+
+	Gtk::MenuItem &
+	getBackgroundImageMenuItem () const
+	{ return *m_BackgroundImageMenuItem; }
+
+	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
@@ -355,6 +363,10 @@ public:
 
 	virtual
 	void
+	on_background_image_activate () = 0;
+
+	virtual
+	void
 	on_main_view_activate () = 0;
 
 	virtual
@@ -438,6 +450,8 @@ private:
 	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
 	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
+	Gtk::MenuItem* m_LayoutMenuItem;
+	Gtk::MenuItem* m_BackgroundImageMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::MenuItem* m_BrowserPanelMenuItem;
 	Gtk::MenuItem* m_ColorEditorPanelMenuItem;

@@ -676,6 +676,72 @@ X3DBasePtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 }
 
 ///  @relates X3DBasePtrArray
+///  @name Comparision operations
+
+///  Compares two X3DBasePtrArray.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator == (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return lhs .size () == rhs .size () &&
+	       std::equal (lhs .begin (), lhs .end (),
+	                   rhs .begin ());
+}
+
+///  Compares two X3DBasePtrArray.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator not_eq (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return not (lhs == rhs);
+}
+
+///  Lexicographically compares two X3DBasePtrArray.
+///  Returns true if @a lhs less than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator < (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return std::lexicographical_compare (lhs .begin (), lhs .end (),
+	                                     rhs .begin (), rhs .end ());
+}
+
+///  Lexicographically compares two X3DBasePtrArray.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator > (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return rhs < lhs;
+}
+
+///  Lexicographically compares two X3DBasePtrArray.
+///  Returns true if @a lhs greater than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator <= (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return not (rhs < lhs);
+}
+
+///  Lexicographically compares two X3DBasePtrArray.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator >= (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
+{
+	return not (lhs < rhs);
+}
+
+///  @relates X3DBasePtrArray
 ///  @name Artihmetic operations
 
 ///  Returns the set set union of @a lhs and @a rhs.

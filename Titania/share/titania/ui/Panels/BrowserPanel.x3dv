@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Wed, 21 Jun 2017 06:33:49 GMT"
+META "modified" "Wed, 21 Jun 2017 07:51:52 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -99,9 +99,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF BackgroundImageLayer LayoutLayer {
-              isPickable FALSE
-            }
           }
         ]
       }
@@ -157,7 +154,29 @@ LayerSet {
         ]
       }
     }
-    USE BackgroundImageLayer
+    DEF BackgroundImageLayer LayoutLayer {
+      isPickable FALSE
+      children DEF BackgroundImageSwitch Switch {
+        children DEF BackgroundImage Shape {
+          appearance Appearance {
+            texture DEF BackgroundTexture ImageTexture {
+              textureProperties TextureProperties {
+                generateMipMaps TRUE
+                minificationFilter "DEFAULT"
+                magnificationFilter "DEFAULT"
+                boundaryModeS "CLAMP_TO_EDGE"
+                boundaryModeT "CLAMP_TO_EDGE"
+                boundaryModeR "CLAMP_TO_EDGE"
+                textureCompression "DEFAULT"
+              }
+            }
+          }
+          geometry Rectangle2D {
+            solid TRUE
+          }
+        }
+      }
+    }
     DEF GridLayer Layer {
       children [
         NavigationInfo {

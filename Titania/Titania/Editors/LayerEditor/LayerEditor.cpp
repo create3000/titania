@@ -211,7 +211,7 @@ LayerEditor::set_layers ()
 void
 LayerEditor::set_treeView ()
 {
-	if (X3D::MFNode (layers) not_eq layerSet -> layers ())
+	if (layers not_eq layerSet -> layers ())
 		return;
 
 	getLayerTreeView () .unset_model ();

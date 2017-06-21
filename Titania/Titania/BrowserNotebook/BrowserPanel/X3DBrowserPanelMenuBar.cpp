@@ -665,6 +665,16 @@ X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
 }
 
 /*
+ *  Layout menu
+ */
+
+void
+X3DBrowserPanelMenuBar::on_background_image_activate ()
+{
+
+}
+
+/*
  *  Camera menu
  */
 
