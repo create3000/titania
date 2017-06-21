@@ -64,6 +64,12 @@ class X3DPanelInterface :
 {
 public:
 
+	/// @name Events
+
+	const X3D::SFBool &
+	hasFocus () const
+	{ return focus; }
+
 	/// @name Destruction
 
 	virtual
@@ -84,19 +90,26 @@ protected:
 	void
 	initialize () override;
 
-	/// @name Event handlers
+	/// @name Events
 
-	bool
-	on_focus_out_event (GdkEventFocus* event);
-
-	bool
-	on_focus_in_event (GdkEventFocus* event);
+	void
+	setFocus (const bool value)
+	{ focus = value; }
 
 
 private:
 
+	/// @name Event handlers
+
 	void
 	set_editing ();
+
+	void
+	set_focus ();
+
+	///  @name Members
+
+	X3D::SFBool focus;
 
 };
 

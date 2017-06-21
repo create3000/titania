@@ -159,6 +159,12 @@ private:
 	void
 	set_grid ();
 
+	bool
+	on_focus_in_event (GdkEventFocus* event);
+
+	bool
+	on_focus_out_event (GdkEventFocus* event);
+
 	///  @name Static members
 
 	static const std::vector <std::string>     names;

@@ -211,7 +211,6 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="DisplayMenuItem">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="right_justified">True</property>
                 <property name="label" translatable="yes">Display</property>
@@ -225,6 +224,36 @@
                 <property name="right_justified">True</property>
                 <property name="label" translatable="yes">_Panels</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="BrowserPanelMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Browser Panel</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ColorEditorPanelMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Color Editor Panel</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="TextureMappingPanelMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Texture Mapping Panel</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>

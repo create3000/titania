@@ -56,8 +56,11 @@ namespace titania {
 namespace puck {
 
 X3DPanelInterface::X3DPanelInterface () :
-	X3DUserInterface ()
-{ }
+	X3DUserInterface (),
+	           focus (false)
+{
+	addChildObjects (focus);
+}
 
 void
 X3DPanelInterface::initialize ()
@@ -65,6 +68,7 @@ X3DPanelInterface::initialize ()
 	X3DUserInterface::initialize ();
 
 	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
+	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
 
 	set_editing ();
 }
@@ -77,20 +81,18 @@ X3DPanelInterface::set_editing ()
 
 	else
 		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
+
+	set_focus ();
 }
 
-bool
-X3DPanelInterface::on_focus_out_event (GdkEventFocus* event)
+void
+X3DPanelInterface::set_focus ()
 {
-	getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-	return false;
-}
+	if (hasFocus () and getBrowserWindow () -> getEditing ())
+		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
 
-bool
-X3DPanelInterface::on_focus_in_event (GdkEventFocus* event)
-{
-	getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-	return false;
+	else
+		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
 }
 
 void
