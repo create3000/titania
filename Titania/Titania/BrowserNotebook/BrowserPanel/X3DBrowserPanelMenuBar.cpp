@@ -103,8 +103,8 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 void
 X3DBrowserPanelMenuBar::on_main_browser_mapped ()
 {
-	getMainViewMenuItem ()          .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
-	getMainViewSeparatorMenuItem () .set_visible (not getPage () -> getMainBrowser () -> get_mapped ());
+	getMainViewMenuItem ()          .set_sensitive (not getPage () -> getMainBrowser () -> get_mapped ());
+	getMainViewSeparatorMenuItem () .set_sensitive (not getPage () -> getMainBrowser () -> get_mapped ());
 }
 
 void

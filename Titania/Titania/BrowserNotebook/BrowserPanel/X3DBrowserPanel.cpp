@@ -145,6 +145,8 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
+	page -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+
 	const auto t = getConfig () -> get <int32_t> ("type", type);
 	//const auto t = createWorldInfo (page -> getScene ()) -> getMetaData <int32_t> ("/Titania/BrowserPanel/type" + id, type);
 
@@ -218,7 +220,6 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 		browser -> initialized () .addInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> set_opacity (0);
 		browser -> setName (names [type]);
-		browser -> setFixedPipeline (not getBrowserWindow () -> getCobwebCompatibilityAction () -> get_active ());
 	}
 
 	if (getWidget () .get_mapped ())
@@ -317,7 +318,8 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Connect to active layer.
 	
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
-	
+
+		set_fixed_pipeline ();
 		set_activeLayer ();
 		set_grid ();
 	}
@@ -325,6 +327,15 @@ X3DBrowserPanel::set_dependent_browser ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+X3DBrowserPanel::set_fixed_pipeline ()
+{
+	if (type == BrowserPanelType::MAIN)
+		return;
+
+	browser -> setFixedPipeline (page -> getMainBrowser () -> getFixedPipeline ());
 }
 
 void
