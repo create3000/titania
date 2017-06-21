@@ -267,7 +267,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value)
 {
-	if (not editing or (activeLayer and value == getList (activeLayer) -> at (0)))
+	if (not editing or (activeLayer and value == getList (activeLayer) -> getList () .at (0)))
 		selection = nullptr;
 	else
 		selection = value;
@@ -348,11 +348,11 @@ X3DBindableNodeList <Type>::set_list ()
 	{
 		const auto & list = getList (activeLayer);
 
-		if (not list -> empty ())
+		if (not list -> getList () .empty ())
 		{
-			for (size_t i = 0, size = list -> size (); i < size; ++ i)
+			for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 			{
-			   X3D::X3DPtr <Type> node (list -> at (i));
+			   X3D::X3DPtr <Type> node (list -> getList () .at (i));
 
 				if (not editing and getDescription (node) .empty ())
 				   continue;
@@ -388,9 +388,9 @@ X3DBindableNodeList <Type>::set_stack ()
 	const auto & list = getList (activeLayer);
 	auto         row  = getListStore () -> children () .begin ();
 
-	for (size_t i = 0, size = list -> size (); i < size; ++ i)
+	for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 	{
-	   const X3D::X3DPtr <Type> node (list -> at (i));
+	   const X3D::X3DPtr <Type> node (list -> getList () .at (i));
 
 		if (not editing and getDescription (node) .empty ())
 		   continue;
@@ -430,7 +430,7 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 
 	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
 
-	const X3D::X3DPtr <Type> node (getList (activeLayer) -> at (index));
+	const X3D::X3DPtr <Type> node (getList (activeLayer) -> getList () .at (index));
 
 	if (not editing)
 	{
@@ -479,7 +479,7 @@ X3DBindableNodeList <Type>::on_bind_toggled (const Gtk::TreePath & path)
 	// Get Node
 
 	const auto index = path [0];
-	const auto node  = getList (activeLayer) -> at (index);
+	const auto node  = getList (activeLayer) -> getList () .at (index);
 
 	if (node -> isBound ())
 		node -> transitionStart (node);

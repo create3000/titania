@@ -234,7 +234,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint : *getViewpoints ())
+	for (const auto & viewpoint : getViewpoints () -> getList ())
 	{
 		if (not viewpoint -> description () .empty ())
 			userViewpoints .emplace_back (viewpoint);
@@ -263,32 +263,32 @@ X3DLayerNode::bind ()
 {
 	traverse (TraverseType::CAMERA, this);
 
-	if (not getNavigationInfos () -> empty ())
+	if (not getNavigationInfos () -> getList () .empty ())
 	{
-		const auto navigationInfo = getNavigationInfos () -> bound ();
-		getNavigationInfoStack () -> forcePushOnTop (navigationInfo);
+		const auto navigationInfo = getNavigationInfos () -> getBound ();
+		getNavigationInfoStack () -> pushOnTop (navigationInfo, true);
 		navigationInfo -> addLayer (this);
 	}
 
-	if (not getViewpoints () -> empty ())
+	if (not getViewpoints () -> getList () .empty ())
 	{
-		const auto viewpoint = getViewpoints () -> bound ();
-		getViewpointStack () -> forcePushOnTop (viewpoint);
+		const auto viewpoint = getViewpoints () -> getBound ();
+		getViewpointStack () -> pushOnTop (viewpoint, true);
 		viewpoint -> addLayer (this);
 		viewpoint -> resetUserOffsets ();
 	}
 
-	if (not getBackgrounds () -> empty ())
+	if (not getBackgrounds () -> getList () .empty ())
 	{
-		const auto background = getBackgrounds () -> bound ();
-		getBackgroundStack () -> forcePushOnTop (background);
+		const auto background = getBackgrounds () -> getBound ();
+		getBackgroundStack () -> pushOnTop (background, true);
 		background -> addLayer (this);
 	}
 
-	if (not getFogs () -> empty ())
+	if (not getFogs () -> getList () .empty ())
 	{
-		const auto fog = getFogs () -> bound ();
-		getFogStack () -> forcePushOnTop (fog);
+		const auto fog = getFogs () -> getBound ();
+		getFogStack () -> pushOnTop (fog, true);
 		fog -> addLayer (this);
 	}
 }

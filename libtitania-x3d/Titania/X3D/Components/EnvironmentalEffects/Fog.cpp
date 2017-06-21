@@ -118,7 +118,7 @@ Fog::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		case TraverseType::CAMERA:
 		{
-			renderObject -> getLayer () -> getFogs () -> push_back (this);
+			renderObject -> getLayer () -> getFogs () -> pushBack (this);
 			break;
 		}
 		default:

@@ -303,8 +303,8 @@ X3DBrowserPanel::set_dependent_browser ()
 		else
 			viewpoint = executionContext -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
 
-		gridLayer -> getViewpointStack () -> forcePushOnTop (viewpoint);
-		layer     -> getViewpointStack () -> forcePushOnTop (viewpoint);
+		gridLayer -> getViewpointStack () -> pushOnTop (viewpoint, true);
+		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
 
 		viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
 

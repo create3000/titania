@@ -395,7 +395,7 @@ NavigationInfo::traverse (const TraverseType type, X3DRenderObject* const render
 	{
 		case TraverseType::CAMERA:
 		{
-			renderObject -> getLayer () -> getNavigationInfos () -> push_back (this);
+			renderObject -> getLayer () -> getNavigationInfos () -> pushBack (this);
 			break;
 		}
 		default:

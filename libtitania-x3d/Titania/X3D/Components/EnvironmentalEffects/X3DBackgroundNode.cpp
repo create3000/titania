@@ -348,7 +348,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 	{
 		case TraverseType::CAMERA:
 		{
-			renderObject -> getLayer () -> getBackgrounds () -> push_back (this);
+			renderObject -> getLayer () -> getBackgrounds () -> pushBack (this);
 			
 			transformationMatrix = renderObject -> getModelViewMatrix () .get ();
 			break;

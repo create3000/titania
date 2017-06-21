@@ -65,9 +65,11 @@ class X3DBindableNodeStack :
 {
 public:
 
-	typedef Type*                            pointer_type;
-	typedef basic::bind_stack <pointer_type> stack_type;
-	typedef typename stack_type::size_type   size_type;
+	///  @name Member types
+
+	using pointer_type = Type*;
+	using stack_type   = basic::bind_stack <pointer_type>;
+	using size_type    = typename stack_type::size_type;
 
 	///  @name Construction
 
@@ -125,19 +127,16 @@ public:
 	size_type
 	getSize () const
 	{ return stack .size (); }
-		
-	void
-	forcePushOnTop (const pointer_type & node)
-	{
-		node -> isBound ()  = true;
-		node -> bindTime () = getCurrentTime ();
-		pushOnTop (node, true);
-	}
 
 	void
 	pushOnTop (const pointer_type & node, const bool force = false)
 	{
-		if (lock and not force)
+		if (force)
+		{
+			node -> isBound ()  = true;
+			node -> bindTime () = getCurrentTime ();
+		}
+		else if (lock)
 			return;
 
 		if (stack .empty ())

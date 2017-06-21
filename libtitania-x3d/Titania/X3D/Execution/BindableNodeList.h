@@ -64,10 +64,10 @@ class X3DBindableNodeList :
 {
 public:
 
-	typedef Type*                              pointer_type;
-	typedef std::vector <pointer_type>         list_type;
-	typedef typename list_type::const_iterator const_iterator;
-	typedef typename list_type::size_type      size_type;
+	///  @name Member types
+
+	using pointer_type = Type*;;
+	using list_type    = std::vector <pointer_type>;
 
 	/// @name Constructors
 
@@ -102,53 +102,16 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	/// @name Iterators
+	/// @name Member access
 
-	const_iterator
-	begin () const
-	{ return list .cbegin (); }
-
-	const_iterator
-	cbegin () const
-	{ return list .cbegin (); }
-
-	const_iterator
-	end () const
-	{ return list .cend (); }
-
-	const_iterator
-	cend () const
-	{ return list .cend (); }
-
-	///  @name Member access
-
-	const pointer_type &
-	operator [ ] (const size_type & index) const
-	{ return list [index]; }
-
-	const pointer_type &
-	at (const size_type & index) const
-	throw (std::out_of_range)
-	{ return list .at (index); }
-
-	/// @name Capacity
-
-	bool
-	empty () const
-	{ return list .empty (); }
-
-	size_type
-	size () const
-	{ return list .size (); }
-
-	size_type
-	max_size () const
-	{ return list .max_size (); }
+	const list_type &
+	getList () const
+	{ return list; }
 
 	/// @name Modifiers
 
 	const pointer_type &
-	bound () const
+	getBound () const
 	{
 	   if (not list .empty ())
 	   {
@@ -161,16 +124,16 @@ public:
 
 		try
 		{
-			return at (1);
+			return list .at (1);
 		}
 		catch (const std::out_of_range &)
 		{
-			return at (0);
+			return list .at (0);
 		}
 	}
 
 	void
-	push_back (const pointer_type & node)
+	pushBack (const pointer_type & node)
 	{ temp .emplace_back (node); }
 
 	void
@@ -194,6 +157,11 @@ public:
 			temp .clear ();
 	}
 
+
+private:
+
+	///  @name Operations
+
 	void
 	erase (const pointer_type & node)
 	{
@@ -205,11 +173,6 @@ public:
 			addEvent ();
 		}
 	}
-
-
-private:
-
-	///  @name Operations
 	
 	void
 	replace (const list_type &)

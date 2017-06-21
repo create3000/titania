@@ -617,7 +617,7 @@ X3DViewpointNode::traverse (const TraverseType type, X3DRenderObject* const rend
 		{
 			const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
-			renderObject -> getLayer () -> getViewpoints () -> push_back (this);
+			renderObject -> getLayer () -> getViewpoints () -> pushBack (this);
 
 			setTransformationMatrix (modelViewMatrix);
 
