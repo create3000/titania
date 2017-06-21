@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Wed, 21 Jun 2017 06:31:39 GMT"
+META "modified" "Wed, 21 Jun 2017 06:33:49 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO Grid [
@@ -41,7 +41,7 @@ WorldInfo {
         value DEF activeLayer MetadataInteger {
           name "activeLayer"
           reference "http://titania.create3000.de"
-          value 1
+          value 4
         }
       }
       DEF NavigationInfo MetadataSet {

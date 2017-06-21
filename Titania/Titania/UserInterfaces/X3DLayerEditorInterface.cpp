@@ -96,6 +96,9 @@ X3DLayerEditorInterface::create ()
 	m_builder -> get_widget ("LayerSetExpander", m_LayerSetExpander);
 	m_builder -> get_widget ("LayerScrolledWindow", m_LayerScrolledWindow);
 	m_builder -> get_widget ("LayerTreeView", m_LayerTreeView);
+	m_builder -> get_widget ("LayerNameBox", m_LayerNameBox);
+	m_builder -> get_widget ("LayerNameEntry", m_LayerNameEntry);
+	m_builder -> get_widget ("LayerRenameButton", m_LayerRenameButton);
 	m_builder -> get_widget ("LayerActionBox", m_LayerActionBox);
 	m_builder -> get_widget ("NewLayerPopupButton", m_NewLayerPopupButton);
 	m_builder -> get_widget ("RemoveLayerButton", m_RemoveLayerButton);

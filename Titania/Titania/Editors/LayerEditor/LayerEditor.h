@@ -100,6 +100,9 @@ private:
 	set_treeView ();
 
 	void
+	set_name (X3D::X3DLayerNode* const layer);
+
+	void
 	add_layer (const X3D::SFNode &, const X3D::X3DPtr <X3D::X3DLayerNode> &, const int32_t);
 
 	void
@@ -202,6 +205,8 @@ private:
 	X3D::WorldPtr                        world;
 	X3D::X3DPtr <X3D::LayerSet>          layerSet;
 	X3D::X3DPtrArray <X3D::X3DLayerNode> layers;
+	NameEntry                            nodeName;
+
 };
 
 } // puck

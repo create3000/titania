@@ -156,6 +156,18 @@ public:
 	{ return *m_LayerTreeView; }
 
 	Gtk::Box &
+	getLayerNameBox () const
+	{ return *m_LayerNameBox; }
+
+	Gtk::Entry &
+	getLayerNameEntry () const
+	{ return *m_LayerNameEntry; }
+
+	Gtk::Button &
+	getLayerRenameButton () const
+	{ return *m_LayerRenameButton; }
+
+	Gtk::Box &
 	getLayerActionBox () const
 	{ return *m_LayerActionBox; }
 
@@ -302,6 +314,9 @@ private:
 	Gtk::Expander* m_LayerSetExpander;
 	Gtk::ScrolledWindow* m_LayerScrolledWindow;
 	Gtk::TreeView* m_LayerTreeView;
+	Gtk::Box* m_LayerNameBox;
+	Gtk::Entry* m_LayerNameEntry;
+	Gtk::Button* m_LayerRenameButton;
 	Gtk::Box* m_LayerActionBox;
 	Gtk::Button* m_NewLayerPopupButton;
 	Gtk::Button* m_RemoveLayerButton;

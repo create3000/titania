@@ -90,7 +90,8 @@ LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
 	X3DLayerEditorInterface (get_ui ("Editors/LayerEditor.glade")),
 	                  world (),
 	               layerSet (),
-	                 layers ()
+	                 layers (),
+	               nodeName (this, getLayerNameEntry (), getLayerRenameButton ())
 {
 	addChildObjects (world, layerSet, layers);
 
@@ -241,7 +242,7 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 
 	if (layer)
 	{
-		layer -> name_changed () .addInterest (&LayerEditor::set_treeView, this);
+		layer -> name_changed () .addInterest (&LayerEditor::set_name, this, layer .getValue ());
 		layer -> isPickable ()   .addInterest (&LayerEditor::set_treeView, this);
 	}
 
@@ -250,7 +251,7 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
 	row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Hand" : "gtk-stop"));
 	row -> set_value (Columns::TYPE_NAME,          node ? node -> getTypeName () : "");
-	row -> set_value (Columns::NAME,               layer ? (layer -> isLayer0 () ? _ ("Default Layer") : node -> getName ()) : "NULL");
+	row -> set_value (Columns::NAME,               layer ? (layer -> isLayer0 () ? _ ("Default Layer") : layer -> getName ()) : "NULL");
 	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
 	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 		
@@ -264,6 +265,20 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 		row -> set_value (Columns::WEIGHT, Weight::NORMAL);
 		row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 	}
+}
+
+void
+LayerEditor::set_name (X3D::X3DLayerNode* const layer)
+{
+	const auto iter = std::find (layers .begin (), layers .end (), layer);
+
+	if (iter == layers .end ())
+		return;
+
+	const auto index = (iter - layers .begin ()) + 1;
+	const auto row   = getLayerListStore () -> children () [index];
+
+	row -> set_value (Columns::NAME, layer -> getName ());
 }
 
 void
@@ -611,6 +626,11 @@ LayerEditor::on_layer_selection_changed ()
 	getUpButton ()     .set_sensitive (not isFirstRow);
 	getDownButton ()   .set_sensitive (not isLastRow);
 	getBottomButton () .set_sensitive (not isLastRow);
+
+	if (not haveSelection or selectedIndex == 0)
+		nodeName .setNode (nullptr);
+	else
+		nodeName .setNode (layers [selectedIndex - 1]);
 }
 
 void
