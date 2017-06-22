@@ -530,7 +530,7 @@ private:
 	void
 	on_transform_tool_mode_toggled () final override;
 
-	///  @name Layout
+	///  @name Geometry
 
 	virtual
 	void
@@ -558,6 +558,12 @@ private:
 	virtual
 	void
 	on_transform_to_zero_activated () final override;
+
+	///  @name Layout
+
+	virtual
+	void
+	on_background_image_activate () final override;
 
 	///  @name Grid
 

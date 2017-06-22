@@ -461,9 +461,9 @@ JSPropertySpec X3DConstants::properties [ ] = {
 
 	// Tools
 
-	{ "AngleTool",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AngleTool,   nullptr },
-	{ "GridTool",    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GridTool,    nullptr },
-	{ "X3DGridTool", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGridTool, nullptr },
+	{ "AngleGridTool", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AngleGridTool,   nullptr },
+	{ "GridTool",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GridTool,    nullptr },
+	{ "X3DGridTool",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGridTool, nullptr },
 
 	{ 0 }
 
@@ -2636,9 +2636,9 @@ X3DConstants::X3DViewportNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 // Tools
 
 JSBool
-X3DConstants::AngleTool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+X3DConstants::AngleGridTool (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
-	return JS_NewNumberValue (cx, X3D::X3DConstants::AngleTool, vp);
+	return JS_NewNumberValue (cx, X3D::X3DConstants::AngleGridTool, vp);
 }
 
 JSBool

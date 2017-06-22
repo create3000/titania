@@ -61,6 +61,7 @@ namespace X3D {
 
 X3DTexturingContext::X3DTexturingContext () :
 	             X3DBaseNode (),
+	               texturing (true),
 	           textureMemory (0),
 	          minTextureSize (16),
 	          maxTextureSize (0),
@@ -75,7 +76,8 @@ X3DTexturingContext::X3DTexturingContext () :
 	                 texture (nullptr),
 	        textureTransform (defaultTextureTransform)
 {
-	addChildObjects (defaultTexCoord,
+	addChildObjects (texturing,
+	                 defaultTexCoord,
 	                 defaultTextureProperties,
 	                 defaultTextureTransform);
 }

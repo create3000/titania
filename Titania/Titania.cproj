@@ -152,7 +152,6 @@
     <Compile Include="Titania\Editors\GridEditor\GridEditor.cpp" />
     <Compile Include="Titania\Editors\GridEditor\X3DGridEditor.cpp" />
     <Compile Include="Titania\Editors\GridEditor\GridTool.cpp" />
-    <Compile Include="Titania\Editors\GridEditor\AngleTool.cpp" />
     <Compile Include="Titania\Editors\GridEditor\X3DAngleEditor.cpp" />
     <Compile Include="Titania\Editors\AppearanceEditor\X3DMaterialPaletteEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.cpp" />
@@ -314,6 +313,7 @@
     <Compile Include="Titania\BrowserNotebook\BrowserPanel\BrowserPanel.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanel.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.cpp" />
+    <Compile Include="Titania\Editors\GridEditor\AngleGridTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1182,7 +1182,7 @@
     <None Include="Titania\Editors\GridEditor\X3DGridEditor.h" />
     <None Include="share\titania\ui\icons\Grid.svg" />
     <None Include="Titania\Editors\GridEditor\GridTool.h" />
-    <None Include="Titania\Editors\GridEditor\AngleTool.h" />
+    <None Include="Titania\Editors\GridEditor\AngleGridTool.h" />
     <None Include="Titania\Editors\GridEditor\X3DAngleEditor.h" />
     <None Include="Titania\Browser\UserData.h" />
     <None Include="share\titania\ui\icons\Hammer.svg" />
@@ -2989,6 +2989,7 @@
     <None Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanel.h" />
     <None Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.h" />
     <None Include="share\titania\ui\Panels\BrowserPanel.x3dv" />
+    <None Include="share\titania\ui\icons\BackgroundImage.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

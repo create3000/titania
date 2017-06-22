@@ -211,6 +211,32 @@
                         <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="TexturesMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Textures</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_textures_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ShadersMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Shaders</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_shaders_toggled" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -337,29 +363,6 @@
                         <property name="label" translatable="yes">Hide All Object Icons</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="LayoutMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Layout</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="BackgroundImageMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Background Image</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_background_image_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

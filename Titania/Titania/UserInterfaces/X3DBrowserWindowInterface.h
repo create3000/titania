@@ -615,6 +615,10 @@ public:
 	getBrowserLayoutMenuItem () const
 	{ return *m_BrowserLayoutMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getBrowserBackgroundImageMenuItem () const
+	{ return *m_BrowserBackgroundImageMenuItem; }
+
 	Gtk::CheckMenuItem &
 	getBrowserGridLayoutToolMenuItem () const
 	{ return *m_BrowserGridLayoutToolMenuItem; }
@@ -1070,6 +1074,10 @@ public:
 	Gtk::MenuItem &
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBackgroundImageMenuItem () const
+	{ return *m_BackgroundImageMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getGridLayoutToolMenuItem () const
@@ -1739,6 +1747,22 @@ public:
 
 	virtual
 	void
+	on_background_image_activate () = 0;
+
+	virtual
+	void
+	on_grid_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_layout_tool_toggled () = 0;
+
+	virtual
+	void
 	on_grid_properties_activated () = 0;
 
 	virtual
@@ -1768,18 +1792,6 @@ public:
 	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	void
-	on_grid_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_axonometric_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -2121,6 +2133,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserColorPerVertexMenuItem;
 	Gtk::ImageMenuItem* m_BrowserTextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_BrowserLayoutMenuItem;
+	Gtk::ImageMenuItem* m_BrowserBackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
@@ -2235,6 +2248,7 @@ private:
 	Gtk::ImageMenuItem* m_ColorPerVertexEditorMenuItem;
 	Gtk::ImageMenuItem* m_TextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_LayoutMenuItem;
+	Gtk::ImageMenuItem* m_BackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;

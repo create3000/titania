@@ -98,7 +98,7 @@ titania_SOURCES =  \
 	Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DGeometryTool.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
-	Titania/Editors/GridEditor/AngleTool.cpp \
+	Titania/Editors/GridEditor/AngleGridTool.cpp \
 	Titania/Editors/GridEditor/AxonometricGridTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \

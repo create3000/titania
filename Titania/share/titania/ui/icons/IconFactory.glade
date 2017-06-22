@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="BackgroundImage" filename="BackgroundImage.svg"/>
       <source stock-id="Appearance" filename="Appearance.svg"/>
       <source stock-id="Arrow" filename="Arrow.svg"/>
       <source stock-id="audio-volume-high" filename="Faenza/16/audio-volume-high.png"/>

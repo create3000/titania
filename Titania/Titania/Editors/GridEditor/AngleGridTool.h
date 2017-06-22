@@ -48,82 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_ANGLE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_ANGLE_TOOL_H__
+#ifndef __TITANIA_EDITORS_GRID_EDITOR_ANGLE_TOOL_H__
+#define __TITANIA_EDITORS_GRID_EDITOR_ANGLE_TOOL_H__
 
-#include "../Grids/X3DGridTool.h"
+#include "X3DGridTool.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class AngleTool :
+class AngleGridTool :
 	public X3DGridTool
 {
 public:
 
 	///  @name Construction
 
-	AngleTool (X3DExecutionContext* const executionContext);
+	AngleGridTool (X3DBrowserWindow* const browserWindow);
+
+	/// @name Members
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
+	const X3D::X3DPtr <X3D::X3DGridTool> &
+	getTool () const final override;
 
 	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	void
+	fromMetadata () final override;
+
+	///  @name Destruction
 
 	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	~AngleGridTool () final override;
 
 
 private:
 
-	///  @name Construction
+	void
+	realize ();
 
 	virtual
 	void
-	initialize () final override;
+	set_dimension () final override;
+	
+	///  @name Members
 
-	virtual
-	void
-	realize () final override;
-
-	///  @name Operations
-
-	virtual
-	Vector3d
-	getSnapPosition (const Vector3d &, const bool = true) final override;
-
-	virtual
-	Vector3d
-	getSnapPosition (const Vector3d &, const Vector3d &) final override;
-
-	double
-	getSnapPosition (const double);
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	X3D::X3DPtr <X3D::X3DGridTool> tool;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

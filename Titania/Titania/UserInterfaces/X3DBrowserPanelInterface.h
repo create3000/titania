@@ -155,6 +155,14 @@ public:
 	getPointsetMenuItem () const
 	{ return *m_PointsetMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getTexturesMenuItem () const
+	{ return *m_TexturesMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getShadersMenuItem () const
+	{ return *m_ShadersMenuItem; }
+
 	Gtk::MenuItem &
 	getShowMenuItem () const
 	{ return *m_ShowMenuItem; }
@@ -202,14 +210,6 @@ public:
 	Gtk::MenuItem &
 	getHideAllObjectIconsMenuItem () const
 	{ return *m_HideAllObjectIconsMenuItem; }
-
-	Gtk::MenuItem &
-	getLayoutMenuItem () const
-	{ return *m_LayoutMenuItem; }
-
-	Gtk::MenuItem &
-	getBackgroundImageMenuItem () const
-	{ return *m_BackgroundImageMenuItem; }
 
 	Gtk::MenuItem &
 	getPanelsMenuItem () const
@@ -327,6 +327,14 @@ public:
 
 	virtual
 	void
+	on_textures_toggled () = 0;
+
+	virtual
+	void
+	on_shaders_toggled () = 0;
+
+	virtual
+	void
 	on_backgrounds_toggled () = 0;
 
 	virtual
@@ -360,10 +368,6 @@ public:
 	virtual
 	void
 	on_hide_all_object_icons_activated () = 0;
-
-	virtual
-	void
-	on_background_image_activate () = 0;
 
 	virtual
 	void
@@ -438,6 +442,8 @@ private:
 	Gtk::RadioMenuItem* m_FlatMenuItem;
 	Gtk::RadioMenuItem* m_WireframeMenuItem;
 	Gtk::RadioMenuItem* m_PointsetMenuItem;
+	Gtk::CheckMenuItem* m_TexturesMenuItem;
+	Gtk::CheckMenuItem* m_ShadersMenuItem;
 	Gtk::MenuItem* m_ShowMenuItem;
 	Gtk::MenuItem* m_ShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem* m_BackgroundsMenuItem;
@@ -450,8 +456,6 @@ private:
 	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
 	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
-	Gtk::MenuItem* m_LayoutMenuItem;
-	Gtk::MenuItem* m_BackgroundImageMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::MenuItem* m_BrowserPanelMenuItem;
 	Gtk::MenuItem* m_ColorEditorPanelMenuItem;

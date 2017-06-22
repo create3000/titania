@@ -53,7 +53,7 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 
-#include "../Editors/GridEditor/AngleTool.h"
+#include "../Editors/GridEditor/AngleGridTool.h"
 #include "../Editors/GridEditor/AxonometricGridTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
@@ -81,7 +81,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	            sidebar (new Sidebar (this)),
 	             footer (new Footer (this)),
 	           gridTool (new GridTool (this)),
-	          angleTool (new AngleTool (this)),
+	      angleGridTool (new AngleGridTool (this)),
 	axonometricGridTool (new AxonometricGridTool (this)),
 	               keys (),
 	       accelerators (true)
@@ -205,7 +205,7 @@ X3DBrowserWindow::dispose ()
 	sidebar             .reset ();
 	footer              .reset ();
 	gridTool            .reset ();
-	angleTool           .reset ();
+	angleGridTool       .reset ();
 	axonometricGridTool .reset ();
 
 	X3DBrowserEditor::dispose ();

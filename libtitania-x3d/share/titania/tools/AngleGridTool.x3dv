@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleTool.x3dv"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleGridTool.x3dv"
 META "modified" "Tue, 20 Jun 2017 05:06:40 GMT"
 
 EXTERNPROTO ToolShader [ ]
@@ -131,10 +131,10 @@ WorldInfo {
       }
     ]
   }
-  title "AngleTool"
+  title "AngleGridTool"
 }
 
-DEF AngleTool Collision {
+DEF AngleGridTool Collision {
   enabled FALSE
   children [
     DEF AngleGrid_1 TouchGroup {

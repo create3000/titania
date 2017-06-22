@@ -106,12 +106,16 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	browser -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
 	browser -> getViewer ()            .removeInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
 	browser -> getStraightenHorizon () .removeInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+	browser -> getTexturing ()         .removeInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
+	browser -> getShaders ()           .removeInterest (&X3DBrowserPanelMenuBar::set_shaders,            this);
 
 	browser = value;
 
 	browser -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
 	browser -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
 	browser -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+	browser -> getTexturing ()         .addInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
+	browser -> getShaders ()           .addInterest (&X3DBrowserPanelMenuBar::set_shaders,            this);
 
 	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), browser));
 	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
@@ -120,6 +124,8 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	set_shading (browser -> getBrowserOptions () -> Shading ());
 	set_viewer ();
 	set_straighten_horizon ();
+	set_texturing ();
+	set_shaders ();
 
 	if (browser not_eq getPage () -> getMainBrowser ())
 	{
@@ -346,6 +352,44 @@ X3DBrowserPanelMenuBar::connectShading (const X3D::SFString & field)
 {
 	field .removeInterest (&X3DBrowserPanelMenuBar::connectShading, this);
 	field .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+}
+
+void
+X3DBrowserPanelMenuBar::set_texturing ()
+{
+	changing = true;
+
+	getTexturesMenuItem () .set_active (getLocalBrowser () -> getTexturing ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::on_textures_toggled ()
+{
+	if (changing)
+		return;
+
+	getLocalBrowser () -> setTexturing (getTexturesMenuItem () .get_active ());
+}
+
+void
+X3DBrowserPanelMenuBar::set_shaders ()
+{
+	changing = true;
+
+	getShadersMenuItem () .set_active (getLocalBrowser () -> getShaders ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::on_shaders_toggled ()
+{
+	if (changing)
+		return;
+
+	getLocalBrowser () -> setShaders (getShadersMenuItem () .get_active ());
 }
 
 /*
@@ -662,16 +706,6 @@ X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
 
 	if (getViewpointsMenuItem () .get_active ())
 		getViewpointsMenuItem () .set_active (false);
-}
-
-/*
- *  Layout menu
- */
-
-void
-X3DBrowserPanelMenuBar::on_background_image_activate ()
-{
-
 }
 
 /*

@@ -73,7 +73,7 @@ X3DIndexedFaceSetBrushObject::X3DIndexedFaceSetBrushObject () :
 	                  brushTransform (),
 	                       brushNode ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetBrushObject);
+	addType (X3DConstants::X3DIndexedFaceSetBrushObject);
 
 	addChildObjects (toolSwitch,
 	                 touchSensor,

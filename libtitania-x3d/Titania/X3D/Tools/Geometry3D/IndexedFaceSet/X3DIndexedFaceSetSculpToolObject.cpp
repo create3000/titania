@@ -82,7 +82,7 @@ X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	                  undoPoints (),
 	                    undoStep ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
+	addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
 
 	addChildObjects (touchSensor, coordNode);
 }

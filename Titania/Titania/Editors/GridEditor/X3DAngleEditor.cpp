@@ -127,7 +127,7 @@ X3DAngleEditor::X3DAngleEditor () :
 void
 X3DAngleEditor::initialize ()
 {
-	const auto &      angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto &      angleTool  = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const X3D::MFNode angleTools = { angleTool };
 
 	enabled          .setNodes (angleTools);
@@ -148,7 +148,7 @@ X3DAngleEditor::initialize ()
 	snapDistance     .setNodes (angleTools);
 	snapToCenter     .setNodes (angleTools);
 
-	getBrowserWindow () -> getAngleTool () -> getVisible () .addInterest (&X3DAngleEditor::set_angle_grid_visible, this);
+	getBrowserWindow () -> getAngleGridTool () -> getVisible () .addInterest (&X3DAngleEditor::set_angle_grid_visible, this);
 
 	angleTool -> rotation ()        .addInterest (&X3DAngleEditor::set_rotation,       this);
 	angleTool -> majorLineEvery ()  .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
@@ -172,7 +172,7 @@ X3DAngleEditor::set_angle_grid_visible ()
 {
 	changing = true;
 
-	getAngleCheckButton () .set_active (getBrowserWindow () -> getAngleTool () -> getVisible ());
+	getAngleCheckButton () .set_active (getBrowserWindow () -> getAngleGridTool () -> getVisible ());
 
 	changing = false;
 }
@@ -183,7 +183,7 @@ X3DAngleEditor::on_angle_toggled ()
 	if (changing)
 		return;
 
-	getBrowserWindow () -> getAngleTool () -> setVisible (getAngleCheckButton () .get_active ());
+	getBrowserWindow () -> getAngleGridTool () -> setVisible (getAngleCheckButton () .get_active ());
 
 	getAngleTransformBox ()           .set_sensitive (getAngleCheckButton () .get_active ());
 	getAngleMajorLinesBox ()          .set_sensitive (getAngleCheckButton () .get_active ());
@@ -197,7 +197,7 @@ X3DAngleEditor::on_angle_plane_changed ()
 	if (changing)
 		return;
 
-	const auto &      grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto &      grid  = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const X3D::MFNode nodes = { grid };
 
 	addUndoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
@@ -205,7 +205,7 @@ X3DAngleEditor::on_angle_plane_changed ()
 	grid -> rotation () .removeInterest (&X3DAngleEditor::set_rotation, this);
 	grid -> rotation () .addInterest (&X3DAngleEditor::connectRotation, this);
 
-	getBrowserWindow () -> getAngleTool () -> setPlane (getAnglePlaneComboBoxText () .get_active_row_number ());
+	getBrowserWindow () -> getAngleGridTool () -> setPlane (getAnglePlaneComboBoxText () .get_active_row_number ());
 
 	addRedoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 }
@@ -215,7 +215,7 @@ X3DAngleEditor::set_rotation ()
 {
 	changing = true;
 
-	getAnglePlaneComboBoxText () .set_active (getBrowserWindow () -> getAngleTool () -> getPlane ());
+	getAnglePlaneComboBoxText () .set_active (getBrowserWindow () -> getAngleGridTool () -> getPlane ());
 
 	changing = false;
 }
@@ -245,7 +245,7 @@ X3DAngleEditor::on_angle_uniform_scale_clicked ()
 void
 X3DAngleEditor::on_angle_major_line_grid_value_changed ()
 {
-	const auto & grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto & grid  = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const size_t index = getAngleMajorGridAdjustment () -> get_value () - 1;
 
 	if (grid -> majorLineEvery () .size () < INDICES * index + INDICES)
@@ -273,7 +273,7 @@ void
 X3DAngleEditor::on_angle_add_major_line_grid ()
 {
 	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Add Major Line Grid");
-	const auto & grid     = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto & grid     = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const int    size     = getAngleMajorGridAdjustment () -> get_upper () + 1;
 
 	undoStep -> addObjects (grid);
@@ -296,7 +296,7 @@ void
 X3DAngleEditor::on_angle_remove_major_line_grid ()
 {
 	const auto   undoStep = std::make_shared <X3D::UndoStep> ("Remove Major Line Grid");
-	const auto & grid     = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto & grid     = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const int    size     = getAngleMajorGridAdjustment () -> get_upper () - 1;
 	const int    index    = (getAngleMajorGridAdjustment () -> get_value () - 1) * INDICES;
 	const auto   iterL    = grid -> majorLineEvery ()  .begin () + index;
@@ -326,7 +326,7 @@ X3DAngleEditor::on_angle_remove_major_line_grid ()
 void
 X3DAngleEditor::set_majorLineEvery ()
 {
-	const auto & grid = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto & grid = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 	const auto   size = grid -> majorLineEvery () .size () / INDICES;
 
 	getAngleMajorGridAdjustment () -> set_lower (bool (size));

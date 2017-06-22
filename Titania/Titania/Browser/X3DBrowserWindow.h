@@ -111,8 +111,8 @@ public:
 	{ return gridTool; }
 
 	const std::shared_ptr <X3DGridTool> &
-	getAngleTool () const
-	{ return angleTool; }
+	getAngleGridTool () const
+	{ return angleGridTool; }
 
 	const std::shared_ptr <X3DGridTool> &
 	getAxonometricGridTool () const
@@ -181,7 +181,7 @@ private:
 	std::shared_ptr <Sidebar>           sidebar;
 	std::shared_ptr <Footer>            footer;
 	std::shared_ptr <X3DGridTool>       gridTool;
-	std::shared_ptr <X3DGridTool>       angleTool;
+	std::shared_ptr <X3DGridTool>       angleGridTool;
 	std::shared_ptr <X3DGridTool>       axonometricGridTool;
 
 	X3D::Keys keys;

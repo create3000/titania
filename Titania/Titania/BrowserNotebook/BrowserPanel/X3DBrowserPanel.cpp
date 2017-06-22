@@ -54,7 +54,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Editors/GridEditor/AngleTool.h"
+#include "../../Editors/GridEditor/AngleGridTool.h"
 #include "../../Editors/GridEditor/AxonometricGridTool.h"
 #include "../../Editors/GridEditor/GridTool.h"
 
@@ -70,7 +70,7 @@
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
 #include <Titania/X3D/Tools/Grids/GridTool.h>
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/AngleGridTool.h>
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
 #include <cassert>
@@ -274,7 +274,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
 
 		const auto & gridTool            = getBrowserWindow () -> getGridTool ()            -> getTool ();
-		const auto & angleGridTool       = getBrowserWindow () -> getAngleTool ()           -> getTool ();
+		const auto & angleGridTool       = getBrowserWindow () -> getAngleGridTool ()           -> getTool ();
 		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
@@ -485,9 +485,9 @@ X3DBrowserPanel::set_grid ()
 				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
 			}
 		}
-		else if (getBrowserWindow () -> getAngleTool () -> getVisible ())
+		else if (getBrowserWindow () -> getAngleGridTool () -> getVisible ())
 		{
-			const auto plane = getBrowserWindow () -> getAngleTool () -> getPlane ();
+			const auto plane = getBrowserWindow () -> getAngleGridTool () -> getPlane ();
 
 			if (type == BrowserPanelType::PERSPECTIVE or plane == getPlane ())
 			{
@@ -495,14 +495,14 @@ X3DBrowserPanel::set_grid ()
 			}
 			else
 			{
-				const auto & tool = getBrowserWindow () -> getAngleTool () -> getTool ();
+				const auto & tool = getBrowserWindow () -> getAngleGridTool () -> getTool ();
 				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
 
 				gridSwitch -> whichChoice () = 0;
 	
 				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
 				grid -> setField <X3D::SFVec3f> ("scale",       tool -> scale ());
-				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (2) }));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ tool -> dimension () .at (2), 0, tool -> dimension () .at (2) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
 				{
@@ -544,7 +544,7 @@ X3DBrowserPanel::set_grid ()
 	
 				grid -> setField <X3D::SFVec3f> ("translation", tool -> translation () * one);
 				grid -> setField <X3D::SFVec3f> ("scale",       tool -> scale ());
-				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ 2, 0, tool -> dimension () .at (1) }));
+				grid -> setField <X3D::MFInt32> ("dimension",   X3D::MFInt32 ({ tool -> dimension () .at (1), 0, tool -> dimension () .at (1) }));
 	
 				for (size_t i = 0; i < tool -> majorLineEvery () .size () / 4; ++ i)
 				{
@@ -592,7 +592,7 @@ X3DBrowserPanel::on_map ()
 	page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
-	getBrowserWindow () -> getAngleTool ()           -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
+	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 }
 
@@ -619,7 +619,7 @@ X3DBrowserPanel::on_unmap ()
 	page -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
-	getBrowserWindow () -> getAngleTool ()           -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
+	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
 }
 

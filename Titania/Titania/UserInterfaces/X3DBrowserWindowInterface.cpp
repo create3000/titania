@@ -211,6 +211,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
 	m_builder -> get_widget ("BrowserTextureCoordinateEditorMenuItem", m_BrowserTextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
+	m_builder -> get_widget ("BrowserBackgroundImageMenuItem", m_BrowserBackgroundImageMenuItem);
 	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAxonometricGridLayoutToolMenuItem", m_BrowserAxonometricGridLayoutToolMenuItem);
@@ -325,6 +326,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);
 	m_builder -> get_widget ("TextureCoordinateEditorMenuItem", m_TextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
+	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
 	m_builder -> get_widget ("AxonometricGridLayoutToolMenuItem", m_AxonometricGridLayoutToolMenuItem);
@@ -511,6 +513,14 @@ X3DBrowserWindowInterface::create ()
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
+	m_BrowserBackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'BrowserGridLayoutToolMenuItem'.
+	m_BrowserGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
+	m_BrowserAngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
+	m_BrowserAxonometricGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserGridPropertiesMenuItem'.
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'BrowserScenesMenuItem'.
@@ -611,6 +621,7 @@ X3DBrowserWindowInterface::create ()
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
+	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
 	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));

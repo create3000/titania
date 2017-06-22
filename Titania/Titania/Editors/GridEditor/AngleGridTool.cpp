@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#include "AngleTool.h"
+#include "AngleGridTool.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
 
 #include <Titania/X3D/Browser/Tools/TransformToolOptions.h>
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/AngleGridTool.h>
 
 #include <Titania/X3D/Components/Core/MetadataBoolean.h>
 #include <Titania/X3D/Components/Core/MetadataFloat.h>
@@ -66,7 +66,7 @@ namespace puck {
 
 using math::pi;
 
-AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :
+AngleGridTool::AngleGridTool (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	     X3DGridTool (),
 	            tool ()
@@ -79,22 +79,22 @@ AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-AngleTool::realize ()
+AngleGridTool::realize ()
 {
-	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AngleTool> ();
+	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AngleGridTool> ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &
-AngleTool::getTool () const
+AngleGridTool::getTool () const
 {
 	if (not tool)
-		const_cast <AngleTool*> (this) -> realize ();
+		const_cast <AngleGridTool*> (this) -> realize ();
 
 	return tool;
 }
 
 void
-AngleTool::fromMetadata ()
+AngleGridTool::fromMetadata ()
 {
 	getTool () -> translation ()     = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/translation",     X3D::SFVec3f ());
 	getTool () -> rotation ()        = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/rotation",        X3D::SFRotation ());
@@ -110,14 +110,14 @@ AngleTool::fromMetadata ()
 }
 
 void
-AngleTool::set_dimension ()
+AngleGridTool::set_dimension ()
 {
 	X3DGridTool::set_dimension ();
 
 	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * pi <double> / getTool () -> dimension () .at (1);
 }
 
-AngleTool::~AngleTool ()
+AngleGridTool::~AngleGridTool ()
 {
 	dispose ();
 }

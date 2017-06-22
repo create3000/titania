@@ -70,7 +70,7 @@ PolygonMode::PolygonMode (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	polygonModeType (GL_FILL)
 {
-	//addType (X3DConstants::PolygonMode);
+	addType (X3DConstants::PolygonMode);
 
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "type",           type ());

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "AngleTool.h"
+#include "AngleGridTool.h"
 
 #include "../../Browser/Networking/config.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -58,15 +58,15 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType AngleTool::component      = ComponentType::TITANIA;
-const std::string   AngleTool::typeName       = "AngleTool";
-const std::string   AngleTool::containerField = "grid";
+const ComponentType AngleGridTool::component      = ComponentType::TITANIA;
+const std::string   AngleGridTool::typeName       = "AngleGridTool";
+const std::string   AngleGridTool::containerField = "grid";
 
-AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
+AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGridTool ()
 {
-	addType (X3DConstants::AngleTool);
+	addType (X3DConstants::AngleGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
@@ -89,27 +89,27 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 }
 
 X3DBaseNode*
-AngleTool::create (X3DExecutionContext* const executionContext) const
+AngleGridTool::create (X3DExecutionContext* const executionContext) const
 {
-	return new AngleTool (executionContext);
+	return new AngleGridTool (executionContext);
 }
 
 void
-AngleTool::initialize ()
+AngleGridTool::initialize ()
 {
 	X3DGridTool::initialize ();
 
-	requestAsyncLoad ({ get_tool ("AngleTool.x3dv") .str () });
+	requestAsyncLoad ({ get_tool ("AngleGridTool.x3dv") .str () });
 }
 
 void
-AngleTool::realize ()
+AngleGridTool::realize ()
 {
 	X3DGridTool::realize ();
 }
 
 Vector3d
-AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
+AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {
 	auto translation = position;
 
@@ -151,13 +151,13 @@ AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 }
 
 Vector3d
-AngleTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+AngleGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
 {
 	return position;
 }
 
 double
-AngleTool::getSnapPosition (const double position)
+AngleGridTool::getSnapPosition (const double position)
 {
 	const auto o  = dimension () .get1Value (2) % 2 * 0.5; // Add a half scale if dimension is odd.
 	const auto p  = std::round (position);

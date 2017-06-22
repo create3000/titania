@@ -54,7 +54,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Editors/GridEditor/AngleTool.h"
+#include "../../Editors/GridEditor/AngleGridTool.h"
 #include "../../Editors/GridEditor/AxonometricGridTool.h"
 #include "../../Editors/GridEditor/GridTool.h"
 
@@ -68,7 +68,7 @@
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
 #include <Titania/X3D/Tools/Grids/GridTool.h>
-#include <Titania/X3D/Tools/Grids/AngleTool.h>
+#include <Titania/X3D/Tools/Grids/AngleGridTool.h>
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
 namespace titania {

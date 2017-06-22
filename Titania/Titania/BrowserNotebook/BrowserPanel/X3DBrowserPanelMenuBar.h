@@ -176,9 +176,23 @@ private:
 	
 	void
 	set_shading (const X3D::SFString & value);
-	
+
 	void
 	connectShading (const X3D::SFString & field);
+
+	void
+	set_texturing ();
+
+	virtual
+	void
+	on_textures_toggled () final override;
+
+	void
+	set_shaders ();
+
+	virtual
+	void
+	on_shaders_toggled () final override;
 
 	///  @name Show menu
 
@@ -237,12 +251,6 @@ private:
 	virtual
 	void
 	on_hide_all_object_icons_activated () final override;
-
-	///  @name Layout menu
-
-	virtual
-	void
-	on_background_image_activate () final override;
 
 	///  @name Camera menu
 

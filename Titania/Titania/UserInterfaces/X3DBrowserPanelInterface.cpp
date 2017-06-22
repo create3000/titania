@@ -96,6 +96,8 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("FlatMenuItem", m_FlatMenuItem);
 	m_builder -> get_widget ("WireframeMenuItem", m_WireframeMenuItem);
 	m_builder -> get_widget ("PointsetMenuItem", m_PointsetMenuItem);
+	m_builder -> get_widget ("TexturesMenuItem", m_TexturesMenuItem);
+	m_builder -> get_widget ("ShadersMenuItem", m_ShadersMenuItem);
 	m_builder -> get_widget ("ShowMenuItem", m_ShowMenuItem);
 	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
@@ -108,8 +110,6 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
-	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
-	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("BrowserPanelMenuItem", m_BrowserPanelMenuItem);
 	m_builder -> get_widget ("ColorEditorPanelMenuItem", m_ColorEditorPanelMenuItem);
@@ -149,7 +149,9 @@ X3DBrowserPanelInterface::create ()
 	m_WireframeMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_wireframe_toggled));
 	m_PointsetMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_pointset_toggled));
 
-	// Connect object Gtk::CheckMenuItem with id 'BackgroundsMenuItem'.
+	// Connect object Gtk::CheckMenuItem with id 'TexturesMenuItem'.
+	m_TexturesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_textures_toggled));
+	m_ShadersMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_shaders_toggled));
 	m_BackgroundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_backgrounds_toggled));
 	m_FogsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_fogs_toggled));
 	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_lights_toggled));
@@ -161,7 +163,6 @@ X3DBrowserPanelInterface::create ()
 
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_hide_all_object_icons_activated));
-	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_background_image_activate));
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
 	m_PerspectiveViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_perspective_view_activate));
 	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_top_view_activate));

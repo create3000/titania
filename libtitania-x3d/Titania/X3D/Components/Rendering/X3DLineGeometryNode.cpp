@@ -63,7 +63,7 @@ namespace X3D {
 X3DLineGeometryNode::X3DLineGeometryNode () :
 	X3DGeometryNode ()
 {
-	//addType (X3DConstants::X3DLineGeometryNode);
+	addType (X3DConstants::X3DLineGeometryNode);
 }
 
 bool

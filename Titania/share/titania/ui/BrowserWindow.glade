@@ -1548,11 +1548,30 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+              <object class="GtkImageMenuItem" id="BrowserBackgroundImageMenuItem">
+                <property name="label" translatable="yes">Background _Image</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image40</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_background_image_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem33">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkCheckMenuItem" id="BrowserGridLayoutToolMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                 <property name="use_underline">True</property>
+                <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
                 <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
@@ -1562,6 +1581,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                 <property name="use_underline">True</property>
+                <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
                 <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
@@ -1571,6 +1591,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
                 <property name="use_underline">True</property>
+                <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
               </object>
             </child>
             <child>
@@ -1581,6 +1602,7 @@
                 <property name="use_underline">True</property>
                 <property name="image">image34</property>
                 <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
               </object>
             </child>
@@ -1652,10 +1674,22 @@
     <property name="stock">UndoHistory</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image39">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BackgroundImage</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">document-export</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image40">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BackgroundImage</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image5">
@@ -2941,6 +2975,24 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
+                              <object class="GtkImageMenuItem" id="BackgroundImageMenuItem">
+                                <property name="label" translatable="yes">Background _Image</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image39</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_background_image_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
                               <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -2977,6 +3029,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="image">image10</property>
                                 <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
                               </object>
                             </child>

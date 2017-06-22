@@ -282,8 +282,8 @@ Appearance::draw (X3DRenderObject* const renderObject)
 		}
 	
 		// Texture
-	
-		if (textureNode)
+
+		if (browser -> getTexturing () and textureNode)
 		{
 			textureNode -> draw (renderObject);
 
@@ -296,16 +296,16 @@ Appearance::draw (X3DRenderObject* const renderObject)
 	
 		// Shader
 	
-		if (shaderNode)
+		if (browser -> getShaders () and shaderNode)
 			shaderNode -> draw (renderObject);
 	}
 
 	browser -> setLineProperties (linePropertiesNode);
 	browser -> setMaterial (materialNode);
-	browser -> setTexture (textureNode);
+	browser -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
 	browser -> setTextureTransform (textureTransformNode);
 
-	if (shaderNode)
+	if (browser -> getShaders () and shaderNode)
 		browser -> setShader (shaderNode);
 	else
 		browser -> setShader (browser -> getDefaultShader ());

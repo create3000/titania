@@ -75,6 +75,14 @@ public:
 
 	///  @name Member access
 
+	void
+	setTexturing (const bool value)
+	{ texturing = value; }
+
+	const SFBool &
+	getTexturing () const
+	{ return texturing; }
+
 	size_t
 	getMaxTextures () const;
 
@@ -167,6 +175,7 @@ private:
 
 	///  @name Members
 
+	SFBool           texturing;
 	size_t           textureMemory;
 	size_t           minTextureSize;
 	int32_t          maxTextureSize;

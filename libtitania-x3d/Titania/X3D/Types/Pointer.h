@@ -438,7 +438,7 @@ class X3DSelector;
 class UndoStepContainer;
 
 class AnchorTool;
-class AngleTool;
+class AngleGridTool;
 class BillboardTool;
 class CADAssemblyTool;
 class CADFaceTool;

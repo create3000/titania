@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class AngleTool;
+class AngleGridTool;
 
 }
 }

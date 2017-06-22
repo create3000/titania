@@ -549,9 +549,9 @@ private:
 
 	///  @name Tools
 
-	static JSBool AngleTool   (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool GridTool    (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DGridTool (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool AngleGridTool (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool GridTool      (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool X3DGridTool   (JSContext *, JSObject *, jsid, jsval*);
 
 	///  @name Static Members
 

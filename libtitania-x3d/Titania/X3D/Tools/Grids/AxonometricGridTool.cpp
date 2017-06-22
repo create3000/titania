@@ -71,7 +71,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	X3DGridTool (),
 	     fields ()
 {
-	//addType (X3DConstants::AxonometricGridTool);
+	addType (X3DConstants::AxonometricGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());

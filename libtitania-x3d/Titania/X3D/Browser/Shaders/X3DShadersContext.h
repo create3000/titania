@@ -68,6 +68,14 @@ public:
 
 	///  @name Member access
 
+	void
+	setShaders (const bool value)
+	{ shaders = value; }
+
+	const SFBool &
+	getShaders () const
+	{ return shaders; }
+
 	float
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
@@ -162,6 +170,7 @@ private:
 
 	///  @name Members
 
+	SFBool                  shaders;
 	float                   shadingLanguageVersion;
 	int32_t                 maxVertexUniformVectors;
 	int32_t                 maxFragmentUniformVectors;

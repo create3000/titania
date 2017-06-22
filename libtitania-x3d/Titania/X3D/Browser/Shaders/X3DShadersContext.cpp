@@ -65,6 +65,7 @@ namespace X3D {
 
 X3DShadersContext::X3DShadersContext () :
 	              X3DBaseNode (),
+	                  shaders (true),
 	   shadingLanguageVersion (),
 	  maxVertexUniformVectors (0),
 	maxFragmentUniformVectors (0),
@@ -79,7 +80,8 @@ X3DShadersContext::X3DShadersContext () :
 	            defaultShader (),
 	               shaderNode (nullptr)
 {
-	addChildObjects (fixedPipeline,
+	addChildObjects (shaders,
+	                 fixedPipeline,
                     fixedPipelineRequired,
                     pointShader,
 	                 wireframeShader,
