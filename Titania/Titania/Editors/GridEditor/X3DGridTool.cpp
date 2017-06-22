@@ -76,75 +76,45 @@ X3DGridTool::X3DGridTool () :
 	         undoStep ()
 {
 	addChildObjects (browser);
-
-	getBrowserWindow () -> getEditing () .addInterest (&X3DGridTool::update, this);
 }
 
 void
-X3DGridTool::setEnabled (const bool value)
+X3DGridTool::setup ()
 {
-	setMetaData ("/Titania/" + getName () + "/enabled", value);
+	X3DBaseInterface::setup ();
+	X3DEditorObject::setup ();
 
-	update ();
-}
-
-bool
-X3DGridTool::getEnabled () const
-{
-	return getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
+	getBrowserWindow () -> getEditing () .addInterest (&X3DGridTool::set_browser, this);
+	getCurrentScene () .addInterest (&X3DGridTool::set_browser, this);
 }
 
 void
-X3DGridTool::setPlane (const int32_t index)
+X3DGridTool::set_browser ()
 {
-	const auto & grid = getTool ();
+	const auto   visible = getVisible () and getBrowserWindow () -> getEditing ();
+	const auto & value   = visible ? getCurrentBrowser () : getMasterBrowser ();
 
-	switch (index)
-	{
-		case 0:
-			grid -> rotation () = X_PLANE_ROTATION;
-			break;
-		case 1:
-			grid -> rotation () = Y_PLANE_ROTATION;
-			break;
-		case 2:
-			grid -> rotation () = Z_PLANE_ROTATION;
-			break;
-		default:
-			break;
-	}
-}
+	if (not visible and not browser)
+		return;
 
-int32_t
-X3DGridTool::getPlane () const
-{
-	constexpr float EPS  = math::radians (0.1);
-
-	const auto & grid = getTool ();
-
-	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
-		return 0;
-
-	else if (std::abs ((grid -> rotation () * ~Y_PLANE_ROTATION) .angle ()) < EPS)
-		return 1;
-
-	else if (std::abs ((grid -> rotation () * ~Z_PLANE_ROTATION) .angle ()) < EPS)
-		return 2;
-
-	return -1;
-}
-
-void
-X3DGridTool::set_browser (const X3D::BrowserPtr & value)
-{
-	browser -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
+	if (browser)
+		browser -> getActiveLayer () .removeInterest (&X3DGridTool::set_activeLayer, this);
 
 	browser = value;
 
-	getTool () -> setExecutionContext (browser -> getPrivateScene ());
+	if (browser)
+	{
+		browser -> getActiveLayer () .addInterest (&X3DGridTool::set_activeLayer, this);
 
-	browser -> getActiveLayer () .addInterest (&X3DGridTool::update, this);
+		getTool () -> setExecutionContext (browser -> getPrivateScene ());
 
+		set_activeLayer ();
+	}
+}
+
+void
+X3DGridTool::set_activeLayer ()
+{
 	// Set tool fields from meta data.
 
 	getTool () -> enabled () .removeInterest (&X3DGridTool::set_enabled, this);
@@ -193,33 +163,57 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 }
 
 void
-X3DGridTool::update ()
+X3DGridTool::setVisible (const bool value)
 {
-	if (getEnabled () and getBrowserWindow () -> getEditing ())
-	   enable ();
-	else
-		disable ();
+	setMetaData ("/Titania/" + getName () + "/enabled", value);
+
+	set_browser ();
+}
+
+bool
+X3DGridTool::getVisible () const
+{
+	return getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
 }
 
 void
-X3DGridTool::enable ()
+X3DGridTool::setPlane (const int32_t index)
 {
-	getCurrentBrowser () .addInterest (&X3DGridTool::set_browser, this);
-	getCurrentBrowser () -> getActiveLayer () .addInterest (&X3DGridTool::update, this);
+	const auto & grid = getTool ();
 
-	set_browser (getCurrentBrowser ());
-}
-
-void
-X3DGridTool::disable ()
-{
-	if (browser)
+	switch (index)
 	{
-		getCurrentBrowser () .removeInterest (&X3DGridTool::set_browser, this);
-		getCurrentBrowser () -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
-
-		set_browser (getMasterBrowser ());
+		case 0:
+			grid -> rotation () = X_PLANE_ROTATION;
+			break;
+		case 1:
+			grid -> rotation () = Y_PLANE_ROTATION;
+			break;
+		case 2:
+			grid -> rotation () = Z_PLANE_ROTATION;
+			break;
+		default:
+			break;
 	}
+}
+
+int32_t
+X3DGridTool::getPlane () const
+{
+	constexpr float EPS  = math::radians (0.1);
+
+	const auto & grid = getTool ();
+
+	if (std::abs ((grid -> rotation () * ~X_PLANE_ROTATION) .angle ()) < EPS)
+		return 0;
+
+	else if (std::abs ((grid -> rotation () * ~Y_PLANE_ROTATION) .angle ()) < EPS)
+		return 1;
+
+	else if (std::abs ((grid -> rotation () * ~Z_PLANE_ROTATION) .angle ()) < EPS)
+		return 2;
+
+	return -1;
 }
 
 void
@@ -428,9 +422,15 @@ X3DGridTool::connectSnapToCenter (const X3D::SFBool & field)
 	field .addInterest (&X3DGridTool::set_snapToCenter, this);
 }
 
-X3DGridTool::~X3DGridTool ()
+void
+X3DGridTool::dispose ()
 {
+	X3DEditorObject::dispose ();
+	X3DBaseInterface::dispose ();
 }
+
+X3DGridTool::~X3DGridTool ()
+{ }
 
 } // puck
 } // titania

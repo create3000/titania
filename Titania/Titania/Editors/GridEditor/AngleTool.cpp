@@ -82,8 +82,6 @@ void
 AngleTool::realize ()
 {
 	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AngleTool> ();
-
-	getMasterBrowser () -> getPrivateScene () -> realize ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &

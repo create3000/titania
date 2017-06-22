@@ -66,14 +66,20 @@ class X3DGridTool :
 public:
 
 	virtual
+	void
+	setup () final override;
+
+	///  @name Member access
+
+	virtual
 	const X3D::X3DPtr <X3D::X3DGridTool> &
 	getTool () const = 0;
 
 	void
-	setEnabled (const bool value);
+	setVisible (const bool value);
 
 	bool
-	getEnabled () const;
+	getVisible () const;
 
 	void
 	setPlane (const int32_t index);
@@ -81,14 +87,11 @@ public:
 	int32_t
 	getPlane () const;
 
-	void
-	update ();
+	///  @name Destruction
 
 	virtual
 	void
-	fromMetadata () = 0;
-
-	///  @name Destruction
+	dispose () final override;
 
 	virtual
 	~X3DGridTool () override;
@@ -99,6 +102,10 @@ protected:
 	///  @name Construction
 
 	X3DGridTool ();
+
+	virtual
+	void
+	fromMetadata () = 0;
 
 	///  @name Event handlers
 
@@ -157,16 +164,13 @@ protected:
 
 private:
 
-	///  @name Operations
+	///  @name Construction
 
 	void
-	set_browser (const X3D::BrowserPtr &);
+	set_browser ();
 
 	void
-	enable ();
-
-	void
-	disable ();
+	set_activeLayer ();
 
 	///  @name Event handlers
 

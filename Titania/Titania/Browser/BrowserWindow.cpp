@@ -275,17 +275,9 @@ BrowserWindow::set_activeLayer ()
 
 	// Layout Menu
 
-	getGridLayoutToolAction () -> set_active (getGridTool () -> getEnabled ());
-	getGridTool () -> update ();
-
-	getAngleLayoutToolAction () -> set_active (getAngleTool () -> getEnabled ());
-	getAngleTool () -> update ();
-
-	getAxonometricGridLayoutToolAction () -> set_active (getAxonometricGridTool () -> getEnabled ());
-	getAxonometricGridTool () -> update ();
-
-	getAxonometricGridLayoutToolAction () -> set_active (getAxonometricGridTool () -> getEnabled ());
-	getAxonometricGridTool () -> update ();
+	getGridLayoutToolAction ()            -> set_active (getGridTool ()            -> getVisible ());
+	getAngleLayoutToolAction ()           -> set_active (getAngleTool ()           -> getVisible ());
+	getAxonometricGridLayoutToolAction () -> set_active (getAxonometricGridTool () -> getVisible ());
 
 	changing = false;
 }
@@ -1811,21 +1803,19 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	changing = true;
 
-	getAngleTool () -> setEnabled (false);
-	getAngleTool () -> update ();
-	getAngleLayoutToolAction () -> set_active (false);
+	getAngleTool ()           -> setVisible (false);
+	getAxonometricGridTool () -> setVisible (false);
 
-	getAxonometricGridTool () -> setEnabled (false);
-	getAxonometricGridTool () -> update ();
+	getAngleLayoutToolAction ()           -> set_active (false);
 	getAxonometricGridLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle grid.
 
-	getGridTool () -> setEnabled (getGridLayoutToolAction () -> get_active ());
-	getGridTool () -> update ();
-	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+	getGridTool () -> setVisible (getGridLayoutToolAction () -> get_active ());
+
+	getCurrentPage () -> setModified (true);
 }
 
 void
@@ -1836,21 +1826,19 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	changing = true;
 
-	getGridTool () -> setEnabled (false);
-	getGridTool () -> update ();
-	getGridLayoutToolAction () -> set_active (false);
+	getGridTool ()            -> setVisible (false);
+	getAxonometricGridTool () -> setVisible (false);
 
-	getAxonometricGridTool () -> setEnabled (false);
-	getAxonometricGridTool () -> update ();
+	getGridLayoutToolAction ()            -> set_active (false);
 	getAxonometricGridLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle angle grid.
 
-	getAngleTool () -> setEnabled (getAngleLayoutToolAction () -> get_active ());
-	getAngleTool () -> update ();
-	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+	getAngleTool () -> setVisible (getAngleLayoutToolAction () -> get_active ());
+
+	getCurrentPage () -> setModified (true);
 }
 
 void
@@ -1861,21 +1849,19 @@ BrowserWindow::on_axonometric_layout_tool_toggled ()
 
 	changing = true;
 
-	getGridTool () -> setEnabled (false);
-	getGridTool () -> update ();
-	getGridLayoutToolAction () -> set_active (false);
+	getGridTool ()  -> setVisible (false);
+	getAngleTool () -> setVisible (false);
 
-	getAngleTool () -> setEnabled (false);
-	getAngleTool () -> update ();
+	getGridLayoutToolAction ()  -> set_active (false);
 	getAngleLayoutToolAction () -> set_active (false);
 
 	changing = false;
 
 	// Toggle axonometric grid.
 
-	getAxonometricGridTool () -> setEnabled (getAxonometricGridLayoutToolAction () -> get_active ());
-	getAxonometricGridTool () -> update ();
-	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+	getAxonometricGridTool () -> setVisible (getAxonometricGridLayoutToolAction () -> get_active ());
+
+	getCurrentPage () -> setModified (true);
 }
 
 void

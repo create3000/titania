@@ -435,12 +435,12 @@ X3DBrowserPanel::set_grid ()
 		std::make_pair (std::make_pair (2, BrowserPanelType::BACK),   X3D::Vector2i (0, 2)),
 	};
 
-	if (page -> getMainBrowser () -> getExecutionContext () not_eq getCurrentContext ())
+	if (page -> getMainBrowser () not_eq getCurrentBrowser ())
 		return;
 
 	try
 	{
-		if (getBrowserWindow () -> getGridTool () -> getEnabled ())
+		if (getBrowserWindow () -> getGridTool () -> getVisible ())
 		{
 			const auto plane = getBrowserWindow () -> getGridTool () -> getPlane ();
 	
@@ -483,7 +483,7 @@ X3DBrowserPanel::set_grid ()
 				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
 			}
 		}
-		else if (getBrowserWindow () -> getAngleTool () -> getEnabled ())
+		else if (getBrowserWindow () -> getAngleTool () -> getVisible ())
 		{
 			const auto plane = getBrowserWindow () -> getAngleTool () -> getPlane ();
 
@@ -525,7 +525,7 @@ X3DBrowserPanel::set_grid ()
 				grid -> setField <X3D::SFFloat> ("majorLineTransparency", 1 - tool -> majorLineColor () .getAlpha ());
 			}
 		}
-		else if (getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ())
+		else if (getBrowserWindow () -> getAxonometricGridTool () -> getVisible ())
 		{
 			const auto plane = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
 

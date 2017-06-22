@@ -162,7 +162,8 @@ Configuration::getString (const std::string & key) const
 void
 Configuration::removeKey (const std::string & key) const
 {
-	keyfile -> remove_key (group, key);
+	if (hasKey (key))
+		keyfile -> remove_key (group, key);
 }
 
 Configuration::~Configuration ()
