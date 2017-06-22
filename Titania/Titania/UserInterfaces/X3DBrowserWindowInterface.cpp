@@ -77,33 +77,30 @@ void
 X3DBrowserWindowInterface::create ()
 {
 	// Get objects.
-	m_AngleLayoutToolAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
-	m_AxonometricGridLayoutToolAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AxonometricGridLayoutToolAction"));
-	m_BrowserAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
-	m_CobwebCompatibilityAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("CobwebCompatibilityAction"));
-	m_EditorAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
-	m_FlatAction                      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
-	m_FollowPrimarySelectionAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
-	m_FooterAction                    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
-	m_GouraudAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
-	m_GridLayoutToolAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
-	m_MenubarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
-	m_PhongAction                     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
-	m_PointsetAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
-	m_PrimitiveQualityHighAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
-	m_PrimitiveQualityLowAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityLowAction"));
-	m_PrimitiveQualityMediumAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityMediumAction"));
-	m_RenderingPropertiesAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RenderingPropertiesAction"));
-	m_RubberbandAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
-	m_SelectLowestAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
-	m_SidebarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SidebarAction"));
-	m_TabsAction                      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TabsAction"));
-	m_TextureQualityHighAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityHighAction"));
-	m_TextureQualityLowAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityLowAction"));
-	m_TextureQualityMediumAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
-	m_ToolbarAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
-	m_TransformToolModeAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
-	m_WireframeAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
+	m_BrowserAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
+	m_CobwebCompatibilityAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("CobwebCompatibilityAction"));
+	m_EditorAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
+	m_FlatAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
+	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
+	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
+	m_GouraudAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
+	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
+	m_PhongAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
+	m_PointsetAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
+	m_PrimitiveQualityHighAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
+	m_PrimitiveQualityLowAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityLowAction"));
+	m_PrimitiveQualityMediumAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityMediumAction"));
+	m_RenderingPropertiesAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RenderingPropertiesAction"));
+	m_RubberbandAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
+	m_SelectLowestAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
+	m_SidebarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SidebarAction"));
+	m_TabsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TabsAction"));
+	m_TextureQualityHighAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityHighAction"));
+	m_TextureQualityLowAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityLowAction"));
+	m_TextureQualityMediumAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
+	m_ToolbarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
+	m_TransformToolModeAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
+	m_WireframeAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
@@ -407,9 +404,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("NoneViewerButton", m_NoneViewerButton);
 	m_builder -> get_widget ("OtherViewerButton", m_OtherViewerButton);
 
-	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
-	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
-	m_AxonometricGridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
+	// Connect object Gtk::ToggleAction with id 'BrowserAction'.
 	m_BrowserAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_toggled));
 	m_CobwebCompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_cobweb_compatibility_toggled));
 	m_EditorAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_editor_toggled));
@@ -417,7 +412,6 @@ X3DBrowserWindowInterface::create ()
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_GouraudAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_gouraud_toggled));
-	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_menubar_toggled));
 	m_PhongAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_phong_toggled));
 	m_PointsetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_pointset_toggled));
@@ -617,6 +611,13 @@ X3DBrowserWindowInterface::create ()
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
+
+	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
+	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
+	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
+	m_AxonometricGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'ScenesMenuItem'.

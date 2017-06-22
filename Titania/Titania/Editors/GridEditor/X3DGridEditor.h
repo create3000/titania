@@ -99,6 +99,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_grid_visible ();
+
 	virtual
 	void
 	on_grid_toggled () final override;

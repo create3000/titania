@@ -73,9 +73,10 @@ X3DGridTool::X3DGridTool () :
 	 X3DBaseInterface (),
 	  X3DEditorObject (),
 	          browser (getCurrentBrowser ()),
+	          visible (),
 	         undoStep ()
 {
-	addChildObjects (browser);
+	addChildObjects (browser, visible);
 }
 
 void
@@ -85,7 +86,7 @@ X3DGridTool::setup ()
 	X3DEditorObject::setup ();
 
 	getBrowserWindow () -> getEditing () .addInterest (&X3DGridTool::set_browser, this);
-	getCurrentScene () .addInterest (&X3DGridTool::set_browser, this);
+	getCurrentScene () .addInterest (&X3DGridTool::set_scene, this);
 }
 
 void
@@ -110,6 +111,14 @@ X3DGridTool::set_browser ()
 
 		set_activeLayer ();
 	}
+}
+
+void
+X3DGridTool::set_scene ()
+{
+	visible = getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
+
+	set_browser ();
 }
 
 void
@@ -165,15 +174,14 @@ X3DGridTool::set_activeLayer ()
 void
 X3DGridTool::setVisible (const bool value)
 {
-	setMetaData ("/Titania/" + getName () + "/enabled", value);
+	if (value == visible)
+		return;
+
+	visible = value;
+
+	setMetaData ("/Titania/" + getName () + "/enabled", visible);
 
 	set_browser ();
-}
-
-bool
-X3DGridTool::getVisible () const
-{
-	return getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
 }
 
 void

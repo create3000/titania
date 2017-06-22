@@ -99,6 +99,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_angle_grid_visible ();
+
 	virtual
 	void
 	on_angle_toggled () final override;

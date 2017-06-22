@@ -561,6 +561,15 @@ private:
 
 	///  @name Grid
 
+	void
+	set_grid_visible ();
+
+	void
+	set_angle_grid_visible ();
+
+	void
+	set_axonometric_grid_visible ();
+
 	virtual
 	void
 	on_grid_layout_tool_toggled () final override;

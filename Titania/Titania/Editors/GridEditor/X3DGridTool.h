@@ -78,8 +78,9 @@ public:
 	void
 	setVisible (const bool value);
 
-	bool
-	getVisible () const;
+	const X3D::SFBool &
+	getVisible () const
+	{ return visible; }
 
 	void
 	setPlane (const int32_t index);
@@ -170,6 +171,9 @@ private:
 	set_browser ();
 
 	void
+	set_scene ();
+
+	void
 	set_activeLayer ();
 
 	///  @name Event handlers
@@ -213,6 +217,7 @@ private:
 	///  @name Members
 
 	X3D::BrowserPtr  browser;
+	X3D::SFBool      visible;
 	X3D::UndoStepPtr undoStep;
 };
 

@@ -107,8 +107,6 @@ X3DGridEditor::X3DGridEditor () :
 	              undoStep (),
 	              changing (false)
 {
-	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridLayoutToolAction ());
-
 	//translation     .setUndo (false);
 	//scale           .setUndo (false);
 	//dimension       .setUndo (false);
@@ -153,11 +151,14 @@ X3DGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
+	getBrowserWindow () -> getGridTool () -> getVisible () .addInterest (&X3DGridEditor::set_grid_visible, this);
+
 	gridTool -> rotation ()        .addInterest (&X3DGridEditor::set_rotation,       this);
 	gridTool -> majorLineEvery ()  .addInterest (&X3DGridEditor::set_majorLineEvery, this);
 	gridTool -> majorLineOffset () .addInterest (&X3DGridEditor::set_majorLineEvery, this);
 	getCurrentScene ()             .addInterest (&X3DGridEditor::set_majorLineEvery, this);
 
+	set_grid_visible ();
 	on_grid_toggled ();
 	set_rotation ();
 	set_majorLineEvery ();
@@ -170,8 +171,23 @@ X3DGridEditor::configure ()
 }
 
 void
+X3DGridEditor::set_grid_visible ()
+{
+	changing = true;
+
+	getGridCheckButton () .set_active (getBrowserWindow () -> getGridTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
 X3DGridEditor::on_grid_toggled ()
 {
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getGridTool () -> setVisible (getGridCheckButton () .get_active ());
+
 	getGridTransformBox ()           .set_sensitive (getGridCheckButton () .get_active ());
 	getGridMajorLinesBox ()          .set_sensitive (getGridCheckButton () .get_active ());
 	getGridColorsBox ()              .set_sensitive (getGridCheckButton () .get_active ());

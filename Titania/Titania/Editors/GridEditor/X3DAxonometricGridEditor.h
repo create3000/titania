@@ -102,6 +102,9 @@ private:
 	void
 	set_angle ();
 
+	void
+	set_axonometric_grid_visible ();
+
 	virtual
 	void
 	on_axonometric_grid_toggled () final override;

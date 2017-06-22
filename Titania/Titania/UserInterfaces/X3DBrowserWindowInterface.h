@@ -88,14 +88,6 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getAngleLayoutToolAction () const
-	{ return m_AngleLayoutToolAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getAxonometricGridLayoutToolAction () const
-	{ return m_AxonometricGridLayoutToolAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getBrowserAction () const
 	{ return m_BrowserAction; }
 
@@ -122,10 +114,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getGouraudAction () const
 	{ return m_GouraudAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getGridLayoutToolAction () const
-	{ return m_GridLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getMenubarAction () const
@@ -1399,14 +1387,6 @@ public:
 
 	virtual
 	void
-	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_axonometric_layout_tool_toggled () = 0;
-
-	virtual
-	void
 	on_browser_toggled () = 0;
 
 	virtual
@@ -1432,10 +1412,6 @@ public:
 	virtual
 	void
 	on_gouraud_toggled () = 0;
-
-	virtual
-	void
-	on_grid_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -1795,6 +1771,18 @@ public:
 
 	virtual
 	void
+	on_grid_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_layout_tool_toggled () = 0;
+
+	virtual
+	void
 	on_scenes_activated () = 0;
 
 	virtual
@@ -2001,8 +1989,6 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_AxonometricGridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_CobwebCompatibilityAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
@@ -2010,7 +1996,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PointsetAction;

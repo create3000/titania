@@ -104,8 +104,6 @@ X3DAngleEditor::X3DAngleEditor () :
 	              undoStep (),
 	              changing (false)
 {
-	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleLayoutToolAction ());
-
 	//translation     .setUndo (false);
 	//scale           .setUndo (false);
 	//dimension       .setUndo (false);
@@ -150,12 +148,15 @@ X3DAngleEditor::initialize ()
 	snapDistance     .setNodes (angleTools);
 	snapToCenter     .setNodes (angleTools);
 
+	getBrowserWindow () -> getAngleTool () -> getVisible () .addInterest (&X3DAngleEditor::set_angle_grid_visible, this);
+
 	angleTool -> rotation ()        .addInterest (&X3DAngleEditor::set_rotation,       this);
 	angleTool -> majorLineEvery ()  .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
 	angleTool -> majorLineOffset () .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
 	getCurrentScene ()              .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
 
-	on_grid_toggled ();
+	set_angle_grid_visible ();
+	on_angle_toggled ();
 	set_rotation ();
 	set_majorLineEvery ();
 }
@@ -167,8 +168,23 @@ X3DAngleEditor::configure ()
 }
 
 void
+X3DAngleEditor::set_angle_grid_visible ()
+{
+	changing = true;
+
+	getAngleCheckButton () .set_active (getBrowserWindow () -> getAngleTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
 X3DAngleEditor::on_angle_toggled ()
 {
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getAngleTool () -> setVisible (getAngleCheckButton () .get_active ());
+
 	getAngleTransformBox ()           .set_sensitive (getAngleCheckButton () .get_active ());
 	getAngleMajorLinesBox ()          .set_sensitive (getAngleCheckButton () .get_active ());
 	getAngleColorsBox ()              .set_sensitive (getAngleCheckButton () .get_active ());

@@ -120,8 +120,6 @@ X3DAxonometricGridEditor::X3DAxonometricGridEditor () :
 	fields -> addUserDefinedField (X3D::inputOutput, "gamma", new X3D::SFDouble ());
 	fields -> getField <X3D::SFDouble> ("gamma") .setUnit (X3D::UnitCategory::ANGLE);
 
-	getAxonometricGridCheckButton () .set_related_action (getBrowserWindow () -> getAxonometricGridLayoutToolAction ());
-
 	dimension0       .setIndex (0);
 	dimension1       .setIndex (1);
 	majorLineEvery0  .setIndex (0);
@@ -161,6 +159,8 @@ X3DAxonometricGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
+	getBrowserWindow () -> getAxonometricGridTool () -> getVisible () .addInterest (&X3DAxonometricGridEditor::set_axonometric_grid_visible, this);
+
 	gridTool -> rotation ()        .addInterest (&X3DAxonometricGridEditor::set_rotation, this);
 	gridTool -> majorLineEvery ()  .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
 	gridTool -> majorLineOffset () .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
@@ -168,7 +168,8 @@ X3DAxonometricGridEditor::initialize ()
 	getCurrentScene () .addInterest (&X3DAxonometricGridEditor::set_angle, this);
 	getCurrentScene () .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
 
-	on_grid_toggled ();
+	set_axonometric_grid_visible ();
+	on_axonometric_grid_toggled ();
 	set_angle ();
 	set_rotation ();
 	set_majorLineEvery ();
@@ -196,8 +197,23 @@ X3DAxonometricGridEditor::set_angle ()
 }
 
 void
+X3DAxonometricGridEditor::set_axonometric_grid_visible ()
+{
+	changing = true;
+
+	getAxonometricGridCheckButton () .set_active (getBrowserWindow () -> getAxonometricGridTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
 X3DAxonometricGridEditor::on_axonometric_grid_toggled ()
 {
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (getAxonometricGridCheckButton () .get_active ());
+
 	getAxonometricGridTransformBox ()           .set_sensitive (getAxonometricGridCheckButton () .get_active ());
 	getAxonometricGridMajorLinesBox ()          .set_sensitive (getAxonometricGridCheckButton () .get_active ());
 	getAxonometricGridColorsBox ()              .set_sensitive (getAxonometricGridCheckButton () .get_active ());
