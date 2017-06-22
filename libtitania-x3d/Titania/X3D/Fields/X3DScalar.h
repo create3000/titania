@@ -144,7 +144,7 @@ public:
 	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_arithmetic <T>::value,
-		value_type
+		InternalType
 	>
 	operator ++ ()
 	{
@@ -156,7 +156,7 @@ public:
 	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_arithmetic <T>::value,
-		value_type
+		InternalType
 	>
 	operator ++ (int)
 	{
@@ -169,7 +169,7 @@ public:
 	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_arithmetic <T>::value,
-		value_type
+		InternalType
 	>
 	operator -- ()
 	{
@@ -181,7 +181,7 @@ public:
 	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_arithmetic <T>::value,
-		value_type
+		InternalType
 	>
 	operator -- (int)
 	{

@@ -96,15 +96,15 @@ AngleTool::getTool () const
 void
 AngleTool::fromMetadata ()
 {
-	getTool () -> translation ()     = getMetaData ("/Titania/" + getName () + "/translation",     X3D::SFVec3f ());
-	getTool () -> rotation ()        = getMetaData ("/Titania/" + getName () + "/rotation",        X3D::SFRotation ());
-	getTool () -> scale ()           = getMetaData ("/Titania/" + getName () + "/scale",           X3D::SFVec3f (1, 1, 1));
-	getTool () -> dimension ()       = getMetaData ("/Titania/" + getName () + "/dimension",       X3D::MFInt32 ({ 5, 16, 10 }));
-	getTool () -> majorLineEvery ()  = getMetaData ("/Titania/" + getName () + "/majorLineEvery",  X3D::MFInt32 ({ 5, 2, 5 }));
-	getTool () -> majorLineOffset () = getMetaData ("/Titania/" + getName () + "/majorLineOffset", X3D::MFInt32 ({ 0, 0, 0 }));
-	getTool () -> color ()           = getMetaData ("/Titania/" + getName () + "/color",           X3D::SFColorRGBA (0.5, 0.5, 0.5, 0.2));
-	getTool () -> lineColor ()       = getMetaData ("/Titania/" + getName () + "/lineColor",       X3D::SFColorRGBA (1, 0.7, 0.7, 0.2));
-	getTool () -> majorLineColor ()  = getMetaData ("/Titania/" + getName () + "/majorLineColor",  X3D::SFColorRGBA (1, 0.7, 0.7, 0.4));
+	getTool () -> translation ()     = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/translation",     X3D::SFVec3f ());
+	getTool () -> rotation ()        = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/rotation",        X3D::SFRotation ());
+	getTool () -> scale ()           = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/scale",           X3D::SFVec3f (1, 1, 1));
+	getTool () -> dimension ()       = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/dimension",       X3D::MFInt32 ({ 5, 16, 10 }));
+	getTool () -> majorLineEvery ()  = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/majorLineEvery",  X3D::MFInt32 ({ 5, 2, 5 }));
+	getTool () -> majorLineOffset () = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/majorLineOffset", X3D::MFInt32 ({ 0, 0, 0 }));
+	getTool () -> color ()           = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/color",           X3D::SFColorRGBA (0.5, 0.5, 0.5, 0.2));
+	getTool () -> lineColor ()       = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/lineColor",       X3D::SFColorRGBA (1, 0.7, 0.7, 0.2));
+	getTool () -> majorLineColor ()  = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/majorLineColor",  X3D::SFColorRGBA (1, 0.7, 0.7, 0.4));
 
 	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * pi <double> / getTool () -> dimension () [1];
 }

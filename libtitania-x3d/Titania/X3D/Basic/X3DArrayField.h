@@ -137,9 +137,14 @@ public:
 
 	///  Construct new X3DArrayField.
 	explicit
-	X3DArrayField (const size_type size) :
+	X3DArrayField (const size_type count) :
 		X3DArrayField <ValueType> ()
-	{ resize (size); }
+	{ resize (count); }
+
+	///  Construct new X3DArrayField.
+	X3DArrayField (const size_type count, const ValueType & value) :
+		X3DArrayField ()
+	{ resize (count, value); }
 
 	///  Construct new X3DArrayField.
 	template <class InputIterator>
@@ -464,7 +469,7 @@ public:
 
 	///  Changes the number of elements stored.
 	void
-	resize (const size_type, const ValueType &);
+	resize (const size_type count, const ValueType & value);
 
 	///  Swaps the contents.
 	void

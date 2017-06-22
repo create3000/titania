@@ -148,11 +148,11 @@ public:
 
 	template <class Type>
 	void
-	setMetaData (const std::string & key, const Type & value);
+	setMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & value);
 	
 	template <class Type>
 	Type
-	getMetaData (const std::string & key, const Type & defaultValue = Type ()) const;
+	getMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & defaultValue = Type ()) const;
 
 	/***
 	 *  @name Node, Proto and Context path handline
@@ -269,28 +269,34 @@ private:
 
 template <class Type>
 void
-X3DBaseInterface::setMetaData (const std::string & key, const Type & value)
+X3DBaseInterface::setMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & value)
 {
-	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
+	const auto & layerSet = browser -> getWorld () -> getLayerSet ();
 
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		layerSet -> getActiveLayer () -> setMetaData (key, value);
 	else
-		createWorldInfo (getCurrentScene ()) -> setMetaData (key, value);
+	{
+		X3D::X3DScenePtr scene (browser -> getExecutionContext () -> getScene ());
+
+		createWorldInfo (scene) -> setMetaData (key, value);
+	}
 }
 
 template <class Type>
 Type
-X3DBaseInterface::getMetaData (const std::string & key, const Type & defaultValue) const
+X3DBaseInterface::getMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & defaultValue) const
 {
 	try
 	{
-		const auto & layerSet = getCurrentWorld () -> getLayerSet ();
+		const auto & layerSet = browser -> getWorld () -> getLayerSet ();
 	
 		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			return layerSet -> getActiveLayer () -> getMetaData <Type> (key, defaultValue);
-	
-		return getWorldInfo (getCurrentScene ()) -> getMetaData <Type> (key, defaultValue);
+
+		X3D::X3DScenePtr scene (browser -> getExecutionContext () -> getScene ());
+
+		return getWorldInfo (scene) -> getMetaData <Type> (key, defaultValue);
 	}
 	catch (const X3D::X3DError &)
 	{
