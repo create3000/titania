@@ -244,33 +244,6 @@ private:
 	void
 	on_background_image_activate () final override;
 
-	///  @name Grid
-
-	void
-	set_grid_visible ();
-
-	void
-	set_angle_grid_visible ();
-
-	void
-	set_axonometric_grid_visible ();
-
-	virtual
-	void
-	on_grid_layout_tool_toggled () final override;
-
-	virtual
-	void
-	on_angle_layout_tool_toggled () final override;
-
-	virtual
-	void
-	on_axonometric_layout_tool_toggled () final override;
-
-	virtual
-	void
-	on_grid_properties_activated () final override;
-
 	///  @name Camera menu
 
 	virtual

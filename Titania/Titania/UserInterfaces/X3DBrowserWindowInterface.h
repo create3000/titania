@@ -612,6 +612,26 @@ public:
 	{ return *m_BrowserTextureCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserLayoutMenuItem () const
+	{ return *m_BrowserLayoutMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserGridLayoutToolMenuItem () const
+	{ return *m_BrowserGridLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserAngleLayoutToolMenuItem () const
+	{ return *m_BrowserAngleLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserAxonometricGridLayoutToolMenuItem () const
+	{ return *m_BrowserAxonometricGridLayoutToolMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserGridPropertiesMenuItem () const
+	{ return *m_BrowserGridPropertiesMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserScenesMenuItem () const
 	{ return *m_BrowserScenesMenuItem; }
 
@@ -1046,6 +1066,26 @@ public:
 	Gtk::ImageMenuItem &
 	getTextureCoordinateEditorMenuItem () const
 	{ return *m_TextureCoordinateEditorMenuItem; }
+
+	Gtk::MenuItem &
+	getLayoutMenuItem () const
+	{ return *m_LayoutMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getGridLayoutToolMenuItem () const
+	{ return *m_GridLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAngleLayoutToolMenuItem () const
+	{ return *m_AngleLayoutToolMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getAxonometricGridLayoutToolMenuItem () const
+	{ return *m_AxonometricGridLayoutToolMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getGridPropertiesMenuItem () const
+	{ return *m_GridPropertiesMenuItem; }
 
 	Gtk::MenuItem &
 	getScenesMenuItem () const
@@ -1699,6 +1739,10 @@ public:
 
 	virtual
 	void
+	on_grid_properties_activated () = 0;
+
+	virtual
+	void
 	on_browser_scenes_activated () = 0;
 
 	virtual
@@ -1724,6 +1768,18 @@ public:
 	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_grid_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -2064,6 +2120,11 @@ private:
 	Gtk::ImageMenuItem* m_BrowserTransformToZeroMenuItem;
 	Gtk::ImageMenuItem* m_BrowserColorPerVertexMenuItem;
 	Gtk::ImageMenuItem* m_BrowserTextureCoordinateEditorMenuItem;
+	Gtk::MenuItem* m_BrowserLayoutMenuItem;
+	Gtk::CheckMenuItem* m_BrowserGridLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
+	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
@@ -2173,6 +2234,11 @@ private:
 	Gtk::ImageMenuItem* m_TransformToZeroMenuItem;
 	Gtk::ImageMenuItem* m_ColorPerVertexEditorMenuItem;
 	Gtk::ImageMenuItem* m_TextureCoordinateEditorMenuItem;
+	Gtk::MenuItem* m_LayoutMenuItem;
+	Gtk::CheckMenuItem* m_GridLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
+	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
 	Gtk::MenuItem* m_ScenesMenuItem;
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;

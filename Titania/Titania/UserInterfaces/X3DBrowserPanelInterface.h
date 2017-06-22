@@ -211,22 +211,6 @@ public:
 	getBackgroundImageMenuItem () const
 	{ return *m_BackgroundImageMenuItem; }
 
-	Gtk::CheckMenuItem &
-	getGridLayoutToolMenuItem () const
-	{ return *m_GridLayoutToolMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getAngleLayoutToolMenuItem () const
-	{ return *m_AngleLayoutToolMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getAxonometricGridLayoutToolMenuItem () const
-	{ return *m_AxonometricGridLayoutToolMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getGridPropertiesMenuItem () const
-	{ return *m_GridPropertiesMenuItem; }
-
 	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
@@ -383,22 +367,6 @@ public:
 
 	virtual
 	void
-	on_grid_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_axonometric_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_grid_properties_activated () = 0;
-
-	virtual
-	void
 	on_main_view_activate () = 0;
 
 	virtual
@@ -484,10 +452,6 @@ private:
 	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
 	Gtk::MenuItem* m_LayoutMenuItem;
 	Gtk::MenuItem* m_BackgroundImageMenuItem;
-	Gtk::CheckMenuItem* m_GridLayoutToolMenuItem;
-	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
-	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
-	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::MenuItem* m_BrowserPanelMenuItem;
 	Gtk::MenuItem* m_ColorEditorPanelMenuItem;
