@@ -50,8 +50,9 @@
 
 #include "X3DBrowserPanelMenuBar.h"
 
-#include "../NotebookPage/NotebookPage.h"
 #include "ViewpointObserver.h"
+#include "../NotebookPage/NotebookPage.h"
+#include "../../Editors/GridEditor/X3DGridTool.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
@@ -171,13 +172,28 @@ X3DBrowserPanelMenuBar::on_map ()
 {
 	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
 
+	// Layout Menu
+
+	getBrowserWindow () -> getGridTool ()            -> getVisible () .addInterest (&X3DBrowserPanelMenuBar::set_grid_visible,             this);
+	getBrowserWindow () -> getAngleTool ()           -> getVisible () .addInterest (&X3DBrowserPanelMenuBar::set_angle_grid_visible,       this);
+	getBrowserWindow () -> getAxonometricGridTool () -> getVisible () .addInterest (&X3DBrowserPanelMenuBar::set_axonometric_grid_visible, this);
+
 	set_editing ();
+	set_grid_visible ();
+	set_angle_grid_visible ();
+	set_axonometric_grid_visible ();
 }
 
 void
 X3DBrowserPanelMenuBar::on_unmap ()
 {
-	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
+	getBrowserWindow () -> getEditing () .removeInterest (&X3DBrowserPanelMenuBar::set_editing, this);
+
+	// Layout Menu
+
+	getBrowserWindow () -> getGridTool ()            -> getVisible () .removeInterest (&X3DBrowserPanelMenuBar::set_grid_visible,             this);
+	getBrowserWindow () -> getAngleTool ()           -> getVisible () .removeInterest (&X3DBrowserPanelMenuBar::set_angle_grid_visible,       this);
+	getBrowserWindow () -> getAxonometricGridTool () -> getVisible () .removeInterest (&X3DBrowserPanelMenuBar::set_axonometric_grid_visible, this);
 }
 
 /*
@@ -672,6 +688,90 @@ void
 X3DBrowserPanelMenuBar::on_background_image_activate ()
 {
 
+}
+
+void
+X3DBrowserPanelMenuBar::set_grid_visible ()
+{
+	changing = true;
+
+	getGridLayoutToolMenuItem () .set_active (getBrowserWindow () -> getGridTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::set_angle_grid_visible ()
+{
+	changing = true;
+
+	getAngleLayoutToolMenuItem () .set_active (getBrowserWindow () -> getAngleTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::set_axonometric_grid_visible ()
+{
+	changing = true;
+
+	getAxonometricGridLayoutToolMenuItem () .set_active (getBrowserWindow () -> getAxonometricGridTool () -> getVisible ());
+
+	changing = false;
+}
+
+void
+X3DBrowserPanelMenuBar::on_grid_layout_tool_toggled ()
+{
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getAngleTool ()           -> setVisible (false);
+	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (false);
+
+	// Toggle grid.
+
+	getBrowserWindow () -> getGridTool () -> setVisible (getGridLayoutToolMenuItem () .get_active ());
+
+	getPage () -> setModified (true);
+}
+
+void
+X3DBrowserPanelMenuBar::on_angle_layout_tool_toggled ()
+{
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getGridTool ()            -> setVisible (false);
+	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (false);
+
+	// Toggle angle grid.
+
+	getBrowserWindow () -> getAngleTool () -> setVisible (getAngleLayoutToolMenuItem () .get_active ());
+
+	getPage () -> setModified (true);
+}
+
+void
+X3DBrowserPanelMenuBar::on_axonometric_layout_tool_toggled ()
+{
+	if (changing)
+		return;
+
+	getBrowserWindow () -> getGridTool ()  -> setVisible (false);
+	getBrowserWindow () -> getAngleTool () -> setVisible (false);
+
+	// Toggle axonometric grid.
+
+	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (getAxonometricGridLayoutToolMenuItem () .get_active ());
+
+	getPage () -> setModified (true);
+}
+
+void
+X3DBrowserPanelMenuBar::on_grid_properties_activated ()
+{
+	getBrowserWindow () -> addDialog ("GridEditor");
 }
 
 /*

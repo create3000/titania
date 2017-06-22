@@ -165,12 +165,6 @@
     <property name="stock">Union</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkImage" id="image10">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Grid</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="image11">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -319,12 +313,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">PaintBrush</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image34">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Grid</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image35">
@@ -1532,56 +1520,6 @@
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="BrowserLayoutMenuItem">
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Layout</property>
-        <property name="use_underline">True</property>
-        <child type="submenu">
-          <object class="GtkMenu" id="menu28">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkCheckMenuItem" id="BrowserGridLayoutToolMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
-                <property name="use_underline">True</property>
-                <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkCheckMenuItem" id="BrowserAngleLayoutToolMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
-                <property name="use_underline">True</property>
-                <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkCheckMenuItem" id="BrowserAxonometricGridLayoutToolMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
-                <property name="use_underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImageMenuItem" id="BrowserGridPropertiesMenuItem">
-                <property name="label" translatable="yes">Grid _Properties ...</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_underline">True</property>
-                <property name="image">image34</property>
-                <property name="use_stock">False</property>
-                <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
               </object>
             </child>
           </object>
@@ -2925,59 +2863,6 @@
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="LayoutMenuItem">
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Layout</property>
-                        <property name="use_underline">True</property>
-                        <child type="submenu">
-                          <object class="GtkMenu" id="menu10">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
-                                <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
-                                <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="AngleLayoutToolMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
-                                <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
-                                <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="AxonometricGridLayoutToolMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
-                                <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="GridPropertiesMenuItem">
-                                <property name="label" translatable="yes">Grid _Properties ...</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="image">image10</property>
-                                <property name="use_stock">False</property>
-                                <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
                               </object>
                             </child>
                           </object>

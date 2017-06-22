@@ -58,7 +58,6 @@
 #include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
-#include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
@@ -83,7 +82,6 @@
 #include <Titania/X3D/Editing/Combine.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Parser/Filter.h>
-#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
 #include <Titania/OS.h>
@@ -183,12 +181,6 @@ BrowserWindow::initialize ()
 	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
 	getSelection () -> getHierarchy () .addInterest (&BrowserWindow::set_hierarchy, this);
-
-	// Layout Menu
-
-	getGridTool ()            -> getVisible () .addInterest (&BrowserWindow::set_grid_visible,             this);
-	getAngleTool ()           -> getVisible () .addInterest (&BrowserWindow::set_angle_grid_visible,       this);
-	getAxonometricGridTool () -> getVisible () .addInterest (&BrowserWindow::set_axonometric_grid_visible, this);
 
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
@@ -1222,7 +1214,6 @@ BrowserWindow::setEditing (const bool enabled)
 	//getShadingMenuItem ()                .set_visible (enabled);
 	getSelectionMenuItem ()              .set_visible (enabled);
 	getGeometryMenuItem ()               .set_visible (enabled);
-	getLayoutMenuItem ()                 .set_visible (enabled);
 
 	getBrowserOpenRecentMenuItem ()             .set_visible (enabled);
 	getBrowserImportMenuItem ()                 .set_visible (enabled);
@@ -1234,7 +1225,6 @@ BrowserWindow::setEditing (const bool enabled)
 	//getBrowserShadingMenuItem ()                .set_visible (enabled);
 	getBrowserSelectionMenuItem ()              .set_visible (enabled);
 	getBrowserGeometryMenuItem ()               .set_visible (enabled);
-	getBrowserLayoutMenuItem ()                 .set_visible (enabled);
 
 	getLocationBar () .set_visible (not enabled);
 	getEditToolBar () .set_visible (enabled);
@@ -1791,92 +1781,6 @@ BrowserWindow::on_transform_to_zero_activated ()
 	X3D::X3DEditor::transformToZero (getSelection () -> getNodes (), undoStep);
 
 	addUndoStep (undoStep);
-}
-
-// Layout
-
-void
-BrowserWindow::set_grid_visible ()
-{
-	changing = true;
-
-	getGridLayoutToolMenuItem () .set_active (getGridTool () -> getVisible ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_angle_grid_visible ()
-{
-	changing = true;
-
-	getAngleLayoutToolMenuItem () .set_active (getAngleTool () -> getVisible ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_axonometric_grid_visible ()
-{
-	changing = true;
-
-	getAxonometricGridLayoutToolMenuItem () .set_active (getAxonometricGridTool () -> getVisible ());
-
-	changing = false;
-}
-
-void
-BrowserWindow::on_grid_layout_tool_toggled ()
-{
-	if (changing)
-		return;
-
-	getAngleTool ()           -> setVisible (false);
-	getAxonometricGridTool () -> setVisible (false);
-
-	// Toggle grid.
-
-	getGridTool () -> setVisible (getGridLayoutToolMenuItem () .get_active ());
-
-	getCurrentPage () -> setModified (true);
-}
-
-void
-BrowserWindow::on_angle_layout_tool_toggled ()
-{
-	if (changing)
-		return;
-
-	getGridTool ()            -> setVisible (false);
-	getAxonometricGridTool () -> setVisible (false);
-
-	// Toggle angle grid.
-
-	getAngleTool () -> setVisible (getAngleLayoutToolMenuItem () .get_active ());
-
-	getCurrentPage () -> setModified (true);
-}
-
-void
-BrowserWindow::on_axonometric_layout_tool_toggled ()
-{
-	if (changing)
-		return;
-
-	getGridTool ()  -> setVisible (false);
-	getAngleTool () -> setVisible (false);
-
-	// Toggle axonometric grid.
-
-	getAxonometricGridTool () -> setVisible (getAxonometricGridLayoutToolMenuItem () .get_active ());
-
-	getCurrentPage () -> setModified (true);
-}
-
-void
-BrowserWindow::on_grid_properties_activated ()
-{
-	addDialog ("GridEditor");
 }
 
 // Scenes menu

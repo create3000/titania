@@ -110,6 +110,10 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
+	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
+	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
+	m_builder -> get_widget ("AxonometricGridLayoutToolMenuItem", m_AxonometricGridLayoutToolMenuItem);
+	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("BrowserPanelMenuItem", m_BrowserPanelMenuItem);
 	m_builder -> get_widget ("ColorEditorPanelMenuItem", m_ColorEditorPanelMenuItem);
@@ -162,6 +166,16 @@ X3DBrowserPanelInterface::create ()
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_hide_all_object_icons_activated));
 	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_background_image_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
+	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_grid_layout_tool_toggled));
+	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_angle_layout_tool_toggled));
+	m_AxonometricGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_axonometric_layout_tool_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
+	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_grid_properties_activated));
+
+	// Connect object Gtk::MenuItem with id 'MainViewMenuItem'.
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
 	m_PerspectiveViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_perspective_view_activate));
 	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_top_view_activate));
