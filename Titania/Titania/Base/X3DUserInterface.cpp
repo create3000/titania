@@ -67,6 +67,7 @@ const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new Dialo
 const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"ScenePropertiesEditor",
 	"MotionBlurEditor",
+	"BackgroundImageEditor",
 	"GridEditor",
 	"NodeEditor",
 	"NodePropertiesEditor",
