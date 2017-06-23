@@ -472,14 +472,14 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	if (changing)
 		return;
 
-	const auto        undoStep    = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
-	const std::string path        = fileChooser .get_file () -> get_path ();
-	const basic::uri  URL         = "file://" + path;
-	const basic::uri  relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
-	const auto        url         = X3D::MFString ({ relativeURL .str (), URL .str () });
-	const auto        minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
-	auto              maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
-	const auto        heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP);
+	const auto       undoStep    = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
+	const basic::uri path        = fileChooser .get_file () -> get_path ();
+	const basic::uri URL         = path .add_file_scheme ();
+	const basic::uri relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
+	const auto       url         = X3D::MFString ({ relativeURL .str (), URL .str () });
+	const auto       minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
+	auto             maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
+	const auto       heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP);
 
 	if (path .empty ())
 		return;

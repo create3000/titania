@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
+#include "../../Editors/BackgroundImageEditor/BackgroundImage.h"
 
 #include "../BrowserPanel/BrowserPanel.h"
 
@@ -70,7 +71,8 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	             undoHistory (),
 	                modified (false),
 	           saveConfirmed (false),
-	            fileMonitors ()
+	            fileMonitors (),
+	         backgroundImage (new BackgroundImage (this))
 {
 	addChildObjects (mainBrowser);
 
@@ -298,7 +300,6 @@ X3DNotebookPage::shutdown ()
 void
 X3DNotebookPage::set_browser ()
 {
-__LOG__ << std::endl;
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser, this);
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_splashScreen, this);
 	mainBrowser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
@@ -307,7 +308,6 @@ __LOG__ << std::endl;
 void
 X3DNotebookPage::set_splashScreen ()
 {
-__LOG__ << std::endl;
 	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,          this);
 	mainBrowser -> shutdown ()        .addInterest (&X3DNotebookPage::set_shutdown,        this);
@@ -349,6 +349,14 @@ void
 X3DNotebookPage::set_shutdown ()
 {
 	shutdown ();
+}
+
+void
+X3DNotebookPage::dispose ()
+{
+	backgroundImage .reset ();
+
+	X3DNotebookPageInterface::dispose ();
 }
 
 X3DNotebookPage::~X3DNotebookPage ()

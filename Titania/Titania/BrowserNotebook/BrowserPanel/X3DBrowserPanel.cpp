@@ -51,6 +51,7 @@
 #include "X3DBrowserPanel.h"
 
 #include "../NotebookPage/NotebookPage.h"
+#include "../../Editors/BackgroundImageEditor/BackgroundImage.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -67,6 +68,8 @@
 #include <Titania/X3D/Components/Navigation/NavigationInfo.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Texturing/ImageTexture.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
 #include <Titania/X3D/Tools/Grids/GridTool.h>
@@ -269,13 +272,17 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		// Setup scene.
 
-		const auto & executionContext = browser -> getExecutionContext ();
-		const auto   gridLayer        = executionContext -> getNamedNode <X3D::X3DLayerNode> ("GridLayer");
-		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
+		const auto & executionContext     = browser -> getExecutionContext ();
+		const auto   gridLayer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("GridLayer");
+		const auto   layer                = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
+		const auto   backgroundAppearance = executionContext -> getNamedNode <X3D::Appearance> ("BackgroundImageAppearance");
 
 		const auto & gridTool            = getBrowserWindow () -> getGridTool ()            -> getTool ();
-		const auto & angleGridTool       = getBrowserWindow () -> getAngleGridTool ()           -> getTool ();
+		const auto & angleGridTool       = getBrowserWindow () -> getAngleGridTool ()       -> getTool ();
 		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
+
+		page -> getBackgroundImage () -> getTexture () -> checkLoadState () .addInterest (&X3DBrowserPanel::set_background_texture, this);
+		backgroundAppearance -> texture () = page -> getBackgroundImage () -> getTexture ();
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
 		gridSwitch    = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
@@ -311,6 +318,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		page -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
 
 		set_fixed_pipeline ();
+		set_background_texture ();
 		set_activeLayer ();
 	}
 	catch (const X3D::X3DError & error)
@@ -326,6 +334,32 @@ X3DBrowserPanel::set_fixed_pipeline ()
 		return;
 
 	browser -> setFixedPipeline (page -> getMainBrowser () -> getFixedPipeline ());
+}
+
+void
+X3DBrowserPanel::set_background_texture ()
+{
+	try
+	{
+		const auto & executionContext      = browser -> getExecutionContext ();
+		const auto   backgroundImageSwitch = executionContext -> getNamedNode <X3D::Switch> ("BackgroundImageSwitch");
+
+		if (page -> getBackgroundImage () -> getTexture () -> checkLoadState () == X3D::COMPLETE_STATE)
+		{
+			const auto   backgroundImageTransform = executionContext -> getNamedNode <X3D::Transform> ("BackgroundImageTransform");
+			const double width                    = page -> getBackgroundImage () -> getTexture () -> getImageWidth ();
+			const double height                   = page -> getBackgroundImage () -> getTexture () -> getImageHeight ();
+
+			backgroundImageTransform -> scale ()    = X3D::Vector3f (width / height, 1, 1);
+			backgroundImageSwitch -> whichChoice () = 0;
+		}
+		else
+			backgroundImageSwitch -> whichChoice () = -1;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

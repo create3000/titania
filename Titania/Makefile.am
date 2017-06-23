@@ -77,6 +77,8 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DUsedMaterialsEditor.cpp \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
+	Titania/Editors/BackgroundImageEditor/BackgroundImage.cpp \
+	Titania/Editors/BackgroundImageEditor/BackgroundImageEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
@@ -182,6 +184,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
+	Titania/UserInterfaces/X3DBackgroundImageEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserPanelInterface.cpp \

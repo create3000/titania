@@ -314,6 +314,9 @@
     <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanel.cpp" />
     <Compile Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.cpp" />
     <Compile Include="Titania\Editors\GridEditor\AngleGridTool.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBackgroundImageEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\BackgroundImageEditor\BackgroundImageEditor.cpp" />
+    <Compile Include="Titania\Editors\BackgroundImageEditor\BackgroundImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2990,6 +2993,10 @@
     <None Include="Titania\BrowserNotebook\BrowserPanel\X3DBrowserPanelMenuBar.h" />
     <None Include="share\titania\ui\Panels\BrowserPanel.x3dv" />
     <None Include="share\titania\ui\icons\BackgroundImage.svg" />
+    <None Include="share\titania\ui\Editors\BackgroundImageEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DBackgroundImageEditorInterface.h" />
+    <None Include="Titania\Editors\BackgroundImageEditor\BackgroundImageEditor.h" />
+    <None Include="Titania\Editors\BackgroundImageEditor\BackgroundImage.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3137,6 +3144,7 @@
     <Folder Include="Titania\BrowserNotebook\NotebookPage\" />
     <Folder Include="share\titania\ui\Panels\" />
     <Folder Include="Titania\BrowserNotebook\BrowserPanel\" />
+    <Folder Include="Titania\Editors\BackgroundImageEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

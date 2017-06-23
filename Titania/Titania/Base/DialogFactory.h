@@ -67,6 +67,7 @@
 
 #include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/BackgroundEditor/BackgroundEditor.h"
+#include "../Editors/BackgroundImageEditor/BackgroundImageEditor.h"
 #include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
@@ -122,9 +123,10 @@ public:
 		         std::make_pair ("FileExportDialog",         constructDialog <FileExportDialog>),
 		         std::make_pair ("FileExportImageDialog",    constructDialog <FileExportImageDialog>),
 		         std::make_pair ("MessageDialog",            constructDialog <MessageDialog>),
-		         std::make_pair ("UndoHistoryEditor",        constructDialog <UndoHistoryEditor>),
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
+		         std::make_pair ("UndoHistoryEditor",        constructDialog <UndoHistoryEditor>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
+		         std::make_pair ("BackgroundImageEditor",    constructDialog <BackgroundImageEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
 		         std::make_pair ("NodeEditor",               constructDialog <NodeEditor>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),

@@ -48,147 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
-#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
+#ifndef __TITANIA_EDITORS_BACKGROUND_IMAGE_EDITOR_BACKGROUND_IMAGE_H__
+#define __TITANIA_EDITORS_BACKGROUND_IMAGE_EDITOR_BACKGROUND_IMAGE_H__
 
-#include "../../UserInterfaces/X3DBrowserPanelInterface.h"
+#include "../../Base/X3DBaseInterface.h"
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
+class X3DNotebookPage;
 
-enum BrowserPanelType :
-	int32_t
-{
-	MAIN,
-	PERSPECTIVE,
-	TOP,
-	RIGHT,
-	FRONT,
-	BOTTOM,
-	LEFT,
-	BACK
-
-};
-
-class X3DBrowserPanel :
-	virtual public X3DBrowserPanelInterface
+class BackgroundImage :
+	public X3DBaseInterface
 {
 public:
 
-	///  @name Member access
+	/// @name Construction
 
-	const X3D::BrowserPtr &
-	getLocalBrowser () const
-	{ return browser; }
+	BackgroundImage (X3DNotebookPage* const page);
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DBrowserPanel () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const std::string & id);
-
-	X3DBrowserPanel ();
-
-	virtual
-	void
-	initialize () override;
-
-	NotebookPage*
-	getPage () const
-	{ return page; }
+	/// @name Member access
 
 	void
-	setType (const BrowserPanelType value);
+	setUrl (const X3D::MFString & value);
 
-	BrowserPanelType
-	getType () const;
+	const X3D::MFString &
+	getUrl () const;
 
-	virtual
-	void
-	setLocalBrowser (const X3D::BrowserPtr & value);
+	const X3D::X3DPtr <X3D::ImageTexture> &
+	getTexture () const
+	{ return texture; }
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () override;
+	/// @name Destruction
 
 	virtual
-	void
-	on_unmap () override;
+	~BackgroundImage () final override;
 
 
 private:
 
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserPanelType type) const;
-
-	///  @name Member access
-
-	int32_t
-	getPlane () const;
-
-	///  @name Event handlers
-
-	void
-	set_dependent_browser ();
-
-	void
-	set_fixed_pipeline ();
-
-	void
-	set_background_texture ();
-
-	void
-	set_activeLayer ();
-
-	void
-	connectViewpoint ();
-
-	void
-	set_viewpoint ();
-
-	void
-	set_grid ();
-
-	bool
-	on_focus_in_event (GdkEventFocus* event);
-
-	bool
-	on_focus_out_event (GdkEventFocus* event);
-
-	///  @name Static members
-
-	static const std::vector <std::string>     names;
-	static const std::vector <X3D::Vector3d>   axes;
-	static const std::vector <X3D::Vector3d>   positions;
-	static const std::vector <X3D::Rotation4d> orientations;
-
 	///  @name Members
 
-	NotebookPage* const                 page;
-	BrowserPanelType                    type;
-	const std::string                   id;
-	X3D::BrowserPtr                     browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
-	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
-	X3D::X3DPtr <X3D::Transform>        gridTransform;
-	X3D::X3DPtr <X3D::Switch>           gridSwitch;
-	X3D::SFNode                         grid;
+	X3D::X3DPtr <X3D::ImageTexture>      texture;
+	X3D::X3DPtr <X3D::TextureProperties> textureProperties;
 
 };
 

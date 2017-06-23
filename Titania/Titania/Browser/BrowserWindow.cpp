@@ -1798,6 +1798,7 @@ BrowserWindow::on_transform_to_zero_activated ()
 void
 BrowserWindow::on_background_image_activate ()
 {
+	addDialog ("BackgroundImageEditor");
 }
 
 void

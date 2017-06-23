@@ -279,9 +279,8 @@ FileImportDialog::run ()
 			{
 				getConfig () -> setItem ("importType", ImportType::SCENE);
 
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
-
-				const auto nodes = getBrowserWindow () -> import ({ getURL () }, undoStep);
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Magic Import"));
+				const auto nodes    = getBrowserWindow () -> import ({ getURL () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -291,9 +290,8 @@ FileImportDialog::run ()
 			{
 				getConfig () -> setItem ("importType", ImportType::INLINE);
 
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
-
-				const auto nodes = getBrowserWindow () -> importAsInline ({ getURL () }, undoStep);
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
+				const auto nodes    = getBrowserWindow () -> importAsInline ({ getURL () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);

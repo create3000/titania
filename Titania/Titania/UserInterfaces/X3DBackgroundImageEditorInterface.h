@@ -47,166 +47,119 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_BACKGROUND_IMAGE_EDITOR_H__
+#define __TMP_GLAD2CPP_BACKGROUND_IMAGE_EDITOR_H__
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
-
-#include "../../UserInterfaces/X3DNotebookPageInterface.h"
-#include "../../Browser/BrowserHistory.h"
-
-#include <Titania/X3D/Editing/Undo/UndoHistory.h>
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class BackgroundImage;
-
-class X3DNotebookPage :
-	public X3DNotebookPageInterface
+/**
+ *  Gtk Interface for BackgroundImageEditor.
+ */
+class X3DBackgroundImageEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
+	///  @name Construction
+
+	X3DBackgroundImageEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DBackgroundImageEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DBackgroundImageEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filenames); }
+
 	///  @name Member access
 
-	int32_t
-	getPageNumber () const;
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
 
-	const X3D::BrowserPtr &
-	getMainBrowser () const
-	{ return mainBrowser; }
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
 
-	X3D::X3DScenePtr
-	getMasterScene () const;
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
 
-	X3D::X3DScenePtr
-	getScene () const;
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
-	const basic::uri &
-	getMasterSceneURL () const;
+	Gtk::FileChooserButton &
+	getImageChooserButton () const
+	{ return *m_ImageChooserButton; }
 
-	const basic::uri &
-	getWorldURL () const;
+	Gtk::Button &
+	getImageReloadButton () const
+	{ return *m_ImageReloadButton; }
 
-	BrowserHistory &
-	getBrowserHistory ()
-	{ return browserHistory; }
+	Gtk::Button &
+	getImageRemoveButton () const
+	{ return *m_ImageRemoveButton; }
 
-	const BrowserHistory &
-	getBrowserHistory () const
-	{ return browserHistory; }
+	Gtk::Label &
+	getLoadStateLabel () const
+	{ return *m_LoadStateLabel; }
 
-	X3D::UndoHistory &
-	getUndoHistory ()
-	{ return undoHistory; }
+	///  @name Signal handlers
 
-	const X3D::UndoHistory &
-	getUndoHistory () const
-	{ return undoHistory; }
-
+	virtual
 	void
-	setModified (const bool value);
+	on_image_set () = 0;
 
-	bool
-	getModified () const;
-
+	virtual
 	void
-	setSaveConfirmed (const bool value)
-	{ saveConfirmed = value; }
+	on_image_reload_clicked () = 0;
 
-	bool
-	getSaveConfirmed () const
-	{ return saveConfirmed; }
-
-	bool
-	isSaved ();
-
+	virtual
 	void
-	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
-
-	const std::unique_ptr <BackgroundImage> &
-	getBackgroundImage () const
-	{ return backgroundImage; }
+	on_image_remove_clicked () = 0;
 
 	///  @name Destruction
 
-	void
-	reset ();
-
 	virtual
-	void
-	shutdown ();
-
-	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DNotebookPage () override;
+	~X3DBackgroundImageEditorInterface () override;
 
 
-protected:
+private:
 
 	///  @name Construction
 
-	X3DNotebookPage (const basic::uri & startUrl);
-
-	virtual
 	void
-	loaded ();
-
-	virtual
-	void
-	initialized ();
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Operations
+	create (const std::string &);
 
 	void
-	updateTitle ();
-
-	std::string
-	getTitle () const;
-
-	///  @name Event handlers
+	create (std::initializer_list <std::string>);
 
 	void
-	set_browser ();
+	create ();
 
-	void
-	set_splashScreen ();
-
-	void
-	set_loaded ();
-
-	void
-	set_initialized ();
-
-	void
-	set_loadCount ();
-
-	void
-	set_shutdown ();
+	///  @name Static members
 
 	///  @name Members
 
-	X3D::BrowserPtr  mainBrowser;
-	basic::uri       url; // Start URL
-	BrowserHistory   browserHistory;
-	X3D::UndoHistory undoHistory;
-	bool             modified;
-	bool             saveConfirmed;
-
-	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
-	
-	std::unique_ptr <BackgroundImage> backgroundImage;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::FileChooserButton* m_ImageChooserButton;
+	Gtk::Button* m_ImageReloadButton;
+	Gtk::Button* m_ImageRemoveButton;
+	Gtk::Label* m_LoadStateLabel;
 
 };
 

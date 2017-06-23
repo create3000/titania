@@ -48,165 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
+#ifndef __TITANIA_EDITORS_BACKGROUND_IMAGE_EDITOR_BACKGROUND_IMAGE_EDITOR_H__
+#define __TITANIA_EDITORS_BACKGROUND_IMAGE_EDITOR_BACKGROUND_IMAGE_EDITOR_H__
 
-#include "../../UserInterfaces/X3DNotebookPageInterface.h"
-#include "../../Browser/BrowserHistory.h"
-
-#include <Titania/X3D/Editing/Undo/UndoHistory.h>
+#include "../../Browser/UserData.h"
+#include "../../UserInterfaces/X3DBackgroundImageEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BackgroundImage;
+class NotebookPage;
 
-class X3DNotebookPage :
-	public X3DNotebookPageInterface
+class BackgroundImageEditor :
+	virtual public X3DBackgroundImageEditorInterface
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	int32_t
-	getPageNumber () const;
-
-	const X3D::BrowserPtr &
-	getMainBrowser () const
-	{ return mainBrowser; }
-
-	X3D::X3DScenePtr
-	getMasterScene () const;
-
-	X3D::X3DScenePtr
-	getScene () const;
-
-	const basic::uri &
-	getMasterSceneURL () const;
-
-	const basic::uri &
-	getWorldURL () const;
-
-	BrowserHistory &
-	getBrowserHistory ()
-	{ return browserHistory; }
-
-	const BrowserHistory &
-	getBrowserHistory () const
-	{ return browserHistory; }
-
-	X3D::UndoHistory &
-	getUndoHistory ()
-	{ return undoHistory; }
-
-	const X3D::UndoHistory &
-	getUndoHistory () const
-	{ return undoHistory; }
-
-	void
-	setModified (const bool value);
-
-	bool
-	getModified () const;
-
-	void
-	setSaveConfirmed (const bool value)
-	{ saveConfirmed = value; }
-
-	bool
-	getSaveConfirmed () const
-	{ return saveConfirmed; }
-
-	bool
-	isSaved ();
-
-	void
-	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
-
-	const std::unique_ptr <BackgroundImage> &
-	getBackgroundImage () const
-	{ return backgroundImage; }
+	BackgroundImageEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
-	void
-	reset ();
-
 	virtual
-	void
-	shutdown ();
-
-	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DNotebookPage () override;
+	~BackgroundImageEditor () final override;
 
 
-protected:
-
-	///  @name Construction
-
-	X3DNotebookPage (const basic::uri & startUrl);
-
-	virtual
-	void
-	loaded ();
-
-	virtual
-	void
-	initialized ();
-
-
-protected:
+private:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () override;
-
-	///  @name Operations
-
-	void
-	updateTitle ();
-
-	std::string
-	getTitle () const;
+	initialize () final override;
 
 	///  @name Event handlers
 
 	void
-	set_browser ();
+	set_scene ();
 
 	void
-	set_splashScreen ();
+	set_background_image ();
 
 	void
-	set_loaded ();
+	set_loadState ();
 
+	virtual
 	void
-	set_initialized ();
-
+	on_image_set () final override;
+	
+	virtual
 	void
-	set_loadCount ();
-
+	on_image_reload_clicked () final override;
+	
+	virtual
 	void
-	set_shutdown ();
+	on_image_remove_clicked () final override;
 
 	///  @name Members
 
-	X3D::BrowserPtr  mainBrowser;
-	basic::uri       url; // Start URL
-	BrowserHistory   browserHistory;
-	X3D::UndoHistory undoHistory;
-	bool             modified;
-	bool             saveConfirmed;
-
-	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
-	
-	std::unique_ptr <BackgroundImage> backgroundImage;
+	std::shared_ptr <NotebookPage> page;
+	bool                           changing;
 
 };
 
