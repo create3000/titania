@@ -1242,8 +1242,8 @@ AnimationEditor::on_time ()
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), getLoopSwitch () .get_active ());
 	timeSensor -> loop () = getLoopSwitch () .get_active ();
 
-	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&X3D::SFTime::now));
-	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&X3D::SFTime::now));
+	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
+	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	timeSensor -> stopTime () = X3D::SFTime::now ();
 
 	// Build interpolators.

@@ -195,7 +195,7 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 		// Create Icon.
 
 		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (index),
-		                                                        preview -> getSnapshot (X3D::SFTime::now (), IMAGE_SIZE, IMAGE_SIZE, false, 8));
+		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)
 	{ 

@@ -171,7 +171,7 @@ X3DBrowserContext::setSelection (const SelectionPtr & value)
  *  @param  antialiasing  Number of samples used for antialising.
  */
 Magick::Image
-X3DBrowserContext::getSnapshot (const time_type time, const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
 throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -198,7 +198,7 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 	getDisplayTools () .push (false);
 
 	reshape (Vector4i (0, 0, width, height));
-	update (time);
+	update ();
 	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 
 	frameBuffer .readPixels ();
@@ -259,14 +259,14 @@ X3DBrowserContext::endUpdateForFrame ()
  */
 
 void
-X3DBrowserContext::update (const time_type time)
+X3DBrowserContext::update ()
 noexcept (true)
 {
 	try
 	{
 		// Prepare
 
-		setCurrentTime (time);
+		getClock () -> advance ();
 
 		prepareEvents () .processInterests ();
 		processEvents ();

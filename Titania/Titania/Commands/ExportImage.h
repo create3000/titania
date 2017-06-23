@@ -106,8 +106,7 @@ public:
 		{
 			// Make snapshot and save image.
 	
-			auto image = browser -> getSnapshot (X3D::SFTime::now (),
-			                                     width,
+			auto image = browser -> getSnapshot (width,
 			                                     height,
 			                                     options .alphaChannel,
 			                                     antialiasing);

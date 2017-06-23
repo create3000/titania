@@ -317,6 +317,7 @@
     <Compile Include="Titania\UserInterfaces\X3DBackgroundImageEditorInterface.cpp" />
     <Compile Include="Titania\Editors\BackgroundImageEditor\BackgroundImageEditor.cpp" />
     <Compile Include="Titania\Editors\BackgroundImageEditor\BackgroundImage.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DPanelMenuInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2997,6 +2998,8 @@
     <None Include="Titania\UserInterfaces\X3DBackgroundImageEditorInterface.h" />
     <None Include="Titania\Editors\BackgroundImageEditor\BackgroundImageEditor.h" />
     <None Include="Titania\Editors\BackgroundImageEditor\BackgroundImage.h" />
+    <None Include="share\titania\ui\Widgets\PanelMenu.glade" />
+    <None Include="Titania\UserInterfaces\X3DPanelMenuInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

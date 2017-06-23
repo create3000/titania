@@ -124,7 +124,7 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		// Get snapshot image.
 
-		auto image = browser -> getSnapshot (SFTime::now (), width, height, property_transparent () .get_value (), 8);
+		auto image = browser -> getSnapshot (width, height, property_transparent () .get_value (), 8);
 
 		// Determine height and update tree view if needed.
 

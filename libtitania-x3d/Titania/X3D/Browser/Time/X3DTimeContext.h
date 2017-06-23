@@ -52,10 +52,15 @@
 #define __TITANIA_X3D_BROWSER_TIME_X3DTIME_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/SFTime.h"
+
+#include <Titania/Chrono/SystemClock.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
+
+using X3DClock    = chrono::clock_base <time_type>;
+using X3DClockPtr = std::unique_ptr <X3DClock>;
 
 class X3DTimeContext :
 	virtual public X3DBaseNode
@@ -64,11 +69,9 @@ public:
 
 	///  @name Member access
 
-	virtual
-	time_type
-	getCurrentTime () const
-	throw (Error <DISPOSED>) final override
-	{ return currentTime; }
+	const X3DClockPtr &
+	getClock () const
+	{ return clock; }
 
 	///  @name Destruction
 
@@ -80,43 +83,26 @@ public:
 
 protected:
 
-	///  @name Friends
-
-	friend class X3DTimeDependentNode;
-
 	///  @name Construction
 
 	X3DTimeContext () :
-		 X3DBaseNode (),
-		 currentTime (SFTime::now ()),
-		previousTime (currentTime)
+		X3DBaseNode (),
+		      clock (new chrono::system_clock <time_type> ())
 	{ }
 
 	virtual
 	void
 	initialize () override
-	{ setCurrentTime (SFTime::now ()); }
-
-	void
-	setCurrentTime (const time_type value)
-	throw (Error <DISPOSED>)
 	{
-		previousTime = currentTime;
-		currentTime  = value;
+		clock -> advance ();
 	}
-
-	time_type
-	getPreviousTime () const
-	throw (Error <DISPOSED>)
-	{ return previousTime; }
 
 
 private:
 
 	///  @name Members
 
-	time_type currentTime;
-	time_type previousTime;
+	std::unique_ptr <X3DClock> clock;
 
 };
 

@@ -181,7 +181,7 @@ Circle2D::build ()
 		getVertices () .reserve (optionsNode -> getVertices () .size ());
 
 		for (const auto & vertex : optionsNode -> getVertices ())
-			getVertices () .emplace_back (vertex * double (std::abs (radius () .getValue ())));
+			getVertices () .emplace_back (vertex * std::abs <double> (radius () .getValue ()));
 	}
 
 	addElements (optionsNode -> getVertexMode (), getVertices () .size ());
