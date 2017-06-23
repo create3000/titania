@@ -87,6 +87,10 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransparencyAdjustment () const
+	{ return m_TransparencyAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -115,7 +119,19 @@ public:
 	getLoadStateLabel () const
 	{ return *m_LoadStateLabel; }
 
+	Gtk::Box &
+	getTransparencyBox () const
+	{ return *m_TransparencyBox; }
+
+	Gtk::Scale &
+	getTransparencyScale () const
+	{ return *m_TransparencyScale; }
+
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_transparency_changed () = 0;
 
 	virtual
 	void
@@ -153,6 +169,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -160,6 +177,8 @@ private:
 	Gtk::Button* m_ImageReloadButton;
 	Gtk::Button* m_ImageRemoveButton;
 	Gtk::Label* m_LoadStateLabel;
+	Gtk::Box* m_TransparencyBox;
+	Gtk::Scale* m_TransparencyScale;
 
 };
 

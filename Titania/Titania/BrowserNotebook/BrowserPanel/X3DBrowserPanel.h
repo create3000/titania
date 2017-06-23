@@ -154,6 +154,9 @@ private:
 	set_background_texture ();
 
 	void
+	set_background_texture_transparency ();
+
+	void
 	set_activeLayer ();
 
 	void

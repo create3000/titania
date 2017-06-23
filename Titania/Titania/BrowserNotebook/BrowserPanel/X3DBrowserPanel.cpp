@@ -69,6 +69,7 @@
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
@@ -282,6 +283,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
 
 		page -> getBackgroundImage () -> getTexture () -> checkLoadState () .addInterest (&X3DBrowserPanel::set_background_texture, this);
+		page -> getBackgroundImage () -> getTransparency () .addInterest (&X3DBrowserPanel::set_background_texture_transparency, this);
 		backgroundAppearance -> texture () = page -> getBackgroundImage () -> getTexture ();
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
@@ -319,6 +321,7 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		set_fixed_pipeline ();
 		set_background_texture ();
+		set_background_texture_transparency ();
 		set_activeLayer ();
 	}
 	catch (const X3D::X3DError & error)
@@ -341,20 +344,36 @@ X3DBrowserPanel::set_background_texture ()
 {
 	try
 	{
-		const auto & executionContext      = browser -> getExecutionContext ();
-		const auto   backgroundImageSwitch = executionContext -> getNamedNode <X3D::Switch> ("BackgroundImageSwitch");
+		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   imageSwitch      = executionContext -> getNamedNode <X3D::Switch> ("BackgroundImageSwitch");
 
 		if (page -> getBackgroundImage () -> getTexture () -> checkLoadState () == X3D::COMPLETE_STATE)
 		{
-			const auto   backgroundImageTransform = executionContext -> getNamedNode <X3D::Transform> ("BackgroundImageTransform");
-			const double width                    = page -> getBackgroundImage () -> getTexture () -> getImageWidth ();
-			const double height                   = page -> getBackgroundImage () -> getTexture () -> getImageHeight ();
+			const auto   transform = executionContext -> getNamedNode <X3D::Transform> ("BackgroundImageTransform");
+			const double width     = page -> getBackgroundImage () -> getTexture () -> getImageWidth ();
+			const double height    = page -> getBackgroundImage () -> getTexture () -> getImageHeight ();
 
-			backgroundImageTransform -> scale ()    = X3D::Vector3f (width / height, 1, 1);
-			backgroundImageSwitch -> whichChoice () = 0;
+			transform -> scale ()         = X3D::Vector3f (width / height, 1, 1);
+			imageSwitch -> whichChoice () = 0;
 		}
 		else
-			backgroundImageSwitch -> whichChoice () = -1;
+			imageSwitch -> whichChoice () = -1;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserPanel::set_background_texture_transparency ()
+{
+	try
+	{
+		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   material         = executionContext -> getNamedNode <X3D::Material> ("BackgroundImageMaterial");
+
+		material -> transparency () = page -> getBackgroundImage () -> getTransparency ();
 	}
 	catch (const X3D::X3DError & error)
 	{

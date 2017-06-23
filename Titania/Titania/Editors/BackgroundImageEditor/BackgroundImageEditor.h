@@ -105,6 +105,13 @@ private:
 	void
 	on_image_remove_clicked () final override;
 
+	void
+	set_transparency ();
+	
+	virtual
+	void
+	on_transparency_changed () final override;
+
 	///  @name Members
 
 	std::shared_ptr <NotebookPage> page;

@@ -277,7 +277,9 @@ X3DBaseInterface::setMetaData (const X3D::BrowserPtr & browser, const std::strin
 		layerSet -> getActiveLayer () -> setMetaData (key, value);
 	else
 	{
-		X3D::X3DScenePtr scene (browser -> getExecutionContext () -> getScene ());
+		const auto scene = browser -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene })
+		                   ? X3D::X3DScenePtr (browser -> getExecutionContext ())
+		                   : X3D::X3DScenePtr (browser -> getExecutionContext () -> getScene ());
 
 		createWorldInfo (scene) -> setMetaData (key, value);
 	}
@@ -294,7 +296,9 @@ X3DBaseInterface::getMetaData (const X3D::BrowserPtr & browser, const std::strin
 		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			return layerSet -> getActiveLayer () -> getMetaData <Type> (key, defaultValue);
 
-		X3D::X3DScenePtr scene (browser -> getExecutionContext () -> getScene ());
+		const auto scene = browser -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene })
+		                   ? X3D::X3DScenePtr (browser -> getExecutionContext ())
+		                   : X3D::X3DScenePtr (browser -> getExecutionContext () -> getScene ());
 
 		return getWorldInfo (scene) -> getMetaData <Type> (key, defaultValue);
 	}

@@ -77,6 +77,7 @@ void
 X3DBackgroundImageEditorInterface::create ()
 {
 	// Get objects.
+	m_TransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -86,6 +87,11 @@ X3DBackgroundImageEditorInterface::create ()
 	m_builder -> get_widget ("ImageReloadButton", m_ImageReloadButton);
 	m_builder -> get_widget ("ImageRemoveButton", m_ImageRemoveButton);
 	m_builder -> get_widget ("LoadStateLabel", m_LoadStateLabel);
+	m_builder -> get_widget ("TransparencyBox", m_TransparencyBox);
+	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
+
+	// Connect object Gtk::Adjustment with id 'TransparencyAdjustment'.
+	m_TransparencyAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DBackgroundImageEditorInterface::on_transparency_changed));
 
 	// Connect object Gtk::FileChooserButton with id 'ImageChooserButton'.
 	m_ImageChooserButton -> signal_file_set () .connect (sigc::mem_fun (this, &X3DBackgroundImageEditorInterface::on_image_set));

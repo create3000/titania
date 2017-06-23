@@ -117,6 +117,8 @@ BackgroundImageEditor::set_background_image ()
 		getImageReloadButton () .set_sensitive (true);
 	}
 
+	getTransparencyAdjustment () -> set_value (page -> getBackgroundImage () -> getTransparency ());
+
 	changing = false;
 }
 
@@ -199,6 +201,15 @@ BackgroundImageEditor::on_image_remove_clicked ()
 	// Image
 
 	page -> getBackgroundImage () -> setUrl ({});
+}
+
+void
+BackgroundImageEditor::on_transparency_changed ()
+{
+	if (changing)
+		return;
+
+	page -> getBackgroundImage () -> setTransparency (getTransparencyAdjustment () -> get_value ());
 }
 
 BackgroundImageEditor::~BackgroundImageEditor ()

@@ -75,6 +75,14 @@ public:
 	const X3D::MFString &
 	getUrl () const;
 
+	void
+	setTransparency (const float value)
+	{ transparency = value; }
+
+	const X3D::SFFloat &
+	getTransparency () const
+	{ return transparency; }
+
 	const X3D::X3DPtr <X3D::ImageTexture> &
 	getTexture () const
 	{ return texture; }
@@ -87,10 +95,23 @@ public:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_activeLayer ();
+	
+	void
+	eventsProcessed ();
+	
+	void
+	connectEventsProcessed ();
+
 	///  @name Members
 
+	X3DNotebookPage* const               page;
 	X3D::X3DPtr <X3D::ImageTexture>      texture;
 	X3D::X3DPtr <X3D::TextureProperties> textureProperties;
+	X3D::SFFloat                         transparency;
 
 };
 

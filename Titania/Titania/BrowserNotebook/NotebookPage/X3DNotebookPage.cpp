@@ -322,7 +322,6 @@ X3DNotebookPage::set_splashScreen ()
 void
 X3DNotebookPage::set_loaded ()
 {
-__LOG__ << std::endl;
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
 
@@ -333,7 +332,6 @@ __LOG__ << std::endl;
 void
 X3DNotebookPage::set_initialized ()
 {
-__LOG__ << std::endl;
 	initialized ();
 }
 

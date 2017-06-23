@@ -61,15 +61,21 @@ namespace puck {
 
 BackgroundImage::BackgroundImage (X3DNotebookPage* const page) :
 	 X3DBaseInterface (page -> getBrowserWindow (), page -> getMainBrowser ()),
+	             page (page),
 	          texture (page -> getMainBrowser () -> createNode <X3D::ImageTexture> ()),
-	textureProperties (page -> getMainBrowser () -> createNode <X3D::TextureProperties> ())
+	textureProperties (page -> getMainBrowser () -> createNode <X3D::TextureProperties> ()),
+	     transparency (0)
 {
 	addChildObjects (texture,
-	                 textureProperties);
+	                 textureProperties,
+	                 transparency);
+
+	page -> getMainBrowser () -> getActiveLayer () .addInterest (&BackgroundImage::set_activeLayer, this);
+	addInterest (&BackgroundImage::eventsProcessed, this);
 
 	textureProperties -> generateMipMaps ()     = true;
-	textureProperties -> minificationFilter ()  = "DEFAULT";
-	textureProperties -> magnificationFilter () = "DEFAULT";
+	textureProperties -> minificationFilter ()  = "LINEAR";
+	textureProperties -> magnificationFilter () = "LINEAR";
 	textureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
 	textureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
 	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
@@ -84,12 +90,39 @@ void
 BackgroundImage::setUrl (const X3D::MFString & value)
 {
 	texture -> url () = value;
+	addEvent ();
 }
 
 const X3D::MFString &
 BackgroundImage::getUrl () const
 {
 	return texture -> url ();
+}
+
+void
+BackgroundImage::set_activeLayer ()
+{
+	removeInterest (&BackgroundImage::eventsProcessed, this);
+	addInterest (&BackgroundImage::connectEventsProcessed, this);
+
+	setUrl          (getMetaData <X3D::MFString> (page -> getMainBrowser (), "/Titania/BackgroundImage/url"));
+	setTransparency (getMetaData <float>         (page -> getMainBrowser (), "/Titania/BackgroundImage/transparency"));
+}
+
+void
+BackgroundImage::eventsProcessed ()
+{
+	setMetaData (page -> getMainBrowser (), "/Titania/BackgroundImage/url",          getUrl ());
+	setMetaData (page -> getMainBrowser (), "/Titania/BackgroundImage/transparency", getTransparency ());
+
+	page -> setModified (true);
+}
+
+void
+BackgroundImage::connectEventsProcessed ()
+{
+	removeInterest (&BackgroundImage::connectEventsProcessed, this);
+	addInterest (&BackgroundImage::eventsProcessed, this);
 }
 
 BackgroundImage::~BackgroundImage ()
