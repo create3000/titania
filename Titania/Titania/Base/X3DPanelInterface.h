@@ -60,13 +60,22 @@ namespace titania {
 namespace puck {
 
 class NotebookPage;
+class PanelMenu;
 
 class X3DPanelInterface :
 	public X3DUserInterface
 {
 public:
 
-	/// @name Events
+	/// @name Member access
+
+	virtual
+	Gtk::MenuItem &
+	getPanelsMenuItem () const = 0;
+
+	const std::unique_ptr <PanelMenu> &
+	getPanelMenu () const
+	{ return panelMenu; }
 
 	const X3D::SFBool &
 	hasFocus () const
@@ -117,8 +126,9 @@ private:
 
 	///  @name Members
 
-	NotebookPage* const page;
-	X3D::SFBool         focus;
+	NotebookPage* const         page;
+	std::unique_ptr <PanelMenu> panelMenu;
+	X3D::SFBool                 focus;
 
 };
 

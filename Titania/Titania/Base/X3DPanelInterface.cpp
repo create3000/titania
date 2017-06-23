@@ -51,6 +51,7 @@
 #include "X3DPanelInterface.h"
 
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/PanelMenu/PanelMenu.h"
 
 #include <cassert>
 
@@ -60,6 +61,7 @@ namespace puck {
 X3DPanelInterface::X3DPanelInterface (NotebookPage* const page) :
 	X3DUserInterface (),
 	            page (page),
+	       panelMenu (new PanelMenu (getBrowserWindow (), page)),
 	           focus (false)
 {
 	assert (page);
@@ -78,6 +80,8 @@ X3DPanelInterface::initialize ()
 
 	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
 	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
+
+	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
 
 	set_editing ();
 }
@@ -107,6 +111,8 @@ X3DPanelInterface::set_focus ()
 void
 X3DPanelInterface::dispose ()
 {
+	panelMenu .reset ();
+
 	X3DUserInterface::dispose ();
 }
 
