@@ -48,13 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DVIEW_INTERFACE_H__
-#define __TITANIA_BASE_X3DVIEW_INTERFACE_H__
+#ifndef __TITANIA_BASE_X3DPANEL_INTERFACE_H__
+#define __TITANIA_BASE_X3DPANEL_INTERFACE_H__
 
 #include "../Base/X3DUserInterface.h"
-#include "../Configuration/Configuration.h"
-#include <gtkmm.h>
-#include <string>
+
+#include "../BrowserNotebook/NotebookPage/PanelType.h"
 
 namespace titania {
 namespace puck {
@@ -68,6 +67,9 @@ class X3DPanelInterface :
 public:
 
 	/// @name Member access
+
+	const X3D::SFEnum <PanelType> &
+	getPanelType () const;
 
 	virtual
 	Gtk::MenuItem &
@@ -95,7 +97,7 @@ protected:
 
 	/// @name Construction
 
-	X3DPanelInterface (NotebookPage* const page);
+	X3DPanelInterface (NotebookPage* const page, const PanelType panelType);
 
 	X3DPanelInterface ();
 

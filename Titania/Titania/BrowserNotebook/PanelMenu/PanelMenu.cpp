@@ -58,10 +58,10 @@
 namespace titania {
 namespace puck {
 
-PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page) :
+PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const PanelType panelType_) :
 	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
-	            panelType (PanelType::BROWSER_PANEL)
+	            panelType (panelType_)
 {
 	addChildObjects (panelType);
 

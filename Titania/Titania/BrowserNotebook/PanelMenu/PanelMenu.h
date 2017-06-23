@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page);
+	PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const PanelType panelType);
 
 	///  @name Member access
 

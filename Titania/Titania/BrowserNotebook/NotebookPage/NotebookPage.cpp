@@ -194,7 +194,7 @@ NotebookPage::setPanel (const size_t id, std::unique_ptr <BrowserPanel> & panel,
 
 	panel -> getWidget () .reparent (box);
 
-	panel -> getPanelMenu () -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel), std::ref (panel -> getPanelMenu () -> getPanelType ()), std::ref (box));
+	panel -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel), std::ref (panel -> getPanelType ()), std::ref (box));
 }
 
 void

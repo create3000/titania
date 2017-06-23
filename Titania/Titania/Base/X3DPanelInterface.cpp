@@ -58,10 +58,10 @@
 namespace titania {
 namespace puck {
 
-X3DPanelInterface::X3DPanelInterface (NotebookPage* const page) :
+X3DPanelInterface::X3DPanelInterface (NotebookPage* const page, const PanelType panelType) :
 	X3DUserInterface (),
 	            page (page),
-	       panelMenu (new PanelMenu (getBrowserWindow (), page)),
+	       panelMenu (new PanelMenu (getBrowserWindow (), page, panelType)),
 	           focus (false)
 {
 	assert (page);
@@ -70,7 +70,7 @@ X3DPanelInterface::X3DPanelInterface (NotebookPage* const page) :
 }
 
 X3DPanelInterface::X3DPanelInterface () :
-	X3DPanelInterface (nullptr)
+	X3DPanelInterface (nullptr, PanelType::BROWSER_PANEL)
 { }
 
 void
@@ -84,6 +84,12 @@ X3DPanelInterface::initialize ()
 	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
 
 	set_editing ();
+}
+
+const X3D::SFEnum <PanelType> &
+X3DPanelInterface::getPanelType () const
+{
+	return panelMenu -> getPanelType ();
 }
 
 void
