@@ -97,17 +97,13 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const size_t id);
+	X3DBrowserPanel (const BrowserPanelType type, const size_t id);
 
 	X3DBrowserPanel ();
 
 	virtual
 	void
 	initialize () override;
-
-	NotebookPage*
-	getPage () const
-	{ return page; }
 
 	void
 	setType (const BrowserPanelType value);
@@ -186,7 +182,6 @@ private:
 
 	///  @name Members
 
-	NotebookPage* const                 page;
 	BrowserPanelType                    type;
 	const size_t                        id;
 	X3D::BrowserPtr                     browser;

@@ -117,20 +117,17 @@ const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 	X3D::Rotation4f (0, 1, 0, math::pi <float>)
 };
 
-X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const size_t id) :
+X3DBrowserPanel::X3DBrowserPanel (const BrowserPanelType type, const size_t id) :
 	X3DBrowserPanelInterface (),
-	                    page (page),
 	                    type (type),
 	                      id (id),
-	                 browser (page -> getMainBrowser ()),
+	                 browser (getPage () -> getMainBrowser ()),
 	             activeLayer (),
 	               viewpoint (),
 	           gridTransform (),
 	              gridSwitch (),
 	                    grid ()
 {
-	assert (page);
-
 	addChildObjects (browser,
 	                 activeLayer,
 	                 viewpoint,
@@ -141,7 +138,7 @@ X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelTy
 }
 
 X3DBrowserPanel::X3DBrowserPanel () :
-	X3DBrowserPanel (nullptr, BrowserPanelType::MAIN, 0)
+	X3DBrowserPanel (BrowserPanelType::MAIN, 0)
 { }
 
 void
@@ -149,11 +146,11 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	page -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+	getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
 
 	// type
 
-	const auto typeArray = createWorldInfo (page -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
+	const auto typeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
 
 	type = BrowserPanelType (typeArray [id] < BrowserPanelType::MAIN or typeArray [id] > BrowserPanelType::BACK ? type : typeArray [id]);
 
@@ -164,9 +161,9 @@ X3D::BrowserPtr
 X3DBrowserPanel::createBrowser (const BrowserPanelType type) const
 {
 	if (type == BrowserPanelType::MAIN)
-		return page -> getMainBrowser ();
+		return getPage () -> getMainBrowser ();
 
-	return X3D::createBrowser (page -> getMainBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
+	return X3D::createBrowser (getPage () -> getMainBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
 }
 
 void
@@ -174,13 +171,13 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 {
 	type = value;
 
-	auto typeArray = createWorldInfo (page -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
+	auto typeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
 
 	typeArray [id] = type;
 
-	createWorldInfo (page -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", typeArray);
+	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", typeArray);
 
-	page -> setModified (true);
+	getPage () -> setModified (true);
 
 	set_type ();
 }
@@ -281,7 +278,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);	
-		browser -> setSelection (page -> getMainBrowser () -> getSelection ());
+		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ());
 		browser -> setFrameRate (30);
 		browser -> set_opacity (1);
 
@@ -296,9 +293,9 @@ X3DBrowserPanel::set_dependent_browser ()
 		const auto & angleGridTool       = getBrowserWindow () -> getAngleGridTool ()       -> getTool ();
 		const auto & axonometricGridTool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
 
-		page -> getBackgroundImage () -> getTexture () -> checkLoadState () .addInterest (&X3DBrowserPanel::set_background_texture, this);
-		page -> getBackgroundImage () -> getTransparency () .addInterest (&X3DBrowserPanel::set_background_texture_transparency, this);
-		backgroundAppearance -> texture () = page -> getBackgroundImage () -> getTexture ();
+		getPage () -> getBackgroundImage () -> getTexture () -> checkLoadState () .addInterest (&X3DBrowserPanel::set_background_texture, this);
+		getPage () -> getBackgroundImage () -> getTransparency () .addInterest (&X3DBrowserPanel::set_background_texture_transparency, this);
+		backgroundAppearance -> texture () = getPage () -> getBackgroundImage () -> getTexture ();
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
 		gridSwitch    = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
@@ -331,7 +328,7 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		// Connect to active layer.
 	
-		page -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
+		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
 
 		set_fixed_pipeline ();
 		set_background_texture ();
@@ -350,7 +347,7 @@ X3DBrowserPanel::set_fixed_pipeline ()
 	if (type == BrowserPanelType::MAIN)
 		return;
 
-	browser -> setFixedPipeline (page -> getMainBrowser () -> getFixedPipeline ());
+	browser -> setFixedPipeline (getPage () -> getMainBrowser () -> getFixedPipeline ());
 }
 
 void
@@ -361,11 +358,11 @@ X3DBrowserPanel::set_background_texture ()
 		const auto & executionContext = browser -> getExecutionContext ();
 		const auto   imageSwitch      = executionContext -> getNamedNode <X3D::Switch> ("BackgroundImageSwitch");
 
-		if (page -> getBackgroundImage () -> getTexture () -> checkLoadState () == X3D::COMPLETE_STATE)
+		if (getPage () -> getBackgroundImage () -> getTexture () -> checkLoadState () == X3D::COMPLETE_STATE)
 		{
 			const auto   transform = executionContext -> getNamedNode <X3D::Transform> ("BackgroundImageTransform");
-			const double width     = page -> getBackgroundImage () -> getTexture () -> getImageWidth ();
-			const double height    = page -> getBackgroundImage () -> getTexture () -> getImageHeight ();
+			const double width     = getPage () -> getBackgroundImage () -> getTexture () -> getImageWidth ();
+			const double height    = getPage () -> getBackgroundImage () -> getTexture () -> getImageHeight ();
 
 			transform -> scale ()         = X3D::Vector3f (width / height, 1, 1);
 			imageSwitch -> whichChoice () = 0;
@@ -387,7 +384,7 @@ X3DBrowserPanel::set_background_texture_transparency ()
 		const auto & executionContext = browser -> getExecutionContext ();
 		const auto   material         = executionContext -> getNamedNode <X3D::Material> ("BackgroundImageMaterial");
 
-		material -> transparency () = page -> getBackgroundImage () -> getTransparency ();
+		material -> transparency () = getPage () -> getBackgroundImage () -> getTransparency ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -412,7 +409,7 @@ X3DBrowserPanel::set_activeLayer ()
 		__LOG__ << error .what () << std::endl;
 	}
 
-	activeLayer = page -> getMainBrowser () -> getActiveLayer ();
+	activeLayer = getPage () -> getMainBrowser () -> getActiveLayer ();
 
 	try
 	{
@@ -422,10 +419,10 @@ X3DBrowserPanel::set_activeLayer ()
 
 		if (activeLayer)
 		{
-			const auto userPosition         = getMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position", positions [type]);
-			const auto userOrientation      = getMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation", orientations [type]);
-			const auto userCenterOfRotation = getMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ());
-			const auto fieldOfViewScale     = getMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
+			const auto userPosition         = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position", positions [type]);
+			const auto userOrientation      = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation", orientations [type]);
+			const auto userCenterOfRotation = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ());
+			const auto fieldOfViewScale     = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
 
 			activeLayer -> children () .addInterest (group -> children ());
 			group -> children () = activeLayer -> children ();
@@ -462,12 +459,12 @@ X3DBrowserPanel::connectViewpoint ()
 void
 X3DBrowserPanel::set_viewpoint ()
 {
-	setMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
-	setMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
-	setMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
-	setMetaData (page -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
 
-	page -> setModified (true);
+	getPage () -> setModified (true);
 
 	if (type not_eq BrowserPanelType::PERSPECTIVE)
 		gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
@@ -506,7 +503,7 @@ X3DBrowserPanel::set_grid ()
 			std::make_pair (std::make_pair (2, BrowserPanelType::BACK),   X3D::Vector2i (0, 2)),
 		};
 	
-		if (page -> getMainBrowser () not_eq getCurrentBrowser ())
+		if (getPage () -> getMainBrowser () not_eq getCurrentBrowser ())
 			return;
 	
 		if (getBrowserWindow () -> getGridTool () -> getVisible ())
@@ -656,7 +653,7 @@ X3DBrowserPanel::on_map ()
 	if (type == BrowserPanelType::MAIN)
 		return;
 
-	page -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
+	getPage () -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
@@ -683,7 +680,7 @@ X3DBrowserPanel::on_unmap ()
 	if (type == BrowserPanelType::MAIN)
 		return;
 
-	page -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
+	getPage () -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);

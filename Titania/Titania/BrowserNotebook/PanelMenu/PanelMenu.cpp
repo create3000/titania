@@ -48,70 +48,27 @@
  *
  ******************************************************************************/
 
-#include "X3DPanelInterface.h"
+#include "PanelMenu.h"
 
-#include "../Browser/X3DBrowserWindow.h"
+#include "../NotebookPage/NotebookPage.h"
 
-#include <cassert>
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-X3DPanelInterface::X3DPanelInterface (NotebookPage* const page) :
-	X3DUserInterface (),
-	            page (page),
-	           focus (false)
+PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page) :
+	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
+	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade"))
 {
-	assert (page);
-
-	addChildObjects (focus);
+	setup ();
 }
 
-X3DPanelInterface::X3DPanelInterface () :
-	X3DPanelInterface (nullptr)
-{ }
-
-void
-X3DPanelInterface::initialize ()
+PanelMenu::~PanelMenu ()
 {
-	X3DUserInterface::initialize ();
-
-	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
-	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
-
-	set_editing ();
+	dispose ();
 }
-
-void
-X3DPanelInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-
-	set_focus ();
-}
-
-void
-X3DPanelInterface::set_focus ()
-{
-	if (hasFocus () and getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-}
-
-void
-X3DPanelInterface::dispose ()
-{
-	X3DUserInterface::dispose ();
-}
-
-X3DPanelInterface::~X3DPanelInterface ()
-{ }
 
 } // puck
 } // titania

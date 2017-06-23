@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,70 +48,36 @@
  *
  ******************************************************************************/
 
-#include "X3DPanelInterface.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_PANEL_MENU_PANEL_MENU_H__
+#define __TITANIA_BROWSER_NOTEBOOK_PANEL_MENU_PANEL_MENU_H__
 
-#include "../Browser/X3DBrowserWindow.h"
-
-#include <cassert>
+#include "../../UserInterfaces/X3DPanelMenuInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DPanelInterface::X3DPanelInterface (NotebookPage* const page) :
-	X3DUserInterface (),
-	            page (page),
-	           focus (false)
+class NotebookPage;
+
+class PanelMenu :
+	public X3DPanelMenuInterface
 {
-	assert (page);
+public:
 
-	addChildObjects (focus);
-}
+	///  @name Construction
 
-X3DPanelInterface::X3DPanelInterface () :
-	X3DPanelInterface (nullptr)
-{ }
+	PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page);
 
-void
-X3DPanelInterface::initialize ()
-{
-	X3DUserInterface::initialize ();
+	///  @name Destruction
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
-	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
+	virtual
+	~PanelMenu () final override;
 
-	set_editing ();
-}
 
-void
-X3DPanelInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
+private:
 
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-
-	set_focus ();
-}
-
-void
-X3DPanelInterface::set_focus ()
-{
-	if (hasFocus () and getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-}
-
-void
-X3DPanelInterface::dispose ()
-{
-	X3DUserInterface::dispose ();
-}
-
-X3DPanelInterface::~X3DPanelInterface ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif

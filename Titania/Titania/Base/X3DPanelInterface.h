@@ -59,6 +59,8 @@
 namespace titania {
 namespace puck {
 
+class NotebookPage;
+
 class X3DPanelInterface :
 	public X3DUserInterface
 {
@@ -84,13 +86,19 @@ protected:
 
 	/// @name Construction
 
+	X3DPanelInterface (NotebookPage* const page);
+
 	X3DPanelInterface ();
 
 	virtual
 	void
 	initialize () override;
 
-	/// @name Events
+	/// @name Member access
+
+	NotebookPage*
+	getPage () const
+	{ return page; }
 
 	void
 	setFocus (const bool value)
@@ -109,7 +117,8 @@ private:
 
 	///  @name Members
 
-	X3D::SFBool focus;
+	NotebookPage* const page;
+	X3D::SFBool         focus;
 
 };
 

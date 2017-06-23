@@ -30,6 +30,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
+	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
