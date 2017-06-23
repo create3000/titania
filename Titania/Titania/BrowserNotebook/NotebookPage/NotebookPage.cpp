@@ -88,10 +88,10 @@ NotebookPage::loaded ()
 	getBox3 () .remove ();
 	getBox4 () .remove ();
 
-   panel1 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::TOP,   "1");
-   panel2 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::MAIN , "2");
-   panel3 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::RIGHT, "3");
-   panel4 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::FRONT, "4");
+   panel1 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::TOP,   0);
+   panel2 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::MAIN , 1);
+   panel3 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::RIGHT, 2);
+   panel4 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::FRONT, 3);
 
 	panel1 -> getWidget () .reparent (getBox1 ());
 	panel2 -> getWidget () .reparent (getBox2 ());

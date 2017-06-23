@@ -117,7 +117,7 @@ const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 	X3D::Rotation4f (0, 1, 0, math::pi <float>)
 };
 
-X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const std::string & id) :
+X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelType type, const size_t id) :
 	X3DBrowserPanelInterface (),
 	                    page (page),
 	                    type (type),
@@ -141,7 +141,7 @@ X3DBrowserPanel::X3DBrowserPanel (NotebookPage* const page, const BrowserPanelTy
 }
 
 X3DBrowserPanel::X3DBrowserPanel () :
-	X3DBrowserPanel (nullptr, BrowserPanelType::MAIN, "1")
+	X3DBrowserPanel (nullptr, BrowserPanelType::MAIN, 0)
 { }
 
 void
@@ -151,10 +151,11 @@ X3DBrowserPanel::initialize ()
 
 	page -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
 
-	const auto t = getConfig () -> get <int32_t> ("type", type);
-	//const auto t = createWorldInfo (page -> getScene ()) -> getMetaData <int32_t> ("/Titania/BrowserPanel/type" + id, type);
+	// type
 
-	setType (BrowserPanelType (math::clamp <int32_t> (t, BrowserPanelType::MAIN, BrowserPanelType::BACK)));
+	const auto typeArray = createWorldInfo (page -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
+
+	setType (BrowserPanelType (typeArray [id] < BrowserPanelType::MAIN or typeArray [id] > BrowserPanelType::BACK ? type : typeArray [id]));
 }
 
 X3D::BrowserPtr
@@ -171,8 +172,11 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 {
 	type = value;
 
-	getConfig () -> set <int32_t> ("type", type);
-	//createWorldInfo (page -> getScene ()) -> setMetaData <int32_t> ("/Titania/BrowserPanel/type" + id, type);
+	auto typeArray = createWorldInfo (page -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
+
+	typeArray [id] = type;
+
+	createWorldInfo (page -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", typeArray);
 
 	switch (type)
 	{
