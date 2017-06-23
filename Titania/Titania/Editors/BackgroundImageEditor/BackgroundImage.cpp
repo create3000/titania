@@ -62,13 +62,15 @@ namespace puck {
 BackgroundImage::BackgroundImage (X3DNotebookPage* const page) :
 	 X3DBaseInterface (page -> getBrowserWindow (), page -> getMainBrowser ()),
 	             page (page),
+	              url (),
+	     transparency (0),
 	          texture (page -> getMainBrowser () -> createNode <X3D::ImageTexture> ()),
-	textureProperties (page -> getMainBrowser () -> createNode <X3D::TextureProperties> ()),
-	     transparency (0)
+	textureProperties (page -> getMainBrowser () -> createNode <X3D::TextureProperties> ())
 {
-	addChildObjects (texture,
-	                 textureProperties,
-	                 transparency);
+	addChildObjects (url,
+	                 transparency,
+	                 texture,
+	                 textureProperties);
 
 	page -> getMainBrowser () -> getActiveLayer () .addInterest (&BackgroundImage::set_activeLayer, this);
 	addInterest (&BackgroundImage::eventsProcessed, this);
@@ -89,14 +91,14 @@ BackgroundImage::BackgroundImage (X3DNotebookPage* const page) :
 void
 BackgroundImage::setUrl (const X3D::MFString & value)
 {
-	texture -> url () = value;
-	addEvent ();
-}
+	url = value;
 
-const X3D::MFString &
-BackgroundImage::getUrl () const
-{
-	return texture -> url ();
+	X3D::MFString absoluteUrl;
+
+	for (const auto & URL : url)
+		absoluteUrl .emplace_back (page -> getMainBrowser () -> getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+
+	texture -> url () = absoluteUrl;
 }
 
 void

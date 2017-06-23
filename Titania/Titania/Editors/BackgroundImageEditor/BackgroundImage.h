@@ -73,7 +73,8 @@ public:
 	setUrl (const X3D::MFString & value);
 
 	const X3D::MFString &
-	getUrl () const;
+	getUrl () const
+	{ return url; }
 
 	void
 	setTransparency (const float value)
@@ -109,9 +110,10 @@ private:
 	///  @name Members
 
 	X3DNotebookPage* const               page;
+	X3D::MFString                        url;
+	X3D::SFFloat                         transparency;
 	X3D::X3DPtr <X3D::ImageTexture>      texture;
 	X3D::X3DPtr <X3D::TextureProperties> textureProperties;
-	X3D::SFFloat                         transparency;
 
 };
 
