@@ -155,7 +155,9 @@ X3DBrowserPanel::initialize ()
 
 	const auto typeArray = createWorldInfo (page -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
 
-	setType (BrowserPanelType (typeArray [id] < BrowserPanelType::MAIN or typeArray [id] > BrowserPanelType::BACK ? type : typeArray [id]));
+	type = BrowserPanelType (typeArray [id] < BrowserPanelType::MAIN or typeArray [id] > BrowserPanelType::BACK ? type : typeArray [id]);
+
+	set_type ();
 }
 
 X3D::BrowserPtr
@@ -178,6 +180,14 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 
 	createWorldInfo (page -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", typeArray);
 
+	page -> setModified (true);
+
+	set_type ();
+}
+
+void
+X3DBrowserPanel::set_type ()
+{
 	switch (type)
 	{
 		case BrowserPanelType::MAIN:

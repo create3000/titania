@@ -145,6 +145,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_type ();
+
+	void
 	set_dependent_browser ();
 
 	void
