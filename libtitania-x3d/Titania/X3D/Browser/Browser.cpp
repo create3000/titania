@@ -188,7 +188,7 @@ bool
 Browser::on_render ()
 {
 	X3DBrowser::on_render ();
-	update ();
+	update (SFTime::now ());
 	return false;
 }
 

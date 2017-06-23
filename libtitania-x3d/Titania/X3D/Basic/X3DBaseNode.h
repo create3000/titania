@@ -133,6 +133,7 @@ public:
 	{ return nameOutput; }
 
 	///  Returns the current browser time for this frame.
+	virtual
 	time_type
 	getCurrentTime () const
 	throw (Error <DISPOSED>);

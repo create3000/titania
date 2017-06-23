@@ -132,9 +132,8 @@ libtitania_standard_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Basic/Path.lo Titania/Basic/URI.lo \
-	Titania/Chrono/ClockBase.lo Titania/Chrono/CountingClock.lo \
-	Titania/Chrono/Now.lo Titania/Chrono/StopWatch.lo \
-	Titania/Chrono/SystemClock.lo \
+	Titania/Chrono/ClockBase.lo Titania/Chrono/Now.lo \
+	Titania/Chrono/StopWatch.lo Titania/Chrono/SystemClock.lo \
 	Titania/External/ApproxMVBB/AABB.lo \
 	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo \
 	Titania/External/ApproxMVBB/ConvexHull2D.lo \
@@ -439,7 +438,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \
 	Titania/Chrono/ClockBase.cpp \
-	Titania/Chrono/CountingClock.cpp \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
@@ -616,8 +614,6 @@ Titania/Chrono/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Chrono/$(DEPDIR)
 	@: > Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
 Titania/Chrono/ClockBase.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/CountingClock.lo: Titania/Chrono/$(am__dirstamp) \
 	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
 Titania/Chrono/Now.lo: Titania/Chrono/$(am__dirstamp) \
 	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
@@ -957,7 +953,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Basic/$(DEPDIR)/Path.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Basic/$(DEPDIR)/URI.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/ClockBase.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/CountingClock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/Now.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/StopWatch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/SystemClock.Plo@am__quote@

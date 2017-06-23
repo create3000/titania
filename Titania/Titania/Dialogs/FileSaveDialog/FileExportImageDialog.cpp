@@ -184,7 +184,8 @@ FileExportImageDialog::run ()
 
 	// Save image.
 
-	auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+	auto image = getCurrentBrowser () -> getSnapshot (X3D::SFTime::now (),
+	                                                  getImageWidthAdjustment () -> get_value (),
 	                                                  getImageHeightAdjustment () -> get_value (),
 	                                                  getImageAlphaChannelSwitch () .get_active (),
 	                                                  getImageAntialiasingAdjustment () -> get_value ());

@@ -177,7 +177,7 @@ public:
 	///  @name Operations
 
 	Magick::Image
-	getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
+	getSnapshot (const time_type time, const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
 	throw (Error <INSUFFICIENT_CAPABILITIES>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -227,13 +227,13 @@ protected:
 	///  @name Operations
 
 	void
-	update ()
+	update (const time_type time)
 	noexcept (true);
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ update (); }
+	{ }
 
 
 private:

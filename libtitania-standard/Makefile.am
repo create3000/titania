@@ -9,7 +9,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Basic/Path.cpp \
 	Titania/Basic/URI.cpp \
 	Titania/Chrono/ClockBase.cpp \
-	Titania/Chrono/CountingClock.cpp \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \

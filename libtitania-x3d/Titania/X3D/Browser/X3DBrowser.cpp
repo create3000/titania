@@ -195,7 +195,7 @@ X3DBrowser::set_prepareEvents ()
 	else
 		currentSpeed .setPosition (Vector3f (), 0);
 
-	currentFrameRate = 1 / getClock () -> interval ();
+	currentFrameRate = 1 / (getCurrentTime () - getPreviousTime ());
 }
 
 void
@@ -346,7 +346,7 @@ throw (Error <INVALID_SCENE>,
 		{
 			++ inShutdown;
 
-			//getClock () -> advance ();
+			//setCurrentTime (SFTime::now ());
 
 			shutdown () .processInterests ();
 
@@ -677,7 +677,7 @@ void
 X3DBrowser::beginUpdate ()
 throw (Error <DISPOSED>)
 {
-	getClock () -> advance ();
+	setCurrentTime (SFTime::now ());
 
 	X3DBaseNode::beginUpdate ();
 }

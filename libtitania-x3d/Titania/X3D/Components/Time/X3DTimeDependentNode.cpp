@@ -397,7 +397,7 @@ X3DTimeDependentNode::timeout (TimeoutHandler handler)
 {
 	if (enabled ())
 	{
-		getBrowser () -> getClock () -> advance ();
+		getBrowser () -> setCurrentTime (SFTime::now ());
 
 		(this ->* handler)();
 	}

@@ -407,7 +407,7 @@ time_type
 X3DBaseNode::getCurrentTime () const
 throw (Error <DISPOSED>)
 {
-	return getBrowser () -> getClock () -> cycle ();
+	return getBrowser () -> getCurrentTime ();
 }
 
 /***
