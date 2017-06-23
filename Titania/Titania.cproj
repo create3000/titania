@@ -3002,6 +3002,8 @@
     <None Include="share\titania\ui\Widgets\PanelMenu.glade" />
     <None Include="Titania\UserInterfaces\X3DPanelMenuInterface.h" />
     <None Include="Titania\BrowserNotebook\PanelMenu\PanelMenu.h" />
+    <None Include="Titania\BrowserNotebook\NotebookPage\PanelType.h" />
+    <None Include="Titania\BrowserNotebook\BrowserPanel\BrowserPanelType.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -105,6 +105,14 @@ public:
 
 	///  @name Signal handlers
 
+	virtual
+	void
+	on_browser_panel_activate () = 0;
+
+	virtual
+	void
+	on_render_panel_activate () = 0;
+
 	///  @name Destruction
 
 	virtual

@@ -53,6 +53,9 @@
 
 #include "X3DNotebookPage.h"
 
+#include "../PanelMenu/PanelMenu.h"
+#include "../BrowserPanel/BrowserPanelType.h"
+
 namespace titania {
 namespace puck {
 
@@ -124,6 +127,9 @@ private:
 
 	bool
 	on_box_key_release_event (GdkEventKey* event, const size_t index);
+
+	void
+	setPanel (const size_t id, std::unique_ptr <BrowserPanel> & panel, const PanelType panelType, Gtk::Viewport & box);
 
 	void
 	setActiveView (const size_t value);

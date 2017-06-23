@@ -12,6 +12,7 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">_Browser Panel</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="on_browser_panel_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -20,6 +21,7 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">_Render Panel</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="on_render_panel_activate" swapped="no"/>
       </object>
     </child>
   </object>

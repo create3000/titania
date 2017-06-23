@@ -216,18 +216,6 @@ public:
 	{ return *m_PanelsMenuItem; }
 
 	Gtk::MenuItem &
-	getBrowserPanelMenuItem () const
-	{ return *m_BrowserPanelMenuItem; }
-
-	Gtk::MenuItem &
-	getColorEditorPanelMenuItem () const
-	{ return *m_ColorEditorPanelMenuItem; }
-
-	Gtk::MenuItem &
-	getTextureMappingPanelMenuItem () const
-	{ return *m_TextureMappingPanelMenuItem; }
-
-	Gtk::MenuItem &
 	getCameraMenuItem () const
 	{ return *m_CameraMenuItem; }
 
@@ -457,9 +445,6 @@ private:
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
 	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
-	Gtk::MenuItem* m_BrowserPanelMenuItem;
-	Gtk::MenuItem* m_ColorEditorPanelMenuItem;
-	Gtk::MenuItem* m_TextureMappingPanelMenuItem;
 	Gtk::MenuItem* m_CameraMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;
 	Gtk::SeparatorMenuItem* m_MainViewSeparatorMenuItem;

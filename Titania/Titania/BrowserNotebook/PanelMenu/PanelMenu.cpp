@@ -60,9 +60,24 @@ namespace puck {
 
 PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page) :
 	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
-	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade"))
+	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
+	            panelType (PanelType::BROWSER_PANEL)
 {
+	addChildObjects (panelType);
+
 	setup ();
+}
+
+void
+PanelMenu::on_browser_panel_activate ()
+{
+	panelType = PanelType::BROWSER_PANEL;
+}
+
+void
+PanelMenu::on_render_panel_activate ()
+{
+	panelType = PanelType::RENDER_PANEL;
 }
 
 PanelMenu::~PanelMenu ()

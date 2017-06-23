@@ -83,6 +83,10 @@ X3DPanelMenuInterface::create ()
 	m_builder -> get_widget ("BrowserPanelMenuItem", m_BrowserPanelMenuItem);
 	m_builder -> get_widget ("RenderPanelMenuItem", m_RenderPanelMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
+
+	// Connect object Gtk::MenuItem with id 'BrowserPanelMenuItem'.
+	m_BrowserPanelMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPanelMenuInterface::on_browser_panel_activate));
+	m_RenderPanelMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPanelMenuInterface::on_render_panel_activate));
 }
 
 X3DPanelMenuInterface::~X3DPanelMenuInterface ()

@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const BrowserPanelType type, const size_t id);
+	BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
 	///  @name Destruction
 

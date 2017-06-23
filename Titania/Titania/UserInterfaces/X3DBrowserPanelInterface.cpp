@@ -111,9 +111,6 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
-	m_builder -> get_widget ("BrowserPanelMenuItem", m_BrowserPanelMenuItem);
-	m_builder -> get_widget ("ColorEditorPanelMenuItem", m_ColorEditorPanelMenuItem);
-	m_builder -> get_widget ("TextureMappingPanelMenuItem", m_TextureMappingPanelMenuItem);
 	m_builder -> get_widget ("CameraMenuItem", m_CameraMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
 	m_builder -> get_widget ("MainViewSeparatorMenuItem", m_MainViewSeparatorMenuItem);

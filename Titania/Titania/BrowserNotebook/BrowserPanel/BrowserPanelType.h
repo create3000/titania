@@ -48,137 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
-#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_VIEW_X3DBROWSER_VIEW_H__
-
-#include "../../UserInterfaces/X3DBrowserPanelInterface.h"
-
-#include "BrowserPanelType.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_BROWSER_PANEL_BROWSER_PANEL_TYPE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_BROWSER_PANEL_BROWSER_PANEL_TYPE_H__
 
 namespace titania {
 namespace puck {
 
-class NotebookPage;
-
-class X3DBrowserPanel :
-	virtual public X3DBrowserPanelInterface
+enum BrowserPanelType
 {
-public:
-
-	///  @name Member access
-
-	const X3D::BrowserPtr &
-	getLocalBrowser () const
-	{ return browser; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DBrowserPanel () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DBrowserPanel (const size_t id);
-
-	X3DBrowserPanel ();
-
-	virtual
-	void
-	initialize () override;
-
-	void
-	setType (const BrowserPanelType value);
-
-	BrowserPanelType
-	getType () const;
-
-	virtual
-	void
-	setLocalBrowser (const X3D::BrowserPtr & value);
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () override;
-
-	virtual
-	void
-	on_unmap () override;
-
-
-private:
-
-	///  @name Construction
-
-	X3D::BrowserPtr
-	createBrowser (const BrowserPanelType type) const;
-
-	///  @name Member access
-
-	int32_t
-	getPlane () const;
-
-	///  @name Event handlers
-
-	void
-	set_type ();
-
-	void
-	set_dependent_browser ();
-
-	void
-	set_fixed_pipeline ();
-
-	void
-	set_background_texture ();
-
-	void
-	set_background_texture_transparency ();
-
-	void
-	set_activeLayer ();
-
-	void
-	connectViewpoint ();
-
-	void
-	set_viewpoint ();
-
-	void
-	set_grid ();
-
-	bool
-	on_focus_in_event (GdkEventFocus* event);
-
-	bool
-	on_focus_out_event (GdkEventFocus* event);
-
-	///  @name Static members
-
-	static const std::vector <BrowserPanelType> defaultTypes;
-	static const std::vector <std::string>      names;
-	static const std::vector <X3D::Vector3d>    axes;
-	static const std::vector <X3D::Vector3d>    positions;
-	static const std::vector <X3D::Rotation4d>  orientations;
-
-	///  @name Members
-
-	BrowserPanelType                    type;
-	const size_t                        id;
-	X3D::BrowserPtr                     browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
-	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
-	X3D::X3DPtr <X3D::Transform>        gridTransform;
-	X3D::X3DPtr <X3D::Switch>           gridSwitch;
-	X3D::SFNode                         grid;
+	MAIN,
+	PERSPECTIVE,
+	TOP,
+	RIGHT,
+	FRONT,
+	BOTTOM,
+	LEFT,
+	BACK
 
 };
 

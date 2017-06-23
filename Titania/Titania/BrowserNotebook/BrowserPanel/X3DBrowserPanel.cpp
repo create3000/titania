@@ -82,6 +82,13 @@
 namespace titania {
 namespace puck {
 
+const std::vector <BrowserPanelType> X3DBrowserPanel::defaultTypes = {
+	BrowserPanelType::TOP,
+	BrowserPanelType::MAIN,
+	BrowserPanelType::RIGHT,
+	BrowserPanelType::FRONT,
+};
+
 const std::vector <std::string> X3DBrowserPanel::names = { "", "Perspective", "Top", "Right", "Front", "Bottom", "Left", "Back" };
 
 const std::vector <X3D::Vector3d> X3DBrowserPanel::axes = {
@@ -117,9 +124,9 @@ const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
 	X3D::Rotation4f (0, 1, 0, math::pi <float>)
 };
 
-X3DBrowserPanel::X3DBrowserPanel (const BrowserPanelType type, const size_t id) :
+X3DBrowserPanel::X3DBrowserPanel (const size_t id) :
 	X3DBrowserPanelInterface (),
-	                    type (type),
+	                    type (defaultTypes [id]),
 	                      id (id),
 	                 browser (getPage () -> getMainBrowser ()),
 	             activeLayer (),
@@ -138,7 +145,7 @@ X3DBrowserPanel::X3DBrowserPanel (const BrowserPanelType type, const size_t id) 
 }
 
 X3DBrowserPanel::X3DBrowserPanel () :
-	X3DBrowserPanel (BrowserPanelType::MAIN, 0)
+	X3DBrowserPanel (0)
 { }
 
 void

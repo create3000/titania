@@ -53,6 +53,8 @@
 
 #include "../../UserInterfaces/X3DPanelMenuInterface.h"
 
+#include "../NotebookPage/PanelType.h"
+
 namespace titania {
 namespace puck {
 
@@ -67,6 +69,12 @@ public:
 
 	PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page);
 
+	///  @name Member access
+
+	const X3D::SFEnum <PanelType> &
+	getPanelType () const
+	{ return panelType; }
+
 	///  @name Destruction
 
 	virtual
@@ -74,6 +82,20 @@ public:
 
 
 private:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_browser_panel_activate () final override;
+
+	virtual
+	void
+	on_render_panel_activate () final override;
+
+	///  @name Members
+
+	X3D::SFEnum <PanelType> panelType;
 
 };
 

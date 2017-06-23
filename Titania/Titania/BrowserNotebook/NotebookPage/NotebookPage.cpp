@@ -83,20 +83,10 @@ NotebookPage::initialize ()
 void
 NotebookPage::loaded ()
 {
-	getBox1 () .remove ();
-	getBox2 () .remove ();
-	getBox3 () .remove ();
-	getBox4 () .remove ();
-
-   panel1 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::TOP,   0);
-   panel2 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::MAIN , 1);
-   panel3 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::RIGHT, 2);
-   panel4 = std::make_unique <BrowserPanel> (getBrowserWindow (), this, BrowserPanelType::FRONT, 3);
-
-	panel1 -> getWidget () .reparent (getBox1 ());
-	panel2 -> getWidget () .reparent (getBox2 ());
-	panel3 -> getWidget () .reparent (getBox3 ());
-	panel4 -> getWidget () .reparent (getBox4 ());
+	setPanel (0, panel1, PanelType::BROWSER_PANEL, getBox1 ());
+	setPanel (1, panel2, PanelType::BROWSER_PANEL, getBox2 ());
+	setPanel (2, panel3, PanelType::BROWSER_PANEL, getBox3 ());
+	setPanel (3, panel4, PanelType::BROWSER_PANEL, getBox4 ());
 }
 
 void
@@ -181,6 +171,30 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 	}
 
 	return false;
+}
+
+void
+NotebookPage::setPanel (const size_t id, std::unique_ptr <BrowserPanel> & panel, const PanelType panelType, Gtk::Viewport & box)
+{
+	box .remove ();
+
+	switch (panelType)
+	{
+		case PanelType::BROWSER_PANEL:
+		case PanelType::RENDER_PANEL:
+		{
+		   panel = std::make_unique <BrowserPanel> (getBrowserWindow (), this, id);
+			break;
+		}
+//		case PanelType::RENDER_PANEL:
+//		{
+//			break;
+//		}
+	}
+
+	panel -> getWidget () .reparent (box);
+
+	panel -> getPanelMenu () -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel), std::ref (panel -> getPanelMenu () -> getPanelType ()), std::ref (box));
 }
 
 void
