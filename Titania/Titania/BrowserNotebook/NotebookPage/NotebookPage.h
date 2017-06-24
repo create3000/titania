@@ -53,8 +53,7 @@
 
 #include "X3DNotebookPage.h"
 
-#include "../PanelMenu/PanelMenu.h"
-#include "../BrowserPanel/BrowserPanelType.h"
+#include "PanelType.h"
 
 namespace titania {
 namespace puck {

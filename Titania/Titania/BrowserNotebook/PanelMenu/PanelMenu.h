@@ -95,8 +95,8 @@ private:
 
 	///  @name Members
 
-	X3D::SFEnum <PanelType>      panelType;
-	std::vector <Gtk::MenuItem*> menuItems;
+	X3D::SFEnum <PanelType>              panelType;
+	std::map <PanelType, Gtk::MenuItem*> menuItems;
 
 };
 

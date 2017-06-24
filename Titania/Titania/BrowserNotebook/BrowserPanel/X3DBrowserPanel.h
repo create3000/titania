@@ -169,11 +169,11 @@ private:
 
 	///  @name Static members
 
-	static const std::vector <BrowserPanelType> defaultTypes;
-	static const std::vector <std::string>      names;
-	static const std::vector <X3D::Vector3d>    axes;
-	static const std::vector <X3D::Vector3d>    positions;
-	static const std::vector <X3D::Rotation4d>  orientations;
+	static const std::vector <BrowserPanelType>                defaultTypes;
+	static const std::map <BrowserPanelType, std::string>      names;
+	static const std::map <BrowserPanelType, X3D::Vector3d>    axes;
+	static const std::map <BrowserPanelType, X3D::Vector3d>    positions;
+	static const std::map <BrowserPanelType, X3D::Rotation4d>  orientations;
 
 	///  @name Members
 

@@ -54,7 +54,7 @@
 namespace titania {
 namespace puck {
 
-enum BrowserPanelType
+enum class BrowserPanelType
 {
 	MAIN_VIEW,
 	PERSPECTIVE_VIEW,

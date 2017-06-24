@@ -89,39 +89,48 @@ const std::vector <BrowserPanelType> X3DBrowserPanel::defaultTypes = {
 	BrowserPanelType::FRONT_VIEW,
 };
 
-const std::vector <std::string> X3DBrowserPanel::names = { "", "Perspective", "Top", "Right", "Front", "Bottom", "Left", "Back" };
-
-const std::vector <X3D::Vector3d> X3DBrowserPanel::axes = {
-	X3D::Vector3f (),
-	X3D::Vector3f (),
-	X3D::Vector3f (0, 1, 0),
-	X3D::Vector3f (1, 0, 0),
-	X3D::Vector3f (0, 0, 1),
-	X3D::Vector3f (0, -1, 0),
-	X3D::Vector3f (-1, 0, 0),
-	X3D::Vector3f (0, 0, -1)
+const std::map <BrowserPanelType, std::string> X3DBrowserPanel::names = {
+	std::make_pair (BrowserPanelType::MAIN_VIEW,        ""),
+	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, "Perspective"),
+	std::make_pair (BrowserPanelType::TOP_VIEW,         "Top"),
+	std::make_pair (BrowserPanelType::RIGHT_VIEW,       "Right"),
+	std::make_pair (BrowserPanelType::FRONT_VIEW,       "Front"),
+	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      "Bottom"),
+	std::make_pair (BrowserPanelType::LEFT_VIEW,        "Left"),
+	std::make_pair (BrowserPanelType::BACK_VIEW,        "Back")
 };
 
-const std::vector <X3D::Vector3d> X3DBrowserPanel::positions = {
-	X3D::Vector3f (),
-	X3D::Vector3f (8.48219, 12, 8.48219),
-	X3D::Vector3f (0, 10, 0),
-	X3D::Vector3f (10, 0, 0),
-	X3D::Vector3f (0, 0, 10),
-	X3D::Vector3f (0, -10, 0),
-	X3D::Vector3f (-10, 0, 0),
-	X3D::Vector3f (0, 0, -10)
+const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::axes = {
+	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
+	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f ()),
+	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 1, 0)),
+	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (1, 0, 0)),
+	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 1)),
+	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -1, 0)),
+	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-1, 0, 0)),
+	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -1))
 };
 
-const std::vector <X3D::Rotation4d> X3DBrowserPanel::orientations = {
-	X3D::Rotation4f (),
-	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 4) * X3D::Rotation4f (0, 1, 0, math::pi <float> / 4),
-	X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2),
-	X3D::Rotation4f (0, 1, 0, math::pi <float> / 2),
-	X3D::Rotation4f (),
-	X3D::Rotation4f (1, 0, 0, math::pi <float> / 2) * X3D::Rotation4f (0, 1, 0, math::pi <float>),
-	X3D::Rotation4f (0, 1, 0, -math::pi <float> / 2),
-	X3D::Rotation4f (0, 1, 0, math::pi <float>)
+const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::positions = {
+	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
+	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f (8.48219, 12, 8.48219)),
+	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 10, 0)),
+	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (10, 0, 0)),
+	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 10)),
+	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -10, 0)),
+	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-10, 0, 0)),
+	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -10))
+};
+
+const std::map <BrowserPanelType, X3D::Rotation4d> X3DBrowserPanel::orientations = {
+	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Rotation4f ()),
+	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Rotation4f (1, 0, 0, -math::pi <float> / 4) * X3D::Rotation4f (0, 1, 0, math::pi <float> / 4)),
+	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2)),
+	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Rotation4f (0, 1, 0, math::pi <float> / 2)),
+	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Rotation4f ()),
+	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Rotation4f (1, 0, 0, math::pi <float> / 2) * X3D::Rotation4f (0, 1, 0, math::pi <float>)),
+	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Rotation4f (0, 1, 0, -math::pi <float> / 2)),
+	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Rotation4f (0, 1, 0, math::pi <float>))
 };
 
 X3DBrowserPanel::X3DBrowserPanel (const size_t id) :
@@ -218,7 +227,7 @@ X3DBrowserPanel::getBrowserPanelType (const size_t id) const
 	}
 	catch (const std::exception &)
 	{
-		return type;
+		return defaultTypes [id];
 	}
 }
 
@@ -284,7 +293,7 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	{
 		browser -> initialized () .addInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> set_opacity (0);
-		browser -> setName (names [type]);
+		browser -> setName (names .at (type));
 	}
 
 	if (getWidget () .get_mapped ())
@@ -371,10 +380,10 @@ X3DBrowserPanel::set_dependent_browser ()
 		gridLayer -> getViewpointStack () -> pushOnTop (viewpoint, true);
 		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
 
-		viewpoint -> setPosition (positions [type]);
-		viewpoint -> setOrientation (orientations [type]);
+		viewpoint -> setPosition (positions .at (type));
+		viewpoint -> setOrientation (orientations .at (type));
 
-		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations [type]);
+		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations .at (type));
 
 		// Connect to active layer.
 	
@@ -469,10 +478,10 @@ X3DBrowserPanel::set_activeLayer ()
 
 		if (activeLayer)
 		{
-			const auto userPosition         = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position", positions [type]);
-			const auto userOrientation      = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation", orientations [type]);
-			const auto userCenterOfRotation = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", X3D::Vector3d ());
-			const auto fieldOfViewScale     = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", 1.0);
+			const auto userPosition         = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position", positions .at (type));
+			const auto userOrientation      = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation", orientations .at (type));
+			const auto userCenterOfRotation = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
+			const auto fieldOfViewScale     = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
 
 			activeLayer -> children () .addInterest (group -> children ());
 			group -> children () = activeLayer -> children ();
@@ -509,15 +518,15 @@ X3DBrowserPanel::connectViewpoint ()
 void
 X3DBrowserPanel::set_viewpoint ()
 {
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/position",         viewpoint -> getUserPosition ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names [type] + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
 
 	getPage () -> setModified (true);
 
 	if (type not_eq BrowserPanelType::PERSPECTIVE_VIEW)
-		gridTransform -> translation () = viewpoint -> getUserPosition () * axes [type] - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
+		gridTransform -> translation () = viewpoint -> getUserPosition () * axes .at (type) - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
 }
 
 void
@@ -568,7 +577,7 @@ X3DBrowserPanel::set_grid ()
 			{
 				const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
 				const auto   mapping = mappings .at (std::make_pair (plane, type));
-				const auto   one     = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
+				const auto   one     = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;
 
@@ -610,7 +619,7 @@ X3DBrowserPanel::set_grid ()
 			else
 			{
 				const auto & tool = getBrowserWindow () -> getAngleGridTool () -> getTool ();
-				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
+				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;
 	
@@ -652,7 +661,7 @@ X3DBrowserPanel::set_grid ()
 			else
 			{
 				const auto & tool = getBrowserWindow () -> getAxonometricGridTool () -> getTool ();
-				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes [type], -axes [type]));
+				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;
 	

@@ -62,12 +62,19 @@ PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const
 	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
 	            panelType (panelType_),
-	            menuItems ({ &getBrowserPanelMenuItem (),
-	                         &getRenderPanelMenuItem () })
+	            menuItems ({ std::make_pair (PanelType::BROWSER_PANEL, &getBrowserPanelMenuItem ()),
+	                         std::make_pair (PanelType::RENDER_PANEL,  &getRenderPanelMenuItem ()) })
 {
 	addChildObjects (panelType);
 
-	menuItems [panelType]-> get_style_context () -> add_class ("titania-menu-item-selected");
+	try
+	{
+		menuItems .at (panelType) -> get_style_context () -> add_class ("titania-menu-item-selected");
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 
 	setup ();
 }
