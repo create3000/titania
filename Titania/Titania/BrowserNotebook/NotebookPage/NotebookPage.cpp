@@ -84,15 +84,10 @@ NotebookPage::initialize ()
 void
 NotebookPage::loaded ()
 {
-	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFInt32 (4, X3D::SFInt32 (PanelType::BROWSER_PANEL)));
-
-	for (auto & panelType : panelsArray)
-		panelType = panelType < PanelType::BROWSER_PANEL or panelType > PanelType::RENDER_PANEL ? PanelType::BROWSER_PANEL : panelType;
-
-	set_panel (0, panel1, PanelType (panelsArray [0] .getValue ()), getBox1 ());
-	set_panel (1, panel2, PanelType (panelsArray [1] .getValue ()), getBox2 ());
-	set_panel (2, panel3, PanelType (panelsArray [2] .getValue ()), getBox3 ());
-	set_panel (3, panel4, PanelType (panelsArray [3] .getValue ()), getBox4 ());
+	set_panel (0, panel1, getPanelType (0), getBox1 ());
+	set_panel (1, panel2, getPanelType (1), getBox2 ());
+	set_panel (2, panel3, getPanelType (2), getBox3 ());
+	set_panel (3, panel4, getPanelType (3), getBox4 ());
 }
 
 void
@@ -180,15 +175,46 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 }
 
 void
-NotebookPage::setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
+NotebookPage::setPanelType (const size_t id, const PanelType panelType)
 {
-	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFInt32 (4, X3D::SFInt32 (PanelType::BROWSER_PANEL)));
+	static const std::map <PanelType, std::string> panelTypes = {
+		std::make_pair (PanelType::BROWSER_PANEL, "BROWSER_PANEL"),
+		std::make_pair (PanelType::RENDER_PANEL,  "RENDER_PANEL"),
+	};
 
-	panelsArray [id] = panel -> getPanelType ();
+	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFString (4, X3D::SFString ("BROWSER_PANEL")));
+
+	panelsArray [id] = panelTypes .at (panelType);
 
 	createWorldInfo (getScene ()) -> setMetaData ("/Titania/Page/panels", panelsArray);
 
 	setModified (true);
+}
+
+PanelType
+NotebookPage::getPanelType (const size_t id) const
+{
+	try
+	{
+		static const std::map <std::string, PanelType> panelTypes = {
+			std::make_pair ("BROWSER_PANEL", PanelType::BROWSER_PANEL),
+			std::make_pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
+		};
+
+		const auto panelsArray = getWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFString (4, X3D::SFString ("BROWSER_PANEL")));
+
+		return panelTypes .at (panelsArray [id]);
+	}
+	catch (const std::exception &)
+	{
+		return PanelType::BROWSER_PANEL;
+	}
+}
+
+void
+NotebookPage::setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
+{
+	setPanelType (id, panelType);
 
 	set_panel (id, panel, panelType, box);
 }

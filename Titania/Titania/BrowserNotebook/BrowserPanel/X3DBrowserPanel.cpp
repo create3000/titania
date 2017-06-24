@@ -157,9 +157,7 @@ X3DBrowserPanel::initialize ()
 
 	// type
 
-	const auto typeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
-
-	type = BrowserPanelType (typeArray [id] < BrowserPanelType::MAIN_VIEW or typeArray [id] > BrowserPanelType::BACK_VIEW ? type : typeArray [id]);
+	type = getBrowserPanelType (id);
 
 	set_type ();
 }
@@ -174,17 +172,60 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type) const
 }
 
 void
+X3DBrowserPanel::setBrowserPanelType (const size_t id, const BrowserPanelType browserPanelType)
+{
+	static const std::map <BrowserPanelType, std::string> browserPanelTypes = {
+		std::make_pair (BrowserPanelType::MAIN_VIEW,        "MAIN_VIEW"),
+		std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, "PERSPECTIVE_VIEW"),
+		std::make_pair (BrowserPanelType::TOP_VIEW,         "TOP_VIEW"),
+		std::make_pair (BrowserPanelType::RIGHT_VIEW,       "RIGHT_VIEW"),
+		std::make_pair (BrowserPanelType::FRONT_VIEW,       "FRONT_VIEW"),
+		std::make_pair (BrowserPanelType::BOTTOM_VIEW,      "BOTTOM_VIEW"),
+		std::make_pair (BrowserPanelType::LEFT_VIEW,        "LEFT_VIEW"),
+		std::make_pair (BrowserPanelType::BACK_VIEW,        "BACK_VIEW"),
+	};
+
+	auto browserPanelTypeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFString (4));
+
+	browserPanelTypeArray [id] = browserPanelTypes .at (browserPanelType);
+
+	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", browserPanelTypeArray);
+
+	getPage () -> setModified (true);
+}
+
+BrowserPanelType
+X3DBrowserPanel::getBrowserPanelType (const size_t id) const
+{
+	try
+	{
+		static const std::map <std::string, BrowserPanelType> browserPanelTypes = {
+			std::make_pair ("MAIN_VIEW",        BrowserPanelType::MAIN_VIEW),
+			std::make_pair ("PERSPECTIVE_VIEW", BrowserPanelType::PERSPECTIVE_VIEW),
+			std::make_pair ("TOP_VIEW",         BrowserPanelType::TOP_VIEW),
+			std::make_pair ("RIGHT_VIEW",       BrowserPanelType::RIGHT_VIEW),
+			std::make_pair ("FRONT_VIEW",       BrowserPanelType::FRONT_VIEW),
+			std::make_pair ("BOTTOM_VIEW",      BrowserPanelType::BOTTOM_VIEW),
+			std::make_pair ("LEFT_VIEW",        BrowserPanelType::LEFT_VIEW),
+			std::make_pair ("BACK_VIEW",        BrowserPanelType::BACK_VIEW),
+		};
+
+		const auto browserPanelTypeArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFString (4));
+
+		return browserPanelTypes .at (browserPanelTypeArray [id]);
+	}
+	catch (const std::exception &)
+	{
+		return type;
+	}
+}
+
+void
 X3DBrowserPanel::setType (const BrowserPanelType value)
 {
 	type = value;
 
-	auto typeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFInt32 (4, X3D::SFInt32 (-1)));
-
-	typeArray [id] = type;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", typeArray);
-
-	getPage () -> setModified (true);
+	setBrowserPanelType (id, value);
 
 	set_type ();
 }
@@ -663,7 +704,7 @@ X3DBrowserPanel::on_map ()
 	getPage () -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
-	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
+	getBrowserWindow () -> getAngleGridTool ()       -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 }
 

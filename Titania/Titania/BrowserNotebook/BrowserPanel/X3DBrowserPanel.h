@@ -123,6 +123,12 @@ private:
 
 	///  @name Member access
 
+	void
+	setBrowserPanelType (const size_t id, const BrowserPanelType browserPanelType);
+	
+	BrowserPanelType
+	getBrowserPanelType (const size_t id) const;
+
 	int32_t
 	getPlane () const;
 

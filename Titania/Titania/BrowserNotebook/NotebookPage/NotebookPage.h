@@ -129,6 +129,12 @@ private:
 	on_box_key_release_event (GdkEventKey* event, const size_t index);
 
 	void
+	setPanelType (const size_t id, const PanelType panelType);
+	
+	PanelType
+	getPanelType (const size_t id) const;
+
+	void
 	setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
 
 	void
