@@ -67,14 +67,7 @@ PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const
 {
 	addChildObjects (panelType);
 
-	try
-	{
-		menuItems .at (panelType) -> get_style_context () -> add_class ("titania-menu-item-selected");
-	}
-	catch (const std::out_of_range & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	menuItems .at (panelType) -> get_style_context () -> add_class ("titania-menu-item-selected");
 
 	setup ();
 }
