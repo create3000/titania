@@ -715,49 +715,49 @@ X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
 void
 X3DBrowserPanelMenuBar::on_main_view_activate ()
 {
-	setType (BrowserPanelType::MAIN);
+	setType (BrowserPanelType::MAIN_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_perspective_view_activate ()
 {
-	setType (BrowserPanelType::PERSPECTIVE);
+	setType (BrowserPanelType::PERSPECTIVE_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_top_view_activate ()
 {
-	setType (BrowserPanelType::TOP);
+	setType (BrowserPanelType::TOP_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_right_view_activate ()
 {
-	setType (BrowserPanelType::RIGHT);
+	setType (BrowserPanelType::RIGHT_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_front_view_activate ()
 {
-	setType (BrowserPanelType::FRONT);
+	setType (BrowserPanelType::FRONT_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_bottom_view_activate ()
 {
-	setType (BrowserPanelType::BOTTOM);
+	setType (BrowserPanelType::BOTTOM_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_left_view_activate ()
 {
-	setType (BrowserPanelType::LEFT);
+	setType (BrowserPanelType::LEFT_VIEW);
 }
 
 void
 X3DBrowserPanelMenuBar::on_back_view_activate ()
 {
-	setType (BrowserPanelType::BACK);
+	setType (BrowserPanelType::BACK_VIEW);
 }
 
 /*

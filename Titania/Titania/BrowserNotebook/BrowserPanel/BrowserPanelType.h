@@ -56,14 +56,14 @@ namespace puck {
 
 enum BrowserPanelType
 {
-	MAIN,
-	PERSPECTIVE,
-	TOP,
-	RIGHT,
-	FRONT,
-	BOTTOM,
-	LEFT,
-	BACK
+	MAIN_VIEW,
+	PERSPECTIVE_VIEW,
+	TOP_VIEW,
+	RIGHT_VIEW,
+	FRONT_VIEW,
+	BOTTOM_VIEW,
+	LEFT_VIEW,
+	BACK_VIEW
 
 };
 

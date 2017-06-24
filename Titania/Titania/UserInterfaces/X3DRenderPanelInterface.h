@@ -47,116 +47,97 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_RENDER_PANEL_H__
+#define __TMP_GLAD2CPP_RENDER_PANEL_H__
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-
-#include "X3DNotebookPage.h"
-
-#include "../PanelMenu/PanelMenu.h"
-#include "../BrowserPanel/BrowserPanelType.h"
+#include "../Base/X3DPanelInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
-
-class NotebookPage :
-	public X3DNotebookPage
+/**
+ *  Gtk Interface for RenderPanel.
+ */
+class X3DRenderPanelInterface :
+	public X3DPanelInterface
 {
 public:
 
 	///  @name Construction
 
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+	X3DRenderPanelInterface () :
+		X3DPanelInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DRenderPanelInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DRenderPanelInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
+	{ create (filenames); }
+
+	///  @name Member access
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::MenuBar &
+	getMenuBar () const
+	{ return *m_MenuBar; }
+
+	Gtk::MenuItem &
+	getPanelsMenuItem () const
+	{ return *m_PanelsMenuItem; }
+
+	Gtk::Box &
+	getBox () const
+	{ return *m_Box; }
+
+	///  @name Signal handlers
 
 	///  @name Destruction
 
 	virtual
-	void
-	shutdown () final override;
-
-	virtual
-	~NotebookPage () final override;
+	~X3DRenderPanelInterface () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
 	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	virtual
-	void
-	initialized () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
+	create (const std::string &);
 
 	void
-	set_editing ();
-
-	virtual
-	bool
-	on_box1_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* event) final override;
-
-	bool
-	on_box_key_release_event (GdkEventKey* event, const size_t index);
+	create (std::initializer_list <std::string>);
 
 	void
-	setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
+	create ();
 
-	void
-	set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	setMultiView (const bool value);
-
-	bool
-	getMultiView () const
-	{ return multiView; }
+	///  @name Static members
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*>          boxes;
-	std::unique_ptr <X3DPanelInterface> panel1;
-	std::unique_ptr <X3DPanelInterface> panel2;
-	std::unique_ptr <X3DPanelInterface> panel3;
-	std::unique_ptr <X3DPanelInterface> panel4;
-	size_t                              activeView;
-	bool                                multiView;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::MenuBar* m_MenuBar;
+	Gtk::MenuItem* m_PanelsMenuItem;
+	Gtk::Box* m_Box;
 
 };
 

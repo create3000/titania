@@ -61,9 +61,13 @@ namespace puck {
 PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const PanelType panelType_) :
 	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
-	            panelType (panelType_)
+	            panelType (panelType_),
+	            menuItems ({ &getBrowserPanelMenuItem (),
+	                         &getRenderPanelMenuItem () })
 {
 	addChildObjects (panelType);
+
+	menuItems [panelType]-> get_style_context () -> add_class ("titania-menu-item-selected");
 
 	setup ();
 }

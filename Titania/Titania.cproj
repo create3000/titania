@@ -319,6 +319,8 @@
     <Compile Include="Titania\Editors\BackgroundImageEditor\BackgroundImage.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DPanelMenuInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\PanelMenu\PanelMenu.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DRenderPanelInterface.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3004,6 +3006,9 @@
     <None Include="Titania\BrowserNotebook\PanelMenu\PanelMenu.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\PanelType.h" />
     <None Include="Titania\BrowserNotebook\BrowserPanel\BrowserPanelType.h" />
+    <None Include="share\titania\ui\Panels\RenderPanel.glade" />
+    <None Include="Titania\UserInterfaces\X3DRenderPanelInterface.h" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3153,6 +3158,7 @@
     <Folder Include="Titania\BrowserNotebook\BrowserPanel\" />
     <Folder Include="Titania\Editors\BackgroundImageEditor\" />
     <Folder Include="Titania\BrowserNotebook\PanelMenu\" />
+    <Folder Include="Titania\BrowserNotebook\RenderPanel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

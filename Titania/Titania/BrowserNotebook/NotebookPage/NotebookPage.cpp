@@ -54,6 +54,7 @@
 #include "../../Configuration/config.h"
 
 #include "../BrowserPanel/BrowserPanel.h"
+#include "../RenderPanel/RenderPanel.h"
 
 namespace titania {
 namespace puck {
@@ -83,10 +84,15 @@ NotebookPage::initialize ()
 void
 NotebookPage::loaded ()
 {
-	setPanel (0, panel1, PanelType::BROWSER_PANEL, getBox1 ());
-	setPanel (1, panel2, PanelType::BROWSER_PANEL, getBox2 ());
-	setPanel (2, panel3, PanelType::BROWSER_PANEL, getBox3 ());
-	setPanel (3, panel4, PanelType::BROWSER_PANEL, getBox4 ());
+	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFInt32 (4, X3D::SFInt32 (PanelType::BROWSER_PANEL)));
+
+	for (auto & panelType : panelsArray)
+		panelType = panelType < PanelType::BROWSER_PANEL or panelType > PanelType::RENDER_PANEL ? PanelType::BROWSER_PANEL : panelType;
+
+	set_panel (0, panel1, PanelType (panelsArray [0] .getValue ()), getBox1 ());
+	set_panel (1, panel2, PanelType (panelsArray [1] .getValue ()), getBox2 ());
+	set_panel (2, panel3, PanelType (panelsArray [2] .getValue ()), getBox3 ());
+	set_panel (3, panel4, PanelType (panelsArray [3] .getValue ()), getBox4 ());
 }
 
 void
@@ -174,22 +180,36 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 }
 
 void
-NotebookPage::setPanel (const size_t id, std::unique_ptr <BrowserPanel> & panel, const PanelType panelType, Gtk::Viewport & box)
+NotebookPage::setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
+{
+	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData ("/Titania/Page/panels", X3D::MFInt32 (4, X3D::SFInt32 (PanelType::BROWSER_PANEL)));
+
+	panelsArray [id] = panel -> getPanelType ();
+
+	createWorldInfo (getScene ()) -> setMetaData ("/Titania/Page/panels", panelsArray);
+
+	setModified (true);
+
+	set_panel (id, panel, panelType, box);
+}
+
+void
+NotebookPage::set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
 {
 	box .remove ();
 
 	switch (panelType)
 	{
 		case PanelType::BROWSER_PANEL:
-		case PanelType::RENDER_PANEL:
 		{
 		   panel = std::make_unique <BrowserPanel> (getBrowserWindow (), this, id);
 			break;
 		}
-//		case PanelType::RENDER_PANEL:
-//		{
-//			break;
-//		}
+		case PanelType::RENDER_PANEL:
+		{
+		   panel = std::make_unique <RenderPanel> (getBrowserWindow (), this, id);
+			break;
+		}
 	}
 
 	panel -> getWidget () .reparent (box);

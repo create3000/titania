@@ -54,7 +54,7 @@
 namespace titania {
 namespace puck {
 
-enum class PanelType
+enum PanelType
 {
 	BROWSER_PANEL,
 	RENDER_PANEL

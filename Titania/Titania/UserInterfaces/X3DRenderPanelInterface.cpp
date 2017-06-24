@@ -47,120 +47,49 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-
-#include "X3DNotebookPage.h"
-
-#include "../PanelMenu/PanelMenu.h"
-#include "../BrowserPanel/BrowserPanelType.h"
+#include "X3DRenderPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
-
-class NotebookPage :
-	public X3DNotebookPage
+void
+X3DRenderPanelInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
+	create ();
+}
 
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+void
+X3DRenderPanelInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
-	///  @name Destruction
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-	virtual
-	void
-	shutdown () final override;
+	create ();
+}
 
-	virtual
-	~NotebookPage () final override;
+void
+X3DRenderPanelInterface::create ()
+{
+	// Get objects.
 
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("MenuBar", m_MenuBar);
+	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
+	m_builder -> get_widget ("Box", m_Box);
+}
 
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	virtual
-	void
-	initialized () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_editing ();
-
-	virtual
-	bool
-	on_box1_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* event) final override;
-
-	bool
-	on_box_key_release_event (GdkEventKey* event, const size_t index);
-
-	void
-	setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	setMultiView (const bool value);
-
-	bool
-	getMultiView () const
-	{ return multiView; }
-
-	///  @name Members
-
-	std::vector <Gtk::Widget*>          boxes;
-	std::unique_ptr <X3DPanelInterface> panel1;
-	std::unique_ptr <X3DPanelInterface> panel2;
-	std::unique_ptr <X3DPanelInterface> panel3;
-	std::unique_ptr <X3DPanelInterface> panel4;
-	size_t                              activeView;
-	bool                                multiView;
-
-};
+X3DRenderPanelInterface::~X3DRenderPanelInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

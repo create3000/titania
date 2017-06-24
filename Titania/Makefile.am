@@ -31,6 +31,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
+	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -218,6 +219,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
 	Titania/UserInterfaces/X3DPrecisionPlacementPanelInterface.cpp \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
+	Titania/UserInterfaces/X3DRenderPanelInterface.cpp \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DSculpToolEditorInterface.cpp \

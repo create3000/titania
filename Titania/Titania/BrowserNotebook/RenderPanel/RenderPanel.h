@@ -48,115 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_PANEL_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_PANEL_H__
 
-#include "X3DNotebookPage.h"
-
-#include "../PanelMenu/PanelMenu.h"
-#include "../BrowserPanel/BrowserPanelType.h"
+#include "../../UserInterfaces/X3DRenderPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
+class NotebookPage;
 
-class NotebookPage :
-	public X3DNotebookPage
+class RenderPanel :
+	public X3DRenderPanelInterface
 {
 public:
 
 	///  @name Construction
 
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+	RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
 	///  @name Destruction
 
 	virtual
-	void
-	shutdown () final override;
-
-	virtual
-	~NotebookPage () final override;
+	~RenderPanel () final override;
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	virtual
-	void
-	initialized () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_editing ();
-
-	virtual
-	bool
-	on_box1_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* event) final override;
-
-	bool
-	on_box_key_release_event (GdkEventKey* event, const size_t index);
-
-	void
-	setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	setMultiView (const bool value);
-
-	bool
-	getMultiView () const
-	{ return multiView; }
-
-	///  @name Members
-
-	std::vector <Gtk::Widget*>          boxes;
-	std::unique_ptr <X3DPanelInterface> panel1;
-	std::unique_ptr <X3DPanelInterface> panel2;
-	std::unique_ptr <X3DPanelInterface> panel3;
-	std::unique_ptr <X3DPanelInterface> panel4;
-	size_t                              activeView;
-	bool                                multiView;
 
 };
 

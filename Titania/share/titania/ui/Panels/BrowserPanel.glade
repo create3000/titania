@@ -8,12 +8,6 @@
     <property name="stock">gtk-jump-to</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkImage" id="image10">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Grid</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -513,9 +507,6 @@
             <property name="position">2</property>
           </packing>
         </child>
-        <style>
-          <class name="titania-browser-view"/>
-        </style>
       </object>
     </child>
   </object>
