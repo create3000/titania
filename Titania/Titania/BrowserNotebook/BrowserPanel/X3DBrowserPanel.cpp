@@ -383,7 +383,6 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		// Connect to active layer.
 	
-		browser -> sensors () .addInterest (&X3DBrowserPanel::set_sensors, this);                                         // addDependentBrowser
 		getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this); // addDependentBrowser
 		getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this); // addDependentBrowser
 		getPage () -> getMainBrowser () -> getActiveLayer ()   .addInterest (&X3DBrowserPanel::set_activeLayer,    this);
@@ -397,13 +396,6 @@ X3DBrowserPanel::set_dependent_browser ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-X3DBrowserPanel::set_sensors ()
-{
-	//getPage () -> getMainBrowser () -> sensors () .processInterests ();
-	//getPage () -> getMainBrowser () -> processEvents ();
 }
 
 void

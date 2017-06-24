@@ -141,9 +141,6 @@ private:
 	set_dependent_browser ();
 
 	void
-	set_sensors ();
-
-	void
 	set_fixed_pipeline ();
 
 	void

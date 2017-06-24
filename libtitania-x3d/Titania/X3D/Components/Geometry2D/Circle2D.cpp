@@ -178,10 +178,12 @@ Circle2D::build ()
 
 	else
 	{
+		const double r = std::abs (radius () .getValue ());
+
 		getVertices () .reserve (optionsNode -> getVertices () .size ());
 
 		for (const auto & vertex : optionsNode -> getVertices ())
-			getVertices () .emplace_back (vertex * std::abs <double> (radius () .getValue ()));
+			getVertices () .emplace_back (vertex * r);
 	}
 
 	addElements (optionsNode -> getVertexMode (), getVertices () .size ());
