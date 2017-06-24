@@ -70,18 +70,15 @@ LightSaber::LightSaber (X3DExecutionContext* const executionContext) :
 	          points (2)
 {
 	addType (X3DConstants::LightSaber);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
 LightSaber*
 LightSaber::create (X3DExecutionContext* const executionContext) const
 {
 	return new LightSaber (executionContext);
-}
-
-void
-LightSaber::initialize ()
-{
-	X3DExamineViewer::initialize ();
 }
 
 bool

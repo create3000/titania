@@ -141,6 +141,9 @@ private:
 	set_dependent_browser ();
 
 	void
+	set_sensors ();
+
+	void
 	set_fixed_pipeline ();
 
 	void
@@ -148,6 +151,9 @@ private:
 
 	void
 	set_background_texture_transparency ();
+
+	void
+	set_viewer ();
 
 	void
 	set_activeLayer ();

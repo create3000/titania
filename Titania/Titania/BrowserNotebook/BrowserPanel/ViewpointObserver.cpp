@@ -89,7 +89,7 @@ ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 {
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .removeInterest (&ViewpointObserver::set_active, this);
+		viewerNode -> isActive ()   .removeInterest (&ViewpointObserver::set_active,     this);
 		viewerNode -> scrollTime () .removeInterest (&ViewpointObserver::set_scrollTime, this);
 	}
 
@@ -97,7 +97,7 @@ ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .addInterest (&ViewpointObserver::set_active, this);
+		viewerNode -> isActive ()   .addInterest (&ViewpointObserver::set_active,     this);
 		viewerNode -> scrollTime () .addInterest (&ViewpointObserver::set_scrollTime, this);
 	}
 
@@ -109,7 +109,7 @@ ViewpointObserver::set_navigationInfo ()
 {
 	if (navigationInfo)
 	{
-		navigationInfo -> transitionStart ()    .removeInterest (&ViewpointObserver::set_transitionStart, this);
+		navigationInfo -> transitionStart ()    .removeInterest (&ViewpointObserver::set_transitionStart,    this);
 		navigationInfo -> transitionComplete () .removeInterest (&ViewpointObserver::set_transitionComplete, this);
 	}
 
@@ -117,7 +117,7 @@ ViewpointObserver::set_navigationInfo ()
 
 	if (navigationInfo)
 	{
-		navigationInfo -> transitionStart ()    .addInterest (&ViewpointObserver::set_transitionStart, this);
+		navigationInfo -> transitionStart ()    .addInterest (&ViewpointObserver::set_transitionStart,    this);
 		navigationInfo -> transitionComplete () .addInterest (&ViewpointObserver::set_transitionComplete, this);
 	}
 }

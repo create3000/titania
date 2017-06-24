@@ -99,15 +99,6 @@ public:
 	~LightSaber () final override;
 
 
-protected:
-
-	///  @name Constructors
-
-	virtual
-	void
-	initialize () override;
-
-
 private:
 
 	///  @name Event handlers

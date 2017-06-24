@@ -162,10 +162,6 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
-
-	// type
-
 	type = getBrowserPanelType (id);
 
 	set_type ();
@@ -336,7 +332,7 @@ X3DBrowserPanel::set_dependent_browser ()
 	{
 		// Setup dependent browser.
 
-		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);	
+		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ());
 		browser -> setFrameRate (30);
 		browser -> set_opacity (1);
@@ -387,7 +383,10 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		// Connect to active layer.
 	
-		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
+		browser -> sensors () .addInterest (&X3DBrowserPanel::set_sensors, this);                                         // addDependentBrowser
+		getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this); // addDependentBrowser
+		getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this); // addDependentBrowser
+		getPage () -> getMainBrowser () -> getActiveLayer ()   .addInterest (&X3DBrowserPanel::set_activeLayer,    this);
 
 		set_fixed_pipeline ();
 		set_background_texture ();
@@ -401,11 +400,15 @@ X3DBrowserPanel::set_dependent_browser ()
 }
 
 void
+X3DBrowserPanel::set_sensors ()
+{
+	//getPage () -> getMainBrowser () -> sensors () .processInterests ();
+	//getPage () -> getMainBrowser () -> processEvents ();
+}
+
+void
 X3DBrowserPanel::set_fixed_pipeline ()
 {
-	if (type == BrowserPanelType::MAIN_VIEW)
-		return;
-
 	browser -> setFixedPipeline (getPage () -> getMainBrowser () -> getFixedPipeline ());
 }
 
@@ -448,6 +451,21 @@ X3DBrowserPanel::set_background_texture_transparency ()
 	catch (const X3D::X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserPanel::set_viewer ()
+{
+	const auto & mainViewer = getPage () -> getMainBrowser () -> getViewer ();
+
+	if (mainViewer -> isType ({ X3D::X3DConstants::X3DSelector, X3D::X3DConstants::LightSaber }))
+	{
+		browser -> setPrivateViewer (mainViewer -> getType () .back ());
+	}
+	else
+	{
+		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 	}
 }
 
@@ -712,7 +730,7 @@ X3DBrowserPanel::on_map ()
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return;
 
-	getPage () -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ());
+	getPage () -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ()); // addDependentBrowser
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()       -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
@@ -739,7 +757,7 @@ X3DBrowserPanel::on_unmap ()
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return;
 
-	getPage () -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ());
+	getPage () -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ()); // addDependentBrowser
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()           -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
