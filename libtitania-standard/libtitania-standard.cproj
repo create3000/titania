@@ -575,7 +575,6 @@
     <None Include="Titania\Math\Numbers\Hash.h" />
     <None Include="Titania\Math\Utility\almost_less.h" />
     <None Include="Titania\Math\Primitives\TriangleSphere3.h" />
-    <None Include="Titania\Utility\DefinedOr.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

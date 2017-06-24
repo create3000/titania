@@ -185,7 +185,9 @@ X3DBrowserPanel::setBrowserPanelType (const size_t id, const BrowserPanelType br
 		std::make_pair (BrowserPanelType::BACK_VIEW,        "BACK_VIEW"),
 	};
 
-	auto browserPanelTypeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFString (4));
+	auto browserPanelTypeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/type");
+
+	browserPanelTypeArray .resize (4);
 
 	browserPanelTypeArray [id] = browserPanelTypes .at (browserPanelType);
 
@@ -210,9 +212,9 @@ X3DBrowserPanel::getBrowserPanelType (const size_t id) const
 			std::make_pair ("BACK_VIEW",        BrowserPanelType::BACK_VIEW),
 		};
 
-		const auto browserPanelTypeArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData ("/Titania/BrowserPanel/type", X3D::MFString (4));
+		const auto browserPanelTypeArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/type");
 
-		return browserPanelTypes .at (browserPanelTypeArray [id]);
+		return browserPanelTypes .at (browserPanelTypeArray .at (id));
 	}
 	catch (const std::exception &)
 	{
