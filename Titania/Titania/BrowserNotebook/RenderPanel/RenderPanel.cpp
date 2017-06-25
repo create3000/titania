@@ -54,14 +54,24 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../ComposedWidgets/TexturePreview.h"
+
+#include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
 namespace titania {
 namespace puck {
 
 RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
-	X3DRenderPanelInterface (get_ui ("Panels/RenderPanel.glade"), page, PanelType::RENDER_PANEL)
+	X3DRenderPanelInterface (get_ui ("Panels/RenderPanel.glade"), page, PanelType::RENDER_PANEL),
+	                preview (new TexturePreview (this,
+                            getPreviewBox (),
+                            getTextureFormatLabel (),
+                            getTextureLoadStateLabel ())),
+	                texture (page -> getMainBrowser () -> createNode <X3D::ImageTexture> ())
 {
+	preview -> setTexture (texture);
+
 	setup ();
 }
 

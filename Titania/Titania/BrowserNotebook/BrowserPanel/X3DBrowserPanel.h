@@ -144,10 +144,10 @@ private:
 	set_fixed_pipeline ();
 
 	void
-	set_sensors ();
+	set_viewer ();
 
 	void
-	set_viewer ();
+	set_sensors ();
 
 	void
 	set_background_texture ();

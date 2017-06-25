@@ -77,13 +77,21 @@ void
 X3DRenderPanelInterface::create ()
 {
 	// Get objects.
+	m_FrameAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
-	m_builder -> get_widget ("Box", m_Box);
+	m_builder -> get_widget ("NewButton", m_NewButton);
+	m_builder -> get_widget ("NewButton1", m_NewButton1);
+	m_builder -> get_widget ("NewButton2", m_NewButton2);
+	m_builder -> get_widget ("NewButton3", m_NewButton3);
+	m_builder -> get_widget ("FrameSpinButton", m_FrameSpinButton);
+	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
+	m_builder -> get_widget ("TextureLoadStateLabel", m_TextureLoadStateLabel);
 }
 
 X3DRenderPanelInterface::~X3DRenderPanelInterface ()

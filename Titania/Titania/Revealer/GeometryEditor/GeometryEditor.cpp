@@ -137,7 +137,9 @@ GeometryEditor::configure ()
 {
 	X3DGeometryEditorInterface::configure ();
 
+	changing = true;
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
+	changing = false;
 
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
@@ -159,11 +161,11 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
+	//getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
 	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasKey ("axisAlignedBoundingBox"));
-	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
+	//getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
 	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasKey ("cutSnapping"));
 }
 
@@ -864,6 +866,7 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
+
 	if (changing)
 		return;
 
@@ -933,7 +936,10 @@ GeometryEditor::on_brush_activated ()
 	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
 	else
-		getPaintSelectionButton () .set_active (true);
+	{
+		if (not changing)
+			getPaintSelectionButton () .set_active (true);
+	}
 }
 
 void
@@ -947,7 +953,10 @@ GeometryEditor::on_rectangle_activated ()
 	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
 	else
-		getPaintSelectionButton () .set_active (true);
+	{
+		if (not changing)
+			getPaintSelectionButton () .set_active (true);
+	}
 }
 
 void
@@ -961,7 +970,10 @@ GeometryEditor::on_lasso_activated ()
 	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
 	else
-		getPaintSelectionButton () .set_active (true);
+	{
+		if (not changing)
+			getPaintSelectionButton () .set_active (true);
+	}
 }
 
 void

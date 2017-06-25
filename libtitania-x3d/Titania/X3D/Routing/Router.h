@@ -66,25 +66,27 @@ public:
 
 	Router ();
 
-	///  @name Operations
+	///  @name Member access
 
 	ChildId
-	addTaintedChild (X3DChildObject* const, const EventPtr &);
+	addTaintedChild (X3DChildObject* const child, const EventPtr & event);
 
 	void
-	removeTaintedChild (const ChildId &);
+	removeTaintedChild (const ChildId & childId);
 
 	bool
-	isValid (const ChildId &) const;
+	isValid (const ChildId & childId) const;
 
 	ParentId
-	addTaintedParent (X3DParentObject* const);
+	addTaintedParent (X3DParentObject* const parent);
 
 	void
-	removeTaintedParent (const ParentId &);
+	removeTaintedParent (const ParentId & parentId);
 
 	bool
-	isValid (const ParentId &) const;
+	isValid (const ParentId & parentId) const;
+
+	///  @name Operations
 
 	void
 	processEvents ();
@@ -111,10 +113,10 @@ private:
 	eventsProcessed ();
 
 	size_t
-	size () const;
+	getSize () const;
 
 	bool
-	empty () const;
+	isEmpty () const;
 
 	///  @name Members
 

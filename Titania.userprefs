@@ -2,12 +2,14 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h">
     <Files>
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="188" Column="11" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="107" Column="1" />
       <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanelType.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/ViewpointObserver.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

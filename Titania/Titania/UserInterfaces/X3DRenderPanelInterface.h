@@ -87,6 +87,10 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFrameAdjustment () const
+	{ return m_FrameAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -103,9 +107,37 @@ public:
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
+	Gtk::ToolButton &
+	getNewButton () const
+	{ return *m_NewButton; }
+
+	Gtk::ToolButton &
+	getNewButton1 () const
+	{ return *m_NewButton1; }
+
+	Gtk::ToolButton &
+	getNewButton2 () const
+	{ return *m_NewButton2; }
+
+	Gtk::ToolButton &
+	getNewButton3 () const
+	{ return *m_NewButton3; }
+
+	Gtk::SpinButton &
+	getFrameSpinButton () const
+	{ return *m_FrameSpinButton; }
+
 	Gtk::Box &
-	getBox () const
-	{ return *m_Box; }
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
+
+	Gtk::Label &
+	getTextureFormatLabel () const
+	{ return *m_TextureFormatLabel; }
+
+	Gtk::Label &
+	getTextureLoadStateLabel () const
+	{ return *m_TextureLoadStateLabel; }
 
 	///  @name Signal handlers
 
@@ -133,11 +165,19 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_FrameAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
 	Gtk::MenuItem* m_PanelsMenuItem;
-	Gtk::Box* m_Box;
+	Gtk::ToolButton* m_NewButton;
+	Gtk::ToolButton* m_NewButton1;
+	Gtk::ToolButton* m_NewButton2;
+	Gtk::ToolButton* m_NewButton3;
+	Gtk::SpinButton* m_FrameSpinButton;
+	Gtk::Box* m_PreviewBox;
+	Gtk::Label* m_TextureFormatLabel;
+	Gtk::Label* m_TextureLoadStateLabel;
 
 };
 

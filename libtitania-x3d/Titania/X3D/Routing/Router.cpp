@@ -139,11 +139,11 @@ Router::processEvents ()
 				event .first -> processEvent (event .second);
 			}
 		}
-		while (not empty ());
+		while (not isEmpty ());
 
 		eventsProcessed ();
 	}
-	while (not empty ());
+	while (not isEmpty ());
 }
 
 void
@@ -154,17 +154,17 @@ Router::eventsProcessed ()
 		for (const auto & parent : getTaintedParents ())
 			parent -> eventsProcessed ();
 	}
-	while (not parents .empty () and empty ());
+	while (not parents .empty () and isEmpty ());
 }
 
 bool
-Router::empty () const
+Router::isEmpty () const
 {
 	return children .empty ();
 }
 
 size_t
-Router::size () const
+Router::getSize () const
 {
 	return children .size ();
 }
@@ -190,7 +190,7 @@ Router::debug () const
 		}
 	}
 
-	assert (empty ());
+	assert (isEmpty ());
 }
 
 Router::~Router ()

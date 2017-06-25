@@ -57,6 +57,7 @@ namespace titania {
 namespace puck {
 
 class NotebookPage;
+class TexturePreview;
 
 class RenderPanel :
 	public X3DRenderPanelInterface
@@ -74,6 +75,9 @@ public:
 
 
 private:
+
+	std::unique_ptr <TexturePreview> preview;
+	X3D::X3DPtr <X3D::ImageTexture>  texture;
 
 };
 
