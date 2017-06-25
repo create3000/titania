@@ -396,6 +396,7 @@ class Parser;
 class ProtoDeclaration;
 class RenderingProperties;
 class Route;
+class Router;
 class Scene;
 class Selection;
 class SupportedComponents;
@@ -411,7 +412,6 @@ class X3DJavaScriptEngine;
 class X3DParser;
 class X3DProtoDeclarationNode;
 class X3DRenderObject;
-class X3DRouterObject;
 class X3DScene;
 class X3DBaseNode;
 

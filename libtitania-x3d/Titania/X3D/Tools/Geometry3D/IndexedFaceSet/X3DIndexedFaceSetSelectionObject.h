@@ -382,8 +382,8 @@ protected:
 	double
 	getDistance (const Vector3d &, const Vector3d &);
 
-	double
-	getArea (const std::vector <size_t> &);
+	//double
+	//getArea (const std::vector <size_t> &);
 
 	///  @name Undo/redo handling
 

@@ -48,110 +48,153 @@
  *
  ******************************************************************************/
 
-#include "X3DBoundedObjectTool.h"
+#include "Router.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Rendering/X3DRenderObject.h"
-#include "../../Routing/Router.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Fields/SFTime.h"
+
+#include <cassert>
 
 namespace titania {
 namespace X3D {
 
-X3DBoundedObjectTool::X3DBoundedObjectTool (const Color3f & color) :
-	X3DBoundedObject (),
-	     X3DBaseTool (),
-	        linetype (3),
-	   displayCenter (false),
-	           color (color)
+Router::Router () :
+	    children (),
+	     parents (),
+	childrenTime (SFTime::now ()),
+	  parentTime (SFTime::now ())
+{ }
+
+ChildId
+Router::addTaintedChild (X3DChildObject* const child, const EventPtr & event)
 {
-	addType (X3DConstants::X3DBoundedObjectTool);
+	children .emplace_back (child, event);
+
+	return ChildId { childrenTime, -- children .end () };
 }
 
 void
-X3DBoundedObjectTool::initialize ()
+Router::removeTaintedChild (const ChildId & childId)
 {
-	requestAsyncLoad ({ get_tool ("BoundingBox.x3dv") .str () });
+	if (isValid (childId))
+		children .erase (childId .iter);
+}
+
+bool
+Router::isValid (const ChildId & childId) const
+{
+	return childId .time == childrenTime;
+}
+
+ChildrenList
+Router::getTaintedChildren ()
+{
+	// Invalidate all iterators
+
+	childrenTime = SFTime::now ();
+
+	return std::move (children);
+}
+
+ParentId
+Router::addTaintedParent (X3DParentObject* const parent)
+{
+	parents .emplace_back (parent);
+
+	return ParentId { parentTime, -- parents .end () };
 }
 
 void
-X3DBoundedObjectTool::realize ()
+Router::removeTaintedParent (const ParentId & parentId)
 {
-	try
-	{
-		const SFNode & tool = getToolNode ();
+	if (isValid (parentId))
+		parents .erase (parentId .iter);
+}
 
-		tool -> setField <SFBool>  ("displayCenter", displayCenter);
-		tool -> setField <SFColor> ("color",         color);
-		tool -> setField <SFInt32> ("linetype",      linetype);
-	}
-	catch (const X3DError & error)
-	{ }
+bool
+Router::isValid (const ParentId & parentId) const
+{
+	return parentId .time == parentTime;
+}
+
+ParentList
+Router::getTaintedParents ()
+{
+	// Invalidate all iterators
+
+	parentTime = SFTime::now ();
+
+	return std::move (parents);
 }
 
 void
-X3DBoundedObjectTool::setLinetype (const int32_t value)
+Router::processEvents ()
 {
-	linetype = value;
-}
-
-Box3d
-X3DBoundedObjectTool::getGroupBBox () const
-{
-	try
+	do
 	{
-		Box3d bbox = getNode <X3DBoundedObject> () -> getBBox ();
-	
-		bbox *= inverse (getMatrix ());
+		do
+		{
+			for (const auto & event : getTaintedChildren ())
+			{
+				event .first -> processEvent (event .second);
+			}
+		}
+		while (not empty ());
 
-		return bbox;
+		eventsProcessed ();
 	}
-	catch (const std::domain_error &)
-	{
-		return Box3d (Vector3d (), Vector3d ());
-	}
+	while (not empty ());
 }
 
 void
-X3DBoundedObjectTool::reshape ()
+Router::eventsProcessed ()
 {
-	try
+	do
 	{
-	   getBrowser () -> endUpdateForFrame ();
-
-		const auto   bbox = getGroupBBox ();
-		const auto & tool = getToolNode ();
-
-		tool -> setField <SFInt32> ("linetype",   linetype,        true);
-		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
-		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
-
-		getBrowser () -> getRouter () -> processEvents ();
-	   getBrowser () -> beginUpdateForFrame ();
+		for (const auto & parent : getTaintedParents ())
+			parent -> eventsProcessed ();
 	}
-	catch (const X3DError &)
-	{
-		getBrowser () -> beginUpdateForFrame ();
-	}
+	while (not parents .empty () and empty ());
+}
+
+bool
+Router::empty () const
+{
+	return children .empty ();
+}
+
+size_t
+Router::size () const
+{
+	return children .size ();
 }
 
 void
-X3DBoundedObjectTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+Router::debug () const
 {
-	getNode <X3DBoundedObject> () -> traverse (type, renderObject);
+	for (auto & event : children)
+	{
+		const auto field = dynamic_cast <X3DFieldDefinition*> (event .first);
 
-	// Tool
+		if (field)
+			__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
 
-	renderObject -> getModelViewMatrix () .push ();
-	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+		for (const auto & parent : event .first -> getParents ())
+		{
+			const auto node = dynamic_cast <X3DBaseNode*> (parent);
 
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		X3DBoundedObjectTool::reshape ();
+			if (node)
+			{
+				__LOG__ << "\t" << node -> getTypeName () << std::endl;
+			}
+		}
+	}
 
-	X3DToolObject::traverse (type, renderObject);
-
-	renderObject -> getModelViewMatrix () .pop ();
+	assert (empty ());
 }
+
+Router::~Router ()
+{ }
 
 } // X3D
 } // titania

@@ -208,7 +208,7 @@ public:
 
 	virtual
 	bool
-	cut (const Line2d &);
+	cut (X3DRenderObject* const renderObject, const Line2d & cutLine);
 
 	virtual
 	void

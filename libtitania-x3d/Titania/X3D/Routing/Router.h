@@ -48,47 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_LIGHT_SABER_OBJECT_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_LIGHT_SABER_OBJECT_H__
+#ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
+#define __TITANIA_X3D_ROUTING_ROUTER_H__
 
-#include "X3DIndexedFaceSetCutObject.h"
+#include "../Basic/NodeSet.h"
+#include "../Routing/ChildrenList.h"
+#include "../Routing/ParentList.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DIndexedFaceSetLightSaberObject :
-	virtual public X3DIndexedFaceSetCutObject
+class Router
 {
 public:
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose ()
-	{ }
-
-	virtual
-	~X3DIndexedFaceSetLightSaberObject () override;
-
-
-protected:
-
 	///  @name Construction
 
-	X3DIndexedFaceSetLightSaberObject ();
+	Router ();
 
-	virtual
+	///  @name Operations
+
+	ChildId
+	addTaintedChild (X3DChildObject* const, const EventPtr &);
+
 	void
-	initialize () override
-	{ }
+	removeTaintedChild (const ChildId &);
+
+	bool
+	isValid (const ChildId &) const;
+
+	ParentId
+	addTaintedParent (X3DParentObject* const);
+
+	void
+	removeTaintedParent (const ParentId &);
+
+	bool
+	isValid (const ParentId &) const;
+
+	void
+	processEvents ();
+
+	void
+	debug () const;
+
+	///  @name Destruction
+
+	~Router ();
 
 
 private:
 
-	virtual
+	///  @name Operations
+
+	ChildrenList
+	getTaintedChildren ();
+
+	ParentList
+	getTaintedParents ();
+
+	void
+	eventsProcessed ();
+
+	size_t
+	size () const;
+
 	bool
-	cut (X3DRenderObject* const renderObject, const Line2d & cutLine) final override;
+	empty () const;
+
+	///  @name Members
+
+	ChildrenList children;
+	ParentList   parents;
+	time_type    childrenTime;
+	time_type    parentTime;
 
 };
 

@@ -720,7 +720,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/RenderingSurface/RenderingContext.lo \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.lo \
 	Titania/X3D/Routing/Route.lo Titania/X3D/Routing/RouteArray.lo \
-	Titania/X3D/Routing/RouteSet.lo \
+	Titania/X3D/Routing/Router.lo Titania/X3D/Routing/RouteSet.lo \
 	Titania/X3D/Routing/X3DRouterObject.lo \
 	Titania/X3D/Thread/SceneFuture.lo \
 	Titania/X3D/Thread/Texture3DFuture.lo \
@@ -1665,6 +1665,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	Titania/X3D/Routing/Route.cpp \
 	Titania/X3D/Routing/RouteArray.cpp \
+	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Routing/X3DRouterObject.cpp \
 	Titania/X3D/Thread/SceneFuture.cpp \
@@ -4101,6 +4102,8 @@ Titania/X3D/Routing/Route.lo: Titania/X3D/Routing/$(am__dirstamp) \
 Titania/X3D/Routing/RouteArray.lo:  \
 	Titania/X3D/Routing/$(am__dirstamp) \
 	Titania/X3D/Routing/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Routing/Router.lo: Titania/X3D/Routing/$(am__dirstamp) \
+	Titania/X3D/Routing/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Routing/RouteSet.lo: Titania/X3D/Routing/$(am__dirstamp) \
 	Titania/X3D/Routing/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Routing/X3DRouterObject.lo:  \
@@ -5339,6 +5342,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/Route.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/Router.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/X3DRouterObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/SceneFuture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/Texture3DFuture.Plo@am__quote@

@@ -77,6 +77,10 @@ public:
 
 	///  @name Member access
 
+	GLuint
+	getId () const
+	{ return id; }
+
 	size_t
 	getWidth () const
 	{ return width; }

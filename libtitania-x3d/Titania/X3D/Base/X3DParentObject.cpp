@@ -50,7 +50,8 @@
 
 #include "X3DParentObject.h"
 
-#include <Titania/X3D/Browser/X3DBrowser.h>
+#include "../Browser/X3DBrowser.h"
+#include "../Routing/Router.h"
 
 #include <cassert>
 
@@ -104,11 +105,11 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 
 	for (const auto & event : events)
 	{
-		if (browser -> isValid (event))
+		if (browser -> getRouter () -> isValid (event))
 			objects .emplace_back (*event .iter);
 	}
 
-	const bool tainted = browser -> isValid (parentId);
+	const bool tainted = browser -> getRouter () -> isValid (parentId);
 
 	removeEvents ();
 
@@ -188,7 +189,7 @@ X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & 
 
 	// Register for processEvent
 
-	events .emplace_back (browser -> addTaintedChild (object, event));
+	events .emplace_back (browser -> getRouter () -> addTaintedChild (object, event));
 
 	// Register for eventsProcessed
 
@@ -203,7 +204,7 @@ X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & 
 	// Register always on every first event.
 
 	if (not parentId .time)
-		parentId = browser -> addTaintedParent (this);
+		parentId = browser -> getRouter () -> addTaintedParent (this);
 }
 
 /***
@@ -217,7 +218,7 @@ X3DParentObject::addEvent ()
 		setTainted (true);
 
 		if (not parentId .time)
-			parentId = browser -> addTaintedParent (this);
+			parentId = browser -> getRouter () -> addTaintedParent (this);
 
 		browser -> addEvent ();
 	}
@@ -247,13 +248,13 @@ void
 X3DParentObject::removeEvents ()
 {
 	for (const auto & event : events)
-		browser -> removeTaintedChild (event);
+		browser -> getRouter () -> removeTaintedChild (event);
 
 	events .clear ();
 
 	if (parentId .time)
 	{
-		browser -> removeTaintedParent (parentId);
+		browser -> getRouter () -> removeTaintedParent (parentId);
 		parentId .time = 0;
 	}
 }

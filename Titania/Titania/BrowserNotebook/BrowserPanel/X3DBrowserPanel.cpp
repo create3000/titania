@@ -72,6 +72,7 @@
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
+#include <Titania/X3D/Routing/Router.h>
 
 #include <Titania/X3D/Tools/Grids/GridTool.h>
 #include <Titania/X3D/Tools/Grids/AngleGridTool.h>
@@ -168,12 +169,26 @@ X3DBrowserPanel::initialize ()
 }
 
 X3D::BrowserPtr
-X3DBrowserPanel::createBrowser (const BrowserPanelType type) const
+X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 {
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return getPage () -> getMainBrowser ();
 
-	return X3D::createBrowser (getPage () -> getMainBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
+	const auto browser = X3D::createBrowser (getPage () -> getMainBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
+
+	// Setup dependent browser.
+
+	getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+	getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
+
+	browser -> setRouter    (getPage () -> getMainBrowser () -> getRouter ());
+	browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ());
+
+	browser -> sensors () .addInterest (&X3DBrowserPanel::set_sensors, this);
+
+	set_fixed_pipeline ();
+
+	return browser;
 }
 
 void
@@ -333,7 +348,6 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
-		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ());
 		browser -> setFrameRate (30);
 		browser -> set_opacity (1);
 
@@ -382,12 +396,9 @@ X3DBrowserPanel::set_dependent_browser ()
 		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations .at (type));
 
 		// Connect to active layer.
-	
-		getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this); // addDependentBrowser
-		getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this); // addDependentBrowser
-		getPage () -> getMainBrowser () -> getActiveLayer ()   .addInterest (&X3DBrowserPanel::set_activeLayer,    this);
 
-		set_fixed_pipeline ();
+		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
+
 		set_background_texture ();
 		set_background_texture_transparency ();
 		set_activeLayer ();
@@ -402,6 +413,27 @@ void
 X3DBrowserPanel::set_fixed_pipeline ()
 {
 	browser -> setFixedPipeline (getPage () -> getMainBrowser () -> getFixedPipeline ());
+}
+
+void
+X3DBrowserPanel::set_sensors ()
+{
+	getPage () -> getMainBrowser () -> sensors () .processInterests ();
+}
+
+void
+X3DBrowserPanel::set_viewer ()
+{
+	const auto & mainViewer = getPage () -> getMainBrowser () -> getViewer ();
+
+	if (mainViewer -> isType ({ X3D::X3DConstants::X3DSelector, X3D::X3DConstants::LightSaber }))
+	{
+		browser -> setPrivateViewer (mainViewer -> getType () .back ());
+	}
+	else
+	{
+		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
+	}
 }
 
 void
@@ -443,21 +475,6 @@ X3DBrowserPanel::set_background_texture_transparency ()
 	catch (const X3D::X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DBrowserPanel::set_viewer ()
-{
-	const auto & mainViewer = getPage () -> getMainBrowser () -> getViewer ();
-
-	if (mainViewer -> isType ({ X3D::X3DConstants::X3DSelector, X3D::X3DConstants::LightSaber }))
-	{
-		browser -> setPrivateViewer (mainViewer -> getType () .back ());
-	}
-	else
-	{
-		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 	}
 }
 
@@ -707,6 +724,8 @@ X3DBrowserPanel::set_grid ()
 			gridSwitch -> whichChoice () = -1;
 		}
 	}
+	catch (const X3D::Error <X3D::DISPOSED> & error)
+	{ }
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;

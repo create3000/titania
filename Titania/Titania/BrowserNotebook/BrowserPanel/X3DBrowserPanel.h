@@ -119,7 +119,7 @@ private:
 	///  @name Construction
 
 	X3D::BrowserPtr
-	createBrowser (const BrowserPanelType type) const;
+	createBrowser (const BrowserPanelType type);
 
 	///  @name Member access
 
@@ -144,13 +144,16 @@ private:
 	set_fixed_pipeline ();
 
 	void
+	set_sensors ();
+
+	void
+	set_viewer ();
+
+	void
 	set_background_texture ();
 
 	void
 	set_background_texture_transparency ();
-
-	void
-	set_viewer ();
 
 	void
 	set_activeLayer ();

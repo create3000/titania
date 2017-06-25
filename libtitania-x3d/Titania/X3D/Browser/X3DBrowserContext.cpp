@@ -55,6 +55,8 @@
 #include "../Browser/Selection.h"
 #include "../Rendering/FrameBuffer.h"
 
+#include "../Routing/Router.h"
+
 namespace titania {
 namespace X3D {
 
@@ -81,7 +83,6 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	           X3DTexturingContext (),
 	    X3DCubeMapTexturingContext (),
 	                X3DTimeContext (),
-	               X3DRouterObject (),
 	                X3DToolContext (),
 	             initializedOutput (),
 	           prepareEventsOutput (),
@@ -91,6 +92,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                 changedOutput (),
 	                   changedTime (0),
 	                   freezedTime (0),
+	                        router (new Router ()),
 	                 sharedContext (other),
 	                         world (new World (getExecutionContext ())),
 	                 headUpDisplay (new World (getExecutionContext ())),
@@ -135,7 +137,6 @@ X3DBrowserContext::initialize ()
 	X3DTexturingContext::initialize ();
 	X3DCubeMapTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
-	X3DRouterObject::initialize ();
 	X3DToolContext::initialize ();
 
 	getHeadUpDisplay () -> order () .clear ();
@@ -227,6 +228,14 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 }
 
 void
+X3DBrowserContext::setRouter (const std::shared_ptr <Router> & value)
+{
+	router -> processEvents ();
+
+	router = value;
+}
+
+void
 X3DBrowserContext::addEvent ()
 {
 	if (changedTime == getCurrentTime ())
@@ -269,7 +278,7 @@ noexcept (true)
 		getClock () -> advance ();
 
 		prepareEvents () .processInterests ();
-		processEvents ();
+		getRouter () -> processEvents ();
 
 		getWorld () -> traverse (TraverseType::CAMERA, nullptr);
 
@@ -277,13 +286,13 @@ noexcept (true)
 			getWorld () -> traverse (TraverseType::COLLISION, nullptr);
 
 		sensors () .processInterests ();
-		processEvents ();
+		getRouter () -> processEvents ();
 
 		deleteObjectsAsync ();
 
 		// Debug
 
-		debugRouter ();
+		getRouter () -> debug ();
 
 		// Clear surface.
 
@@ -345,7 +354,6 @@ X3DBrowserContext::dispose ()
 	changedOutput       .dispose ();
 
 	X3DToolContext::dispose ();
-	X3DRouterObject::dispose ();
 	X3DTimeContext::dispose ();
 	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturingContext::dispose ();

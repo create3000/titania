@@ -366,10 +366,10 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 	
 		// Ugly fallback if the track point lies behind the screen.
 	
-		const auto trackPoint = Vector3d (planeSensors [cutFaceIndex] -> trackPoint_changed () .getValue ()) * getModelViewMatrix ();
+		const auto trackPoint = Vector3d (planeSensors [cutFaceIndex] -> trackPoint_changed () .getValue ()) * getModelViewMatrix (TraverseType::POINTER);
 	
 		if (trackPoint .z () > 0)
-			knifeLineCoordinate -> point () [1] = (getBrowser () -> getHitRay () * inverse (getModelViewMatrix ())) .point ();
+			knifeLineCoordinate -> point () [1] = (getBrowser () -> getHitRay () * inverse (getModelViewMatrix (TraverseType::POINTER))) .point ();
 	}
 	catch (const std::domain_error &)
 	{
@@ -564,12 +564,12 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
 		const auto edgeLine   = Line3d (point1, point2, math::points_type ());	                   
 		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::points_type ());
-		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
+		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
 
 		// Determine closeset point.
 		const auto closestPoint2d = edgeScreen .intersects (cutScreen) .first;
-		const auto hitRay         = ViewVolume::unProjectRay (closestPoint2d, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto hitRay         = ViewVolume::unProjectRay (closestPoint2d, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
 		const auto closestPoint3d = edgeLine .closest_point (hitRay) .first;
 
 		return closestPoint3d;

@@ -57,6 +57,7 @@
 #include "../../Editing/Undo/UndoStepContainer.h"
 #include "../../Editing/X3DEditor.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../../Routing/Router.h"
 
 #include "../ToolColors.h"
 
@@ -477,7 +478,7 @@ X3DTransformNodeTool::reshape (X3DRenderObject* const renderObject)
 		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),   true);
 		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (), true);
 
-		getBrowser () -> processEvents ();
+		getBrowser () -> getRouter () -> processEvents ();
 		getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError & error)

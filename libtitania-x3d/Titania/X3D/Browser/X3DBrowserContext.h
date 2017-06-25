@@ -77,8 +77,6 @@
 #include "../Browser/Time/X3DTimeContext.h"
 #include "../Browser/Tools/X3DToolContext.h"
 
-#include "../Routing/X3DRouterObject.h"
-
 #include "../Types/Pointer.h"
 
 #include <Magick++.h>
@@ -109,7 +107,6 @@ class X3DBrowserContext :
 	public X3DTexturingContext,
 	public X3DCubeMapTexturingContext,
 	public X3DTimeContext,
-	public X3DRouterObject,
 	public X3DToolContext
 {
 public:
@@ -184,6 +181,13 @@ public:
 
 	///  @name Event handling
 
+	void
+	setRouter (const std::shared_ptr <Router> & value);
+
+	const std::shared_ptr <Router> &
+	getRouter () const
+	{ return router; }
+
 	virtual
 	void
 	addEvent () final override;
@@ -252,12 +256,13 @@ private:
 	time_type changedTime;
 	time_type freezedTime;
 
-	X3DBrowserContextPtr sharedContext;
-	WorldPtr             world;
-	WorldPtr             headUpDisplay;
-	SelectionPtr         selection;
-	NotificationPtr      notification;
-	ConsolePtr           console;
+	std::shared_ptr <Router> router;
+	X3DBrowserContextPtr     sharedContext;
+	WorldPtr                 world;
+	WorldPtr                 headUpDisplay;
+	SelectionPtr             selection;
+	NotificationPtr          notification;
+	ConsolePtr               console;
 
 };
 

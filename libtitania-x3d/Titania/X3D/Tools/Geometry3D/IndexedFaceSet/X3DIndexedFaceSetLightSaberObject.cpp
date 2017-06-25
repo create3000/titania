@@ -55,6 +55,7 @@
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
 #include "../../../Rendering/ViewVolume.h"
+#include "../../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -73,15 +74,15 @@ X3DIndexedFaceSetLightSaberObject::X3DIndexedFaceSetLightSaberObject () :
  */
 
 bool
-X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
+X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, const Line2d & cutLine)
 {
 	try
 	{
 		if (toolType () not_eq "CUT")
 			return false;
 
-		const auto modelViewProjection  = getModelViewMatrix () * getProjectionMatrix ();
-		const auto viewport             = getViewport ();
+		const auto viewport             = renderObject -> getViewVolumes () .back () .getViewport ();
+		const auto modelViewProjection  = renderObject -> getModelViewMatrix () .get () * renderObject -> getProjectionMatrix () .get ();
 		auto       intersectingFaces    = std::vector <size_t> ();
 		auto       intersectingVertices = std::vector <std::vector <size_t>> ();
 		auto       intersectingPoints   = std::vector <std::vector <Vector2d>> ();

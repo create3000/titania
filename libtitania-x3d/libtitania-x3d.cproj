@@ -953,6 +953,7 @@
     <None Include="share\titania\tools\library\AngleGrid.x3dv" />
     <None Include="Titania\X3D\Tools\Grids\AngleGridTool.h" />
     <None Include="share\titania\tools\AngleGridTool.x3dv" />
+    <None Include="Titania\X3D\Routing\Router.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1641,6 +1642,7 @@
     <Compile Include="Titania\X3D\RenderingSurface\ContextLock.cpp" />
     <Compile Include="Titania\X3D\Configuration\SupportedFieldsArray.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AngleGridTool.cpp" />
+    <Compile Include="Titania\X3D\Routing\Router.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

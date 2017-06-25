@@ -267,7 +267,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 				{
 					// Translate over screen plane
 	
-					const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+					const auto vector       = inverse (getModelViewMatrix (TraverseType::POINTER)) .mult_dir_matrix (Vector3d (0, 0, 1));
 					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 	
 					planeSensorNormal -> enabled () = false;

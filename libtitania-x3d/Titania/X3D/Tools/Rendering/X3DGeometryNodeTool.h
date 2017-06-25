@@ -238,16 +238,16 @@ protected:
 	initialize () override;
 
 	const Vector4i &
-	getViewport () const
-	{ return viewport; }
+	getViewport (const TraverseType type) const
+	{ return const_cast <X3DGeometryNodeTool*> (this) -> viewport [type]; }
 
 	const Matrix4d &
-	getProjectionMatrix () const
-	{ return projectionMatrix; }
+	getProjectionMatrix (const TraverseType type) const
+	{ return const_cast <X3DGeometryNodeTool*> (this) -> projectionMatrix [type]; }
 
 	const Matrix4d &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
+	getModelViewMatrix (const TraverseType type) const
+	{ return const_cast <X3DGeometryNodeTool*> (this) -> modelViewMatrix [type]; }
 
 	virtual
 	void
@@ -287,9 +287,9 @@ private:
 	X3DPtr <NormalTool>     normalToolNode;
 	X3DPtr <CoordinateTool> coordToolNode;
 
-	Vector4i viewport;
-	Matrix4d projectionMatrix;
-	Matrix4d modelViewMatrix;
+	std::map <TraverseType, Vector4i> viewport;
+	std::map <TraverseType, Matrix4d> projectionMatrix;
+	std::map <TraverseType, Matrix4d> modelViewMatrix;
 
 };
 

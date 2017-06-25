@@ -760,7 +760,7 @@ X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 }
 	                    	                   
 bool
-X3DGeometryNode::cut (const Line2d & cutLine)
+X3DGeometryNode::cut (X3DRenderObject* const renderObject, const Line2d & cutLine)
 {
 	return false;
 }

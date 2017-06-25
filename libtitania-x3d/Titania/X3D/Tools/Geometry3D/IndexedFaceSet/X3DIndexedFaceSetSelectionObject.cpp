@@ -1638,8 +1638,8 @@ X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Ve
 {
 	try
 	{
-		const auto p1 = ViewVolume::projectPoint (point1, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto p1 = ViewVolume::projectPoint (point1, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
+		const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
 
 		return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
 	}
@@ -1649,61 +1649,61 @@ X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Ve
 	}
 }
 
-///  Returns the sceen area in pixels of @a polygon.
-double
-X3DIndexedFaceSetSelectionObject::getArea (const std::vector <size_t> & vertices)
-{
-	try
-	{
-		double area = 0;
-
-		if (convex ())
-		{
-			for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
-			{
-				auto p0 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [0]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-				auto p1 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-				auto p2 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i + 1]]), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-				p0 .z (0);
-				p1 .z (0);
-				p2 .z (0);
-
-				area += math::area (p0, p1, p2);
-			}
-		}
-		else
-		{
-			math::tessellator <double, size_t> tessellator;
-
-			tessellator .begin_polygon ();
-			tessellator .begin_contour ();
-
-			for (const auto vertex : vertices)
-			{
-				const auto point = getCoord () -> get1Point (coordIndex () [vertex]);
-				auto       p     = ViewVolume::projectPoint (point, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-				p .z (0);
-
-				tessellator .add_vertex (p);
-			}
-
-			tessellator .end_contour ();
-			tessellator .end_polygon ();
-
-			const auto triangles = tessellator .triangles ();
-
-			for (size_t v = 0, size = triangles .size (); v < size; v += 3)
-				area += math::area (triangles [v] .point (), triangles [v + 1] .point (), triangles [v + 2] .point ());
-		}
-
-		return area;
-	}
-	catch (const std::domain_error &)
-	{
-	   return 0;
-	}
-}
+/////  Returns the sceen area in pixels of @a polygon.
+//double
+//X3DIndexedFaceSetSelectionObject::getArea (const std::vector <size_t> & vertices)
+//{
+//	try
+//	{
+//		double area = 0;
+//
+//		if (convex ())
+//		{
+//			for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
+//			{
+//				auto p0 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [0]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+//				auto p1 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+//				auto p2 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i + 1]]), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+//
+//				p0 .z (0);
+//				p1 .z (0);
+//				p2 .z (0);
+//
+//				area += math::area (p0, p1, p2);
+//			}
+//		}
+//		else
+//		{
+//			math::tessellator <double, size_t> tessellator;
+//
+//			tessellator .begin_polygon ();
+//			tessellator .begin_contour ();
+//
+//			for (const auto vertex : vertices)
+//			{
+//				const auto point = getCoord () -> get1Point (coordIndex () [vertex]);
+//				auto       p     = ViewVolume::projectPoint (point, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+//				p .z (0);
+//
+//				tessellator .add_vertex (p);
+//			}
+//
+//			tessellator .end_contour ();
+//			tessellator .end_polygon ();
+//
+//			const auto triangles = tessellator .triangles ();
+//
+//			for (size_t v = 0, size = triangles .size (); v < size; v += 3)
+//				area += math::area (triangles [v] .point (), triangles [v + 1] .point (), triangles [v + 2] .point ());
+//		}
+//
+//		return area;
+//	}
+//	catch (const std::domain_error &)
+//	{
+//	   return 0;
+//	}
+//}
 
 void
 X3DIndexedFaceSetSelectionObject::undoRestoreSelection (const UndoStepPtr & undoStep)

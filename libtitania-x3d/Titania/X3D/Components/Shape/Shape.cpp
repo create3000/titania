@@ -270,7 +270,7 @@ Shape::cut (X3DRenderObject* const renderObject)
 {
 	const auto browser = renderObject -> getBrowser ();
 
-	getGeometry () -> cut (browser -> getCutLine ());
+	getGeometry () -> cut (renderObject, browser -> getCutLine ());
 }
 
 void
