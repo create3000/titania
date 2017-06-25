@@ -213,7 +213,7 @@ FrameBuffer::readPixels (const GLenum format)
 		}
 	}
 	else
-		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+		glReadPixels (0, 0, width, height, format, GL_UNSIGNED_BYTE, pixels .data ());
 
 	return pixels;
 }
