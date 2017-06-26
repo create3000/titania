@@ -48,67 +48,98 @@
  *
  ******************************************************************************/
 
-#include "Commands/CommandOptions.h"
-#include "Commands/ExportImage.h"
-#include "Commands/Info.h"
-#include "Commands/Tidy.h"
-#include "Browser/BrowserApplication.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
 
-#include <Titania/OS.h>
+#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
 
-int
-main (int argc, char** argv)
+#include <Titania/X3D.h>
+
+#include <thread>
+
+namespace titania {
+namespace puck {
+
+class RenderThread :
+	public X3D::X3DInterruptibleThread
 {
-	using namespace titania;
-	using namespace titania::puck;
+public:
 
-	try
-	{
-		// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made. 
-		//XInitThreads ();
+	///  @name Construction
 
-		os::env ("UBUNTU_MENUPROXY",      "0");    // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
+	RenderThread (const X3D::MFString & url,
+	              const size_t frames,
+	              const size_t framesPerSecond,
+	              const size_t width,
+	              const size_t height,
+	              const size_t antialiasing);
 
-		// Replace the C++ global locale as well as the C locale with the user-preferred locale.
-		std::locale::global (std::locale (""));
+	///  @name Member access
+
+	size_t
+	getFrame () const
+	{ return frame; }
+
+	size_t
+	getFrames () const
+	{ return frames; }
+
+	size_t
+	getFramesPerSecond () const
+	{ return framesPerSecond; }
+
+	size_t
+	getWidth () const
+	{ return width; }
+
+	size_t
+	getHeight () const
+	{ return height; }
+
+	size_t
+	getAntialiasing () const
+	{ return antialiasing; }
+
+	Magick::Image &
+	getCurrentImage ()
+	{ return image; }
+
+	///  Signal setup.
+	sigc::signal <void> &
+	signal_frame_changed ()
+	{ return frameSignal; }
+
+	///  @name Destruction
+
+	virtual
+	~RenderThread () final override;
 
 
-		// Run appropriate application.
+private:
 
-		CommandOptions options (argc, argv);
+	///  @name Event handlers
 
-		if (not options .imageFilename .empty ())
-			return ExportImage () .main (options);
+	void
+	set_initialized ();
 
-		if (not options .exportFilename .empty ())
-			return Tidy::main (options);
+	bool
+	on_timeout ();
 
-		if (not options .list .empty ())
-			return Info::main (options);
+	///  @name Members
 
-		if (options .help)
-		{
-			std::cout << options .get_help () << std::endl;
-			return 0;
-		}
+	const X3D::BrowserPtr       browser;
+   const size_t                frames;
+	const size_t                framesPerSecond;
+	const size_t                width;
+	const size_t                height;
+	const size_t                antialiasing;
+	size_t                      frame;
+	Magick::Image               image;
+	sigc::signal <void>         frameSignal;
 
-		return BrowserApplication::main (argc, argv);
-	}
-	catch (const Glib::Exception & error)
-	{
-		std::cerr << error .what () << std::endl;
-		return 1;
-	}
-	catch (const std::exception & error)
-	{
-		std::cerr << error .what () << std::endl;
-		return 1;
-	}
-	catch (...)
-	{
-		std::cerr << "A strange error occured." << std::endl;
-		return 1;
-	}
-}
+};
+
+} // puck
+} // titania
+
+#endif

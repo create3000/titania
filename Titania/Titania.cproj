@@ -321,6 +321,7 @@
     <Compile Include="Titania\BrowserNotebook\PanelMenu\PanelMenu.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DRenderPanelInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RenderPanel\RenderThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3009,6 +3010,7 @@
     <None Include="share\titania\ui\Panels\RenderPanel.glade" />
     <None Include="Titania\UserInterfaces\X3DRenderPanelInterface.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.h" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\RenderThread.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

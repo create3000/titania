@@ -127,7 +127,12 @@ public:
 	{ return resize; }
 
 	void
-	setUrl (const Cairo::RefPtr <Cairo::ImageSurface> &)
+	setUrl (Magick::Image & image)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	setUrl (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 

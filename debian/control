@@ -52,7 +52,8 @@ Depends: ${misc:Depends},
          libcgal12,
          libgmp10,
          libmpfr4,
-         ttf-ubuntu-font-family
+         ttf-ubuntu-font-family,
+         ffmpeg
 Recommends: gstreamer1.0-plugins-base,
             gstreamer1.0-plugins-good,
             gstreamer1.0-plugins-bad,

@@ -56,7 +56,6 @@
 
 namespace titania {
 namespace os {
-namespace system_utility {
 
 std::string
 escape_argument (const std::string & argument)
@@ -66,6 +65,5 @@ escape_argument (const std::string & argument)
 	return std::regex_replace (argument, escapeCharacters, "\\$&");
 }
 
-} // system_utility
 } // os
 } // titania

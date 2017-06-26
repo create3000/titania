@@ -32,6 +32,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
+	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -286,6 +287,8 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-sqlite \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
+
+AM_LDFLAGS="-lX11"
 
 install-exec-hook:
 	mkdir -m 755 -p $(DESTDIR)$(datadir)

@@ -84,7 +84,7 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
-	m_builder -> get_widget ("NewButton", m_NewButton);
+	m_builder -> get_widget ("RecordButton", m_RecordButton);
 	m_builder -> get_widget ("NewButton1", m_NewButton1);
 	m_builder -> get_widget ("NewButton2", m_NewButton2);
 	m_builder -> get_widget ("NewButton3", m_NewButton3);
@@ -92,6 +92,9 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
 	m_builder -> get_widget ("TextureLoadStateLabel", m_TextureLoadStateLabel);
+
+	// Connect object Gtk::ToolButton with id 'RecordButton'.
+	m_RecordButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_record_clicked));
 }
 
 X3DRenderPanelInterface::~X3DRenderPanelInterface ()

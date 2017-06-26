@@ -130,6 +130,7 @@ am_titania_OBJECTS =  \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT) \
+	Titania/BrowserNotebook/RenderPanel/RenderThread.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/Cairo.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
@@ -632,6 +633,7 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
+	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -887,6 +889,7 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
 
+AM_LDFLAGS = "-lX11"
 all: all-am
 
 .SUFFIXES:
@@ -1092,6 +1095,9 @@ Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/RenderPanel/$(DEPDIR)
 	@: > Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT):  \
+	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
+	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/RenderPanel/RenderThread.$(OBJEXT):  \
 	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/$(am__dirstamp):
@@ -2152,6 +2158,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderThread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/Cairo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@

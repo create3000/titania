@@ -48,67 +48,87 @@
  *
  ******************************************************************************/
 
-#include "Commands/CommandOptions.h"
-#include "Commands/ExportImage.h"
-#include "Commands/Info.h"
-#include "Commands/Tidy.h"
-#include "Browser/BrowserApplication.h"
+#include "RenderThread.h"
 
-#include <Titania/OS.h>
+#include <Titania/X3D/Routing/Router.h>
 
-int
-main (int argc, char** argv)
+#include <glibmm/main.h>
+
+namespace titania {
+namespace puck {
+
+RenderThread::RenderThread (const X3D::MFString & url,
+                            const size_t frames,
+                            const size_t framesPerSecond,
+                            const size_t width,
+                            const size_t height,
+                            const size_t antialiasing) :
+	X3D::X3DInterruptibleThread (),
+	                    browser (X3D::createBrowser (url)),
+	                     frames (frames),
+	            framesPerSecond (framesPerSecond),
+	                      width (width),
+	                     height (height),
+	               antialiasing (antialiasing),
+	                      frame (0),
+	                      image (),
+	                frameSignal ()
 {
-	using namespace titania;
-	using namespace titania::puck;
+	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
+	browser -> setup ();
+}
 
+void
+RenderThread::set_initialized ()
+{
 	try
 	{
-		// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made. 
-		//XInitThreads ();
+		__LOG__ << browser -> getWorldURL () << std::endl;
 
-		os::env ("UBUNTU_MENUPROXY",      "0");    // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
+		browser -> initialized () .removeInterest (&RenderThread::set_initialized, this);
+		checkForInterrupt ();
 
-		// Replace the C++ global locale as well as the C locale with the user-preferred locale.
-		std::locale::global (std::locale (""));
-
-
-		// Run appropriate application.
-
-		CommandOptions options (argc, argv);
-
-		if (not options .imageFilename .empty ())
-			return ExportImage () .main (options);
-
-		if (not options .exportFilename .empty ())
-			return Tidy::main (options);
-
-		if (not options .list .empty ())
-			return Info::main (options);
-
-		if (options .help)
-		{
-			std::cout << options .get_help () << std::endl;
-			return 0;
-		}
-
-		return BrowserApplication::main (argc, argv);
+		Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
 	}
-	catch (const Glib::Exception & error)
+	catch (const X3D::X3DError & error)
 	{
-		std::cerr << error .what () << std::endl;
-		return 1;
+		__LOG__ << error .what () << std::endl;
 	}
-	catch (const std::exception & error)
+	catch (const X3D::InterruptThreadException & error)
+	{ }
+}
+
+bool
+RenderThread::on_timeout ()
+{
+	try
 	{
-		std::cerr << error .what () << std::endl;
-		return 1;
+		checkForInterrupt ();
+
+		if (frame >= frames)
+			return false;
+
+		__LOG__ << browser -> getWorldURL () << " : " << frame << std::endl;
+
+		image = browser -> getSnapshot (width, height, false, std::min <size_t> (antialiasing, browser -> getMaxSamples ()));
+		frameSignal .emit ();
+
+		++ frame;
+		return true;
 	}
-	catch (...)
+	catch (const X3D::X3DError & error)
 	{
-		std::cerr << "A strange error occured." << std::endl;
-		return 1;
+		__LOG__ << error .what () << std::endl;
+		return false;
+	}
+	catch (const X3D::InterruptThreadException & error)
+	{
+		return false;
 	}
 }
+
+RenderThread::~RenderThread ()
+{ }
+
+} // puck
+} // titania

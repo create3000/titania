@@ -123,42 +123,35 @@ Browser::create (X3DExecutionContext* const executionContext) const
 void
 Browser::initialize ()
 {
-	try
-	{
-		ContextLock lock (this);
+	ContextLock lock (this);
 
-		X3DBrowser::initialize ();
-	
-		viewer         -> setup ();
-		keyDevice      -> setup ();
-		pointingDevice -> setup ();
-	
-		getCursor ()        .addInterest (&Browser::set_cursor, this);
-		getViewerType ()    .addInterest (&Browser::set_viewer, this);
-		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-	
-		add_events (Gdk::BUTTON_PRESS_MASK |
-		            Gdk::POINTER_MOTION_MASK |
-		            Gdk::POINTER_MOTION_HINT_MASK |
-		            Gdk::BUTTON_RELEASE_MASK |
-		            Gdk::FOCUS_CHANGE_MASK |
-		            Gdk::LEAVE_NOTIFY_MASK |
-		            Gdk::SCROLL_MASK |
-		            Gdk::KEY_PRESS_MASK |
-		            Gdk::KEY_RELEASE_MASK);
-	
-		set_focus_on_click (true);
-		set_can_focus (true);
-		setCursor ("default");
-	
-		// As last command connect.
-		changed () .addInterest (&Browser::queue_render, this);
-		queue_render ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	X3DBrowser::initialize ();
+
+	viewer         -> setup ();
+	keyDevice      -> setup ();
+	pointingDevice -> setup ();
+
+	getCursor ()        .addInterest (&Browser::set_cursor, this);
+	getViewerType ()    .addInterest (&Browser::set_viewer, this);
+	getPrivateViewer () .addInterest (&Browser::set_viewer, this);
+
+	add_events (Gdk::BUTTON_PRESS_MASK |
+	            Gdk::POINTER_MOTION_MASK |
+	            Gdk::POINTER_MOTION_HINT_MASK |
+	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::FOCUS_CHANGE_MASK |
+	            Gdk::LEAVE_NOTIFY_MASK |
+	            Gdk::SCROLL_MASK |
+	            Gdk::KEY_PRESS_MASK |
+	            Gdk::KEY_RELEASE_MASK);
+
+	set_focus_on_click (true);
+	set_can_focus (true);
+	setCursor ("default");
+
+	// As last command connect.
+	changed () .addInterest (&Browser::queue_render, this);
+	queue_render ();
 }
 
 void

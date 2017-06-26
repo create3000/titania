@@ -100,21 +100,25 @@ public:
 	void
 	queue_render ();
 
+	///  Process on render cycle.
+	void
+	render ();
+
 	///  @name Signals
 
 	///  Signal setup.
-	const sigc::signal <void> &
-	signal_setup () const
+	sigc::signal <void> &
+	signal_setup ()
 	{ return setupSignal; }
 
 	///  Signal reshape.
-	const sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> &
-	signal_reshape () const
+	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> &
+	signal_reshape ()
 	{ return reshapeSignal; }
 
 	///  Signal render.
-	const sigc::signal <bool> &
-	signal_render () const
+	sigc::signal <bool> &
+	signal_render ()
 	{ return renderSignal; }
 
 	///  @name Destruction

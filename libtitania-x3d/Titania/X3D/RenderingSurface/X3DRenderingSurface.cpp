@@ -105,7 +105,8 @@ X3DRenderingSurface::isExtensionAvailable (const std::string & name) const
 bool
 X3DRenderingSurface::makeCurrent ()
 {
-	return std::this_thread::get_id () == treadId and context and context -> makeCurrent ();
+	return std::this_thread::get_id () == treadId and
+	       context and context -> makeCurrent ();
 }
 
 void
@@ -114,7 +115,13 @@ X3DRenderingSurface::queue_render ()
 	if (connection .connected ())
 		return;
 
-	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), 1000 / frameRate, Glib::PRIORITY_DEFAULT_IDLE);
+	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_DEFAULT_IDLE);
+}
+
+void
+X3DRenderingSurface::render ()
+{
+	on_timeout ();
 }
 
 void

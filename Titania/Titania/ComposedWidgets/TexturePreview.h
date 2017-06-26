@@ -71,6 +71,10 @@ public:
 	void
 	setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
+	const X3D::BrowserPtr &
+	getLocalBrowser () const
+	{ return preview; }
+
 	///  @name Destruction
 
 	virtual

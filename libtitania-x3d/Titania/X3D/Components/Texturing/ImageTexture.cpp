@@ -167,6 +167,22 @@ ImageTexture::update ()
 }
 
 void
+ImageTexture::setUrl (Magick::Image & image)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	Magick::Blob blob;
+
+	image .magick ("PNG");
+	image .write (&blob);
+
+	std::string data (static_cast <const char*> (blob .data ()),
+	                  static_cast <const char*> (blob .data ()) + blob .length ());
+
+	url () = { "data:image/png;base64," + basic::base64_encode (data) };
+}
+
+void
 ImageTexture::setUrl (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)

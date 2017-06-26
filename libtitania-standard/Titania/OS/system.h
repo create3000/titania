@@ -56,7 +56,6 @@
 
 namespace titania {
 namespace os {
-namespace system_utility {
 
 std::string
 escape_argument (const std::string &);
@@ -74,15 +73,13 @@ join_command (std::string & buffer, const std::string argument, const Args & ...
 	join_command (buffer, args ...);
 }
 
-} // utility
-
 template <typename ... Args>
 int
 system (const std::string & command, const Args & ... args)
 {
-	std::string command_with_args = system_utility::escape_argument (command);
+	auto command_with_args = escape_argument (command);
 
-	system_utility::join_command (command_with_args, args ...);
+	join_command (command_with_args, args ...);
 
 	return std::system (command_with_args .c_str ());
 }

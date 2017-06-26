@@ -108,8 +108,8 @@ public:
 	{ return *m_PanelsMenuItem; }
 
 	Gtk::ToolButton &
-	getNewButton () const
-	{ return *m_NewButton; }
+	getRecordButton () const
+	{ return *m_RecordButton; }
 
 	Gtk::ToolButton &
 	getNewButton1 () const
@@ -141,6 +141,10 @@ public:
 
 	///  @name Signal handlers
 
+	virtual
+	void
+	on_record_clicked () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -170,7 +174,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
 	Gtk::MenuItem* m_PanelsMenuItem;
-	Gtk::ToolButton* m_NewButton;
+	Gtk::ToolButton* m_RecordButton;
 	Gtk::ToolButton* m_NewButton1;
 	Gtk::ToolButton* m_NewButton2;
 	Gtk::ToolButton* m_NewButton3;

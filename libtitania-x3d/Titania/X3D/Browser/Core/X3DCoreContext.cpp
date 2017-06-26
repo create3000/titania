@@ -75,9 +75,6 @@ X3DCoreContext::X3DCoreContext () :
 void
 X3DCoreContext::initialize ()
 {
-	//if (getBrowser () -> get_mapped ())
-	//	XInitThreads ();
-
 	vendor   = (const char*) glGetString (GL_VENDOR);
 	renderer = (const char*) glGetString (GL_RENDERER);
 	version  = (const char*) glGetString (GL_VERSION);

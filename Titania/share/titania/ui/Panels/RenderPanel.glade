@@ -61,13 +61,14 @@
                     <property name="toolbar_style">icons</property>
                     <property name="icon_size">1</property>
                     <child>
-                      <object class="GtkToolButton" id="NewButton">
+                      <object class="GtkToolButton" id="RecordButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Create new file (Ctrl-N).</property>
                         <property name="label" translatable="yes">New file</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-media-record</property>
+                        <signal name="clicked" handler="on_record_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -199,29 +200,41 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label73">
-                        <property name="visible">True</property>
+                      <object class="GtkBox">
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
-                        <property name="label" translatable="yes">Load State:</property>
+                        <property name="spacing">8</property>
+                        <child>
+                          <object class="GtkLabel" id="label73">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Load State:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="TextureLoadStateLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">NOT STARTED</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="TextureLoadStateLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">NOT STARTED</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>

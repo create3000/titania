@@ -57,7 +57,9 @@ namespace titania {
 namespace puck {
 
 class NotebookPage;
+class RenderThread;
 class TexturePreview;
+class VideoEncoder;
 
 class RenderPanel :
 	public X3DRenderPanelInterface
@@ -76,8 +78,24 @@ public:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_record_clicked () final override;
+
+	void
+	on_frame_changed ();
+
+	void
+	set_frame (const size_t value);
+
+	///  @name Members
+
 	std::unique_ptr <TexturePreview> preview;
 	X3D::X3DPtr <X3D::ImageTexture>  texture;
+	std::unique_ptr <RenderThread>   renderThread;
+	std::unique_ptr <VideoEncoder>   videoEncoder;
 
 };
 
