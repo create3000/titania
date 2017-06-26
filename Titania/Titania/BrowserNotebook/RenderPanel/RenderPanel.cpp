@@ -51,200 +51,19 @@
 #include "RenderPanel.h"
 
 #include "RenderThread.h"
+#include "VideoEncoder.h"
 #include "../NotebookPage/NotebookPage.h"
 
+#include "../../Bits/String.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../ComposedWidgets/TexturePreview.h"
+#include "../../Dialogs/FileSaveDialog/FileSaveVideoDialog.h"
 
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
-#include <Titania/OS.h>
-
-#include <sys/wait.h>
 
 namespace titania {
 namespace puck {
-
-class VideoEncoder
-{
-public:
-
-	VideoEncoder (const basic::uri & filename);
-
-	bool
-	open ();
-
-	bool
-	write (Magick::Image & image);
-
-	bool
-	close ();
-
-	~VideoEncoder ();
-
-
-private:
-
-	const basic::uri filename;
-	std::string      command_with_args;
-	pid_t            pid;
-	int32_t          stdin;
-	int32_t          stdout;
-	int32_t          stderr;
-	bool             opened;
-
-};
-
-VideoEncoder::VideoEncoder (const basic::uri & filename) :
-	         filename (filename),
-	command_with_args (os::escape_argument ("ffmpeg")),
-	              pid (0),
-	            stdin (0),
-	           stdout (0),
-	           stderr (0),
-	           opened (false)
-{
-	os::join_command (command_with_args, "-f", "image2pipe", "-vcodec", "png", "-r", "30", "-i", "-", "-vcodec", "png", "-q:v", "0", filename .path ());
-}
-
-bool
-VideoEncoder::open ()
-{
-	__LOG__ << command_with_args << std::endl;
-
-	if (opened)
-		close ();
-
-	os::unlink (filename .path ());
-
-	if ((pid = os::popen3 (command_with_args, &stdin, &stdout, &stderr)) <= 0)
-		return false;
-
-	opened = true;
-	return true;
-}
-
-bool
-VideoEncoder::write (Magick::Image & image)
-{
-	Magick::Blob blob;
-
-	image .magick ("PNG");
-	image .write (&blob);
-
-	const int32_t bytes        = blob .length ();
-	const int32_t bytesWritten = ::write (stdin, static_cast <const char*> (blob .data ()), bytes);
-
-	__LOG__ << pid << " : " << stdin << " : " << bytesWritten << " : " << bytes << std::endl;
-
-	if (bytesWritten not_eq bytes)
-		return false;
-
-	return true;
-}
-
-bool
-VideoEncoder::close ()
-{
-	if (not opened)
-		return false;
-
-	opened = false;
-
-	{
-		constexpr size_t BUFFER_SIZE = 1024;
-	
-		size_t             bytesRead = 0;
-		std::vector <char> buffer (BUFFER_SIZE);
-		std::string        output;
-	
-		::close (stdin);
-
-		while ((bytesRead = read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			output .append (buffer .data (), bytesRead);
-
-		__LOG__ << output << std::endl;
-
-		::close (stdout);
-
-		while ((bytesRead = read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::clog .write (buffer .data (), bytesRead);
-
-		::close (stderr);
-	}
-
-	stdin  = 0;
-	stdout = 0;
-	stderr = 0;
-
-	int32_t status = 0;
-
-	::waitpid (pid, &status, 0);
-
-	if (status)
-		return false;
-
-	return true;
-}
-
-VideoEncoder::~VideoEncoder ()
-{
-	close ();
-}
-
-//static
-//std::string
-//golden_pipe (const std::string & program, const std::string & input)
-////throw (Error <URL_UNAVAILABLE>)
-//{
-//	constexpr size_t BUFFER_SIZE = 1024;
-//
-//	int32_t pid       = 0;
-//	int32_t status    = 0;
-//	int32_t stdin     = 0;
-//	int32_t stdout    = 0;
-//	int32_t stderr    = 0;
-//	size_t  bytesRead = 0;
-//
-//	std::vector <char> buffer (BUFFER_SIZE);
-//
-//	// Open pipe.
-//
-//	if ((pid = os::popen3 (program, &stdin, &stdout, &stderr)) <= 0)
-//		throw Error <URL_UNAVAILABLE> ("Couldn't open program '" + program + "'.");
-//
-//	// Write to pipe.
-//
-//	if (write (stdin, input .c_str (), input .size ()) not_eq (int32_t) input .size ())
-//		throw Error <URL_UNAVAILABLE> ("Write to pipe failed.");
-//
-//	close (stdin);
-//
-//	// Read from pipe.
-//
-//	std::string output;
-//
-//	while ((bytesRead = read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-//		output .append (buffer .data (), bytesRead);
-//
-//	close (stdout);
-//
-//	// Read error from pipe.
-//
-//	while ((bytesRead = read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-//		std::clog .write (buffer .data (), bytesRead);
-//
-//	close (stderr);
-//
-//	// Read from pipe.
-//
-//	waitpid (pid, &status, 0);
-//
-//	if (status)
-//		throw Error <INVALID_X3D> ("Exit status :" + basic::to_string (status, std::locale::classic ()));
-//
-//	return output;
-//}
 
 RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
@@ -255,8 +74,11 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
                             getTextureLoadStateLabel ())),
 	                texture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           renderThread (),
-	           videoEncoder ()
+	           videoEncoder (),
+	               filename ()
 {
+	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
+
 	const auto textureProperties = preview -> getLocalBrowser ()-> createNode <X3D::TextureProperties> ();
 
 	textureProperties -> generateMipMaps ()     = false;
@@ -274,36 +96,111 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	setup ();
 }
 
-void
-RenderPanel::on_record_clicked ()
+bool
+RenderPanel::getPropertiesDialogResponse ()
 {
-	auto         url             = getPage () -> getMainBrowser () -> getWorldURL ();
-   const size_t frames          = 1800;
-	const size_t framesPerSecond = 30;
-	const size_t width           = 768;
-	const size_t height          = 576;
-	const size_t antialiasing    = 4;
+	const auto &  browser      = getPage () -> getMainBrowser ();
+	const int32_t antialiasing = browser -> getMaxSamples ();
 
-	set_frame (0);
+	filename = browser -> getWorldURL () .parent () + browser -> getWorldURL () .basename (false) + ".mp4";
 
-	videoEncoder .reset (new VideoEncoder (url + ".mp4"));
+	getWidthAdjustment ()  -> set_upper (browser -> getMaxRenderBufferSize ());
+	getHeightAdjustment () -> set_upper (browser -> getMaxRenderBufferSize ());
+	getAntialiasingAdjustment () -> set_upper (antialiasing);
 
-	if (videoEncoder -> open ())
+	getFileLabel () .set_text (filename .basename ());
+
+	getDurationAdjustment ()     -> set_value (1800);
+	getFPSAdjustment ()          -> set_value (30);
+	getWidthAdjustment ()        -> set_value (768);
+	getHeightAdjustment ()       -> set_value (576);
+	getAntialiasingAdjustment () -> set_value (std::min (4, antialiasing));
+
+	const auto responseId = getPropertiesDialog () .run ();
+
+	getPropertiesDialog () .hide ();
+
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return false;
+
+	return true;
+}
+
+void
+RenderPanel::setRendering (const bool value)
+{
+	if (value)
 	{
+		if (not getPropertiesDialogResponse ())
+			return;
+
+		const auto   worldURL        = getPage () -> getMainBrowser () -> getWorldURL ();
+	   const size_t frames          = getDurationAdjustment () -> get_value ();
+		const size_t framesPerSecond = getFPSAdjustment () -> get_value ();
+		const size_t width           = getWidthAdjustment () -> get_value ();
+		const size_t height          = getHeightAdjustment () -> get_value ();
+		const size_t antialiasing    = getAntialiasingAdjustment () -> get_value ();
+		const size_t fixedPipeline   = getPage () -> getMainBrowser () -> getFixedPipeline ();
+
+		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
+		set_frame (0);
+
+		videoEncoder = std::make_unique <VideoEncoder> (filename);
+
 		try
 		{
-			renderThread .reset (new RenderThread ({ url .str () }, frames, framesPerSecond, width, height, antialiasing));
+			renderThread = std::make_unique <RenderThread> (worldURL, frames, framesPerSecond, width, height, antialiasing, fixedPipeline);
 			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
+
+			videoEncoder = std::make_unique <VideoEncoder> (filename);
+			videoEncoder -> open ();
 		}
-		catch (const X3D::X3DError & error)
+		catch (const std::exception & error)
 		{
 			__LOG__ << error .what () << std::endl;
+			setRendering (false);
 		}
 	}
 	else
 	{
-		__LOG__ << "Couldn't open output video file." << std::endl;
+		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-record"));
+
+		videoEncoder .reset ();
+		renderThread .reset ();
 	}
+}
+
+bool
+RenderPanel::getRendering () const
+{
+	return bool (renderThread);
+}
+
+void
+RenderPanel::on_properties_file_chooser_button_clicked ()
+{
+	const auto dialog = std::dynamic_pointer_cast <FileSaveVideoDialog> (createDialog ("FileSaveVideoDialog"));
+
+	dialog -> setUrl (filename);
+
+	if (not dialog -> run ())
+		return;
+
+	filename = dialog -> getUrl ();
+
+	getFileLabel () .set_text (filename .basename ());
+}
+
+void
+RenderPanel::on_properties_time_changed ()
+{
+	getTimeLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFPSAdjustment () -> get_value ()));
+}
+
+void
+RenderPanel::on_record_clicked ()
+{
+	setRendering (not getRendering ());
 }
 
 void
@@ -318,10 +215,7 @@ RenderPanel::on_frame_changed ()
 		texture -> setUrl (renderThread -> getCurrentImage ());
 
 	if (not videoEncoder -> write (renderThread -> getCurrentImage ()) or lastFrame)
-	{
-		videoEncoder -> close ();
-		renderThread -> stop ();
-	}
+		setRendering (false);
 }
 
 void
@@ -334,8 +228,7 @@ RenderPanel::set_frame (const size_t value)
 
 RenderPanel::~RenderPanel ()
 {
-	renderThread .reset ();
-	videoEncoder .reset ();
+	setRendering (false);
 
 	dispose ();
 }

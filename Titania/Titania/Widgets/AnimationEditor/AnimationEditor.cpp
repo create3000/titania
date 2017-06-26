@@ -50,6 +50,7 @@
 
 #include "AnimationEditor.h"
 
+#include "../../Bits/String.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -81,35 +82,6 @@ static constexpr double  DEFAULT_SCALE       = 16;           // in pixel
 static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0; // something nice
 
 static constexpr double infinity = std::numeric_limits <double>::infinity ();
-
-static
-std::string
-strfframes (const size_t value, const size_t framesPerSecond)
-{
-	size_t time = value;
-
-	const size_t frames = time % framesPerSecond;
-	time /= framesPerSecond;
-
-	const size_t seconds = time % 60;
-	time /= 60;
-
-	const size_t minutes = time % 60;
-	time /= 60;
-
-	const size_t hours = time;
-
-	std::ostringstream osstream;
-	
-	osstream
-		<< std::setfill ('0')
-		<< std::setw (2) << hours << ":"
-		<< std::setw (2) << minutes << ":" 
-		<< std::setw (2) << seconds << ":" 
-		<< std::setw (2) << frames;
-
-	return osstream .str ();
-}
 
 const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolatorComponents = {
 	std::make_pair (X3D::X3DConstants::BooleanSequencer,         1),
@@ -155,6 +127,8 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                       keys ()
 {
 	addChildObjects (animation, timeSensor);
+
+	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
 
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
@@ -319,10 +293,10 @@ AnimationEditor::on_new ()
 {
 	// Open »New Animation Dialog«.
 
-	getNewNameEntry () .set_text (_ ("Animation"));
+	getNewNameEntry ()         .set_text (_ ("Animation"));
 	getDurationAdjustment () -> set_value (10);
-	getFPSAdjustment () -> set_value (10);
-	getLoopSwitch () .set_active (false);
+	getFPSAdjustment ()      -> set_value (10);
+	getLoopSwitch ()           .set_active (false);
 
 	const auto responseId = getPropertiesDialog () .run ();
 

@@ -271,6 +271,10 @@ public:
 	getNewOkButton () const
 	{ return *m_NewOkButton; }
 
+	Gtk::HeaderBar &
+	getPropertiesHeaderBar () const
+	{ return *m_PropertiesHeaderBar; }
+
 	Gtk::Entry &
 	getNewNameEntry () const
 	{ return *m_NewNameEntry; }
@@ -511,6 +515,7 @@ private:
 	Gtk::Dialog* m_PropertiesDialog;
 	Gtk::Button* m_NewCancelButton;
 	Gtk::Button* m_NewOkButton;
+	Gtk::HeaderBar* m_PropertiesHeaderBar;
 	Gtk::Entry* m_NewNameEntry;
 	Gtk::SpinButton* m_DurationSspinButton;
 	Gtk::SpinButton* m_FPSSpinButton;

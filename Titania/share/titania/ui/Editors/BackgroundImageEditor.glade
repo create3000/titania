@@ -30,6 +30,7 @@
             <property name="can_focus">False</property>
             <property name="title">Background Image</property>
             <property name="subtitle">Background Image for Dependent Browsers</property>
+            <property name="show_close_button">True</property>
             <child>
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
@@ -80,6 +81,7 @@
                         <property name="tooltip_text" translatable="yes">Choose a height map image.</property>
                         <property name="halign">start</property>
                         <property name="hexpand">False</property>
+                        <property name="local_only">False</property>
                         <property name="title" translatable="yes">Open Image</property>
                         <signal name="file-set" handler="on_image_set" swapped="no"/>
                       </object>

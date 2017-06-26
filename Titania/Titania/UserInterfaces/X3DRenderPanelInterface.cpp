@@ -77,7 +77,12 @@ void
 X3DRenderPanelInterface::create ()
 {
 	// Get objects.
-	m_FrameAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
+	m_AntialiasingAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AntialiasingAdjustment"));
+	m_DurationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DurationAdjustment"));
+	m_FPSAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FPSAdjustment"));
+	m_FrameAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
+	m_HeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
+	m_WidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("WidthAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -92,14 +97,32 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
 	m_builder -> get_widget ("TextureLoadStateLabel", m_TextureLoadStateLabel);
+	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
+	m_builder -> get_widget ("PropertiesCancelButton", m_PropertiesCancelButton);
+	m_builder -> get_widget ("PropertiesOkButton", m_PropertiesOkButton);
+	m_builder -> get_widget ("PropertiesHeaderBar", m_PropertiesHeaderBar);
+	m_builder -> get_widget ("DurationSspinButton", m_DurationSspinButton);
+	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
+	m_builder -> get_widget ("TimeLabel", m_TimeLabel);
+	m_builder -> get_widget ("AntialiasingBox", m_AntialiasingBox);
+	m_builder -> get_widget ("FileChooserButton", m_FileChooserButton);
+	m_builder -> get_widget ("FileLabel", m_FileLabel);
+
+	// Connect object Gtk::Adjustment with id 'DurationAdjustment'.
+	m_DurationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
+	m_FPSAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
 
 	// Connect object Gtk::ToolButton with id 'RecordButton'.
 	m_RecordButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_record_clicked));
+
+	// Connect object Gtk::Button with id 'FileChooserButton'.
+	m_FileChooserButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_file_chooser_button_clicked));
 }
 
 X3DRenderPanelInterface::~X3DRenderPanelInterface ()
 {
 	delete m_Window;
+	delete m_PropertiesDialog;
 }
 
 } // puck

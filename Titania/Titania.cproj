@@ -86,7 +86,6 @@
     <Compile Include="Titania\Base\X3DDialogInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DGeometryPropertiesEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DTextEditorInterface.cpp" />
-    <Compile Include="Titania\ComposedWidgets\Cairo.cpp" />
     <Compile Include="Titania\Base\X3DEditorObject.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLightEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFileOpenDialogInterface.cpp" />
@@ -322,6 +321,10 @@
     <Compile Include="Titania\UserInterfaces\X3DRenderPanelInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.cpp" />
     <Compile Include="Titania\BrowserNotebook\RenderPanel\RenderThread.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RenderPanel\VideoEncoder.cpp" />
+    <Compile Include="Titania\Bits\Cairo.cpp" />
+    <Compile Include="Titania\Bits\String.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1010,7 +1013,6 @@
     <None Include="Titania\ComposedWidgets\SFStringComboBoxText.h" />
     <None Include="Titania\ComposedWidgets\SFColorRGBAButton.h" />
     <None Include="Titania\ComposedWidgets\SFColorButton.h" />
-    <None Include="Titania\ComposedWidgets\Cairo.h" />
     <None Include="share\titania\ui\icons\Node\NULL.svg" />
     <None Include="Titania\UserInterfaces\X3DLightEditorInterface.h" />
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment3.h" />
@@ -2437,7 +2439,6 @@
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-warning.png" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.h" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\GeneratedCubeMapTexture" />
-    <None Include="titania" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\GeneratedCubeMapTexture" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\ImageCubeMapTexture" />
     <None Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.h" />
@@ -3011,6 +3012,11 @@
     <None Include="Titania\UserInterfaces\X3DRenderPanelInterface.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderThread.h" />
+    <None Include="Titania" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\VideoEncoder.h" />
+    <None Include="Titania\Bits\Cairo.h" />
+    <None Include="Titania\Bits\String.h" />
+    <None Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3161,6 +3167,7 @@
     <Folder Include="Titania\Editors\BackgroundImageEditor\" />
     <Folder Include="Titania\BrowserNotebook\PanelMenu\" />
     <Folder Include="Titania\BrowserNotebook\RenderPanel\" />
+    <Folder Include="Titania\Bits\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

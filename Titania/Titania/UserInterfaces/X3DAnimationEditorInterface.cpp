@@ -125,6 +125,7 @@ X3DAnimationEditorInterface::create ()
 	m_builder -> get_widget ("PropertiesDialog", m_PropertiesDialog);
 	m_builder -> get_widget ("NewCancelButton", m_NewCancelButton);
 	m_builder -> get_widget ("NewOkButton", m_NewOkButton);
+	m_builder -> get_widget ("PropertiesHeaderBar", m_PropertiesHeaderBar);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
 	m_builder -> get_widget ("DurationSspinButton", m_DurationSspinButton);
 	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);

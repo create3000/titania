@@ -88,8 +88,28 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAntialiasingAdjustment () const
+	{ return m_AntialiasingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getDurationAdjustment () const
+	{ return m_DurationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFPSAdjustment () const
+	{ return m_FPSAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getFrameAdjustment () const
 	{ return m_FrameAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getHeightAdjustment () const
+	{ return m_HeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getWidthAdjustment () const
+	{ return m_WidthAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -139,11 +159,59 @@ public:
 	getTextureLoadStateLabel () const
 	{ return *m_TextureLoadStateLabel; }
 
+	Gtk::Dialog &
+	getPropertiesDialog () const
+	{ return *m_PropertiesDialog; }
+
+	Gtk::Button &
+	getPropertiesCancelButton () const
+	{ return *m_PropertiesCancelButton; }
+
+	Gtk::Button &
+	getPropertiesOkButton () const
+	{ return *m_PropertiesOkButton; }
+
+	Gtk::HeaderBar &
+	getPropertiesHeaderBar () const
+	{ return *m_PropertiesHeaderBar; }
+
+	Gtk::SpinButton &
+	getDurationSspinButton () const
+	{ return *m_DurationSspinButton; }
+
+	Gtk::SpinButton &
+	getFPSSpinButton () const
+	{ return *m_FPSSpinButton; }
+
+	Gtk::Label &
+	getTimeLabel () const
+	{ return *m_TimeLabel; }
+
+	Gtk::Box &
+	getAntialiasingBox () const
+	{ return *m_AntialiasingBox; }
+
+	Gtk::Button &
+	getFileChooserButton () const
+	{ return *m_FileChooserButton; }
+
+	Gtk::Label &
+	getFileLabel () const
+	{ return *m_FileLabel; }
+
 	///  @name Signal handlers
 
 	virtual
 	void
+	on_properties_time_changed () = 0;
+
+	virtual
+	void
 	on_record_clicked () = 0;
+
+	virtual
+	void
+	on_properties_file_chooser_button_clicked () = 0;
 
 	///  @name Destruction
 
@@ -169,7 +237,12 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_AntialiasingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_DurationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_FrameAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_HeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_WidthAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
@@ -182,6 +255,16 @@ private:
 	Gtk::Box* m_PreviewBox;
 	Gtk::Label* m_TextureFormatLabel;
 	Gtk::Label* m_TextureLoadStateLabel;
+	Gtk::Dialog* m_PropertiesDialog;
+	Gtk::Button* m_PropertiesCancelButton;
+	Gtk::Button* m_PropertiesOkButton;
+	Gtk::HeaderBar* m_PropertiesHeaderBar;
+	Gtk::SpinButton* m_DurationSspinButton;
+	Gtk::SpinButton* m_FPSSpinButton;
+	Gtk::Label* m_TimeLabel;
+	Gtk::Box* m_AntialiasingBox;
+	Gtk::Button* m_FileChooserButton;
+	Gtk::Label* m_FileLabel;
 
 };
 

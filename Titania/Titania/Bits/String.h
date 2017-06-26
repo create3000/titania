@@ -48,95 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
+#ifndef __TITANIA_BITS_STRING_H__
+#define __TITANIA_BITS_STRING_H__
 
-#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
-
-#include <Titania/X3D.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class RenderThread :
-	public X3D::X3DInterruptibleThread
-{
-public:
-
-	///  @name Construction
-
-	RenderThread (const basic::uri & url,
-	              const size_t frames,
-	              const size_t framesPerSecond,
-	              const size_t width,
-	              const size_t height,
-	              const size_t antialiasing,
-	              const bool fixedPipeline);
-
-	///  @name Member access
-
-	size_t
-	getFrame () const
-	{ return frame; }
-
-	size_t
-	getFrames () const
-	{ return frames; }
-
-	size_t
-	getFramesPerSecond () const
-	{ return framesPerSecond; }
-
-	size_t
-	getWidth () const
-	{ return width; }
-
-	size_t
-	getHeight () const
-	{ return height; }
-
-	size_t
-	getAntialiasing () const
-	{ return antialiasing; }
-
-	Magick::Image &
-	getCurrentImage ()
-	{ return image; }
-
-	///  Signal setup.
-	sigc::signal <void> &
-	signal_frame_changed ()
-	{ return frameSignal; }
-
-	///  @name Destruction
-
-	virtual
-	~RenderThread () final override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_initialized ();
-
-	bool
-	on_timeout ();
-
-	///  @name Members
-
-	const X3D::BrowserPtr       browser;
-   const size_t                frames;
-	const size_t                framesPerSecond;
-	const size_t                width;
-	const size_t                height;
-	const size_t                antialiasing;
-	size_t                      frame;
-	Magick::Image               image;
-	sigc::signal <void>         frameSignal;
-
-};
+std::string
+strfframes (const size_t value, const size_t framesPerSecond);
 
 } // puck
 } // titania

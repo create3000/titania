@@ -78,7 +78,26 @@ public:
 
 private:
 
+	///  @name Member access
+
+	bool
+	getPropertiesDialogResponse ();
+
+	void
+	setRendering (const bool value);
+
+	bool
+	getRendering () const;
+
 	///  @name Event handlers
+
+	virtual
+	void
+	on_properties_file_chooser_button_clicked () final override;
+
+	virtual
+	void
+	on_properties_time_changed () final override;
 
 	virtual
 	void
@@ -96,6 +115,7 @@ private:
 	X3D::X3DPtr <X3D::ImageTexture>  texture;
 	std::unique_ptr <RenderThread>   renderThread;
 	std::unique_ptr <VideoEncoder>   videoEncoder;
+	basic::uri                       filename;
 
 };
 

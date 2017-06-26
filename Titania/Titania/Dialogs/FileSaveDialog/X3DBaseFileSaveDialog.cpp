@@ -88,6 +88,13 @@ X3DBaseFileSaveDialog::run ()
 	return false;
 }
 
+void
+X3DBaseFileSaveDialog::setUrl (const basic::uri & url) const
+{
+	getWindow () .set_uri (url .str ());
+	getWindow () .set_current_name (url .basename ());
+}
+
 basic::uri
 X3DBaseFileSaveDialog::getUrl () const
 {

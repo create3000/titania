@@ -2570,6 +2570,7 @@
                                                         <property name="tooltip_text" translatable="yes">Choose a height map image.</property>
                                                         <property name="halign">start</property>
                                                         <property name="hexpand">False</property>
+                                                        <property name="local_only">False</property>
                                                         <property name="title" translatable="yes">Open Image</property>
                                                       </object>
                                                       <packing>
@@ -3677,6 +3678,7 @@
                                                         <property name="tooltip_text" translatable="yes">Choose a height map image.</property>
                                                         <property name="halign">start</property>
                                                         <property name="hexpand">False</property>
+                                                        <property name="local_only">False</property>
                                                         <property name="title" translatable="yes">Open Image</property>
                                                       </object>
                                                       <packing>

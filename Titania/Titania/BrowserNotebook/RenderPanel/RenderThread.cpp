@@ -57,14 +57,15 @@
 namespace titania {
 namespace puck {
 
-RenderThread::RenderThread (const X3D::MFString & url,
+RenderThread::RenderThread (const basic::uri & url,
                             const size_t frames,
                             const size_t framesPerSecond,
                             const size_t width,
                             const size_t height,
-                            const size_t antialiasing) :
+                            const size_t antialiasing,
+                            const bool fixedPipeline) :
 	X3D::X3DInterruptibleThread (),
-	                    browser (X3D::createBrowser (url)),
+	                    browser (X3D::createBrowser ({ url .str () })),
 	                     frames (frames),
 	            framesPerSecond (framesPerSecond),
 	                      width (width),
@@ -75,6 +76,7 @@ RenderThread::RenderThread (const X3D::MFString & url,
 	                frameSignal ()
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
+	browser -> setFixedPipeline (fixedPipeline);
 	browser -> setup ();
 }
 
@@ -128,7 +130,9 @@ RenderThread::on_timeout ()
 }
 
 RenderThread::~RenderThread ()
-{ }
+{
+	stop ();
+}
 
 } // puck
 } // titania

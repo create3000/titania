@@ -61,6 +61,14 @@ class X3DBaseFileSaveDialog :
 {
 public:
 
+	///  @name Member access
+
+	void
+	setUrl (const basic::uri & url) const;
+
+	basic::uri
+	getUrl () const;
+
 	///  @name Destruction
 
 	virtual
@@ -77,11 +85,6 @@ protected:
 
 	bool
 	run ();
-
-	///  @name Member access
-
-	basic::uri
-	getUrl () const;
 
 	///  @name Filter handling
 

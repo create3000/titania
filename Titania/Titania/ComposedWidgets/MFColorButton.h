@@ -51,7 +51,6 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFCOLOR_BUTTON_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFCOLOR_BUTTON_H__
 
-#include "../ComposedWidgets/Cairo.h"
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
-#define __TITANIA_COMPOSED_WIDGETS_CAIRO_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_SAVE_VIDEO_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_SAVE_VIDEO_DIALOG_H__
 
-#include <cairomm/cairomm.h>
-#include <Titania/X3D/Types/Numbers.h>
+#include "X3DBaseFileSaveDialog.h"
 
 namespace titania {
 namespace puck {
 
-void
-draw_checker_board (const Cairo::RefPtr <Cairo::Context> & context,
-                    const double width, const double height,
-                    const X3D::Color4f & color1,
-                    const X3D::Color4f & color2,
-                    const double rectangle_x, const double rectangle_y,
-                    const double rectangle_width, const double rectangle_height);
+class FileSaveVideoDialog :
+	public X3DBaseFileSaveDialog
+{
+public:
+
+	///  @name Construction
+
+	FileSaveVideoDialog (X3DBrowserWindow* const browserWindow);
+
+	///  @name Operations
+
+	bool
+	run ();
+
+	///  @name Destruction
+
+	virtual
+	~FileSaveVideoDialog () final override;
+
+
+private:
+
+	///  @name Filter handling
+
+	void
+	setFileFilter (const std::string & name);
+
+	virtual
+	std::string
+	getSuffix () const final override;
+
+	virtual
+	const std::set <std::string> &
+	getKnownFileTypes () const final override
+	{ return knownFileTypes; }
+
+	///  @name Static members
+
+	static const std::set <std::string> knownFileTypes;
+
+};
 
 } // puck
 } // titania

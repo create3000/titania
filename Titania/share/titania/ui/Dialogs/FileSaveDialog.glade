@@ -118,6 +118,24 @@
       <mime-type>video/*</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterVideoAVI">
+    <mime-types>
+      <mime-type>video/avi</mime-type>
+      <mime-type>video/x-msvideo</mime-type>
+      <mime-type>video/msvideo</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.avi</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideoMP4">
+    <mime-types>
+      <mime-type>video/mp4</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.mp4</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterVrmlEncoding">
     <mime-types>
       <mime-type>x-world/x-vrml</mime-type>
@@ -399,8 +417,8 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Width:</property>
-                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -411,8 +429,8 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Height:</property>
-                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -423,8 +441,8 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Alpha Channel:</property>
-                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -435,8 +453,8 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Antialiasing:</property>
-                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -491,8 +509,8 @@
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Compression Quality:</property>
-                    <property name="xalign">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>

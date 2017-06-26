@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,97 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
+#include "String.h"
 
-#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
-
-#include <Titania/X3D.h>
+#include <iomanip>
+#include <sstream>
 
 namespace titania {
 namespace puck {
 
-class RenderThread :
-	public X3D::X3DInterruptibleThread
+std::string
+strfframes (const size_t value, const size_t framesPerSecond)
 {
-public:
+	size_t time = value;
 
-	///  @name Construction
+	const size_t frames = time % framesPerSecond;
+	time /= framesPerSecond;
 
-	RenderThread (const basic::uri & url,
-	              const size_t frames,
-	              const size_t framesPerSecond,
-	              const size_t width,
-	              const size_t height,
-	              const size_t antialiasing,
-	              const bool fixedPipeline);
+	const size_t seconds = time % 60;
+	time /= 60;
 
-	///  @name Member access
+	const size_t minutes = time % 60;
+	time /= 60;
 
-	size_t
-	getFrame () const
-	{ return frame; }
+	const size_t hours = time;
 
-	size_t
-	getFrames () const
-	{ return frames; }
+	std::ostringstream osstream;
+	
+	osstream
+		<< std::setfill ('0')
+		<< std::setw (2) << hours << ":"
+		<< std::setw (2) << minutes << ":" 
+		<< std::setw (2) << seconds << ":" 
+		<< std::setw (2) << frames;
 
-	size_t
-	getFramesPerSecond () const
-	{ return framesPerSecond; }
-
-	size_t
-	getWidth () const
-	{ return width; }
-
-	size_t
-	getHeight () const
-	{ return height; }
-
-	size_t
-	getAntialiasing () const
-	{ return antialiasing; }
-
-	Magick::Image &
-	getCurrentImage ()
-	{ return image; }
-
-	///  Signal setup.
-	sigc::signal <void> &
-	signal_frame_changed ()
-	{ return frameSignal; }
-
-	///  @name Destruction
-
-	virtual
-	~RenderThread () final override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_initialized ();
-
-	bool
-	on_timeout ();
-
-	///  @name Members
-
-	const X3D::BrowserPtr       browser;
-   const size_t                frames;
-	const size_t                framesPerSecond;
-	const size_t                width;
-	const size_t                height;
-	const size_t                antialiasing;
-	size_t                      frame;
-	Magick::Image               image;
-	sigc::signal <void>         frameSignal;
-
-};
+	return osstream .str ();
+}
 
 } // puck
 } // titania
-
-#endif

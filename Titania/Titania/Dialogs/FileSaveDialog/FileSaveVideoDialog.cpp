@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,97 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
+#include "FileSaveVideoDialog.h"
 
-#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
+#include "../../Browser/X3DBrowserWindow.h"
 
-#include <Titania/X3D.h>
+#include <Titania/OS.h>
+
+#include <regex>
 
 namespace titania {
 namespace puck {
 
-class RenderThread :
-	public X3D::X3DInterruptibleThread
-{
-public:
+static constexpr auto VIDEO_AVI_FILTER = "AVI Video (*.avi)";
+static constexpr auto VIDEO_MP4_FILTER = "MPEG-4 Video (*.mp4)";
 
-	///  @name Construction
-
-	RenderThread (const basic::uri & url,
-	              const size_t frames,
-	              const size_t framesPerSecond,
-	              const size_t width,
-	              const size_t height,
-	              const size_t antialiasing,
-	              const bool fixedPipeline);
-
-	///  @name Member access
-
-	size_t
-	getFrame () const
-	{ return frame; }
-
-	size_t
-	getFrames () const
-	{ return frames; }
-
-	size_t
-	getFramesPerSecond () const
-	{ return framesPerSecond; }
-
-	size_t
-	getWidth () const
-	{ return width; }
-
-	size_t
-	getHeight () const
-	{ return height; }
-
-	size_t
-	getAntialiasing () const
-	{ return antialiasing; }
-
-	Magick::Image &
-	getCurrentImage ()
-	{ return image; }
-
-	///  Signal setup.
-	sigc::signal <void> &
-	signal_frame_changed ()
-	{ return frameSignal; }
-
-	///  @name Destruction
-
-	virtual
-	~RenderThread () final override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_initialized ();
-
-	bool
-	on_timeout ();
-
-	///  @name Members
-
-	const X3D::BrowserPtr       browser;
-   const size_t                frames;
-	const size_t                framesPerSecond;
-	const size_t                width;
-	const size_t                height;
-	const size_t                antialiasing;
-	size_t                      frame;
-	Magick::Image               image;
-	sigc::signal <void>         frameSignal;
-
+const std::set <std::string> FileSaveVideoDialog::knownFileTypes = {
+	".avi",
+	".mp4",
 };
+
+FileSaveVideoDialog::FileSaveVideoDialog (X3DBrowserWindow* const browserWindow) :
+	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseFileSaveDialog ()
+{
+	setName ("FileSaveVideoDialog");
+
+	getWindow () .set_title (_ ("Save Video as …"));
+
+	getFileFilterVideoAVI () -> set_name (_ (VIDEO_AVI_FILTER));
+	getFileFilterVideoMP4 () -> set_name (_ (VIDEO_MP4_FILTER));
+
+	setup ();
+}
+
+void
+FileSaveVideoDialog::setFileFilter (const std::string & name)
+{
+	getWindow () .add_filter (getFileFilterVideoAVI ());
+	getWindow () .add_filter (getFileFilterVideoMP4 ());
+
+	if (name == _(VIDEO_AVI_FILTER))
+		getWindow () .set_filter (getFileFilterVideoAVI ());
+
+	else
+		getWindow () .set_filter (getFileFilterVideoMP4 ());
+}
+
+std::string
+FileSaveVideoDialog::getSuffix () const
+{
+	if (getWindow () .get_filter () == getFileFilterVideoAVI ())
+		return ".avi";
+
+	// Default
+
+	return ".mp4";
+}
+
+// Export image
+
+bool
+FileSaveVideoDialog::run ()
+{
+	setFileFilter (getConfig () -> getString ("fileFilter"));
+
+	const auto responseId = getWindow () .run ();
+
+	quit ();
+
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
+
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return false;
+
+	return true;
+}
+
+FileSaveVideoDialog::~FileSaveVideoDialog ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

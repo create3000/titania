@@ -48,93 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_RENDER_THREAD_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
 
-#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
+#include <Titania/Basic/URI.h>
 
-#include <Titania/X3D.h>
+#include <Magick++.h>
+
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class RenderThread :
-	public X3D::X3DInterruptibleThread
+class VideoEncoder
 {
 public:
 
-	///  @name Construction
+	VideoEncoder (const basic::uri & filename);
 
-	RenderThread (const basic::uri & url,
-	              const size_t frames,
-	              const size_t framesPerSecond,
-	              const size_t width,
-	              const size_t height,
-	              const size_t antialiasing,
-	              const bool fixedPipeline);
+	void
+	open ()
+	throw (std::runtime_error);
 
-	///  @name Member access
+	bool
+	write (Magick::Image & image);
 
-	size_t
-	getFrame () const
-	{ return frame; }
+	bool
+	close ();
 
-	size_t
-	getFrames () const
-	{ return frames; }
-
-	size_t
-	getFramesPerSecond () const
-	{ return framesPerSecond; }
-
-	size_t
-	getWidth () const
-	{ return width; }
-
-	size_t
-	getHeight () const
-	{ return height; }
-
-	size_t
-	getAntialiasing () const
-	{ return antialiasing; }
-
-	Magick::Image &
-	getCurrentImage ()
-	{ return image; }
-
-	///  Signal setup.
-	sigc::signal <void> &
-	signal_frame_changed ()
-	{ return frameSignal; }
-
-	///  @name Destruction
-
-	virtual
-	~RenderThread () final override;
+	~VideoEncoder ();
 
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_initialized ();
-
-	bool
-	on_timeout ();
-
-	///  @name Members
-
-	const X3D::BrowserPtr       browser;
-   const size_t                frames;
-	const size_t                framesPerSecond;
-	const size_t                width;
-	const size_t                height;
-	const size_t                antialiasing;
-	size_t                      frame;
-	Magick::Image               image;
-	sigc::signal <void>         frameSignal;
+	const basic::uri filename;
+	std::string      command_with_args;
+	pid_t            pid;
+	int32_t          stdin;
+	int32_t          stdout;
+	int32_t          stderr;
+	bool             opened;
 
 };
 

@@ -50,6 +50,8 @@
 
 #include "MFColorRGBAButton.h"
 
+#include "../Bits/Cairo.h"
+
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 
 namespace titania {

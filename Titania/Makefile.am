@@ -15,6 +15,8 @@ titania_SOURCES =  \
 	Titania/Base/X3DPanelInterface.cpp \
 	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
+	Titania/Bits/Cairo.cpp \
+	Titania/Bits/String.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -33,8 +35,8 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
+	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
-	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
 	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
@@ -67,6 +69,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/FileSaveVideoDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/X3DBaseFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
