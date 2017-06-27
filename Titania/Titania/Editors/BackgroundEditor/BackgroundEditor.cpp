@@ -285,7 +285,7 @@ BackgroundEditor::on_new_background_clicked ()
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	backgroundList -> setSelection (node);
+	backgroundList -> setSelection (node, true);
 }
 
 void
@@ -298,7 +298,7 @@ BackgroundEditor::on_new_texture_background_clicked ()
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	backgroundList -> setSelection (node);
+	backgroundList -> setSelection (node, true);
 }
 
 void

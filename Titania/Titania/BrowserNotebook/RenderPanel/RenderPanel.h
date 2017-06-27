@@ -55,6 +55,8 @@
 
 #include "X3DRenderPanel.h"
 
+#include "../../Editors/BindableNodeList/ViewpointList.h"
+
 namespace titania {
 namespace puck {
 
@@ -89,6 +91,9 @@ private:
 
 	///  @name Member access
 
+	std::shared_ptr <ViewpointList>
+	getViewpointList () const;
+
 	bool
 	getPropertiesDialogResponse ();
 
@@ -110,6 +115,13 @@ private:
 
 	virtual
 	void
+	on_properties_viewpoint_chooser_button_clicked () final override;
+
+	void
+	set_viewpoint ();
+
+	virtual
+	void
 	on_record_clicked () final override;
 
 	void
@@ -125,6 +137,8 @@ private:
 	std::unique_ptr <RenderThread>   renderThread;
 	std::unique_ptr <VideoEncoder>   videoEncoder;
 	basic::uri                       filename;
+	std::string                      viewpoint;
+	std::shared_ptr <ViewpointList>  viewpointList;
 
 };
 

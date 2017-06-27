@@ -78,18 +78,25 @@ public:
 	///  @name Member acccess
 
 	void
-	setEditing (const bool);
+	setEditing (const bool value);
 
 	bool
 	getEditing () const
 	{ return editing; }
+
+	void
+	setSelectNamedNode (const bool value);
+
+	bool
+	getSelectNamedNode () const
+	{ return selectNamedNode; }
 
 	const X3D::X3DPtr <Type> &
 	getSelection () const
 	{ return selection; }
 
 	void
-	setSelection (const X3D::X3DPtr <Type> &);
+	setSelection (const X3D::X3DPtr <Type> & value, const bool event);
 
 	///  @name Destruction
 
@@ -185,6 +192,7 @@ private:
 	X3D::X3DPtrArray <Type>         nodes;
 	X3D::X3DPtr <Type>              selection;
 	bool                            editing;
+	bool                            selectNamedNode;
 
 	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
@@ -199,12 +207,13 @@ const int32_t X3DBindableNodeList <Type>::Weight::BOLD = 700;
 template <class Type>
 X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DBindableNodeListInterface (get_ui ("Widgets/BindableNodeList.glade")),
+	X3DBindableNodeListInterface (get_ui ("Editors/BindableNodeList.glade")),
 	                     browser (getCurrentBrowser ()),
 	                 activeLayer (),
 	                       nodes (),
 	                   selection (),
 	                     editing (false),
+	             selectNamedNode (false),
 	               scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	setName (name);
@@ -265,12 +274,29 @@ X3DBindableNodeList <Type>::setEditing (const bool value)
 
 template <class Type>
 void
-X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value)
+X3DBindableNodeList <Type>::setSelectNamedNode (const bool value)
+{
+	selectNamedNode = value;
+}
+
+template <class Type>
+void
+X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value, const bool event)
 {
 	if (not editing or (activeLayer and value == getList (activeLayer) -> getList () .at (0)))
-		selection = nullptr;
+	{
+		if (event)
+			selection = nullptr;
+		else
+			selection .set (nullptr);
+	}
 	else
-		selection = value;
+	{
+		if (event)
+			selection = value;
+		else
+			selection .set (value);
+	}
 
 	if (editing)
 		set_stack ();
@@ -313,13 +339,11 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 		getStack (activeLayer) -> addInterest (&X3DBindableNodeList::set_stack, this);
 
 		set_list ();
-
-		setSelection (X3D::X3DPtr <Type> (getStack (activeLayer) -> getTop ()));
 	}
 	else
 	{
 		getListStore () -> clear ();
-		setSelection (nullptr);
+		setSelection (nullptr, not selectNamedNode);
 	}
 }
 
@@ -395,6 +419,9 @@ X3DBindableNodeList <Type>::set_stack ()
 		if (not editing and getDescription (node) .empty ())
 		   continue;
 
+		if (selectNamedNode and name .empty ())
+		   continue;
+
 		const auto name = X3D::RemoveTrailingNumber (node -> getName ());
 
 		row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
@@ -441,7 +468,7 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 			node -> set_bind () = true;
 	}
 
-	setSelection (node);
+	setSelection (node, true);
 }
 
 template <class Type>

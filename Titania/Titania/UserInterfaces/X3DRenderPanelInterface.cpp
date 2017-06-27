@@ -107,6 +107,9 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("AntialiasingBox", m_AntialiasingBox);
 	m_builder -> get_widget ("FileChooserButton", m_FileChooserButton);
 	m_builder -> get_widget ("FileLabel", m_FileLabel);
+	m_builder -> get_widget ("FileChooserButton1", m_FileChooserButton1);
+	m_builder -> get_widget ("ViewpointLabel", m_ViewpointLabel);
+	m_builder -> get_widget ("SizesButton", m_SizesButton);
 
 	// Connect object Gtk::Adjustment with id 'DurationAdjustment'.
 	m_DurationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
@@ -119,6 +122,7 @@ X3DRenderPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'FileChooserButton'.
 	m_FileChooserButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_file_chooser_button_clicked));
+	m_FileChooserButton1 -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_viewpoint_chooser_button_clicked));
 }
 
 X3DRenderPanelInterface::~X3DRenderPanelInterface ()

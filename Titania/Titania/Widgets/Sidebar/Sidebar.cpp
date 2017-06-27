@@ -54,10 +54,10 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "../../Editors/BindableNodeList/ViewpointList.h"
 #include "../../Editors/HistoryEditor/HistoryEditor.h"
 #include "../../Editors/LibraryView/LibraryView.h"
 #include "../../Editors/NodeEditor/NodeEditor.h"
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
 #include "../../Widgets/OutlineEditor/OutlineEditor.h"
 
 namespace titania {

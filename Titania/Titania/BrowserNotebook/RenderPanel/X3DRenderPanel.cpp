@@ -251,6 +251,35 @@ X3DRenderPanel::getAntialiasing (const size_t id, const size_t antialiasing) con
 	}
 }
 
+void
+X3DRenderPanel::setViewpoint (const size_t id, const std::string & viewpoint)
+{
+	auto viewpointArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/viewpoint");
+
+	viewpointArray .resize (4);
+
+	viewpointArray [id] = viewpoint;
+
+	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/viewpoint", viewpointArray);
+
+	getPage () -> setModified (true);
+}
+
+std::string
+X3DRenderPanel::getViewpoint (const size_t id, const std::string & viewpoint) const
+{
+	try
+	{
+		const auto viewpointArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/viewpoint");
+
+		return viewpointArray .at (id) .str ();
+	}
+	catch (const std::exception &)
+	{
+		return viewpoint;
+	}
+}
+
 X3DRenderPanel::~X3DRenderPanel ()
 { }
 

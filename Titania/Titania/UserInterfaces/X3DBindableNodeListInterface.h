@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
 #define __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,24 +61,24 @@ namespace puck {
  *  Gtk Interface for BindableNodeList.
  */
 class X3DBindableNodeListInterface :
-	public X3DUserInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DBindableNodeListInterface () :
-		X3DUserInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DBindableNodeListInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DBindableNodeListInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access

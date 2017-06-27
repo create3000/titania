@@ -76,7 +76,9 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	                texture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           renderThread (),
 	           videoEncoder (),
-	               filename ()
+	               filename (),
+	              viewpoint (),
+	          viewpointList ()
 {
 	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
 	getPropertiesDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
@@ -107,20 +109,39 @@ RenderPanel::initialize ()
 	preview -> getLocalBrowser () -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
 }
 
+std::shared_ptr <ViewpointList>
+RenderPanel::getViewpointList () const
+{
+	if (not viewpointList)
+	{
+		const_cast <RenderPanel*> (this) -> viewpointList = std::dynamic_pointer_cast <ViewpointList> (createDialog ("ViewpointList"));
+
+		viewpointList -> getWindow () .set_modal (true);
+		viewpointList -> getLabel ()  .set_visible (false);
+		viewpointList -> setEditing (true);
+		viewpointList -> setSelectNamedNode (true);
+		viewpointList -> getSelection () .addInterest (&RenderPanel::set_viewpoint, const_cast <RenderPanel*> (this));
+	}
+
+	return viewpointList;
+}
+
 bool
 RenderPanel::getPropertiesDialogResponse ()
 {
 	const auto & browser      = getPage () -> getMainBrowser ();
 	const auto   antialiasing = browser -> getMaxSamples ();
 
-	filename = browser -> getWorldURL () .parent () + browser -> getWorldURL () .basename (false) + ".mp4";
-	filename = getFilename (getId (), filename);
+	filename  = browser -> getWorldURL () .parent () + browser -> getWorldURL () .basename (false) + ".mp4";
+	filename  = getFilename (getId (), filename);
+	viewpoint = getViewpoint (getId (), viewpoint);
 
 	getWidthAdjustment ()  -> set_upper (browser -> getMaxRenderBufferSize ());
 	getHeightAdjustment () -> set_upper (browser -> getMaxRenderBufferSize ());
 	getAntialiasingAdjustment () -> set_upper (antialiasing);
 
-	getFileLabel () .set_text (filename .basename ());
+	getFileLabel ()      .set_text (filename .basename ());
+	getViewpointLabel () .set_text (viewpoint);
 
 	getDurationAdjustment ()     -> set_value (getDuration  (getId (), 1800));
 	getFrameRateAdjustment ()    -> set_value (getFrameRate (getId (), 30));
@@ -135,6 +156,14 @@ RenderPanel::getPropertiesDialogResponse ()
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return false;
 
+	setFilename     (getId (), filename);
+	setDuration     (getId (), getDurationAdjustment ()     -> get_value ());
+	setFrameRate    (getId (), getFrameRateAdjustment ()    -> get_value ());
+	setWidth        (getId (), getWidthAdjustment ()        -> get_value ());
+	setHeight       (getId (), getHeightAdjustment ()       -> get_value ());
+	setAntialiasing (getId (), getAntialiasingAdjustment () -> get_value ());
+	setViewpoint    (getId (), viewpoint);
+
 	return true;
 }
 
@@ -146,20 +175,15 @@ RenderPanel::setRendering (const bool value)
 		if (not getPropertiesDialogResponse ())
 			return;
 
-		const auto   worldURL      = getPage () -> getMainBrowser () -> getWorldURL ();
-	   const size_t frames        = getDurationAdjustment () -> get_value ();
-		const size_t frameRate     = getFrameRateAdjustment () -> get_value ();
-		const size_t width         = getWidthAdjustment () -> get_value ();
-		const size_t height        = getHeightAdjustment () -> get_value ();
+		auto         worldURL      = getPage () -> getMainBrowser () -> getWorldURL ();
+	   const size_t duration      = getDurationAdjustment ()     -> get_value ();
+		const size_t frameRate     = getFrameRateAdjustment ()    -> get_value ();
+		const size_t width         = getWidthAdjustment ()        -> get_value ();
+		const size_t height        = getHeightAdjustment ()       -> get_value ();
 		const size_t antialiasing  = getAntialiasingAdjustment () -> get_value ();
 		const size_t fixedPipeline = getPage () -> getMainBrowser () -> getFixedPipeline ();
 
-		setFilename     (getId (), filename);
-		setDuration     (getId (), frames);
-		setFrameRate    (getId (), frameRate);
-		setWidth        (getId (), width);
-		setHeight       (getId (), height);
-		setAntialiasing (getId (), antialiasing);
+		worldURL .fragment (viewpoint);
 
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
 		set_frame (0);
@@ -168,7 +192,7 @@ RenderPanel::setRendering (const bool value)
 
 		try
 		{
-			renderThread = std::make_unique <RenderThread> (worldURL, frames, frameRate, width, height, antialiasing, fixedPipeline);
+			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline);
 			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 
 			videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
@@ -217,6 +241,34 @@ RenderPanel::on_properties_time_changed ()
 }
 
 void
+RenderPanel::on_properties_viewpoint_chooser_button_clicked ()
+{
+	try
+	{
+		const auto viewpointNode = getPage () -> getMainBrowser () -> getExecutionContext () -> getNamedNode <X3D::X3DViewpointNode> (viewpoint);
+
+		getViewpointList () -> setSelection (viewpointNode, false);
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+
+	getViewpointList () -> present ();
+}
+
+void
+RenderPanel::set_viewpoint ()
+{
+	if (getViewpointList () -> getSelection ())
+		viewpoint = getViewpointList () -> getSelection () -> getName ();
+	else
+		viewpoint .clear ();
+
+	getViewpointLabel () .set_text (viewpoint);
+
+	getViewpointList () -> getWindow () .hide ();
+}
+
+void
 RenderPanel::on_record_clicked ()
 {
 	setRendering (not getRendering ());
@@ -226,7 +278,7 @@ void
 RenderPanel::on_frame_changed ()
 {
 	const auto frame     = renderThread -> getFrame ();
-	const auto lastFrame = frame + 1 == renderThread -> getFrames ();
+	const auto lastFrame = frame + 1 >= renderThread -> getDuration ();
 
 	set_frame (frame);
 

@@ -53,8 +53,7 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "../../Editors/BindableNodeList/ViewpointList.h"
 
 namespace titania {
 namespace puck {

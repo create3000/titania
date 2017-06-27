@@ -56,7 +56,7 @@
 #include "X3DOrthoViewpointEditor.h"
 #include "X3DGeoViewpointEditor.h"
 
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "../../Editors/BindableNodeList/ViewpointList.h"
 
 #include "../../ComposedWidgets.h"
 

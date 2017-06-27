@@ -57,7 +57,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../ComposedWidgets/MFColorButton.h"
 #include "../../ComposedWidgets/BackgroundTool.h"
-#include "../../Widgets/BindableNodeList/BackgroundList.h"
+#include "../../Editors/BindableNodeList/BackgroundList.h"
 
 #include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 

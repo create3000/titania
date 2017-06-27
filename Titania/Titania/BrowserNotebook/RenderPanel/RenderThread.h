@@ -68,7 +68,7 @@ public:
 	///  @name Construction
 
 	RenderThread (const basic::uri & url,
-	              const size_t frames,
+	              const size_t duration,
 	              const size_t frameRate,
 	              const size_t width,
 	              const size_t height,
@@ -82,8 +82,8 @@ public:
 	{ return frame; }
 
 	size_t
-	getFrames () const
-	{ return frames; }
+	getDuration () const
+	{ return duration; }
 
 	size_t
 	getFrameRate () const
@@ -129,7 +129,7 @@ private:
 	///  @name Members
 
 	const X3D::BrowserPtr         browser;
-   const size_t                  frames;
+   const size_t                  duration;
 	const size_t                  frameRate;
 	const size_t                  width;
 	const size_t                  height;

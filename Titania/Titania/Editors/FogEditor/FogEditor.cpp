@@ -121,7 +121,7 @@ FogEditor::on_new_fog_clicked ()
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	fogList -> setSelection (node);
+	fogList -> setSelection (node, true);
 }
 
 void

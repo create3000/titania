@@ -111,6 +111,12 @@ protected:
 	size_t
 	getAntialiasing (const size_t id, const size_t antialiasing) const;
 
+	void
+	setViewpoint (const size_t id, const std::string & viewpoint);
+	
+	std::string
+	getViewpoint (const size_t id, const std::string & viewpoint) const;
+
 };
 
 } // puck

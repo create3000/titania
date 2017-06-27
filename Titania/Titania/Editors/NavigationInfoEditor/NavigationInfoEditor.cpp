@@ -147,7 +147,7 @@ NavigationInfoEditor::on_new_navigation_info_clicked ()
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	navigationInfoList -> setSelection (node);
+	navigationInfoList -> setSelection (node, true);
 }
 
 void

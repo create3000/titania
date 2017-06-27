@@ -220,11 +220,7 @@
     <Compile Include="Titania\UserInterfaces\X3DGeometryEditorInterface.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.cpp" />
-    <Compile Include="Titania\Widgets\BindableNodeList\ViewpointList.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBindableNodeListInterface.cpp" />
-    <Compile Include="Titania\Widgets\BindableNodeList\NavigationInfoList.cpp" />
-    <Compile Include="Titania\Widgets\BindableNodeList\FogList.cpp" />
-    <Compile Include="Titania\Widgets\BindableNodeList\BackgroundList.cpp" />
     <Compile Include="Titania\Editors\FogEditor\FogEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFogEditorInterface.cpp" />
     <Compile Include="Titania\Editors\SoundEditor\SoundEditor.cpp" />
@@ -326,6 +322,10 @@
     <Compile Include="Titania\Bits\String.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.cpp" />
     <Compile Include="Titania\BrowserNotebook\RenderPanel\X3DRenderPanel.cpp" />
+    <Compile Include="Titania\Editors\BindableNodeList\BackgroundList.cpp" />
+    <Compile Include="Titania\Editors\BindableNodeList\FogList.cpp" />
+    <Compile Include="Titania\Editors\BindableNodeList\NavigationInfoList.cpp" />
+    <Compile Include="Titania\Editors\BindableNodeList\ViewpointList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2313,12 +2313,7 @@
     <None Include="share\titania\ui\icons\RectangleSelection.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.h" />
     <None Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.h" />
-    <None Include="Titania\Widgets\BindableNodeList\ViewpointList.h" />
-    <None Include="Titania\Widgets\BindableNodeList\X3DBindableNodeList.h" />
     <None Include="Titania\UserInterfaces\X3DBindableNodeListInterface.h" />
-    <None Include="Titania\Widgets\BindableNodeList\NavigationInfoList.h" />
-    <None Include="Titania\Widgets\BindableNodeList\FogList.h" />
-    <None Include="Titania\Widgets\BindableNodeList\BackgroundList.h" />
     <None Include="Titania\Editors\FogEditor\FogEditor.h" />
     <None Include="Titania\UserInterfaces\X3DFogEditorInterface.h" />
     <None Include="share\titania\ui\icons\Fog.svg" />
@@ -3020,6 +3015,11 @@
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderClock.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\X3DRenderPanel.h" />
+    <None Include="Titania\Editors\BindableNodeList\BackgroundList.h" />
+    <None Include="Titania\Editors\BindableNodeList\FogList.h" />
+    <None Include="Titania\Editors\BindableNodeList\NavigationInfoList.h" />
+    <None Include="Titania\Editors\BindableNodeList\ViewpointList.h" />
+    <None Include="Titania\Editors\BindableNodeList\X3DBindableNodeList.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3097,7 +3097,6 @@
     <Folder Include="Titania\Widgets\Footer\" />
     <Folder Include="Titania\Widgets\X3DNotebook\" />
     <Folder Include="share\titania\Library\Components\" />
-    <Folder Include="Titania\Widgets\BindableNodeList\" />
     <Folder Include="Titania\Editors\SoundEditor\" />
     <Folder Include="share\titania\Library\Components\PointingDeviceSensor\.experimental\" />
     <Folder Include="share\titania\ui\Revealer\" />
@@ -3171,6 +3170,7 @@
     <Folder Include="Titania\BrowserNotebook\PanelMenu\" />
     <Folder Include="Titania\BrowserNotebook\RenderPanel\" />
     <Folder Include="Titania\Bits\" />
+    <Folder Include="Titania\Editors\BindableNodeList\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
@@ -3211,9 +3211,9 @@
     <Content Include="share\titania\pages\about\splash.x3dv" />
     <Content Include="share\titania\ui\Editors\MotionBlurEditor.glade" />
     <Content Include="share\titania\ui\Widgets\Console.glade" />
-    <Content Include="share\titania\ui\Widgets\BindableNodeList.glade" />
     <Content Include="share\titania\ui\Editors\HistoryEditor.glade" />
     <Content Include="share\titania\ui\Widgets\OutlineEditor.glade" />
+    <Content Include="share\titania\ui\Editors\BindableNodeList.glade" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

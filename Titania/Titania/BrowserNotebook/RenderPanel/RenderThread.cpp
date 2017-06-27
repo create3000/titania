@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 RenderThread::RenderThread (const basic::uri & url,
-                            const size_t frames,
+                            const size_t duration,
                             const size_t frameRate,
                             const size_t width,
                             const size_t height,
@@ -68,7 +68,7 @@ RenderThread::RenderThread (const basic::uri & url,
                             const bool fixedPipeline) :
 	X3D::X3DInterruptibleThread (),
 	                    browser (X3D::createBrowser ({ url .str () })),
-	                     frames (frames),
+	                   duration (duration),
 	                  frameRate (frameRate),
 	                      width (width),
 	                     height (height),
@@ -109,7 +109,7 @@ RenderThread::on_timeout ()
 	{
 		checkForInterrupt ();
 
-		if (frame >= frames)
+		if (frame >= duration)
 			return false;
 
 		image = browser -> getSnapshot (width, height, false, std::min <size_t> (antialiasing, browser -> getMaxSamples ()));

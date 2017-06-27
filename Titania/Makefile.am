@@ -87,6 +87,10 @@ titania_SOURCES =  \
 	Titania/Editors/BackgroundImageEditor/BackgroundImage.cpp \
 	Titania/Editors/BackgroundImageEditor/BackgroundImageEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
+	Titania/Editors/BindableNodeList/BackgroundList.cpp \
+	Titania/Editors/BindableNodeList/FogList.cpp \
+	Titania/Editors/BindableNodeList/NavigationInfoList.cpp \
+	Titania/Editors/BindableNodeList/ViewpointList.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
@@ -236,10 +240,6 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DUndoHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
-	Titania/Widgets/BindableNodeList/BackgroundList.cpp \
-	Titania/Widgets/BindableNodeList/FogList.cpp \
-	Titania/Widgets/BindableNodeList/NavigationInfoList.cpp \
-	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \

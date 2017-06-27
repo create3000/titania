@@ -54,7 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DFogEditorInterface.h"
 
-#include "../../Widgets/BindableNodeList/FogList.h"
+#include "../../Editors/BindableNodeList/FogList.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/Fog.h>
 

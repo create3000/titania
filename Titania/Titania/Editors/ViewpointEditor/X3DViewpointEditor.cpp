@@ -140,7 +140,7 @@ X3DViewpointEditor::on_new_viewpoint_clicked ()
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node));
+	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);
 }
 
 X3DViewpointEditor::~X3DViewpointEditor ()

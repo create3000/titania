@@ -1,15 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="107" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/RenderPanel.h" Line="56" Column="25" />
+      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp" Line="109" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/VideoEncoder.h" Line="68" Column="38" />
+      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp" Line="80" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -19,6 +15,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/BrowserNotebook/RenderPanel/RenderThread.cpp" line="89" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

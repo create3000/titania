@@ -293,6 +293,12 @@ X3DUserInterface::present ()
 	getWindow () .present ();
 }
 
+//void
+//X3DUserInterface::hide ()
+//{
+//	getWindow () .hide ();
+//}
+
 void
 X3DUserInterface::restoreDialogs ()
 {

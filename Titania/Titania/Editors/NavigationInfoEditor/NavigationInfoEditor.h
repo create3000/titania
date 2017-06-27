@@ -53,8 +53,7 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DNavigationInfoEditorInterface.h"
-
-#include "../../Widgets/BindableNodeList/NavigationInfoList.h"
+#include "../../Editors/BindableNodeList/NavigationInfoList.h"
 
 #include <Titania/X3D/Components/Navigation/NavigationInfo.h>
 

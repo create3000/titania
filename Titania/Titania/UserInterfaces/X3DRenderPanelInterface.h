@@ -199,6 +199,18 @@ public:
 	getFileLabel () const
 	{ return *m_FileLabel; }
 
+	Gtk::Button &
+	getFileChooserButton1 () const
+	{ return *m_FileChooserButton1; }
+
+	Gtk::Label &
+	getViewpointLabel () const
+	{ return *m_ViewpointLabel; }
+
+	Gtk::Button &
+	getSizesButton () const
+	{ return *m_SizesButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -212,6 +224,10 @@ public:
 	virtual
 	void
 	on_properties_file_chooser_button_clicked () = 0;
+
+	virtual
+	void
+	on_properties_viewpoint_chooser_button_clicked () = 0;
 
 	///  @name Destruction
 
@@ -265,6 +281,9 @@ private:
 	Gtk::Box* m_AntialiasingBox;
 	Gtk::Button* m_FileChooserButton;
 	Gtk::Label* m_FileLabel;
+	Gtk::Button* m_FileChooserButton1;
+	Gtk::Label* m_ViewpointLabel;
+	Gtk::Button* m_SizesButton;
 
 };
 

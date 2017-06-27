@@ -154,7 +154,7 @@ X3DOrthoViewpointEditor::on_new_ortho_viewpoint_clicked ()
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
-	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node));
+	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);
 }
 
 X3DOrthoViewpointEditor::~X3DOrthoViewpointEditor ()
