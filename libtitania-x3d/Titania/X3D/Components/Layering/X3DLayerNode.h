@@ -212,7 +212,7 @@ public:
 	lookAt (const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
 	void
-	bind ();
+	bind (const std::string & viewpointName = "");
 
 	virtual
 	void

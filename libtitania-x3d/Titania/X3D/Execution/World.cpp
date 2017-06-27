@@ -142,17 +142,7 @@ World::bind ()
 {
 	// Bind first X3DBindableNodes found in each layer.
 
-	layerSet -> bind ();
-
-	// Bind viewpoint from URL.
-	
-	try
-	{
-		if (not getExecutionContext () -> getWorldURL () .fragment () .empty ())
-			getExecutionContext () -> changeViewpoint (getExecutionContext () -> getWorldURL () .fragment ());
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	layerSet -> bind (getExecutionContext () -> getWorldURL () .fragment ());
 }
 
 World::~World ()

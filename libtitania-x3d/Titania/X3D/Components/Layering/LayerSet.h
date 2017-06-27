@@ -148,7 +148,7 @@ public:
 	///  @name Operations
 
 	void
-	bind ();
+	bind (const std::string & viewpointName);
 
 	virtual
 	void

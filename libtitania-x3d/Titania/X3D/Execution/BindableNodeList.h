@@ -110,11 +110,21 @@ public:
 
 	/// @name Modifiers
 
+	///  Returns a node with @a name or the first bound node.
 	const pointer_type &
-	getBound () const
+	getBound (const std::string & name = "") const
 	{
 	   if (not list .empty ())
 	   {
+			if (not name .empty ())
+			{
+				for (const auto & node : std::make_pair (list .begin () + 1, list .end ()))
+				{
+					if (node -> getName () == name)
+						return node;
+				}
+			}
+
 			for (const auto & node : std::make_pair (list .begin () + 1, list .end ()))
 			{
 				if (node -> isBound ())

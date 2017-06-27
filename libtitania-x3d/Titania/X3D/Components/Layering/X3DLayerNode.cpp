@@ -259,7 +259,7 @@ X3DLayerNode::set_viewport ()
 }
 
 void
-X3DLayerNode::bind ()
+X3DLayerNode::bind (const std::string & viewpointName)
 {
 	traverse (TraverseType::CAMERA, this);
 
@@ -272,7 +272,7 @@ X3DLayerNode::bind ()
 
 	if (not getViewpoints () -> getList () .empty ())
 	{
-		const auto viewpoint = getViewpoints () -> getBound ();
+		const auto viewpoint = getViewpoints () -> getBound (viewpointName);
 		getViewpointStack () -> pushOnTop (viewpoint, true);
 		viewpoint -> addLayer (this);
 		viewpoint -> resetUserOffsets ();

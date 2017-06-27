@@ -185,16 +185,16 @@ LayerSet::set_layers ()
 }
 
 void
-LayerSet::bind ()
+LayerSet::bind (const std::string & viewpointName)
 {
-	layerNode0 -> bind ();
+	layerNode0 -> bind (viewpointName);
 
 	for (const auto & layer : layers ())
 	{
 		const auto layerNode = x3d_cast <X3DLayerNode*> (layer);
 
 		if (layerNode)
-			layerNode -> bind ();
+			layerNode -> bind (viewpointName);
 	}
 }
 
