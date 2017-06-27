@@ -68,6 +68,11 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	           stderr (0),
 	           opened (false)
 {
+//	// So before that class works we also need to ignore SIGPIPE:
+//
+//	if (::signal (SIGPIPE, SIG_IGN) == SIG_ERR)
+//	    ::perror ("signal");
+
 	os::join_command (command_with_args,
 	                  "-f", "image2pipe",
 	                  "-vcodec", "png",
@@ -95,8 +100,55 @@ throw (std::runtime_error)
 	opened = true;
 }
 
-bool
+/***
+ * Returns a value greater than zero on success. Zero on timeout and -1 if an error occured.
+ */
+int32_t
+VideoEncoder::wait (const int32_t fd, const int32_t timeout)
+{
+	fd_set fdread;
+
+	FD_ZERO (&fdread);
+	FD_SET (fd, &fdread);
+
+	struct timeval tv;
+
+	tv .tv_sec  = timeout / 1000;
+	tv .tv_usec = (timeout % 1000) * 1000;
+
+	return select (fd + 1, &fdread, nullptr, nullptr, &tv);
+}
+
+void
+VideoEncoder::read (const int32_t timeout)
+{
+	constexpr size_t BUFFER_SIZE = 1024;
+
+	size_t             bytesRead = 0;
+	std::vector <char> buffer (BUFFER_SIZE);
+
+	while (timeout == 0 or wait (stdout, timeout) > 0)
+	{
+		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+			std::cout .write (buffer .data (), bytesRead);
+
+		else if (timeout == 0)
+			break;
+	}
+
+	while (timeout == 0 or wait (stderr, timeout) > 0)
+	{
+		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+			std::clog .write (buffer .data (), bytesRead);
+
+		else if (timeout == 0)
+			break;
+	}
+}
+
+void
 VideoEncoder::write (Magick::Image & image)
+throw (std::runtime_error)
 {
 	Magick::Blob blob;
 
@@ -106,10 +158,10 @@ VideoEncoder::write (Magick::Image & image)
 	const int32_t bytes        = blob .length ();
 	const int32_t bytesWritten = ::write (stdin, static_cast <const char*> (blob .data ()), bytes);
 
-	if (bytesWritten not_eq bytes)
-		return false;
+	read (50);
 
-	return true;
+	if (bytesWritten not_eq bytes)
+		throw std::runtime_error ("Write to pipe faile: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
 }
 
 bool
@@ -120,31 +172,12 @@ VideoEncoder::close ()
 
 	opened = false;
 
-	{
-		constexpr size_t BUFFER_SIZE = 1024;
-	
-		size_t             bytesRead = 0;
-		std::vector <char> buffer (BUFFER_SIZE);
-		std::string        output;
-	
-		::close (stdin);
+	::close (stdin);
 
-		while ((bytesRead = read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			output .append (buffer .data (), bytesRead);
+	read (0);
 
-		__LOG__ << output << std::endl;
-
-		::close (stdout);
-
-		while ((bytesRead = read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::clog .write (buffer .data (), bytesRead);
-
-		::close (stderr);
-	}
-
-	stdin  = 0;
-	stdout = 0;
-	stderr = 0;
+	::close (stdout);
+	::close (stderr);
 
 	int32_t status = 0;
 
@@ -160,60 +193,6 @@ VideoEncoder::~VideoEncoder ()
 {
 	close ();
 }
-
-//static
-//std::string
-//golden_pipe (const std::string & program, const std::string & input)
-////throw (Error <URL_UNAVAILABLE>)
-//{
-//	constexpr size_t BUFFER_SIZE = 1024;
-//
-//	int32_t pid       = 0;
-//	int32_t status    = 0;
-//	int32_t stdin     = 0;
-//	int32_t stdout    = 0;
-//	int32_t stderr    = 0;
-//	size_t  bytesRead = 0;
-//
-//	std::vector <char> buffer (BUFFER_SIZE);
-//
-//	// Open pipe.
-//
-//	if ((pid = os::popen3 (program, &stdin, &stdout, &stderr)) <= 0)
-//		throw Error <URL_UNAVAILABLE> ("Couldn't open program '" + program + "'.");
-//
-//	// Write to pipe.
-//
-//	if (write (stdin, input .c_str (), input .size ()) not_eq (int32_t) input .size ())
-//		throw Error <URL_UNAVAILABLE> ("Write to pipe failed.");
-//
-//	close (stdin);
-//
-//	// Read from pipe.
-//
-//	std::string output;
-//
-//	while ((bytesRead = read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-//		output .append (buffer .data (), bytesRead);
-//
-//	close (stdout);
-//
-//	// Read error from pipe.
-//
-//	while ((bytesRead = read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-//		std::clog .write (buffer .data (), bytesRead);
-//
-//	close (stderr);
-//
-//	// Read from pipe.
-//
-//	waitpid (pid, &status, 0);
-//
-//	if (status)
-//		throw Error <INVALID_X3D> ("Exit status :" + basic::to_string (status, std::locale::classic ()));
-//
-//	return output;
-//}
 
 } // puck
 } // titania

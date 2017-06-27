@@ -179,7 +179,6 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 
 	browser -> setFrameRate (30);
 	browser -> setRouter    (getPage () -> getMainBrowser () -> getRouter ());
-	browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ());
 
 	browser -> sensors () .addInterest (&X3DBrowserPanel::set_sensors, this);
 
@@ -346,6 +345,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
+		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ()); // here!
 		browser -> set_opacity (1);
 
 		// Setup scene.

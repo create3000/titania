@@ -146,7 +146,7 @@ RenderPanel::getPropertiesDialogResponse ()
 
 	getDurationAdjustment ()     -> set_value (getDuration  (getId (), 1800));
 	getFrameRateAdjustment ()    -> set_value (getFrameRate (getId (), 30));
-	getWidthAdjustment ()        -> set_value (getWidth     (getId (), 768));
+	getWidthAdjustment ()        -> set_value (getWidth     (getId (), 1024));
 	getHeightAdjustment ()       -> set_value (getHeight    (getId (), 576));
 	getAntialiasingAdjustment () -> set_value (std::min (getAntialiasing (getId (), 4), antialiasing));
 
@@ -294,16 +294,26 @@ RenderPanel::on_load_count_changed (const size_t loadCount)
 void
 RenderPanel::on_frame_changed ()
 {
-	const auto frame     = renderThread -> getFrame ();
-	const auto lastFrame = frame + 1 >= renderThread -> getDuration ();
+	try
+	{
+		const auto frame     = renderThread -> getFrame ();
+		const auto lastFrame = frame + 1 >= renderThread -> getDuration ();
+	
+		set_frame (frame);
+	
+		if (texture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
+			texture -> setUrl (renderThread -> getCurrentImage ());
 
-	set_frame (frame);
+		videoEncoder -> write (renderThread -> getCurrentImage ());
 
-	if (texture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
-		texture -> setUrl (renderThread -> getCurrentImage ());
-
-	if (not videoEncoder -> write (renderThread -> getCurrentImage ()) or lastFrame)
+		if (lastFrame)
+			setRendering (false);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
 		setRendering (false);
+	}
 }
 
 void

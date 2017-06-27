@@ -64,23 +64,40 @@ class VideoEncoder
 {
 public:
 
+	///  @name Construction
+
 	VideoEncoder (const basic::uri & filename,
 	              const size_t frameRate);
+
+	///  @name Operations
 
 	void
 	open ()
 	throw (std::runtime_error);
 
-	bool
-	write (Magick::Image & image);
+	void
+	write (Magick::Image & image)
+	throw (std::runtime_error);
 
 	bool
 	close ();
+
+	///  @name Destruction
 
 	~VideoEncoder ();
 
 
 private:
+
+	///  @name Operations
+
+	void
+	read (const int32_t timeout);
+
+	int32_t
+	wait (const int32_t fd, const int32_t timeout);
+
+	///  @name Members
 
 	const basic::uri filename;
 	std::string      command_with_args;

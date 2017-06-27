@@ -53,6 +53,7 @@
 #include <csignal>
 #include <execinfo.h>
 #include <iostream>
+#include <map>
 
 namespace titania {
 
@@ -60,12 +61,20 @@ static
 void
 backtrace_print (size_t size, int sig)
 {
+	static const std::map <int32_t, std::string> sigs = {
+		std::make_pair (SIGSEGV, "SIGSEGV"),
+		std::make_pair (SIGABRT, "SIGABRT"),
+		std::make_pair (SIGPIPE, "SIGPIPE"),
+	};
+
+	const auto iter = sigs .find (sig);
+
 	std::clog
 		<< std::string (80, '#') << std::endl
 		<< "#" << std::endl
 		<< "# Backtrace" << std::endl
 		<< "#" << std::endl
-		<< "# Error: signal " << sig << std::endl
+		<< "# Error: signal " << sig << " " << (iter not_eq sigs .end () ? iter -> second : "") << std::endl
 		<< "#" << std::endl
 		<< std::string (80, '#') << std::endl
 		<< backtrace_symbols (size)
@@ -96,6 +105,7 @@ install_backtrace ()
 	// install our handler
 	std::signal (SIGSEGV, &backtrace_signal_handler);
 	std::signal (SIGABRT, &backtrace_signal_handler);
+	std::signal (SIGPIPE, &backtrace_signal_handler);
 
 	std::set_terminate (&backtrace_terminate_handler);
 }
