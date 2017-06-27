@@ -72,11 +72,11 @@ SoundTool::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getSoundTools () .remove (X3DWeakPtr <SoundTool> (this));
+	getBrowser () -> removeSoundTool (this);
 
 	X3DSoundNodeTool::setExecutionContext (executionContext);
 
-	getBrowser () -> getSoundTools () .emplace_back (this);
+	getBrowser () -> addSoundTool (this);
 }
 
 void
@@ -85,7 +85,7 @@ SoundTool::initialize ()
 	X3DSoundNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
-	getBrowser () -> getSoundTools () .emplace_back (this);
+	getBrowser () -> addSoundTool (this);
 
 	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
 }
@@ -164,7 +164,7 @@ SoundTool::removeTool (const bool really)
 void
 SoundTool::dispose ()
 {
-	getBrowser () -> getSoundTools () .remove (nullptr);
+	getBrowser () -> removeSoundTool (this);
 
 	X3DBoundedObject::dispose ();
 	X3DSoundNodeTool::dispose ();

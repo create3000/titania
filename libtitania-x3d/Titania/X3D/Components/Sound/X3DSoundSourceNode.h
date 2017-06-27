@@ -68,6 +68,14 @@ class X3DSoundSourceNode :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	virtual

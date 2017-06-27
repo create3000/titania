@@ -99,6 +99,14 @@ public:
 	getTabLabel () const
 	{ return *m_TabLabel; }
 
+	Gtk::ToggleButton &
+	getMuteButton () const
+	{ return *m_MuteButton; }
+
+	Gtk::Image &
+	getMuteImage () const
+	{ return *m_MuteImage; }
+
 	Gtk::Button &
 	getTabCloseButton () const
 	{ return *m_TabCloseButton; }
@@ -128,6 +136,10 @@ public:
 	{ return *m_Box4; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_mute_toggled () = 0;
 
 	virtual
 	void
@@ -180,6 +192,8 @@ private:
 	Gtk::Box* m_TabWidget;
 	Gtk::Image* m_TabImage;
 	Gtk::Label* m_TabLabel;
+	Gtk::ToggleButton* m_MuteButton;
+	Gtk::Image* m_MuteImage;
 	Gtk::Button* m_TabCloseButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;

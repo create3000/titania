@@ -56,6 +56,7 @@
 #include "../Execution/X3DScene.h"
 
 #include "../Browser/Core/X3DCoreContext.h"
+#include "../Browser/CubeMapTexturing/X3DCubeMapTexturingContext.h"
 #include "../Browser/Geometry2D/X3DGeometry2DContext.h"
 #include "../Browser/Geometry3D/X3DGeometry3DContext.h"
 #include "../Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.h"
@@ -71,9 +72,9 @@
 #include "../Browser/Scripting/X3DScriptingContext.h"
 #include "../Browser/Shaders/X3DShadersContext.h"
 #include "../Browser/Shape/X3DShapeContext.h"
+#include "../Browser/Sound/X3DSoundContext.h"
 #include "../Browser/Text/X3DTextContext.h"
 #include "../Browser/Texturing/X3DTexturingContext.h"
-#include "../Browser/CubeMapTexturing/X3DCubeMapTexturingContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 #include "../Browser/Tools/X3DToolContext.h"
 
@@ -103,6 +104,7 @@ class X3DBrowserContext :
 	public X3DRigidBodyPhysicsContext,
 	public X3DScriptingContext,
 	public X3DShapeContext,
+	public X3DSoundContext,
 	public X3DTextContext,
 	public X3DTexturingContext,
 	public X3DCubeMapTexturingContext,

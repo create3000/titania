@@ -86,6 +86,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
+	Titania/X3D/Browser/Sound/X3DSoundContext.cpp \
 	Titania/X3D/Browser/Text/Font.cpp \
 	Titania/X3D/Browser/Text/FontFace.cpp \
 	Titania/X3D/Browser/Text/FontStyleOptions.cpp \

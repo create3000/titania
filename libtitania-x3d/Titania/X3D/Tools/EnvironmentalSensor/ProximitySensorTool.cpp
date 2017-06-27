@@ -69,11 +69,11 @@ ProximitySensorTool::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getProximitySensorTools () .remove (X3DWeakPtr <ProximitySensorTool> (this));
+	getBrowser () -> removeProximitySensorTool (this);
 
 	X3DEnvironmentalSensorNodeTool::setExecutionContext (executionContext);
 
-	getBrowser () -> getProximitySensorTools () .emplace_back (this);
+	getBrowser () -> addProximitySensorTool (this);
 }
 
 void
@@ -81,13 +81,13 @@ ProximitySensorTool::initialize ()
 {
 	X3DEnvironmentalSensorNodeTool::initialize ();
 
-	getBrowser () -> getProximitySensorTools () .emplace_back (this);
+	getBrowser () -> addProximitySensorTool (this);
 }
 
 void
 ProximitySensorTool::dispose ()
 {
-	getBrowser () -> getProximitySensorTools () .remove (nullptr);
+	getBrowser () -> removeProximitySensorTool (this);
 
 	X3DEnvironmentalSensorNodeTool::dispose ();
 }

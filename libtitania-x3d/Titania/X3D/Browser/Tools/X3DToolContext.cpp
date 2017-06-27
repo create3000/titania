@@ -102,6 +102,97 @@ throw (Error <INVALID_NAME>,
 }
 
 void
+X3DToolContext::addTransformTool (X3DTransformNodeTool* const node)
+{
+	transformTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeTransformTool (X3DTransformNodeTool* const node)
+{
+	transformTools .remove (X3DWeakPtr <X3DTransformNodeTool> (node));
+	transformTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addLightTool (X3DLightNodeTool* const node)
+{
+	lightTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeLightTool (X3DLightNodeTool* const node)
+{
+	lightTools .remove (X3DWeakPtr <X3DLightNodeTool> (node));
+	lightTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addProximitySensorTool (ProximitySensorTool* const node)
+{
+	proximitySensorTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeProximitySensorTool (ProximitySensorTool* const node)
+{
+	proximitySensorTools .remove (X3DWeakPtr <ProximitySensorTool> (node));
+	proximitySensorTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addSoundTool (SoundTool* const node)
+{
+	soundTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeSoundTool (SoundTool* const node)
+{
+	soundTools .remove (X3DWeakPtr <SoundTool> (node));
+	soundTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addTransformSensorTool (TransformSensorTool* const node)
+{
+	transformSensorTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeTransformSensorTool (TransformSensorTool* const node)
+{
+	transformSensorTools .remove (X3DWeakPtr <TransformSensorTool> (node));
+	transformSensorTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addVisibilitySensorTool (VisibilitySensorTool* const node)
+{
+	visibilitySensorTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeVisibilitySensorTool (VisibilitySensorTool* const node)
+{
+	visibilitySensorTools .remove (X3DWeakPtr <VisibilitySensorTool> (node));
+	visibilitySensorTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addViewpointTool (X3DViewpointNodeTool* const node)
+{
+	viewpointTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeViewpointTool (X3DViewpointNodeTool* const node)
+{
+	viewpointTools .remove (X3DWeakPtr <X3DViewpointNodeTool> (node));
+	viewpointTools .remove (nullptr);
+}
+
+void
 X3DToolContext::dispose ()
 { }
 

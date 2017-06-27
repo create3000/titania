@@ -77,11 +77,11 @@ X3DViewpointNodeTool::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getViewpointTools () .remove (X3DWeakPtr <X3DViewpointNodeTool> (this));
+	getBrowser () -> removeViewpointTool (this);
 
 	X3DBindableNodeTool::setExecutionContext (executionContext);
 
-	getBrowser () -> getViewpointTools () .emplace_back (this);
+	getBrowser () -> addViewpointTool (this);
 }
 
 void
@@ -90,7 +90,7 @@ X3DViewpointNodeTool::initialize ()
 	X3DBindableNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
-	getBrowser () -> getViewpointTools () .emplace_back (this);
+	getBrowser () -> addViewpointTool (this);
 
 	requestAsyncLoad ({ get_tool ("ViewpointTool.x3dv") .str () });
 }
@@ -196,7 +196,7 @@ X3DViewpointNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 void
 X3DViewpointNodeTool::dispose ()
 {
-	getBrowser () -> getViewpointTools () .remove (nullptr);
+	getBrowser () -> removeViewpointTool (this);
 
 	X3DBoundedObject::dispose ();
 	X3DBindableNodeTool::dispose ();

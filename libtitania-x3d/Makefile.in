@@ -213,6 +213,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.lo \
 	Titania/X3D/Browser/Shape/X3DShapeContext.lo \
 	Titania/X3D/Browser/Sound/MediaStream.lo \
+	Titania/X3D/Browser/Sound/X3DSoundContext.lo \
 	Titania/X3D/Browser/Text/Font.lo \
 	Titania/X3D/Browser/Text/FontFace.lo \
 	Titania/X3D/Browser/Text/FontStyleOptions.lo \
@@ -1147,6 +1148,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
+	Titania/X3D/Browser/Sound/X3DSoundContext.cpp \
 	Titania/X3D/Browser/Text/Font.cpp \
 	Titania/X3D/Browser/Text/FontFace.cpp \
 	Titania/X3D/Browser/Text/FontStyleOptions.cpp \
@@ -2202,6 +2204,9 @@ Titania/X3D/Browser/Sound/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Sound/$(DEPDIR)
 	@: > Titania/X3D/Browser/Sound/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Sound/MediaStream.lo:  \
+	Titania/X3D/Browser/Sound/$(am__dirstamp) \
+	Titania/X3D/Browser/Sound/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Sound/X3DSoundContext.lo:  \
 	Titania/X3D/Browser/Sound/$(am__dirstamp) \
 	Titania/X3D/Browser/Sound/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Text/$(am__dirstamp):
@@ -4825,6 +4830,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shaders/$(DEPDIR)/X3DShadersContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shape/$(DEPDIR)/X3DShapeContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Sound/$(DEPDIR)/MediaStream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Sound/$(DEPDIR)/X3DSoundContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/Font.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/FontFace.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/FontStyleOptions.Plo@am__quote@

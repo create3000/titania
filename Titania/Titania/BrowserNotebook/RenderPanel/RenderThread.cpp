@@ -80,6 +80,7 @@ RenderThread::RenderThread (const basic::uri & url,
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
 	browser -> setFixedPipeline (fixedPipeline);
+	browser -> setMute (true);
 	browser -> setup ();
 }
 

@@ -96,57 +96,31 @@ public:
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
 
-	X3DWeakPtrArray <X3DTransformNodeTool> &
-	getTransformTools ()
-	{ return transformTools; }
+	///  @name Tools
 
 	const X3DWeakPtrArray <X3DTransformNodeTool> &
 	getTransformTools () const
 	{ return transformTools; }
 
-	X3DWeakPtrArray <X3DLightNodeTool> &
-	getLightTools ()
-	{ return lightTools; }
-
 	const X3DWeakPtrArray <X3DLightNodeTool> &
 	getLightTools () const
 	{ return lightTools; }
-
-	X3DWeakPtrArray <ProximitySensorTool> &
-	getProximitySensorTools ()
-	{ return proximitySensorTools; }
 
 	const X3DWeakPtrArray <ProximitySensorTool> &
 	getProximitySensorTools () const
 	{ return proximitySensorTools; }
 
-	X3DWeakPtrArray <SoundTool> &
-	getSoundTools ()
-	{ return soundTools; }
-
 	const X3DWeakPtrArray <SoundTool> &
 	getSoundTools () const
 	{ return soundTools; }
-
-	X3DWeakPtrArray <TransformSensorTool> &
-	getTransformSensorTools ()
-	{ return transformSensorTools; }
 
 	const X3DWeakPtrArray <TransformSensorTool> &
 	getTransformSensorTools () const
 	{ return transformSensorTools; }
 
-	X3DWeakPtrArray <VisibilitySensorTool> &
-	getVisibilitySensorTools ()
-	{ return visibilitySensorTools; }
-
 	const X3DWeakPtrArray <VisibilitySensorTool> &
 	getVisibilitySensorTools () const
 	{ return visibilitySensorTools; }
-
-	X3DWeakPtrArray <X3DViewpointNodeTool> &
-	getViewpointTools ()
-	{ return viewpointTools; }
 
 	const X3DWeakPtrArray <X3DViewpointNodeTool> &
 	getViewpointTools () const
@@ -172,6 +146,16 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class X3DTransformNodeTool;
+	friend class X3DLightNodeTool;
+	friend class ProximitySensorTool;
+	friend class SoundTool;
+	friend class TransformSensorTool;
+	friend class VisibilitySensorTool;
+	friend class X3DViewpointNodeTool;
+
 	///  @name Construction
 
 	X3DToolContext ();
@@ -179,6 +163,50 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	void
+	addTransformTool (X3DTransformNodeTool* const node);
+	
+	void
+	removeTransformTool (X3DTransformNodeTool* const node);
+
+	void
+	addLightTool (X3DLightNodeTool* const node);
+	
+	void
+	removeLightTool (X3DLightNodeTool* const node);
+
+	void
+	addProximitySensorTool (ProximitySensorTool* const node);
+	
+	void
+	removeProximitySensorTool (ProximitySensorTool* const node);
+
+	void
+	addSoundTool (SoundTool* const node);
+	
+	void
+	removeSoundTool (SoundTool* const node);
+
+	void
+	addTransformSensorTool (TransformSensorTool* const node);
+	
+	void
+	removeTransformSensorTool (TransformSensorTool* const node);
+
+	void
+	addVisibilitySensorTool (VisibilitySensorTool* const node);
+	
+	void
+	removeVisibilitySensorTool (VisibilitySensorTool* const node);
+
+	void
+	addViewpointTool (X3DViewpointNodeTool* const node);
+	
+	void
+	removeViewpointTool (X3DViewpointNodeTool* const node);
 
 
 private:

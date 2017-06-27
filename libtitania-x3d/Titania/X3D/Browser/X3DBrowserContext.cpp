@@ -79,6 +79,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	    X3DRigidBodyPhysicsContext (),
 	           X3DScriptingContext (),
 	               X3DShapeContext (),
+	               X3DSoundContext (),
 	                X3DTextContext (),
 	           X3DTexturingContext (),
 	    X3DCubeMapTexturingContext (),
@@ -133,6 +134,7 @@ X3DBrowserContext::initialize ()
 	X3DRigidBodyPhysicsContext::initialize ();
 	X3DScriptingContext::initialize ();
 	X3DShapeContext::initialize ();
+	X3DSoundContext::initialize ();
 	X3DTextContext::initialize ();
 	X3DTexturingContext::initialize ();
 	X3DCubeMapTexturingContext::initialize ();
@@ -358,6 +360,7 @@ X3DBrowserContext::dispose ()
 	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturingContext::dispose ();
 	X3DTextContext::dispose ();
+	X3DSoundContext::dispose ();
 	X3DShapeContext::dispose ();
 	X3DScriptingContext::dispose ();
 	X3DRigidBodyPhysicsContext::dispose ();

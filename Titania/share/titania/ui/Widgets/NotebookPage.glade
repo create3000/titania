@@ -35,6 +35,29 @@
       </packing>
     </child>
     <child>
+      <object class="GtkToggleButton" id="MuteButton">
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <signal name="toggled" handler="on_mute_toggled" swapped="no"/>
+        <child>
+          <object class="GtkImage" id="MuteImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="stock">audio-volume-high</property>
+            <property name="icon_size">1</property>
+          </object>
+        </child>
+        <style>
+          <class name="titania-tab-button"/>
+        </style>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkButton" id="TabCloseButton">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
@@ -50,13 +73,13 @@
           </object>
         </child>
         <style>
-          <class name="titania-tab-close"/>
+          <class name="titania-tab-button"/>
         </style>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">2</property>
+        <property name="position">3</property>
       </packing>
     </child>
   </object>

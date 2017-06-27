@@ -48,52 +48,89 @@
  *
  ******************************************************************************/
 
-#include "VisibilitySensorTool.h"
+#ifndef __TITANIA_X3D_BROWSER_TIME_X3DSOUND_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_TIME_X3DSOUND_CONTEXT_H__
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DScalar.h"
+#include "../../Fields/X3DWeakPtrArray.h"
 
 namespace titania {
 namespace X3D {
 
-VisibilitySensorTool::VisibilitySensorTool (X3DBaseNode* const node) :
-	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	              VisibilitySensor (node -> getExecutionContext ()),
-	                   X3DBaseTool (node),
-	X3DEnvironmentalSensorNodeTool (Color3f (1, 0, 0))
+class X3DSoundContext :
+	virtual public X3DBaseNode
 {
-	addType (X3DConstants::VisibilitySensorTool);
-}
+public:
 
-void
-VisibilitySensorTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	getBrowser () -> removeVisibilitySensorTool (this);
+	///  @name Member access
 
-	X3DEnvironmentalSensorNodeTool::setExecutionContext (executionContext);
+	void
+	setVolume (const float value)
+	{ volume = value; }
 
-	getBrowser () -> addVisibilitySensorTool (this);
-}
+	const SFFloat &
+	getVolume () const
+	{ return volume; }
 
-void
-VisibilitySensorTool::initialize ()
-{
-	X3DEnvironmentalSensorNodeTool::initialize ();
+	void
+	setMute (const float value)
+	{ mute = value; }
 
-	getBrowser () -> addVisibilitySensorTool (this);
-}
+	const SFFloat &
+	getMute () const
+	{ return mute; }
 
-void
-VisibilitySensorTool::dispose ()
-{
-	getBrowser () -> removeVisibilitySensorTool (this);
+	const X3DWeakPtrArray <X3DSoundSourceNode> &
+	getSoundSources () const
+	{ return soundSources; }
 
-	X3DEnvironmentalSensorNodeTool::dispose ();
-}
+	///  @name Destruction
 
-VisibilitySensorTool::~VisibilitySensorTool ()
-{ }
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DSoundContext () override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class X3DSoundSourceNode;
+
+	///  @name Construction
+
+	X3DSoundContext ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	///  @name Member access
+
+	void
+	addSoundSource (X3DSoundSourceNode* const node);
+
+	void
+	removeSoundSource (X3DSoundSourceNode* const node);
+
+
+private:
+
+	///  @name Members
+
+	X3DWeakPtrArray <X3DSoundSourceNode> soundSources;
+	SFFloat                              volume;
+	SFFloat                              mute;
+
+};
 
 } // X3D
 } // titania
+
+#endif

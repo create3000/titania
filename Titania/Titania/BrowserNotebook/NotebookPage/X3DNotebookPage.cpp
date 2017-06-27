@@ -72,7 +72,8 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                modified (false),
 	           saveConfirmed (false),
 	            fileMonitors (),
-	         backgroundImage (new BackgroundImage (this))
+	         backgroundImage (new BackgroundImage (this)),
+	                changing (false)
 {
 	addChildObjects (mainBrowser);
 
@@ -92,8 +93,14 @@ X3DNotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
 
+	getMainBrowser () -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
+	getMainBrowser () -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
+
 	getBox1 () .add (*getMainBrowser ());
 	getBox1 () .show_all ();
+
+	set_soundSources ();
+	set_mute ();
 }
 
 int32_t
@@ -347,6 +354,36 @@ void
 X3DNotebookPage::set_shutdown ()
 {
 	shutdown ();
+}
+
+void
+X3DNotebookPage::set_soundSources ()
+{
+	getMuteButton () .set_visible (getMainBrowser () -> getSoundSources () .size ());
+}
+
+void
+X3DNotebookPage::set_mute ()
+{
+	changing = true;
+
+	getMuteButton () .set_active (getMainBrowser () -> getMute ());
+
+	if (getMainBrowser () -> getMute ())
+		getMuteImage () .set (Gtk::StockID ("audio-volume-muted"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	else
+		getMuteImage () .set (Gtk::StockID ("audio-volume-high"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	changing = false;
+}
+
+void
+X3DNotebookPage::on_mute_toggled ()
+{
+	if (changing)
+		return;
+
+	getMainBrowser () -> setMute (getMuteButton () .get_active ());
 }
 
 void

@@ -75,11 +75,11 @@ X3DLightNodeTool::setExecutionContext (X3DExecutionContext* const executionConte
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getLightTools () .remove (X3DWeakPtr <X3DLightNodeTool> (this));
+	getBrowser () -> removeLightTool (this);
 
 	X3DChildNodeTool::setExecutionContext (executionContext);
 
-	getBrowser () -> getLightTools () .emplace_back (this);
+	getBrowser () -> addLightTool (this);
 }
 
 void
@@ -88,7 +88,7 @@ X3DLightNodeTool::initialize ()
 	X3DChildNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
-	getBrowser () -> getLightTools () .emplace_back (this);
+	getBrowser () -> addLightTool (this);
 
 	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
 }
@@ -165,7 +165,7 @@ X3DLightNodeTool::traverse (const TraverseType type, X3DRenderObject* const rend
 void
 X3DLightNodeTool::dispose ()
 {
-	getBrowser () -> getLightTools () .remove (nullptr);
+	getBrowser () -> removeLightTool (this);
 
 	X3DBoundedObject::dispose ();
 	X3DChildNodeTool::dispose ();

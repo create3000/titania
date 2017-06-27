@@ -954,6 +954,7 @@
     <None Include="Titania\X3D\Tools\Grids\AngleGridTool.h" />
     <None Include="share\titania\tools\AngleGridTool.x3dv" />
     <None Include="Titania\X3D\Routing\Router.h" />
+    <None Include="Titania\X3D\Browser\Sound\X3DSoundContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1643,6 +1644,7 @@
     <Compile Include="Titania\X3D\Configuration\SupportedFieldsArray.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AngleGridTool.cpp" />
     <Compile Include="Titania\X3D\Routing\Router.cpp" />
+    <Compile Include="Titania\X3D\Browser\Sound\X3DSoundContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

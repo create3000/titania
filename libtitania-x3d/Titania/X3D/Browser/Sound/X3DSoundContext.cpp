@@ -48,51 +48,36 @@
  *
  ******************************************************************************/
 
-#include "VisibilitySensorTool.h"
+#include "X3DSoundContext.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Components/Sound/X3DSoundSourceNode.h"
 
 namespace titania {
 namespace X3D {
 
-VisibilitySensorTool::VisibilitySensorTool (X3DBaseNode* const node) :
-	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	              VisibilitySensor (node -> getExecutionContext ()),
-	                   X3DBaseTool (node),
-	X3DEnvironmentalSensorNodeTool (Color3f (1, 0, 0))
+X3DSoundContext::X3DSoundContext () :
+	 X3DBaseNode (),
+	soundSources (),
+	      volume (1),
+	        mute (false)
 {
-	addType (X3DConstants::VisibilitySensorTool);
+	addChildObjects (soundSources, volume, mute);
 }
 
 void
-VisibilitySensorTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DSoundContext::addSoundSource (X3DSoundSourceNode* const node)
 {
-	getBrowser () -> removeVisibilitySensorTool (this);
-
-	X3DEnvironmentalSensorNodeTool::setExecutionContext (executionContext);
-
-	getBrowser () -> addVisibilitySensorTool (this);
+	soundSources .emplace_back (node);
 }
 
 void
-VisibilitySensorTool::initialize ()
+X3DSoundContext::removeSoundSource (X3DSoundSourceNode* const node)
 {
-	X3DEnvironmentalSensorNodeTool::initialize ();
-
-	getBrowser () -> addVisibilitySensorTool (this);
+	soundSources .remove (X3DWeakPtr <X3DSoundSourceNode> (node));
+	soundSources .remove (nullptr);
 }
 
-void
-VisibilitySensorTool::dispose ()
-{
-	getBrowser () -> removeVisibilitySensorTool (this);
-
-	X3DEnvironmentalSensorNodeTool::dispose ();
-}
-
-VisibilitySensorTool::~VisibilitySensorTool ()
+X3DSoundContext::~X3DSoundContext ()
 { }
 
 } // X3D

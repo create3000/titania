@@ -82,6 +82,8 @@ X3DSoundSourceNode::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
+	getBrowser () -> addSoundSource (this);
+
 	mediaStream .reset (new MediaStream ());
 
 	speed () .addInterest (&X3DSoundSourceNode::set_speed, this);
@@ -94,9 +96,21 @@ X3DSoundSourceNode::initialize ()
 }
 
 void
+X3DSoundSourceNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> removeSoundSource (this);
+
+	X3DTimeDependentNode::setExecutionContext (executionContext);
+
+	getBrowser () -> addSoundSource (this);
+}
+
+void
 X3DSoundSourceNode::setVolume (const float value)
 {
-	mediaStream -> setVolume (value);
+	mediaStream -> setVolume (value * getBrowser () -> getVolume () * (not getBrowser () -> getMute ()));
 }
 
 const std::unique_ptr <MediaStream> &
@@ -179,6 +193,8 @@ X3DSoundSourceNode::on_duration_changed ()
 void
 X3DSoundSourceNode::dispose ()
 {
+	getBrowser () -> removeSoundSource (this);
+
 	mediaStream .reset ();
 
 	X3DTimeDependentNode::dispose ();

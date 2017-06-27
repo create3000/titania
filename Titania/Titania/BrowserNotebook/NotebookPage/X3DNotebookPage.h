@@ -195,6 +195,16 @@ protected:
 	void
 	set_shutdown ();
 
+	void
+	set_soundSources ();
+
+	void
+	set_mute ();
+
+	virtual
+	void
+	on_mute_toggled () final override;
+
 	///  @name Members
 
 	X3D::BrowserPtr  mainBrowser;
@@ -207,6 +217,7 @@ protected:
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 	
 	std::unique_ptr <BackgroundImage> backgroundImage;
+	bool                              changing;
 
 };
 

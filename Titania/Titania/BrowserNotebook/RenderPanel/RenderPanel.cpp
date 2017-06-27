@@ -140,8 +140,9 @@ RenderPanel::getPropertiesDialogResponse ()
 	getHeightAdjustment () -> set_upper (browser -> getMaxRenderBufferSize ());
 	getAntialiasingAdjustment () -> set_upper (antialiasing);
 
-	getFileLabel ()      .set_text (filename .basename ());
-	getViewpointLabel () .set_text (viewpoint);
+	getFileLabel ()         .set_text (filename .basename ());
+	getFileChooserButton () .set_tooltip_text (filename .str ());
+	getViewpointLabel ()    .set_text (viewpoint);
 
 	getDurationAdjustment ()     -> set_value (getDuration  (getId (), 1800));
 	getFrameRateAdjustment ()    -> set_value (getFrameRate (getId (), 30));
@@ -231,7 +232,8 @@ RenderPanel::on_properties_file_chooser_button_clicked ()
 
 	filename = dialog -> getUrl ();
 
-	getFileLabel () .set_text (filename .basename ());
+	getFileLabel ()         .set_text (filename .basename ());
+	getFileChooserButton () .set_tooltip_text (filename .str ());
 }
 
 void
