@@ -48,35 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 
-#include <Titania/Basic/URI.h>
-
-#include <Magick++.h>
-
-#include "Pipe.h"
+#include <stdexcept>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class VideoEncoder
+class Pipe
 {
 public:
 
 	///  @name Construction
 
-	VideoEncoder (const basic::uri & filename,
-	              const size_t frameRate);
+	Pipe ();
 
 	///  @name Operations
 
 	void
-	open ()
+	open (const std::string & command)
 	throw (std::runtime_error);
 
 	void
-	write (Magick::Image & image)
+	write (const char* data, const size_t length)
 	throw (std::runtime_error);
 
 	bool
@@ -84,16 +80,27 @@ public:
 
 	///  @name Destruction
 
-	~VideoEncoder ();
+	virtual
+	~Pipe ();
 
 
 private:
 
+	///  @name Operations
+
+	void
+	read (const int32_t timeout);
+
+	int32_t
+	wait (const int32_t fd, const int32_t timeout);
+
 	///  @name Members
 
-	const basic::uri filename;
-	std::string      command;
-	Pipe             pipe;
+	pid_t   pid;
+	int32_t stdin;
+	int32_t stdout;
+	int32_t stderr;
+	bool    opened;
 
 };
 

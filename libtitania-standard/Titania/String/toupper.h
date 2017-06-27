@@ -51,6 +51,8 @@
 #ifndef __TITANIA_STRING_TOUPPER_H__
 #define __TITANIA_STRING_TOUPPER_H__
 
+#include <algorithm>
+
 namespace titania {
 namespace basic {
 

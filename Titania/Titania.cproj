@@ -326,6 +326,7 @@
     <Compile Include="Titania\Editors\BindableNodeList\FogList.cpp" />
     <Compile Include="Titania\Editors\BindableNodeList\NavigationInfoList.cpp" />
     <Compile Include="Titania\Editors\BindableNodeList\ViewpointList.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RenderPanel\Pipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3020,6 +3021,7 @@
     <None Include="Titania\Editors\BindableNodeList\NavigationInfoList.h" />
     <None Include="Titania\Editors\BindableNodeList\ViewpointList.h" />
     <None Include="Titania\Editors\BindableNodeList\X3DBindableNodeList.h" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\Pipe.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

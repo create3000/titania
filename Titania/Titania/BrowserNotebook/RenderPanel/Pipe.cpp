@@ -48,56 +48,130 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
-#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
-
-#include <Titania/Basic/URI.h>
-
-#include <Magick++.h>
-
 #include "Pipe.h"
+
+#include <Titania/OS.h>
+#include <Titania/String.h>
+
+#include <sys/wait.h>
+#include <vector>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace puck {
 
-class VideoEncoder
+Pipe::Pipe () :
+	   pid (0),
+	 stdin (0),
+	stdout (0),
+	stderr (0),
+	opened (false)
+{ }
+
+void
+Pipe::open (const std::string & command)
+throw (std::runtime_error)
 {
-public:
+	__LOG__ << command << std::endl;
 
-	///  @name Construction
+	if (opened)
+		close ();
 
-	VideoEncoder (const basic::uri & filename,
-	              const size_t frameRate);
+	if ((pid = os::popen3 (command, &stdin, &stdout, &stderr)) <= 0)
+		throw std::runtime_error ("Couldn't open command '" +  command+ "'.");
 
-	///  @name Operations
+	opened = true;
+}
 
-	void
-	open ()
-	throw (std::runtime_error);
+/***
+ * Returns a value greater than zero on success. Zero on timeout and -1 if an error occured.
+ */
+int32_t
+Pipe::wait (const int32_t fd, const int32_t timeout)
+{
+	fd_set fdread;
 
-	void
-	write (Magick::Image & image)
-	throw (std::runtime_error);
+	FD_ZERO (&fdread);
+	FD_SET (fd, &fdread);
 
-	bool
+	struct timeval tv;
+
+	tv .tv_sec  = timeout / 1000;
+	tv .tv_usec = (timeout % 1000) * 1000;
+
+	return select (fd + 1, &fdread, nullptr, nullptr, &tv);
+}
+
+void
+Pipe::read (const int32_t timeout)
+{
+	constexpr size_t BUFFER_SIZE = 1024;
+
+	size_t             bytesRead = 0;
+	std::vector <char> buffer (BUFFER_SIZE);
+
+	while (timeout == 0 or wait (stdout, timeout) > 0)
+	{
+		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+			std::cout .write (buffer .data (), bytesRead);
+
+		else if (timeout == 0)
+			break;
+	}
+
+	while (timeout == 0 or wait (stderr, timeout) > 0)
+	{
+		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
+			std::clog .write (buffer .data (), bytesRead);
+
+		else if (timeout == 0)
+			break;
+	}
+}
+
+void
+Pipe::write (const char* data, const size_t length)
+throw (std::runtime_error)
+{
+	const int32_t bytes        = length;
+	const int32_t bytesWritten = ::write (stdin, data, bytes);
+
+	read (50);
+
+	if (bytesWritten not_eq bytes)
+		throw std::runtime_error ("Write to pipe faile: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+}
+
+bool
+Pipe::close ()
+{
+	if (not opened)
+		return false;
+
+	opened = false;
+
+	::close (stdin);
+
+	read (0);
+
+	::close (stdout);
+	::close (stderr);
+
+	int32_t status = 0;
+
+	::waitpid (pid, &status, 0);
+
+	if (status)
+		return false;
+
+	return true;
+}
+
+Pipe::~Pipe ()
+{
 	close ();
-
-	///  @name Destruction
-
-	~VideoEncoder ();
-
-
-private:
-
-	///  @name Members
-
-	const basic::uri filename;
-	std::string      command;
-	Pipe             pipe;
-
-};
+}
 
 } // puck
 } // titania
-
-#endif

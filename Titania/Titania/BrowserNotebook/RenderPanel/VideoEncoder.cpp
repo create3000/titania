@@ -60,20 +60,15 @@ namespace puck {
 
 VideoEncoder::VideoEncoder (const basic::uri & filename,
                             const size_t frameRate) :
-	         filename (filename),
-	command_with_args (os::escape_argument ("ffmpeg")),
-	              pid (0),
-	            stdin (0),
-	           stdout (0),
-	           stderr (0),
-	           opened (false)
+	filename (filename),
+	 command (os::escape_argument ("ffmpeg"))
 {
 //	// So before that class works we also need to ignore SIGPIPE:
 //
 //	if (::signal (SIGPIPE, SIG_IGN) == SIG_ERR)
 //	    ::perror ("signal");
 
-	os::join_command (command_with_args,
+	os::join_command (command,
 	                  "-f", "image2pipe",
 	                  "-vcodec", "png",
 	                  "-r", basic::to_string (frameRate, std::locale::classic ()),
@@ -87,63 +82,9 @@ void
 VideoEncoder::open ()
 throw (std::runtime_error)
 {
-	__LOG__ << command_with_args << std::endl;
-
-	if (opened)
-		close ();
-
 	os::unlink (filename .path ());
 
-	if ((pid = os::popen3 (command_with_args, &stdin, &stdout, &stderr)) <= 0)
-		throw std::runtime_error ("Couldn't open command '" +  command_with_args+ "'.");
-
-	opened = true;
-}
-
-/***
- * Returns a value greater than zero on success. Zero on timeout and -1 if an error occured.
- */
-int32_t
-VideoEncoder::wait (const int32_t fd, const int32_t timeout)
-{
-	fd_set fdread;
-
-	FD_ZERO (&fdread);
-	FD_SET (fd, &fdread);
-
-	struct timeval tv;
-
-	tv .tv_sec  = timeout / 1000;
-	tv .tv_usec = (timeout % 1000) * 1000;
-
-	return select (fd + 1, &fdread, nullptr, nullptr, &tv);
-}
-
-void
-VideoEncoder::read (const int32_t timeout)
-{
-	constexpr size_t BUFFER_SIZE = 1024;
-
-	size_t             bytesRead = 0;
-	std::vector <char> buffer (BUFFER_SIZE);
-
-	while (timeout == 0 or wait (stdout, timeout) > 0)
-	{
-		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::cout .write (buffer .data (), bytesRead);
-
-		else if (timeout == 0)
-			break;
-	}
-
-	while (timeout == 0 or wait (stderr, timeout) > 0)
-	{
-		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::clog .write (buffer .data (), bytesRead);
-
-		else if (timeout == 0)
-			break;
-	}
+	pipe .open (command);
 }
 
 void
@@ -155,44 +96,17 @@ throw (std::runtime_error)
 	image .magick ("PNG");
 	image .write (&blob);
 
-	const int32_t bytes        = blob .length ();
-	const int32_t bytesWritten = ::write (stdin, static_cast <const char*> (blob .data ()), bytes);
-
-	read (50);
-
-	if (bytesWritten not_eq bytes)
-		throw std::runtime_error ("Write to pipe faile: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
 }
 
 bool
 VideoEncoder::close ()
 {
-	if (not opened)
-		return false;
-
-	opened = false;
-
-	::close (stdin);
-
-	read (0);
-
-	::close (stdout);
-	::close (stderr);
-
-	int32_t status = 0;
-
-	::waitpid (pid, &status, 0);
-
-	if (status)
-		return false;
-
-	return true;
+	return pipe .close ();
 }
 
 VideoEncoder::~VideoEncoder ()
-{
-	close ();
-}
+{ }
 
 } // puck
 } // titania
