@@ -125,6 +125,9 @@ private:
 	on_record_clicked () final override;
 
 	void
+	on_load_count_changed (const size_t loadCount);
+
+	void
 	on_frame_changed ();
 
 	void

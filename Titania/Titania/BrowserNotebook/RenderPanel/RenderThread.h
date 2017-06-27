@@ -106,6 +106,11 @@ public:
 	{ return image; }
 
 	///  Signal setup.
+	sigc::signal <void, size_t> &
+	signal_load_count_changed ()
+	{ return loadCountSignal; }
+
+	///  Signal setup.
 	sigc::signal <void> &
 	signal_frame_changed ()
 	{ return frameSignal; }
@@ -123,6 +128,9 @@ private:
 	void
 	set_initialized ();
 
+	void
+	set_loadCount ();
+
 	bool
 	on_timeout ();
 
@@ -137,6 +145,7 @@ private:
 	std::shared_ptr <RenderClock> clock;
 	size_t                        frame;
 	Magick::Image                 image;
+	sigc::signal <void, size_t>   loadCountSignal;
 	sigc::signal <void>           frameSignal;
 
 };

@@ -147,6 +147,10 @@ public:
 	getFrameSpinButton () const
 	{ return *m_FrameSpinButton; }
 
+	Gtk::Label &
+	getLoadStateLabel () const
+	{ return *m_LoadStateLabel; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -268,6 +272,7 @@ private:
 	Gtk::ToolButton* m_NewButton2;
 	Gtk::ToolButton* m_NewButton3;
 	Gtk::SpinButton* m_FrameSpinButton;
+	Gtk::Label* m_LoadStateLabel;
 	Gtk::Box* m_PreviewBox;
 	Gtk::Label* m_TextureFormatLabel;
 	Gtk::Label* m_TextureLoadStateLabel;

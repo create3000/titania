@@ -71,7 +71,7 @@ public:
 	///  and for interval to the tick interval of the system clock, in seconds.
 	system_clock () :
 		clock_base <Type> (count (), duration_cast <duration <Type>> (duration <high_resolution_clock::rep,
-		                                                                         high_resolution_clock::period> ()) .count ())
+		                                                                        high_resolution_clock::period> ()) .count ())
 	{ }
 
 	///  Copy constructor.

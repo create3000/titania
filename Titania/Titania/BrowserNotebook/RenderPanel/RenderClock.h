@@ -76,7 +76,7 @@ public:
 	virtual
 	void
 	advance () final override
-	{ }
+	{ cycle (cycle () + 0.00001); }
 
 	virtual
 	~RenderClock () final override

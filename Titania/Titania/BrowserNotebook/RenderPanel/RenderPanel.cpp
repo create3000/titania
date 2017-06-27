@@ -187,13 +187,17 @@ RenderPanel::setRendering (const bool value)
 		worldURL .fragment (viewpoint);
 
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
-		set_frame (0);
 
-		videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
+		getLoadStateLabel () .set_text ("Initializing …");
+		getLoadStateLabel () .set_visible (true);
+		getPreviewBox ()     .set_visible (false);
+
+		set_frame (0);
 
 		try
 		{
 			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline);
+			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
 			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 
 			videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
@@ -208,6 +212,7 @@ RenderPanel::setRendering (const bool value)
 	else
 	{
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-record"));
+		getLoadStateLabel () .set_text ("");
 
 		videoEncoder .reset ();
 		renderThread .reset ();
@@ -274,6 +279,16 @@ void
 RenderPanel::on_record_clicked ()
 {
 	setRendering (not getRendering ());
+}
+
+void
+RenderPanel::on_load_count_changed (const size_t loadCount)
+{
+	if (loadCount)
+		return;
+
+	getLoadStateLabel () .set_visible (false);
+	getPreviewBox ()     .set_visible (true);
 }
 
 void

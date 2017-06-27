@@ -123,23 +123,23 @@ protected:
 		value (clock .value)
 		{ }
 
-	///  Set the last interval of this clock.
-	void
-	interval (const Type & interval)
-	{ value .imag (interval); }
-
-
-private:
-
 	///  Set the cycle of this clock.
 	void
 	cycle (const Type & cycle)
 	{ return value .real (cycle); }
 
+	///  Set the last interval of this clock.
+	void
+	interval (const Type & interval)
+	{ value .imag (interval); }
+
 	///  Get the count of this clock.
 	virtual
 	Type
 	count () const = 0;
+
+
+private:
 
 	std::complex <Type> value;
 

@@ -73,12 +73,14 @@ RenderThread::RenderThread (const basic::uri & url,
 	                      width (width),
 	                     height (height),
 	               antialiasing (antialiasing),
-	                      clock (),
+	                      clock (std::make_shared <RenderClock> (X3D::SFTime::now (), 1 / X3D::time_type (frameRate))),
 	                      frame (0),
 	                      image (),
+	            loadCountSignal (),
 	                frameSignal ()
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
+	browser -> setClock (clock);
 	browser -> setFixedPipeline (fixedPipeline);
 	browser -> setMute (true);
 	browser -> setup ();
@@ -91,7 +93,30 @@ RenderThread::set_initialized ()
 	{
 		checkForInterrupt ();
 		browser -> initialized () .removeInterest (&RenderThread::set_initialized, this);
-		browser -> setClock (clock = std::make_shared <RenderClock> (X3D::SFTime::now (), 1 / X3D::time_type (frameRate)));
+		browser -> getLoadCount () .addInterest (&RenderThread::set_loadCount, this);
+
+		set_loadCount ();
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const X3D::InterruptThreadException & error)
+	{ }
+}
+
+void
+RenderThread::set_loadCount ()
+{
+	try
+	{
+		loadCountSignal .emit (browser -> getLoadCount ());
+
+		if (browser -> getLoadCount ())
+			return;
+
+		checkForInterrupt ();
+		browser -> getLoadCount () .removeInterest (&RenderThread::set_loadCount, this);
 
 		Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
 	}
