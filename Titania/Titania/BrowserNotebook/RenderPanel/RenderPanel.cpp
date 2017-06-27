@@ -78,6 +78,7 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	               filename ()
 {
 	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
+	getPropertiesDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
 
 	const auto textureProperties = preview -> getLocalBrowser ()-> createNode <X3D::TextureProperties> ();
 
@@ -96,6 +97,15 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	setup ();
 }
 
+void
+RenderPanel::initialize ()
+{
+	X3DRenderPanelInterface::initialize ();
+
+	preview -> getLocalBrowser () -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
+	preview -> getLocalBrowser () -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
+}
+
 bool
 RenderPanel::getPropertiesDialogResponse ()
 {
@@ -111,7 +121,7 @@ RenderPanel::getPropertiesDialogResponse ()
 	getFileLabel () .set_text (filename .basename ());
 
 	getDurationAdjustment ()     -> set_value (1800);
-	getFPSAdjustment ()          -> set_value (30);
+	getFrameRateAdjustment ()    -> set_value (30);
 	getWidthAdjustment ()        -> set_value (768);
 	getHeightAdjustment ()       -> set_value (576);
 	getAntialiasingAdjustment () -> set_value (std::min (4, antialiasing));
@@ -134,25 +144,25 @@ RenderPanel::setRendering (const bool value)
 		if (not getPropertiesDialogResponse ())
 			return;
 
-		const auto   worldURL        = getPage () -> getMainBrowser () -> getWorldURL ();
-	   const size_t frames          = getDurationAdjustment () -> get_value ();
-		const size_t framesPerSecond = getFPSAdjustment () -> get_value ();
-		const size_t width           = getWidthAdjustment () -> get_value ();
-		const size_t height          = getHeightAdjustment () -> get_value ();
-		const size_t antialiasing    = getAntialiasingAdjustment () -> get_value ();
-		const size_t fixedPipeline   = getPage () -> getMainBrowser () -> getFixedPipeline ();
+		const auto   worldURL      = getPage () -> getMainBrowser () -> getWorldURL ();
+	   const size_t frames        = getDurationAdjustment () -> get_value ();
+		const size_t frameRate     = getFrameRateAdjustment () -> get_value ();
+		const size_t width         = getWidthAdjustment () -> get_value ();
+		const size_t height        = getHeightAdjustment () -> get_value ();
+		const size_t antialiasing  = getAntialiasingAdjustment () -> get_value ();
+		const size_t fixedPipeline = getPage () -> getMainBrowser () -> getFixedPipeline ();
 
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
 		set_frame (0);
 
-		videoEncoder = std::make_unique <VideoEncoder> (filename);
+		videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
 
 		try
 		{
-			renderThread = std::make_unique <RenderThread> (worldURL, frames, framesPerSecond, width, height, antialiasing, fixedPipeline);
+			renderThread = std::make_unique <RenderThread> (worldURL, frames, frameRate, width, height, antialiasing, fixedPipeline);
 			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 
-			videoEncoder = std::make_unique <VideoEncoder> (filename);
+			videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
 			videoEncoder -> open ();
 		}
 		catch (const std::exception & error)
@@ -194,7 +204,7 @@ RenderPanel::on_properties_file_chooser_button_clicked ()
 void
 RenderPanel::on_properties_time_changed ()
 {
-	getTimeLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFPSAdjustment () -> get_value ()));
+	getTimeLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFrameRateAdjustment () -> get_value ()));
 }
 
 void

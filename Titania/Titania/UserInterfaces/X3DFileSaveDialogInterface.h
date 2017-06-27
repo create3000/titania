@@ -152,6 +152,10 @@ public:
 	{ return m_FileFilterVideoMP4; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterVideoOGG () const
+	{ return m_FileFilterVideoOGG; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterVrmlEncoding () const
 	{ return m_FileFilterVrmlEncoding; }
 
@@ -265,6 +269,7 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideoAVI;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideoMP4;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideoOGG;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;

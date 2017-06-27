@@ -50,6 +50,8 @@
 
 #include "RenderThread.h"
 
+#include "RenderClock.h"
+
 #include <Titania/X3D/Routing/Router.h>
 
 #include <glibmm/main.h>
@@ -59,7 +61,7 @@ namespace puck {
 
 RenderThread::RenderThread (const basic::uri & url,
                             const size_t frames,
-                            const size_t framesPerSecond,
+                            const size_t frameRate,
                             const size_t width,
                             const size_t height,
                             const size_t antialiasing,
@@ -67,10 +69,11 @@ RenderThread::RenderThread (const basic::uri & url,
 	X3D::X3DInterruptibleThread (),
 	                    browser (X3D::createBrowser ({ url .str () })),
 	                     frames (frames),
-	            framesPerSecond (framesPerSecond),
+	                  frameRate (frameRate),
 	                      width (width),
 	                     height (height),
 	               antialiasing (antialiasing),
+	                      clock (),
 	                      frame (0),
 	                      image (),
 	                frameSignal ()
@@ -85,10 +88,9 @@ RenderThread::set_initialized ()
 {
 	try
 	{
-		__LOG__ << browser -> getWorldURL () << std::endl;
-
-		browser -> initialized () .removeInterest (&RenderThread::set_initialized, this);
 		checkForInterrupt ();
+		browser -> initialized () .removeInterest (&RenderThread::set_initialized, this);
+		browser -> setClock (clock = std::make_shared <RenderClock> (X3D::SFTime::now (), 1 / X3D::time_type (frameRate)));
 
 		Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
 	}
@@ -110,9 +112,11 @@ RenderThread::on_timeout ()
 		if (frame >= frames)
 			return false;
 
-		__LOG__ << browser -> getWorldURL () << " : " << frame << std::endl;
-
 		image = browser -> getSnapshot (width, height, false, std::min <size_t> (antialiasing, browser -> getMaxSamples ()));
+		clock -> render ();
+
+		image .defineValue ("PNG", "color-type", "2");
+
 		frameSignal .emit ();
 
 		++ frame;

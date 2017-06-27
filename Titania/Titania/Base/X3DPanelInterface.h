@@ -83,6 +83,16 @@ public:
 	hasFocus () const
 	{ return focus; }
 
+	/// @name Event handler
+
+	virtual
+	bool
+	on_focus_in_event (GdkEventFocus* event);
+
+	virtual
+	bool
+	on_focus_out_event (GdkEventFocus* event);
+
 	/// @name Destruction
 
 	virtual

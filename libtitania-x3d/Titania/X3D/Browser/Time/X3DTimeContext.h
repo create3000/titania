@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 using X3DClock    = chrono::clock_base <time_type>;
-using X3DClockPtr = std::unique_ptr <X3DClock>;
+using X3DClockPtr = std::shared_ptr <X3DClock>;
 
 class X3DTimeContext :
 	virtual public X3DBaseNode
@@ -68,6 +68,10 @@ class X3DTimeContext :
 public:
 
 	///  @name Member access
+
+	void
+	setClock (const X3DClockPtr & value)
+	{ clock = value; }
 
 	const X3DClockPtr &
 	getClock () const
@@ -102,7 +106,7 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <X3DClock> clock;
+	X3DClockPtr clock;
 
 };
 

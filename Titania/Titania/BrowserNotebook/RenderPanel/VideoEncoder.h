@@ -64,7 +64,8 @@ class VideoEncoder
 {
 public:
 
-	VideoEncoder (const basic::uri & filename);
+	VideoEncoder (const basic::uri & filename,
+	              const size_t frameRate);
 
 	void
 	open ()

@@ -61,10 +61,13 @@ namespace puck {
 
 static constexpr auto VIDEO_AVI_FILTER = "AVI Video (*.avi)";
 static constexpr auto VIDEO_MP4_FILTER = "MPEG-4 Video (*.mp4)";
+static constexpr auto VIDEO_OGG_FILTER = "Ogg Theora (*.ogg, *.ogv)";
 
 const std::set <std::string> FileSaveVideoDialog::knownFileTypes = {
 	".avi",
 	".mp4",
+	".ogg",
+	".ogv",
 };
 
 FileSaveVideoDialog::FileSaveVideoDialog (X3DBrowserWindow* const browserWindow) :
@@ -77,6 +80,7 @@ FileSaveVideoDialog::FileSaveVideoDialog (X3DBrowserWindow* const browserWindow)
 
 	getFileFilterVideoAVI () -> set_name (_ (VIDEO_AVI_FILTER));
 	getFileFilterVideoMP4 () -> set_name (_ (VIDEO_MP4_FILTER));
+	getFileFilterVideoOGG () -> set_name (_ (VIDEO_OGG_FILTER));
 
 	setup ();
 }
@@ -86,9 +90,13 @@ FileSaveVideoDialog::setFileFilter (const std::string & name)
 {
 	getWindow () .add_filter (getFileFilterVideoAVI ());
 	getWindow () .add_filter (getFileFilterVideoMP4 ());
+	getWindow () .add_filter (getFileFilterVideoOGG ());
 
 	if (name == _(VIDEO_AVI_FILTER))
 		getWindow () .set_filter (getFileFilterVideoAVI ());
+
+	else if (name == _(VIDEO_OGG_FILTER))
+		getWindow () .set_filter (getFileFilterVideoOGG ());
 
 	else
 		getWindow () .set_filter (getFileFilterVideoMP4 ());
@@ -99,6 +107,9 @@ FileSaveVideoDialog::getSuffix () const
 {
 	if (getWindow () .get_filter () == getFileFilterVideoAVI ())
 		return ".avi";
+
+	if (getWindow () .get_filter () == getFileFilterVideoOGG ())
+		return ".ogg";
 
 	// Default
 

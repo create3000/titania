@@ -313,8 +313,8 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	if (getWidget () .get_mapped ())
 		X3DBrowserPanel::on_map ();
 
-	browser -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DBrowserPanel::on_focus_out_event));
-	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DBrowserPanel::on_focus_in_event));
+	browser -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
+	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -748,20 +748,6 @@ X3DBrowserPanel::on_map ()
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()       -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
-}
-
-bool
-X3DBrowserPanel::on_focus_in_event (GdkEventFocus* event)
-{
-	setFocus (true);
-	return false;
-}
-
-bool
-X3DBrowserPanel::on_focus_out_event (GdkEventFocus* event)
-{
-	setFocus (false);
-	return false;
 }
 
 void

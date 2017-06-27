@@ -79,8 +79,8 @@ X3DRenderPanelInterface::create ()
 	// Get objects.
 	m_AntialiasingAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AntialiasingAdjustment"));
 	m_DurationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DurationAdjustment"));
-	m_FPSAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FPSAdjustment"));
 	m_FrameAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
+	m_FrameRateAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameRateAdjustment"));
 	m_HeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
 	m_WidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("WidthAdjustment"));
 
@@ -110,10 +110,12 @@ X3DRenderPanelInterface::create ()
 
 	// Connect object Gtk::Adjustment with id 'DurationAdjustment'.
 	m_DurationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
-	m_FPSAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
 
 	// Connect object Gtk::ToolButton with id 'RecordButton'.
 	m_RecordButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_record_clicked));
+
+	// Connect object Gtk::Adjustment with id 'FrameRateAdjustment'.
+	m_FrameRateAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));
 
 	// Connect object Gtk::Button with id 'FileChooserButton'.
 	m_FileChooserButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_file_chooser_button_clicked));

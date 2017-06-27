@@ -3017,6 +3017,7 @@
     <None Include="Titania\Bits\Cairo.h" />
     <None Include="Titania\Bits\String.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.h" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\RenderClock.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

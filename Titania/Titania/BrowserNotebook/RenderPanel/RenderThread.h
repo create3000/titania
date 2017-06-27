@@ -58,6 +58,8 @@
 namespace titania {
 namespace puck {
 
+class RenderClock;
+
 class RenderThread :
 	public X3D::X3DInterruptibleThread
 {
@@ -67,7 +69,7 @@ public:
 
 	RenderThread (const basic::uri & url,
 	              const size_t frames,
-	              const size_t framesPerSecond,
+	              const size_t frameRate,
 	              const size_t width,
 	              const size_t height,
 	              const size_t antialiasing,
@@ -84,8 +86,8 @@ public:
 	{ return frames; }
 
 	size_t
-	getFramesPerSecond () const
-	{ return framesPerSecond; }
+	getFrameRate () const
+	{ return frameRate; }
 
 	size_t
 	getWidth () const
@@ -126,15 +128,16 @@ private:
 
 	///  @name Members
 
-	const X3D::BrowserPtr       browser;
-   const size_t                frames;
-	const size_t                framesPerSecond;
-	const size_t                width;
-	const size_t                height;
-	const size_t                antialiasing;
-	size_t                      frame;
-	Magick::Image               image;
-	sigc::signal <void>         frameSignal;
+	const X3D::BrowserPtr         browser;
+   const size_t                  frames;
+	const size_t                  frameRate;
+	const size_t                  width;
+	const size_t                  height;
+	const size_t                  antialiasing;
+	std::shared_ptr <RenderClock> clock;
+	size_t                        frame;
+	Magick::Image                 image;
+	sigc::signal <void>           frameSignal;
 
 };
 

@@ -78,6 +78,12 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Member access
 
 	bool

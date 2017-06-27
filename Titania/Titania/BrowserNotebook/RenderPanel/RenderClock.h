@@ -48,96 +48,52 @@
  *
  ******************************************************************************/
 
-#include "X3DPanelInterface.h"
+#ifndef __TITANIA_CHRONO_COUNTING_CLOCK_H__
+#define __TITANIA_CHRONO_COUNTING_CLOCK_H__
 
-#include "../Browser/X3DBrowserWindow.h"
-#include "../BrowserNotebook/PanelMenu/PanelMenu.h"
-
-#include <cassert>
+#include <Titania/X3D/Fields/SFTime.h>
+#include <Titania/Chrono/ClockBase.h>
 
 namespace titania {
 namespace puck {
 
-X3DPanelInterface::X3DPanelInterface (NotebookPage* const page, const PanelType panelType) :
-	X3DUserInterface (),
-	            page (page),
-	       panelMenu (new PanelMenu (getBrowserWindow (), page, panelType)),
-	           focus (false)
+class RenderClock :
+	public chrono::clock_base <X3D::time_type>
 {
-	assert (page);
+public:
 
-	addChildObjects (focus);
-}
+	///  Default constructor.  Sets the value for this clock to cycle to @a currentTime and for interval to @a interval.
+	constexpr
+	RenderClock (const X3D::time_type currentTime, const X3D::time_type interval) :
+		chrono::clock_base <X3D::time_type> (currentTime, interval)
+	{ }
 
-X3DPanelInterface::X3DPanelInterface () :
-	X3DPanelInterface (nullptr, PanelType::BROWSER_PANEL)
-{ }
+	void
+	render ()
+	{ chrono::clock_base <X3D::time_type>::advance (); }
 
-void
-X3DPanelInterface::initialize ()
-{
-	X3DUserInterface::initialize ();
+	///  Disable advance, thus no time step is done if we do not want.
+	virtual
+	void
+	advance () final override
+	{ }
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
-	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
+	virtual
+	~RenderClock () final override
+	{ }
 
-	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
 
-	set_editing ();
-}
+private:
 
-const X3D::SFEnum <PanelType> &
-X3DPanelInterface::getPanelType () const
-{
-	return panelMenu -> getPanelType ();
-}
+	///  Get the current count of this clock.
+	virtual
+	X3D::time_type
+	count () const final override
+	{ return cycle () + interval (); }
 
-bool
-X3DPanelInterface::on_focus_in_event (GdkEventFocus* event)
-{
-	setFocus (true);
-	return false;
-}
+};
 
-bool
-X3DPanelInterface::on_focus_out_event (GdkEventFocus* event)
-{
-	setFocus (false);
-	return false;
-}
-
-void
-X3DPanelInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-
-	set_focus ();
-}
-
-void
-X3DPanelInterface::set_focus ()
-{
-	if (hasFocus () and getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-}
-
-void
-X3DPanelInterface::dispose ()
-{
-	panelMenu .reset ();
-
-	X3DUserInterface::dispose ();
-}
-
-X3DPanelInterface::~X3DPanelInterface ()
-{ }
-
-} // puck
+} // chrono
 } // titania
+
+#endif

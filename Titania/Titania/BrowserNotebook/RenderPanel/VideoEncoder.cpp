@@ -51,13 +51,15 @@
 #include "VideoEncoder.h"
 
 #include <Titania/OS.h>
+#include <Titania/String.h>
 
 #include <sys/wait.h>
 
 namespace titania {
 namespace puck {
 
-VideoEncoder::VideoEncoder (const basic::uri & filename) :
+VideoEncoder::VideoEncoder (const basic::uri & filename,
+                            const size_t frameRate) :
 	         filename (filename),
 	command_with_args (os::escape_argument ("ffmpeg")),
 	              pid (0),
@@ -66,7 +68,14 @@ VideoEncoder::VideoEncoder (const basic::uri & filename) :
 	           stderr (0),
 	           opened (false)
 {
-	os::join_command (command_with_args, "-f", "image2pipe", "-vcodec", "png", "-r", "30", "-i", "-", "-vcodec", "png", "-q:v", "0", filename .path ());
+	os::join_command (command_with_args,
+	                  "-f", "image2pipe",
+	                  "-vcodec", "png",
+	                  "-r", basic::to_string (frameRate, std::locale::classic ()),
+	                  "-i", "-",
+	                  "-vcodec", "png",
+	                  "-q:v", "0",
+	                  filename .path ());
 }
 
 void
@@ -96,8 +105,6 @@ VideoEncoder::write (Magick::Image & image)
 
 	const int32_t bytes        = blob .length ();
 	const int32_t bytesWritten = ::write (stdin, static_cast <const char*> (blob .data ()), bytes);
-
-	__LOG__ << pid << " : " << stdin << " : " << bytesWritten << " : " << bytes << std::endl;
 
 	if (bytesWritten not_eq bytes)
 		return false;
