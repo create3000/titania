@@ -133,6 +133,12 @@ private:
 	void
 	set_frame (const size_t value);
 
+	void
+	on_stdout (const Glib::ustring & string);
+	
+	void
+	on_stderr (const Glib::ustring & string);
+
 	///  @name Members
 
 	std::unique_ptr <TexturePreview> preview;

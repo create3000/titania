@@ -61,13 +61,33 @@
 namespace titania {
 namespace puck {
 
-Pipe::Pipe () :
-	   pid (0),
-	 stdin (0),
-	stdout (0),
-	stderr (0),
-	opened (false)
+const size_t Pipe::bufferSize = 1024;
+
+Pipe::Pipe (const bool use_stdin, const bool use_stdout, const bool use_stderr) :
+	   use_stdin (use_stdin),
+	  use_stdout (use_stdout),
+	  use_stderr (use_stderr),
+	         pid (0),
+	    fd_stdin (0),
+	   fd_stdout (0),
+	   fd_stderr (0),
+	      opened (false),
+	stdoutBuffer (),
+	stderrBuffer (),
+	      buffer (bufferSize) 
 { }
+
+std::string
+Pipe::stdout ()
+{
+	return std::move (stdoutBuffer);
+}
+
+std::string
+Pipe::stderr ()
+{
+	return std::move (stderrBuffer);
+}
 
 void
 Pipe::open (const std::string & command)
@@ -78,8 +98,10 @@ throw (std::runtime_error)
 	if (opened)
 		close ();
 
-	if ((pid = os::popen3 (command, &stdin, &stdout, &stderr)) <= 0)
+	if ((pid = os::popen3 (command, &fd_stdin, &fd_stdout, &fd_stderr)) <= 0)
 		throw std::runtime_error ("Couldn't open command '" +  command+ "'.");
+
+	read (5);
 
 	opened = true;
 }
@@ -106,25 +128,30 @@ Pipe::wait (const int32_t fd, const int32_t timeout)
 void
 Pipe::read (const int32_t timeout)
 {
-	constexpr size_t BUFFER_SIZE = 1024;
+	int32_t bytesRead = 0;
 
-	size_t             bytesRead = 0;
-	std::vector <char> buffer (BUFFER_SIZE);
-
-	while (timeout == 0 or wait (stdout, timeout) > 0)
+	while (timeout == 0 or wait (fd_stdout, timeout) > 0)
 	{
-		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::cout .write (buffer .data (), bytesRead);
-
+		if ((bytesRead = ::read (fd_stdout, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		{
+			if (use_stdout)
+				stdoutBuffer .append (buffer .data (), bytesRead);
+			else
+				std::cout .write (buffer .data (), bytesRead);
+		}
 		else if (timeout == 0)
 			break;
 	}
 
-	while (timeout == 0 or wait (stderr, timeout) > 0)
+	while (timeout == 0 or wait (fd_stderr, timeout) > 0)
 	{
-		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * BUFFER_SIZE)) > 0)
-			std::clog .write (buffer .data (), bytesRead);
-
+		if ((bytesRead = ::read (fd_stderr, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		{
+			if (use_stderr)
+				stderrBuffer .append (buffer .data (), bytesRead);
+			else
+				std::clog .write (buffer .data (), bytesRead);
+		}
 		else if (timeout == 0)
 			break;
 	}
@@ -135,9 +162,9 @@ Pipe::write (const char* data, const size_t length)
 throw (std::runtime_error)
 {
 	const int32_t bytes        = length;
-	const int32_t bytesWritten = ::write (stdin, data, bytes);
+	const int32_t bytesWritten = ::write (fd_stdin, data, bytes);
 
-	read (50);
+	read (5);
 
 	if (bytesWritten not_eq bytes)
 		throw std::runtime_error ("Write to pipe faile: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
@@ -151,12 +178,12 @@ Pipe::close ()
 
 	opened = false;
 
-	::close (stdin);
+	::close (fd_stdin);
 
 	read (0);
 
-	::close (stdout);
-	::close (stderr);
+	::close (fd_stdout);
+	::close (fd_stderr);
 
 	int32_t status = 0;
 

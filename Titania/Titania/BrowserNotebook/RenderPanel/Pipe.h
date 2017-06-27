@@ -53,6 +53,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace titania {
 namespace puck {
@@ -63,9 +64,15 @@ public:
 
 	///  @name Construction
 
-	Pipe ();
+	Pipe (const bool use_stdin, const bool use_stout, const bool use_sterr);
 
 	///  @name Operations
+
+	std::string
+	stdout ();
+
+	std::string
+	stderr ();
 
 	void
 	open (const std::string & command)
@@ -94,13 +101,25 @@ private:
 	int32_t
 	wait (const int32_t fd, const int32_t timeout);
 
+	///  @name Static members
+
+	static const size_t bufferSize;
+
 	///  @name Members
 
+	bool use_stdin;
+	bool use_stdout;
+	bool use_stderr;
+
 	pid_t   pid;
-	int32_t stdin;
-	int32_t stdout;
-	int32_t stderr;
+	int32_t fd_stdin;
+	int32_t fd_stdout;
+	int32_t fd_stderr;
 	bool    opened;
+
+	std::string        stdoutBuffer;
+	std::string        stderrBuffer;
+	std::vector <char> buffer;
 
 };
 

@@ -54,6 +54,8 @@
 #include <Titania/Basic/URI.h>
 
 #include <Magick++.h>
+#include <glibmm/ustring.h>
+#include <sigc++/signal.h>
 
 #include "Pipe.h"
 
@@ -67,6 +69,7 @@ public:
 	///  @name Construction
 
 	VideoEncoder (const basic::uri & filename,
+	              const std::string & codec,
 	              const size_t frameRate);
 
 	///  @name Operations
@@ -82,6 +85,18 @@ public:
 	bool
 	close ();
 
+	///  @name Signals
+
+	///  Signal stdout.
+	sigc::signal <void, Glib::ustring> &
+	signal_stdout ()
+	{ return stdoutSignal; }
+
+	///  Signal stdout.
+	sigc::signal <void, Glib::ustring> &
+	signal_stderr ()
+	{ return stderrSignal; }
+
 	///  @name Destruction
 
 	~VideoEncoder ();
@@ -94,6 +109,9 @@ private:
 	const basic::uri filename;
 	std::string      command;
 	Pipe             pipe;
+
+	sigc::signal <void, Glib::ustring> stdoutSignal;
+	sigc::signal <void, Glib::ustring> stderrSignal;
 
 };
 

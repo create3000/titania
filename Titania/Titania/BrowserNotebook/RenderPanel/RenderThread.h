@@ -105,12 +105,12 @@ public:
 	getCurrentImage ()
 	{ return image; }
 
-	///  Signal setup.
+	///  Signal load_count_changed.
 	sigc::signal <void, size_t> &
 	signal_load_count_changed ()
 	{ return loadCountSignal; }
 
-	///  Signal setup.
+	///  Signal frame_changed.
 	sigc::signal <void> &
 	signal_frame_changed ()
 	{ return frameSignal; }

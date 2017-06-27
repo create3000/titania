@@ -58,22 +58,33 @@
 namespace titania {
 namespace puck {
 
+/*
+ *  codecs PNG, H.264
+ */
+
 VideoEncoder::VideoEncoder (const basic::uri & filename,
+                            const std::string & codec,
                             const size_t frameRate) :
-	filename (filename),
-	 command (os::escape_argument ("ffmpeg"))
+	    filename (filename),
+	     command (os::escape_argument ("ffmpeg")),
+	        pipe (true, true, true),
+	stdoutSignal (),
+	stderrSignal ()
 {
-//	// So before that class works we also need to ignore SIGPIPE:
-//
-//	if (::signal (SIGPIPE, SIG_IGN) == SIG_ERR)
-//	    ::perror ("signal");
+	static const std::map <std::string, std::string> codecs = {
+		std::make_pair ("PNG",   "png"),
+		std::make_pair ("H.264", "libx264"),
+	};
+
+	const auto iter   = codecs .find (codec);
+	const auto vcodec = iter not_eq codecs .end () ? iter -> second : "png";
 
 	os::join_command (command,
 	                  "-f", "image2pipe",
 	                  "-vcodec", "png",
 	                  "-r", basic::to_string (frameRate, std::locale::classic ()),
 	                  "-i", "-",
-	                  "-vcodec", "png",
+	                  "-vcodec", vcodec,
 	                  "-q:v", "0",
 	                  filename .path ());
 }
@@ -85,6 +96,9 @@ throw (std::runtime_error)
 	os::unlink (filename .path ());
 
 	pipe .open (command);
+
+	stdoutSignal .emit (pipe .stdout ());
+	stderrSignal .emit (pipe .stderr ());
 }
 
 void
@@ -97,16 +111,31 @@ throw (std::runtime_error)
 	image .write (&blob);
 
 	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
+
+	stdoutSignal .emit (pipe .stdout ());
+	stderrSignal .emit (pipe .stderr ());
 }
 
 bool
 VideoEncoder::close ()
 {
-	return pipe .close ();
+	const auto success = pipe .close ();
+
+	stdoutSignal .emit (pipe .stdout ());
+	stderrSignal .emit (pipe .stderr ());
+
+	return success;
 }
 
 VideoEncoder::~VideoEncoder ()
-{ }
+{
+	close ();
+}
+
+//	// So before that class works we also need to ignore SIGPIPE:
+//
+//	if (::signal (SIGPIPE, SIG_IGN) == SIG_ERR)
+//	    ::perror ("signal");
 
 } // puck
 } // titania

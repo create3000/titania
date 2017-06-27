@@ -144,6 +144,7 @@ RenderPanel::getPropertiesDialogResponse ()
 	getFileChooserButton () .set_tooltip_text (filename .str ());
 	getViewpointLabel ()    .set_text (viewpoint);
 
+	getCodecButton () .set_active_text (getCodec  (getId (), "PNG"));
 	getDurationAdjustment ()     -> set_value (getDuration  (getId (), 1800));
 	getFrameRateAdjustment ()    -> set_value (getFrameRate (getId (), 30));
 	getWidthAdjustment ()        -> set_value (getWidth     (getId (), 1024));
@@ -158,6 +159,7 @@ RenderPanel::getPropertiesDialogResponse ()
 		return false;
 
 	setFilename     (getId (), filename);
+	setCodec        (getId (), getCodecButton () .get_active_text ());
 	setDuration     (getId (), getDurationAdjustment ()     -> get_value ());
 	setFrameRate    (getId (), getFrameRateAdjustment ()    -> get_value ());
 	setWidth        (getId (), getWidthAdjustment ()        -> get_value ());
@@ -177,6 +179,7 @@ RenderPanel::setRendering (const bool value)
 			return;
 
 		auto         worldURL      = getPage () -> getMainBrowser () -> getWorldURL ();
+		const auto   codec         = getCodecButton () .get_active_text ();
 	   const size_t duration      = getDurationAdjustment ()     -> get_value ();
 		const size_t frameRate     = getFrameRateAdjustment ()    -> get_value ();
 		const size_t width         = getWidthAdjustment ()        -> get_value ();
@@ -200,7 +203,9 @@ RenderPanel::setRendering (const bool value)
 			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
 			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 
-			videoEncoder = std::make_unique <VideoEncoder> (filename, frameRate);
+			videoEncoder = std::make_unique <VideoEncoder> (filename, codec, frameRate);
+			videoEncoder -> signal_stdout () .connect  (sigc::mem_fun (this, &RenderPanel::on_stdout));
+			videoEncoder -> signal_stderr () .connect  (sigc::mem_fun (this, &RenderPanel::on_stderr));
 			videoEncoder -> open ();
 		}
 		catch (const std::exception & error)
@@ -322,6 +327,18 @@ RenderPanel::set_frame (const size_t value)
 	getFrameAdjustment () -> set_lower (value);
 	getFrameAdjustment () -> set_upper (value);
 	getFrameAdjustment () -> set_value (value);
+}
+
+void
+RenderPanel::on_stdout (const Glib::ustring & string)
+{
+	getPage () -> getMainBrowser () -> getConsole () -> addString (string);
+}
+
+void
+RenderPanel::on_stderr (const Glib::ustring & string)
+{
+	getPage () -> getMainBrowser () -> getConsole () -> addString (string);
 }
 
 RenderPanel::~RenderPanel ()

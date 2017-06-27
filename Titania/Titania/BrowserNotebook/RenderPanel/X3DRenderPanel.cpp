@@ -92,6 +92,38 @@ X3DRenderPanel::getFilename (const size_t id, const basic::uri & filename) const
 }
 
 void
+X3DRenderPanel::setCodec (const size_t id, const std::string & codec)
+{
+	auto codecArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/codec");
+
+	codecArray .resize (4);
+
+	codecArray [id] = codec;
+
+	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/codec", codecArray);
+
+	getPage () -> setModified (true);
+}
+
+std::string
+X3DRenderPanel::getCodec (const size_t id, const std::string & codec) const
+{
+	try
+	{
+		const auto codecArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/codec");
+
+		if (codecArray .at (id) .empty ())
+			return codec;
+
+		return codecArray .at (id) .str ();
+	}
+	catch (const std::exception &)
+	{
+		return codec;
+	}
+}
+
+void
 X3DRenderPanel::setDuration (const size_t id, const size_t duration)
 {
 	auto durationArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/duration");

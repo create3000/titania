@@ -80,7 +80,13 @@ protected:
 	
 	basic::uri
 	getFilename (const size_t id, const basic::uri & filename) const;
-	
+
+	void
+	setCodec (const size_t id, const std::string & codec);
+
+	std::string
+	getCodec (const size_t id, const std::string & codec) const;
+
 	void
 	setDuration (const size_t id, const size_t duration);
 	

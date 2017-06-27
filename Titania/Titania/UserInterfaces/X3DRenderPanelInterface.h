@@ -215,6 +215,10 @@ public:
 	getSizesButton () const
 	{ return *m_SizesButton; }
 
+	Gtk::ComboBoxText &
+	getCodecButton () const
+	{ return *m_CodecButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -289,6 +293,7 @@ private:
 	Gtk::Button* m_FileChooserButton1;
 	Gtk::Label* m_ViewpointLabel;
 	Gtk::Button* m_SizesButton;
+	Gtk::ComboBoxText* m_CodecButton;
 
 };
 
