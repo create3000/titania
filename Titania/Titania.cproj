@@ -325,6 +325,7 @@
     <Compile Include="Titania\Bits\Cairo.cpp" />
     <Compile Include="Titania\Bits\String.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RenderPanel\X3DRenderPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3018,6 +3019,7 @@
     <None Include="Titania\Bits\String.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveVideoDialog.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderClock.h" />
+    <None Include="Titania\BrowserNotebook\RenderPanel\X3DRenderPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -134,10 +134,9 @@ const std::map <BrowserPanelType, X3D::Rotation4d> X3DBrowserPanel::orientations
 	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Rotation4f (0, 1, 0, math::pi <float>))
 };
 
-X3DBrowserPanel::X3DBrowserPanel (const size_t id) :
+X3DBrowserPanel::X3DBrowserPanel () :
 	X3DBrowserPanelInterface (),
-	                    type (defaultTypes [id]),
-	                      id (id),
+	                    type (defaultTypes [getId ()]),
 	                 browser (getPage () -> getMainBrowser ()),
 	             activeLayer (),
 	               viewpoint (),
@@ -154,16 +153,12 @@ X3DBrowserPanel::X3DBrowserPanel (const size_t id) :
 
 }
 
-X3DBrowserPanel::X3DBrowserPanel () :
-	X3DBrowserPanel (0)
-{ }
-
 void
 X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	type = getBrowserPanelType (id);
+	type = getBrowserPanelType (getId ());
 
 	set_type ();
 }
@@ -250,7 +245,7 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 {
 	type = value;
 
-	setBrowserPanelType (id, value);
+	setBrowserPanelType (getId (), value);
 
 	set_type ();
 }

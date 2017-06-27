@@ -67,7 +67,8 @@ namespace puck {
 
 RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
-	X3DRenderPanelInterface (get_ui ("Panels/RenderPanel.glade"), page, PanelType::RENDER_PANEL),
+	X3DRenderPanelInterface (get_ui ("Panels/RenderPanel.glade"), page, PanelType::RENDER_PANEL, id),
+	         X3DRenderPanel (),
 	                preview (new TexturePreview (this,
                             getPreviewBox (),
                             getTextureFormatLabel (),
@@ -109,10 +110,11 @@ RenderPanel::initialize ()
 bool
 RenderPanel::getPropertiesDialogResponse ()
 {
-	const auto &  browser      = getPage () -> getMainBrowser ();
-	const int32_t antialiasing = browser -> getMaxSamples ();
+	const auto & browser      = getPage () -> getMainBrowser ();
+	const auto   antialiasing = browser -> getMaxSamples ();
 
 	filename = browser -> getWorldURL () .parent () + browser -> getWorldURL () .basename (false) + ".mp4";
+	filename = getFilename (getId (), filename);
 
 	getWidthAdjustment ()  -> set_upper (browser -> getMaxRenderBufferSize ());
 	getHeightAdjustment () -> set_upper (browser -> getMaxRenderBufferSize ());
@@ -120,11 +122,11 @@ RenderPanel::getPropertiesDialogResponse ()
 
 	getFileLabel () .set_text (filename .basename ());
 
-	getDurationAdjustment ()     -> set_value (1800);
-	getFrameRateAdjustment ()    -> set_value (30);
-	getWidthAdjustment ()        -> set_value (768);
-	getHeightAdjustment ()       -> set_value (576);
-	getAntialiasingAdjustment () -> set_value (std::min (4, antialiasing));
+	getDurationAdjustment ()     -> set_value (getDuration  (getId (), 1800));
+	getFrameRateAdjustment ()    -> set_value (getFrameRate (getId (), 30));
+	getWidthAdjustment ()        -> set_value (getWidth     (getId (), 768));
+	getHeightAdjustment ()       -> set_value (getHeight    (getId (), 576));
+	getAntialiasingAdjustment () -> set_value (std::min (getAntialiasing (getId (), 4), antialiasing));
 
 	const auto responseId = getPropertiesDialog () .run ();
 
@@ -151,6 +153,13 @@ RenderPanel::setRendering (const bool value)
 		const size_t height        = getHeightAdjustment () -> get_value ();
 		const size_t antialiasing  = getAntialiasingAdjustment () -> get_value ();
 		const size_t fixedPipeline = getPage () -> getMainBrowser () -> getFixedPipeline ();
+
+		setFilename     (getId (), filename);
+		setDuration     (getId (), frames);
+		setFrameRate    (getId (), frameRate);
+		setWidth        (getId (), width);
+		setHeight       (getId (), height);
+		setAntialiasing (getId (), antialiasing);
 
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
 		set_frame (0);

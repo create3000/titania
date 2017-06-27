@@ -36,6 +36,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
+	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \

@@ -133,6 +133,7 @@ am_titania_OBJECTS =  \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.$(OBJEXT) \
+	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
@@ -639,6 +640,7 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
+	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
@@ -1116,6 +1118,9 @@ Titania/BrowserNotebook/RenderPanel/RenderThread.$(OBJEXT):  \
 	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RenderPanel/VideoEncoder.$(OBJEXT):  \
+	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
+	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.$(OBJEXT):  \
 	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/$(am__dirstamp):
@@ -2181,6 +2186,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderThread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@

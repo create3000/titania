@@ -53,6 +53,8 @@
 
 #include "../../UserInterfaces/X3DRenderPanelInterface.h"
 
+#include "X3DRenderPanel.h"
+
 namespace titania {
 namespace puck {
 
@@ -62,7 +64,8 @@ class TexturePreview;
 class VideoEncoder;
 
 class RenderPanel :
-	public X3DRenderPanelInterface
+	virtual public X3DRenderPanelInterface,
+	public X3DRenderPanel
 {
 public:
 

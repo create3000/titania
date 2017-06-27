@@ -164,7 +164,7 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 		
 			setActiveView (index);
 			setMultiView (not getMultiView ());
-
+			setModified (true);
 			return true;
 		}
 		default:

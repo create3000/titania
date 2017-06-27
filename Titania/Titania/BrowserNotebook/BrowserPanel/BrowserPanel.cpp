@@ -76,8 +76,8 @@ namespace puck {
 
 BrowserPanel::BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DBrowserPanelInterface (get_ui ("Panels/BrowserPanel.glade"), page, PanelType::BROWSER_PANEL),
-	         X3DBrowserPanel (id),
+	X3DBrowserPanelInterface (get_ui ("Panels/BrowserPanel.glade"), page, PanelType::BROWSER_PANEL, id),
+	         X3DBrowserPanel (),
 	  X3DBrowserPanelMenuBar ()
 {
 	setName ("BrowserPanel" + basic::to_string (id, std::locale::classic ()));

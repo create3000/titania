@@ -107,7 +107,7 @@ protected:
 
 	/// @name Construction
 
-	X3DPanelInterface (NotebookPage* const page, const PanelType panelType);
+	X3DPanelInterface (NotebookPage* const page, const PanelType panelType, const size_t id);
 
 	X3DPanelInterface ();
 
@@ -120,6 +120,10 @@ protected:
 	NotebookPage*
 	getPage () const
 	{ return page; }
+
+	size_t
+	getId () const
+	{ return id; }
 
 	void
 	setFocus (const bool value)
@@ -139,6 +143,7 @@ private:
 	///  @name Members
 
 	NotebookPage* const         page;
+	const size_t                id;
 	std::unique_ptr <PanelMenu> panelMenu;
 	X3D::SFBool                 focus;
 

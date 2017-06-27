@@ -85,8 +85,6 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowserPanel (const size_t id);
-
 	X3DBrowserPanel ();
 
 	virtual
@@ -178,7 +176,6 @@ private:
 	///  @name Members
 
 	BrowserPanelType                    type;
-	const size_t                        id;
 	X3D::BrowserPtr                     browser;
 	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,97 +48,72 @@
  *
  ******************************************************************************/
 
-#include "X3DPanelInterface.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_X3DPANEL_RENDER_PANEL_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_X3DPANEL_RENDER_PANEL_H__
 
-#include "../Browser/X3DBrowserWindow.h"
-#include "../BrowserNotebook/PanelMenu/PanelMenu.h"
-
-#include <cassert>
+#include "../../UserInterfaces/X3DRenderPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DPanelInterface::X3DPanelInterface (NotebookPage* const page, const PanelType panelType, const size_t id) :
-	X3DUserInterface (),
-	            page (page),
-	              id (id),
-	       panelMenu (new PanelMenu (getBrowserWindow (), page, panelType)),
-	           focus (false)
+class X3DRenderPanel :
+	virtual public X3DRenderPanelInterface
 {
-	assert (page);
+public:
 
-	addChildObjects (focus);
-}
+	///  @name Destruction
 
-X3DPanelInterface::X3DPanelInterface () :
-	X3DPanelInterface (nullptr, PanelType::BROWSER_PANEL, 0)
-{ }
+	virtual
+	~X3DRenderPanel () override;
 
-void
-X3DPanelInterface::initialize ()
-{
-	X3DUserInterface::initialize ();
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
-	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
+protected:
 
-	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
+	///  @name Construction
 
-	set_editing ();
-}
+	X3DRenderPanel ();
 
-const X3D::SFEnum <PanelType> &
-X3DPanelInterface::getPanelType () const
-{
-	return panelMenu -> getPanelType ();
-}
+	///  @name Member access
 
-bool
-X3DPanelInterface::on_focus_in_event (GdkEventFocus* event)
-{
-	setFocus (true);
-	return false;
-}
+	void
+	setFilename (const size_t id, const basic::uri & filename);
+	
+	basic::uri
+	getFilename (const size_t id, const basic::uri & filename) const;
+	
+	void
+	setDuration (const size_t id, const size_t duration);
+	
+	size_t
+	getDuration (const size_t id, const size_t duration) const;
+	
+	void
+	setFrameRate (const size_t id, const size_t frameRate);
+	
+	size_t
+	getFrameRate (const size_t id, const size_t frameRate) const;
+	
+	void
+	setWidth (const size_t id, const size_t width);
+	
+	size_t
+	getWidth (const size_t id, const size_t width) const;
+	
+	void
+	setHeight (const size_t id, const size_t height);
+	
+	size_t
+	getHeight (const size_t id, const size_t height) const;
+	
+	void
+	setAntialiasing (const size_t id, const size_t antialiasing);
+	
+	size_t
+	getAntialiasing (const size_t id, const size_t antialiasing) const;
 
-bool
-X3DPanelInterface::on_focus_out_event (GdkEventFocus* event)
-{
-	setFocus (false);
-	return false;
-}
-
-void
-X3DPanelInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-
-	set_focus ();
-}
-
-void
-X3DPanelInterface::set_focus ()
-{
-	if (hasFocus () and getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
-}
-
-void
-X3DPanelInterface::dispose ()
-{
-	panelMenu .reset ();
-
-	X3DUserInterface::dispose ();
-}
-
-X3DPanelInterface::~X3DPanelInterface ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif
