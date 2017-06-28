@@ -58,11 +58,20 @@
 namespace titania {
 namespace puck {
 
+static constexpr int32_t INSERT_MARK_COUNT  = 2;
+static constexpr int32_t SCROLL_COUNT       = 2;
+static constexpr int32_t SCROLL_LINES_COUNT = 42;
+static constexpr int32_t LAST_LINES_COUNT   = 2;
+
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DConsoleInterface (get_ui ("Widgets/Console.glade")),
+	            markSet (0),
+	           scrolled (0),
 	        scrollToEnd (true)
 {
+	getTextView () .get_vadjustment () -> signal_value_changed () .connect (sigc::mem_fun (this, &Console::on_vadjustment_value_changed));
+
 	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
 	setup ();
@@ -141,18 +150,11 @@ Console::set_string (const X3D::MFString & value)
 		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
 	}
 
+//		// Update TextView and thus we can scoll to iter.
+//		while (Gtk::Main::events_pending ())
+//			Gtk::Main::iteration ();
+
 	// Update TextView and scoll to end.
-
-	int           buffer_x = 0;
-	int           buffer_y = 0;
-	int           line_top = 0;
-	Gtk::TextIter lineY;
-
-	getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_WIDGET, 0, getTextView () .get_height (), buffer_x, buffer_y); 
-	getTextView () .get_line_at_y (lineY, buffer_y, line_top);
-
-	if (lineY .get_line () > getTextBuffer () -> get_line_count () - 4)
-		scrollToEnd = true;
 
 	if (scrollToEnd)
 	{
@@ -169,7 +171,43 @@ void
 Console::on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark)
 {
 	if (mark == getTextBuffer () -> get_insert ())
+	{
+		markSet     = INSERT_MARK_COUNT;
 		scrollToEnd = false;
+	}
+}
+
+void
+Console::on_vadjustment_value_changed ()
+{
+	int           buffer_x = 0;
+	int           buffer_y = 0;
+	int           line_top = 0;
+	Gtk::TextIter lineY;
+
+	getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_WIDGET, 0, getTextView () .get_height (), buffer_x, buffer_y); 
+	getTextView () .get_line_at_y (lineY, buffer_y, line_top);
+
+	if (markSet)
+		-- markSet;
+
+	if (scrolled)
+		-- scrolled;
+
+	if (not scrolled and not markSet)
+	{
+		const auto lastLines = getTextBuffer () -> get_line_count () - lineY .get_line ();
+
+		if (lastLines <= LAST_LINES_COUNT)
+		{
+			scrollToEnd = true;
+		}
+		else if (lastLines > SCROLL_LINES_COUNT)
+		{
+			scrolled    = SCROLL_COUNT;
+			scrollToEnd = false;
+		}
+	}
 }
 
 Console::~Console ()

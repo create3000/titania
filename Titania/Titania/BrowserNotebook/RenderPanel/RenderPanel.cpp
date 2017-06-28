@@ -191,7 +191,7 @@ RenderPanel::setRendering (const bool value)
 
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
 
-		getLoadStateLabel () .set_text ("Initializing …");
+		getLoadStateLabel () .set_text (_ ("Initializing Renderer …"));
 		getLoadStateLabel () .set_visible (true);
 		getPreviewBox ()     .set_visible (false);
 
@@ -218,6 +218,14 @@ RenderPanel::setRendering (const bool value)
 	{
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-record"));
 		getLoadStateLabel () .set_text ("");
+
+		if (videoEncoder)
+		{
+			if (videoEncoder -> close ())
+				getPage () -> getMainBrowser () -> getConsole () -> addString ("*** Finished encoding '" + filename + "'.");
+			else
+				getPage () -> getMainBrowser () -> getConsole () -> addString ("*** Failed encoding '" + filename + "'.");
+		}
 
 		videoEncoder .reset ();
 		renderThread .reset ();

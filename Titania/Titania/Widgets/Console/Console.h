@@ -111,9 +111,14 @@ private:
 	void
 	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
 
+	void
+	on_vadjustment_value_changed ();
+
 	///  @name Event handlers
 
-	bool scrollToEnd;
+	int32_t markSet;
+	int32_t scrolled;
+	bool    scrollToEnd;
 
 };
 

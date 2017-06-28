@@ -57,14 +57,22 @@
 
 namespace titania {
 
+// The signals SIGKILL and SIGSTOP cannot be caught, blocked, or ignored.
+
 static
 void
 backtrace_print (size_t size, int sig)
 {
-	static const std::map <int32_t, std::string> sigs = {
-		std::make_pair (SIGSEGV, "SIGSEGV"),
-		std::make_pair (SIGABRT, "SIGABRT"),
-		std::make_pair (SIGPIPE, "SIGPIPE"),
+	// http://man7.org/linux/man-pages/man7/signal.7.html
+	static const std::map <int32_t, std::pair <std::string, std::string>> sigs = {
+		std::make_pair (SIGHUP,  std::make_pair ("SIGHUP",  "Hangup detected on controlling terminal or death of controlling process")),
+		std::make_pair (SIGILL,  std::make_pair ("SIGILL",  "Illegal Instruction")),
+		std::make_pair (SIGFPE,  std::make_pair ("SIGFPE",  "Floating-point exception")),
+		std::make_pair (SIGKILL, std::make_pair ("SIGKILL", "Kill signal")),
+		std::make_pair (SIGABRT, std::make_pair ("SIGABRT", "Abort signal from abort")),
+		std::make_pair (SIGSEGV, std::make_pair ("SIGSEGV", "Invalid memory reference")),
+		std::make_pair (SIGPIPE, std::make_pair ("SIGPIPE", "Broken pipe: write to pipe with no readers; see pipe")),
+		std::make_pair (SIGTERM, std::make_pair ("SIGTERM", "Termination signal")),
 	};
 
 	const auto iter = sigs .find (sig);
@@ -74,7 +82,9 @@ backtrace_print (size_t size, int sig)
 		<< "#" << std::endl
 		<< "# Backtrace" << std::endl
 		<< "#" << std::endl
-		<< "# Error: signal " << sig << " " << (iter not_eq sigs .end () ? iter -> second : "") << std::endl
+		<< "# Error: signal " << sig << " " << (iter not_eq sigs .end () ? iter -> second .first : "") << std::endl
+		<< "#" << std::endl
+		<< "# " << (iter not_eq sigs .end () ? iter -> second .second : "") << std::endl
 		<< "#" << std::endl
 		<< std::string (80, '#') << std::endl
 		<< backtrace_symbols (size)
