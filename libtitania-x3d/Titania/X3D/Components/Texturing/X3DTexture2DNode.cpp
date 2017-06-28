@@ -60,21 +60,26 @@ namespace X3D {
 X3DTexture2DNode::Fields::Fields () :
 	          repeatS (new SFBool (true)),
 	          repeatT (new SFBool (true)),
-	textureProperties (new SFNode ())
+	textureProperties (new SFNode ()),
+	            width (0),
+	           height (0),
+	       components (0)
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
 	       X3DTextureNode (),
 	               fields (),
 	          transparent (false),
-	                width (0),
-	               height (0),
-	           components (0),
+	         textureWidth (0),
+	        textureHeight (0),
 	texturePropertiesNode ()
 {
 	addType (X3DConstants::X3DTexture2DNode);
 
-	addChildObjects (texturePropertiesNode);
+	addChildObjects (texturePropertiesNode,
+	                 width (),
+	                 height (),
+	                 components ());
 }
 
 void
@@ -123,6 +128,10 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 {
 	if (texture)
 	{
+		width ()      = texture -> getImageWidth ();
+		height ()     = texture -> getImageHeight ();
+		components () = texture -> getComponents ();
+
 		setImage (getInternalFormat (texture -> getComponents ()),
 		          texture -> getTransparency (),
 		          texture -> getComponents (),
@@ -141,18 +150,21 @@ X3DTexture2DNode::clearTexture ()
 
 	static const uint8_t data [3] = { 255, 255, 255 };
 
+	width ()      = 0;
+	height ()     = 0;
+	components () = 0;
+
 	setImage (GL_RGB, false, 3, 1, 1, GL_RGB, data);
 }
 
 void
-X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* const data)
+X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const size_t comp, const GLint width, const GLint height, const GLenum format, const void* const data)
 {
 	// transfer image
 
-	width       = w;
-	height      = h;
-	components  = comp;
-	transparent = t;
+	textureWidth  = width;
+	textureHeight = height;
+	transparent   = t;
 
 	updateTextureProperties ();
 
@@ -161,7 +173,7 @@ X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const siz
 	glTexImage2D (GL_TEXTURE_2D,
 	              0,     // This texture is level 0 in mimpap generation.
 	              internalFormat,
-	              width, height,
+	              textureWidth, textureHeight,
 	              0, /* clamp <int32_t> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
 	              format, GL_UNSIGNED_BYTE,
 	              data);
@@ -174,13 +186,16 @@ X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const siz
 void
 X3DTexture2DNode::updateTextureProperties ()
 {
-	X3DTextureNode::updateTextureProperties (GL_TEXTURE_2D, textureProperties (), texturePropertiesNode, width, height, repeatS (), repeatT (), false);
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_2D, textureProperties (), texturePropertiesNode, textureWidth, textureHeight, repeatS (), repeatT (), false);
 }
 
 void
 X3DTexture2DNode::updateImage (const GLint width, const GLint height, const GLenum format, const void* const data)
 {
 	// update image
+
+	textureWidth  = width;
+	textureHeight = height;
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
@@ -192,7 +207,7 @@ X3DTexture2DNode::updateImage (const GLint width, const GLint height, const GLen
 void
 X3DTexture2DNode::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureNode::draw (renderObject, GL_TEXTURE_2D, components);
+	X3DTextureNode::draw (renderObject, GL_TEXTURE_2D, components ());
 }
 
 void
@@ -214,7 +229,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	// Process image.
 	const auto width     = getWidth ();
 	const auto height    = getHeight ();
-	const bool opaque    = getComponents () % 2;
+	const bool opaque    = components () % 2;
 	const auto imageData = getImageData ();
 
 	Magick::Image image (width, height, opaque ? "RGB" : "RGBA", Magick::CharPixel, imageData .data ());
@@ -242,11 +257,10 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 {
 	X3D::ContextLock lock (getBrowser ());
 
-	const auto   width      = getWidth ();
-	const auto   height     = getHeight ();
-	const auto   components = getComponents ();
+	const auto width  = getWidth ();
+	const auto height = getHeight ();
 
-	switch (components)
+	switch (components ())
 	{
 		case 1:
 		{
@@ -280,7 +294,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride    = components;
+			const auto stride = components ();
 			std::vector <uint8_t> image (width * height * stride);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
@@ -293,7 +307,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride = components;
+			const auto stride = components ();
 
 			std::vector <uint8_t> image (width * height * stride);
 

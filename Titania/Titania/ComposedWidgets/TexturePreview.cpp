@@ -102,6 +102,14 @@ TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 		textureNode -> removeInterest (&X3D::Browser::addEvent, *preview);
 		textureNode -> checkLoadState () .removeInterest (&TexturePreview::set_loadState, this);
 
+		const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+	
+		if (texture2DNode)
+		{
+			texture2DNode -> width ()  .removeInterest (&TexturePreview::set_loadState, this);
+			texture2DNode -> height () .removeInterest (&TexturePreview::set_loadState, this);
+		}
+
 		try
 		{
 			textureNode -> getField <X3D::MFNode> ("texture") .removeInterest (&TexturePreview::set_textures, this);
@@ -118,6 +126,14 @@ TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 	{
 		textureNode -> addInterest (&X3D::Browser::addEvent, *preview);
 		textureNode -> checkLoadState () .addInterest (&TexturePreview::set_loadState, this);
+
+		const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+	
+		if (texture2DNode)
+		{
+			texture2DNode -> width ()  .addInterest (&TexturePreview::set_loadState, this);
+			texture2DNode -> height () .addInterest (&TexturePreview::set_loadState, this);
+		}
 
 		try
 		{
@@ -219,7 +235,7 @@ TexturePreview::set_loadState ()
 	{
 		std::string components;
 	
-		switch (texture2DNode -> getComponents ())
+		switch (texture2DNode -> components ())
 		{
 			case 1: components = _ ("GRAY");       break;
 			case 2: components = _ ("GRAY ALPHA"); break;
@@ -229,9 +245,9 @@ TexturePreview::set_loadState ()
 				break;
 		}
 	
-		formatLabel .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
+		formatLabel .set_text (std::to_string (texture2DNode -> width ()) +
 		                       " × " +
-		                       std::to_string (texture2DNode -> getImageHeight ()) +
+		                       std::to_string (texture2DNode -> height ()) +
 		                       " (" +
 		                       components +
 		                       ")");
@@ -243,7 +259,7 @@ TexturePreview::set_loadState ()
 	{
 		std::string components;
 	
-		switch (texture3DNode -> getComponents ())
+		switch (texture3DNode -> components ())
 		{
 			case 1: components = _ ("GRAY");       break;
 			case 2: components = _ ("GRAY ALPHA"); break;
@@ -253,11 +269,11 @@ TexturePreview::set_loadState ()
 				break;
 		}
 	
-		formatLabel .set_text (std::to_string (texture3DNode -> getImageWidth ()) +
+		formatLabel .set_text (std::to_string (texture3DNode -> width ()) +
 		                       " × " +
-		                       std::to_string (texture3DNode -> getImageHeight ()) +
+		                       std::to_string (texture3DNode -> height ()) +
 		                       " × " +
-		                       std::to_string (texture3DNode -> getDepth ()) +
+		                       std::to_string (texture3DNode -> depth ()) +
 		                       " (" +
 		                       components +
 		                       ")");
@@ -331,7 +347,7 @@ TexturePreview::set_camera ()
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
 	if (texture2DNode)
-		set_camera (texture2DNode -> getImageWidth (), texture2DNode -> getImageHeight ());
+		set_camera (texture2DNode -> width (), texture2DNode -> height ());
 
 	else
 		set_camera (512, 512);

@@ -104,24 +104,6 @@ PixelTexture3D::initialize ()
 	update ();
 }
 
-size_t
-PixelTexture3D::getImageWidth () const
-{
-	if (image () .size () > WIDTH)
-		return std::max <int32_t> (0, image () [WIDTH]);
-
-	return 0;
-}
-
-size_t
-PixelTexture3D::getImageHeight () const
-{
-	if (image () .size () > HEIGHT)
-		return std::max <int32_t> (0, image () [HEIGHT]);
-
-	return 0;
-}
-
 void
 PixelTexture3D::update ()
 {
@@ -290,10 +272,10 @@ throw (Error <INVALID_NODE>,
 
 	ContextLock lock (texture3DNode -> getBrowser ());
 
-	const auto   width      = texture3DNode -> getWidth ();
-	const auto   height     = texture3DNode -> getHeight ();
-	const auto   depth      = texture3DNode -> getDepth ();
-	const auto   components = texture3DNode -> getComponents ();
+	const int32_t width      = texture3DNode -> getWidth ();
+	const int32_t height     = texture3DNode -> getHeight ();
+	const int32_t depth      = texture3DNode -> depth ();
+	const int32_t components = texture3DNode -> components ();
 
 	X3D::MFInt32 & array = image ();
 
@@ -310,9 +292,9 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy and flip image vertically.
 
-			const auto stride    = 3;
-			const auto rowStride = width * stride;
-			const auto size      = width * height * stride;
+			const int32_t stride    = 3;
+			const int32_t rowStride = width * stride;
+			const int32_t size      = width * height * stride;
 
 			std::vector <uint8_t> images (size * depth);
 
@@ -320,15 +302,15 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGB, GL_UNSIGNED_BYTE, images .data ());
 			glBindTexture (GL_TEXTURE_3D, 0);
 
-			for (size_t i = 0; i < depth; ++ i)
+			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
 		
-				for (size_t h = 0; h < height; ++ h)
+				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
 	
-					for (size_t w = 0; w < rowStride; w += stride)
+					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
 	
@@ -343,9 +325,9 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy and flip image vertically.
 
-			const auto stride    = 4;
-			const auto rowStride = width * stride;
-			const auto size      = width * height * stride;
+			const int32_t stride    = 4;
+			const int32_t rowStride = width * stride;
+			const int32_t size      = width * height * stride;
 
 			std::vector <uint8_t> images (size * depth);
 
@@ -353,15 +335,15 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGBA, GL_UNSIGNED_BYTE, images .data ());
 			glBindTexture (GL_TEXTURE_3D, 0);
 
-			for (size_t i = 0; i < depth; ++ i)
+			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
 	
-				for (size_t h = 0; h < height; ++ h)
+				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
 	
-					for (size_t w = 0; w < rowStride; w += stride)
+					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
 	
@@ -380,9 +362,9 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy and flip image vertically.
 
-			const auto stride    = components;
-			const auto rowStride = width * stride;
-			const auto size      = width * height * stride;
+			const int32_t stride    = components;
+			const int32_t rowStride = width * stride;
+			const int32_t size      = width * height * stride;
 
 			std::vector <uint8_t> images (size * depth);
 
@@ -390,15 +372,15 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGB, GL_UNSIGNED_BYTE, images .data ());
 			glBindTexture (GL_TEXTURE_3D, 0);
 
-			for (size_t i = 0; i < depth; ++ i)
+			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
 	
-				for (size_t h = 0; h < height; ++ h)
+				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
 	
-					for (size_t w = 0; w < rowStride; w += stride)
+					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
 	
@@ -417,9 +399,9 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy and flip image vertically.
 
-			const auto stride    = components;
-			const auto rowStride = width * stride;
-			const auto size      = width * height * stride;
+			const int32_t stride    = components;
+			const int32_t rowStride = width * stride;
+			const int32_t size      = width * height * stride;
 
 			std::vector <uint8_t> images (size * depth);
 
@@ -427,15 +409,15 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGBA, GL_UNSIGNED_BYTE, images .data ());
 			glBindTexture (GL_TEXTURE_3D, 0);
 
-			for (size_t i = 0; i < depth; ++ i)
+			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
 	
-				for (size_t h = 0; h < height; ++ h)
+				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
 	
-					for (size_t w = 0; w < rowStride; w += stride)
+					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
 	

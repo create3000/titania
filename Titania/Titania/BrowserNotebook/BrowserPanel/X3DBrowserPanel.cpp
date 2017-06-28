@@ -447,8 +447,8 @@ X3DBrowserPanel::set_background_texture ()
 		if (getPage () -> getBackgroundImage () -> getTexture () -> checkLoadState () == X3D::COMPLETE_STATE)
 		{
 			const auto   transform = executionContext -> getNamedNode <X3D::Transform> ("BackgroundImageTransform");
-			const double width     = getPage () -> getBackgroundImage () -> getTexture () -> getImageWidth ();
-			const double height    = getPage () -> getBackgroundImage () -> getTexture () -> getImageHeight ();
+			const double width     = getPage () -> getBackgroundImage () -> getTexture () -> width ();
+			const double height    = getPage () -> getBackgroundImage () -> getTexture () -> height ();
 
 			transform -> scale ()         = X3D::Vector3f (width / height, 1, 1);
 			imageSwitch -> whichChoice () = 0;

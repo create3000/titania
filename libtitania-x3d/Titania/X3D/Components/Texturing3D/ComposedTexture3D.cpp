@@ -121,10 +121,10 @@ ComposedTexture3D::set_texture ()
 void
 ComposedTexture3D::update ()
 {
-	size_t width      = 0;
-	size_t height     = 0;
-	size_t components = 0;
-	size_t depth      = 0;
+	width ()      = 0;
+	height ()     = 0;
+	components () = 0;
+	depth ()      = 0;
 
 	std::vector <char> image;
 
@@ -134,17 +134,16 @@ ComposedTexture3D::update ()
 
 		if (texture)
 		{
-			++ depth;
+			++ depth ();
 
 			// Get texture 2d data
 
-			components = std::max (components, texture -> getComponents ());
-
-			width  = texture -> getWidth ();
-			height = texture -> getHeight ();
+			width ()      = texture -> getWidth ();
+			height ()     = texture -> getHeight ();
+			components () = std::max <int32_t> (components (), texture -> components ());
 
 			size_t first = image .size ();
-			image .resize (first + width * height * 4);
+			image .resize (first + width () * height () * 4);
 
 			glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data () + first);
@@ -153,9 +152,9 @@ ComposedTexture3D::update ()
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	image .resize (width * height * depth * 4, 0xFF);
+	image .resize (width () * height () * depth () * 4, 0xFF);
 
-	setImage (getInternalFormat (components), components, width, height, depth, GL_RGBA, image .data ());
+	setImage (getInternalFormat (components ()), components (), width (), height (), depth (), GL_RGBA, image .data ());
 
 	loadState = COMPLETE_STATE;
 }

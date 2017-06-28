@@ -108,16 +108,6 @@ public:
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
 
-	virtual
-	size_t
-	getImageWidth () const final override
-	{ return imageWidth; }
-
-	virtual
-	size_t
-	getImageHeight () const final override
-	{ return imageHeight; }
-
 	void
 	setResizeToPowerOfTwo (const bool value)
 	{ resize = value; }
@@ -184,8 +174,6 @@ private:
 
 	///  @name Members
 	
-	size_t                 imageWidth;
-	size_t                 imageHeight;
 	bool                   resize;
 	X3DPtr <TextureFuture> future;
 

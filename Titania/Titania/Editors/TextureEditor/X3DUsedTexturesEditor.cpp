@@ -159,7 +159,7 @@ X3DUsedTexturesEditor::set_camera (const size_t index)
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (nodeIndex -> getNodes () .at (index));
 
 	if (texture2DNode)
-		set_camera (texture2DNode -> getImageWidth (), texture2DNode -> getImageHeight ());
+		set_camera (texture2DNode -> width (), texture2DNode -> height ());
 
 	else
 		set_camera (512, 512);

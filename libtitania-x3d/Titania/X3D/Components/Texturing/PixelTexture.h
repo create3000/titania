@@ -106,16 +106,6 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
-	virtual
-	size_t
-	getImageWidth () const final override
-	{ return image () .getWidth (); }
-
-	virtual
-	size_t
-	getImageHeight () const final override
-	{ return image () .getHeight (); }
-
 	void
 	setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &)
 	throw (Error <INVALID_NODE>,

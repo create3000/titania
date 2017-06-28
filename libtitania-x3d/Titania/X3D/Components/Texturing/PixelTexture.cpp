@@ -254,9 +254,9 @@ throw (Error <INVALID_NODE>,
 
 	ContextLock lock (texture2DNode -> getBrowser ());
 
-	const auto   width      = texture2DNode -> getWidth ();
-	const auto   height     = texture2DNode -> getHeight ();
-	const auto   components = texture2DNode -> getComponents ();
+	const int32_t width      = texture2DNode -> getWidth ();
+	const int32_t height     = texture2DNode -> getHeight ();
+	const int32_t components = texture2DNode -> components ();
 	X3D::MFInt32 array;
 
 	switch (components)
@@ -265,8 +265,8 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride    = 3;
-			const auto rowStride = width * stride;
+			const int32_t stride    = 3;
+			const int32_t rowStride = width * stride;
 
 			std::vector <uint8_t> image (width * height * stride);
 
@@ -276,11 +276,11 @@ throw (Error <INVALID_NODE>,
 
 			const uint8_t* first = image .data ();
 
-			for (size_t h = 0; h < height; ++ h)
+			for (int32_t h = 0; h < height; ++ h)
 			{
 				const auto row = h * rowStride;
 
-				for (size_t w = 0; w < rowStride; w += stride)
+				for (int32_t w = 0; w < rowStride; w += stride)
 				{
 					auto p = first + (row + w);
 
@@ -305,11 +305,11 @@ throw (Error <INVALID_NODE>,
 
 			const uint8_t* first = image .data ();
 
-			for (size_t h = 0; h < height; ++ h)
+			for (int32_t h = 0; h < height; ++ h)
 			{
 				const auto row = h * rowStride;
 
-				for (size_t w = 0; w < rowStride; w += stride)
+				for (int32_t w = 0; w < rowStride; w += stride)
 				{
 					auto p = first + (row + w);
 
@@ -327,8 +327,8 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride    = components;
-			const auto rowStride = width * stride;
+			const int32_t stride    = components;
+			const int32_t rowStride = width * stride;
 
 			std::vector <uint8_t> image (width * height * stride);
 
@@ -338,11 +338,11 @@ throw (Error <INVALID_NODE>,
 
 			const uint8_t* first = image .data ();
 
-			for (size_t h = 0; h < height; ++ h)
+			for (int32_t h = 0; h < height; ++ h)
 			{
 				const auto row = h * rowStride;
 
-				for (size_t w = 0; w < rowStride; w += stride)
+				for (int32_t w = 0; w < rowStride; w += stride)
 				{
 					auto p = first + (row + w);
 
@@ -360,8 +360,8 @@ throw (Error <INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride    = components;
-			const auto rowStride = width * stride;
+			const int32_t stride    = components;
+			const int32_t rowStride = width * stride;
 
 			std::vector <uint8_t> image (width * height * stride);
 
@@ -371,11 +371,11 @@ throw (Error <INVALID_NODE>,
 
 			const uint8_t* first = image .data ();
 
-			for (size_t h = 0; h < height; ++ h)
+			for (int32_t h = 0; h < height; ++ h)
 			{
 				const auto row = h * rowStride;
 
-				for (size_t w = 0; w < rowStride; w += stride)
+				for (int32_t w = 0; w < rowStride; w += stride)
 				{
 					auto p = first + (row + w);
 

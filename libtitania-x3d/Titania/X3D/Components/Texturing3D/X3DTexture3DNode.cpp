@@ -60,22 +60,29 @@ X3DTexture3DNode::Fields::Fields () :
 	          repeatS (new SFBool ()),
 	          repeatT (new SFBool ()),
 	          repeatR (new SFBool ()),
-	textureProperties (new SFNode ())
+	textureProperties (new SFNode ()),
+	            width (0),
+	           height (0),
+	            depth (0),
+	       components (0)
 { }
 
 X3DTexture3DNode::X3DTexture3DNode () :
 	       X3DTextureNode (),
 	               fields (),
-	                width (0),
-	               height (0),
-	                depth (0),
-	           components (0),
+	         textureWidth (0),
+	        textureHeight (0),
+	         textureDepth (0),
 	          transparent (false),
 	texturePropertiesNode ()
 {
 	addType (X3DConstants::X3DTexture3DNode);
 
-	addChildObjects (texturePropertiesNode);
+	addChildObjects (texturePropertiesNode,
+	                 width (),
+	                 height (),
+	                 depth (),
+	                 components ());
 }
 
 void
@@ -123,6 +130,11 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 {
 	if (texture)
 	{
+		width ()      = texture -> getImageWidth ();
+		height ()     = texture -> getImageHeight ();
+		depth ()      = texture -> getDepth ();
+		components () = texture -> getComponents ();
+
 		setImage (getInternalFormat (texture -> getComponents ()),
 		          texture -> getComponents (),
 		          texture -> getWidth (), texture -> getHeight (),
@@ -141,19 +153,23 @@ X3DTexture3DNode::clearTexture ()
 
 	static const uint8_t data [3] = { 255, 255, 255 };
 
+	width ()      = 0;
+	height ()     = 0;
+	depth ()      = 0;
+	components () = 0;
+
 	setImage (GL_RGB, 3, 1, 1, 1, GL_RGB, data);
 }
 
 void
-X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint d, const GLenum format, const void* const data)
+X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint width, const GLint height, const GLint depth, const GLenum format, const void* const data)
 {
 	// transfer image
 
-	width       = w;
-	height      = h;
-	depth       = d;
-	components  = comp;
-	transparent = math::is_even (comp);
+	textureWidth  = width;
+	textureHeight = height;
+	textureDepth  = depth;
+	transparent   = math::is_even (comp);
 
 	updateTextureProperties ();
 
@@ -162,7 +178,7 @@ X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, cons
 	glTexImage3D (GL_TEXTURE_3D,
 	              0,     // This texture is level 0 in mimpap generation.
 	              internalFormat,
-	              width, height, depth,
+	              textureWidth, textureHeight, textureDepth,
 	              0, /* clamp <int32_t> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
 	              format, GL_UNSIGNED_BYTE,
 	              data);
@@ -175,13 +191,13 @@ X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, cons
 void
 X3DTexture3DNode::updateTextureProperties ()
 {
-	X3DTextureNode::updateTextureProperties (GL_TEXTURE_3D, textureProperties (), texturePropertiesNode, width, height, repeatS (), repeatT (), repeatR ());
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_3D, textureProperties (), texturePropertiesNode, textureDepth, textureHeight, repeatS (), repeatT (), repeatR ());
 }
 
 void
 X3DTexture3DNode::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureNode::draw (renderObject, GL_TEXTURE_3D, components);
+	X3DTextureNode::draw (renderObject, GL_TEXTURE_3D, components ());
 }
 
 void

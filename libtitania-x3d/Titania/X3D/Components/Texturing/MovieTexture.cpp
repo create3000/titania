@@ -150,10 +150,10 @@ MovieTexture::requestImmediateLoad ()
 
 		duration_changed () = getStream () -> getDuration ();
 
-		const auto width  = getStream () -> getWidth ();
-		const auto height = getStream () -> getHeight ();
+		width ()  = getStream () -> getWidth ();
+		height () = getStream () -> getHeight ();
 
-		setImage (GL_RGB, false, 3, width, height, GL_BGRA, std::vector <uint8_t> (width * 4 * height, 255) .data ());
+		setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, std::vector <uint8_t> (width () * 4 * height (), 255) .data ());
 
 		setLoadState (COMPLETE_STATE);
 	}
@@ -181,10 +181,13 @@ MovieTexture::on_buffer_changed ()
 	{
 	   ContextLock lock (getBrowser ());
 
-		const auto width  = getStream () -> getWidth ();
-		const auto height = getStream () -> getHeight ();
+		if (width () not_eq getStream () -> getWidth ())
+			width () = getStream () -> getWidth ();
 
-		updateImage (width, height, GL_BGRA, getStream () -> getBuffer () .data ());
+		if (height () not_eq getStream () -> getHeight ())
+			height () = getStream () -> getHeight ();
+
+		updateImage (width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
 	}
 	catch (const X3DError & error)
 	{

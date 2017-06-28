@@ -96,6 +96,30 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
+	const SFInt32 &
+	width () const
+	{ return fields .width; }
+
+	SFInt32 &
+	width ()
+	{ return fields .width; }
+
+	SFInt32 &
+	height ()
+	{ return fields .height; }
+
+	const SFInt32 &
+	height () const
+	{ return fields .height; }
+
+	SFInt32 &
+	components ()
+	{ return fields .components; }
+
+	const SFInt32 &
+	components () const
+	{ return fields .components; }
+
 	///  @name Member access
 
 	virtual
@@ -105,23 +129,11 @@ public:
 
 	size_t
 	getWidth () const
-	{ return width; }
+	{ return textureWidth; }
 
 	size_t
 	getHeight () const
-	{ return height; }
-
-	size_t
-	getComponents () const
-	{ return components; }
-
-	virtual
-	size_t
-	getImageWidth () const = 0;
-
-	virtual
-	size_t
-	getImageHeight () const = 0;
+	{ return textureHeight; }
 
 	Magick::Image
 	getImage () const
@@ -205,14 +217,16 @@ private:
 		SFBool* const repeatS;
 		SFBool* const repeatT;
 		SFNode* const textureProperties;
+		SFInt32 width;
+		SFInt32 height;
+		SFInt32 components;
 	};
 
 	Fields fields;
 
 	bool                       transparent;
-	size_t                     width;
-	size_t                     height;
-	size_t                     components;
+	size_t                     textureWidth;
+	size_t                     textureHeight;
 	X3DPtr <TextureProperties> texturePropertiesNode;
 
 };

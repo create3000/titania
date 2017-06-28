@@ -131,7 +131,7 @@ ImageCubeMapTexture::getHeight () const
 size_t
 ImageCubeMapTexture::getComponents () const
 {
-	return textureNode -> getComponents ();
+	return textureNode -> components ();
 }
 
 void

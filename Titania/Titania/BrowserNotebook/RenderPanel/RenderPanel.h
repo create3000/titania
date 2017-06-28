@@ -147,6 +147,7 @@ private:
 
 	std::unique_ptr <TexturePreview> preview;
 	X3D::X3DPtr <X3D::ImageTexture>  texture;
+	X3D::X3DPtr <X3D::MovieTexture>  movieTexture;
 	std::unique_ptr <RenderThread>   renderThread;
 	std::unique_ptr <VideoEncoder>   videoEncoder;
 	basic::uri                       filename;

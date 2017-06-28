@@ -99,7 +99,7 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 				{
 					X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (value);
 
-					if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> getComponents ())
+					if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> components ())
 						pixelTexture -> setImage (texture2DNode);
 				}
 				catch (const X3D::X3DError &)

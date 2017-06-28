@@ -61,6 +61,7 @@
 #include "../../Dialogs/FileSaveDialog/FileSaveVideoDialog.h"
 
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
+#include <Titania/X3D/Components/Texturing/MovieTexture.h>
 
 namespace titania {
 namespace puck {
@@ -74,6 +75,7 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
                             getTextureFormatLabel (),
                             getTextureLoadStateLabel ())),
 	                texture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
+	           movieTexture (preview -> getLocalBrowser () -> createNode <X3D::MovieTexture> ()),
 	           renderThread (),
 	           videoEncoder (),
 	               filename (),
@@ -93,9 +95,8 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
 	textureProperties -> textureCompression ()  = "DEFAULT";
 
-	texture -> textureProperties () = textureProperties;
-
-	preview -> setTexture (texture);
+	texture      -> textureProperties () = textureProperties;
+	movieTexture -> textureProperties () = textureProperties;
 
 	setup ();
 }
@@ -197,6 +198,9 @@ RenderPanel::setRendering (const bool value)
 
 		set_frame (0);
 
+		movieTexture -> loop () = false;
+		preview -> setTexture (texture);
+
 		try
 		{
 			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline);
@@ -218,6 +222,10 @@ RenderPanel::setRendering (const bool value)
 	{
 		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-record"));
 		getLoadStateLabel () .set_text ("");
+
+		movieTexture -> url () = { filename .str () };
+		movieTexture -> loop () = true;
+		preview -> setTexture (movieTexture);
 
 		if (videoEncoder)
 		{

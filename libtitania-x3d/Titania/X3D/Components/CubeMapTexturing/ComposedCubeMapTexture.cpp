@@ -241,7 +241,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 			if (texture)
 			{
 				transparent = transparent or texture -> isTransparent ();
-				components  = std::max (components, texture -> getComponents ());
+				components  = std::max <int32_t> (components, texture -> components ());
 			}
 		}
 
