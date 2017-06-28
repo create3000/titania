@@ -52,9 +52,16 @@
 #define __TITANIA_BACKTRACE_H__
 
 #include <cstdlib>
+#include <functional>
+#include <list>
+#include <map>
 #include <string>
 
 namespace titania {
+
+/*
+ * backtrace handling
+ */
 
 void
 install_backtrace ();
@@ -64,6 +71,21 @@ backtrace (size_t = 30);
 
 std::string
 backtrace_symbols (size_t = 30);
+
+/*
+ * signal handling
+ */
+
+using signal_callback      = std::function <void (void)>;
+using signal_handler_list  = std::list <signal_callback>;
+using signal_handler_index = std::map <int, signal_handler_list>;
+using signal_handler_id    = signal_handler_list::iterator;
+
+signal_handler_id
+add_signal_handler (int sig, const signal_callback & callback);
+
+void
+remove_signal_handler (int sig, const signal_handler_id id);
 
 } // titania
 

@@ -349,10 +349,16 @@ RenderPanel::on_stderr (const Glib::ustring & string)
 	getPage () -> getMainBrowser () -> print (string);
 }
 
-RenderPanel::~RenderPanel ()
+void
+RenderPanel::dispose ()
 {
 	setRendering (false);
 
+	X3DRenderPanel::dispose ();
+}
+
+RenderPanel::~RenderPanel ()
+{
 	dispose ();
 }
 

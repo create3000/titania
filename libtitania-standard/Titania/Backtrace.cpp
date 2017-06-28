@@ -53,11 +53,16 @@
 #include <csignal>
 #include <execinfo.h>
 #include <iostream>
-#include <map>
 
 namespace titania {
 
 // The signals SIGKILL and SIGSTOP cannot be caught, blocked, or ignored.
+
+static signal_handler_index signal_handlers;
+
+/*
+ * backtrace handling
+ */
 
 static
 void
@@ -93,11 +98,29 @@ backtrace_print (size_t size, int sig)
 
 static
 void
+handle_signal (int sig)
+{
+	const auto handlers = signal_handlers .find (sig);
+
+	if (handlers not_eq signal_handlers .end ())
+	{
+		if (not handlers -> second .empty ())
+		{
+			for (const auto & handler : handlers -> second)
+				handler ();
+		}
+	}
+}
+
+static
+void
 backtrace_signal_handler (int sig)
 {
+	handle_signal (sig);
+
 	// print out all the frames to stderr
 	backtrace_print (100, sig);
-	exit (1);
+	::exit (255);
 }
 
 static
@@ -106,7 +129,7 @@ backtrace_terminate_handler ()
 {
 	// print out all the frames to stderr
 	backtrace_print (100, SIGABRT);
-	exit (1);
+	::exit (1);
 }
 
 void
@@ -149,9 +172,29 @@ backtrace_symbols (size_t size)
 		string += "\n";
 	}
 
-	free (symbols);
+	::free (symbols);
 
 	return string;
+}
+
+/*
+ * signal handling
+ */
+
+signal_handler_id
+add_signal_handler (int sig, const signal_callback & callback)
+{
+	std::signal (sig, &backtrace_signal_handler);
+
+	signal_handlers [sig] .emplace_back (callback);
+
+	return -- signal_handlers [sig] .end ();
+}
+
+void
+remove_signal_handler (int sig, const signal_handler_id id)
+{
+	signal_handlers [sig] .erase (id);
 }
 
 } // titania
