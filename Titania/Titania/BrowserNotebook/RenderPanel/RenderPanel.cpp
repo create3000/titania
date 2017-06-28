@@ -74,7 +74,7 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
                             getPreviewBox (),
                             getTextureFormatLabel (),
                             getTextureLoadStateLabel ())),
-	                texture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
+	           imageTexture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           movieTexture (preview -> getLocalBrowser () -> createNode <X3D::MovieTexture> ()),
 	           renderThread (),
 	           videoEncoder (),
@@ -95,7 +95,7 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
 	textureProperties -> textureCompression ()  = "DEFAULT";
 
-	texture      -> textureProperties () = textureProperties;
+	imageTexture -> textureProperties () = textureProperties;
 	movieTexture -> textureProperties () = textureProperties;
 
 	setup ();
@@ -106,8 +106,13 @@ RenderPanel::initialize ()
 {
 	X3DRenderPanelInterface::initialize ();
 
+	movieTexture -> isActive () .addInterest (&RenderPanel::set_movie_active, this);
+	movieTexture -> isPaused () .addInterest (&RenderPanel::set_movie_active, this);
+
 	preview -> getLocalBrowser () -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
 	preview -> getLocalBrowser () -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
+
+	set_movie_active ();
 }
 
 std::shared_ptr <ViewpointList>
@@ -190,7 +195,8 @@ RenderPanel::setRendering (const bool value)
 
 		worldURL .fragment (viewpoint);
 
-		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-stop"));
+		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-cancel"));
+		getPlayPauseButton () .set_sensitive (false);
 
 		getLoadStateLabel () .set_text (_ ("Initializing Renderer …"));
 		getLoadStateLabel () .set_visible (true);
@@ -198,8 +204,9 @@ RenderPanel::setRendering (const bool value)
 
 		set_frame (0);
 
-		movieTexture -> loop () = false;
-		preview -> setTexture (texture);
+		movieTexture -> loop ()     = false;
+		movieTexture -> stopTime () = X3D::SFTime::now ();
+		preview -> setTexture (imageTexture);
 
 		try
 		{
@@ -220,11 +227,13 @@ RenderPanel::setRendering (const bool value)
 	}
 	else
 	{
-		getRecordButton () .set_stock_id (Gtk::StockID ("gtk-media-record"));
-		getLoadStateLabel () .set_text ("");
+		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-media-record"));
+		getPlayPauseButton () .set_sensitive (true);
+		getLoadStateLabel ()  .set_text ("");
 
-		movieTexture -> url () = { filename .str () };
-		movieTexture -> loop () = true;
+		movieTexture -> url ()       = { filename .str () };
+		movieTexture -> loop ()      = true;
+		movieTexture -> startTime () = X3D::SFTime::now ();
 		preview -> setTexture (movieTexture);
 
 		if (videoEncoder)
@@ -313,6 +322,31 @@ RenderPanel::on_load_count_changed (const size_t loadCount)
 }
 
 void
+RenderPanel::set_movie_active ()
+{
+	if (movieTexture -> isActive () and not movieTexture -> isPaused ())
+		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-pause"));
+
+	else
+		getPlayPauseButton () .set_stock_id (Gtk::StockID ("gtk-media-play"));
+}
+
+void
+RenderPanel::on_play_pause_clicked ()
+{
+	if (movieTexture -> isActive ())
+	{
+		if (movieTexture -> isPaused ())
+			movieTexture -> resumeTime () = X3D::SFTime::now ();
+
+		else
+			movieTexture -> pauseTime () = X3D::SFTime::now ();
+	}
+	else
+		movieTexture -> startTime () = X3D::SFTime::now ();
+}
+
+void
 RenderPanel::on_frame_changed ()
 {
 	try
@@ -322,8 +356,8 @@ RenderPanel::on_frame_changed ()
 	
 		set_frame (frame);
 	
-		if (texture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
-			texture -> setUrl (renderThread -> getCurrentImage ());
+		if (imageTexture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
+			imageTexture -> setUrl (renderThread -> getCurrentImage ());
 
 		videoEncoder -> write (renderThread -> getCurrentImage ());
 

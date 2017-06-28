@@ -131,11 +131,11 @@ public:
 
 	int32_t
 	getWidth () const
-	{ return vsink -> get_width (); }
+	{ return width; }
 
 	int32_t
 	getHeight () const
-	{ return vsink -> get_height (); }
+	{ return height; }
 
 	const std::vector <uint8_t> &
 	getBuffer () const
@@ -206,6 +206,8 @@ private:
 	Display* display;
 	Pixmap   pixmap;
 
+	int32_t               width;
+	int32_t               height;
 	std::vector <uint8_t> image;
 	double                volume;
 

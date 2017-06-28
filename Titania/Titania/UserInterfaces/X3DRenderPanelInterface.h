@@ -132,16 +132,8 @@ public:
 	{ return *m_RecordButton; }
 
 	Gtk::ToolButton &
-	getNewButton1 () const
-	{ return *m_NewButton1; }
-
-	Gtk::ToolButton &
-	getNewButton2 () const
-	{ return *m_NewButton2; }
-
-	Gtk::ToolButton &
-	getNewButton3 () const
-	{ return *m_NewButton3; }
+	getPlayPauseButton () const
+	{ return *m_PlayPauseButton; }
 
 	Gtk::SpinButton &
 	getFrameSpinButton () const
@@ -231,6 +223,10 @@ public:
 
 	virtual
 	void
+	on_play_pause_clicked () = 0;
+
+	virtual
+	void
 	on_properties_file_chooser_button_clicked () = 0;
 
 	virtual
@@ -272,9 +268,7 @@ private:
 	Gtk::MenuBar* m_MenuBar;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::ToolButton* m_RecordButton;
-	Gtk::ToolButton* m_NewButton1;
-	Gtk::ToolButton* m_NewButton2;
-	Gtk::ToolButton* m_NewButton3;
+	Gtk::ToolButton* m_PlayPauseButton;
 	Gtk::SpinButton* m_FrameSpinButton;
 	Gtk::Label* m_LoadStateLabel;
 	Gtk::Box* m_PreviewBox;

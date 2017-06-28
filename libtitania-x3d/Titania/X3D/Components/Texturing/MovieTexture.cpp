@@ -149,11 +149,7 @@ MovieTexture::requestImmediateLoad ()
 			continue;
 
 		duration_changed () = getStream () -> getDuration ();
-
-		width ()  = getStream () -> getWidth ();
-		height () = getStream () -> getHeight ();
-
-		setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, std::vector <uint8_t> (width () * 4 * height (), 255) .data ());
+		components ()       = 3;
 
 		setLoadState (COMPLETE_STATE);
 	}
@@ -163,6 +159,7 @@ MovieTexture::requestImmediateLoad ()
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
 		duration_changed () = -1;
+		components ()       = 0;
 
 		setImage (GL_RGB, false, 3, 0, 0, GL_BGRA, nullptr);
 
@@ -187,7 +184,10 @@ MovieTexture::on_buffer_changed ()
 		if (height () not_eq getStream () -> getHeight ())
 			height () = getStream () -> getHeight ();
 
-		updateImage (width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
+		if (width () .getTainted () or height () .getTainted ())
+			setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
+		else
+			updateImage (width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
 	}
 	catch (const X3DError & error)
 	{

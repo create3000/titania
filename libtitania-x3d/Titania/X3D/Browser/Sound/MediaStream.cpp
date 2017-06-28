@@ -70,6 +70,8 @@ MediaStream::MediaStream () :
 	          player (),
 	           vsink (),
 	         display (nullptr),
+	           width (0),
+	          height (0),
 	           image (),
 	          volume (0)
 {
@@ -285,8 +287,6 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		{
 			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
 			player -> property_volume () = volume;
-
-		   update ();
 			break;
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
@@ -328,14 +328,12 @@ MediaStream::on_video_changed ()
 		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (this, &MediaStream::on_video_pad_got_buffer));
 
 	loaded .emit ();
-	update ();
 }
 
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
 	update ();
-
 	return Gst::PAD_PROBE_OK;
 }
 
@@ -350,8 +348,8 @@ MediaStream::update ()
 
 		if (buffer)
 		{
-			const auto width  = vsink -> get_width ();
-			const auto height = vsink -> get_height ();
+			width  = vsink -> get_width ();
+			height = vsink -> get_height ();
 
 			image .resize (width * 4 * height);
 
