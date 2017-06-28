@@ -88,34 +88,34 @@ protected:
 	getCodec (const size_t id, const std::string & codec) const;
 
 	void
-	setDuration (const size_t id, const size_t duration);
+	setDuration (const size_t id, const int32_t duration);
 	
 	size_t
-	getDuration (const size_t id, const size_t duration) const;
+	getDuration (const size_t id, const int32_t duration) const;
 	
 	void
-	setFrameRate (const size_t id, const size_t frameRate);
+	setFrameRate (const size_t id, const int32_t frameRate);
 	
 	size_t
-	getFrameRate (const size_t id, const size_t frameRate) const;
+	getFrameRate (const size_t id, const int32_t frameRate) const;
 	
 	void
-	setWidth (const size_t id, const size_t width);
+	setWidth (const size_t id, const int32_t width);
 	
 	size_t
-	getWidth (const size_t id, const size_t width) const;
+	getWidth (const size_t id, const int32_t width) const;
 	
 	void
-	setHeight (const size_t id, const size_t height);
+	setHeight (const size_t id, const int32_t height);
 	
 	size_t
-	getHeight (const size_t id, const size_t height) const;
+	getHeight (const size_t id, const int32_t height) const;
 	
 	void
-	setAntialiasing (const size_t id, const size_t antialiasing);
+	setAntialiasing (const size_t id, const int32_t antialiasing);
 	
 	size_t
-	getAntialiasing (const size_t id, const size_t antialiasing) const;
+	getAntialiasing (const size_t id, const int32_t antialiasing) const;
 
 	void
 	setViewpoint (const size_t id, const std::string & viewpoint);

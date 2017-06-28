@@ -131,13 +131,22 @@ X3DFileSaveDialog::run (const basic::uri & url)
 			getWindow () .set_current_name (url .basename ());
 	}
 
+	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
+	{
+		getOutputStyleBox ()    .set_visible (true);
+		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
+	}
+	else
+	{
+		getOutputStyleBox ()    .set_visible (false);
+		getOutputStyleButton () .set_active (0);
+	}
+
 	setFileFilter (getConfig () -> getString ("fileFilter"));
 
 	const auto success = X3DBaseFileSaveDialog::run ();
 
-	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
-
+	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
 	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 
 	return success;

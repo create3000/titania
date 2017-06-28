@@ -822,6 +822,7 @@
                 <items>
                   <item>PNG</item>
                   <item>H.264</item>
+                  <item translatable="yes">Xvid</item>
                 </items>
               </object>
               <packing>

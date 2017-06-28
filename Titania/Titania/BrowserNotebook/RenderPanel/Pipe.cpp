@@ -53,8 +53,13 @@
 #include <Titania/OS.h>
 #include <Titania/String.h>
 
+#include <fcntl.h>
+#include <string.h>
 #include <sys/wait.h>
+#include <poll.h>
 #include <vector>
+
+#include <sys/socket.h>
 
 #include <Titania/LOG.h>
 
@@ -63,31 +68,16 @@ namespace puck {
 
 const size_t Pipe::bufferSize = 1024;
 
-Pipe::Pipe (const bool use_stdin, const bool use_stdout, const bool use_stderr) :
-	   use_stdin (use_stdin),
-	  use_stdout (use_stdout),
-	  use_stderr (use_stderr),
-	         pid (0),
-	    fd_stdin (0),
-	   fd_stdout (0),
-	   fd_stderr (0),
-	      opened (false),
-	stdoutBuffer (),
-	stderrBuffer (),
-	      buffer (bufferSize) 
+Pipe::Pipe (const PipeCallback & stdoutCallback, const PipeCallback & stderrCallback) :
+	stdoutCallback (stdoutCallback),
+	stderrCallback (stderrCallback),
+	           pid (0),
+	         stdin (0),
+	        stdout (0),
+	        stderr (0),
+	        opened (false),
+	        buffer (bufferSize) 
 { }
-
-std::string
-Pipe::stdout ()
-{
-	return std::move (stdoutBuffer);
-}
-
-std::string
-Pipe::stderr ()
-{
-	return std::move (stderrBuffer);
-}
 
 void
 Pipe::open (const std::string & command)
@@ -98,7 +88,7 @@ throw (std::runtime_error)
 	if (opened)
 		close ();
 
-	if ((pid = os::popen3 (command, &fd_stdin, &fd_stdout, &fd_stderr)) <= 0)
+	if ((pid = os::popen3 (command, &stdin, &stdout, &stderr)) <= 0)
 		throw std::runtime_error ("Couldn't open command '" +  command+ "'.");
 
 	read (5);
@@ -112,17 +102,9 @@ throw (std::runtime_error)
 int32_t
 Pipe::wait (const int32_t fd, const int32_t timeout)
 {
-	fd_set fdread;
+	struct pollfd p = { .fd = fd, .events = POLLIN };
 
-	FD_ZERO (&fdread);
-	FD_SET (fd, &fdread);
-
-	struct timeval tv;
-
-	tv .tv_sec  = timeout / 1000;
-	tv .tv_usec = (timeout % 1000) * 1000;
-
-	return select (fd + 1, &fdread, nullptr, nullptr, &tv);
+	return ::poll (&p, 1, timeout);
 }
 
 void
@@ -130,12 +112,12 @@ Pipe::read (const int32_t timeout)
 {
 	int32_t bytesRead = 0;
 
-	while (timeout == 0 or wait (fd_stdout, timeout) > 0)
+	while (timeout == 0 or wait (stdout, timeout) > 0)
 	{
-		if ((bytesRead = ::read (fd_stdout, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * bufferSize)) > 0)
 		{
-			if (use_stdout)
-				stdoutBuffer .append (buffer .data (), bytesRead);
+			if (stdoutCallback)
+				stdoutCallback (std::string (buffer .data (), bytesRead));
 			else
 				std::cout .write (buffer .data (), bytesRead);
 		}
@@ -143,12 +125,12 @@ Pipe::read (const int32_t timeout)
 			break;
 	}
 
-	while (timeout == 0 or wait (fd_stderr, timeout) > 0)
+	while (timeout == 0 or wait (stderr, timeout) > 0)
 	{
-		if ((bytesRead = ::read (fd_stderr, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * bufferSize)) > 0)
 		{
-			if (use_stderr)
-				stderrBuffer .append (buffer .data (), bytesRead);
+			if (stderrCallback)
+				stderrCallback (std::string (buffer .data (), bytesRead));
 			else
 				std::clog .write (buffer .data (), bytesRead);
 		}
@@ -162,12 +144,17 @@ Pipe::write (const char* data, const size_t length)
 throw (std::runtime_error)
 {
 	const int32_t bytes        = length;
-	const int32_t bytesWritten = ::write (fd_stdin, data, bytes);
+	const int32_t bytesWritten = ::write (stdin, data, bytes);
 
 	read (5);
 
 	if (bytesWritten not_eq bytes)
-		throw std::runtime_error ("Write to pipe faile: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+	{
+		if (bytesWritten < 0)
+			throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
+		else
+			throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+	}
 }
 
 bool
@@ -178,12 +165,12 @@ Pipe::close ()
 
 	opened = false;
 
-	::close (fd_stdin);
+	::close (stdin);
 
 	read (0);
 
-	::close (fd_stdout);
-	::close (fd_stderr);
+	::close (stdout);
+	::close (stderr);
 
 	int32_t status = 0;
 

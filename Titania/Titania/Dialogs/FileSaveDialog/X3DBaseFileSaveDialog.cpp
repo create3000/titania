@@ -65,27 +65,19 @@ X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
 bool
 X3DBaseFileSaveDialog::run ()
 {
-	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
-	{
-		getOutputStyleBox ()    .set_visible (true);
-		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
-	}
-	else
-	{
-		getOutputStyleBox ()    .set_visible (false);
-		getOutputStyleButton () .set_active (0);
-	}
+	setFileFilter (getConfig () -> getString ("fileFilter"));
 
 	const auto responseId = getWindow () .run ();
 
 	quit ();
 
-	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
 
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return false;
 
-	return false;
+	return true;
 }
 
 void

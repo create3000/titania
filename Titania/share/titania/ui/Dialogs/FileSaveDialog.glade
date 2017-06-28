@@ -136,16 +136,6 @@
       <pattern>*.mp4</pattern>
     </patterns>
   </object>
-  <object class="GtkFileFilter" id="FileFilterVideoOGG">
-    <mime-types>
-      <mime-type>video/ogg</mime-type>
-      <mime-type>application/ogg</mime-type>
-    </mime-types>
-    <patterns>
-      <pattern>*.ogv</pattern>
-      <pattern>*.ogg</pattern>
-    </patterns>
-  </object>
   <object class="GtkFileFilter" id="FileFilterVrmlEncoding">
     <mime-types>
       <mime-type>x-world/x-vrml</mime-type>

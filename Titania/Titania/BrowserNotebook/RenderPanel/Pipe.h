@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 #define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 
+#include <functional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -58,21 +59,19 @@
 namespace titania {
 namespace puck {
 
+using PipeCallback = std::function <void (const std::string &)>;
+
 class Pipe
 {
 public:
 
 	///  @name Construction
 
-	Pipe (const bool use_stdin, const bool use_stout, const bool use_sterr);
+	explicit
+	Pipe (const PipeCallback & stdoutCallback = PipeCallback (),
+	      const PipeCallback & stderrCallback = PipeCallback ());
 
 	///  @name Operations
-
-	std::string
-	stdout ();
-
-	std::string
-	stderr ();
 
 	void
 	open (const std::string & command)
@@ -107,18 +106,15 @@ private:
 
 	///  @name Members
 
-	bool use_stdin;
-	bool use_stdout;
-	bool use_stderr;
+	const PipeCallback stdoutCallback;
+	const PipeCallback stderrCallback;
 
 	pid_t   pid;
-	int32_t fd_stdin;
-	int32_t fd_stdout;
-	int32_t fd_stderr;
+	int32_t stdin;
+	int32_t stdout;
+	int32_t stderr;
 	bool    opened;
 
-	std::string        stdoutBuffer;
-	std::string        stderrBuffer;
 	std::vector <char> buffer;
 
 };

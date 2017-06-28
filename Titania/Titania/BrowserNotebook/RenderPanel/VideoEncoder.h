@@ -104,6 +104,14 @@ public:
 
 private:
 
+	///  @name Event handler
+
+	void
+	on_stdout (const std::string & string);
+	
+	void
+	on_stderr (const std::string & string);
+
 	///  @name Members
 
 	const basic::uri filename;

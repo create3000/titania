@@ -206,11 +206,14 @@ X3DBrowserPanel::setBrowserPanelType (const size_t id, const BrowserPanelType br
 
 	browserPanelTypeArray .resize (4);
 
-	browserPanelTypeArray [id] = browserPanelTypes .at (browserPanelType);
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", browserPanelTypeArray);
-
-	getPage () -> setModified (true);
+	if (browserPanelTypeArray [id] not_eq browserPanelTypes .at (browserPanelType))
+	{
+		browserPanelTypeArray [id] = browserPanelTypes .at (browserPanelType);
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", browserPanelTypeArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 BrowserPanelType

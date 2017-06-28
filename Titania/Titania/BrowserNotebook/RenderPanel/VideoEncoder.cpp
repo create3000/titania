@@ -58,6 +58,8 @@
 namespace titania {
 namespace puck {
 
+using namespace std::placeholders;
+
 /*
  *  codecs PNG, H.264
  */
@@ -67,13 +69,14 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
                             const size_t frameRate) :
 	    filename (filename),
 	     command (os::escape_argument ("ffmpeg")),
-	        pipe (true, true, true),
+	        pipe (std::bind (&VideoEncoder::on_stdout, this, _1), std::bind (&VideoEncoder::on_stderr, this, _1)),
 	stdoutSignal (),
 	stderrSignal ()
 {
 	static const std::map <std::string, std::string> codecs = {
 		std::make_pair ("PNG",   "png"),
 		std::make_pair ("H.264", "libx264"),
+		std::make_pair ("Xvid",  "libxvid"),
 	};
 
 	const auto iter   = codecs .find (codec);
@@ -84,21 +87,29 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	                  "-vcodec", "png",
 	                  "-r", basic::to_string (frameRate, std::locale::classic ()),
 	                  "-i", "-",
+	                  "-y", // Overwrite output files without asking.
 	                  "-vcodec", vcodec,
 	                  "-q:v", "0",
 	                  filename .path ());
 }
 
 void
+VideoEncoder::on_stdout (const std::string & string)
+{
+	stdoutSignal .emit (string);
+}
+
+void
+VideoEncoder::on_stderr (const std::string & string)
+{
+	stderrSignal .emit (string);
+}
+
+void
 VideoEncoder::open ()
 throw (std::runtime_error)
 {
-	os::unlink (filename .path ());
-
 	pipe .open (command);
-
-	stdoutSignal .emit (pipe .stdout ());
-	stderrSignal .emit (pipe .stderr ());
 }
 
 void
@@ -111,31 +122,18 @@ throw (std::runtime_error)
 	image .write (&blob);
 
 	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
-
-	stdoutSignal .emit (pipe .stdout ());
-	stderrSignal .emit (pipe .stderr ());
 }
 
 bool
 VideoEncoder::close ()
 {
-	const auto success = pipe .close ();
-
-	stdoutSignal .emit (pipe .stdout ());
-	stderrSignal .emit (pipe .stderr ());
-
-	return success;
+	return pipe .close ();
 }
 
 VideoEncoder::~VideoEncoder ()
 {
 	close ();
 }
-
-//	// So before that class works we also need to ignore SIGPIPE:
-//
-//	if (::signal (SIGPIPE, SIG_IGN) == SIG_ERR)
-//	    ::perror ("signal");
 
 } // puck
 } // titania

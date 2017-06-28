@@ -69,6 +69,12 @@ public:
 	basic::uri
 	getUrl () const;
 
+	///  @name Operations
+
+	virtual
+	bool
+	run ();
+
 	///  @name Destruction
 
 	virtual
@@ -81,12 +87,11 @@ protected:
 
 	X3DBaseFileSaveDialog ();
 
-	///  @name Operations
-
-	bool
-	run ();
-
 	///  @name Filter handling
+
+	virtual
+	void
+	setFileFilter (const std::string & name) = 0;
 
 	virtual
 	std::string

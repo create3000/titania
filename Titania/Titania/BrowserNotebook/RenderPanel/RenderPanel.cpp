@@ -222,9 +222,9 @@ RenderPanel::setRendering (const bool value)
 		if (videoEncoder)
 		{
 			if (videoEncoder -> close ())
-				getPage () -> getMainBrowser () -> getConsole () -> addString ("*** Finished encoding '" + filename + "'.");
+				getPage () -> getMainBrowser () -> println ("*** Finished encoding '" + filename + "'.");
 			else
-				getPage () -> getMainBrowser () -> getConsole () -> addString ("*** Failed encoding '" + filename + "'.");
+				getPage () -> getMainBrowser () -> println ("*** Failed encoding '" + filename + "'.");
 		}
 
 		videoEncoder .reset ();
@@ -340,13 +340,13 @@ RenderPanel::set_frame (const size_t value)
 void
 RenderPanel::on_stdout (const Glib::ustring & string)
 {
-	getPage () -> getMainBrowser () -> getConsole () -> addString (string);
+	getPage () -> getMainBrowser () -> print (string);
 }
 
 void
 RenderPanel::on_stderr (const Glib::ustring & string)
 {
-	getPage () -> getMainBrowser () -> getConsole () -> addString (string);
+	getPage () -> getMainBrowser () -> print (string);
 }
 
 RenderPanel::~RenderPanel ()

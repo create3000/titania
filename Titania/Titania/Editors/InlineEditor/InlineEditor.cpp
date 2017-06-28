@@ -169,7 +169,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 	const auto fileExportDialog = std::dynamic_pointer_cast <FileExportDialog> (addDialog ("FileExportDialog", false));
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
-	const auto exported         = fileExportDialog -> exportNodes (nodes, undoStep);
+	const auto exported         = fileExportDialog -> run (nodes, undoStep);
 
 	if (exported .second)
 	{

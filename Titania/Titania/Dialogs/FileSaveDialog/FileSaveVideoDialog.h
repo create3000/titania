@@ -65,23 +65,19 @@ public:
 
 	FileSaveVideoDialog (X3DBrowserWindow* const browserWindow);
 
-	///  @name Operations
-
-	bool
-	run ();
-
 	///  @name Destruction
 
 	virtual
 	~FileSaveVideoDialog () final override;
 
 
-private:
+protected:
 
 	///  @name Filter handling
 
+	virtual
 	void
-	setFileFilter (const std::string & name);
+	setFileFilter (const std::string & name) final override;
 
 	virtual
 	std::string
@@ -91,6 +87,9 @@ private:
 	const std::set <std::string> &
 	getKnownFileTypes () const final override
 	{ return knownFileTypes; }
+
+
+private:
 
 	///  @name Static members
 

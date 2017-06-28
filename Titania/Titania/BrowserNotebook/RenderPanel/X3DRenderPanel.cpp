@@ -66,11 +66,14 @@ X3DRenderPanel::setFilename (const size_t id, const basic::uri & filename)
 
 	filenameArray .resize (4);
 
-	filenameArray [id] = filename .str ();
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/filename", filenameArray);
-
-	getPage () -> setModified (true);
+	if (filenameArray [id] not_eq filename .str ())
+	{
+		filenameArray [id] = filename .str ();
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/filename", filenameArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 basic::uri
@@ -98,11 +101,14 @@ X3DRenderPanel::setCodec (const size_t id, const std::string & codec)
 
 	codecArray .resize (4);
 
-	codecArray [id] = codec;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/codec", codecArray);
-
-	getPage () -> setModified (true);
+	if (codecArray [id] not_eq codec)
+	{
+		codecArray [id] = codec;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/codec", codecArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 std::string
@@ -124,21 +130,24 @@ X3DRenderPanel::getCodec (const size_t id, const std::string & codec) const
 }
 
 void
-X3DRenderPanel::setDuration (const size_t id, const size_t duration)
+X3DRenderPanel::setDuration (const size_t id, const int32_t duration)
 {
 	auto durationArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/duration");
 
 	durationArray .resize (4, X3D::SFInt32 (-1));
 
-	durationArray [id] = duration;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/duration", durationArray);
-
-	getPage () -> setModified (true);
+	if (durationArray [id] not_eq duration)
+	{
+		durationArray [id] = duration;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/duration", durationArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 size_t
-X3DRenderPanel::getDuration (const size_t id, const size_t duration) const
+X3DRenderPanel::getDuration (const size_t id, const int32_t duration) const
 {
 	try
 	{
@@ -156,21 +165,24 @@ X3DRenderPanel::getDuration (const size_t id, const size_t duration) const
 }
 
 void
-X3DRenderPanel::setFrameRate (const size_t id, const size_t frameRate)
+X3DRenderPanel::setFrameRate (const size_t id, const int32_t frameRate)
 {
 	auto frameRateArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/frameRate");
 
 	frameRateArray .resize (4, X3D::SFInt32 (-1));
 
-	frameRateArray [id] = frameRate;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/frameRate", frameRateArray);
-
-	getPage () -> setModified (true);
+	if (frameRateArray [id] not_eq frameRate)
+	{
+		frameRateArray [id] = frameRate;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/frameRate", frameRateArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 size_t
-X3DRenderPanel::getFrameRate (const size_t id, const size_t frameRate) const
+X3DRenderPanel::getFrameRate (const size_t id, const int32_t frameRate) const
 {
 	try
 	{
@@ -188,21 +200,24 @@ X3DRenderPanel::getFrameRate (const size_t id, const size_t frameRate) const
 }
 
 void
-X3DRenderPanel::setWidth (const size_t id, const size_t width)
+X3DRenderPanel::setWidth (const size_t id, const int32_t width)
 {
 	auto widthArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/width");
 
 	widthArray .resize (4, X3D::SFInt32 (-1));
 
-	widthArray [id] = width;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/width", widthArray);
-
-	getPage () -> setModified (true);
+	if (widthArray [id] not_eq width)
+	{
+		widthArray [id] = width;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/width", widthArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 size_t
-X3DRenderPanel::getWidth (const size_t id, const size_t width) const
+X3DRenderPanel::getWidth (const size_t id, const int32_t width) const
 {
 	try
 	{
@@ -220,21 +235,24 @@ X3DRenderPanel::getWidth (const size_t id, const size_t width) const
 }
 
 void
-X3DRenderPanel::setHeight (const size_t id, const size_t height)
+X3DRenderPanel::setHeight (const size_t id, const int32_t height)
 {
 	auto heightArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/height");
 
 	heightArray .resize (4, X3D::SFInt32 (-1));
 
-	heightArray [id] = height;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/height", heightArray);
-
-	getPage () -> setModified (true);
+	if (heightArray [id] not_eq height)
+	{
+		heightArray [id] = height;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/height", heightArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 size_t
-X3DRenderPanel::getHeight (const size_t id, const size_t height) const
+X3DRenderPanel::getHeight (const size_t id, const int32_t height) const
 {
 	try
 	{
@@ -252,21 +270,24 @@ X3DRenderPanel::getHeight (const size_t id, const size_t height) const
 }
 
 void
-X3DRenderPanel::setAntialiasing (const size_t id, const size_t antialiasing)
+X3DRenderPanel::setAntialiasing (const size_t id, const int32_t antialiasing)
 {
 	auto antialiasingArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFInt32> ("/Titania/RenderPanel/antialiasing");
 
 	antialiasingArray .resize (4, X3D::SFInt32 (-1));
 
-	antialiasingArray [id] = antialiasing;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/antialiasing", antialiasingArray);
-
-	getPage () -> setModified (true);
+	if (antialiasingArray [id] not_eq antialiasing)
+	{
+		antialiasingArray [id] = antialiasing;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/antialiasing", antialiasingArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 size_t
-X3DRenderPanel::getAntialiasing (const size_t id, const size_t antialiasing) const
+X3DRenderPanel::getAntialiasing (const size_t id, const int32_t antialiasing) const
 {
 	try
 	{
@@ -290,11 +311,14 @@ X3DRenderPanel::setViewpoint (const size_t id, const std::string & viewpoint)
 
 	viewpointArray .resize (4);
 
-	viewpointArray [id] = viewpoint;
-
-	createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/viewpoint", viewpointArray);
-
-	getPage () -> setModified (true);
+	if (viewpointArray [id] not_eq viewpoint)
+	{
+		viewpointArray [id] = viewpoint;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/viewpoint", viewpointArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 std::string

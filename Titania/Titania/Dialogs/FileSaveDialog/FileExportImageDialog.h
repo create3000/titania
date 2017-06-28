@@ -67,8 +67,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	bool
-	run ();
+	run () final override;
 
 	bool
 	save (Magick::Image & image);
@@ -83,8 +84,9 @@ private:
 
 	///  @name Filter handling
 
+	virtual
 	void
-	setFileFilter (const std::string & name);
+	setFileFilter (const std::string & name) final override;
 
 	virtual
 	std::string
@@ -94,6 +96,9 @@ private:
 	const std::set <std::string> &
 	getKnownFileTypes () const final override
 	{ return knownFileTypes; }
+
+
+protected:
 
 	///  @name Export image
 

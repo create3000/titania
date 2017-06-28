@@ -186,11 +186,14 @@ NotebookPage::setPanelType (const size_t id, const PanelType panelType)
 
 	panelsArray .resize (4, X3D::SFString ("BROWSER_PANEL"));
 
-	panelsArray [id] = panelTypes .at (panelType);
-
-	createWorldInfo (getScene ()) -> setMetaData ("/Titania/Page/panels", panelsArray);
-
-	setModified (true);
+	if (panelsArray [id] not_eq panelTypes .at (panelType))
+	{
+		panelsArray [id] = panelTypes .at (panelType);
+	
+		createWorldInfo (getScene ()) -> setMetaData ("/Titania/Page/panels", panelsArray);
+	
+		setModified (true);
+	}
 }
 
 PanelType

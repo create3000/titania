@@ -77,9 +77,9 @@ FileExportDialog::FileExportDialog (X3DBrowserWindow* const browserWindow) :
 // Export nodes
 
 std::pair <basic::uri, bool>
-FileExportDialog::exportNodes (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
+FileExportDialog::run (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
-	const bool success = run (getCurrentScene () -> getWorldURL () .parent () + _ ("inline.x3d"));
+	const bool success = X3DFileSaveDialog::run (getCurrentScene () -> getWorldURL () .parent () + _ ("inline.x3d"));
 
 	if (not success)
 		return std::make_pair ("", false);

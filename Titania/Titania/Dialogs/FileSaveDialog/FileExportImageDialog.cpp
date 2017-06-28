@@ -206,20 +206,13 @@ FileExportImageDialog::save (Magick::Image & image)
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
 
-	setFileFilter (getConfig () -> getString ("fileFilter"));
-
 	// Run dialog.
 
-	const auto responseId = getWindow () .run ();
+	const auto success = X3DBaseFileSaveDialog::run ();
 
 	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 
-	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
-
-	quit ();
-
-	if (responseId not_eq Gtk::RESPONSE_OK)
+	if (not success)
 		return false;
 
 	// Save image.

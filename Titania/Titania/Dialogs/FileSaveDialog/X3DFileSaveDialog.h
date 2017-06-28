@@ -78,6 +78,12 @@ protected:
 
 	X3DFileSaveDialog ();
 
+	///  @name Filter handling
+
+	virtual
+	void
+	setFileFilter (const std::string & name) final override;
+
 	///  @name Member access
 
 	virtual
@@ -92,14 +98,6 @@ protected:
 
 	bool
 	run (const basic::uri & url);
-
-
-private:
-
-	///  @name Filter handling
-
-	void
-	setFileFilter (const std::string & name);
 
 };
 
