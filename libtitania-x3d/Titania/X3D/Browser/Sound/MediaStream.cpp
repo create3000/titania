@@ -138,20 +138,19 @@ MediaStream::setUri (const basic::uri & uri)
 	return true;
 }
 
-double
+time_type
 MediaStream::getDuration () const
 {
-	auto   format   = Gst::FORMAT_TIME;
 	gint64 duration = 0;
 
-	if (player -> query_duration (format, duration) and duration >= 0)
-		return duration / double (Gst::SECOND);
+	if (player -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
+		return duration / time_type (Gst::SECOND);
 
 	return -1;
 }
 
 void
-MediaStream::setVolume (double value)
+MediaStream::setVolume (time_type value)
 {
 	static constexpr double granularity = 0.05;
 
@@ -165,7 +164,7 @@ MediaStream::setVolume (double value)
 }
 
 void
-MediaStream::setSpeed (const double value)
+MediaStream::setSpeed (const time_type value)
 {
 	speed = value;
 }
@@ -189,7 +188,7 @@ MediaStream::setSpeed (const double value)
 //
 //			if (player -> query_position (format, position))
 //			{
-//				__LOG__ << position / double (Gst::SECOND) << std::endl;
+//				__LOG__ << position / time_type (Gst::SECOND) << std::endl;
 //
 //				player -> seek (speed,
 //				                format,
@@ -237,14 +236,14 @@ MediaStream::sync () const
 }
 
 void
-MediaStream::seek (const double position)
+MediaStream::seek (const time_type position)
 {
 //	if (position)
 //	{
 //		player -> seek (speed,
 //				          Gst::FORMAT_TIME,
 //				          Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-//				          Gst::SEEK_TYPE_SET, position * double (Gst::SECOND),
+//				          Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND),
 //				          Gst::SEEK_TYPE_SET, 0);
 //	}
 //

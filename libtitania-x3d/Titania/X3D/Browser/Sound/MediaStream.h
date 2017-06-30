@@ -51,18 +51,16 @@
 #ifndef __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
 #define __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
 
+#include "../../Types/Time.h"
+
 #include <Titania/Basic/URI.h>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <gstreamermm.h>
 #include <gstreamermm/message.h>
 #include <gstreamermm/playbin.h>
 #include <gstreamermm/ximagesink.h>
 #include <glibmm/dispatcher.h>
-#pragma GCC diagnostic pop
-
-#include <gtkmm.h>
+#include <gdkmm/display.h>
 
 extern "C"
 {
@@ -112,9 +110,9 @@ public:
 	setVolume (double value);
 
 	void
-	setSpeed (const double value);
+	setSpeed (const time_type value);
 
-	double
+	time_type
 	getDuration () const;
 
 	std::shared_ptr <VideoFrame>
@@ -131,7 +129,7 @@ public:
 	sync () const;
 
 	void
-	seek (const double position);
+	seek (const time_type position);
 
 	void
 	start ();
@@ -210,10 +208,10 @@ private:
 
 	std::shared_ptr <VideoFrame> currentFrame;
 
-	double  volume;
-	double  speed;
-	bool    active;
-	bool    paused;
+	double    volume;
+	time_type speed;
+	bool      active;
+	bool      paused;
 
 	Glib::Dispatcher videoChangedDispatcher;
 	Glib::Dispatcher bufferChangedDispatcher;
