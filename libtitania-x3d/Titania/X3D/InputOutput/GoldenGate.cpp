@@ -52,6 +52,7 @@
 
 #include "../Fields.h"
 #include "../Browser/Sound/MediaStream.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Parser/JSONParser.h"
 #include "../Parser/XMLParser.h"
 #include "../Parser/Filter.h"
@@ -298,7 +299,7 @@ GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 void
 GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	MediaStream mediaStream;
+	MediaStream mediaStream (scene -> getBrowser () -> get_display ());
 
 	mediaStream .setup ();
 	mediaStream .setUri (uri);
@@ -306,8 +307,9 @@ GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.x3dv"));
 
-	const auto width  = mediaStream .getWidth  () ? mediaStream .getWidth  () / 72.0 * inch <double> : 1.0;
-	const auto height = mediaStream .getHeight () ? mediaStream .getHeight () / 72.0 * inch <double> : 1.0;
+	const auto video  = mediaStream .getVideoSink ();
+	const auto width  = video -> get_width  () ? video -> get_width  () / 72.0 * inch <double> : 1.0;
+	const auto height = video -> get_height () ? video -> get_height () / 72.0 * inch <double> : 1.0;
 
 	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
 	file = std::regex_replace (file, Description, SFString (uri .basename (false)) .toString ());

@@ -51,8 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SOUND_SOUND_H__
 #define __TITANIA_X3D_COMPONENTS_SOUND_SOUND_H__
 
-#include "../../Browser/Sound/X3DMediaStream.h"
-
 #include "../Sound/X3DSoundNode.h"
 
 namespace titania {

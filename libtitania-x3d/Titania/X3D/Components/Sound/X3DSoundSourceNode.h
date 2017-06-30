@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
 
 #include "../Time/X3DTimeDependentNode.h"
-#include "../../Browser/Sound/X3DMediaStream.h"
 
 #include <Titania/Basic/URI.h>
 #include <glibmm/refptr.h>

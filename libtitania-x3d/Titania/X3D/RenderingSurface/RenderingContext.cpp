@@ -76,9 +76,9 @@ RenderingContext::createPixmap (Display* const xDisplay,
                                 const size_t width,
                                 const size_t height)
 {
-	const auto screen    = XDefaultScreenOfDisplay (xDisplay);
-	const auto xDrawable = RootWindowOfScreen (screen);
-	const auto depth     = DefaultDepthOfScreen (screen);
+	const auto xScreen   = XDefaultScreenOfDisplay (xDisplay);
+	const auto xDrawable = RootWindowOfScreen (xScreen);
+	const auto depth     = DefaultDepthOfScreen (xScreen);
 	const auto xPixmap   = XCreatePixmap (xDisplay, xDrawable, width, height, depth);
 
 	if (not xPixmap)

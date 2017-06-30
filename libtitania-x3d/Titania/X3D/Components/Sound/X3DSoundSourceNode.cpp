@@ -84,7 +84,7 @@ X3DSoundSourceNode::initialize ()
 
 	getBrowser () -> addSoundSource (this);
 
-	mediaStream .reset (new MediaStream ());
+	mediaStream .reset (new MediaStream (getBrowser () -> get_display ()));
 
 	speed () .addInterest (&X3DSoundSourceNode::set_speed, this);
 	pitch () .addInterest (&X3DSoundSourceNode::set_pitch, this);
@@ -93,6 +93,8 @@ X3DSoundSourceNode::initialize ()
 	mediaStream -> signal_end ()              .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
 	mediaStream -> signal_duration_changed () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_duration_changed));
 	mediaStream -> setup ();
+
+	set_speed ();
 }
 
 void
@@ -134,7 +136,7 @@ X3DSoundSourceNode::on_end ()
 void
 X3DSoundSourceNode::set_speed ()
 {
-	// Speed is not supported maybe with playbin2
+	mediaStream -> setSpeed (speed ());
 }
 
 void
@@ -144,15 +146,13 @@ X3DSoundSourceNode::set_pitch ()
 void
 X3DSoundSourceNode::set_start ()
 {
-	if (speed ())
-		mediaStream -> start (speed (), 0);
+	mediaStream -> start ();
 }
 
 void
 X3DSoundSourceNode::set_resume (const time_type)
 {
-	if (speed ())
-		mediaStream -> resume ();
+	mediaStream -> resume ();
 }
 
 void
@@ -172,9 +172,6 @@ X3DSoundSourceNode::set_end ()
 {
 	if (loop ())
 	{
-		if (speed ())
-			mediaStream -> start (speed (), 0);
-
 		// The event order below is very important.
 
 		elapsedTime () = getElapsedTime ();

@@ -105,7 +105,7 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> signal_loaded ()         .connect (sigc::mem_fun (this, &MovieTexture::on_loaded));
+	getStream () -> signal_video_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_video_changed));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
 	url () .addInterest (&MovieTexture::update, this);
@@ -168,7 +168,7 @@ MovieTexture::requestImmediateLoad ()
 }
 
 void
-MovieTexture::on_loaded ()
+MovieTexture::on_video_changed ()
 { }
 
 void
@@ -178,16 +178,21 @@ MovieTexture::on_buffer_changed ()
 	{
 	   ContextLock lock (getBrowser ());
 
-		if (width () not_eq getStream () -> getWidth ())
-			width () = getStream () -> getWidth ();
+		const auto frame = getStream () -> getCurrentFrame ();
 
-		if (height () not_eq getStream () -> getHeight ())
-			height () = getStream () -> getHeight ();
-
-		if (width () .getTainted () or height () .getTainted ())
-			setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
-		else
-			updateImage (width (), height (), GL_BGRA, getStream () -> getBuffer () .data ());
+		if (frame)
+		{
+			if (width () not_eq frame -> width)
+				width () = frame -> width;
+	
+			if (height () not_eq frame -> height)
+				height () = frame -> height;
+	
+			if (width () .getTainted () or height () .getTainted ())
+				setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, frame -> image .data ());
+			else
+				updateImage (width (), height (), GL_BGRA, frame -> image .data ());
+		}
 	}
 	catch (const X3DError & error)
 	{

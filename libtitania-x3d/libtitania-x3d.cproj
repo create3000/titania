@@ -766,7 +766,6 @@
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSelectionObject.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
-    <None Include="Titania\X3D\Browser\Sound\X3DMediaStream.h" />
     <None Include="Titania\X3D\Editing\Combine.h" />
     <None Include="share\titania\tools\library\gradient.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg">

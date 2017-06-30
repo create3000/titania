@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V1.2.2
+#VRML V2.0 utf8 Titania V3.0.4
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -22,9 +22,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              -0.229807236485249,
+              -1.15942983981394,
+              5.34574632994789
             ]
           }
           DEF orientation MetadataDouble {
@@ -41,8 +41,8 @@ WorldInfo {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
+              -0.229807236485249,
+              -1.15942983981394,
               0
             ]
           }
@@ -52,27 +52,79 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF children MetadataSet {
-            name "children"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
-            value DEF Movie MovieTexture {
-              url [
-                "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mp4",
-                "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mpv"
-              ]
-              loop TRUE
-              #loop TRUE
-              startTime 1452512631.64944
-              stopTime 1452512633.83991
-              repeatS FALSE
-              repeatT FALSE
-            }
+            value FALSE
           }
-          DEF previous MetadataSet {
-            name "previous"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
           }
         ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value DEF viewpoints MetadataSet {
+          name "viewpoints"
+          reference "http://titania.create3000.de"
+          value DEF TopViewpoint MetadataSet {
+            name "TopViewpoint"
+            reference "http://titania.create3000.de"
+            value [
+              DEF position_1 MetadataDouble {
+                name "position"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  10,
+                  0
+                ]
+              }
+              DEF orientation_1 MetadataDouble {
+                name "orientation"
+                reference "http://titania.create3000.de"
+                value [
+                  1,
+                  0,
+                  0,
+                  4.71238898038469
+                ]
+              }
+              DEF centerOfRotation_1 MetadataDouble {
+                name "centerOfRotation"
+                reference "http://titania.create3000.de"
+                value [
+                  0,
+                  0,
+                  0
+                ]
+              }
+              DEF fieldOfViewScale MetadataDouble {
+                name "fieldOfViewScale"
+                reference "http://titania.create3000.de"
+                value 1
+              }
+            ]
+          }
+        }
       }
     ]
   }
@@ -91,11 +143,21 @@ DEF MovieTexture Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE Movie
+      texture DEF Movie MovieTexture {
+        url [
+          "../../../../../Schreibtisch/beyond-germany.mp4",
+          "file:///home/holger/Schreibtisch/beyond-germany.mp4"
+        ]
+        loop TRUE
+        #loop TRUE
+        startTime 1498696134.588
+        stopTime 1498695961.31483
+        repeatS FALSE
+        repeatT FALSE
+      }
     }
     geometry Rectangle2D {
-      size 2.66667 2
-      solid FALSE
+      size 3.007 2
     }
   }
 }
@@ -225,15 +287,15 @@ Transform {
 }
 
 DEF Debug Script {
-  eventIn  SFTime  set_speed0
-  eventIn  SFTime  set_speed1
-  eventIn  SFTime  set_speed2
-  eventIn  SFTime  set_speed3
-  eventIn  SFTime  set_speed4
-  eventIn  SFBool  set_active
-  eventIn  SFTime  set_elapsedTime
-  eventIn  SFTime  set_duration
-  eventOut SFFloat speed_changed
+  eventIn    SFTime  set_speed0
+  eventIn    SFTime  set_speed1
+  eventIn    SFTime  set_speed2
+  eventIn    SFTime  set_speed3
+  eventIn    SFTime  set_speed4
+  eventIn    SFBool  set_active
+  eventIn    SFTime  set_elapsedTime
+  eventIn    SFTime  set_duration
+  eventOut   SFFloat speed_changed
 
   url "vrmlscript:
 function set_speed (value)

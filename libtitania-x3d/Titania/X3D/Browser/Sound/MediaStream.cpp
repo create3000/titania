@@ -52,6 +52,11 @@
 
 #include "MediaStream.h"
 
+extern "C"
+{
+#include <gdk/gdkx.h>
+}
+
 namespace titania {
 namespace X3D {
 
@@ -61,19 +66,20 @@ namespace X3D {
  *   https://github.com/GNOME/gstreamermm/blob/master/examples/media_player_gtkmm/player_window.cc
  */
 
-MediaStream::MediaStream () :
-	  X3DMediaStream (),
-	          loaded (),
-	  buffer_changed (),
-	             end (),
-	duration_changed (),
+MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
+	         display (display),
+	         xPixmap (createPixmap (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
 	          player (),
 	           vsink (),
-	         display (nullptr),
-	           width (0),
-	          height (0),
-	           image (),
-	          volume (0)
+	    currentFrame (),
+	          volume (0),
+	           speed (1),
+	          active (false),
+	          paused (false),
+	   video_changed (),
+	  buffer_changed (),
+	             end (),
+	duration_changed ()
 {
 	// Static init
 
@@ -88,25 +94,21 @@ MediaStream::MediaStream () :
 	vsink  = VideoSink::create ("vsink");
 }
 
+Pixmap
+MediaStream::createPixmap (Display* const xDisplay, const int32_t width, const int32_t height) const
+{
+	const auto xScreen   = XDefaultScreenOfDisplay (xDisplay);
+	const auto xDrawable = RootWindowOfScreen (xScreen);
+	const auto depth     = DefaultDepthOfScreen (xScreen);
+	const auto xPixmap   = XCreatePixmap (xDisplay, xDrawable, width, height, depth);
+
+	return xPixmap;
+}
+
 void
 MediaStream::setup ()
 {
-	// X11
-
-	if (glXGetCurrentContext ())
-		display = XOpenDisplay (nullptr);
-
-	if (display)
-		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
-
-	// X11
-
-	gst_base_sink_set_last_sample_enabled (vsink -> Gst::BaseSink::gobj (), true);
-
-	player -> property_video_sink () = vsink;
-	player -> property_volume ()     = volume;
-	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
-	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
+	// GStreamer
 
 	const auto bus = player -> get_bus ();
 
@@ -115,12 +117,21 @@ MediaStream::setup ()
 
 	bus -> add_signal_watch ();
 	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
+
+	vsink -> set_last_sample_enabled (true);
+	vsink -> handle_events (false);
+
+	player -> property_video_sink () = vsink;
+	player -> property_volume ()     = volume;
+	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
+	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
 }
 
 bool
 MediaStream::setUri (const basic::uri & uri)
 {
 	player -> set_state (Gst::STATE_NULL);
+
 	player -> property_volume () = volume = 0;
 	player -> property_uri ()    = uri .str ();
 	player -> set_state (Gst::STATE_PAUSED);
@@ -134,17 +145,11 @@ MediaStream::getDuration () const
 	auto   format   = Gst::FORMAT_TIME;
 	gint64 duration = 0;
 
-	if (player -> query_duration (format, duration) && duration >= 0)
+	if (player -> query_duration (format, duration) and duration >= 0)
 		return duration / double (Gst::SECOND);
 
 	return -1;
 }
-
-//void
-//MediaStream::setVolume (double value)
-//{
-//	player -> property_volume () = math::clamp (value, 0.0, 1.0);
-//}
 
 void
 MediaStream::setVolume (double value)
@@ -160,32 +165,10 @@ MediaStream::setVolume (double value)
 	}
 }
 
-Gst::State
-MediaStream::getState () const
+void
+MediaStream::setSpeed (const double value)
 {
-	Gst::State             state;
-	Gst::State             pending;
-	Gst::StateChangeReturn ret = player -> get_state (state, pending, 1 * Gst::SECOND);
-
-	switch (ret)
-	{
-		case Gst::STATE_CHANGE_SUCCESS:
-		{
-			return state;
-		}
-		case Gst::STATE_CHANGE_ASYNC:
-		{
-			__LOG__ << "Query state failed, still performing change" << std::endl;
-			break;
-		}
-		default:
-		{
-			__LOG__ << "Query state failed, hard failure" << std::endl;
-			break;
-		}
-	}
-
-	return Gst::STATE_NULL;
+	speed = value;
 }
 
 //	void
@@ -220,6 +203,34 @@ MediaStream::getState () const
 //		}
 //	}
 
+Gst::State
+MediaStream::getState () const
+{
+	Gst::State             state;
+	Gst::State             pending;
+	Gst::StateChangeReturn ret = player -> get_state (state, pending, 1 * Gst::SECOND);
+
+	switch (ret)
+	{
+		case Gst::STATE_CHANGE_SUCCESS:
+		{
+			return state;
+		}
+		case Gst::STATE_CHANGE_ASYNC:
+		{
+			__LOG__ << "Query state failed, still performing change" << std::endl;
+			break;
+		}
+		default:
+		{
+			__LOG__ << "Query state failed, hard failure" << std::endl;
+			break;
+		}
+	}
+
+	return Gst::STATE_NULL;
+}
+
 bool
 MediaStream::sync () const
 {
@@ -227,34 +238,50 @@ MediaStream::sync () const
 }
 
 void
-MediaStream::start (const double speed, const double position)
+MediaStream::seek (const double position)
 {
+//	if (position)
+//	{
+//		player -> seek (speed,
+//				          Gst::FORMAT_TIME,
+//				          Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+//				          Gst::SEEK_TYPE_SET, position * double (Gst::SECOND),
+//				          Gst::SEEK_TYPE_SET, 0);
+//	}
+//
+//	player -> set_state (Gst::STATE_NULL);
+}
+
+void
+MediaStream::start ()
+{
+	active = true;
+
 	player -> set_state (Gst::STATE_NULL);
-
-	player -> seek (speed,
-			          Gst::FORMAT_TIME,
-			          Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-			          Gst::SEEK_TYPE_SET, position * double (Gst::SECOND),
-			          Gst::SEEK_TYPE_SET, 0);
-
 	player -> set_state (Gst::STATE_PLAYING);
 }
 
 void
 MediaStream::pause ()
 {
+	paused = true;
+
 	player -> set_state (Gst::STATE_PAUSED);
 }
 
 void
 MediaStream::resume ()
 {
+	paused = false;
+
 	player -> set_state (Gst::STATE_PLAYING);
 }
 
 void
 MediaStream::stop ()
 {
+	active = false;
+
 	player -> set_state (Gst::STATE_PAUSED);
 }
 
@@ -264,10 +291,10 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 	if (not gst_is_video_overlay_prepare_window_handle_message (message -> gobj ()))
 		return;
 
-	if (pixmap == 0)
+	if (xPixmap == 0)
 		return;
 
-	vsink -> set_window_handle (pixmap);
+	vsink -> set_window_handle (xPixmap);
 }
 
 void
@@ -280,22 +307,14 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
 			player -> property_volume () = volume;
 
+			if (active and not paused)
+				start ();
+
 			end .emit ();
-			break;
-		}
-		case Gst::MESSAGE_STATE_CHANGED:
-		{
-			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
-			player -> property_volume () = volume;
 			break;
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
 		{
-//			__LOG__
-//				<< "MESSAGE_DURATION_CHANGED: "
-//				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
-//				<< std::endl;
-
 			duration_changed .emit ();
 			break;
 		}
@@ -327,45 +346,90 @@ MediaStream::on_video_changed ()
 	if (pad)
 		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (this, &MediaStream::on_video_pad_got_buffer));
 
-	loaded .emit ();
+	video_changed .emit ();
 }
 
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
-	update ();
-	return Gst::PAD_PROBE_OK;
-}
+	int32_t width  = 0;
+	int32_t height = 0;
 
-void
-MediaStream::update ()
-{
-	const auto sample = gst_base_sink_get_last_sample (vsink -> Gst::BaseSink::gobj ());
+	auto caps = pad -> get_current_caps ();
+
+	caps = caps -> create_writable ();
+
+	const auto structure = caps -> get_structure (0);
+
+	if (structure)
+	{
+		structure .get_field ("width",  width);
+		structure .get_field ("height", height);
+	}
+
+	const auto size   = width * 4 * height;
+	const auto sample = vsink -> get_last_sample ();
 
 	if (sample)
 	{
-		const auto buffer = gst_sample_get_buffer (sample);
+		const auto buffer = sample -> get_buffer ();
 
 		if (buffer)
 		{
-			width  = vsink -> get_width ();
-			height = vsink -> get_height ();
+			const auto frame = std::make_shared <VideoFrame> ();
 
-			image .resize (width * 4 * height);
+			frame -> width  = width;
+			frame -> height = height;
+			frame -> image .resize (size);
 
-			gst_buffer_extract (buffer, 0, image .data (), image .size ());
+			buffer -> extract (0, frame -> image .data (), frame -> image .size ());
 
-			flip (width, height);
+			flip (frame -> image, frame -> width, frame -> height);
+
+			currentFrame = frame;
 
 			buffer_changed .emit ();
 		}
-
-		gst_sample_unref (sample);
 	}
+
+	return Gst::PAD_PROBE_OK;
 }
 
+//void
+//MediaStream::update ()
+//{
+//	const auto sample = gst_base_sink_get_last_sample (vsink -> Gst::BaseSink::gobj ());
+//
+//	if (sample)
+//	{
+//		const auto buffer = gst_sample_get_buffer (sample);
+//
+//		if (buffer)
+//		{
+//			const auto frame = frame2 .load ();
+//
+//			std::lock_guard <std::mutex> frameLock (frame -> mutex);
+//
+//			frame -> width  = vsink -> get_width ();
+//			frame -> height = vsink -> get_height ();
+//
+//			frame -> image .resize (frame -> width * 4 * frame -> height);
+//
+//			gst_buffer_extract (buffer, 0, frame -> image .data (), frame -> image .size ());
+//
+//			flip (frame -> image, frame -> width, frame -> height);
+//
+//			frame2 .store (frame1 .exchange (frame));
+//
+//			buffer_changed .emit ();
+//		}
+//
+//		gst_sample_unref (sample);
+//	}
+//}
+
 void
-MediaStream::flip (const size_t width, const size_t height)
+MediaStream::flip (std::vector <uint8_t> & image, const int32_t width, const int32_t height)
 {
 	// Flip image vertically
 
@@ -384,12 +448,10 @@ MediaStream::flip (const size_t width, const size_t height)
 MediaStream::~MediaStream ()
 {
 	player -> set_state (Gst::STATE_NULL);
+	sync ();
 
-	if (pixmap)
-		XFreePixmap (display, pixmap);
-
-	if (display)
-		XCloseDisplay (display);
+	if (xPixmap)
+		XFreePixmap (gdk_x11_display_get_xdisplay (display -> gobj ()), xPixmap);
 }
 
 } // X3D

@@ -134,7 +134,7 @@ private:
 	///  @name Event handlers
 
 	void
-	on_loaded ();
+	on_video_changed ();
 
 	void
 	on_buffer_changed ();

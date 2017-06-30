@@ -51,8 +51,6 @@
 #ifndef __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
 #define __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
 
-#include "X3DMediaStream.h"
-
 #include <Titania/Basic/URI.h>
 
 #pragma GCC diagnostic push
@@ -64,59 +62,46 @@
 #include <glibmm/dispatcher.h>
 #pragma GCC diagnostic pop
 
+#include <gtkmm.h>
+
 extern "C"
 {
 #include <X11/Xlib.h>
 }
 
+namespace Gst {
+
+class PlayBin;
+class XImageSink;
+class Message;
+
+}
+
 namespace titania {
 namespace X3D {
 
-class MediaStream :
-	X3DMediaStream
+struct VideoFrame
+{
+	int32_t               width;
+	int32_t               height;
+	std::vector <uint8_t> image;
+};
+
+class MediaStream
 {
 public:
 
+	///  @name Member types
+
+	using Player    = Gst::PlayBin;
+	using VideoSink = Gst::XImageSink;
+
 	///  @name Construction
 
-	MediaStream ();
+	MediaStream (const Glib::RefPtr <Gdk::Display> & display);
 
 	void
 	setup ();
-
-	///  @name Signals
-
-	Glib::Dispatcher &
-	signal_loaded ()
-	{ return loaded; }
-
-	const Glib::Dispatcher &
-	signal_loaded () const
-	{ return loaded; }
-
-	Glib::Dispatcher &
-	signal_buffer_changed ()
-	{ return buffer_changed; }
-
-	const Glib::Dispatcher &
-	signal_buffer_changed () const
-	{ return buffer_changed; }
-
-	Glib::Dispatcher &
-	signal_end ()
-	{ return end; }
-
-	const Glib::Dispatcher &
-	signal_end () const
-	{ return end; }
-
-	Glib::Dispatcher &
-	signal_duration_changed ()
-	{ return duration_changed; }
-
-	const Glib::Dispatcher &
-	signal_duration_changed () const
-	{ return duration_changed; }
 
 	///  @name Member access
 
@@ -126,20 +111,19 @@ public:
 	void
 	setVolume (double value);
 
+	void
+	setSpeed (const double value);
+
 	double
 	getDuration () const;
 
-	int32_t
-	getWidth () const
-	{ return width; }
+	std::shared_ptr <VideoFrame>
+	getCurrentFrame ()
+	{ return std::move (currentFrame); }
 
-	int32_t
-	getHeight () const
-	{ return height; }
-
-	const std::vector <uint8_t> &
-	getBuffer () const
-	{ return image; }
+	const Glib::RefPtr <VideoSink> &
+	getVideoSink () const
+	{ return vsink; }
 
 	///  @name Operations
 
@@ -147,7 +131,10 @@ public:
 	sync () const;
 
 	void
-	start (const double speed, const double position);
+	seek (const double position);
+
+	void
+	start ();
 
 	void
 	pause ();
@@ -158,12 +145,35 @@ public:
 	void
 	stop ();
 
+	///  @name Signals
+
+	Glib::Dispatcher &
+	signal_video_changed ()
+	{ return video_changed; }
+
+	Glib::Dispatcher &
+	signal_buffer_changed ()
+	{ return buffer_changed; }
+
+	Glib::Dispatcher &
+	signal_end ()
+	{ return end; }
+
+	Glib::Dispatcher &
+	signal_duration_changed ()
+	{ return duration_changed; }
+
 	///  @name Destruction
 
 	~MediaStream ();
 
 
 private:
+
+	///  @name Construction
+
+	Pixmap
+	createPixmap (Display* const xDisplay, const int32_t width, const int32_t height) const;
 
 	///  @name Operations
 
@@ -188,28 +198,28 @@ private:
 	on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> &, const Gst::PadProbeInfo &);
 
 	void
-	update ();
-
-	void
-	flip (const size_t, const size_t);
+	flip (std::vector <uint8_t> & image, const int32_t width, const int32_t height);
 
 	///  @name Member access
 
-	Glib::Dispatcher loaded;
-	Glib::Dispatcher buffer_changed;
-	Glib::Dispatcher end;
-	Glib::Dispatcher duration_changed;
+	const Glib::RefPtr <Gdk::Display> display;
+	const Pixmap                      xPixmap;
 
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;
 
-	Display* display;
-	Pixmap   pixmap;
+	std::shared_ptr <VideoFrame> currentFrame;
 
-	int32_t               width;
-	int32_t               height;
-	std::vector <uint8_t> image;
-	double                volume;
+	double  volume;
+	double  speed;
+	bool    active;
+	bool    paused;
+
+	Glib::Dispatcher video_changed;
+	Glib::Dispatcher buffer_changed;
+	Glib::Dispatcher end;
+	Glib::Dispatcher duration_changed;
+
 
 };
 
