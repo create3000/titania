@@ -74,6 +74,8 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	             currentFrame (),
 	                   volume (0),
 	                    speed (1),
+	                 duration (-1),
+	             emitDuration (false),
 	                   active (false),
 	                   paused (false),
 	   videoChangedDispatcher (),
@@ -129,6 +131,8 @@ MediaStream::setup ()
 bool
 MediaStream::setUri (const basic::uri & uri)
 {
+	emitDuration = true;
+
 	player -> set_state (Gst::STATE_NULL);
 
 	player -> property_volume () = volume = 0;
@@ -139,11 +143,11 @@ MediaStream::setUri (const basic::uri & uri)
 }
 
 time_type
-MediaStream::getDuration () const
+MediaStream::getQueryDuration () const
 {
 	gint64 duration = 0;
 
-	if (player -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
+	if (vsink -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
 		return duration / time_type (Gst::SECOND);
 
 	return -1;
@@ -290,14 +294,12 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 		return;
 
 	if (not xWindow)
+	{
+		stop ();
 		return;
+	}
 
-	XDestroyWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow);
-
-	xWindow = createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), vsink -> get_width (), vsink -> get_height ());
-
-	if (not xWindow)
-		return;
+	XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
 
 	vsink -> set_window_handle (xWindow);
 }
@@ -318,9 +320,14 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 			endDispatcher .emit ();
 			break;
 		}
-		case Gst::MESSAGE_DURATION_CHANGED:
+		case Gst::MESSAGE_ASYNC_DONE:
 		{
-			durationChangedDispatcher .emit ();
+			if (emitDuration)
+			{
+				emitDuration = false;
+				duration     = getQueryDuration ();
+				durationChangedDispatcher .emit ();
+			}
 			break;
 		}
 		case Gst::MESSAGE_ERROR:

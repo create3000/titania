@@ -113,7 +113,8 @@ public:
 	setSpeed (const time_type value);
 
 	time_type
-	getDuration () const;
+	getDuration () const
+	{ return duration; }
 
 	std::shared_ptr <VideoFrame>
 	getCurrentFrame ()
@@ -178,6 +179,9 @@ private:
 	Gst::State
 	getState () const;
 
+	time_type
+	getQueryDuration () const;
+
 	///  @name Event handlers
 
 	void
@@ -210,6 +214,8 @@ private:
 
 	double    volume;
 	time_type speed;
+	time_type duration;
+	bool      emitDuration;
 	bool      active;
 	bool      paused;
 
