@@ -67,19 +67,19 @@ namespace X3D {
  */
 
 MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
-	         display (display),
-	         xWindow (createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
-	          player (),
-	           vsink (),
-	    currentFrame (),
-	          volume (0),
-	           speed (1),
-	          active (false),
-	          paused (false),
-	   video_changed (),
-	  buffer_changed (),
-	             end (),
-	duration_changed ()
+	                  display (display),
+	                  xWindow (createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
+	                   player (),
+	                    vsink (),
+	             currentFrame (),
+	                   volume (0),
+	                    speed (1),
+	                   active (false),
+	                   paused (false),
+	   videoChangedDispatcher (),
+	  bufferChangedDispatcher (),
+	            endDispatcher (),
+	durationChangedDispatcher ()
 {
 	// Static init
 
@@ -316,12 +316,12 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 			if (active and not paused)
 				start ();
 
-			end .emit ();
+			endDispatcher .emit ();
 			break;
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
 		{
-			duration_changed .emit ();
+			durationChangedDispatcher .emit ();
 			break;
 		}
 		case Gst::MESSAGE_ERROR:
@@ -352,12 +352,14 @@ MediaStream::on_video_changed ()
 	if (pad)
 		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (this, &MediaStream::on_video_pad_got_buffer));
 
-	video_changed .emit ();
+	videoChangedDispatcher .emit ();
 }
 
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
+	// This function is process in another thread!
+
 	const auto width  = vsink -> get_width ();
 	const auto height = vsink -> get_height ();
 	const auto size   = width * 4 * height;
@@ -381,7 +383,7 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 
 			currentFrame = frame;
 
-			buffer_changed .emit ();
+			bufferChangedDispatcher .emit ();
 		}
 	}
 

@@ -149,19 +149,19 @@ public:
 
 	Glib::Dispatcher &
 	signal_video_changed ()
-	{ return video_changed; }
+	{ return videoChangedDispatcher; }
 
 	Glib::Dispatcher &
 	signal_buffer_changed ()
-	{ return buffer_changed; }
+	{ return bufferChangedDispatcher; }
 
 	Glib::Dispatcher &
 	signal_end ()
-	{ return end; }
+	{ return endDispatcher; }
 
 	Glib::Dispatcher &
 	signal_duration_changed ()
-	{ return duration_changed; }
+	{ return durationChangedDispatcher; }
 
 	///  @name Destruction
 
@@ -215,10 +215,10 @@ private:
 	bool    active;
 	bool    paused;
 
-	Glib::Dispatcher video_changed;
-	Glib::Dispatcher buffer_changed;
-	Glib::Dispatcher end;
-	Glib::Dispatcher duration_changed;
+	Glib::Dispatcher videoChangedDispatcher;
+	Glib::Dispatcher bufferChangedDispatcher;
+	Glib::Dispatcher endDispatcher;
+	Glib::Dispatcher durationChangedDispatcher;
 
 
 };
