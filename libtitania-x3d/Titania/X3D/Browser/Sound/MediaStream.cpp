@@ -68,7 +68,7 @@ namespace X3D {
 
 MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	         display (display),
-	         xPixmap (createPixmap (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
+	         xWindow (createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
 	          player (),
 	           vsink (),
 	    currentFrame (),
@@ -94,15 +94,14 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	vsink  = VideoSink::create ("vsink");
 }
 
-Pixmap
-MediaStream::createPixmap (Display* const xDisplay, const int32_t width, const int32_t height) const
+Window
+MediaStream::createWindow (Display* const xDisplay, const int32_t width, const int32_t height) const
 {
-	const auto xScreen   = XDefaultScreenOfDisplay (xDisplay);
-	const auto xDrawable = RootWindowOfScreen (xScreen);
-	const auto depth     = DefaultDepthOfScreen (xScreen);
-	const auto xPixmap   = XCreatePixmap (xDisplay, xDrawable, width, height, depth);
+	const auto xScreen = DefaultScreen (xDisplay);
+	const auto xBlack  = BlackPixel (xDisplay, xScreen);
+	const auto xWhite  = WhitePixel (xDisplay, xScreen);
 
-	return xPixmap;
+	return XCreateSimpleWindow (xDisplay, RootWindow (xDisplay, xScreen), 0, 0, width, height, 0, xBlack, xWhite);
 }
 
 void
@@ -291,10 +290,17 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 	if (not gst_is_video_overlay_prepare_window_handle_message (message -> gobj ()))
 		return;
 
-	if (xPixmap == 0)
+	if (not xWindow)
 		return;
 
-	vsink -> set_window_handle (xPixmap);
+	XDestroyWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow);
+
+	xWindow = createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), vsink -> get_width (), vsink -> get_height ());
+
+	if (not xWindow)
+		return;
+
+	vsink -> set_window_handle (xWindow);
 }
 
 void
@@ -352,21 +358,8 @@ MediaStream::on_video_changed ()
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
-	int32_t width  = 0;
-	int32_t height = 0;
-
-	auto caps = pad -> get_current_caps ();
-
-	caps = caps -> create_writable ();
-
-	const auto structure = caps -> get_structure (0);
-
-	if (structure)
-	{
-		structure .get_field ("width",  width);
-		structure .get_field ("height", height);
-	}
-
+	const auto width  = vsink -> get_width ();
+	const auto height = vsink -> get_height ();
 	const auto size   = width * 4 * height;
 	const auto sample = vsink -> get_last_sample ();
 
@@ -395,39 +388,6 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 	return Gst::PAD_PROBE_OK;
 }
 
-//void
-//MediaStream::update ()
-//{
-//	const auto sample = gst_base_sink_get_last_sample (vsink -> Gst::BaseSink::gobj ());
-//
-//	if (sample)
-//	{
-//		const auto buffer = gst_sample_get_buffer (sample);
-//
-//		if (buffer)
-//		{
-//			const auto frame = frame2 .load ();
-//
-//			std::lock_guard <std::mutex> frameLock (frame -> mutex);
-//
-//			frame -> width  = vsink -> get_width ();
-//			frame -> height = vsink -> get_height ();
-//
-//			frame -> image .resize (frame -> width * 4 * frame -> height);
-//
-//			gst_buffer_extract (buffer, 0, frame -> image .data (), frame -> image .size ());
-//
-//			flip (frame -> image, frame -> width, frame -> height);
-//
-//			frame2 .store (frame1 .exchange (frame));
-//
-//			buffer_changed .emit ();
-//		}
-//
-//		gst_sample_unref (sample);
-//	}
-//}
-
 void
 MediaStream::flip (std::vector <uint8_t> & image, const int32_t width, const int32_t height)
 {
@@ -450,8 +410,8 @@ MediaStream::~MediaStream ()
 	player -> set_state (Gst::STATE_NULL);
 	sync ();
 
-	if (xPixmap)
-		XFreePixmap (gdk_x11_display_get_xdisplay (display -> gobj ()), xPixmap);
+	if (xWindow)
+		XDestroyWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow);
 }
 
 } // X3D

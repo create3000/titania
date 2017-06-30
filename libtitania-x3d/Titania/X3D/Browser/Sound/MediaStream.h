@@ -172,8 +172,8 @@ private:
 
 	///  @name Construction
 
-	Pixmap
-	createPixmap (Display* const xDisplay, const int32_t width, const int32_t height) const;
+	Window
+	createWindow (Display* const xDisplay, const int32_t width, const int32_t height) const;
 
 	///  @name Operations
 
@@ -203,7 +203,7 @@ private:
 	///  @name Member access
 
 	const Glib::RefPtr <Gdk::Display> display;
-	const Pixmap                      xPixmap;
+	Window                            xWindow;
 
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;
