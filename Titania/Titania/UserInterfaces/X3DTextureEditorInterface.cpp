@@ -78,6 +78,7 @@ X3DTextureEditorInterface::create ()
 {
 	// Get objects.
 	m_GeneratedCubeMapTextureSizeAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeneratedCubeMapTextureSizeAdjustment"));
+	m_MovieTextureSpeedAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MovieTextureSpeedAdjustment"));
 	m_MultiTextureAlphaAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MultiTextureAlphaAdjustment"));
 	m_MultiTextureColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MultiTextureColorAdjustment"));
 	m_MultiTextureFunctionListStore                = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MultiTextureFunctionListStore"));
@@ -187,13 +188,15 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("PixelTextureOpenButton", m_PixelTextureOpenButton);
 	m_builder -> get_widget ("PixelTextureSaveAsButton", m_PixelTextureSaveAsButton);
 	m_builder -> get_widget ("MovieTextureBox", m_MovieTextureBox);
+	m_builder -> get_widget ("MovieTextureEnabledCheckButton", m_MovieTextureEnabledCheckButton);
+	m_builder -> get_widget ("MovieTextureLoopCheckButton", m_MovieTextureLoopCheckButton);
 	m_builder -> get_widget ("MovieTextureURLBox", m_MovieTextureURLBox);
 	m_builder -> get_widget ("MovieTextureURLTreeView", m_MovieTextureURLTreeView);
 	m_builder -> get_widget ("MovieTextureURLAddButton", m_MovieTextureURLAddButton);
 	m_builder -> get_widget ("MovieTextureURLRemoveButton", m_MovieTextureURLRemoveButton);
 	m_builder -> get_widget ("MovieTextureURLReloadButton", m_MovieTextureURLReloadButton);
-	m_builder -> get_widget ("MovieTextureEnabledCheckButton", m_MovieTextureEnabledCheckButton);
-	m_builder -> get_widget ("MovieTextureLoopCheckButton", m_MovieTextureLoopCheckButton);
+	m_builder -> get_widget ("MovieTextureDescriptionEntry", m_MovieTextureDescriptionEntry);
+	m_builder -> get_widget ("MovieTextureSpeedSpinButton", m_MovieTextureSpeedSpinButton);
 	m_builder -> get_widget ("ComposedTexture3DBox", m_ComposedTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DBox", m_ImageTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DURLBox", m_ImageTexture3DURLBox);

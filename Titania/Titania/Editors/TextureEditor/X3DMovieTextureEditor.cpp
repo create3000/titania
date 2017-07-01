@@ -59,7 +59,7 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
 	                 enabled (this, getMovieTextureEnabledCheckButton (), "enabled"),
-	                    loop (this, getMovieTextureLoopCheckButton (), "loop"),
+	             description (this, getMovieTextureDescriptionEntry (), "description"),
 	                     url (new MFStringURLWidget (this,
 	                          getMovieTextureURLTreeView (),
 	                          getMovieTextureURLCellRendererText (),
@@ -68,6 +68,8 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          getMovieTextureURLReloadButton (),
 	                          getMovieTextureURLChooserColumn (),
 	                          "url")),
+	                     loop (this, getMovieTextureLoopCheckButton (), "loop"),
+	                    speed (this, getMovieTextureSpeedAdjustment (), getMovieTextureSpeedSpinButton (), "speed"),
 	             movieTexture ()
 {
 	addChildObjects (movieTexture);
@@ -85,8 +87,10 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	const X3D::MFNode nodes = { movieTexture };
 
-	enabled .setNodes (nodes);
-	loop    .setNodes (nodes);
+	enabled     .setNodes (nodes);
+	description .setNodes (nodes);
+	loop        .setNodes (nodes);
+	speed       .setNodes (nodes);
 
 	url -> setNodes (nodes);
 }

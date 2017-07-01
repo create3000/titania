@@ -92,6 +92,10 @@ public:
 	{ return m_GeneratedCubeMapTextureSizeAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getMovieTextureSpeedAdjustment () const
+	{ return m_MovieTextureSpeedAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getMultiTextureAlphaAdjustment () const
 	{ return m_MultiTextureAlphaAdjustment; }
 
@@ -519,6 +523,14 @@ public:
 	getMovieTextureBox () const
 	{ return *m_MovieTextureBox; }
 
+	Gtk::CheckButton &
+	getMovieTextureEnabledCheckButton () const
+	{ return *m_MovieTextureEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getMovieTextureLoopCheckButton () const
+	{ return *m_MovieTextureLoopCheckButton; }
+
 	Gtk::Box &
 	getMovieTextureURLBox () const
 	{ return *m_MovieTextureURLBox; }
@@ -539,13 +551,13 @@ public:
 	getMovieTextureURLReloadButton () const
 	{ return *m_MovieTextureURLReloadButton; }
 
-	Gtk::CheckButton &
-	getMovieTextureEnabledCheckButton () const
-	{ return *m_MovieTextureEnabledCheckButton; }
+	Gtk::Entry &
+	getMovieTextureDescriptionEntry () const
+	{ return *m_MovieTextureDescriptionEntry; }
 
-	Gtk::CheckButton &
-	getMovieTextureLoopCheckButton () const
-	{ return *m_MovieTextureLoopCheckButton; }
+	Gtk::SpinButton &
+	getMovieTextureSpeedSpinButton () const
+	{ return *m_MovieTextureSpeedSpinButton; }
 
 	Gtk::Box &
 	getComposedTexture3DBox () const
@@ -1214,6 +1226,7 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_GeneratedCubeMapTextureSizeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_MovieTextureSpeedAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_MultiTextureAlphaAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_MultiTextureColorAdjustment;
 	Glib::RefPtr <Gtk::ListStore> m_MultiTextureFunctionListStore;
@@ -1321,13 +1334,15 @@ private:
 	Gtk::Button* m_PixelTextureOpenButton;
 	Gtk::Button* m_PixelTextureSaveAsButton;
 	Gtk::Box* m_MovieTextureBox;
+	Gtk::CheckButton* m_MovieTextureEnabledCheckButton;
+	Gtk::CheckButton* m_MovieTextureLoopCheckButton;
 	Gtk::Box* m_MovieTextureURLBox;
 	Gtk::TreeView* m_MovieTextureURLTreeView;
 	Gtk::Button* m_MovieTextureURLAddButton;
 	Gtk::Button* m_MovieTextureURLRemoveButton;
 	Gtk::Button* m_MovieTextureURLReloadButton;
-	Gtk::CheckButton* m_MovieTextureEnabledCheckButton;
-	Gtk::CheckButton* m_MovieTextureLoopCheckButton;
+	Gtk::Entry* m_MovieTextureDescriptionEntry;
+	Gtk::SpinButton* m_MovieTextureSpeedSpinButton;
 	Gtk::Box* m_ComposedTexture3DBox;
 	Gtk::Box* m_ImageTexture3DBox;
 	Gtk::Box* m_ImageTexture3DURLBox;

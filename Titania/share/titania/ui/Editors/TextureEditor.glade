@@ -7,6 +7,12 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="MovieTextureSpeedAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="MultiTextureAlphaAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -442,8 +448,8 @@
                                       <object class="GtkLabel" id="label6">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
                                         <property name="label" translatable="yes">Texture:</property>
-                                        <property name="xalign">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -528,8 +534,8 @@
                                       <object class="GtkLabel" id="label101">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
                                         <property name="label" translatable="yes">Name:</property>
-                                        <property name="xalign">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -589,6 +595,7 @@
                                       <object class="GtkLabel" id="label35">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
                                         <property name="label" translatable="yes">Preview:</property>
                                       </object>
                                       <packing>
@@ -600,8 +607,8 @@
                                       <object class="GtkLabel" id="label37">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
                                         <property name="label" translatable="yes">Format:</property>
-                                        <property name="xalign">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -687,6 +694,17 @@
                                     <property name="expand">True</property>
                                     <property name="fill">True</property>
                                     <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1555,6 +1573,66 @@
                                             <property name="row_spacing">8</property>
                                             <property name="column_spacing">16</property>
                                             <child>
+                                              <object class="GtkCheckButton" id="MovieTextureEnabledCheckButton">
+                                                <property name="label" translatable="yes">Enabled</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="draw_indicator">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkCheckButton" id="MovieTextureLoopCheckButton">
+                                                <property name="label" translatable="yes">Loop</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="draw_indicator">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">3</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel" id="label61">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel" id="label62">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">3</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel" id="label39">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">end</property>
+                                                <property name="label" translatable="yes">URL:</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">2</property>
+                                              </packing>
+                                            </child>
+                                            <child>
                                               <object class="GtkBox" id="MovieTextureURLBox">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
@@ -1698,39 +1776,21 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkLabel" id="label39">
+                                              <object class="GtkLabel" id="label1">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
+                                                <property name="halign">end</property>
+                                                <property name="label" translatable="yes">Description:</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
-                                                <property name="top_attach">2</property>
+                                                <property name="top_attach">1</property>
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkCheckButton" id="MovieTextureEnabledCheckButton">
-                                                <property name="label" translatable="yes">Enabled</property>
+                                              <object class="GtkEntry" id="MovieTextureDescriptionEntry">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="xalign">0</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="left_attach">1</property>
-                                                <property name="top_attach">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkCheckButton" id="MovieTextureLoopCheckButton">
-                                                <property name="label" translatable="yes">Loop</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="xalign">0</property>
-                                                <property name="draw_indicator">True</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1738,23 +1798,32 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkLabel" id="label61">
+                                              <object class="GtkSpinButton" id="MovieTextureSpeedSpinButton">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                                <property name="halign">start</property>
+                                                <property name="text" translatable="yes">0,000</property>
+                                                <property name="adjustment">MovieTextureSpeedAdjustment</property>
+                                                <property name="climb_rate">0.01</property>
+                                                <property name="digits">3</property>
+                                                <property name="numeric">True</property>
                                               </object>
                                               <packing>
-                                                <property name="left_attach">0</property>
-                                                <property name="top_attach">0</property>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">4</property>
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkLabel" id="label62">
+                                              <object class="GtkLabel" id="label105">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="halign">end</property>
+                                                <property name="label" translatable="yes">Speed:</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
-                                                <property name="top_attach">1</property>
+                                                <property name="top_attach">4</property>
                                               </packing>
                                             </child>
                                           </object>
@@ -3192,7 +3261,18 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
-                                    <property name="position">3</property>
+                                    <property name="position">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">5</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -3229,8 +3309,8 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="halign">start</property>
                                         <property name="hexpand">True</property>
-                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3244,7 +3324,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="xalign">0</property>
+                                        <property name="halign">start</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3256,11 +3336,8 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
-                                    <property name="position">4</property>
+                                    <property name="position">6</property>
                                   </packing>
-                                </child>
-                                <child>
-                                  <placeholder/>
                                 </child>
                                 <child>
                                   <object class="GtkGrid" id="Texture3DBox">
@@ -3296,8 +3373,8 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="halign">start</property>
                                         <property name="hexpand">True</property>
-                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3311,7 +3388,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="xalign">0</property>
+                                        <property name="halign">start</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3325,7 +3402,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="xalign">0</property>
+                                        <property name="halign">start</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3348,7 +3425,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
-                                    <property name="position">6</property>
+                                    <property name="position">7</property>
                                   </packing>
                                 </child>
                               </object>

@@ -74,6 +74,7 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	             currentFrame (),
 	                   volume (0),
 	                    speed (1),
+	              updateSpeed (false),
 	                 duration (-1),
 	             emitDuration (false),
 	   videoChangedDispatcher (),
@@ -168,40 +169,38 @@ MediaStream::setVolume (time_type value)
 void
 MediaStream::setSpeed (const time_type value)
 {
-	speed = value;
-}
+	__LOG__ << value << std::endl;
 
-//	void
-//	setSpeed (double speed)
-//	{
-//		auto format = Gst::FORMAT_TIME;
-//
-//		if (speed > 0)
-//		{
-//			player -> seek (speed,
-//			                format,
-//			                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-//			                Gst::SEEK_TYPE_CUR, 0,
-//			                Gst::SEEK_TYPE_END, 0);
-//		}
-//		else
-//		{
-//			gint64 position = 0;
-//
-//			if (player -> query_position (format, position))
-//			{
-//				__LOG__ << position / time_type (Gst::SECOND) << std::endl;
-//
-//				player -> seek (speed,
-//				                format,
-//				                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-//				                Gst::SEEK_TYPE_SET, 0,
-//				                Gst::SEEK_TYPE_SET, position);
-//			}
-//			else
-//				__LOG__ << "*** query_position failed" << std::endl;
-//		}
-//	}
+	speed       = value;
+	updateSpeed = false;
+
+	if (speed > 0)
+	{
+		gint64 position = 0;
+
+		if (not player -> query_position (Gst::FORMAT_TIME, position))
+			position = 0;
+
+		player -> seek (speed,
+		                Gst::FORMAT_TIME,
+		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+		                Gst::SEEK_TYPE_SET, position,
+		                Gst::SEEK_TYPE_END, 0);
+	}
+	else if (speed < 0)
+	{
+		gint64 position = 0;
+
+		if (not player -> query_position (Gst::FORMAT_TIME, position))
+			position = 0;
+
+		player -> seek (speed,
+		                Gst::FORMAT_TIME,
+		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+		                Gst::SEEK_TYPE_SET, 0,
+		                Gst::SEEK_TYPE_SET, position);
+	}
+}
 
 Gst::State
 MediaStream::getState () const
@@ -240,22 +239,28 @@ MediaStream::sync () const
 void
 MediaStream::seek (const time_type position)
 {
-//	if (position)
-//	{
-//		player -> seek (speed,
-//				          Gst::FORMAT_TIME,
-//				          Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-//				          Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND),
-//				          Gst::SEEK_TYPE_SET, 0);
-//	}
-//
-//	player -> set_state (Gst::STATE_NULL);
+	if (speed > 0)
+	{
+		player -> seek (speed,
+		                Gst::FORMAT_TIME,
+		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+		                Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND),
+		                Gst::SEEK_TYPE_END, 0);
+	}
+	else
+	{
+		player -> seek (speed,
+		                Gst::FORMAT_TIME,
+		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+		                Gst::SEEK_TYPE_SET, 0,
+		                Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND));
+	}
 }
 
 void
-MediaStream::start ()
+MediaStream::play ()
 {
-	player -> set_state (Gst::STATE_NULL);
+	updateSpeed = true;
 	player -> set_state (Gst::STATE_PLAYING);
 }
 
@@ -266,15 +271,9 @@ MediaStream::pause ()
 }
 
 void
-MediaStream::resume ()
-{
-	player -> set_state (Gst::STATE_PLAYING);
-}
-
-void
 MediaStream::stop ()
 {
-	player -> set_state (Gst::STATE_PAUSED);
+	player -> set_state (Gst::STATE_NULL);
 }
 
 void
@@ -301,16 +300,25 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 	{
 		case Gst::MESSAGE_EOS:
 		{
-			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
-			player -> property_volume () = volume;
-
 			endDispatcher .emit ();
+			break;
+		}
+		case Gst::MESSAGE_STATE_CHANGED:
+		{
+			const auto state = Glib::RefPtr <Gst::MessageStateChanged>::cast_static (message) -> parse_new_state ();
+
+			if (state == Gst::STATE_PLAYING)
+			{
+				// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
+				player -> property_volume () = volume;
+			}
+
 			break;
 		}
 		case Gst::MESSAGE_ASYNC_DONE:
 		{
-			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
-			player -> property_volume () = volume;
+			if (updateSpeed)
+				setSpeed (speed);
 
 			if (emitDuration)
 			{
@@ -318,6 +326,7 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 				duration     = getQueryDuration ();
 				durationChangedDispatcher .emit ();
 			}
+
 			break;
 		}
 		case Gst::MESSAGE_ERROR:

@@ -137,13 +137,10 @@ public:
 	seek (const time_type position);
 
 	void
-	start ();
+	play ();
 
 	void
 	pause ();
-
-	void
-	resume ();
 
 	void
 	stop ();
@@ -218,6 +215,7 @@ private:
 
 	double    volume;
 	time_type speed;
+	bool      updateSpeed;
 	time_type duration;
 	bool      emitDuration;
 
