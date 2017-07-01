@@ -67,7 +67,8 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	  X3DTexture2DNode (),
 	X3DSoundSourceNode (),
 	      X3DUrlObject (),
-	             first (true)
+	          urlStack (),
+	               URL ()
 {
 	addType (X3DConstants::MovieTexture);
 
@@ -105,7 +106,8 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> signal_video_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_video_changed));
+	getStream () -> signal_video_changed ()  .connect (sigc::mem_fun (this, &MovieTexture::on_video_changed));
+	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &MovieTexture::on_error));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
 	url () .addInterest (&MovieTexture::update, this);
@@ -133,43 +135,47 @@ MovieTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (url () .empty ())
-	{
-		setLoadState (FAILED_STATE);
-		return;
-	}
+	urlStack = url ();
 
-	for (const auto & URL : url ())
-	{
-		getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+	load ();
+}
 
-		// Sync stream
-
-		if (not getStream () -> sync ())
-			continue;
-
-		duration_changed () = getStream () -> getDuration ();
-		components ()       = 3;
-
-		setLoadState (COMPLETE_STATE);
-	}
-
-	set_loop ();
-
-	if (checkLoadState () not_eq COMPLETE_STATE)
+void
+MovieTexture::load ()
+{
+	if (urlStack .empty ())
 	{
 		duration_changed () = -1;
 		components ()       = 0;
 
-		setImage (GL_RGB, false, 3, 0, 0, GL_BGRA, nullptr);
+		clearTexture ();
 
 		setLoadState (FAILED_STATE);
+		return;
 	}
+
+	URL = urlStack .front ();
+	urlStack .pop_front ();
+
+	getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 }
 
 void
 MovieTexture::on_video_changed ()
-{ }
+{
+	if (isActive () and not isPaused ())
+		getStream () -> play ();
+
+	components () = 3;
+
+	setLoadState (COMPLETE_STATE);
+}
+
+void
+MovieTexture::on_error ()
+{
+	load ();
+}
 
 void
 MovieTexture::on_buffer_changed ()

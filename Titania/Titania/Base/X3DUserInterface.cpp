@@ -129,7 +129,7 @@ X3DUserInterface::setup ()
 void
 X3DUserInterface::on_initialize ()
 {
-	__LOG__ << "Initializing widget: " << getName () << std::endl;
+	//__LOG__ << "Initializing widget: " << getName () << std::endl;
 
 	initializeConnection .disconnect ();
 
@@ -152,7 +152,7 @@ X3DUserInterface::on_initialize ()
 
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
 
-	__LOG__ << "Initialized widget: " << getName () << std::endl;
+	//__LOG__ << "Initialized widget: " << getName () << std::endl;
 }
 
 void

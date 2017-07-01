@@ -113,6 +113,9 @@ public:
 	setSpeed (const time_type value);
 
 	time_type
+	getPosition () const;
+
+	time_type
 	getDuration () const
 	{ return duration; }
 
@@ -148,8 +151,16 @@ public:
 	///  @name Signals
 
 	Glib::Dispatcher &
+	signal_audio_changed ()
+	{ return audioChangedDispatcher; }
+
+	Glib::Dispatcher &
 	signal_video_changed ()
 	{ return videoChangedDispatcher; }
+
+	Glib::Dispatcher &
+	signal_error ()
+	{ return errorDispatcher; }
 
 	Glib::Dispatcher &
 	signal_buffer_changed ()
@@ -213,13 +224,17 @@ private:
 
 	std::shared_ptr <VideoFrame> currentFrame;
 
+	bool      emitAudio;
+	bool      emitVideo;
 	double    volume;
 	time_type speed;
 	bool      updateSpeed;
 	time_type duration;
 	bool      emitDuration;
 
+	Glib::Dispatcher audioChangedDispatcher;
 	Glib::Dispatcher videoChangedDispatcher;
+	Glib::Dispatcher errorDispatcher;
 	Glib::Dispatcher bufferChangedDispatcher;
 	Glib::Dispatcher endDispatcher;
 	Glib::Dispatcher durationChangedDispatcher;

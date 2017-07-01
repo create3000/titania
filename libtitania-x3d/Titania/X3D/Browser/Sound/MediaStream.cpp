@@ -57,6 +57,8 @@ extern "C"
 #include <gdk/gdkx.h>
 }
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -72,12 +74,16 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	                   player (),
 	                    vsink (),
 	             currentFrame (),
+	                emitAudio (false),
+	                emitVideo (false),
 	                   volume (0),
 	                    speed (1),
 	              updateSpeed (false),
 	                 duration (-1),
 	             emitDuration (false),
+	   audioChangedDispatcher (),
 	   videoChangedDispatcher (),
+	          errorDispatcher (),
 	  bufferChangedDispatcher (),
 	            endDispatcher (),
 	durationChangedDispatcher ()
@@ -130,7 +136,9 @@ MediaStream::setup ()
 bool
 MediaStream::setUri (const basic::uri & uri)
 {
-	emitDuration = true;
+	emitAudio     = true;
+	emitVideo     = true;
+	emitDuration  = true;
 
 	player -> set_state (Gst::STATE_NULL);
 
@@ -141,19 +149,8 @@ MediaStream::setUri (const basic::uri & uri)
 	return true;
 }
 
-time_type
-MediaStream::getQueryDuration () const
-{
-	gint64 duration = 0;
-
-	if (vsink -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
-		return duration / time_type (Gst::SECOND);
-
-	return -1;
-}
-
 void
-MediaStream::setVolume (time_type value)
+MediaStream::setVolume (double value)
 {
 	static constexpr double granularity = 0.05;
 
@@ -169,8 +166,6 @@ MediaStream::setVolume (time_type value)
 void
 MediaStream::setSpeed (const time_type value)
 {
-	__LOG__ << value << std::endl;
-
 	speed       = value;
 	updateSpeed = false;
 
@@ -202,6 +197,17 @@ MediaStream::setSpeed (const time_type value)
 	}
 }
 
+time_type
+MediaStream::getPosition () const
+{
+	gint64 position = 0;
+
+	if (not player -> query_position (Gst::FORMAT_TIME, position))
+		position = 0;
+
+	return position / (long double) Gst::SECOND;
+}
+
 Gst::State
 MediaStream::getState () const
 {
@@ -230,6 +236,17 @@ MediaStream::getState () const
 	return Gst::STATE_NULL;
 }
 
+time_type
+MediaStream::getQueryDuration () const
+{
+	gint64 duration = 0;
+
+	if (vsink -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
+		return duration / (long double) Gst::SECOND;
+
+	return -1;
+}
+
 bool
 MediaStream::sync () const
 {
@@ -244,16 +261,16 @@ MediaStream::seek (const time_type position)
 		player -> seek (speed,
 		                Gst::FORMAT_TIME,
 		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-		                Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND),
+		                Gst::SEEK_TYPE_SET, position * (long double) Gst::SECOND,
 		                Gst::SEEK_TYPE_END, 0);
 	}
-	else
+	else if (speed < 0)
 	{
 		player -> seek (speed,
 		                Gst::FORMAT_TIME,
 		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
 		                Gst::SEEK_TYPE_SET, 0,
-		                Gst::SEEK_TYPE_SET, position * time_type (Gst::SECOND));
+		                Gst::SEEK_TYPE_SET, position * (long double) Gst::SECOND);
 	}
 }
 
@@ -331,10 +348,20 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		}
 		case Gst::MESSAGE_ERROR:
 		{
-//			__LOG__
-//				<< "MESSAGE_ERROR: "
-//				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse () .what ()
-//				<< std::endl;
+			__LOG__
+				<< "MESSAGE_ERROR: "
+				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse_debug ()
+				<< std::endl;
+
+			const auto error    = Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse_debug ();
+			const auto uriError = error .find ("gsturidecodebin") not_eq std::string::npos;
+
+			if (uriError)
+			{
+				emitAudio = false;
+				emitVideo = false;
+				errorDispatcher .emit ();
+			}
 
 			stop ();
 			break;
@@ -347,6 +374,11 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 void
 MediaStream::on_audio_changed ()
 {
+	if (emitAudio)
+	{
+		emitAudio = false;
+		audioChangedDispatcher .emit ();
+	}
 }
 
 void
@@ -357,7 +389,11 @@ MediaStream::on_video_changed ()
 	if (pad)
 		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (this, &MediaStream::on_video_pad_got_buffer));
 
-	videoChangedDispatcher .emit ();
+	if (emitVideo)
+	{
+		emitVideo = false;
+		videoChangedDispatcher .emit ();
+	}
 }
 
 Gst::PadProbeReturn
@@ -415,7 +451,6 @@ MediaStream::flip (std::vector <uint8_t> & image, const int32_t width, const int
 MediaStream::~MediaStream ()
 {
 	player -> set_state (Gst::STATE_NULL);
-	sync ();
 
 	if (xWindow)
 		XDestroyWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow);

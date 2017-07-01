@@ -136,6 +136,8 @@ X3DSoundSourceNode::on_end ()
 void
 X3DSoundSourceNode::set_speed ()
 {
+	mediaStream -> setSpeed (speed ());
+
 	if (speed () == 0.0f)
 	{
 		mediaStream -> pause ();
@@ -145,8 +147,6 @@ X3DSoundSourceNode::set_speed ()
 		if (isActive () and not isPaused ())
 			mediaStream -> play ();
 	}
-
-	mediaStream -> setSpeed (speed ());
 }
 
 void
@@ -156,12 +156,15 @@ X3DSoundSourceNode::set_pitch ()
 void
 X3DSoundSourceNode::set_start ()
 {
-	mediaStream -> stop ();
-
 	if (speed () == 0.0f)
+	{
 		mediaStream -> pause ();
+	}
 	else
+	{
+		mediaStream -> stop ();
 		mediaStream -> play ();
+	}
 }
 
 void

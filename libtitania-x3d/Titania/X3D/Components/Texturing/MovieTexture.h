@@ -131,10 +131,18 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Operations
+
+	void
+	load ();
+
 	///  @name Event handlers
 
 	void
 	on_video_changed ();
+
+	void
+	on_error ();
 
 	void
 	on_buffer_changed ();
@@ -151,7 +159,8 @@ private:
 
 	///  @name Members
 
-	bool first;
+	MFString urlStack;
+	SFString URL;
 
 };
 

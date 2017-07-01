@@ -65,7 +65,9 @@ const std::string   AudioClip::containerField = "source";
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSoundSourceNode (),
-	      X3DUrlObject ()
+	      X3DUrlObject (),
+	          urlStack (),
+	               URL ()
 {
 	addType (X3DConstants::AudioClip);
 
@@ -99,6 +101,9 @@ AudioClip::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	getStream () -> signal_audio_changed ()  .connect (sigc::mem_fun (this, &AudioClip::on_audio_changed));
+	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &AudioClip::on_error));
+
 	url () .addInterest (&AudioClip::set_url, this);
 
 	requestImmediateLoad ();
@@ -124,30 +129,41 @@ AudioClip::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	for (const auto & URL : url ())
-	{
-		getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+	urlStack = url ();
 
-		// Sync stream
+	load ();
+}
 
-		if (not getStream () -> sync ())
-			continue;
-
-		// Get audio
-
-		duration_changed () = getStream () -> getDuration ();
-
-		setLoadState (COMPLETE_STATE);
-		break;
-	}
-
-	set_loop ();
-
-	if (checkLoadState () not_eq COMPLETE_STATE)
+void
+AudioClip::load ()
+{
+	if (urlStack .empty ())
 	{
 		duration_changed () = -1;
+
 		setLoadState (FAILED_STATE);
+		return;
 	}
+
+	URL = urlStack .front ();
+	urlStack .pop_front ();
+
+	getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+}
+
+void
+AudioClip::on_audio_changed ()
+{
+	if (isActive () and not isPaused ())
+		getStream () -> play ();
+
+	setLoadState (COMPLETE_STATE);
+}
+
+void
+AudioClip::on_error ()
+{
+	load ();
 }
 
 void

@@ -117,7 +117,18 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Operations
+
+	void
+	load ();
+
 	///  @name Event handlers
+
+	void
+	on_audio_changed ();
+
+	void
+	on_error ();
 
 	void
 	set_url ();
@@ -127,6 +138,11 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	///  @name Members
+
+	MFString urlStack;
+	SFString URL;
 
 
 };
