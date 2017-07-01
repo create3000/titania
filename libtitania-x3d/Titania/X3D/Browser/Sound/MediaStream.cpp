@@ -73,6 +73,8 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	                  xWindow (createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
 	                   player (),
 	                    vsink (),
+	                    width (-1),
+	                   height (-1),
 	             currentFrame (),
 	                emitAudio (false),
 	                emitVideo (false),
@@ -129,8 +131,8 @@ MediaStream::setup ()
 
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = volume;
-	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
 	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
+	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
 }
 
 bool
@@ -305,25 +307,7 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 		return;
 	}
 
-	// Resize vsink
-	{
-		int32_t width  = 0;
-		int32_t height = 0;
-	
-		auto caps = player -> get_video_pad (0) -> get_current_caps ();
-	
-		caps = caps -> create_writable ();
-	
-		const auto structure = caps -> get_structure (0);
-	
-		if (structure)
-		{
-			structure .get_field ("width",  width);
-			structure .get_field ("height", height);
-		}
-	
-		XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
-	}
+	XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
 
 	vsink -> set_window_handle (xWindow);
 }
@@ -417,6 +401,32 @@ MediaStream::on_video_changed ()
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
+	// Resize vsink
+	{
+		int32_t w  = 0;
+		int32_t h = 0;
+	
+		auto caps = pad -> get_current_caps ();
+	
+		caps = caps -> create_writable ();
+	
+		const auto structure = caps -> get_structure (0);
+	
+		if (structure)
+		{
+			structure .get_field ("width",  w);
+			structure .get_field ("height", h);
+		}
+	
+		if (w not_eq width or h not_eq height)
+		{
+			width  = w;
+			height = h;
+
+			XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
+		}
+	}
+
 	// This function is process in another thread!
 
 	const auto width  = vsink -> get_width ();

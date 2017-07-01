@@ -353,6 +353,9 @@ RenderPanel::set_movie_elapsedTime ()
 void
 RenderPanel::set_movie_duration (const X3D::time_type value)
 {
+	if (value < 0)
+		return;
+
 	const auto duration  = value;
 	const auto frameRate = getFrameRateAdjustment () -> get_value ();
 	const auto frames    = std::round (duration * frameRate);

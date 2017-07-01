@@ -67,6 +67,8 @@ extern "C"
 #include <X11/Xlib.h>
 }
 
+#include <atomic>
+
 namespace Gst {
 
 class PlayBin;
@@ -222,6 +224,8 @@ private:
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;
 
+	std::atomic <int32_t>        width;
+	std::atomic <int32_t>        height;
 	std::shared_ptr <VideoFrame> currentFrame;
 
 	bool      emitAudio;
