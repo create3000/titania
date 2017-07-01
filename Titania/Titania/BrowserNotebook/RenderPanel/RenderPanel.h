@@ -134,6 +134,16 @@ private:
 	void
 	set_movie_active ();
 
+	void
+	set_movie_elapsedTime ();
+
+	void
+	set_movie_duration (const X3D::time_type value);
+
+	virtual
+	void
+	on_stop_clicked () final override;
+
 	virtual
 	void
 	on_play_pause_clicked () final override;
@@ -143,6 +153,9 @@ private:
 
 	void
 	set_frame (const size_t value);
+
+	void
+	set_duration (const size_t value);
 
 	void
 	on_stdout (const Glib::ustring & string);

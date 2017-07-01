@@ -322,6 +322,9 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		}
 		case Gst::MESSAGE_ASYNC_DONE:
 		{
+			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
+			player -> property_volume () = volume;
+
 			if (emitDuration)
 			{
 				emitDuration = false;

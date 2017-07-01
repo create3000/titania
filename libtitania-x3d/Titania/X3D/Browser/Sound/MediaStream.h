@@ -120,9 +120,13 @@ public:
 	getCurrentFrame ()
 	{ return std::move (currentFrame); }
 
-	const Glib::RefPtr <VideoSink> &
-	getVideoSink () const
-	{ return vsink; }
+	int32_t
+	getWidth () const
+	{ return vsink -> get_width (); }
+
+	int32_t
+	getHeight () const
+	{ return vsink -> get_height (); }
 
 	///  @name Operations
 

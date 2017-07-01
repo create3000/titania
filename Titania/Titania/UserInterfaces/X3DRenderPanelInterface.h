@@ -132,12 +132,24 @@ public:
 	{ return *m_RecordButton; }
 
 	Gtk::ToolButton &
+	getStopButton () const
+	{ return *m_StopButton; }
+
+	Gtk::ToolButton &
 	getPlayPauseButton () const
 	{ return *m_PlayPauseButton; }
 
 	Gtk::SpinButton &
 	getFrameSpinButton () const
 	{ return *m_FrameSpinButton; }
+
+	Gtk::Label &
+	getElapsedTimeLabel () const
+	{ return *m_ElapsedTimeLabel; }
+
+	Gtk::Label &
+	getDurationLabel () const
+	{ return *m_DurationLabel; }
 
 	Gtk::Label &
 	getLoadStateLabel () const
@@ -223,6 +235,10 @@ public:
 
 	virtual
 	void
+	on_stop_clicked () = 0;
+
+	virtual
+	void
 	on_play_pause_clicked () = 0;
 
 	virtual
@@ -268,8 +284,11 @@ private:
 	Gtk::MenuBar* m_MenuBar;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::ToolButton* m_RecordButton;
+	Gtk::ToolButton* m_StopButton;
 	Gtk::ToolButton* m_PlayPauseButton;
 	Gtk::SpinButton* m_FrameSpinButton;
+	Gtk::Label* m_ElapsedTimeLabel;
+	Gtk::Label* m_DurationLabel;
 	Gtk::Label* m_LoadStateLabel;
 	Gtk::Box* m_PreviewBox;
 	Gtk::Label* m_TextureFormatLabel;

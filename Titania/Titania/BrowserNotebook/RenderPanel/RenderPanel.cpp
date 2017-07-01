@@ -106,8 +106,10 @@ RenderPanel::initialize ()
 {
 	X3DRenderPanelInterface::initialize ();
 
-	movieTexture -> isActive () .addInterest (&RenderPanel::set_movie_active, this);
-	movieTexture -> isPaused () .addInterest (&RenderPanel::set_movie_active, this);
+	movieTexture -> isActive ()         .addInterest (&RenderPanel::set_movie_active,      this);
+	movieTexture -> isPaused ()         .addInterest (&RenderPanel::set_movie_active,      this);
+	movieTexture -> elapsedTime ()      .addInterest (&RenderPanel::set_movie_elapsedTime, this);
+	movieTexture -> duration_changed () .addInterest (&RenderPanel::set_movie_duration,    this);
 
 	preview -> getLocalBrowser () -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
 	preview -> getLocalBrowser () -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
@@ -196,6 +198,7 @@ RenderPanel::setRendering (const bool value)
 		worldURL .fragment (viewpoint);
 
 		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-cancel"));
+		getStopButton ()      .set_sensitive (false);
 		getPlayPauseButton () .set_sensitive (false);
 
 		getLoadStateLabel () .set_text (_ ("Initializing Renderer …"));
@@ -203,6 +206,7 @@ RenderPanel::setRendering (const bool value)
 		getPreviewBox ()     .set_visible (false);
 
 		set_frame (0);
+		set_duration (duration);
 
 		movieTexture -> loop ()     = false;
 		movieTexture -> stopTime () = X3D::SFTime::now ();
@@ -228,6 +232,7 @@ RenderPanel::setRendering (const bool value)
 	else
 	{
 		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-media-record"));
+		getStopButton ()      .set_sensitive (true);
 		getPlayPauseButton () .set_sensitive (true);
 		getLoadStateLabel ()  .set_text ("");
 
@@ -274,7 +279,10 @@ RenderPanel::on_properties_file_chooser_button_clicked ()
 void
 RenderPanel::on_properties_time_changed ()
 {
-	getTimeLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFrameRateAdjustment () -> get_value ()));
+	const auto frames    = getDurationAdjustment () -> get_value ();
+	const auto frameRate = getFrameRateAdjustment () -> get_value ();
+
+	getTimeLabel () .set_text (strfframes (frames, frameRate));
 }
 
 void
@@ -332,6 +340,33 @@ RenderPanel::set_movie_active ()
 }
 
 void
+RenderPanel::set_movie_elapsedTime ()
+{
+	const auto cycleTime = movieTexture -> cycleTime () - movieTexture -> startTime ();
+	const auto time      = std::max <X3D::time_type> (0, movieTexture -> elapsedTime () - cycleTime);
+	const auto frameRate = getFrameRateAdjustment () -> get_value ();
+	const auto frame     = time * frameRate;
+
+	set_frame (frame);
+}
+
+void
+RenderPanel::set_movie_duration (const X3D::time_type value)
+{
+	const auto time      = value;
+	const auto frameRate = getFrameRateAdjustment () -> get_value ();
+	const auto frames    = std::round (time * frameRate);
+
+	getDurationLabel () .set_text (strfframes (frames, frameRate));
+}
+
+void
+RenderPanel::on_stop_clicked ()
+{
+	movieTexture -> stopTime () = X3D::SFTime::now ();
+}
+
+void
 RenderPanel::on_play_pause_clicked ()
 {
 	if (movieTexture -> isActive ())
@@ -377,6 +412,14 @@ RenderPanel::set_frame (const size_t value)
 	getFrameAdjustment () -> set_lower (value);
 	getFrameAdjustment () -> set_upper (value);
 	getFrameAdjustment () -> set_value (value);
+
+	getElapsedTimeLabel () .set_text (strfframes (value, getFrameRateAdjustment () -> get_value ()));
+}
+
+void
+RenderPanel::set_duration (const size_t value)
+{
+	set_movie_duration (value / getFrameRateAdjustment () -> get_value ());
 }
 
 void
