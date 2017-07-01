@@ -305,7 +305,25 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 		return;
 	}
 
-	XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
+	// Resize vsink
+	{
+		int32_t width  = 0;
+		int32_t height = 0;
+	
+		auto caps = player -> get_video_pad (0) -> get_current_caps ();
+	
+		caps = caps -> create_writable ();
+	
+		const auto structure = caps -> get_structure (0);
+	
+		if (structure)
+		{
+			structure .get_field ("width",  width);
+			structure .get_field ("height", height);
+		}
+	
+		XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
+	}
 
 	vsink -> set_window_handle (xWindow);
 }

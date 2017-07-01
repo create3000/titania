@@ -70,8 +70,8 @@ WorldInfo {
                       url [
                         "file:///home/holger/Schreibtisch/text.x3d",
                         "file:///home/holger/Schreibtisch/home.avi",
-                        "file:///home/holger/Schreibtisch/beyond-germany.avi",
-                        "file:///home/holger/Videos/Adrian Frutiger - Ein Leben.mp4"
+                        "file:///home/holger/Videos/Adrian Frutiger - Ein Leben.mp4",
+                        "file:///home/holger/Schreibtisch/beyond-germany.avi"
                       ]
                       speed 4
                       loop TRUE
