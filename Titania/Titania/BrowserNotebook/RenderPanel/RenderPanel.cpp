@@ -345,7 +345,7 @@ RenderPanel::set_movie_elapsedTime ()
 	const auto cycleTime = movieTexture -> cycleTime () - movieTexture -> startTime ();
 	const auto time      = std::max <X3D::time_type> (0, movieTexture -> elapsedTime () - cycleTime);
 	const auto frameRate = getFrameRateAdjustment () -> get_value ();
-	const auto frame     = time * frameRate;
+	const auto frame     = std::round (time * frameRate);
 
 	set_frame (frame);
 }
@@ -353,11 +353,11 @@ RenderPanel::set_movie_elapsedTime ()
 void
 RenderPanel::set_movie_duration (const X3D::time_type value)
 {
-	const auto time      = value;
+	const auto duration  = value;
 	const auto frameRate = getFrameRateAdjustment () -> get_value ();
-	const auto frames    = std::round (time * frameRate);
+	const auto frames    = std::round (duration * frameRate);
 
-	getDurationLabel () .set_text (strfframes (frames, frameRate));
+	set_duration (frames);
 }
 
 void
@@ -419,7 +419,7 @@ RenderPanel::set_frame (const size_t value)
 void
 RenderPanel::set_duration (const size_t value)
 {
-	set_movie_duration (value / getFrameRateAdjustment () -> get_value ());
+	getDurationLabel () .set_text (strfframes (value, getFrameRateAdjustment () -> get_value ()));
 }
 
 void

@@ -24,7 +24,7 @@ WorldInfo {
             value [
               -0.34825000166893,
               -1.10000002384186,
-              5.53251720719846
+              5.42403647764555
             ]
           }
           DEF orientation MetadataDouble {
@@ -61,27 +61,33 @@ WorldInfo {
             name "nodes"
             reference "http://titania.create3000.de"
             value DEF MovieTexture Transform {
-              children Shape {
-                appearance Appearance {
-                  material Material { }
-                  texture DEF Movie MovieTexture {
-                    url [
-                      "file:///home/holger/Schreibtisch/beyond-germany.mp4",
-                      "file:///home/holger/Schreibtisch/home.avi",
-                      "file:///home/holger/Videos/Adrian Frutiger - Ein Leben.mp4"
-                    ]
-                    loop TRUE
-                    #loop TRUE
-                    startTime 1498818887.25248
-                    stopTime 1498818881.51641
-                    repeatS FALSE
-                    repeatT FALSE
+              children [
+                Shape {
+                  appearance Appearance {
+                    material Material { }
+                    texture DEF Movie MovieTexture {
+                      url [
+                        "file:///home/holger/Schreibtisch/beyond-germany.mp4",
+                        "file:///home/holger/Schreibtisch/home.avi",
+                        "file:///home/holger/Videos/Adrian Frutiger - Ein Leben.mp4"
+                      ]
+                      loop TRUE
+                      #loop TRUE
+                      startTime 1498818887.25248
+                      stopTime 1498818881.51641
+                      repeatS FALSE
+                      repeatT FALSE
+                    }
+                  }
+                  geometry Rectangle2D {
+                    size 3.007 2
                   }
                 }
-                geometry Rectangle2D {
-                  size 3.007 2
+                Sound {
+                  intensity 0.199
+                  source USE Movie
                 }
-              }
+              ]
             }
           }
         ]
@@ -347,8 +353,6 @@ function set_duration (value)
 }
 	"
 }
-
-Sound { }
 
 ROUTE Speed0.touchTime TO Debug.set_speed0
 ROUTE Speed1.touchTime TO Debug.set_speed1

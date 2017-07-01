@@ -220,8 +220,6 @@ private:
 	time_type speed;
 	time_type duration;
 	bool      emitDuration;
-	bool      active;
-	bool      paused;
 
 	Glib::Dispatcher videoChangedDispatcher;
 	Glib::Dispatcher bufferChangedDispatcher;

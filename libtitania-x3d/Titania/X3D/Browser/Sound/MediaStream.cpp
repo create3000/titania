@@ -76,8 +76,6 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	                    speed (1),
 	                 duration (-1),
 	             emitDuration (false),
-	                   active (false),
-	                   paused (false),
 	   videoChangedDispatcher (),
 	  bufferChangedDispatcher (),
 	            endDispatcher (),
@@ -257,8 +255,6 @@ MediaStream::seek (const time_type position)
 void
 MediaStream::start ()
 {
-	active = true;
-
 	player -> set_state (Gst::STATE_NULL);
 	player -> set_state (Gst::STATE_PLAYING);
 }
@@ -266,24 +262,18 @@ MediaStream::start ()
 void
 MediaStream::pause ()
 {
-	paused = true;
-
 	player -> set_state (Gst::STATE_PAUSED);
 }
 
 void
 MediaStream::resume ()
 {
-	paused = false;
-
 	player -> set_state (Gst::STATE_PLAYING);
 }
 
 void
 MediaStream::stop ()
 {
-	active = false;
-
 	player -> set_state (Gst::STATE_PAUSED);
 }
 
@@ -313,9 +303,6 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		{
 			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
 			player -> property_volume () = volume;
-
-			if (active and not paused)
-				start ();
 
 			endDispatcher .emit ();
 			break;

@@ -172,6 +172,9 @@ X3DSoundSourceNode::set_end ()
 {
 	if (loop ())
 	{
+		if (speed ())
+			mediaStream -> start ();
+
 		// The event order below is very important.
 
 		elapsedTime () = getElapsedTime ();
