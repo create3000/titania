@@ -127,7 +127,6 @@ MediaStream::setup ()
 	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
 
 	vsink -> set_last_sample_enabled (true);
-	//vsink -> handle_events (false);
 
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = volume;
