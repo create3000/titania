@@ -127,7 +127,7 @@ MediaStream::setup ()
 	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
 
 	vsink -> set_last_sample_enabled (true);
-	vsink -> handle_events (false);
+	//vsink -> handle_events (false);
 
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = volume;
@@ -401,23 +401,23 @@ MediaStream::on_video_changed ()
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
-	// Resize vsink
+	// Resize window
 	{
-		int32_t w  = 0;
+		int32_t w = 0;
 		int32_t h = 0;
-	
+
 		auto caps = pad -> get_current_caps ();
-	
+
 		caps = caps -> create_writable ();
-	
+
 		const auto structure = caps -> get_structure (0);
-	
+
 		if (structure)
 		{
 			structure .get_field ("width",  w);
 			structure .get_field ("height", h);
 		}
-	
+
 		if (w not_eq width or h not_eq height)
 		{
 			width  = w;
@@ -429,8 +429,8 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 
 	// This function is process in another thread!
 
-	const auto width  = vsink -> get_width ();
-	const auto height = vsink -> get_height ();
+	const auto width  = vsink -> get_width ();  // This width and height are the values for the buffer.
+	const auto height = vsink -> get_height (); // This width and height are the values for the buffer.
 	const auto size   = width * 4 * height;
 	const auto sample = vsink -> get_last_sample ();
 
