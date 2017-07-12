@@ -51,10 +51,12 @@
 #include "RenderThread.h"
 
 #include "RenderClock.h"
+#include "VideoEncoder.h"
 
 #include <Titania/X3D/Routing/Router.h>
 
 #include <glibmm/main.h>
+#include <regex>
 
 namespace titania {
 namespace puck {
@@ -65,7 +67,10 @@ RenderThread::RenderThread (const basic::uri & url,
                             const size_t width,
                             const size_t height,
                             const size_t antialiasing,
-                            const bool fixedPipeline) :
+                            const bool fixedPipeline,
+                            const basic::uri & filename,
+                            const std::string & codec) :
+	              X3D::X3DInput (),
 	X3D::X3DInterruptibleThread (),
 	                    browser (X3D::createBrowser ({ url .str () })),
 	                   duration (duration),
@@ -74,16 +79,50 @@ RenderThread::RenderThread (const basic::uri & url,
 	                     height (height),
 	               antialiasing (antialiasing),
 	                      clock (std::make_shared <RenderClock> (X3D::SFTime::now (), 1 / X3D::time_type (frameRate))),
-	                      frame (0),
-	                      image (),
+	               currentFrame (),
+	                frameNumber (0),
 	            loadCountSignal (),
-	                frameSignal ()
+	            frameDispatcher (),
+	               videoEncoder (std::make_unique <VideoEncoder> (filename, codec, frameRate)),
+	                     thread ()
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
+	browser -> setName ("Renderer");
 	browser -> setClock (clock);
 	browser -> setFixedPipeline (fixedPipeline);
 	browser -> setMute (true);
+}
+
+std::string
+RenderThread::getStdout ()
+{
+	return videoEncoder -> getStdout ();
+}
+
+std::string
+RenderThread::getStderr ()
+{
+	return videoEncoder -> getStderr ();
+}
+
+void
+RenderThread::start ()
+throw (std::runtime_error)
+{
+	videoEncoder -> open ();
+
 	browser -> setup ();
+}
+
+bool
+RenderThread::stop ()
+{
+	X3D::X3DInterruptibleThread::stop ();
+
+	if (thread and thread -> joinable ())
+		thread -> join ();
+
+	return videoEncoder -> close ();
 }
 
 void
@@ -110,6 +149,9 @@ RenderThread::set_loadCount ()
 {
 	try
 	{
+		// NVIDIA Driver are thread save, ATI don't know, Nouveau not yet.
+		static const std::regex threadSaveDriver (R"/(NVIDIA)/");
+
 		loadCountSignal .emit (browser -> getLoadCount ());
 
 		if (browser -> getLoadCount ())
@@ -118,7 +160,36 @@ RenderThread::set_loadCount ()
 		checkForInterrupt ();
 		browser -> getLoadCount () .removeInterest (&RenderThread::set_loadCount, this);
 
-		Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
+		// Start thread or timeout version depending on grafix card driver.
+
+		if (std::regex_search (browser -> getVendor (), threadSaveDriver))
+			thread = std::make_unique <std::thread> (std::bind (&RenderThread::run, this));
+
+		else
+			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const X3D::InterruptThreadException & error)
+	{ }
+}
+
+void
+RenderThread::run ()
+{
+	try
+	{
+		using namespace std::chrono_literals;
+
+
+		for (size_t frameNumber = 0; frameNumber < duration; ++ frameNumber)
+		{
+			std::this_thread::sleep_for (50ms);
+
+			currentFrame = getFrame (frameNumber);
+		}
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -133,20 +204,10 @@ RenderThread::on_timeout ()
 {
 	try
 	{
-		checkForInterrupt ();
+		currentFrame = getFrame (frameNumber);
 
-		if (frame >= duration)
-			return false;
-
-		image = browser -> getSnapshot (width, height, false, std::min <size_t> (antialiasing, browser -> getMaxSamples ()));
-		clock -> render ();
-
-		image .defineValue ("PNG", "color-type", "2");
-
-		frameSignal .emit ();
-
-		++ frame;
-		return true;
+		++ frameNumber;
+		return frameNumber < duration;
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -157,6 +218,40 @@ RenderThread::on_timeout ()
 	{
 		return false;
 	}
+}
+
+RenderThreadFramePtr
+RenderThread::getFrame (const int32_t frameNumber)
+{
+	checkForInterrupt ();
+
+	auto frame = std::make_shared <RenderThreadFrame> ();
+
+	frame -> frameNumber = frameNumber;
+	frame -> image       = browser -> getSnapshot (width, height, false, antialiasing);
+
+	// Make PNG always RGB, otherwise the image is sometimes GRAY if ImageMagick desides that this is possible.
+	frame -> image .defineValue ("PNG", "color-type", "2"); 
+
+	videoEncoder -> write (frame -> image);
+
+	frameDispatcher .emit ();
+
+	clock -> real_advance ();
+
+	return frame;
+}
+
+Glib::Dispatcher &
+RenderThread::signal_stdout ()
+{
+	return videoEncoder -> signal_stdout ();
+}
+
+Glib::Dispatcher &
+RenderThread::signal_stderr ()
+{
+	return videoEncoder -> signal_stderr ();
 }
 
 RenderThread::~RenderThread ()

@@ -52,10 +52,11 @@
 #define __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
 
 #include <gtkmm/drawingarea.h>
+#include <glibmm/dispatcher.h>
 
 #include <memory>
 #include <set>
-#include <thread>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
@@ -100,10 +101,6 @@ public:
 	void
 	queue_render ();
 
-	///  Process on render cycle.
-	void
-	render ();
-
 	///  @name Signals
 
 	///  Signal setup.
@@ -136,6 +133,7 @@ protected:
 	///  @name Friends
 
 	friend class ContextLock;
+	friend class std::lock_guard <X3DRenderingSurface>;
 
 	///  @name Construction
 
@@ -149,8 +147,13 @@ protected:
 	getContext () const
 	{ return context; }
 
-	bool
-	makeCurrent ();
+	///  @name Thread handling
+
+	void
+	lock ();
+
+	void
+	unlock ();
 
 	///  @name Event handlers
 
@@ -199,22 +202,26 @@ private:
 
 	///  @name Event handler
 
+	void
+	on_dispatch ();
+
 	bool
 	on_timeout ();
 
 	///  @name Members
 
-	const std::thread::id              treadId;
-	std::shared_ptr <RenderingContext> context;
-	std::set <std::string>             extensions;
-
+	bool                                                    initialized;
+	std::shared_ptr <RenderingContext>                      context;
+	std::set <std::string>                                  extensions;
 	size_t                                                  antialiasing;
 	size_t                                                  frameRate;
 	std::unique_ptr <FrameBuffer>                           frameBuffer;
 	sigc::signal <void>                                     setupSignal;
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
 	sigc::signal <bool>                                     renderSignal;
-	sigc::connection                                        connection;
+	Glib::Dispatcher                                        timeoutDispatcher;
+	sigc::connection                                        timeoutConnection;
+	std::recursive_mutex                                    mutex;
 
 };
 

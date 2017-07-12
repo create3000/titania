@@ -62,6 +62,13 @@ namespace titania {
 namespace X3D {
 
 /*
+ * Init
+ */
+
+void
+Init (int argc, char** argv);
+
+/*
  * getBrowser
  */
 

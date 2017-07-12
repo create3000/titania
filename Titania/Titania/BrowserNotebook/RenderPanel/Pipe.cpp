@@ -110,31 +110,33 @@ Pipe::wait (const int32_t fd, const int32_t timeout)
 void
 Pipe::read (const int32_t timeout)
 {
-	int32_t bytesRead = 0;
-
 	while (timeout == 0 or wait (stdout, timeout) > 0)
 	{
-		if ((bytesRead = ::read (stdout, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		const auto bytesRead = ::read (stdout, buffer .data (), sizeof (char) * bufferSize);
+
+		if (bytesRead > 0)
 		{
 			if (stdoutCallback)
 				stdoutCallback (std::string (buffer .data (), bytesRead));
 			else
 				std::cout .write (buffer .data (), bytesRead);
 		}
-		else if (timeout == 0)
+		else
 			break;
 	}
 
 	while (timeout == 0 or wait (stderr, timeout) > 0)
 	{
-		if ((bytesRead = ::read (stderr, buffer .data (), sizeof (char) * bufferSize)) > 0)
+		const auto bytesRead = ::read (stderr, buffer .data (), sizeof (char) * bufferSize);
+
+		if (bytesRead > 0)
 		{
 			if (stderrCallback)
 				stderrCallback (std::string (buffer .data (), bytesRead));
 			else
 				std::clog .write (buffer .data (), bytesRead);
 		}
-		else if (timeout == 0)
+		else
 			break;
 	}
 }

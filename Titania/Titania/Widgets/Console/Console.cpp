@@ -96,6 +96,12 @@ Console::isEnabled () const
 }
 
 void
+Console::print (const std::string & string)
+{
+	set_string (X3D::MFString ({ string }));
+}
+
+void
 Console::on_suspend_button_toggled ()
 {
 	set_enabled ();

@@ -51,13 +51,15 @@
 #ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
 #define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
 
+#include "Pipe.h"
+
 #include <Titania/Basic/URI.h>
 
 #include <Magick++.h>
-#include <glibmm/ustring.h>
+#include <glibmm/dispatcher.h>
 #include <sigc++/signal.h>
 
-#include "Pipe.h"
+#include <mutex>
 
 namespace titania {
 namespace puck {
@@ -71,6 +73,14 @@ public:
 	VideoEncoder (const basic::uri & filename,
 	              const std::string & codec,
 	              const size_t frameRate);
+
+	///  @name Member access
+
+	std::string
+	getStdout ();
+	
+	std::string
+	getStderr ();
 
 	///  @name Operations
 
@@ -88,14 +98,14 @@ public:
 	///  @name Signals
 
 	///  Signal stdout.
-	sigc::signal <void, Glib::ustring> &
+	Glib::Dispatcher &
 	signal_stdout ()
-	{ return stdoutSignal; }
+	{ return stdoutDispatcher; }
 
 	///  Signal stdout.
-	sigc::signal <void, Glib::ustring> &
+	Glib::Dispatcher &
 	signal_stderr ()
-	{ return stderrSignal; }
+	{ return stderrDispatcher; }
 
 	///  @name Destruction
 
@@ -117,9 +127,13 @@ private:
 	const basic::uri filename;
 	std::string      command;
 	Pipe             pipe;
+	std::string      stdout;
+	std::string      stderr;
 
-	sigc::signal <void, Glib::ustring> stdoutSignal;
-	sigc::signal <void, Glib::ustring> stderrSignal;
+	Glib::Dispatcher stdoutDispatcher;
+	Glib::Dispatcher stderrDispatcher;
+
+	std::mutex mutex;
 
 };
 

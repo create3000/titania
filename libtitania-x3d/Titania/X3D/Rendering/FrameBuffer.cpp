@@ -254,8 +254,10 @@ FrameBuffer::~FrameBuffer ()
 		if (id)
 			glDeleteFramebuffers (1, &id);
 	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
+	catch (const Error <INVALID_OPERATION_TIMING> & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 } // X3D

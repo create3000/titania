@@ -63,6 +63,7 @@
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
 #include "../Execution/World.h"
+#include "../Fields/X3DWeakPtrArray.h"
 
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -77,7 +78,7 @@
 #include <iostream>
 #include <limits>
 
-#include "../Fields/X3DWeakPtrArray.h"
+#include <thread>
 
 namespace titania {
 namespace X3D {
@@ -182,6 +183,7 @@ Browser::on_render ()
 {
 	X3DBrowser::on_render ();
 	update ();
+
 	return false;
 }
 

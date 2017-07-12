@@ -83,7 +83,7 @@ public:
 	interval () const
 	{ return value .interval; }
 
-	constexpr Type
+	Type
 	average () const
 	{ return value .interval / value .cycles; }
 

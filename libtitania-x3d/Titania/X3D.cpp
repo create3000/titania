@@ -55,6 +55,26 @@
 namespace titania {
 namespace X3D {
 
+/***
+ *  Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made. 
+ */
+void
+Init (int argc, char** argv)
+{
+	// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made. 
+	XInitThreads (); // GStreamer
+
+	// Replace the C++ global locale as well as the C locale with the user-preferred locale.
+	std::locale::global (std::locale (""));
+
+//	// Initialize Gtk
+//	const bool success = gtk_init_check (&argc, &argv);
+//
+//	gtk_init (&argc, &argv);
+//
+//	return success;
+}
+
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
 const BrowserApplicationPtr &
@@ -84,7 +104,9 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	}
 }
 
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
+/***
+ *  The createBrowser service creates a new instance of a browser application.
+ */
 BrowserPtr
 createBrowser (const MFString & url, const MFString & parameter)
 throw (Error <BROWSER_UNAVAILABLE>)
@@ -99,7 +121,9 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	}
 }
 
-///  6.2.3 The createBrowser service creates a new instance of a browser application.
+/***
+ *  The createBrowser service creates a new instance of a browser application.
+ */
 BrowserPtr
 createBrowser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter)
 throw (Error <INVALID_NODE>,

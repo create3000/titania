@@ -56,6 +56,8 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DExecutionContext.h"
 
+#include <thread>
+
 namespace titania {
 namespace X3D {
 
@@ -63,30 +65,56 @@ class ContextLock::Implementation
 {
 public:
 
+	///  @name Construction
+
 	Implementation (X3DRenderingSurface* const renderingSurface)
 	throw (Error <INVALID_OPERATION_TIMING>);
+
+	///  @name Destruction
 
 	~Implementation ();
 
 
 private:
 
-	static std::shared_ptr <RenderingContext> currentContext;
+	///  @name Static members
 
-	std::shared_ptr <RenderingContext> previousContext;
+	static std::map <std::thread::id, std::shared_ptr <RenderingContext>> currentContexts;
+
+	static std::mutex mutex;
+
+	///  @name Members
+
+	std::lock_guard <X3DRenderingSurface>  surfaceLock;
+	std::shared_ptr <RenderingContext>     currentContext;
+	std::shared_ptr <RenderingContext>     previousContext;
 
 };
 
-std::shared_ptr <RenderingContext> ContextLock::Implementation::currentContext;
+std::map <std::thread::id, std::shared_ptr <RenderingContext>> ContextLock::Implementation::currentContexts;
+std::mutex ContextLock::Implementation::mutex;
 
 ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface)
 throw (Error <INVALID_OPERATION_TIMING>) :
-	 previousContext (currentContext)
+	    surfaceLock (*renderingSurface),
+	 currentContext (),
+	previousContext ()
 {
-	if (renderingSurface -> makeCurrent ())
+	std::lock_guard <std::mutex> lock (mutex);
+
+	previousContext = currentContexts [std::this_thread::get_id ()];
+	currentContext  = renderingSurface -> getContext ();
+
+	if (currentContext)
 	{
-		currentContext = renderingSurface -> getContext ();
-	   return;
+		if (currentContext == previousContext)
+			return;
+	
+		if (currentContext -> makeCurrent ())
+		{
+			currentContexts [std::this_thread::get_id ()] = currentContext;
+		   return;
+		}
 	}
 
 	// Throw an exception if it cannot make current!  The destructor is then not called.
@@ -95,12 +123,21 @@ throw (Error <INVALID_OPERATION_TIMING>) :
 
 ContextLock::Implementation::~Implementation ()
 {
-	currentContext = previousContext;
+	std::lock_guard <std::mutex> lock (mutex);
 
-	if (currentContext and currentContext -> makeCurrent ())
-		return;
+	if (previousContext)
+	{
+		if (currentContext == previousContext)
+			return;
 
-	currentContext .reset ();
+		if (previousContext -> makeCurrent ())
+		{
+			currentContexts [std::this_thread::get_id ()] = previousContext;
+			return;
+		}
+	}
+
+	currentContexts .erase (std::this_thread::get_id ());
 
 	RenderingContext::clearCurrent ();
 }

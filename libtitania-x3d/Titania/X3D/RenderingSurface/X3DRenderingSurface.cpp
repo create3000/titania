@@ -61,8 +61,13 @@
 #include <Titania/String.h>
 #include <Titania/LOG.h>
 
+#include <atomic>
+#include <thread>
+
 namespace titania {
 namespace X3D {
+
+static const std::atomic <std::thread::id> mainTreadId (std::this_thread::get_id ());
 
 X3DRenderingSurface::X3DRenderingSurface () :
 	X3DRenderingSurface (nullptr)
@@ -70,16 +75,18 @@ X3DRenderingSurface::X3DRenderingSurface () :
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	Gtk::DrawingArea (),
-	         treadId (std::this_thread::get_id ()),
-	         context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
-	      extensions (),
-	    antialiasing (0),
-	       frameRate (60),
-	     frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	     setupSignal (),
-	   reshapeSignal (),
-	    renderSignal (),
-	      connection ()
+	      initialized (false),
+	          context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
+	       extensions (),
+	     antialiasing (0),
+	        frameRate (60),
+	      frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	      setupSignal (),
+	    reshapeSignal (),
+	     renderSignal (),
+	timeoutDispatcher (),
+	timeoutConnection (),
+	            mutex ()
 {
 	ContextLock lock (this);
 
@@ -94,6 +101,8 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 
 	frameBuffer -> setup ();
 	frameBuffer -> bind ();
+
+	timeoutDispatcher .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
 }
 
 bool
@@ -102,26 +111,25 @@ X3DRenderingSurface::isExtensionAvailable (const std::string & name) const
 	return extensions .count (name);
 }
 
-bool
-X3DRenderingSurface::makeCurrent ()
+void
+X3DRenderingSurface::lock ()
 {
-	return std::this_thread::get_id () == treadId and
-	       context and context -> makeCurrent ();
+	mutex .lock ();
+}
+
+void
+X3DRenderingSurface::unlock ()
+{
+	mutex .unlock ();
 }
 
 void
 X3DRenderingSurface::queue_render ()
 {
-	if (connection .connected ())
-		return;
-
-	connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_DEFAULT_IDLE);
-}
-
-void
-X3DRenderingSurface::render ()
-{
-	on_timeout ();
+	if (std::this_thread::get_id () == mainTreadId)
+		on_dispatch ();
+	else
+		timeoutDispatcher .emit ();
 }
 
 void
@@ -138,11 +146,16 @@ X3DRenderingSurface::on_realize ()
 	try
 	{
 		Gtk::DrawingArea::on_realize ();
-		
-		ContextLock lock (this);
 
-		on_setup ();
-		setupSignal .emit ();
+		if (not initialized)
+		{
+			initialized = true;
+
+			ContextLock lock (this);
+
+			on_setup ();
+			setupSignal .emit ();
+		}
 	}
 	catch (const std::exception & error)
 	{
@@ -211,14 +224,23 @@ void
 X3DRenderingSurface::on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height)
 { }
 
+void
+X3DRenderingSurface::on_dispatch ()
+{
+	if (timeoutConnection .connected ())
+		return;
+
+	timeoutConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_DEFAULT_IDLE);
+}
+
 bool
 X3DRenderingSurface::on_timeout ()
 {
 	try
 	{
-		connection .disconnect ();
-	
 		ContextLock lock (this);
+	
+		timeoutConnection .disconnect ();
 	
 		on_render ();
 		renderSignal .emit ();
@@ -296,7 +318,9 @@ X3DRenderingSurface::on_unrealize ()
 void
 X3DRenderingSurface::dispose ()
 {
-	connection .disconnect ();
+	std::lock_guard <std::recursive_mutex> lock (mutex);
+
+	timeoutConnection .disconnect ();
 
 	notify_callbacks ();
 

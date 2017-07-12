@@ -303,7 +303,7 @@ RenderingProperties::build ()
 		std::ostringstream stringstream;
 
 		string .emplace_back (_ ("Current Graphics Renderer"));
-		string .emplace_back (basic::sprintf (_ ("  Name: %s"), Renderer () .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("  Name: %s %s"), Vendor () .c_str (), Renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
 		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2] .getValue (), getBrowser () -> getViewport () [3] .getValue ()));

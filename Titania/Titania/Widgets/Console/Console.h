@@ -72,6 +72,11 @@ public:
 	bool
 	isEnabled () const;
 
+	///  @name Operations
+
+	void
+	print (const std::string & string);
+
 	///  @name Destruction
 	
 	virtual

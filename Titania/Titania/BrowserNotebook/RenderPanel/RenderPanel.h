@@ -63,7 +63,6 @@ namespace puck {
 class NotebookPage;
 class RenderThread;
 class TexturePreview;
-class VideoEncoder;
 
 class RenderPanel :
 	virtual public X3DRenderPanelInterface,
@@ -158,10 +157,10 @@ private:
 	set_duration (const size_t value);
 
 	void
-	on_stdout (const Glib::ustring & string);
+	on_stdout ();
 	
 	void
-	on_stderr (const Glib::ustring & string);
+	on_stderr ();
 
 	///  @name Members
 
@@ -169,7 +168,6 @@ private:
 	X3D::X3DPtr <X3D::ImageTexture>  imageTexture;
 	X3D::X3DPtr <X3D::MovieTexture>  movieTexture;
 	std::unique_ptr <RenderThread>   renderThread;
-	std::unique_ptr <VideoEncoder>   videoEncoder;
 	basic::uri                       filename;
 	std::string                      viewpoint;
 	std::shared_ptr <ViewpointList>  viewpointList;

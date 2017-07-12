@@ -59,12 +59,13 @@
 
 #include "../Revealer/GeometryEditor/GeometryEditor.h"
 
-#include "../Widgets/Sidebar/Sidebar.h"
+#include "../Widgets/Console/Console.h"
 #include "../Widgets/Footer/Footer.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 #include "../Widgets/OutlineEditor/OutlineTreeModel.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
+#include "../Widgets/Sidebar/Sidebar.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
@@ -190,6 +191,28 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 
 	if  (not paths .empty ())
 		getOutlineTreeView () -> scroll_to_row (paths .front (), 2 - math::phi <double>);
+}
+
+void
+X3DBrowserWindow::print (const std::string & string)
+{
+	try
+	{
+		if (not footer)
+			return;
+	
+		footer -> getPage <Console> ("Console") -> print (string);
+	}
+	catch (const std::exception & error)
+	{ }
+
+	std::cout << string << std::endl;
+}
+
+void
+X3DBrowserWindow::println (const std::string & string)
+{
+	print (string + "\n");
 }
 
 void

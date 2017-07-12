@@ -63,13 +63,12 @@ class RenderClock :
 public:
 
 	///  Default constructor.  Sets the value for this clock to cycle to @a currentTime and for interval to @a interval.
-	constexpr
 	RenderClock (const X3D::time_type currentTime, const X3D::time_type interval) :
 		chrono::clock_base <X3D::time_type> (currentTime, interval)
 	{ }
 
 	void
-	render ()
+	real_advance ()
 	{ chrono::clock_base <X3D::time_type>::advance (); }
 
 	///  Disable advance, thus no time step is done if we do not want.
@@ -78,6 +77,7 @@ public:
 	advance () final override
 	{ cycle (cycle () + 0.00001); }
 
+	///  Destructs this clock.
 	virtual
 	~RenderClock () final override
 	{ }

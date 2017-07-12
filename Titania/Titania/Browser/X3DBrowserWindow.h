@@ -58,6 +58,7 @@
 namespace titania {
 namespace puck {
 
+class Console;
 class Footer;
 class GeometryEditor;
 class OutlineTreeViewEditor;
@@ -128,6 +129,14 @@ public:
 
 	void
 	expandNodes (const X3D::MFNode &);
+
+	///  @name Console
+
+	void
+	print (const std::string & string);
+
+	void
+	println (const std::string & string);
 
 	///  @name Destruction
 

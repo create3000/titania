@@ -51,7 +51,8 @@
 #ifndef __TITANIA_CHRONO_CLOCK_BASE_H__
 #define __TITANIA_CHRONO_CLOCK_BASE_H__
 
-#include <complex>
+#include <atomic>
+#include <istream>
 
 namespace titania {
 namespace chrono {
@@ -64,20 +65,21 @@ public:
 	typedef Type value_type;
 
 	///  Get the current cycle of this clock.
-	constexpr Type
+	Type
 	cycle () const
-	{ return value .real (); }
+	{ return m_cycle; }
 
 	///  Assignment operator for clocks.
 	clock_base &
 	operator = (const clock_base & clock)
 	{
-		value = clock .value;
+		cycle    (clock .cycle    ());
+		interval (clock .interval ());
 		return *this;
 	}
 
 	///  Compares if the cycle of this clock is before the cycle of @a clock.
-	constexpr bool
+	bool
 	before (const clock_base & clock) const
 	{ return before (clock .cycle ()); }
 
@@ -89,12 +91,12 @@ public:
 
 	///  Get the last interval of this clock.  The interval is the amount of time between two cycles.
 	///  A steady clock will alway have a constant interval.
-	constexpr Type
+	Type
 	interval () const
-	{ return value .imag (); }
+	{ return m_interval; }
 
 	///  Get the current interval of this clock.  This is the amount of time between now and the last cycle.
-	constexpr Type
+	Type
 	current () const
 	{ return count () - cycle (); }
 
@@ -104,6 +106,7 @@ public:
 	advance ()
 	{ cycle (count ()); }
 
+	///  Destructs this clock.
 	virtual
 	~clock_base ()
 	{ }
@@ -112,26 +115,26 @@ public:
 protected:
 
 	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
-	constexpr
 	clock_base (const Type & cycle, const Type & interval) :
-		value (cycle, interval)
+		   m_cycle (cycle),
+		m_interval (interval)
 	{ }
 
 	///  Copy constructor.
-	constexpr
 	clock_base (const clock_base & clock) :
-		value (clock .value)
+		   m_cycle (clock .cycle ()),
+		m_interval (clock .interval ())
 		{ }
 
 	///  Set the cycle of this clock.
 	void
 	cycle (const Type & cycle)
-	{ return value .real (cycle); }
+	{ m_cycle = cycle; }
 
 	///  Set the last interval of this clock.
 	void
 	interval (const Type & interval)
-	{ value .imag (interval); }
+	{ m_interval = interval; }
 
 	///  Get the count of this clock.
 	virtual
@@ -141,13 +144,14 @@ protected:
 
 private:
 
-	std::complex <Type> value;
+	std::atomic <Type> m_cycle;
+	std::atomic <Type> m_interval;
 
 };
 
 template <class Type>
 inline
-constexpr bool
+bool
 operator < (const clock_base <Type> & a, const clock_base <Type> & b)
 {
 	return a .before (b);
@@ -155,7 +159,7 @@ operator < (const clock_base <Type> & a, const clock_base <Type> & b)
 
 template <class Type>
 inline
-constexpr bool
+bool
 operator < (const clock_base <Type> & a, const Type & b)
 {
 	return a .before (b);
@@ -163,7 +167,7 @@ operator < (const clock_base <Type> & a, const Type & b)
 
 template <class Type>
 inline
-constexpr bool
+bool
 operator > (const clock_base <Type> & a, const clock_base <Type> & b)
 {
 	return not a .before (b);
@@ -171,7 +175,7 @@ operator > (const clock_base <Type> & a, const clock_base <Type> & b)
 
 template <class Type>
 inline
-constexpr bool
+bool
 operator > (const clock_base <Type> & a, const Type & b)
 {
 	return not a .before (b);

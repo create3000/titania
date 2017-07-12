@@ -57,6 +57,8 @@
 
 #include <Titania/Math/Geometry/Camera.h>
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 

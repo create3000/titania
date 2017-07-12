@@ -51,7 +51,6 @@
 #include "RenderPanel.h"
 
 #include "RenderThread.h"
-#include "VideoEncoder.h"
 #include "../NotebookPage/NotebookPage.h"
 
 #include "../../Bits/String.h"
@@ -77,7 +76,6 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
 	           imageTexture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           movieTexture (preview -> getLocalBrowser () -> createNode <X3D::MovieTexture> ()),
 	           renderThread (),
-	           videoEncoder (),
 	               filename (),
 	              viewpoint (),
 	          viewpointList ()
@@ -214,14 +212,12 @@ RenderPanel::setRendering (const bool value)
 
 		try
 		{
-			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline);
+			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline, filename, codec);
 			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
-			renderThread -> signal_frame_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
-
-			videoEncoder = std::make_unique <VideoEncoder> (filename, codec, frameRate);
-			videoEncoder -> signal_stdout () .connect  (sigc::mem_fun (this, &RenderPanel::on_stdout));
-			videoEncoder -> signal_stderr () .connect  (sigc::mem_fun (this, &RenderPanel::on_stderr));
-			videoEncoder -> open ();
+			renderThread -> signal_frame_changed ()      .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
+			renderThread -> signal_stdout ()             .connect (sigc::mem_fun (this, &RenderPanel::on_stdout));
+			renderThread -> signal_stderr ()             .connect (sigc::mem_fun (this, &RenderPanel::on_stderr));
+			renderThread -> start ();
 		}
 		catch (const std::exception & error)
 		{
@@ -241,15 +237,14 @@ RenderPanel::setRendering (const bool value)
 		movieTexture -> startTime () = X3D::SFTime::now ();
 		preview -> setTexture (movieTexture);
 
-		if (videoEncoder)
+		if (renderThread)
 		{
-			if (videoEncoder -> close ())
-				getPage () -> getMainBrowser () -> println ("*** Finished encoding '" + filename + "'.");
+			if (renderThread -> stop ())
+				getBrowserWindow () -> println ("*** Finished encoding '" + filename + "'.");
 			else
-				getPage () -> getMainBrowser () -> println ("*** Failed encoding '" + filename + "'.");
+				getBrowserWindow () -> println ("*** Failed encoding '" + filename + "'.");
 		}
 
-		videoEncoder .reset ();
 		renderThread .reset ();
 	}
 }
@@ -342,8 +337,7 @@ RenderPanel::set_movie_active ()
 void
 RenderPanel::set_movie_elapsedTime ()
 {
-	const auto cycleTime = movieTexture -> cycleTime () - movieTexture -> startTime ();
-	const auto time      = std::max <X3D::time_type> (0, movieTexture -> elapsedTime () - cycleTime);
+	const auto time      = std::fmod (movieTexture -> elapsedTime (), movieTexture -> duration_changed ());
 	const auto frameRate = getFrameRateAdjustment () -> get_value ();
 	const auto frame     = std::round (time * frameRate);
 
@@ -389,18 +383,20 @@ RenderPanel::on_frame_changed ()
 {
 	try
 	{
-		const auto frame     = renderThread -> getFrame ();
-		const auto lastFrame = frame + 1 >= renderThread -> getDuration ();
-	
-		set_frame (frame);
-	
-		if (imageTexture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
-			imageTexture -> setUrl (renderThread -> getCurrentImage ());
+		const auto frame = renderThread -> getCurrentFrame ();
 
-		videoEncoder -> write (renderThread -> getCurrentImage ());
+		if (frame)
+		{
+			const auto lastFrame = frame -> frameNumber + 1 >= renderThread -> getDuration ();
 
-		if (lastFrame)
-			setRendering (false);
+			set_frame (frame -> frameNumber);
+		
+			if (imageTexture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
+				imageTexture -> setUrl (frame -> image);
+	
+			if (lastFrame)
+				setRendering (false);
+		}
 	}
 	catch (const std::exception & error)
 	{
@@ -426,15 +422,15 @@ RenderPanel::set_duration (const size_t value)
 }
 
 void
-RenderPanel::on_stdout (const Glib::ustring & string)
+RenderPanel::on_stdout ()
 {
-	getPage () -> getMainBrowser () -> print (string);
+	getBrowserWindow () -> print (renderThread -> getStdout ());
 }
 
 void
-RenderPanel::on_stderr (const Glib::ustring & string)
+RenderPanel::on_stderr ()
 {
-	getPage () -> getMainBrowser () -> print (string);
+	getBrowserWindow () -> print (renderThread -> getStderr ());
 }
 
 void

@@ -55,13 +55,25 @@
 
 #include <Titania/X3D.h>
 
+#include <thread>
+
 namespace titania {
 namespace puck {
 
 class RenderClock;
+class VideoEncoder;
+
+struct RenderThreadFrame
+{
+	size_t        frameNumber;
+	Magick::Image image;
+};
+
+using RenderThreadFramePtr = std::shared_ptr <RenderThreadFrame>;
 
 class RenderThread :
-	public X3D::X3DInterruptibleThread
+	public X3D::X3DInput,
+	protected X3D::X3DInterruptibleThread
 {
 public:
 
@@ -73,13 +85,11 @@ public:
 	              const size_t width,
 	              const size_t height,
 	              const size_t antialiasing,
-	              const bool fixedPipeline);
+	              const bool fixedPipeline,
+	              const basic::uri & filename,
+	              const std::string & codec);
 
 	///  @name Member access
-
-	size_t
-	getFrame () const
-	{ return frame; }
 
 	size_t
 	getDuration () const
@@ -101,9 +111,26 @@ public:
 	getAntialiasing () const
 	{ return antialiasing; }
 
-	Magick::Image &
-	getCurrentImage ()
-	{ return image; }
+	RenderThreadFramePtr
+	getCurrentFrame ()
+	{ return std::move (currentFrame); }
+
+	std::string
+	getStdout ();
+	
+	std::string
+	getStderr ();
+
+	///  @name Operations
+
+	void
+	start ()
+	throw (std::runtime_error);
+
+	bool
+	stop ();
+
+	///  @name Signals
 
 	///  Signal load_count_changed.
 	sigc::signal <void, size_t> &
@@ -111,9 +138,17 @@ public:
 	{ return loadCountSignal; }
 
 	///  Signal frame_changed.
-	sigc::signal <void> &
+	Glib::Dispatcher &
 	signal_frame_changed ()
-	{ return frameSignal; }
+	{ return frameDispatcher; }
+
+	///  Signal stdout.
+	Glib::Dispatcher &
+	signal_stdout ();
+
+	///  Signal stdout.
+	Glib::Dispatcher &
+	signal_stderr ();
 
 	///  @name Destruction
 
@@ -131,22 +166,30 @@ private:
 	void
 	set_loadCount ();
 
+	void
+	run ();
+
 	bool
 	on_timeout ();
 
+	RenderThreadFramePtr
+	getFrame (const int32_t frameNumber);
+
 	///  @name Members
 
-	const X3D::BrowserPtr         browser;
-   const size_t                  duration;
-	const size_t                  frameRate;
-	const size_t                  width;
-	const size_t                  height;
-	const size_t                  antialiasing;
-	std::shared_ptr <RenderClock> clock;
-	size_t                        frame;
-	Magick::Image                 image;
-	sigc::signal <void, size_t>   loadCountSignal;
-	sigc::signal <void>           frameSignal;
+	const X3D::BrowserPtr          browser;
+   const std::atomic <size_t>     duration;
+	const std::atomic <size_t>     frameRate;
+	const std::atomic <size_t>     width;
+	const std::atomic <size_t>     height;
+	const std::atomic <size_t>     antialiasing;
+	std::shared_ptr <RenderClock>  clock;
+	RenderThreadFramePtr           currentFrame;
+	size_t                         frameNumber; // Only used for timout version.
+	sigc::signal <void, size_t>    loadCountSignal;
+	Glib::Dispatcher               frameDispatcher;
+	std::unique_ptr <VideoEncoder> videoEncoder;
+	std::unique_ptr <std::thread>  thread;
 
 };
 

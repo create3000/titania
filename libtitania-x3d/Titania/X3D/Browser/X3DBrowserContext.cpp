@@ -57,6 +57,8 @@
 
 #include "../Routing/Router.h"
 
+#include <thread>
+
 namespace titania {
 namespace X3D {
 
@@ -179,54 +181,54 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (not getWorld ())
-		throw Error <DISPOSED> ("X3DBrowserContext::getSnapshot: Disposed.");
-
 	// Make snapshot.
 
 	ContextLock lock (this);
 
-	// Update browser.
-
-	const auto viewport = getViewport ();
-
-	// Render to frame buffer.
-
-	FrameBuffer frameBuffer (this, width, height, antialiasing);
-
-	frameBuffer .setup ();
-	frameBuffer .bind ();
-
-	getAlphaChannel () .push (alphaChannel);
-	getDisplayTools () .push (false);
-
-	reshape (Vector4i (0, 0, width, height));
-	update ();
-	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
-
-	frameBuffer .readPixels ();
-	frameBuffer .unbind ();
-
-	getDisplayTools () .pop ();
-	getAlphaChannel () .pop ();
-
-	// Process image.
-
-	Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
-
-	if (alphaChannel)
-		image .type (Magick::TrueColorMatteType);
-	else
+	if (getWorld ())
 	{
-		image .matte (false);
-		image .type (Magick::TrueColorType);
+		const auto viewport = getViewport ();
+	
+		// Render to frame buffer.
+	
+		FrameBuffer frameBuffer (this, width, height, std::min <size_t> (antialiasing, getMaxSamples ()));
+	
+		frameBuffer .setup ();
+		frameBuffer .bind ();
+	
+		getAlphaChannel () .push (alphaChannel);
+		getDisplayTools () .push (false);
+	
+		reshape (Vector4i (0, 0, width, height));
+		update ();
+		reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
+	
+		frameBuffer .readPixels ();
+		frameBuffer .unbind ();
+	
+		getDisplayTools () .pop ();
+		getAlphaChannel () .pop ();
+	
+		// Process image.
+	
+		Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
+	
+		if (alphaChannel)
+			image .type (Magick::TrueColorMatteType);
+		else
+		{
+			image .matte (false);
+			image .type (Magick::TrueColorType);
+		}
+	
+		image .flip ();
+		image .resolutionUnits (Magick::PixelsPerInchResolution);
+		image .density (Magick::Geometry (72, 72));
+	
+		return image;
 	}
 
-	image .flip ();
-	image .resolutionUnits (Magick::PixelsPerInchResolution);
-	image .density (Magick::Geometry (72, 72));
-
-	return image;
+	throw Error <DISPOSED> ("X3DBrowserContext::getSnapshot: Disposed.");
 }
 
 void
@@ -320,6 +322,7 @@ noexcept (true)
 		if (errorNum not_eq GL_NO_ERROR)
 		{
 			std::clog
+			   << getName () << " "
 				<< "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": "
 				<< gluErrorString (errorNum)
 				<< " in " << getWorldURL () << std::endl;

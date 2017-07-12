@@ -75,14 +75,12 @@ public:
 	{ }
 
 	///  Copy constructor.
-	constexpr
 	system_clock (const system_clock & clock) :
 		clock_base <Type> (clock)
 	{ }
 
 	virtual
 	bool
-	// should be constexpr
 	before (const Type & value) const
 	{ return system_clock::cycle () < value; }
 
@@ -91,11 +89,11 @@ public:
 	void
 	advance ()
 	{
-		const Type prior = system_clock::cycle ();
+		const Type prior = this -> cycle ();
 
 		clock_base <Type>::advance ();
 
-		this -> interval (system_clock::cycle () - prior);
+		this -> interval (this -> cycle () - prior);
 	}
 
 private:

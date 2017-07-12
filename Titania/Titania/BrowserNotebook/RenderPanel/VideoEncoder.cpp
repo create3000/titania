@@ -67,11 +67,14 @@ using namespace std::placeholders;
 VideoEncoder::VideoEncoder (const basic::uri & filename,
                             const std::string & codec,
                             const size_t frameRate) :
-	    filename (filename),
-	     command (os::escape_argument ("ffmpeg")),
-	        pipe (std::bind (&VideoEncoder::on_stdout, this, _1), std::bind (&VideoEncoder::on_stderr, this, _1)),
-	stdoutSignal (),
-	stderrSignal ()
+	        filename (filename),
+	         command (os::escape_argument ("ffmpeg")),
+	            pipe (std::bind (&VideoEncoder::on_stdout, this, _1), std::bind (&VideoEncoder::on_stderr, this, _1)),
+	          stdout (),
+	          stderr (),
+	stdoutDispatcher (),
+	stderrDispatcher (),
+	           mutex ()
 {
 	static const std::map <std::string, std::string> codecs = {
 		std::make_pair ("PNG",   "png"),
@@ -93,16 +96,40 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	                  filename .path ());
 }
 
+std::string
+VideoEncoder::getStdout ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return std::move (stdout);
+}
+
+std::string
+VideoEncoder::getStderr ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return std::move (stderr);
+}
+
 void
 VideoEncoder::on_stdout (const std::string & string)
 {
-	stdoutSignal .emit (string);
+	std::lock_guard <std::mutex> lock (mutex);
+
+	stdout .insert (stdout .end (), string .begin (), string .end ());
+
+	stdoutDispatcher .emit ();
 }
 
 void
 VideoEncoder::on_stderr (const std::string & string)
 {
-	stderrSignal .emit (string);
+	std::lock_guard <std::mutex> lock (mutex);
+
+	stderr .insert (stderr .end (), string .begin (), string .end ());
+
+	stderrDispatcher .emit ();
 }
 
 void

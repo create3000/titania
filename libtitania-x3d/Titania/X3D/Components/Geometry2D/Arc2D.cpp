@@ -59,6 +59,8 @@
 #include "../Rendering/Coordinate.h"
 #include "../Rendering/IndexedLineSet.h"
 
+#include <complex>
+
 namespace titania {
 namespace X3D {
 
