@@ -121,9 +121,6 @@
     <None Include="Titania\Math\Utility\MatrixStack.h" />
     <None Include="Titania\Math\Geometry\Camera.h" />
     <None Include="Titania\Geospatial\Interpolation.h" />
-    <None Include="Titania\OS\getfullname.h" />
-    <None Include="Titania\OS\cwd.h" />
-    <None Include="Titania\OS\env.h" />
     <None Include="Titania\OS\file_exists.h" />
     <None Include="Titania\OS\file_size.h" />
     <None Include="Titania\OS\find_data_file.h" />
@@ -131,7 +128,6 @@
     <None Include="Titania\OS\is_file.h" />
     <None Include="Titania\OS\load_file.h" />
     <None Include="Titania\OS\mkdir.h" />
-    <None Include="Titania\OS\popen2.h" />
     <None Include="Titania\OS\system.h" />
     <None Include="Titania\InputOutput\InverseString.h" />
     <None Include="Titania\OS\realpath.h" />
@@ -615,9 +611,6 @@
     <Compile Include="Titania\Geospatial\UniversalTransverseMercator.cpp" />
     <Compile Include="Titania\Geospatial\BasicConverter.cpp" />
     <Compile Include="Titania\Math\Utility\MatrixStack.cpp" />
-    <Compile Include="Titania\OS\getfullname.cpp" />
-    <Compile Include="Titania\OS\cwd.cpp" />
-    <Compile Include="Titania\OS\env.cpp" />
     <Compile Include="Titania\OS\file_exists.cpp" />
     <Compile Include="Titania\OS\file_size.cpp" />
     <Compile Include="Titania\OS\find_data_file.cpp" />
@@ -625,7 +618,6 @@
     <Compile Include="Titania\OS\is_file.cpp" />
     <Compile Include="Titania\OS\load_file.cpp" />
     <Compile Include="Titania\OS\mkdir.cpp" />
-    <Compile Include="Titania\OS\popen2.cpp" />
     <Compile Include="Titania\OS\system.cpp" />
     <Compile Include="Titania\InputOutput\InverseString.cpp" />
     <Compile Include="Titania\OS\realpath.cpp" />

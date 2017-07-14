@@ -53,6 +53,8 @@
 #include <Titania/OS.h>
 #include <Titania/Stream/GZStream.h>
 
+#include <glibmm.h>
+
 #include <iostream>
 
 namespace titania {
@@ -129,7 +131,7 @@ throw (Error <INVALID_URL>,
 	};
 
 	if (worldURL .is_relative ())
-		worldURL = basic::uri (os::cwd ()) .transform (worldURL);
+		worldURL = basic::uri (Glib::get_current_dir () + "/") .transform (worldURL);
 
 	if (not worldURL .is_local ())
 		throw Error <INVALID_URL> ("Invalid URL: URL is not local.");

@@ -60,6 +60,8 @@
 #include <Titania/OS.h>
 #include <Titania/String/to_string.h>
 
+#include <glibmm.h>
+
 #include <random>
 
 namespace titania {
@@ -182,10 +184,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (not metadatas .count ("creator"))
 	{
-		const std::string fullname = os::getfullname ();
+		const std::string fullname = Glib::get_real_name ();
 
 		if (not fullname .empty ())
-			setMetaData ("creator", os::getfullname ());
+			setMetaData ("creator", Glib::get_real_name ());
 	}
 
 	if (not metadatas .count ("created"))

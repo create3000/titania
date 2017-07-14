@@ -181,13 +181,11 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Numbers/Vector2.lo \
 	Titania/Math/Numbers/Vector3.lo \
 	Titania/Math/Numbers/Vector4.lo \
-	Titania/Math/Utility/MatrixStack.lo Titania/OS/cwd.lo \
-	Titania/OS/env.lo Titania/OS/file_exists.lo \
+	Titania/Math/Utility/MatrixStack.lo Titania/OS/file_exists.lo \
 	Titania/OS/file_size.lo Titania/OS/find_data_file.lo \
-	Titania/OS/getfullname.lo Titania/OS/is_directory.lo \
-	Titania/OS/is_file.lo Titania/OS/load_file.lo \
-	Titania/OS/mkdir.lo Titania/OS/mkstemps.lo \
-	Titania/OS/popen2.lo Titania/OS/program_exists.lo \
+	Titania/OS/is_directory.lo Titania/OS/is_file.lo \
+	Titania/OS/load_file.lo Titania/OS/mkdir.lo \
+	Titania/OS/mkstemps.lo Titania/OS/program_exists.lo \
 	Titania/OS/realpath.lo Titania/OS/rename.lo \
 	Titania/OS/system.lo Titania/OS/unlink.lo \
 	Titania/RegEx/regex_escape.lo Titania/String/dtoa.lo \
@@ -495,18 +493,14 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Numbers/Vector3.cpp \
 	Titania/Math/Numbers/Vector4.cpp \
 	Titania/Math/Utility/MatrixStack.cpp \
-	Titania/OS/cwd.cpp \
-	Titania/OS/env.cpp \
 	Titania/OS/file_exists.cpp \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
-	Titania/OS/getfullname.cpp \
 	Titania/OS/is_directory.cpp \
 	Titania/OS/is_file.cpp \
 	Titania/OS/load_file.cpp \
 	Titania/OS/mkdir.cpp \
 	Titania/OS/mkstemps.cpp \
-	Titania/OS/popen2.cpp \
 	Titania/OS/program_exists.cpp \
 	Titania/OS/realpath.cpp \
 	Titania/OS/rename.cpp \
@@ -844,17 +838,11 @@ Titania/OS/$(am__dirstamp):
 Titania/OS/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/OS/$(DEPDIR)
 	@: > Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/cwd.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/env.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/file_exists.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/file_size.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/find_data_file.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/getfullname.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/is_directory.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
@@ -865,8 +853,6 @@ Titania/OS/load_file.lo: Titania/OS/$(am__dirstamp) \
 Titania/OS/mkdir.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/mkstemps.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/popen2.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/program_exists.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
@@ -1010,18 +996,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/cwd.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/env.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_exists.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_size.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/getfullname.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_directory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/load_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/mkdir.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/mkstemps.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/popen2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/program_exists.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/realpath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/rename.Plo@am__quote@

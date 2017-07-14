@@ -50,18 +50,15 @@
 
 #include "VideoEncoder.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
-
-#include <sys/wait.h>
 
 namespace titania {
 namespace puck {
 
 using namespace std::placeholders;
 
-/*
- *  codecs PNG, H.264
+/***
+ *  Codecs PNG, H.264, Xvid
  */
 
 VideoEncoder::VideoEncoder (const basic::uri & filename,

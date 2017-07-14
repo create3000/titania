@@ -61,7 +61,6 @@
 #include <Titania/X3D/Components/Text/Text.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
-#include <Titania/OS/cwd.h>
 #include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
 
@@ -239,7 +238,7 @@ RecentView::set_url (const X3D::SFString & url)
 	basic::uri URL = url .str ();
 
 	if (URL .is_relative ())
-		URL = basic::uri (os::cwd ()) .transform (URL);
+		URL = basic::uri (Glib::get_current_dir () + "/") .transform (URL);
 
 	try
 	{

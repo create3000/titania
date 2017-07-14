@@ -64,7 +64,6 @@
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 
-#include <Titania/OS/cwd.h>
 #include <Titania/String.h>
 #include <Titania/Stream/GZStream.h>
 #include <fstream>
@@ -394,7 +393,7 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 	auto URL = URL_;
 
 	if (URL .is_relative ())
-		URL = basic::uri (os::cwd ()) .transform (URL);
+		URL = basic::uri (Glib::get_current_dir () + "/") .transform (URL);
 
 	try
 	{
