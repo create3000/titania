@@ -108,7 +108,7 @@ BackgroundImageEditor::set_background_image ()
 	if (page -> getBackgroundImage () -> getUrl () .size () < 2)
 	{
 		getImageChooserButton () .set_uri ("");
-		getImageChooserButton () .set_current_folder (os::home ());
+		getImageChooserButton () .set_current_folder (Glib::get_home_dir ());
 		getImageReloadButton () .set_sensitive (false);
 	}
 	else
@@ -195,7 +195,7 @@ BackgroundImageEditor::on_image_remove_clicked ()
 	// Widgets
 
 	getImageChooserButton () .set_uri ("");
-	getImageChooserButton () .set_current_folder (os::home ());
+	getImageChooserButton () .set_current_folder (Glib::get_home_dir ());
 	getImageReloadButton () .set_sensitive (false);
 
 	// Image

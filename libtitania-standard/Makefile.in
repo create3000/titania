@@ -184,12 +184,12 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Utility/MatrixStack.lo Titania/OS/cwd.lo \
 	Titania/OS/env.lo Titania/OS/file_exists.lo \
 	Titania/OS/file_size.lo Titania/OS/find_data_file.lo \
-	Titania/OS/getfullname.lo Titania/OS/home.lo \
-	Titania/OS/is_directory.lo Titania/OS/is_file.lo \
-	Titania/OS/load_file.lo Titania/OS/mkdir.lo \
-	Titania/OS/mkstemps.lo Titania/OS/popen2.lo \
-	Titania/OS/program_exists.lo Titania/OS/realpath.lo \
-	Titania/OS/rename.lo Titania/OS/system.lo Titania/OS/unlink.lo \
+	Titania/OS/getfullname.lo Titania/OS/is_directory.lo \
+	Titania/OS/is_file.lo Titania/OS/load_file.lo \
+	Titania/OS/mkdir.lo Titania/OS/mkstemps.lo \
+	Titania/OS/popen2.lo Titania/OS/program_exists.lo \
+	Titania/OS/realpath.lo Titania/OS/rename.lo \
+	Titania/OS/system.lo Titania/OS/unlink.lo \
 	Titania/RegEx/regex_escape.lo Titania/String/dtoa.lo \
 	Titania/String/naturally_compare.lo Titania/String/sprintf.lo \
 	Titania/String/strfsize.lo Titania/String/trim.lo
@@ -501,7 +501,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
 	Titania/OS/getfullname.cpp \
-	Titania/OS/home.cpp \
 	Titania/OS/is_directory.cpp \
 	Titania/OS/is_file.cpp \
 	Titania/OS/load_file.cpp \
@@ -857,8 +856,6 @@ Titania/OS/find_data_file.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/getfullname.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/home.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/is_directory.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/is_file.lo: Titania/OS/$(am__dirstamp) \
@@ -1019,7 +1016,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_size.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/getfullname.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/home.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_directory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/load_file.Plo@am__quote@

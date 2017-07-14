@@ -71,7 +71,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
 	Titania/OS/getfullname.cpp \
-	Titania/OS/home.cpp \
 	Titania/OS/is_directory.cpp \
 	Titania/OS/is_file.cpp \
 	Titania/OS/load_file.cpp \

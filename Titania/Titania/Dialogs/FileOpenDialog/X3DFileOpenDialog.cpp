@@ -81,7 +81,7 @@ X3DFileOpenDialog::run ()
 	if (getConfig () -> hasKey ("currentFolder"))
 		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	else
-		getWindow () .set_current_folder (os::home ());
+		getWindow () .set_current_folder (Glib::get_home_dir ());
 
 	setFileFilter (getConfig () -> getString ("fileFilter"));
 

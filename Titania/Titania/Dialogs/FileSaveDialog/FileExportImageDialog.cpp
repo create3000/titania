@@ -202,7 +202,7 @@ FileExportImageDialog::save (Magick::Image & image)
 	if (getConfig () -> hasKey ("currentFolder"))
 		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 	else
-		getWindow () .set_current_folder (os::home ());
+		getWindow () .set_current_folder (Glib::get_home_dir ());
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
 

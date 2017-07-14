@@ -50,59 +50,71 @@
 
 #include "Pipe.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 
+#include <glibmm.h>
+
+#include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <poll.h>
 #include <vector>
 
-#include <sys/socket.h>
-
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace puck {
 
-const size_t Pipe::bufferSize = 1024;
-
-Pipe::Pipe (const PipeCallback & stdoutCallback, const PipeCallback & stderrCallback) :
-	stdoutCallback (stdoutCallback),
-	stderrCallback (stderrCallback),
-	           pid (0),
-	         stdin (0),
-	        stdout (0),
-	        stderr (0),
-	        opened (false),
-	        buffer (bufferSize) 
+Pipe::Pipe (const PipeCallback & stdout_callback, const PipeCallback & stderr_callback) :
+	m_stdout_callback (stdout_callback),
+	m_stderr_callback (stderr_callback),
+	            m_pid (0),
+	          m_stdin (0),
+	         m_stdout (0),
+	         m_stderr (0),
+	        m_is_open (false),
+	         m_buffer (buffer_size) 
 { }
 
 void
-Pipe::open (const std::string & command)
+Pipe::open (const std::vector <std::string> & command)
 throw (std::runtime_error)
 {
-	__LOG__ << command << std::endl;
+	try
+	{
+		__LOG__ << basic::join (command, " ") << std::endl;
 
-	if (opened)
-		close ();
-
-	if ((pid = os::popen3 (command, &stdin, &stdout, &stderr)) <= 0)
-		throw std::runtime_error ("Couldn't open command '" +  command+ "'.");
-
-	read (5);
-
-	opened = true;
+		if (m_is_open)
+			close ();
+	
+		Glib::spawn_async_with_pipes (Glib::get_home_dir (),
+		                              command,
+		                              Glib::ArrayHandle <std::string> (std::vector <std::string> ()),
+		                              Glib::SPAWN_SEARCH_PATH | Glib::SPAWN_SEARCH_PATH_FROM_ENVP | Glib::SPAWN_CLOEXEC_PIPES,
+		                              Glib::SlotSpawnChildSetup (),
+		                              &m_pid,
+		                              &m_stdin,
+		                              &m_stdout,
+		                              &m_stderr);
+	
+		m_is_open = true;
+	
+		read (5);
+	}
+	catch (const Glib::SpawnError)
+	{
+		throw std::runtime_error ("Couldn't open command '" + basic::join (command, " ") + "'.");
+	}
 }
 
 /***
  * Returns a value greater than zero on success. Zero on timeout and -1 if an error occured.
  */
 int32_t
-Pipe::wait (const int32_t fd, const int32_t timeout)
+Pipe::poll (const int32_t fd, const int32_t timeout, const short events)
 {
-	struct pollfd p = { .fd = fd, .events = POLLIN };
+	struct pollfd p = { .fd = fd, .events = events };
 
 	return ::poll (&p, 1, timeout);
 }
@@ -110,31 +122,33 @@ Pipe::wait (const int32_t fd, const int32_t timeout)
 void
 Pipe::read (const int32_t timeout)
 {
-	while (timeout == 0 or wait (stdout, timeout) > 0)
+	while (poll (m_stdout, timeout, POLLIN) > 0)
 	{
-		const auto bytesRead = ::read (stdout, buffer .data (), sizeof (char) * bufferSize);
+		const auto bytesRead = ::read (m_stdout, m_buffer .data (), sizeof (char) * buffer_size);
 
 		if (bytesRead > 0)
 		{
-			if (stdoutCallback)
-				stdoutCallback (std::string (buffer .data (), bytesRead));
+			if (m_stdout_callback)
+				m_stdout_callback (std::string (m_buffer .data (), bytesRead));
+
 			else
-				std::cout .write (buffer .data (), bytesRead);
+				std::cout .write (m_buffer .data (), bytesRead);
 		}
 		else
 			break;
 	}
 
-	while (timeout == 0 or wait (stderr, timeout) > 0)
+	while (poll (m_stderr, timeout, POLLIN) > 0)
 	{
-		const auto bytesRead = ::read (stderr, buffer .data (), sizeof (char) * bufferSize);
+		const auto bytesRead = ::read (m_stderr, m_buffer .data (), sizeof (char) * buffer_size);
 
 		if (bytesRead > 0)
 		{
-			if (stderrCallback)
-				stderrCallback (std::string (buffer .data (), bytesRead));
+			if (m_stderr_callback)
+				m_stderr_callback (std::string (m_buffer .data (), bytesRead));
+
 			else
-				std::clog .write (buffer .data (), bytesRead);
+				std::clog .write (m_buffer .data (), bytesRead);
 		}
 		else
 			break;
@@ -145,38 +159,52 @@ void
 Pipe::write (const char* data, const size_t length)
 throw (std::runtime_error)
 {
-	const int32_t bytes        = length;
-	const int32_t bytesWritten = ::write (stdin, data, bytes);
+	if (not m_is_open)
+		throw std::runtime_error ("Write to closed pipe.");
 
-	read (5);
+	read (0);
 
-	if (bytesWritten not_eq bytes)
+	if (poll (m_stdin, 5, POLLOUT) >= 0)
 	{
-		if (bytesWritten < 0)
-			throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
-		else
-			throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+		const int32_t bytes        = length;
+		const int32_t bytesWritten = ::write (m_stdin, data, bytes);
+	
+		if (bytesWritten not_eq bytes)
+		{
+			if (bytesWritten < 0)
+				throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
+			else
+				throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+		}
+	}
+	else
+	{
+		close ();
+
+		throw std::runtime_error ("Broken pipe: write to pipe with no readers.");
 	}
 }
 
 bool
 Pipe::close ()
 {
-	if (not opened)
+	if (not m_is_open)
 		return false;
 
-	opened = false;
+	m_is_open = false;
 
-	::close (stdin);
+	::close (m_stdin);
 
-	read (0);
+	read (50);
 
-	::close (stdout);
-	::close (stderr);
+	::close (m_stdout);
+	::close (m_stderr);
 
 	int32_t status = 0;
 
-	::waitpid (pid, &status, 0);
+	::waitpid (m_pid, &status, 0);
+
+	Glib::spawn_close_pid (m_pid);
 
 	if (status)
 		return false;

@@ -72,8 +72,9 @@ struct RenderThreadFrame
 using RenderThreadFramePtr = std::shared_ptr <RenderThreadFrame>;
 
 class RenderThread :
+	protected X3D::X3DInterruptibleThread,
 	public X3D::X3DInput,
-	protected X3D::X3DInterruptibleThread
+	public sigc::trackable
 {
 public:
 
@@ -177,8 +178,8 @@ private:
 
 	///  @name Members
 
-	const X3D::BrowserPtr          browser;
-   const std::atomic <size_t>     duration;
+	X3D::BrowserPtr                browser;
+	const std::atomic <size_t>     duration;
 	const std::atomic <size_t>     frameRate;
 	const std::atomic <size_t>     width;
 	const std::atomic <size_t>     height;

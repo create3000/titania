@@ -54,8 +54,6 @@
 #include "Commands/Tidy.h"
 #include "Browser/BrowserApplication.h"
 
-#include <Titania/OS.h>
-
 int
 main (int argc, char** argv)
 {
@@ -67,9 +65,9 @@ main (int argc, char** argv)
 		// X3D::Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made. 
 		X3D::Init (argc, argv);
 
-		os::env ("UBUNTU_MENUPROXY",      "0");    // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
+		Glib::setenv ("UBUNTU_MENUPROXY",      "0");    // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
+		//Glib::setenv ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
+		//Glib::setenv ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
 
 		// Run appropriate application.
 

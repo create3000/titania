@@ -71,10 +71,6 @@ popen2 (const char* const command, int* const stdin, int* const stdout)
 pid_t
 popen3 (const char* const command, int* const stdin, int* const stdout, int* const stderr)
 {
-	static std::mutex mutex;
-
-	std::lock_guard <std::mutex> lock (mutex);
-
 	int input [2], output [2], error [2];
 
 	if (pipe (output) not_eq 0 or pipe (input) not_eq 0 or pipe (error) not_eq 0)
@@ -102,6 +98,10 @@ popen3 (const char* const command, int* const stdin, int* const stdout, int* con
 		perror ("execl");
 		exit (1);
 	}
+
+	fcntl (output [WRITE], F_SETFD, FD_CLOEXEC);
+	fcntl (input  [READ],  F_SETFD, FD_CLOEXEC);
+	fcntl (error  [READ],  F_SETFD, FD_CLOEXEC);
 
 	close (output [READ]);
 

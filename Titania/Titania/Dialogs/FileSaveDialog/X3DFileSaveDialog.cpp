@@ -123,7 +123,7 @@ X3DFileSaveDialog::run (const basic::uri & url)
 		if (getConfig () -> hasKey ("currentFolder"))
 			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 		else
-			getWindow () .set_current_folder (os::home ());
+			getWindow () .set_current_folder (Glib::get_home_dir ());
 
 		if (url .basename () .empty ())
 			getWindow () .set_current_name (_ ("scene.x3d"));

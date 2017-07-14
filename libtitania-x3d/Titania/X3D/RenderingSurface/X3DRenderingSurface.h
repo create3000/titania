@@ -220,6 +220,7 @@ private:
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
 	sigc::signal <bool>                                     renderSignal;
 	Glib::Dispatcher                                        timeoutDispatcher;
+	sigc::connection                                        timeoutDispatcherConnection;
 	sigc::connection                                        timeoutConnection;
 	std::recursive_mutex                                    mutex;
 

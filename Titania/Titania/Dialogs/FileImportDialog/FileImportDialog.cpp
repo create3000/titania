@@ -142,7 +142,7 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 		getWindow () .set_uri (worldURL .filename () .str ());
 
 	else
-		getWindow () .set_filename (os::home () + _ ("scene.x3d"));
+		getWindow () .set_filename (Glib::get_home_dir () + "/" + _ ("scene.x3d"));
 
 	// Import dialog
 
@@ -201,7 +201,7 @@ FileImportDialog::run ()
 		if (getConfig () -> hasKey ("currentFolder"))
 			getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 		else
-			getWindow () .set_current_folder (os::home ());
+			getWindow () .set_current_folder (Glib::get_home_dir ());
 		
 		setFilter (getConfig () -> getString ("filter"));
 		

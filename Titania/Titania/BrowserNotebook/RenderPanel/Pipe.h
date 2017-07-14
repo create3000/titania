@@ -55,6 +55,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <mutex>
 
 namespace titania {
 namespace puck {
@@ -68,13 +69,23 @@ public:
 	///  @name Construction
 
 	explicit
-	Pipe (const PipeCallback & stdoutCallback = PipeCallback (),
-	      const PipeCallback & stderrCallback = PipeCallback ());
+	Pipe (const PipeCallback & stdout_callback = PipeCallback (),
+	      const PipeCallback & stderr_callback = PipeCallback ());
+
+	///  @name Member access
+
+	bool
+	is_open () const
+	{ return m_is_open; }
+
+	int32_t
+	pid () const
+	{ return m_pid; }
 
 	///  @name Operations
 
 	void
-	open (const std::string & command)
+	open (const std::vector <std::string> & command)
 	throw (std::runtime_error);
 
 	void
@@ -94,28 +105,28 @@ private:
 
 	///  @name Operations
 
+	int32_t
+	poll (const int32_t fd, const int32_t timeout, const short events);
+
 	void
 	read (const int32_t timeout);
 
-	int32_t
-	wait (const int32_t fd, const int32_t timeout);
-
 	///  @name Static members
 
-	static const size_t bufferSize;
+	static constexpr size_t buffer_size = 1024;
 
 	///  @name Members
 
-	const PipeCallback stdoutCallback;
-	const PipeCallback stderrCallback;
+	const PipeCallback m_stdout_callback;
+	const PipeCallback m_stderr_callback;
 
-	pid_t   pid;
-	int32_t stdin;
-	int32_t stdout;
-	int32_t stderr;
-	bool    opened;
+	pid_t   m_pid;
+	int32_t m_stdin;
+	int32_t m_stdout;
+	int32_t m_stderr;
+	bool    m_is_open;
 
-	std::vector <char> buffer;
+	std::vector <char> m_buffer;
 
 };
 

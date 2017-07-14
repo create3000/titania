@@ -57,7 +57,6 @@
 #include <Titania/X3D/Fields/Hash.h>
 
 #include <Titania/OS/file_exists.h>
-#include <Titania/OS/home.h>
 
 namespace titania {
 namespace puck {
@@ -458,7 +457,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 		// No data available.
 
 		fileChooser .set_uri ("");
-		fileChooser .set_current_folder (os::home ());
+		fileChooser .set_current_folder (Glib::get_home_dir ());
 		reloadButton .set_sensitive (false);
 	}
 
@@ -541,7 +540,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_remove_clicked ()
 	// Widgets
 
 	fileChooser .set_uri ("");
-	fileChooser .set_current_folder (os::home ());
+	fileChooser .set_current_folder (Glib::get_home_dir ());
 	reloadButton .set_sensitive (false);
 }
 

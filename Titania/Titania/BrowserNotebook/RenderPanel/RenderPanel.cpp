@@ -75,11 +75,14 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
                             getTextureLoadStateLabel ())),
 	           imageTexture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           movieTexture (preview -> getLocalBrowser () -> createNode <X3D::MovieTexture> ()),
+	              rendering (false),
 	           renderThread (),
 	               filename (),
 	              viewpoint (),
 	          viewpointList ()
 {
+	addChildObjects (imageTexture, movieTexture, rendering);
+
 	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
 	getPropertiesDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
 
@@ -103,6 +106,8 @@ void
 RenderPanel::initialize ()
 {
 	X3DRenderPanelInterface::initialize ();
+
+	rendering .addInterest (&RenderPanel::set_rendering, this);
 
 	movieTexture -> isActive ()         .addInterest (&RenderPanel::set_movie_active,      this);
 	movieTexture -> isPaused ()         .addInterest (&RenderPanel::set_movie_active,      this);
@@ -177,7 +182,7 @@ RenderPanel::getPropertiesDialogResponse ()
 }
 
 void
-RenderPanel::setRendering (const bool value)
+RenderPanel::set_rendering (const bool value)
 {
 	if (value)
 	{
@@ -222,7 +227,7 @@ RenderPanel::setRendering (const bool value)
 		catch (const std::exception & error)
 		{
 			__LOG__ << error .what () << std::endl;
-			setRendering (false);
+			rendering = false;
 		}
 	}
 	else
@@ -247,12 +252,6 @@ RenderPanel::setRendering (const bool value)
 
 		renderThread .reset ();
 	}
-}
-
-bool
-RenderPanel::getRendering () const
-{
-	return bool (renderThread);
 }
 
 void
@@ -311,7 +310,7 @@ RenderPanel::set_viewpoint ()
 void
 RenderPanel::on_record_clicked ()
 {
-	setRendering (not getRendering ());
+	rendering = not rendering;
 }
 
 void
@@ -395,13 +394,13 @@ RenderPanel::on_frame_changed ()
 				imageTexture -> setUrl (frame -> image);
 	
 			if (lastFrame)
-				setRendering (false);
+				rendering = false;
 		}
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
-		setRendering (false);
+		rendering = false;
 	}
 }
 
@@ -436,7 +435,7 @@ RenderPanel::on_stderr ()
 void
 RenderPanel::dispose ()
 {
-	setRendering (false);
+	set_rendering (false);
 
 	X3DRenderPanel::dispose ();
 }

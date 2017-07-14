@@ -127,7 +127,6 @@
     <None Include="Titania\OS\file_exists.h" />
     <None Include="Titania\OS\file_size.h" />
     <None Include="Titania\OS\find_data_file.h" />
-    <None Include="Titania\OS\home.h" />
     <None Include="Titania\OS\is_directory.h" />
     <None Include="Titania\OS\is_file.h" />
     <None Include="Titania\OS\load_file.h" />
@@ -622,7 +621,6 @@
     <Compile Include="Titania\OS\file_exists.cpp" />
     <Compile Include="Titania\OS\file_size.cpp" />
     <Compile Include="Titania\OS\find_data_file.cpp" />
-    <Compile Include="Titania\OS\home.cpp" />
     <Compile Include="Titania\OS\is_directory.cpp" />
     <Compile Include="Titania\OS\is_file.cpp" />
     <Compile Include="Titania\OS\load_file.cpp" />

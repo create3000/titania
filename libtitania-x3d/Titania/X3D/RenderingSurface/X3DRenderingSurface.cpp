@@ -74,19 +74,20 @@ X3DRenderingSurface::X3DRenderingSurface () :
 { }
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
-	Gtk::DrawingArea (),
-	      initialized (false),
-	          context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
-	       extensions (),
-	     antialiasing (0),
-	        frameRate (60),
-	      frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	      setupSignal (),
-	    reshapeSignal (),
-	     renderSignal (),
-	timeoutDispatcher (),
-	timeoutConnection (),
-	            mutex ()
+	          Gtk::DrawingArea (),
+	                initialized (false),
+	                    context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
+	                 extensions (),
+	               antialiasing (0),
+	                  frameRate (60),
+	                frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	                setupSignal (),
+	              reshapeSignal (),
+	               renderSignal (),
+	          timeoutDispatcher (),
+	timeoutDispatcherConnection (),
+	          timeoutConnection (),
+	                      mutex ()
 {
 	ContextLock lock (this);
 
@@ -102,7 +103,7 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	frameBuffer -> setup ();
 	frameBuffer -> bind ();
 
-	timeoutDispatcher .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
+	timeoutDispatcherConnection = timeoutDispatcher .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
 }
 
 bool
@@ -230,7 +231,7 @@ X3DRenderingSurface::on_dispatch ()
 	if (timeoutConnection .connected ())
 		return;
 
-	timeoutConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_DEFAULT_IDLE);
+	timeoutConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_HIGH);
 }
 
 bool
@@ -320,7 +321,8 @@ X3DRenderingSurface::dispose ()
 {
 	std::lock_guard <std::recursive_mutex> lock (mutex);
 
-	timeoutConnection .disconnect ();
+	timeoutDispatcherConnection .disconnect ();
+	timeoutConnection           .disconnect ();
 
 	notify_callbacks ();
 

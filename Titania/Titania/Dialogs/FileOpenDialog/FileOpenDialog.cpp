@@ -106,7 +106,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 		getWindow () .set_uri (worldURL .filename () .str ());
 
 	else
-		getWindow () .set_filename (os::home () + _ ("scene.x3d"));
+		getWindow () .set_filename (Glib::get_home_dir () + "/" + _ ("scene.x3d"));
 
 	setup ();
 }

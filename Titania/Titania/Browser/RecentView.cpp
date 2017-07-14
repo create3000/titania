@@ -62,7 +62,6 @@
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
 #include <Titania/OS/cwd.h>
-#include <Titania/OS/home.h>
 #include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
 

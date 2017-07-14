@@ -66,9 +66,10 @@ using namespace std::placeholders;
 
 VideoEncoder::VideoEncoder (const basic::uri & filename,
                             const std::string & codec,
-                            const size_t frameRate) :
+                            const size_t frameRate,
+                            const size_t duration) :
 	        filename (filename),
-	         command (os::escape_argument ("ffmpeg")),
+	         command (),
 	            pipe (std::bind (&VideoEncoder::on_stdout, this, _1), std::bind (&VideoEncoder::on_stderr, this, _1)),
 	          stdout (),
 	          stderr (),
@@ -85,15 +86,17 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	const auto iter   = codecs .find (codec);
 	const auto vcodec = iter not_eq codecs .end () ? iter -> second : "png";
 
-	os::join_command (command,
-	                  "-f", "image2pipe",
-	                  "-vcodec", "png",
-	                  "-r", basic::to_string (frameRate, std::locale::classic ()),
-	                  "-i", "-",
-	                  "-y", // Overwrite output files without asking.
-	                  "-vcodec", vcodec,
-	                  "-q:v", "0",
-	                  filename .path ());
+	command = { "ffmpeg",
+	            "-y", // Overwrite output files without asking.
+	            "-f", "image2pipe",
+	            "-vcodec", "png",
+	            "-r", basic::to_string (frameRate, std::locale::classic ()),
+	            "-i", "-",
+	            "-vcodec", vcodec,
+	            "-q:v", "0",
+	            "-r", basic::to_string (frameRate, std::locale::classic ()),
+	            "-frames:v", basic::to_string (duration, std::locale::classic ()),
+	            filename .path () };
 }
 
 std::string

@@ -70,8 +70,9 @@ RenderThread::RenderThread (const basic::uri & url,
                             const bool fixedPipeline,
                             const basic::uri & filename,
                             const std::string & codec) :
-	              X3D::X3DInput (),
 	X3D::X3DInterruptibleThread (),
+	              X3D::X3DInput (),
+	            sigc::trackable (),
 	                    browser (X3D::createBrowser ({ url .str () })),
 	                   duration (duration),
 	                  frameRate (frameRate),
@@ -83,7 +84,7 @@ RenderThread::RenderThread (const basic::uri & url,
 	                frameNumber (0),
 	            loadCountSignal (),
 	            frameDispatcher (),
-	               videoEncoder (std::make_unique <VideoEncoder> (filename, codec, frameRate)),
+	               videoEncoder (std::make_unique <VideoEncoder> (filename, codec, frameRate, duration)),
 	                     thread ()
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
@@ -122,7 +123,7 @@ RenderThread::stop ()
 	if (thread and thread -> joinable ())
 		thread -> join ();
 
-	return videoEncoder -> close ();
+	videoEncoder -> close ();
 }
 
 void
@@ -150,7 +151,7 @@ RenderThread::set_loadCount ()
 	try
 	{
 		// NVIDIA Driver are thread save, ATI don't know, Nouveau not yet.
-		static const std::regex threadSaveDriver (R"/(NVIDIA)/");
+		static const std::regex threadSaveDriver (R"/(NVIDIA)/", std::regex_constants::icase);
 
 		loadCountSignal .emit (browser -> getLoadCount ());
 
@@ -166,7 +167,7 @@ RenderThread::set_loadCount ()
 			thread = std::make_unique <std::thread> (std::bind (&RenderThread::run, this));
 
 		else
-			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_DEFAULT_IDLE);
+			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_HIGH);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -181,22 +182,19 @@ RenderThread::run ()
 {
 	try
 	{
-		using namespace std::chrono_literals;
-
-
 		for (size_t frameNumber = 0; frameNumber < duration; ++ frameNumber)
 		{
-			std::this_thread::sleep_for (50ms);
+			checkForInterrupt ();
 
 			currentFrame = getFrame (frameNumber);
 		}
 	}
-	catch (const X3D::X3DError & error)
+	catch (const X3D::InterruptThreadException & error)
+	{ }
+	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-	catch (const X3D::InterruptThreadException & error)
-	{ }
 }
 
 bool
@@ -204,18 +202,21 @@ RenderThread::on_timeout ()
 {
 	try
 	{
+		checkForInterrupt ();
+
 		currentFrame = getFrame (frameNumber);
 
 		++ frameNumber;
+
 		return frameNumber < duration;
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-		return false;
 	}
 	catch (const X3D::InterruptThreadException & error)
 	{
+		return false;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
 		return false;
 	}
 }
@@ -223,8 +224,6 @@ RenderThread::on_timeout ()
 RenderThreadFramePtr
 RenderThread::getFrame (const int32_t frameNumber)
 {
-	checkForInterrupt ();
-
 	auto frame = std::make_shared <RenderThreadFrame> ();
 
 	frame -> frameNumber = frameNumber;
@@ -257,6 +256,10 @@ RenderThread::signal_stderr ()
 RenderThread::~RenderThread ()
 {
 	stop ();
+
+	browser .dispose ();
+
+	dispose ();
 }
 
 } // puck

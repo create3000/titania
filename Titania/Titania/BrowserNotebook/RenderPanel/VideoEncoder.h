@@ -72,7 +72,8 @@ public:
 
 	VideoEncoder (const basic::uri & filename,
 	              const std::string & codec,
-	              const size_t frameRate);
+	              const size_t frameRate,
+	              const size_t duration);
 
 	///  @name Member access
 
@@ -124,11 +125,11 @@ private:
 
 	///  @name Members
 
-	const basic::uri filename;
-	std::string      command;
-	Pipe             pipe;
-	std::string      stdout;
-	std::string      stderr;
+	const basic::uri          filename;
+	std::vector <std::string> command;
+	Pipe                      pipe;
+	std::string               stdout;
+	std::string               stderr;
 
 	Glib::Dispatcher stdoutDispatcher;
 	Glib::Dispatcher stderrDispatcher;

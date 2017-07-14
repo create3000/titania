@@ -52,6 +52,8 @@
 
 #include <Titania/OS.h>
 
+#include <glibmm.h>
+
 namespace titania {
 namespace puck {
 
@@ -60,7 +62,7 @@ static const std::string TITANIA_DATA_DIR  = "titania/";
 std::string
 config_dir ()
 {
-	return os::home () + "/.config/Titania/";
+	return Glib::get_home_dir () + "/.config/Titania/";
 }
 
 std::string
