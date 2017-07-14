@@ -75,13 +75,12 @@ RenderPanel::RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* c
                             getTextureLoadStateLabel ())),
 	           imageTexture (preview -> getLocalBrowser () -> createNode <X3D::ImageTexture> ()),
 	           movieTexture (preview -> getLocalBrowser () -> createNode <X3D::MovieTexture> ()),
-	              rendering (false),
 	           renderThread (),
 	               filename (),
 	              viewpoint (),
 	          viewpointList ()
 {
-	addChildObjects (imageTexture, movieTexture, rendering);
+	addChildObjects (imageTexture, movieTexture);
 
 	setTitleBar (getPropertiesDialog (), getPropertiesHeaderBar ());
 	getPropertiesDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
@@ -106,8 +105,6 @@ void
 RenderPanel::initialize ()
 {
 	X3DRenderPanelInterface::initialize ();
-
-	rendering .addInterest (&RenderPanel::set_rendering, this);
 
 	movieTexture -> isActive ()         .addInterest (&RenderPanel::set_movie_active,      this);
 	movieTexture -> isPaused ()         .addInterest (&RenderPanel::set_movie_active,      this);
@@ -182,7 +179,7 @@ RenderPanel::getPropertiesDialogResponse ()
 }
 
 void
-RenderPanel::set_rendering (const bool value)
+RenderPanel::setRendering (const bool value)
 {
 	if (value)
 	{
@@ -191,7 +188,7 @@ RenderPanel::set_rendering (const bool value)
 
 		auto         worldURL      = getPage () -> getMainBrowser () -> getWorldURL ();
 		const auto   codec         = getCodecButton () .get_active_text ();
-	   const size_t duration      = getDurationAdjustment ()     -> get_value ();
+		const size_t duration      = getDurationAdjustment ()     -> get_value ();
 		const size_t frameRate     = getFrameRateAdjustment ()    -> get_value ();
 		const size_t width         = getWidthAdjustment ()        -> get_value ();
 		const size_t height        = getHeightAdjustment ()       -> get_value ();
@@ -227,7 +224,7 @@ RenderPanel::set_rendering (const bool value)
 		catch (const std::exception & error)
 		{
 			__LOG__ << error .what () << std::endl;
-			rendering = false;
+			setRendering (false);
 		}
 	}
 	else
@@ -252,6 +249,12 @@ RenderPanel::set_rendering (const bool value)
 
 		renderThread .reset ();
 	}
+}
+
+bool
+RenderPanel::getRendering () const
+{
+	return bool (renderThread);
 }
 
 void
@@ -310,7 +313,7 @@ RenderPanel::set_viewpoint ()
 void
 RenderPanel::on_record_clicked ()
 {
-	rendering = not rendering;
+	setRendering (not getRendering ());
 }
 
 void
@@ -394,13 +397,13 @@ RenderPanel::on_frame_changed ()
 				imageTexture -> setUrl (frame -> image);
 	
 			if (lastFrame)
-				rendering = false;
+				setRendering (false);
 		}
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
-		rendering = false;
+		setRendering (false);
 	}
 }
 
@@ -435,7 +438,7 @@ RenderPanel::on_stderr ()
 void
 RenderPanel::dispose ()
 {
-	set_rendering (false);
+	setRendering (false);
 
 	X3DRenderPanel::dispose ();
 }

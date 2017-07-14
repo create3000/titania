@@ -101,7 +101,10 @@ private:
 	getPropertiesDialogResponse ();
 
 	void
-	set_rendering (const bool value);
+	setRendering (const bool value);
+
+	bool
+	getRendering () const;
 
 	///  @name Event handlers
 
@@ -164,7 +167,6 @@ private:
 	std::unique_ptr <TexturePreview> preview;
 	X3D::X3DPtr <X3D::ImageTexture>  imageTexture;
 	X3D::X3DPtr <X3D::MovieTexture>  movieTexture;
-	X3D::SFBool                      rendering;
 	std::unique_ptr <RenderThread>   renderThread;
 	basic::uri                       filename;
 	std::string                      viewpoint;

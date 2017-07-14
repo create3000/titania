@@ -87,11 +87,13 @@ throw (std::runtime_error)
 
 		if (m_is_open)
 			close ();
-	
+
+		// FD_CLOEXEC   This flag specifies that the file descriptor should be closed when an exec function is invoked.
+
 		Glib::spawn_async_with_pipes (Glib::get_home_dir (),
 		                              command,
-		                              Glib::ArrayHandle <std::string> (std::vector <std::string> ()),
-		                              Glib::SPAWN_SEARCH_PATH | Glib::SPAWN_SEARCH_PATH_FROM_ENVP | Glib::SPAWN_CLOEXEC_PIPES,
+		                              std::vector <std::string> (),
+		                              Glib::SPAWN_SEARCH_PATH | Glib::SPAWN_SEARCH_PATH_FROM_ENVP | Glib::SPAWN_CLOEXEC_PIPES | Glib::SPAWN_DO_NOT_REAP_CHILD,
 		                              Glib::SlotSpawnChildSetup (),
 		                              &m_pid,
 		                              &m_stdin,
@@ -102,9 +104,9 @@ throw (std::runtime_error)
 	
 		read (5);
 	}
-	catch (const Glib::SpawnError)
+	catch (const Glib::SpawnError & error)
 	{
-		throw std::runtime_error ("Couldn't open command '" + basic::join (command, " ") + "'.");
+		throw std::runtime_error ("Couldn't execute command '" + basic::join (command, " ") + "'.");
 	}
 }
 

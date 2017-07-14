@@ -123,7 +123,7 @@ RenderThread::stop ()
 	if (thread and thread -> joinable ())
 		thread -> join ();
 
-	videoEncoder -> close ();
+	return videoEncoder -> close ();
 }
 
 void
@@ -132,6 +132,7 @@ RenderThread::set_initialized ()
 	try
 	{
 		checkForInterrupt ();
+
 		browser -> initialized () .removeInterest (&RenderThread::set_initialized, this);
 		browser -> getLoadCount () .addInterest (&RenderThread::set_loadCount, this);
 
@@ -153,12 +154,13 @@ RenderThread::set_loadCount ()
 		// NVIDIA Driver are thread save, ATI don't know, Nouveau not yet.
 		static const std::regex threadSaveDriver (R"/(NVIDIA)/", std::regex_constants::icase);
 
+		checkForInterrupt ();
+
 		loadCountSignal .emit (browser -> getLoadCount ());
 
 		if (browser -> getLoadCount ())
 			return;
 
-		checkForInterrupt ();
 		browser -> getLoadCount () .removeInterest (&RenderThread::set_loadCount, this);
 
 		// Start thread or timeout version depending on grafix card driver.

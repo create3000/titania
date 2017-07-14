@@ -67,6 +67,14 @@
 namespace titania {
 namespace X3D {
 
+/***
+ *  A widget used for drawing with OpenGL.
+ *
+ *  @param  other  Sharing surface.
+ *
+ *  A X3DRenderingSurface object must be instantiated and disposed in the main thread.
+ */
+
 static const std::atomic <std::thread::id> mainTreadId (std::this_thread::get_id ());
 
 X3DRenderingSurface::X3DRenderingSurface () :
@@ -74,20 +82,19 @@ X3DRenderingSurface::X3DRenderingSurface () :
 { }
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
-	          Gtk::DrawingArea (),
-	                initialized (false),
-	                    context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
-	                 extensions (),
-	               antialiasing (0),
-	                  frameRate (60),
-	                frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	                setupSignal (),
-	              reshapeSignal (),
-	               renderSignal (),
-	          timeoutDispatcher (),
-	timeoutDispatcherConnection (),
-	          timeoutConnection (),
-	                      mutex ()
+	Gtk::DrawingArea (),
+	      initialized (false),
+	          context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
+	       extensions (),
+	     antialiasing (0),
+	        frameRate (60),
+	      frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	      setupSignal (),
+	    reshapeSignal (),
+	     renderSignal (),
+	timeoutDispatcher (new Glib::Dispatcher ()),
+	timeoutConnection (),
+	            mutex ()
 {
 	ContextLock lock (this);
 
@@ -103,7 +110,7 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	frameBuffer -> setup ();
 	frameBuffer -> bind ();
 
-	timeoutDispatcherConnection = timeoutDispatcher .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
+	timeoutDispatcher -> connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
 }
 
 bool
@@ -128,9 +135,14 @@ void
 X3DRenderingSurface::queue_render ()
 {
 	if (std::this_thread::get_id () == mainTreadId)
+	{
 		on_dispatch ();
+	}
 	else
-		timeoutDispatcher .emit ();
+	{
+		if (timeoutDispatcher)
+			timeoutDispatcher -> emit ();
+	}
 }
 
 void
@@ -319,10 +331,9 @@ X3DRenderingSurface::on_unrealize ()
 void
 X3DRenderingSurface::dispose ()
 {
-	std::lock_guard <std::recursive_mutex> lock (mutex);
-
-	timeoutDispatcherConnection .disconnect ();
-	timeoutConnection           .disconnect ();
+	// The Dispatcher object must be instantiated and deleted by the receiver thread.
+	timeoutDispatcher .reset ();
+	timeoutConnection .disconnect ();
 
 	notify_callbacks ();
 

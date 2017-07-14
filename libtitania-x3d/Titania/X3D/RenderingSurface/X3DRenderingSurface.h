@@ -219,8 +219,7 @@ private:
 	sigc::signal <void>                                     setupSignal;
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
 	sigc::signal <bool>                                     renderSignal;
-	Glib::Dispatcher                                        timeoutDispatcher;
-	sigc::connection                                        timeoutDispatcherConnection;
+	std::unique_ptr <Glib::Dispatcher>                      timeoutDispatcher;
 	sigc::connection                                        timeoutConnection;
 	std::recursive_mutex                                    mutex;
 
