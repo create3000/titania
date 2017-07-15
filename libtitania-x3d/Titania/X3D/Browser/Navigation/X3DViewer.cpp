@@ -69,8 +69,9 @@ X3DViewer::Fields::Fields () :
 { }
 
 X3DViewer::X3DViewer () :
-	X3DBrowserObject (),
-	          fields ()
+	    X3DBaseNode (),
+	sigc::trackable (),
+	         fields ()
 { }
 
 NavigationInfo*
@@ -186,6 +187,14 @@ X3DViewer::touch (const double x, const double y) const
 	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
 
 	return not getBrowser () -> getHits () .empty ();
+}
+
+void
+X3DViewer::dispose ()
+{
+	notify_callbacks ();
+
+	X3DBaseNode::dispose ();
 }
 
 X3DViewer::~X3DViewer ()

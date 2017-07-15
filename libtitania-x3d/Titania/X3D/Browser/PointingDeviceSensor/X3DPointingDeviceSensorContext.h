@@ -68,7 +68,7 @@ class X3DPointingDeviceSensorContext :
 {
 public:
 
-	///  @name Outputs
+	///  @name Member access
 
 	void
 	setPickable (const bool value)
@@ -77,6 +77,60 @@ public:
 	const SFBool &
 	getPickable () const
 	{ return pickable; }
+
+	void
+	setCursor (const std::string & value)
+	noexcept (true)
+	{ cursor = value; }
+
+	const SFString &
+	getCursor () const
+	noexcept (true)
+	{ return cursor; }
+
+	const Line3d &
+	getHitRay () const
+	{ return hitRay; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DPointingDeviceSensorContext () override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class Anchor;
+	friend class Inline;
+	friend class LayerSet;
+	friend class LOD;
+	friend class LightSaber;
+	friend class ParicleSystem;
+	friend class PointingDevice;
+	friend class Selection;
+	friend class Shape;
+	friend class Switch;
+	friend class X3DGroupingNode;
+	friend class X3DLayerNode;
+	friend class X3DPointingDeviceSensorNode;
+	friend class X3DSelector;
+	friend class X3DToolObject;
+	friend class X3DViewer;
+
+	///  @name Construction
+
+	X3DPointingDeviceSensorContext ();
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Member access
 
@@ -135,10 +189,6 @@ public:
 	void
 	addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
 
-	const Line3d &
-	getHitRay () const
-	{ return hitRay; }
-
 	std::vector <PointingDeviceSensorContainerSet> &
 	getSensors ()
 	{ return enabledSensors; }
@@ -164,37 +214,16 @@ public:
 	void
 	touch (const double x, const double y);
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DPointingDeviceSensorContext () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DPointingDeviceSensorContext ();
-
-	virtual
-	void
-	initialize () override;
-
 
 private:
 
-	///  @name Members access
-
-	virtual
-	const WorldPtr &
-	getWorld () const = 0;
-
 	///  @name Event handlers
+
+	void
+	on_map ();
+
+	void
+	set_cursor (const String & value);
 
 	void
 	set_shutdown ();
@@ -207,6 +236,7 @@ private:
 	//  @name Members
 
 	SFBool                                         pickable;
+	SFString                                       cursor;
 	Vector2d                                       pointer;
 	Line3d                                         hitRay;
 	HitArray                                       hits;

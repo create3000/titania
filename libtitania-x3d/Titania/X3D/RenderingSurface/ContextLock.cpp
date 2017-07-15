@@ -53,9 +53,6 @@
 #include "../RenderingSurface/RenderingContext.h"
 #include "../RenderingSurface/X3DRenderingSurface.h"
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
-
 #include <thread>
 
 namespace titania {
@@ -85,9 +82,8 @@ private:
 
 	///  @name Members
 
-	std::lock_guard <X3DRenderingSurface>  surfaceLock;
-	std::shared_ptr <RenderingContext>     currentContext;
-	std::shared_ptr <RenderingContext>     previousContext;
+	std::lock_guard <X3DRenderingSurface> surfaceLock;
+	std::shared_ptr <RenderingContext>    previousContext;
 
 };
 
@@ -97,19 +93,16 @@ std::mutex ContextLock::Implementation::mutex;
 ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface)
 throw (Error <INVALID_OPERATION_TIMING>) :
 	    surfaceLock (*renderingSurface),
-	 currentContext (),
 	previousContext ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
+	const auto & currentContext = renderingSurface -> getContext ();
+
 	previousContext = currentContexts [std::this_thread::get_id ()];
-	currentContext  = renderingSurface -> getContext ();
 
 	if (currentContext)
 	{
-		if (currentContext == previousContext)
-			return;
-	
 		if (currentContext -> makeCurrent ())
 		{
 			currentContexts [std::this_thread::get_id ()] = currentContext;
@@ -127,9 +120,6 @@ ContextLock::Implementation::~Implementation ()
 
 	if (previousContext)
 	{
-		if (currentContext == previousContext)
-			return;
-
 		if (previousContext -> makeCurrent ())
 		{
 			currentContexts [std::this_thread::get_id ()] = previousContext;
@@ -143,14 +133,14 @@ ContextLock::Implementation::~Implementation ()
 }
 
 /**
- *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
- *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
+ *  When a ContextLock object is created, it attempts to aquire the OpenGL context of the browser instance, otherwise
+ *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous OpenGL context is restored.
  *
  *  @param  renderingSurface  A valid X3DRenderingSurface instance.
  */
 ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface)
 throw (Error <INVALID_OPERATION_TIMING>) :
-	 implementation (new Implementation (renderingSurface))
+	implementation (new Implementation (renderingSurface))
 { }
 
 ContextLock::~ContextLock ()

@@ -553,7 +553,6 @@
     <None Include="Titania\X3D\Browser\Text\X3DTextContext.h" />
     <None Include="Titania\X3D\Browser\ParticleSystems\X3DParticleSystemsContext.h" />
     <None Include="Titania\X3D\Browser\Browser.h" />
-    <None Include="Titania\X3D\Browser\X3DBrowserObject.h" />
     <None Include="Titania\X3D\Browser\Selection.h" />
     <None Include="Titania\X3D\Browser\Navigation\ExamineViewer.h" />
     <None Include="Titania\X3D\Browser\Navigation\FlyViewer.h" />

@@ -50,6 +50,9 @@
 
 #include "WalkViewer.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
+
 namespace titania {
 namespace X3D {
 

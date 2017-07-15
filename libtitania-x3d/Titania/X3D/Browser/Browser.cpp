@@ -88,15 +88,13 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	         X3DBrowser (nullptr, url, parameter),
 	            viewer  (new NoneViewer (this)),
 	          keyDevice (new KeyDevice (this)),
-	    pointingDevice  (new PointingDevice (this)),
-	             cursor ("default")
+	    pointingDevice  (new PointingDevice (this))
 {
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,
 	                 keyDevice,
-	                 pointingDevice,
-	                 cursor);
+	                 pointingDevice);
 }
 
 Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
@@ -104,15 +102,13 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	         X3DBrowser (sharedBrowser, url, parameter),
 	            viewer  (new NoneViewer (this)),
 	          keyDevice (new KeyDevice (this)),
-	    pointingDevice  (new PointingDevice (this)),
-	             cursor ("default")
+	    pointingDevice  (new PointingDevice (this))
 {
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,
 	                 keyDevice,
-	                 pointingDevice,
-	                 cursor);
+	                 pointingDevice);
 }
 
 Browser*
@@ -132,7 +128,6 @@ Browser::initialize ()
 	keyDevice      -> setup ();
 	pointingDevice -> setup ();
 
-	getCursor ()        .addInterest (&Browser::set_cursor, this);
 	getViewerType ()    .addInterest (&Browser::set_viewer, this);
 	getPrivateViewer () .addInterest (&Browser::set_viewer, this);
 
@@ -148,7 +143,6 @@ Browser::initialize ()
 
 	set_focus_on_click (true);
 	set_can_focus (true);
-	setCursor ("default");
 
 	// As last command connect.
 	changed () .addInterest (&Browser::queue_render, this);
@@ -165,14 +159,6 @@ Browser::on_setup ()
 }
 
 void
-Browser::on_map ()
-{
-	X3DBrowser::on_map ();
-
-	set_cursor (cursor);
-}
-
-void
 Browser::on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height)
 {
 	reshape (Vector4i (x, y, width, height));
@@ -185,21 +171,6 @@ Browser::on_render ()
 	update ();
 
 	return false;
-}
-
-void
-Browser::on_unmap ()
-{
-	X3DBrowser::on_unmap ();
-}
-
-void
-Browser::set_cursor (const String & value)
-{
-	if (not get_mapped ())
-		return;
-
-	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
 }
 
 void

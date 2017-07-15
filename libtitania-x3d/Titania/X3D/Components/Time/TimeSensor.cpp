@@ -117,10 +117,14 @@ TimeSensor::prepareEvents ()
 	{
 		if (loop ())
 		{
-			cycle              += interval * std::floor ((getCurrentTime () - cycle) / interval);
-			fraction_changed () = last;
-			elapsedTime ()      = getElapsedTime ();
-			cycleTime ()        = getCurrentTime ();
+			if (interval)
+			{
+				cycle += interval * std::floor ((getCurrentTime () - cycle) / interval);
+
+				fraction_changed () = last;
+				elapsedTime ()      = getElapsedTime ();
+				cycleTime ()        = getCurrentTime ();
+			}
 		}
 		else
 		{

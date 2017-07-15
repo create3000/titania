@@ -187,10 +187,6 @@ public:
 	getDurationSspinButton () const
 	{ return *m_DurationSspinButton; }
 
-	Gtk::SpinButton &
-	getFPSSpinButton () const
-	{ return *m_FPSSpinButton; }
-
 	Gtk::Label &
 	getTimeLabel () const
 	{ return *m_TimeLabel; }
@@ -222,6 +218,10 @@ public:
 	Gtk::ComboBoxText &
 	getCodecButton () const
 	{ return *m_CodecButton; }
+
+	Gtk::SpinButton &
+	getFPSSpinButton () const
+	{ return *m_FPSSpinButton; }
 
 	///  @name Signal handlers
 
@@ -298,7 +298,6 @@ private:
 	Gtk::Button* m_PropertiesOkButton;
 	Gtk::HeaderBar* m_PropertiesHeaderBar;
 	Gtk::SpinButton* m_DurationSspinButton;
-	Gtk::SpinButton* m_FPSSpinButton;
 	Gtk::Label* m_TimeLabel;
 	Gtk::Box* m_AntialiasingBox;
 	Gtk::Button* m_FileChooserButton;
@@ -307,6 +306,7 @@ private:
 	Gtk::Label* m_ViewpointLabel;
 	Gtk::Button* m_SizesButton;
 	Gtk::ComboBoxText* m_CodecButton;
+	Gtk::SpinButton* m_FPSSpinButton;
 
 };
 

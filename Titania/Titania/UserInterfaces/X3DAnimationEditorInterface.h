@@ -283,10 +283,6 @@ public:
 	getDurationSspinButton () const
 	{ return *m_DurationSspinButton; }
 
-	Gtk::SpinButton &
-	getFPSSpinButton () const
-	{ return *m_FPSSpinButton; }
-
 	Gtk::CheckButton &
 	getScaleKeyframesButton () const
 	{ return *m_ScaleKeyframesButton; }
@@ -298,6 +294,10 @@ public:
 	Gtk::Label &
 	getCycleIntervalLabel () const
 	{ return *m_CycleIntervalLabel; }
+
+	Gtk::SpinButton &
+	getFPSSpinButton () const
+	{ return *m_FPSSpinButton; }
 
 	///  @name Signal handlers
 
@@ -518,10 +518,10 @@ private:
 	Gtk::HeaderBar* m_PropertiesHeaderBar;
 	Gtk::Entry* m_NewNameEntry;
 	Gtk::SpinButton* m_DurationSspinButton;
-	Gtk::SpinButton* m_FPSSpinButton;
 	Gtk::CheckButton* m_ScaleKeyframesButton;
 	Gtk::Switch* m_LoopSwitch;
 	Gtk::Label* m_CycleIntervalLabel;
+	Gtk::SpinButton* m_FPSSpinButton;
 
 };
 

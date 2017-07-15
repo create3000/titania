@@ -61,7 +61,7 @@ const std::string   PointingDevice::containerField = "pointingDevice";
 
 PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
 		            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	          X3DBrowserObject (),
+	           sigc::trackable (),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
@@ -80,7 +80,7 @@ PointingDevice::create (X3DExecutionContext* const executionContext) const
 void
 PointingDevice::initialize ()
 {
-	X3DBrowserObject::initialize ();
+	X3DBaseNode::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&PointingDevice::set_initialized, this);
 	getBrowser () -> getPickable () .addInterest (&PointingDevice::set_pickable, this);
@@ -218,6 +218,17 @@ PointingDevice::on_leave_notify_event (GdkEventCrossing* event)
 	getBrowser () -> setLeaveNotifyEvent (event -> x, getBrowser () -> get_height () - event -> y);
 	return false;
 }
+
+void
+PointingDevice::dispose ()
+{
+	notify_callbacks ();
+
+	X3DBaseNode::dispose ();
+}
+
+PointingDevice::~PointingDevice ()
+{ }
 
 } // X3D
 } // titania

@@ -161,10 +161,6 @@ private:
 
 	///  @name Member access
 
-	virtual
-	const WorldPtr &
-	getWorld () const = 0;
-
 	///  @name Event handlers
 
 	void

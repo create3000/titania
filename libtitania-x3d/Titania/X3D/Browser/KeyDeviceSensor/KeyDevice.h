@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 
-#include "../X3DBrowserObject.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "../../Types/String.h"
 #include "Keys.h"
 
@@ -64,7 +64,8 @@ namespace X3D {
 class Browser;
 
 class KeyDevice :
-	public X3DBrowserObject
+	virtual public X3DBaseNode,
+	public sigc::trackable
 {
 public:
 
@@ -97,6 +98,10 @@ public:
 	{ return containerField; }
 
 	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 	virtual
 	~KeyDevice () final override;

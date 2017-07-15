@@ -77,16 +77,6 @@ public:
 
 	///  @name Member access
 
-	void
-	setCursor (const std::string & value)
-	noexcept (true)
-	{ cursor = value; }
-
-	const SFString &
-	getCursor () const
-	noexcept (true)
-	{ return cursor; }
-
 	const X3DPtr <X3DViewer> &
 	getViewer () const
 	noexcept (true)
@@ -118,27 +108,16 @@ protected:
 
 	virtual
 	void
-	on_map () override;
-
-	virtual
-	void
 	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
 
 	virtual
 	bool
 	on_render ();
 
-	virtual
-	void
-	on_unmap () override;
-
 
 private:
 
 	///  @name Event handler
-
-	void
-	set_cursor (const String & value);
 
 	void
 	set_viewer ();
@@ -148,7 +127,6 @@ private:
 	X3DPtr <X3DViewer>      viewer;
 	X3DPtr <KeyDevice>      keyDevice;
 	X3DPtr <PointingDevice> pointingDevice;
-	SFString                cursor;
 
 };
 

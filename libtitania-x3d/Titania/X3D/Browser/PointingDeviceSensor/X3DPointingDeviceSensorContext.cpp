@@ -69,6 +69,7 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       X3DBaseNode (),
 	          pickable (true),
+	            cursor ("default"),
 	           pointer (),
 	            hitRay (),
 	              hits (),
@@ -85,13 +86,34 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       depthBuffer ()
 {
 	addChildObjects (pickable,
+	                 cursor,
 	                 selectedLayer);
 }
 
 void
 X3DPointingDeviceSensorContext::initialize ()
 {
+	getBrowser () -> signal_map () .connect (sigc::mem_fun (this, &X3DPointingDeviceSensorContext::on_map));
 	getBrowser () -> shutdown () .addInterest (&X3DPointingDeviceSensorContext::set_shutdown, this);
+
+	getCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
+
+	setCursor ("default");
+}
+
+void
+X3DPointingDeviceSensorContext::on_map ()
+{
+	set_cursor (cursor);
+}
+
+void
+X3DPointingDeviceSensorContext::set_cursor (const String & value)
+{
+	if (not getBrowser () -> get_mapped ())
+		return;
+
+	getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
 }
 
 void
@@ -291,7 +313,7 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 
 		//update (); // We cannot make an update here because of gravity.
 
-		getWorld () -> traverse (TraverseType::POINTER, nullptr);
+		getBrowser () -> getWorld () -> traverse (TraverseType::POINTER, nullptr);
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }

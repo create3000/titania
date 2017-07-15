@@ -75,7 +75,7 @@ public:
 	virtual
 	void
 	advance () final override
-	{ cycle (cycle () + 0.00001); }
+	{ }
 
 	///  Destructs this clock.
 	virtual

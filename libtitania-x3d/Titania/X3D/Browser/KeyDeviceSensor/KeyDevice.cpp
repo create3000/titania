@@ -64,7 +64,7 @@ const std::string   KeyDevice::containerField = "keyDevice";
 
 KeyDevice::KeyDevice (X3DExecutionContext* const executionContext) :
 		        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      X3DBrowserObject (),
+	       sigc::trackable (),
 	        imContextPress (gtk_im_context_simple_new ()),
 	      imContextRelease (gtk_im_context_simple_new ()),
 	              keyPress (),
@@ -83,7 +83,7 @@ KeyDevice::create (X3DExecutionContext* const executionContext) const
 void
 KeyDevice::initialize ()
 {
-	X3DBrowserObject::initialize ();
+	X3DBaseNode::initialize ();
 
 	getBrowser () -> signal_focus_out_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_focus_out_event));
 	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_action_key_press_event));
@@ -196,6 +196,14 @@ KeyDevice::on_commit (GtkIMContext*, gchar* string, gpointer user_data)
 	String* const key = static_cast <String*> (user_data);
 
 	*key = string;
+}
+
+void
+KeyDevice::dispose ()
+{
+	notify_callbacks ();
+
+	X3DBaseNode::dispose ();
 }
 
 KeyDevice::~KeyDevice ()

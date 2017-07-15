@@ -116,39 +116,47 @@ public:
 	///  @name Outputs
 
 	virtual
-	SFTime &
+	SFBool &
 	initialized ()
+	noexcept (true)
 	{ return initializedOutput; }
 
 	virtual
-	const SFTime &
+	const SFBool &
 	initialized () const
+	noexcept (true)
 	{ return initializedOutput; }
 
 	const Output &
 	sensors () const
+	noexcept (true)
 	{ return sensorsOutput; }
 
 	const Output &
 	prepareEvents () const
+	noexcept (true)
 	{ return prepareEventsOutput; }
 
 	const Output &
 	displayed () const
+	noexcept (true)
 	{ return displayedOutput; }
 
 	const Output &
 	finished () const
+	noexcept (true)
 	{ return finishedOutput; }
 
 	const Output &
 	changed () const
+	noexcept (true)
 	{ return changedOutput; }
 	
 	///  @name Member access
 
 	const X3DBrowserContextPtr &
 	getSharedContext () const
+	noexcept (true)
 	{ return sharedContext; }
 
 	const WorldPtr &
@@ -163,14 +171,17 @@ public:
 
 	const SelectionPtr &
 	getSelection () const
+	noexcept (true)
 	{ return selection; }
 
 	const NotificationPtr &
 	getNotification () const
+	noexcept (true)
 	{ return notification; }
 
 	const ConsolePtr &
 	getConsole () const
+	noexcept (true)
 	{ return console; }
 
 	///  @name Operations
@@ -188,6 +199,7 @@ public:
 
 	const std::shared_ptr <Router> &
 	getRouter () const
+	noexcept (true)
 	{ return router; }
 
 	virtual
@@ -247,7 +259,7 @@ private:
 	///  @name Members
 
 
-	SFTime initializedOutput;
+	SFBool initializedOutput;
 	Output pickedOutput;
 	Output prepareEventsOutput;
 	Output sensorsOutput;
@@ -255,6 +267,7 @@ private:
 	Output finishedOutput;
 	Output changedOutput;
 
+	time_type currentTime;
 	time_type changedTime;
 	time_type freezedTime;
 

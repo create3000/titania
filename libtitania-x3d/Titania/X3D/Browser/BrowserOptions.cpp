@@ -167,6 +167,9 @@ BrowserOptions::initialize ()
 void
 BrowserOptions::set_Antialiased ()
 {
+	// We need extra locking here, because the OpenGL commands need the browser context in case of a shared context.
+	ContextLock lock (getBrowser ());
+
 	if (Antialiased ())
 	{
 		glEnable (GL_MULTISAMPLE);
@@ -188,6 +191,9 @@ BrowserOptions::set_Antialiased ()
 void
 BrowserOptions::set_TextureQuality ()
 {
+	// We need extra locking here, because the OpenGL commands need the browser context in case of a shared context.
+	ContextLock lock (getBrowser ());
+
 	const auto & textureProperties        = getBrowser () -> getDefaultTextureProperties ();
 	const auto & cubeMapTextureProperties = getBrowser () -> getDefaultCubeMapTextureProperties ();
 
@@ -311,6 +317,9 @@ BrowserOptions::set_Shading ()
 		std::make_pair ("GOURAUD",   ShadingType::GOURAUD),
 		std::make_pair ("PHONG",     ShadingType::PHONG),
 	};
+
+	// We need extra locking here, because the OpenGL commands need the browser context in case of a shared context.
+	ContextLock lock (getBrowser ());
 
 	getBrowser () -> getRenderingProperties () -> Shading () = Shading ();
 

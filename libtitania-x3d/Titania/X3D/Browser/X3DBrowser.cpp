@@ -148,10 +148,10 @@ X3DBrowser::set_loaded (const bool loaded)
 	// Load initial url or start with empty scene.
 
 	if (url .empty ())
-	   initialized () = getCurrentTime ();
+	   initialized () = true;
 	else
 	{
-	   initialized () .set (getCurrentTime ());
+	   initialized () .set (true);
 
 	   loadURL (url, parameter);
 	}
@@ -195,7 +195,10 @@ X3DBrowser::set_prepareEvents ()
 	else
 		currentSpeed .setPosition (Vector3f (), 0);
 
-	currentFrameRate = 1 / getClock () -> interval ();
+	if (getClock () -> interval ())
+		currentFrameRate = 1 / getClock () -> interval ();
+	else
+		currentFrameRate = 0;
 }
 
 void
@@ -394,7 +397,7 @@ throw (Error <INVALID_SCENE>,
 		executionContext = value;
 
 	if (initialized ())
-		initialized () = getCurrentTime ();
+		initialized () = true;
 }
 
 void

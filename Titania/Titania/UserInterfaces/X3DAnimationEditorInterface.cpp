@@ -128,10 +128,10 @@ X3DAnimationEditorInterface::create ()
 	m_builder -> get_widget ("PropertiesHeaderBar", m_PropertiesHeaderBar);
 	m_builder -> get_widget ("NewNameEntry", m_NewNameEntry);
 	m_builder -> get_widget ("DurationSspinButton", m_DurationSspinButton);
-	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
 	m_builder -> get_widget ("ScaleKeyframesButton", m_ScaleKeyframesButton);
 	m_builder -> get_widget ("LoopSwitch", m_LoopSwitch);
 	m_builder -> get_widget ("CycleIntervalLabel", m_CycleIntervalLabel);
+	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
 
 	// Connect object Gtk::Adjustment with id 'FrameAdjustment'.
 	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_current_frame_changed));

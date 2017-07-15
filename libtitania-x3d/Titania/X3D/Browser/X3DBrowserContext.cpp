@@ -93,6 +93,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
+	                   currentTime (SFTime::now ()),
 	                   changedTime (0),
 	                   freezedTime (0),
 	                        router (new Router ()),
@@ -242,10 +243,10 @@ X3DBrowserContext::setRouter (const std::shared_ptr <Router> & value)
 void
 X3DBrowserContext::addEvent ()
 {
-	if (changedTime == getCurrentTime ())
+	if (changedTime == currentTime)
 		return;
 
-	changedTime = getCurrentTime ();
+	changedTime = currentTime;
 	changed () .processInterests ();
 }
 
@@ -259,7 +260,7 @@ void
 X3DBrowserContext::endUpdateForFrame ()
 {
 	freezedTime = changedTime;
-	changedTime = getCurrentTime ();
+	changedTime = currentTime;
 }
 
 /*
@@ -279,6 +280,7 @@ noexcept (true)
 	{
 		// Prepare
 
+		currentTime = SFTime::now ();
 		getClock () -> advance ();
 
 		prepareEvents () .processInterests ();
@@ -323,7 +325,7 @@ noexcept (true)
 		{
 			std::clog
 			   << getName () << " "
-				<< "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": "
+				<< "OpenGL Error at " << SFTime (SFTime::now ()) .toUTCString () << ": "
 				<< gluErrorString (errorNum)
 				<< " in " << getWorldURL () << std::endl;
 		}
@@ -333,7 +335,7 @@ noexcept (true)
 	{
 		std::clog
 		   << getName () << " "
-			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
+			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
 
 		//throw; // DEBUG
@@ -342,7 +344,7 @@ noexcept (true)
 	{
 		std::clog
 		   << getName () << " "
-			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled unkowm exception." << std::endl;
+			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled unkowm exception." << std::endl;
 
 		//throw; // DEBUG
 	}

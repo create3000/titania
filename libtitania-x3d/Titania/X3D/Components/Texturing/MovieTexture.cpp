@@ -67,6 +67,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	  X3DTexture2DNode (),
 	X3DSoundSourceNode (),
 	      X3DUrlObject (),
+	   sigc::trackable (),
 	          urlStack (),
 	               URL ()
 {
@@ -228,6 +229,8 @@ MovieTexture::update ()
 void
 MovieTexture::dispose ()
 {
+	notify_callbacks ();
+
 	X3DUrlObject::dispose ();
 	X3DSoundSourceNode::dispose ();
 	X3DTexture2DNode::dispose ();

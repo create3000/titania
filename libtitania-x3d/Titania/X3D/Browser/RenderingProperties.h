@@ -242,6 +242,9 @@ private:
 	set_Shading ();
 
 	void
+	set_initialized ();
+
+	void
 	reset ();
 
 	void
@@ -283,6 +286,8 @@ private:
 	Fields fields;
 
 	SFEnum <ShadingType> shading;
+
+	time_type initialized;
 
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;

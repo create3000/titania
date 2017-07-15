@@ -141,7 +141,7 @@ private:
 	addURL (const std::string &, const basic::uri &);
 
 	void
-	connect (const X3D::SFTime &);
+	connect (const X3D::SFBool &);
 
 	///  @name Static members
 

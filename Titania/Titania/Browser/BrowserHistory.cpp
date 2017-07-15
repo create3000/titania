@@ -95,7 +95,7 @@ BrowserHistory::set_initialized ()
 }
 
 void
-BrowserHistory::connect (const X3D::SFTime & initialized)
+BrowserHistory::connect (const X3D::SFBool & initialized)
 {
 	initialized .removeInterest (&BrowserHistory::connect, this);
 	initialized .addInterest (&BrowserHistory::set_initialized, this);

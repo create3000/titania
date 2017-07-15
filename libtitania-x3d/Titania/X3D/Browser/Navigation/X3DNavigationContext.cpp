@@ -153,7 +153,7 @@ X3DNavigationContext::lookAtAllObjectsInActiveLayer ()
 void
 X3DNavigationContext::set_initialized ()
 {
-	getWorld () -> getActiveLayer () .addInterest (&X3DNavigationContext::set_activeLayer, this);
+	getBrowser () -> getWorld () -> getActiveLayer () .addInterest (&X3DNavigationContext::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -161,7 +161,7 @@ X3DNavigationContext::set_initialized ()
 void
 X3DNavigationContext::set_activeLayer ()
 {
-	if (activeLayer not_eq getWorld () -> getActiveLayer ())
+	if (activeLayer not_eq getBrowser () -> getWorld () -> getActiveLayer ())
 	{
 		if (activeLayer)
 		{
@@ -169,7 +169,7 @@ X3DNavigationContext::set_activeLayer ()
 			activeLayer -> getViewpointStack ()      -> removeInterest (&X3DNavigationContext::set_viewpoint, this);
 		}
 
-		activeLayer = getWorld () -> getActiveLayer ();
+		activeLayer = getBrowser () -> getWorld () -> getActiveLayer ();
 
 		if (activeLayer)
 		{

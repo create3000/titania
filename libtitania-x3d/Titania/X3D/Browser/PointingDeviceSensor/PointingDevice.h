@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_H__
 
-#include "../X3DBrowserObject.h"
+#include "../../Basic/X3DBaseNode.h"
 
 #include <gdk/gdk.h>
 #include <sigc++/sigc++.h>
@@ -62,7 +62,8 @@ namespace X3D {
 class Browser;
 
 class PointingDevice :
-	public X3DBrowserObject
+	virtual public X3DBaseNode,
+	public sigc::trackable
 {
 public:
 
@@ -93,6 +94,15 @@ public:
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~PointingDevice () final override;
 
 
 private:

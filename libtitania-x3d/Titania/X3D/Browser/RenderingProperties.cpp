@@ -99,6 +99,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (),
 	    shading (ShadingType::GOURAUD),
+	initialized (SFTime::now ()),
 	      scene ()
 {
 	addType (X3DConstants::RenderingProperties);
@@ -130,6 +131,8 @@ void
 RenderingProperties::initialize ()
 {
 	X3DBaseNode::initialize ();
+
+	getBrowser () -> initialized () .addInterest (&RenderingProperties::set_initialized, this);
 
 	Vendor ()   = getBrowser () -> getVendor ();
 	Renderer () = getBrowser () -> getRenderer ();
@@ -219,6 +222,12 @@ RenderingProperties::set_Shading ()
 	{
 		shading = ShadingType::GOURAUD;
 	}
+}
+
+void
+RenderingProperties::set_initialized ()
+{
+	initialized = SFTime::now ();
 }
 
 void
@@ -317,7 +326,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
-		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (SFTime::now () - getBrowser () -> initialized ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (SFTime::now () - initialized) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %%"), 100 * renderClock .average () / clock .average ()));

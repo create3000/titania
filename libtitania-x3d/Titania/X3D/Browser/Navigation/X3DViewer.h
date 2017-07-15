@@ -51,7 +51,9 @@
 #ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DVIEWER_H__
 #define __TITANIA_X3D_BROWSER_NAVIGATION_X3DVIEWER_H__
 
-#include "../X3DBrowserObject.h"
+#include "../../Basic/X3DBaseNode.h"
+
+#include <sigc++/sigc++.h>
 
 namespace titania {
 namespace X3D {
@@ -61,7 +63,8 @@ class X3DViewpointNode;
 class X3DLayerNode;
 
 class X3DViewer :
-	public X3DBrowserObject
+	virtual public X3DBaseNode,
+	public sigc::trackable
 {
 public:
 
@@ -92,6 +95,10 @@ public:
 	{ return *fields .scrollTime; }
 
 	///  @name Constructors
+
+	virtual
+	void
+	dispose () override;
 
 	virtual
 	~X3DViewer () override;
