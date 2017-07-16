@@ -116,11 +116,17 @@ X3DTexture2DNode::set_textureProperties ()
 	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
 
 	if (not texturePropertiesNode)
-		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()));
+		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getDefaultTextureProperties ()));
 
 	texturePropertiesNode -> addInterest (&X3DTexture2DNode::updateTextureProperties, this);
 
 	updateTextureProperties ();
+}
+
+const X3DPtr <TextureProperties> &
+X3DTexture2DNode::getDefaultTextureProperties () const
+{
+	return getBrowser () -> getDefaultTextureProperties ();
 }
 
 void

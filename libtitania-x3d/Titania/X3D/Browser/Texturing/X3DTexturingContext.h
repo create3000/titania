@@ -109,6 +109,50 @@ public:
 	getMaxCombinedTextureUnits () const
 	{ return maxCombinedTextureUnits; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DTexturingContext () override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class Appearance;
+	friend class BrowserOptions;
+	friend class LightContainer; // Shadow
+	friend class MovieTexture;
+	friend class MultiTexture;
+	friend class MultiTextureCoordinate;
+	friend class MultiTextureTransform;
+	friend class ParticleSystem;
+	friend class RenderingProperties;
+	friend class TextureProperties;
+	friend class ScreenText;
+	friend class X3DGeometryNode;
+	friend class X3DTexture2DNode;
+	friend class X3DTexture3DNode;
+	friend class X3DTextureCoordinateNode;
+	friend class X3DTextureTransformNode;
+	friend class X3DProgrammableShaderObject;
+	friend class X3DShapeNode;
+
+	///  @name Construction
+
+	X3DTexturingContext ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
 	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
@@ -121,17 +165,21 @@ public:
 	getTextureStages ()
 	{ return textureStages; }
 
-	const X3DPtr <X3DTextureCoordinateNode> &
-	getDefaultTexCoord () const
-	{ return defaultTexCoord; }
-
 	const X3DPtr <TextureProperties> &
 	getDefaultTextureProperties () const
 	{ return defaultTextureProperties; }
 
+	const X3DPtr <TextureProperties> &
+	getDefaultMovieTextureProperties () const
+	{ return defaultMovieTextureProperties; }
+
 	const X3DPtr <X3DTextureTransformNode> &
 	getDefaultTextureTransform () const
 	{ return defaultTextureTransform; }
+
+	const X3DPtr <X3DTextureCoordinateNode> &
+	getDefaultTexCoord () const
+	{ return defaultTexCoord; }
 
 	void
 	setTexture (X3DTextureNode* const value)
@@ -149,27 +197,6 @@ public:
 	getTextureTransform () const
 	{ return textureTransform; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DTexturingContext () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DTexturingContext ();
-
-	virtual
-	void
-	initialize () override;
-
 
 private:
 
@@ -185,9 +212,10 @@ private:
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;
 
-	X3DPtr <X3DTextureCoordinateNode> defaultTexCoord;
 	X3DPtr <TextureProperties>        defaultTextureProperties;
+	X3DPtr <TextureProperties>        defaultMovieTextureProperties;
 	X3DPtr <X3DTextureTransformNode>  defaultTextureTransform;
+	X3DPtr <X3DTextureCoordinateNode> defaultTexCoord;
 	X3DTextureNode*                   texture;
 	X3DTextureTransformNode*          textureTransform;
 

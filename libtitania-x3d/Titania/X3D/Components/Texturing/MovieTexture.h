@@ -122,6 +122,16 @@ public:
 	void
 	dispose () final override;
 
+	virtual
+	~MovieTexture () final override;
+
+
+protected:
+
+	virtual
+	const X3DPtr <TextureProperties> &
+	getDefaultTextureProperties () const;
+
 
 private:
 

@@ -60,26 +60,28 @@ namespace titania {
 namespace X3D {
 
 X3DTexturingContext::X3DTexturingContext () :
-	             X3DBaseNode (),
-	               texturing (true),
-	           textureMemory (0),
-	          minTextureSize (16),
-	          maxTextureSize (0),
-	         maxTextureUnits (0),
-	 maxCombinedTextureUnits (0),
-	            textureUnits (),
-	    combinedTextureUnits (),
-	           textureStages (),
-	         defaultTexCoord (new TextureCoordinate (getExecutionContext ())),
-	defaultTextureProperties (new TextureProperties (getExecutionContext ())),
-	 defaultTextureTransform (new TextureTransform (getExecutionContext ())),
-	                 texture (nullptr),
-	        textureTransform (defaultTextureTransform)
+	                  X3DBaseNode (),
+	                    texturing (true),
+	                textureMemory (0),
+	               minTextureSize (16),
+	               maxTextureSize (0),
+	              maxTextureUnits (0),
+	      maxCombinedTextureUnits (0),
+	                 textureUnits (),
+	         combinedTextureUnits (),
+	                textureStages (),
+	     defaultTextureProperties (new TextureProperties (getExecutionContext ())),
+	defaultMovieTextureProperties (new TextureProperties (getExecutionContext ())),
+	      defaultTextureTransform (new TextureTransform (getExecutionContext ())),
+	              defaultTexCoord (new TextureCoordinate (getExecutionContext ())),
+	                      texture (nullptr),
+	             textureTransform (defaultTextureTransform)
 {
 	addChildObjects (texturing,
-	                 defaultTexCoord,
 	                 defaultTextureProperties,
-	                 defaultTextureTransform);
+	                 defaultMovieTextureProperties,
+	                 defaultTextureTransform,
+	                 defaultTexCoord);
 }
 
 void
@@ -113,9 +115,10 @@ X3DTexturingContext::initialize ()
 	for (int32_t i = maxTextureUnits; i < maxCombinedTextureUnits; ++ i)
 		combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
 
-	defaultTexCoord          -> setup ();
-	defaultTextureProperties -> setup ();
-	defaultTextureTransform  -> setup ();
+	defaultTextureProperties      -> setup ();
+	defaultMovieTextureProperties -> setup ();
+	defaultTextureTransform       -> setup ();
+	defaultTexCoord               -> setup ();
 }
 
 size_t

@@ -165,6 +165,10 @@ protected:
 	///  @name Operations
 
 	virtual
+	const X3DPtr <TextureProperties> &
+	getDefaultTextureProperties () const;
+
+	virtual
 	void
 	setTexture (const TexturePtr &);
 

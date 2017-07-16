@@ -125,6 +125,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DTexture2DNode::setExecutionContext (executionContext);
 }
 
+const X3DPtr <TextureProperties> &
+MovieTexture::getDefaultTextureProperties () const
+{
+	return getBrowser () -> getDefaultMovieTextureProperties ();
+}
+
 void
 MovieTexture::requestImmediateLoad ()
 {
@@ -235,6 +241,9 @@ MovieTexture::dispose ()
 	X3DSoundSourceNode::dispose ();
 	X3DTexture2DNode::dispose ();
 }
+
+MovieTexture::~MovieTexture ()
+{ }
 
 } // X3D
 } // titania

@@ -195,6 +195,7 @@ BrowserOptions::set_TextureQuality ()
 	ContextLock lock (getBrowser ());
 
 	const auto & textureProperties        = getBrowser () -> getDefaultTextureProperties ();
+	const auto & movieTextureProperties   = getBrowser () -> getDefaultMovieTextureProperties ();
 	const auto & cubeMapTextureProperties = getBrowser () -> getDefaultCubeMapTextureProperties ();
 
 	if (TextureQuality () == "HIGH")
@@ -203,6 +204,11 @@ BrowserOptions::set_TextureQuality ()
 		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> textureCompression  () = "NICEST";
 		textureProperties -> generateMipMaps     () = true;
+
+		movieTextureProperties -> minificationFilter  () = "NICEST";
+		movieTextureProperties -> magnificationFilter () = "NICEST";
+		movieTextureProperties -> textureCompression  () = "NICEST";
+		movieTextureProperties -> generateMipMaps     () = false;
 
 		cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
 		cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
@@ -219,6 +225,11 @@ BrowserOptions::set_TextureQuality ()
 		textureProperties -> textureCompression  () = "FASTEST";
 		textureProperties -> generateMipMaps     () = true;
 
+		movieTextureProperties -> minificationFilter  () = "AVG_PIXEL_NEAREST_MIPMAP";
+		movieTextureProperties -> magnificationFilter () = "NICEST";
+		movieTextureProperties -> textureCompression  () = "FASTEST";
+		movieTextureProperties -> generateMipMaps     () = false;
+
 		cubeMapTextureProperties -> minificationFilter  () = "NEAREST_PIXEL";
 		cubeMapTextureProperties -> magnificationFilter () = "NEAREST_PIXEL";
 
@@ -233,6 +244,11 @@ BrowserOptions::set_TextureQuality ()
 	textureProperties -> magnificationFilter () = "NICEST";
 	textureProperties -> textureCompression  () = "NICEST";
 	textureProperties -> generateMipMaps     () = true;
+
+	movieTextureProperties -> minificationFilter  () = "AVG_PIXEL_AVG_MIPMAP";
+	movieTextureProperties -> magnificationFilter () = "NICEST";
+	movieTextureProperties -> textureCompression  () = "NICEST";
+	movieTextureProperties -> generateMipMaps     () = false;
 
 	cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
 	cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
