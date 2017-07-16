@@ -65,9 +65,20 @@ class NotebookPage :
 {
 public:
 
+	///  @name Member types
+
+	using PanelPtr   = std::unique_ptr <X3DPanelInterface>;
+	using PanelArray = std::vector <PanelPtr>;
+
 	///  @name Construction
 
 	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+
+	///  @name Member access
+
+	const PanelArray &
+	getPanels () const
+	{ return panels; }
 
 	///  @name Destruction
 
@@ -110,22 +121,7 @@ private:
 
 	virtual
 	bool
-	on_box1_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* event) final override;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* event) final override;
-
-	bool
-	on_box_key_release_event (GdkEventKey* event, const size_t index);
+	on_key_release_event (GdkEventKey* event);
 
 	void
 	setPanelType (const size_t id, const PanelType panelType);
@@ -134,10 +130,10 @@ private:
 	getPanelType (const size_t id) const;
 
 	void
-	setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
+	setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
 
 	void
-	set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box);
+	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
 
 	void
 	setActiveView (const size_t value);
@@ -155,13 +151,10 @@ private:
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*>          boxes;
-	std::unique_ptr <X3DPanelInterface> panel1;
-	std::unique_ptr <X3DPanelInterface> panel2;
-	std::unique_ptr <X3DPanelInterface> panel3;
-	std::unique_ptr <X3DPanelInterface> panel4;
-	size_t                              activeView;
-	bool                                multiView;
+	std::vector <Gtk::Widget*> boxes;
+	PanelArray                 panels;
+	size_t                     activeView;
+	bool                       multiView;
 
 };
 

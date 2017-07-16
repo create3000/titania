@@ -256,6 +256,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
+
+	virtual
+	bool
+	on_render ();
+
 	///  @name Members
 
 

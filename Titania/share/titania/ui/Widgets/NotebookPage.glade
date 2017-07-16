@@ -90,6 +90,7 @@
         <property name="name">NotebookPage</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
         <signal name="map" handler="on_map" swapped="no"/>
         <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
@@ -104,7 +105,6 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="shadow_type">none</property>
-                <signal name="key-release-event" handler="on_box1_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
                 </child>
@@ -120,7 +120,6 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="shadow_type">none</property>
-                <signal name="key-release-event" handler="on_box2_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
                 </child>
@@ -136,7 +135,6 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="shadow_type">none</property>
-                <signal name="key-release-event" handler="on_box3_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
                 </child>
@@ -152,7 +150,6 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="shadow_type">none</property>
-                <signal name="key-release-event" handler="on_box4_key_release_event" swapped="no"/>
                 <child>
                   <placeholder/>
                 </child>

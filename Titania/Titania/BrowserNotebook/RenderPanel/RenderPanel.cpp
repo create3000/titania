@@ -111,9 +111,6 @@ RenderPanel::initialize ()
 	movieTexture -> elapsedTime ()      .addInterest (&RenderPanel::set_movie_elapsedTime, this);
 	movieTexture -> duration_changed () .addInterest (&RenderPanel::set_movie_duration,    this);
 
-	preview -> getLocalBrowser () -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
-	preview -> getLocalBrowser () -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
-
 	set_movie_active ();
 }
 
@@ -202,7 +199,7 @@ RenderPanel::setRendering (const bool value)
 		getPlayPauseButton () .set_sensitive (false);
 
 		getLoadStateLabel () .set_text (_ ("Initializing Renderer …"));
-		getLoadStateLabel () .set_visible (true);
+		getLoadStateBox ()   .set_visible (true);
 		getPreviewBox ()     .set_visible (false);
 
 		set_frame (0);
@@ -322,8 +319,8 @@ RenderPanel::on_load_count_changed (const size_t loadCount)
 	if (loadCount)
 		return;
 
-	getLoadStateLabel () .set_visible (false);
-	getPreviewBox ()     .set_visible (true);
+	getLoadStateBox () .set_visible (false);
+	getPreviewBox ()   .set_visible (true);
 }
 
 void
@@ -438,7 +435,7 @@ RenderPanel::on_stderr ()
 void
 RenderPanel::dispose ()
 {
-	setRendering (false);
+	renderThread .reset ();
 
 	X3DRenderPanel::dispose ();
 }

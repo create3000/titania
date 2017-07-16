@@ -63,10 +63,7 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	         X3DNotebookPage (startUrl),
 	                   boxes ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
-	                  panel1 (),
-	                  panel2 (),
-	                  panel3 (),
-	                  panel4 (),
+	                  panels (4),
 	              activeView (1),
 	               multiView (false)
 {
@@ -84,10 +81,10 @@ NotebookPage::initialize ()
 void
 NotebookPage::loaded ()
 {
-	set_panel (0, panel1, getPanelType (0), getBox1 ());
-	set_panel (1, panel2, getPanelType (1), getBox2 ());
-	set_panel (2, panel3, getPanelType (2), getBox3 ());
-	set_panel (3, panel4, getPanelType (3), getBox4 ());
+	set_panel (0, getPanelType (0), getBox1 ());
+	set_panel (1, getPanelType (1), getBox2 ());
+	set_panel (2, getPanelType (2), getBox3 ());
+	set_panel (3, getPanelType (3), getBox4 ());
 }
 
 void
@@ -129,31 +126,7 @@ NotebookPage::set_editing ()
 }
 
 bool
-NotebookPage::on_box1_key_release_event (GdkEventKey* event)
-{
-	return on_box_key_release_event (event, 0);
-}
-
-bool
-NotebookPage::on_box2_key_release_event (GdkEventKey* event)
-{
-	return on_box_key_release_event (event, 1);
-}
-
-bool
-NotebookPage::on_box3_key_release_event (GdkEventKey* event)
-{
-	return on_box_key_release_event (event, 2);
-}
-
-bool
-NotebookPage::on_box4_key_release_event (GdkEventKey* event)
-{
-	return on_box_key_release_event (event, 3);
-}
-
-bool
-NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
+NotebookPage::on_key_release_event (GdkEventKey* event)
 {
 	switch (event -> keyval)
 	{
@@ -161,10 +134,17 @@ NotebookPage::on_box_key_release_event (GdkEventKey* event, const size_t index)
 		{
 			if (not getBrowserWindow () -> getEditing ())
 				return false;
-		
+
+			const auto iter  = std::find_if (panels .begin (), panels .end (), [] (const PanelPtr & panel) { return panel -> hasFocus (); });
+			const auto index = iter - panels .begin ();
+
+			if (iter == panels .end ())
+				return false;
+
 			setActiveView (index);
 			setMultiView (not getMultiView ());
 			setModified (true);
+
 			return true;
 		}
 		default:
@@ -217,16 +197,18 @@ NotebookPage::getPanelType (const size_t id) const
 }
 
 void
-NotebookPage::setPanel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
+NotebookPage::setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box)
 {
 	setPanelType (id, panelType);
 
-	set_panel (id, panel, panelType, box);
+	set_panel (id, panelType, box);
 }
 
 void
-NotebookPage::set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & panel, const PanelType panelType, Gtk::Viewport & box)
+NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box)
 {
+	auto & panel = panels [id];
+
 	box .remove ();
 
 	switch (panelType)
@@ -245,7 +227,7 @@ NotebookPage::set_panel (const size_t id, std::unique_ptr <X3DPanelInterface> & 
 
 	panel -> getWidget () .reparent (box);
 
-	panel -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel), std::ref (panel -> getPanelType ()), std::ref (box));
+	panel -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel -> getPanelType ()), std::ref (box));
 }
 
 void
@@ -267,7 +249,7 @@ NotebookPage::setMultiView (const bool value)
 	{
 		boxes [i] -> set_visible (multiView or i == getActiveView ());
 	}
- }
+}
 
 void
 NotebookPage::shutdown ()
@@ -277,10 +259,7 @@ NotebookPage::shutdown ()
 
 NotebookPage::~NotebookPage ()
 {
-   panel1 .reset ();
-   panel2 .reset ();
-   panel3 .reset ();
-   panel4 .reset ();
+   panels .clear ();
 
 	dispose ();
 }

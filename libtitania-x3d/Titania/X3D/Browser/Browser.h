@@ -83,10 +83,6 @@ public:
 	{ return viewer; }
 
 	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
 	
 	virtual
 	~Browser () final override;
@@ -105,14 +101,6 @@ protected:
 	virtual
 	void
 	on_setup () override;
-
-	virtual
-	void
-	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
-
-	virtual
-	bool
-	on_render ();
 
 
 private:

@@ -93,7 +93,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
-	                   currentTime (SFTime::now ()),
+	                   currentTime (0),
 	                   changedTime (0),
 	                   freezedTime (0),
 	                        router (new Router ()),
@@ -115,6 +115,19 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                 selection,
 	                 notification,
 	                 console);
+
+	add_events (Gdk::BUTTON_PRESS_MASK |
+	            Gdk::POINTER_MOTION_MASK |
+	            Gdk::POINTER_MOTION_HINT_MASK |
+	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::FOCUS_CHANGE_MASK |
+	            Gdk::LEAVE_NOTIFY_MASK |
+	            Gdk::SCROLL_MASK |
+	            Gdk::KEY_PRESS_MASK |
+	            Gdk::KEY_RELEASE_MASK);
+
+	set_focus_on_click (true);
+	set_can_focus (true);
 }
 
 void
@@ -150,6 +163,8 @@ X3DBrowserContext::initialize ()
 	selection     -> setup ();
 	notification  -> setup ();
 	console       -> setup ();
+
+	queue_render ();
 }
 
 const X3DPtr <LayerSet> &
@@ -248,6 +263,8 @@ X3DBrowserContext::addEvent ()
 
 	changedTime = currentTime;
 	changed () .processInterests ();
+
+	queue_render ();
 }
 
 void
@@ -348,6 +365,24 @@ noexcept (true)
 
 		//throw; // DEBUG
 	}
+}
+
+void
+X3DBrowserContext::on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height)
+{
+	X3DRenderingSurface::on_reshape (x, y, width, height);
+
+	reshape (Vector4i (x, y, width, height));
+}
+
+bool
+X3DBrowserContext::on_render ()
+{
+	X3DRenderingSurface::on_render ();
+
+	update ();
+
+	return false;
 }
 
 void

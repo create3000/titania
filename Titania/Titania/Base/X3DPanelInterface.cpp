@@ -51,6 +51,7 @@
 #include "X3DPanelInterface.h"
 
 #include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../BrowserNotebook/PanelMenu/PanelMenu.h"
 
 #include <cassert>
@@ -63,7 +64,8 @@ X3DPanelInterface::X3DPanelInterface (NotebookPage* const page, const PanelType 
 	            page (page),
 	              id (id),
 	       panelMenu (new PanelMenu (getBrowserWindow (), page, panelType)),
-	           focus (false)
+	           focus (false),
+	    focusWidgets ()
 {
 	assert (page);
 
@@ -84,6 +86,9 @@ X3DPanelInterface::initialize ()
 
 	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
 
+	for (const auto widget : getWidgets <Gtk::Widget> (getWidget ()))
+		addFocusWidget (widget);
+
 	set_editing ();
 }
 
@@ -93,18 +98,29 @@ X3DPanelInterface::getPanelType () const
 	return panelMenu -> getPanelType ();
 }
 
-bool
-X3DPanelInterface::on_focus_in_event (GdkEventFocus* event)
+void
+X3DPanelInterface::addFocusWidget (Gtk::Widget* const widget)
 {
-	setFocus (true);
-	return false;
+	// Be aware that widget must not always be valid, and can only be used as key.
+
+	const auto connection = widget -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DPanelInterface::on_button_press_event), false);
+
+	widget -> add_events (Gdk::BUTTON_PRESS_MASK);
+
+	focusWidgets .emplace (widget, connection);
 }
 
-bool
-X3DPanelInterface::on_focus_out_event (GdkEventFocus* event)
+void
+X3DPanelInterface::removeFocusWidget (Gtk::Widget* const widget)
 {
-	setFocus (false);
-	return false;
+	const auto iter = focusWidgets .find (widget);
+
+	if (iter == focusWidgets .end ())
+		return;
+
+	iter -> second .disconnect ();
+
+	focusWidgets .erase (iter);
 }
 
 void
@@ -123,15 +139,38 @@ void
 X3DPanelInterface::set_focus ()
 {
 	if (hasFocus () and getBrowserWindow () -> getEditing ())
+	{
+		const auto widgets     = getWidgets <Gtk::Widget> (getWidget ());
+		const auto anyHasFocus = std::any_of (widgets .begin (),
+		                                      widgets .end (),
+		                                      [ ] (Gtk::Widget* const widget)
+		                                      { return widget -> has_focus (); });
+
 		getWidget () .get_style_context () -> add_class ("titania-widget-box-selected");
 
+		if (not anyHasFocus)
+			getWidget () .grab_focus ();
+	}
 	else
 		getWidget () .get_style_context () -> remove_class ("titania-widget-box-selected");
+
+}
+
+bool
+X3DPanelInterface::on_button_press_event (GdkEventButton* event)
+{
+	for (size_t i = 0, size = page -> getPanels () .size (); i < size; ++ i)
+		page -> getPanels () [i] -> setFocus (i == id);
+
+	return false;
 }
 
 void
 X3DPanelInterface::dispose ()
 {
+	for (auto & pair : focusWidgets)
+		pair .second .disconnect ();
+
 	panelMenu .reset ();
 
 	X3DUserInterface::dispose ();

@@ -38,7 +38,8 @@
       <object class="GtkBox" id="Widget">
         <property name="name">BrowserPanel</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can_focus">True</property>
+        <property name="events">GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK</property>
         <property name="orientation">vertical</property>
         <signal name="map" handler="on_map" swapped="no"/>
         <signal name="unmap" handler="on_unmap" swapped="no"/>

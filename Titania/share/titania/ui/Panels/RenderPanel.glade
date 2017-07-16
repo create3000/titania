@@ -25,7 +25,8 @@
       <object class="GtkBox" id="Widget">
         <property name="name">RenderPanel</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can_focus">True</property>
+        <property name="events">GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="MenuBar">
@@ -220,9 +221,15 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="LoadStateLabel">
+              <object class="GtkEventBox" id="LoadStateBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="LoadStateLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -245,33 +252,19 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box5">
+              <object class="GtkEventBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">16</property>
                 <child>
-                  <object class="GtkLabel" id="TextureFormatLabel">
+                  <object class="GtkBox" id="box5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="can_focus">False</property>
-                    <property name="halign">end</property>
-                    <property name="spacing">8</property>
+                    <property name="spacing">16</property>
                     <child>
-                      <object class="GtkLabel" id="label73">
+                      <object class="GtkLabel" id="TextureFormatLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Load State:</property>
+                        <property name="label" translatable="yes">0 × 0 (RGB)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -280,24 +273,44 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="TextureLoadStateLabel">
-                        <property name="visible">True</property>
+                      <object class="GtkBox">
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
-                        <property name="label" translatable="yes">NOT STARTED</property>
+                        <property name="spacing">8</property>
+                        <child>
+                          <object class="GtkLabel" id="label73">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Load State:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="TextureLoadStateLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">NOT STARTED</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>

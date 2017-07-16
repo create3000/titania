@@ -332,6 +332,9 @@ X3DNotebookPage::set_loaded ()
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
 
+	getBox1 () .set_visible (false);
+	getBox1 () .remove ();
+
 	loaded ();
 	initialized ();
 }

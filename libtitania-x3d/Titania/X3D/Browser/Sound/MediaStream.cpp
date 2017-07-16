@@ -401,28 +401,33 @@ Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
 	// Resize window
+
+	if (pad)
 	{
-		int32_t w = 0;
-		int32_t h = 0;
-
 		auto caps = pad -> get_current_caps ();
-
-		caps = caps -> create_writable ();
-
-		const auto structure = caps -> get_structure (0);
-
-		if (structure)
+	
+		if (caps)
 		{
-			structure .get_field ("width",  w);
-			structure .get_field ("height", h);
-		}
+			caps = caps -> create_writable ();
+	
+			const auto structure = caps -> get_structure (0);
+	
+			if (structure)
+			{
+				int32_t w = 0;
+				int32_t h = 0;
+	
+				structure .get_field ("width",  w);
+				structure .get_field ("height", h);
 
-		if (w not_eq width or h not_eq height)
-		{
-			width  = w;
-			height = h;
-
-			XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
+				if (w not_eq width or h not_eq height)
+				{
+					width  = w;
+					height = h;
+		
+					XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
+				}
+			}
 		}
 	}
 

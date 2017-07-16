@@ -151,6 +151,10 @@ public:
 	getDurationLabel () const
 	{ return *m_DurationLabel; }
 
+	Gtk::EventBox &
+	getLoadStateBox () const
+	{ return *m_LoadStateBox; }
+
 	Gtk::Label &
 	getLoadStateLabel () const
 	{ return *m_LoadStateLabel; }
@@ -289,6 +293,7 @@ private:
 	Gtk::SpinButton* m_FrameSpinButton;
 	Gtk::Label* m_ElapsedTimeLabel;
 	Gtk::Label* m_DurationLabel;
+	Gtk::EventBox* m_LoadStateBox;
 	Gtk::Label* m_LoadStateLabel;
 	Gtk::Box* m_PreviewBox;
 	Gtk::Label* m_TextureFormatLabel;

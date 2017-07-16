@@ -83,16 +83,6 @@ public:
 	hasFocus () const
 	{ return focus; }
 
-	/// @name Event handler
-
-	virtual
-	bool
-	on_focus_in_event (GdkEventFocus* event);
-
-	virtual
-	bool
-	on_focus_out_event (GdkEventFocus* event);
-
 	/// @name Destruction
 
 	virtual
@@ -126,11 +116,19 @@ protected:
 	{ return id; }
 
 	void
-	setFocus (const bool value)
-	{ focus = value; }
+	addFocusWidget (Gtk::Widget* const widget);
+
+	void
+	removeFocusWidget (Gtk::Widget* const widget);
 
 
 private:
+
+	/// @name Member access
+
+	void
+	setFocus (const bool value)
+	{ focus = value; }
 
 	/// @name Event handlers
 
@@ -140,12 +138,20 @@ private:
 	void
 	set_focus ();
 
+	bool
+	on_button_press_event (GdkEventButton* event);
+
+	///  @name Member types
+
+	using FocusWidgets = std::map <Gtk::Widget*, sigc::connection>;
+
 	///  @name Members
 
 	NotebookPage* const         page;
 	const size_t                id;
 	std::unique_ptr <PanelMenu> panelMenu;
 	X3D::SFBool                 focus;
+	FocusWidgets                focusWidgets;
 
 };
 

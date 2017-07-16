@@ -190,15 +190,12 @@ X3DTexture2DNode::updateTextureProperties ()
 }
 
 void
-X3DTexture2DNode::updateImage (const GLint width, const GLint height, const GLenum format, const void* const data)
+X3DTexture2DNode::updateImage (const GLenum format, const void* const data)
 {
-	// update image
-
-	textureWidth  = width;
-	textureHeight = height;
+	// Update image
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
-	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, textureWidth, textureHeight, format, GL_UNSIGNED_BYTE, data);
 	glBindTexture (GL_TEXTURE_2D, 0);
 
 	addEvent ();

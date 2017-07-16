@@ -153,6 +153,9 @@ KeyDevice::on_action_key_release_event (GdkEventKey* event)
 bool
 KeyDevice::on_key_press_event (GdkEventKey* event)
 {
+	if (getBrowser () -> getSelection () -> getEnabled ())
+		return false;
+
 	if (gtk_im_context_filter_keypress (imContextPress, event))
 	{
 		if (not keyPress .empty ())
@@ -166,12 +169,15 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyPressEvent (event -> keyval);
 
-	return not getBrowser () -> getSelection () -> getEnabled ();
+	return true;
 }
 
 bool
 KeyDevice::on_key_release_event (GdkEventKey* event)
 {
+	if (getBrowser () -> getSelection () -> getEnabled ())
+		return false;
+
 	event -> type = GDK_KEY_PRESS;
 
 	if (gtk_im_context_filter_keypress (imContextRelease, event))
@@ -187,7 +193,7 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyReleaseEvent (event -> keyval);
 
-	return not getBrowser () -> getSelection () -> getEnabled ();
+	return true;
 }
 
 void

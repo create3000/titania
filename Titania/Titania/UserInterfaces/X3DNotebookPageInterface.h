@@ -142,28 +142,16 @@ public:
 	on_mute_toggled () = 0;
 
 	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
 	void
 	on_map () = 0;
 
 	virtual
 	void
 	on_unmap () = 0;
-
-	virtual
-	bool
-	on_box1_key_release_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	bool
-	on_box2_key_release_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	bool
-	on_box3_key_release_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	bool
-	on_box4_key_release_event (GdkEventKey* key_event) = 0;
 
 	///  @name Destruction
 

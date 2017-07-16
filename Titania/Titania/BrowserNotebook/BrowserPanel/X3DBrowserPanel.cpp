@@ -169,7 +169,7 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return getPage () -> getMainBrowser ();
 
-	const auto browser = X3D::createBrowser (getPage () -> getMainBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
+	const auto browser = X3D::createBrowser (getMasterBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
 
 	// addDependentBrowser
 	// Setup dependent browser.
@@ -295,10 +295,14 @@ X3DBrowserPanel::getType () const
 void
 X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 {
+	removeFocusWidget (browser);
+
 	if (browser)
 		getBrowserBox () .remove (*browser);
 
 	browser = value;
+
+	addFocusWidget (browser);
 
 	if (type not_eq BrowserPanelType::MAIN_VIEW)
 	{
@@ -310,8 +314,6 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	if (getWidget () .get_mapped ())
 		X3DBrowserPanel::on_map ();
 
-	browser -> signal_focus_out_event () .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_out_event));
-	browser -> signal_focus_in_event ()  .connect (sigc::mem_fun ((X3DPanelInterface*) this, &X3DPanelInterface::on_focus_in_event));
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -764,11 +766,6 @@ X3DBrowserPanel::on_unmap ()
 void
 X3DBrowserPanel::dispose ()
 {
-	const auto parent = browser -> get_parent ();
-
-	if (parent)
-		parent -> remove (*browser);
-
 	X3DBrowserPanelInterface::dispose ();
 }
 

@@ -130,23 +130,6 @@ Browser::initialize ()
 
 	getViewerType ()    .addInterest (&Browser::set_viewer, this);
 	getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-
-	add_events (Gdk::BUTTON_PRESS_MASK |
-	            Gdk::POINTER_MOTION_MASK |
-	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK |
-	            Gdk::FOCUS_CHANGE_MASK |
-	            Gdk::LEAVE_NOTIFY_MASK |
-	            Gdk::SCROLL_MASK |
-	            Gdk::KEY_PRESS_MASK |
-	            Gdk::KEY_RELEASE_MASK);
-
-	set_focus_on_click (true);
-	set_can_focus (true);
-
-	// As last command connect.
-	changed () .addInterest (&Browser::queue_render, this);
-	queue_render ();
 }
 
 void
@@ -156,21 +139,6 @@ Browser::on_setup ()
 
 	if (not isInitialized ())
 		setup ();
-}
-
-void
-Browser::on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height)
-{
-	reshape (Vector4i (x, y, width, height));
-}
-
-bool
-Browser::on_render ()
-{
-	X3DBrowser::on_render ();
-	update ();
-
-	return false;
 }
 
 void
@@ -243,12 +211,6 @@ Browser::set_viewer ()
 
 		viewer -> setup ();
 	}
-}
-
-void
-Browser::dispose ()
-{
-	X3DBrowser::dispose ();
 }
 
 Browser::~Browser ()

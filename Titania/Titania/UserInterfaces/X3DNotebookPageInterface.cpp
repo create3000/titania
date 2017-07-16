@@ -96,14 +96,9 @@ X3DNotebookPageInterface::create ()
 	m_MuteButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_mute_toggled));
 
 	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_unmap));
-
-	// Connect object Gtk::Viewport with id 'Box1'.
-	m_Box1 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box1_key_release_event));
-	m_Box2 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box2_key_release_event));
-	m_Box3 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box3_key_release_event));
-	m_Box4 -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_box4_key_release_event));
 }
 
 X3DNotebookPageInterface::~X3DNotebookPageInterface ()

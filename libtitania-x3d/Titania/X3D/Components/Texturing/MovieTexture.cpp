@@ -183,7 +183,7 @@ MovieTexture::on_buffer_changed ()
 {
 	try
 	{
-	   ContextLock lock (getBrowser ());
+		ContextLock lock (getBrowser ());
 
 		const auto frame = getStream () -> getCurrentFrame ();
 
@@ -191,14 +191,14 @@ MovieTexture::on_buffer_changed ()
 		{
 			if (width () not_eq frame -> width)
 				width () = frame -> width;
-	
+
 			if (height () not_eq frame -> height)
 				height () = frame -> height;
-	
+
 			if (width () .getTainted () or height () .getTainted ())
 				setImage (GL_RGB, false, 3, width (), height (), GL_BGRA, frame -> image .data ());
 			else
-				updateImage (width (), height (), GL_BGRA, frame -> image .data ());
+				updateImage (GL_BGRA, frame -> image .data ());
 		}
 	}
 	catch (const X3DError & error)

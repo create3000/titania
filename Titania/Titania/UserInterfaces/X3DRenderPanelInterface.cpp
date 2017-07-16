@@ -95,6 +95,7 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("FrameSpinButton", m_FrameSpinButton);
 	m_builder -> get_widget ("ElapsedTimeLabel", m_ElapsedTimeLabel);
 	m_builder -> get_widget ("DurationLabel", m_DurationLabel);
+	m_builder -> get_widget ("LoadStateBox", m_LoadStateBox);
 	m_builder -> get_widget ("LoadStateLabel", m_LoadStateLabel);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
