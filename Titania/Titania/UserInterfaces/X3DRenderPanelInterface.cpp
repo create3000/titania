@@ -90,8 +90,9 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("RecordButton", m_RecordButton);
-	m_builder -> get_widget ("StopButton", m_StopButton);
+	m_builder -> get_widget ("LoopButton", m_LoopButton);
 	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
+	m_builder -> get_widget ("StopButton", m_StopButton);
 	m_builder -> get_widget ("FrameSpinButton", m_FrameSpinButton);
 	m_builder -> get_widget ("ElapsedTimeLabel", m_ElapsedTimeLabel);
 	m_builder -> get_widget ("DurationLabel", m_DurationLabel);
@@ -120,8 +121,13 @@ X3DRenderPanelInterface::create ()
 
 	// Connect object Gtk::ToolButton with id 'RecordButton'.
 	m_RecordButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_record_clicked));
-	m_StopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_stop_clicked));
+
+	// Connect object Gtk::ToggleToolButton with id 'LoopButton'.
+	m_LoopButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_loop_toggled));
+
+	// Connect object Gtk::ToolButton with id 'PlayPauseButton'.
 	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_play_pause_clicked));
+	m_StopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_stop_clicked));
 
 	// Connect object Gtk::Adjustment with id 'FrameRateAdjustment'.
 	m_FrameRateAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));

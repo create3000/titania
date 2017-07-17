@@ -84,13 +84,24 @@ public:
 	~RenderPanel () final override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	virtual
+	void
+	configure () final override;
+
+	virtual
+	void
+	store () final override;
+
+
+private:
 
 	///  @name Member access
 
@@ -138,6 +149,10 @@ private:
 
 	void
 	set_movie_duration (const X3D::time_type value);
+
+	virtual
+	void
+	on_loop_toggled () final override;
 
 	virtual
 	void

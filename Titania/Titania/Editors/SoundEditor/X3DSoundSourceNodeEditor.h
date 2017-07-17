@@ -115,7 +115,7 @@ private:
 	set_widgets ();
 
 	void
-	set_active ();
+	on_sound_source_loop_toggled ();
 
 	virtual
 	void
@@ -125,6 +125,8 @@ private:
 	void
 	on_sound_source_play_pause_clicked () final override;
 
+	void
+	set_active ();
 
 	///  @name Members
 

@@ -114,6 +114,14 @@ RenderPanel::initialize ()
 	set_movie_active ();
 }
 
+void
+RenderPanel::configure ()
+{
+	X3DRenderPanelInterface::configure ();
+
+	getLoopButton () .set_active (getConfig () -> get <bool> ("loop"));
+}
+
 std::shared_ptr <ViewpointList>
 RenderPanel::getViewpointList () const
 {
@@ -195,6 +203,7 @@ RenderPanel::setRendering (const bool value)
 		worldURL .fragment (viewpoint);
 
 		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-cancel"));
+		getLoopButton ()      .set_sensitive (false);
 		getStopButton ()      .set_sensitive (false);
 		getPlayPauseButton () .set_sensitive (false);
 
@@ -205,7 +214,6 @@ RenderPanel::setRendering (const bool value)
 		set_frame (0);
 		set_duration (duration);
 
-		movieTexture -> loop ()     = false;
 		movieTexture -> stopTime () = X3D::SFTime::now ();
 		preview -> setTexture (imageTexture);
 
@@ -227,12 +235,12 @@ RenderPanel::setRendering (const bool value)
 	else
 	{
 		getRecordButton ()    .set_stock_id (Gtk::StockID ("gtk-media-record"));
+		getLoopButton ()      .set_sensitive (true);
 		getStopButton ()      .set_sensitive (true);
 		getPlayPauseButton () .set_sensitive (true);
 		getLoadStateLabel ()  .set_text ("");
 
 		movieTexture -> url ()       = { filename .str () };
-		movieTexture -> loop ()      = true;
 		movieTexture -> startTime () = X3D::SFTime::now ();
 		preview -> setTexture (movieTexture);
 
@@ -357,6 +365,15 @@ RenderPanel::set_movie_duration (const X3D::time_type value)
 }
 
 void
+RenderPanel::on_loop_toggled ()
+{
+	movieTexture -> loop () = getLoopButton () .get_active ();
+
+	if (getLoopButton () .get_active () and not movieTexture -> isActive ())
+		movieTexture -> stopTime () = X3D::SFTime::now ();
+}
+
+void
 RenderPanel::on_stop_clicked ()
 {
 	movieTexture -> stopTime () = X3D::SFTime::now ();
@@ -430,6 +447,14 @@ void
 RenderPanel::on_stderr ()
 {
 	getBrowserWindow () -> print (renderThread -> getStderr ());
+}
+
+void
+RenderPanel::store ()
+{
+	getConfig () -> set <bool> ("loop", getLoopButton () .get_active ());
+
+	X3DRenderPanelInterface::store ();
 }
 
 void

@@ -149,12 +149,11 @@ X3DSoundEditorInterface::create ()
 	m_builder -> get_widget ("SoundSourceCycleTimeSpinButton", m_SoundSourceCycleTimeSpinButton);
 	m_builder -> get_widget ("SoundSourceElapsedTimeSpinButton", m_SoundSourceElapsedTimeSpinButton);
 	m_builder -> get_widget ("SoundSourceDurationSpinButton", m_SoundSourceDurationSpinButton);
-	m_builder -> get_widget ("SoundSourceLoopBox", m_SoundSourceLoopBox);
-	m_builder -> get_widget ("SoundSourceLoopCheckButton", m_SoundSourceLoopCheckButton);
-	m_builder -> get_widget ("SoundSourceStopButton", m_SoundSourceStopButton);
-	m_builder -> get_widget ("SoundSourceStopImage", m_SoundSourceStopImage);
+	m_builder -> get_widget ("SoundSourceLoopToggleButton", m_SoundSourceLoopToggleButton);
 	m_builder -> get_widget ("SoundSourcePlayPauseButton", m_SoundSourcePlayPauseButton);
 	m_builder -> get_widget ("SoundSourcePlayPauseImage", m_SoundSourcePlayPauseImage);
+	m_builder -> get_widget ("SoundSourceStopButton", m_SoundSourceStopButton);
+	m_builder -> get_widget ("SoundSourceStopImage", m_SoundSourceStopImage);
 
 	// Connect object Gtk::Button with id 'NewSoundButton'.
 	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_new_sound_clicked));
@@ -166,8 +165,8 @@ X3DSoundEditorInterface::create ()
 
 	// Connect object Gtk::Button with id 'SoundSourceUnlinkButton'.
 	m_SoundSourceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_unlink_clicked));
-	m_SoundSourceStopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_stop_clicked));
 	m_SoundSourcePlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_play_pause_clicked));
+	m_SoundSourceStopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_stop_clicked));
 }
 
 X3DSoundEditorInterface::~X3DSoundEditorInterface ()

@@ -3022,6 +3022,8 @@
     <None Include="Titania\Editors\BindableNodeList\ViewpointList.h" />
     <None Include="Titania\Editors\BindableNodeList\X3DBindableNodeList.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\Pipe.h" />
+    <None Include="share\titania\ui\icons\Faenza\16\media-playlist-repeat.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\insert-link.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

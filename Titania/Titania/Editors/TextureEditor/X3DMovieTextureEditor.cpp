@@ -70,10 +70,12 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          getMovieTextureURLChooserColumn (),
 	                          "url")),
 	                    speed (this, getMovieTextureSpeedAdjustment (), getMovieTextureSpeedSpinButton (), "speed"),
-	                     loop (this, getMovieTextureLoopCheckButton (), "loop"),
+	                     loop (this, getMovieTextureLoopToggleButton (), "loop"),
 	             movieTexture ()
 {
 	addChildObjects (movieTexture);
+
+	getMovieTextureLoopToggleButton () .signal_toggled () .connect (sigc::mem_fun (this, &X3DMovieTextureEditor::on_movie_texture_loop_toggled));
 }
 
 void
@@ -128,13 +130,10 @@ X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 }
 
 void
-X3DMovieTextureEditor::set_active ()
+X3DMovieTextureEditor::on_movie_texture_loop_toggled ()
 {
-	if (movieTexture -> isActive () and not movieTexture -> isPaused ())
-		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-
-	else
-		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	if (getMovieTextureLoopToggleButton () .get_active () and not movieTexture -> isActive ())
+		movieTexture -> stopTime () = X3D::SFTime::now ();
 }
 
 void
@@ -160,6 +159,16 @@ X3DMovieTextureEditor::on_movie_texture_play_pause_clicked ()
 		movieTexture -> startTime () = X3D::SFTime::now ();
 
 	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+void
+X3DMovieTextureEditor::set_active ()
+{
+	if (movieTexture -> isActive () and not movieTexture -> isPaused ())
+		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	else
+		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()

@@ -76,7 +76,7 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 	                         getSoundSourcePitchAdjustment (),
 	                         getSoundSourcePitchSpinButton (),
 	                         "pitch"),
-	                   loop (this, getSoundSourceLoopCheckButton (), "loop"),
+	                   loop (this, getSoundSourceLoopToggleButton (), "loop"),
 	               cycleTime (this,
 	                         getSoundSourceCycleTimeAdjustment (),
 	                         getSoundSourceCycleTimeSpinButton (),
@@ -102,6 +102,8 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 	               changing (false)
 {
 	addChildObjects (sounds, soundSourceNodeBuffer, soundSourceNode, audioClip, movieTexture);
+
+	getSoundSourceLoopToggleButton () .signal_toggled () .connect (sigc::mem_fun (this, &X3DSoundSourceNodeEditor::on_sound_source_loop_toggled));
 }
 
 void
@@ -304,13 +306,10 @@ X3DSoundSourceNodeEditor::set_widgets ()
 }
 
 void
-X3DSoundSourceNodeEditor::set_active ()
+X3DSoundSourceNodeEditor::on_sound_source_loop_toggled ()
 {
-	if (soundSourceNode -> isActive () and not soundSourceNode -> isPaused ())
-		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-
-	else
-		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	if (getSoundSourceLoopToggleButton () .get_active () and not soundSourceNode -> isActive ())
+		soundSourceNode -> stopTime () = X3D::SFTime::now ();
 }
 
 void
@@ -336,6 +335,16 @@ X3DSoundSourceNodeEditor::on_sound_source_play_pause_clicked ()
 		soundSourceNode -> startTime () = X3D::SFTime::now ();
 
 	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+void
+X3DSoundSourceNodeEditor::set_active ()
+{
+	if (soundSourceNode -> isActive () and not soundSourceNode -> isPaused ())
+		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	else
+		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 }
 
 X3DSoundSourceNodeEditor::~X3DSoundSourceNodeEditor ()

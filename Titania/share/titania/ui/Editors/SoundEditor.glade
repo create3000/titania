@@ -1417,19 +1417,25 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="SoundSourceLoopBox">
+                                      <object class="GtkBox">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">start</property>
-                                        <property name="spacing">16</property>
+                                        <property name="spacing">2</property>
                                         <child>
-                                          <object class="GtkCheckButton" id="SoundSourceLoopCheckButton">
-                                            <property name="label" translatable="yes">Loop</property>
+                                          <object class="GtkToggleButton" id="SoundSourceLoopToggleButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Loop sound source.</property>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">media-playlist-repeat</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1438,59 +1444,47 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox">
+                                          <object class="GtkButton" id="SoundSourcePlayPauseButton">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="spacing">2</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Toggle between play and pause of sound source.</property>
+                                            <signal name="clicked" handler="on_sound_source_play_pause_clicked" swapped="no"/>
                                             <child>
-                                              <object class="GtkButton" id="SoundSourceStopButton">
+                                              <object class="GtkImage" id="SoundSourcePlayPauseImage">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Stop playing sound source.</property>
-                                                <signal name="clicked" handler="on_sound_source_stop_clicked" swapped="no"/>
-                                                <child>
-                                                  <object class="GtkImage" id="SoundSourceStopImage">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="stock">gtk-media-stop</property>
-                                                    <property name="icon_size">1</property>
-                                                  </object>
-                                                </child>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-media-play</property>
+                                                <property name="icon_size">1</property>
                                               </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkButton" id="SoundSourcePlayPauseButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Toggle between play and pause of sound source.</property>
-                                                <signal name="clicked" handler="on_sound_source_play_pause_clicked" swapped="no"/>
-                                                <child>
-                                                  <object class="GtkImage" id="SoundSourcePlayPauseImage">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="stock">gtk-media-play</property>
-                                                    <property name="icon_size">1</property>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">1</property>
-                                              </packing>
                                             </child>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
-                                            <property name="position">1</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="SoundSourceStopButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Stop playing sound source.</property>
+                                            <signal name="clicked" handler="on_sound_source_stop_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="SoundSourceStopImage">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-media-stop</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
                                           </packing>
                                         </child>
                                       </object>

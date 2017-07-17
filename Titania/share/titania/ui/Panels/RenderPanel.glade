@@ -99,15 +99,15 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolButton" id="StopButton">
+                      <object class="GtkToggleToolButton" id="LoopButton">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Stop playing video.</property>
-                        <property name="label" translatable="yes">Stop</property>
+                        <property name="tooltip_text" translatable="yes">Loop video.</property>
+                        <property name="label" translatable="yes">Loop</property>
                         <property name="use_underline">True</property>
-                        <property name="stock_id">gtk-media-stop</property>
-                        <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
+                        <property name="stock_id">media-playlist-repeat</property>
+                        <signal name="toggled" handler="on_loop_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -124,6 +124,22 @@
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-media-play</property>
                         <signal name="clicked" handler="on_play_pause_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="StopButton">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Stop playing video.</property>
+                        <property name="label" translatable="yes">Stop</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">gtk-media-stop</property>
+                        <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

@@ -93,7 +93,7 @@ private:
 	///  @name Members
 
 	void
-	set_active ();
+	on_movie_texture_loop_toggled ();
 
 	virtual
 	void
@@ -102,6 +102,9 @@ private:
 	virtual
 	void
 	on_movie_texture_play_pause_clicked () final override;
+
+	void
+	set_active ();
 
 	///  @name Members
 

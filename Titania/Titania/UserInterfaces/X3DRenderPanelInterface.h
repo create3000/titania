@@ -131,13 +131,17 @@ public:
 	getRecordButton () const
 	{ return *m_RecordButton; }
 
-	Gtk::ToolButton &
-	getStopButton () const
-	{ return *m_StopButton; }
+	Gtk::ToggleToolButton &
+	getLoopButton () const
+	{ return *m_LoopButton; }
 
 	Gtk::ToolButton &
 	getPlayPauseButton () const
 	{ return *m_PlayPauseButton; }
+
+	Gtk::ToolButton &
+	getStopButton () const
+	{ return *m_StopButton; }
 
 	Gtk::SpinButton &
 	getFrameSpinButton () const
@@ -239,11 +243,15 @@ public:
 
 	virtual
 	void
-	on_stop_clicked () = 0;
+	on_loop_toggled () = 0;
 
 	virtual
 	void
 	on_play_pause_clicked () = 0;
+
+	virtual
+	void
+	on_stop_clicked () = 0;
 
 	virtual
 	void
@@ -288,8 +296,9 @@ private:
 	Gtk::MenuBar* m_MenuBar;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::ToolButton* m_RecordButton;
-	Gtk::ToolButton* m_StopButton;
+	Gtk::ToggleToolButton* m_LoopButton;
 	Gtk::ToolButton* m_PlayPauseButton;
+	Gtk::ToolButton* m_StopButton;
 	Gtk::SpinButton* m_FrameSpinButton;
 	Gtk::Label* m_ElapsedTimeLabel;
 	Gtk::Label* m_DurationLabel;

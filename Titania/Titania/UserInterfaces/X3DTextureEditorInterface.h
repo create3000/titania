@@ -551,21 +551,17 @@ public:
 	getMovieTextureDescriptionEntry () const
 	{ return *m_MovieTextureDescriptionEntry; }
 
+	Gtk::SpinButton &
+	getMovieTextureSpeedSpinButton () const
+	{ return *m_MovieTextureSpeedSpinButton; }
+
 	Gtk::Box &
 	getMovieTextureLoopBox () const
 	{ return *m_MovieTextureLoopBox; }
 
-	Gtk::CheckButton &
-	getMovieTextureLoopCheckButton () const
-	{ return *m_MovieTextureLoopCheckButton; }
-
-	Gtk::Button &
-	getMovieTextureStopButton () const
-	{ return *m_MovieTextureStopButton; }
-
-	Gtk::Image &
-	getMovieTextureStopImage () const
-	{ return *m_MovieTextureStopImage; }
+	Gtk::ToggleButton &
+	getMovieTextureLoopToggleButton () const
+	{ return *m_MovieTextureLoopToggleButton; }
 
 	Gtk::Button &
 	getMovieTexturePlayPauseButton () const
@@ -575,9 +571,13 @@ public:
 	getMovieTexturePlayPauseImage () const
 	{ return *m_MovieTexturePlayPauseImage; }
 
-	Gtk::SpinButton &
-	getMovieTextureSpeedSpinButton () const
-	{ return *m_MovieTextureSpeedSpinButton; }
+	Gtk::Button &
+	getMovieTextureStopButton () const
+	{ return *m_MovieTextureStopButton; }
+
+	Gtk::Image &
+	getMovieTextureStopImage () const
+	{ return *m_MovieTextureStopImage; }
 
 	Gtk::Box &
 	getComposedTexture3DBox () const
@@ -1131,11 +1131,11 @@ public:
 
 	virtual
 	void
-	on_movie_texture_stop_clicked () = 0;
+	on_movie_texture_play_pause_clicked () = 0;
 
 	virtual
 	void
-	on_movie_texture_play_pause_clicked () = 0;
+	on_movie_texture_stop_clicked () = 0;
 
 	virtual
 	void
@@ -1369,13 +1369,13 @@ private:
 	Gtk::Button* m_MovieTextureURLRemoveButton;
 	Gtk::Button* m_MovieTextureURLReloadButton;
 	Gtk::Entry* m_MovieTextureDescriptionEntry;
+	Gtk::SpinButton* m_MovieTextureSpeedSpinButton;
 	Gtk::Box* m_MovieTextureLoopBox;
-	Gtk::CheckButton* m_MovieTextureLoopCheckButton;
-	Gtk::Button* m_MovieTextureStopButton;
-	Gtk::Image* m_MovieTextureStopImage;
+	Gtk::ToggleButton* m_MovieTextureLoopToggleButton;
 	Gtk::Button* m_MovieTexturePlayPauseButton;
 	Gtk::Image* m_MovieTexturePlayPauseImage;
-	Gtk::SpinButton* m_MovieTextureSpeedSpinButton;
+	Gtk::Button* m_MovieTextureStopButton;
+	Gtk::Image* m_MovieTextureStopImage;
 	Gtk::Box* m_ComposedTexture3DBox;
 	Gtk::Box* m_ImageTexture3DBox;
 	Gtk::Box* m_ImageTexture3DURLBox;

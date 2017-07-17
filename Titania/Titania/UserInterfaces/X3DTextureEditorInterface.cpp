@@ -195,13 +195,13 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("MovieTextureURLRemoveButton", m_MovieTextureURLRemoveButton);
 	m_builder -> get_widget ("MovieTextureURLReloadButton", m_MovieTextureURLReloadButton);
 	m_builder -> get_widget ("MovieTextureDescriptionEntry", m_MovieTextureDescriptionEntry);
+	m_builder -> get_widget ("MovieTextureSpeedSpinButton", m_MovieTextureSpeedSpinButton);
 	m_builder -> get_widget ("MovieTextureLoopBox", m_MovieTextureLoopBox);
-	m_builder -> get_widget ("MovieTextureLoopCheckButton", m_MovieTextureLoopCheckButton);
-	m_builder -> get_widget ("MovieTextureStopButton", m_MovieTextureStopButton);
-	m_builder -> get_widget ("MovieTextureStopImage", m_MovieTextureStopImage);
+	m_builder -> get_widget ("MovieTextureLoopToggleButton", m_MovieTextureLoopToggleButton);
 	m_builder -> get_widget ("MovieTexturePlayPauseButton", m_MovieTexturePlayPauseButton);
 	m_builder -> get_widget ("MovieTexturePlayPauseImage", m_MovieTexturePlayPauseImage);
-	m_builder -> get_widget ("MovieTextureSpeedSpinButton", m_MovieTextureSpeedSpinButton);
+	m_builder -> get_widget ("MovieTextureStopButton", m_MovieTextureStopButton);
+	m_builder -> get_widget ("MovieTextureStopImage", m_MovieTextureStopImage);
 	m_builder -> get_widget ("ComposedTexture3DBox", m_ComposedTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DBox", m_ImageTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DURLBox", m_ImageTexture3DURLBox);
@@ -343,8 +343,8 @@ X3DTextureEditorInterface::create ()
 	m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_embed_image_clicked));
 	m_PixelTextureOpenButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_pixel_texture_open_clicked));
 	m_PixelTextureSaveAsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_pixel_texture_save_as_clicked));
-	m_MovieTextureStopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_movie_texture_stop_clicked));
 	m_MovieTexturePlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_movie_texture_play_pause_clicked));
+	m_MovieTextureStopButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_movie_texture_stop_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TexturePropertiesCheckButton'.
 	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_textureProperties_toggled));

@@ -75,10 +75,10 @@ WorldInfo {
                       ]
                       loop TRUE
                       #loop TRUE
-                      startTime 1500261922.73621
+                      startTime 1500266607.69703
                       resumeTime 1498892025.40683
                       pauseTime 1498892026.303
-                      stopTime 1500261916.41727
+                      stopTime 1500266596.39112
                       repeatS FALSE
                       repeatT FALSE
                     }

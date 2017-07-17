@@ -367,21 +367,9 @@ public:
 	getSoundSourceDurationSpinButton () const
 	{ return *m_SoundSourceDurationSpinButton; }
 
-	Gtk::Box &
-	getSoundSourceLoopBox () const
-	{ return *m_SoundSourceLoopBox; }
-
-	Gtk::CheckButton &
-	getSoundSourceLoopCheckButton () const
-	{ return *m_SoundSourceLoopCheckButton; }
-
-	Gtk::Button &
-	getSoundSourceStopButton () const
-	{ return *m_SoundSourceStopButton; }
-
-	Gtk::Image &
-	getSoundSourceStopImage () const
-	{ return *m_SoundSourceStopImage; }
+	Gtk::ToggleButton &
+	getSoundSourceLoopToggleButton () const
+	{ return *m_SoundSourceLoopToggleButton; }
 
 	Gtk::Button &
 	getSoundSourcePlayPauseButton () const
@@ -390,6 +378,14 @@ public:
 	Gtk::Image &
 	getSoundSourcePlayPauseImage () const
 	{ return *m_SoundSourcePlayPauseImage; }
+
+	Gtk::Button &
+	getSoundSourceStopButton () const
+	{ return *m_SoundSourceStopButton; }
+
+	Gtk::Image &
+	getSoundSourceStopImage () const
+	{ return *m_SoundSourceStopImage; }
 
 	///  @name Signal handlers
 
@@ -415,11 +411,11 @@ public:
 
 	virtual
 	void
-	on_sound_source_stop_clicked () = 0;
+	on_sound_source_play_pause_clicked () = 0;
 
 	virtual
 	void
-	on_sound_source_play_pause_clicked () = 0;
+	on_sound_source_stop_clicked () = 0;
 
 	///  @name Destruction
 
@@ -515,12 +511,11 @@ private:
 	Gtk::SpinButton* m_SoundSourceCycleTimeSpinButton;
 	Gtk::SpinButton* m_SoundSourceElapsedTimeSpinButton;
 	Gtk::SpinButton* m_SoundSourceDurationSpinButton;
-	Gtk::Box* m_SoundSourceLoopBox;
-	Gtk::CheckButton* m_SoundSourceLoopCheckButton;
-	Gtk::Button* m_SoundSourceStopButton;
-	Gtk::Image* m_SoundSourceStopImage;
+	Gtk::ToggleButton* m_SoundSourceLoopToggleButton;
 	Gtk::Button* m_SoundSourcePlayPauseButton;
 	Gtk::Image* m_SoundSourcePlayPauseImage;
+	Gtk::Button* m_SoundSourceStopButton;
+	Gtk::Image* m_SoundSourceStopImage;
 
 };
 

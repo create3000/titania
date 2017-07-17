@@ -4,6 +4,8 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="media-playlist-repeat" filename="Faenza/16/media-playlist-repeat.png"/>
+      <source stock-id="insert-link" filename="Faenza/16/insert-link.png"/>
       <source stock-id="BackgroundImage" filename="BackgroundImage.svg"/>
       <source stock-id="Appearance" filename="Appearance.svg"/>
       <source stock-id="Arrow" filename="Arrow.svg"/>
