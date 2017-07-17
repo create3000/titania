@@ -50,6 +50,7 @@
 
 #include "X3DMovieTextureEditor.h"
 
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
 namespace titania {
@@ -68,8 +69,8 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          getMovieTextureURLReloadButton (),
 	                          getMovieTextureURLChooserColumn (),
 	                          "url")),
-	                     loop (this, getMovieTextureLoopCheckButton (), "loop"),
 	                    speed (this, getMovieTextureSpeedAdjustment (), getMovieTextureSpeedSpinButton (), "speed"),
+	                     loop (this, getMovieTextureLoopCheckButton (), "loop"),
 	             movieTexture ()
 {
 	addChildObjects (movieTexture);
@@ -82,6 +83,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	{
 		movieTexture -> isActive () .removeInterest (&X3DMovieTextureEditor::set_active, this);
 		movieTexture -> isPaused () .removeInterest (&X3DMovieTextureEditor::set_active, this);
+		movieTexture -> isEvenLive (false);
 	}
 
 	movieTexture = value;
@@ -94,13 +96,14 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	movieTexture -> isActive () .addInterest (&X3DMovieTextureEditor::set_active, this);
 	movieTexture -> isPaused () .addInterest (&X3DMovieTextureEditor::set_active, this);
+	movieTexture -> isEvenLive (true);
 
 	const X3D::MFNode nodes = { movieTexture };
 
 	enabled     .setNodes (nodes);
 	description .setNodes (nodes);
-	loop        .setNodes (nodes);
 	speed       .setNodes (nodes);
+	loop        .setNodes (nodes);
 
 	url -> setNodes (nodes);
 
@@ -138,6 +141,8 @@ void
 X3DMovieTextureEditor::on_movie_texture_stop_clicked ()
 {
 	movieTexture -> stopTime () = X3D::SFTime::now ();
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void
@@ -153,6 +158,8 @@ X3DMovieTextureEditor::on_movie_texture_play_pause_clicked ()
 	}
 	else
 		movieTexture -> startTime () = X3D::SFTime::now ();
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()

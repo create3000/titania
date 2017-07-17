@@ -195,13 +195,13 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("MovieTextureURLRemoveButton", m_MovieTextureURLRemoveButton);
 	m_builder -> get_widget ("MovieTextureURLReloadButton", m_MovieTextureURLReloadButton);
 	m_builder -> get_widget ("MovieTextureDescriptionEntry", m_MovieTextureDescriptionEntry);
-	m_builder -> get_widget ("MovieTextureSpeedSpinButton", m_MovieTextureSpeedSpinButton);
 	m_builder -> get_widget ("MovieTextureLoopBox", m_MovieTextureLoopBox);
 	m_builder -> get_widget ("MovieTextureLoopCheckButton", m_MovieTextureLoopCheckButton);
 	m_builder -> get_widget ("MovieTextureStopButton", m_MovieTextureStopButton);
 	m_builder -> get_widget ("MovieTextureStopImage", m_MovieTextureStopImage);
 	m_builder -> get_widget ("MovieTexturePlayPauseButton", m_MovieTexturePlayPauseButton);
 	m_builder -> get_widget ("MovieTexturePlayPauseImage", m_MovieTexturePlayPauseImage);
+	m_builder -> get_widget ("MovieTextureSpeedSpinButton", m_MovieTextureSpeedSpinButton);
 	m_builder -> get_widget ("ComposedTexture3DBox", m_ComposedTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DBox", m_ImageTexture3DBox);
 	m_builder -> get_widget ("ImageTexture3DURLBox", m_ImageTexture3DURLBox);

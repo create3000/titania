@@ -108,8 +108,8 @@ private:
 	X3DFieldToggleButton <X3D::SFBool>  enabled;
 	SFStringEntry                       description;
 	std::unique_ptr <MFStringURLWidget> url;
-	X3DFieldToggleButton <X3D::SFBool>  loop;
 	X3DFieldAdjustment <X3D::SFFloat>   speed;
+	X3DFieldToggleButton <X3D::SFBool>  loop;
 	X3D::X3DPtr <X3D::MovieTexture>     movieTexture;
 
 };

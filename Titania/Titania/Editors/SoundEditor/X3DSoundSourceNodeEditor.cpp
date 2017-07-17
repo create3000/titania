@@ -50,6 +50,7 @@
 
 #include "X3DSoundSourceNodeEditor.h"
 
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
 namespace titania {
@@ -316,6 +317,8 @@ void
 X3DSoundSourceNodeEditor::on_sound_source_stop_clicked ()
 {
 	soundSourceNode -> stopTime () = X3D::SFTime::now ();
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void
@@ -331,6 +334,8 @@ X3DSoundSourceNodeEditor::on_sound_source_play_pause_clicked ()
 	}
 	else
 		soundSourceNode -> startTime () = X3D::SFTime::now ();
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 X3DSoundSourceNodeEditor::~X3DSoundSourceNodeEditor ()

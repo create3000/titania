@@ -1447,7 +1447,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Stop playing video.</property>
+                                                <property name="tooltip_text" translatable="yes">Stop playing sound source.</property>
                                                 <signal name="clicked" handler="on_sound_source_stop_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkImage" id="SoundSourceStopImage">
@@ -1469,7 +1469,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="tooltip_text" translatable="yes">Toggle between play and pause of video.</property>
+                                                <property name="tooltip_text" translatable="yes">Toggle between play and pause of sound source.</property>
                                                 <signal name="clicked" handler="on_sound_source_play_pause_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkImage" id="SoundSourcePlayPauseImage">
