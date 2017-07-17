@@ -56,11 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class KeyDevice;
-class PointingDevice;
-class X3DViewer;
-class X3DSelector;
-
 class Browser :
 	public X3DBrowser
 {
@@ -74,13 +69,6 @@ public:
 
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;
-
-	///  @name Member access
-
-	const X3DPtr <X3DViewer> &
-	getViewer () const
-	noexcept (true)
-	{ return viewer; }
 
 	///  @name Destruction
 	
@@ -96,25 +84,7 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Event handlers
 
-	virtual
-	void
-	on_setup () override;
-
-
-private:
-
-	///  @name Event handler
-
-	void
-	set_viewer ();
-
-	///  @name Members
-
-	X3DPtr <X3DViewer>      viewer;
-	X3DPtr <KeyDevice>      keyDevice;
-	X3DPtr <PointingDevice> pointingDevice;
 
 };
 

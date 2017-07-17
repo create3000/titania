@@ -118,7 +118,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_keyDeviceSensorNodeEvent ();
+	set_keyDeviceSensor ();
 
 	bool
 	on_focus_out_event (GdkEventFocus*);

@@ -78,8 +78,6 @@
 #include <Titania/X3D/Tools/Grids/AngleGridTool.h>
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
 
-#include <cassert>
-
 namespace titania {
 namespace puck {
 
@@ -171,16 +169,13 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 
 	const auto browser = X3D::createBrowser (getMasterBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
 
-	// addDependentBrowser
 	// Setup dependent browser.
 
 	getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
 	getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
 
+	browser -> setDependentContext (getPage () -> getMainBrowser ());
 	browser -> setFrameRate (30);
-	browser -> setRouter    (getPage () -> getMainBrowser () -> getRouter ());
-
-	browser -> sensors () .addInterest (&X3DBrowserPanel::set_sensors, this);
 
 	set_fixed_pipeline ();
 	set_viewer ();
@@ -430,12 +425,6 @@ X3DBrowserPanel::set_viewer ()
 	{
 		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 	}
-}
-
-void
-X3DBrowserPanel::set_sensors ()
-{
-	getPage () -> getMainBrowser () -> sensors () .processInterests ();
 }
 
 void
@@ -743,8 +732,6 @@ X3DBrowserPanel::on_map ()
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return;
 
-	getPage () -> getMainBrowser () -> changed () .addInterest (&X3D::Browser::addEvent, browser .getValue ()); // addDependentBrowser
-
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()       -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAxonometricGridTool () -> getTool () -> addInterest (&X3DBrowserPanel::set_grid, this);
@@ -755,8 +742,6 @@ X3DBrowserPanel::on_unmap ()
 {
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return;
-
-	getPage () -> getMainBrowser () -> changed () .removeInterest (&X3D::Browser::addEvent, browser .getValue ()); // addDependentBrowser
 
 	getBrowserWindow () -> getGridTool ()            -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);
 	getBrowserWindow () -> getAngleGridTool ()       -> getTool () -> removeInterest (&X3DBrowserPanel::set_grid, this);

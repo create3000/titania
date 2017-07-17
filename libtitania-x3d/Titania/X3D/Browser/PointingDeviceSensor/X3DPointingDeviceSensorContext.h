@@ -235,6 +235,7 @@ private:
 
 	//  @name Members
 
+	X3DPtr <PointingDevice>                        pointingDevice;
 	SFBool                                         pickable;
 	SFString                                       cursor;
 	Vector2d                                       pointer;

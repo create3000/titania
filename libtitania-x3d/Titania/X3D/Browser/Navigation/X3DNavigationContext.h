@@ -66,20 +66,26 @@ class X3DNavigationContext :
 {
 public:
 
+	///  @name Member access
+
 	const std::shared_ptr <LightContainer> &
 	getHeadlight () const
+	noexcept (true)
 	{ return headlightContainer; }
 
 	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
+	noexcept (true)
 	{ return activeLayer; }
 
 	const X3DWeakPtr <NavigationInfo> &
 	getActiveNavigationInfo () const
+	noexcept (true)
 	{ return activeNavigationInfo; }
 
 	const X3DWeakPtr <X3DViewpointNode> &
 	getActiveViewpoint () const
+	noexcept (true)
 	{ return activeViewpoint; }
 
 	X3D::X3DConstants::NodeType
@@ -88,44 +94,44 @@ public:
 	virtual
 	void
 	setViewerType (const X3DConstants::NodeType value)
+	noexcept (true)
 	{ viewer = value; }
 
 	virtual
 	const SFEnum <X3DConstants::NodeType> &
 	getViewerType () const
+	noexcept (true)
 	{ return viewer; }
 
 	void
 	setPrivateViewer (const X3DConstants::NodeType value)
+	noexcept (true)
 	{ privateViewer = value; }
 
 	const SFEnum <X3DConstants::NodeType> &
 	getPrivateViewer () const
+	noexcept (true)
 	{ return privateViewer; }
 
 	const MFEnum <X3DConstants::NodeType> &
 	getAvailableViewers () const
+	noexcept (true)
 	{ return availableViewers; }
+
+	const X3DPtr <X3DViewer> &
+	getViewer () const
+	noexcept (true)
+	{ return viewerNode; }
 
 	void
 	setStraightenHorizon (const bool value)
+	noexcept (true)
 	{ straightenHorizon = value; }
 
 	const SFBool &
 	getStraightenHorizon () const
+	noexcept (true)
 	{ return straightenHorizon; }
-
-	void
-	addCollision (const X3DBaseNode* collision)
-	{ activeCollisions .emplace (collision); }
-
-	void
-	removeCollision (const X3DBaseNode* collision)
-	{ activeCollisions .erase (collision); }
-
-	std::set <const X3DBaseNode*>
-	getActiveCollisions () const
-	{ return activeCollisions; }
 
 	///  @name Operations
 
@@ -148,13 +154,33 @@ public:
 
 protected:
 
-	///  @name Constructor
+	///  @name Friends
+
+	friend class Collision;
+	friend class FlyViewer;
+	friend class WalkViewer;
+
+	///  @name Construction
 
 	X3DNavigationContext ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	void
+	addCollision (const X3DBaseNode* collision)
+	{ activeCollisions .emplace (collision); }
+
+	void
+	removeCollision (const X3DBaseNode* collision)
+	{ activeCollisions .erase (collision); }
+
+	std::set <const X3DBaseNode*>
+	getActiveCollisions () const
+	{ return activeCollisions; }
 
 
 private:
@@ -178,6 +204,9 @@ private:
 	void
 	set_viewpoint ();
 
+	void
+	set_viewer ();
+
 	///  @name Members
 
 	X3DPtr <DirectionalLight>        headlightNode;
@@ -187,6 +216,7 @@ private:
 	SFEnum <X3DConstants::NodeType>  viewer;
 	SFEnum <X3DConstants::NodeType>  privateViewer;
 	MFEnum <X3DConstants::NodeType>  availableViewers;
+	X3DPtr <X3DViewer>               viewerNode;
 	X3DWeakPtr <X3DViewpointNode>    activeViewpoint;
 	SFBool                           straightenHorizon;
 	std::set <const X3DBaseNode*>    activeCollisions;

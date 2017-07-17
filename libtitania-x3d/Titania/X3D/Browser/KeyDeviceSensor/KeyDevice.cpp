@@ -89,14 +89,14 @@ KeyDevice::initialize ()
 	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_action_key_press_event));
 	getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (this, &KeyDevice::on_action_key_release_event));
 
-	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (&KeyDevice::set_keyDeviceSensorNodeEvent, this);
+	getBrowser () -> getKeyDeviceSensor () .addInterest (&KeyDevice::set_keyDeviceSensor, this);
 
 	g_signal_connect (imContextPress,   "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyPress);
 	g_signal_connect (imContextRelease, "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyRelease);
 }
 
 void
-KeyDevice::set_keyDeviceSensorNodeEvent ()
+KeyDevice::set_keyDeviceSensor ()
 {
 	gtk_im_context_reset (imContextPress);
 	gtk_im_context_reset (imContextRelease);
@@ -104,7 +104,7 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 	key_press_connection   .disconnect ();
 	key_release_connection .disconnect ();
 
-	if (getBrowser () -> getKeyDeviceSensorNode ())
+	if (getBrowser () -> getKeyDeviceSensor ())
 	{
 		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_key_press_event));
 		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (this, &KeyDevice::on_key_release_event));
@@ -120,8 +120,8 @@ KeyDevice::on_focus_out_event (GdkEventFocus*)
 	getBrowser () -> setShiftKey   (false);
 	getBrowser () -> setAltKey     (false);
 
-	if (getBrowser () -> getKeyDeviceSensorNode ())
-		getBrowser () -> getKeyDeviceSensorNode () -> setKeyReleaseEvent ();
+	if (getBrowser () -> getKeyDeviceSensor ())
+		getBrowser () -> getKeyDeviceSensor () -> setKeyReleaseEvent ();
 
 	return false;
 }
@@ -160,14 +160,14 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 	{
 		if (not keyPress .empty ())
 		{
-			getBrowser () -> getKeyDeviceSensorNode () -> setKeyPressEvent (keyPress);
+			getBrowser () -> getKeyDeviceSensor () -> setKeyPressEvent (keyPress);
 
 			keyPress .clear ();
 			return false;
 		}
 	}
 
-	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyPressEvent (event -> keyval);
+	getBrowser () -> getKeyDeviceSensor () -> setActionKeyPressEvent (event -> keyval);
 
 	return true;
 }
@@ -184,14 +184,14 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 	{
 		if (not keyRelease .empty ())
 		{
-			getBrowser () -> getKeyDeviceSensorNode () -> setKeyReleaseEvent (keyRelease);
+			getBrowser () -> getKeyDeviceSensor () -> setKeyReleaseEvent (keyRelease);
 
 			keyRelease .clear ();
 			return false;
 		}
 	}
 
-	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyReleaseEvent (event -> keyval);
+	getBrowser () -> getKeyDeviceSensor () -> setActionKeyReleaseEvent (event -> keyval);
 
 	return true;
 }

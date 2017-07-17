@@ -145,9 +145,6 @@ private:
 	set_viewer ();
 
 	void
-	set_sensors ();
-
-	void
 	set_background_texture ();
 
 	void

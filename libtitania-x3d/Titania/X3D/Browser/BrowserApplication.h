@@ -65,9 +65,22 @@ public:
 
 	BrowserApplication (const MFString & url, const MFString & parameter) :
 		    X3DBaseNode (this, this),
-		     X3DBrowser (nullptr, url, parameter),
-		         viewer (X3DConstants::NoneViewer)
+		     X3DBrowser (nullptr, url, parameter)
 	{ addType (X3DConstants::BrowserApplication); }
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final override
+	{ return new BrowserApplication ({ }, { }); }
+
+	///  @name Destruction
+	
+	virtual
+	~BrowserApplication () final override
+	{ }
+
+
+protected:
 
 	///  @name Member access
 
@@ -75,41 +88,10 @@ public:
 	void
 	initialize () final override
 	{
-		try
-		{
-			ContextLock lock (this);
+		ContextLock lock (this);
 	
-			X3DBrowser::initialize ();
-		}
-		catch (const std::exception & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
+		X3DBrowser::initialize ();
 	}
-
-	virtual
-	void
-	setViewerType (const X3DConstants::NodeType) final override
-	{ }
-
-	virtual
-	const SFEnum <X3DConstants::NodeType> &
-	getViewerType () const final override
-	{ return viewer; }
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override
-	{ return new BrowserApplication ({ }, { }); }
-
-	///  @name Members
-
-	SFEnum <X3DConstants::NodeType> viewer;
 
 };
 

@@ -415,6 +415,11 @@ class X3DRenderObject;
 class X3DScene;
 class X3DBaseNode;
 
+// Devices
+
+class KeyDevice;
+class PointingDevice;
+
 // Viewer
 
 class DefaultViewer;
@@ -425,6 +430,7 @@ class NoneViewer;
 class PlaneViewer;
 class WalkViewer;
 class X3DExamineViewer;
+class X3DViewer;
 
 // Viewer tools
 

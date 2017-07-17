@@ -106,16 +106,6 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="SoundSourceStartTimeAdjustment">
-    <property name="upper">1000000000000</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
-  </object>
-  <object class="GtkAdjustment" id="SoundSourceStopTimeAdjustment">
-    <property name="upper">1000000000000</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
-  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
@@ -1301,125 +1291,6 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkCheckButton" id="SoundSourceLoopCheckButton">
-                                        <property name="label" translatable="yes">Loop</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="xalign">0</property>
-                                        <property name="active">True</property>
-                                        <property name="draw_indicator">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="top_attach">5</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label24">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Start Time:</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">6</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label25">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Resume Time:</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">7</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label26">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Pause Time:</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">8</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label27">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Stop Time:</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">9</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="box10">
-                                        <property name="visible">True</property>
-                                        <property name="sensitive">False</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
-                                        <child>
-                                          <object class="GtkCheckButton" id="SoundSourceIsActiveCheckButton">
-                                            <property name="label" translatable="yes">Is Active</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="xalign">0</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="top_attach">11</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="box11">
-                                        <property name="visible">True</property>
-                                        <property name="sensitive">False</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
-                                        <child>
-                                          <object class="GtkCheckButton" id="SoundSourceIsPausedCheckButton">
-                                            <property name="label" translatable="yes">Is Paused</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="xalign">0</property>
-                                            <property name="active">True</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="top_attach">10</property>
-                                      </packing>
-                                    </child>
-                                    <child>
                                       <object class="GtkLabel" id="label28">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -1428,7 +1299,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">12</property>
+                                        <property name="top_attach">6</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1440,7 +1311,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">13</property>
+                                        <property name="top_attach">7</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1452,29 +1323,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">14</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label32">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">10</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label33">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="xalign">0</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">11</property>
+                                        <property name="top_attach">8</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1504,7 +1353,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">12</property>
+                                        <property name="top_attach">6</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1534,7 +1383,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">13</property>
+                                        <property name="top_attach">7</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1564,175 +1413,23 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">14</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="SoundSourceStartTimeBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="spacing">8</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SoundSourceStartTimeSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">1,000</property>
-                                            <property name="adjustment">SoundSourceStartTimeAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">9</property>
-                                            <property name="numeric">True</property>
-                                            <property name="value">1</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkButton" id="SoundSourceStartTimeButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <signal name="clicked" handler="on_sound_source_start_time_clicked" swapped="no"/>
-                                            <child>
-                                              <object class="GtkImage" id="image10">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="stock">gtk-media-play</property>
-                                                <property name="icon_size">1</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="top_attach">6</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="SoundSourceResumeTimeBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="spacing">8</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SoundSourceResumeTimeSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">1,000</property>
-                                            <property name="adjustment">SoundSourceResumeTimeAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">9</property>
-                                            <property name="numeric">True</property>
-                                            <property name="value">1</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkButton" id="SoundSourceResumeTimeButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <signal name="clicked" handler="on_sound_source_resume_time_clicked" swapped="no"/>
-                                            <child>
-                                              <object class="GtkImage" id="image12">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="stock">gtk-media-resume</property>
-                                                <property name="icon_size">1</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="top_attach">7</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="SoundSourcePauseTimeBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="spacing">8</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SoundSourcePauseTimeSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">1,000</property>
-                                            <property name="adjustment">SoundSourcePauseTimeAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">9</property>
-                                            <property name="numeric">True</property>
-                                            <property name="value">1</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkButton" id="SoundSourcePauseTimeButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <signal name="clicked" handler="on_sound_source_pause_time_clicked" swapped="no"/>
-                                            <child>
-                                              <object class="GtkImage" id="image13">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="stock">gtk-media-pause</property>
-                                                <property name="icon_size">1</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
                                         <property name="top_attach">8</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkBox" id="SoundSourceStopTimeBox">
+                                      <object class="GtkBox" id="SoundSourceLoopBox">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="spacing">8</property>
+                                        <property name="halign">start</property>
+                                        <property name="spacing">16</property>
                                         <child>
-                                          <object class="GtkSpinButton" id="SoundSourceStopTimeSpinButton">
+                                          <object class="GtkCheckButton" id="SoundSourceLoopCheckButton">
+                                            <property name="label" translatable="yes">Loop</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">1,000</property>
-                                            <property name="adjustment">SoundSourceStopTimeAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">9</property>
-                                            <property name="numeric">True</property>
-                                            <property name="value">1</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="active">True</property>
+                                            <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1741,18 +1438,53 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkButton" id="SoundSourceStopTimeButton">
+                                          <object class="GtkBox">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">True</property>
-                                            <signal name="clicked" handler="on_sound_source_stop_time_clicked" swapped="no"/>
+                                            <property name="can_focus">False</property>
+                                            <property name="spacing">2</property>
                                             <child>
-                                              <object class="GtkImage" id="image14">
+                                              <object class="GtkButton" id="SoundSourceStopButton">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="stock">gtk-media-stop</property>
-                                                <property name="icon_size">1</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Stop playing video.</property>
+                                                <signal name="clicked" handler="on_sound_source_stop_clicked" swapped="no"/>
+                                                <child>
+                                                  <object class="GtkImage" id="SoundSourceStopImage">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-media-stop</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
                                               </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="SoundSourcePlayPauseButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Toggle between play and pause of video.</property>
+                                                <signal name="clicked" handler="on_sound_source_play_pause_clicked" swapped="no"/>
+                                                <child>
+                                                  <object class="GtkImage" id="SoundSourcePlayPauseImage">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-media-play</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
                                             </child>
                                           </object>
                                           <packing>
@@ -1764,7 +1496,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">9</property>
+                                        <property name="top_attach">5</property>
                                       </packing>
                                     </child>
                                   </object>
@@ -1820,5 +1552,15 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="SoundSourceStartTimeAdjustment">
+    <property name="upper">1000000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="SoundSourceStopTimeAdjustment">
+    <property name="upper">1000000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
 </interface>

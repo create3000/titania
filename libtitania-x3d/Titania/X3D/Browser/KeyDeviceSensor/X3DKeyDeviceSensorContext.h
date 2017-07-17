@@ -68,21 +68,6 @@ public:
 	///  @name Member access
 
 	void
-	setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const);
-
-	X3DKeyDeviceSensorNode*
-	getKeyDeviceSensorNode () const
-	{ return keyDeviceSensorNode; }
-
-	SFTime &
-	keyDeviceSensorNodeEvent ()
-	{ return keyDeviceSensorNodeOutput; }
-
-	const SFTime &
-	keyDeviceSensorNodeEvent () const
-	{ return keyDeviceSensorNodeOutput; }
-
-	void
 	setControlKey (const bool);
 
 	const SFBool &
@@ -97,7 +82,7 @@ public:
 	{ return shiftKey; }
 
 	void
-	setAltKey(const bool);
+	setAltKey (const bool);
 
 	const SFBool &
 	getAltKey () const
@@ -121,8 +106,16 @@ public:
 	dispose () override
 	{ }
 
+	virtual
+	~X3DKeyDeviceSensorContext () override;
+
 
 protected:
+
+	///  @name Friends
+
+	friend class KeyDevice;
+	friend class X3DKeyDeviceSensorNode;
 
 	///  @name Construction
 
@@ -130,8 +123,16 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
+
+	///  @name Member access
+
+	void
+	setKeyDeviceSensor (X3DKeyDeviceSensorNode* const);
+
+	const X3DWeakPtr <X3DKeyDeviceSensorNode> &
+	getKeyDeviceSensor () const
+	{ return keyDeviceSensorNode; }
 
 
 private:
@@ -143,15 +144,15 @@ private:
 
 	///  @name Members
 
-	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
-	SFTime                  keyDeviceSensorNodeOutput;
-	SFBool                  controlKey;
-	SFBool                  shiftKey;
-	SFBool                  altKey;
-	bool                    internalControlKey;
-	bool                    internalShiftKey;
-	bool                    internalAltKey;
-	Keys                    externalKeys;
+	X3DPtr <KeyDevice>                  keyDevice;
+	X3DWeakPtr <X3DKeyDeviceSensorNode> keyDeviceSensorNode;
+	SFBool                              controlKey;
+	SFBool                              shiftKey;
+	SFBool                              altKey;
+	bool                                internalControlKey;
+	bool                                internalShiftKey;
+	bool                                internalAltKey;
+	Keys                                externalKeys;
 
 };
 

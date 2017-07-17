@@ -50,6 +50,8 @@
 
 #include "X3DPointingDeviceSensorContext.h"
 
+#include "../PointingDeviceSensor/PointingDevice.h"
+
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
 
@@ -68,6 +70,7 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       X3DBaseNode (),
+	   pointingDevice  (new PointingDevice (getBrowser ())),
 	          pickable (true),
 	            cursor ("default"),
 	           pointer (),
@@ -85,7 +88,8 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   selectionBuffer (),
 	       depthBuffer ()
 {
-	addChildObjects (pickable,
+	addChildObjects (pointingDevice,
+	                 pickable,
 	                 cursor,
 	                 selectedLayer);
 }
@@ -99,6 +103,8 @@ X3DPointingDeviceSensorContext::initialize ()
 	getCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
 
 	setCursor ("default");
+
+	pointingDevice -> setup ();
 }
 
 void

@@ -195,7 +195,12 @@ public:
 	///  @name Event handling
 
 	void
-	setRouter (const std::shared_ptr <Router> & value);
+	setDependentContext (const X3DBrowserContextPtr & value);
+
+	const X3DBrowserContextPtr &
+	getDependentContext () const
+	noexcept (true)
+	{ return dependentContext; }
 
 	const std::shared_ptr <Router> &
 	getRouter () const
@@ -248,26 +253,37 @@ protected:
 	update ()
 	noexcept (true);
 
+	///  @name Event handlers
+
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ update (); }
+	on_setup () override;
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_unmap () override;
+
+	virtual
+	void
+	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height) override;
+
+	virtual
+	bool
+	on_render () override;
 
 
 private:
 
 	///  @name Event handlers
 
-	virtual
 	void
-	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
-
-	virtual
-	bool
-	on_render ();
+	set_sensors ();
 
 	///  @name Members
-
 
 	SFBool initializedOutput;
 	Output pickedOutput;
@@ -283,6 +299,7 @@ private:
 
 	std::shared_ptr <Router> router;
 	X3DBrowserContextPtr     sharedContext;
+	X3DBrowserContextPtr     dependentContext;
 	WorldPtr                 world;
 	WorldPtr                 headUpDisplay;
 	SelectionPtr             selection;

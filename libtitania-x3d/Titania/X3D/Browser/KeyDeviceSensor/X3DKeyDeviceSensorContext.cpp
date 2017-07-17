@@ -50,6 +50,8 @@
 
 #include "X3DKeyDeviceSensorContext.h"
 
+#include "../X3DBrowser.h"
+#include "../KeyDeviceSensor/KeyDevice.h"
 #include "../../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 
 namespace titania {
@@ -57,8 +59,8 @@ namespace X3D {
 
 X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	              X3DBaseNode (),
+	                keyDevice (new KeyDevice (getBrowser ())),
 	      keyDeviceSensorNode (nullptr),
-	keyDeviceSensorNodeOutput (),
 	               controlKey (),
 	                 shiftKey (),
 	                   altKey (),
@@ -67,7 +69,23 @@ X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	           internalAltKey (false),
 	             externalKeys ()
 {
-	addChildObjects (keyDeviceSensorNodeOutput, controlKey, shiftKey, altKey);
+	addChildObjects (keyDevice,
+	                 keyDeviceSensorNode,
+	                 controlKey,
+	                 shiftKey,
+	                 altKey);
+}
+
+void
+X3DKeyDeviceSensorContext::initialize ()
+{
+	keyDevice -> setup ();
+}
+
+void
+X3DKeyDeviceSensorContext::setKeyDeviceSensor (X3DKeyDeviceSensorNode* const value)
+{
+	keyDeviceSensorNode .setValue (value);
 }
 
 void
@@ -140,20 +158,8 @@ X3DKeyDeviceSensorContext::on_external_key_event ()
 		altKey = internalAltKey or externalKeys .alt ();
 }
 
-// Key device
-
-void
-X3DKeyDeviceSensorContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
-{
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> disposed () .removeInterest (&X3DKeyDeviceSensorContext::setKeyDeviceSensorNode, this);
-
-	keyDeviceSensorNode         = value;
-	keyDeviceSensorNodeEvent () = getCurrentTime ();
-
-	if (keyDeviceSensorNode)
-		keyDeviceSensorNode -> disposed () .addInterest (&X3DKeyDeviceSensorContext::setKeyDeviceSensorNode, this, nullptr);
-}
+X3DKeyDeviceSensorContext::~X3DKeyDeviceSensorContext ()
+{ }
 
 } // X3D
 } // titania

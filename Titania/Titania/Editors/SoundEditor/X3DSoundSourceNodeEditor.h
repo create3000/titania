@@ -115,23 +115,16 @@ private:
 	set_widgets ();
 
 	void
-	set_playing ();
+	set_active ();
 
 	virtual
 	void
-	on_sound_source_start_time_clicked () final override;
+	on_sound_source_stop_clicked () final override;
 
 	virtual
 	void
-	on_sound_source_resume_time_clicked () final override;
+	on_sound_source_play_pause_clicked () final override;
 
-	virtual
-	void
-	on_sound_source_pause_time_clicked () final override;
-
-	virtual
-	void
-	on_sound_source_stop_time_clicked () final override;
 
 	///  @name Members
 
@@ -141,12 +134,6 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>   speed;
 	X3DFieldAdjustment <X3D::SFFloat>   pitch;
 	X3DFieldToggleButton <X3D::SFBool>  loop;
-	X3DFieldAdjustment <X3D::SFTime>    startTime;
-	X3DFieldAdjustment <X3D::SFTime>    resumeTime;
-	X3DFieldAdjustment <X3D::SFTime>    pauseTime;
-	X3DFieldAdjustment <X3D::SFTime>    stopTime;
-	X3DFieldToggleButton <X3D::SFBool>  isPaused;
-	X3DFieldToggleButton <X3D::SFBool>  isActive;
 	X3DFieldAdjustment <X3D::SFTime>    cycleTime;
 	X3DFieldAdjustment <X3D::SFTime>    elapsedTime;
 	X3DFieldAdjustment <X3D::SFTime>    duration_changed;

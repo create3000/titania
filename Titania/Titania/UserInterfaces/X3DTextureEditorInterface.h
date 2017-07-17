@@ -527,10 +527,6 @@ public:
 	getMovieTextureEnabledCheckButton () const
 	{ return *m_MovieTextureEnabledCheckButton; }
 
-	Gtk::CheckButton &
-	getMovieTextureLoopCheckButton () const
-	{ return *m_MovieTextureLoopCheckButton; }
-
 	Gtk::Box &
 	getMovieTextureURLBox () const
 	{ return *m_MovieTextureURLBox; }
@@ -558,6 +554,30 @@ public:
 	Gtk::SpinButton &
 	getMovieTextureSpeedSpinButton () const
 	{ return *m_MovieTextureSpeedSpinButton; }
+
+	Gtk::Box &
+	getMovieTextureLoopBox () const
+	{ return *m_MovieTextureLoopBox; }
+
+	Gtk::CheckButton &
+	getMovieTextureLoopCheckButton () const
+	{ return *m_MovieTextureLoopCheckButton; }
+
+	Gtk::Button &
+	getMovieTextureStopButton () const
+	{ return *m_MovieTextureStopButton; }
+
+	Gtk::Image &
+	getMovieTextureStopImage () const
+	{ return *m_MovieTextureStopImage; }
+
+	Gtk::Button &
+	getMovieTexturePlayPauseButton () const
+	{ return *m_MovieTexturePlayPauseButton; }
+
+	Gtk::Image &
+	getMovieTexturePlayPauseImage () const
+	{ return *m_MovieTexturePlayPauseImage; }
 
 	Gtk::Box &
 	getComposedTexture3DBox () const
@@ -1111,6 +1131,14 @@ public:
 
 	virtual
 	void
+	on_movie_texture_stop_clicked () = 0;
+
+	virtual
+	void
+	on_movie_texture_play_pause_clicked () = 0;
+
+	virtual
+	void
 	on_textureProperties_toggled () = 0;
 
 	virtual
@@ -1335,7 +1363,6 @@ private:
 	Gtk::Button* m_PixelTextureSaveAsButton;
 	Gtk::Box* m_MovieTextureBox;
 	Gtk::CheckButton* m_MovieTextureEnabledCheckButton;
-	Gtk::CheckButton* m_MovieTextureLoopCheckButton;
 	Gtk::Box* m_MovieTextureURLBox;
 	Gtk::TreeView* m_MovieTextureURLTreeView;
 	Gtk::Button* m_MovieTextureURLAddButton;
@@ -1343,6 +1370,12 @@ private:
 	Gtk::Button* m_MovieTextureURLReloadButton;
 	Gtk::Entry* m_MovieTextureDescriptionEntry;
 	Gtk::SpinButton* m_MovieTextureSpeedSpinButton;
+	Gtk::Box* m_MovieTextureLoopBox;
+	Gtk::CheckButton* m_MovieTextureLoopCheckButton;
+	Gtk::Button* m_MovieTextureStopButton;
+	Gtk::Image* m_MovieTextureStopImage;
+	Gtk::Button* m_MovieTexturePlayPauseButton;
+	Gtk::Image* m_MovieTexturePlayPauseImage;
 	Gtk::Box* m_ComposedTexture3DBox;
 	Gtk::Box* m_ImageTexture3DBox;
 	Gtk::Box* m_ImageTexture3DURLBox;

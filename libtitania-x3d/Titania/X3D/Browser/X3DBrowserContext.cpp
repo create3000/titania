@@ -98,6 +98,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                   freezedTime (0),
 	                        router (new Router ()),
 	                 sharedContext (other),
+	              dependentContext (),
 	                         world (new World (getExecutionContext ())),
 	                 headUpDisplay (new World (getExecutionContext ())),
 	                     selection (new Selection (this)),
@@ -110,6 +111,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 
 	addChildObjects (initialized (),
 	                 sharedContext,
+	                 dependentContext,
 	                 world,
 	                 headUpDisplay,
 	                 selection,
@@ -179,6 +181,61 @@ X3DBrowserContext::setSelection (const SelectionPtr & value)
 	selection = value;
 }
 
+void
+X3DBrowserContext::setDependentContext (const X3DBrowserContextPtr & value)
+{
+	if (dependentContext)
+	{
+		dependentContext -> changed () .removeInterest (&X3DBrowserContext::addEvent, this);
+
+		sensors () .removeInterest (&X3DBrowserContext::set_sensors, this);
+	}
+
+	dependentContext = value;
+
+	router -> processEvents ();
+
+	if (dependentContext)
+	{
+		router = dependentContext -> getRouter ();
+
+		if (get_mapped ())
+			dependentContext -> changed () .addInterest (&X3DBrowserContext::addEvent, this);
+
+		sensors () .addInterest (&X3DBrowserContext::set_sensors, this);
+	}
+	else
+	{
+		router .reset (new Router ());
+	}
+}
+
+void
+X3DBrowserContext::on_map ()
+{
+	X3DRenderingSurface::on_map ();
+
+	if (dependentContext)
+		dependentContext -> changed () .addInterest (&X3DBrowserContext::addEvent, this);
+
+	queue_render ();
+}
+
+void
+X3DBrowserContext::on_unmap ()
+{
+	X3DRenderingSurface::on_unmap ();
+
+	if (dependentContext)
+		dependentContext -> changed () .removeInterest (&X3DBrowserContext::addEvent, this);
+}
+
+void
+X3DBrowserContext::set_sensors ()
+{
+	dependentContext -> sensors () .processInterests ();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /***
@@ -245,14 +302,6 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 	}
 
 	throw Error <DISPOSED> ("X3DBrowserContext::getSnapshot: Disposed.");
-}
-
-void
-X3DBrowserContext::setRouter (const std::shared_ptr <Router> & value)
-{
-	router -> processEvents ();
-
-	router = value;
 }
 
 void
@@ -365,6 +414,15 @@ noexcept (true)
 
 		//throw; // DEBUG
 	}
+}
+
+void
+X3DBrowserContext::on_setup ()
+{
+	X3DRenderingSurface::on_setup ();
+
+	if (not isInitialized ())
+		setup ();
 }
 
 void

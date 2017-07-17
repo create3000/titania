@@ -78,12 +78,22 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 void
 X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
+	if (movieTexture)
+	{
+		movieTexture -> isActive () .removeInterest (&X3DMovieTextureEditor::set_active, this);
+		movieTexture -> isPaused () .removeInterest (&X3DMovieTextureEditor::set_active, this);
+	}
+
 	movieTexture = value;
 
-	getMovieTextureBox () .set_visible (movieTexture);
+	getMovieTextureBox ()     .set_visible   (movieTexture);
+	getMovieTextureLoopBox () .set_sensitive (movieTexture);
 
 	if (not movieTexture)
 		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
+
+	movieTexture -> isActive () .addInterest (&X3DMovieTextureEditor::set_active, this);
+	movieTexture -> isPaused () .addInterest (&X3DMovieTextureEditor::set_active, this);
 
 	const X3D::MFNode nodes = { movieTexture };
 
@@ -93,6 +103,8 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	speed       .setNodes (nodes);
 
 	url -> setNodes (nodes);
+
+	set_active ();
 }
 
 const X3D::X3DPtr <X3D::MovieTexture> &
@@ -110,6 +122,37 @@ X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	}
 
 	return movieTexture;
+}
+
+void
+X3DMovieTextureEditor::set_active ()
+{
+	if (movieTexture -> isActive () and not movieTexture -> isPaused ())
+		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	else
+		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+X3DMovieTextureEditor::on_movie_texture_stop_clicked ()
+{
+	movieTexture -> stopTime () = X3D::SFTime::now ();
+}
+
+void
+X3DMovieTextureEditor::on_movie_texture_play_pause_clicked ()
+{
+	if (movieTexture -> isActive ())
+	{
+		if (movieTexture -> isPaused ())
+			movieTexture -> resumeTime () = X3D::SFTime::now ();
+
+		else
+			movieTexture -> pauseTime () = X3D::SFTime::now ();
+	}
+	else
+		movieTexture -> startTime () = X3D::SFTime::now ();
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()

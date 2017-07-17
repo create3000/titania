@@ -50,6 +50,17 @@
 
 #include "X3DNavigationContext.h"
 
+#include "../Navigation/ExamineViewer.h"
+#include "../Navigation/FlyViewer.h"
+#include "../Navigation/LookAtViewer.h"
+#include "../Navigation/NoneViewer.h"
+#include "../Navigation/PlaneViewer.h"
+#include "../Navigation/WalkViewer.h"
+#include "../Navigation/X3DViewer.h"
+#include "../Tools/LightSaber.h"
+#include "../Tools/LassoSelection.h"
+#include "../Tools/RectangleSelection.h"
+
 #include "../Selection.h"
 #include "../X3DBrowser.h"
 
@@ -79,6 +90,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	                    viewer (X3DConstants::NoneViewer),
 	             privateViewer (X3DConstants::DefaultViewer),
 	          availableViewers (),
+	               viewerNode  (new NoneViewer (getBrowser ())),
 	           activeViewpoint (),
 	         straightenHorizon (),
 	          activeCollisions ()
@@ -89,6 +101,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	                 viewer,
 	                 privateViewer,
 	                 availableViewers,
+	                 viewerNode,
 	                 activeViewpoint,
 	                 straightenHorizon);
 }
@@ -96,11 +109,13 @@ X3DNavigationContext::X3DNavigationContext () :
 void
 X3DNavigationContext::initialize ()
 {
-	headlightNode -> setup ();
-
 	getBrowser () -> initialized () .addInterest (&X3DNavigationContext::set_initialized, this);
+	getActiveNavigationInfo () .addInterest (&X3DNavigationContext::set_active_navigationInfo, this);
+	getViewerType ()           .addInterest (&X3DNavigationContext::set_viewer, this);
+	getPrivateViewer ()        .addInterest (&X3DNavigationContext::set_viewer, this);
 
-	activeNavigationInfo .addInterest (&X3DNavigationContext::set_active_navigationInfo, this);
+	headlightNode -> setup ();
+	viewerNode    -> setup ();
 }
 
 X3D::X3DConstants::NodeType
@@ -223,6 +238,78 @@ X3DNavigationContext::set_viewpoint ()
 		activeViewpoint .setValue (activeLayer -> getViewpoint ());
 	else
 		activeViewpoint = nullptr;
+}
+
+void
+X3DNavigationContext::set_viewer ()
+{
+	const auto type = getCurrentViewer ();
+
+	getBrowser () -> setCursor ("default");
+
+	viewerNode .addEvent ();
+
+	if (type not_eq viewerNode -> getType () .back ())
+	{
+		switch (type)
+		{
+			case X3DConstants::NoneViewer:
+			{
+				viewerNode .setValue (new NoneViewer (getBrowser ()));
+				break;
+			}
+			case X3DConstants::ExamineViewer:
+			{
+				viewerNode .setValue (new ExamineViewer (getBrowser ()));
+				break;
+			}
+			case X3DConstants::WalkViewer:
+			{
+				viewerNode .setValue (new WalkViewer (getBrowser ()));
+				break;
+			}
+			case X3DConstants::FlyViewer:
+			{
+				viewerNode .setValue (new FlyViewer (getBrowser ()));
+				break;
+			}
+			case X3DConstants::PlaneViewer:
+			{
+				viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer));
+				break;
+			}
+			case X3DConstants::PlaneViewer3D:
+			{
+				viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer3D));
+				break;
+			}
+			case X3DConstants::LookAtViewer:
+			{
+				viewerNode .setValue (new LookAtViewer (getBrowser ()));
+				break;
+			}
+			case X3DConstants::RectangleSelection:
+			{
+				viewerNode .setValue (new RectangleSelection (getBrowser ()));
+				break;
+			}
+			case X3DConstants::LassoSelection:
+			{
+				viewerNode .setValue (new LassoSelection (getBrowser ()));
+				break;
+			}
+			case X3DConstants::LightSaber:
+			{
+				viewerNode .setValue (new LightSaber (getBrowser ()));
+				break;
+			}
+			default:
+				viewerNode .setValue (new NoneViewer (getBrowser ()));
+				break;
+		}
+
+		viewerNode -> setup ();
+	}
 }
 
 X3DNavigationContext::~X3DNavigationContext ()

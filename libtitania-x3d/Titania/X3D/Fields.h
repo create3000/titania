@@ -72,4 +72,7 @@
 #include "Fields/FieldPtr.h"
 #include "Fields/FieldArray.h"
 
+#include "Fields/X3DWeakPtr.h"
+#include "Fields/X3DWeakPtrArray.h"
+
 #endif

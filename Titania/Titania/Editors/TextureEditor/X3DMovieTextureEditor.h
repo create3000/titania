@@ -92,6 +92,19 @@ private:
 
 	///  @name Members
 
+	void
+	set_active ();
+
+	virtual
+	void
+	on_movie_texture_stop_clicked () final override;
+
+	virtual
+	void
+	on_movie_texture_play_pause_clicked () final override;
+
+	///  @name Members
+
 	X3DFieldToggleButton <X3D::SFBool>  enabled;
 	SFStringEntry                       description;
 	std::unique_ptr <MFStringURLWidget> url;

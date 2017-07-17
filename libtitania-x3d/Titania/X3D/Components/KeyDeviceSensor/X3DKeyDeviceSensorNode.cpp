@@ -84,10 +84,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (executionContext -> getBrowser () not_eq getBrowser ())
 		{
 			if (isActive ())
-			{
-				getBrowser () -> setKeyDeviceSensorNode (nullptr);
-				executionContext -> getBrowser () -> setKeyDeviceSensorNode (this);
-			}
+				getBrowser () -> setKeyDeviceSensor (this);
 		}
 	}
 
@@ -107,7 +104,7 @@ X3DKeyDeviceSensorNode::enable ()
 	if (isActive ())
 		return;
 
-	X3DKeyDeviceSensorNode* const keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensorNode ();
+	X3DKeyDeviceSensorNode* const keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensor ();
 
 	if (keyDeviceSensorNode)
 	{
@@ -115,7 +112,7 @@ X3DKeyDeviceSensorNode::enable ()
 		keyDeviceSensorNode -> isActive () = false;
 	}
 
-	getBrowser () -> setKeyDeviceSensorNode (this);
+	getBrowser () -> setKeyDeviceSensor (this);
 
 	isActive () = true;
 }
@@ -126,7 +123,7 @@ X3DKeyDeviceSensorNode::disable ()
 	if (not isActive ())
 		return;
 
-	getBrowser () -> setKeyDeviceSensorNode (nullptr);
+	getBrowser () -> setKeyDeviceSensor (nullptr);
 
 	setKeyReleaseEvent ();
 	isActive () = false;

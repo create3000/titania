@@ -76,24 +76,6 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 	                         getSoundSourcePitchSpinButton (),
 	                         "pitch"),
 	                   loop (this, getSoundSourceLoopCheckButton (), "loop"),
-	              startTime (this,
-	                         getSoundSourceStartTimeAdjustment (),
-	                         getSoundSourceStartTimeBox (),
-	                         "startTime"),
-	              resumeTime (this,
-	                         getSoundSourceResumeTimeAdjustment (),
-	                         getSoundSourceResumeTimeBox (),
-	                         "resumeTime"),
-	              pauseTime (this,
-	                         getSoundSourcePauseTimeAdjustment (),
-	                         getSoundSourcePauseTimeBox (),
-	                         "pauseTime"),
-	               stopTime (this,
-	                         getSoundSourceStopTimeAdjustment (),
-	                         getSoundSourceStopTimeBox (),
-	                         "stopTime"),
-	               isPaused (this, getSoundSourceIsPausedCheckButton (), "isPaused"),
-	               isActive (this, getSoundSourceIsActiveCheckButton (), "isActive"),
 	               cycleTime (this,
 	                         getSoundSourceCycleTimeAdjustment (),
 	                         getSoundSourceCycleTimeSpinButton (),
@@ -236,8 +218,8 @@ X3DSoundSourceNodeEditor::set_node ()
 	{
 		soundSourceNode -> isEvenLive (false);
 
-		soundSourceNode -> isPaused () .removeInterest (&X3DSoundSourceNodeEditor::set_playing, this);
-		soundSourceNode -> isActive () .removeInterest (&X3DSoundSourceNodeEditor::set_playing, this);
+		soundSourceNode -> isPaused () .removeInterest (&X3DSoundSourceNodeEditor::set_active, this);
+		soundSourceNode -> isActive () .removeInterest (&X3DSoundSourceNodeEditor::set_active, this);
 	}
 
 	undoStep           .reset ();
@@ -266,8 +248,8 @@ X3DSoundSourceNodeEditor::set_node ()
 		soundSourceNode = audioClip;
 
 	soundSourceNode -> isEvenLive (true);
-	soundSourceNode -> isPaused () .addInterest (&X3DSoundSourceNodeEditor::set_playing, this);
-	soundSourceNode -> isActive () .addInterest (&X3DSoundSourceNodeEditor::set_playing, this);
+	soundSourceNode -> isPaused () .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
+	soundSourceNode -> isActive () .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
 
 	changing = true;
 
@@ -299,7 +281,7 @@ X3DSoundSourceNodeEditor::set_node ()
 	getSoundSourceUnlinkButton () .set_sensitive (active > 0 and soundSourceNode -> getCloneCount () > 1);
 
 	set_widgets ();
-	set_playing ();
+	set_active ();
 
 	changing = false;
 }
@@ -315,84 +297,40 @@ X3DSoundSourceNodeEditor::set_widgets ()
 	speed            .setNodes (nodes);
 	pitch            .setNodes (nodes);
 	loop             .setNodes (nodes);
-	startTime        .setNodes (nodes);
-	resumeTime       .setNodes (nodes);
-	pauseTime        .setNodes (nodes);
-	stopTime         .setNodes (nodes);
-	isPaused         .setNodes (nodes);
-	isActive         .setNodes (nodes);
 	cycleTime        .setNodes (nodes);
 	elapsedTime      .setNodes (nodes);
 	duration_changed .setNodes (nodes);
 }
 
 void
-X3DSoundSourceNodeEditor::set_playing ()
+X3DSoundSourceNodeEditor::set_active ()
+{
+	if (soundSourceNode -> isActive () and not soundSourceNode -> isPaused ())
+		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-pause"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	else
+		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+X3DSoundSourceNodeEditor::on_sound_source_stop_clicked ()
+{
+	soundSourceNode -> stopTime () = X3D::SFTime::now ();
+}
+
+void
+X3DSoundSourceNodeEditor::on_sound_source_play_pause_clicked ()
 {
 	if (soundSourceNode -> isActive ())
 	{
 		if (soundSourceNode -> isPaused ())
-		{
-			getSoundSourceStartTimeButton  () .set_sensitive (false);
-			getSoundSourcePauseTimeButton  () .set_sensitive (false);
-			getSoundSourceResumeTimeButton () .set_sensitive (true);
-			getSoundSourceStopTimeButton   () .set_sensitive (true);
-		}
+			soundSourceNode -> resumeTime () = X3D::SFTime::now ();
+
 		else
-		{
-			getSoundSourceStartTimeButton  () .set_sensitive (false);
-			getSoundSourcePauseTimeButton  () .set_sensitive (true);
-			getSoundSourceResumeTimeButton () .set_sensitive (false);
-			getSoundSourceStopTimeButton   () .set_sensitive (true);
-		}
+			soundSourceNode -> pauseTime () = X3D::SFTime::now ();
 	}
 	else
-	{
-		getSoundSourceStartTimeButton  () .set_sensitive (true);
-		getSoundSourcePauseTimeButton  () .set_sensitive (false);
-		getSoundSourceResumeTimeButton () .set_sensitive (false);
-		getSoundSourceStopTimeButton   () .set_sensitive (false);
-	}
-}
-
-void
-X3DSoundSourceNodeEditor::on_sound_source_start_time_clicked ()
-{
-	addUndoFunction (soundSourceNode, soundSourceNode -> startTime (), startTimeUndoStep);
-
-	soundSourceNode -> startTime () = X3D::SFTime::now ();
-
-	addRedoFunction (soundSourceNode, soundSourceNode -> startTime (), startTimeUndoStep);
-}
-
-void
-X3DSoundSourceNodeEditor::on_sound_source_resume_time_clicked ()
-{
-	addUndoFunction (soundSourceNode, soundSourceNode -> resumeTime (), resumeTimeUndoStep);
-
-	soundSourceNode -> resumeTime () = X3D::SFTime::now ();
-
-	addRedoFunction (soundSourceNode, soundSourceNode -> resumeTime (), resumeTimeUndoStep);
-}
-
-void
-X3DSoundSourceNodeEditor::on_sound_source_pause_time_clicked ()
-{
-	addUndoFunction (soundSourceNode, soundSourceNode -> pauseTime (), pauseTimeUndoStep);
-
-	soundSourceNode -> pauseTime () = X3D::SFTime::now ();
-
-	addRedoFunction (soundSourceNode, soundSourceNode -> pauseTime (), pauseTimeUndoStep);
-}
-
-void
-X3DSoundSourceNodeEditor::on_sound_source_stop_time_clicked ()
-{
-	addUndoFunction (soundSourceNode, soundSourceNode -> stopTime (), stopTimeUndoStep);
-
-	soundSourceNode -> stopTime () = X3D::SFTime::now ();
-
-	addRedoFunction (soundSourceNode, soundSourceNode -> stopTime (), stopTimeUndoStep);
+		soundSourceNode -> startTime () = X3D::SFTime::now ();
 }
 
 X3DSoundSourceNodeEditor::~X3DSoundSourceNodeEditor ()
