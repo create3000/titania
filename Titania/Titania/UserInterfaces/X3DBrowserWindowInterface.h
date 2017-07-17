@@ -1155,6 +1155,10 @@ public:
 	getReloadButton () const
 	{ return *m_ReloadButton; }
 
+	Gtk::Box &
+	getEditToolBarBox () const
+	{ return *m_EditToolBarBox; }
+
 	Gtk::Toolbar &
 	getEditToolBar () const
 	{ return *m_EditToolBar; }
@@ -1200,26 +1204,6 @@ public:
 	{ return *m_NodeIndexButton; }
 
 	Gtk::ToolButton &
-	getNodePropertiesEditorButton () const
-	{ return *m_NodePropertiesEditorButton; }
-
-	Gtk::ToolButton &
-	getAppearanceEditorButton () const
-	{ return *m_AppearanceEditorButton; }
-
-	Gtk::ToolButton &
-	getTextureEditorButton () const
-	{ return *m_TextureEditorButton; }
-
-	Gtk::ToolButton &
-	getTextEditorButton () const
-	{ return *m_TextEditorButton; }
-
-	Gtk::ToolButton &
-	getGeometryPropertiesEditorButton () const
-	{ return *m_GeometryPropertiesEditorButton; }
-
-	Gtk::ToolButton &
 	getGeometryEditorButton () const
 	{ return *m_GeometryEditorButton; }
 
@@ -1232,44 +1216,56 @@ public:
 	{ return *m_TextureCoordinateEditorButton; }
 
 	Gtk::ToolButton &
-	getLayerEditorButton () const
-	{ return *m_LayerEditorButton; }
-
-	Gtk::ToolButton &
-	getBackgroundEditorButton () const
-	{ return *m_BackgroundEditorButton; }
-
-	Gtk::ToolButton &
-	getNavigationInfoEditorButton () const
-	{ return *m_NavigationInfoEditorButton; }
-
-	Gtk::ToolButton &
-	getViewpointEditorButton () const
-	{ return *m_ViewpointEditorButton; }
-
-	Gtk::ToolButton &
-	getLightEditorButton () const
-	{ return *m_LightEditorButton; }
-
-	Gtk::ToolButton &
-	getLODEditorButton () const
-	{ return *m_LODEditorButton; }
-
-	Gtk::ToolButton &
-	getInlineEditorButton () const
-	{ return *m_InlineEditorButton; }
-
-	Gtk::ToolButton &
-	getPrecisionPlacementPanelButton () const
-	{ return *m_PrecisionPlacementPanelButton; }
-
-	Gtk::ToolButton &
 	getCreatePrototypeInstanceButton () const
 	{ return *m_CreatePrototypeInstanceButton; }
 
+	Gtk::Toolbar &
+	getPrimitivesToolBar () const
+	{ return *m_PrimitivesToolBar; }
+
 	Gtk::ToolButton &
-	getNodeEditorButton () const
-	{ return *m_NodeEditorButton; }
+	getArcCloseButton () const
+	{ return *m_ArcCloseButton; }
+
+	Gtk::ToolButton &
+	getDiskButton () const
+	{ return *m_DiskButton; }
+
+	Gtk::ToolButton &
+	getRectangleButton () const
+	{ return *m_RectangleButton; }
+
+	Gtk::ToolButton &
+	getStarButton () const
+	{ return *m_StarButton; }
+
+	Gtk::SeparatorToolItem &
+	getSeparatorToolItem3 () const
+	{ return *m_SeparatorToolItem3; }
+
+	Gtk::ToolButton &
+	getBoxButton () const
+	{ return *m_BoxButton; }
+
+	Gtk::ToolButton &
+	getConeButton () const
+	{ return *m_ConeButton; }
+
+	Gtk::ToolButton &
+	getCylinderButton () const
+	{ return *m_CylinderButton; }
+
+	Gtk::ToolButton &
+	getElevationGridButton () const
+	{ return *m_ElevationGridButton; }
+
+	Gtk::ToolButton &
+	getPyramidButton () const
+	{ return *m_PyramidButton; }
+
+	Gtk::ToolButton &
+	getSphereButton () const
+	{ return *m_SphereButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -1835,59 +1831,7 @@ public:
 
 	virtual
 	void
-	on_node_properties_editor_clicked () = 0;
-
-	virtual
-	void
-	on_appearance_editor_clicked () = 0;
-
-	virtual
-	void
-	on_texture_editor_clicked () = 0;
-
-	virtual
-	void
-	on_text_editor_clicked () = 0;
-
-	virtual
-	void
-	on_geometry_properties_editor_clicked () = 0;
-
-	virtual
-	void
 	on_geometry_editor_clicked () = 0;
-
-	virtual
-	void
-	on_layer_editor_clicked () = 0;
-
-	virtual
-	void
-	on_background_editor_clicked () = 0;
-
-	virtual
-	void
-	on_navigation_info_editor_clicked () = 0;
-
-	virtual
-	void
-	on_viewpoint_editor_clicked () = 0;
-
-	virtual
-	void
-	on_light_editor_clicked () = 0;
-
-	virtual
-	void
-	on_lod_editor_clicked () = 0;
-
-	virtual
-	void
-	on_inline_editor_clicked () = 0;
-
-	virtual
-	void
-	on_precision_placement_panel_clicked () = 0;
 
 	virtual
 	void
@@ -1895,7 +1839,43 @@ public:
 
 	virtual
 	void
-	on_node_editor_clicked () = 0;
+	on_arc_close_clicked () = 0;
+
+	virtual
+	void
+	on_disk_clicked () = 0;
+
+	virtual
+	void
+	on_rectangle_clicked () = 0;
+
+	virtual
+	void
+	on_star_clicked () = 0;
+
+	virtual
+	void
+	on_box_clicked () = 0;
+
+	virtual
+	void
+	on_cone_clicked () = 0;
+
+	virtual
+	void
+	on_cylinder_clicked () = 0;
+
+	virtual
+	void
+	on_elevation_grid_clicked () = 0;
+
+	virtual
+	void
+	on_pyramid_clicked () = 0;
+
+	virtual
+	void
+	on_sphere_clicked () = 0;
 
 	virtual
 	bool
@@ -2268,6 +2248,7 @@ private:
 	Gtk::Entry* m_LocationEntry;
 	Gtk::Toolbar* m_LocationBar2;
 	Gtk::ToolButton* m_ReloadButton;
+	Gtk::Box* m_EditToolBarBox;
 	Gtk::Toolbar* m_EditToolBar;
 	Gtk::ToolButton* m_NewButton;
 	Gtk::ToolButton* m_OpenButton;
@@ -2279,24 +2260,22 @@ private:
 	Gtk::ToolButton* m_RedoButton;
 	Gtk::SeparatorToolItem* m_SeparatorToolItem2;
 	Gtk::ToolButton* m_NodeIndexButton;
-	Gtk::ToolButton* m_NodePropertiesEditorButton;
-	Gtk::ToolButton* m_AppearanceEditorButton;
-	Gtk::ToolButton* m_TextureEditorButton;
-	Gtk::ToolButton* m_TextEditorButton;
-	Gtk::ToolButton* m_GeometryPropertiesEditorButton;
 	Gtk::ToolButton* m_GeometryEditorButton;
 	Gtk::ToolButton* m_ColorPerVertexEditorButton;
 	Gtk::ToolButton* m_TextureCoordinateEditorButton;
-	Gtk::ToolButton* m_LayerEditorButton;
-	Gtk::ToolButton* m_BackgroundEditorButton;
-	Gtk::ToolButton* m_NavigationInfoEditorButton;
-	Gtk::ToolButton* m_ViewpointEditorButton;
-	Gtk::ToolButton* m_LightEditorButton;
-	Gtk::ToolButton* m_LODEditorButton;
-	Gtk::ToolButton* m_InlineEditorButton;
-	Gtk::ToolButton* m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton* m_CreatePrototypeInstanceButton;
-	Gtk::ToolButton* m_NodeEditorButton;
+	Gtk::Toolbar* m_PrimitivesToolBar;
+	Gtk::ToolButton* m_ArcCloseButton;
+	Gtk::ToolButton* m_DiskButton;
+	Gtk::ToolButton* m_RectangleButton;
+	Gtk::ToolButton* m_StarButton;
+	Gtk::SeparatorToolItem* m_SeparatorToolItem3;
+	Gtk::ToolButton* m_BoxButton;
+	Gtk::ToolButton* m_ConeButton;
+	Gtk::ToolButton* m_CylinderButton;
+	Gtk::ToolButton* m_ElevationGridButton;
+	Gtk::ToolButton* m_PyramidButton;
+	Gtk::ToolButton* m_SphereButton;
 	Gtk::Paned* m_VPaned;
 	Gtk::Paned* m_HPaned;
 	Gtk::Overlay* m_BrowserOverlay;

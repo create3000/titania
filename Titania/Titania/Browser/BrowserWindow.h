@@ -649,30 +649,6 @@ private:
 
 	virtual
 	void
-	on_node_editor_clicked () final override;
-
-	virtual
-	void
-	on_node_properties_editor_clicked () final override;
-
-	virtual
-	void
-	on_appearance_editor_clicked () final override;
-
-	virtual
-	void
-	on_texture_editor_clicked () final override;
-
-	virtual
-	void
-	on_text_editor_clicked () final override;
-
-	virtual
-	void
-	on_geometry_properties_editor_clicked () final override;
-
-	virtual
-	void
 	on_color_editor_clicked () final override;
 
 	virtual
@@ -681,43 +657,56 @@ private:
 
 	virtual
 	void
-	on_layer_editor_clicked () final override;
-
-	virtual
-	void
-	on_background_editor_clicked () final override;
-
-	virtual
-	void
-	on_navigation_info_editor_clicked () final override;
-
-	virtual
-	void
-	on_viewpoint_editor_clicked () final override;
-
-	virtual
-	void
-	on_light_editor_clicked () final override;
-
-	virtual
-	void
-	on_lod_editor_clicked () final override;
-
-	virtual
-	void
-	on_inline_editor_clicked () final override;
-
-	virtual
-	void
-	on_precision_placement_panel_clicked () final override;
-
-	virtual
-	void
 	on_prototype_instance_dialog_clicked () final override;
 
 	virtual
 	void
 	on_node_index_clicked () final override;
+
+	///  @name Primitives toolbar
+
+	virtual
+	void
+	on_arc_close_clicked () final override;
+
+	virtual
+	void
+	on_disk_clicked () final override;
+
+	virtual
+	void
+	on_rectangle_clicked () final override;
+
+	virtual
+	void
+	on_star_clicked () final override;
+
+	virtual
+	void
+	on_box_clicked () final override;
+
+	virtual
+	void
+	on_cone_clicked () final override;
+
+	virtual
+	void
+	on_cylinder_clicked () final override;
+
+	virtual
+	void
+	on_elevation_grid_clicked () final override;
+
+	virtual
+	void
+	on_pyramid_clicked () final override;
+
+	virtual
+	void
+	on_sphere_clicked () final override;
+
+	void
+	on_primitive_clicked (const std::string & description, const std::string & path);
 
 	///  @name Browser dashboard handling
 

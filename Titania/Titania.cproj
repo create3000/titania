@@ -2479,7 +2479,6 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.h" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-ascending.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-descending.png" />
-    <None Include="share\titania\Library\Primitives\Geometry2D\Star.x3dv" />
     <None Include="Titania\Editors\GridEditor\AxonometricGridTool.h" />
     <None Include="Titania\Editors\GridEditor\X3DAxonometricGridEditor.h" />
     <None Include="share\titania\Library\Materials\Gray\Gray1.x3dv" />
@@ -3024,6 +3023,17 @@
     <None Include="Titania\BrowserNotebook\RenderPanel\Pipe.h" />
     <None Include="share\titania\ui\icons\Faenza\16\media-playlist-repeat.png" />
     <None Include="share\titania\ui\icons\Faenza\16\insert-link.png" />
+    <None Include="share\titania\ui\icons\Primitives\SphereNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\BoxNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\ConeNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\CylinderNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\DiskNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\RectangleNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\ElevationGridNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\PyramidNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\ArcCloseNode.svg" />
+    <None Include="share\titania\ui\icons\Primitives\StarNode.svg" />
+    <None Include="share\titania\Library\Primitives\Geometry2D\Star2D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3175,6 +3185,7 @@
     <Folder Include="Titania\BrowserNotebook\RenderPanel\" />
     <Folder Include="Titania\Bits\" />
     <Folder Include="Titania\Editors\BindableNodeList\" />
+    <Folder Include="share\titania\ui\icons\Primitives\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

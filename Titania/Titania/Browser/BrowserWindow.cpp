@@ -1236,8 +1236,8 @@ BrowserWindow::setEditing (const bool enabled)
 	getBrowserGeometryMenuItem ()               .set_visible (enabled);
 	getBrowserLayoutMenuItem ()                 .set_visible (enabled);
 
-	getLocationBar () .set_visible (not enabled);
-	getEditToolBar () .set_visible (enabled);
+	getLocationBar ()    .set_visible (not enabled);
+	getEditToolBarBox () .set_visible (enabled);
 
 	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
@@ -2063,42 +2063,6 @@ BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, 
 }
 
 void
-BrowserWindow::on_node_editor_clicked ()
-{
-	addDialog ("NodeEditor");
-}
-
-void
-BrowserWindow::on_node_properties_editor_clicked ()
-{
-	addDialog ("NodePropertiesEditor");
-}
-
-void
-BrowserWindow::on_appearance_editor_clicked ()
-{
-	addDialog ("AppearanceEditor");
-}
-
-void
-BrowserWindow::on_texture_editor_clicked ()
-{
-	addDialog ("TextureEditor");
-}
-
-void
-BrowserWindow::on_text_editor_clicked ()
-{
-	addDialog ("TextEditor");
-}
-
-void
-BrowserWindow::on_geometry_properties_editor_clicked ()
-{
-	addDialog ("GeometryPropertiesEditor");
-}
-
-void
 BrowserWindow::on_color_editor_clicked ()
 {
 	addDialog ("ColorEditor");
@@ -2111,54 +2075,6 @@ BrowserWindow::on_texture_mapping_editor_clicked ()
 }
 
 void
-BrowserWindow::on_layer_editor_clicked ()
-{
-	addDialog ("LayerEditor");
-}
-
-void
-BrowserWindow::on_background_editor_clicked ()
-{
-	addDialog ("BackgroundEditor");
-}
-
-void
-BrowserWindow::on_navigation_info_editor_clicked ()
-{
-	addDialog ("NavigationInfoEditor");
-}
-
-void
-BrowserWindow::on_viewpoint_editor_clicked ()
-{
-	addDialog ("ViewpointEditor");
-}
-
-void
-BrowserWindow::on_light_editor_clicked ()
-{
-	addDialog ("LightEditor");
-}
-
-void
-BrowserWindow::on_lod_editor_clicked ()
-{
-	addDialog ("LODEditor");
-}
-
-void
-BrowserWindow::on_inline_editor_clicked ()
-{
-	addDialog ("InlineEditor");
-}
-
-void
-BrowserWindow::on_precision_placement_panel_clicked ()
-{
-	addDialog ("PrecisionPlacementPanel");
-}
-
-void
 BrowserWindow::on_prototype_instance_dialog_clicked ()
 {
 	addDialog ("PrototypeEditor");
@@ -2168,6 +2084,85 @@ void
 BrowserWindow::on_node_index_clicked ()
 {
 	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+}
+
+// Primitive toolbar
+
+void
+BrowserWindow::on_arc_close_clicked ()
+{
+	on_primitive_clicked (_ ("Insert ArcClosed2D."), "Library/Primitives/Geometry2D/ArcClose2D.x3dv");
+}
+
+void
+BrowserWindow::on_disk_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Disk2D."), "Library/Primitives/Geometry2D/Disk2D.x3dv");
+}
+
+void
+BrowserWindow::on_rectangle_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Rectangle2D."), "Library/Primitives/Geometry2D/Rectangle2D.x3dv");
+}
+
+void
+BrowserWindow::on_star_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Star2D."), "Library/Primitives/Geometry2D/Star2D.x3dv");
+}
+
+void
+BrowserWindow::on_box_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Box."), "Library/Primitives/Geometry3D/Box.x3dv");
+}
+
+void
+BrowserWindow::on_cone_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Cone."), "Library/Primitives/Geometry3D/Cone.x3dv");
+}
+
+void
+BrowserWindow::on_cylinder_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Cylinder."), "Library/Primitives/Geometry3D/Cylinder.x3dv");
+}
+
+void
+BrowserWindow::on_elevation_grid_clicked ()
+{
+	on_primitive_clicked (_ ("Insert ElevationGrid."), "Library/Primitives/Geometry3D/ElevationGrid.x3dv");
+}
+
+void
+BrowserWindow::on_pyramid_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Pyramid."), "Library/Primitives/Geometry3D/Pyramid.x3dv");
+}
+
+void
+BrowserWindow::on_sphere_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Sphere."), "Library/Primitives/Geometry3D/Sphere.x3dv");
+}
+
+void
+BrowserWindow::on_primitive_clicked (const std::string & description, const std::string & path)
+{
+	try
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (description);
+		const auto nodes    = getBrowserWindow () -> import ({ find_data_file (path) }, undoStep);
+	
+		getSelection () -> setNodes (nodes, undoStep);
+		addUndoStep (undoStep);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 // Browser dashboard handling

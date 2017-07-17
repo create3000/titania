@@ -4,6 +4,16 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="StarNode" filename="Primitives/StarNode.svg"/>
+      <source stock-id="PyramidNode" filename="Primitives/PyramidNode.svg"/>
+      <source stock-id="ElevationGridNode" filename="Primitives/ElevationGridNode.svg"/>
+      <source stock-id="ArcCloseNode" filename="Primitives/ArcCloseNode.svg"/>
+      <source stock-id="RectangleNode" filename="Primitives/RectangleNode.svg"/>
+      <source stock-id="DiskNode" filename="Primitives/DiskNode.svg"/>
+      <source stock-id="ConeNode" filename="Primitives/ConeNode.svg"/>
+      <source stock-id="CylinderNode" filename="Primitives/CylinderNode.svg"/>
+      <source stock-id="BoxNode" filename="Primitives/BoxNode.svg"/>
+      <source stock-id="SphereNode" filename="Primitives/SphereNode.svg"/>
       <source stock-id="media-playlist-repeat" filename="Faenza/16/media-playlist-repeat.png"/>
       <source stock-id="insert-link" filename="Faenza/16/insert-link.png"/>
       <source stock-id="BackgroundImage" filename="BackgroundImage.svg"/>

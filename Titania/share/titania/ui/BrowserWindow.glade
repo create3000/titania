@@ -345,6 +345,30 @@
     <property name="stock">UndoHistory</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image38">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UndoHistory</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image39">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BackgroundImage</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-export</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image40">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BackgroundImage</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1667,30 +1691,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image38">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">UndoHistory</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image39">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">BackgroundImage</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">document-export</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image40">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">BackgroundImage</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image5">
     <property name="visible">True</property>
@@ -3238,453 +3238,427 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolbar" id="EditToolBar">
+                      <object class="GtkBox" id="EditToolBarBox">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="toolbar_style">icons</property>
-                        <property name="icon_size">1</property>
+                        <property name="spacing">8</property>
                         <child>
-                          <object class="GtkToolButton" id="NewButton">
+                          <object class="GtkToolbar" id="EditToolBar">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Create new file (Ctrl-N).</property>
-                            <property name="label" translatable="yes">New file</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-new</property>
-                            <signal name="clicked" handler="on_new_activated" swapped="no"/>
+                            <property name="halign">start</property>
+                            <property name="toolbar_style">icons</property>
+                            <property name="icon_size">1</property>
+                            <child>
+                              <object class="GtkToolButton" id="NewButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Create new file (Ctrl-N).</property>
+                                <property name="label" translatable="yes">New file</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-new</property>
+                                <signal name="clicked" handler="on_new_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="OpenButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Open file or media (Ctrl-O).</property>
+                                <property name="label" translatable="yes">Open file</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-open</property>
+                                <signal name="clicked" handler="on_open_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="ImportButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Import file or media.</property>
+                                <property name="label" translatable="yes">Import file</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">document-import</property>
+                                <signal name="clicked" handler="on_import_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="SaveButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Save current file (Ctrl-S).</property>
+                                <property name="label" translatable="yes">Save file</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-save</property>
+                                <signal name="clicked" handler="on_save_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="RefreshButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Reload file (F5).</property>
+                                <property name="label" translatable="yes">Reload file</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-refresh</property>
+                                <signal name="clicked" handler="on_revert_to_saved_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="SeparatorToolItem1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="UndoButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
+                                <property name="label" translatable="yes">Undo</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-undo</property>
+                                <signal name="clicked" handler="on_undo_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="RedoButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
+                                <property name="label" translatable="yes">Redo</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-redo</property>
+                                <signal name="clicked" handler="on_redo_activated" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="SeparatorToolItem2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="NodeIndexButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Node Index</property>
+                                <property name="label" translatable="yes">Node Index</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">Index</property>
+                                <signal name="clicked" handler="on_node_index_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="separatortoolitem2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="GeometryEditorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Geometry Editor</property>
+                                <property name="label" translatable="yes">Geometry Editor</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">Geometry</property>
+                                <signal name="clicked" handler="on_geometry_editor_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="ColorPerVertexEditorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Paint Polygons</property>
+                                <property name="label" translatable="yes">Paint Polygons</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">PaintBrush</property>
+                                <signal name="clicked" handler="on_color_editor_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="TextureCoordinateEditorButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Texture Mapping Editor</property>
+                                <property name="label" translatable="yes">Texture Coordinate Editor</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">TextureCoordinate</property>
+                                <signal name="clicked" handler="on_texture_mapping_editor_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="separatortoolitem6">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Prototype Editor</property>
+                                <property name="label" translatable="yes">Prototype Instance</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">Prototype</property>
+                                <signal name="clicked" handler="on_prototype_instance_dialog_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton" id="OpenButton">
+                          <object class="GtkSeparator">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Open file or media (Ctrl-O).</property>
-                            <property name="label" translatable="yes">Open file</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-open</property>
-                            <signal name="clicked" handler="on_open_activated" swapped="no"/>
+                            <property name="orientation">vertical</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton" id="ImportButton">
+                          <object class="GtkToolbar" id="PrimitivesToolBar">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Import file or media.</property>
-                            <property name="label" translatable="yes">Import file</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">document-import</property>
-                            <signal name="clicked" handler="on_import_activated" swapped="no"/>
+                            <property name="toolbar_style">icons</property>
+                            <property name="icon_size">1</property>
+                            <child>
+                              <object class="GtkToolButton" id="ArcCloseButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert ArcClose2D.</property>
+                                <property name="label" translatable="yes">ArcClose</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">ArcCloseNode</property>
+                                <signal name="clicked" handler="on_arc_close_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="DiskButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Disk2D.</property>
+                                <property name="label" translatable="yes">Disk</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">DiskNode</property>
+                                <signal name="clicked" handler="on_disk_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="RectangleButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Rectangle2D.</property>
+                                <property name="label" translatable="yes">Rectangle</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">RectangleNode</property>
+                                <signal name="clicked" handler="on_rectangle_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="StarButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Star2D.</property>
+                                <property name="label" translatable="yes">Star</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">StarNode</property>
+                                <signal name="clicked" handler="on_star_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="SeparatorToolItem3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="BoxButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Box.</property>
+                                <property name="label" translatable="yes">Box</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">BoxNode</property>
+                                <signal name="clicked" handler="on_box_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="ConeButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Cone.</property>
+                                <property name="label" translatable="yes">Cone</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">ConeNode</property>
+                                <signal name="clicked" handler="on_cone_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="CylinderButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Cylinder.</property>
+                                <property name="label" translatable="yes">Cylinder</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">CylinderNode</property>
+                                <signal name="clicked" handler="on_cylinder_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="ElevationGridButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert ElevationGrid.</property>
+                                <property name="label" translatable="yes">ElevationGrid</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">ElevationGridNode</property>
+                                <signal name="clicked" handler="on_elevation_grid_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="PyramidButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Pyramid.</property>
+                                <property name="label" translatable="yes">Pyramid</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">PyramidNode</property>
+                                <signal name="clicked" handler="on_pyramid_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="SphereButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Insert Sphere.</property>
+                                <property name="label" translatable="yes">Sphere</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">SphereNode</property>
+                                <signal name="clicked" handler="on_sphere_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="SaveButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Save current file (Ctrl-S).</property>
-                            <property name="label" translatable="yes">Save file</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-save</property>
-                            <signal name="clicked" handler="on_save_activated" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="RefreshButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Reload file (F5).</property>
-                            <property name="label" translatable="yes">Reload file</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-refresh</property>
-                            <signal name="clicked" handler="on_revert_to_saved_activated" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="SeparatorToolItem1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="UndoButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Undo last action (Ctrl-Z).</property>
-                            <property name="label" translatable="yes">Undo</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-undo</property>
-                            <signal name="clicked" handler="on_undo_activated" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="RedoButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Redo last action (Ctrl-Shift-Z).</property>
-                            <property name="label" translatable="yes">Redo</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-redo</property>
-                            <signal name="clicked" handler="on_redo_activated" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="SeparatorToolItem2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="NodeIndexButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Node Index</property>
-                            <property name="label" translatable="yes">Node Index</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Index</property>
-                            <signal name="clicked" handler="on_node_index_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="NodePropertiesEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Node Properties Editor</property>
-                            <property name="label" translatable="yes">Node Properties Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-edit</property>
-                            <signal name="clicked" handler="on_node_properties_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="AppearanceEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Appearance Editor</property>
-                            <property name="label" translatable="yes">Appearance Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Appearance</property>
-                            <signal name="clicked" handler="on_appearance_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="TextureEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Texture Editor</property>
-                            <property name="label" translatable="yes">Texture Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Texture</property>
-                            <signal name="clicked" handler="on_texture_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="TextEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Text Editor</property>
-                            <property name="label" translatable="yes">Text Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Text</property>
-                            <signal name="clicked" handler="on_text_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Geometry Properties Editor</property>
-                            <property name="label" translatable="yes">Geometry Properties Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Geometry</property>
-                            <signal name="clicked" handler="on_geometry_properties_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem3">
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="GeometryEditorButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Geometry Editor</property>
-                            <property name="label" translatable="yes">Geometry Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Geometry</property>
-                            <signal name="clicked" handler="on_geometry_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="ColorPerVertexEditorButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Paint Polygons</property>
-                            <property name="label" translatable="yes">Paint Polygons</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">PaintBrush</property>
-                            <signal name="clicked" handler="on_color_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="TextureCoordinateEditorButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Texture Mapping Editor</property>
-                            <property name="label" translatable="yes">Texture Coordinate Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">TextureCoordinate</property>
-                            <signal name="clicked" handler="on_texture_mapping_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem6">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="LayerEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Layer Editor</property>
-                            <property name="label" translatable="yes">Layer Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">LayerSet</property>
-                            <signal name="clicked" handler="on_layer_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="BackgroundEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Background Editor</property>
-                            <property name="label" translatable="yes">Background Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Background</property>
-                            <signal name="clicked" handler="on_background_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="NavigationInfoEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Navigation Info Editor</property>
-                            <property name="label" translatable="yes">Navigation Info Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Navigation</property>
-                            <signal name="clicked" handler="on_navigation_info_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="ViewpointEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
-                            <property name="label" translatable="yes">Viewpoint Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Viewpoint</property>
-                            <signal name="clicked" handler="on_viewpoint_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="LightEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Light Editor</property>
-                            <property name="label" translatable="yes">Light Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Light</property>
-                            <signal name="clicked" handler="on_light_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="LODEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">LOD Editor</property>
-                            <property name="label" translatable="yes">LOD Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">LOD</property>
-                            <signal name="clicked" handler="on_lod_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="InlineEditorButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Inline Editor</property>
-                            <property name="label" translatable="yes">Inline Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Inline</property>
-                            <signal name="clicked" handler="on_inline_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="PrecisionPlacementPanelButton">
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Precision Placement Panel</property>
-                            <property name="label" translatable="yes">Precision Placement Panel</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Placement</property>
-                            <signal name="clicked" handler="on_precision_placement_panel_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem4">
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="CreatePrototypeInstanceButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Prototype Editor</property>
-                            <property name="label" translatable="yes">Prototype Instance</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Prototype</property>
-                            <signal name="clicked" handler="on_prototype_instance_dialog_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem5">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="NodeEditorButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Node Editor</property>
-                            <property name="label" translatable="yes">Node Editor</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-edit</property>
-                            <signal name="clicked" handler="on_node_editor_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
