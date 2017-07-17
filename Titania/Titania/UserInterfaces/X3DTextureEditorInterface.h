@@ -556,8 +556,8 @@ public:
 	{ return *m_MovieTextureSpeedSpinButton; }
 
 	Gtk::Box &
-	getMovieTextureLoopBox () const
-	{ return *m_MovieTextureLoopBox; }
+	getMovieTextureControlsBox () const
+	{ return *m_MovieTextureControlsBox; }
 
 	Gtk::ToggleButton &
 	getMovieTextureLoopToggleButton () const
@@ -578,6 +578,14 @@ public:
 	Gtk::Image &
 	getMovieTextureStopImage () const
 	{ return *m_MovieTextureStopImage; }
+
+	Gtk::Label &
+	getMovieTextureElapsedTimeLabel () const
+	{ return *m_MovieTextureElapsedTimeLabel; }
+
+	Gtk::Label &
+	getMovieTextureDurationLabel () const
+	{ return *m_MovieTextureDurationLabel; }
 
 	Gtk::Box &
 	getComposedTexture3DBox () const
@@ -1370,12 +1378,14 @@ private:
 	Gtk::Button* m_MovieTextureURLReloadButton;
 	Gtk::Entry* m_MovieTextureDescriptionEntry;
 	Gtk::SpinButton* m_MovieTextureSpeedSpinButton;
-	Gtk::Box* m_MovieTextureLoopBox;
+	Gtk::Box* m_MovieTextureControlsBox;
 	Gtk::ToggleButton* m_MovieTextureLoopToggleButton;
 	Gtk::Button* m_MovieTexturePlayPauseButton;
 	Gtk::Image* m_MovieTexturePlayPauseImage;
 	Gtk::Button* m_MovieTextureStopButton;
 	Gtk::Image* m_MovieTextureStopImage;
+	Gtk::Label* m_MovieTextureElapsedTimeLabel;
+	Gtk::Label* m_MovieTextureDurationLabel;
 	Gtk::Box* m_ComposedTexture3DBox;
 	Gtk::Box* m_ImageTexture3DBox;
 	Gtk::Box* m_ImageTexture3DURLBox;

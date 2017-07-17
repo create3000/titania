@@ -106,6 +106,12 @@ private:
 	void
 	set_active ();
 
+	void
+	set_elapsedTime ();
+
+	void
+	set_duration ();
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool>  enabled;

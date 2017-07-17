@@ -59,6 +59,9 @@ namespace puck {
 std::string
 strfframes (const size_t value, const size_t framesPerSecond);
 
+std::string
+strftime (const long double value, const size_t fractions);
+
 } // puck
 } // titania
 

@@ -128,6 +128,12 @@ private:
 	void
 	set_active ();
 
+	void
+	set_elapsedTime ();
+
+	void
+	set_duration ();
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool>  enabled;
@@ -136,9 +142,6 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>   speed;
 	X3DFieldAdjustment <X3D::SFFloat>   pitch;
 	X3DFieldToggleButton <X3D::SFBool>  loop;
-	X3DFieldAdjustment <X3D::SFTime>    cycleTime;
-	X3DFieldAdjustment <X3D::SFTime>    elapsedTime;
-	X3DFieldAdjustment <X3D::SFTime>    duration_changed;
 
 	X3D::X3DPtrArray <X3D::Sound>         sounds;
 	X3D::SFTime                           soundSourceNodeBuffer;
@@ -146,10 +149,6 @@ private:
 	X3D::X3DPtr <X3D::AudioClip>          audioClip;
 	X3D::X3DPtr <X3D::MovieTexture>       movieTexture;
 	X3D::UndoStepPtr                      undoStep;
-	X3D::UndoStepPtr                      startTimeUndoStep;
-	X3D::UndoStepPtr                      resumeTimeUndoStep;
-	X3D::UndoStepPtr                      pauseTimeUndoStep;
-	X3D::UndoStepPtr                      stopTimeUndoStep;
 	bool                                  changing;
 
 };

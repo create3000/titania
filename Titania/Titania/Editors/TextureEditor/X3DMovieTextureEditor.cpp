@@ -50,6 +50,7 @@
 
 #include "X3DMovieTextureEditor.h"
 
+#include "../../Bits/String.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
@@ -83,21 +84,26 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 {
 	if (movieTexture)
 	{
-		movieTexture -> isActive () .removeInterest (&X3DMovieTextureEditor::set_active, this);
-		movieTexture -> isPaused () .removeInterest (&X3DMovieTextureEditor::set_active, this);
+		movieTexture -> isActive ()         .removeInterest (&X3DMovieTextureEditor::set_active,      this);
+		movieTexture -> isPaused ()         .removeInterest (&X3DMovieTextureEditor::set_active,      this);
+		movieTexture -> elapsedTime ()      .removeInterest (&X3DMovieTextureEditor::set_elapsedTime, this);
+		movieTexture -> duration_changed () .removeInterest (&X3DMovieTextureEditor::set_duration,    this);
+
 		movieTexture -> isEvenLive (false);
 	}
 
 	movieTexture = value;
 
-	getMovieTextureBox ()     .set_visible   (movieTexture);
-	getMovieTextureLoopBox () .set_sensitive (movieTexture);
+	getMovieTextureBox ()         .set_visible   (movieTexture);
+	getMovieTextureControlsBox () .set_sensitive (movieTexture);
 
 	if (not movieTexture)
 		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
 
-	movieTexture -> isActive () .addInterest (&X3DMovieTextureEditor::set_active, this);
-	movieTexture -> isPaused () .addInterest (&X3DMovieTextureEditor::set_active, this);
+	movieTexture -> isActive ()         .addInterest (&X3DMovieTextureEditor::set_active,      this);
+	movieTexture -> isPaused ()         .addInterest (&X3DMovieTextureEditor::set_active,      this);
+	movieTexture -> elapsedTime ()      .addInterest (&X3DMovieTextureEditor::set_elapsedTime, this);
+	movieTexture -> duration_changed () .addInterest (&X3DMovieTextureEditor::set_duration,    this);
 	movieTexture -> isEvenLive (true);
 
 	const X3D::MFNode nodes = { movieTexture };
@@ -110,6 +116,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	url -> setNodes (nodes);
 
 	set_active ();
+	set_duration ();
 }
 
 const X3D::X3DPtr <X3D::MovieTexture> &
@@ -169,6 +176,20 @@ X3DMovieTextureEditor::set_active ()
 
 	else
 		getMovieTexturePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+X3DMovieTextureEditor::set_elapsedTime ()
+{
+	const auto time = std::fmod (movieTexture -> elapsedTime (), movieTexture -> duration_changed ());
+
+	getMovieTextureElapsedTimeLabel () .set_text (strftime (time, 3));
+}
+
+void
+X3DMovieTextureEditor::set_duration ()
+{
+	getMovieTextureDurationLabel () .set_text (strftime (movieTexture -> duration_changed (), 3));
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()

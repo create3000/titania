@@ -50,6 +50,7 @@
 
 #include "String.h"
 
+#include <cmath>
 #include <iomanip>
 #include <sstream>
 
@@ -80,6 +81,36 @@ strfframes (const size_t value, const size_t framesPerSecond)
 		<< std::setw (2) << minutes << ":" 
 		<< std::setw (2) << seconds << ":" 
 		<< std::setw (2) << frames;
+
+	return osstream .str ();
+}
+
+std::string
+strftime (const long double value, const size_t fractions)
+{
+	const size_t framesPerSecond = std::pow (10, fractions);
+
+	size_t time = std::round (value * framesPerSecond);
+
+	const size_t frames = time % framesPerSecond;
+	time /= framesPerSecond;
+
+	const size_t seconds = time % 60;
+	time /= 60;
+
+	const size_t minutes = time % 60;
+	time /= 60;
+
+	const size_t hours = time;
+
+	std::ostringstream osstream;
+	
+	osstream
+		<< std::setfill ('0')
+		<< std::setw (2) << hours << ":"
+		<< std::setw (2) << minutes << ":" 
+		<< std::setw (2) << seconds << "." 
+		<< std::setw (fractions) << frames;
 
 	return osstream .str ();
 }

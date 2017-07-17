@@ -169,7 +169,7 @@ RenderThread::set_loadCount ()
 			thread = std::make_unique <std::thread> (std::bind (&RenderThread::run, this));
 
 		else
-			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_HIGH);
+			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_HIGH_IDLE);
 	}
 	catch (const X3D::X3DError & error)
 	{

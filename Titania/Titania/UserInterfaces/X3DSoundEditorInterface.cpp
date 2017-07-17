@@ -146,14 +146,13 @@ X3DSoundEditorInterface::create ()
 	m_builder -> get_widget ("SoundSourceURLReloadButton", m_SoundSourceURLReloadButton);
 	m_builder -> get_widget ("SoundSourceSpeedSpinButton", m_SoundSourceSpeedSpinButton);
 	m_builder -> get_widget ("SoundSourcePitchSpinButton", m_SoundSourcePitchSpinButton);
-	m_builder -> get_widget ("SoundSourceCycleTimeSpinButton", m_SoundSourceCycleTimeSpinButton);
-	m_builder -> get_widget ("SoundSourceElapsedTimeSpinButton", m_SoundSourceElapsedTimeSpinButton);
-	m_builder -> get_widget ("SoundSourceDurationSpinButton", m_SoundSourceDurationSpinButton);
 	m_builder -> get_widget ("SoundSourceLoopToggleButton", m_SoundSourceLoopToggleButton);
 	m_builder -> get_widget ("SoundSourcePlayPauseButton", m_SoundSourcePlayPauseButton);
 	m_builder -> get_widget ("SoundSourcePlayPauseImage", m_SoundSourcePlayPauseImage);
 	m_builder -> get_widget ("SoundSourceStopButton", m_SoundSourceStopButton);
 	m_builder -> get_widget ("SoundSourceStopImage", m_SoundSourceStopImage);
+	m_builder -> get_widget ("SoundSourceElapsedTimeLabel", m_SoundSourceElapsedTimeLabel);
+	m_builder -> get_widget ("SoundSourceDurationLabel", m_SoundSourceDurationLabel);
 
 	// Connect object Gtk::Button with id 'NewSoundButton'.
 	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_new_sound_clicked));

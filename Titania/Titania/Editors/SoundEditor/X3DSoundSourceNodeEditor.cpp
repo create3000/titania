@@ -50,6 +50,7 @@
 
 #include "X3DSoundSourceNodeEditor.h"
 
+#include "../../Bits/String.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
@@ -77,28 +78,12 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 	                         getSoundSourcePitchSpinButton (),
 	                         "pitch"),
 	                   loop (this, getSoundSourceLoopToggleButton (), "loop"),
-	               cycleTime (this,
-	                         getSoundSourceCycleTimeAdjustment (),
-	                         getSoundSourceCycleTimeSpinButton (),
-	                         "cycleTime"),
-	            elapsedTime (this,
-	                         getSoundSourceElapsedTimeAdjustment (),
-	                         getSoundSourceElapsedTimeSpinButton (),
-	                         "elapsedTime"),
-	       duration_changed (this,
-	                         getSoundSourceDurationAdjustment (),
-	                         getSoundSourceDurationSpinButton (),
-	                         "duration_changed"),
 	                 sounds (),
 	  soundSourceNodeBuffer (),
 	        soundSourceNode (),
 	              audioClip (),
 	           movieTexture (),
 	               undoStep (),
-	      startTimeUndoStep (),
-	     resumeTimeUndoStep (),
-	      pauseTimeUndoStep (),
-	       stopTimeUndoStep (),
 	               changing (false)
 {
 	addChildObjects (sounds, soundSourceNodeBuffer, soundSourceNode, audioClip, movieTexture);
@@ -221,15 +206,13 @@ X3DSoundSourceNodeEditor::set_node ()
 	{
 		soundSourceNode -> isEvenLive (false);
 
-		soundSourceNode -> isPaused () .removeInterest (&X3DSoundSourceNodeEditor::set_active, this);
-		soundSourceNode -> isActive () .removeInterest (&X3DSoundSourceNodeEditor::set_active, this);
+		soundSourceNode -> isPaused ()         .removeInterest (&X3DSoundSourceNodeEditor::set_active,      this);
+		soundSourceNode -> isActive ()         .removeInterest (&X3DSoundSourceNodeEditor::set_active,      this);
+		soundSourceNode -> elapsedTime ()      .removeInterest (&X3DSoundSourceNodeEditor::set_elapsedTime, this);
+		soundSourceNode -> duration_changed () .removeInterest (&X3DSoundSourceNodeEditor::set_duration,    this);
 	}
 
-	undoStep           .reset ();
-	startTimeUndoStep  .reset ();
-	resumeTimeUndoStep .reset ();
-	pauseTimeUndoStep  .reset ();
-	stopTimeUndoStep   .reset ();
+	undoStep .reset ();
 
 	auto  tuple             = getSelection <X3D::X3DSoundSourceNode> (sounds, "source");
 	const int32_t active    = std::get <1> (tuple);
@@ -251,8 +234,10 @@ X3DSoundSourceNodeEditor::set_node ()
 		soundSourceNode = audioClip;
 
 	soundSourceNode -> isEvenLive (true);
-	soundSourceNode -> isPaused () .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
-	soundSourceNode -> isActive () .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
+	soundSourceNode -> isPaused ()         .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
+	soundSourceNode -> isActive ()         .addInterest (&X3DSoundSourceNodeEditor::set_active, this);
+	soundSourceNode -> elapsedTime ()      .addInterest (&X3DSoundSourceNodeEditor::set_elapsedTime, this);
+	soundSourceNode -> duration_changed () .addInterest (&X3DSoundSourceNodeEditor::set_duration,    this);
 
 	changing = true;
 
@@ -285,6 +270,7 @@ X3DSoundSourceNodeEditor::set_node ()
 
 	set_widgets ();
 	set_active ();
+	set_duration ();
 
 	changing = false;
 }
@@ -294,15 +280,12 @@ X3DSoundSourceNodeEditor::set_widgets ()
 {
 	const X3D::MFNode nodes = { soundSourceNode };
 
-	enabled          .setNodes (nodes);
-	description      .setNodes (nodes);
-	url ->            setNodes (nodes);
-	speed            .setNodes (nodes);
-	pitch            .setNodes (nodes);
-	loop             .setNodes (nodes);
-	cycleTime        .setNodes (nodes);
-	elapsedTime      .setNodes (nodes);
-	duration_changed .setNodes (nodes);
+	enabled     .setNodes (nodes);
+	description .setNodes (nodes);
+	url ->       setNodes (nodes);
+	speed       .setNodes (nodes);
+	pitch       .setNodes (nodes);
+	loop        .setNodes (nodes);
 }
 
 void
@@ -345,6 +328,20 @@ X3DSoundSourceNodeEditor::set_active ()
 
 	else
 		getSoundSourcePlayPauseImage () .set (Gtk::StockID ("gtk-media-play"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+X3DSoundSourceNodeEditor::set_elapsedTime ()
+{
+	const auto time = std::fmod (movieTexture -> elapsedTime (), movieTexture -> duration_changed ());
+
+	getSoundSourceElapsedTimeLabel () .set_text (strftime (time, 3));
+}
+
+void
+X3DSoundSourceNodeEditor::set_duration ()
+{
+	getSoundSourceDurationLabel () .set_text (strftime (soundSourceNode -> duration_changed (), 3));
 }
 
 X3DSoundSourceNodeEditor::~X3DSoundSourceNodeEditor ()

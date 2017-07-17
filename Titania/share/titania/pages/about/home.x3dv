@@ -8,7 +8,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Mon, 17 Jul 2017 04:23:49 GMT"
+META "modified" "Mon, 17 Jul 2017 05:19:59 GMT"
 META "title" "about:home"
 
 EXTERNPROTO Rotor [
@@ -51,7 +51,7 @@ WorldInfo {
             value [
               0,
               0,
-              34
+              0.5
             ]
           }
           DEF orientation MetadataDouble {
@@ -113,16 +113,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 Transform {
-              rotation -0.999999999993254 -3.67320512848233e-06 8.16034767383677e-19 1.5707963267949
-              children DEF Radial Background {
-                skyAngle 0.671487
-                skyColor [
-                  0.408 0.408 0.408,
-                  0.285 0.285 0.285
-                ]
-              }
-            }
           }
         ]
       }
@@ -311,11 +301,20 @@ DEF NavigationInfo_1 NavigationInfo {
   type "NONE"
 }
 
-USE _1
+Transform {
+  rotation -0.999999999993254 -3.67320512848233e-06 8.16034767383677e-19 1.5707963267949
+  children DEF Radial Background {
+    skyAngle 0.671487
+    skyColor [
+      0.408 0.408 0.408,
+      0.285 0.285 0.285
+    ]
+  }
+}
 
 DEF Home Viewpoint {
   description "Home"
-  position 0 0 34
+  position 0 0 0.5
 }
 
 DEF Fastener Rotor {
@@ -329,12 +328,12 @@ DEF Slower Rotor {
   loop TRUE
 }
 
-DEF _2 TimeSensor {
+DEF _1 TimeSensor {
   cycleInterval 40
-  startTime 1500265030.16214
+  startTime 1500268793.08567
 }
 
-DEF _3 ScalarInterpolator {
+DEF _2 ScalarInterpolator {
   key [
     0,
     0.2,
@@ -351,7 +350,7 @@ DEF _3 ScalarInterpolator {
   ]
 }
 
-DEF _4 PositionInterpolator {
+DEF _3 PositionInterpolator {
   key [
     0,
     0.35,
@@ -367,9 +366,9 @@ DEF _4 PositionInterpolator {
 DEF Titania_1 Transform {
   children Shape {
     appearance Appearance {
-      material DEF _5 Material {
+      material DEF _4 Material {
         diffuseColor 0 0 0
-        transparency 1
+        transparency 0.193045
       }
     }
     geometry Text {
@@ -390,7 +389,7 @@ DEF Titania_1 Transform {
 }
 
 DEF Small Transform {
-  rotation 0 0 -1 3.52855204057291
+  rotation 0 0 -1 0.741365780426241
   scale 0.222222 0.222222 1
   children DEF loops Inline {
     url "library/red.orange.yellow.x3dv"
@@ -402,12 +401,12 @@ DEF Medium Transform {
 }
 
 DEF Large Transform {
-  rotation 0 0 1 6.11970774623156
+  rotation 0 0 1 0.674974812918815
   scale 4.5 4.5 1
   children USE loops
 }
 
-DEF _6 LoadSensor {
+DEF _5 LoadSensor {
   watchList USE loops
 }
 
@@ -422,8 +421,8 @@ function initialize ()
 
 ROUTE Fastener.rotation_changed TO Small.set_rotation
 ROUTE Slower.rotation_changed TO Large.set_rotation
-ROUTE _3.value_changed TO _5.set_transparency
-ROUTE _4.value_changed TO Home.set_position
-ROUTE _2.fraction_changed TO _3.set_fraction
-ROUTE _2.fraction_changed TO _4.set_fraction
-ROUTE _6.loadTime TO _2.set_startTime
+ROUTE _2.value_changed TO _4.set_transparency
+ROUTE _3.value_changed TO Home.set_position
+ROUTE _1.fraction_changed TO _2.set_fraction
+ROUTE _1.fraction_changed TO _3.set_fraction
+ROUTE _5.loadTime TO _1.set_startTime
