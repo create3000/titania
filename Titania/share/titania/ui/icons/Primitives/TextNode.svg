@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="102.4"
+   height="102.4"
+   id="svg2408"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="TextNode.svg"
+   inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/icon14x14.png"
+   inkscape:export-xdpi="13.125"
+   inkscape:export-ydpi="13.125"
+   viewBox="0 0 96 96">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     id="namedview3312"
+     showgrid="true"
+     inkscape:zoom="5.12"
+     inkscape:cx="49.81721"
+     inkscape:cy="46.698036"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer11"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:object-paths="false"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-intersection-paths="false"
+     inkscape:object-nodes="true"
+     inkscape:snap-page="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-global="true">
+    <sodipodi:guide
+       orientation="0,1"
+       position="-190.05815,47.999999"
+       id="guide4411"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="47.999999,99.034132"
+       id="guide4413"
+       inkscape:locked="false" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3989"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingy="3"
+       spacingx="3"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2410">
+    <filter
+       id="filter8810"
+       inkscape:label="Blur"
+       x="-0.16000000000000003"
+       y="-0.16000000000000003"
+       width="1.3300000000000001"
+       height="1.3300000000000001">
+      <feGaussianBlur
+         stdDeviation="5"
+         id="feGaussianBlur8812" />
+    </filter>
+    <filter
+       id="filter4926-8-3-1"
+       inkscape:label="Inner Shadow"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Adds a colorizable drop shadow inside"
+       x="-0.23"
+       y="-0.28999999"
+       width="1.24"
+       height="1.3"
+       style="color-interpolation-filters:sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4928-2-9-7"
+         stdDeviation="4"
+         result="result8" />
+      <feOffset
+         id="feOffset4930-8-9-4"
+         dx="6"
+         dy="6"
+         result="result11" />
+      <feComposite
+         id="feComposite4932-3-6-4"
+         in2="result11"
+         result="result6"
+         in="SourceGraphic"
+         operator="in" />
+      <feFlood
+         id="feFlood4934-0-5-3"
+         result="result10"
+         in="result6"
+         flood-opacity="1"
+         flood-color="rgb(0,0,0)" />
+      <feBlend
+         id="feBlend4936-6-6-2"
+         in2="result10"
+         mode="normal"
+         in="result6"
+         result="result12" />
+      <feComposite
+         id="feComposite4938-0-3-8"
+         in2="SourceGraphic"
+         result="result2"
+         operator="in" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata2413">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer12"
+     inkscape:label="Background"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#444444;fill-opacity:1;stroke:none"
+       id="rect4390"
+       width="96"
+       height="96"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer11"
+     inkscape:label="Shadow white"
+     style="display:inline">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 72.363638,89.999994 Q 70.666669,85.030296 68.848487,80.181812 67.030305,75.333327 65.333335,70.242418 H 29.939396 q -1.69697,5.090909 -3.515152,10.060606 -1.696969,4.848485 -3.393938,9.69697 H 7.1515169 Q 11.87879,76.545448 16.121214,65.151509 q 4.242425,-11.39394 8.242424,-21.575758 4.121212,-10.181819 8.121213,-19.39394 4,-9.212121 8.242424,-18.1818181 h 14.424242 q 4.242425,8.9696971 8.242425,18.1818181 4,9.212121 7.999999,19.39394 4.121213,10.181818 8.363638,21.575758 4.363636,11.393939 9.090908,24.848485 z M 47.636365,22.242417 q -2.787878,6.424243 -6.424242,15.636364 -3.515151,9.212121 -7.393939,20 H 61.454548 Q 57.57576,47.090902 53.939396,37.75757 50.303033,28.424235 47.636365,22.242417 Z"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:121.21212006px;line-height:129.99999523%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Medium';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.93749994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter8810)"
+       id="path4504-1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Navigation"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <g
+       aria-label="A"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.09595871px;line-height:129.99999523%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.93749994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="text4502">
+      <path
+         d="M 72.363637,89.999992 Q 70.666668,85.030295 68.848486,80.181811 67.030304,75.333326 65.333334,70.242417 H 29.939395 q -1.696969,5.090909 -3.515151,10.060606 -1.69697,4.848485 -3.393939,9.696969 H 7.1515169 Q 11.87879,76.545447 16.121214,65.151508 20.363638,53.757568 24.363638,43.57575 28.48485,33.393932 32.48485,24.181811 q 4,-9.212121 8.242424,-18.1818178 h 14.424242 q 4.242425,8.9696968 8.242425,18.1818178 4,9.212121 7.999999,19.393939 4.121213,10.181818 8.363637,21.575758 4.363636,11.393939 9.090909,24.848484 z M 47.636365,22.242417 q -2.787879,6.424243 -6.424242,15.636364 -3.515152,9.212121 -7.39394,20 H 61.454547 Q 57.575759,47.090902 53.939395,37.757569 50.303032,28.424235 47.636365,22.242417 Z"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:121.21212006px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Medium';stroke-width:0.93749994px"
+         id="path4504"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+  <g
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:92.19857788px;line-height:129.99999523%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     id="text7563" />
+</svg>

@@ -2149,6 +2149,12 @@ BrowserWindow::on_sphere_clicked ()
 }
 
 void
+BrowserWindow::on_text_clicked ()
+{
+	on_primitive_clicked (_ ("Insert Text."), "Library/Primitives/Text/Text.x3dv");
+}
+
+void
 BrowserWindow::on_primitive_clicked (const std::string & description, const std::string & path)
 {
 	try
@@ -2156,8 +2162,8 @@ BrowserWindow::on_primitive_clicked (const std::string & description, const std:
 		const auto undoStep = std::make_shared <X3D::UndoStep> (description);
 		const auto nodes    = getBrowserWindow () -> import ({ find_data_file (path) }, undoStep);
 	
-		getSelection () -> setNodes (nodes, undoStep);
-		addUndoStep (undoStep);
+		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const std::exception & error)
 	{

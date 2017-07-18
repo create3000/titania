@@ -73,6 +73,8 @@ public:
 
 private:
 
+	///  @name Operations
+
 	void
 	watch_motion (const bool);
 

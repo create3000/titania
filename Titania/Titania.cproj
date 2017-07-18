@@ -3034,6 +3034,7 @@
     <None Include="share\titania\ui\icons\Primitives\ArcCloseNode.svg" />
     <None Include="share\titania\ui\icons\Primitives\StarNode.svg" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Star2D.x3dv" />
+    <None Include="share\titania\ui\icons\Primitives\TextNode.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

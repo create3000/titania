@@ -55,6 +55,9 @@
 
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
+
+#include <Titania/String.h>
+
 #include <cassert>
 
 namespace titania {
@@ -814,6 +817,12 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 
 bool
 OutlineTreeModel::drag_data_get_vfunc (const Path & path, Gtk::SelectionData & selection_data) const
+{
+	return true;
+}
+
+bool
+OutlineTreeModel::row_drop_possible_vfunc (const Path & path, const Gtk::SelectionData & selection_data) const
 {
 	return true;
 }

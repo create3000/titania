@@ -705,6 +705,10 @@ private:
 	void
 	on_sphere_clicked () final override;
 
+	virtual
+	void
+	on_text_clicked () final override;
+
 	void
 	on_primitive_clicked (const std::string & description, const std::string & path);
 

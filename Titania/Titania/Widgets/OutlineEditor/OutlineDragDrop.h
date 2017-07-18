@@ -120,7 +120,8 @@ private:
 	///  @name Members
 
 	OutlineTreeViewEditor* const treeView;
-	Gtk::TreePath sourcePath;
+	basic::uri                   sourceUrl;
+	Gtk::TreePath                sourcePath;
 
 };
 

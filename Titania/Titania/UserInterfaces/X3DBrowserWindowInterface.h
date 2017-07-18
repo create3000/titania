@@ -1267,6 +1267,10 @@ public:
 	getSphereButton () const
 	{ return *m_SphereButton; }
 
+	Gtk::ToolButton &
+	getTextButton () const
+	{ return *m_TextButton; }
+
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_VPaned; }
@@ -1878,6 +1882,10 @@ public:
 	on_sphere_clicked () = 0;
 
 	virtual
+	void
+	on_text_clicked () = 0;
+
+	virtual
 	bool
 	on_notebook_button_press_event (GdkEventButton* event) = 0;
 
@@ -2276,6 +2284,7 @@ private:
 	Gtk::ToolButton* m_ElevationGridButton;
 	Gtk::ToolButton* m_PyramidButton;
 	Gtk::ToolButton* m_SphereButton;
+	Gtk::ToolButton* m_TextButton;
 	Gtk::Paned* m_VPaned;
 	Gtk::Paned* m_HPaned;
 	Gtk::Overlay* m_BrowserOverlay;

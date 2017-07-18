@@ -374,6 +374,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ElevationGridButton", m_ElevationGridButton);
 	m_builder -> get_widget ("PyramidButton", m_PyramidButton);
 	m_builder -> get_widget ("SphereButton", m_SphereButton);
+	m_builder -> get_widget ("TextButton", m_TextButton);
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_builder -> get_widget ("HPaned", m_HPaned);
 	m_builder -> get_widget ("BrowserOverlay", m_BrowserOverlay);
@@ -678,6 +679,7 @@ X3DBrowserWindowInterface::create ()
 	m_ElevationGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_elevation_grid_clicked));
 	m_PyramidButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_pyramid_clicked));
 	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_sphere_clicked));
+	m_TextButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_text_clicked));
 
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
 	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_notebook_button_press_event), false);

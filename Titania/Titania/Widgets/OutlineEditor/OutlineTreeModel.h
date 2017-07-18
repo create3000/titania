@@ -294,20 +294,23 @@ private:
 	bool
 	drag_data_get_vfunc (const Path & path, Gtk::SelectionData & selection_data) const final override;
 
+	virtual
+	bool
+	row_drop_possible_vfunc (const Path & path, const Gtk::SelectionData & selection_data) const final override;
+
+	///  @name Member types
+
+	using DataColumn     = Gtk::TreeModelColumn <OutlineTreeData*>;
+	using SelectedColumn = Gtk::TreeModelColumn <bool>;
+
 	///  @name Members
 
-	typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
-	typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
-
 	X3D::X3DExecutionContextPtr executionContext;
-
-	DataColumn data_column;
-	SelectedColumn selected_column;
-
-	mutable OutlineTree tree;
-	int stamp;
-
-	bool show_all_routes;
+	DataColumn                  data_column;
+	SelectedColumn              selected_column;
+	mutable OutlineTree         tree;
+	int                         stamp;
+	bool                        show_all_routes;
 
 };
 
