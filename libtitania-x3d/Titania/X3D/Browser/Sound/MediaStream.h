@@ -68,6 +68,7 @@ extern "C"
 }
 
 #include <atomic>
+#include <mutex>
 
 namespace Gst {
 
@@ -122,8 +123,7 @@ public:
 	{ return duration; }
 
 	std::shared_ptr <VideoFrame>
-	getCurrentFrame ()
-	{ return std::move (currentFrame); }
+	getCurrentFrame ();
 
 	int32_t
 	getWidth () const
@@ -227,6 +227,7 @@ private:
 	std::atomic <int32_t>        width;
 	std::atomic <int32_t>        height;
 	std::shared_ptr <VideoFrame> currentFrame;
+	std::mutex                   frameMutex;
 
 	bool      emitAudio;
 	bool      emitVideo;

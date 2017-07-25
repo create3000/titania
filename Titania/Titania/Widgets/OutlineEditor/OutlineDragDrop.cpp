@@ -70,7 +70,7 @@ const std::string OutlineDragDrop::dragDataType = "TITANIA_OUTLINE_TREE_ROW";
 
 OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
 	  treeView (treeView),
-	 sourceUrl (),
+	  sourceId (0),
 	sourcePath ()
 {
 	// Drag & Drop
@@ -102,7 +102,7 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 	{
 		Gtk::TreeViewColumn* column = nullptr;
 
-		sourceUrl  = treeView -> get_execution_context () -> getWorldURL ();
+		sourceId   = treeView -> get_execution_context () -> getId ();
 		sourcePath = treeView -> get_path_at_position (event -> x, event -> y, column);
 	}
 
@@ -117,7 +117,7 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 	if (time)
 		context -> drag_status (Gdk::ACTION_MOVE, time);
 
-	if (treeView -> get_execution_context () -> getWorldURL () not_eq sourceUrl)
+	if (treeView -> get_execution_context () -> getId () not_eq sourceId)
 		return true;
 
 	const auto iter = treeView -> get_model () -> get_iter (sourcePath);

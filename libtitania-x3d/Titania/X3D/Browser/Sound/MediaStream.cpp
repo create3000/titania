@@ -76,6 +76,7 @@ MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
 	                    width (-1),
 	                   height (-1),
 	             currentFrame (),
+	               frameMutex (),
 	                emitAudio (false),
 	                emitVideo (false),
 	                   volume (0),
@@ -246,6 +247,14 @@ MediaStream::getQueryDuration () const
 		return duration / (long double) Gst::SECOND;
 
 	return -1;
+}
+
+std::shared_ptr <VideoFrame>
+MediaStream::getCurrentFrame ()
+{
+	std::lock_guard <std::mutex> lock (frameMutex);
+
+	return std::move (currentFrame);
 }
 
 bool
@@ -454,7 +463,12 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 
 			flip (frame -> image, frame -> width, frame -> height);
 
-			currentFrame = frame;
+			// Exchange current frame
+			{
+				std::lock_guard <std::mutex> lock (frameMutex);
+
+				currentFrame = frame;
+			}
 
 			bufferChangedDispatcher .emit ();
 		}
