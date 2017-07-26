@@ -47,10 +47,10 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_PANEL_MENU_H__
-#define __TMP_GLAD2CPP_PANEL_MENU_H__
+#ifndef __TMP_GLAD2CPP_ROUTE_GRAPH_H__
+#define __TMP_GLAD2CPP_ROUTE_GRAPH_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DPanelInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -58,27 +58,27 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for PanelMenu.
+ *  Gtk Interface for RouteGraph.
  */
-class X3DPanelMenuInterface :
-	public X3DUserInterface
+class X3DRouteGraphInterface :
+	public X3DPanelInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DPanelMenuInterface () :
-		X3DUserInterface ()
+	X3DRouteGraphInterface () :
+		X3DPanelInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DPanelMenuInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+	X3DRouteGraphInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DPanelMenuInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+	X3DRouteGraphInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DPanelInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -87,44 +87,72 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
-	Gtk::Menu &
-	getWidget () const
-	{ return *m_Widget; }
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getHAdjustment () const
+	{ return m_HAdjustment; }
 
-	Gtk::MenuItem &
-	getBrowserPanelMenuItem () const
-	{ return *m_BrowserPanelMenuItem; }
-
-	Gtk::MenuItem &
-	getRenderPanelMenuItem () const
-	{ return *m_RenderPanelMenuItem; }
-
-	Gtk::MenuItem &
-	getRouteGraphMenuItem () const
-	{ return *m_RouteGraphMenuItem; }
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getVAdjustment () const
+	{ return m_VAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
 
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::MenuBar &
+	getMenuBar () const
+	{ return *m_MenuBar; }
+
+	Gtk::MenuItem &
+	getRouteGraphMenuItem () const
+	{ return *m_RouteGraphMenuItem; }
+
+	Gtk::MenuItem &
+	getRenameMenuItem () const
+	{ return *m_RenameMenuItem; }
+
+	Gtk::MenuItem &
+	getAlignToGridMenuItem () const
+	{ return *m_AlignToGridMenuItem; }
+
+	Gtk::MenuItem &
+	getPanelsMenuItem () const
+	{ return *m_PanelsMenuItem; }
+
+	Gtk::Viewport &
+	getViewport () const
+	{ return *m_Viewport; }
+
+	Gtk::Fixed &
+	getFixed () const
+	{ return *m_Fixed; }
+
 	///  @name Signal handlers
 
 	virtual
-	void
-	on_browser_panel_activate () = 0;
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
-	on_render_panel_activate () = 0;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
-	void
-	on_route_graph_activate () = 0;
+	bool
+	on_motion_notify_event (GdkEventMotion* motion_event) = 0;
+
+	virtual
+	bool
+	on_draw (const ::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~X3DPanelMenuInterface () override;
+	~X3DRouteGraphInterface () override;
 
 
 private:
@@ -145,11 +173,17 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Menu* m_Widget;
-	Gtk::MenuItem* m_BrowserPanelMenuItem;
-	Gtk::MenuItem* m_RenderPanelMenuItem;
-	Gtk::MenuItem* m_RouteGraphMenuItem;
+	Glib::RefPtr <Gtk::Adjustment> m_HAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_VAdjustment;
 	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::MenuBar* m_MenuBar;
+	Gtk::MenuItem* m_RouteGraphMenuItem;
+	Gtk::MenuItem* m_RenameMenuItem;
+	Gtk::MenuItem* m_AlignToGridMenuItem;
+	Gtk::MenuItem* m_PanelsMenuItem;
+	Gtk::Viewport* m_Viewport;
+	Gtk::Fixed* m_Fixed;
 
 };
 

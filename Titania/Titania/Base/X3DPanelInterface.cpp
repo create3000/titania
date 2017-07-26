@@ -159,8 +159,11 @@ X3DPanelInterface::set_focus ()
 bool
 X3DPanelInterface::on_button_press_event (GdkEventButton* event)
 {
-	for (size_t i = 0, size = page -> getPanels () .size (); i < size; ++ i)
-		page -> getPanels () [i] -> setFocus (i == id);
+	if (event -> button == 1)
+	{
+		for (size_t i = 0, size = page -> getPanels () .size (); i < size; ++ i)
+			page -> getPanels () [i] -> setFocus (i == id);
+	}
 
 	return false;
 }

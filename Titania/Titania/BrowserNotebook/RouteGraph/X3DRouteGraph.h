@@ -48,17 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_X3DROUTE_GRAPH_H__
+#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_X3DROUTE_GRAPH_H__
+
+#include "../../UserInterfaces/X3DRouteGraphInterface.h"
 
 namespace titania {
 namespace puck {
 
-enum class PanelType
+class X3DRouteGraph :
+	virtual public X3DRouteGraphInterface
 {
-	BROWSER_PANEL,
-	RENDER_PANEL,
-	ROUTE_GRAPH
+public:
+
+	///  @name Destruction
+
+	virtual
+	~X3DRouteGraph () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DRouteGraph ();
 
 };
 

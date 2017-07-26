@@ -47,22 +47,63 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
+#include "X3DRouteGraphInterface.h"
 
 namespace titania {
 namespace puck {
 
-enum class PanelType
+void
+X3DRouteGraphInterface::create (const std::string & filename)
 {
-	BROWSER_PANEL,
-	RENDER_PANEL,
-	ROUTE_GRAPH
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-};
+	create ();
+}
+
+void
+X3DRouteGraphInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DRouteGraphInterface::create ()
+{
+	// Get objects.
+	m_HAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HAdjustment"));
+	m_VAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VAdjustment"));
+
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("MenuBar", m_MenuBar);
+	m_builder -> get_widget ("RouteGraphMenuItem", m_RouteGraphMenuItem);
+	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
+	m_builder -> get_widget ("AlignToGridMenuItem", m_AlignToGridMenuItem);
+	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
+	m_builder -> get_widget ("Viewport", m_Viewport);
+	m_builder -> get_widget ("Fixed", m_Fixed);
+
+	// Connect object Gtk::Viewport with id 'Viewport'.
+	m_Viewport -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_button_press_event));
+	m_Viewport -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_drag_data_received));
+	m_Viewport -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_motion_notify_event));
+
+	// Connect object Gtk::Fixed with id 'Fixed'.
+	m_Fixed -> signal_draw () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_draw), false);
+}
+
+X3DRouteGraphInterface::~X3DRouteGraphInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

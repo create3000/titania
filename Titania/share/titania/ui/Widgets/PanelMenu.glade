@@ -24,6 +24,15 @@
         <signal name="activate" handler="on_render_panel_activate" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="RouteGraphMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Route _Graph</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_route_graph_activate" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>

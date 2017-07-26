@@ -48,17 +48,68 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_PANEL_TYPE_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
+#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
+
+#include "../../UserInterfaces/X3DRouteGraphInterface.h"
+
+#include "X3DRouteGraph.h"
 
 namespace titania {
 namespace puck {
 
-enum class PanelType
+class RouteGraph :
+	virtual public X3DRouteGraphInterface,
+	public X3DRouteGraph
 {
-	BROWSER_PANEL,
-	RENDER_PANEL,
-	ROUTE_GRAPH
+public:
+
+	///  @name Construction
+
+	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
+
+	///  @name Destruction
+
+	virtual
+	~RouteGraph () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
+private:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time) final override;
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) final override;
+	
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion* event) final override;
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & context) final override;
+
+	///  @name Members
+
+	Gtk::CellRendererText titleRenderer;
 
 };
 

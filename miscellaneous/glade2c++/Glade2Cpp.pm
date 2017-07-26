@@ -918,3 +918,19 @@ FileChooserDialog::response
   virtual void on_response(int response_id);
 Viewport::key_release_event
   virtual bool on_key_release_event(GdkEventKey* key_event);
+Fixed::draw
+  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
+Fixed::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+Fixed::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+Fixed::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+EventBox::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+Viewport::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+Viewport::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+Viewport::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);

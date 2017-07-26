@@ -53,6 +53,8 @@
 
 #include "../../Base/X3DBaseInterface.h"
 
+#include "OutlineTreeData.h"
+
 #include <gtkmm.h>
 
 namespace titania {
@@ -77,31 +79,54 @@ private:
 	///  @name Event handlers
 
 	bool
-	on_button_press_event (GdkEventButton*);
+	on_button_press_event (GdkEventButton* event);
+
+	void
+	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time);
 
 	bool
-	   on_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
 
 	bool
-	   on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
 
 	bool
-	   on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
 
 	void
-	   on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time);
 
 	void
-	   on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time);
 
 	void
-	   on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time);
 
 	void
-	   on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time);
 
 	void
-	   on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
+	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       int x, int y,
+	                       const Gtk::SelectionData & selection_data,
+	                       guint info,
+	                       guint time);
 
 	void
 	remove_source_node (const X3D::X3DExecutionContextPtr & sourceContext,
@@ -115,13 +140,16 @@ private:
 
 	///  @name Static members
 
-	static const std::string dragDataType;
+	static const std::string dragExternProtoIdType;
+	static const std::string dragNodeIdType;
 
 	///  @name Members
 
 	OutlineTreeViewEditor* const treeView;
-	size_t                       sourceId;
 	Gtk::TreePath                sourcePath;
+	size_t                       sourceId;
+	OutlineIterType              sourceType;
+	size_t                       nodeId;
 
 };
 

@@ -59,6 +59,8 @@
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Parser/Parser.h>
 
+#include <Titania/String.h>
+
 namespace titania {
 namespace puck {
 
@@ -66,23 +68,29 @@ namespace puck {
  * Enable drag & drop for a row in the model.
  */
 
-const std::string OutlineDragDrop::dragDataType = "TITANIA_OUTLINE_TREE_ROW";
+const std::string OutlineDragDrop::dragExternProtoIdType = "TITANIA_EXTERN_PROTO_ID";
+const std::string OutlineDragDrop::dragNodeIdType        = "TITANIA_NODE_ID";
 
 OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
 	  treeView (treeView),
+	sourcePath (),
 	  sourceId (0),
-	sourcePath ()
+	sourceType (OutlineIterType::NULL_),
+	    nodeId (0)
 {
 	// Drag & Drop
 	treeView -> set_reorderable (true);
 
-	treeView -> enable_model_drag_source ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
+	treeView -> enable_model_drag_source ({ Gtk::TargetEntry (dragExternProtoIdType, Gtk::TARGET_SAME_WIDGET),
+	                                        Gtk::TargetEntry (dragNodeIdType, Gtk::TARGET_SAME_APP) },
 	                                        Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
-	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
+	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry (dragExternProtoIdType, Gtk::TARGET_SAME_WIDGET),
+	                                      Gtk::TargetEntry (dragNodeIdType, Gtk::TARGET_SAME_WIDGET) },
 	                                      Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
 	treeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_button_press_event), false);
+	treeView -> signal_drag_data_get ()      .connect (sigc::mem_fun (this, &OutlineDragDrop::on_drag_data_get));
 	treeView -> signal_drag_motion ()        .connect (sigc::mem_fun (this, &OutlineDragDrop::on_drag_motion), false);
 	treeView -> signal_drag_data_received () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_drag_data_received));
 }
@@ -102,11 +110,49 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 	{
 		Gtk::TreeViewColumn* column = nullptr;
 
-		sourceId   = treeView -> get_execution_context () -> getId ();
 		sourcePath = treeView -> get_path_at_position (event -> x, event -> y, column);
+		sourceId   = treeView -> get_execution_context () -> getId ();
+		sourceType = OutlineIterType::NULL_;
+		nodeId     = 0;
+
+		const auto iter = treeView -> get_model () -> get_iter (sourcePath);
+
+		if (treeView -> get_model () -> iter_is_valid (iter))
+		{
+			sourceType = treeView -> get_data_type (iter);
+
+			switch (sourceType)
+			{
+				case OutlineIterType::ExternProtoDeclaration:
+				case OutlineIterType::X3DBaseNode:
+					nodeId = static_cast <X3D::SFNode*> (treeView -> get_object (iter)) -> getValue () -> getId ();
+					break;
+				case OutlineIterType::NULL_:
+				default:
+					break;
+			}
+		}
 	}
 
 	return false;
+}
+
+void
+OutlineDragDrop::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context,
+                                   Gtk::SelectionData & selection_data,
+                                   guint info,
+                                   guint time)
+{
+	switch (sourceType)
+	{
+		case OutlineIterType::X3DBaseNode:
+			selection_data .set (dragNodeIdType, basic::to_string (nodeId, std::locale::classic ()));
+			break;
+		case OutlineIterType::NULL_:
+		case OutlineIterType::ExternProtoDeclaration:
+		default:
+			break;
+	}
 }
 
 bool
