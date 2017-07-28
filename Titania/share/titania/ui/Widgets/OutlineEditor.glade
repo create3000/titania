@@ -46,7 +46,7 @@
                         <property name="can_focus">False</property>
                         <property name="margin_left">1</property>
                         <property name="margin_right">1</property>
-                        <property name="stock">X3DExecutionContext16</property>
+                        <property name="stock">Node.X3DExecutionContext</property>
                         <property name="icon_size">1</property>
                       </object>
                       <packing>

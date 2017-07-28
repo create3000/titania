@@ -209,8 +209,10 @@
       <source stock-id="Viewpoints" filename="Viewpoint.svg"/>
       <source stock-id="WalkViewer" filename="WalkViewer.svg"/>
       <source stock-id="X3DBaseNode" filename="X3DBaseNode.svg"/>
-      <source stock-id="X3DExecutionContext16" filename="Node/X3DExecutionContext.16.svg"/>
-      <source stock-id="X3DExecutionContext" filename="Node/X3DExecutionContext.96.svg"/>
+      <source stock-id="Node.X3DBaseNode" filename="Node/X3DBaseNode.svg"/>
+      <source stock-id="Node.X3DBaseNode.uninitalized" filename="Node/X3DBaseNode.u.svg"/>
+      <source stock-id="Node.X3DExecutionContext" filename="Node/X3DExecutionContext.16.svg"/>
+      <source stock-id="X3DExecutionContext" filename="X3DExecutionContext.svg"/>
     </sources>
   </object>
 </interface>

@@ -136,6 +136,7 @@ am_titania_OBJECTS =  \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.$(OBJEXT) \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.$(OBJEXT) \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
@@ -647,6 +648,7 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.cpp \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.cpp \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -1141,6 +1143,9 @@ Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/RouteGraph/$(DEPDIR)
 	@: > Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RouteGraph/RouteGraph.$(OBJEXT):  \
+	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
+	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/RouteGraph/RouteGraphNode.$(OBJEXT):  \
 	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
 	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.$(OBJEXT):  \
@@ -2216,6 +2221,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/RouteGraph.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/RouteGraphNode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/X3DRouteGraph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@

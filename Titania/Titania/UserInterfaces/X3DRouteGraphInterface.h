@@ -95,6 +95,10 @@ public:
 	getVAdjustment () const
 	{ return m_VAdjustment; }
 
+	Gtk::Label &
+	getSheetName () const
+	{ return *m_SheetName; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -126,6 +130,10 @@ public:
 	Gtk::Viewport &
 	getViewport () const
 	{ return *m_Viewport; }
+
+	Gtk::Overlay &
+	getOverlay () const
+	{ return *m_Overlay; }
 
 	Gtk::Fixed &
 	getFixed () const
@@ -175,6 +183,7 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_HAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_VAdjustment;
+	Gtk::Label* m_SheetName;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
@@ -183,6 +192,7 @@ private:
 	Gtk::MenuItem* m_AlignToGridMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::Viewport* m_Viewport;
+	Gtk::Overlay* m_Overlay;
 	Gtk::Fixed* m_Fixed;
 
 };

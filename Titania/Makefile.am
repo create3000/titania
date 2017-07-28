@@ -39,6 +39,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.cpp \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.cpp \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \

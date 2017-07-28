@@ -330,6 +330,7 @@
     <Compile Include="Titania\UserInterfaces\X3DRouteGraphInterface.cpp" />
     <Compile Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraph.cpp" />
     <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2448,7 +2449,6 @@
     <None Include="Titania\Browser\BrowserApplication.h" />
     <None Include="share\man\man1\titania.1" />
     <None Include="Titania\ComposedWidgets.h" />
-    <None Include="share\titania\ui\icons\Node\X3DExecutionContext.96.svg" />
     <None Include="share\titania\ui\icons\Node\ExternProto.96.svg" />
     <None Include="share\titania\ui\icons\Node\Prototype.96.svg" />
     <None Include="share\titania\ui\icons\Pull.svg" />
@@ -3042,6 +3042,8 @@
     <None Include="Titania\UserInterfaces\X3DRouteGraphInterface.h" />
     <None Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraph.h" />
     <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.h" />
+    <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.h" />
+    <None Include="share\titania\ui\icons\X3DExecutionContext.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

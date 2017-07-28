@@ -81,6 +81,7 @@ X3DRouteGraphInterface::create ()
 	m_VAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("SheetName", m_SheetName);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
@@ -89,6 +90,7 @@ X3DRouteGraphInterface::create ()
 	m_builder -> get_widget ("AlignToGridMenuItem", m_AlignToGridMenuItem);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("Viewport", m_Viewport);
+	m_builder -> get_widget ("Overlay", m_Overlay);
 	m_builder -> get_widget ("Fixed", m_Fixed);
 
 	// Connect object Gtk::Viewport with id 'Viewport'.

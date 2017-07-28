@@ -50,9 +50,12 @@
 
 #include "RouteGraph.h"
 
+#include "RouteGraphNode.h"
 #include "../NotebookPage/NotebookPage.h"
 
 #include "../../Configuration/config.h"
+
+#include <Titania/X3D/Bits/Traverse.h>
 
 namespace titania {
 namespace puck {
@@ -61,12 +64,9 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DRouteGraphInterface (get_ui ("Panels/RouteGraph.glade"), page, PanelType::ROUTE_GRAPH, id),
 	         X3DRouteGraph (),
-	         titleRenderer ()
+	                 nodes ()
 {
-	titleRenderer .property_text ()           = _ ("New Sheet");
-	titleRenderer .property_size_points ()    = 18;
-	titleRenderer .property_foreground ()     = "white";
-	titleRenderer .property_foreground_set () = true;
+	getOverlay () .add_overlay (getSheetName ());
 
 	// Drag & drop targets
 
@@ -81,6 +81,36 @@ RouteGraph::initialize ()
 	X3DRouteGraphInterface::initialize ();
 }
 
+X3D::SFNode
+RouteGraph::getNode (const size_t id) const
+{
+	X3D::SFNode found;
+
+	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	{
+		if (id == node -> getId ())
+		{
+			found = node;
+			return false;
+		}
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES);
+
+	return found;
+}
+
+void
+RouteGraph::addNode (const X3D::SFNode & node, const int x, const int y)
+{
+	const auto widget = std::make_shared <RouteGraphNode> (&getFixed (), node, x, y);
+
+	widget -> show ();
+
+	nodes .emplace (widget);
+}
+
 void
 RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
                                    int x, int y,
@@ -88,14 +118,12 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
                                    guint info,
                                    guint time)
 {
-	__LOG__ << std::endl;
-
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
-		__LOG__ << selection_data .get_data_type () << std::endl;
-
 		if (selection_data .get_data_type () == "TITANIA_NODE_ID")
 		{
+			// Parse node id.
+
 			size_t nodeId = 0;
 
 			std::istringstream isstream (selection_data .get_data_as_string ());
@@ -104,7 +132,12 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 
 			isstream >> nodeId;
 
-			__LOG__ << nodeId << std::endl;
+			// Add node widget
+
+			const auto node = getNode (nodeId);
+
+			if (node)
+				addNode (node, x, y);
 
 			context -> drag_finish (true, false, time);
 			return;
@@ -138,7 +171,6 @@ RouteGraph::on_motion_notify_event (GdkEventMotion* event)
 bool
 RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const auto flags  = Gtk::CellRendererState (0);
 	const auto width  = getFixed () .get_width ();
 	const auto height = getFixed () .get_height ();
 
@@ -148,15 +180,30 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	context -> rectangle (0, 0, width, height);
 	context -> fill ();
 
-	// Grid
+	// Grid with points
 
-	static constexpr auto gridSize  = 40;
-	static constexpr auto gridColor = 0.38823529;
+	static constexpr auto gridSize       = 40;
+	static constexpr auto gridColor      = 14.0 / 255.0;
+	static constexpr auto gridPointColor = 99.0 / 255.0;
 
 	const auto xGridOffset = (width % gridSize) / 2;
 	const auto yGridOffset = (height % gridSize) / 2;
 
+	// Grid
+
 	context -> set_source_rgb (gridColor, gridColor, gridColor);
+
+	for (int32_t y = yGridOffset; y < height; y += gridSize / 4)
+		context -> rectangle (0, y, width, 1);
+
+	for (int32_t x = xGridOffset; x < width; x += gridSize / 4)
+		context -> rectangle (x, 0, 1, height);
+
+	context -> fill ();
+
+	// Points
+
+	context -> set_source_rgb (gridPointColor, gridPointColor, gridPointColor);
 
 	for (int32_t y = yGridOffset; y < height; y += gridSize)
 	{
@@ -165,11 +212,6 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	}
 
 	context -> fill ();
-
-	// Title
-
-	const Gdk::Rectangle titleArea (gridSize / 2, 0, width, gridSize + 4);
-	titleRenderer .render (context, getFixed (), titleArea, titleArea, flags);
 
 	return false;
 }

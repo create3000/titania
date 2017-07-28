@@ -751,7 +751,7 @@ X3DBrowserPanel::on_unmap ()
 void
 X3DBrowserPanel::dispose ()
 {
-	// It is important to remove the browser from parent widget here.
+	// It is important to remove the browser from parent widget here, otherwise it will not be done.
 
 	const auto parent = browser -> get_parent ();
 

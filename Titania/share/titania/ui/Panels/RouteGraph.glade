@@ -7,6 +7,16 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkLabel" id="SheetName">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="halign">start</property>
+    <property name="valign">start</property>
+    <property name="label" translatable="yes">New Sheet</property>
+    <style>
+      <class name="titania-route-graph-sheet-name"/>
+    </style>
+  </object>
   <object class="GtkAdjustment" id="VAdjustment">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -95,10 +105,19 @@
                 <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
                 <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
                 <child>
-                  <object class="GtkFixed" id="Fixed">
+                  <object class="GtkOverlay" id="Overlay">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <signal name="draw" handler="on_draw" after="yes" swapped="no"/>
+                    <child>
+                      <object class="GtkFixed" id="Fixed">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <signal name="draw" handler="on_draw" after="yes" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="index">-1</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
               </object>

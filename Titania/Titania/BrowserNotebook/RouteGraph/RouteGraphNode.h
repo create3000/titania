@@ -48,78 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
-#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_NODE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_NODE_H__
 
-#include "../../UserInterfaces/X3DRouteGraphInterface.h"
+#include <Titania/X3D/Fields/SFNode.h>
 
-#include "X3DRouteGraph.h"
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-class RouteGraphNode;
-
-class RouteGraph :
-	virtual public X3DRouteGraphInterface,
-	public X3DRouteGraph
+class RouteGraphNode :
+	public Gtk::EventBox
 {
 public:
 
 	///  @name Construction
 
-	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
+	RouteGraphNode (Gtk::Fixed* const fixed, const X3D::SFNode & node, const int32_t x, const int32_t y);
 
 	///  @name Destruction
 
 	virtual
-	~RouteGraph () final override;
+	~RouteGraphNode () final override;
 
 
 protected:
 
-	///  @name Construction
-
 	virtual
-	void
-	initialize () final override;
+	bool
+	on_button_press_event (GdkEventButton* event) override;
+	
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) override;
+	
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion* event) override;
 
 
 private:
 
-	///  @name Operations
-
-	X3D::SFNode
-	getNode (const size_t id) const;
-
-	void
-	addNode (const X3D::SFNode & node, const int x, const int y);
-
 	///  @name Event handlers
 
-	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time) final override;
+	set_name (Gtk::Label* const name);
 
-	virtual
-	bool
-	on_button_press_event (GdkEventButton* event) final override;
-	
-	virtual
-	bool
-	on_motion_notify_event (GdkEventMotion* event) final override;
+	///  @name Operations
 
-	virtual
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> & context) final override;
+	void
+	build ();
 
 	///  @name Members
 
-	std::set <std::shared_ptr <RouteGraphNode>> nodes;
+	Gtk::Fixed* const fixed;
+	const X3D::SFNode node;
+	int32_t           button;
+	X3D::Vector2d     position;
+	X3D::Vector2d     pointer;
 
 };
 
