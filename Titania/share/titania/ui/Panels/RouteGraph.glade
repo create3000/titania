@@ -59,6 +59,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Align To Grid</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_align_to_grid_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -92,16 +93,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="ScrolledWindow">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
               <object class="GtkViewport" id="Viewport">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="events">GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_STRUCTURE_MASK</property>
+                <property name="events">GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
                 <property name="shadow_type">none</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
                 <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
                 <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
                 <child>

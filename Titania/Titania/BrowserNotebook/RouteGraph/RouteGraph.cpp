@@ -102,13 +102,33 @@ RouteGraph::getNode (const size_t id) const
 }
 
 void
-RouteGraph::addNode (const X3D::SFNode & node, const int x, const int y)
+RouteGraph::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
-	const auto widget = std::make_shared <RouteGraphNode> (&getFixed (), node, x, y);
+	const auto iter = nodes .find (node);
+
+	if (iter not_eq nodes .end ())
+		return;
+
+	const auto widget = std::make_shared <RouteGraphNode> (this, node, position);
 
 	widget -> show ();
 
-	nodes .emplace (widget);
+	nodes .emplace (node, widget);
+}
+
+void
+RouteGraph::on_align_to_grid_activate ()
+{
+	for (const auto & pair : nodes)
+	{
+		static constexpr double snapDistance = 20;
+
+		auto position = X3D::Vector2d (pair .second -> getPosition ());
+
+		position = X3D::round (position / snapDistance) * snapDistance;
+
+		pair .second -> setPosition (X3D::Vector2i (position));
+	}
 }
 
 void
@@ -137,7 +157,7 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 			const auto node = getNode (nodeId);
 
 			if (node)
-				addNode (node, x, y);
+				addNode (node, X3D::Vector2i (x, y));
 
 			context -> drag_finish (true, false, time);
 			return;
@@ -156,6 +176,14 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 	{
 
 	}
+
+	return false;
+}
+
+bool
+RouteGraph::on_button_release_event (GdkEventButton* event) 
+{
+	__LOG__ << std::endl;
 
 	return false;
 }
@@ -186,8 +214,8 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	static constexpr auto gridColor      = 14.0 / 255.0;
 	static constexpr auto gridPointColor = 99.0 / 255.0;
 
-	const auto xGridOffset = (width % gridSize) / 2;
-	const auto yGridOffset = (height % gridSize) / 2;
+	const auto xGridOffset = (getScrolledWindow () .get_width ()  % gridSize) / 2;
+	const auto yGridOffset = (getScrolledWindow () .get_height () % gridSize) / 2;
 
 	// Grid
 

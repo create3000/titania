@@ -127,6 +127,10 @@ public:
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
+
 	Gtk::Viewport &
 	getViewport () const
 	{ return *m_Viewport; }
@@ -142,8 +146,16 @@ public:
 	///  @name Signal handlers
 
 	virtual
+	void
+	on_align_to_grid_activate () = 0;
+
+	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -191,6 +203,7 @@ private:
 	Gtk::MenuItem* m_RenameMenuItem;
 	Gtk::MenuItem* m_AlignToGridMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Viewport* m_Viewport;
 	Gtk::Overlay* m_Overlay;
 	Gtk::Fixed* m_Fixed;

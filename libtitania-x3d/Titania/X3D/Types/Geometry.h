@@ -68,6 +68,7 @@ namespace X3D {
 
 using namespace titania::math;
 
+using Box2i             = box2 <int32_t>;
 using Box2d             = box2 <double>;
 using Box2f             = box2 <float>;
 using Box3d             = box3 <double>;

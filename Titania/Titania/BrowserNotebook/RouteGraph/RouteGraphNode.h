@@ -58,14 +58,30 @@
 namespace titania {
 namespace puck {
 
+class RouteGraph;
+
 class RouteGraphNode :
-	public Gtk::EventBox
+	public Gtk::Box
 {
 public:
 
 	///  @name Construction
 
-	RouteGraphNode (Gtk::Fixed* const fixed, const X3D::SFNode & node, const int32_t x, const int32_t y);
+	RouteGraphNode (RouteGraph* const routeGraph, const X3D::SFNode & node, const X3D::Vector2i & position);
+
+	///  @name Member access
+
+	const X3D::Vector2i &
+	getPosition () const
+	{ return position; }
+
+	void
+	setPosition (const X3D::Vector2i & value);
+
+	///  @name Operations
+
+	void
+	bringToFront ();
 
 	///  @name Destruction
 
@@ -75,18 +91,6 @@ public:
 
 protected:
 
-	virtual
-	bool
-	on_button_press_event (GdkEventButton* event) override;
-	
-	virtual
-	bool
-	on_button_release_event (GdkEventButton* event) override;
-	
-	virtual
-	bool
-	on_motion_notify_event (GdkEventMotion* event) override;
-
 
 private:
 
@@ -95,6 +99,24 @@ private:
 	void
 	set_name (Gtk::Label* const name);
 
+	bool
+	on_route_graph_button_press_event (GdkEventButton* event);
+	
+	bool
+	on_route_graph_button_release_event (GdkEventButton* event);
+
+	bool
+	on_route_graph_motion_notify_event (GdkEventMotion* event);
+
+	void
+	on_footer_clicked (Gtk::Revealer* const fieldRevealer);
+
+	void
+	on_reveal_fields (Gtk::Revealer* const fieldRevealer);
+	
+	void
+	on_fields_revealed (Gtk::Revealer* const fieldRevealer);
+
 	///  @name Operations
 
 	void
@@ -102,11 +124,14 @@ private:
 
 	///  @name Members
 
-	Gtk::Fixed* const fixed;
-	const X3D::SFNode node;
-	int32_t           button;
-	X3D::Vector2d     position;
-	X3D::Vector2d     pointer;
+	RouteGraph* const                                  routeGraph;
+	const X3D::SFNode                                 node;
+	std::map <X3D::X3DFieldDefinition*, Gtk::Button*> inputs;
+	std::map <X3D::X3DFieldDefinition*, Gtk::Button*> outputs;
+	int32_t                                           button;
+	X3D::Vector2i                                     position;
+	X3D::Vector2i                                     startPosition;
+	bool                                              expanded;
 
 };
 

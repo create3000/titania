@@ -89,12 +89,15 @@ X3DRouteGraphInterface::create ()
 	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
 	m_builder -> get_widget ("AlignToGridMenuItem", m_AlignToGridMenuItem);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("Viewport", m_Viewport);
 	m_builder -> get_widget ("Overlay", m_Overlay);
 	m_builder -> get_widget ("Fixed", m_Fixed);
+	m_AlignToGridMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_align_to_grid_activate));
 
 	// Connect object Gtk::Viewport with id 'Viewport'.
 	m_Viewport -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_button_press_event));
+	m_Viewport -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_button_release_event));
 	m_Viewport -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_drag_data_received));
 	m_Viewport -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_motion_notify_event));
 

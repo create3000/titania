@@ -934,3 +934,5 @@ Viewport::drag_data_received
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
 Viewport::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+Viewport::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);

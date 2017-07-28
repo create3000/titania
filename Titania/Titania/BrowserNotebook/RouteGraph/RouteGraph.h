@@ -93,9 +93,13 @@ private:
 	getNode (const size_t id) const;
 
 	void
-	addNode (const X3D::SFNode & node, const int x, const int y);
+	addNode (const X3D::SFNode & node, const X3D::Vector2i & position);
 
 	///  @name Event handlers
+
+	virtual
+	void
+	on_align_to_grid_activate () final override;
 
 	virtual
 	void
@@ -108,6 +112,10 @@ private:
 	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) final override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) final override;
 	
 	virtual
 	bool
@@ -119,7 +127,7 @@ private:
 
 	///  @name Members
 
-	std::set <std::shared_ptr <RouteGraphNode>> nodes;
+	std::map <X3D::SFNode, std::shared_ptr <RouteGraphNode>> nodes;
 
 };
 

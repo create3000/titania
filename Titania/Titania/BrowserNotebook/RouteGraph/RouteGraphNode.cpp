@@ -50,63 +50,122 @@
 
 #include "RouteGraphNode.h"
 
+#include "RouteGraph.h"
+
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-RouteGraphNode::RouteGraphNode (Gtk::Fixed* const fixed, const X3D::SFNode & node, const int32_t x, const int32_t y) :
-	Gtk::EventBox (),
-	        fixed (fixed),
+RouteGraphNode::RouteGraphNode (RouteGraph* const routeGraph, const X3D::SFNode & node, const X3D::Vector2i & position) :
+	     Gtk::Box (),
+	   routeGraph (routeGraph),
 	         node (node),
 	       button (0),
-	     position (x, y),
-	      pointer ()
+	     position (position),
+	startPosition (),
+	     expanded (true)
 {
 	// Box
 
 	get_style_context () -> add_class ("titania-route-graph-node");
 
-	node -> fields_changed () .addInterest (&RouteGraphNode::build, this);
-
 	build ();
 
-	fixed -> put (*this, position .x (), position .y ());
+	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
+
+	// Events
+
+	routeGraph -> getViewport () .signal_button_press_event   () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_button_press_event));
+	routeGraph -> getViewport () .signal_button_release_event () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_button_release_event));
+	routeGraph -> getViewport () .signal_motion_notify_event  () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_motion_notify_event));
+
+	node -> fields_changed () .addInterest (&RouteGraphNode::build, this);
+}
+
+void
+RouteGraphNode::setPosition (const X3D::Vector2i & value)
+{
+	position = X3D::max (X3D::Vector2i (), value);
+
+	//fixed -> move (*this, position .x (), position .y ());
+
+	routeGraph -> getFixed () .remove (*this);
+	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
+
+	__LOG__ << position << std::endl;
+}
+
+void
+RouteGraphNode::bringToFront ()
+{
+	routeGraph -> getFixed () .remove (*this);
+	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
 }
 
 bool
-RouteGraphNode::on_button_press_event (GdkEventButton* event)
+RouteGraphNode::on_route_graph_button_press_event (GdkEventButton* event)
 {
-	button  = event -> button;
-	pointer = X3D::Vector2d (event -> x, event -> y);
+	__LOG__ << std::endl;
 
-	fixed -> remove (*this);
-	fixed -> put (*this, position .x (), position .y ());
+	const auto box = X3D::Box2i (position, position + X3D::Vector2i (get_width (), get_height ()), X3D::extents_type ());
 
-	return true;
+	startPosition = X3D::Vector2i (event -> x, event -> y);
+
+	if (box .intersects (startPosition))
+	{
+		button = event -> button;
+
+		if (button == 1)
+		{
+			for (const auto & pair : inputs)
+				pair .second -> set_sensitive (false);
+	
+			for (const auto & pair : outputs)
+				pair .second -> set_sensitive (false);
+	
+			bringToFront ();
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool
-RouteGraphNode::on_button_release_event (GdkEventButton* event)
+RouteGraphNode::on_route_graph_button_release_event (GdkEventButton* event)
 {
+	__LOG__ << std::endl;
+
 	button = 0;
 
-	return true;
+	for (const auto & pair : inputs)
+		pair .second -> set_sensitive (true);
+
+	for (const auto & pair : outputs)
+		pair .second -> set_sensitive (true);
+
+	return false;
 }
 
 bool
-RouteGraphNode::on_motion_notify_event (GdkEventMotion* event)
+RouteGraphNode::on_route_graph_motion_notify_event (GdkEventMotion* event)
 {
+	__LOG__ << std::endl;
+
 	if (button == 1)
 	{
-		position += X3D::Vector2d (event -> x, event -> y) - pointer;
-	
-		fixed -> move (*this, std::max <int32_t> (0, position .x ()), std::max <int32_t> (0, position .y ()));
+		const auto translation = X3D::Vector2i (event -> x, event -> y) - startPosition;
+
+		setPosition (position + translation);
+
+		startPosition = X3D::Vector2i (event -> x, event -> y);
 
 		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void
@@ -120,15 +179,19 @@ RouteGraphNode::build ()
 {
 	// Clear
 
-	remove ();
+	for (const auto & widget : get_children ())
+		remove (*widget);
+
+	inputs  .clear ();
+	outputs .clear ();
 
 	node -> name_changed () .removeInterest (&RouteGraphNode::set_name, this);
 
 	// Box
 
-	const auto box = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 2));
+	const auto box = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
 
-	add (*box);
+	pack_start (*box, true, true);
 
 	get_style_context () -> add_class ("titania-route-graph-node-box");
 
@@ -151,8 +214,8 @@ RouteGraphNode::build ()
 	headerBox -> pack_start (*headerRight, false, true);
 
 	header -> attach (*imageBox, 0, 0, 1, 1);
-	header -> attach (*typeName, 1, 0, 1, 1);
-	header -> attach (*name,     1, 1, 1, 1);
+	header -> attach (*name,     1, 0, 1, 1);
+	header -> attach (*typeName, 1, 1, 1, 1);
 
 	header -> set_hexpand (true);
 	header -> set_hexpand_set (true);
@@ -161,7 +224,7 @@ RouteGraphNode::build ()
 
 	image    -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg")));
 	typeName -> set_text (node -> getTypeName ());
-	name     -> set_text (node -> getName ());
+	name     -> set_text (node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ());
 
 	image    -> set_valign (Gtk::ALIGN_CENTER);
 	typeName -> set_halign (Gtk::ALIGN_START);
@@ -178,14 +241,20 @@ RouteGraphNode::build ()
 
 	// Fields
 
-	const auto fieldBox = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 2));
+	const auto fieldRevealer = Gtk::manage (new Gtk::Revealer ());
+	const auto fieldBox      = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
 
-	fieldBox -> set_spacing (2);
+	fieldRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields), fieldRevealer));
+	fieldRevealer -> property_child_revealed () .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed), fieldRevealer));
+
+	fieldRevealer -> set_reveal_child (true);
+
 	fieldBox -> set_homogeneous (true);
 	fieldBox -> set_hexpand (true);
 	fieldBox -> set_hexpand_set (true);
 
-	box -> pack_start (*fieldBox, true, true);
+	box -> pack_start (*fieldRevealer, true, true);
+	fieldRevealer -> add (*fieldBox);
 
 	for (const auto & fieldDefinition : node -> getFieldDefinitions ())
 	{
@@ -237,6 +306,8 @@ RouteGraphNode::build ()
 
 			input  -> get_style_context () -> add_class ("titania-route-graph-connector");
 			input  -> get_style_context () -> add_class ("titania-route-graph-input");
+
+			inputs .emplace (fieldDefinition, input);
 		}
 
 		if (fieldDefinition -> getAccessType () & X3D::outputOnly)
@@ -250,6 +321,8 @@ RouteGraphNode::build ()
 	
 			output -> get_style_context () -> add_class ("titania-route-graph-connector");
 			output -> get_style_context () -> add_class ("titania-route-graph-output");
+
+			outputs .emplace (fieldDefinition, output);
 		}
 	}
 
@@ -258,7 +331,9 @@ RouteGraphNode::build ()
 	const auto footerBox   = Gtk::manage (new Gtk::Box ());
 	const auto footerLeft  = Gtk::manage (new Gtk::Box ());
 	const auto footerRight = Gtk::manage (new Gtk::Box ());
-	const auto footer      = Gtk::manage (new Gtk::Box ());
+	const auto footer      = Gtk::manage (new Gtk::Button ());
+
+	footer -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_footer_clicked), fieldRevealer));
 
 	footer -> set_hexpand (true);
 	footer -> set_hexpand_set (true);
@@ -280,6 +355,32 @@ RouteGraphNode::build ()
 	node -> name_changed () .addInterest (&RouteGraphNode::set_name, this, name);
 
 	box -> show_all ();
+}
+
+void
+RouteGraphNode::on_footer_clicked (Gtk::Revealer* const fieldRevealer)
+{
+	__LOG__ << std::endl;
+
+	expanded = not expanded;
+
+	fieldRevealer -> set_reveal_child (expanded);
+}
+
+void
+RouteGraphNode::on_reveal_fields (Gtk::Revealer* const fieldRevealer)
+{
+	if (fieldRevealer -> get_reveal_child ())
+		fieldRevealer -> set_visible (true);
+}
+
+void
+RouteGraphNode::on_fields_revealed (Gtk::Revealer* const fieldRevealer)
+{
+	if (not fieldRevealer -> get_reveal_child ())
+		fieldRevealer -> set_visible (false);
+
+	bringToFront ();
 }
 
 RouteGraphNode::~RouteGraphNode ()
