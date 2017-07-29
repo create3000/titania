@@ -67,21 +67,16 @@ public:
 
 	///  @name Construction
 
-	RouteGraphNode (RouteGraph* const routeGraph, const X3D::SFNode & node, const X3D::Vector2i & position);
+	RouteGraphNode (const X3D::SFNode & node);
 
 	///  @name Member access
 
-	const X3D::Vector2i &
-	getPosition () const
-	{ return position; }
-
 	void
-	setPosition (const X3D::Vector2i & value);
+	setConnectorsSensitive (const bool value);
 
-	///  @name Operations
-
-	void
-	bringToFront ();
+	bool
+	getConnectorsSensitive () const
+	{ return connectorsSensitive; }
 
 	///  @name Destruction
 
@@ -99,15 +94,6 @@ private:
 	void
 	set_name (Gtk::Label* const name);
 
-	bool
-	on_route_graph_button_press_event (GdkEventButton* event);
-	
-	bool
-	on_route_graph_button_release_event (GdkEventButton* event);
-
-	bool
-	on_route_graph_motion_notify_event (GdkEventMotion* event);
-
 	void
 	on_footer_clicked (Gtk::Revealer* const fieldRevealer);
 
@@ -122,16 +108,17 @@ private:
 	void
 	build ();
 
+	///  @name Member types
+
+	using ConnectorIndex = std::map <X3D::X3DFieldDefinition*, Gtk::Button*>;
+
 	///  @name Members
 
-	RouteGraph* const                                  routeGraph;
-	const X3D::SFNode                                 node;
-	std::map <X3D::X3DFieldDefinition*, Gtk::Button*> inputs;
-	std::map <X3D::X3DFieldDefinition*, Gtk::Button*> outputs;
-	int32_t                                           button;
-	X3D::Vector2i                                     position;
-	X3D::Vector2i                                     startPosition;
-	bool                                              expanded;
+	const X3D::SFNode node;
+	ConnectorIndex    inputs;
+	ConnectorIndex    outputs;
+	bool              expanded;
+	bool              connectorsSensitive;
 
 };
 

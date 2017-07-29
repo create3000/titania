@@ -57,14 +57,11 @@
 namespace titania {
 namespace puck {
 
-RouteGraphNode::RouteGraphNode (RouteGraph* const routeGraph, const X3D::SFNode & node, const X3D::Vector2i & position) :
-	     Gtk::Box (),
-	   routeGraph (routeGraph),
-	         node (node),
-	       button (0),
-	     position (position),
-	startPosition (),
-	     expanded (true)
+RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
+	           Gtk::Box (),
+	               node (node),
+	           expanded (true),
+	connectorsSensitive (true)
 {
 	// Box
 
@@ -72,100 +69,19 @@ RouteGraphNode::RouteGraphNode (RouteGraph* const routeGraph, const X3D::SFNode 
 
 	build ();
 
-	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
-
-	// Events
-
-	routeGraph -> getViewport () .signal_button_press_event   () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_button_press_event));
-	routeGraph -> getViewport () .signal_button_release_event () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_button_release_event));
-	routeGraph -> getViewport () .signal_motion_notify_event  () .connect (sigc::mem_fun (this, &RouteGraphNode::on_route_graph_motion_notify_event));
-
 	node -> fields_changed () .addInterest (&RouteGraphNode::build, this);
 }
 
 void
-RouteGraphNode::setPosition (const X3D::Vector2i & value)
+RouteGraphNode::setConnectorsSensitive (const bool value)
 {
-	position = X3D::max (X3D::Vector2i (), value);
-
-	//fixed -> move (*this, position .x (), position .y ());
-
-	routeGraph -> getFixed () .remove (*this);
-	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
-
-	__LOG__ << position << std::endl;
-}
-
-void
-RouteGraphNode::bringToFront ()
-{
-	routeGraph -> getFixed () .remove (*this);
-	routeGraph -> getFixed () .put (*this, position .x (), position .y ());
-}
-
-bool
-RouteGraphNode::on_route_graph_button_press_event (GdkEventButton* event)
-{
-	__LOG__ << std::endl;
-
-	const auto box = X3D::Box2i (position, position + X3D::Vector2i (get_width (), get_height ()), X3D::extents_type ());
-
-	startPosition = X3D::Vector2i (event -> x, event -> y);
-
-	if (box .intersects (startPosition))
-	{
-		button = event -> button;
-
-		if (button == 1)
-		{
-			for (const auto & pair : inputs)
-				pair .second -> set_sensitive (false);
-	
-			for (const auto & pair : outputs)
-				pair .second -> set_sensitive (false);
-	
-			bringToFront ();
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool
-RouteGraphNode::on_route_graph_button_release_event (GdkEventButton* event)
-{
-	__LOG__ << std::endl;
-
-	button = 0;
+	connectorsSensitive = value;
 
 	for (const auto & pair : inputs)
-		pair .second -> set_sensitive (true);
+		pair .second -> set_sensitive (false);
 
 	for (const auto & pair : outputs)
-		pair .second -> set_sensitive (true);
-
-	return false;
-}
-
-bool
-RouteGraphNode::on_route_graph_motion_notify_event (GdkEventMotion* event)
-{
-	__LOG__ << std::endl;
-
-	if (button == 1)
-	{
-		const auto translation = X3D::Vector2i (event -> x, event -> y) - startPosition;
-
-		setPosition (position + translation);
-
-		startPosition = X3D::Vector2i (event -> x, event -> y);
-
-		return true;
-	}
-
-	return false;
+		pair .second -> set_sensitive (false);
 }
 
 void
@@ -208,6 +124,9 @@ RouteGraphNode::build ()
 	const auto name     = Gtk::manage (new Gtk::Label ());
 
 	box -> pack_start (*headerBox, true, true);
+
+	headerBox -> set_hexpand (true);
+	headerBox -> set_hexpand_set (true);
 
 	headerBox -> pack_start (*headerLeft,  false, true);
 	headerBox -> pack_start (*header,      false, true);
@@ -280,6 +199,9 @@ RouteGraphNode::build ()
 		box -> pack_start (*left,  false, true);
 		box -> pack_start (*field, true,  true);
 		box -> pack_start (*right, false, true);
+
+		field -> set_hexpand (true);
+		field -> set_hexpand_set (true);
 
 		field -> pack_start (*image, false, true);
 		field -> pack_start (*name,  false, true);
@@ -380,7 +302,7 @@ RouteGraphNode::on_fields_revealed (Gtk::Revealer* const fieldRevealer)
 	if (not fieldRevealer -> get_reveal_child ())
 		fieldRevealer -> set_visible (false);
 
-	bringToFront ();
+	//bringToFront ();
 }
 
 RouteGraphNode::~RouteGraphNode ()

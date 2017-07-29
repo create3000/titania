@@ -64,7 +64,10 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DRouteGraphInterface (get_ui ("Panels/RouteGraph.glade"), page, PanelType::ROUTE_GRAPH, id),
 	         X3DRouteGraph (),
-	                 nodes ()
+	               windows (),
+	             selection (),
+	                button (0),
+	               pointer ()
 {
 	getOverlay () .add_overlay (getSheetName ());
 
@@ -104,30 +107,71 @@ RouteGraph::getNode (const size_t id) const
 void
 RouteGraph::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
-	const auto iter = nodes .find (node);
+	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
 
-	if (iter not_eq nodes .end ())
+	if (iter not_eq windows .end ())
 		return;
 
-	const auto widget = std::make_shared <RouteGraphNode> (this, node, position);
+	const auto window = std::make_shared <RouteGraphWindow> ();
+	const auto widget = std::make_shared <RouteGraphNode> (node);
+
+	window -> node     = node;
+	window -> widget   = widget;
+	window -> position = position;
 
 	widget -> show ();
 
-	nodes .emplace (node, widget);
+	getFixed () .put (*widget, position .x (), position .y ());
+
+	windows .emplace_front (window);
+}
+
+void
+RouteGraph::setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position)
+{
+	const auto & widget = window -> widget;
+
+	window -> position = position;
+
+	getFixed () .move (*widget, position .x (), position .y ());
+
+	//getFixed () .remove (*widget);
+	//getFixed () .put (*widget, position .x (), position .y ());
+}
+
+void
+RouteGraph::bringToFront (const RouteGraphWindowPtr window)
+{
+	const auto & widget   = window -> widget;
+	const auto & position = window -> position;
+
+	getFixed () .remove (*widget);
+	getFixed () .put (*widget, position .x (), position .y ());
+
+	windows .erase (std::remove (windows .begin (), windows .end (), window), windows .end ());
+	windows .emplace_front (window);
+}
+
+void
+RouteGraph::setSelection (const RouteGraphWindowPtr window)
+{
+	selection .clear ();
+	selection .emplace_back (window);
+	bringToFront (window);
 }
 
 void
 RouteGraph::on_align_to_grid_activate ()
 {
-	for (const auto & pair : nodes)
+	for (const auto & window : windows)
 	{
 		static constexpr double snapDistance = 20;
 
-		auto position = X3D::Vector2d (pair .second -> getPosition ());
+		auto position = X3D::Vector2d (window -> position);
 
 		position = X3D::round (position / snapDistance) * snapDistance;
 
-		pair .second -> setPosition (X3D::Vector2i (position));
+		window -> position = X3D::Vector2i (position);
 	}
 }
 
@@ -172,9 +216,33 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 {
 	__LOG__ << std::endl;
 
-	if (event -> button == 2)
-	{
+	button = event -> button;
 
+	if (button == 1)
+	{
+		// Prepare move widget
+
+		pointer = X3D::Vector2i (event -> x, event -> y);
+
+		for (const auto & window : windows)
+		{
+			const auto & widget   = window -> widget;
+			const auto & position = window -> position;
+			const auto   width    = widget -> get_width ();
+			const auto   height   = widget -> get_height ();
+			const auto   box      = X3D::Box2i (position, position + X3D::Vector2i (width, height), X3D::extents_type ());
+
+			if (not box .intersects (pointer))
+				continue;
+
+			setSelection (window);
+
+			// Prepare move
+
+			widget -> setConnectorsSensitive (false);	
+
+			return true;
+		}
 	}
 
 	return false;
@@ -185,6 +253,15 @@ RouteGraph::on_button_release_event (GdkEventButton* event)
 {
 	__LOG__ << std::endl;
 
+	button = 0;
+
+	for (const auto & window : selection)
+	{
+		const auto & widget = window -> widget;
+
+		widget -> setConnectorsSensitive (true);	
+	}
+
 	return false;
 }
 
@@ -192,6 +269,25 @@ bool
 RouteGraph::on_motion_notify_event (GdkEventMotion* event) 
 {
 	__LOG__ << std::endl;
+
+	if (button == 1)
+	{
+		const auto translation = X3D::Vector2i (event -> x, event -> y) - pointer;
+
+		for (const auto & window : selection)
+		{
+			auto position = window -> position;
+
+			position += translation;
+			position  = X3D::max (X3D::Vector2i (), position);
+
+			setPosition (window, position);
+		}
+
+		pointer = X3D::Vector2i (event -> x, event -> y);
+
+		return true;
+	}
 
 	return false;
 }

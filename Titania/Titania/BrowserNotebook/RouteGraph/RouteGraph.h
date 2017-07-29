@@ -87,6 +87,20 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	using WidgetPtr = std::shared_ptr <RouteGraphNode>;
+
+	struct RouteGraphWindow
+	{
+		X3D::SFNode   node;
+		WidgetPtr     widget;
+		X3D::Vector2i position;
+	};
+
+	using RouteGraphWindowPtr   = std::shared_ptr <RouteGraphWindow>;
+	using RouteGraphWindowArray = std::deque <RouteGraphWindowPtr>;
+
 	///  @name Operations
 
 	X3D::SFNode
@@ -94,6 +108,15 @@ private:
 
 	void
 	addNode (const X3D::SFNode & node, const X3D::Vector2i & position);
+
+	void
+	setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position);
+
+	void
+	bringToFront (const RouteGraphWindowPtr window);
+
+	void
+	setSelection (const RouteGraphWindowPtr window);
 
 	///  @name Event handlers
 
@@ -127,7 +150,11 @@ private:
 
 	///  @name Members
 
-	std::map <X3D::SFNode, std::shared_ptr <RouteGraphNode>> nodes;
+	RouteGraphWindowArray windows;
+	RouteGraphWindowArray selection;
+	int32_t               button;
+	X3D::Vector2i         position;
+	X3D::Vector2i         pointer;
 
 };
 
