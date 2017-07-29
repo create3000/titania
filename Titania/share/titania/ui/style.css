@@ -91,21 +91,27 @@ expander > title > label {
 
 /* Route Graph */
 
+/* All classes
+.titania-route-graph-sheet-name
+.titania-route-graph-node
+.titania-route-graph-node-box
+.titania-route-graph-node-element-box
+.titania-route-graph-node-element-left
+.titania-route-graph-node-element-right
+.titania-route-graph-node-header
+.titania-route-graph-node-image
+.titania-route-graph-node-type-name
+.titania-route-graph-node-name
+.titania-route-graph-field
+.titania-route-graph-field-image
+.titania-route-graph-field-name
+.titania-route-graph-connector
+.titania-route-graph-node-footer
+*/
+
 .titania-route-graph-sheet-name,
-.titania-route-graph-node-element-box,
-.titania-route-graph-node-element-left,
-.titania-route-graph-node-element-right,
 .titania-route-graph-node,
-.titania-route-graph-node-box,
-.titania-route-graph-node-header,
-.titania-route-graph-node-image,
-.titania-route-graph-node-type-name,
-.titania-route-graph-node-name,
-.titania-route-graph-field,
-.titania-route-graph-field-image,
-.titania-route-graph-field-name,
-.titania-route-graph-connector,
-.titania-route-graph-node-footer {
+.titania-route-graph-node * {
 	margin: 0px;
 	border: 0px;
 	padding: 0px;

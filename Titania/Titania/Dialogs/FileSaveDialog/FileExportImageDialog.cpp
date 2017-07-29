@@ -195,7 +195,7 @@ FileExportImageDialog::run ()
 }
 
 bool
-FileExportImageDialog::save (Magick::Image & image)
+FileExportImageDialog::save (Magick::Image & image, const std::string & basename)
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
@@ -204,7 +204,10 @@ FileExportImageDialog::save (Magick::Image & image)
 	else
 		getWindow () .set_current_folder (Glib::get_home_dir ());
 
-	getWindow () .set_current_name (worldURL .basename (false) + ".png");
+	if (basename .empty ())
+		getWindow () .set_current_name (worldURL .basename (false) + ".png");
+	else
+		getWindow () .set_current_name (basename);
 
 	// Run dialog.
 

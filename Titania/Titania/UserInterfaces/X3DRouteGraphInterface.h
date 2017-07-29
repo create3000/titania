@@ -124,6 +124,10 @@ public:
 	{ return *m_AlignToGridMenuItem; }
 
 	Gtk::MenuItem &
+	getExportSheetMenuItem () const
+	{ return *m_ExportSheetMenuItem; }
+
+	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
@@ -147,7 +151,15 @@ public:
 
 	virtual
 	void
+	on_rename_sheet_activate () = 0;
+
+	virtual
+	void
 	on_align_to_grid_activate () = 0;
+
+	virtual
+	void
+	on_export_sheet_activate () = 0;
 
 	virtual
 	bool
@@ -202,6 +214,7 @@ private:
 	Gtk::MenuItem* m_RouteGraphMenuItem;
 	Gtk::MenuItem* m_RenameMenuItem;
 	Gtk::MenuItem* m_AlignToGridMenuItem;
+	Gtk::MenuItem* m_ExportSheetMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Viewport* m_Viewport;

@@ -122,7 +122,15 @@ private:
 
 	virtual
 	void
+	on_rename_sheet_activate () final override;
+
+	virtual
+	void
 	on_align_to_grid_activate () final override;
+
+	virtual
+	void
+	on_export_sheet_activate () final override;
 
 	virtual
 	void
@@ -148,6 +156,9 @@ private:
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & context) final override;
 
+	void
+	on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context);
+
 	///  @name Members
 
 	RouteGraphWindowArray windows;
@@ -155,6 +166,7 @@ private:
 	int32_t               button;
 	X3D::Vector2i         position;
 	X3D::Vector2i         pointer;
+	std::string           sheetName;
 
 };
 

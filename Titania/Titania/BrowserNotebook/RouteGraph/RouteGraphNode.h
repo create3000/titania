@@ -72,6 +72,13 @@ public:
 	///  @name Member access
 
 	void
+	setExpanded (const bool value);
+
+	bool
+	getExpanded () const
+	{ return expanded; }
+
+	void
 	setConnectorsSensitive (const bool value);
 
 	bool
@@ -95,13 +102,13 @@ private:
 	set_name (Gtk::Label* const name);
 
 	void
-	on_footer_clicked (Gtk::Revealer* const fieldRevealer);
+	on_footer_clicked ();
 
 	void
-	on_reveal_fields (Gtk::Revealer* const fieldRevealer);
+	on_reveal_fields ();
 	
 	void
-	on_fields_revealed (Gtk::Revealer* const fieldRevealer);
+	on_fields_revealed ();
 
 	///  @name Operations
 
@@ -115,6 +122,7 @@ private:
 	///  @name Members
 
 	const X3D::SFNode node;
+	Gtk::Revealer*    fieldRevealer;
 	ConnectorIndex    inputs;
 	ConnectorIndex    outputs;
 	bool              expanded;

@@ -60,16 +60,27 @@ namespace puck {
 RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
 	           Gtk::Box (),
 	               node (node),
+	      fieldRevealer (nullptr),
+	             inputs (),
+	            outputs (),
 	           expanded (true),
 	connectorsSensitive (true)
 {
 	// Box
 
+	node -> fields_changed () .addInterest (&RouteGraphNode::build, this);
+
 	get_style_context () -> add_class ("titania-route-graph-node");
 
 	build ();
+}
 
-	node -> fields_changed () .addInterest (&RouteGraphNode::build, this);
+void
+RouteGraphNode::setExpanded (const bool value)
+{
+	expanded = value;
+
+	fieldRevealer -> set_reveal_child (expanded);
 }
 
 void
@@ -78,10 +89,10 @@ RouteGraphNode::setConnectorsSensitive (const bool value)
 	connectorsSensitive = value;
 
 	for (const auto & pair : inputs)
-		pair .second -> set_sensitive (false);
+		pair .second -> set_sensitive (connectorsSensitive);
 
 	for (const auto & pair : outputs)
-		pair .second -> set_sensitive (false);
+		pair .second -> set_sensitive (connectorsSensitive);
 }
 
 void
@@ -160,11 +171,12 @@ RouteGraphNode::build ()
 
 	// Fields
 
-	const auto fieldRevealer = Gtk::manage (new Gtk::Revealer ());
-	const auto fieldBox      = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
+	fieldRevealer = Gtk::manage (new Gtk::Revealer ());
 
-	fieldRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields), fieldRevealer));
-	fieldRevealer -> property_child_revealed () .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed), fieldRevealer));
+	const auto fieldBox = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
+
+	fieldRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields));
+	fieldRevealer -> property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed));
 
 	fieldRevealer -> set_reveal_child (true);
 
@@ -255,7 +267,7 @@ RouteGraphNode::build ()
 	const auto footerRight = Gtk::manage (new Gtk::Box ());
 	const auto footer      = Gtk::manage (new Gtk::Button ());
 
-	footer -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_footer_clicked), fieldRevealer));
+	footer -> signal_clicked () .connect (sigc::mem_fun (this, &RouteGraphNode::on_footer_clicked));
 
 	footer -> set_hexpand (true);
 	footer -> set_hexpand_set (true);
@@ -280,24 +292,20 @@ RouteGraphNode::build ()
 }
 
 void
-RouteGraphNode::on_footer_clicked (Gtk::Revealer* const fieldRevealer)
+RouteGraphNode::on_footer_clicked ()
 {
-	__LOG__ << std::endl;
-
-	expanded = not expanded;
-
-	fieldRevealer -> set_reveal_child (expanded);
+	setExpanded (not expanded);
 }
 
 void
-RouteGraphNode::on_reveal_fields (Gtk::Revealer* const fieldRevealer)
+RouteGraphNode::on_reveal_fields ()
 {
 	if (fieldRevealer -> get_reveal_child ())
 		fieldRevealer -> set_visible (true);
 }
 
 void
-RouteGraphNode::on_fields_revealed (Gtk::Revealer* const fieldRevealer)
+RouteGraphNode::on_fields_revealed ()
 {
 	if (not fieldRevealer -> get_reveal_child ())
 		fieldRevealer -> set_visible (false);

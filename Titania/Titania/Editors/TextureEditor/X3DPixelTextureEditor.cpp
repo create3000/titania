@@ -129,11 +129,9 @@ X3DPixelTextureEditor::on_pixel_texture_save_as_clicked ()
 		const auto dialog = std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false));
 		auto       image  = pixelTexture -> getImage ();
 
-		dialog -> getWindow () .set_current_name (_ ("image.png"));
-
 		image .quality (100);
-	
-		dialog -> save (image);
+
+		dialog -> save (image, _ ("image.png"));
 	}
 	catch (const X3D::X3DError &)
 	{ }

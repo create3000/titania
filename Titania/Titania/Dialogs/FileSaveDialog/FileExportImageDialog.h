@@ -72,7 +72,7 @@ public:
 	run () final override;
 
 	bool
-	save (Magick::Image & image);
+	save (Magick::Image & image, const std::string & basename = "");
 
 	///  @name Destruction
 

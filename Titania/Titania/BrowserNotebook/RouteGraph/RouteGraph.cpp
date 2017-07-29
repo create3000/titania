@@ -54,6 +54,7 @@
 #include "../NotebookPage/NotebookPage.h"
 
 #include "../../Configuration/config.h"
+#include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 
@@ -67,8 +68,11 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	               windows (),
 	             selection (),
 	                button (0),
-	               pointer ()
+	               pointer (),
+	             sheetName (_ ("New Sheet"))
 {
+	getSheetName () .set_text (sheetName);
+
 	getOverlay () .add_overlay (getSheetName ());
 
 	// Drag & drop targets
@@ -134,9 +138,6 @@ RouteGraph::setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i &
 	window -> position = position;
 
 	getFixed () .move (*widget, position .x (), position .y ());
-
-	//getFixed () .remove (*widget);
-	//getFixed () .put (*widget, position .x (), position .y ());
 }
 
 void
@@ -161,6 +162,12 @@ RouteGraph::setSelection (const RouteGraphWindowPtr window)
 }
 
 void
+RouteGraph::on_rename_sheet_activate ()
+{
+
+}
+
+void
 RouteGraph::on_align_to_grid_activate ()
 {
 	for (const auto & window : windows)
@@ -172,6 +179,60 @@ RouteGraph::on_align_to_grid_activate ()
 		position = X3D::round (position / snapDistance) * snapDistance;
 
 		window -> position = X3D::Vector2i (position);
+	}
+}
+
+void
+RouteGraph::on_export_sheet_activate ()
+{
+	try
+	{
+		static const std::map <int32_t, std::string> magick = {
+			std::make_pair (1, "GRAY"),
+			std::make_pair (3, "RGB"),
+			std::make_pair (4, "RGBA"),
+		};
+
+		Gtk::OffscreenWindow window;
+
+		window .set_size_request (getFixed () .get_width (), getFixed () .get_height ());
+		getOverlay () .remove ();
+		window .add (getFixed ());
+		window .show ();
+
+		// This must be done, otherwise the pixbuf is empty.
+		while (Gtk::Main::events_pending ())
+			Gtk::Main::iteration ();
+
+		const auto pixbuf = window .get_pixbuf ();
+
+		window .remove ();
+		getOverlay () .add (getFixed ());
+
+		// Convert pixbuf to magick image
+
+		if (not pixbuf)
+			throw std::runtime_error ("RouteGraph::on_export_sheet_activate: pixbuf is NULL.");
+
+		const auto channels = pixbuf -> get_n_channels ();
+		const auto width    = pixbuf -> get_width ();
+		const auto height   = pixbuf -> get_height ();
+		const auto data     = pixbuf -> get_pixels ();
+
+		Magick::Image image (width, height, magick .at (channels), Magick::CharPixel, data);
+
+		// Save magick image
+
+		const auto dialog = std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false));
+
+		image .quality (100);
+
+		dialog -> save (image, sheetName + ".png");
+	}
+	catch (const std::exception & error)
+	{
+		// No magick
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -338,6 +399,12 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	context -> fill ();
 
 	return false;
+}
+
+void
+RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
+{
+
 }
 
 RouteGraph::~RouteGraph ()

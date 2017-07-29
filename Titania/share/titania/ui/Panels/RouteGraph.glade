@@ -51,6 +51,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Rename Sheet</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_rename_sheet_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -60,6 +61,15 @@
                         <property name="label" translatable="yes">Align To Grid</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_align_to_grid_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="ExportSheetMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Export Sheet</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_export_sheet_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
