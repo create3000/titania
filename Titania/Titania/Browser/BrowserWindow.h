@@ -649,6 +649,10 @@ private:
 
 	virtual
 	void
+	on_node_index_clicked () final override;
+
+	virtual
+	void
 	on_color_editor_clicked () final override;
 
 	virtual
@@ -657,11 +661,11 @@ private:
 
 	virtual
 	void
-	on_prototype_instance_dialog_clicked () final override;
+	on_prototype_editor_clicked () final override;
 
 	virtual
 	void
-	on_node_index_clicked () final override;
+	on_node_editor_clicked () final override;
 
 	///  @name Primitives toolbar
 

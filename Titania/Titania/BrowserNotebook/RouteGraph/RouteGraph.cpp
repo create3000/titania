@@ -119,15 +119,22 @@ RouteGraph::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
 	const auto window = std::make_shared <RouteGraphWindow> ();
 	const auto widget = std::make_shared <RouteGraphNode> (node);
 
+	windows .emplace_front (window);
+
 	window -> node     = node;
 	window -> widget   = widget;
 	window -> position = position;
 
+	widget -> signal_changed () .connect (sigc::mem_fun (this, &RouteGraph::refresh));
 	widget -> show ();
 
-	getFixed () .put (*widget, position .x (), position .y ());
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		field -> getInputRoutes ()  .addInterest (&RouteGraph::refresh, this);
+		field -> getOutputRoutes () .addInterest (&RouteGraph::refresh, this);
+	}
 
-	windows .emplace_front (window);
+	getFixed () .put (*widget, position .x (), position .y ());
 }
 
 void
@@ -162,6 +169,12 @@ RouteGraph::setSelection (const RouteGraphWindowPtr window)
 }
 
 void
+RouteGraph::refresh ()
+{
+	getFixed () .queue_draw ();
+}
+
+void
 RouteGraph::on_rename_sheet_activate ()
 {
 
@@ -172,13 +185,14 @@ RouteGraph::on_align_to_grid_activate ()
 {
 	for (const auto & window : windows)
 	{
-		static constexpr double snapDistance = 20;
+		static constexpr double snapDistance = 40;
+		static constexpr auto   offset       = X3D::Vector2d (7, 0);
 
-		auto position = X3D::Vector2d (window -> position);
+		auto position = X3D::Vector2d (window -> position) + offset;
 
-		position = X3D::round (position / snapDistance) * snapDistance;
+		position = X3D::round (position / snapDistance) * snapDistance - offset;
 
-		window -> position = X3D::Vector2i (position);
+		setPosition (window, X3D::Vector2i (position));
 	}
 }
 
@@ -371,17 +385,14 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	static constexpr auto gridColor      = 14.0 / 255.0;
 	static constexpr auto gridPointColor = 99.0 / 255.0;
 
-	const auto xGridOffset = (getScrolledWindow () .get_width ()  % gridSize) / 2;
-	const auto yGridOffset = (getScrolledWindow () .get_height () % gridSize) / 2;
-
 	// Grid
 
 	context -> set_source_rgb (gridColor, gridColor, gridColor);
 
-	for (int32_t y = yGridOffset; y < height; y += gridSize / 4)
+	for (int32_t y = 0; y < height; y += gridSize / 4)
 		context -> rectangle (0, y, width, 1);
 
-	for (int32_t x = xGridOffset; x < width; x += gridSize / 4)
+	for (int32_t x = 0; x < width; x += gridSize / 4)
 		context -> rectangle (x, 0, 1, height);
 
 	context -> fill ();
@@ -390,13 +401,15 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	context -> set_source_rgb (gridPointColor, gridPointColor, gridPointColor);
 
-	for (int32_t y = yGridOffset; y < height; y += gridSize)
+	for (int32_t y = 0; y < height; y += gridSize)
 	{
-		for (int32_t x = xGridOffset; x < width; x += gridSize)
+		for (int32_t x = 0; x < width; x += gridSize)
 			context -> rectangle (x, y, 1, 1);
 	}
 
 	context -> fill ();
+
+	on_draw_routes (context);
 
 	return false;
 }
@@ -404,7 +417,76 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 void
 RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 {
+	context -> set_line_width (2);
 
+	for (const auto & sourceWindow : windows)
+	{
+		const auto & sourceNode   = sourceWindow -> node;
+		const auto & sourceWidget = sourceWindow -> widget;
+
+		for (const auto & sourceField : sourceNode -> getFieldDefinitions ())
+		{
+			for (const auto & route : sourceField -> getOutputRoutes ())
+			{
+				try
+				{
+					const auto destinationNode  = route -> getDestinationNode ();
+					const auto destinationField = destinationNode -> getField (route -> getDestinationField ());
+					const auto iter             = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == destinationNode; });
+
+					if (iter == windows .end ())
+						continue;
+
+					const auto & destinationWindow   = *iter;
+					const auto & destinationWidget   = destinationWindow -> widget;
+					const auto   sourcePosition      = X3D::Vector2d (sourceWindow -> position + sourceWidget -> getOutputPosition (sourceField));
+					const auto   destinationPosition = X3D::Vector2d (destinationWindow -> position + destinationWidget -> getInputPosition (destinationField));
+
+					// Draw sine curved route, dark or light
+
+					const auto wp = (destinationPosition .x () - sourcePosition .x ()) * 0.5;
+					const auto cf = wp > 0 ? 1.0 : 0.5;
+					const auto x0 = sourcePosition .x ();
+					const auto y0 = sourcePosition .y ();
+					const auto x1 = sourcePosition .x () + wp;
+					const auto y1 = sourcePosition .y ();
+					const auto x2 = destinationPosition .x () - wp;
+					const auto y2 = destinationPosition .y ();
+					const auto x3 = destinationPosition .x ();
+					const auto y3 = destinationPosition .y ();
+ 
+					context -> set_source_rgb (255.0 / 255.0 * cf, 219.0 / 255.0 * cf, 165.0 / 255.0 * cf);
+					context -> move_to (x0, y0);
+					context -> curve_to (x1, y1, x2, y2, x3, y3);
+					context -> stroke ();
+
+					// Draw arrow
+
+					const auto p1 = X3D::Vector2d (0, 0);
+					const auto p2 = X3D::Vector2d (0, 14);
+					const auto p3 = X3D::Vector2d (10.0 / 9.0 * 14, 7);
+					const auto c  = X3D::negate ((p1 + p2 + p3) / 3.0);
+					const auto t  = (sourcePosition + destinationPosition) / 2.0;
+					const auto d  = destinationPosition - sourcePosition;
+					const auto s  = std::sin (1 / d .x () * math::pi <double> * math::pi <double> / 2) * d .y () / 2.0;
+					const auto a  = d .x () ? std::atan2 (1, 1 / s) : math::pi <double> / 2;
+
+					context -> save ();
+					context -> translate (t .x (), t .y ());
+					context -> rotate (d .y () >= 0 ? a : a + math::pi <double>);
+					context -> translate (c .x (), c .y ());
+					context -> move_to (p1 .x (), p1 .y ());
+					context -> line_to (p2 .x (), p2 .y ());
+					context -> line_to (p3 .x (), p3 .y ());
+					context -> close_path ();
+					context -> fill ();
+					context -> restore ();
+				}
+				catch (const std::exception & error)
+				{ }
+			}
+		}
+	}
 }
 
 RouteGraph::~RouteGraph ()

@@ -109,6 +109,9 @@ private:
 	void
 	addNode (const X3D::SFNode & node, const X3D::Vector2i & position);
 
+	RouteGraphWindowPtr
+	getWindow (const X3D::SFNode & node) const;
+
 	void
 	setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position);
 
@@ -117,6 +120,9 @@ private:
 
 	void
 	setSelection (const RouteGraphWindowPtr window);
+
+	void
+	refresh ();
 
 	///  @name Event handlers
 

@@ -1216,8 +1216,12 @@ public:
 	{ return *m_TextureCoordinateEditorButton; }
 
 	Gtk::ToolButton &
-	getCreatePrototypeInstanceButton () const
-	{ return *m_CreatePrototypeInstanceButton; }
+	getPrototypeEditorButton () const
+	{ return *m_PrototypeEditorButton; }
+
+	Gtk::ToolButton &
+	getNodeEditorButton () const
+	{ return *m_NodeEditorButton; }
 
 	Gtk::Toolbar &
 	getPrimitivesToolBar () const
@@ -1839,7 +1843,11 @@ public:
 
 	virtual
 	void
-	on_prototype_instance_dialog_clicked () = 0;
+	on_prototype_editor_clicked () = 0;
+
+	virtual
+	void
+	on_node_editor_clicked () = 0;
 
 	virtual
 	void
@@ -2271,7 +2279,8 @@ private:
 	Gtk::ToolButton* m_GeometryEditorButton;
 	Gtk::ToolButton* m_ColorPerVertexEditorButton;
 	Gtk::ToolButton* m_TextureCoordinateEditorButton;
-	Gtk::ToolButton* m_CreatePrototypeInstanceButton;
+	Gtk::ToolButton* m_PrototypeEditorButton;
+	Gtk::ToolButton* m_NodeEditorButton;
 	Gtk::Toolbar* m_PrimitivesToolBar;
 	Gtk::ToolButton* m_ArcCloseButton;
 	Gtk::ToolButton* m_DiskButton;

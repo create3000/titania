@@ -54,17 +54,23 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Parser/Filter.h>
+
 namespace titania {
 namespace puck {
 
 RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
-	           Gtk::Box (),
-	               node (node),
-	      fieldRevealer (nullptr),
-	             inputs (),
-	            outputs (),
-	           expanded (true),
-	connectorsSensitive (true)
+	            Gtk::Box (),
+	                node (node),
+	         headerInput (nullptr),
+	        headerOutput (nullptr),
+	       fieldRevealer (nullptr),
+	              inputs (),
+	             outputs (),
+	            expanded (true),
+	    headerConnectors (false),
+	 connectorsSensitive (true),
+	       changedSignal ()
 {
 	// Box
 
@@ -93,6 +99,36 @@ RouteGraphNode::setConnectorsSensitive (const bool value)
 
 	for (const auto & pair : outputs)
 		pair .second -> set_sensitive (connectorsSensitive);
+}
+
+X3D::Vector2i
+RouteGraphNode::getInputPosition (X3D::X3DFieldDefinition* const field) const
+throw (std::out_of_range)
+{
+	const auto button = headerConnectors ? headerInput : inputs .at (field);
+	const auto width  = button -> get_width ();
+	const auto height = button -> get_height ();
+
+	int x, y;
+
+	button -> translate_coordinates (*const_cast <RouteGraphNode*> (this), width / 2, height / 2, x, y);
+
+	return X3D::Vector2i (x, y);
+}
+
+X3D::Vector2i
+RouteGraphNode::getOutputPosition (X3D::X3DFieldDefinition* const field) const
+throw (std::out_of_range)
+{
+	const auto button = headerConnectors ? headerOutput : outputs .at (field);
+	const auto width  = button -> get_width ();
+	const auto height = button -> get_height ();
+
+	int x, y;
+
+	button -> translate_coordinates (*const_cast <RouteGraphNode*> (this), width / 2, height / 2, x, y);
+
+	return X3D::Vector2i (x, y);
 }
 
 void
@@ -124,9 +160,12 @@ RouteGraphNode::build ()
 
 	// Header
 
-	const auto headerBox   = Gtk::manage (new Gtk::Box ());
-	const auto headerLeft  = Gtk::manage (new Gtk::Box ());
-	const auto headerRight = Gtk::manage (new Gtk::Box ());
+	const auto displayName = X3D::GetDisplayName (node);
+
+	const auto headerOverlay = Gtk::manage (new Gtk::Overlay ());
+	const auto headerBox     = Gtk::manage (new Gtk::Box ());
+	const auto headerLeft    = Gtk::manage (new Gtk::Box ());
+	const auto headerRight   = Gtk::manage (new Gtk::Box ());
 
 	const auto header   = Gtk::manage (new Gtk::Grid ());
 	const auto imageBox = Gtk::manage (new Gtk::Box ());
@@ -134,7 +173,8 @@ RouteGraphNode::build ()
 	const auto typeName = Gtk::manage (new Gtk::Label ());
 	const auto name     = Gtk::manage (new Gtk::Label ());
 
-	box -> pack_start (*headerBox, true, true);
+	box -> pack_start (*headerOverlay, true, true);
+	headerOverlay -> add (*headerBox);
 
 	headerBox -> set_hexpand (true);
 	headerBox -> set_hexpand_set (true);
@@ -154,7 +194,7 @@ RouteGraphNode::build ()
 
 	image    -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg")));
 	typeName -> set_text (node -> getTypeName ());
-	name     -> set_text (node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ());
+	name     -> set_text (displayName .empty () ? _ ("<unnamed>") : displayName);
 
 	image    -> set_valign (Gtk::ALIGN_CENTER);
 	typeName -> set_halign (Gtk::ALIGN_START);
@@ -177,8 +217,6 @@ RouteGraphNode::build ()
 
 	fieldRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields));
 	fieldRevealer -> property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed));
-
-	fieldRevealer -> set_reveal_child (true);
 
 	fieldBox -> set_homogeneous (true);
 	fieldBox -> set_hexpand (true);
@@ -289,6 +327,33 @@ RouteGraphNode::build ()
 	node -> name_changed () .addInterest (&RouteGraphNode::set_name, this, name);
 
 	box -> show_all ();
+
+	// Header Connectors
+
+	headerInput  = Gtk::manage (new Gtk::Button ());
+	headerOutput = Gtk::manage (new Gtk::Button ());
+
+	headerInput  -> set_visible (headerConnectors);
+	headerOutput -> set_visible (headerConnectors);
+	headerInput  -> set_sensitive (false);
+	headerOutput -> set_sensitive (false);
+
+	headerInput  -> set_halign (Gtk::ALIGN_START);
+	headerInput  -> set_valign (Gtk::ALIGN_CENTER);
+	headerOutput -> set_halign (Gtk::ALIGN_END);
+	headerOutput -> set_valign (Gtk::ALIGN_CENTER);
+
+	headerOverlay -> add_overlay (*headerInput);
+	headerOverlay -> add_overlay (*headerOutput);
+
+	headerInput  -> get_style_context () -> add_class ("titania-route-graph-connector");
+	headerInput  -> get_style_context () -> add_class ("titania-route-graph-input");
+	headerOutput -> get_style_context () -> add_class ("titania-route-graph-connector");
+	headerOutput -> get_style_context () -> add_class ("titania-route-graph-output");
+
+	// Reveal at end, when all widget are created.
+
+	fieldRevealer -> set_reveal_child (true);
 }
 
 void
@@ -302,6 +367,16 @@ RouteGraphNode::on_reveal_fields ()
 {
 	if (fieldRevealer -> get_reveal_child ())
 		fieldRevealer -> set_visible (true);
+
+	if (not fieldRevealer -> get_reveal_child ())
+	{
+		headerConnectors = true;
+
+		headerInput   -> set_visible (headerConnectors);
+		headerOutput  -> set_visible (headerConnectors);
+	}
+
+	changedSignal .emit ();
 }
 
 void
@@ -310,7 +385,15 @@ RouteGraphNode::on_fields_revealed ()
 	if (not fieldRevealer -> get_reveal_child ())
 		fieldRevealer -> set_visible (false);
 
-	//bringToFront ();
+	if (fieldRevealer -> get_reveal_child ())
+	{
+		headerConnectors = false;
+
+		headerInput   -> set_visible (headerConnectors);
+		headerOutput  -> set_visible (headerConnectors);
+	}
+
+	changedSignal .emit ();
 }
 
 RouteGraphNode::~RouteGraphNode ()

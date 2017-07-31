@@ -361,7 +361,8 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("GeometryEditorButton", m_GeometryEditorButton);
 	m_builder -> get_widget ("ColorPerVertexEditorButton", m_ColorPerVertexEditorButton);
 	m_builder -> get_widget ("TextureCoordinateEditorButton", m_TextureCoordinateEditorButton);
-	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
+	m_builder -> get_widget ("PrototypeEditorButton", m_PrototypeEditorButton);
+	m_builder -> get_widget ("NodeEditorButton", m_NodeEditorButton);
 	m_builder -> get_widget ("PrimitivesToolBar", m_PrimitivesToolBar);
 	m_builder -> get_widget ("ArcCloseButton", m_ArcCloseButton);
 	m_builder -> get_widget ("DiskButton", m_DiskButton);
@@ -668,7 +669,8 @@ X3DBrowserWindowInterface::create ()
 	m_GeometryEditorButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_geometry_editor_clicked));
 	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
-	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
+	m_PrototypeEditorButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_prototype_editor_clicked));
+	m_NodeEditorButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_node_editor_clicked));
 	m_ArcCloseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_arc_close_clicked));
 	m_DiskButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_disk_clicked));
 	m_RectangleButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_rectangle_clicked));

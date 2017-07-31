@@ -85,6 +85,20 @@ public:
 	getConnectorsSensitive () const
 	{ return connectorsSensitive; }
 
+	X3D::Vector2i
+	getInputPosition (X3D::X3DFieldDefinition* const field) const
+	throw (std::out_of_range);
+
+	X3D::Vector2i
+	getOutputPosition (X3D::X3DFieldDefinition* const field) const
+	throw (std::out_of_range);
+
+	///  @name Signals
+
+	sigc::signal <void> &
+	signal_changed ()
+	{ return changedSignal; }
+
 	///  @name Destruction
 
 	virtual
@@ -122,11 +136,16 @@ private:
 	///  @name Members
 
 	const X3D::SFNode node;
+	Gtk::Button*      headerInput;
+	Gtk::Button*      headerOutput;
 	Gtk::Revealer*    fieldRevealer;
 	ConnectorIndex    inputs;
 	ConnectorIndex    outputs;
 	bool              expanded;
+	bool              headerConnectors;
 	bool              connectorsSensitive;
+
+	sigc::signal <void> changedSignal;
 
 };
 

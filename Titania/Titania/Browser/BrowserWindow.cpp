@@ -305,9 +305,9 @@ BrowserWindow::set_executionContext ()
 
 	// Toolbar
 
-	getSaveButton ()                    .set_sensitive (inScene);
-	getImportButton ()                  .set_sensitive (inScene);
-	getCreatePrototypeInstanceButton () .set_sensitive (inScene);
+	getSaveButton ()            .set_sensitive (inScene);
+	getImportButton ()          .set_sensitive (inScene);
+	getPrototypeEditorButton () .set_sensitive (inScene);
 
 	changing = true;
 
@@ -2063,6 +2063,12 @@ BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, 
 }
 
 void
+BrowserWindow::on_node_index_clicked ()
+{
+	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+}
+
+void
 BrowserWindow::on_color_editor_clicked ()
 {
 	addDialog ("ColorEditor");
@@ -2075,15 +2081,15 @@ BrowserWindow::on_texture_mapping_editor_clicked ()
 }
 
 void
-BrowserWindow::on_prototype_instance_dialog_clicked ()
+BrowserWindow::on_prototype_editor_clicked ()
 {
 	addDialog ("PrototypeEditor");
 }
 
 void
-BrowserWindow::on_node_index_clicked ()
+BrowserWindow::on_node_editor_clicked ()
 {
-	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+	addDialog ("NodeEditor");
 }
 
 // Primitive toolbar
