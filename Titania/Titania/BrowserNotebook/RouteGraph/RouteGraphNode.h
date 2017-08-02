@@ -93,11 +93,34 @@ public:
 	getOutputPosition (X3D::X3DFieldDefinition* const field) const
 	throw (std::out_of_range);
 
+	///  @name Operations
+
+	void
+	disableInputConnectors (const X3D::X3DExecutionContextPtr & executionContext,
+	                        const X3D::SFNode & sourceNode,
+	                        X3D::X3DFieldDefinition* const sourceField);
+
+	void
+	disableOutputConnectors (const X3D::X3DExecutionContextPtr & executionContext,
+	                         const X3D::SFNode & destinationNode,
+	                         X3D::X3DFieldDefinition* const destinationField);
+
+	void
+	enableConnectors ();
+
 	///  @name Signals
 
 	sigc::signal <void> &
 	signal_changed ()
 	{ return changedSignal; }
+
+	sigc::signal <void, X3D::X3DFieldDefinition*> &
+	signal_input_connector_clicked ()
+	{ return inputConnectorSignal; }
+
+	sigc::signal <void, X3D::X3DFieldDefinition*> &
+	signal_output_connector_clicked ()
+	{ return outputConnectorSignal; }
 
 	///  @name Destruction
 
@@ -114,6 +137,12 @@ private:
 
 	void
 	set_name (Gtk::Label* const name);
+
+	void
+	on_input_connector_clicked (X3D::X3DFieldDefinition* const field);
+
+	void
+	on_output_connector_clicked (X3D::X3DFieldDefinition* const field);
 
 	void
 	on_footer_clicked ();
@@ -138,14 +167,16 @@ private:
 	const X3D::SFNode node;
 	Gtk::Button*      headerInput;
 	Gtk::Button*      headerOutput;
-	Gtk::Revealer*    fieldRevealer;
+	Gtk::Revealer*    fieldsRevealer;
 	ConnectorIndex    inputs;
 	ConnectorIndex    outputs;
 	bool              expanded;
 	bool              headerConnectors;
 	bool              connectorsSensitive;
 
-	sigc::signal <void> changedSignal;
+	sigc::signal <void>                           changedSignal;
+	sigc::signal <void, X3D::X3DFieldDefinition*> inputConnectorSignal;
+	sigc::signal <void, X3D::X3DFieldDefinition*> outputConnectorSignal;
 
 };
 

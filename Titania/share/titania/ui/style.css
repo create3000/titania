@@ -113,6 +113,7 @@ expander > title > label {
 .titania-route-graph-node,
 .titania-route-graph-node * {
 	margin: 0px;
+	outline: none;
 	border: 0px;
 	padding: 0px;
 	background: none;

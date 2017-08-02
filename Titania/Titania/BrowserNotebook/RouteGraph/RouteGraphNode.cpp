@@ -60,17 +60,19 @@ namespace titania {
 namespace puck {
 
 RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
-	            Gtk::Box (),
-	                node (node),
-	         headerInput (nullptr),
-	        headerOutput (nullptr),
-	       fieldRevealer (nullptr),
-	              inputs (),
-	             outputs (),
-	            expanded (true),
-	    headerConnectors (false),
-	 connectorsSensitive (true),
-	       changedSignal ()
+	             Gtk::Box (),
+	                 node (node),
+	          headerInput (nullptr),
+	         headerOutput (nullptr),
+	       fieldsRevealer (nullptr),
+	               inputs (),
+	              outputs (),
+	             expanded (true),
+	     headerConnectors (false),
+	  connectorsSensitive (true),
+	        changedSignal (),
+	 inputConnectorSignal (),
+	outputConnectorSignal ()
 {
 	// Box
 
@@ -86,7 +88,7 @@ RouteGraphNode::setExpanded (const bool value)
 {
 	expanded = value;
 
-	fieldRevealer -> set_reveal_child (expanded);
+	fieldsRevealer -> set_reveal_child (expanded);
 }
 
 void
@@ -129,6 +131,78 @@ throw (std::out_of_range)
 	button -> translate_coordinates (*const_cast <RouteGraphNode*> (this), width / 2, height / 2, x, y);
 
 	return X3D::Vector2i (x, y);
+}
+
+void
+RouteGraphNode::disableInputConnectors (const X3D::X3DExecutionContextPtr & executionContext,
+                                        const X3D::SFNode & sourceNode,
+                                        X3D::X3DFieldDefinition* const sourceField)
+{
+	const bool disableInputs = node == sourceNode or (executionContext not_eq node -> getExecutionContext () and not executionContext -> isImportedNode (node));
+
+	for (const auto & input : inputs)
+	{
+		const auto field  = input .first;
+		const auto button = input .second;
+
+		if (field -> getType () not_eq sourceField -> getType () or disableInputs)
+			button-> set_visible (false);
+	}
+
+	for (const auto & output : outputs)
+	{
+		const auto field  = output .first;
+		const auto button = output .second;
+
+		if (field == sourceField)
+			button -> set_sensitive (false);
+		else
+			button -> set_visible (false);
+	}
+}
+
+void
+RouteGraphNode::disableOutputConnectors (const X3D::X3DExecutionContextPtr & executionContext,
+                                         const X3D::SFNode & destinationNode,
+                                         X3D::X3DFieldDefinition* const destinationField)
+{
+	const bool disableOutputs = node == destinationNode or (executionContext not_eq node -> getExecutionContext () and not executionContext -> isImportedNode (node));
+
+	for (const auto & input : inputs)
+	{
+		const auto field  = input .first;
+		const auto button = input .second;
+
+		if (field == destinationField)
+			button-> set_sensitive (false);
+		else
+			button -> set_visible (false);
+	}
+
+	for (const auto & output : outputs)
+	{
+		const auto field  = output .first;
+		const auto button = output .second;
+
+		if (field -> getType () not_eq destinationField -> getType () or disableOutputs)
+			button -> set_visible (false);
+	}
+}
+
+void
+RouteGraphNode::enableConnectors ()
+{
+	for (const auto & input : inputs)
+	{
+		input .second -> set_sensitive (true);
+		input .second -> set_visible (true);
+	}
+
+	for (const auto & output : outputs)
+	{
+		output .second -> set_sensitive (true);
+		output .second -> set_visible (true);
+	}
 }
 
 void
@@ -211,90 +285,94 @@ RouteGraphNode::build ()
 
 	// Fields
 
-	fieldRevealer = Gtk::manage (new Gtk::Revealer ());
+	fieldsRevealer = Gtk::manage (new Gtk::Revealer ());
 
-	const auto fieldBox = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
+	const auto fieldsBox = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
 
-	fieldRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields));
-	fieldRevealer -> property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed));
+	fieldsRevealer -> property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_reveal_fields));
+	fieldsRevealer -> property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &RouteGraphNode::on_fields_revealed));
 
-	fieldBox -> set_homogeneous (true);
-	fieldBox -> set_hexpand (true);
-	fieldBox -> set_hexpand_set (true);
+	fieldsBox -> set_homogeneous (true);
+	fieldsBox -> set_hexpand (true);
+	fieldsBox -> set_hexpand_set (true);
 
-	box -> pack_start (*fieldRevealer, true, true);
-	fieldRevealer -> add (*fieldBox);
+	box -> pack_start (*fieldsRevealer, true, true);
+	fieldsRevealer -> add (*fieldsBox);
 
-	for (const auto & fieldDefinition : node -> getFieldDefinitions ())
+	for (const auto & field : node -> getFieldDefinitions ())
 	{
-		if (fieldDefinition -> getAccessType () == X3D::initializeOnly)
+		if (field -> getAccessType () == X3D::initializeOnly)
 			continue;
 
 		// Field
 
-		const auto overlay = Gtk::manage (new Gtk::Overlay ());
-		const auto box     = Gtk::manage (new Gtk::Box ());
-		const auto left    = Gtk::manage (new Gtk::Box ());
-		const auto right   = Gtk::manage (new Gtk::Box ());
-		const auto field   = Gtk::manage (new Gtk::Box ());
-		const auto image   = Gtk::manage (new Gtk::Image ());
-		const auto name    = Gtk::manage (new Gtk::Label ());
+		const auto overlay  = Gtk::manage (new Gtk::Overlay ());
+		const auto box      = Gtk::manage (new Gtk::Box ());
+		const auto left     = Gtk::manage (new Gtk::Box ());
+		const auto right    = Gtk::manage (new Gtk::Box ());
+		const auto fieldBox = Gtk::manage (new Gtk::Box ());
+		const auto image    = Gtk::manage (new Gtk::Image ());
+		const auto name     = Gtk::manage (new Gtk::Label ());
 
-		image -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + fieldDefinition -> getTypeName () + ".svg")));
-		name  -> set_text (fieldDefinition -> getName ());
+		image -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg")));
+		name  -> set_text (field -> getName ());
 
-		fieldBox -> pack_start (*overlay, false, true);
+		fieldsBox -> pack_start (*overlay, false, true);
 		overlay  -> add (*box);
 
-		box -> pack_start (*left,  false, true);
-		box -> pack_start (*field, true,  true);
-		box -> pack_start (*right, false, true);
+		box -> pack_start (*left,     false, true);
+		box -> pack_start (*fieldBox, true,  true);
+		box -> pack_start (*right,    false, true);
 
-		field -> set_hexpand (true);
-		field -> set_hexpand_set (true);
+		fieldBox -> set_hexpand (true);
+		fieldBox -> set_hexpand_set (true);
 
-		field -> pack_start (*image, false, true);
-		field -> pack_start (*name,  false, true);
+		fieldBox -> pack_start (*image, false, true);
+		fieldBox -> pack_start (*name,  false, true);
 
 		name -> set_halign (Gtk::ALIGN_START);
 
-		box   -> get_style_context () -> add_class ("titania-route-graph-node-element-box");
-		left  -> get_style_context () -> add_class ("titania-route-graph-node-element-left");
-		right -> get_style_context () -> add_class ("titania-route-graph-node-element-right");
-		field -> get_style_context () -> add_class ("titania-route-graph-field");
-		image -> get_style_context () -> add_class ("titania-route-graph-field-image");
-		name  -> get_style_context () -> add_class ("titania-route-graph-field-name");
+		box      -> get_style_context () -> add_class ("titania-route-graph-node-element-box");
+		left     -> get_style_context () -> add_class ("titania-route-graph-node-element-left");
+		right    -> get_style_context () -> add_class ("titania-route-graph-node-element-right");
+		fieldBox -> get_style_context () -> add_class ("titania-route-graph-field");
+		image    -> get_style_context () -> add_class ("titania-route-graph-field-image");
+		name     -> get_style_context () -> add_class ("titania-route-graph-field-name");
 
 		// Connectors
 
-		if (fieldDefinition -> getAccessType () & X3D::inputOnly)
+		if (field -> getAccessType () & X3D::inputOnly)
 		{
-			const auto input  = Gtk::manage (new Gtk::Button ());
-	
+			const auto input = Gtk::manage (new Gtk::Button ());
+
+			input -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_input_connector_clicked), field));
+
 			input -> set_halign (Gtk::ALIGN_START);
 			input -> set_valign (Gtk::ALIGN_CENTER);
-	
+
 			overlay -> add_overlay (*input);
 
-			input  -> get_style_context () -> add_class ("titania-route-graph-connector");
-			input  -> get_style_context () -> add_class ("titania-route-graph-input");
+			input -> get_style_context () -> add_class ("titania-route-graph-connector");
+			input -> get_style_context () -> add_class ("titania-route-graph-input");
 
-			inputs .emplace (fieldDefinition, input);
+			inputs .emplace (field, input);
 		}
 
-		if (fieldDefinition -> getAccessType () & X3D::outputOnly)
+		if (field -> getAccessType () & X3D::outputOnly)
 		{
 			const auto output = Gtk::manage (new Gtk::Button ());
-	
+
+			output -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphNode::on_output_connector_clicked), field));
+
 			output -> set_halign (Gtk::ALIGN_END);
 			output -> set_valign (Gtk::ALIGN_CENTER);
-	
+
 			overlay -> add_overlay (*output);
-	
+
 			output -> get_style_context () -> add_class ("titania-route-graph-connector");
 			output -> get_style_context () -> add_class ("titania-route-graph-output");
 
-			outputs .emplace (fieldDefinition, output);
+			outputs .emplace (field, output);
 		}
 	}
 
@@ -353,7 +431,19 @@ RouteGraphNode::build ()
 
 	// Reveal at end, when all widget are created.
 
-	fieldRevealer -> set_reveal_child (true);
+	fieldsRevealer -> set_reveal_child (true);
+}
+
+void
+RouteGraphNode::on_input_connector_clicked (X3D::X3DFieldDefinition* const field)
+{
+	inputConnectorSignal .emit (field);
+}
+
+void
+RouteGraphNode::on_output_connector_clicked (X3D::X3DFieldDefinition* const field)
+{
+	outputConnectorSignal .emit (field);
 }
 
 void
@@ -365,10 +455,10 @@ RouteGraphNode::on_footer_clicked ()
 void
 RouteGraphNode::on_reveal_fields ()
 {
-	if (fieldRevealer -> get_reveal_child ())
-		fieldRevealer -> set_visible (true);
+	if (fieldsRevealer -> get_reveal_child ())
+		fieldsRevealer -> set_visible (true);
 
-	if (not fieldRevealer -> get_reveal_child ())
+	if (not fieldsRevealer -> get_reveal_child ())
 	{
 		headerConnectors = true;
 
@@ -382,10 +472,10 @@ RouteGraphNode::on_reveal_fields ()
 void
 RouteGraphNode::on_fields_revealed ()
 {
-	if (not fieldRevealer -> get_reveal_child ())
-		fieldRevealer -> set_visible (false);
+	if (not fieldsRevealer -> get_reveal_child ())
+		fieldsRevealer -> set_visible (false);
 
-	if (fieldRevealer -> get_reveal_child ())
+	if (fieldsRevealer -> get_reveal_child ())
 	{
 		headerConnectors = false;
 

@@ -104,10 +104,11 @@ private:
 	///  @name Operations
 
 	X3D::SFNode
-	getNode (const size_t id) const;
+	getNode (const size_t id) const
+	throw (std::runtime_error);
 
 	void
-	addNode (const X3D::SFNode & node, const X3D::Vector2i & position);
+	addWindow (const X3D::SFNode & node, const X3D::Vector2i & position);
 
 	RouteGraphWindowPtr
 	getWindow (const X3D::SFNode & node) const;
@@ -120,6 +121,12 @@ private:
 
 	void
 	setSelection (const RouteGraphWindowPtr window);
+
+	void
+	clearSelection ();
+
+	void
+	clearConnectorSelection ();
 
 	void
 	refresh ();
@@ -165,14 +172,25 @@ private:
 	void
 	on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context);
 
+	void
+	on_input_connector_clicked (X3D::X3DFieldDefinition* const field, RouteGraphWindow* const window);
+
+	void
+	on_output_connector_clicked (X3D::X3DFieldDefinition* const field, RouteGraphWindow* const window);
+
 	///  @name Members
 
-	RouteGraphWindowArray windows;
-	RouteGraphWindowArray selection;
-	int32_t               button;
-	X3D::Vector2i         position;
-	X3D::Vector2i         pointer;
-	std::string           sheetName;
+	RouteGraphWindowArray       windows;
+	RouteGraphWindowArray       selection;
+	int32_t                     button;
+	X3D::Vector2i               position;
+	X3D::Vector2i               pointer;
+	std::string                 sheetName;
+	bool                        inputConnectorClicked;
+	bool                        outputConnectorClicked;
+	X3D::X3DExecutionContextPtr matchingContext;
+	X3D::SFNode                 routeNode;
+	X3D::X3DFieldDefinition*    routeField;
 
 };
 

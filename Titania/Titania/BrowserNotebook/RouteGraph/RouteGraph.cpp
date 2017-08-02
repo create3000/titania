@@ -54,9 +54,11 @@
 #include "../NotebookPage/NotebookPage.h"
 
 #include "../../Configuration/config.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 
 namespace titania {
 namespace puck {
@@ -69,7 +71,12 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	             selection (),
 	                button (0),
 	               pointer (),
-	             sheetName (_ ("New Sheet"))
+	             sheetName (_ ("New Sheet")),
+	 inputConnectorClicked (false),
+	outputConnectorClicked (false),
+	       matchingContext (),
+	             routeNode (),
+	            routeField (nullptr)
 {
 	getSheetName () .set_text (sheetName);
 
@@ -90,10 +97,11 @@ RouteGraph::initialize ()
 
 X3D::SFNode
 RouteGraph::getNode (const size_t id) const
+throw (std::runtime_error)
 {
 	X3D::SFNode found;
 
-	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	X3D::traverse (getCurrentContext (), [&] (X3D::SFNode & node)
 	{
 		if (id == node -> getId ())
 		{
@@ -103,13 +111,20 @@ RouteGraph::getNode (const size_t id) const
 		
 		return true;
 	},
-	X3D::TRAVERSE_INLINE_NODES);
+	X3D::TRAVERSE_PROTO_DECLARATIONS |
+	X3D::TRAVERSE_PROTO_DECLARATION_BODY |
+	X3D::TRAVERSE_ROOT_NODES |
+	X3D::TRAVERSE_INLINE_NODES |
+	X3D::TRAVERSE_IMPORTED_NODES);
 
-	return found;
+	if (found)
+		return found;
+
+	throw std::runtime_error ("RouteGraph::getNode");
 }
 
 void
-RouteGraph::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
+RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
 	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
 
@@ -125,7 +140,9 @@ RouteGraph::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
 	window -> widget   = widget;
 	window -> position = position;
 
-	widget -> signal_changed () .connect (sigc::mem_fun (this, &RouteGraph::refresh));
+	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraph::refresh));
+	widget -> signal_input_connector_clicked ()  .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_input_connector_clicked),  window .get ()));
+	widget -> signal_output_connector_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_output_connector_clicked), window .get ()));
 	widget -> show ();
 
 	for (const auto & field : node -> getFieldDefinitions ())
@@ -166,6 +183,33 @@ RouteGraph::setSelection (const RouteGraphWindowPtr window)
 	selection .clear ();
 	selection .emplace_back (window);
 	bringToFront (window);
+
+	refresh ();
+}
+
+void
+RouteGraph::clearSelection ()
+{
+	selection .clear ();
+
+	refresh ();
+}
+
+void
+RouteGraph::clearConnectorSelection ()
+{
+	if (inputConnectorClicked or outputConnectorClicked)
+	{
+		inputConnectorClicked  = false;
+		outputConnectorClicked = false;
+
+		matchingContext = nullptr;
+		routeNode       = nullptr;
+		routeField      = nullptr;
+
+		for (const auto & window : windows)
+			window -> widget -> enableConnectors ();
+	}
 }
 
 void
@@ -271,12 +315,16 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 
 			isstream >> nodeId;
 
-			// Add node widget
-
-			const auto node = getNode (nodeId);
-
-			if (node)
-				addNode (node, X3D::Vector2i (x, y));
+			try
+			{
+				// Add node widget
+	
+				addWindow (getNode (nodeId), X3D::Vector2i (x, y));
+			}
+			catch (const std::exception & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 
 			context -> drag_finish (true, false, time);
 			return;
@@ -292,6 +340,16 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 	__LOG__ << std::endl;
 
 	button = event -> button;
+
+	// Clear selection
+
+	clearSelection ();
+
+	// Clear connector selection
+
+	clearConnectorSelection ();
+
+	// Handle buttons
 
 	if (button == 1)
 	{
@@ -486,6 +544,82 @@ RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 				{ }
 			}
 		}
+	}
+}
+
+void
+RouteGraph::on_input_connector_clicked (X3D::X3DFieldDefinition* const connectorField, RouteGraphWindow* const window)
+{
+	if (inputConnectorClicked)
+		return;
+
+	if (outputConnectorClicked)
+	{
+		const auto sourceNode       = routeNode;
+		const auto sourceField      = routeField -> getName ();
+		const auto destinationNode  = window -> node;
+		const auto destinationField = connectorField -> getName ();
+
+		try
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
+			X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
+			X3D::X3DEditor::addRoute (matchingContext, sourceNode, sourceField, destinationNode, destinationField, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		clearConnectorSelection ();
+	}
+	else
+	{
+		inputConnectorClicked = true;
+
+		matchingContext = X3D::X3DExecutionContextPtr (window -> node -> getExecutionContext ());
+		routeNode       = window -> node;
+		routeField      = connectorField;
+
+		for (const auto & window : windows)
+			window -> widget -> disableOutputConnectors (matchingContext, routeNode, routeField);
+	}
+}
+
+void
+RouteGraph::on_output_connector_clicked (X3D::X3DFieldDefinition* const connectorField, RouteGraphWindow* const window)
+{
+	if (outputConnectorClicked)
+		return;
+
+	if (inputConnectorClicked)
+	{
+		const auto sourceNode       = window -> node;
+		const auto sourceField      = connectorField  -> getName ();
+		const auto destinationNode  = routeNode;
+		const auto destinationField = routeField-> getName ();
+
+		try
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
+			X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
+			X3D::X3DEditor::addRoute (matchingContext, sourceNode, sourceField, destinationNode, destinationField, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		clearConnectorSelection ();
+	}
+	else
+	{
+		outputConnectorClicked = true;
+	
+		matchingContext = X3D::X3DExecutionContextPtr (window -> node -> getExecutionContext ());
+		routeNode       = window -> node;
+		routeField      = connectorField;
+	
+		for (const auto & window : windows)
+			window -> widget -> disableInputConnectors (matchingContext, routeNode, routeField);
 	}
 }
 
