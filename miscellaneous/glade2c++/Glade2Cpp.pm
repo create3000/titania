@@ -936,3 +936,5 @@ Viewport::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
 Viewport::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
+Fixed::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);
