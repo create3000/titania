@@ -67,6 +67,7 @@ RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
 	       fieldsRevealer (nullptr),
 	               inputs (),
 	              outputs (),
+	             selected (false),
 	             expanded (true),
 	     headerConnectors (false),
 	  connectorsSensitive (true),
@@ -81,6 +82,17 @@ RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
 	get_style_context () -> add_class ("titania-route-graph-node");
 
 	build ();
+}
+
+void
+RouteGraphNode::setSelected (const bool value)
+{
+	selected = value;
+
+	if (selected)
+		get_style_context () -> add_class ("titania-route-graph-node-selected");
+	else
+		get_style_context () -> remove_class ("titania-route-graph-node-selected");
 }
 
 void

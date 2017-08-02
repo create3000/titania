@@ -63,6 +63,13 @@
 namespace titania {
 namespace puck {
 
+static constexpr auto   GRID_SIZE        = 40;
+static constexpr auto   SMALL_GRID_SIZE  = 10;
+static constexpr auto   GRID_COLOR       = 14.0 / 255.0;
+static constexpr auto   GRID_POINT_COLOR = 99.0 / 255.0;
+static constexpr double SNAP_DISTANCE    = GRID_SIZE;
+static constexpr auto   SNAP_OFFSET      = X3D::Vector2d (7, 0);
+
 RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DRouteGraphInterface (get_ui ("Panels/RouteGraph.glade"), page, PanelType::ROUTE_GRAPH, id),
@@ -70,7 +77,8 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	               windows (),
 	             selection (),
 	                button (0),
-	               pointer (),
+	              position (),
+	         startPosition (),
 	             sheetName (_ ("New Sheet")),
 	 inputConnectorClicked (false),
 	outputConnectorClicked (false),
@@ -151,7 +159,15 @@ RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 		field -> getOutputRoutes () .addInterest (&RouteGraph::refresh, this);
 	}
 
+	// Put widget on fixed.
+
 	getFixed () .put (*widget, position .x (), position .y ());
+
+	// This must be done, the size of the new window is 0.
+	while (Gtk::Main::events_pending ())
+		Gtk::Main::iteration ();
+
+	resizeGrid ();
 }
 
 void
@@ -162,6 +178,17 @@ RouteGraph::setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i &
 	window -> position = position;
 
 	getFixed () .move (*widget, position .x (), position .y ());
+}
+
+X3D::Box2i
+RouteGraph::getBBox (const RouteGraphWindowPtr & window) const
+{
+	const auto & widget   = window -> widget;
+	const auto & position = window -> position;
+	const auto   width    = widget -> get_width ();
+	const auto   height   = widget -> get_height ();
+
+	return X3D::Box2i (position, position + X3D::Vector2i (width, height), X3D::extents_type ());
 }
 
 void
@@ -177,19 +204,60 @@ RouteGraph::bringToFront (const RouteGraphWindowPtr window)
 	windows .emplace_front (window);
 }
 
-void
-RouteGraph::setSelection (const RouteGraphWindowPtr window)
+bool
+RouteGraph::isSelected (const RouteGraphWindowPtr & window) const
 {
-	selection .clear ();
-	selection .emplace_back (window);
-	bringToFront (window);
+	const auto iter = std::find_if (selection .begin (), selection .end (), [&] (const RouteGraphWindowPtr & selectedWindow) { return window == selectedWindow; });
 
+	return iter not_eq selection .end ();
+}
+
+void
+RouteGraph::addSelection (const RouteGraphWindowArray & windows)
+{
+	for (const auto & window : windows)
+		window -> widget -> setSelected (true);
+
+	selection .insert (selection .end (), windows .begin (), windows .end ());
+
+	if (not windows .empty ())
+		bringToFront (windows .back ());
+
+	refresh ();
+}
+
+void
+RouteGraph::setSelection (const RouteGraphWindowArray & windows)
+{
+	clearSelection ();
+
+	addSelection (windows);
+}
+
+void
+RouteGraph::removeSelection (const RouteGraphWindowArray & windows)
+{
+	for (const auto & window : windows)
+		window -> widget -> setSelected (false);
+
+	const auto iter = std::remove_if (selection .begin (), selection .end (), [&] (const RouteGraphWindowPtr & selectedWindow)
+	{
+		const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window == selectedWindow; });
+	
+		return iter not_eq windows .end ();
+	});
+
+	selection .erase (iter, selection .end ());
+	
 	refresh ();
 }
 
 void
 RouteGraph::clearSelection ()
 {
+	for (const auto & window : selection)
+		window -> widget -> setSelected (false);
+
 	selection .clear ();
 
 	refresh ();
@@ -213,6 +281,20 @@ RouteGraph::clearConnectorSelection ()
 }
 
 void
+RouteGraph::resizeGrid ()
+{
+	auto bbox = X3D::Box2d ();
+
+	for (const auto & window : windows)
+		bbox += X3D::Box2d (getBBox (window));
+
+	const auto extents = bbox .extents ();
+	const auto max     = extents .second;
+
+	getFixed () .set_size_request (max .x () + GRID_SIZE, max .y () + GRID_SIZE);
+}
+
+void
 RouteGraph::refresh ()
 {
 	getFixed () .queue_draw ();
@@ -229,12 +311,9 @@ RouteGraph::on_align_to_grid_activate ()
 {
 	for (const auto & window : windows)
 	{
-		static constexpr double snapDistance = 40;
-		static constexpr auto   offset       = X3D::Vector2d (7, 0);
+		auto position = X3D::Vector2d (window -> position) + SNAP_OFFSET;
 
-		auto position = X3D::Vector2d (window -> position) + offset;
-
-		position = X3D::round (position / snapDistance) * snapDistance - offset;
+		position = X3D::round (position / SNAP_DISTANCE) * SNAP_DISTANCE - SNAP_OFFSET;
 
 		setPosition (window, X3D::Vector2i (position));
 	}
@@ -250,6 +329,9 @@ RouteGraph::on_export_sheet_activate ()
 			std::make_pair (3, "RGB"),
 			std::make_pair (4, "RGBA"),
 		};
+
+		const auto hValue = getScrolledWindow () .get_hadjustment () -> get_value ();
+		const auto vValue = getScrolledWindow () .get_vadjustment () -> get_value ();
 
 		Gtk::OffscreenWindow window;
 
@@ -286,6 +368,11 @@ RouteGraph::on_export_sheet_activate ()
 		image .quality (100);
 
 		dialog -> save (image, sheetName + ".png");
+
+		// Set adjustments.
+
+		getScrolledWindow () .get_hadjustment () -> set_value (hValue);
+		getScrolledWindow () .get_vadjustment () -> set_value (vValue);
 	}
 	catch (const std::exception & error)
 	{
@@ -319,7 +406,11 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 			{
 				// Add node widget
 	
-				addWindow (getNode (nodeId), X3D::Vector2i (x, y));
+				int xOffset, yOffset;
+			
+				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
+
+				addWindow (getNode (nodeId), X3D::Vector2i (x + xOffset, y + yOffset));
 			}
 			catch (const std::exception & error)
 			{
@@ -337,38 +428,44 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 bool
 RouteGraph::on_button_press_event (GdkEventButton* event) 
 {
-	__LOG__ << std::endl;
+	if (button)
+		return false;
+
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
 
 	button = event -> button;
-
-	// Clear selection
-
-	clearSelection ();
-
-	// Clear connector selection
-
-	clearConnectorSelection ();
 
 	// Handle buttons
 
 	if (button == 1)
 	{
+		// Selected node widget and prepare move.
+
+		// Clear connector selection
+	
+		clearConnectorSelection ();
+	
 		// Prepare move widget
 
-		pointer = X3D::Vector2i (event -> x, event -> y);
+		startPosition = pointer;
 
 		for (const auto & window : windows)
 		{
-			const auto & widget   = window -> widget;
-			const auto & position = window -> position;
-			const auto   width    = widget -> get_width ();
-			const auto   height   = widget -> get_height ();
-			const auto   box      = X3D::Box2i (position, position + X3D::Vector2i (width, height), X3D::extents_type ());
+			const auto & widget = window -> widget;
+			const auto   bbox   = X3D::Box2d (getBBox (window));
 
-			if (not box .intersects (pointer))
+			if (not bbox .intersects (startPosition))
 				continue;
 
-			setSelection (window);
+			if (getBrowserWindow () -> getKeys () .shift ())
+			{
+				if (isSelected (window))
+					removeSelection ({ window });
+				else
+					addSelection ({ window });
+			}
+			else if (not isSelected (window))
+				setSelection ({ window });
 
 			// Prepare move
 
@@ -376,6 +473,16 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 
 			return true;
 		}
+
+		// Clear selection if clicked on grid.
+
+		clearSelection ();
+	}
+	else if (button == 2)
+	{
+		// Prepare move area.
+
+		startPosition = pointer;
 	}
 
 	return false;
@@ -384,16 +491,17 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 bool
 RouteGraph::on_button_release_event (GdkEventButton* event) 
 {
-	__LOG__ << std::endl;
+	if (button == 1)
+	{
+		for (const auto & window : selection)
+		{
+			const auto & widget = window -> widget;
+	
+			widget -> setConnectorsSensitive (true);	
+		}
+	}
 
 	button = 0;
-
-	for (const auto & window : selection)
-	{
-		const auto & widget = window -> widget;
-
-		widget -> setConnectorsSensitive (true);	
-	}
 
 	return false;
 }
@@ -401,25 +509,50 @@ RouteGraph::on_button_release_event (GdkEventButton* event)
 bool
 RouteGraph::on_motion_notify_event (GdkEventMotion* event) 
 {
-	__LOG__ << std::endl;
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
 
 	if (button == 1)
 	{
-		const auto translation = X3D::Vector2i (event -> x, event -> y) - pointer;
+		auto bbox = X3D::Box2d ();
+
+		for (const auto & window : selection)
+			bbox += X3D::Box2d (getBBox (window));
+
+		const auto translation          = pointer - startPosition;
+		const auto extents              = bbox .extents ();
+		const auto min                  = extents .first;
+		const auto translated           = X3D::max (X3D::Vector2d (), min + translation);
+		const auto selectionTranslation = X3D::Vector2i (X3D::round (translated - min));
 
 		for (const auto & window : selection)
 		{
 			auto position = window -> position;
 
-			position += translation;
+			position += selectionTranslation;
 			position  = X3D::max (X3D::Vector2i (), position);
 
 			setPosition (window, position);
 		}
 
-		pointer = X3D::Vector2i (event -> x, event -> y);
+		// Make the fixed a litte larger.
+		resizeGrid ();
+
+		startPosition = pointer;
 
 		return true;
+	}
+	else if (button == 2)
+	{
+		// Move area.
+
+		const auto translation = startPosition - pointer;
+		const auto x           = getScrolledWindow () .get_hscrollbar () -> get_value ();
+		const auto y           = getScrolledWindow () .get_vscrollbar () -> get_value ();
+
+		getScrolledWindow () .get_hscrollbar () -> set_value (x + translation .x ());
+		getScrolledWindow () .get_vscrollbar () -> set_value (y + translation .y ());
+
+		startPosition = pointer + translation;
 	}
 
 	return false;
@@ -439,29 +572,23 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	// Grid with points
 
-	static constexpr auto gridSize       = 40;
-	static constexpr auto gridColor      = 14.0 / 255.0;
-	static constexpr auto gridPointColor = 99.0 / 255.0;
+	context -> set_source_rgb (GRID_COLOR, GRID_COLOR, GRID_COLOR);
 
-	// Grid
-
-	context -> set_source_rgb (gridColor, gridColor, gridColor);
-
-	for (int32_t y = 0; y < height; y += gridSize / 4)
+	for (int32_t y = 0; y < height; y += SMALL_GRID_SIZE)
 		context -> rectangle (0, y, width, 1);
 
-	for (int32_t x = 0; x < width; x += gridSize / 4)
+	for (int32_t x = 0; x < width; x += SMALL_GRID_SIZE)
 		context -> rectangle (x, 0, 1, height);
 
 	context -> fill ();
 
 	// Points
 
-	context -> set_source_rgb (gridPointColor, gridPointColor, gridPointColor);
+	context -> set_source_rgb (GRID_POINT_COLOR, GRID_POINT_COLOR, GRID_POINT_COLOR);
 
-	for (int32_t y = 0; y < height; y += gridSize)
+	for (int32_t y = 0; y < height; y += GRID_SIZE)
 	{
-		for (int32_t x = 0; x < width; x += gridSize)
+		for (int32_t x = 0; x < width; x += GRID_SIZE)
 			context -> rectangle (x, y, 1, 1);
 	}
 

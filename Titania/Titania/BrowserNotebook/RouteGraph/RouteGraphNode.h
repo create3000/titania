@@ -72,6 +72,13 @@ public:
 	///  @name Member access
 
 	void
+	setSelected (const bool value);
+
+	bool
+	getSelected () const
+	{ return selected; }
+
+	void
 	setExpanded (const bool value);
 
 	bool
@@ -170,6 +177,7 @@ private:
 	Gtk::Revealer*    fieldsRevealer;
 	ConnectorIndex    inputs;
 	ConnectorIndex    outputs;
+	bool              selected;
 	bool              expanded;
 	bool              headerConnectors;
 	bool              connectorsSensitive;

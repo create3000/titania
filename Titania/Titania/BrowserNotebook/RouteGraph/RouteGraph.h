@@ -116,17 +116,32 @@ private:
 	void
 	setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position);
 
+	X3D::Box2i
+	getBBox (const RouteGraphWindowPtr & window) const;
+
 	void
 	bringToFront (const RouteGraphWindowPtr window);
 
+	bool
+	isSelected (const RouteGraphWindowPtr & window) const;
+
 	void
-	setSelection (const RouteGraphWindowPtr window);
+	addSelection (const RouteGraphWindowArray & windows);
+
+	void
+	removeSelection (const RouteGraphWindowArray & windows);
+
+	void
+	setSelection (const RouteGraphWindowArray & windows);
 
 	void
 	clearSelection ();
 
 	void
 	clearConnectorSelection ();
+
+	void
+	resizeGrid ();
 
 	void
 	refresh ();
@@ -183,8 +198,8 @@ private:
 	RouteGraphWindowArray       windows;
 	RouteGraphWindowArray       selection;
 	int32_t                     button;
-	X3D::Vector2i               position;
-	X3D::Vector2i               pointer;
+	X3D::Vector2d               position;
+	X3D::Vector2d               startPosition;
 	std::string                 sheetName;
 	bool                        inputConnectorClicked;
 	bool                        outputConnectorClicked;

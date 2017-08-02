@@ -137,6 +137,10 @@ expander > title > label {
 	padding: 5px 20px 5px 4px;
 }
 
+.titania-route-graph-node-selected .titania-route-graph-node-header {
+	background: rgb(83,53,32);
+}
+
 .titania-route-graph-node-image-box {
 	padding: 0px 10px 0px 5px;
 }
@@ -155,6 +159,10 @@ expander > title > label {
 	border-bottom: 2px solid black;
 	padding: 3px 25px 3px 9px;
 	background: rgb(51,74,93);
+}
+
+.titania-route-graph-node-selected .titania-route-graph-field {
+	background: rgb(106,73,55);
 }
 
 .titania-route-graph-field-image {
@@ -190,6 +198,10 @@ expander > title > label {
 .titania-route-graph-node-footer {
 	background: rgb(74,100,133);
 	min-height: 6px;
+}
+
+.titania-route-graph-node-selected .titania-route-graph-node-footer {
+	background: rgb(85,43,23);
 }
 
 .titania-route-graph-node-footer-left,
