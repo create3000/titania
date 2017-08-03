@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_GEOMETRY_BOX2_H__
 #define __TITANIA_MATH_GEOMETRY_BOX2_H__
 
+#include "../Algorithms/SAT.h"
 #include "../Numbers/Matrix3.h"
 #include "../Numbers/Vector2.h"
 #include "../Geometry/ConvexHull2.h"
@@ -256,11 +257,19 @@ public:
 	bool
 	intersects (const vector2 <Type> &) const;
 
+	///  Returns true if @a box intersects with this oriented box.
+	bool
+	intersects (const box2 &) const;
+
 	///  Returns true if this box contains @a box.
 	bool
 	contains (const box2 & box) const;
 
 private:
+
+	///  Returns the three unnormalized unique normals of this box.
+	std::vector <vector2 <Type>> 
+	normals () const;
 
 	///  Returns the absolute min and max extents of this box.
 	std::pair <vector2 <Type>, vector2 <Type>>
@@ -356,6 +365,22 @@ box2 <Type>::axes () const
 }
 
 template <class Type>
+std::vector <vector2 <Type>> 
+box2 <Type>::normals () const
+{
+	std::vector <vector2 <Type>> normals;
+	normals .reserve (2);
+
+	const auto x = matrix () .x_axis ();
+	const auto y = matrix () .y_axis ();
+
+	normals .emplace_back (-x .y (), x .x ());
+	normals .emplace_back (-y .y (), y .x ());
+
+	return normals;
+}
+
+template <class Type>
 template <class Up>
 box2 <Type> &
 box2 <Type>::operator += (const box2 <Up> & box)
@@ -388,6 +413,34 @@ box2 <Type>::intersects (const vector2 <Type> & point) const
 	       max .x () >= point .x () and
 	       min .y () <= point .y () and
 	       max .y () >= point .y ();
+}
+
+template <class Type>
+bool
+box2 <Type>::intersects (const box2 <Type> & other) const
+{
+	// Test special cases.
+
+	if (empty ())
+		return false;
+
+	if (other .empty ())
+		return false;
+
+	// Get points.
+
+	const auto points1 = points ();
+	const auto points2 = other .points ();
+
+	if (sat::separated (normals (), points1, points2))
+		return false;
+
+	if (sat::separated (other .normals (), points1, points2))
+		return false;
+
+	// Both boxes intersect.
+
+	return true;
 }
 
 template <class Type>

@@ -186,6 +186,9 @@ X3DSelector::display ()
 
 	// Configure HUD
 
+	const auto f = make_rgba <double> (210, 225, 252, 43);
+	const auto s = make_rgba <double> (210, 225, 252, 255);
+
 	const auto & viewport = getBrowser () -> getViewport ();
 	const auto & width    = viewport [2];
 	const auto & height   = viewport [3];
@@ -204,7 +207,7 @@ X3DSelector::display ()
 
 	glEnable (GL_BLEND);
 	glDisable (GL_CULL_FACE);
-	glColor4f (1, 1, 1, 0.2);
+	glColor4f (f .r (), f .g (), f .b (), f .a ());
 	polygon ();
 	glDisable (GL_BLEND);
 
@@ -212,11 +215,7 @@ X3DSelector::display ()
 	glVertexPointer (3, GL_DOUBLE, 0, points .data ());
 
 	glLineWidth (2);
-	glColor3f (0, 0, 0);
-	glDrawArrays (GL_LINE_LOOP, 0, points .size ());
-
-	glLineWidth (1);
-	glColor3f (1, 1, 1);
+	glColor4f (s .r (), s .g (), s .b (), s .a ());
 	glDrawArrays (GL_LINE_LOOP, 0, points .size ());
 
 	glDisableClientState (GL_VERTEX_ARRAY);

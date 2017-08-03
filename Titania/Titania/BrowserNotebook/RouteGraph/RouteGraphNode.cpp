@@ -228,13 +228,13 @@ RouteGraphNode::build ()
 {
 	// Clear
 
-	for (const auto & widget : get_children ())
-		remove (*widget);
+	node -> name_changed () .removeInterest (&RouteGraphNode::set_name, this);
 
 	inputs  .clear ();
 	outputs .clear ();
 
-	node -> name_changed () .removeInterest (&RouteGraphNode::set_name, this);
+	for (const auto & widget : get_children ())
+		remove (*widget);
 
 	// Box
 
@@ -443,7 +443,7 @@ RouteGraphNode::build ()
 
 	// Reveal at end, when all widget are created.
 
-	fieldsRevealer -> set_reveal_child (true);
+	fieldsRevealer -> set_reveal_child (expanded);
 }
 
 void

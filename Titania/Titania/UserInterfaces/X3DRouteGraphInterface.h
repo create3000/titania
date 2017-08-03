@@ -131,6 +131,10 @@ public:
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
+	Gtk::Overlay &
+	getOverlay () const
+	{ return *m_Overlay; }
+
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -138,10 +142,6 @@ public:
 	Gtk::Viewport &
 	getViewport () const
 	{ return *m_Viewport; }
-
-	Gtk::Overlay &
-	getOverlay () const
-	{ return *m_Overlay; }
 
 	Gtk::Fixed &
 	getFixed () const
@@ -216,9 +216,9 @@ private:
 	Gtk::MenuItem* m_AlignToGridMenuItem;
 	Gtk::MenuItem* m_ExportSheetMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
+	Gtk::Overlay* m_Overlay;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Viewport* m_Viewport;
-	Gtk::Overlay* m_Overlay;
 	Gtk::Fixed* m_Fixed;
 
 };

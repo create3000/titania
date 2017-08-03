@@ -101,6 +101,13 @@ private:
 	using RouteGraphWindowPtr   = std::shared_ptr <RouteGraphWindow>;
 	using RouteGraphWindowArray = std::deque <RouteGraphWindowPtr>;
 
+	enum class MotionType
+	{
+		DEFAULT,
+		SELECTION,
+		RECTANGLE
+	};
+
 	///  @name Operations
 
 	X3D::SFNode
@@ -141,7 +148,7 @@ private:
 	clearConnectorSelection ();
 
 	void
-	resizeGrid ();
+	resize ();
 
 	void
 	refresh ();
@@ -200,6 +207,8 @@ private:
 	int32_t                     button;
 	X3D::Vector2d               position;
 	X3D::Vector2d               startPosition;
+	X3D::Vector2d               endPosition;
+	MotionType                  motionType;
 	std::string                 sheetName;
 	bool                        inputConnectorClicked;
 	bool                        outputConnectorClicked;

@@ -274,7 +274,7 @@ private:
 
 	///  Returns the three unnormalized unique normals of this box.
 	std::vector <vector3 <Type>> 
-	planes () const;
+	normals () const;
 
 	///  Returns the absolute min and max extents of this box.
 	std::pair <vector3 <Type>, vector3 <Type>>
@@ -339,20 +339,20 @@ box3 <Type>::axes () const
 
 template <class Type>
 std::vector <vector3 <Type>> 
-box3 <Type>::planes () const
+box3 <Type>::normals () const
 {
-	std::vector <vector3 <Type>>  axes;
-	axes .reserve (3);
+	std::vector <vector3 <Type>> normals;
+	normals .reserve (3);
 
 	const auto x = matrix () .x_axis ();
 	const auto y = matrix () .y_axis ();
 	const auto z = matrix () .z_axis ();
 
-	axes .emplace_back (cross (y, z));
-	axes .emplace_back (cross (z, x));
-	axes .emplace_back (cross (x, y));
+	normals .emplace_back (cross (y, z));
+	normals .emplace_back (cross (z, x));
+	normals .emplace_back (cross (x, y));
 
-	return axes;
+	return normals;
 }
 
 template <class Type>
@@ -535,17 +535,17 @@ box3 <Type>::intersects (const box3 & other) const
 
 	// Get points.
 
-	const std::vector <vector3 <Type>>  points1 = points ();
-	const std::vector <vector3 <Type>>  points2 = other .points ();
+	const auto points1 = points ();
+	const auto points2 = other .points ();
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (sat::separated (planes (), points1, points2))
+	if (sat::separated (normals (), points1, points2))
 		return false;
 
 	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
 
-	if (sat::separated (other .planes (), points1, points2))
+	if (sat::separated (other .normals (), points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of each parallelepiped.
@@ -582,7 +582,7 @@ box3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, con
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (sat::separated (planes (), points1, points2))
+	if (sat::separated (normals (), points1, points2))
 		return false;
 
 	// Test the normal of the triangle.

@@ -79,6 +79,8 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	                button (0),
 	              position (),
 	         startPosition (),
+	           endPosition (),
+	            motionType (MotionType::DEFAULT),
 	             sheetName (_ ("New Sheet")),
 	 inputConnectorClicked (false),
 	outputConnectorClicked (false),
@@ -163,11 +165,8 @@ RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 
 	getFixed () .put (*widget, position .x (), position .y ());
 
-	// This must be done, the size of the new window is 0.
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	resizeGrid ();
+	// Make the grid a litte larger.
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraph::resize));
 }
 
 void
@@ -281,7 +280,7 @@ RouteGraph::clearConnectorSelection ()
 }
 
 void
-RouteGraph::resizeGrid ()
+RouteGraph::resize ()
 {
 	auto bbox = X3D::Box2d ();
 
@@ -336,7 +335,7 @@ RouteGraph::on_export_sheet_activate ()
 		Gtk::OffscreenWindow window;
 
 		window .set_size_request (getFixed () .get_width (), getFixed () .get_height ());
-		getOverlay () .remove ();
+		getViewport () .remove ();
 		window .add (getFixed ());
 		window .show ();
 
@@ -347,7 +346,7 @@ RouteGraph::on_export_sheet_activate ()
 		const auto pixbuf = window .get_pixbuf ();
 
 		window .remove ();
-		getOverlay () .add (getFixed ());
+		getViewport () .add (getFixed ());
 
 		// Convert pixbuf to magick image
 
@@ -448,6 +447,7 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 		// Prepare move widget
 
 		startPosition = pointer;
+		endPosition   = pointer;
 
 		for (const auto & window : windows)
 		{
@@ -456,6 +456,8 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 
 			if (not bbox .intersects (startPosition))
 				continue;
+
+			motionType = MotionType::SELECTION;
 
 			if (getBrowserWindow () -> getKeys () .shift ())
 			{
@@ -474,9 +476,13 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 			return true;
 		}
 
+		motionType = MotionType::RECTANGLE;
+
 		// Clear selection if clicked on grid.
 
 		clearSelection ();
+
+		refresh ();
 	}
 	else if (button == 2)
 	{
@@ -501,7 +507,10 @@ RouteGraph::on_button_release_event (GdkEventButton* event)
 		}
 	}
 
-	button = 0;
+	button     = 0;
+	motionType = MotionType::DEFAULT;
+
+	refresh ();
 
 	return false;
 }
@@ -513,31 +522,60 @@ RouteGraph::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		auto bbox = X3D::Box2d ();
-
-		for (const auto & window : selection)
-			bbox += X3D::Box2d (getBBox (window));
-
-		const auto translation          = pointer - startPosition;
-		const auto extents              = bbox .extents ();
-		const auto min                  = extents .first;
-		const auto translated           = X3D::max (X3D::Vector2d (), min + translation);
-		const auto selectionTranslation = X3D::Vector2i (X3D::round (translated - min));
-
-		for (const auto & window : selection)
+		switch (motionType)
 		{
-			auto position = window -> position;
+			case MotionType::DEFAULT:
+				break;
+			case MotionType::SELECTION:
+			{
+				auto bbox = X3D::Box2d ();
+		
+				for (const auto & window : selection)
+					bbox += X3D::Box2d (getBBox (window));
+		
+				const auto translation          = pointer - startPosition;
+				const auto extents              = bbox .extents ();
+				const auto min                  = extents .first;
+				const auto translated           = X3D::max (X3D::Vector2d (), min + translation);
+				const auto selectionTranslation = X3D::Vector2i (X3D::round (translated - min));
+		
+				for (const auto & window : selection)
+				{
+					auto position = window -> position;
+		
+					position += selectionTranslation;
+					position  = X3D::max (X3D::Vector2i (), position);
+		
+					setPosition (window, position);
+				}
+		
+				// Make the grid a litte larger.
+				resize ();
+		
+				startPosition = pointer;
 
-			position += selectionTranslation;
-			position  = X3D::max (X3D::Vector2i (), position);
+				break;
+			}
+			case MotionType::RECTANGLE:
+			{
+				endPosition = pointer;
 
-			setPosition (window, position);
+				const auto points             = std::vector <X3D::Vector2d> { startPosition, endPosition };
+				const auto rectangleSelection = X3D::Box2d (points .begin (), points .end (), X3D::iterator_type ());
+				auto       selection          = RouteGraphWindowArray ();
+
+				for (const auto & window : windows)
+				{
+					if (X3D::Box2d (getBBox (window)) .intersects (rectangleSelection))
+						selection .emplace_back (window);
+				}
+
+				setSelection (selection);
+
+				refresh ();
+				break;
+			}
 		}
-
-		// Make the fixed a litte larger.
-		resizeGrid ();
-
-		startPosition = pointer;
 
 		return true;
 	}
@@ -594,7 +632,27 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	context -> fill ();
 
+	// Draw routes.
+
 	on_draw_routes (context);
+
+	// Draw rectangular selection.
+
+	if (motionType == MotionType::RECTANGLE)
+	{
+		const auto f    = X3D::make_rgba <double> (210, 225, 252, 43);
+		const auto s    = X3D::make_rgba <double> (210, 225, 252, 255);
+		const auto size = endPosition - startPosition;
+
+		context -> set_source_rgba (f .r (), f .g (), f .b (), f .a ());
+		context -> rectangle (startPosition .x (), startPosition .y (), size .x (), size .y ());
+		context -> fill ();
+
+		context -> set_line_width (2);
+		context -> set_source_rgba (s .r (), s .g (), s .b (), s .a ());
+		context -> rectangle (startPosition .x (), startPosition .y (), size .x (), size .y ());
+		context -> stroke ();
+	}
 
 	return false;
 }
