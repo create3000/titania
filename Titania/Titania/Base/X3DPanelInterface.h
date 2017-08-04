@@ -79,9 +79,20 @@ public:
 	getPanelMenu () const
 	{ return panelMenu; }
 
+	void
+	setFocus (const bool value)
+	{ focus = value; }
+
 	const X3D::SFBool &
 	hasFocus () const
 	{ return focus; }
+
+	///  @name Event handler
+
+	virtual
+	bool
+	on_delete ()
+	{ return false; }
 
 	/// @name Destruction
 
@@ -123,12 +134,6 @@ protected:
 
 
 private:
-
-	/// @name Member access
-
-	void
-	setFocus (const bool value)
-	{ focus = value; }
 
 	/// @name Event handlers
 

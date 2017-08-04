@@ -70,6 +70,12 @@ public:
 
 	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
+	///  @name Event handler
+
+	virtual
+	bool
+	on_delete () final override;
+
 	///  @name Destruction
 
 	virtual
@@ -93,9 +99,8 @@ private:
 
 	struct RouteGraphWindow
 	{
-		X3D::SFNode   node;
-		WidgetPtr     widget;
-		X3D::Vector2i position;
+		X3D::SFNode node;
+		WidgetPtr   widget;
 	};
 
 	using RouteGraphWindowPtr   = std::shared_ptr <RouteGraphWindow>;
@@ -115,13 +120,32 @@ private:
 	throw (std::runtime_error);
 
 	void
+	addConnectedWindows (const X3D::SFNode & node, const X3D::Vector2i & position);
+
+	void
+	getConnectedNodes (X3D::X3DExecutionContext* const executionContext,
+	                   const X3D::SFNode & node,
+	                   const int32_t index,
+	                   std::map <int32_t, X3D::MFNode> & columns,
+	                   std::set <X3D::SFNode> & nodes) const;
+
+	void
+	on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns, const X3D::Vector2i & position);
+
+	RouteGraphWindowPtr
 	addWindow (const X3D::SFNode & node, const X3D::Vector2i & position);
+
+	void
+	removeWindow (const RouteGraphWindowPtr window);
 
 	RouteGraphWindowPtr
 	getWindow (const X3D::SFNode & node) const;
 
 	void
 	setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position);
+
+	X3D::Vector2i
+	getPosition (const RouteGraphWindowPtr window) const;
 
 	X3D::Box2i
 	getBBox (const RouteGraphWindowPtr & window) const;
@@ -131,6 +155,10 @@ private:
 
 	bool
 	isSelected (const RouteGraphWindowPtr & window) const;
+
+	const RouteGraphWindowArray &
+	getSelection () const
+	{ return selection; }
 
 	void
 	addSelection (const RouteGraphWindowArray & windows);

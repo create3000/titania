@@ -81,7 +81,6 @@ X3DRouteGraphInterface::create ()
 	m_VAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("SheetName", m_SheetName);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("MenuBar", m_MenuBar);
@@ -94,6 +93,7 @@ X3DRouteGraphInterface::create ()
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("Viewport", m_Viewport);
 	m_builder -> get_widget ("Fixed", m_Fixed);
+	m_builder -> get_widget ("SheetName", m_SheetName);
 	m_RenameMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_rename_sheet_activate));
 	m_AlignToGridMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_align_to_grid_activate));
 	m_ExportSheetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_export_sheet_activate));

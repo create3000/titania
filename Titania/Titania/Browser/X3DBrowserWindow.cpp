@@ -53,6 +53,7 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 
+#include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Editors/GridEditor/AngleGridTool.h"
 #include "../Editors/GridEditor/AxonometricGridTool.h"
 #include "../Editors/GridEditor/GridTool.h"
@@ -191,6 +192,26 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 
 	if  (not paths .empty ())
 		getOutlineTreeView () -> scroll_to_row (paths .front (), 2 - math::phi <double>);
+}
+
+bool
+X3DBrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
+{
+	const auto clones = std::count_if (first,
+	                                   last,
+	                                   [ ] (const X3D::SFNode & node)
+	                                   { return node -> getCloneCount () - node -> getUserData <UserData> () -> cloneCount .count () > 1; });
+
+	if (not clones)
+		return false;
+
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+	dialog -> setType (Gtk::MESSAGE_QUESTION);
+	dialog -> setMessage (_ ("This operation is not clone save!"));
+	dialog -> setText (_ ("You have selected one ore more clones. Use Outline Editor's context menu or drag & drop facility to have a clone safe operation. Proceed anyway?"));
+
+	return dialog -> run () not_eq Gtk::RESPONSE_OK;
 }
 
 void

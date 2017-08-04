@@ -52,11 +52,13 @@
 
 #include "../NotebookPage/NotebookPage.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/GridEditor/AngleGridTool.h"
 #include "../../Editors/GridEditor/AxonometricGridTool.h"
 #include "../../Editors/GridEditor/GridTool.h"
+#include "../../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Browser/Navigation/PlaneViewer.h>
 #include <Titania/X3D/Browser/Selection.h>
@@ -111,6 +113,31 @@ BrowserPanel::on_unmap ()
 {
 	X3DBrowserPanel::on_unmap ();
 	X3DBrowserPanelMenuBar::on_unmap ();
+}
+
+bool
+BrowserPanel::on_delete ()
+{
+	if (getBrowserWindow () -> getGeometryEditor () -> on_delete ())
+		return true;
+
+	const auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
+
+	if (selection .empty ())
+		return true;
+
+	if (getBrowserWindow () -> checkForClones (selection .cbegin (), selection .cend ()))
+		return true;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
+
+	getBrowserWindow () -> getSelection () -> clearNodes (undoStep);
+
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), selection, true, undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	return true;
 }
 
 void

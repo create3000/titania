@@ -7,16 +7,6 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkLabel" id="SheetName">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="halign">start</property>
-    <property name="valign">start</property>
-    <property name="label" translatable="yes">New Sheet</property>
-    <style>
-      <class name="titania-route-graph-sheet-name"/>
-    </style>
-  </object>
   <object class="GtkAdjustment" id="VAdjustment">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -135,6 +125,18 @@
               <packing>
                 <property name="index">-1</property>
               </packing>
+            </child>
+            <child type="overlay">
+              <object class="GtkLabel" id="SheetName">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
+                <property name="label" translatable="yes">New Sheet</property>
+                <style>
+                  <class name="titania-route-graph-sheet-name"/>
+                </style>
+              </object>
             </child>
           </object>
           <packing>

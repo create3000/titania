@@ -95,9 +95,13 @@ NotebookPage::initialized ()
 
 	if (getBrowserWindow () -> getEditing ())
 	{
-		const auto worldInfo = createWorldInfo (getScene ());
+		const auto worldInfo  = createWorldInfo (getScene ());
+		const auto activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
 
-		setActiveView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4));
+		for (int32_t i = 0, size = panels .size (); i < size; ++ i)
+			panels [i] -> setFocus (i == activeView);
+
+		setActiveView (activeView);
 		setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
 	}
 }
@@ -136,13 +140,6 @@ NotebookPage::on_key_release_event (GdkEventKey* event)
 			if (not getBrowserWindow () -> getEditing ())
 				return false;
 
-			const auto iter  = std::find_if (panels .begin (), panels .end (), [] (const PanelPtr & panel) { return panel -> hasFocus (); });
-			const auto index = iter - panels .begin ();
-
-			if (iter == panels .end ())
-				return false;
-
-			setActiveView (index);
 			setMultiView (not getMultiView ());
 			setModified (true);
 
@@ -153,6 +150,20 @@ NotebookPage::on_key_release_event (GdkEventKey* event)
 	}
 
 	return false;
+}
+
+bool
+NotebookPage::on_delete ()
+{
+	try
+	{
+		return panels .at (getActiveView ()) -> on_delete ();
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return false;
+	}
 }
 
 void
@@ -233,9 +244,18 @@ NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewpo
 		}
 	}
 
+
 	panel -> getWidget () .reparent (box);
 
 	panel -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel -> getPanelType ()), std::ref (box));
+	panel -> hasFocus ()     .addInterest (&NotebookPage::set_focus, this, id);
+}
+
+void
+NotebookPage::set_focus (const size_t id)
+{
+	if (panels [id] -> hasFocus ())
+		setActiveView (id);
 }
 
 void

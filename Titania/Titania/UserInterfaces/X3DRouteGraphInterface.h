@@ -95,10 +95,6 @@ public:
 	getVAdjustment () const
 	{ return m_VAdjustment; }
 
-	Gtk::Label &
-	getSheetName () const
-	{ return *m_SheetName; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -146,6 +142,10 @@ public:
 	Gtk::Fixed &
 	getFixed () const
 	{ return *m_Fixed; }
+
+	Gtk::Label &
+	getSheetName () const
+	{ return *m_SheetName; }
 
 	///  @name Signal handlers
 
@@ -207,7 +207,6 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_HAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_VAdjustment;
-	Gtk::Label* m_SheetName;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;
@@ -220,6 +219,7 @@ private:
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Viewport* m_Viewport;
 	Gtk::Fixed* m_Fixed;
+	Gtk::Label* m_SheetName;
 
 };
 

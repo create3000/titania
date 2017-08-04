@@ -80,6 +80,11 @@ public:
 	getPanels () const
 	{ return panels; }
 
+	///  @name Event handler
+
+	bool
+	on_delete ();
+
 	///  @name Destruction
 
 	virtual
@@ -134,6 +139,9 @@ private:
 
 	void
 	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
+
+	void
+	set_focus (const size_t id);
 
 	void
 	setActiveView (const size_t value);

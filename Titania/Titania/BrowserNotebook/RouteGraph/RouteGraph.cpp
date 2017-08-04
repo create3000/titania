@@ -60,6 +60,8 @@
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 
+#include <random>
+
 namespace titania {
 namespace puck {
 
@@ -89,8 +91,6 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	            routeField (nullptr)
 {
 	getSheetName () .set_text (sheetName);
-
-	getOverlay () .add_overlay (getSheetName ());
 
 	// Drag & drop targets
 
@@ -134,12 +134,99 @@ throw (std::runtime_error)
 }
 
 void
+RouteGraph::addConnectedWindows (const X3D::SFNode & node, const X3D::Vector2i & position)
+{
+	std::map <int32_t, X3D::MFNode> columns;
+	std::set <X3D::SFNode>          nodes;
+
+	getConnectedNodes (node -> getExecutionContext (), node, 0, columns, nodes);
+
+	int32_t x = position .x ();
+
+	for (const auto & column : columns)
+	{
+		int32_t y = position .y ();
+
+		for (const auto & node : column .second)
+		{
+			addWindow (node, X3D::Vector2i (x, y));
+
+			y += 400;
+		}
+
+		x += 300;
+	}
+
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_place_nodes), columns, position));
+}
+
+void
+RouteGraph::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns, const X3D::Vector2i & position)
+{
+	static std::uniform_real_distribution <double>
+	random (-1, 1);
+
+	static std::default_random_engine
+	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
+
+	int32_t x = position .x ();
+
+	for (const auto & column : columns)
+	{
+		int32_t width = 0;
+		int32_t y     = position .y ();
+
+		for (const auto & node : column .second)
+		{
+			const auto   rposition = X3D::Vector2i (x + random (random_engine) * GRID_SIZE, y + random (random_engine) * GRID_SIZE);
+			const auto   window    = addWindow (node, rposition);
+			const auto & widget    = window -> widget;
+
+			setPosition (window, rposition);
+
+			y += widget -> get_height ();
+			y += GRID_SIZE * 2;
+
+			width = std::max (width, widget -> get_width ());
+		}
+
+		x += width;
+		x += GRID_SIZE * 4;
+	}
+}
+
+void
+RouteGraph::getConnectedNodes (X3D::X3DExecutionContext* const executionContext,
+                               const X3D::SFNode & node,
+                               const int32_t index,
+                               std::map <int32_t, X3D::MFNode> & columns,
+                               std::set <X3D::SFNode> & nodes) const
+{
+	if (not nodes .emplace (node) .second)
+		return; 
+
+	if (node -> getExecutionContext () not_eq executionContext and not executionContext -> isImportedNode (node))
+		return;
+
+	columns [index] .emplace_back (node);
+
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		for (const auto & route : field -> getInputRoutes ())
+			getConnectedNodes (executionContext, route -> getSourceNode (), index - 1, columns, nodes);
+
+		for (const auto & route : field -> getOutputRoutes ())
+			getConnectedNodes (executionContext, route -> getDestinationNode (), index + 1, columns, nodes);
+	}
+}
+
+RouteGraph::RouteGraphWindowPtr
 RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
 	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
 
 	if (iter not_eq windows .end ())
-		return;
+		return *iter;
 
 	const auto window = std::make_shared <RouteGraphWindow> ();
 	const auto widget = std::make_shared <RouteGraphNode> (node);
@@ -148,7 +235,6 @@ RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 
 	window -> node     = node;
 	window -> widget   = widget;
-	window -> position = position;
 
 	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraph::refresh));
 	widget -> signal_input_connector_clicked ()  .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_input_connector_clicked),  window .get ()));
@@ -167,6 +253,21 @@ RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 
 	// Make the grid a litte larger.
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraph::resize));
+
+	return window;
+}
+
+void
+RouteGraph::removeWindow (const RouteGraphWindowPtr window)
+{
+	const auto iter = std::find (windows .begin (), windows .end (), window);
+
+	if (iter == windows .end ())
+		return;
+
+	getFixed () .remove (*window -> widget);
+
+	windows .erase (iter);
 }
 
 void
@@ -174,16 +275,24 @@ RouteGraph::setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i &
 {
 	const auto & widget = window -> widget;
 
-	window -> position = position;
-
 	getFixed () .move (*widget, position .x (), position .y ());
+}
+
+X3D::Vector2i
+RouteGraph::getPosition (const RouteGraphWindowPtr window) const
+{
+	const auto & widget = window -> widget;
+	const auto   x      = getFixed () .child_property_x (*widget) .get_value ();
+	const auto   y      = getFixed () .child_property_y (*widget) .get_value ();
+
+	return X3D::Vector2i (x, y);
 }
 
 X3D::Box2i
 RouteGraph::getBBox (const RouteGraphWindowPtr & window) const
 {
 	const auto & widget   = window -> widget;
-	const auto & position = window -> position;
+	const auto & position = getPosition (window);
 	const auto   width    = widget -> get_width ();
 	const auto   height   = widget -> get_height ();
 
@@ -194,7 +303,7 @@ void
 RouteGraph::bringToFront (const RouteGraphWindowPtr window)
 {
 	const auto & widget   = window -> widget;
-	const auto & position = window -> position;
+	const auto & position = getPosition (window);
 
 	getFixed () .remove (*widget);
 	getFixed () .put (*widget, position .x (), position .y ());
@@ -299,6 +408,19 @@ RouteGraph::refresh ()
 	getFixed () .queue_draw ();
 }
 
+bool
+RouteGraph::on_delete ()
+{
+	for (const auto & window : getSelection ())
+		removeWindow (window);
+
+	clearSelection ();
+
+	resize ();
+
+	return false;
+}
+
 void
 RouteGraph::on_rename_sheet_activate ()
 {
@@ -310,7 +432,7 @@ RouteGraph::on_align_to_grid_activate ()
 {
 	for (const auto & window : windows)
 	{
-		auto position = X3D::Vector2d (window -> position) + SNAP_OFFSET;
+		auto position = X3D::Vector2d (getPosition (window)) + SNAP_OFFSET;
 
 		position = X3D::round (position / SNAP_DISTANCE) * SNAP_DISTANCE - SNAP_OFFSET;
 
@@ -409,7 +531,7 @@ RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & conte
 			
 				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
 
-				addWindow (getNode (nodeId), X3D::Vector2i (x + xOffset, y + yOffset));
+				addConnectedWindows (getNode (nodeId), X3D::Vector2i (x + xOffset, y + yOffset));
 			}
 			catch (const std::exception & error)
 			{
@@ -480,7 +602,8 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 
 		// Clear selection if clicked on grid.
 
-		clearSelection ();
+		if (not getBrowserWindow () -> getKeys () .shift ())
+			clearSelection ();
 
 		refresh ();
 	}
@@ -499,7 +622,7 @@ RouteGraph::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		for (const auto & window : selection)
+		for (const auto & window : getSelection ())
 		{
 			const auto & widget = window -> widget;
 	
@@ -541,7 +664,7 @@ RouteGraph::on_motion_notify_event (GdkEventMotion* event)
 		
 				for (const auto & window : selection)
 				{
-					auto position = window -> position;
+					auto position = getPosition (window);
 		
 					position += selectionTranslation;
 					position  = X3D::max (X3D::Vector2i (), position);
@@ -562,12 +685,19 @@ RouteGraph::on_motion_notify_event (GdkEventMotion* event)
 
 				const auto points             = std::vector <X3D::Vector2d> { startPosition, endPosition };
 				const auto rectangleSelection = X3D::Box2d (points .begin (), points .end (), X3D::iterator_type ());
-				auto       selection          = RouteGraphWindowArray ();
+				auto       selection          = getBrowserWindow () -> getKeys () .shift () ? getSelection () : RouteGraphWindowArray ();
 
 				for (const auto & window : windows)
 				{
 					if (X3D::Box2d (getBBox (window)) .intersects (rectangleSelection))
 						selection .emplace_back (window);
+				}
+
+				if (getBrowserWindow () -> getKeys () .shift ())
+				{
+					std::stable_sort (selection .begin (), selection .end ());
+
+					selection .erase (std::unique (selection .begin (), selection .end ()), selection .end ());
 				}
 
 				setSelection (selection);
@@ -682,8 +812,8 @@ RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 
 					const auto & destinationWindow   = *iter;
 					const auto & destinationWidget   = destinationWindow -> widget;
-					const auto   sourcePosition      = X3D::Vector2d (sourceWindow -> position + sourceWidget -> getOutputPosition (sourceField));
-					const auto   destinationPosition = X3D::Vector2d (destinationWindow -> position + destinationWidget -> getInputPosition (destinationField));
+					const auto   sourcePosition      = X3D::Vector2d (getPosition (sourceWindow) + sourceWidget -> getOutputPosition (sourceField));
+					const auto   destinationPosition = X3D::Vector2d (getPosition (destinationWindow) + destinationWidget -> getInputPosition (destinationField));
 
 					// Draw sine curved route, dark or light
 
