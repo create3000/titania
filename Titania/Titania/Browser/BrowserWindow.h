@@ -809,6 +809,9 @@ private:
 	void
 	on_look_at_toggled () final override;
 
+	bool
+	checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last);
+
 	void
 	toggleActions (const Glib::RefPtr <Gtk::ToggleAction> &, const std::vector <Glib::RefPtr <Gtk::ToggleAction>> &);
 

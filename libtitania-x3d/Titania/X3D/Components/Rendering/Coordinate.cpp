@@ -112,9 +112,9 @@ Coordinate::getNormal (const size_t index1, const size_t index2, const size_t in
 	const size_t size = point () .size ();
 
 	if (index1 < size and index2 < size and index3 < size)
-		return math::normal <float> (point () [index1],
-		                             point () [index2],
-		                             point () [index3]);
+		return Triangle3f (point () [index1],
+		                   point () [index2],
+		                   point () [index3]) .normal ();
 
 	return Vector3f (0, 0, 0);
 }

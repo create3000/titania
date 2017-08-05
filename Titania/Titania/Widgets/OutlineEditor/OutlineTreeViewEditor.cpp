@@ -753,7 +753,7 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 							if (route -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 								return false;
 
-							const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
+							const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
 
 							X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
 							                             route -> getSourceNode (),
@@ -830,7 +830,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 				if (route -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return;
 
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
 
 				X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
 				                             route -> getSourceNode (),

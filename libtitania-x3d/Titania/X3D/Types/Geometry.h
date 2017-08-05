@@ -61,6 +61,7 @@
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Sphere3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
+#include <Titania/Math/Geometry/Triangle2.h>
 #include <Titania/Math/Geometry/Triangle3.h>
 
 namespace titania {
@@ -89,6 +90,10 @@ using Sphere3d          = sphere3 <double>;
 using Sphere3f          = sphere3 <float>;
 using Spheroid3d        = spheroid3 <double>;
 using Spheroid3f        = spheroid3 <double>;
+using Triangle2d        = math::triangle2 <double>;
+using Triangle2f        = math::triangle2 <float>;
+using Triangle3d        = math::triangle3 <double>;
+using Triangle3f        = math::triangle3 <float>;
 
 } // X3D
 } // titania

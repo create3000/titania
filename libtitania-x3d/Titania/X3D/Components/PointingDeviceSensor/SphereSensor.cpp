@@ -185,7 +185,7 @@ SphereSensor::set_motion (const HitPtr & hit,
 
 			// Find trackPoint behind sphere
 
-			const auto triNormal     = math::normal (sphere .center (), trackPoint1, startPoint);
+			const auto triNormal     = Triangle3d (sphere .center (), trackPoint1, startPoint) .normal ();
 			const auto dirFromCenter = normalize (trackPoint1 - sphere .center ());
 			const auto normal        = normalize (cross (triNormal, dirFromCenter));
 

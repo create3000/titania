@@ -152,20 +152,6 @@ NotebookPage::on_key_release_event (GdkEventKey* event)
 	return false;
 }
 
-bool
-NotebookPage::on_delete ()
-{
-	try
-	{
-		return panels .at (getActiveView ()) -> on_delete ();
-	}
-	catch (const std::out_of_range & error)
-	{
-		__LOG__ << error .what () << std::endl;
-		return false;
-	}
-}
-
 void
 NotebookPage::setPanelType (const size_t id, const PanelType panelType)
 {

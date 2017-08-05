@@ -67,12 +67,6 @@ public:
 
 	BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
-	///  @name Event handler
-
-	virtual
-	bool
-	on_delete () final override;
-
 	///  @name Destruction
 
 	virtual

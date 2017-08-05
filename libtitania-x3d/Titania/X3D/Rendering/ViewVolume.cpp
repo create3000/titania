@@ -98,12 +98,12 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 		Vector3f p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
 
 		planes .reserve (6);
-		planes .emplace_back (p4, normal (p3, p4, p5));  // front
-		planes .emplace_back (p2, normal (p1, p2, p3));  // left
-		planes .emplace_back (p5, normal (p6, p5, p4));  // right
-		planes .emplace_back (p6, normal (p5, p6, p1));  // top
-		planes .emplace_back (p3, normal (p4, p3, p2));  // bottom
-		planes .emplace_back (p1, normal (p2, p1, p6));  // back
+		planes .emplace_back (p4, Triangle3d (p3, p4, p5) .normal ());  // front
+		planes .emplace_back (p2, Triangle3d (p1, p2, p3) .normal ());  // left
+		planes .emplace_back (p5, Triangle3d (p6, p5, p4) .normal ());  // right
+		planes .emplace_back (p6, Triangle3d (p5, p6, p1) .normal ());  // top
+		planes .emplace_back (p3, Triangle3d (p4, p3, p2) .normal ());  // bottom
+		planes .emplace_back (p1, Triangle3d (p2, p1, p6) .normal ());  // back
 	}
 	catch (const std::domain_error & error)
 	{

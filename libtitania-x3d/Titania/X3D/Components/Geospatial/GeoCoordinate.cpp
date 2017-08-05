@@ -147,9 +147,7 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 	const size_t size = points .size ();
 
 	if (index1 < size and index2 < size and index3 < size)
-		return math::normal (points [index1],
-		                     points [index2],
-		                     points [index3]);
+		return Triangle3f (points [index1], points [index2], points [index3]) .normal ();
 
 	return Vector3f (0, 0, 0);
 }

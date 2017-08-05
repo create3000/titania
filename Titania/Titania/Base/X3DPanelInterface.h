@@ -87,13 +87,6 @@ public:
 	hasFocus () const
 	{ return focus; }
 
-	///  @name Event handler
-
-	virtual
-	bool
-	on_delete ()
-	{ return false; }
-
 	/// @name Destruction
 
 	virtual

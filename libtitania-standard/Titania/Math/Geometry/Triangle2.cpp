@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,120 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-
-#include "X3DNotebookPage.h"
-
-#include "PanelType.h"
+#include "Triangle2.h"
 
 namespace titania {
-namespace puck {
+namespace math {
 
-class X3DPanelInterface;
+template class triangle2 <float>;
+template class triangle2 <double>;
+template class triangle2 <long double>;
 
-class NotebookPage :
-	public X3DNotebookPage
-{
-public:
+//
+template std::istream & operator >> (std::istream &, triangle2 <float> &);
+template std::istream & operator >> (std::istream &, triangle2 <double> &);
+template std::istream & operator >> (std::istream &, triangle2 <long double> &);
 
-	///  @name Member types
+//
+template std::ostream & operator << (std::ostream &, const triangle2 <float> &);
+template std::ostream & operator << (std::ostream &, const triangle2 <double> &);
+template std::ostream & operator << (std::ostream &, const triangle2 <long double> &);
 
-	using PanelPtr   = std::unique_ptr <X3DPanelInterface>;
-	using PanelArray = std::vector <PanelPtr>;
-
-	///  @name Construction
-
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
-
-	///  @name Member access
-
-	const PanelArray &
-	getPanels () const
-	{ return panels; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	shutdown () final override;
-
-	virtual
-	~NotebookPage () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	virtual
-	void
-	initialized () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_editing ();
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey* event);
-
-	void
-	setPanelType (const size_t id, const PanelType panelType);
-	
-	PanelType
-	getPanelType (const size_t id) const;
-
-	void
-	setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_focus (const size_t id);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	setMultiView (const bool value);
-
-	bool
-	getMultiView () const
-	{ return multiView; }
-
-	///  @name Members
-
-	std::vector <Gtk::Widget*> boxes;
-	PanelArray                 panels;
-	size_t                     activeView;
-	bool                       multiView;
-
-};
-
-} // puck
+} // math
 } // titania
-
-#endif

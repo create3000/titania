@@ -61,7 +61,8 @@ namespace puck {
 class RouteGraph;
 
 class RouteGraphNode :
-	public Gtk::Box
+	public Gtk::Box,
+	public X3D::X3DInput
 {
 public:
 

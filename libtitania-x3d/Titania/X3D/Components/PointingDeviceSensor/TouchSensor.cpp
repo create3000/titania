@@ -99,10 +99,10 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 const Vector3d &
 TouchSensor::getClosestPoint () const
 {
-	return intersection -> triangle [triangle_closest_point (intersection -> triangle [0],
-	                                                         intersection -> triangle [1],
-	                                                         intersection -> triangle [2],
-	                                                         hitPoint)];
+	return intersection -> triangle [Triangle3d (intersection -> triangle [0],
+	                                             intersection -> triangle [1],
+	                                             intersection -> triangle [2])
+	                                             .closest_point (hitPoint)];
 }
 
 void

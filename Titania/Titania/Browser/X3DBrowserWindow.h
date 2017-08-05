@@ -130,11 +130,6 @@ public:
 	void
 	expandNodes (const X3D::MFNode &);
 
-	///  @name Misc
-
-	bool
-	checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last);
-
 	///  @name Console
 
 	void

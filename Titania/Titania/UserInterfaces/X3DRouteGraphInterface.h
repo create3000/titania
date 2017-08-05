@@ -124,6 +124,22 @@ public:
 	{ return *m_ExportSheetMenuItem; }
 
 	Gtk::MenuItem &
+	getEditMenuItem () const
+	{ return *m_EditMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getDeleteMenuItem () const
+	{ return *m_DeleteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getSelectAllMenuItem () const
+	{ return *m_SelectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getDeselectAllMenuItem () const
+	{ return *m_DeselectAllMenuItem; }
+
+	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
@@ -160,6 +176,18 @@ public:
 	virtual
 	void
 	on_export_sheet_activate () = 0;
+
+	virtual
+	void
+	on_delete_activate () = 0;
+
+	virtual
+	void
+	on_select_all_activate () = 0;
+
+	virtual
+	void
+	on_deselect_all_activate () = 0;
 
 	virtual
 	bool
@@ -214,6 +242,10 @@ private:
 	Gtk::MenuItem* m_RenameMenuItem;
 	Gtk::MenuItem* m_AlignToGridMenuItem;
 	Gtk::MenuItem* m_ExportSheetMenuItem;
+	Gtk::MenuItem* m_EditMenuItem;
+	Gtk::ImageMenuItem* m_DeleteMenuItem;
+	Gtk::ImageMenuItem* m_SelectAllMenuItem;
+	Gtk::MenuItem* m_DeselectAllMenuItem;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::Overlay* m_Overlay;
 	Gtk::ScrolledWindow* m_ScrolledWindow;

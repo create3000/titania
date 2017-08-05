@@ -834,7 +834,24 @@ BrowserWindow::on_paste_activated ()
 void
 BrowserWindow::on_delete_activated ()
 {
-	getCurrentPage () -> on_delete ();
+	if (getGeometryEditor () -> on_delete ())
+		return;
+
+	const auto selection = getSelection () -> getNodes ();
+
+	if (selection .empty ())
+		return;
+
+	if (checkForClones (selection .cbegin (), selection .cend ()))
+		return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
+
+	getSelection () -> clearNodes (undoStep);
+
+	removeNodesFromScene (getCurrentContext (), selection, true, undoStep);
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -2751,6 +2768,26 @@ BrowserWindow::on_look_at_toggled ()
 		if (getCurrentBrowser () -> getCurrentViewer () not_eq viewer)
 			setViewer (viewer);
 	}
+}
+
+bool
+BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
+{
+	const auto clones = std::count_if (first,
+	                                   last,
+	                                   [ ] (const X3D::SFNode & node)
+	                                   { return node -> getCloneCount () - node -> getUserData <UserData> () -> cloneCount .count () > 1; });
+
+	if (not clones)
+		return false;
+
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+	dialog -> setType (Gtk::MESSAGE_QUESTION);
+	dialog -> setMessage (_ ("This operation is not clone save!"));
+	dialog -> setText (_ ("You have selected one ore more clones. Use Outline Editor's context menu or drag & drop facility to have a clone safe operation. Proceed anyway?"));
+
+	return dialog -> run () not_eq Gtk::RESPONSE_OK;
 }
 
 void

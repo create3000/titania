@@ -228,7 +228,7 @@ CollidableShape::set_collidableGeometry ()
 
 		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 		{
-			normals .emplace_back (normal (vertices [i], vertices [i + 1], vertices [i + 2]));
+			normals .emplace_back (Triangle3d (vertices [i], vertices [i + 1], vertices [i + 2]) .normal ());
 		}
 
 		// Create BVH

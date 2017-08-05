@@ -305,9 +305,7 @@ ElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::
 		for (size_t i = 0; i < 3; ++ i)
 			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
 
-		const Vector3f normal = math::normal (points [*(index)],
-		                                      points [*(index + 1)],
-		                                      points [*(index + 2)]);
+		const Vector3f normal = Triangle3f (points [*(index)], points [*(index + 1)], points [*(index + 2)]) .normal ();
 
 		normals .resize (normals .size () + 3, normal);
 	}

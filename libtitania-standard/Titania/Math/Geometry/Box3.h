@@ -96,8 +96,8 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	box3 (const box3 <Up> & box) :
-		m_matrix (box .matrix ())
+	box3 (const box3 <Up> & other) :
+		m_matrix (other .matrix ())
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
@@ -145,9 +145,9 @@ public:
 	///  Assign @a box3 to this box3.
 	template <class Up>
 	box3 &
-	operator = (const box3 <Up> & box)
+	operator = (const box3 <Up> & other)
 	{
-		m_matrix = box .m_matrix;
+		m_matrix = other .m_matrix;
 		return *this;
 	}
 
@@ -247,19 +247,19 @@ public:
 
 	///  Returns true if @a point is inside this box's min and max extents.
 	bool
-	intersects (const vector3 <Type> &) const;
+	intersects (const vector3 <Type> & point) const;
 
 	///  Returns true if @a line intersects with this box's min and max extends.
 	bool
-	intersects (const line3 <Type> &) const;
+	intersects (const line3 <Type> & line) const;
 
 	///  Returns true if @a sphere intersects with this box's min and max extends.
 	bool
-	intersects (const sphere3 <Type> &) const;
+	intersects (const sphere3 <Type> & sphere) const;
 
 	///  Returns true if @a box intersects with this oriented box.
 	bool
-	intersects (const box3 &) const;
+	intersects (const box3 & box) const;
 
 	///  Returns true if the triangle defined by the points @a a, @a b, and @a c intersects with this oriented box.
 	bool
@@ -267,7 +267,7 @@ public:
 
 	///  Returns true if @a box is within this box's min and max extends.
 	bool
-	contains (const box3 &) const;
+	contains (const box3 & box) const;
 
 
 private:
@@ -587,7 +587,7 @@ box3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, con
 
 	// Test the normal of the triangle.
 
-	if (sat::separated ({ normal (a, b, c) }, points1, points2))
+	if (sat::separated ({ triangle3 <Type> (a, b, c) .normal () }, points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.

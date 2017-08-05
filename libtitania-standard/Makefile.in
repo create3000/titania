@@ -171,7 +171,9 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Geometry/LineSegment3.lo \
 	Titania/Math/Geometry/Plane3.lo \
 	Titania/Math/Geometry/Sphere3.lo \
-	Titania/Math/Geometry/Spheroid3.lo Titania/Math/Image.lo \
+	Titania/Math/Geometry/Spheroid3.lo \
+	Titania/Math/Geometry/Triangle2.lo \
+	Titania/Math/Geometry/Triangle3.lo Titania/Math/Image.lo \
 	Titania/Math/Mesh/Combine.lo Titania/Math/Numbers/Color3.lo \
 	Titania/Math/Numbers/Color4.lo Titania/Math/Numbers/Matrix2.lo \
 	Titania/Math/Numbers/Matrix3.lo \
@@ -480,6 +482,8 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/Plane3.cpp \
 	Titania/Math/Geometry/Sphere3.cpp \
 	Titania/Math/Geometry/Spheroid3.cpp \
+	Titania/Math/Geometry/Triangle2.cpp \
+	Titania/Math/Geometry/Triangle3.cpp \
 	Titania/Math/Image.cpp \
 	Titania/Math/Mesh/Combine.cpp \
 	Titania/Math/Numbers/Color3.cpp \
@@ -779,6 +783,12 @@ Titania/Math/Geometry/Sphere3.lo:  \
 Titania/Math/Geometry/Spheroid3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Geometry/Triangle2.lo:  \
+	Titania/Math/Geometry/$(am__dirstamp) \
+	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Geometry/Triangle3.lo:  \
+	Titania/Math/Geometry/$(am__dirstamp) \
+	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Math
 	@: > Titania/Math/$(am__dirstamp)
@@ -984,6 +994,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Mesh/$(DEPDIR)/Combine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color4.Plo@am__quote@

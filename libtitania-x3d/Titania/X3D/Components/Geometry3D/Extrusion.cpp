@@ -407,8 +407,8 @@ Extrusion::build ()
 			const auto texCoord2 = Vector2f ((k + 1) / numCrossSection_1,       n / numSpine_1);
 			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
 			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
-			const auto normal1   = normal (points [p1], points [p2], points [p3]);
-			const auto normal2   = normal (points [p1], points [p3], points [p4]);
+			const auto normal1   = Triangle3f (points [p1], points [p2], points [p3]) .normal ();
+			const auto normal2   = Triangle3f (points [p1], points [p3], points [p4]) .normal ();
 
 			// Merge points on the most left and most right side if spine is coincident for better normal generation.
 
@@ -511,9 +511,7 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				Vector3f normal = math::normal (points [INDEX (j, 2)],
-				                                points [INDEX (j, 1)],
-				                                points [INDEX (j, 0)]);
+				Vector3f normal = Triangle3f (points [INDEX (j, 2)], points [INDEX (j, 1)], points [INDEX (j, 0)]) .normal ();
 
 				if (not ccw ())
 					normal .negate ();
@@ -550,9 +548,7 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				Vector3f normal = math::normal (points [INDEX (j, 0)],
-				                                points [INDEX (j, 1)],
-				                                points [INDEX (j, 2)]);
+				Vector3f normal = Triangle3f (points [INDEX (j, 0)], points [INDEX (j, 1)], points [INDEX (j, 2)]) .normal ();
 
 				if (not ccw ())
 					normal .negate ();
@@ -611,9 +607,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
-					normal += math::normal (points [std::get < I > (polygon [0] .data ())],
-					                        points [std::get < I > (polygon [i] .data ())],
-					                        points [std::get < I > (polygon [i + 1] .data ())]);
+					normal += Triangle3f (points [std::get < I > (polygon [0] .data ())],
+					                      points [std::get < I > (polygon [i] .data ())],
+					                      points [std::get < I > (polygon [i + 1] .data ())]) .normal ();
 				}
 
 				break;
@@ -622,9 +618,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
-					normal += math::normal (points [std::get < I > (polygon [is_odd (i) ? i + 1 : i] .data ())],
-					                        points [std::get < I > (polygon [is_odd (i) ? i : i + 1] .data ())],
-					                        points [std::get < I > (polygon [i + 2] .data ())]);
+					normal += Triangle3f (points [std::get < I > (polygon [is_odd (i) ? i + 1 : i] .data ())],
+					                      points [std::get < I > (polygon [is_odd (i) ? i : i + 1] .data ())],
+					                      points [std::get < I > (polygon [i + 2] .data ())]) .normal ();
 				}
 
 				break;
@@ -633,9 +629,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
-					normal += math::normal (points [std::get < I > (polygon [i] .data ())],
-					                        points [std::get < I > (polygon [i + 1] .data ())],
-					                        points [std::get < I > (polygon [i + 2] .data ())]);
+					normal += Triangle3f (points [std::get < I > (polygon [i] .data ())],
+					                      points [std::get < I > (polygon [i + 1] .data ())],
+					                      points [std::get < I > (polygon [i + 2] .data ())]) .normal ();
 				}
 
 				break;

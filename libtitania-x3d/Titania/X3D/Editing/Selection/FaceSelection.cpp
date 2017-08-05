@@ -342,7 +342,7 @@ FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <si
 			const auto point0   = coordNode -> get1Point (index0);
 			const auto point1   = coordNode -> get1Point (index1);
 			const auto point2   = coordNode -> get1Point (index2);
-			const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
+			const auto distance = Triangle3d (point0, point1, point2) .distance_to_point (hitPoint);
 
 			if (distance < minDistance)
 				minDistance = distance;
@@ -368,7 +368,7 @@ FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <si
 			const auto point0   = triangles [v ++] .point ();
 			const auto point1   = triangles [v ++] .point ();
 			const auto point2   = triangles [v ++] .point ();
-			const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
+			const auto distance = Triangle3d (point0, point1, point2) .distance_to_point (hitPoint);
 
 			if (distance < minDistance)
 				minDistance = distance;

@@ -204,7 +204,12 @@ public:
 
 	static
 	void
-	addRoute (const X3DExecutionContextPtr & executionContext, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr &)
+	addRoute (const X3DExecutionContextPtr & executionContext,
+	          const SFNode & soureceNode,
+	          const std::string & sourceField,
+	          const SFNode & destinationNode,
+	          const std::string & destinationField,
+	          const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -212,7 +217,12 @@ public:
 
 	static
 	void
-	deleteRoute (const X3DExecutionContextPtr & executionContext, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr & undoStep);
+	deleteRoute (const X3DExecutionContextPtr & executionContext,
+	             const SFNode & soureceNode,
+	             const std::string & sourceField,
+	             const SFNode & destinationNode,
+	             const std::string & destinationField,
+	             const UndoStepPtr & undoStep);
 
 	static
 	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>

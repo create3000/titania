@@ -217,7 +217,7 @@ CollisionSensor::update ()
 							contactPosition += triangles1 [i + 1];
 							contactPosition += triangles1 [i + 2];
 
-							contactNormal += normal (triangles1 [i], triangles1 [i + 1], triangles1 [i + 2]);
+							contactNormal += Triangle3d (triangles1 [i], triangles1 [i + 1], triangles1 [i + 2]) .normal ();
 						}
 
 						contactPosition /= triangles1 .size ();

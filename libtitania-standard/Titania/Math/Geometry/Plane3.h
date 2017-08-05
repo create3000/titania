@@ -105,7 +105,7 @@ public:
 	///  Constructs a plane from @a point1, @a point2 and @a point3. The normal is calculated
 	///  counter clockwise from the points.
 	plane3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const vector3 <Type> & point3) :
-		plane3 (point1, math::normal (point1, point2, point3))
+		plane3 (point1, triangle3 <Type> (point1, point2, point3) .normal ())
 	{ }
 
 	///  Constructs a plane from @a point and @a normal.

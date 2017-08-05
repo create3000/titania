@@ -281,7 +281,7 @@ public:
 		const auto & b = this -> getVertex (triangle, 1);
 		const auto & c = this -> getVertex (triangle, 2);
 
-		if (triangle_intersects (points, edges, normals, a * matrix, b * matrix, c * matrix))
+		if (triangle3 <Type> (a * matrix, b * matrix, c * matrix) .intersects (points, edges, normals))
 		{
 			triangles .emplace_back (a);
 			triangles .emplace_back (b);

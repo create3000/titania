@@ -650,7 +650,7 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 			const auto point1   = getCoord () -> get1Point (index1);
 			const auto point2   = getCoord () -> get1Point (index2);
 
-			area += math::area (point0, point1, point2);
+			area += Triangle3f (point0, point1, point2) .area ();
 		}
 	}
 	else
@@ -670,11 +670,11 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 
 		for (size_t v = 0, size = triangles .size (); v < size; )
 		{
-			const auto point0   = triangles [v ++] .point ();
-			const auto point1   = triangles [v ++] .point ();
-			const auto point2   = triangles [v ++] .point ();
+			const auto & point0 = triangles [v ++] .point ();
+			const auto & point1 = triangles [v ++] .point ();
+			const auto & point2 = triangles [v ++] .point ();
 
-			area += math::area (point0, point1, point2);
+			area += Triangle3f (point0, point1, point2) .area ();
 		}
 	}
 

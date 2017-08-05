@@ -61,6 +61,7 @@ namespace puck {
 
 RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
 	             Gtk::Box (),
+	        X3D::X3DInput (),
 	                 node (node),
 	          headerInput (nullptr),
 	         headerOutput (nullptr),

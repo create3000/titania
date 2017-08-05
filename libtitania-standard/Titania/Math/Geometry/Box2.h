@@ -97,8 +97,8 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	box2 (const box2 <Up> & box) :
-		m_matrix (box .matrix ())
+	box2 (const box2 <Up> & other) :
+		m_matrix (other .matrix ())
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
@@ -145,9 +145,9 @@ public:
 	///  Assign @a box2 to this box2.
 	template <class Up>
 	box2 &
-	operator = (const box2 <Up> & box)
+	operator = (const box2 <Up> & other)
 	{
-		m_matrix = box .m_matrix;
+		m_matrix = other .m_matrix;
 		return *this;
 	}
 
@@ -255,11 +255,11 @@ public:
 
 	///  Returns true if @a point is inside this box min and max extents.
 	bool
-	intersects (const vector2 <Type> &) const;
+	intersects (const vector2 <Type> & point) const;
 
 	///  Returns true if @a box intersects with this oriented box.
 	bool
-	intersects (const box2 &) const;
+	intersects (const box2 & box) const;
 
 	///  Returns true if this box contains @a box.
 	bool

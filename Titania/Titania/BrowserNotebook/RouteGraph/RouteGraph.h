@@ -70,12 +70,6 @@ public:
 
 	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
-	///  @name Event handler
-
-	virtual
-	bool
-	on_delete () final override;
-
 	///  @name Destruction
 
 	virtual
@@ -105,6 +99,7 @@ private:
 
 	using RouteGraphWindowPtr   = std::shared_ptr <RouteGraphWindow>;
 	using RouteGraphWindowArray = std::deque <RouteGraphWindowPtr>;
+	using RouteArray            = std::deque <X3D::RoutePtr>;
 
 	enum class MotionType
 	{
@@ -172,6 +167,25 @@ private:
 	void
 	clearSelection ();
 
+	bool
+	isRouteSelected (const X3D::RoutePtr & route) const;
+
+	const RouteArray &
+	getRouteSelection () const
+	{ return routeSelection; }
+
+	void
+	addRouteSelection (const RouteArray & routes);
+	
+	void
+	setRouteSelection (const RouteArray & routes);
+	
+	void
+	removeRouteSelection (const RouteArray & routes);
+	
+	void
+	clearRouteSelection ();
+
 	void
 	clearConnectorSelection ();
 
@@ -182,6 +196,12 @@ private:
 	refresh ();
 
 	///  @name Event handlers
+
+	void
+	set_live (const RouteGraphWindowPtr window);
+
+	void
+	set_routes ();
 
 	virtual
 	void
@@ -197,6 +217,18 @@ private:
 
 	virtual
 	void
+	on_delete_activate () final override;
+
+	virtual
+	void
+	on_select_all_activate () final override;
+
+	virtual
+	void
+	on_deselect_all_activate () final override;
+
+	virtual
+	void
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
 	                       int x, int y,
 	                       const Gtk::SelectionData & selection_data,
@@ -206,6 +238,12 @@ private:
 	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) final override;
+
+	bool
+	on_route_button_press_event (GdkEventButton* event);
+
+	X3D::Triangle2d
+	get_arrow (const X3D::Vector2d & sourcePosition, const X3D::Vector2d & destinationPosition) const;
 
 	virtual
 	bool
@@ -232,6 +270,7 @@ private:
 
 	RouteGraphWindowArray       windows;
 	RouteGraphWindowArray       selection;
+	RouteArray                  routeSelection;
 	int32_t                     button;
 	X3D::Vector2d               position;
 	X3D::Vector2d               startPosition;

@@ -59,62 +59,110 @@
 namespace titania {
 namespace math {
 
-// A
-//  |
-//  |
-//  |
-//  |
-//  ----------
-// B         C
-
-///  Returns the area of the triangle with the vertices @a A, @a B and @a C.
+/**
+ *  Template to represent a triangle in 3D space.
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of matrix values.
+ */
 template <class Type>
-inline
-Type
-area (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C)
+class triangle3
 {
-	return abs (cross (B - A, C - A)) / 2;
-}
+public:
 
-// A
-//  |
-//  |
-//  |
-//  |
-//  ----------
-// B         C
+	///  @name Member types
 
-template <class Type>
-inline
-vector3 <Type>
-normal (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C)
-{
-	return normalize (cross (C - B, A - B));
-}
+	using value_type = Type;
 
-// D ----- C
-//  |       |
-//  |       |
-//  |       |
-// A ----- B
+	///  @name Construction
 
-template <class Type>
-inline
-vector3 <Type>
-normal (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & D)
-{
-	// (p3 - B) x (p4 - C)
-	return normalize (cross (C - A, D - B));
-}
+	///  Default constructor. Constructs a box of size 0 0 and center 0 0.
+	constexpr
+	triangle3 () :
+		m_a (),
+		m_b (),
+		m_c ()
+	{ }
 
-///  Returns the index of one of the three points defined by @a A, @a B, @a C to @a point.
+	///  Copy constructor.
+	template <class Up>
+	constexpr
+	triangle3 (const triangle3 <Up> & other) :
+		m_a (other .a ()),
+		m_b (other .b ()),
+		m_c (other .c ())
+	{ }
+
+	///  Constructs a trangle from vertices @a a, @a b, and @a c in counterclockwise order.
+	constexpr
+	triangle3 (const vector3 <Type> & a, const vector3 <Type> & b, const vector3 <Type> & c) :
+		m_a (a),
+		m_b (b),
+		m_c (c)
+	{ }
+
+	///  @name Member access
+
+	const vector3 <Type> &
+	a () const
+	{ return m_a; }
+
+	const vector3 <Type> &
+	b () const
+	{ return m_b; }
+
+	const vector3 <Type> &
+	c () const
+	{ return m_c; }
+
+	///  @name Operations
+
+	///  Returns the area of the triangle
+	Type
+	area () const 
+	{ return abs (cross (b () - a (), c () - a ())) / 2; }
+
+	///  Returns the normal of the triangle.
+	vector3 <Type>
+	normal () const
+	{ return normalize (cross (c () - b (), a () - b ())); }
+
+	///  Returns the index of one of the three points defined by @a a, @a b, @a c to @a point.
+	size_t
+	closest_point (const vector3 <Type> & point) const;
+
+	///  Returns the squared distance from the triangle defined by @a A, @a B, @a C to @a point.
+	Type
+	distance_to_point (const vector3 <Type> & point) const;
+
+	///  @name Intersection
+
+	///  Returns true if @a point intersects with geometry, otherwise false.
+	bool
+	intersects (const std::vector <vector3 <Type>> & points,
+	            const std::vector <vector3 <Type>> & edges,
+	            const std::vector <vector3 <Type>> & normals) const;
+
+
+private:
+
+	///  @name Members;
+
+	vector3 <Type> m_a;
+	vector3 <Type> m_b;
+	vector3 <Type> m_c;
+
+};
+
 template <class Type>
 size_t
-triangle_closest_point (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & point)
+triangle3 <Type>::closest_point (const vector3 <Type> & point) const
 {
-	const auto distance0 = abs (A - point);
-	const auto distance1 = abs (B - point);
-	const auto distance2 = abs (C - point);
+	const auto distance0 = abs (a () - point);
+	const auto distance1 = abs (b () - point);
+	const auto distance2 = abs (c () - point);
 
 	if (distance0 < distance1)
 	{
@@ -128,18 +176,17 @@ triangle_closest_point (const vector3 <Type> & A, const vector3 <Type> & B, cons
 	return 2;
 }
 
-///  Returns the squared distance from the triangle defined by @a A, @a B, @a C to @a point.
 template <class Type>
 Type
-triangle_distance_to_point (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & point)
+triangle3 <Type>::distance_to_point (const vector3 <Type> & point) const
 {
 	// http://www.geometrictools.com/GTEngine/Include/GteDistPoint3Triangle3.inl
 
 	Type sqrDistance;
 
-	const auto diff  = A - point;
-	const auto edge0 = B - A;
-	const auto edge1 = C - A;
+	const auto diff  = this -> a () - point;
+	const auto edge0 = this -> b () - this -> a ();
+	const auto edge1 = this -> c () - this -> a ();
 	auto       a00   = dot (edge0, edge0);
 	auto       a01   = dot (edge0, edge1);
 	auto       a11   = dot (edge1, edge1);
@@ -386,52 +433,106 @@ triangle_distance_to_point (const vector3 <Type> & A, const vector3 <Type> & B, 
 // 
 template <class Type>
 bool
-triangle_intersects (const std::vector <vector3 <Type>> & points1,
-	                  const std::vector <vector3 <Type>> & edges1,
-	                  const std::vector <vector3 <Type>> & normals1,
-                     const vector3 <Type> & A,
-                     const vector3 <Type> & B,
-                     const vector3 <Type> & C)
+triangle3 <Type>::intersects (const std::vector <vector3 <Type>> & points,
+	                           const std::vector <vector3 <Type>> & edges,
+	                           const std::vector <vector3 <Type>> & normals) const
 {
 	// Test special cases.
 
 	// Get points.
 
-	const std::vector <vector3 <Type>> points2 = { A, B, C };
+	const std::vector <vector3 <Type>> points2 = { a (), b (), c () };
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (sat::separated (normals1, points1, points2))
+	if (sat::separated (normals, points, points2))
 		return false;
 
 	// Test the normal of the triangle.
 
-	if (sat::separated ({ normal (A, B, C) }, points1, points2))
+	if (sat::separated ({ normal () }, points, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.
 
 	const std::array <vector3 <Type>, 3> edges2 = {
-		A - B,
-		B - C,
-		C - A,
+		a () - b (),
+		b () - c (),
+		c () - a (),
 	};
 
 	std::vector <vector3 <Type>> axes;
 
-	for (const auto & axis1 : edges1)
+	for (const auto & axis1 : edges)
 	{
 		for (const auto & axis2 : edges2)
 			axes .emplace_back (cross (axis1, axis2));
 	}
 
-	if (sat::separated (axes, points1, points2))
+	if (sat::separated (axes, points, points2))
 		return false;
 
 	// Box and triangle intersect.
 
 	return true;
 }
+
+// D ----- C
+//  |       |
+//  |       |
+//  |       |
+// A ----- B
+
+template <class Type>
+inline
+vector3 <Type>
+normal (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & D)
+{
+	// (p3 - B) x (p4 - C)
+	return normalize (cross (C - A, D - B));
+}
+
+///  @relates triangle3
+///  @name Input/Output operations
+
+///  Extraction operator for vector values.
+template <class CharT, class Traits, class Type>
+std::basic_istream <CharT, Traits> &
+operator >> (std::basic_istream <CharT, Traits> & istream, triangle3 <Type> & triangle)
+{
+	vector3 <Type> a;
+	vector3 <Type> b;
+	vector3 <Type> c;
+
+	istream >> a >> b >> c;
+
+	if (istream)
+		triangle = triangle3 <Type> (a, b, c);
+
+	return istream;
+}
+
+///  Insertion operator for vector values.
+template <class CharT, class Traits, class Type>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const triangle3 <Type> & triangle)
+{
+	return ostream << triangle .a () << "  " << triangle .b () << "  " << triangle .c ();
+}
+
+extern template class triangle3 <float>;
+extern template class triangle3 <double>;
+extern template class triangle3 <long double>;
+
+//
+extern template std::istream & operator >> (std::istream &, triangle3 <float> &);
+extern template std::istream & operator >> (std::istream &, triangle3 <double> &);
+extern template std::istream & operator >> (std::istream &, triangle3 <long double> &);
+
+//
+extern template std::ostream & operator << (std::ostream &, const triangle3 <float> &);
+extern template std::ostream & operator << (std::ostream &, const triangle3 <double> &);
+extern template std::ostream & operator << (std::ostream &, const triangle3 <long double> &);
 
 } // math
 } // titania

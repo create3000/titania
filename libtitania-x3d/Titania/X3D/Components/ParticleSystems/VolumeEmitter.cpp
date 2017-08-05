@@ -223,7 +223,7 @@ VolumeEmitter::set_geometry ()
 
 	for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 	{
-		surfaceArea += area (vertices [i], vertices [i + 1], vertices [i + 2]);
+		surfaceArea += Triangle3f (vertices [i], vertices [i + 1], vertices [i + 2]) .area ();
 		surfaceAreas .emplace_back (surfaceArea);
 	}
 

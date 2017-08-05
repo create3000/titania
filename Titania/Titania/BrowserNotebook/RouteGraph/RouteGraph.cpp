@@ -78,12 +78,13 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 	         X3DRouteGraph (),
 	               windows (),
 	             selection (),
+	        routeSelection (),
 	                button (0),
 	              position (),
 	         startPosition (),
 	           endPosition (),
 	            motionType (MotionType::DEFAULT),
-	             sheetName (_ ("New Sheet")),
+	             sheetName (_ ("New Logic")),
 	 inputConnectorClicked (false),
 	outputConnectorClicked (false),
 	       matchingContext (),
@@ -193,6 +194,8 @@ RouteGraph::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns, con
 		x += width;
 		x += GRID_SIZE * 4;
 	}
+
+	resize ();
 }
 
 void
@@ -233,19 +236,25 @@ RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
 
 	windows .emplace_front (window);
 
-	window -> node     = node;
-	window -> widget   = widget;
+	window -> node   = node;
+	window -> widget = widget;
+
+	// Node
+
+	node -> isLive () .addInterest (&RouteGraph::set_live, this, window);
+
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		field -> getInputRoutes ()  .addInterest (&RouteGraph::set_routes, this);
+		field -> getOutputRoutes () .addInterest (&RouteGraph::set_routes, this);
+	}
+
+	// Widget
 
 	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraph::refresh));
 	widget -> signal_input_connector_clicked ()  .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_input_connector_clicked),  window .get ()));
 	widget -> signal_output_connector_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_output_connector_clicked), window .get ()));
 	widget -> show ();
-
-	for (const auto & field : node -> getFieldDefinitions ())
-	{
-		field -> getInputRoutes ()  .addInterest (&RouteGraph::refresh, this);
-		field -> getOutputRoutes () .addInterest (&RouteGraph::refresh, this);
-	}
 
 	// Put widget on fixed.
 
@@ -264,6 +273,20 @@ RouteGraph::removeWindow (const RouteGraphWindowPtr window)
 
 	if (iter == windows .end ())
 		return;
+
+	// Node
+
+	const auto & node = window -> node;
+
+	node -> isLive () .removeInterest (&RouteGraph::set_live, this);
+
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		field -> getInputRoutes ()  .removeInterest (&RouteGraph::set_routes, this);
+		field -> getOutputRoutes () .removeInterest (&RouteGraph::set_routes, this);
+	}
+
+	// Widget
 
 	getFixed () .remove (*window -> widget);
 
@@ -371,6 +394,53 @@ RouteGraph::clearSelection ()
 	refresh ();
 }
 
+bool
+RouteGraph::isRouteSelected (const X3D::RoutePtr & route) const
+{
+	const auto iter = std::find_if (routeSelection .begin (), routeSelection .end (), [&] (const X3D::RoutePtr & selectedRoute) { return route == selectedRoute; });
+
+	return iter not_eq routeSelection .end ();
+}
+
+void
+RouteGraph::addRouteSelection (const RouteArray & routes)
+{
+	routeSelection .insert (routeSelection .end (), routes .begin (), routes .end ());
+
+	refresh ();
+}
+
+void
+RouteGraph::setRouteSelection (const RouteArray & routes)
+{
+	clearRouteSelection ();
+
+	addRouteSelection (routes);
+}
+
+void
+RouteGraph::removeRouteSelection (const RouteArray & routes)
+{
+	const auto iter = std::remove_if (routeSelection .begin (), routeSelection .end (), [&] (const X3D::RoutePtr & selectedRoute)
+	{
+		const auto iter = std::find_if (routes .begin (), routes .end (), [&] (const X3D::RoutePtr & route) { return route == selectedRoute; });
+	
+		return iter not_eq routes .end ();
+	});
+
+	routeSelection .erase (iter, routeSelection .end ());
+
+	refresh ();
+}
+
+void
+RouteGraph::clearRouteSelection ()
+{
+	routeSelection .clear ();
+
+	refresh ();
+}
+
 void
 RouteGraph::clearConnectorSelection ()
 {
@@ -408,17 +478,17 @@ RouteGraph::refresh ()
 	getFixed () .queue_draw ();
 }
 
-bool
-RouteGraph::on_delete ()
+void
+RouteGraph::set_live (const RouteGraphWindowPtr window)
 {
-	for (const auto & window : getSelection ())
-		removeWindow (window);
+	removeWindow (window);
+}
 
-	clearSelection ();
-
-	resize ();
-
-	return false;
+void
+RouteGraph::set_routes ()
+{
+	clearRouteSelection ();
+	refresh ();
 }
 
 void
@@ -503,6 +573,48 @@ RouteGraph::on_export_sheet_activate ()
 }
 
 void
+RouteGraph::on_delete_activate ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
+
+	for (const auto & window : getSelection ())
+		removeWindow (window);
+
+	for (const auto & route : RouteArray (getRouteSelection ()))
+	{
+		X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
+		                             route -> getSourceNode (),
+		                             route -> getSourceField (),
+		                             route -> getDestinationNode (),
+		                             route -> getDestinationField (),
+		                             undoStep);
+	}
+
+	clearSelection ();
+	clearRouteSelection ();
+
+	resize ();
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+RouteGraph::on_select_all_activate ()
+{
+	setSelection (windows);
+
+	resize ();
+}
+
+void
+RouteGraph::on_deselect_all_activate ()
+{
+	clearSelection ();
+
+	resize ();
+}
+
+void
 RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
                                    int x, int y,
                                    const Gtk::SelectionData & selection_data,
@@ -562,11 +674,21 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 	{
 		// Selected node widget and prepare move.
 
-		// Clear connector selection
+		// Clear connector selection.
 	
 		clearConnectorSelection ();
+
+		// Handle route set_selection.
 	
-		// Prepare move widget
+		if (on_route_button_press_event (event))
+		{
+			button = 0;
+			return false;
+		}
+
+		// Prepare move widget.
+
+		clearRouteSelection ();
 
 		startPosition = pointer;
 		endPosition   = pointer;
@@ -606,15 +728,99 @@ RouteGraph::on_button_press_event (GdkEventButton* event)
 			clearSelection ();
 
 		refresh ();
+
+		return false;
 	}
 	else if (button == 2)
 	{
 		// Prepare move area.
 
 		startPosition = pointer;
+		return false;
 	}
 
 	return false;
+}
+
+bool
+RouteGraph::on_route_button_press_event (GdkEventButton* event) 
+{
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
+
+	for (const auto & sourceWindow : windows)
+	{
+		const auto & sourceNode   = sourceWindow -> node;
+		const auto & sourceWidget = sourceWindow -> widget;
+
+		for (const auto & sourceField : sourceNode -> getFieldDefinitions ())
+		{
+			for (const auto & route : sourceField -> getOutputRoutes ())
+			{
+				try
+				{
+					const auto destinationNode  = route -> getDestinationNode ();
+					const auto destinationField = destinationNode -> getField (route -> getDestinationField ());
+					const auto iter             = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == destinationNode; });
+
+					if (iter == windows .end ())
+						continue;
+
+					const auto & destinationWindow   = *iter;
+					const auto & destinationWidget   = destinationWindow -> widget;
+					const auto   sourcePosition      = X3D::Vector2d (getPosition (sourceWindow) + sourceWidget -> getOutputPosition (sourceField));
+					const auto   destinationPosition = X3D::Vector2d (getPosition (destinationWindow) + destinationWidget -> getInputPosition (destinationField));
+
+					// Intersect with arrow
+
+					if (get_arrow (sourcePosition, destinationPosition) .intersects (pointer))
+					{
+						const auto routeptr = X3D::RoutePtr (route);
+
+						clearSelection ();
+
+						if (getBrowserWindow () -> getKeys () .shift ())
+						{
+							if (isRouteSelected (routeptr))
+								removeRouteSelection ({ routeptr });
+							else
+								addRouteSelection ({ routeptr });
+						}
+						else if (not isRouteSelected (routeptr))
+							setRouteSelection ({ routeptr });
+
+						return true;
+					}
+				}
+				catch (const std::exception & error)
+				{ }
+			}
+		}
+	}
+
+	return false;
+}
+
+X3D::Triangle2d
+RouteGraph::get_arrow (const X3D::Vector2d & sourcePosition, const X3D::Vector2d & destinationPosition) const
+{
+	// Intersect with arrow
+
+	const auto p1 = X3D::Vector2d (0, 0);
+	const auto p2 = X3D::Vector2d (0, 14);
+	const auto p3 = X3D::Vector2d (10.0 / 9.0 * 14, 7);
+	const auto c  = X3D::negate ((p1 + p2 + p3) / 3.0);
+	const auto t  = (sourcePosition + destinationPosition) / 2.0;
+	const auto d  = destinationPosition - sourcePosition;
+	const auto s  = std::sin (1 / d .x () * math::pi <double> * math::pi <double> / 2) * d .y () / 2.0;
+	const auto a  = d .x () ? std::atan2 (1, 1 / s) : math::pi <double> / 2;
+
+	X3D::Matrix3d m;
+
+	m .translate (t);
+	m .rotate (d .y () >= 0 ? a : a + math::pi <double>);
+	m .translate (c);
+
+	return X3D::Triangle2d (p1 * m, p2 * m, p3 * m);
 }
 
 bool
@@ -721,6 +927,7 @@ RouteGraph::on_motion_notify_event (GdkEventMotion* event)
 		getScrolledWindow () .get_vscrollbar () -> set_value (y + translation .y ());
 
 		startPosition = pointer + translation;
+		return false;
 	}
 
 	return false;
@@ -790,6 +997,10 @@ RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 void
 RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 {
+	const auto front    = X3D::make_rgb <double> (255, 219, 165);
+	const auto back     = X3D::make_rgb <double> (255 / 2, 219 / 2, 165 / 2);
+	const auto selected = X3D::make_rgb <double> (224, 0, 21);
+
 	context -> set_line_width (2);
 
 	for (const auto & sourceWindow : windows)
@@ -818,7 +1029,6 @@ RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 					// Draw sine curved route, dark or light
 
 					const auto wp = (destinationPosition .x () - sourcePosition .x ()) * 0.5;
-					const auto cf = wp > 0 ? 1.0 : 0.5;
 					const auto x0 = sourcePosition .x ();
 					const auto y0 = sourcePosition .y ();
 					const auto x1 = sourcePosition .x () + wp;
@@ -828,32 +1038,31 @@ RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 					const auto x3 = destinationPosition .x ();
 					const auto y3 = destinationPosition .y ();
  
-					context -> set_source_rgb (255.0 / 255.0 * cf, 219.0 / 255.0 * cf, 165.0 / 255.0 * cf);
+					if (isRouteSelected (X3D::RoutePtr (route)))
+					{
+						context -> set_source_rgb (selected .r (), selected .g (), selected .b ());
+					}
+					else
+					{
+						if (wp > 0)
+							context -> set_source_rgb (front .r (), front .g (), front .b ());
+						else
+							context -> set_source_rgb (back .r (), back .g (), back .b ());
+					}
+
 					context -> move_to (x0, y0);
 					context -> curve_to (x1, y1, x2, y2, x3, y3);
 					context -> stroke ();
 
 					// Draw arrow
 
-					const auto p1 = X3D::Vector2d (0, 0);
-					const auto p2 = X3D::Vector2d (0, 14);
-					const auto p3 = X3D::Vector2d (10.0 / 9.0 * 14, 7);
-					const auto c  = X3D::negate ((p1 + p2 + p3) / 3.0);
-					const auto t  = (sourcePosition + destinationPosition) / 2.0;
-					const auto d  = destinationPosition - sourcePosition;
-					const auto s  = std::sin (1 / d .x () * math::pi <double> * math::pi <double> / 2) * d .y () / 2.0;
-					const auto a  = d .x () ? std::atan2 (1, 1 / s) : math::pi <double> / 2;
+					const auto arrow = get_arrow (sourcePosition, destinationPosition);
 
-					context -> save ();
-					context -> translate (t .x (), t .y ());
-					context -> rotate (d .y () >= 0 ? a : a + math::pi <double>);
-					context -> translate (c .x (), c .y ());
-					context -> move_to (p1 .x (), p1 .y ());
-					context -> line_to (p2 .x (), p2 .y ());
-					context -> line_to (p3 .x (), p3 .y ());
+					context -> move_to (arrow .a () .x (), arrow .a () .y ());
+					context -> line_to (arrow .b () .x (), arrow .b () .y ());
+					context -> line_to (arrow .c () .x (), arrow .c () .y ());
 					context -> close_path ();
 					context -> fill ();
-					context -> restore ();
 				}
 				catch (const std::exception & error)
 				{ }
