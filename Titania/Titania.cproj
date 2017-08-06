@@ -331,6 +331,9 @@
     <Compile Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraph.cpp" />
     <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.cpp" />
     <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraphPage.cpp" />
+    <Compile Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraphPage.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DRouteGraphPageInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3044,6 +3047,10 @@
     <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.h" />
     <None Include="share\titania\ui\icons\X3DExecutionContext.svg" />
     <None Include="share\titania\Library\Models\Vehicles\murcielago640.x3dv" />
+    <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphPage.h" />
+    <None Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraphPage.h" />
+    <None Include="share\titania\ui\Widgets\RouteGraphPage.glade" />
+    <None Include="Titania\UserInterfaces\X3DRouteGraphPageInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

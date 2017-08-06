@@ -47,10 +47,10 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_ROUTE_GRAPH_H__
-#define __TMP_GLAD2CPP_ROUTE_GRAPH_H__
+#ifndef __TMP_GLAD2CPP_ROUTE_GRAPH_PAGE_H__
+#define __TMP_GLAD2CPP_ROUTE_GRAPH_PAGE_H__
 
-#include "../Base/X3DPanelInterface.h"
+#include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -58,27 +58,27 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for RouteGraph.
+ *  Gtk Interface for RouteGraphPage.
  */
-class X3DRouteGraphInterface :
-	public X3DPanelInterface
+class X3DRouteGraphPageInterface :
+	public X3DUserInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DRouteGraphInterface () :
-		X3DPanelInterface ()
+	X3DRouteGraphPageInterface () :
+		X3DUserInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DRouteGraphInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DPanelInterface (arguments ...)
+	X3DRouteGraphPageInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DRouteGraphInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DPanelInterface (arguments ...)
+	X3DRouteGraphPageInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DUserInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -103,96 +103,52 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::MenuBar &
-	getMenuBar () const
-	{ return *m_MenuBar; }
+	Gtk::Overlay &
+	getOverlay () const
+	{ return *m_Overlay; }
 
-	Gtk::MenuItem &
-	getRouteGraphMenuItem () const
-	{ return *m_RouteGraphMenuItem; }
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
 
-	Gtk::ImageMenuItem &
-	getNewPageMenuItem () const
-	{ return *m_NewPageMenuItem; }
+	Gtk::Viewport &
+	getViewport () const
+	{ return *m_Viewport; }
 
-	Gtk::ImageMenuItem &
-	getRenamePageMenuItem () const
-	{ return *m_RenamePageMenuItem; }
+	Gtk::Fixed &
+	getFixed () const
+	{ return *m_Fixed; }
 
-	Gtk::MenuItem &
-	getAlignToGridMenuItem () const
-	{ return *m_AlignToGridMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getExportSheetMenuItem () const
-	{ return *m_ExportSheetMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getClosePageMenuItem () const
-	{ return *m_ClosePageMenuItem; }
-
-	Gtk::MenuItem &
-	getEditMenuItem () const
-	{ return *m_EditMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getDeleteMenuItem () const
-	{ return *m_DeleteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getSelectAllMenuItem () const
-	{ return *m_SelectAllMenuItem; }
-
-	Gtk::MenuItem &
-	getDeselectAllMenuItem () const
-	{ return *m_DeselectAllMenuItem; }
-
-	Gtk::MenuItem &
-	getPanelsMenuItem () const
-	{ return *m_PanelsMenuItem; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
+	Gtk::Label &
+	getPageNameLabel () const
+	{ return *m_PageNameLabel; }
 
 	///  @name Signal handlers
 
 	virtual
-	void
-	on_new_page_activate () = 0;
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
-	on_rename_page_activate () = 0;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
-	void
-	on_align_to_grid_activate () = 0;
+	bool
+	on_motion_notify_event (GdkEventMotion* motion_event) = 0;
 
 	virtual
-	void
-	on_export_page_activate () = 0;
-
-	virtual
-	void
-	on_close_page_activate () = 0;
-
-	virtual
-	void
-	on_delete_activate () = 0;
-
-	virtual
-	void
-	on_select_all_activate () = 0;
-
-	virtual
-	void
-	on_deselect_all_activate () = 0;
+	bool
+	on_draw (const ::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~X3DRouteGraphInterface () override;
+	~X3DRouteGraphPageInterface () override;
 
 
 private:
@@ -217,19 +173,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_VAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::MenuBar* m_MenuBar;
-	Gtk::MenuItem* m_RouteGraphMenuItem;
-	Gtk::ImageMenuItem* m_NewPageMenuItem;
-	Gtk::ImageMenuItem* m_RenamePageMenuItem;
-	Gtk::MenuItem* m_AlignToGridMenuItem;
-	Gtk::ImageMenuItem* m_ExportSheetMenuItem;
-	Gtk::ImageMenuItem* m_ClosePageMenuItem;
-	Gtk::MenuItem* m_EditMenuItem;
-	Gtk::ImageMenuItem* m_DeleteMenuItem;
-	Gtk::ImageMenuItem* m_SelectAllMenuItem;
-	Gtk::MenuItem* m_DeselectAllMenuItem;
-	Gtk::MenuItem* m_PanelsMenuItem;
-	Gtk::Notebook* m_Notebook;
+	Gtk::Overlay* m_Overlay;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::Viewport* m_Viewport;
+	Gtk::Fixed* m_Fixed;
+	Gtk::Label* m_PageNameLabel;
 
 };
 

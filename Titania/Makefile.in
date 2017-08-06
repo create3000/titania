@@ -137,7 +137,9 @@ am_titania_OBJECTS =  \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.$(OBJEXT) \
 	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.$(OBJEXT) \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphPage.$(OBJEXT) \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.$(OBJEXT) \
+	Titania/BrowserNotebook/RouteGraph/X3DRouteGraphPage.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
@@ -331,6 +333,7 @@ am_titania_OBJECTS =  \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DRenderPanelInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DRouteGraphInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DRouteGraphPageInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DScriptEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DSculpToolEditorInterface.$(OBJEXT) \
@@ -649,7 +652,9 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.cpp \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphPage.cpp \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.cpp \
+	Titania/BrowserNotebook/RouteGraph/X3DRouteGraphPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
@@ -843,6 +848,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DRenderPanelInterface.cpp \
 	Titania/UserInterfaces/X3DRouteGraphInterface.cpp \
+	Titania/UserInterfaces/X3DRouteGraphPageInterface.cpp \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DSculpToolEditorInterface.cpp \
@@ -1148,7 +1154,13 @@ Titania/BrowserNotebook/RouteGraph/RouteGraph.$(OBJEXT):  \
 Titania/BrowserNotebook/RouteGraph/RouteGraphNode.$(OBJEXT):  \
 	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
 	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/RouteGraph/RouteGraphPage.$(OBJEXT):  \
+	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
+	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.$(OBJEXT):  \
+	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
+	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/RouteGraph/X3DRouteGraphPage.$(OBJEXT):  \
 	Titania/BrowserNotebook/RouteGraph/$(am__dirstamp) \
 	Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/$(am__dirstamp):
@@ -1971,6 +1983,9 @@ Titania/UserInterfaces/X3DRenderPanelInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DRouteGraphInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DRouteGraphPageInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DScenePropertiesEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -2222,7 +2237,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/RouteGraph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/RouteGraphNode.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/RouteGraphPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/X3DRouteGraph.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RouteGraph/$(DEPDIR)/X3DRouteGraphPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@
@@ -2415,6 +2432,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DPrototypeEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DRenderPanelInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DRouteGraphInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DRouteGraphPageInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DScenePropertiesEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DScriptEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DSculpToolEditorInterface.Po@am__quote@

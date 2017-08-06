@@ -48,98 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
-#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_X3DROUTE_GRAPH_PAGE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_X3DROUTE_GRAPH_PAGE_H__
 
-#include "../../UserInterfaces/X3DRouteGraphInterface.h"
-
-#include "X3DRouteGraph.h"
+#include "../../UserInterfaces/X3DRouteGraphPageInterface.h"
 
 namespace titania {
 namespace puck {
 
-class RouteGraphPage;
-
-using RouteGraphPagePtr = std::shared_ptr <RouteGraphPage>;
-
-class RouteGraph :
-	virtual public X3DRouteGraphInterface,
-	public X3DRouteGraph
+class X3DRouteGraphPage :
+	virtual public X3DRouteGraphPageInterface
 {
 public:
-
-	///  @name Construction
-
-	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
 	///  @name Destruction
 
 	virtual
-	~RouteGraph () final override;
+	~X3DRouteGraphPage () override;
 
 
 protected:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Member access
-
-	int32_t
-	getPageNumber (const RouteGraphPagePtr & page) const;
-
-	///  @name operations
-
-	RouteGraphPagePtr
-	createPage ();
-
-	RouteGraphPagePtr
-	appendPage (const std::string & pageName);
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_new_page_activate () final override;
-
-	virtual
-	void
-	on_rename_page_activate () final override;
-
-	virtual
-	void
-	on_align_to_grid_activate () final override;
-
-	virtual
-	void
-	on_export_page_activate () final override;
-
-	virtual
-	void
-	on_delete_activate () final override;
-
-	virtual
-	void
-	on_select_all_activate () final override;
-
-	virtual
-	void
-	on_deselect_all_activate () final override;
-
-	virtual
-	void
-	on_close_page_activate () final override;
-
-	///  @name Members
-
-	std::vector <RouteGraphPagePtr> pages;
-	RouteGraphPagePtr               currentPage;
+	X3DRouteGraphPage ();
 
 };
 

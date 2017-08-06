@@ -50,54 +50,24 @@
 
 #include "RouteGraph.h"
 
-#include "RouteGraphNode.h"
+#include "RouteGraphPage.h"
 #include "../NotebookPage/NotebookPage.h"
 
 #include "../../Configuration/config.h"
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
-#include <Titania/X3D/Editing/X3DEditor.h>
-
-#include <random>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
-
-static constexpr auto   GRID_SIZE        = 40;
-static constexpr auto   SMALL_GRID_SIZE  = 10;
-static constexpr auto   GRID_COLOR       = 14.0 / 255.0;
-static constexpr auto   GRID_POINT_COLOR = 99.0 / 255.0;
-static constexpr double SNAP_DISTANCE    = GRID_SIZE;
-static constexpr auto   SNAP_OFFSET      = X3D::Vector2d (7, 0);
 
 RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
 	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DRouteGraphInterface (get_ui ("Panels/RouteGraph.glade"), page, PanelType::ROUTE_GRAPH, id),
 	         X3DRouteGraph (),
-	               windows (),
-	             selection (),
-	        routeSelection (),
-	                button (0),
-	              position (),
-	         startPosition (),
-	           endPosition (),
-	            motionType (MotionType::DEFAULT),
-	             sheetName (_ ("New Logic")),
-	 inputConnectorClicked (false),
-	outputConnectorClicked (false),
-	       matchingContext (),
-	             routeNode (),
-	            routeField (nullptr)
+	                 pages (),
+	           currentPage ()
 {
-	getSheetName () .set_text (sheetName);
-
-	getScrolledWindow () .get_hscrollbar () -> set_visible (false);
-	getScrolledWindow () .get_vscrollbar () -> set_visible (false);
-
-	getViewport () .drag_dest_set ({ Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_APP) }, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-
 	setup ();
 }
 
@@ -105,1047 +75,106 @@ void
 RouteGraph::initialize ()
 {
 	X3DRouteGraphInterface::initialize ();
+
+	currentPage = appendPage (_ ("New Logic"));
 }
 
-X3D::SFNode
-RouteGraph::getNode (const size_t id) const
-throw (std::runtime_error)
+int32_t
+RouteGraph::getPageNumber (const RouteGraphPagePtr & page) const
 {
-	X3D::SFNode found;
+	return getNotebook () .page_num (page -> getWidget ());
+}
 
-	X3D::traverse (getCurrentContext (), [&] (X3D::SFNode & node)
+RouteGraphPagePtr
+RouteGraph::createPage ()
+{
+	// Find new page name.
+
+	std::string pageName;
+
+	size_t i = 0;
+
+	for (;;)
 	{
-		if (id == node -> getId ())
+		pageName = _ ("New Logic") + " " + basic::to_string (++ i, std::locale::classic ());
+
+		const auto count = std::count_if (pages .begin (), pages .end (), [&] (const RouteGraphPagePtr & page)
 		{
-			found = node;
-			return false;
-		}
-		
-		return true;
-	},
-	X3D::TRAVERSE_PROTO_DECLARATIONS |
-	X3D::TRAVERSE_PROTO_DECLARATION_BODY |
-	X3D::TRAVERSE_ROOT_NODES |
-	X3D::TRAVERSE_INLINE_NODES |
-	X3D::TRAVERSE_IMPORTED_NODES);
+			return page -> getPageName () == pageName;
+		});
 
-	if (found)
-		return found;
-
-	throw std::runtime_error ("RouteGraph::getNode");
-}
-
-void
-RouteGraph::addConnectedWindows (const X3D::SFNode & node, const X3D::Vector2i & position)
-{
-	std::map <int32_t, X3D::MFNode> columns;
-	std::set <X3D::SFNode>          nodes;
-
-	getConnectedNodes (node -> getExecutionContext (), node, 0, columns, nodes);
-
-	int32_t x = position .x ();
-
-	for (const auto & column : columns)
-	{
-		int32_t y = position .y ();
-
-		for (const auto & node : column .second)
-		{
-			addWindow (node, X3D::Vector2i (x, y));
-
-			y += 400;
-		}
-
-		x += 300;
+		if (count == 0)
+			break;
 	}
 
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_place_nodes), columns, position));
+	// Append page and bring to front.
+
+	currentPage = appendPage (pageName);
+
+	getNotebook () .set_current_page (getPageNumber (currentPage));
+
+	return currentPage;
+}
+
+RouteGraphPagePtr
+RouteGraph::appendPage (const std::string & sheetName)
+{
+	const auto page = std::make_shared <RouteGraphPage> (getBrowserWindow (), sheetName);
+
+	pages .emplace_back (page);
+
+	getNotebook () .append_page (page -> getWidget (), sheetName);
+	getNotebook () .set_tab_reorderable (page -> getWidget (), true);
+	getNotebook () .set_menu_label_text (page -> getWidget (), sheetName);
+
+	return page;
 }
 
 void
-RouteGraph::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns, const X3D::Vector2i & position)
+RouteGraph::on_new_page_activate ()
 {
-	static std::uniform_real_distribution <double>
-	random (-1, 1);
-
-	static std::default_random_engine
-	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
-
-	int32_t x = position .x ();
-
-	for (const auto & column : columns)
-	{
-		int32_t width = 0;
-		int32_t y     = position .y ();
-
-		for (const auto & node : column .second)
-		{
-			const auto   rposition = X3D::Vector2i (x + random (random_engine) * GRID_SIZE, y + random (random_engine) * GRID_SIZE);
-			const auto   window    = addWindow (node, rposition);
-			const auto & widget    = window -> widget;
-
-			setPosition (window, rposition);
-
-			y += widget -> get_height ();
-			y += GRID_SIZE * 2;
-
-			width = std::max (width, widget -> get_width ());
-		}
-
-		x += width;
-		x += GRID_SIZE * 4;
-	}
-
-	resize ();
+	createPage ();
 }
 
 void
-RouteGraph::getConnectedNodes (X3D::X3DExecutionContext* const executionContext,
-                               const X3D::SFNode & node,
-                               const int32_t index,
-                               std::map <int32_t, X3D::MFNode> & columns,
-                               std::set <X3D::SFNode> & nodes) const
+RouteGraph::on_rename_page_activate ()
 {
-	if (not nodes .emplace (node) .second)
-		return; 
-
-	if (node -> getExecutionContext () not_eq executionContext and not executionContext -> isImportedNode (node))
-		return;
-
-	columns [index] .emplace_back (node);
-
-	for (const auto & field : node -> getFieldDefinitions ())
-	{
-		for (const auto & route : field -> getInputRoutes ())
-			getConnectedNodes (executionContext, route -> getSourceNode (), index - 1, columns, nodes);
-
-		for (const auto & route : field -> getOutputRoutes ())
-			getConnectedNodes (executionContext, route -> getDestinationNode (), index + 1, columns, nodes);
-	}
-}
-
-RouteGraph::RouteGraphWindowPtr
-RouteGraph::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
-{
-	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
-
-	if (iter not_eq windows .end ())
-		return *iter;
-
-	const auto window = std::make_shared <RouteGraphWindow> ();
-	const auto widget = std::make_shared <RouteGraphNode> (node);
-
-	windows .emplace_front (window);
-
-	window -> node   = node;
-	window -> widget = widget;
-
-	// Node
-
-	node -> isLive () .addInterest (&RouteGraph::set_live, this, window);
-
-	for (const auto & field : node -> getFieldDefinitions ())
-	{
-		field -> getInputRoutes ()  .addInterest (&RouteGraph::set_routes, this);
-		field -> getOutputRoutes () .addInterest (&RouteGraph::set_routes, this);
-	}
-
-	// Widget
-
-	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraph::refresh));
-	widget -> signal_input_connector_clicked ()  .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_input_connector_clicked),  window .get ()));
-	widget -> signal_output_connector_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraph::on_output_connector_clicked), window .get ()));
-	widget -> show ();
-
-	// Put widget on fixed.
-
-	getFixed () .put (*widget, position .x (), position .y ());
-
-	// Make the grid a litte larger.
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraph::resize));
-
-	return window;
-}
-
-void
-RouteGraph::removeWindow (const RouteGraphWindowPtr window)
-{
-	const auto iter = std::find (windows .begin (), windows .end (), window);
-
-	if (iter == windows .end ())
-		return;
-
-	// Node
-
-	const auto & node = window -> node;
-
-	node -> isLive () .removeInterest (&RouteGraph::set_live, this);
-
-	for (const auto & field : node -> getFieldDefinitions ())
-	{
-		field -> getInputRoutes ()  .removeInterest (&RouteGraph::set_routes, this);
-		field -> getOutputRoutes () .removeInterest (&RouteGraph::set_routes, this);
-	}
-
-	// Widget
-
-	getFixed () .remove (*window -> widget);
-
-	windows .erase (iter);
-}
-
-void
-RouteGraph::setPosition (const RouteGraphWindowPtr window, const X3D::Vector2i & position)
-{
-	const auto & widget = window -> widget;
-
-	getFixed () .move (*widget, position .x (), position .y ());
-}
-
-X3D::Vector2i
-RouteGraph::getPosition (const RouteGraphWindowPtr window) const
-{
-	const auto & widget = window -> widget;
-	const auto   x      = getFixed () .child_property_x (*widget) .get_value ();
-	const auto   y      = getFixed () .child_property_y (*widget) .get_value ();
-
-	return X3D::Vector2i (x, y);
-}
-
-X3D::Box2i
-RouteGraph::getBBox (const RouteGraphWindowPtr & window) const
-{
-	const auto & widget   = window -> widget;
-	const auto & position = getPosition (window);
-	const auto   width    = widget -> get_width ();
-	const auto   height   = widget -> get_height ();
-
-	return X3D::Box2i (position, position + X3D::Vector2i (width, height), X3D::extents_type ());
-}
-
-void
-RouteGraph::bringToFront (const RouteGraphWindowPtr window)
-{
-	const auto & widget   = window -> widget;
-	const auto & position = getPosition (window);
-
-	getFixed () .remove (*widget);
-	getFixed () .put (*widget, position .x (), position .y ());
-
-	windows .erase (std::remove (windows .begin (), windows .end (), window), windows .end ());
-	windows .emplace_front (window);
-}
-
-bool
-RouteGraph::isSelected (const RouteGraphWindowPtr & window) const
-{
-	const auto iter = std::find_if (selection .begin (), selection .end (), [&] (const RouteGraphWindowPtr & selectedWindow) { return window == selectedWindow; });
-
-	return iter not_eq selection .end ();
-}
-
-void
-RouteGraph::addSelection (const RouteGraphWindowArray & windows)
-{
-	for (const auto & window : windows)
-		window -> widget -> setSelected (true);
-
-	selection .insert (selection .end (), windows .begin (), windows .end ());
-
-	if (not windows .empty ())
-		bringToFront (windows .back ());
-
-	refresh ();
-}
-
-void
-RouteGraph::setSelection (const RouteGraphWindowArray & windows)
-{
-	clearSelection ();
-
-	addSelection (windows);
-}
-
-void
-RouteGraph::removeSelection (const RouteGraphWindowArray & windows)
-{
-	for (const auto & window : windows)
-		window -> widget -> setSelected (false);
-
-	const auto iter = std::remove_if (selection .begin (), selection .end (), [&] (const RouteGraphWindowPtr & selectedWindow)
-	{
-		const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window == selectedWindow; });
-	
-		return iter not_eq windows .end ();
-	});
-
-	selection .erase (iter, selection .end ());
-	
-	refresh ();
-}
-
-void
-RouteGraph::clearSelection ()
-{
-	for (const auto & window : selection)
-		window -> widget -> setSelected (false);
-
-	selection .clear ();
-
-	refresh ();
-}
-
-bool
-RouteGraph::isRouteSelected (const X3D::RoutePtr & route) const
-{
-	const auto iter = std::find_if (routeSelection .begin (), routeSelection .end (), [&] (const X3D::RoutePtr & selectedRoute) { return route == selectedRoute; });
-
-	return iter not_eq routeSelection .end ();
-}
-
-void
-RouteGraph::addRouteSelection (const RouteArray & routes)
-{
-	routeSelection .insert (routeSelection .end (), routes .begin (), routes .end ());
-
-	refresh ();
-}
-
-void
-RouteGraph::setRouteSelection (const RouteArray & routes)
-{
-	clearRouteSelection ();
-
-	addRouteSelection (routes);
-}
-
-void
-RouteGraph::removeRouteSelection (const RouteArray & routes)
-{
-	const auto iter = std::remove_if (routeSelection .begin (), routeSelection .end (), [&] (const X3D::RoutePtr & selectedRoute)
-	{
-		const auto iter = std::find_if (routes .begin (), routes .end (), [&] (const X3D::RoutePtr & route) { return route == selectedRoute; });
-	
-		return iter not_eq routes .end ();
-	});
-
-	routeSelection .erase (iter, routeSelection .end ());
-
-	refresh ();
-}
-
-void
-RouteGraph::clearRouteSelection ()
-{
-	routeSelection .clear ();
-
-	refresh ();
-}
-
-void
-RouteGraph::clearConnectorSelection ()
-{
-	if (inputConnectorClicked or outputConnectorClicked)
-	{
-		inputConnectorClicked  = false;
-		outputConnectorClicked = false;
-
-		matchingContext = nullptr;
-		routeNode       = nullptr;
-		routeField      = nullptr;
-
-		for (const auto & window : windows)
-			window -> widget -> enableConnectors ();
-	}
-}
-
-void
-RouteGraph::resize ()
-{
-	auto bbox = X3D::Box2d ();
-
-	for (const auto & window : windows)
-		bbox += X3D::Box2d (getBBox (window));
-
-	const auto extents = bbox .extents ();
-	const auto max     = extents .second;
-
-	getFixed () .set_size_request (max .x () + GRID_SIZE, max .y () + GRID_SIZE);
-}
-
-void
-RouteGraph::refresh ()
-{
-	getFixed () .queue_draw ();
-}
-
-void
-RouteGraph::set_live (const RouteGraphWindowPtr window)
-{
-	removeWindow (window);
-}
-
-void
-RouteGraph::set_routes ()
-{
-	clearRouteSelection ();
-	refresh ();
-}
-
-void
-RouteGraph::on_rename_sheet_activate ()
-{
-
+	currentPage -> on_rename_page_activate ();
 }
 
 void
 RouteGraph::on_align_to_grid_activate ()
 {
-	for (const auto & window : windows)
-	{
-		auto position = X3D::Vector2d (getPosition (window)) + SNAP_OFFSET;
-
-		position = X3D::round (position / SNAP_DISTANCE) * SNAP_DISTANCE - SNAP_OFFSET;
-
-		setPosition (window, X3D::Vector2i (position));
-	}
+	currentPage -> on_align_to_grid_activate ();
 }
 
 void
-RouteGraph::on_export_sheet_activate ()
+RouteGraph::on_export_page_activate ()
 {
-	try
-	{
-		static const std::map <int32_t, std::string> magick = {
-			std::make_pair (1, "GRAY"),
-			std::make_pair (3, "RGB"),
-			std::make_pair (4, "RGBA"),
-		};
-
-		const auto hValue = getScrolledWindow () .get_hadjustment () -> get_value ();
-		const auto vValue = getScrolledWindow () .get_vadjustment () -> get_value ();
-
-		Gtk::OffscreenWindow window;
-
-		window .set_size_request (getFixed () .get_width (), getFixed () .get_height ());
-		getViewport () .remove ();
-		window .add (getFixed ());
-		window .show ();
-
-		// This must be done, otherwise the pixbuf is empty.
-		while (Gtk::Main::events_pending ())
-			Gtk::Main::iteration ();
-
-		const auto pixbuf = window .get_pixbuf ();
-
-		window .remove ();
-		getViewport () .add (getFixed ());
-
-		// Convert pixbuf to magick image
-
-		if (not pixbuf)
-			throw std::runtime_error ("RouteGraph::on_export_sheet_activate: pixbuf is NULL.");
-
-		const auto channels = pixbuf -> get_n_channels ();
-		const auto width    = pixbuf -> get_width ();
-		const auto height   = pixbuf -> get_height ();
-		const auto data     = pixbuf -> get_pixels ();
-
-		Magick::Image image (width, height, magick .at (channels), Magick::CharPixel, data);
-
-		// Save magick image
-
-		const auto dialog = std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false));
-
-		image .quality (100);
-
-		dialog -> save (image, sheetName + ".png");
-
-		// Set adjustments.
-
-		getScrolledWindow () .get_hadjustment () -> set_value (hValue);
-		getScrolledWindow () .get_vadjustment () -> set_value (vValue);
-	}
-	catch (const std::exception & error)
-	{
-		// No magick
-		__LOG__ << error .what () << std::endl;
-	}
+	currentPage -> on_export_page_activate ();
 }
 
 void
 RouteGraph::on_delete_activate ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
-
-	for (const auto & window : getSelection ())
-		removeWindow (window);
-
-	for (const auto & route : RouteArray (getRouteSelection ()))
-	{
-		X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
-		                             route -> getSourceNode (),
-		                             route -> getSourceField (),
-		                             route -> getDestinationNode (),
-		                             route -> getDestinationField (),
-		                             undoStep);
-	}
-
-	clearSelection ();
-	clearRouteSelection ();
-
-	resize ();
-
-	getBrowserWindow () -> addUndoStep (undoStep);
+	currentPage -> on_delete_activate ();
 }
 
 void
 RouteGraph::on_select_all_activate ()
 {
-	setSelection (windows);
-
-	resize ();
+	currentPage -> on_select_all_activate ();
 }
 
 void
 RouteGraph::on_deselect_all_activate ()
 {
-	clearSelection ();
-
-	resize ();
+	currentPage -> on_deselect_all_activate ();
 }
 
 void
-RouteGraph::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                   int x, int y,
-                                   const Gtk::SelectionData & selection_data,
-                                   guint info,
-                                   guint time)
+RouteGraph::on_close_page_activate ()
 {
-	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
-	{
-		if (selection_data .get_data_type () == "TITANIA_NODE_ID")
-		{
-			// Parse node id.
-
-			size_t nodeId = 0;
-
-			std::istringstream isstream (selection_data .get_data_as_string ());
-
-			isstream .imbue (std::locale::classic ());
-
-			isstream >> nodeId;
-
-			try
-			{
-				// Add node widget
-	
-				int xOffset, yOffset;
-			
-				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
-
-				addConnectedWindows (getNode (nodeId), X3D::Vector2i (x + xOffset, y + yOffset));
-			}
-			catch (const std::exception & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
-
-			context -> drag_finish (true, false, time);
-			return;
-		}
-	}
-
-	context -> drag_finish (false, false, time);
-}
-
-bool
-RouteGraph::on_button_press_event (GdkEventButton* event) 
-{
-	if (button)
-		return false;
-
-	const auto pointer = X3D::Vector2d (event -> x, event -> y);
-
-	button = event -> button;
-
-	// Handle buttons
-
-	if (button == 1)
-	{
-		// Selected node widget and prepare move.
-
-		// Clear connector selection.
-	
-		clearConnectorSelection ();
-
-		// Handle route set_selection.
-	
-		if (on_route_button_press_event (event))
-		{
-			button = 0;
-			return false;
-		}
-
-		// Prepare move widget.
-
-		clearRouteSelection ();
-
-		startPosition = pointer;
-		endPosition   = pointer;
-
-		for (const auto & window : windows)
-		{
-			const auto & widget = window -> widget;
-			const auto   bbox   = X3D::Box2d (getBBox (window));
-
-			if (not bbox .intersects (startPosition))
-				continue;
-
-			motionType = MotionType::SELECTION;
-
-			if (getBrowserWindow () -> getKeys () .shift ())
-			{
-				if (isSelected (window))
-					removeSelection ({ window });
-				else
-					addSelection ({ window });
-			}
-			else if (not isSelected (window))
-				setSelection ({ window });
-
-			// Prepare move
-
-			widget -> setConnectorsSensitive (false);	
-
-			return true;
-		}
-
-		motionType = MotionType::RECTANGLE;
-
-		// Clear selection if clicked on grid.
-
-		if (not getBrowserWindow () -> getKeys () .shift ())
-			clearSelection ();
-
-		refresh ();
-
-		return false;
-	}
-	else if (button == 2)
-	{
-		// Prepare move area.
-
-		startPosition = pointer;
-		return false;
-	}
-
-	return false;
-}
-
-bool
-RouteGraph::on_route_button_press_event (GdkEventButton* event) 
-{
-	const auto pointer = X3D::Vector2d (event -> x, event -> y);
-
-	for (const auto & sourceWindow : windows)
-	{
-		const auto & sourceNode   = sourceWindow -> node;
-		const auto & sourceWidget = sourceWindow -> widget;
-
-		for (const auto & sourceField : sourceNode -> getFieldDefinitions ())
-		{
-			for (const auto & route : sourceField -> getOutputRoutes ())
-			{
-				try
-				{
-					const auto destinationNode  = route -> getDestinationNode ();
-					const auto destinationField = destinationNode -> getField (route -> getDestinationField ());
-					const auto iter             = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == destinationNode; });
-
-					if (iter == windows .end ())
-						continue;
-
-					const auto & destinationWindow   = *iter;
-					const auto & destinationWidget   = destinationWindow -> widget;
-					const auto   sourcePosition      = X3D::Vector2d (getPosition (sourceWindow) + sourceWidget -> getOutputPosition (sourceField));
-					const auto   destinationPosition = X3D::Vector2d (getPosition (destinationWindow) + destinationWidget -> getInputPosition (destinationField));
-
-					// Intersect with arrow
-
-					if (get_arrow (sourcePosition, destinationPosition) .intersects (pointer))
-					{
-						const auto routeptr = X3D::RoutePtr (route);
-
-						clearSelection ();
-
-						if (getBrowserWindow () -> getKeys () .shift ())
-						{
-							if (isRouteSelected (routeptr))
-								removeRouteSelection ({ routeptr });
-							else
-								addRouteSelection ({ routeptr });
-						}
-						else if (not isRouteSelected (routeptr))
-							setRouteSelection ({ routeptr });
-
-						return true;
-					}
-				}
-				catch (const std::exception & error)
-				{ }
-			}
-		}
-	}
-
-	return false;
-}
-
-X3D::Triangle2d
-RouteGraph::get_arrow (const X3D::Vector2d & sourcePosition, const X3D::Vector2d & destinationPosition) const
-{
-	// Intersect with arrow
-
-	const auto p1 = X3D::Vector2d (0, 0);
-	const auto p2 = X3D::Vector2d (0, 14);
-	const auto p3 = X3D::Vector2d (10.0 / 9.0 * 14, 7);
-	const auto c  = X3D::negate ((p1 + p2 + p3) / 3.0);
-	const auto t  = (sourcePosition + destinationPosition) / 2.0;
-	const auto d  = destinationPosition - sourcePosition;
-	const auto s  = std::sin (1 / d .x () * math::pi <double> * math::pi <double> / 2) * d .y () / 2.0;
-	const auto a  = d .x () ? std::atan2 (1, 1 / s) : math::pi <double> / 2;
-
-	X3D::Matrix3d m;
-
-	m .translate (t);
-	m .rotate (d .y () >= 0 ? a : a + math::pi <double>);
-	m .translate (c);
-
-	return X3D::Triangle2d (p1 * m, p2 * m, p3 * m);
-}
-
-bool
-RouteGraph::on_button_release_event (GdkEventButton* event) 
-{
-	if (button == 1)
-	{
-		for (const auto & window : getSelection ())
-		{
-			const auto & widget = window -> widget;
-	
-			widget -> setConnectorsSensitive (true);	
-		}
-	}
-
-	button     = 0;
-	motionType = MotionType::DEFAULT;
-
-	refresh ();
-
-	return false;
-}
-
-bool
-RouteGraph::on_motion_notify_event (GdkEventMotion* event) 
-{
-	const auto pointer = X3D::Vector2d (event -> x, event -> y);
-
-	if (button == 1)
-	{
-		switch (motionType)
-		{
-			case MotionType::DEFAULT:
-				break;
-			case MotionType::SELECTION:
-			{
-				auto bbox = X3D::Box2d ();
-		
-				for (const auto & window : selection)
-					bbox += X3D::Box2d (getBBox (window));
-		
-				const auto translation          = pointer - startPosition;
-				const auto extents              = bbox .extents ();
-				const auto min                  = extents .first;
-				const auto translated           = X3D::max (X3D::Vector2d (), min + translation);
-				const auto selectionTranslation = X3D::Vector2i (X3D::round (translated - min));
-		
-				for (const auto & window : selection)
-				{
-					auto position = getPosition (window);
-		
-					position += selectionTranslation;
-					position  = X3D::max (X3D::Vector2i (), position);
-		
-					setPosition (window, position);
-				}
-		
-				// Make the grid a litte larger.
-				resize ();
-		
-				startPosition = pointer;
-
-				break;
-			}
-			case MotionType::RECTANGLE:
-			{
-				endPosition = pointer;
-
-				const auto points             = std::vector <X3D::Vector2d> { startPosition, endPosition };
-				const auto rectangleSelection = X3D::Box2d (points .begin (), points .end (), X3D::iterator_type ());
-				auto       selection          = getBrowserWindow () -> getKeys () .shift () ? getSelection () : RouteGraphWindowArray ();
-
-				for (const auto & window : windows)
-				{
-					if (X3D::Box2d (getBBox (window)) .intersects (rectangleSelection))
-						selection .emplace_back (window);
-				}
-
-				if (getBrowserWindow () -> getKeys () .shift ())
-				{
-					std::stable_sort (selection .begin (), selection .end ());
-
-					selection .erase (std::unique (selection .begin (), selection .end ()), selection .end ());
-				}
-
-				setSelection (selection);
-
-				refresh ();
-				break;
-			}
-		}
-
-		return true;
-	}
-	else if (button == 2)
-	{
-		// Move area.
-
-		const auto translation = startPosition - pointer;
-		const auto x           = getScrolledWindow () .get_hscrollbar () -> get_value ();
-		const auto y           = getScrolledWindow () .get_vscrollbar () -> get_value ();
-
-		getScrolledWindow () .get_hscrollbar () -> set_value (x + translation .x ());
-		getScrolledWindow () .get_vscrollbar () -> set_value (y + translation .y ());
-
-		startPosition = pointer + translation;
-		return false;
-	}
-
-	return false;
-}
-
-bool
-RouteGraph::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
-{
-	const auto width  = getFixed () .get_width ();
-	const auto height = getFixed () .get_height ();
-
-	// Background
-
-	context -> set_source_rgb (0, 0, 0);
-	context -> rectangle (0, 0, width, height);
-	context -> fill ();
-
-	// Grid with points
-
-	context -> set_source_rgb (GRID_COLOR, GRID_COLOR, GRID_COLOR);
-
-	for (int32_t y = 0; y < height; y += SMALL_GRID_SIZE)
-		context -> rectangle (0, y, width, 1);
-
-	for (int32_t x = 0; x < width; x += SMALL_GRID_SIZE)
-		context -> rectangle (x, 0, 1, height);
-
-	context -> fill ();
-
-	// Points
-
-	context -> set_source_rgb (GRID_POINT_COLOR, GRID_POINT_COLOR, GRID_POINT_COLOR);
-
-	for (int32_t y = 0; y < height; y += GRID_SIZE)
-	{
-		for (int32_t x = 0; x < width; x += GRID_SIZE)
-			context -> rectangle (x, y, 1, 1);
-	}
-
-	context -> fill ();
-
-	// Draw routes.
-
-	on_draw_routes (context);
-
-	// Draw rectangular selection.
-
-	if (motionType == MotionType::RECTANGLE)
-	{
-		const auto f    = X3D::make_rgba <double> (210, 225, 252, 43);
-		const auto s    = X3D::make_rgba <double> (210, 225, 252, 255);
-		const auto size = endPosition - startPosition;
-
-		context -> set_source_rgba (f .r (), f .g (), f .b (), f .a ());
-		context -> rectangle (startPosition .x (), startPosition .y (), size .x (), size .y ());
-		context -> fill ();
-
-		context -> set_line_width (2);
-		context -> set_source_rgba (s .r (), s .g (), s .b (), s .a ());
-		context -> rectangle (startPosition .x (), startPosition .y (), size .x (), size .y ());
-		context -> stroke ();
-	}
-
-	return false;
-}
-
-void
-RouteGraph::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
-{
-	const auto front    = X3D::make_rgb <double> (255, 219, 165);
-	const auto back     = X3D::make_rgb <double> (255 / 2, 219 / 2, 165 / 2);
-	const auto selected = X3D::make_rgb <double> (224, 0, 21);
-
-	context -> set_line_width (2);
-
-	for (const auto & sourceWindow : windows)
-	{
-		const auto & sourceNode   = sourceWindow -> node;
-		const auto & sourceWidget = sourceWindow -> widget;
-
-		for (const auto & sourceField : sourceNode -> getFieldDefinitions ())
-		{
-			for (const auto & route : sourceField -> getOutputRoutes ())
-			{
-				try
-				{
-					const auto destinationNode  = route -> getDestinationNode ();
-					const auto destinationField = destinationNode -> getField (route -> getDestinationField ());
-					const auto iter             = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == destinationNode; });
-
-					if (iter == windows .end ())
-						continue;
-
-					const auto & destinationWindow   = *iter;
-					const auto & destinationWidget   = destinationWindow -> widget;
-					const auto   sourcePosition      = X3D::Vector2d (getPosition (sourceWindow) + sourceWidget -> getOutputPosition (sourceField));
-					const auto   destinationPosition = X3D::Vector2d (getPosition (destinationWindow) + destinationWidget -> getInputPosition (destinationField));
-
-					// Draw sine curved route, dark or light
-
-					const auto wp = (destinationPosition .x () - sourcePosition .x ()) * 0.5;
-					const auto x0 = sourcePosition .x ();
-					const auto y0 = sourcePosition .y ();
-					const auto x1 = sourcePosition .x () + wp;
-					const auto y1 = sourcePosition .y ();
-					const auto x2 = destinationPosition .x () - wp;
-					const auto y2 = destinationPosition .y ();
-					const auto x3 = destinationPosition .x ();
-					const auto y3 = destinationPosition .y ();
- 
-					if (isRouteSelected (X3D::RoutePtr (route)))
-					{
-						context -> set_source_rgb (selected .r (), selected .g (), selected .b ());
-					}
-					else
-					{
-						if (wp > 0)
-							context -> set_source_rgb (front .r (), front .g (), front .b ());
-						else
-							context -> set_source_rgb (back .r (), back .g (), back .b ());
-					}
-
-					context -> move_to (x0, y0);
-					context -> curve_to (x1, y1, x2, y2, x3, y3);
-					context -> stroke ();
-
-					// Draw arrow
-
-					const auto arrow = get_arrow (sourcePosition, destinationPosition);
-
-					context -> move_to (arrow .a () .x (), arrow .a () .y ());
-					context -> line_to (arrow .b () .x (), arrow .b () .y ());
-					context -> line_to (arrow .c () .x (), arrow .c () .y ());
-					context -> close_path ();
-					context -> fill ();
-				}
-				catch (const std::exception & error)
-				{ }
-			}
-		}
-	}
-}
-
-void
-RouteGraph::on_input_connector_clicked (X3D::X3DFieldDefinition* const connectorField, RouteGraphWindow* const window)
-{
-	if (inputConnectorClicked)
-		return;
-
-	if (outputConnectorClicked)
-	{
-		const auto sourceNode       = routeNode;
-		const auto sourceField      = routeField -> getName ();
-		const auto destinationNode  = window -> node;
-		const auto destinationField = connectorField -> getName ();
-
-		try
-		{
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-			X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
-			X3D::X3DEditor::addRoute (matchingContext, sourceNode, sourceField, destinationNode, destinationField, undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-		clearConnectorSelection ();
-	}
-	else
-	{
-		inputConnectorClicked = true;
-
-		matchingContext = X3D::X3DExecutionContextPtr (window -> node -> getExecutionContext ());
-		routeNode       = window -> node;
-		routeField      = connectorField;
-
-		for (const auto & window : windows)
-			window -> widget -> disableOutputConnectors (matchingContext, routeNode, routeField);
-	}
-}
-
-void
-RouteGraph::on_output_connector_clicked (X3D::X3DFieldDefinition* const connectorField, RouteGraphWindow* const window)
-{
-	if (outputConnectorClicked)
-		return;
-
-	if (inputConnectorClicked)
-	{
-		const auto sourceNode       = window -> node;
-		const auto sourceField      = connectorField  -> getName ();
-		const auto destinationNode  = routeNode;
-		const auto destinationField = routeField-> getName ();
-
-		try
-		{
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-			X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
-			X3D::X3DEditor::addRoute (matchingContext, sourceNode, sourceField, destinationNode, destinationField, undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-		clearConnectorSelection ();
-	}
-	else
-	{
-		outputConnectorClicked = true;
-	
-		matchingContext = X3D::X3DExecutionContextPtr (window -> node -> getExecutionContext ());
-		routeNode       = window -> node;
-		routeField      = connectorField;
-	
-		for (const auto & window : windows)
-			window -> widget -> disableInputConnectors (matchingContext, routeNode, routeField);
-	}
 }
 
 RouteGraph::~RouteGraph ()

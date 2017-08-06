@@ -12,6 +12,30 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-close</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-new</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-export</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <child>
@@ -36,12 +60,33 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="RenameMenuItem">
+                      <object class="GtkImageMenuItem" id="NewPageMenuItem">
+                        <property name="label">New Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Rename Logic</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_rename_sheet_activate" swapped="no"/>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_new_page_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="RenamePageMenuItem">
+                        <property name="label" translatable="yes">Rename Logic</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image4</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_rename_page_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -54,12 +99,33 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="ExportSheetMenuItem">
+                      <object class="GtkImageMenuItem" id="ExportPageMenuItem">
+                        <property name="label" translatable="yes">Export Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Export Sheet</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_export_sheet_activate" swapped="no"/>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_export_page_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="ClosePageMenuItem">
+                        <property name="label">Close Logic</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image1</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="activate" handler="on_close_page_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -135,62 +201,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSeparator">
+          <object class="GtkNotebook" id="Notebook">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkOverlay" id="Overlay">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkScrolledWindow" id="ScrolledWindow">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">always</property>
-                <property name="vscrollbar_policy">always</property>
-                <child>
-                  <object class="GtkViewport" id="Viewport">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="events">GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
-                    <property name="shadow_type">none</property>
-                    <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                    <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
-                    <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
-                    <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
-                    <child>
-                      <object class="GtkFixed" id="Fixed">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <signal name="draw" handler="on_draw" after="yes" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="index">-1</property>
-              </packing>
-            </child>
-            <child type="overlay">
-              <object class="GtkLabel" id="SheetName">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="valign">start</property>
-                <property name="label" translatable="yes">New Sheet</property>
-                <style>
-                  <class name="titania-route-graph-sheet-name"/>
-                </style>
-              </object>
-            </child>
+            <property name="can_focus">True</property>
+            <property name="scrollable">True</property>
+            <property name="enable_popup">True</property>
           </object>
           <packing>
             <property name="expand">True</property>

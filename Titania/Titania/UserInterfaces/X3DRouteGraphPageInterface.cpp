@@ -47,13 +47,13 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DRouteGraphInterface.h"
+#include "X3DRouteGraphPageInterface.h"
 
 namespace titania {
 namespace puck {
 
 void
-X3DRouteGraphInterface::create (const std::string & filename)
+X3DRouteGraphPageInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -62,7 +62,7 @@ X3DRouteGraphInterface::create (const std::string & filename)
 }
 
 void
-X3DRouteGraphInterface::create (std::initializer_list <std::string> filenames)
+X3DRouteGraphPageInterface::create (std::initializer_list <std::string> filenames)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
@@ -74,7 +74,7 @@ X3DRouteGraphInterface::create (std::initializer_list <std::string> filenames)
 }
 
 void
-X3DRouteGraphInterface::create ()
+X3DRouteGraphPageInterface::create ()
 {
 	// Get objects.
 	m_HAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HAdjustment"));
@@ -83,38 +83,23 @@ X3DRouteGraphInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("MenuBar", m_MenuBar);
-	m_builder -> get_widget ("RouteGraphMenuItem", m_RouteGraphMenuItem);
-	m_builder -> get_widget ("NewPageMenuItem", m_NewPageMenuItem);
-	m_builder -> get_widget ("RenamePageMenuItem", m_RenamePageMenuItem);
-	m_builder -> get_widget ("AlignToGridMenuItem", m_AlignToGridMenuItem);
-	m_builder -> get_widget ("ExportSheetMenuItem", m_ExportSheetMenuItem);
-	m_builder -> get_widget ("ClosePageMenuItem", m_ClosePageMenuItem);
-	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
-	m_builder -> get_widget ("DeleteMenuItem", m_DeleteMenuItem);
-	m_builder -> get_widget ("SelectAllMenuItem", m_SelectAllMenuItem);
-	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
-	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
-	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("Overlay", m_Overlay);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("Viewport", m_Viewport);
+	m_builder -> get_widget ("Fixed", m_Fixed);
+	m_builder -> get_widget ("PageNameLabel", m_PageNameLabel);
 
-	// Connect object Gtk::ImageMenuItem with id 'NewPageMenuItem'.
-	m_NewPageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_new_page_activate));
-	m_RenamePageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_rename_page_activate));
+	// Connect object Gtk::Viewport with id 'Viewport'.
+	m_Viewport -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_button_press_event));
+	m_Viewport -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_button_release_event));
+	m_Viewport -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_drag_data_received));
+	m_Viewport -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_motion_notify_event));
 
-	// Connect object Gtk::MenuItem with id 'AlignToGridMenuItem'.
-	m_AlignToGridMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_align_to_grid_activate));
-
-	// Connect object Gtk::ImageMenuItem with id 'ExportSheetMenuItem'.
-	m_ExportSheetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_export_page_activate));
-	m_ClosePageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_close_page_activate));
-	m_DeleteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_delete_activate));
-	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_select_all_activate));
-
-	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
-	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_deselect_all_activate));
+	// Connect object Gtk::Fixed with id 'Fixed'.
+	m_Fixed -> signal_draw () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_draw), false);
 }
 
-X3DRouteGraphInterface::~X3DRouteGraphInterface ()
+X3DRouteGraphPageInterface::~X3DRouteGraphPageInterface ()
 {
 	delete m_Window;
 }

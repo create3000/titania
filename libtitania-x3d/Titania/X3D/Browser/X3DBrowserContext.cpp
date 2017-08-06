@@ -397,12 +397,21 @@ noexcept (true)
 		}
 		#endif
 	}
-	catch (const std::exception & exception)
+	catch (const Glib::Error & error)
 	{
 		std::clog
 		   << getName () << " "
 			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled exception:" << std::endl
-			<< "  " << exception .what () << std::endl;
+			<< "  " << error .what () << std::endl;
+
+		//throw; // DEBUG
+	}
+	catch (const std::exception & error)
+	{
+		std::clog
+		   << getName () << " "
+			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled exception:" << std::endl
+			<< "  " << error .what () << std::endl;
 
 		//throw; // DEBUG
 	}

@@ -40,7 +40,9 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraph.cpp \
 	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.cpp \
+	Titania/BrowserNotebook/RouteGraph/RouteGraphPage.cpp \
 	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.cpp \
+	Titania/BrowserNotebook/RouteGraph/X3DRouteGraphPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
@@ -234,6 +236,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DRenderPanelInterface.cpp \
 	Titania/UserInterfaces/X3DRouteGraphInterface.cpp \
+	Titania/UserInterfaces/X3DRouteGraphPageInterface.cpp \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DSculpToolEditorInterface.cpp \
