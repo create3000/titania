@@ -244,7 +244,7 @@ X3DRenderingSurface::on_dispatch ()
 		return;
 
 	// Timout with Gtk default drawing priority.
-	timeoutConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_HIGH_IDLE);
+	timeoutConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DRenderingSurface::on_timeout), frameRate ? 1000 / frameRate : 0, Glib::PRIORITY_DEFAULT_IDLE);
 }
 
 bool

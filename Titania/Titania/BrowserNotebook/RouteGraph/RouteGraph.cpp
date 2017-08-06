@@ -93,7 +93,8 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* con
 {
 	getSheetName () .set_text (sheetName);
 
-	// Drag & drop targets
+	getScrolledWindow () .get_hscrollbar () -> set_visible (false);
+	getScrolledWindow () .get_vscrollbar () -> set_visible (false);
 
 	getViewport () .drag_dest_set ({ Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_APP) }, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 

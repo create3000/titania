@@ -329,11 +329,14 @@ Selection::setNodes (const MFNode & value)
 		{
 			clearHierarchy = true;
 
-			const auto geometryNodes = getGeometries ({ value .back () });
+			auto lowestNodes = getGeometries ({ value .back () });
 
-			if (not geometryNodes .empty ())
+			if (lowestNodes .empty ())
+				lowestNodes = getLowest ({ value .back () });
+
+			if (not lowestNodes .empty ())
 			{
-				const auto hierarchies = findNode (geometryNodes .back ());
+				const auto hierarchies = findNode (lowestNodes .back ());
 
 				for (const auto & hierarchy : hierarchies)
 				{
@@ -528,6 +531,39 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 	}
 
 	return geometryNodes;
+}
+
+X3D::MFNode
+Selection::getLowest (const X3D::MFNode & nodes) const
+{
+	X3D::MFNode lowestNodes;
+
+	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
+	[&] (X3D::SFNode & node)
+	{
+		size_t nodeFields = 0;
+
+		for (const auto & field : node -> getFieldDefinitions ())
+		{
+			switch (field -> getType ())
+			{
+				case X3DConstants::SFNode:
+				case X3DConstants::MFNode:
+					++ nodeFields;
+					break;
+				default:
+					break;
+			}
+		}
+
+		if (nodeFields == 1)
+			lowestNodes .emplace_back (node);
+
+		return true;
+	},
+	X3D::TRAVERSE_ROOT_NODES);
+
+	return lowestNodes;
 }
 
 SFNode

@@ -127,8 +127,6 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 void
 Parser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
-
 	try
 	{
 		scene -> setWorldURL (uri);

@@ -2856,7 +2856,6 @@
     <None Include="share\titania\Library\Models\Vehicles\hangglider.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\hydroplane.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\dumptruck.x3dv" />
-    <None Include="share\titania\Library\Models\Vehicles\murcielago640.x3dz" />
     <None Include="share\titania\Library\Models\Vehicles\jeep3.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\hughes_500.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\lightcycle.x3dv" />
@@ -3044,6 +3043,7 @@
     <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.h" />
     <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.h" />
     <None Include="share\titania\ui\icons\X3DExecutionContext.svg" />
+    <None Include="share\titania\Library\Models\Vehicles\murcielago640.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

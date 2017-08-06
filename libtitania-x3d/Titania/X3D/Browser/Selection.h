@@ -203,6 +203,9 @@ private:
 	MFNode
 	getGeometries (const MFNode & nodes) const;
 
+	MFNode
+	getLowest (const MFNode & nodes) const;
+
 	SFNode
 	getTransform (const MFNode & hierarchy) const;
 
