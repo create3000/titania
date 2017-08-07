@@ -853,12 +853,33 @@ RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
+		// Scroll area if pointer is outside window
+
+		const auto x = getScrolledWindow () .get_hscrollbar () -> get_value ();
+		const auto y = getScrolledWindow () .get_vscrollbar () -> get_value ();
+		const auto w = getScrolledWindow () .get_width ();
+		const auto h = getScrolledWindow () .get_height ();
+
+		if (event -> x < x)
+			getScrolledWindow () .get_hscrollbar () -> set_value (event -> x);
+		else if (event -> x > x + w)
+			getScrolledWindow () .get_hscrollbar () -> set_value (event -> x - w);
+
+		if (event -> y < y)
+			getScrolledWindow () .get_vscrollbar () -> set_value (event -> y);
+		else if (event -> y > y + h)
+			getScrolledWindow () .get_vscrollbar () -> set_value (event -> y - h);
+
+		// Handle motion type
+
 		switch (motionType)
 		{
 			case MotionType::DEFAULT:
 				break;
 			case MotionType::SELECTION:
 			{
+				// Move widget
+
 				auto bbox = X3D::Box2d ();
 		
 				for (const auto & window : selection)
@@ -889,6 +910,8 @@ RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 			}
 			case MotionType::RECTANGLE:
 			{
+				// Rectangular selection
+
 				endPosition = pointer;
 
 				const auto points             = std::vector <X3D::Vector2d> { startPosition, endPosition };

@@ -66,6 +66,9 @@
                   <class name="titania-route-graph-sheet-name"/>
                 </style>
               </object>
+              <packing>
+                <property name="pass_through">True</property>
+              </packing>
             </child>
           </object>
           <packing>
