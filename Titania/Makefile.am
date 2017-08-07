@@ -38,11 +38,6 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
-	Titania/BrowserNotebook/RouteGraph/RouteGraph.cpp \
-	Titania/BrowserNotebook/RouteGraph/RouteGraphNode.cpp \
-	Titania/BrowserNotebook/RouteGraph/RouteGraphPage.cpp \
-	Titania/BrowserNotebook/RouteGraph/X3DRouteGraph.cpp \
-	Titania/BrowserNotebook/RouteGraph/X3DRouteGraphPage.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
@@ -265,6 +260,11 @@ titania_SOURCES =  \
 	Titania/Widgets/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp \
+	Titania/Widgets/RouteGraph/RouteGraph.cpp \
+	Titania/Widgets/RouteGraph/RouteGraphNode.cpp \
+	Titania/Widgets/RouteGraph/RouteGraphPage.cpp \
+	Titania/Widgets/RouteGraph/X3DRouteGraph.cpp \
+	Titania/Widgets/RouteGraph/X3DRouteGraphPage.cpp \
 	Titania/Widgets/ScriptEditor/ScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \

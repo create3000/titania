@@ -55,7 +55,6 @@
 
 #include "../BrowserPanel/BrowserPanel.h"
 #include "../RenderPanel/RenderPanel.h"
-#include "../RouteGraph/RouteGraph.h"
 
 namespace titania {
 namespace puck {
@@ -158,7 +157,6 @@ NotebookPage::setPanelType (const size_t id, const PanelType panelType)
 	static const std::map <PanelType, std::string> panelTypes = {
 		std::make_pair (PanelType::BROWSER_PANEL, "BROWSER_PANEL"),
 		std::make_pair (PanelType::RENDER_PANEL,  "RENDER_PANEL"),
-		std::make_pair (PanelType::ROUTE_GRAPH,   "ROUTE_GRAPH"),
 	};
 
 	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");
@@ -183,7 +181,6 @@ NotebookPage::getPanelType (const size_t id) const
 		static const std::map <std::string, PanelType> panelTypes = {
 			std::make_pair ("BROWSER_PANEL", PanelType::BROWSER_PANEL),
 			std::make_pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
-			std::make_pair ("ROUTE_GRAPH",   PanelType::ROUTE_GRAPH),
 		};
 
 		const auto panelsArray = getWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");
@@ -221,11 +218,6 @@ NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewpo
 		case PanelType::RENDER_PANEL:
 		{
 		   panel = std::make_unique <RenderPanel> (getBrowserWindow (), this, id);
-			break;
-		}
-		case PanelType::ROUTE_GRAPH:
-		{
-		   panel = std::make_unique <RouteGraph> (getBrowserWindow (), this, id);
 			break;
 		}
 	}

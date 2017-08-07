@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
+	RouteGraph (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

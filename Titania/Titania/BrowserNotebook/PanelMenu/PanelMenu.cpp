@@ -63,8 +63,7 @@ PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const
 	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
 	            panelType (panelType_),
 	            menuItems ({ std::make_pair (PanelType::BROWSER_PANEL, &getBrowserPanelMenuItem ()),
-	                         std::make_pair (PanelType::RENDER_PANEL,  &getRenderPanelMenuItem ()),
-	                         std::make_pair (PanelType::ROUTE_GRAPH,   &getRouteGraphMenuItem ()) })
+	                         std::make_pair (PanelType::RENDER_PANEL,  &getRenderPanelMenuItem ()) })
 {
 	addChildObjects (panelType);
 
@@ -83,12 +82,6 @@ void
 PanelMenu::on_render_panel_activate ()
 {
 	panelType = PanelType::RENDER_PANEL;
-}
-
-void
-PanelMenu::on_route_graph_activate ()
-{
-	panelType = PanelType::ROUTE_GRAPH;
 }
 
 PanelMenu::~PanelMenu ()

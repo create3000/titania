@@ -328,12 +328,12 @@
     <Compile Include="Titania\Editors\BindableNodeList\ViewpointList.cpp" />
     <Compile Include="Titania\BrowserNotebook\RenderPanel\Pipe.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DRouteGraphInterface.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraph.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RouteGraph\RouteGraphPage.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraphPage.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DRouteGraphPageInterface.cpp" />
+    <Compile Include="Titania\Widgets\RouteGraph\RouteGraph.cpp" />
+    <Compile Include="Titania\Widgets\RouteGraph\RouteGraphNode.cpp" />
+    <Compile Include="Titania\Widgets\RouteGraph\RouteGraphPage.cpp" />
+    <Compile Include="Titania\Widgets\RouteGraph\X3DRouteGraph.cpp" />
+    <Compile Include="Titania\Widgets\RouteGraph\X3DRouteGraphPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3040,17 +3040,18 @@
     <None Include="share\titania\ui\icons\Primitives\StarNode.svg" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Star2D.x3dv" />
     <None Include="share\titania\ui\icons\Primitives\TextNode.svg" />
-    <None Include="share\titania\ui\Panels\RouteGraph.glade" />
     <None Include="Titania\UserInterfaces\X3DRouteGraphInterface.h" />
-    <None Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraph.h" />
-    <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraph.h" />
-    <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphNode.h" />
     <None Include="share\titania\ui\icons\X3DExecutionContext.svg" />
     <None Include="share\titania\Library\Models\Vehicles\murcielago640.x3dv" />
-    <None Include="Titania\BrowserNotebook\RouteGraph\RouteGraphPage.h" />
-    <None Include="Titania\BrowserNotebook\RouteGraph\X3DRouteGraphPage.h" />
     <None Include="share\titania\ui\Widgets\RouteGraphPage.glade" />
     <None Include="Titania\UserInterfaces\X3DRouteGraphPageInterface.h" />
+    <None Include="share\titania\ui\Widgets\RouteGraph.glade" />
+    <None Include="Titania\Widgets\RouteGraph\RouteGraph.h" />
+    <None Include="Titania\Widgets\RouteGraph\RouteGraphNode.h" />
+    <None Include="Titania\Widgets\RouteGraph\RouteGraphPage.h" />
+    <None Include="Titania\Widgets\RouteGraph\X3DRouteGraph.h" />
+    <None Include="Titania\Widgets\RouteGraph\X3DRouteGraphPage.h" />
+    <None Include="share\titania\ui\icons\RouteGraph.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3203,7 +3204,7 @@
     <Folder Include="Titania\Bits\" />
     <Folder Include="Titania\Editors\BindableNodeList\" />
     <Folder Include="share\titania\ui\icons\Primitives\" />
-    <Folder Include="Titania\BrowserNotebook\RouteGraph\" />
+    <Folder Include="Titania\Widgets\RouteGraph\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

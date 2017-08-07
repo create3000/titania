@@ -51,7 +51,6 @@
 #include "RouteGraph.h"
 
 #include "RouteGraphPage.h"
-#include "../NotebookPage/NotebookPage.h"
 
 #include "../../Configuration/config.h"
 #include "../../Browser/X3DBrowserWindow.h"
@@ -61,9 +60,9 @@
 namespace titania {
 namespace puck {
 
-RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
-	       X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
-	X3DRouteGraphInterface (get_ui ("Panels/RouteGraph.glade"), page, PanelType::ROUTE_GRAPH, id),
+RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow) :
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DRouteGraphInterface (get_ui ("Widgets/RouteGraph.glade")),
 	         X3DRouteGraph (),
 	                 pages (),
 	           currentPage ()

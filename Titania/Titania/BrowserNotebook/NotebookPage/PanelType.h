@@ -57,8 +57,7 @@ namespace puck {
 enum class PanelType
 {
 	BROWSER_PANEL,
-	RENDER_PANEL,
-	ROUTE_GRAPH
+	RENDER_PANEL
 
 };
 

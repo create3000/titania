@@ -127,8 +127,10 @@ X3DNotebookPage::getScene () const
 const basic::uri &
 X3DNotebookPage::getMasterSceneURL () const
 {
-	if (mainBrowser -> isInitialized ())
-	   return mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+	const auto & worldURL = mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+
+	if (mainBrowser -> isInitialized () and not worldURL .empty ())
+	   return worldURL;
 
 	return url;
 }
@@ -136,8 +138,10 @@ X3DNotebookPage::getMasterSceneURL () const
 const basic::uri &
 X3DNotebookPage::getWorldURL () const
 {
-	if (mainBrowser -> isInitialized ())
-	   return mainBrowser -> getWorldURL ();
+	const auto & worldURL = mainBrowser -> getWorldURL ();
+
+	if (mainBrowser -> isInitialized () and not worldURL .empty ())
+	   return worldURL;
 
 	return url;
 }

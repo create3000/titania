@@ -90,8 +90,9 @@ public:
 	getPage (const basic::uri &) const
 	throw (std::out_of_range);
 
+	virtual
 	const X3D::BrowserPtr &
-	getMasterBrowser () const
+	getMasterBrowser () const final override
 	{ return masterBrowser; }
 
 	virtual

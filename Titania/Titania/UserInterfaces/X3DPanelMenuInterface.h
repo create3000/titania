@@ -99,10 +99,6 @@ public:
 	getRenderPanelMenuItem () const
 	{ return *m_RenderPanelMenuItem; }
 
-	Gtk::MenuItem &
-	getRouteGraphMenuItem () const
-	{ return *m_RouteGraphMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -116,10 +112,6 @@ public:
 	virtual
 	void
 	on_render_panel_activate () = 0;
-
-	virtual
-	void
-	on_route_graph_activate () = 0;
 
 	///  @name Destruction
 
@@ -148,7 +140,6 @@ private:
 	Gtk::Menu* m_Widget;
 	Gtk::MenuItem* m_BrowserPanelMenuItem;
 	Gtk::MenuItem* m_RenderPanelMenuItem;
-	Gtk::MenuItem* m_RouteGraphMenuItem;
 	Gtk::Window* m_Window;
 
 };

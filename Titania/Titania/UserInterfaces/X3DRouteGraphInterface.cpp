@@ -88,13 +88,12 @@ X3DRouteGraphInterface::create ()
 	m_builder -> get_widget ("NewPageMenuItem", m_NewPageMenuItem);
 	m_builder -> get_widget ("RenamePageMenuItem", m_RenamePageMenuItem);
 	m_builder -> get_widget ("AlignToGridMenuItem", m_AlignToGridMenuItem);
-	m_builder -> get_widget ("ExportSheetMenuItem", m_ExportSheetMenuItem);
+	m_builder -> get_widget ("ExportPageMenuItem", m_ExportPageMenuItem);
 	m_builder -> get_widget ("ClosePageMenuItem", m_ClosePageMenuItem);
 	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
 	m_builder -> get_widget ("DeleteMenuItem", m_DeleteMenuItem);
 	m_builder -> get_widget ("SelectAllMenuItem", m_SelectAllMenuItem);
 	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
-	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 
 	// Connect object Gtk::ImageMenuItem with id 'NewPageMenuItem'.
@@ -104,8 +103,8 @@ X3DRouteGraphInterface::create ()
 	// Connect object Gtk::MenuItem with id 'AlignToGridMenuItem'.
 	m_AlignToGridMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_align_to_grid_activate));
 
-	// Connect object Gtk::ImageMenuItem with id 'ExportSheetMenuItem'.
-	m_ExportSheetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_export_page_activate));
+	// Connect object Gtk::ImageMenuItem with id 'ExportPageMenuItem'.
+	m_ExportPageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_export_page_activate));
 	m_ClosePageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_close_page_activate));
 	m_DeleteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_delete_activate));
 	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_select_all_activate));

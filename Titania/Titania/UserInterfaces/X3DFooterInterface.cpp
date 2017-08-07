@@ -85,6 +85,7 @@ X3DFooterInterface::create ()
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
+	m_builder -> get_widget ("RouteGraphBox", m_RouteGraphBox);
 	m_builder -> get_widget ("AnimationEditorBox", m_AnimationEditorBox);
 
 	// Connect object Gtk::Notebook with id 'Notebook'.

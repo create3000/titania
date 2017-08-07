@@ -52,6 +52,7 @@
 #define __TITANIA_WIDGETS_X3DNOTEBOOK_X3DNOTEBOOK_H__
 
 #include "../../Base/X3DUserInterface.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 #include <Titania/Math/Functional.h>
 
@@ -73,6 +74,15 @@ public:
 	///  @name Construction
 
 	X3DNotebook ();
+
+	///  @name Member access
+
+	void
+	setPageDependent (const bool value);
+
+	bool
+	getPageDependent () const
+	{ return pageDependent; }
 
 	///  @name Operations
 
@@ -114,10 +124,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_browser ();
+
 	///  @name Members
 
 	using Pages = std::map <std::string, std::shared_ptr <X3DUserInterface>>;
 
+	bool                              pageDependent;
 	std::map <std::string, Gtk::Box*> boxes;
 	std::vector <std::string>         userInterfaces;
 	Pages                             pages;
@@ -126,9 +142,12 @@ private:
 
 template <class Interface>
 X3DNotebook <Interface>::X3DNotebook () :
-	Interface ()
-{
-}
+	     Interface (),
+	 pageDependent (false),
+	         boxes (),
+	userInterfaces (),
+	         pages ()
+{ }
 
 template <class Interface>
 void
@@ -136,10 +155,23 @@ X3DNotebook <Interface>::configure ()
 {
 	Interface::configure ();
 
-	const auto currentPage = this -> getConfig () -> getInteger ("currentPage");
+	const auto currentPage = this -> getConfig () -> template get <int32_t> ("currentPage");
 	const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
 
 	this -> getNotebook () .set_current_page (currentPage);
+}
+
+template <class Interface>
+void
+X3DNotebook <Interface>::setPageDependent (const bool value)
+{
+	pageDependent = value;
+
+	if (pageDependent)
+		this -> getCurrentBrowser () .addInterest (&X3DNotebook::set_browser, this);
+
+	else
+		this -> getCurrentBrowser () .removeInterest (&X3DNotebook::set_browser, this);
 }
 
 template <class Interface>
@@ -156,16 +188,26 @@ template <class Type>
 std::shared_ptr <Type>
 X3DNotebook <Interface>::getPage (const std::string & name) const
 {
-	auto & userInterface = const_cast <Pages &> (pages) .at (name);
-
-	if (not userInterface)
+	if (pageDependent)
 	{
-		userInterface = this -> createDialog (name);
-		userInterface -> setName (this -> getName () + "." + userInterface -> getName ());
-		userInterface -> reparent (*boxes .at (name), this -> getWindow ());
+		auto page = this -> getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
+
+		page -> setName (this -> getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), this -> getWindow ());
+
+		return std::dynamic_pointer_cast <Type> (page);
 	}
 
-	return std::dynamic_pointer_cast <Type> (userInterface);
+	auto & page = const_cast <Pages &> (pages) .at (name);
+
+	if (not page)
+	{
+		page = this -> createDialog (name);
+		page -> setName (this -> getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), this -> getWindow ());
+	}
+
+	return std::dynamic_pointer_cast <Type> (page);
 }
 
 template <class Interface>
@@ -175,7 +217,7 @@ X3DNotebook <Interface>::getCurrentPage () const
 {
 	try
 	{
-		const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
+		const size_t currentPage = this -> getConfig () -> template get <int32_t> ("currentPage");
 
 		return getPage <Type> (userInterfaces .at (currentPage));
 	}
@@ -183,6 +225,13 @@ X3DNotebook <Interface>::getCurrentPage () const
 	{
 		return getPage <Type> (0);
 	}
+}
+
+template <class Interface>
+void
+X3DNotebook <Interface>::set_browser ()
+{
+	on_switch_page (nullptr, this -> getConfig () -> template get <int32_t> ("currentPage"));
 }
 
 template <class Interface>
@@ -195,13 +244,17 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 
 	if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
 	{
-		const auto page = getPage <X3DUserInterface> (userInterfaces .at (pageNumber));
+		const auto name = userInterfaces .at (pageNumber);
+		const auto page = getPage <X3DUserInterface> (name);
 
 		page -> getWidget () .set_visible (true);
 		this -> getLabel () .set_text (_ (page -> getWidget () .get_name ()));
+
+		if (pageDependent)
+			page -> reparent (*boxes .at (name), this -> getWindow ());
 	}
 
-	this -> getConfig () -> setItem ("currentPage", int (pageNumber));
+	this -> getConfig () -> template set <int32_t> ("currentPage", int (pageNumber));
 }
 
 template <class Interface>

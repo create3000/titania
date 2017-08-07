@@ -244,6 +244,17 @@ Configuration::get (const std::string & key, const bool & defaultValue) const
 
 template <>
 inline
+int
+Configuration::get (const std::string & key, const int & defaultValue) const
+{
+	if (hasKey (key))
+		return getInteger (key);
+
+	return defaultValue;
+}
+
+template <>
+inline
 double
 Configuration::get (const std::string & key, const double & defaultValue) const
 {

@@ -6,7 +6,7 @@ COMPONENT PointingDeviceSensor : 1
 COMPONENT Scripting : 1
 
 META "title" "Scene"
-META "generator" "Titania X3D Browser"
+META "generator" "Titania X3D Editor"
 META "generator" "x3dtidy"
 
 EXTERNPROTO ExternProto []

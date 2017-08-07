@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
-Name=Titania
-Name[de_DE]=Titania X3D Browser
-Comment=View and navigate in X3D and VRML2 worlds
+Name=Titania X3D Editor
+Name[de_DE]=Titania X3D Editor
+Comment=Edit, view, and navigate in X3D worlds
 Type=Application
 Exec=titania %U
 Terminal=false
@@ -10,9 +10,10 @@ StartupNotify=true
 Icon=titania
 Categories=GNOME;GTK;WebDevelopment;Development;3DGraphics;Graphics;
 MimeType=x-world/x-vrml;model/vrml;model/x3d+vrml;model/x3d+xml;
-GenericName=Titania X3D Browser
+GenericName=Titania X3D Editor
 
 [Desktop Action Document]
 Name=Open a New Document
 Exec=titania
 OnlyShowIn=Unity;
+Name[<Standard>]=Titania X3D Editor

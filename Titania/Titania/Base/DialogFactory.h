@@ -101,6 +101,7 @@
 #include "../Widgets/AnimationEditor/AnimationEditor.h"
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
+#include "../Widgets/RouteGraph/RouteGraph.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 namespace titania {
@@ -159,6 +160,7 @@ public:
 		         std::make_pair ("OutlineEditor",            constructDialog <OutlineEditor>),
 		         std::make_pair ("Console",                  constructDialog <Console>),
 		         std::make_pair ("ScriptEditor",             constructDialog <ScriptEditor>),
+		         std::make_pair ("RouteGraph",               constructDialog <RouteGraph>),
 		         std::make_pair ("AnimationEditor",          constructDialog <AnimationEditor>),
 		         std::make_pair ("SculpToolEditor",          constructDialog <SculpToolEditor>),
 				         })

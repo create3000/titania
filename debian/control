@@ -62,7 +62,7 @@ Recommends: gstreamer1.0-plugins-base,
 Conflicts:
 Replaces:
 Provides: titania
-Description: Titania X3D Browser
+Description: Titania X3D Editor
  Titania is a X3D/VRML editor and browser for Ubuntu. The goal is a full standard compliant X3D browser
  for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds specification for
  VRML 2.0 and already many parts of the X3D specification.

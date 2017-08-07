@@ -67,11 +67,6 @@ public:
 	
 	Console (X3DBrowserWindow* const browserWindow);
 
-	///  @name Member access
-
-	bool
-	isEnabled () const;
-
 	///  @name Operations
 
 	void
@@ -84,16 +79,12 @@ public:
 
 
 private:
-	
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Event handlers
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
 
 	virtual
 	void
@@ -102,9 +93,6 @@ private:
 	virtual
 	void
 	on_clear_button_clicked () final override;
-
-	void
-	set_browser (const X3D::BrowserPtr &);
 
 	void
 	set_enabled ();

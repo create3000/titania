@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,60 +47,18 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DConsoleInterface.h"
+
+#include "X3DRouteGraph.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DConsoleInterface::create (const std::string & filename)
-{
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+X3DRouteGraph::X3DRouteGraph () :
+	X3DRouteGraphInterface ()
+{ }
 
-	create ();
-}
-
-void
-X3DConsoleInterface::create (std::initializer_list <std::string> filenames)
-{
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
-
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
-
-	create ();
-}
-
-void
-X3DConsoleInterface::create ()
-{
-	// Get objects.
-	m_TextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Console", m_Console);
-	m_builder -> get_widget ("TextView", m_TextView);
-	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
-	m_builder -> get_widget ("ClearButton", m_ClearButton);
-
-	// Connect object Gtk::TextBuffer with id 'TextBuffer'.
-	m_TextBuffer -> signal_mark_set () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_mark_set));
-
-	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
-	m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_suspend_button_toggled));
-
-	// Connect object Gtk::ToolButton with id 'ClearButton'.
-	m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_clear_button_clicked));
-}
-
-X3DConsoleInterface::~X3DConsoleInterface ()
-{
-	delete m_Window;
-}
+X3DRouteGraph::~X3DRouteGraph ()
+{ }
 
 } // puck
 } // titania

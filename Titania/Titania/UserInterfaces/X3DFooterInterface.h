@@ -112,6 +112,10 @@ public:
 	{ return *m_ScriptEditorBox; }
 
 	Gtk::Box &
+	getRouteGraphBox () const
+	{ return *m_RouteGraphBox; }
+
+	Gtk::Box &
 	getAnimationEditorBox () const
 	{ return *m_AnimationEditorBox; }
 
@@ -151,6 +155,7 @@ private:
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_ConsoleBox;
 	Gtk::Box* m_ScriptEditorBox;
+	Gtk::Box* m_RouteGraphBox;
 	Gtk::Box* m_AnimationEditorBox;
 
 };

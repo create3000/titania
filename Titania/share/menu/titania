@@ -1,4 +1,4 @@
 ?package(titania):needs="X11" section="Applications/Graphics"\
-  longtitle="Titania X3D Browser"\
+  longtitle="Titania X3D Editor"\
   icon="/usr/share/pixmaps/titania.png"\
   title="Titania" command="/usr/bin/titania"

@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_ROUTE_GRAPH_H__
 #define __TMP_GLAD2CPP_ROUTE_GRAPH_H__
 
-#include "../Base/X3DPanelInterface.h"
+#include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,24 +61,24 @@ namespace puck {
  *  Gtk Interface for RouteGraph.
  */
 class X3DRouteGraphInterface :
-	public X3DPanelInterface
+	public X3DUserInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DRouteGraphInterface () :
-		X3DPanelInterface ()
+		X3DUserInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DRouteGraphInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DPanelInterface (arguments ...)
+		X3DUserInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DRouteGraphInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DPanelInterface (arguments ...)
+		X3DUserInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -124,8 +124,8 @@ public:
 	{ return *m_AlignToGridMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getExportSheetMenuItem () const
-	{ return *m_ExportSheetMenuItem; }
+	getExportPageMenuItem () const
+	{ return *m_ExportPageMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getClosePageMenuItem () const
@@ -146,10 +146,6 @@ public:
 	Gtk::MenuItem &
 	getDeselectAllMenuItem () const
 	{ return *m_DeselectAllMenuItem; }
-
-	Gtk::MenuItem &
-	getPanelsMenuItem () const
-	{ return *m_PanelsMenuItem; }
 
 	Gtk::Notebook &
 	getNotebook () const
@@ -222,13 +218,12 @@ private:
 	Gtk::ImageMenuItem* m_NewPageMenuItem;
 	Gtk::ImageMenuItem* m_RenamePageMenuItem;
 	Gtk::MenuItem* m_AlignToGridMenuItem;
-	Gtk::ImageMenuItem* m_ExportSheetMenuItem;
+	Gtk::ImageMenuItem* m_ExportPageMenuItem;
 	Gtk::ImageMenuItem* m_ClosePageMenuItem;
 	Gtk::MenuItem* m_EditMenuItem;
 	Gtk::ImageMenuItem* m_DeleteMenuItem;
 	Gtk::ImageMenuItem* m_SelectAllMenuItem;
 	Gtk::MenuItem* m_DeselectAllMenuItem;
-	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::Notebook* m_Notebook;
 
 };

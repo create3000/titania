@@ -93,10 +93,6 @@ private:
 	void
 	on_render_panel_activate () final override;
 
-	virtual
-	void
-	on_route_graph_activate () final override;
-
 	///  @name Members
 
 	X3D::SFEnum <PanelType>              panelType;

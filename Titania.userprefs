@@ -1,17 +1,21 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="debian/control">
     <Files>
-      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/RenderPanel.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/RenderingSurface/X3DRenderingSurface.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/RenderThread.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeStack.h" Line="163" Column="1" />
+      <File FileName="Titania/share/titania/ui/style.css" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp" Line="184" Column="3" />
+      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp" Line="111" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="400" Column="79" />
+      <File FileName="Titania/Titania/Widgets/Footer/Footer.cpp" Line="71" Column="22" />
+      <File FileName="Titania/Titania/Base/DialogFactory.h" Line="156" Column="71" />
+      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraph.h" Line="73" Column="51" />
+      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraph.cpp" Line="49" Column="81" />
+      <File FileName="Titania/share/man/man1/titania.1" Line="6" Column="37" />
+      <File FileName="Titania/Titania/Commands/CommandOptions.h" Line="66" Column="45" />
+      <File FileName="Titania/share/applications/titania.desktop" />
+      <File FileName="Titania/share/menu/titania" Line="2" Column="32" />
+      <File FileName="Library/Tests/Scripting/X3DScene.wrl" Line="9" Column="37" />
+      <File FileName="debian/control" Line="58" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

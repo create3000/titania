@@ -189,8 +189,6 @@ X3DUserInterface::on_unmap ()
 	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection, this);
 
 	set_selection ({ });
-
-	store ();
 }
 
 bool
@@ -270,6 +268,9 @@ X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 
 	if (container)
 	   container -> remove (getWidget ());
+
+	for (const auto & widget : box .get_children ())
+		box .remove (*widget);
 
 	box .pack_start (getWidget (), true, true);
 }
@@ -461,6 +462,8 @@ X3DUserInterface::store ()
 void
 X3DUserInterface::dispose ()
 {
+	store ();
+
 	X3DBaseInterface::dispose ();
 }
 

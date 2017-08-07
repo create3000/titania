@@ -165,8 +165,7 @@ AnimationEditor::initialize ()
 	if (getConfig () -> hasKey ("hPaned"))
 		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
 
-	getCurrentBrowser ()  .addInterest (&AnimationEditor::set_animation, this, nullptr);
-	getCurrentContext ()  .addInterest (&AnimationEditor::set_animation, this, nullptr);
+	getCurrentBrowser () -> getExecutionContext () .addInterest (&AnimationEditor::set_animation, this, nullptr);
 
 	nodeIndex -> getNode () .addInterest (&AnimationEditor::set_animation, this);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());

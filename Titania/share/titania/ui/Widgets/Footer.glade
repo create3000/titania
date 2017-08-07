@@ -13,9 +13,8 @@
         <child>
           <object class="GtkLabel" id="Label">
             <property name="can_focus">False</property>
-            <property name="ypad">2</property>
+            <property name="halign">start</property>
             <property name="label" translatable="yes">Notebook</property>
-            <property name="xalign">0</property>
             <style>
               <class name="titania-small"/>
             </style>
@@ -65,7 +64,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Console</property>
-                    <property name="yalign">0.99000000953674316</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -114,7 +112,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Script Editor</property>
-                    <property name="yalign">0.99000000953674316</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -129,7 +126,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="AnimationEditorBox">
+              <object class="GtkBox" id="RouteGraphBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
@@ -150,7 +147,7 @@
                   <object class="GtkImage" id="image40">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="stock">gtk-media-record</property>
+                    <property name="stock">RouteGraph</property>
                     <property name="icon_size">1</property>
                   </object>
                   <packing>
@@ -163,8 +160,7 @@
                   <object class="GtkLabel" id="label40">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Keyframe Animation</property>
-                    <property name="yalign">0.99000000953674316</property>
+                    <property name="label" translatable="yes">Route Graph</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -175,6 +171,55 @@
               </object>
               <packing>
                 <property name="position">2</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="AnimationEditorBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkBox" id="box1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-media-record</property>
+                    <property name="icon_size">1</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Keyframe Animation</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

@@ -78,21 +78,11 @@ Console::Console (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-Console::on_map ()
+Console::initialize ()
 {
-	set_enabled ();
-}
+	X3DConsoleInterface::initialize ();
 
-void
-Console::on_unmap ()
-{
 	set_enabled ();
-}
-
-bool
-Console::isEnabled () const
-{
-	return not getSuspendButton () .get_active () and getWidget () .get_mapped ();
 }
 
 void
@@ -114,27 +104,12 @@ Console::on_clear_button_clicked ()
 }
 
 void
-Console::set_browser (const X3D::BrowserPtr & browser)
-{
-	browser -> getConsole () -> getString () .addInterest (&Console::set_string, this);	
-}
-
-void
 Console::set_enabled ()
 {
-	if (isEnabled ())
-	{
-		getCurrentBrowser () .addInterest (&Console::set_browser, this);
-
-		set_browser (getCurrentBrowser ());
-	}
+	if (getSuspendButton () .get_active ())
+		getCurrentBrowser () -> getConsole () -> getString () .removeInterest (&Console::set_string, this);	
 	else
-	{
-		getCurrentBrowser () .removeInterest (&Console::set_browser, this);
-
-		for (const auto & page : getBrowserWindow () -> getPages ())
-			page -> getBrowser () -> getConsole () -> getString () .removeInterest (&Console::set_string, this);
-	}
+		getCurrentBrowser () -> getConsole () -> getString () .addInterest (&Console::set_string, this);	
 }
 
 void
