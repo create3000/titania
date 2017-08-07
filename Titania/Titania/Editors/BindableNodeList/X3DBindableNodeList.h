@@ -182,7 +182,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string name;
+	static const std::string editorName;
 	static const std::string description;
 
 	///  @name Members
@@ -216,7 +216,7 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	             selectNamedNode (false),
 	               scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
-	setName (name);
+	setName (editorName);
 
 	addChildObjects (browser, activeLayer, nodes, selection);
 
@@ -229,9 +229,9 @@ X3DBindableNodeList <Type>::initialize ()
 {
 	X3DBindableNodeListInterface::initialize ();
 
-	getImage ()     .set (Gtk::StockID (name), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
-	getHeaderBar () .set_title (_ (name));
-	getLabel ()     .set_text (_ (name));
+	getImage ()     .set (Gtk::StockID (editorName), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	getHeaderBar () .set_title (_ (editorName));
+	getLabel ()     .set_text (_ (editorName));
 
 	getNameCellRenderer ()        -> property_weight_set () = true;
 	getDescriptionCellRenderer () -> property_weight_set () = true;

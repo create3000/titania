@@ -97,7 +97,8 @@ X3DUserInterface::X3DUserInterface () :
 	              config (),
 	initializeConnection (),
 	       userInterface (),
-	             dialogs (new DialogIndex ())
+	             dialogs (new DialogIndex ()),
+	         initialized (false)
 {
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -132,6 +133,7 @@ X3DUserInterface::on_initialize ()
 	//__LOG__ << "Initializing widget: " << getName () << std::endl;
 
 	initializeConnection .disconnect ();
+	initialized = true;
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
@@ -143,6 +145,7 @@ X3DUserInterface::on_initialize ()
 
 	connectFocusEvent (getWidget ());
 
+	configure ();
 	initialize ();
 
 	if (isFullscreen ())
@@ -175,8 +178,6 @@ void
 X3DUserInterface::on_map ()
 {
 	restoreInterface ();
-
-	configure ();
 
 	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DEditorInterface::set_selection, this);
 
@@ -233,9 +234,12 @@ X3DUserInterface::setName (const std::string & value)
 {
 	X3DBaseInterface::setName (value);
 
+	if (initialized)
+		store ();
+
 	config .reset (new Configuration (value));
 
-	if (not initializeConnection .connected ())
+	if (initialized)
 		configure ();
 }
 
@@ -450,6 +454,12 @@ X3DUserInterface::store ()
 		getConfig () -> removeKey ("dialogs");
 	else
 		getConfig () -> set ("dialogs", dialogNames);
+}
+
+void
+X3DUserInterface::dispose ()
+{
+	store ();
 
 	// Close dialogs
 
@@ -457,12 +467,6 @@ X3DUserInterface::store ()
 		pair .second -> quit ();
 
 	dialogs -> clear ();
-}
-
-void
-X3DUserInterface::dispose ()
-{
-	store ();
 
 	X3DBaseInterface::dispose ();
 }

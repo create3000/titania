@@ -67,15 +67,13 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DLinePropertiesEditor (),
 	      X3DUsedMaterialsEditor (),
 	    X3DMaterialPaletteEditor (),
-                      selection (),
 	                  shapeNodes (),
 	              appearanceNode (),
 	            appearanceBuffer (),
 	                    undoStep (),
 	                    changing (false)
 {
-	addChildObjects (selection,
-	                 shapeNodes,
+	addChildObjects (shapeNodes,
 	                 appearanceNode,
 	                 appearanceBuffer);
 
@@ -107,14 +105,16 @@ AppearanceEditor::configure ()
 }
 
 void
-AppearanceEditor::set_selection (const X3D::MFNode & selection_)
+AppearanceEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3DAppearanceEditorInterface::set_selection (selection_);
+	X3DAppearanceEditorInterface::set_selection (selection);
+	X3DMaterialEditor::set_selection            (selection);
+	X3DFillPropertiesEditor::set_selection      (selection);
+	X3DLinePropertiesEditor::set_selection      (selection);
 
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> appearance () .removeInterest (&AppearanceEditor::set_appearance, this);
 
-	selection  = selection_;
 	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
@@ -193,10 +193,6 @@ AppearanceEditor::set_node ()
 	getAppearanceUnlinkButton () .set_sensitive (active > 0 and appearanceNode -> getCloneCount () > 1);
 
 	changing = false;
-
-	X3DMaterialEditor::set_selection       (selection);
-	X3DFillPropertiesEditor::set_selection (selection);
-	X3DLinePropertiesEditor::set_selection (selection);
 }
 
 void

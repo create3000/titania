@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 template <>
-const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::name = "Backgrounds";
+const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::editorName = "Backgrounds";
 
 template <>
 const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::description = _ ("Default Background");

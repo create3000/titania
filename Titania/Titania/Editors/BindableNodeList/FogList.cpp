@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 template <>
-const std::string X3DBindableNodeList <X3D::Fog>::name = "Fogs";
+const std::string X3DBindableNodeList <X3D::Fog>::editorName = "Fogs";
 
 template <>
 const std::string X3DBindableNodeList <X3D::Fog>::description = _ ("Default Fog");

@@ -163,7 +163,7 @@ protected:
 
 	bool
 	isInitialized () const
-	{ return not initializeConnection .connected (); }
+	{ return initialized; }
 
 	/// @name Member access
 	
@@ -257,6 +257,7 @@ private:
 	sigc::connection                initializeConnection;
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;
+	bool                            initialized;
 
 };
 

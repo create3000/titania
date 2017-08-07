@@ -481,6 +481,8 @@ X3DMaterialEditor::set_node ()
 		twoSidedMaterial -> setup ();
 	}
 
+	set_widgets ();
+
 	if (not materialNode)
 		materialNode = material;
 
@@ -520,14 +522,13 @@ X3DMaterialEditor::set_node ()
 
 	changing = false;
 
-	set_widgets ();
 	set_preview ();
 }
 
 void
 X3DMaterialEditor::set_widgets ()
 {
-	const X3D::MFNode nodes = { materialNode };
+	const auto nodes = materialNode ? X3D::MFNode ({ materialNode }) : X3D::MFNode ();
 
 	nodeName .setNode (materialNode);
 

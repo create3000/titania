@@ -278,6 +278,9 @@ SFColorButton::set_buffer ()
 
 	widget .set_sensitive (hasField);
 
+	if (nodes .empty ())
+		dialog .set_visible (false);
+
 	changing = false;
 }
 

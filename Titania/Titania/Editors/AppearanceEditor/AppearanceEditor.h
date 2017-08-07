@@ -134,7 +134,6 @@ private:
 
 	///  @name Members
 
-	X3D::MFNode                          selection;
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 	X3D::X3DPtr <X3D::X3DAppearanceNode> appearanceNode;
 	X3D::SFTime                          appearanceBuffer;

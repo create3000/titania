@@ -351,6 +351,9 @@ MFColorRGBAButton::set_buffer ()
 	if (hide)
 		widget .set_visible (hasField);
 
+	if (nodes .empty ())
+		dialog .set_visible (false);
+
 	changing = false;
 }
 
