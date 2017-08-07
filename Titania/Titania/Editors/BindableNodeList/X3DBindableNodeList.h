@@ -419,10 +419,10 @@ X3DBindableNodeList <Type>::set_stack ()
 		if (not editing and getDescription (node) .empty ())
 		   continue;
 
+		const auto name = X3D::RemoveTrailingNumber (node -> getName ());
+
 		if (selectNamedNode and name .empty ())
 		   continue;
-
-		const auto name = X3D::RemoveTrailingNumber (node -> getName ());
 
 		row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
 		row -> set_value (Columns::NAME,        name);

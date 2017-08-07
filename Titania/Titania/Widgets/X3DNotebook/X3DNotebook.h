@@ -75,15 +75,6 @@ public:
 
 	X3DNotebook ();
 
-	///  @name Member access
-
-	void
-	setPageDependent (const bool value);
-
-	bool
-	getPageDependent () const
-	{ return pageDependent; }
-
 	///  @name Operations
 
 	void
@@ -120,6 +111,15 @@ protected:
 	virtual
 	void
 	configure () override;
+
+	///  @name Member access
+
+	void
+	setPageDependent (const bool value);
+
+	bool
+	getPageDependent () const
+	{ return pageDependent; }
 
 
 private:

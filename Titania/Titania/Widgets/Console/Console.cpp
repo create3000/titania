@@ -51,7 +51,6 @@
 #include "Console.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 #include "../../Widgets/Footer/Footer.h"
 
