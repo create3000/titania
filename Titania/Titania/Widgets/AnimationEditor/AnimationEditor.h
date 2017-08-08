@@ -571,6 +571,7 @@ private:
 	Interpolators                       interpolators;
 	std::map <size_t, X3D::SFNode>      nodes;
 	X3D::Vector2d                       fromPoint;
+	double                              fromTranslation;
 	double                              translation;
 	double                              scale;
 	guint                               button;

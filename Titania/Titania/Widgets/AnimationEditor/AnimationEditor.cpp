@@ -110,6 +110,7 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	              interpolators (),
 	                      nodes (),
 	                  fromPoint (),
+	            fromTranslation (0),
 	                translation (0),
 	                      scale (1),
 	                     button (0),
@@ -2503,15 +2504,18 @@ AnimationEditor::on_key_release_event (GdkEventKey* event)
 bool
 AnimationEditor::on_button_press_event (GdkEventButton* event)
 {
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
+
 	button = event -> button;
 
 	getDrawingArea () .grab_focus ();
 
 	if (button == 1)
 	{
-		fromPoint = X3D::Vector2d (event -> x, event -> y);
+		fromPoint       = pointer;
+		fromTranslation = getTranslation ();
 
-		if (pick (X3D::Vector2d (event -> x, event -> y)))
+		if (pick (pointer))
 		{
 			if (not keys .shift ())
 			{
@@ -2540,6 +2544,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			}
 			else
 			{
+				// on_clear_selected_range (frame);
 				selectedFrames .clear ();
 				selectedRange .first  = frame;
 				selectedRange .second = frame;
@@ -2557,7 +2562,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 	{
 		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "move"));
 
-		fromPoint = X3D::Vector2d (event -> x, event -> y);
+		fromPoint = pointer;
 	}
 
 	return false;
@@ -2566,6 +2571,8 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 bool
 AnimationEditor::on_button_release_event (GdkEventButton* event)
 {
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
+
 	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getDrawingArea () .queue_draw ();
 
@@ -2582,7 +2589,7 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 		
 			if (keys .shift ())
 			{
-				if (pick (X3D::Vector2d (event -> x, event -> y)))
+				if (pick (pointer))
 				{
 					if (isSelected ())
 					{
@@ -2605,11 +2612,25 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 bool
 AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 {
-	pick (X3D::Vector2d (event -> x, event -> y));
+	const auto pointer = X3D::Vector2d (event -> x, event -> y);
+
+	pick (pointer);
 
 	if (button == 1)
 	{
-		const auto toPoint = X3D::Vector2d (event -> x, event -> y);
+		// Autoscroll area
+
+		const auto width = getDrawingArea () .get_width ();
+
+		if (event -> x < 0)
+			setTranslation (getTranslation () - event -> x);
+
+		else if (event -> x > width)
+			setTranslation (getTranslation () - (event -> x - width));
+
+		// Drag
+
+		const auto toPoint = pointer;
 		const auto length  = math::abs (toPoint - fromPoint);
 	
 		if (length < FRAME_SIZE)
@@ -2624,7 +2645,7 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 			// Drag selected frames.
 
-			const int32_t fromFrame = std::round ((fromPoint .x () - getTranslation ()) / getScale ());
+			const int32_t fromFrame = std::round ((fromPoint .x () - fromTranslation) / getScale ());
 			const int32_t toFrame   = std::round ((event -> x - getTranslation ()) / getScale ());
 			const int32_t distance  = math::clamp (toFrame - fromFrame, -selectedBounds .first, getDuration () - selectedBounds .second);
 
@@ -2637,6 +2658,8 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 		}
 		else
 		{
+			// Keyframe selection
+
 			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
 		
 			if (keys .shift ())
@@ -2654,7 +2677,7 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		const auto toPoint = X3D::Vector2d (event -> x, event -> y);
+		const auto toPoint = pointer;
 		const auto offset  = toPoint - fromPoint;
 
 		setTranslation (getTranslation () + offset .x ());
