@@ -167,10 +167,6 @@ public:
 
 	virtual
 	void
-	on_add_connected_nodes_toggled () = 0;
-
-	virtual
-	void
 	on_align_to_grid_activate () = 0;
 
 	virtual

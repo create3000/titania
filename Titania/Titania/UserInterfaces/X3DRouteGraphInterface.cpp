@@ -101,9 +101,6 @@ X3DRouteGraphInterface::create ()
 	m_NewPageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_new_page_activate));
 	m_RenamePageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_rename_page_activate));
 
-	// Connect object Gtk::CheckMenuItem with id 'AddConnectedNodesMenuItem'.
-	m_AddConnectedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_add_connected_nodes_toggled));
-
 	// Connect object Gtk::MenuItem with id 'AlignToGridMenuItem'.
 	m_AlignToGridMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_align_to_grid_activate));
 

@@ -97,12 +97,14 @@ protected:
 
 private:
 
-	///  @name Member access
-
-	int32_t
-	getPageNumber (const RouteGraphPagePtr & page) const;
-
 	///  @name operations
+
+	void
+	setCurrentPage (const size_t pageNumber);
+
+	RouteGraphPagePtr
+	getCurrentPage () const
+	{ return currentPage; }
 
 	RouteGraphPagePtr
 	createPage ();
@@ -110,7 +112,16 @@ private:
 	RouteGraphPagePtr
 	appendPage (const std::string & pageName);
 
+	void
+	closePage (const RouteGraphPagePtr page);
+
+	void
+	savePages ();
+
 	///  @name Event handlers
+
+	void
+	set_scene ();
 
 	virtual
 	void
@@ -119,10 +130,6 @@ private:
 	virtual
 	void
 	on_rename_page_activate () final override;
-
-	virtual
-	void
-	on_add_connected_nodes_toggled () final override;
 
 	virtual
 	void

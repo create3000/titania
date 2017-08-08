@@ -54,6 +54,7 @@
 
 #include "../../Configuration/config.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 #include <Titania/String.h>
 
@@ -85,13 +86,24 @@ RouteGraph::initialize ()
 	X3DRouteGraphInterface::initialize ();
 	X3DRouteGraph::initialize ();
 
-	currentPage = appendPage (_ ("New Logic"));
+	getCurrentScene () .addInterest (&RouteGraph::set_scene, this);
+
+	set_scene ();
 }
 
-int32_t
-RouteGraph::getPageNumber (const RouteGraphPagePtr & page) const
+void
+RouteGraph::setCurrentPage (const size_t pageNumber)
 {
-	return getNotebook () .page_num (page -> getWidget ());
+	try
+	{
+		currentPage = pages .at (pageNumber);
+
+		getNotebook () .set_current_page (pageNumber);
+
+		createWorldInfo (getCurrentScene ()) -> setMetaData <int32_t> ("/Titania/RouteGraph/currentPage", pageNumber);
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 RouteGraphPagePtr
@@ -118,27 +130,70 @@ RouteGraph::createPage ()
 
 	// Append page and bring to front.
 
-	currentPage = appendPage (pageName);
-
-	getNotebook () .set_current_page (getPageNumber (currentPage));
-
-	return currentPage;
+	return appendPage (pageName);
 }
 
 RouteGraphPagePtr
 RouteGraph::appendPage (const std::string & pageName)
 {
-	const auto page = std::make_shared <RouteGraphPage> (getBrowserWindow (), pageName);
+	const auto page = std::make_shared <RouteGraphPage> (getBrowserWindow (), this, pageName);
 
 	pages .emplace_back (page);
-
-	page -> setAddConnectedNodes (getAddConnectedNodesMenuItem () .get_active ());
 
 	getNotebook () .append_page (page -> getWidget (), pageName);
 	getNotebook () .set_tab_reorderable (page -> getWidget (), true);
 	getNotebook () .set_menu_label_text (page -> getWidget (), pageName);
 
 	return page;
+}
+
+void
+RouteGraph::closePage (const RouteGraphPagePtr page)
+{
+	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
+
+	getNotebook () .remove_page (page -> getWidget ());
+
+	if (pages .empty ())
+		appendPage (_ ("New Logic"));
+}
+
+void
+RouteGraph::savePages ()
+{
+	createWorldInfo (getCurrentScene ()) -> removeMetaData ("/Titania/RouteGraph");
+
+	for (const auto & page : pages)
+		page -> save ();
+
+	setCurrentPage (getNotebook () .get_current_page ());
+}
+
+void
+RouteGraph::set_scene ()
+{
+	for (const auto & page : pages)
+		getNotebook () .remove_page (page -> getWidget ());
+
+	pages .clear ();
+
+	try
+	{
+		const auto worldInfo = getWorldInfo (getCurrentScene ());
+		const auto metaPages = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/RouteGraph/pages");
+
+		for (size_t i = 0, size = metaPages .size (); i < size; ++ i)
+			appendPage (_ ("Logic")) -> open ();
+
+		setCurrentPage (worldInfo -> getMetaData <int32_t> ("/Titania/RouteGraph/currentPage"));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	if (pages .empty ())
+		appendPage (_ ("New Logic"));
 }
 
 void
@@ -150,55 +205,60 @@ RouteGraph::on_new_page_activate ()
 void
 RouteGraph::on_rename_page_activate ()
 {
-	currentPage -> on_rename_page_activate ();
-}
-
-void
-RouteGraph::on_add_connected_nodes_toggled ()
-{
-	for (const auto & page : pages)
-		page -> setAddConnectedNodes (getAddConnectedNodesMenuItem () .get_active ());
+	getCurrentPage () -> on_rename_page_activate ();
 }
 
 void
 RouteGraph::on_align_to_grid_activate ()
 {
-	currentPage -> on_align_to_grid_activate ();
+	getCurrentPage () -> on_align_to_grid_activate ();
 }
 
 void
 RouteGraph::on_export_page_activate ()
 {
-	currentPage -> on_export_page_activate ();
+	getCurrentPage () -> on_export_page_activate ();
 }
 
 void
 RouteGraph::on_delete_activate ()
 {
-	currentPage -> on_delete_activate ();
+	getCurrentPage () -> on_delete_activate ();
 }
 
 void
 RouteGraph::on_select_all_activate ()
 {
-	currentPage -> on_select_all_activate ();
+	getCurrentPage () -> on_select_all_activate ();
 }
 
 void
 RouteGraph::on_deselect_all_activate ()
 {
-	currentPage -> on_deselect_all_activate ();
+	getCurrentPage () -> on_deselect_all_activate ();
 }
 
 void
 RouteGraph::on_close_page_activate ()
 {
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+	dialog -> setType (Gtk::MESSAGE_QUESTION);
+	dialog -> setMessage (_ ("Do you realy want to close logic »" + getCurrentPage () -> getPageName () + "«?"));
+	dialog -> setText (_ ("The whole logic will be irrevocably removed!"));
+
+	if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+		return;
+
+	closePage (getCurrentPage ());
+
+	savePages ();
 }
 
 void
 RouteGraph::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
-	currentPage = pages [pageNumber];
+	setCurrentPage (pageNumber);
 }
 
 void
@@ -213,6 +273,8 @@ RouteGraph::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 
 	pages .erase (iter);
 	pages .emplace (pages .begin () + pageNumber, std::move (page));
+
+	savePages ();
 }
 
 void

@@ -50,12 +50,15 @@
 
 #include "RouteGraphPage.h"
 
+#include "RouteGraph.h"
 #include "RouteGraphNode.h"
 
 #include "../../Configuration/config.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
+#include <Titania/String.h>
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 
@@ -71,10 +74,11 @@ static constexpr auto   GRID_POINT_COLOR = 99.0 / 255.0;
 static constexpr double SNAP_DISTANCE    = GRID_SIZE;
 static constexpr auto   SNAP_OFFSET      = X3D::Vector2d (7, 0);
 
-RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, const std::string & pageName) :
+RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, RouteGraph* const routeGraph, const std::string & pageName) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DRouteGraphPageInterface (get_ui ("Widgets/RouteGraphPage.glade")),
 	         X3DRouteGraphPage (),
+	                routeGraph (routeGraph),
 	                   windows (),
 	                 selection (),
 	            routeSelection (),
@@ -83,17 +87,16 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, const std
 	             startPosition (),
 	               endPosition (),
 	                motionType (MotionType::DEFAULT),
-	                  pageName (pageName),
+	                  pageName (),
 	     inputConnectorClicked (false),
 	    outputConnectorClicked (false),
 	           matchingContext (),
 	                 routeNode (),
-	                routeField (nullptr),
-	         addConnectedNodes (true)
+	                routeField (nullptr)
 {
 	unparent (getWidget ());
 
-	getPageNameLabel () .set_text (pageName);
+	setPageName (pageName);
 
 	getScrolledWindow () .get_hscrollbar () -> set_visible (false);
 	getScrolledWindow () .get_vscrollbar () -> set_visible (false);
@@ -115,6 +118,83 @@ RouteGraphPage::initialize ()
 {
 	X3DRouteGraphPageInterface::initialize ();
 	X3DRouteGraphPage::initialize ();
+}
+
+int32_t
+RouteGraphPage::getPageNumber () const
+{
+	return routeGraph -> getNotebook () .page_num (getWidget ());
+}
+
+void
+RouteGraphPage::setPageName (const std::string & value)
+{
+	pageName = value;
+
+	getPageNameLabel () .set_text (pageName);
+	routeGraph -> getNotebook () .set_tab_label_text (getWidget (), pageName);
+}
+
+std::string
+RouteGraphPage::getMetaKey () const
+{
+	return "/Titania/RouteGraph/pages/Page" + basic::to_string (getPageNumber (), std::locale::classic ());
+}
+
+void
+RouteGraphPage::open ()
+{
+	try
+	{
+		const auto worldInfo      = getWorldInfo (getCurrentScene ());
+		const auto key            = getMetaKey ();
+		const auto nodePositions  = worldInfo -> getMetaData <X3D::MFVec2d> (key + "/nodePositions");
+		const auto nodes          = worldInfo -> getMetaData <X3D::MFNode> (key + "/nodes");
+		const auto scrollPosition = worldInfo -> getMetaData <X3D::Vector2d> (key + "/scrollPosition");
+
+		setPageName (worldInfo -> getMetaData (key + "/pageName", getPageName ()));
+
+		for (size_t i = 0, size = nodes .size (); i < size; ++ i)
+		{
+			const auto & position = i < nodePositions .size () ? nodePositions [i] : X3D::Vector2d ();
+			const auto & node     = nodes [i];
+
+			if (not node)
+				continue;
+
+			addWindow (node, X3D::Vector2i (position));
+		}
+
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &RouteGraphPage::setScrollPosition), scrollPosition, false));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+RouteGraphPage::save ()
+{
+	const auto worldInfo      = createWorldInfo (getCurrentScene ());
+	const auto key            = getMetaKey ();
+
+	worldInfo -> setMetaData (key + "/pageName",       getPageName ());
+	worldInfo -> setMetaData (key + "/scrollPosition", getScrollPosition ());
+
+	X3D::MFVec2d nodePositions;
+	X3D::MFNode  nodes;
+
+	for (const auto & window : windows)
+	{
+		nodePositions .emplace_back (getPosition (window));
+		nodes         .emplace_back (window -> node);
+	}
+
+	worldInfo -> setMetaData (key + "/nodePositions", nodePositions);
+	worldInfo -> setMetaData (key + "/nodes",         nodes);
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 X3D::SFNode
@@ -334,6 +414,29 @@ RouteGraphPage::getBBox (const RouteGraphWindowPtr & window) const
 }
 
 void
+RouteGraphPage::setScrollPosition (const X3D::Vector2d & scrollPosition, const bool modify)
+{
+	getScrolledWindow () .get_hadjustment () -> set_value (scrollPosition .x ());
+	getScrolledWindow () .get_vadjustment () -> set_value (scrollPosition .y ());
+
+	if (not modify)
+		return;
+
+	createWorldInfo (getCurrentScene ()) -> setMetaData (getMetaKey () + "/scrollPosition", scrollPosition);
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+X3D::Vector2d
+RouteGraphPage::getScrollPosition () const
+{
+	const auto x = getScrolledWindow () .get_hadjustment () -> get_value ();
+	const auto y = getScrolledWindow () .get_vadjustment () -> get_value ();
+
+	return X3D::Vector2d (x, y);
+}
+
+void
 RouteGraphPage::bringToFront (const RouteGraphWindowPtr window)
 {
 	const auto & widget   = window -> widget;
@@ -493,6 +596,8 @@ void
 RouteGraphPage::set_live (const RouteGraphWindowPtr window)
 {
 	removeWindow (window);
+
+	save ();
 }
 
 void
@@ -532,8 +637,7 @@ RouteGraphPage::on_export_page_activate ()
 			std::make_pair (4, "RGBA"),
 		};
 
-		const auto hValue = getScrolledWindow () .get_hadjustment () -> get_value ();
-		const auto vValue = getScrolledWindow () .get_vadjustment () -> get_value ();
+		const auto scrollPosition = getScrollPosition ();
 
 		Gtk::OffscreenWindow window;
 
@@ -569,12 +673,11 @@ RouteGraphPage::on_export_page_activate ()
 
 		image .quality (100);
 
-		dialog -> save (image, pageName + ".png");
+		dialog -> save (image, getPageName () + ".png");
 
 		// Set adjustments.
 
-		getScrolledWindow () .get_hadjustment () -> set_value (hValue);
-		getScrolledWindow () .get_vadjustment () -> set_value (vValue);
+		setScrollPosition (scrollPosition);
 	}
 	catch (const std::exception & error)
 	{
@@ -605,6 +708,7 @@ RouteGraphPage::on_delete_activate ()
 	clearRouteSelection ();
 
 	resize ();
+	save ();
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -636,18 +740,18 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 	{
 		if (selection_data .get_data_type () == "TITANIA_NODE_ID")
 		{
-			// Parse node id.
-
-			size_t nodeId = 0;
-
-			std::istringstream isstream (selection_data .get_data_as_string ());
-
-			isstream .imbue (std::locale::classic ());
-
-			isstream >> nodeId;
-
 			try
 			{
+				// Parse node id.
+	
+				size_t nodeId = 0;
+	
+				std::istringstream isstream (selection_data .get_data_as_string ());
+	
+				isstream .imbue (std::locale::classic ());
+	
+				isstream >> nodeId;
+	
 				// Add node widget
 	
 				int xOffset, yOffset;
@@ -656,17 +760,19 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 
 				const auto position = X3D::Vector2i (x + xOffset, y + yOffset);
 
-				if (getAddConnectedNodes ())
+				if (routeGraph -> getAddConnectedNodesMenuItem () .get_active ())
 					addConnectedWindows (getNode (nodeId), position);
 				else
 					addWindow (getNode (nodeId), position);
+
+				Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
+
+				context -> drag_finish (true, false, time);
 			}
 			catch (const std::exception & error)
 			{
 				__LOG__ << error .what () << std::endl;
 			}
-
-			context -> drag_finish (true, false, time);
 			return;
 		}
 	}
@@ -920,6 +1026,8 @@ RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 		
 				startPosition = pointer;
 
+				Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
+
 				break;
 			}
 			case MotionType::RECTANGLE:
@@ -959,11 +1067,8 @@ RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 		// Move area.
 
 		const auto translation = startPosition - pointer;
-		const auto x           = getScrolledWindow () .get_hscrollbar () -> get_value ();
-		const auto y           = getScrolledWindow () .get_vscrollbar () -> get_value ();
 
-		getScrolledWindow () .get_hscrollbar () -> set_value (x + translation .x ());
-		getScrolledWindow () .get_vscrollbar () -> set_value (y + translation .y ());
+		setScrollPosition (getScrollPosition () + translation);
 
 		startPosition = pointer + translation;
 		return false;

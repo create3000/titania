@@ -58,6 +58,7 @@
 namespace titania {
 namespace puck {
 
+class RouteGraph;
 class RouteGraphNode;
 
 class RouteGraphPage :
@@ -68,21 +69,32 @@ public:
 
 	///  @name Construction
 
-	RouteGraphPage (X3DBrowserWindow* const browserWindow, const std::string & pageName);
+	RouteGraphPage (X3DBrowserWindow* const browserWindow,
+	                RouteGraph* const routeGraph,
+	                const std::string & pageName);
 
 	///  @name Member access
+
+	int32_t
+	getPageNumber () const;
+
+	void
+	setPageName (const std::string & value);
 
 	const std::string &
 	getPageName () const
 	{ return pageName; }
 
-	void
-	setAddConnectedNodes (const bool value)
-	{ addConnectedNodes = value; }
+	std::string
+	getMetaKey () const;
 
-	bool
-	getAddConnectedNodes () const
-	{ return addConnectedNodes; }
+	///  @name Operations
+
+	void
+	open ();
+
+	void
+	save ();
 
 	///  @name Event handlers
 
@@ -188,6 +200,12 @@ private:
 	getBBox (const RouteGraphWindowPtr & window) const;
 
 	void
+	setScrollPosition (const X3D::Vector2d & scrollPosition, const bool modify = true);
+	
+	X3D::Vector2d
+	getScrollPosition () const;
+
+	void
 	bringToFront (const RouteGraphWindowPtr window);
 
 	bool
@@ -286,6 +304,7 @@ private:
 
 	///  @name Members
 
+	RouteGraph* const           routeGraph;
 	RouteGraphWindowArray       windows;
 	RouteGraphWindowArray       selection;
 	RouteArray                  routeSelection;
@@ -300,7 +319,6 @@ private:
 	X3D::X3DExecutionContextPtr matchingContext;
 	X3D::SFNode                 routeNode;
 	X3D::X3DFieldDefinition*    routeField;
-	bool                        addConnectedNodes;
 
 };
 
