@@ -54,6 +54,7 @@
 
 #include "../../Configuration/config.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 #include <Titania/String.h>
@@ -66,7 +67,8 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow) :
 	X3DRouteGraphInterface (get_ui ("Widgets/RouteGraph.glade")),
 	         X3DRouteGraph (),
 	                 pages (),
-	           currentPage ()
+	           currentPage (),
+	              changing (false)
 {
 	setup ();
 }
@@ -92,18 +94,31 @@ RouteGraph::initialize ()
 }
 
 void
-RouteGraph::setCurrentPage (const size_t pageNumber)
+RouteGraph::setCurrentPage (const size_t pageNumber, const bool modify)
 {
 	try
 	{
+		__LOG__ << pageNumber << std::endl;
+
 		currentPage = pages .at (pageNumber);
+
+		changing = true;
 
 		getNotebook () .set_current_page (pageNumber);
 
-		createWorldInfo (getCurrentScene ()) -> setMetaData <int32_t> ("/Titania/RouteGraph/currentPage", pageNumber);
+		changing = false;
+
+		if (modify)
+		{
+			createWorldInfo (getCurrentScene ()) -> setMetaData <int32_t> ("/Titania/RouteGraph/currentPage", pageNumber);
+
+			getBrowserWindow () -> getCurrentPage () -> setModified (true);
+		}
 	}
-	catch (const std::out_of_range &)
-	{ }
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 RouteGraphPagePtr
@@ -140,9 +155,13 @@ RouteGraph::appendPage (const std::string & pageName)
 
 	pages .emplace_back (page);
 
+	changing = true;
+
 	getNotebook () .append_page (page -> getWidget (), pageName);
 	getNotebook () .set_tab_reorderable (page -> getWidget (), true);
 	getNotebook () .set_menu_label_text (page -> getWidget (), pageName);
+
+	changing = false;
 
 	return page;
 }
@@ -185,7 +204,7 @@ RouteGraph::set_scene ()
 		for (size_t i = 0, size = metaPages .size (); i < size; ++ i)
 			appendPage (_ ("Logic")) -> open ();
 
-		setCurrentPage (worldInfo -> getMetaData <int32_t> ("/Titania/RouteGraph/currentPage"));
+		setCurrentPage (worldInfo -> getMetaData <int32_t> ("/Titania/RouteGraph/currentPage"), false);
 	}
 	catch (const std::exception & error)
 	{
@@ -258,6 +277,9 @@ RouteGraph::on_close_page_activate ()
 void
 RouteGraph::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
+	if (changing)
+		return;
+
 	setCurrentPage (pageNumber);
 }
 

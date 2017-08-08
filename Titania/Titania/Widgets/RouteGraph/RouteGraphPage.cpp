@@ -87,7 +87,7 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, RouteGrap
 	             startPosition (),
 	               endPosition (),
 	                motionType (MotionType::DEFAULT),
-	                  pageName (),
+	                  pageName (pageName),
 	     inputConnectorClicked (false),
 	    outputConnectorClicked (false),
 	           matchingContext (),
@@ -95,8 +95,6 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, RouteGrap
 	                routeField (nullptr)
 {
 	unparent (getWidget ());
-
-	setPageName (pageName);
 
 	getScrolledWindow () .get_hscrollbar () -> set_visible (false);
 	getScrolledWindow () .get_vscrollbar () -> set_visible (false);
@@ -118,6 +116,8 @@ RouteGraphPage::initialize ()
 {
 	X3DRouteGraphPageInterface::initialize ();
 	X3DRouteGraphPage::initialize ();
+
+	setPageName (pageName);
 }
 
 int32_t

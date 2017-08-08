@@ -100,7 +100,7 @@ private:
 	///  @name operations
 
 	void
-	setCurrentPage (const size_t pageNumber);
+	setCurrentPage (const size_t pageNumber, const bool modify = true);
 
 	RouteGraphPagePtr
 	getCurrentPage () const
@@ -167,6 +167,7 @@ private:
 
 	std::vector <RouteGraphPagePtr> pages;
 	RouteGraphPagePtr               currentPage;
+	bool                            changing;
 
 };
 
