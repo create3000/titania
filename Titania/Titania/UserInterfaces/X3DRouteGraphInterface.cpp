@@ -115,6 +115,10 @@ X3DRouteGraphInterface::create ()
 
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
 	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_deselect_all_activate));
+
+	// Connect object Gtk::Notebook with id 'Notebook'.
+	m_Notebook -> signal_page_reordered () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_page_reordered));
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_switch_page));
 }
 
 X3DRouteGraphInterface::~X3DRouteGraphInterface ()

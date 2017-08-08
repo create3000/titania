@@ -193,6 +193,14 @@ public:
 	void
 	on_deselect_all_activate () = 0;
 
+	virtual
+	void
+	on_page_reordered (Gtk::Widget* page, guint page_num) = 0;
+
+	virtual
+	void
+	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+
 	///  @name Destruction
 
 	virtual

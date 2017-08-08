@@ -148,6 +148,14 @@ private:
 	void
 	on_close_page_activate () final override;
 
+	virtual
+	void
+	on_switch_page (Gtk::Widget*, guint pageNumber) final override;
+
+	virtual
+	void
+	on_page_reordered (Gtk::Widget* widget, guint pageNumber) final override;
+
 	///  @name Members
 
 	std::vector <RouteGraphPagePtr> pages;

@@ -132,6 +132,8 @@ RouteGraph::appendPage (const std::string & pageName)
 
 	pages .emplace_back (page);
 
+	page -> setAddConnectedNodes (getAddConnectedNodesMenuItem () .get_active ());
+
 	getNotebook () .append_page (page -> getWidget (), pageName);
 	getNotebook () .set_tab_reorderable (page -> getWidget (), true);
 	getNotebook () .set_menu_label_text (page -> getWidget (), pageName);
@@ -191,6 +193,26 @@ RouteGraph::on_deselect_all_activate ()
 void
 RouteGraph::on_close_page_activate ()
 {
+}
+
+void
+RouteGraph::on_switch_page (Gtk::Widget*, guint pageNumber)
+{
+	currentPage = pages [pageNumber];
+}
+
+void
+RouteGraph::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
+{
+	const auto iter = std::find_if (pages .begin (), pages .end (), [&] (const RouteGraphPagePtr & page) { return &page -> getWidget () == widget; });
+
+	if (iter == pages .end ())
+		return;
+
+	auto page = std::move (*iter);
+
+	pages .erase (iter);
+	pages .emplace (pages .begin () + pageNumber, std::move (page));
 }
 
 void
