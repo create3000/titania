@@ -61,7 +61,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="NewPageMenuItem">
-                        <property name="label">New Logic</property>
+                        <property name="label">_New Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -73,7 +73,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="RenamePageMenuItem">
-                        <property name="label" translatable="yes">Rename Logic</property>
+                        <property name="label" translatable="yes">_Rename Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -90,17 +90,27 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkCheckMenuItem" id="AddConnectedNodesMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Add Connected Nodes</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_add_connected_nodes_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="AlignToGridMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Align To Grid</property>
+                        <property name="label" translatable="yes">Align To _Grid</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_align_to_grid_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="ExportPageMenuItem">
-                        <property name="label" translatable="yes">Export Logic</property>
+                        <property name="label" translatable="yes">_Export Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -118,7 +128,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="ClosePageMenuItem">
-                        <property name="label">Close Logic</property>
+                        <property name="label">_Close Logic</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>

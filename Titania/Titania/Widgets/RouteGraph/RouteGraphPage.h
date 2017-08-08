@@ -76,6 +76,14 @@ public:
 	getPageName () const
 	{ return pageName; }
 
+	void
+	setAddConnectedNodes (const bool value)
+	{ addConnectedNodes = value; }
+
+	bool
+	getAddConnectedNodes () const
+	{ return addConnectedNodes; }
+
 	///  @name Event handlers
 
 	void
@@ -108,7 +116,15 @@ protected:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
+
+	virtual
+	void
+	store () final override;
 
 
 private:
@@ -284,6 +300,7 @@ private:
 	X3D::X3DExecutionContextPtr matchingContext;
 	X3D::SFNode                 routeNode;
 	X3D::X3DFieldDefinition*    routeField;
+	bool                        addConnectedNodes;
 
 };
 

@@ -84,7 +84,15 @@ protected:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
+
+	virtual
+	void
+	store () final override;
 
 
 private:
@@ -111,6 +119,10 @@ private:
 	virtual
 	void
 	on_rename_page_activate () final override;
+
+	virtual
+	void
+	on_add_connected_nodes_toggled () final override;
 
 	virtual
 	void

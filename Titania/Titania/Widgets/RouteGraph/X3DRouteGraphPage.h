@@ -73,6 +73,21 @@ protected:
 
 	X3DRouteGraphPage ();
 
+	virtual
+	void
+	configure () override
+	{ }
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	virtual
+	void
+	store () override
+	{ }
+
 };
 
 } // puck

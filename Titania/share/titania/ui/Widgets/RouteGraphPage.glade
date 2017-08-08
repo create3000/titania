@@ -63,7 +63,7 @@
                 <property name="valign">start</property>
                 <property name="label" translatable="yes">New Logic</property>
                 <style>
-                  <class name="titania-route-graph-sheet-name"/>
+                  <class name="titania-route-graph-page-name"/>
                 </style>
               </object>
               <packing>

@@ -119,6 +119,10 @@ public:
 	getRenamePageMenuItem () const
 	{ return *m_RenamePageMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getAddConnectedNodesMenuItem () const
+	{ return *m_AddConnectedNodesMenuItem; }
+
 	Gtk::MenuItem &
 	getAlignToGridMenuItem () const
 	{ return *m_AlignToGridMenuItem; }
@@ -160,6 +164,10 @@ public:
 	virtual
 	void
 	on_rename_page_activate () = 0;
+
+	virtual
+	void
+	on_add_connected_nodes_toggled () = 0;
 
 	virtual
 	void
@@ -217,6 +225,7 @@ private:
 	Gtk::MenuItem* m_RouteGraphMenuItem;
 	Gtk::ImageMenuItem* m_NewPageMenuItem;
 	Gtk::ImageMenuItem* m_RenamePageMenuItem;
+	Gtk::CheckMenuItem* m_AddConnectedNodesMenuItem;
 	Gtk::MenuItem* m_AlignToGridMenuItem;
 	Gtk::ImageMenuItem* m_ExportPageMenuItem;
 	Gtk::ImageMenuItem* m_ClosePageMenuItem;

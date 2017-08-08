@@ -88,7 +88,8 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, const std
 	    outputConnectorClicked (false),
 	           matchingContext (),
 	                 routeNode (),
-	                routeField (nullptr)
+	                routeField (nullptr),
+	         addConnectedNodes (true)
 {
 	unparent (getWidget ());
 
@@ -103,9 +104,17 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, const std
 }
 
 void
+RouteGraphPage::configure ()
+{
+	X3DRouteGraphPageInterface::configure ();
+	X3DRouteGraphPage::configure ();
+}
+
+void
 RouteGraphPage::initialize ()
 {
 	X3DRouteGraphPageInterface::initialize ();
+	X3DRouteGraphPage::initialize ();
 }
 
 X3D::SFNode
@@ -545,7 +554,7 @@ RouteGraphPage::on_export_page_activate ()
 		// Convert pixbuf to magick image
 
 		if (not pixbuf)
-			throw std::runtime_error ("RouteGraphPage::on_export_sheet_activate: pixbuf is NULL.");
+			throw std::runtime_error ("RouteGraphPage::on_export_page_activate: pixbuf is NULL.");
 
 		const auto channels = pixbuf -> get_n_channels ();
 		const auto width    = pixbuf -> get_width ();
@@ -645,7 +654,12 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 			
 				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
 
-				addConnectedWindows (getNode (nodeId), X3D::Vector2i (x + xOffset, y + yOffset));
+				const auto position = X3D::Vector2i (x + xOffset, y + yOffset);
+
+				if (getAddConnectedNodes ())
+					addConnectedWindows (getNode (nodeId), position);
+				else
+					addWindow (getNode (nodeId), position);
 			}
 			catch (const std::exception & error)
 			{
@@ -1170,6 +1184,13 @@ RouteGraphPage::on_output_connector_clicked (X3D::X3DFieldDefinition* const conn
 		for (const auto & window : windows)
 			window -> widget -> disableInputConnectors (matchingContext, routeNode, routeField);
 	}
+}
+
+void
+RouteGraphPage::store ()
+{
+	X3DRouteGraphPage::store ();
+	X3DRouteGraphPageInterface::store ();
 }
 
 RouteGraphPage::~RouteGraphPage ()

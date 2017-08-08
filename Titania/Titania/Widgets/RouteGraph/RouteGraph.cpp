@@ -71,9 +71,19 @@ RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+RouteGraph::configure ()
+{
+	X3DRouteGraphInterface::configure ();
+	X3DRouteGraph::configure ();
+
+	getAddConnectedNodesMenuItem () .set_active (getConfig () -> get <bool> ("addConnectedNodes", true));
+}
+
+void
 RouteGraph::initialize ()
 {
 	X3DRouteGraphInterface::initialize ();
+	X3DRouteGraph::initialize ();
 
 	currentPage = appendPage (_ ("New Logic"));
 }
@@ -116,15 +126,15 @@ RouteGraph::createPage ()
 }
 
 RouteGraphPagePtr
-RouteGraph::appendPage (const std::string & sheetName)
+RouteGraph::appendPage (const std::string & pageName)
 {
-	const auto page = std::make_shared <RouteGraphPage> (getBrowserWindow (), sheetName);
+	const auto page = std::make_shared <RouteGraphPage> (getBrowserWindow (), pageName);
 
 	pages .emplace_back (page);
 
-	getNotebook () .append_page (page -> getWidget (), sheetName);
+	getNotebook () .append_page (page -> getWidget (), pageName);
 	getNotebook () .set_tab_reorderable (page -> getWidget (), true);
-	getNotebook () .set_menu_label_text (page -> getWidget (), sheetName);
+	getNotebook () .set_menu_label_text (page -> getWidget (), pageName);
 
 	return page;
 }
@@ -139,6 +149,13 @@ void
 RouteGraph::on_rename_page_activate ()
 {
 	currentPage -> on_rename_page_activate ();
+}
+
+void
+RouteGraph::on_add_connected_nodes_toggled ()
+{
+	for (const auto & page : pages)
+		page -> setAddConnectedNodes (getAddConnectedNodesMenuItem () .get_active ());
 }
 
 void
@@ -174,6 +191,15 @@ RouteGraph::on_deselect_all_activate ()
 void
 RouteGraph::on_close_page_activate ()
 {
+}
+
+void
+RouteGraph::store ()
+{
+	getConfig () -> set <bool> ("addConnectedNodes", getAddConnectedNodesMenuItem () .get_active ());
+
+	X3DRouteGraph::store ();
+	X3DRouteGraphInterface::store ();
 }
 
 RouteGraph::~RouteGraph ()
