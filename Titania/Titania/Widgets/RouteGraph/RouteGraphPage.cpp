@@ -171,15 +171,23 @@ RouteGraphPage::open ()
 			if (not node)
 				continue;
 
-			addWindow (node, X3D::Vector2i (position));
+			addNode (node, X3D::Vector2i (position));
 		}
 
+		Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::resize));
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &RouteGraphPage::setScrollPosition), scrollPosition, false));
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+RouteGraphPage::queueSave () 
+{
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::resize));
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
 }
 
 void
@@ -235,7 +243,7 @@ throw (std::runtime_error)
 }
 
 void
-RouteGraphPage::addConnectedWindows (const X3D::SFNode & node, const X3D::Vector2i & position)
+RouteGraphPage::addConnectedNodes (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
 	std::map <int32_t, X3D::MFNode> columns;
 	std::set <X3D::SFNode>          nodes;
@@ -250,7 +258,7 @@ RouteGraphPage::addConnectedWindows (const X3D::SFNode & node, const X3D::Vector
 
 		for (const auto & node : column .second)
 		{
-			addWindow (node, X3D::Vector2i (x, y));
+			addNode (node, X3D::Vector2i (x, y));
 
 			y += 400;
 		}
@@ -270,6 +278,12 @@ RouteGraphPage::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns,
 	static std::default_random_engine
 	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
+	const auto undoStep = columns .size () > 1
+	                      ? std::make_shared <X3D::UndoStep> (_ ("Add Nodes To Route Graph"))
+	                      : std::make_shared <X3D::UndoStep> (_ ("Add Node To Route Graph"));
+
+	undoStep -> addUndoFunction (&RouteGraphPage::queueSave, this);
+
 	int32_t x = position .x ();
 
 	for (const auto & column : columns)
@@ -280,8 +294,11 @@ RouteGraphPage::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns,
 		for (const auto & node : column .second)
 		{
 			const auto   rposition = X3D::Vector2i (x + random (random_engine) * GRID_SIZE, y + random (random_engine) * GRID_SIZE);
-			const auto   window    = addWindow (node, rposition);
+			const auto   window    = addNode (node, rposition);
 			const auto & widget    = window -> widget;
+
+			undoStep -> addUndoFunction (&RouteGraphPage::removeNode, this, node);
+			undoStep -> addRedoFunction (&RouteGraphPage::addNode,    this, node, rposition);
 
 			setPosition (window, rposition);
 
@@ -295,7 +312,11 @@ RouteGraphPage::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns,
 		x += GRID_SIZE * 4;
 	}
 
-	resize ();
+	undoStep -> addRedoFunction (&RouteGraphPage::queueSave, this);
+
+	queueSave ();
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -324,7 +345,7 @@ RouteGraphPage::getConnectedNodes (X3D::X3DExecutionContext* const executionCont
 }
 
 RouteGraphPage::RouteGraphWindowPtr
-RouteGraphPage::addWindow (const X3D::SFNode & node, const X3D::Vector2i & position)
+RouteGraphPage::addNode (const X3D::SFNode & node, const X3D::Vector2i & position)
 {
 	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
 
@@ -360,10 +381,18 @@ RouteGraphPage::addWindow (const X3D::SFNode & node, const X3D::Vector2i & posit
 
 	getFixed () .put (*widget, position .x (), position .y ());
 
-	// Make the grid a litte larger.
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::resize));
-
 	return window;
+}
+
+void
+RouteGraphPage::removeNode (const X3D::SFNode & node)
+{
+	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window -> node == node; });
+
+	if (iter == windows .end ())
+		return;
+
+	removeWindow (*iter);
 }
 
 void
@@ -740,28 +769,48 @@ RouteGraphPage::on_export_page_activate ()
 void
 RouteGraphPage::on_delete_activate ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
-
-	for (const auto & window : getSelection ())
-		removeWindow (window);
-
-	for (const auto & route : RouteArray (getRouteSelection ()))
+	if (not getSelection () .empty ())
 	{
-		X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
-		                             route -> getSourceNode (),
-		                             route -> getSourceField (),
-		                             route -> getDestinationNode (),
-		                             route -> getDestinationField (),
-		                             undoStep);
+		const auto undoStep = getSelection () .size () > 1
+		                      ? std::make_shared <X3D::UndoStep> (_ ("Remove Nodes From Route Graph"))
+		                      : std::make_shared <X3D::UndoStep> (_ ("Remove Node From Route Graph"));
+	
+		undoStep -> addUndoFunction (&RouteGraphPage::queueSave, this);
+
+		for (const auto & window : getSelection ())
+		{
+			undoStep -> addUndoFunction (&RouteGraphPage::addNode,    this, window -> node, getPosition (window));
+			undoStep -> addRedoFunction (&RouteGraphPage::removeNode, this, window -> node);
+
+			removeWindow (window);
+		}
+
+		undoStep -> addRedoFunction (&RouteGraphPage::queueSave, this);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+
+	if (not getRouteSelection () .empty ())
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
+	
+		for (const auto & route : RouteArray (getRouteSelection ()))
+		{
+			X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
+			                             route -> getSourceNode (),
+			                             route -> getSourceField (),
+			                             route -> getDestinationNode (),
+			                             route -> getDestinationField (),
+			                             undoStep);
+		}
+	
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
 	clearSelection ();
 	clearRouteSelection ();
 
-	resize ();
-	save ();
-
-	getBrowserWindow () -> addUndoStep (undoStep);
+	queueSave ();
 }
 
 void
@@ -809,14 +858,28 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 			
 				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
 
+				const auto node     = getNode (nodeId);
 				const auto position = X3D::Vector2i (x + xOffset, y + yOffset);
 
 				if (routeGraph -> getAddConnectedNodesMenuItem () .get_active ())
-					addConnectedWindows (getNode (nodeId), position);
+				{
+					addConnectedNodes (node, position);
+				}
 				else
-					addWindow (getNode (nodeId), position);
+				{
+					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Node To Route Graph"));
 
-				Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
+					undoStep -> addUndoFunction (&RouteGraphPage::queueSave,  this);
+					undoStep -> addUndoFunction (&RouteGraphPage::removeNode, this, node);
+					undoStep -> addRedoFunction (&RouteGraphPage::addNode,    this, node, position);
+					undoStep -> addRedoFunction (&RouteGraphPage::queueSave,  this);
+
+					addNode (node, position);
+					queueSave ();
+
+					getBrowserWindow () -> addUndoStep (undoStep);
+				}
+
 
 				context -> drag_finish (true, false, time);
 			}

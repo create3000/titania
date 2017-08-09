@@ -164,12 +164,15 @@ private:
 
 	///  @name Operations
 
+	void
+	queueSave ();
+
 	X3D::SFNode
 	getNode (const size_t id) const
 	throw (std::runtime_error);
 
 	void
-	addConnectedWindows (const X3D::SFNode & node, const X3D::Vector2i & position);
+	addConnectedNodes (const X3D::SFNode & node, const X3D::Vector2i & position);
 
 	void
 	getConnectedNodes (X3D::X3DExecutionContext* const executionContext,
@@ -182,7 +185,10 @@ private:
 	on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns, const X3D::Vector2i & position);
 
 	RouteGraphWindowPtr
-	addWindow (const X3D::SFNode & node, const X3D::Vector2i & position);
+	addNode (const X3D::SFNode & node, const X3D::Vector2i & position);
+
+	void
+	removeNode (const X3D::SFNode & node);
 
 	void
 	removeWindow (const RouteGraphWindowPtr window);
