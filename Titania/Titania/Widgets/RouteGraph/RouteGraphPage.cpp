@@ -279,8 +279,8 @@ RouteGraphPage::on_place_nodes (const std::map <int32_t, X3D::MFNode> & columns,
 	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 	const auto undoStep = columns .size () > 1
-	                      ? std::make_shared <X3D::UndoStep> (_ ("Add Nodes To Route Graph"))
-	                      : std::make_shared <X3D::UndoStep> (_ ("Add Node To Route Graph"));
+	                      ? std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add Nodes To Logic »%s«"), getPageName () .c_str ()))
+	                      : std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add Node To Logic »%s«"), getPageName () .c_str ()));
 
 	undoStep -> addUndoFunction (&RouteGraphPage::queueSave, this);
 
@@ -686,8 +686,17 @@ RouteGraphPage::on_page_name_key_press_event (GdkEventKey* event)
 void
 RouteGraphPage::on_page_name_rename_clicked ()
 {
+	const auto text     = getPageNameEntry () .get_text ();
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename Route Graph Logic To »%s«"), text .c_str ()));
+
 	getRenamePagePopover () .popdown ();
-	setPageName (getPageNameEntry () .get_text ());
+
+	undoStep -> addUndoFunction (&RouteGraphPage::setPageName, this, getPageName (), true);
+	undoStep -> addRedoFunction (&RouteGraphPage::setPageName, this, text, true);
+
+	setPageName (text);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -772,8 +781,8 @@ RouteGraphPage::on_delete_activate ()
 	if (not getSelection () .empty ())
 	{
 		const auto undoStep = getSelection () .size () > 1
-		                      ? std::make_shared <X3D::UndoStep> (_ ("Remove Nodes From Route Graph"))
-		                      : std::make_shared <X3D::UndoStep> (_ ("Remove Node From Route Graph"));
+		                      ? std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Nodes From Route Graph Logic »%s«"), getPageName () .c_str ()))
+		                      : std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Node From Route Graph Logic »%s«"), getPageName () .c_str ()));
 	
 		undoStep -> addUndoFunction (&RouteGraphPage::queueSave, this);
 
@@ -867,7 +876,7 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 				}
 				else
 				{
-					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Node To Route Graph"));
+					const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add Node To Route Graph Logic »%s«"), getPageName () .c_str ()));
 
 					undoStep -> addUndoFunction (&RouteGraphPage::queueSave,  this);
 					undoStep -> addUndoFunction (&RouteGraphPage::removeNode, this, node);
