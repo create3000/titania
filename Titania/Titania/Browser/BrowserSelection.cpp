@@ -152,14 +152,6 @@ BrowserSelection::set_execution_context ()
 		const auto selectGeometry = worldInfo -> getMetaData <X3D::SFBool> ("/Titania/Selection/selectGeometry");
 		const auto current        = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
-		// Set clone bits.
-
-		for (const auto & node : current)
-		{
-			if (node)
-				node -> getUserData <UserData> () -> cloneCount .set (CLONE_SELECTED);
-		}
-
 		// Set selection.
 
 		// Note: setNodes triggers a set_nodes event, which we do not need if scene changes.
@@ -181,20 +173,6 @@ BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 
 	if (nodes == current)
 		return;
-
-	// Set and clear clone bits.
-
-	for (const auto & node : current)
-	{
-		if (node)
-			node -> getUserData <UserData> () -> cloneCount .reset (CLONE_SELECTED);
-	}
-
-	for (const auto & node : nodes)
-	{
-		if (node)
-			node -> getUserData <UserData> () -> cloneCount .set (CLONE_SELECTED);
-	}
 
 	// Set meta data.
 
@@ -248,7 +226,7 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 	const auto & selection = browser -> getSelection ();
 
 	selection -> setSelectGeometry (false);
-	selection -> addNodes (value);
+	selection -> addNodes (filterSelection (value));
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
 	set_nodes (selection -> getNodes ());
@@ -284,7 +262,7 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 	const auto & selection = browser-> getSelection ();
 
 	selection -> setSelectGeometry (false);
-	selection -> setNodes (value);
+	selection -> setNodes (filterSelection (value));
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
 	set_nodes (selection -> getNodes ());
@@ -310,14 +288,15 @@ void
 BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = browser-> getSelection ();
+	const auto   filtered  = filterSelection (value);
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
-	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, value);
+	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, filtered);
 
 	selection -> setSelectGeometry (false);
-	selection -> addNodes (value);
+	selection -> addNodes (filtered);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
 	set_nodes (selection -> getNodes ());
@@ -361,14 +340,15 @@ void
 BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = browser-> getSelection ();
+	const auto   filtered  = filterSelection (value);
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
-	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, value);
+	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, filtered);
 
 	selection -> setSelectGeometry (false);
-	selection -> setNodes (value);
+	selection -> setNodes (filtered);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
 	set_nodes (selection -> getNodes ());
@@ -388,6 +368,23 @@ BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
+}
+
+X3D::MFNode
+BrowserSelection::filterSelection (X3D::MFNode value)
+{
+	try
+	{
+		const auto worldInfo = getWorldInfo (getCurrentScene ());
+	
+		value .erase (std::remove (value .begin (), value .end (), worldInfo), value .end ());
+
+		return value;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return value;
+	}
 }
 
 BrowserSelection::~BrowserSelection ()

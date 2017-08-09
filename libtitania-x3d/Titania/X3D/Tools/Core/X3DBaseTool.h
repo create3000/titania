@@ -262,6 +262,24 @@ public:
 
 	// Clone handling must not be overloaded!
 
+	///  Returns the number of clones of this node used in the meta data nodes.
+	virtual
+	size_t
+	getMetaCloneCount () const final override
+	{ return node -> getMetaCloneCount (); }
+
+	///  Increments the meta clone count by @a count.
+	virtual
+	void
+	addMetaCloneCount (const size_t count) final override
+	{ return node -> addMetaCloneCount (count); }
+
+	///  Decrements the meta clone count by @a count.
+	virtual
+	void
+	removeMetaCloneCount (const size_t count) final override
+	{ return node -> removeMetaCloneCount (count); }
+
 	///  @name Tool support
 
 	virtual

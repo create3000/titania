@@ -353,23 +353,23 @@ public:
 	///  Increments the clone count of its child by @a count.
 	virtual
 	void
-	addClones (const size_t count) final override
+	addCloneCount (const size_t count) final override
 	{
 		cloneCount += count;
 
 		if (getValue ())
-			getValue () -> addClones (count);
+			getValue () -> addCloneCount (count);
 	}
 
 	///  Decrements the clone count of its child by @a count.
 	virtual
 	void
-	removeClones (const size_t count) final override
+	removeCloneCount (const size_t count) final override
 	{
 		cloneCount -= count;
 
 		if (getValue ())
-			getValue () -> removeClones (count);
+			getValue () -> removeCloneCount (count);
 	}
 	
 	///  @name Boolean operations
@@ -493,7 +493,7 @@ private:
 		if (value)
 		{
 			value -> addParent (this);
-			value -> addClones (cloneCount);
+			value -> addCloneCount (cloneCount);
 			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 		}
 	}
@@ -513,8 +513,8 @@ private:
 		if (value)
 		{
 			value -> replaceParent (&other, this);
-			value -> addClones (cloneCount);
-			value -> removeClones (other .cloneCount);
+			value -> addCloneCount (cloneCount);
+			value -> removeCloneCount (other .cloneCount);
 			value -> X3DInput::disposed () .removeInterest (&X3DPtr::set_disposed, other);
 			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 			other .setObject (nullptr);
@@ -542,8 +542,8 @@ private:
 		if (value)
 		{
 			value -> replaceParent (&other, this);
-			value -> addClones (cloneCount);
-			value -> removeClones (other .cloneCount);
+			value -> addCloneCount (cloneCount);
+			value -> removeCloneCount (other .cloneCount);
 			value -> X3DInput::disposed () .removeInterest (&X3DPtr <Up>::set_disposed, other);
 			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 			other .setObject (nullptr);
@@ -565,7 +565,7 @@ private:
 			setObject (nullptr);
 
 			value -> X3DInput::disposed () .removeInterest (&X3DPtr::set_disposed, this);
-			value -> removeClones (cloneCount);
+			value -> removeCloneCount (cloneCount);
 			value -> removeParent (this);
 		}
 	}

@@ -68,9 +68,6 @@ static constexpr size_t OUTLINE_OVER_INPUT      = 3;
 static constexpr size_t OUTLINE_OVER_OUTPUT     = 4;
 static constexpr size_t OUTLINE_SPECIAL         = 5;
 
-// Clone count
-static constexpr size_t CLONE_SELECTED = 0;
-
 class UserData :
 	public X3D::X3DBase
 {
@@ -84,7 +81,6 @@ public:
 		    expanded (false),
 		fullExpanded (false),
 		    selected (),
-		  cloneCount (),
 	       userData ()
 	{ }
 
@@ -103,7 +99,6 @@ public:
 	bool             expanded;                 // Expanded state
 	bool             fullExpanded;             // Expanded mode
 	std::bitset <32> selected;                 // Selected state
-	std::bitset <32> cloneCount;               // Lower clone count by set bits
 
 	std::shared_ptr <UserData> userData;
 

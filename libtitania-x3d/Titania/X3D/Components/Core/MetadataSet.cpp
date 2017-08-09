@@ -76,7 +76,8 @@ MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	          X3DNode (),
 	X3DMetadataObject (),
 	           fields (),
-	    metadataIndex ()
+	    metadataIndex (),
+	            nodes ()
 {
 	addType (X3DConstants::MetadataSet);
 
@@ -84,6 +85,8 @@ MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());
 	addField (inputOutput, "value",     value ());
+
+	addChildObjects (nodes);
 }
 
 X3DBaseNode*
@@ -177,16 +180,40 @@ throw (Error <DISPOSED>)
 void
 MetadataSet::set_value ()
 {
+	// Refresh index.
+
 	removeValues ();
 
 	for (const auto & node : value ())
 		addValue (node);
+
+	// Handle meta clone count.
+
+	for (const auto & node : nodes)
+	{
+		if (node)
+			node -> removeMetaCloneCount (1);
+	}
+
+	nodes = value ();
+
+	for (const auto & node : nodes)
+	{
+		if (node)
+			node -> addMetaCloneCount (1);
+	}
 }
 
 void
 MetadataSet::dispose ()
 {
 	removeValues ();
+
+	for (const auto & node : nodes)
+	{
+		if (node)
+			node -> removeMetaCloneCount (1);
+	}
 
 	X3DMetadataObject::dispose ();
 	X3DNode::dispose ();

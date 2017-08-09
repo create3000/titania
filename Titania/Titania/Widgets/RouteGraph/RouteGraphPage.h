@@ -315,6 +315,9 @@ private:
 	on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
+	on_select_node_clicked (RouteGraphWindow* const window);
+
+	void
 	on_input_connector_clicked (X3D::X3DFieldDefinition* const field, RouteGraphWindow* const window);
 
 	void

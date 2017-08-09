@@ -109,7 +109,7 @@ X3DExecutionContext::X3DExecutionContext () :
 
 	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.
 	getRootNodes () .setName ("rootNodes");
-	getRootNodes () .addClones (1);
+	getRootNodes () .addCloneCount (1);
 
 	sceneGraphOutput .setName ("sceneGraphOutput");
 	bboxOutput       .setName ("bboxOutput");

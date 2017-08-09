@@ -293,23 +293,23 @@ public:
 	///  Increments the clone count of its children by @a count.
 	virtual
 	void
-	addClones (const size_t count) final override
+	addCloneCount (const size_t count) final override
 	{
 		cloneCount += count;
 
 		for (const auto & value : getValue ())
-			value -> addClones (count);
+			value -> addCloneCount (count);
 	}
 
 	///  Decrements the clone count of its children by @a count.
 	virtual
 	void
-	removeClones (const size_t count) final override
+	removeCloneCount (const size_t count) final override
 	{
 		cloneCount -= count;
 
 		for (const auto & value : getValue ())
-			value -> removeClones (count);
+			value -> removeCloneCount (count);
 	}
 
 	///  @name Interest service
@@ -367,7 +367,7 @@ private:
 	{
 		X3DArrayField <ValueType>::addChild (value);
 
-		value -> addClones (cloneCount);
+		value -> addCloneCount (cloneCount);
 	}
 
 	virtual
@@ -376,15 +376,15 @@ private:
 	{
 		X3DArrayField <ValueType>::moveChild (other, value);
 
-		value -> addClones (cloneCount);
-		value -> removeClones (other .getCloneCount ());
+		value -> addCloneCount (cloneCount);
+		value -> removeCloneCount (other .getCloneCount ());
 	}
 
 	virtual
 	void
 	removeChild (value_type* value) final override
 	{
-		value -> removeClones (cloneCount);
+		value -> removeCloneCount (cloneCount);
 
 		X3DArrayField <ValueType>::removeChild (value);
 	}

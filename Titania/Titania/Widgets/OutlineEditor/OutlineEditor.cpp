@@ -1487,7 +1487,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				if (not sfnode)
 					break;
 
-				isCloned            = sfnode -> getCloneCount () - sfnode -> getUserData <UserData> () -> cloneCount .count () > 1;
+				isCloned            = sfnode -> getCloneCount () - sfnode -> getMetaCloneCount () > 1;
 				isBaseNode          = bool (sfnode);
 				isPrototypeInstance = sfnode -> isType ({ X3D::X3DConstants::X3DPrototypeInstance });
 				isInlineNode        = inlineNode;

@@ -107,13 +107,13 @@ public:
 	///  Handler that should be called when the clount count should be incremented @a count.
 	virtual
 	void
-	addClones (const size_t count)
+	addCloneCount (const size_t count)
 	{ }
 
 	///  Handler that should be called when the clount count should be decremented by @a count.
 	virtual
 	void
-	removeClones (const size_t count)
+	removeCloneCount (const size_t count)
 	{ }
 
 	///  @name Event Handling

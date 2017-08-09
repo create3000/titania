@@ -53,9 +53,10 @@
 #include "RouteGraph.h"
 #include "RouteGraphNode.h"
 
-#include "../../Configuration/config.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
+#include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 
 #include <Titania/String.h>
@@ -353,7 +354,7 @@ RouteGraphPage::addNode (const X3D::SFNode & node, const X3D::Vector2i & positio
 		return *iter;
 
 	const auto window = std::make_shared <RouteGraphWindow> ();
-	const auto widget = std::make_shared <RouteGraphNode> (getBrowserWindow (), node);
+	const auto widget = std::make_shared <RouteGraphNode> (node);
 
 	windows .emplace_front (window);
 
@@ -372,9 +373,10 @@ RouteGraphPage::addNode (const X3D::SFNode & node, const X3D::Vector2i & positio
 
 	// Widget
 
-	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraphPage::refresh));
+	widget -> signal_select_node_clicked ()      .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphPage::on_select_node_clicked),      window .get ()));
 	widget -> signal_input_connector_clicked ()  .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphPage::on_input_connector_clicked),  window .get ()));
 	widget -> signal_output_connector_clicked () .connect (sigc::bind (sigc::mem_fun (this, &RouteGraphPage::on_output_connector_clicked), window .get ()));
+	widget -> signal_changed ()                  .connect (sigc::mem_fun (this, &RouteGraphPage::refresh));
 	widget -> show ();
 
 	// Put widget on fixed.
@@ -1336,6 +1338,21 @@ RouteGraphPage::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 			}
 		}
 	}
+}
+
+void
+RouteGraphPage::on_select_node_clicked (RouteGraphWindow* const window)
+{
+	const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & windowPtr) { return windowPtr .get () == window; });
+
+	if (iter == windows .end ())
+		return;
+
+	const X3D::MFNode selection = { window -> node };
+
+	setSelection ({ *iter });
+	getBrowserWindow () -> getSelection () -> setNodes (selection);
+	getBrowserWindow () -> expandNodes (selection);
 }
 
 void

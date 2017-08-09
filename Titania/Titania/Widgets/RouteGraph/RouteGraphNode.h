@@ -59,7 +59,6 @@ namespace titania {
 namespace puck {
 
 class RouteGraph;
-class X3DBrowserWindow;
 
 class RouteGraphNode :
 	public Gtk::Box,
@@ -69,13 +68,9 @@ public:
 
 	///  @name Construction
 
-	RouteGraphNode (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node);
+	RouteGraphNode (const X3D::SFNode & node);
 
 	///  @name Member access
-
-	X3DBrowserWindow*
-	getBrowserWindow () const
-	{ return browserWindow; }
 
 	void
 	setSelected (const bool value);
@@ -124,8 +119,8 @@ public:
 	///  @name Signals
 
 	sigc::signal <void> &
-	signal_changed ()
-	{ return changedSignal; }
+	signal_select_node_clicked ()
+	{ return selectNodeSignal; }
 
 	sigc::signal <void, X3D::X3DFieldDefinition*> &
 	signal_input_connector_clicked ()
@@ -134,6 +129,10 @@ public:
 	sigc::signal <void, X3D::X3DFieldDefinition*> &
 	signal_output_connector_clicked ()
 	{ return outputConnectorSignal; }
+
+	sigc::signal <void> &
+	signal_changed ()
+	{ return changedSignal; }
 
 	///  @name Destruction
 
@@ -180,21 +179,21 @@ private:
 
 	///  @name Members
 
-	X3DBrowserWindow* const browserWindow;
-	const X3D::SFNode       node;
-	Gtk::Button*            headerInput;
-	Gtk::Button*            headerOutput;
-	Gtk::Revealer*          fieldsRevealer;
-	ConnectorIndex          inputs;
-	ConnectorIndex          outputs;
-	bool                    selected;
-	bool                    expanded;
-	bool                    headerConnectors;
-	bool                    connectorsSensitive;
+	const X3D::SFNode node;
+	Gtk::Button*      headerInput;
+	Gtk::Button*      headerOutput;
+	Gtk::Revealer*    fieldsRevealer;
+	ConnectorIndex    inputs;
+	ConnectorIndex    outputs;
+	bool              selected;
+	bool              expanded;
+	bool              headerConnectors;
+	bool              connectorsSensitive;
 
-	sigc::signal <void>                           changedSignal;
+	sigc::signal <void>                           selectNodeSignal;
 	sigc::signal <void, X3D::X3DFieldDefinition*> inputConnectorSignal;
 	sigc::signal <void, X3D::X3DFieldDefinition*> outputConnectorSignal;
+	sigc::signal <void>                           changedSignal;
 
 };
 

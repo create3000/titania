@@ -52,8 +52,6 @@
 
 #include "RouteGraph.h"
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Parser/Filter.h>
@@ -61,10 +59,9 @@
 namespace titania {
 namespace puck {
 
-RouteGraphNode::RouteGraphNode (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node) :
+RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
 	             Gtk::Box (),
 	        X3D::X3DInput (),
-	        browserWindow (browserWindow),
 	                 node (node),
 	          headerInput (nullptr),
 	         headerOutput (nullptr),
@@ -75,9 +72,10 @@ RouteGraphNode::RouteGraphNode (X3DBrowserWindow* const browserWindow, const X3D
 	             expanded (true),
 	     headerConnectors (false),
 	  connectorsSensitive (true),
-	        changedSignal (),
+	     selectNodeSignal (),
 	 inputConnectorSignal (),
-	outputConnectorSignal ()
+	outputConnectorSignal (),
+	        changedSignal ()
 {
 	// Box
 
@@ -470,11 +468,7 @@ RouteGraphNode::build ()
 void
 RouteGraphNode::on_select_node_clicked ()
 {
-	const X3D::MFNode selection = { node };
-
-	getBrowserWindow () -> getSelection () -> setNodes (selection);
-
-	getBrowserWindow () -> expandNodes (selection);
+	selectNodeSignal .emit ();
 }
 
 void

@@ -454,6 +454,8 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 std::string
 OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name) const
 {
+	static const X3D::NodeTypeSet metaDataType = { X3D::X3DConstants::X3DMetadataObject };
+
 	if (sfnode)
 	{
 		const auto node = sfnode .getValue ();
@@ -471,7 +473,8 @@ OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name
 
 		// Add clone count if any.
 
-		const auto cloneCount = node -> getCloneCount () - node -> getUserData <UserData> () -> cloneCount .count ();
+		const auto metaCloneCount = node -> isType (metaDataType) ? 0 : node -> getMetaCloneCount ();
+		const auto cloneCount     = node -> getCloneCount () - metaCloneCount;
 
 		if (cloneCount > 1)
 			string += " [" + std::to_string (cloneCount) + "]";

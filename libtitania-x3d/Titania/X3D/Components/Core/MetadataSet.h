@@ -192,6 +192,7 @@ private:
 	Fields fields;
 
 	std::map <std::string, X3DMetadataObject*> metadataIndex;
+	MFNode                                     nodes;
 
 };
 

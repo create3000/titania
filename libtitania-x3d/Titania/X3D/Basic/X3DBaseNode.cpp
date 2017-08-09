@@ -142,6 +142,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	        fieldsOutput (),
 	        privateState (false),
 	          cloneCount (0),
+	      metaCloneCount (0),
 	                live (true),
 	            comments ()
 {
@@ -537,7 +538,7 @@ throw (Error <INVALID_NAME>,
 	field .setName (name);
 
 	if (not privateState)
-		field .addClones (1);
+		field .addCloneCount (1);
 
 	if (not field .isHidden ())
 		fieldDefinitions .emplace_back (&field);
@@ -612,7 +613,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		}
 	
 		if (not privateState)
-			field -> second -> removeClones (1);
+			field -> second -> removeCloneCount (1);
 	
 		fieldDefinitions .erase (iter);
 	}
@@ -884,12 +885,12 @@ X3DBaseNode::setPrivate (const bool value)
 	if (privateState)
 	{
 		for (const auto & pair : fields)
-			pair .second -> removeClones (1);
+			pair .second -> removeCloneCount (1);
 	}
 	else
 	{
 		for (const auto & pair : fields)
-			pair .second -> addClones (1);
+			pair .second -> addCloneCount (1);
 	}
 }
 
@@ -897,11 +898,8 @@ X3DBaseNode::setPrivate (const bool value)
  *  Increments the clone count by @a count.
  */
 void
-X3DBaseNode::addClones (const size_t count)
+X3DBaseNode::addCloneCount (const size_t count)
 {
-	if (count == 0)
-		return;
-
 	cloneCount += count;
 }
 
@@ -909,12 +907,27 @@ X3DBaseNode::addClones (const size_t count)
  *  Decrements the clone count by @a count.
  */
 void
-X3DBaseNode::removeClones (const size_t count)
+X3DBaseNode::removeCloneCount (const size_t count)
 {
-	if (count == 0)
-		return;
-
 	cloneCount -= count;
+}
+
+/***
+ *  Increments the meta clone count by @a count.
+ */
+void
+X3DBaseNode::addMetaCloneCount (const size_t count)
+{
+	metaCloneCount += count;
+}
+
+/***
+ *  Decrements the meta clone count by @a count.
+ */
+void
+X3DBaseNode::removeMetaCloneCount (const size_t count)
+{
+	metaCloneCount -= count;
 }
 
 void
@@ -2277,15 +2290,14 @@ X3DBaseNode::dispose ()
 {
 	X3DParentObject::dispose ();
 
-	for (const auto & pair : fields)
+	if (not privateState)
 	{
-		const auto & field = pair .second;
-
-		if (not privateState)
-			field -> removeClones (1);
-
-		field -> removeParent (this);
+		for (const auto & pair : fields)
+			pair .second -> removeCloneCount (1);
 	}
+
+	for (const auto & pair : fields)
+		pair .second -> removeParent (this);
 
 	fields           .clear ();
 	fieldDefinitions .clear ();

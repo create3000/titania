@@ -353,12 +353,28 @@ public:
 	///  Increments the clone count by @a count.
 	virtual
 	void
-	addClones (const size_t count) final override;
+	addCloneCount (const size_t count) final override;
 
 	///  Decrements the clone count by @a count.
 	virtual
 	void
-	removeClones (const size_t count) final override;
+	removeCloneCount (const size_t count) final override;
+
+	///  Returns the number of clones of this node used in the meta data nodes.
+	virtual
+	size_t
+	getMetaCloneCount () const
+	{ return metaCloneCount; }
+
+	///  Increments the meta clone count by @a count.
+	virtual
+	void
+	addMetaCloneCount (const size_t count);
+
+	///  Decrements the meta clone count by @a count.
+	virtual
+	void
+	removeMetaCloneCount (const size_t count);
 
 	///  @name Tool support
 
@@ -607,6 +623,7 @@ private:
 
 	bool   privateState;
 	size_t cloneCount;
+	size_t metaCloneCount;
 	SFBool live;
 
 	std::vector <std::string> comments;          // This nodes comments

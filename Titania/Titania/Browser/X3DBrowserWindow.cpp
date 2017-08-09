@@ -151,28 +151,13 @@ X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 {
 	if (getConfig () -> getBoolean ("followPrimarySelection"))
 	{
-		getCurrentBrowser () -> addEvent ();
-		getCurrentBrowser () -> finished () .addInterest (&X3DBrowserWindow::expandNodesImpl, this, nodes);
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &X3DBrowserWindow::expandNodesImpl), nodes));
 	}
-}
-
-void
-X3DBrowserWindow::on_geometry_editor_clicked ()
-{
-	geometryEditor -> getWidget () .set_reveal_child (not geometryEditor -> getWidget () .get_reveal_child ());
-}
-
-void
-X3DBrowserWindow::on_geometry_editor_reveal_child_changed ()
-{
-	getConfig () -> setItem ("geometryEditor", geometryEditor -> getWidget () .get_reveal_child ());
 }
 
 void
 X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
-	getCurrentBrowser () -> finished () .removeInterest (&X3DBrowserWindow::expandNodesImpl, this);
-
 	std::vector <Gtk::TreePath> paths;
 
 	for (const auto & node : nodes)
@@ -189,8 +174,10 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	for (const auto & path : paths)
 		getOutlineTreeView () -> expand_row (path, false);
 
+	using ScrollToRow = void (OutlineTreeViewEditor::*) (const Gtk::TreePath &, float);
+
 	if  (not paths .empty ())
-		getOutlineTreeView () -> scroll_to_row (paths .front (), 2 - math::phi <double>);
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getOutlineTreeView () .get (), (ScrollToRow) &OutlineTreeViewEditor::scroll_to_row), paths .front (), 2 - math::phi <double>));
 }
 
 void
@@ -213,6 +200,18 @@ void
 X3DBrowserWindow::println (const std::string & string)
 {
 	print (string + "\n");
+}
+
+void
+X3DBrowserWindow::on_geometry_editor_clicked ()
+{
+	geometryEditor -> getWidget () .set_reveal_child (not geometryEditor -> getWidget () .get_reveal_child ());
+}
+
+void
+X3DBrowserWindow::on_geometry_editor_reveal_child_changed ()
+{
+	getConfig () -> setItem ("geometryEditor", geometryEditor -> getWidget () .get_reveal_child ());
 }
 
 void
