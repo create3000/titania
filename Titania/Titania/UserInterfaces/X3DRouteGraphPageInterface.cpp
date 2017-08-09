@@ -88,6 +88,10 @@ X3DRouteGraphPageInterface::create ()
 	m_builder -> get_widget ("Viewport", m_Viewport);
 	m_builder -> get_widget ("Fixed", m_Fixed);
 	m_builder -> get_widget ("PageNameLabel", m_PageNameLabel);
+	m_builder -> get_widget ("RenamePagePopover", m_RenamePagePopover);
+	m_builder -> get_widget ("PageNameBox", m_PageNameBox);
+	m_builder -> get_widget ("PageNameEntry", m_PageNameEntry);
+	m_builder -> get_widget ("RenamePageButton", m_RenamePageButton);
 
 	// Connect object Gtk::Viewport with id 'Viewport'.
 	m_Viewport -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_button_press_event));
@@ -97,6 +101,13 @@ X3DRouteGraphPageInterface::create ()
 
 	// Connect object Gtk::Fixed with id 'Fixed'.
 	m_Fixed -> signal_draw () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_draw), false);
+
+	// Connect object Gtk::Entry with id 'PageNameEntry'.
+	m_PageNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_page_name_changed));
+	m_PageNameEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_page_name_key_press_event), false);
+
+	// Connect object Gtk::Button with id 'RenamePageButton'.
+	m_RenamePageButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRouteGraphPageInterface::on_page_name_rename_clicked));
 }
 
 X3DRouteGraphPageInterface::~X3DRouteGraphPageInterface ()

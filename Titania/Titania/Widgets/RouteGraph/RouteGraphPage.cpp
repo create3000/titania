@@ -117,7 +117,7 @@ RouteGraphPage::initialize ()
 	X3DRouteGraphPageInterface::initialize ();
 	X3DRouteGraphPage::initialize ();
 
-	setPageName (pageName);
+	setPageName (pageName, false);
 }
 
 int32_t
@@ -127,12 +127,21 @@ RouteGraphPage::getPageNumber () const
 }
 
 void
-RouteGraphPage::setPageName (const std::string & value)
+RouteGraphPage::setPageName (const std::string & value, const bool modify)
 {
 	pageName = value;
 
 	getPageNameLabel () .set_text (pageName);
-	routeGraph -> getNotebook () .set_tab_label_text (getWidget (), pageName);
+
+	routeGraph -> getNotebook () .set_tab_label_text  (getWidget (), pageName);
+	routeGraph -> getNotebook () .set_menu_label_text (getWidget (), pageName);
+
+	if (not modify)
+		return;
+
+	createWorldInfo (getCurrentScene ()) -> setMetaData (getMetaKey () + "/pageName", pageName);
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 std::string
@@ -152,7 +161,7 @@ RouteGraphPage::open ()
 		const auto nodes          = worldInfo -> getMetaData <X3D::MFNode> (key + "/nodes");
 		const auto scrollPosition = worldInfo -> getMetaData <X3D::Vector2d> (key + "/scrollPosition");
 
-		setPageName (worldInfo -> getMetaData (key + "/pageName", getPageName ()));
+		setPageName (worldInfo -> getMetaData (key + "/pageName", getPageName ()), false);
 
 		for (size_t i = 0, size = nodes .size (); i < size; ++ i)
 		{
@@ -610,7 +619,46 @@ RouteGraphPage::set_routes ()
 void
 RouteGraphPage::on_rename_page_activate ()
 {
+	getPageNameEntry () .set_text (getPageName ());
+	getRenamePagePopover () .popup ();
+}
 
+void
+RouteGraphPage::on_page_name_changed ()
+{
+	getRenamePageButton () .set_sensitive (getPageNameEntry () .get_text () .length ());
+}
+
+bool
+RouteGraphPage::on_page_name_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			if (getPageNameEntry () .get_text () .length ())
+				on_page_name_rename_clicked ();
+
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			getRenamePagePopover () .popdown ();
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+RouteGraphPage::on_page_name_rename_clicked ()
+{
+	getRenamePagePopover () .popdown ();
+	setPageName (getPageNameEntry () .get_text ());
 }
 
 void
@@ -642,8 +690,10 @@ RouteGraphPage::on_export_page_activate ()
 		Gtk::OffscreenWindow window;
 
 		window .set_size_request (getFixed () .get_width (), getFixed () .get_height ());
-		getViewport () .remove ();
-		window .add (getFixed ());
+
+		getWidget () .remove (getOverlay ());
+
+		window .add (getOverlay ());
 		window .show ();
 
 		// This must be done, otherwise the pixbuf is empty.
@@ -653,7 +703,8 @@ RouteGraphPage::on_export_page_activate ()
 		const auto pixbuf = window .get_pixbuf ();
 
 		window .remove ();
-		getViewport () .add (getFixed ());
+
+		getWidget () .pack_start (getOverlay (), true, true);
 
 		// Convert pixbuf to magick image
 

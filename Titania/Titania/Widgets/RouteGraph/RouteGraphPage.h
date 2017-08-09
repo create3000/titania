@@ -79,7 +79,7 @@ public:
 	getPageNumber () const;
 
 	void
-	setPageName (const std::string & value);
+	setPageName (const std::string & value, const bool modify = true);
 
 	const std::string &
 	getPageName () const
@@ -262,6 +262,18 @@ private:
 
 	void
 	set_routes ();
+	
+	virtual
+	void
+	on_page_name_changed () final override;
+
+	virtual
+	bool
+	on_page_name_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	void
+	on_page_name_rename_clicked () final override;
 
 	virtual
 	void

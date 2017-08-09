@@ -123,6 +123,22 @@ public:
 	getPageNameLabel () const
 	{ return *m_PageNameLabel; }
 
+	Gtk::Popover &
+	getRenamePagePopover () const
+	{ return *m_RenamePagePopover; }
+
+	Gtk::Box &
+	getPageNameBox () const
+	{ return *m_PageNameBox; }
+
+	Gtk::Entry &
+	getPageNameEntry () const
+	{ return *m_PageNameEntry; }
+
+	Gtk::Button &
+	getRenamePageButton () const
+	{ return *m_RenamePageButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -144,6 +160,18 @@ public:
 	virtual
 	bool
 	on_draw (const ::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	void
+	on_page_name_changed () = 0;
+
+	virtual
+	bool
+	on_page_name_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	void
+	on_page_name_rename_clicked () = 0;
 
 	///  @name Destruction
 
@@ -178,6 +206,10 @@ private:
 	Gtk::Viewport* m_Viewport;
 	Gtk::Fixed* m_Fixed;
 	Gtk::Label* m_PageNameLabel;
+	Gtk::Popover* m_RenamePagePopover;
+	Gtk::Box* m_PageNameBox;
+	Gtk::Entry* m_PageNameEntry;
+	Gtk::Button* m_RenamePageButton;
 
 };
 

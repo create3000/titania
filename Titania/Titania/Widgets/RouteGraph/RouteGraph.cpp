@@ -88,7 +88,7 @@ RouteGraph::initialize ()
 	X3DRouteGraphInterface::initialize ();
 	X3DRouteGraph::initialize ();
 
-	getCurrentScene () .addInterest (&RouteGraph::set_scene, this);
+	getBrowserWindow () -> getCurrentPage () -> getMainBrowser () -> initialized () .addInterest (&RouteGraph::set_scene, this);
 
 	set_scene ();
 }
@@ -98,8 +98,6 @@ RouteGraph::setCurrentPage (const size_t pageNumber, const bool modify)
 {
 	try
 	{
-		__LOG__ << pageNumber << std::endl;
-
 		currentPage = pages .at (pageNumber);
 
 		changing = true;

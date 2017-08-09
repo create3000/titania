@@ -117,6 +117,8 @@ expander > title > label {
 	border: 0px;
 	padding: 0px;
 	background: none;
+	border-radius: 0px;
+	box-shadow: none;
 }
 
 .titania-route-graph-page-name {
