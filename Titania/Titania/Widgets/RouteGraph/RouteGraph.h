@@ -155,6 +155,23 @@ private:
 	void
 	on_close_page_activate () final override;
 
+
+	virtual
+	void
+	on_new_page_clicked () final override;
+
+	virtual
+	void
+	on_rename_page_clicked () final override;
+
+	virtual
+	void
+	on_delete_clicked () final override;
+
+	virtual
+	void
+	on_close_page_clicked () final override;
+
 	virtual
 	void
 	on_switch_page (Gtk::Widget*, guint pageNumber) final override;

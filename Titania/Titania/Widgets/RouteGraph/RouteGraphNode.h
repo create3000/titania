@@ -59,6 +59,7 @@ namespace titania {
 namespace puck {
 
 class RouteGraph;
+class X3DBrowserWindow;
 
 class RouteGraphNode :
 	public Gtk::Box,
@@ -68,9 +69,13 @@ public:
 
 	///  @name Construction
 
-	RouteGraphNode (const X3D::SFNode & node);
+	RouteGraphNode (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node);
 
 	///  @name Member access
+
+	X3DBrowserWindow*
+	getBrowserWindow () const
+	{ return browserWindow; }
 
 	void
 	setSelected (const bool value);
@@ -147,6 +152,9 @@ private:
 	set_name (Gtk::Label* const name);
 
 	void
+	on_select_node_clicked ();
+
+	void
 	on_input_connector_clicked (X3D::X3DFieldDefinition* const field);
 
 	void
@@ -172,16 +180,17 @@ private:
 
 	///  @name Members
 
-	const X3D::SFNode node;
-	Gtk::Button*      headerInput;
-	Gtk::Button*      headerOutput;
-	Gtk::Revealer*    fieldsRevealer;
-	ConnectorIndex    inputs;
-	ConnectorIndex    outputs;
-	bool              selected;
-	bool              expanded;
-	bool              headerConnectors;
-	bool              connectorsSensitive;
+	X3DBrowserWindow* const browserWindow;
+	const X3D::SFNode       node;
+	Gtk::Button*            headerInput;
+	Gtk::Button*            headerOutput;
+	Gtk::Revealer*          fieldsRevealer;
+	ConnectorIndex          inputs;
+	ConnectorIndex          outputs;
+	bool                    selected;
+	bool                    expanded;
+	bool                    headerConnectors;
+	bool                    connectorsSensitive;
 
 	sigc::signal <void>                           changedSignal;
 	sigc::signal <void, X3D::X3DFieldDefinition*> inputConnectorSignal;

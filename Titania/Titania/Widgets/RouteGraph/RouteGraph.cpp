@@ -210,13 +210,17 @@ RouteGraph::set_scene ()
 	}
 
 	if (pages .empty ())
+	{
 		appendPage (_ ("New Logic"));
+		setCurrentPage (0, false);
+	}
 }
 
 void
 RouteGraph::on_new_page_activate ()
 {
 	createPage ();
+	setCurrentPage (pages .size () - 1);
 }
 
 void
@@ -262,7 +266,7 @@ RouteGraph::on_close_page_activate ()
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("Do you realy want to close logic »" + getCurrentPage () -> getPageName () + "«?"));
-	dialog -> setText (_ ("The whole logic will be irrevocably removed!"));
+	dialog -> setText (_ ("The whole page will be irrevocably removed!"));
 
 	if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 		return;
@@ -270,6 +274,30 @@ RouteGraph::on_close_page_activate ()
 	closePage (getCurrentPage ());
 
 	savePages ();
+}
+
+void
+RouteGraph::on_new_page_clicked ()
+{
+	on_new_page_activate ();
+}
+
+void
+RouteGraph::on_rename_page_clicked ()
+{
+	on_rename_page_activate ();
+}
+
+void
+RouteGraph::on_delete_clicked ()
+{
+	on_delete_activate ();
+}
+
+void
+RouteGraph::on_close_page_clicked ()
+{
+	on_close_page_activate ();
 }
 
 void

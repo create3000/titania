@@ -136,7 +136,7 @@ expander > title > label {
 .titania-route-graph-node-header {
 	border-bottom: 2px solid black;
 	background: rgb(68,52,125);
-	padding: 5px 20px 5px 4px;
+	padding: 5px 4px 5px 4px;
 }
 
 .titania-route-graph-node-selected .titania-route-graph-node-header {
@@ -148,11 +148,13 @@ expander > title > label {
 }
 
 .titania-route-graph-node-name {
+	padding: 0px 10px 0px 0px;
 	color: white;
 	font-size: 150%;
 }
 
 .titania-route-graph-node-type-name {
+	padding: 0px 10px 0px 0px;
 	color: white;
 	font-size: 100%;
 }

@@ -52,6 +52,8 @@
 
 #include "RouteGraph.h"
 
+#include "../../Browser/BrowserSelection.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Parser/Filter.h>
@@ -59,9 +61,10 @@
 namespace titania {
 namespace puck {
 
-RouteGraphNode::RouteGraphNode (const X3D::SFNode & node) :
+RouteGraphNode::RouteGraphNode (X3DBrowserWindow* const browserWindow, const X3D::SFNode & node) :
 	             Gtk::Box (),
 	        X3D::X3DInput (),
+	        browserWindow (browserWindow),
 	                 node (node),
 	          headerInput (nullptr),
 	         headerOutput (nullptr),
@@ -254,11 +257,16 @@ RouteGraphNode::build ()
 	const auto headerLeft    = Gtk::manage (new Gtk::Box ());
 	const auto headerRight   = Gtk::manage (new Gtk::Box ());
 
-	const auto header   = Gtk::manage (new Gtk::Grid ());
-	const auto imageBox = Gtk::manage (new Gtk::Box ());
-	const auto image    = Gtk::manage (new Gtk::Image ());
-	const auto typeName = Gtk::manage (new Gtk::Label ());
-	const auto name     = Gtk::manage (new Gtk::Label ());
+	const auto header      = Gtk::manage (new Gtk::Grid ());
+	const auto imageBox    = Gtk::manage (new Gtk::Box ());
+	const auto image       = Gtk::manage (new Gtk::Image ());
+	const auto typeName    = Gtk::manage (new Gtk::Label ());
+	const auto name        = Gtk::manage (new Gtk::Label ());
+	const auto buttonBox   = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL, 0));
+	const auto arrowButton = Gtk::manage (new Gtk::Button ());
+	const auto arrow       = Gtk::manage (new Gtk::Image ());
+
+	arrowButton -> signal_clicked () .connect (sigc::mem_fun (this, &RouteGraphNode::on_select_node_clicked));
 
 	box -> pack_start (*headerOverlay, true, true);
 	headerOverlay -> add (*headerBox);
@@ -270,22 +278,33 @@ RouteGraphNode::build ()
 	headerBox -> pack_start (*header,      false, true);
 	headerBox -> pack_start (*headerRight, false, true);
 
-	header -> attach (*imageBox, 0, 0, 1, 1);
-	header -> attach (*name,     1, 0, 1, 1);
-	header -> attach (*typeName, 1, 1, 1, 1);
+	header -> attach (*imageBox,  0, 0, 1, 1);
+	header -> attach (*name,      1, 0, 1, 1);
+	header -> attach (*typeName,  1, 1, 1, 1);
+	header -> attach (*buttonBox, 2, 0, 1, 2);
 
-	header -> set_hexpand (true);
-	header -> set_hexpand_set (true);
+	header   -> set_hexpand (true);
+	header   -> set_hexpand_set (true);
+	name     -> set_hexpand (true);
+	name     -> set_hexpand_set (true);
+	typeName -> set_hexpand (true);
+	typeName -> set_hexpand_set (true);
 
-	imageBox -> pack_start (*image, true, true);
+	imageBox    -> pack_start (*image,       true,  true);
+	buttonBox   -> pack_start (*arrowButton, false, true);
 
-	image    -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg")));
-	typeName -> set_text (node -> getTypeName ());
-	name     -> set_text (displayName .empty () ? _ ("<unnamed>") : displayName);
+	image       -> set (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DBaseNode.svg")));
+	typeName    -> set_text (node -> getTypeName ());
+	name        -> set_text (displayName .empty () ? _ ("<unnamed>") : displayName);
+	arrowButton -> set_always_show_image (true);
+	arrowButton -> set_image (*arrow);
+	arrowButton -> set_tooltip_text (_ ("Select node."));
+	arrow       -> set (Gtk::StockID ("Arrow"), Gtk::ICON_SIZE_MENU);
 
 	image    -> set_valign (Gtk::ALIGN_CENTER);
 	typeName -> set_halign (Gtk::ALIGN_START);
 	name     -> set_halign (Gtk::ALIGN_START);
+	arrow    -> set_valign (Gtk::ALIGN_START);
 
 	headerBox   -> get_style_context () -> add_class ("titania-route-graph-node-element-box");
 	headerLeft  -> get_style_context () -> add_class ("titania-route-graph-node-element-left");
@@ -295,6 +314,7 @@ RouteGraphNode::build ()
 	image       -> get_style_context () -> add_class ("titania-route-graph-node-image");
 	typeName    -> get_style_context () -> add_class ("titania-route-graph-node-type-name");
 	name        -> get_style_context () -> add_class ("titania-route-graph-node-name");
+	arrowButton -> get_style_context () -> add_class ("titania-route-graph-node-arrow");
 
 	// Fields
 
@@ -445,6 +465,16 @@ RouteGraphNode::build ()
 	// Reveal at end, when all widget are created.
 
 	fieldsRevealer -> set_reveal_child (expanded);
+}
+
+void
+RouteGraphNode::on_select_node_clicked ()
+{
+	const X3D::MFNode selection = { node };
+
+	getBrowserWindow () -> getSelection () -> setNodes (selection);
+
+	getBrowserWindow () -> expandNodes (selection);
 }
 
 void

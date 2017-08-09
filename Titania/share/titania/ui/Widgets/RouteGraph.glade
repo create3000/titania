@@ -202,6 +202,90 @@
           </packing>
         </child>
         <child>
+          <object class="GtkToolbar" id="EditToolBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="toolbar_style">icons</property>
+            <property name="icon_size">1</property>
+            <child>
+              <object class="GtkToolButton" id="NewLogicButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Create new logic.</property>
+                <property name="label" translatable="yes">New Logic</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-new</property>
+                <signal name="clicked" handler="on_new_page_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="RenamePageButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Rename logic.</property>
+                <property name="label" translatable="yes">Rename Logic</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-edit</property>
+                <signal name="clicked" handler="on_rename_page_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="separatortoolitem6">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="DeleteButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Delete node or route.</property>
+                <property name="label" translatable="yes">Delete</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-remove</property>
+                <signal name="clicked" handler="on_delete_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ClosePageButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Close logic.</property>
+                <property name="halign">end</property>
+                <property name="label" translatable="yes">Close Logic</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-close</property>
+                <signal name="clicked" handler="on_close_page_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkNotebook" id="Notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>

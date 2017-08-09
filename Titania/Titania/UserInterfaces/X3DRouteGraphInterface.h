@@ -151,6 +151,26 @@ public:
 	getDeselectAllMenuItem () const
 	{ return *m_DeselectAllMenuItem; }
 
+	Gtk::Toolbar &
+	getEditToolBar () const
+	{ return *m_EditToolBar; }
+
+	Gtk::ToolButton &
+	getNewLogicButton () const
+	{ return *m_NewLogicButton; }
+
+	Gtk::ToolButton &
+	getRenamePageButton () const
+	{ return *m_RenamePageButton; }
+
+	Gtk::ToolButton &
+	getDeleteButton () const
+	{ return *m_DeleteButton; }
+
+	Gtk::ToolButton &
+	getClosePageButton () const
+	{ return *m_ClosePageButton; }
+
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -188,6 +208,22 @@ public:
 	virtual
 	void
 	on_deselect_all_activate () = 0;
+
+	virtual
+	void
+	on_new_page_clicked () = 0;
+
+	virtual
+	void
+	on_rename_page_clicked () = 0;
+
+	virtual
+	void
+	on_delete_clicked () = 0;
+
+	virtual
+	void
+	on_close_page_clicked () = 0;
 
 	virtual
 	void
@@ -237,6 +273,11 @@ private:
 	Gtk::ImageMenuItem* m_DeleteMenuItem;
 	Gtk::ImageMenuItem* m_SelectAllMenuItem;
 	Gtk::MenuItem* m_DeselectAllMenuItem;
+	Gtk::Toolbar* m_EditToolBar;
+	Gtk::ToolButton* m_NewLogicButton;
+	Gtk::ToolButton* m_RenamePageButton;
+	Gtk::ToolButton* m_DeleteButton;
+	Gtk::ToolButton* m_ClosePageButton;
 	Gtk::Notebook* m_Notebook;
 
 };

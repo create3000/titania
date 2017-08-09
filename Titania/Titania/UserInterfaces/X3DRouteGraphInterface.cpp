@@ -95,6 +95,11 @@ X3DRouteGraphInterface::create ()
 	m_builder -> get_widget ("DeleteMenuItem", m_DeleteMenuItem);
 	m_builder -> get_widget ("SelectAllMenuItem", m_SelectAllMenuItem);
 	m_builder -> get_widget ("DeselectAllMenuItem", m_DeselectAllMenuItem);
+	m_builder -> get_widget ("EditToolBar", m_EditToolBar);
+	m_builder -> get_widget ("NewLogicButton", m_NewLogicButton);
+	m_builder -> get_widget ("RenamePageButton", m_RenamePageButton);
+	m_builder -> get_widget ("DeleteButton", m_DeleteButton);
+	m_builder -> get_widget ("ClosePageButton", m_ClosePageButton);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 
 	// Connect object Gtk::ImageMenuItem with id 'NewPageMenuItem'.
@@ -112,6 +117,12 @@ X3DRouteGraphInterface::create ()
 
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
 	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_deselect_all_activate));
+
+	// Connect object Gtk::ToolButton with id 'NewLogicButton'.
+	m_NewLogicButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_new_page_clicked));
+	m_RenamePageButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_rename_page_clicked));
+	m_DeleteButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_delete_clicked));
+	m_ClosePageButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_close_page_clicked));
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_Notebook -> signal_page_reordered () .connect (sigc::mem_fun (this, &X3DRouteGraphInterface::on_page_reordered));

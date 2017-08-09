@@ -332,7 +332,7 @@ RouteGraphPage::addWindow (const X3D::SFNode & node, const X3D::Vector2i & posit
 		return *iter;
 
 	const auto window = std::make_shared <RouteGraphWindow> ();
-	const auto widget = std::make_shared <RouteGraphNode> (node);
+	const auto widget = std::make_shared <RouteGraphNode> (getBrowserWindow (), node);
 
 	windows .emplace_front (window);
 
