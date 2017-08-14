@@ -3052,6 +3052,9 @@
     <None Include="Titania\Widgets\RouteGraph\X3DRouteGraph.h" />
     <None Include="Titania\Widgets\RouteGraph\X3DRouteGraphPage.h" />
     <None Include="share\titania\ui\icons\RouteGraph.svg" />
+    <None Include="share\titania\Library\Components\Shaders\.Cobweb\FloatVertexAttribute" />
+    <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix3VertexAttribute" />
+    <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix4VertexAttribute" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -174,10 +174,12 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	for (const auto & path : paths)
 		getOutlineTreeView () -> expand_row (path, false);
 
+	if (paths .empty ())
+		return;
+
 	using ScrollToRow = void (OutlineTreeViewEditor::*) (const Gtk::TreePath &, float);
 
-	if  (not paths .empty ())
-		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getOutlineTreeView () .get (), (ScrollToRow) &OutlineTreeViewEditor::scroll_to_row), paths .front (), 2 - math::phi <double>));
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getOutlineTreeView () .get (), (ScrollToRow) &OutlineTreeViewEditor::scroll_to_row), paths .front (), 2 - math::phi <double>));
 }
 
 void

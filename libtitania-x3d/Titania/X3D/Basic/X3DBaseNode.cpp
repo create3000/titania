@@ -2290,14 +2290,15 @@ X3DBaseNode::dispose ()
 {
 	X3DParentObject::dispose ();
 
-	if (not privateState)
-	{
-		for (const auto & pair : fields)
-			pair .second -> removeCloneCount (1);
-	}
-
 	for (const auto & pair : fields)
-		pair .second -> removeParent (this);
+	{
+		const auto & field = pair .second;
+
+		if (not privateState)
+			field -> removeCloneCount (1);
+
+		field -> removeParent (this);
+	}
 
 	fields           .clear ();
 	fieldDefinitions .clear ();

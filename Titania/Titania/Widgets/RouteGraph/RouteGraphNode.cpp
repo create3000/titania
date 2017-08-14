@@ -50,10 +50,9 @@
 
 #include "RouteGraphNode.h"
 
-#include "RouteGraph.h"
-
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Execution/X3DExecutionContext.h>
 #include <Titania/X3D/Parser/Filter.h>
 
 namespace titania {
