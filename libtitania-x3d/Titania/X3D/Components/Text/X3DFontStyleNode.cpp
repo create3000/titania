@@ -613,29 +613,51 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 	// Test if familyName is a valid path local path.
 	// TODO: add support for network paths.
 
+__LOG__ << std::endl;
+
 	static const std::map <std::string, std::string> defaultFonts = {
 		std::make_pair ("SERIF",      "Droid Serif"),
 		std::make_pair ("SANS",       "Ubuntu"),
 		std::make_pair ("TYPEWRITER", "Ubuntu Mono"),
 	};
 
+__LOG__ << std::endl;
+
 	const auto iter       = defaultFonts .find (rawFamilyName);
 	const auto familyName = iter == defaultFonts .end () ? rawFamilyName .raw () : iter -> second;
 
+__LOG__ << std::endl;
+
 	const basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName);
+
+__LOG__ << std::endl;
 
 	if (uri .is_local ())
 	{
+
+__LOG__ << std::endl;
 		if (os::file_exists (uri .path ()))
 		{
 			isExactMatch = true;
 
+__LOG__ << std::endl;
+
 			Font font;
+
+__LOG__ << std::endl;
 			font .setFilename (uri .path ());
+
+__LOG__ << std::endl;
 			font .substitute ();
+
+__LOG__ << std::endl;
 			return font;
 		}
+
+__LOG__ << std::endl;
 	}
+
+__LOG__ << std::endl;
 
 	Font font;
 	font .setFamilyName (familyName == "TYPEWRITER" ? "monospace" : familyName);

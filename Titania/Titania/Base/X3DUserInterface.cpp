@@ -459,6 +459,8 @@ X3DUserInterface::store ()
 void
 X3DUserInterface::dispose ()
 {
+	// Save configuration.
+
 	store ();
 
 	// Close dialogs
@@ -467,6 +469,15 @@ X3DUserInterface::dispose ()
 		pair .second -> quit ();
 
 	dialogs -> clear ();
+
+	// Unparent widget, this is need if it was previously reparented. 
+
+	const auto parent = getWidget () .get_parent ();
+
+	if (parent)
+		parent -> remove (getWidget ());
+
+	// Call base.
 
 	X3DBaseInterface::dispose ();
 }

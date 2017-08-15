@@ -119,7 +119,7 @@ backtrace_signal_handler (int sig)
 	handle_signal (sig);
 
 	// print out all the frames to stderr
-	backtrace_print (100, sig);
+	backtrace_print (1000, sig);
 	::exit (255);
 }
 
@@ -128,7 +128,7 @@ void
 backtrace_terminate_handler ()
 {
 	// print out all the frames to stderr
-	backtrace_print (100, SIGABRT);
+	backtrace_print (1000, SIGABRT);
 	::exit (1);
 }
 
