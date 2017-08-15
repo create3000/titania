@@ -1,14 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp">
     <Files>
       <File FileName="Titania/share/titania/ui/style.css" Line="7" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraph.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraph.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphPage.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphPage.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphNode.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="647" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="365" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

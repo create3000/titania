@@ -56,7 +56,7 @@
 #include "../Shaders/X3DShaderNode.h"
 #include "../Text/Text.h"
 
-#include <Titania/OS/file_exists.h>
+#include <Titania/OS.h>
 #include <Titania/Backtrace.h>
 
 namespace titania {
@@ -528,7 +528,8 @@ X3DFontStyleNode::X3DFontStyleNode () :
 	    fields (),
 	    italic (false),
 	      bold (false),
-	alignments ({ Alignment::BEGIN, Alignment::FIRST })
+	alignments ({ Alignment::BEGIN, Alignment::FIRST }),
+	  tempfile ()
 {
 	addType (X3DConstants::X3DFontStyleNode);
 }
@@ -613,51 +614,51 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 	// Test if familyName is a valid path local path.
 	// TODO: add support for network paths.
 
-__LOG__ << std::endl;
-
 	static const std::map <std::string, std::string> defaultFonts = {
 		std::make_pair ("SERIF",      "Droid Serif"),
 		std::make_pair ("SANS",       "Ubuntu"),
 		std::make_pair ("TYPEWRITER", "Ubuntu Mono"),
 	};
 
-__LOG__ << std::endl;
-
 	const auto iter       = defaultFonts .find (rawFamilyName);
 	const auto familyName = iter == defaultFonts .end () ? rawFamilyName .raw () : iter -> second;
+	const auto uri        = getExecutionContext () -> getWorldURL () .transform (familyName);
+	const auto file       = Gio::File::create_for_uri (uri);
 
-__LOG__ << std::endl;
-
-	const basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName);
-
-__LOG__ << std::endl;
-
-	if (uri .is_local ())
+	try
 	{
+		if (tempfile and tempfile -> query_exists ())
+			tempfile -> remove ();
 
-__LOG__ << std::endl;
-		if (os::file_exists (uri .path ()))
+		if (file -> query_exists ())
 		{
-			isExactMatch = true;
+			const auto  suffix       = uri .suffix ();
+			std::string tempFilename = "/tmp/titania-XXXXXX" + suffix;
+			const auto tempStream    = os::mkstemps (tempFilename, suffix .size ());
 
-__LOG__ << std::endl;
+			const_cast <X3DFontStyleNode*> (this) -> tempfile = Gio::File::create_for_path (tempFilename);
 
-			Font font;
-
-__LOG__ << std::endl;
-			font .setFilename (uri .path ());
-
-__LOG__ << std::endl;
-			font .substitute ();
-
-__LOG__ << std::endl;
-			return font;
+			file -> copy (tempfile, Gio::FILE_COPY_OVERWRITE);
+	
+			if (os::file_exists (uri .path ()))
+			{
+				isExactMatch = true;
+	
+				Font font;
+				font .setFilename (tempFilename);
+				font .substitute ();
+				return font;
+			}
 		}
-
-__LOG__ << std::endl;
 	}
-
-__LOG__ << std::endl;
+	catch (const Glib::Exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 
 	Font font;
 	font .setFamilyName (familyName == "TYPEWRITER" ? "monospace" : familyName);
@@ -715,6 +716,26 @@ X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, con
 	}
 
 	url .erase (std::unique (url .begin (), url .end ()), url .end ());
+}
+
+void
+X3DFontStyleNode::dispose ()
+{
+	try
+	{
+		if (tempfile and tempfile -> query_exists ())
+			tempfile -> remove ();
+	}
+	catch (const Glib::Exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	X3DNode::dispose ();
 }
 
 } // X3D

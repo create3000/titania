@@ -57,6 +57,8 @@
 
 #include <Titania/Basic/URI.h>
 
+#include <giomm/file.h>
+
 namespace titania {
 namespace X3D {
 
@@ -298,6 +300,12 @@ public:
 	void
 	transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL);
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -331,7 +339,7 @@ private:
 	void
 	set_justify ();
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -349,10 +357,12 @@ private:
 
 	Fields fields;
 
-	bool italic;
-	bool bold;
+	///  @name Members
 
+	bool                      italic;
+	bool                      bold;
 	std::array <Alignment, 2> alignments;
+	Glib::RefPtr <Gio::File>  tempfile;
 
 };
 

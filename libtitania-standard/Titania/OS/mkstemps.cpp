@@ -56,11 +56,11 @@ namespace titania {
 namespace os {
 
 std::ofstream
-mkstemps (std::string & filename, size_t count)
+mkstemps (std::string & filename, size_t suffix_length)
 {
 	// Create temp file
 
-	const int fileDescriptor = ::mkstemps (&filename [0], count);
+	const int fileDescriptor = ::mkstemps (&filename [0], suffix_length);
 
 	std::ofstream ofstream (filename);
 

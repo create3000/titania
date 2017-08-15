@@ -58,7 +58,7 @@ namespace titania {
 namespace os {
 
 std::ofstream
-mkstemps (std::string & filename, size_t count);
+mkstemps (std::string & filename, size_t suffix_length);
 
 } // os
 } // titania
