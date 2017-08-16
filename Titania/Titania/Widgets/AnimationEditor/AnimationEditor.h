@@ -554,6 +554,7 @@ private:
 	// Maximum duration is 1,000,000 frames, thus epsilon is 0.000001 as we can only save 6 digits.
 	static constexpr double epsilon = 0.000001;
 
+	static const std::set <X3D::X3DConstants::NodeType>         arrayInterpolators;
 	static const std::map <X3D::X3DConstants::NodeType, size_t> interpolatorComponents;
 
 	/***

@@ -83,6 +83,11 @@ static constexpr double  SCROLL_FACTOR       = 1 + 1 / 16.0; // something nice
 
 static constexpr double infinity = std::numeric_limits <double>::infinity ();
 
+const std::set <X3D::X3DConstants::NodeType> AnimationEditor::arrayInterpolators = {
+	X3D::X3DConstants::CoordinateInterpolator2D,
+	X3D::X3DConstants::CoordinateInterpolator,
+};
+
 const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolatorComponents = {
 	std::make_pair (X3D::X3DConstants::BooleanSequencer,         1),
 	std::make_pair (X3D::X3DConstants::IntegerSequencer,         1),
@@ -1931,8 +1936,11 @@ AnimationEditor::removeKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 	keyValue .erase (keyValue .begin () + indexN, keyValue .begin () + (indexN + components * keySize));
 	keyType  .erase (keyType .begin () + index);
 
-	if (key .empty ())
-		keySize = 0;
+	if (interpolator -> isType (arrayInterpolators))
+	{
+		if (key .empty ())
+			keySize = 0;
+	}
 
 	interpolator -> setMetaData ("/Interpolator/key",      key);
 	interpolator -> setMetaData ("/Interpolator/keyValue", keyValue);
@@ -2347,8 +2355,11 @@ AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpol
 	keyValue .resize (sizeN);
 	keyType  .resize (size);
 
-	if (key .empty ())
-		keySize = 0;
+	if (interpolator -> isType (arrayInterpolators))
+	{
+		if (key .empty ())
+			keySize = 0;
+	}
 
 	interpolator -> setMetaData <X3D::MFInt32>  ("/Interpolator/key",      key);
 	interpolator -> setMetaData <X3D::MFDouble> ("/Interpolator/keyValue", keyValue);
