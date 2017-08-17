@@ -938,3 +938,21 @@ Viewport::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
 Fixed::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
+Fixed::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+Fixed::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+Fixed::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+Viewport::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+Viewport::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+Viewport::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+EventBox::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+EventBox::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+EventBox::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
