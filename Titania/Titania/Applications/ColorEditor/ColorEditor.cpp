@@ -339,12 +339,7 @@ ColorEditor::on_visualize_geometry_toggled ()
 	try
 	{
 		if (previewGeometry)
-		{
-			if (getVisualizeGeometryButton () .get_active ())
-				previewGeometry -> addTool ();
-			else
-				previewGeometry -> removeTool ();
-		}
+			previewGeometry -> getField <X3D::SFNode> ("coordTool") -> setField <X3D::SFBool> ("load", getVisualizeGeometryButton () .get_active ());
 
 		getConfig () -> set <bool> ("visualizeGeometry", getVisualizeGeometryButton () .get_active ());
 	}
@@ -792,6 +787,8 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			// Initialize all.
 
 			preview -> getExecutionContext () -> realize ();
+
+			previewGeometry -> addTool ();
 
 			on_visualize_geometry_toggled ();
 			set_viewer ();
