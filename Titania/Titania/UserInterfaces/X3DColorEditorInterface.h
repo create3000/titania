@@ -132,8 +132,8 @@ public:
 	{ return *m_ArrowButton; }
 
 	Gtk::ToggleToolButton &
-	getCheckerBoardButton () const
-	{ return *m_CheckerBoardButton; }
+	getVisualizeGeometryButton () const
+	{ return *m_VisualizeGeometryButton; }
 
 	Gtk::ToolButton &
 	getShadingButton () const
@@ -142,6 +142,10 @@ public:
 	Gtk::ToggleToolButton &
 	getTextureButton () const
 	{ return *m_TextureButton; }
+
+	Gtk::ToggleToolButton &
+	getCheckerBoardButton () const
+	{ return *m_CheckerBoardButton; }
 
 	Gtk::ToolButton &
 	getLookAtAllButton () const
@@ -243,7 +247,7 @@ public:
 
 	virtual
 	void
-	on_checkerboard_toggled () = 0;
+	on_visualize_geometry_toggled () = 0;
 
 	virtual
 	void
@@ -252,6 +256,10 @@ public:
 	virtual
 	void
 	on_texture_toggled () = 0;
+
+	virtual
+	void
+	on_checkerboard_toggled () = 0;
 
 	virtual
 	void
@@ -340,9 +348,10 @@ private:
 	Gtk::Box* m_PreviewBox;
 	Gtk::RadioToolButton* m_HandButton;
 	Gtk::RadioToolButton* m_ArrowButton;
-	Gtk::ToggleToolButton* m_CheckerBoardButton;
+	Gtk::ToggleToolButton* m_VisualizeGeometryButton;
 	Gtk::ToolButton* m_ShadingButton;
 	Gtk::ToggleToolButton* m_TextureButton;
+	Gtk::ToggleToolButton* m_CheckerBoardButton;
 	Gtk::ToolButton* m_LookAtAllButton;
 	Gtk::ToggleToolButton* m_LookAtButton;
 	Gtk::ToggleButton* m_SelectColorButton;

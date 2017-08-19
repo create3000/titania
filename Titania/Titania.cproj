@@ -3055,6 +3055,7 @@
     <None Include="share\titania\Library\Components\Shaders\.Cobweb\FloatVertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix3VertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix4VertexAttribute" />
+    <None Include="share\titania\ui\icons\VisualizeGeometry.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

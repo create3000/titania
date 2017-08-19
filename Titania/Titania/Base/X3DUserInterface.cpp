@@ -93,12 +93,12 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface () :
-	    X3DBaseInterface (),
-	              config (),
-	initializeConnection (),
-	       userInterface (),
-	             dialogs (new DialogIndex ()),
-	         initialized (false)
+	X3DBaseInterface (),
+	          config (),
+	   mapConnection (),
+	   userInterface (),
+	         dialogs (new DialogIndex ()),
+	     initialized (false)
 {
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -109,7 +109,7 @@ X3DUserInterface::setup ()
 {
 	X3DBaseInterface::setup ();
 
-	assert (not initializeConnection .connected ());
+	assert (not mapConnection .connected ());
 	assert (not getWidget () .get_name () .empty ());
 
 	setTypeName (getWidget () .get_name ());
@@ -119,7 +119,7 @@ X3DUserInterface::setup ()
 
 	config .reset (new Configuration (getName ()));
 
-	initializeConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
+	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
@@ -132,13 +132,13 @@ X3DUserInterface::on_initialize ()
 {
 	//__LOG__ << "Initializing widget: " << getName () << std::endl;
 
-	initializeConnection .disconnect ();
+	mapConnection .disconnect ();
 	initialized = true;
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 
-	getWidget () .signal_map ()   .connect (sigc::mem_fun (this, &X3DUserInterface::on_map));
+	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (this, &X3DUserInterface::on_unmap));
 
 	on_map ();
@@ -416,19 +416,21 @@ X3DUserInterface::saveInterface ()
 		getConfig () -> set ("width",  width);
 		getConfig () -> set ("height", height);
 	}
+
+	getWindow () .hide (); // Hide window as last command.
 }
 
 bool
 X3DUserInterface::quit ()
 {
+	mapConnection .disconnect ();
+
 	// Save sessions
 
 	if (this == userInterfaces .front ())
 		saveInterfaces ();
 	else
 		saveInterface ();
-
-	getWindow () .hide (); // Hide window as last command.
 
 	// Prevent destroying Window.
 	return true;

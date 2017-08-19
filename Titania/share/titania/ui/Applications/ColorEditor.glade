@@ -239,14 +239,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkToggleToolButton" id="CheckerBoardButton">
+                              <object class="GtkToggleToolButton" id="VisualizeGeometryButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="tooltip_text" translatable="yes">Toggle between checkerboard and monochrome background.</property>
-                                <property name="label" translatable="yes">Checkerboard</property>
+                                <property name="tooltip_text" translatable="yes">Toggle visualization of geometry.</property>
+                                <property name="label" translatable="yes">Visualize Geometry</property>
                                 <property name="use_underline">True</property>
-                                <property name="stock_id">Checkerboard</property>
-                                <signal name="toggled" handler="on_checkerboard_toggled" swapped="no"/>
+                                <property name="stock_id">VisualizeGeometry</property>
+                                <signal name="toggled" handler="on_visualize_geometry_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -277,6 +277,21 @@
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">Texture</property>
                                 <signal name="toggled" handler="on_texture_toggled" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToggleToolButton" id="CheckerBoardButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Toggle between checkerboard and monochrome background.</property>
+                                <property name="label" translatable="yes">Checkerboard</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">Checkerboard</property>
+                                <signal name="toggled" handler="on_checkerboard_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -458,7 +473,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="tooltip_text" translatable="yes">Colorize single vertex.</property>
-                                    <property name="xalign">0</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">False</property>
                                     <signal name="clicked" handler="on_single_vertex_clicked" swapped="no"/>
@@ -482,7 +496,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="tooltip_text" translatable="yes">Colorize adjacent vertices.</property>
-                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">False</property>
                                     <property name="group">SingleVertexButton</property>
                                     <signal name="clicked" handler="on_adjacent_vertices_clicked" swapped="no"/>
@@ -506,7 +519,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="tooltip_text" translatable="yes">Colorize single face.</property>
-                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">False</property>
                                     <property name="group">SingleVertexButton</property>
                                     <signal name="clicked" handler="on_single_face_clicked" swapped="no"/>
@@ -530,7 +542,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="tooltip_text" translatable="yes">Colorize whole object.</property>
-                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">False</property>
                                     <property name="group">SingleVertexButton</property>
                                     <signal name="clicked" handler="on_whole_object_clicked" swapped="no"/>

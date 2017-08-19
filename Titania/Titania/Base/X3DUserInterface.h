@@ -254,7 +254,7 @@ private:
 	///  @name Members
 
 	std::shared_ptr <Configuration> config;
-	sigc::connection                initializeConnection;
+	sigc::connection                mapConnection;
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;
 	bool                            initialized;

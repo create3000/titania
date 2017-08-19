@@ -134,10 +134,11 @@ ColorEditor::configure ()
 {
 	X3DColorEditorInterface::configure ();
 
-	getCheckerBoardButton () .set_active (getConfig () -> getBoolean ("checkerBoard"));
-	getTextureButton ()      .set_active (getConfig () -> getBoolean ("texture"));
+	getVisualizeGeometryButton () .set_active (getConfig () -> get <bool> ("visualizeGeometry", true));
+	getCheckerBoardButton ()      .set_active (getConfig () -> get <bool> ("checkerBoard"));
+	getTextureButton ()           .set_active (getConfig () -> get <bool> ("texture"));
 
-	switch (getConfig () -> getInteger ("mode"))
+	switch (getConfig () -> get <int32_t> ("mode"))
 	{
 		case SINGLE_VERTEX:
 		{
@@ -173,18 +174,17 @@ ColorEditor::set_initialized ()
 	try
 	{
 		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> setPrivate (true);
 
 		transform -> addInterest (&ColorEditor::set_viewer, this);
-		shape -> geometry ()               .addInterest (&ColorEditor::set_viewer, this);
 		touchSensor -> hitPoint_changed () .addInterest (&ColorEditor::set_hitPoint, this);
 		touchSensor -> touchTime ()        .addInterest (&ColorEditor::set_touchTime, this);
 
-		configure ();
+		on_texture_toggled ();
+		on_checkerboard_toggled ();
 
 		set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 	}
@@ -334,18 +334,19 @@ ColorEditor::on_arrow_toggled ()
 }
 
 void
-ColorEditor::on_checkerboard_toggled ()
+ColorEditor::on_visualize_geometry_toggled ()
 {
 	try
 	{
-		const auto layerSet = preview -> getExecutionContext () -> getNamedNode <X3D::LayerSet> ("LayerSet");
+		if (previewGeometry)
+		{
+			if (getVisualizeGeometryButton () .get_active ())
+				previewGeometry -> addTool ();
+			else
+				previewGeometry -> removeTool ();
+		}
 
-		if (getCheckerBoardButton () .get_active ())
-			layerSet -> order () = { 2, 3, 4 };
-		else
-			layerSet -> order () = { 1, 3, 4 };
-
-		getConfig () -> setItem ("checkerBoard", getCheckerBoardButton () .get_active ());
+		getConfig () -> set <bool> ("visualizeGeometry", getVisualizeGeometryButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -408,17 +409,37 @@ ColorEditor::on_texture_toggled ()
 	{
 		setTexture (getTextureButton () .get_active ());
 
-		getConfig () -> setItem ("texture", getTextureButton () .get_active ());
+		getConfig () -> set <bool> ("texture", getTextureButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
 }
 
 void
+ColorEditor::on_checkerboard_toggled ()
+{
+	try
+	{
+		const auto layerSet = preview -> getExecutionContext () -> getNamedNode <X3D::LayerSet> ("LayerSet");
+
+		if (getCheckerBoardButton () .get_active ())
+			layerSet -> order () = { 2, 3, 4 };
+		else
+			layerSet -> order () = { 1, 3, 4 };
+
+		getConfig () -> set <bool> ("checkerBoard", getCheckerBoardButton () .get_active ());
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
 ColorEditor::on_look_at_all_clicked ()
 {
 	if (preview -> getActiveLayer ())
-		preview -> getActiveLayer () -> lookAt ();
+		preview -> getActiveLayer () -> lookAt (1, false, 0.2);
 }
 
 void
@@ -441,7 +462,7 @@ ColorEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
 
-	getConfig () -> setItem ("mode", mode);
+	getConfig () -> set <int32_t> ("mode", mode);
 }
 
 void
@@ -449,7 +470,7 @@ ColorEditor::on_adjacent_vertices_clicked ()
 {
 	mode = ADJACENT_VERTICES;
 
-	getConfig () -> setItem ("mode", mode);
+	getConfig () -> set <int32_t> ("mode", mode);
 }
 
 void
@@ -457,7 +478,7 @@ ColorEditor::on_single_face_clicked ()
 {
 	mode = SINGLE_FACE;
 
-	getConfig () -> setItem ("mode", mode);
+	getConfig () -> set <int32_t> ("mode", mode);
 }
 
 void
@@ -465,7 +486,7 @@ ColorEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
 
-	getConfig () -> setItem ("mode", mode);
+	getConfig () -> set <int32_t> ("mode", mode);
 }
 
 void
@@ -552,10 +573,7 @@ void
 ColorEditor::set_viewer ()
 {
 	if (preview -> getActiveLayer ())
-	{
-		preview -> getActiveLayer () -> getViewpoint () -> resetUserOffsets ();
-		preview -> getActiveLayer () -> lookAt ();
-	}
+		preview -> getActiveLayer () -> lookAt (1, true, 0);
 }
 
 void
@@ -611,6 +629,7 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 		appearance -> texture ()          .addInterest (&ColorEditor::set_texture, this);
 		appearance -> textureTransform () .addInterest (&ColorEditor::set_textureTransform, this);
 
+		set_material (appearance -> material ());
 		set_texture (appearance -> texture ());
 		set_textureTransform (appearance -> textureTransform ());
 		setTexture (getTextureButton () .get_active ());
@@ -620,6 +639,14 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 		set_texture (nullptr);
 		set_textureTransform (nullptr);
 	}
+}
+
+void
+ColorEditor::set_material (const X3D::SFNode & value)
+{
+	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+	previewAppearance -> material () = value;
 }
 
 void
@@ -765,6 +792,9 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			// Initialize all.
 
 			preview -> getExecutionContext () -> realize ();
+
+			on_visualize_geometry_toggled ();
+			set_viewer ();
 		}
 		else
 		{

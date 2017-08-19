@@ -1,10 +1,13 @@
-#X3D V3.3 utf8 Titania V0.7.6
+#X3D V3.3 utf8 Titania V3.0.4
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 08 Dec 2014 15:11:06 GMT"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/ColorEditorPreview.x3dv"
+META "modified" "Sat, 19 Aug 2017 06:12:41 GMT"
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -16,11 +19,11 @@ DEF LayerSet LayerSet {
   layers [
     DEF Background Layer {
       isPickable FALSE
-      children DEF Gray_1 Background {
+      children DEF Gray Background {
         skyColor 0.5 0.5 0.5
       }
     }
-    DEF CheckerBoard_1 LayoutLayer {
+    DEF CheckerBoard LayoutLayer {
       isPickable FALSE
       layout Layout {
         scaleMode [
@@ -29,7 +32,7 @@ DEF LayerSet LayerSet {
         ]
       }
       children [
-        DEF Gray_2 Background {
+        DEF Gray_1 Background {
           skyColor 0.4 0.4 0.4
         }
         Shape {
@@ -177,7 +180,7 @@ function initialize ()
                       color Color {
                         color [
                           1 0 0,
-                          1 1 1
+                          1 0.5 0.5
                         ]
                       }
                       coord USE TriangleCoordinate

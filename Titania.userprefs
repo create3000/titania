@@ -1,13 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/share/titania/ui/style.css" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="556" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="90" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="437" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="2460" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphPage.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/RouteGraph/RouteGraphPage.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

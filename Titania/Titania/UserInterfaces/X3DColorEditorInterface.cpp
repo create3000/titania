@@ -90,9 +90,10 @@ X3DColorEditorInterface::create ()
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("HandButton", m_HandButton);
 	m_builder -> get_widget ("ArrowButton", m_ArrowButton);
-	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
+	m_builder -> get_widget ("VisualizeGeometryButton", m_VisualizeGeometryButton);
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 	m_builder -> get_widget ("TextureButton", m_TextureButton);
+	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
@@ -126,14 +127,15 @@ X3DColorEditorInterface::create ()
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_hand_toggled));
 	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_arrow_toggled));
 
-	// Connect object Gtk::ToggleToolButton with id 'CheckerBoardButton'.
-	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_checkerboard_toggled));
+	// Connect object Gtk::ToggleToolButton with id 'VisualizeGeometryButton'.
+	m_VisualizeGeometryButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_visualize_geometry_toggled));
 
 	// Connect object Gtk::ToolButton with id 'ShadingButton'.
 	m_ShadingButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_shading_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'TextureButton'.
 	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_texture_toggled));
+	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_checkerboard_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
 	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_look_at_all_clicked));

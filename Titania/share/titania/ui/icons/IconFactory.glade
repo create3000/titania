@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="VisualizeGeometry" filename="VisualizeGeometry.svg"/>
       <source stock-id="RouteGraph" filename="RouteGraph.svg"/>
       <source stock-id="TextNode" filename="Primitives/TextNode.svg"/>
       <source stock-id="StarNode" filename="Primitives/StarNode.svg"/>

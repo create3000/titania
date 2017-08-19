@@ -177,7 +177,7 @@ MFColorRGBAButton::setIndex (const int32_t value)
 {
 	index = value;
 
-	set_buffer ();
+	set_field ();
 
 	index_changed .emit ();
 }

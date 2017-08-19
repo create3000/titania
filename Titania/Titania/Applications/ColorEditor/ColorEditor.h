@@ -149,7 +149,7 @@ private:
 
 	virtual
 	void
-	on_checkerboard_toggled () final override;
+	on_visualize_geometry_toggled () final override;
 
 	virtual
 	void
@@ -181,6 +181,10 @@ private:
 	virtual
 	void
 	on_texture_toggled () final override;
+
+	virtual
+	void
+	on_checkerboard_toggled () final override;
 
 	virtual
 	void
@@ -234,6 +238,9 @@ private:
 
 	void
 	set_appearance (const X3D::SFNode &);
+
+	void
+	set_material (const X3D::SFNode & value);
 
 	void
 	set_texture (const X3D::SFNode &);
