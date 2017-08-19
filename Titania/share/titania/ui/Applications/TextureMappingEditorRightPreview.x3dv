@@ -1,14 +1,13 @@
-#X3D V3.3 utf8 Titania V2.0.1
+#X3D V3.3 utf8 Titania V3.0.4
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TextureMappingEditorRightPreview.x3dv"
-META "modified" "Fri, 03 Feb 2017 05:22:04 GMT"
-META "outputStyle" "nicest"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/TextureMappingEditorRightPreview.x3dv"
+META "modified" "Sat, 19 Aug 2017 07:04:44 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -71,101 +70,39 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
-            value DEF _1 DepthBuffer {
-              enabled FALSE
-              depthOffset 1000000000
-              children [
-                DEF SelectedFaces Group {
-                  children [
-                    DEF _2 Switch {
-                      whichChoice 1
-                      children [
-                        Group { }
-                        Shape {
-                          appearance Appearance {
-                            lineProperties LineProperties {
-                              linewidthScaleFactor 2
-                            }
-                            material Material {
-                              diffuseColor 0 0 0
-                            }
-                          }
-                          geometry DEF SelectedGeometry IndexedLineSet { }
-                        }
-                      ]
-                    }
-                    Shape {
-                      appearance Appearance {
-                        material Material {
-                          diffuseColor 0 0 0
-                          emissiveColor 0.35 1 0.7
-                        }
-                      }
-                      geometry USE SelectedGeometry
-                    }
-                  ]
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF _1 PolygonOffset {
+              factor 1
+              units 1
+              children DEF Shape Shape {
+                appearance DEF Appearance Appearance {
+                  material Material { }
                 }
-                DEF ActiveFace Switch {
-                  whichChoice 0
-                  children [
-                    DEF CrossScript Script {
-                      inputOnly  SFBool  set_active
-                      outputOnly SFInt32 whichChoice_changed
-
-                      url "javascript:
-
-function initialize ()
-{
-	whichChoice_changed = false;
-}
-
-function set_active (value)
-{
-	whichChoice_changed = value;
-}"
-                    }
-                    DEF Selection_1 Group {
-                      children [
-                        DEF _3 Switch {
-                          whichChoice 1
-                          children [
-                            Group { }
-                            Shape {
-                              appearance Appearance {
-                                lineProperties LineProperties {
-                                  linewidthScaleFactor 2
-                                }
-                                material Material {
-                                  diffuseColor 0 0 0
-                                }
-                              }
-                              geometry DEF SelectionGeometry IndexedLineSet { }
-                            }
-                          ]
-                        }
-                        Shape {
-                          appearance Appearance {
-                            material Material {
-                              diffuseColor 0 0 0
-                              emissiveColor 1 0 0
-                            }
-                          }
-                          geometry USE SelectionGeometry
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              }
             }
           }
-          DEF children MetadataSet {
-            name "children"
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
             reference "http://titania.create3000.de"
-            value USE _1
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -201,12 +138,88 @@ LayerSet {
         DEF Transform Transform {
           children [
             DEF TouchSensor TouchSensor { }
-            DEF Shape Shape {
-              appearance DEF Appearance Appearance {
-                material Material { }
-              }
-            }
             USE _1
+            DEF SelectedFaces Group {
+              children [
+                DEF _2 Switch {
+                  whichChoice 0
+                  children [
+                    Group { }
+                    Shape {
+                      appearance Appearance {
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 2
+                        }
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry DEF SelectedGeometry IndexedLineSet { }
+                    }
+                  ]
+                }
+                Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.35 1 0.7
+                    }
+                  }
+                  geometry USE SelectedGeometry
+                }
+              ]
+            }
+            DEF ActiveFace Switch {
+              whichChoice 0
+              children [
+                DEF CrossScript Script {
+                  inputOnly  SFBool  set_active
+                  outputOnly SFInt32 whichChoice_changed
+
+                  url "javascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+                }
+                DEF Selection_1 Group {
+                  children [
+                    DEF _3 Switch {
+                      whichChoice 0
+                      children [
+                        Group { }
+                        Shape {
+                          appearance Appearance {
+                            lineProperties LineProperties {
+                              linewidthScaleFactor 2
+                            }
+                            material Material {
+                              diffuseColor 0 0 0
+                            }
+                          }
+                          geometry DEF SelectionGeometry IndexedLineSet { }
+                        }
+                      ]
+                    }
+                    Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 0
+                          emissiveColor 1 0 0
+                        }
+                      }
+                      geometry USE SelectionGeometry
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]

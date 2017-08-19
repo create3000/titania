@@ -106,8 +106,6 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	                 previewColor,
 	                 selection);
 
-	preview -> setAntialiasing (4);
-
 	setup ();
 }
 
@@ -117,6 +115,8 @@ ColorEditor::initialize ()
 	X3DColorEditorInterface::initialize ();
 
 	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
+	preview -> setAntialiasing (4);
+	preview -> setPrivateCursor ("default");
 	preview -> set_opacity (0);
 	preview -> show ();
 

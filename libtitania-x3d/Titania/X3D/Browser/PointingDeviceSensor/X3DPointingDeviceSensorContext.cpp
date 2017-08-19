@@ -73,6 +73,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	   pointingDevice  (new PointingDevice (getBrowser ())),
 	          pickable (true),
 	            cursor ("default"),
+	     privateCursor ("none"),
 	           pointer (),
 	            hitRay (),
 	              hits (),
@@ -91,6 +92,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	addChildObjects (pointingDevice,
 	                 pickable,
 	                 cursor,
+	                 privateCursor,
 	                 selectedLayer);
 }
 
@@ -100,7 +102,8 @@ X3DPointingDeviceSensorContext::initialize ()
 	getBrowser () -> signal_map () .connect (sigc::mem_fun (this, &X3DPointingDeviceSensorContext::on_map));
 	getBrowser () -> shutdown () .addInterest (&X3DPointingDeviceSensorContext::set_shutdown, this);
 
-	getCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
+	getCursor ()        .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
+	getPrivateCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
 
 	setCursor ("default");
 
@@ -110,16 +113,20 @@ X3DPointingDeviceSensorContext::initialize ()
 void
 X3DPointingDeviceSensorContext::on_map ()
 {
-	set_cursor (cursor);
+	set_cursor ();
 }
 
 void
-X3DPointingDeviceSensorContext::set_cursor (const String & value)
+X3DPointingDeviceSensorContext::set_cursor ()
 {
 	if (not getBrowser () -> get_mapped ())
 		return;
 
-	getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
+	if (getPrivateCursor () != "none")
+		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), getPrivateCursor ()));
+
+	else
+		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), getCursor ()));
 }
 
 void

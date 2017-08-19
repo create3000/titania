@@ -88,6 +88,16 @@ public:
 	noexcept (true)
 	{ return cursor; }
 
+	void
+	setPrivateCursor (const std::string & value)
+	noexcept (true)
+	{ privateCursor = value; }
+
+	const SFString &
+	getPrivateCursor () const
+	noexcept (true)
+	{ return privateCursor; }
+
 	const Line3d &
 	getHitRay () const
 	{ return hitRay; }
@@ -223,7 +233,7 @@ private:
 	on_map ();
 
 	void
-	set_cursor (const String & value);
+	set_cursor ();
 
 	void
 	set_shutdown ();
@@ -238,6 +248,7 @@ private:
 	X3DPtr <PointingDevice>                        pointingDevice;
 	SFBool                                         pickable;
 	SFString                                       cursor;
+	SFString                                       privateCursor;
 	Vector2d                                       pointer;
 	Line3d                                         hitRay;
 	HitArray                                       hits;
