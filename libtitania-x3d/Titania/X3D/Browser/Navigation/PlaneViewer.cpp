@@ -106,7 +106,7 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 		{
 			button = event -> button;
 
-			getBrowser () -> setCursor ("move");
+			getBrowser () -> setCursor ("MOVE");
 			getActiveViewpoint () -> transitionStop ();
 
 			fromPoint = getPointOnCenterPlane (event -> x, event -> y);
@@ -128,7 +128,7 @@ PlaneViewer::on_button_release_event (GdkEventButton* event)
 
 	button = 0;
 
-	getBrowser () -> setCursor ("default");
+	getBrowser () -> setCursor ("ARROW");
 
 	isActive () = false;
 	return false;

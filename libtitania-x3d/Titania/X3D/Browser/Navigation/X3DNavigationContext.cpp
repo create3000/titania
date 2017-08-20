@@ -245,7 +245,7 @@ X3DNavigationContext::set_viewer ()
 {
 	const auto type = getCurrentViewer ();
 
-	getBrowser () -> setCursor ("default");
+	getBrowser () -> setCursor ("ARROW");
 
 	viewerNode .addEvent ();
 

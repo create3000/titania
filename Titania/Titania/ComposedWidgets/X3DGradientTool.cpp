@@ -85,6 +85,7 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 
 	browser -> initialized () .addInterest (&X3DGradientTool::set_initialized, this);
 	browser -> setAntialiasing (4);
+	browser -> setPrivateCursor ("ARROW");
 	browser -> set_opacity (0);
 	browser -> show ();
 

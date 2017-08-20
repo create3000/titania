@@ -110,7 +110,7 @@ PointingDevice::set_pickable ()
 
 		getBrowser () -> setButtonReleaseEvent (-1000, -1000);
 		getBrowser () -> setLeaveNotifyEvent (-1000, -1000);
-		getBrowser () -> setCursor ("default");
+		getBrowser () -> setCursor ("ARROW");
 	}
 
 	// Connect.
@@ -140,7 +140,7 @@ PointingDevice::set_motion (const double x, const double y)
 		{
 			isOver = true;
 			cursor = getBrowser () -> getCursor ();
-			getBrowser () -> setCursor (button == 1 ? "grabbing" : "grab");
+			getBrowser () -> setCursor (button == 1 ? "GRABBING" : "GRAB");
 		}
 	}
 	else
@@ -148,7 +148,7 @@ PointingDevice::set_motion (const double x, const double y)
 		if (isOver)
 		{
 			isOver = false;
-			getBrowser () -> setCursor (button == 1 ? "grabbing" : cursor);
+			getBrowser () -> setCursor (button == 1 ? "GRABBING" : cursor);
 		}
 	}
 }
@@ -184,7 +184,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 	{
 		if (getBrowser () -> setButtonPressEvent (event -> x, getBrowser () -> get_height () - event -> y))
 		{
-			getBrowser () -> setCursor ("grabbing");
+			getBrowser () -> setCursor ("GRABBING");
 			getBrowser () -> finished () .addInterest (&PointingDevice::set_verify_motion, this, event -> x, event -> y);
 			return true;
 		}
@@ -200,9 +200,9 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 		getBrowser () -> setButtonReleaseEvent (event -> x, getBrowser () -> get_height () - event -> y);
 
 	if (isOver)
-		getBrowser () -> setCursor ("grab");
+		getBrowser () -> setCursor ("GRAB");
 	else
-		getBrowser () -> setCursor ("default");
+		getBrowser () -> setCursor ("ARROW");
 
 	getBrowser () -> finished () .addInterest (&PointingDevice::set_verify_motion, this, event -> x, event -> y);
 	getBrowser () -> addEvent ();

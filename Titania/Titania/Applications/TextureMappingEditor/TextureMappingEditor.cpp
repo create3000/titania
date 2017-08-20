@@ -149,8 +149,8 @@ TextureMappingEditor::initialize ()
 
 	left  -> setAntialiasing (4);
 	right -> setAntialiasing (4);
-	left  -> setPrivateCursor ("default");
-	right -> setPrivateCursor ("default");
+	left  -> setPrivateCursor ("ARROW");
+	right -> setPrivateCursor ("ARROW");
 	left  -> set_opacity (0);
 	right -> set_opacity (0);
 	left  -> show ();

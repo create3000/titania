@@ -72,8 +72,8 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       X3DBaseNode (),
 	   pointingDevice  (new PointingDevice (getBrowser ())),
 	          pickable (true),
-	            cursor ("default"),
-	     privateCursor ("none"),
+	            cursor ("ARROW"),
+	     privateCursor ("DEFAULT"),
 	           pointer (),
 	            hitRay (),
 	              hits (),
@@ -105,7 +105,7 @@ X3DPointingDeviceSensorContext::initialize ()
 	getCursor ()        .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
 	getPrivateCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
 
-	setCursor ("default");
+	setCursor ("ARROW");
 
 	pointingDevice -> setup ();
 }
@@ -119,14 +119,29 @@ X3DPointingDeviceSensorContext::on_map ()
 void
 X3DPointingDeviceSensorContext::set_cursor ()
 {
-	if (not getBrowser () -> get_mapped ())
-		return;
+	try
+	{
+		static const std::map <std::string, std::string> cursors = {
+			std::make_pair ("ARROW",    "default"),
+			std::make_pair ("GRAB",     "grab"),
+			std::make_pair ("GRABBING", "grabbing"),
+			std::make_pair ("MOVE",     "move"),
+			std::make_pair ("LOOK_AT",  "cell"),
+		};
 
-	if (getPrivateCursor () != "none")
-		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), getPrivateCursor ()));
+		if (not getBrowser () -> get_mapped ())
+			return;
+	
+		const auto string = cursors .at (getPrivateCursor () == "DEFAULT" ? getCursor () : getPrivateCursor ());
 
-	else
-		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), getCursor ()));
+		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), string));
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
+	}
 }
 
 void

@@ -116,7 +116,7 @@ ColorEditor::initialize ()
 
 	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
 	preview -> setAntialiasing (4);
-	preview -> setPrivateCursor ("default");
+	preview -> setPrivateCursor ("ARROW");
 	preview -> set_opacity (0);
 	preview -> show ();
 
