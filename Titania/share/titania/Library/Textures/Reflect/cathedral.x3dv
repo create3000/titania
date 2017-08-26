@@ -13,10 +13,10 @@ DEF cathedral Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Reflect/cathedral.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Reflect/cathedral.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Reflect/cathedral.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Reflect/cathedral.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Reflect/cathedral.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Reflect/cathedral.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Reflect/cathedral.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Reflect/cathedral.png"
         ]
         repeatS FALSE
         repeatT FALSE

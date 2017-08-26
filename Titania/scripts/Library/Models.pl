@@ -18,10 +18,10 @@ my $models = "/home/holger/Projekte/Library/Models/";
 
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/Library/master/Models",
-	"https://cdn.rawgit.com/create3000/Library/master/Models",
-	"http://rawgit.com/create3000/Library/master/Models",
-	"https://rawgit.com/create3000/Library/master/Models",
+	"http://cdn.rawgit.com/create3000/Library/1.0.0/Models",
+	"https://cdn.rawgit.com/create3000/Library/1.0.0/Models",
+	"http://rawgit.com/create3000/Library/1.0.0/Models",
+	"https://rawgit.com/create3000/Library/1.0.0/Models",
 );
 
 sub models {

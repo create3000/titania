@@ -13,10 +13,10 @@ DEF bear Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Animal/bear.jpg",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Animal/bear.jpg",
-          "http://rawgit.com/create3000/Library/master/Textures/Animal/bear.jpg",
-          "https://rawgit.com/create3000/Library/master/Textures/Animal/bear.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/bear.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/bear.jpg",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animal/bear.jpg",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animal/bear.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

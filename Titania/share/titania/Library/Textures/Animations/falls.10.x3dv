@@ -13,10 +13,10 @@ DEF falls10 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Animations/falls.10.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Animations/falls.10.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Animations/falls.10.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Animations/falls.10.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animations/falls.10.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animations/falls.10.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animations/falls.10.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animations/falls.10.png"
         ]
         repeatS FALSE
         repeatT FALSE

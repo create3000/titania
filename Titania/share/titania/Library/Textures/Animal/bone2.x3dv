@@ -13,10 +13,10 @@ DEF bone2 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Animal/bone2.jpg",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Animal/bone2.jpg",
-          "http://rawgit.com/create3000/Library/master/Textures/Animal/bone2.jpg",
-          "https://rawgit.com/create3000/Library/master/Textures/Animal/bone2.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/bone2.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/bone2.jpg",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animal/bone2.jpg",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animal/bone2.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

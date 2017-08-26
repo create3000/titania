@@ -13,10 +13,10 @@ DEF LostValley-right Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-          "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-          "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

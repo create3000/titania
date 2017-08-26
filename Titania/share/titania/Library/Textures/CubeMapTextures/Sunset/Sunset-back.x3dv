@@ -13,10 +13,10 @@ DEF Sunset-back Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-          "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-          "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

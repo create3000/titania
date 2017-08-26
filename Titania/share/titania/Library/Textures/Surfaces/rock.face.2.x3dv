@@ -13,10 +13,10 @@ DEF rockface2 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/rock.face.2.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/rock.face.2.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Surfaces/rock.face.2.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Surfaces/rock.face.2.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/rock.face.2.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/rock.face.2.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/rock.face.2.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/rock.face.2.png"
         ]
         repeatS FALSE
         repeatT FALSE

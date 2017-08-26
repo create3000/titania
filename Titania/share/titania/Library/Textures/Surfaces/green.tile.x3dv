@@ -13,10 +13,10 @@ DEF greentile Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/green.tile.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/green.tile.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Surfaces/green.tile.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Surfaces/green.tile.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/green.tile.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/green.tile.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/green.tile.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/green.tile.png"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -12,10 +12,10 @@ EXTERNPROTO SFVec3f [
   outputOnly  SFVec3f value_changed
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
-  "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
-  "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
-  "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec3f.x3dv"
+  "https://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
+  "http://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
+  "https://rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/SFVec3f.x3dv",
+  "http://rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/SFVec3f.x3dv"
 ]
 
 SFVec3f { }

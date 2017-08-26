@@ -13,10 +13,10 @@ DEF tantile Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/tan.tile.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/tan.tile.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Surfaces/tan.tile.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Surfaces/tan.tile.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/tan.tile.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/tan.tile.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/tan.tile.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/tan.tile.png"
         ]
         repeatS FALSE
         repeatT FALSE

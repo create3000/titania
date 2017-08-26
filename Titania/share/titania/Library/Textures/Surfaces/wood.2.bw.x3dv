@@ -13,10 +13,10 @@ DEF wood2bw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/wood.2.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Surfaces/wood.2.bw.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Surfaces/wood.2.bw.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Surfaces/wood.2.bw.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/wood.2.bw.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/wood.2.bw.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/wood.2.bw.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Surfaces/wood.2.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

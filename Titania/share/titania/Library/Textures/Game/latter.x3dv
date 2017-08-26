@@ -13,10 +13,10 @@ DEF latter Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/master/Textures/Game/latter.png",
-          "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/latter.png",
-          "http://rawgit.com/create3000/Library/master/Textures/Game/latter.png",
-          "https://rawgit.com/create3000/Library/master/Textures/Game/latter.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Game/latter.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Game/latter.png",
+          "http://rawgit.com/create3000/Library/1.0.0/Textures/Game/latter.png",
+          "https://rawgit.com/create3000/Library/1.0.0/Textures/Game/latter.png"
         ]
         repeatS FALSE
         repeatT FALSE
