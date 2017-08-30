@@ -260,6 +260,8 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 void
 X3DIndexedFaceSetKnifeObject::set_touch_sensor_over ()
 {
+	getBrowser () -> setPrivateCursor (knifeTouchSensor -> isOver () ? "ARROW" : "DEFAULT");
+
 	if (knifeTouchSensor -> isActive ())
       return;
 

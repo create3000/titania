@@ -424,6 +424,8 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
 {
+	getBrowser () -> setPrivateCursor (over ? "ARROW" : "DEFAULT");
+
 	if (over)
 		return;
 
@@ -585,6 +587,190 @@ X3DIndexedFaceSetSelectionObject::setHotSelection (const std::vector <int32_t> &
 	}
 }
 
+void
+X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t> & coincidentPoints)
+{
+	const auto & hitPoint = touchSensor -> getHitPoint ();
+	auto         index    = coincidentPoints [0];
+	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto         face     = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
+
+	const auto point    = getCoord () -> get1Point (index);
+	const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+	activeFace = face;
+	activeFaces  .clear ();
+	activeEdges  .clear ();
+	activePoints .clear ();
+
+	if (vertices .size () >= 3)
+	{
+		const auto edge          = getFaceSelection () -> getClosestEdge (hitPoint, vertices);
+		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+		const auto pointDistance = getDistance (hitPoint, point);
+
+		// Hot edge and points for near point or face
+
+		if (pointDistance > SELECTION_DISTANCE)
+		{
+			if (edgeDistance > SELECTION_DISTANCE)
+			{
+				// Face
+
+				switch (getSelectionType ())
+				{
+					case SelectionType::POINTS:
+					{
+						break;
+					}
+					case SelectionType::EDGES:
+					{
+						break;
+					}
+					case SelectionType::FACES:
+					{
+						for (const auto & vertex : vertices)
+							activePoints .emplace_back (coordIndex () [vertex]);
+
+						if (selectLineLoop ())
+						{
+							activeFaces = selectFaceLoop (face);
+							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
+
+							for (const auto & face : activeFaces)
+							{
+								for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+									activePoints .emplace_back (coordIndex () [vertex]);
+							}
+
+							std::sort (activePoints .begin (), activePoints .end ());
+
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+						}
+						else
+						{
+							activeFaces = { face };
+							activeEdges = getFaceSelection () -> getFaceEdges (face);
+						}
+
+						break;
+					}
+				}
+			}
+			else
+			{
+				// Edge
+
+				if (selectLineLoop ())
+				{
+					const auto lineLoop = selectLineLoop (edge .index0, edge .index1);
+
+					switch (getSelectionType ())
+					{
+						case SelectionType::POINTS:
+						{
+							// Points
+
+							for (const auto & edge : lineLoop)
+							{
+								activePoints .emplace_back (coordIndex () [edge .first]);
+								activePoints .emplace_back (coordIndex () [edge .second]);
+							}
+		
+							std::sort (activePoints .begin (), activePoints .end ());
+
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
+						}
+						case SelectionType::EDGES:
+						{
+							// Edges
+
+							activeEdges = lineLoop;
+
+							// Points
+
+							for (const auto & edge : lineLoop)
+							{
+								activePoints .emplace_back (coordIndex () [edge .first]);
+								activePoints .emplace_back (coordIndex () [edge .second]);
+							}
+		
+							std::sort (activePoints .begin (), activePoints .end ());
+
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
+						}
+						case SelectionType::FACES:
+						{
+							for (const auto & vertex : vertices)
+								activePoints .emplace_back (coordIndex () [vertex]);
+
+							activeFaces = { face };
+							activeEdges = getFaceSelection () -> getFaceEdges (face);
+							break;
+						}
+					}
+				}
+				else
+				{
+					switch (getSelectionType ())
+					{
+						case SelectionType::POINTS:
+						{
+							break;
+						}
+						case SelectionType::EDGES:
+						{
+							activeEdges  = { std::make_pair (edge .index0, edge .index1) };
+							activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+							break;
+						}
+						case SelectionType::FACES:
+						{
+							for (const auto & vertex : vertices)
+								activePoints .emplace_back (coordIndex () [vertex]);
+
+							activeFaces = { face };
+							activeEdges = getFaceSelection () -> getFaceEdges (face);
+							break;
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Point
+
+			switch (getSelectionType ())
+			{
+				case SelectionType::POINTS:
+				{
+					activePoints = { index };
+					break;
+				}
+				case SelectionType::EDGES:
+				{
+					activeEdges  = { std::make_pair (edge .index0, edge .index1) };
+					activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+					break;
+				}
+				case SelectionType::FACES:
+				{
+					for (const auto & vertex : vertices)
+						activePoints .emplace_back (coordIndex () [vertex]);
+
+					activeFaces = { face };
+					activeEdges = getFaceSelection () -> getFaceEdges (face);
+					break;
+				}
+			}
+		}
+	}
+}
+
+/*
 void
 X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t> & coincidentPoints)
 {
@@ -824,6 +1010,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 		}
 	}
 }
+*/
 
 void
 X3DIndexedFaceSetSelectionObject::updateMagicSelection ()

@@ -52,6 +52,7 @@
 
 #include "../../Rendering/CoordinateTool.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Grouping/Switch.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
@@ -234,6 +235,8 @@ X3DIndexedFaceSetBrushObject::set_brush_radius ()
 void
 X3DIndexedFaceSetBrushObject::set_touch_sensor_over ()
 {
+	getBrowser () -> setPrivateCursor (touchSensor -> isOver () ? "ARROW" : "DEFAULT");
+
 	brushSwitch -> whichChoice () = touchSensor -> isOver ();
 }
 

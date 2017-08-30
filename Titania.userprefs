@@ -2,9 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/share/titania/ui/style.css" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/ui/style.css" Line="15" Column="22" />
       <File FileName="Titania/Titania/Applications/ColorEditor/ColorEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Applications/ColorEditor/ColorEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/scripts/Library/Textures.pl" Line="1" Column="1" />
+      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
