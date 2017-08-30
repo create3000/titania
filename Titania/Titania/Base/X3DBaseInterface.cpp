@@ -164,9 +164,11 @@ X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
 {
 	try
 	{
-		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("titania-add-world-info"), std::locale::classic ());
+		return true;
 
-		return addWorldInfo == "true";
+//		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("titania-add-world-info"), std::locale::classic ());
+//
+//		return addWorldInfo == "true";
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
