@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/GridTool.x3dv"
-META "modified" "Tue, 20 Jun 2017 05:05:04 GMT"
+META "modified" "Wed, 30 Aug 2017 16:12:08 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -86,51 +86,39 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-            value NULL
-          }
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-            value DEF ScaleScript Script {
-              inputOnly   SFVec3f set_translation
-              inputOutput SFVec3f scale 1 1 1
-              inputOutput MFInt32 dimension [
-                10,
-                10,
-                10
-              ]
-              outputOnly  SFVec3f translation_changed
-
-              url "javascript:
-
-function initialize ()
-{
-	eventsProcessed ();
-}
-
-function set_translation (value)
-{
-	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
-	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
-}"
-            }
-          }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
             reference "http://titania.create3000.de"
             value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF MoveScript Script {
+              inputOutput SFVec3f    scale 1 1 1
+              inputOnly   SFVec3f    set_translation
+              inputOutput SFRotation rotation 0 0 1 0
+              outputOnly  SFVec3f    translation_changed
+
+              url "peaseblossom:
+
+function set_translation (value)
+{
+	var translation = rotation .inverse () .multVec (value); 
+
+	if (scale .x)
+		translation .x = Math .round (translation .x / scale .x) * scale .x;
+
+	if (scale .y)
+		translation .y = Math .round (translation .y / scale .y) * scale .y;
+
+	if (scale .z)
+		translation .z = Math .round (translation .z / scale .z) * scale .z;
+
+	translation_changed = rotation .multVec (translation);
+}
+"
+            }
           }
         ]
       }
@@ -182,32 +170,32 @@ DEF GridTool Collision {
         transparency 0.8
       }
     }
-    DEF Center Transform {
+    DEF _2 Transform {
       children [
-        DEF _2 PlaneSensor {
-          axisRotation 1 0 0 1.5708
-          autoOffset FALSE
-        }
-        DEF _3 Transform {
-          children ScreenGroup {
-            children DEF Sphere Transform {
-              scale 4 4 4
-              children Shape {
-                appearance DEF _4 Appearance {
-                  material Material {
-                    diffuseColor 1 0.7 0
+        DEF Center Transform {
+          children [
+            DEF _3 PlaneSensor {
+              axisRotation 1 0 0 1.5708
+              autoOffset FALSE
+            }
+            DEF _4 Transform {
+              children ScreenGroup {
+                children DEF Sphere Transform {
+                  scale 4 4 4
+                  children Shape {
+                    appearance DEF _5 Appearance {
+                      material Material {
+                        diffuseColor 1 0.7 0
+                      }
+                      shaders ToolShader { }
+                    }
+                    geometry Sphere { }
                   }
-                  shaders ToolShader { }
                 }
-                geometry Sphere { }
               }
             }
-          }
+          ]
         }
-      ]
-    }
-    DEF _5 Transform {
-      children [
         DEF DimensionHandle Transform {
           children [
             DEF _6 PlaneSensor {
@@ -221,7 +209,7 @@ DEF GridTool Collision {
                 children DEF Edge Transform {
                   scale 3 3 3
                   children Shape {
-                    appearance USE _4
+                    appearance USE _5
                     geometry Extrusion {
                       convex FALSE
                       crossSection [
@@ -257,7 +245,7 @@ DEF GridTool Collision {
                 children DEF Box Transform {
                   scale 3 3 3
                   children Shape {
-                    appearance USE _4
+                    appearance USE _5
                     geometry Box { }
                   }
                 }
@@ -311,38 +299,40 @@ function eventsProcessed ()
 "
 }
 
-DEF MoveScript Script {
-  inputOutput SFVec3f    scale 1 1 1
-  inputOnly   SFVec3f    set_translation
-  inputOutput SFRotation rotation 0 0 1 0
-  outputOnly  SFVec3f    translation_changed
-  outputOnly  SFRotation axisOfRotation_changed
+USE MoveScript
 
-  url "peaseblossom:
+DEF ScaleScript Script {
+  inputOnly   SFVec3f set_translation
+  inputOutput SFVec3f scale 1 1 1
+  inputOutput MFInt32 dimension [
+    10,
+    10,
+    10
+  ]
+  outputOnly  SFVec3f translation_changed
+
+  url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
 
 function set_translation (value)
 {
-	var translation = rotation .inverse () .multVec (value); 
+	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
 
-	if (scale .x)
-		translation .x = Math .round (translation .x / scale .x) * scale .x;
-
-	if (scale .y)
-		translation .y = Math .round (translation .y / scale .y) * scale .y;
-
-	if (scale .z)
-		translation .z = Math .round (translation .z / scale .z) * scale .z;
-
-	translation_changed = rotation .multVec (translation);
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
 }
 
-function set_rotation (value)
+function eventsProcessed ()
 {
-	axisOfRotation_changed = new SFRotation (1, 0, 0, Math .PI / 2) .multiply (value);
+	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
 }"
 }
-
-USE ScaleScript
 
 DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
@@ -378,14 +368,13 @@ DEF Tool Script {
 ROUTE DimensionScript.translation_changed TO _7.set_translation
 ROUTE _6.translation_changed TO DimensionScript.set_translation
 ROUTE DimensionScript.translation_changed TO _6.set_offset
-ROUTE _2.translation_changed TO MoveScript.set_translation
-ROUTE Tool.translation_changed TO _2.set_offset
+ROUTE _3.translation_changed TO MoveScript.set_translation
+ROUTE Tool.translation_changed TO _3.set_offset
 ROUTE MoveScript.translation_changed TO Tool.set_translation
 ROUTE Tool.transparency_changed TO _1.set_transparency
 ROUTE Tool.color_changed TO _1.set_color
 ROUTE Tool.translation_changed TO DimensionHandle.set_translation
-ROUTE Tool.translation_changed TO _3.set_translation
-ROUTE MoveScript.axisOfRotation_changed TO _2.set_axisRotation
+ROUTE Tool.translation_changed TO _4.set_translation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
@@ -409,9 +398,9 @@ ROUTE ScaleScript.scale_changed TO Tool.set_scale
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.translation_changed TO _8.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
-ROUTE _2.isActive TO Tool.set_isActive
+ROUTE _3.isActive TO Tool.set_isActive
 ROUTE _6.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
-ROUTE Tool.rotation_changed TO _5.set_rotation
+ROUTE Tool.rotation_changed TO _2.set_rotation
 
 EXPORT Tool

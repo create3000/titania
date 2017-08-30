@@ -13,7 +13,7 @@ my $SOLUTION_DIR = "$PROJECT_DIR/../";
 
 my $min = `date +'%M'`; chomp $min;
 
-if (($min > 16 and $min < 20) or 0)
+if (($min > 16 and $min < 20) and 0)
 {
 	unless (-e "$HOME/.config/Titania.O")
 	{
