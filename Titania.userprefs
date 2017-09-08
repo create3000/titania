@@ -2,15 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/share/titania/ui/style.css" Line="15" Column="22" />
-      <File FileName="Titania/Titania/Applications/ColorEditor/ColorEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Applications/ColorEditor/ColorEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Textures.pl" Line="1" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
-      <File FileName="Titania/run.pl" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Commands/Info.h" Line="134" Column="29" />
-      <File FileName="Titania/Titania/Commands/CommandOptions.h" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/String/tolower.h" Line="52" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.cpp" Line="57" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.h" Line="135" Column="15" />
+      <File FileName=".gitignore" Line="34" Column="1" />
+      <File FileName=".bzrignore" Line="29" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
