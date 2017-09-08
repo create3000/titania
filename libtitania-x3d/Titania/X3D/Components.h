@@ -85,5 +85,6 @@
 #include "Components/Texturing.h"
 #include "Components/Texturing3D.h"
 #include "Components/Time.h"
+#include "Components/VolumeRendering.h"
 
 #endif

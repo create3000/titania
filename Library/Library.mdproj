@@ -695,6 +695,10 @@
     <None Include="Tests\Handles\Torus.json" />
     <None Include="Tests\Handles\Grid.json" />
     <None Include="Tests\Handles\GridInline.json" />
+    <None Include="Tests\CubeMapTexturing\ComposedCubeMapTexture1.wrl" />
+    <None Include="Tests\ParticleSystems\PointEmitter.x3dv" />
+    <None Include="Tests\Texturing\images\colors\rgba.png" />
+    <None Include="Tests\images\ubuntu.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

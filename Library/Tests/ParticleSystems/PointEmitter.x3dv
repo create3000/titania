@@ -1,0 +1,53 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Thu, 28 Aug 2014 08:12:08 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Thu, 28 Aug 2014 08:12:08 GMT"
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Viewpoint"
+  position 0 0 30
+}
+
+DEF _1 Transform {
+  translation -1.08379 -4.05888 0
+  children ParticleSystem {
+    geometryType "LINE"
+    maxParticles 10000
+    particleLifetime 3
+    lifetimeVariation 0.1
+    particleSize 0.1 0.2
+    colorKey [
+      0,
+      0.1,
+      0.4,
+      1
+    ]
+    emitter PointEmitter {
+      direction 1 3 0
+      speed 15
+      variation 0.01
+      mass 0.01
+      surfaceArea 0.1
+    }
+    colorRamp ColorRGBA {
+      color [
+        0 0.38 1 0,
+        0.06 0.58 1 0.1,
+        0 0.37 1 0.2,
+        0 0.05 1 0.2
+      ]
+    }
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 4
+      }
+    }
+  }
+}

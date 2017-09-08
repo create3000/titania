@@ -953,6 +953,23 @@
     <None Include="share\titania\tools\AngleGridTool.x3dv" />
     <None Include="Titania\X3D\Routing\Router.h" />
     <None Include="Titania\X3D\Browser\Sound\X3DSoundContext.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\BlendedVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\BoundaryEnhancementVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\CartoonVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\ComposedVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\EdgeEnhancementVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\IsoSurfaceVolumeData.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\OpacityMapVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\ProjectionVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\SegmentedVolumeData.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\ShadedVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\SilhouetteEnhancementVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\ToneMappedVolumeStyle.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\VolumeData.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\X3DComposableVolumeRenderStyleNode.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.h" />
+    <None Include="Titania\X3D\Components\VolumeRendering.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1643,6 +1660,22 @@
     <Compile Include="Titania\X3D\Tools\Grids\AngleGridTool.cpp" />
     <Compile Include="Titania\X3D\Routing\Router.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\X3DSoundContext.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\BlendedVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\BoundaryEnhancementVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\CartoonVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\ComposedVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\EdgeEnhancementVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\IsoSurfaceVolumeData.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\OpacityMapVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\ProjectionVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\SegmentedVolumeData.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\ShadedVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\SilhouetteEnhancementVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\ToneMappedVolumeStyle.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\VolumeData.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\X3DComposableVolumeRenderStyleNode.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.cpp" />
+    <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1743,6 +1776,7 @@
     <Folder Include="Titania\X3D\Tools\NURBS\" />
     <Folder Include="share\titania\ui\" />
     <Folder Include="Titania\X3D\RenderingSurface\" />
+    <Folder Include="Titania\X3D\Components\VolumeRendering\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

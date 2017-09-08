@@ -72,6 +72,7 @@
     <None Include="Website.15.10.svg" />
     <None Include="Website.17.8.svg" />
     <None Include="Website.svg" />
+    <None Include="logo\screenshot.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />

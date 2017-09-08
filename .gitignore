@@ -9,21 +9,48 @@
 *.so
 *.dirstamp
 *.so.*
+*.*~
 .bzr
 .libs
 .deps
 
+Makefile
+Makefile.include
+aclocal.m4
+autom4te.cache
+compile
+config.h
+config.log
+config.make
+config.status
+intltool-extract.in
+intltool-merge.in
+intltool-update.in
+libtool
+missing
+mkinstalldirs
+rules.make
+stamp-h1
+
+
 ./*/bin
 ./*/obj
-./Titania/titania
 ./experimental/experimental
-./debian/titania
 ./experimental/titania-experimental
 
+.debhelper
+./debian/titania
+titania.debhelper.log
+titania.postinst.debhelper
+titania.postrm.debhelper
+titania.substvars
+
+
 ./Documentation/Titania/html
+*.tmp
 
 ./build/snapcraft/parts
 ./build/snapcraft/prime
 ./build/snapcraft/stage
-./build/snapcraft/titania_*.snap
+titania_*.snap
 

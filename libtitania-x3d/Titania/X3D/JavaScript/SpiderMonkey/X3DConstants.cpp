@@ -164,300 +164,316 @@ JSPropertySpec X3DConstants::properties [ ] = {
 
 	// Basic node types
 
-	{ "Anchor",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Anchor,                       nullptr },
-	{ "Appearance",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Appearance,                   nullptr },
-	{ "Arc2D",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Arc2D,                        nullptr },
-	{ "ArcClose2D",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ArcClose2D,                   nullptr },
-	{ "AudioClip",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AudioClip,                    nullptr },
-	{ "Background",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Background,                   nullptr },
-	{ "BallJoint",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BallJoint,                    nullptr },
-	{ "Billboard",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Billboard,                    nullptr },
-	{ "BooleanFilter",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanFilter,                nullptr },
-	{ "BooleanSequencer",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanSequencer,             nullptr },
-	{ "BooleanToggle",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanToggle,                nullptr },
-	{ "BooleanTrigger",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanTrigger,               nullptr },
-	{ "BoundedPhysicsModel",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BoundedPhysicsModel,          nullptr },
-	{ "Box",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Box,                          nullptr },
-	{ "CADAssembly",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADAssembly,                  nullptr },
-	{ "CADFace",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADFace,                      nullptr },
-	{ "CADLayer",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADLayer,                     nullptr },
-	{ "CADPart",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADPart,                      nullptr },
-	{ "Circle2D",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Circle2D,                     nullptr },
-	{ "ClipPlane",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ClipPlane,                    nullptr },
-	{ "CollidableOffset",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollidableOffset,             nullptr },
-	{ "CollidableShape",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollidableShape,              nullptr },
-	{ "Collision",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Collision,                    nullptr },
-	{ "CollisionCollection",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionCollection,          nullptr },
-	{ "CollisionSensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionSensor,              nullptr },
-	{ "CollisionSpace",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionSpace,               nullptr },
-	{ "Color",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Color,                        nullptr },
-	{ "ColorChaser",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorChaser,                  nullptr },
-	{ "ColorDamper",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorDamper,                  nullptr },
-	{ "ColorInterpolator",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorInterpolator,            nullptr },
-	{ "ColorRGBA",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorRGBA,                    nullptr },
-	{ "ComposedCubeMapTexture",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedCubeMapTexture,       nullptr },
-	{ "ComposedShader",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedShader,               nullptr },
-	{ "ComposedTexture3D",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedTexture3D,            nullptr },
-	{ "Cone",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Cone,                         nullptr },
-	{ "ConeEmitter",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ConeEmitter,                  nullptr },
-	{ "Contact",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Contact,                      nullptr },
-	{ "Contour2D",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Contour2D,                    nullptr },
-	{ "ContourPolyline2D",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ContourPolyline2D,            nullptr },
-	{ "Coordinate",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Coordinate,                   nullptr },
-	{ "CoordinateChaser",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateChaser,             nullptr },
-	{ "CoordinateDamper",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateDamper,             nullptr },
-	{ "CoordinateDouble",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateDouble,             nullptr },
-	{ "CoordinateInterpolator",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateInterpolator,       nullptr },
-	{ "CoordinateInterpolator2D",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateInterpolator2D,     nullptr },
-	{ "Cylinder",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Cylinder,                     nullptr },
-	{ "CylinderSensor",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CylinderSensor,               nullptr },
-	{ "DISEntityManager",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DISEntityManager,             nullptr },
-	{ "DISEntityTypeMapping",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DISEntityTypeMapping,         nullptr },
-	{ "DirectionalLight",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DirectionalLight,             nullptr },
-	{ "Disk2D",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Disk2D,                       nullptr },
-	{ "DoubleAxisHingeJoint",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DoubleAxisHingeJoint,         nullptr },
-	{ "EaseInEaseOut",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, EaseInEaseOut,                nullptr },
-	{ "ElevationGrid",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ElevationGrid,                nullptr },
-	{ "EspduTransform",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, EspduTransform,               nullptr },
-	{ "ExplosionEmitter",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ExplosionEmitter,             nullptr },
-	{ "Extrusion",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Extrusion,                    nullptr },
-	{ "FillProperties",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FillProperties,               nullptr },
-	{ "FloatVertexAttribute",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FloatVertexAttribute,         nullptr },
-	{ "Fog",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Fog,                          nullptr },
-	{ "FogCoordinate",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FogCoordinate,                nullptr },
-	{ "FontStyle",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FontStyle,                    nullptr },
-	{ "ForcePhysicsModel",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ForcePhysicsModel,            nullptr },
-	{ "GeneratedCubeMapTexture",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeneratedCubeMapTexture,      nullptr },
-	{ "GeoCoordinate",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoCoordinate,                nullptr },
-	{ "GeoElevationGrid",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoElevationGrid,             nullptr },
-	{ "GeoLOD",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoLOD,                       nullptr },
-	{ "GeoLocation",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoLocation,                  nullptr },
-	{ "GeoMetadata",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoMetadata,                  nullptr },
-	{ "GeoOrigin",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoOrigin,                    nullptr },
-	{ "GeoPositionInterpolator",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoPositionInterpolator,      nullptr },
-	{ "GeoProximitySensor",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoProximitySensor,           nullptr },
-	{ "GeoTouchSensor",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoTouchSensor,               nullptr },
-	{ "GeoTransform",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoTransform,                 nullptr },
-	{ "GeoViewpoint",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoViewpoint,                 nullptr },
-	{ "Group",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Group,                        nullptr },
-	{ "HAnimDisplacer",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimDisplacer,               nullptr },
-	{ "HAnimHumanoid",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimHumanoid,                nullptr },
-	{ "HAnimJoint",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimJoint,                   nullptr },
-	{ "HAnimSegment",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimSegment,                 nullptr },
-	{ "HAnimSite",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimSite,                    nullptr },
-	{ "ImageCubeMapTexture",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageCubeMapTexture,          nullptr },
-	{ "ImageTexture",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageTexture,                 nullptr },
-	{ "ImageTexture3D",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageTexture3D,               nullptr },
-	{ "IndexedFaceSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedFaceSet,               nullptr },
-	{ "IndexedLineSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedLineSet,               nullptr },
-	{ "IndexedQuadSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedQuadSet,               nullptr },
-	{ "IndexedTriangleFanSet",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleFanSet,        nullptr },
-	{ "IndexedTriangleSet",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleSet,           nullptr },
-	{ "IndexedTriangleStripSet",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleStripSet,      nullptr },
-	{ "Inline",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Inline,                       nullptr },
-	{ "IntegerSequencer",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IntegerSequencer,             nullptr },
-	{ "IntegerTrigger",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IntegerTrigger,               nullptr },
-	{ "KeySensor",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, KeySensor,                    nullptr },
-	{ "LOD",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LOD,                          nullptr },
-	{ "Layer",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Layer,                        nullptr },
-	{ "LayerSet",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayerSet,                     nullptr },
-	{ "Layout",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Layout,                       nullptr },
-	{ "LayoutGroup",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayoutGroup,                  nullptr },
-	{ "LayoutLayer",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayoutLayer,                  nullptr },
-	{ "LinePickSensor",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LinePickSensor,               nullptr },
-	{ "LineProperties",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LineProperties,               nullptr },
-	{ "LineSet",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LineSet,                      nullptr },
-	{ "LoadSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LoadSensor,                   nullptr },
-	{ "LocalFog",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LocalFog,                     nullptr },
-	{ "Material",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Material,                     nullptr },
-	{ "Matrix3VertexAttribute",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Matrix3VertexAttribute,       nullptr },
-	{ "Matrix4VertexAttribute",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Matrix4VertexAttribute,       nullptr },
-	{ "MetadataBoolean",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataBoolean,              nullptr },
-	{ "MetadataDouble",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataDouble,               nullptr },
-	{ "MetadataFloat",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataFloat,                nullptr },
-	{ "MetadataInteger",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataInteger,              nullptr },
-	{ "MetadataSet",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataSet,                  nullptr },
-	{ "MetadataString",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataString,               nullptr },
-	{ "MotorJoint",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MotorJoint,                   nullptr },
-	{ "MovieTexture",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MovieTexture,                 nullptr },
-	{ "MultiTexture",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTexture,                 nullptr },
-	{ "MultiTextureCoordinate",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTextureCoordinate,       nullptr },
-	{ "MultiTextureTransform",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTextureTransform,        nullptr },
-	{ "NavigationInfo",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NavigationInfo,               nullptr },
-	{ "Normal",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Normal,                       nullptr },
-	{ "NormalInterpolator",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NormalInterpolator,           nullptr },
-	{ "NurbsCurve",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsCurve,                   nullptr },
-	{ "NurbsCurve2D",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsCurve2D,                 nullptr },
-	{ "NurbsOrientationInterpolator", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsOrientationInterpolator, nullptr },
-	{ "NurbsPatchSurface",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsPatchSurface,            nullptr },
-	{ "NurbsPositionInterpolator",    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsPositionInterpolator,    nullptr },
-	{ "NurbsSet",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSet,                     nullptr },
-	{ "NurbsSurfaceInterpolator",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSurfaceInterpolator,     nullptr },
-	{ "NurbsSweptSurface",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSweptSurface,            nullptr },
-	{ "NurbsSwungSurface",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSwungSurface,            nullptr },
-	{ "NurbsTextureCoordinate",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsTextureCoordinate,       nullptr },
-	{ "NurbsTrimmedSurface",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsTrimmedSurface,          nullptr },
-	{ "OrientationChaser",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationChaser,            nullptr },
-	{ "OrientationDamper",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationDamper,            nullptr },
-	{ "OrientationInterpolator",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationInterpolator,      nullptr },
-	{ "OrthoViewpoint",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrthoViewpoint,               nullptr },
-	{ "PackagedShader",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PackagedShader,               nullptr },
-	{ "ParticleSystem",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ParticleSystem,               nullptr },
-	{ "PickableGroup",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PickableGroup,                nullptr },
-	{ "PixelTexture",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PixelTexture,                 nullptr },
-	{ "PixelTexture3D",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PixelTexture3D,               nullptr },
-	{ "PlaneSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PlaneSensor,                  nullptr },
-	{ "PointEmitter",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointEmitter,                 nullptr },
-	{ "PointLight",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointLight,                   nullptr },
-	{ "PointPickSensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointPickSensor,              nullptr },
-	{ "PointSet",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointSet,                     nullptr },
-	{ "Polyline2D",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Polyline2D,                   nullptr },
-	{ "PolylineEmitter",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PolylineEmitter,              nullptr },
-	{ "Polypoint2D",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Polypoint2D,                  nullptr },
-	{ "PositionChaser",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionChaser,               nullptr },
-	{ "PositionChaser2D",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionChaser2D,             nullptr },
-	{ "PositionDamper",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionDamper,               nullptr },
-	{ "PositionDamper2D",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionDamper2D,             nullptr },
-	{ "PositionInterpolator",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionInterpolator,         nullptr },
-	{ "PositionInterpolator2D",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionInterpolator2D,       nullptr },
-	{ "PrimitivePickSensor",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PrimitivePickSensor,          nullptr },
-	{ "ProgramShader",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ProgramShader,                nullptr },
-	{ "ProximitySensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ProximitySensor,              nullptr },
-	{ "QuadSet",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, QuadSet,                      nullptr },
-	{ "ReceiverPdu",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ReceiverPdu,                  nullptr },
-	{ "Rectangle2D",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Rectangle2D,                  nullptr },
-	{ "RigidBody",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, RigidBody,                    nullptr },
-	{ "RigidBodyCollection",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, RigidBodyCollection,          nullptr },
-	{ "ScalarChaser",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarChaser,                 nullptr },
-	{ "ScalarDamper",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarDamper,                 nullptr },
-	{ "ScalarInterpolator",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarInterpolator,           nullptr },
-	{ "ScreenFontStyle",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScreenFontStyle,              nullptr },
-	{ "ScreenGroup",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScreenGroup,                  nullptr },
-	{ "Script",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Script,                       nullptr },
-	{ "ShaderPart",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ShaderPart,                   nullptr },
-	{ "ShaderProgram",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ShaderProgram,                nullptr },
-	{ "Shape",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Shape,                        nullptr },
-	{ "SignalPdu",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SignalPdu,                    nullptr },
-	{ "SingleAxisHingeJoint",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SingleAxisHingeJoint,         nullptr },
-	{ "SliderJoint",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SliderJoint,                  nullptr },
-	{ "Sound",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Sound,                        nullptr },
-	{ "Sphere",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Sphere,                       nullptr },
-	{ "SphereSensor",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SphereSensor,                 nullptr },
-	{ "SplinePositionInterpolator",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplinePositionInterpolator,   nullptr },
-	{ "SplinePositionInterpolator2D", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplinePositionInterpolator2D, nullptr },
-	{ "SplineScalarInterpolator",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplineScalarInterpolator,     nullptr },
-	{ "SpotLight",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SpotLight,                    nullptr },
-	{ "SquadOrientationInterpolator", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SquadOrientationInterpolator, nullptr },
-	{ "StaticGroup",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, StaticGroup,                  nullptr },
-	{ "StringSensor",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, StringSensor,                 nullptr },
-	{ "SurfaceEmitter",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SurfaceEmitter,               nullptr },
-	{ "Switch",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Switch,                       nullptr },
-	{ "TexCoordChaser2D",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TexCoordChaser2D,             nullptr },
-	{ "TexCoordDamper2D",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TexCoordDamper2D,             nullptr },
-	{ "Text",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Text,                         nullptr },
-	{ "TextureBackground",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureBackground,            nullptr },
-	{ "TextureCoordinate",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate,            nullptr },
-	{ "TextureCoordinate3D",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate3D,          nullptr },
-	{ "TextureCoordinate4D",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate4D,          nullptr },
-	{ "TextureCoordinateGenerator",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinateGenerator,   nullptr },
-	{ "TextureProperties",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureProperties,            nullptr },
-	{ "TextureTransform",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransform,             nullptr },
-	{ "TextureTransform3D",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransform3D,           nullptr },
-	{ "TextureTransformMatrix3D",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransformMatrix3D,     nullptr },
-	{ "TimeSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeSensor,                   nullptr },
-	{ "TimeTrigger",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeTrigger,                  nullptr },
-	{ "TouchGroup",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchGroup,                   nullptr },
-	{ "TouchSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchSensor,                  nullptr },
-	{ "Transform",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Transform,                    nullptr },
-	{ "TransformMatrix3D",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformMatrix3D,            nullptr },
-	{ "TransformSensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformSensor,              nullptr },
-	{ "TransmitterPdu",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransmitterPdu,               nullptr },
-	{ "TriangleFanSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleFanSet,               nullptr },
-	{ "TriangleSet",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleSet,                  nullptr },
-	{ "TriangleSet2D",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleSet2D,                nullptr },
-	{ "TriangleStripSet",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleStripSet,             nullptr },
-	{ "TwoSidedMaterial",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TwoSidedMaterial,             nullptr },
-	{ "UniversalJoint",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, UniversalJoint,               nullptr },
-	{ "Viewpoint",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Viewpoint,                    nullptr },
-	{ "ViewpointGroup",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ViewpointGroup,               nullptr },
-	{ "Viewport",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Viewport,                     nullptr },
-	{ "VisibilitySensor",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VisibilitySensor,             nullptr },
-	{ "VolumeEmitter",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VolumeEmitter,                nullptr },
-	{ "VolumePickSensor",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VolumePickSensor,             nullptr },
-	{ "WindPhysicsModel",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, WindPhysicsModel,             nullptr },
-	{ "WorldInfo",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, WorldInfo,                    nullptr },
+	{ "Anchor",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Anchor,                           nullptr },
+	{ "Appearance",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Appearance,                       nullptr },
+	{ "Arc2D",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Arc2D,                            nullptr },
+	{ "ArcClose2D",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ArcClose2D,                       nullptr },
+	{ "AudioClip",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AudioClip,                        nullptr },
+	{ "Background",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Background,                       nullptr },
+	{ "BallJoint",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BallJoint,                        nullptr },
+	{ "Billboard",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Billboard,                        nullptr },
+	{ "BlendedVolumeStyle",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BlendedVolumeStyle,               nullptr },
+	{ "BooleanFilter",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanFilter,                    nullptr },
+	{ "BooleanSequencer",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanSequencer,                 nullptr },
+	{ "BooleanToggle",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanToggle,                    nullptr },
+	{ "BooleanTrigger",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BooleanTrigger,                   nullptr },
+	{ "BoundaryEnhancementVolumeStyle",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BoundaryEnhancementVolumeStyle,   nullptr },
+	{ "BoundedPhysicsModel",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, BoundedPhysicsModel,              nullptr },
+	{ "Box",                              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Box,                              nullptr },
+	{ "CADAssembly",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADAssembly,                      nullptr },
+	{ "CADFace",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADFace,                          nullptr },
+	{ "CADLayer",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADLayer,                         nullptr },
+	{ "CADPart",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CADPart,                          nullptr },
+	{ "CartoonVolumeStyle",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CartoonVolumeStyle,               nullptr },
+	{ "Circle2D",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Circle2D,                         nullptr },
+	{ "ClipPlane",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ClipPlane,                        nullptr },
+	{ "CollidableOffset",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollidableOffset,                 nullptr },
+	{ "CollidableShape",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollidableShape,                  nullptr },
+	{ "Collision",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Collision,                        nullptr },
+	{ "CollisionCollection",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionCollection,              nullptr },
+	{ "CollisionSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionSensor,                  nullptr },
+	{ "CollisionSpace",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CollisionSpace,                   nullptr },
+	{ "Color",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Color,                            nullptr },
+	{ "ColorChaser",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorChaser,                      nullptr },
+	{ "ColorDamper",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorDamper,                      nullptr },
+	{ "ColorInterpolator",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorInterpolator,                nullptr },
+	{ "ColorRGBA",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ColorRGBA,                        nullptr },
+	{ "ComposedCubeMapTexture",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedCubeMapTexture,           nullptr },
+	{ "ComposedShader",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedShader,                   nullptr },
+	{ "ComposedTexture3D",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedTexture3D,                nullptr },
+	{ "ComposedVolumeStyle",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ComposedVolumeStyle,              nullptr },
+	{ "Cone",                             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Cone,                             nullptr },
+	{ "ConeEmitter",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ConeEmitter,                      nullptr },
+	{ "Contact",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Contact,                          nullptr },
+	{ "Contour2D",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Contour2D,                        nullptr },
+	{ "ContourPolyline2D",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ContourPolyline2D,                nullptr },
+	{ "Coordinate",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Coordinate,                       nullptr },
+	{ "CoordinateChaser",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateChaser,                 nullptr },
+	{ "CoordinateDamper",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateDamper,                 nullptr },
+	{ "CoordinateDouble",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateDouble,                 nullptr },
+	{ "CoordinateInterpolator",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateInterpolator,           nullptr },
+	{ "CoordinateInterpolator2D",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CoordinateInterpolator2D,         nullptr },
+	{ "Cylinder",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Cylinder,                         nullptr },
+	{ "CylinderSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, CylinderSensor,                   nullptr },
+	{ "DISEntityManager",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DISEntityManager,                 nullptr },
+	{ "DISEntityTypeMapping",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DISEntityTypeMapping,             nullptr },
+	{ "DirectionalLight",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DirectionalLight,                 nullptr },
+	{ "Disk2D",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Disk2D,                           nullptr },
+	{ "DoubleAxisHingeJoint",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, DoubleAxisHingeJoint,             nullptr },
+	{ "EaseInEaseOut",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, EaseInEaseOut,                    nullptr },
+	{ "EdgeEnhancementVolumeStyle",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, EdgeEnhancementVolumeStyle,       nullptr },
+	{ "ElevationGrid",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ElevationGrid,                    nullptr },
+	{ "EspduTransform",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, EspduTransform,                   nullptr },
+	{ "ExplosionEmitter",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ExplosionEmitter,                 nullptr },
+	{ "Extrusion",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Extrusion,                        nullptr },
+	{ "FillProperties",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FillProperties,                   nullptr },
+	{ "FloatVertexAttribute",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FloatVertexAttribute,             nullptr },
+	{ "Fog",                              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Fog,                              nullptr },
+	{ "FogCoordinate",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FogCoordinate,                    nullptr },
+	{ "FontStyle",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FontStyle,                        nullptr },
+	{ "ForcePhysicsModel",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ForcePhysicsModel,                nullptr },
+	{ "GeneratedCubeMapTexture",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeneratedCubeMapTexture,          nullptr },
+	{ "GeoCoordinate",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoCoordinate,                    nullptr },
+	{ "GeoElevationGrid",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoElevationGrid,                 nullptr },
+	{ "GeoLOD",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoLOD,                           nullptr },
+	{ "GeoLocation",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoLocation,                      nullptr },
+	{ "GeoMetadata",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoMetadata,                      nullptr },
+	{ "GeoOrigin",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoOrigin,                        nullptr },
+	{ "GeoPositionInterpolator",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoPositionInterpolator,          nullptr },
+	{ "GeoProximitySensor",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoProximitySensor,               nullptr },
+	{ "GeoTouchSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoTouchSensor,                   nullptr },
+	{ "GeoTransform",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoTransform,                     nullptr },
+	{ "GeoViewpoint",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, GeoViewpoint,                     nullptr },
+	{ "Group",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Group,                            nullptr },
+	{ "HAnimDisplacer",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimDisplacer,                   nullptr },
+	{ "HAnimHumanoid",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimHumanoid,                    nullptr },
+	{ "HAnimJoint",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimJoint,                       nullptr },
+	{ "HAnimSegment",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimSegment,                     nullptr },
+	{ "HAnimSite",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, HAnimSite,                        nullptr },
+	{ "ImageCubeMapTexture",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageCubeMapTexture,              nullptr },
+	{ "ImageTexture",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageTexture,                     nullptr },
+	{ "ImageTexture3D",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ImageTexture3D,                   nullptr },
+	{ "IndexedFaceSet",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedFaceSet,                   nullptr },
+	{ "IndexedLineSet",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedLineSet,                   nullptr },
+	{ "IndexedQuadSet",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedQuadSet,                   nullptr },
+	{ "IndexedTriangleFanSet",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleFanSet,            nullptr },
+	{ "IndexedTriangleSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleSet,               nullptr },
+	{ "IndexedTriangleStripSet",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IndexedTriangleStripSet,          nullptr },
+	{ "Inline",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Inline,                           nullptr },
+	{ "IntegerSequencer",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IntegerSequencer,                 nullptr },
+	{ "IntegerTrigger",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IntegerTrigger,                   nullptr },
+	{ "IsoSurfaceVolumeData",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, IsoSurfaceVolumeData,             nullptr },
+	{ "KeySensor",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, KeySensor,                        nullptr },
+	{ "LOD",                              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LOD,                              nullptr },
+	{ "Layer",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Layer,                            nullptr },
+	{ "LayerSet",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayerSet,                         nullptr },
+	{ "Layout",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Layout,                           nullptr },
+	{ "LayoutGroup",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayoutGroup,                      nullptr },
+	{ "LayoutLayer",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LayoutLayer,                      nullptr },
+	{ "LinePickSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LinePickSensor,                   nullptr },
+	{ "LineProperties",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LineProperties,                   nullptr },
+	{ "LineSet",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LineSet,                          nullptr },
+	{ "LoadSensor",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LoadSensor,                       nullptr },
+	{ "LocalFog",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LocalFog,                         nullptr },
+	{ "Material",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Material,                         nullptr },
+	{ "Matrix3VertexAttribute",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Matrix3VertexAttribute,           nullptr },
+	{ "Matrix4VertexAttribute",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Matrix4VertexAttribute,           nullptr },
+	{ "MetadataBoolean",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataBoolean,                  nullptr },
+	{ "MetadataDouble",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataDouble,                   nullptr },
+	{ "MetadataFloat",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataFloat,                    nullptr },
+	{ "MetadataInteger",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataInteger,                  nullptr },
+	{ "MetadataSet",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataSet,                      nullptr },
+	{ "MetadataString",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MetadataString,                   nullptr },
+	{ "MotorJoint",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MotorJoint,                       nullptr },
+	{ "MovieTexture",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MovieTexture,                     nullptr },
+	{ "MultiTexture",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTexture,                     nullptr },
+	{ "MultiTextureCoordinate",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTextureCoordinate,           nullptr },
+	{ "MultiTextureTransform",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MultiTextureTransform,            nullptr },
+	{ "NavigationInfo",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NavigationInfo,                   nullptr },
+	{ "Normal",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Normal,                           nullptr },
+	{ "NormalInterpolator",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NormalInterpolator,               nullptr },
+	{ "NurbsCurve",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsCurve,                       nullptr },
+	{ "NurbsCurve2D",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsCurve2D,                     nullptr },
+	{ "NurbsOrientationInterpolator",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsOrientationInterpolator,     nullptr },
+	{ "NurbsPatchSurface",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsPatchSurface,                nullptr },
+	{ "NurbsPositionInterpolator",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsPositionInterpolator,        nullptr },
+	{ "NurbsSet",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSet,                         nullptr },
+	{ "NurbsSurfaceInterpolator",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSurfaceInterpolator,         nullptr },
+	{ "NurbsSweptSurface",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSweptSurface,                nullptr },
+	{ "NurbsSwungSurface",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsSwungSurface,                nullptr },
+	{ "NurbsTextureCoordinate",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsTextureCoordinate,           nullptr },
+	{ "NurbsTrimmedSurface",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, NurbsTrimmedSurface,              nullptr },
+	{ "OpacityMapVolumeStyle",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OpacityMapVolumeStyle,            nullptr },
+	{ "OrientationChaser",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationChaser,                nullptr },
+	{ "OrientationDamper",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationDamper,                nullptr },
+	{ "OrientationInterpolator",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrientationInterpolator,          nullptr },
+	{ "OrthoViewpoint",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, OrthoViewpoint,                   nullptr },
+	{ "PackagedShader",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PackagedShader,                   nullptr },
+	{ "ParticleSystem",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ParticleSystem,                   nullptr },
+	{ "PickableGroup",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PickableGroup,                    nullptr },
+	{ "PixelTexture",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PixelTexture,                     nullptr },
+	{ "PixelTexture3D",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PixelTexture3D,                   nullptr },
+	{ "PlaneSensor",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PlaneSensor,                      nullptr },
+	{ "PointEmitter",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointEmitter,                     nullptr },
+	{ "PointLight",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointLight,                       nullptr },
+	{ "PointPickSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointPickSensor,                  nullptr },
+	{ "PointSet",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PointSet,                         nullptr },
+	{ "Polyline2D",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Polyline2D,                       nullptr },
+	{ "PolylineEmitter",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PolylineEmitter,                  nullptr },
+	{ "Polypoint2D",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Polypoint2D,                      nullptr },
+	{ "PositionChaser",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionChaser,                   nullptr },
+	{ "PositionChaser2D",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionChaser2D,                 nullptr },
+	{ "PositionDamper",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionDamper,                   nullptr },
+	{ "PositionDamper2D",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionDamper2D,                 nullptr },
+	{ "PositionInterpolator",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionInterpolator,             nullptr },
+	{ "PositionInterpolator2D",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PositionInterpolator2D,           nullptr },
+	{ "PrimitivePickSensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, PrimitivePickSensor,              nullptr },
+	{ "ProgramShader",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ProgramShader,                    nullptr },
+	{ "ProjectionVolumeStyle",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ProjectionVolumeStyle,            nullptr },
+	{ "ProximitySensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ProximitySensor,                  nullptr },
+	{ "QuadSet",                          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, QuadSet,                          nullptr },
+	{ "ReceiverPdu",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ReceiverPdu,                      nullptr },
+	{ "Rectangle2D",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Rectangle2D,                      nullptr },
+	{ "RigidBody",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, RigidBody,                        nullptr },
+	{ "RigidBodyCollection",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, RigidBodyCollection,              nullptr },
+	{ "ScalarChaser",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarChaser,                     nullptr },
+	{ "ScalarDamper",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarDamper,                     nullptr },
+	{ "ScalarInterpolator",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScalarInterpolator,               nullptr },
+	{ "ScreenFontStyle",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScreenFontStyle,                  nullptr },
+	{ "ScreenGroup",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ScreenGroup,                      nullptr },
+	{ "Script",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Script,                           nullptr },
+	{ "SegmentedVolumeData",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SegmentedVolumeData,              nullptr },
+	{ "ShadedVolumeStyle",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ShadedVolumeStyle,                nullptr },
+	{ "ShaderPart",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ShaderPart,                       nullptr },
+	{ "ShaderProgram",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ShaderProgram,                    nullptr },
+	{ "Shape",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Shape,                            nullptr },
+	{ "SignalPdu",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SignalPdu,                        nullptr },
+	{ "SilhouetteEnhancementVolumeStyle", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SilhouetteEnhancementVolumeStyle, nullptr },
+	{ "SingleAxisHingeJoint",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SingleAxisHingeJoint,             nullptr },
+	{ "SliderJoint",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SliderJoint,                      nullptr },
+	{ "Sound",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Sound,                            nullptr },
+	{ "Sphere",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Sphere,                           nullptr },
+	{ "SphereSensor",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SphereSensor,                     nullptr },
+	{ "SplinePositionInterpolator",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplinePositionInterpolator,       nullptr },
+	{ "SplinePositionInterpolator2D",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplinePositionInterpolator2D,     nullptr },
+	{ "SplineScalarInterpolator",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SplineScalarInterpolator,         nullptr },
+	{ "SpotLight",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SpotLight,                        nullptr },
+	{ "SquadOrientationInterpolator",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SquadOrientationInterpolator,     nullptr },
+	{ "StaticGroup",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, StaticGroup,                      nullptr },
+	{ "StringSensor",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, StringSensor,                     nullptr },
+	{ "SurfaceEmitter",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SurfaceEmitter,                   nullptr },
+	{ "Switch",                           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Switch,                           nullptr },
+	{ "TexCoordChaser2D",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TexCoordChaser2D,                 nullptr },
+	{ "TexCoordDamper2D",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TexCoordDamper2D,                 nullptr },
+	{ "Text",                             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Text,                             nullptr },
+	{ "TextureBackground",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureBackground,                nullptr },
+	{ "TextureCoordinate",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate,                nullptr },
+	{ "TextureCoordinate3D",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate3D,              nullptr },
+	{ "TextureCoordinate4D",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinate4D,              nullptr },
+	{ "TextureCoordinateGenerator",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureCoordinateGenerator,       nullptr },
+	{ "TextureProperties",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureProperties,                nullptr },
+	{ "TextureTransform",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransform,                 nullptr },
+	{ "TextureTransform3D",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransform3D,               nullptr },
+	{ "TextureTransformMatrix3D",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransformMatrix3D,         nullptr },
+	{ "TimeSensor",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeSensor,                       nullptr },
+	{ "TimeTrigger",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeTrigger,                      nullptr },
+	{ "ToneMappedVolumeStyle",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ToneMappedVolumeStyle,            nullptr },
+	{ "TouchGroup",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchGroup,                       nullptr },
+	{ "TouchSensor",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchSensor,                      nullptr },
+	{ "Transform",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Transform,                        nullptr },
+	{ "TransformMatrix3D",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformMatrix3D,                nullptr },
+	{ "TransformSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformSensor,                  nullptr },
+	{ "TransmitterPdu",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransmitterPdu,                   nullptr },
+	{ "TriangleFanSet",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleFanSet,                   nullptr },
+	{ "TriangleSet",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleSet,                      nullptr },
+	{ "TriangleSet2D",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleSet2D,                    nullptr },
+	{ "TriangleStripSet",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleStripSet,                 nullptr },
+	{ "TwoSidedMaterial",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TwoSidedMaterial,                 nullptr },
+	{ "UniversalJoint",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, UniversalJoint,                   nullptr },
+	{ "Viewpoint",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Viewpoint,                        nullptr },
+	{ "ViewpointGroup",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ViewpointGroup,                   nullptr },
+	{ "Viewport",                         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Viewport,                         nullptr },
+	{ "VisibilitySensor",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VisibilitySensor,                 nullptr },
+	{ "VolumeData",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VolumeData,                       nullptr },
+	{ "VolumeEmitter",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VolumeEmitter,                    nullptr },
+	{ "VolumePickSensor",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VolumePickSensor,                 nullptr },
+	{ "WindPhysicsModel",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, WindPhysicsModel,                 nullptr },
+	{ "WorldInfo",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, WorldInfo,                        nullptr },
 
 	// Abstract node types
 
-	{ "X3DAppearanceChildNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DAppearanceChildNode,       nullptr },
-	{ "X3DAppearanceNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DAppearanceNode,            nullptr },
-	{ "X3DBackgroundNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBackgroundNode,            nullptr },
-	{ "X3DBindableNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBindableNode,              nullptr },
-	{ "X3DBoundedObject",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBoundedObject,             nullptr },
-	{ "X3DChaserNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DChaserNode,                nullptr },
-	{ "X3DChildNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DChildNode,                 nullptr },
-	{ "X3DColorNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DColorNode,                 nullptr },
-	{ "X3DComposedGeometryNode",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DComposedGeometryNode,      nullptr },
-	{ "X3DCoordinateNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DCoordinateNode,            nullptr },
-	{ "X3DDamperNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DDamperNode,                nullptr },
-	{ "X3DDragSensorNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DDragSensorNode,            nullptr },
-	{ "X3DEnvironmentTextureNode",    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DEnvironmentTextureNode,    nullptr },
-	{ "X3DEnvironmentalSensorNode",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DEnvironmentalSensorNode,   nullptr },
-	{ "X3DFogObject",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFogObject,                 nullptr },
-	{ "X3DFollowerNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFollowerNode,              nullptr },
-	{ "X3DFontStyleNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFontStyleNode,             nullptr },
-	{ "X3DGeometricPropertyNode",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometricPropertyNode,     nullptr },
-	{ "X3DGeometryNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometryNode,              nullptr },
-	{ "X3DGeospatialObject",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeospatialObject,          nullptr },
-	{ "X3DGroupingNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGroupingNode,              nullptr },
-	{ "X3DInfoNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInfoNode,                  nullptr },
-	{ "X3DInterpolatorNode",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInterpolatorNode,          nullptr },
-	{ "X3DKeyDeviceSensorNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DKeyDeviceSensorNode,       nullptr },
-	{ "X3DLayerNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLayerNode,                 nullptr },
-	{ "X3DLayoutNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLayoutNode,                nullptr },
-	{ "X3DLightNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLightNode,                 nullptr },
-	{ "X3DMaterialNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DMaterialNode,              nullptr },
-	{ "X3DMetadataObject",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DMetadataObject,            nullptr },
-	{ "X3DNBodyCollidableNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNBodyCollidableNode,       nullptr },
-	{ "X3DNBodyCollisionSpaceNode",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNBodyCollisionSpaceNode,   nullptr },
-	{ "X3DNetworkSensorNode",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNetworkSensorNode,         nullptr },
-	{ "X3DNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNode,                      nullptr },
-	{ "X3DNormalNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNormalNode,                nullptr },
-	{ "X3DNurbsControlCurveNode",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNurbsControlCurveNode,     nullptr },
-	{ "X3DNurbsSurfaceGeometryNode",  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNurbsSurfaceGeometryNode,  nullptr },
-	{ "X3DParametricGeometryNode",    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParametricGeometryNode,    nullptr },
-	{ "X3DParticleEmitterNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParticleEmitterNode,       nullptr },
-	{ "X3DParticlePhysicsModelNode",  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParticlePhysicsModelNode,  nullptr },
-	{ "X3DPickSensorNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPickSensorNode,            nullptr },
-	{ "X3DPickableObject",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPickableObject,            nullptr },
-	{ "X3DPointingDeviceSensorNode",  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPointingDeviceSensorNode,  nullptr },
-	{ "X3DProductStructureChildNode", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProductStructureChildNode, nullptr },
-	{ "X3DProgrammableShaderObject",  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProgrammableShaderObject,  nullptr },
-	{ "X3DPrototypeInstance",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPrototypeInstance,         nullptr },
-	{ "X3DRigidJointNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DRigidJointNode,            nullptr },
-	{ "X3DScriptNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DScriptNode,                nullptr },
-	{ "X3DSensorNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSensorNode,                nullptr },
-	{ "X3DSequencerNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSequencerNode,             nullptr },
-	{ "X3DShaderNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShaderNode,                nullptr },
-	{ "X3DShapeNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShapeNode,                 nullptr },
-	{ "X3DSoundNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSoundNode,                 nullptr },
-	{ "X3DSoundSourceNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSoundSourceNode,           nullptr },
-	{ "X3DTexture2DNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTexture2DNode,             nullptr },
-	{ "X3DTexture3DNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTexture3DNode,             nullptr },
-	{ "X3DTextureCoordinateNode",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureCoordinateNode,     nullptr },
-	{ "X3DTextureNode",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureNode,               nullptr },
-	{ "X3DTextureTransformNode",      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureTransformNode,      nullptr },
-	{ "X3DTimeDependentNode",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTimeDependentNode,         nullptr },
-	{ "X3DTouchSensorNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTouchSensorNode,           nullptr },
-	{ "X3DTransformMatrix3DNode",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DNode,     nullptr },
-	{ "X3DTransformMatrix3DObject",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DObject,   nullptr },
-	{ "X3DTransformNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformNode,             nullptr },
-	{ "X3DTriggerNode",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTriggerNode,               nullptr },
-	{ "X3DUrlObject",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                 nullptr },
-	{ "X3DVertexAttributeNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVertexAttributeNode,       nullptr },
-	{ "X3DViewpointNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointNode,             nullptr },
-	{ "X3DViewpointObject",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointObject,           nullptr },
-	{ "X3DViewportNode",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewportNode,              nullptr },
+	{ "X3DAppearanceChildNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DAppearanceChildNode,             nullptr },
+	{ "X3DAppearanceNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DAppearanceNode,                  nullptr },
+	{ "X3DBackgroundNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBackgroundNode,                  nullptr },
+	{ "X3DBindableNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBindableNode,                    nullptr },
+	{ "X3DBoundedObject",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DBoundedObject,                   nullptr },
+	{ "X3DChaserNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DChaserNode,                      nullptr },
+	{ "X3DChildNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DChildNode,                       nullptr },
+	{ "X3DColorNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DColorNode,                       nullptr },
+	{ "X3DComposableVolumeRenderStyleNode", JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DComposableVolumeRenderStyleNode, nullptr },
+	{ "X3DComposedGeometryNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DComposedGeometryNode,            nullptr },
+	{ "X3DCoordinateNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DCoordinateNode,                  nullptr },
+	{ "X3DDamperNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DDamperNode,                      nullptr },
+	{ "X3DDragSensorNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DDragSensorNode,                  nullptr },
+	{ "X3DEnvironmentTextureNode",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DEnvironmentTextureNode,          nullptr },
+	{ "X3DEnvironmentalSensorNode",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DEnvironmentalSensorNode,         nullptr },
+	{ "X3DFogObject",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFogObject,                       nullptr },
+	{ "X3DFollowerNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFollowerNode,                    nullptr },
+	{ "X3DFontStyleNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFontStyleNode,                   nullptr },
+	{ "X3DGeometricPropertyNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometricPropertyNode,           nullptr },
+	{ "X3DGeometryNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometryNode,                    nullptr },
+	{ "X3DGeospatialObject",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeospatialObject,                nullptr },
+	{ "X3DGroupingNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGroupingNode,                    nullptr },
+	{ "X3DInfoNode",                        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInfoNode,                        nullptr },
+	{ "X3DInterpolatorNode",                JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInterpolatorNode,                nullptr },
+	{ "X3DKeyDeviceSensorNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DKeyDeviceSensorNode,             nullptr },
+	{ "X3DLayerNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLayerNode,                       nullptr },
+	{ "X3DLayoutNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLayoutNode,                      nullptr },
+	{ "X3DLightNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DLightNode,                       nullptr },
+	{ "X3DMaterialNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DMaterialNode,                    nullptr },
+	{ "X3DMetadataObject",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DMetadataObject,                  nullptr },
+	{ "X3DNBodyCollidableNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNBodyCollidableNode,             nullptr },
+	{ "X3DNBodyCollisionSpaceNode",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNBodyCollisionSpaceNode,         nullptr },
+	{ "X3DNetworkSensorNode",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNetworkSensorNode,               nullptr },
+	{ "X3DNode",                            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNode,                            nullptr },
+	{ "X3DNormalNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNormalNode,                      nullptr },
+	{ "X3DNurbsControlCurveNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNurbsControlCurveNode,           nullptr },
+	{ "X3DNurbsSurfaceGeometryNode",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DNurbsSurfaceGeometryNode,        nullptr },
+	{ "X3DParametricGeometryNode",          JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParametricGeometryNode,          nullptr },
+	{ "X3DParticleEmitterNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParticleEmitterNode,             nullptr },
+	{ "X3DParticlePhysicsModelNode",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DParticlePhysicsModelNode,        nullptr },
+	{ "X3DPickSensorNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPickSensorNode,                  nullptr },
+	{ "X3DPickableObject",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPickableObject,                  nullptr },
+	{ "X3DPointingDeviceSensorNode",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPointingDeviceSensorNode,        nullptr },
+	{ "X3DProductStructureChildNode",       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProductStructureChildNode,       nullptr },
+	{ "X3DProgrammableShaderObject",        JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProgrammableShaderObject,        nullptr },
+	{ "X3DPrototypeInstance",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPrototypeInstance,               nullptr },
+	{ "X3DRigidJointNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DRigidJointNode,                  nullptr },
+	{ "X3DScriptNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DScriptNode,                      nullptr },
+	{ "X3DSensorNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSensorNode,                      nullptr },
+	{ "X3DSequencerNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSequencerNode,                   nullptr },
+	{ "X3DShaderNode",                      JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShaderNode,                      nullptr },
+	{ "X3DShapeNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShapeNode,                       nullptr },
+	{ "X3DSoundNode",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSoundNode,                       nullptr },
+	{ "X3DSoundSourceNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSoundSourceNode,                 nullptr },
+	{ "X3DTexture2DNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTexture2DNode,                   nullptr },
+	{ "X3DTexture3DNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTexture3DNode,                   nullptr },
+	{ "X3DTextureCoordinateNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureCoordinateNode,           nullptr },
+	{ "X3DTextureNode",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureNode,                     nullptr },
+	{ "X3DTextureTransformNode",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureTransformNode,            nullptr },
+	{ "X3DTimeDependentNode",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTimeDependentNode,               nullptr },
+	{ "X3DTouchSensorNode",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTouchSensorNode,                 nullptr },
+	{ "X3DTransformMatrix3DNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DNode,           nullptr },
+	{ "X3DTransformMatrix3DObject",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DObject,         nullptr },
+	{ "X3DTransformNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformNode,                   nullptr },
+	{ "X3DTriggerNode",                     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTriggerNode,                     nullptr },
+	{ "X3DUrlObject",                       JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                       nullptr },
+	{ "X3DVertexAttributeNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVertexAttributeNode,             nullptr },
+	{ "X3DViewpointNode",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointNode,                   nullptr },
+	{ "X3DViewpointObject",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointObject,                 nullptr },
+	{ "X3DViewportNode",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewportNode,                    nullptr },
+	{ "X3DVolumeDataNode",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVolumeDataNode,                  nullptr },
+	{ "X3DVolumeRenderStyleNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVolumeRenderStyleNode,           nullptr },
 
 	// Tools
 
@@ -934,6 +950,12 @@ X3DConstants::Billboard (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::BlendedVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::BlendedVolumeStyle, vp);
+}
+
+JSBool
 X3DConstants::BooleanFilter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::BooleanFilter, vp);
@@ -955,6 +977,12 @@ JSBool
 X3DConstants::BooleanTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::BooleanTrigger, vp);
+}
+
+JSBool
+X3DConstants::BoundaryEnhancementVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::BoundaryEnhancementVolumeStyle, vp);
 }
 
 JSBool
@@ -991,6 +1019,12 @@ JSBool
 X3DConstants::CADPart (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::CADPart, vp);
+}
+
+JSBool
+X3DConstants::CartoonVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::CartoonVolumeStyle, vp);
 }
 
 JSBool
@@ -1087,6 +1121,12 @@ JSBool
 X3DConstants::ComposedTexture3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::ComposedTexture3D, vp);
+}
+
+JSBool
+X3DConstants::ComposedVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::ComposedVolumeStyle, vp);
 }
 
 JSBool
@@ -1201,6 +1241,12 @@ JSBool
 X3DConstants::EaseInEaseOut (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::EaseInEaseOut, vp);
+}
+
+JSBool
+X3DConstants::EdgeEnhancementVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::EdgeEnhancementVolumeStyle, vp);
 }
 
 JSBool
@@ -1444,6 +1490,12 @@ X3DConstants::IntegerTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::IsoSurfaceVolumeData (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::IsoSurfaceVolumeData, vp);
+}
+
+JSBool
 X3DConstants::KeySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::KeySensor, vp);
@@ -1684,6 +1736,12 @@ X3DConstants::NurbsTrimmedSurface (JSContext* cx, JSObject* obj, jsid id, jsval*
 }
 
 JSBool
+X3DConstants::OpacityMapVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::OpacityMapVolumeStyle, vp);
+}
+
+JSBool
 X3DConstants::OrientationChaser (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::OrientationChaser, vp);
@@ -1834,6 +1892,12 @@ X3DConstants::ProgramShader (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::ProjectionVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::ProjectionVolumeStyle, vp);
+}
+
+JSBool
 X3DConstants::ProximitySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::ProximitySensor, vp);
@@ -1906,6 +1970,18 @@ X3DConstants::Script (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::SegmentedVolumeData (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::SegmentedVolumeData, vp);
+}
+
+JSBool
+X3DConstants::ShadedVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::ShadedVolumeStyle, vp);
+}
+
+JSBool
 X3DConstants::ShaderPart (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::ShaderPart, vp);
@@ -1927,6 +2003,12 @@ JSBool
 X3DConstants::SignalPdu (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::SignalPdu, vp);
+}
+
+JSBool
+X3DConstants::SilhouetteEnhancementVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::SilhouetteEnhancementVolumeStyle, vp);
 }
 
 JSBool
@@ -2098,6 +2180,12 @@ X3DConstants::TimeTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::ToneMappedVolumeStyle (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::ToneMappedVolumeStyle, vp);
+}
+
+JSBool
 X3DConstants::TouchGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::TouchGroup, vp);
@@ -2194,6 +2282,12 @@ X3DConstants::VisibilitySensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp
 }
 
 JSBool
+X3DConstants::VolumeData (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::VolumeData, vp);
+}
+
+JSBool
 X3DConstants::VolumeEmitter (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::VolumeEmitter, vp);
@@ -2265,6 +2359,12 @@ JSBool
 X3DConstants::X3DColorNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DColorNode, vp);
+}
+
+JSBool
+X3DConstants::X3DComposableVolumeRenderStyleNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DComposableVolumeRenderStyleNode, vp);
 }
 
 JSBool
@@ -2631,6 +2731,18 @@ JSBool
 X3DConstants::X3DViewportNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DViewportNode, vp);
+}
+
+JSBool
+X3DConstants::X3DVolumeDataNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DVolumeDataNode, vp);
+}
+
+JSBool
+X3DConstants::X3DVolumeRenderStyleNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DVolumeRenderStyleNode, vp);
 }
 
 // Tools

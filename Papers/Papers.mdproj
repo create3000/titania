@@ -75,8 +75,6 @@
     <None Include="natsort-0.1.0\AUTHORS" />
     <None Include="natsort-0.1.0\COPYING" />
     <None Include="natsort-0.1.0\HISTORY" />
-    <None Include="natsort-0.1.0\Makefile.am" />
-    <None Include="natsort-0.1.0\Makefile.in" />
     <None Include="natsort-0.1.0\README.md" />
     <None Include="natsort-0.1.0\aclocal.m4" />
     <None Include="natsort-0.1.0\config.h.in" />
@@ -86,9 +84,6 @@
     <None Include="natsort-0.1.0\natsort.pod" />
     <None Include="natsort-0.1.0\sort.c" />
     <None Include="natsort-0.1.0\sort.h" />
-    <None Include="natsort-0.1.0\build-aux\depcomp" />
-    <None Include="natsort-0.1.0\build-aux\install-sh" />
-    <None Include="natsort-0.1.0\build-aux\missing" />
     <None Include="xxx\PointingDevice.h" />
     <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone.html" />
     <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\3Y23IfCCmlM.html" />
@@ -253,6 +248,7 @@
     <None Include="xxx\BrowserCellRenderer.h" />
     <None Include="xxx\Phong.fs" />
     <None Include="xxx\Phong.vs" />
+    <None Include="Chapter05-AppearanceMaterialTextures.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

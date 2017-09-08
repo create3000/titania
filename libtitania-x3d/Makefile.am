@@ -399,6 +399,22 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Texturing3D/X3DTexture3DNode.cpp \
 	Titania/X3D/Components/Time/TimeSensor.cpp \
 	Titania/X3D/Components/Time/X3DTimeDependentNode.cpp \
+	Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/BoundaryEnhancementVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/CartoonVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/ComposedVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/EdgeEnhancementVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/IsoSurfaceVolumeData.cpp \
+	Titania/X3D/Components/VolumeRendering/OpacityMapVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/ProjectionVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/SegmentedVolumeData.cpp \
+	Titania/X3D/Components/VolumeRendering/ShadedVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/SilhouetteEnhancementVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/ToneMappedVolumeStyle.cpp \
+	Titania/X3D/Components/VolumeRendering/VolumeData.cpp \
+	Titania/X3D/Components/VolumeRendering/X3DComposableVolumeRenderStyleNode.cpp \
+	Titania/X3D/Components/VolumeRendering/X3DVolumeDataNode.cpp \
+	Titania/X3D/Components/VolumeRendering/X3DVolumeRenderStyleNode.cpp \
 	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \

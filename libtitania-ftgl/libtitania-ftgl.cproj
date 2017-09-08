@@ -51,6 +51,7 @@
     <None Include="Titania\FTGL\Types.h" />
     <None Include="Titania\FTGL.h" />
     <None Include="Titania\FTGL\Vectorizer.h" />
+    <None Include="libtitania-ftgl.md.pc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -16,5 +16,6 @@
     <None Include="Titania.Doxyfile" />
     <None Include="Titania\doxygen.css" />
     <None Include="Documentation.mdproj" />
+    <None Include="Titania\.gitignore" />
   </ItemGroup>
 </Project>
