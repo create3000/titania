@@ -124,7 +124,7 @@ private:
 				   << field -> getTypeName () << ";";
 
 				if (field -> isInitializable ())
-					std::cout << field;
+					std::cout << *field;
 
 				std::cout << std::endl;
 			}
