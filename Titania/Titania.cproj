@@ -3056,7 +3056,19 @@
     <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix3VertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Cobweb\Matrix4VertexAttribute" />
     <None Include="share\titania\ui\icons\VisualizeGeometry.svg" />
-    <None Include="titania" />
+    <None Include="share\titania\Library\Components\VolumeRendering\BlendedVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\BoundaryEnhancementVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\CartoonVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\ComposedVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\EdgeEnhancementVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\IsoSurfaceVolumeData.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\OpacityMapVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\ProjectionVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\SegmentedVolumeData.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\ShadedVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\SilhouetteEnhancementVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\ToneMappedVolumeStyle.x3dv" />
+    <None Include="share\titania\Library\Components\VolumeRendering\VolumeData.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3210,6 +3222,7 @@
     <Folder Include="Titania\Editors\BindableNodeList\" />
     <Folder Include="share\titania\ui\icons\Primitives\" />
     <Folder Include="Titania\Widgets\RouteGraph\" />
+    <Folder Include="share\titania\Library\Components\VolumeRendering\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

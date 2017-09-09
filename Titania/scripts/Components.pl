@@ -10,17 +10,20 @@ use File::Basename qw (dirname);
 
 say "Generate Components";
 
-my $TitaniaInfo = "/home/holger/Projekte/Titania/titania-info/titania-info";
+my $titania     = "/home/holger/Projekte/Titania/Titania/run.pl";
 my $components  = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Components";
 
 my $nodes = new Glib::KeyFile ();
-$nodes -> load_from_data (join ("", `$TitaniaInfo -i=nodes 2>/dev/null`), "none");
+
+$nodes -> load_from_data (join ("", `$titania --list=nodes 2>/dev/null`), "none");
 
 foreach my $node ($nodes -> get_groups ())
 {
-	say $node;
-
 	my $componentName = $nodes -> get_string ($node, "componentName");
+
+	next unless $componentName eq "VolumeRendering";
+
+	say $node;
 
 	system "mkdir", "-p", "$components/$componentName";
 
