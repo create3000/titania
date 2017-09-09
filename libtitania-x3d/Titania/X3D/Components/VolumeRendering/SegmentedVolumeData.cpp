@@ -83,6 +83,12 @@ SegmentedVolumeData::SegmentedVolumeData (X3DExecutionContext* const executionCo
 	addField (initializeOnly, "bboxSize", bboxSize ());
 }
 
+X3DBaseNode*
+SegmentedVolumeData::create (X3DExecutionContext* const executionContext) const
+{
+	return new SegmentedVolumeData (executionContext);
+}
+
 SegmentedVolumeData::~SegmentedVolumeData ()
 { }
 

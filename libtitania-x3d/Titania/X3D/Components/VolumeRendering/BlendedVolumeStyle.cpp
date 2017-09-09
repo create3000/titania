@@ -83,6 +83,12 @@ BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionCont
 	addField (inputOutput, "weightFunction1", weightFunction1 ());
 }
 
+X3DBaseNode*
+BlendedVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new BlendedVolumeStyle (executionContext);
+}
+
 BlendedVolumeStyle::~BlendedVolumeStyle ()
 { }
 

@@ -79,6 +79,12 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize", bboxSize ());
 }
 
+X3DBaseNode*
+VolumeData::create (X3DExecutionContext* const executionContext) const
+{
+	return new VolumeData (executionContext);
+}
+
 VolumeData::~VolumeData ()
 { }
 

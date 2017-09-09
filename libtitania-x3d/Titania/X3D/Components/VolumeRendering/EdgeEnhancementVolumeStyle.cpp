@@ -79,6 +79,12 @@ EdgeEnhancementVolumeStyle::EdgeEnhancementVolumeStyle (X3DExecutionContext* con
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
 }
 
+X3DBaseNode*
+EdgeEnhancementVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new EdgeEnhancementVolumeStyle (executionContext);
+}
+
 EdgeEnhancementVolumeStyle::~EdgeEnhancementVolumeStyle ()
 { }
 

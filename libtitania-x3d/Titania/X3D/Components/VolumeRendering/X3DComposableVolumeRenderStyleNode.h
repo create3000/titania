@@ -75,19 +75,6 @@ protected:
 
 	X3DComposableVolumeRenderStyleNode ();
 
-
-private:
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
-
 };
 
 } // X3D

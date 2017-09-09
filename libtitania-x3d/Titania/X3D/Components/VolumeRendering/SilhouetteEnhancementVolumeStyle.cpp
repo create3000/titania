@@ -81,6 +81,12 @@ SilhouetteEnhancementVolumeStyle::SilhouetteEnhancementVolumeStyle (X3DExecution
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
 }
 
+X3DBaseNode*
+SilhouetteEnhancementVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new SilhouetteEnhancementVolumeStyle (executionContext);
+}
+
 SilhouetteEnhancementVolumeStyle::~SilhouetteEnhancementVolumeStyle ()
 { }
 

@@ -75,6 +75,12 @@ OpacityMapVolumeStyle::OpacityMapVolumeStyle (X3DExecutionContext* const executi
 	addField (inputOutput, "transferFunction", transferFunction ());
 }
 
+X3DBaseNode*
+OpacityMapVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new OpacityMapVolumeStyle (executionContext);
+}
+
 OpacityMapVolumeStyle::~OpacityMapVolumeStyle ()
 { }
 

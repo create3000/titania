@@ -79,6 +79,12 @@ ToneMappedVolumeStyle::ToneMappedVolumeStyle (X3DExecutionContext* const executi
 	addField (inputOutput, "warmColor", warmColor ());
 }
 
+X3DBaseNode*
+ToneMappedVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new ToneMappedVolumeStyle (executionContext);
+}
+
 ToneMappedVolumeStyle::~ToneMappedVolumeStyle ()
 { }
 

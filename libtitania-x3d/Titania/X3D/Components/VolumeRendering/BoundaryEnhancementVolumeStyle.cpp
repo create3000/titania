@@ -79,6 +79,12 @@ BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionCont
 	addField (inputOutput, "retainedOpacity", retainedOpacity ());
 }
 
+X3DBaseNode*
+BoundaryEnhancementVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new BoundaryEnhancementVolumeStyle (executionContext);
+}
+
 BoundaryEnhancementVolumeStyle::~BoundaryEnhancementVolumeStyle ()
 { }
 

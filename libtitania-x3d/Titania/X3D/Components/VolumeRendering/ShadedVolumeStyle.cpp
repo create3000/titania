@@ -83,6 +83,12 @@ ShadedVolumeStyle::ShadedVolumeStyle (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "phaseFunction", phaseFunction ());
 }
 
+X3DBaseNode*
+ShadedVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new ShadedVolumeStyle (executionContext);
+}
+
 ShadedVolumeStyle::~ShadedVolumeStyle ()
 { }
 

@@ -87,6 +87,12 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 	addField (initializeOnly, "bboxSize", bboxSize ());
 }
 
+X3DBaseNode*
+IsoSurfaceVolumeData::create (X3DExecutionContext* const executionContext) const
+{
+	return new IsoSurfaceVolumeData (executionContext);
+}
+
 IsoSurfaceVolumeData::~IsoSurfaceVolumeData ()
 { }
 

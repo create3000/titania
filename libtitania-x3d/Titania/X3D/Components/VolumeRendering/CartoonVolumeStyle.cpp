@@ -81,6 +81,12 @@ CartoonVolumeStyle::CartoonVolumeStyle (X3DExecutionContext* const executionCont
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
 }
 
+X3DBaseNode*
+CartoonVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new CartoonVolumeStyle (executionContext);
+}
+
 CartoonVolumeStyle::~CartoonVolumeStyle ()
 { }
 

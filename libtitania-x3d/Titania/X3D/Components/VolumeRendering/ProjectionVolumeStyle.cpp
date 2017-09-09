@@ -75,6 +75,12 @@ ProjectionVolumeStyle::ProjectionVolumeStyle (X3DExecutionContext* const executi
 	addField (inputOutput, "intensityThreshold", intensityThreshold ());
 }
 
+X3DBaseNode*
+ProjectionVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new ProjectionVolumeStyle (executionContext);
+}
+
 ProjectionVolumeStyle::~ProjectionVolumeStyle ()
 { }
 

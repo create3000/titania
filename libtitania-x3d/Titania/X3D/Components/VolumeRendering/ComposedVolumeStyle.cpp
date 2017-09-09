@@ -75,6 +75,12 @@ ComposedVolumeStyle::ComposedVolumeStyle (X3DExecutionContext* const executionCo
 	addField (inputOutput, "renderStyle", renderStyle ());
 }
 
+X3DBaseNode*
+ComposedVolumeStyle::create (X3DExecutionContext* const executionContext) const
+{
+	return new ComposedVolumeStyle (executionContext);
+}
+
 ComposedVolumeStyle::~ComposedVolumeStyle ()
 { }
 
