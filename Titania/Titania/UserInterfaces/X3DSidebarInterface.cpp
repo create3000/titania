@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "X3DSidebarInterface.h"
 
 namespace titania {

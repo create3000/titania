@@ -62,7 +62,7 @@ X3DWorldInfoEditor::X3DWorldInfoEditor () :
 	                            scene (getCurrentScene ()),
 	                         changing (false)
 {
-	getAddWorldInfoButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DWorldInfoEditor::on_add_world_info_activate));
+	getAddMetadataButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DWorldInfoEditor::on_add_metadata_activate));
 }
 
 void
@@ -84,14 +84,14 @@ X3DWorldInfoEditor::on_unmap ()
 }
 
 void
-X3DWorldInfoEditor::on_add_world_info_activate ()
+X3DWorldInfoEditor::on_add_metadata_activate ()
 {
 	if (changing)
 		return;
 
-	setAddWorldInfo (scene, getAddWorldInfoButton () .get_active ());
+	setAddMetadata (scene, getAddMetadataButton () .get_active ());
 
-	if (getAddWorldInfoButton () .get_active ())
+	if (getAddMetadataButton () .get_active ())
 		createWorldInfo (scene);
 
 	set_node ();
@@ -110,7 +110,7 @@ X3DWorldInfoEditor::set_current_scene ()
 
 	set_node ();
 
-	getAddWorldInfoButton () .set_active (getAddWorldInfo (scene));
+	getAddMetadataButton () .set_active (getAddMetadata (scene));
 
 	changing = false;
 }
@@ -120,7 +120,7 @@ X3DWorldInfoEditor::set_node ()
 {
 	try
 	{
-		const auto worldInfo = X3D::MFNode ({ getWorldInfo (scene) });
+		const auto worldInfo = X3D::MFNode ({ getWorldInfo (scene, false) });
 	
 		title .setNodes (worldInfo);
 		info  .setNodes (worldInfo);

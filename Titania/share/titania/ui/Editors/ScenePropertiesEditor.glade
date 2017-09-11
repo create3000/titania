@@ -845,6 +845,7 @@
                         </child>
                         <child>
                           <object class="GtkBox">
+                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">16</property>
                             <child>
@@ -856,7 +857,7 @@
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Add World Info:</property>
+                                    <property name="label" translatable="yes">Add Metadata:</property>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -872,7 +873,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSwitch" id="AddWorldInfoButton">
+                              <object class="GtkSwitch" id="AddMetadataButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">Automatically add a WorldInfo node to store program and scene configuration values and user data.</property>

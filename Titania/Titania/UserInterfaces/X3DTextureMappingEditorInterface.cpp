@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "X3DTextureMappingEditorInterface.h"
 
 namespace titania {

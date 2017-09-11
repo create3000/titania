@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "X3DScenePropertiesEditorInterface.h"
 
 namespace titania {
@@ -114,7 +115,7 @@ X3DScenePropertiesEditorInterface::create ()
 	m_builder -> get_widget ("WorldInfoExpander", m_WorldInfoExpander);
 	m_builder -> get_widget ("WorldInfoTitleTextView", m_WorldInfoTitleTextView);
 	m_builder -> get_widget ("WorldInfoInfoTextView", m_WorldInfoInfoTextView);
-	m_builder -> get_widget ("AddWorldInfoButton", m_AddWorldInfoButton);
+	m_builder -> get_widget ("AddMetadataButton", m_AddMetadataButton);
 	m_builder -> get_widget ("MetaDataDialog", m_MetaDataDialog);
 	m_builder -> get_widget ("MetaDataCancelButton", m_MetaDataCancelButton);
 	m_builder -> get_widget ("MetaDataOkButton", m_MetaDataOkButton);

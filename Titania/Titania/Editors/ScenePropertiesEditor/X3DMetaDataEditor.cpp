@@ -83,6 +83,7 @@ X3DMetaDataEditor::configure ()
 	getCurrentScene () .addInterest (&X3DMetaDataEditor::set_current_scene, this);
 
 	getAddStandardMetaDataButton () .set_state (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"));
+	//getAddStandardMetaDataButton () .set_state (getAddStandardMetadata (scene));
 }
 
 void
@@ -287,6 +288,7 @@ void
 X3DMetaDataEditor::on_add_standard_meta_data_activate ()
 {
 	getBrowserWindow () -> getConfig () -> setItem ("addStandardMetaData", getAddStandardMetaDataButton () .get_active ());
+	//setAddStandardMetadata (scene, getAddStandardMetaDataButton () .get_active ());
 }
 
 void

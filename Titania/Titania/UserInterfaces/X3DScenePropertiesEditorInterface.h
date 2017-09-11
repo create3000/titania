@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TMP_GLAD2CPP_SCENE_PROPERTIES_EDITOR_H__
 #define __TMP_GLAD2CPP_SCENE_PROPERTIES_EDITOR_H__
 
@@ -228,8 +229,8 @@ public:
 	{ return *m_WorldInfoInfoTextView; }
 
 	Gtk::Switch &
-	getAddWorldInfoButton () const
-	{ return *m_AddWorldInfoButton; }
+	getAddMetadataButton () const
+	{ return *m_AddMetadataButton; }
 
 	Gtk::Dialog &
 	getMetaDataDialog () const
@@ -412,7 +413,7 @@ private:
 	Gtk::Expander* m_WorldInfoExpander;
 	Gtk::TextView* m_WorldInfoTitleTextView;
 	Gtk::TextView* m_WorldInfoInfoTextView;
-	Gtk::Switch* m_AddWorldInfoButton;
+	Gtk::Switch* m_AddMetadataButton;
 	Gtk::Dialog* m_MetaDataDialog;
 	Gtk::Button* m_MetaDataCancelButton;
 	Gtk::Button* m_MetaDataOkButton;

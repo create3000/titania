@@ -129,10 +129,16 @@ public:
 	 */
 
 	void
-	setAddWorldInfo (const X3D::X3DScenePtr & scene, const bool value);
+	setAddStandardMetadata (const X3D::X3DScenePtr & scene, const bool value);
 
 	bool
-	getAddWorldInfo (const X3D::X3DScenePtr & scene);
+	getAddStandardMetadata (const X3D::X3DScenePtr & scene);
+
+	void
+	setAddMetadata (const X3D::X3DScenePtr & scene, const bool value);
+
+	bool
+	getAddMetadata (const X3D::X3DScenePtr & scene);
 
 	X3D::X3DPtr <X3D::WorldInfo>
 	createWorldInfo (const X3D::X3DScenePtr & scene)
@@ -246,14 +252,14 @@ protected:
 	setTypeName (const std::string & value)
 	{ typeName = value; }
 
-
-private:
-
 	/// @name Operations
 	 
 	X3D::X3DPtr <X3D::WorldInfo>
 	getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
+
+private:
 
 	/// @name Event handlers
 	 

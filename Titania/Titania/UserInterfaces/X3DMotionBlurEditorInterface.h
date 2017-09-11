@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
 #define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
 

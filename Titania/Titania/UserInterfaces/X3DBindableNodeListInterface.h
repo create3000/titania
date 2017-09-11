@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
 #define __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
 

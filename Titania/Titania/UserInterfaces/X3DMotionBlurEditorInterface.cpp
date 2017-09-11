@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "X3DMotionBlurEditorInterface.h"
 
 namespace titania {

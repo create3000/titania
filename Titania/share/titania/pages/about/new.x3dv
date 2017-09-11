@@ -8,7 +8,7 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.3, http://titania.create3000.de"
 META "identifier" ""
 META "modified" "Fri, 28 Apr 2017 15:24:36 GMT"
-META "titania-add-world-info" "true"
+META "titania-add-metadata" "true"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {

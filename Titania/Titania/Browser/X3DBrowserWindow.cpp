@@ -84,9 +84,12 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	           gridTool (new GridTool (this)),
 	      angleGridTool (new AngleGridTool (this)),
 	axonometricGridTool (new AxonometricGridTool (this)),
+	   defaultWorldInfo (defaultBrowser -> getExecutionContext () -> createNode <X3D::WorldInfo> ()),
 	               keys (),
 	       accelerators (true)
-{ }  
+{
+	addChildObjects (defaultWorldInfo);
+}  
 
 void
 X3DBrowserWindow::initialize ()

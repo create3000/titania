@@ -858,7 +858,15 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 	// Head
 
-	if (not getComponents () .empty () and not getUnits () .empty () and not getMetaDatas () .empty ())
+	bool outputUnits = false;
+
+	for (const auto & unit : getUnits ())
+	{
+		if (unit .getConversionFactor () not_eq 1)
+			outputUnits = true;
+	}
+
+	if (not getMetaDatas () .empty () or not getComponents () .empty () or outputUnits)
 	{
 		bool headLastProperty = false;
 	
@@ -872,113 +880,6 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			<< '{'
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
-
-
-		// Components
-
-		if (not getComponents () .empty ())
-		{
-			if (headLastProperty)
-			{
-				ostream
-					<< ','
-					<< Generator::TidyBreak;
-			}
-	
-
-			// Components begin
-				
-			ostream
-				<< Generator::Indent
-				<< '"'
-				<< "component"
-				<< '"'
-				<< ':'
-				<< Generator::TidySpace
-				<< '['
-				<< Generator::TidyBreak
-				<< Generator::IncIndent;
-
-
-			// Components
-
-			for (const auto & component : getComponents ())
-			{
-				ostream << Generator::Indent;
-
-				component -> toJSONStream (ostream);
-
-				if (component not_eq getComponents () .back ())
-					ostream << ',';
-		
-				ostream << Generator::TidyBreak;
-			}
-
-
-			// Components end
-		
-			ostream
-				<< Generator::DecIndent
-				<< Generator::Indent
-				<< ']';
-
-			headLastProperty = true;
-		}
-
-
-		// Units
-
-		if (not getUnits () .empty ())
-		{
-			if (headLastProperty)
-			{
-				ostream
-					<< ','
-					<< Generator::TidyBreak;
-			}
-	
-
-			// Units begin
-				
-			ostream
-				<< Generator::Indent
-				<< '"'
-				<< "unit"
-				<< '"'
-				<< ':'
-				<< Generator::TidySpace
-				<< '['
-				<< Generator::TidyBreak
-				<< Generator::IncIndent;
-
-
-			// Units
-
-			for (const auto & unit : getUnits ())
-			{
-				if (unit .getConversionFactor () not_eq 1)
-				{
-					ostream << Generator::Indent;
-
-					unit .toJSONStream (ostream);
-
-					if (&unit not_eq &getUnits () .back ())
-						ostream << ',';
-			
-					ostream << Generator::TidyBreak;
-				}
-			}
-
-
-			// Unit end
-		
-			ostream
-				<< Generator::DecIndent
-				<< Generator::Indent
-				<< ']';
-
-			headLastProperty = true;
-		}	
 
 
 		// Meta data
@@ -1058,6 +959,113 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 			headLastProperty = true;
 		}
+
+
+		// Components
+
+		if (not getComponents () .empty ())
+		{
+			if (headLastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+
+
+			// Components begin
+				
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "component"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+
+			// Components
+
+			for (const auto & component : getComponents ())
+			{
+				ostream << Generator::Indent;
+
+				component -> toJSONStream (ostream);
+
+				if (component not_eq getComponents () .back ())
+					ostream << ',';
+		
+				ostream << Generator::TidyBreak;
+			}
+
+
+			// Components end
+		
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			headLastProperty = true;
+		}
+
+
+		// Units
+
+		if (outputUnits)
+		{
+			if (headLastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
+
+			// Units begin
+				
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "unit"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+
+			// Units
+
+			for (const auto & unit : getUnits ())
+			{
+				if (unit .getConversionFactor () not_eq 1)
+				{
+					ostream << Generator::Indent;
+
+					unit .toJSONStream (ostream);
+
+					if (&unit not_eq &getUnits () .back ())
+						ostream << ',';
+			
+					ostream << Generator::TidyBreak;
+				}
+			}
+
+
+			// Unit end
+		
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			headLastProperty = true;
+		}	
 	
 	
 		// Head end

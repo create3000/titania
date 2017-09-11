@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "X3DPrototypeEditorInterface.h"
 
 namespace titania {

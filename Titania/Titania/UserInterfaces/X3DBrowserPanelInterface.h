@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TMP_GLAD2CPP_BROWSER_PANEL_H__
 #define __TMP_GLAD2CPP_BROWSER_PANEL_H__
 
