@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.cpp" Line="54" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.cpp" Line="24" Column="64" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/VolumeRendering/BlendedVolumeStyle.h" Line="1" Column="1" />
-      <File FileName=".gitignore" Line="1" Column="1" />
-      <File FileName=".bzrignore" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/pages/about/new.x3dv" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
