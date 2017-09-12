@@ -399,12 +399,12 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 			}
 			case '"':
 			{
-				ostream << "&quot;";
+				ostream << "\\\"";
 				break;
 			}
 			case '\\':
 			{
-				ostream << "&#92;";
+				ostream << "\\\\";
 				break;
 			}
 			default:
