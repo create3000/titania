@@ -131,7 +131,7 @@ throw (Error <INVALID_URL>,
 	};
 
 	if (worldURL .is_relative ())
-		worldURL = basic::uri (Glib::get_current_dir () + "/") .transform (worldURL);
+		worldURL = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (worldURL);
 
 	if (not worldURL .is_local ())
 		throw Error <INVALID_URL> ("Invalid URL: URL is not local.");

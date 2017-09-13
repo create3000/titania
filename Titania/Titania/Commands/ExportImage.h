@@ -135,10 +135,10 @@ public:
 		basic::uri outputFilename (options .imageFilename);
 
 		if (inputFilename .is_relative ())
-			inputFilename = basic::uri (Glib::get_current_dir () + "/") .transform (inputFilename);
+			inputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (inputFilename);
 
 		if (outputFilename .is_relative ())
-			outputFilename = basic::uri (Glib::get_current_dir () + "/") .transform (outputFilename);
+			outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
 
 		const auto browser = X3D::createBrowser ();
 		//browser -> set_size_request (options .width, options. height);

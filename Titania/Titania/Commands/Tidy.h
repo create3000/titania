@@ -74,7 +74,10 @@ public:
 		basic::uri outputFilename (options .exportFilename);
 
 		if (inputFilename .is_relative ())
-			inputFilename = basic::uri (Glib::get_current_dir () + "/") .transform (inputFilename);
+			inputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (inputFilename);
+
+		if (outputFilename .is_relative ())
+			outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
 
 		const auto browser = X3D::getBrowser ();
 		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
