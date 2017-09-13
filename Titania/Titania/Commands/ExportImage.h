@@ -66,14 +66,9 @@ class ExportImage :
 public:
 
 	void
-	set_loadCount (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
+	set_initialized (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
 	{
 		std::clog << "*** Loading " << browser -> getLoadCount () << " files." << std::endl;
-
-		if (browser -> getLoadCount () > 0)
-			return;
-
-		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
 
 		// Constrain options.
 
@@ -140,14 +135,12 @@ public:
 		if (outputFilename .is_relative ())
 			outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
 
-		const auto browser = X3D::createBrowser ();
+		const auto browser = X3D::createBrowser ({ inputFilename .str () });
 		//browser -> set_size_request (options .width, options. height);
 		browser -> setFixedPipeline (options .fixedPipeline);
 		browser -> setup ();
 
-		const auto scene = browser -> createX3DFromURL ({ inputFilename .str () });
-		browser -> replaceWorld (scene);
-		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser .getValue (), std::ref (options), outputFilename);
+		browser -> initialized () .addInterest (&ExportImage::set_initialized, this, browser .getValue (), std::ref (options), outputFilename);
 
 		kit .run ();
 		return 0;
