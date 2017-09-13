@@ -70,6 +70,7 @@ public:
 		             height (100),
 		       alphaChannel (false),
 		       antialiasing (4),
+		      fixedPipeline (false),
 		     exportFilename (),
 		               list (),
 		               help (false)
@@ -79,6 +80,7 @@ public:
 		Glib::OptionEntry optionHeight;
 		Glib::OptionEntry optionAlphaChannel;
 		Glib::OptionEntry optionAntialiasing;
+		Glib::OptionEntry optionFixedPipeline;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
 		Glib::OptionEntry optionList;
@@ -86,10 +88,10 @@ public:
 
 		set_summary ("Titania is a X3D/VRML editor and browser for Ubuntu.");
 
-		Glib::OptionGroup mainGroup ("common", "Common options", "General options");
-		Glib::OptionGroup imageGroup ("image", "Image options", "Image options");
-		Glib::OptionGroup exportGroup ("export", "Export options", "Export options");
-		Glib::OptionGroup listGroup ("list", "Listings options", "Listings options");
+		Glib::OptionGroup mainGroup   ("common", "Common options",   "General options");
+		Glib::OptionGroup imageGroup  ("image",  "Image options",    "Image options");
+		Glib::OptionGroup exportGroup ("export", "Export options",   "Export options");
+		Glib::OptionGroup listGroup   ("list",   "Listings options", "Listings options");
 
 		optionExportImage .set_short_name ('i');
 		optionExportImage .set_long_name ("export-image");
@@ -115,6 +117,10 @@ public:
 		optionAntialiasing .set_arg_description ("SAMPLES");
 		optionAntialiasing .set_description ("Set image antialiasing samples.");
 
+		optionFixedPipeline .set_short_name ('f');
+		optionFixedPipeline .set_long_name ("fixed-pipeline");
+		optionFixedPipeline .set_description ("Set whether fixed pipeline should be used or shader pipeline.");
+
 		optionExportFilename .set_short_name ('e');
 		optionExportFilename .set_long_name ("export");
 		optionExportFilename .set_arg_description ("FILENAME");
@@ -138,6 +144,7 @@ public:
 		imageGroup  .add_entry (optionHeight,         height);
 		imageGroup  .add_entry (optionAlphaChannel,   alphaChannel);
 		imageGroup  .add_entry (optionAntialiasing,   antialiasing);
+		imageGroup  .add_entry (optionFixedPipeline,  fixedPipeline);
 		exportGroup .add_entry (optionExportFilename, exportFilename);
 		exportGroup .add_entry (optionExportStyle,    exportStyle);
 		listGroup   .add_entry (optionList,           list);
@@ -159,6 +166,7 @@ public:
 	int32_t                     height;
 	bool                        alphaChannel;
 	int32_t                     antialiasing;
+	bool                        fixedPipeline;
 	Glib::ustring               exportFilename;
 	Glib::ustring               exportStyle;
 	Glib::ustring               list;

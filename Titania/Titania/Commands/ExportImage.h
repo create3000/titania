@@ -142,6 +142,7 @@ public:
 
 		const auto browser = X3D::createBrowser ();
 		//browser -> set_size_request (options .width, options. height);
+		browser -> setFixedPipeline (options .fixedPipeline);
 		browser -> setup ();
 
 		const auto scene = browser -> createX3DFromURL ({ inputFilename .str () });
