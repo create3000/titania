@@ -1682,10 +1682,8 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	// Handle IS references, if node is proto.
 
 	if (oldField -> getType () == newField -> getType ())
-	{
-		if (oldField -> getAccessType () not_eq newField -> getAccessType ())
-			replaceReferences (ProtoDeclarationPtr (node), oldField, newField, undoStep);
-	}
+		replaceReferences (ProtoDeclarationPtr (node), oldField, newField, undoStep);
+
 	else
 		removeReferences (ProtoDeclarationPtr (node), oldField, undoStep);
 
@@ -1881,6 +1879,8 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 void
 X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
+	__LOG__ << std::endl;
+
 	using namespace std::placeholders;
 	
 	undoStep -> addObjects (proto);
@@ -1896,6 +1896,9 @@ X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const o
 	{
 		if (field -> getReferences () .count (oldProtoField))
 		{
+			__LOG__ << node -> getTypeName () << std::endl;
+			__LOG__ << newProtoField -> isReference (field -> getAccessType ()) << std::endl;
+
 			undoStep -> addObjects (node);
 			removeReference (node, field, oldProtoField, undoStep);
 
