@@ -82,6 +82,10 @@ template <>
 JSBool
 MFNode::push (JSContext *, uint32_t, jsval*);
 
+template <>
+JSBool
+MFNode::splice (JSContext *, uint32_t, jsval*);
+
 extern template class X3DArrayField <SFNode, X3D::MFNode>;
 
 } // spidermonkey

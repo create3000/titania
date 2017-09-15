@@ -200,6 +200,50 @@ MFNode::push (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
+template <>
+JSBool
+MFNode::splice (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc < 2)
+		return ThrowException (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv        = JS_ARGV (cx, vp);
+		const auto array       = getThis <X3DArrayField> (cx, vp);
+		auto       index       = spidermonkey::getArgument <int32_t> (cx, argv, 0);
+		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, argv, 1);
+		auto       result      = new X3D::MFNode ();
+
+		if (index > (int32_t) array -> size ())
+			index = array -> size ();
+
+		if (index + deleteCount > (int32_t) array -> size ())
+			deleteCount = array -> size () - index;
+
+		result -> insert (result -> begin (), array -> begin () + index, array -> begin () + (index + deleteCount));
+		array -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
+
+		for (ssize_t i = argc - 1; i >= 2; -- i)
+		{
+			try
+			{
+				array -> emplace (array -> begin () + index, getArgument <SFNode> (cx, argv, i));
+			}
+			catch (const std::domain_error &)
+			{
+				array -> emplace (array -> begin () + index, nullptr);
+			}
+		}
+
+		return create <MFNode> (cx, result, &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
+	}
+}
+
 template class X3DArrayField <SFNode, X3D::MFNode>;
 
 } // spidermonkey

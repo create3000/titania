@@ -111,6 +111,7 @@ private:
 	static JSBool push    (JSContext*, uint32_t, jsval*);
 	static JSBool shift   (JSContext*, uint32_t, jsval*);
 	static JSBool pop     (JSContext*, uint32_t, jsval*);
+	static JSBool splice  (JSContext*, uint32_t, jsval*);
 
 	///  @name Properties
 
@@ -179,6 +180,7 @@ JSFunctionSpec X3DArrayField <Type, InternalType>::functions [ ] = {
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
 	{ "pop",         pop,     0, 0 },
+	{ "splice",      splice,  2, 0 },
 
 	{ 0 }
 
@@ -213,7 +215,7 @@ X3DArrayField <Type, InternalType>::construct (JSContext* cx, uint32_t argc, jsv
 
 			for (uint32_t i = 0; i < argc; ++ i)
 			{
-				array -> emplace_back (getArgument <value_type> (cx, argv, i));
+				array -> emplace_back (getArgument <Type> (cx, argv, i));
 			}
 
 			return create <X3DArrayField <Type, InternalType>> (cx, array, &JS_RVAL (cx, vp));
@@ -438,6 +440,41 @@ X3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .pop: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type, class InternalType>
+JSBool
+X3DArrayField <Type, InternalType>::splice (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc < 2)
+		return ThrowException (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv        = JS_ARGV (cx, vp);
+		const auto array       = getThis <X3DArrayField> (cx, vp);
+		auto       index       = spidermonkey::getArgument <int32_t> (cx, argv, 0);
+		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, argv, 1);
+		auto       result      = new InternalType ();
+
+		if (index > (int32_t) array -> size ())
+			index = array -> size ();
+
+		if (index + deleteCount > (int32_t) array -> size ())
+			deleteCount = array -> size () - index;
+
+		result -> insert (result -> begin (), array -> begin () + index, array -> begin () + (index + deleteCount));
+		array  -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
+
+		for (ssize_t i = argc - 1; i >= 2; -- i)
+			array -> emplace (array -> begin () + index, getArgument <Type> (cx, argv, i));
+
+		return create <X3DArrayField <Type, InternalType>> (cx, result, &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
 	}
 }
 
