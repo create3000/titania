@@ -372,11 +372,6 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 				ostream << "&#xD;";
 				break;
 			}
-			case '#':
-			{
-				ostream << "&#35;";
-				break;
-			}
 			case '<':
 			{
 				ostream << "&lt;";
