@@ -50,7 +50,7 @@
 
 #include "SupportedProfiles.h"
 
-#include <iostream>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {

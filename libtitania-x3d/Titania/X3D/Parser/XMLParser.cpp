@@ -132,7 +132,6 @@ XMLParser::parseIntoScene ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
 		throw;
 	}
 	catch (const std::exception & error)
