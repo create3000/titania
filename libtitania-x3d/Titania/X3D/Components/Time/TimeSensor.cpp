@@ -121,7 +121,9 @@ TimeSensor::prepareEvents ()
 			{
 				cycle += interval * std::floor ((getCurrentTime () - cycle) / interval);
 
-				fraction_changed () = last;
+				time_type intpart;
+
+				fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
 				elapsedTime ()      = getElapsedTime ();
 				cycleTime ()        = getCurrentTime ();
 			}
