@@ -664,6 +664,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getHeaderBox () const
 	{ return *m_HeaderBox; }
@@ -2142,6 +2146,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_HeaderBox;
 	Gtk::Box* m_HeaderSubBox;
 	Gtk::MenuBar* m_Menubar;

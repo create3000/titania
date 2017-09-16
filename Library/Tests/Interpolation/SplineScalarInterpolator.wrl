@@ -1,20 +1,19 @@
-#X3D V3.0 utf8
-
-META "title" "SplineScalarInterpolator"
+#VRML V2.0 utf8 Titania V3.0.4
 
 EXTERNPROTO ComposeSFVec3f [
-  inputOutput SFFloat x
-  inputOutput SFFloat y
-  inputOutput SFFloat z
-  outputOnly  SFVec3f value_changed
+  exposedField SFFloat x
+  exposedField SFFloat y
+  exposedField SFFloat z
+  eventOut    SFVec3f value_changed
 ]
 "ComposeSFVec3f.wrl"
 
 EXTERNPROTO LineTrail [
-  inputOutput    SFTime  cycleInterval
-  inputOutput    SFTime  resetTime
-  inputOutput    SFVec3f point
-  initializeOnly SFInt32 dimension
+  exposedField   SFBool  enabled
+  exposedField   SFTime  cycleInterval
+  exposedField   SFTime  resetTime
+  exposedField   SFVec3f point
+  field          SFInt32 dimension
 ]
 "LineTrail.wrl"
 
@@ -23,6 +22,7 @@ Transform {
   scale 10 1 1
   children [
     DEF Box Transform {
+      translation 3.50475e-06 -1.37572e-09 0
       scale 0.01 0.1 0.1
       children Shape {
         appearance Appearance {
@@ -39,6 +39,8 @@ Transform {
       }
       geometry DEF Trail LineTrail {
         cycleInterval 0.1
+        resetTime 1505493445.07078
+        point 3.50475e-06 -1.37572e-09 0
         dimension 50
       }
     }
@@ -51,11 +53,26 @@ DEF Timer TimeSensor {
 }
 
 DEF Interpolator SplineScalarInterpolator {
-  key [ 0, 0.25, 0.5, 0.75, 1 ]
-  keyValue [ 0, -2, 2, -1, 0 ]
+  key [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ]
+  keyValue [
+    0,
+    -2,
+    2,
+    -1,
+    0
+  ]
 }
 
-DEF Composer ComposeSFVec3f { }
+DEF Composer ComposeSFVec3f {
+  x 3.50475e-06
+  y -1.37572e-09
+}
 
 ROUTE Timer.cycleTime TO Trail.set_resetTime
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction

@@ -33,6 +33,7 @@
             <property name="can_focus">False</property>
             <property name="title">Protoype Properties</property>
             <property name="subtitle">Extern Prototype »Rotor«</property>
+            <property name="show_close_button">True</property>
             <child>
               <object class="GtkImage" id="EditPrototypeImage">
                 <property name="visible">True</property>

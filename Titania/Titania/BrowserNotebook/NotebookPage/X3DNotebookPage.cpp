@@ -221,13 +221,13 @@ X3DNotebookPage::updateTitle ()
 
 	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
 	{
-		getWindow () .set_title (mainBrowser -> getExecutionContext () -> getTitle ()
-		                         + " · "
-		                         + mainBrowser -> getExecutionContext () -> getWorldURL () .filename ()
-		                         + (modified ? "*" : "")
-		                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
-		                         + " · "
-		                         + mainBrowser -> getName ());
+		getBrowserWindow () -> getHeaderBar () .set_title (mainBrowser -> getExecutionContext () -> getTitle ()
+		                                                   + (modified ? "*" : ""
+		                                                   + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), ".")))
+		                                                   + " · "
+		                                                   + mainBrowser -> getName ());
+
+		getBrowserWindow () -> getHeaderBar () .set_subtitle (mainBrowser -> getExecutionContext () -> getWorldURL () .filename () .str ());
 	}
 }
 

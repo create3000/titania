@@ -224,6 +224,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
 	m_builder -> get_widget ("HeaderSubBox", m_HeaderSubBox);
 	m_builder -> get_widget ("Menubar", m_Menubar);

@@ -94,6 +94,8 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 	                 browser,
 	                 scene,
 	                 executionContext);
+
+	setTitleBar (getWindow (), getHeaderBar ());
 }
 
 void
