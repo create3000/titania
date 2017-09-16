@@ -98,8 +98,9 @@ SplineScalarInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue ()    .addInterest (&SplineScalarInterpolator::set_keyValue, this);
-	keyVelocity () .addInterest (&SplineScalarInterpolator::set_keyVelocity, this);
+	keyValue ()          .addInterest (&SplineScalarInterpolator::set_keyValue,          this);
+	keyVelocity ()       .addInterest (&SplineScalarInterpolator::set_keyVelocity,       this);
+	normalizeVelocity () .addInterest (&SplineScalarInterpolator::set_normalizeVelocity, this);
 }
 
 void
@@ -120,6 +121,12 @@ SplineScalarInterpolator::set_keyVelocity ()
 			keyVelocity () .resize (key () .size ());
 	}
 
+	set_normalizeVelocity ();
+}
+
+void
+SplineScalarInterpolator::set_normalizeVelocity ()
+{
 	spline -> generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 

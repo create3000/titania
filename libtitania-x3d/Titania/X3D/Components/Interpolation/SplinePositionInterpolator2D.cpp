@@ -98,8 +98,9 @@ SplinePositionInterpolator2D::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue ()    .addInterest (&SplinePositionInterpolator2D::set_keyValue, this);
-	keyVelocity () .addInterest (&SplinePositionInterpolator2D::set_keyVelocity, this);
+	keyValue ()          .addInterest (&SplinePositionInterpolator2D::set_keyValue,          this);
+	keyVelocity ()       .addInterest (&SplinePositionInterpolator2D::set_keyVelocity,       this);
+	normalizeVelocity () .addInterest (&SplinePositionInterpolator2D::set_normalizeVelocity, this);
 }
 
 void
@@ -120,6 +121,12 @@ SplinePositionInterpolator2D::set_keyVelocity ()
 			keyVelocity () .resize (key () .size ());
 	}
 
+	set_normalizeVelocity ();
+}
+
+void
+SplinePositionInterpolator2D::set_normalizeVelocity ()
+{
 	spline -> generate (closed (), key (), keyValue (), keyVelocity (), normalizeVelocity ());
 }
 

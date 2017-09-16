@@ -150,7 +150,12 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (const bool closed,
 					Dtot += abs (keyValue [i] - keyValue [i + 1]);
 
 				for (auto & Ti : T)
-					Ti *= Dtot / abs (Ti);
+				{
+					const auto Tia = abs (Ti);
+
+					if (Tia)
+						Ti *= Dtot / Tia;
+				}
 			}
 		}
 

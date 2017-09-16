@@ -158,6 +158,9 @@ private:
 	void
 	set_keyVelocity ();
 
+	void
+	set_normalizeVelocity ();
+
 	///  @name Operations
 
 	virtual
