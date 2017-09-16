@@ -476,7 +476,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		if (backTexture -> checkLoadState () == COMPLETE_STATE)
 		{
-			if (frontTexture -> isTransparent ())
+			if (backTexture -> isTransparent ())
 				glEnable (GL_BLEND);
 			else
 				glDisable (GL_BLEND);
@@ -499,7 +499,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		if (leftTexture -> checkLoadState () == COMPLETE_STATE)
 		{
-			if (frontTexture -> isTransparent ())
+			if (leftTexture -> isTransparent ())
 				glEnable (GL_BLEND);
 			else
 				glDisable (GL_BLEND);
@@ -522,7 +522,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		if (rightTexture -> checkLoadState () == COMPLETE_STATE)
 		{
-			if (frontTexture -> isTransparent ())
+			if (rightTexture -> isTransparent ())
 				glEnable (GL_BLEND);
 			else
 				glDisable (GL_BLEND);
@@ -545,7 +545,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		if (topTexture -> checkLoadState () == COMPLETE_STATE)
 		{
-			if (frontTexture -> isTransparent ())
+			if (topTexture -> isTransparent ())
 				glEnable (GL_BLEND);
 			else
 				glDisable (GL_BLEND);
@@ -568,7 +568,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		if (bottomTexture -> checkLoadState () == COMPLETE_STATE)
 		{
-			if (frontTexture -> isTransparent ())
+			if (bottomTexture -> isTransparent ())
 				glEnable (GL_BLEND);
 			else
 				glDisable (GL_BLEND);
