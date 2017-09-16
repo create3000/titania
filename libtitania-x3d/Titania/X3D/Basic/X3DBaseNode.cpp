@@ -1473,10 +1473,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
 
-	const MFString* cdata = getSourceText ();
+	const MFString* sourceText = getSourceText ();
 
-	if (cdata and cdata -> empty ())
-		cdata = nullptr;
+	if (sourceText and sourceText -> empty ())
+		sourceText = nullptr;
 
 	ostream
 		<< Generator::IncIndent
@@ -1523,7 +1523,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					}
 					default:
 					{
-						if (field == cdata)
+						if (field == sourceText)
 							break;
 	
 						ostream
@@ -1549,7 +1549,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::DecIndent;
 
-	if ((not canUserDefinedFields () or userDefinedFields .empty ()) and references .empty () and childNodes .empty () and not cdata)
+	if ((not canUserDefinedFields () or userDefinedFields .empty ()) and references .empty () and childNodes .empty () and not sourceText)
 	{
 		ostream << "/>";
 	}
@@ -1706,9 +1706,9 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			Generator::PopContainerField (ostream);
 		}
 
-		if (cdata)
+		if (sourceText)
 		{
-			for (std::string value : *cdata)
+			for (const auto & value : *sourceText)
 			{
 				ostream
 					<< "<![CDATA["
