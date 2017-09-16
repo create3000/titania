@@ -63,6 +63,21 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const io::string Parser::fields ("fields");
+
+const std::map <std::string, std::string> Parser::substitutions = {
+	std::make_pair ("SFBitMask", "SFString"),
+	std::make_pair ("SFEnum",    "SFString"),
+	std::make_pair ("SFLong",    "SFInt32"),
+	std::make_pair ("SFMatrix",  "SFMatrix4f"),
+	std::make_pair ("MFBitMask", "MFString"),
+	std::make_pair ("MFEnum",    "MFString"),
+	std::make_pair ("MFLong",    "MFInt32"),
+	std::make_pair ("MFMatrix",  "MFMatrix4f"),
+};
+
+const io::character Parser::VerticalBar ('|');
+
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	       X3D::X3DParser (),
 	                scene (scene),
@@ -526,8 +541,6 @@ Parser::nodeBodyElement (const X3D::SFNode & _node)
 void
 Parser::fieldsElements (const X3D::SFNode & _node)
 {
-	static const io::string fields ("fields");
-
 	comments ();
 
 	if (fields (istream))
@@ -550,17 +563,6 @@ Parser::fieldsElements (const X3D::SFNode & _node)
 bool
 Parser::fieldElement (const X3D::SFNode & _node)
 {
-	static const std::map <std::string, std::string> substitutions = {
-		std::make_pair ("SFBitMask", "SFString"),
-		std::make_pair ("SFEnum",    "SFString"),
-		std::make_pair ("SFLong",    "SFInt32"),
-		std::make_pair ("SFMatrix",  "SFMatrix4f"),
-		std::make_pair ("MFBitMask", "MFString"),
-		std::make_pair ("MFEnum",    "MFString"),
-		std::make_pair ("MFLong",    "MFInt32"),
-		std::make_pair ("MFMatrix",  "MFMatrix4f"),
-	};
-
 	comments ();
 
 	std::string _fieldType;
@@ -846,8 +848,6 @@ Parser::sfstringValue (X3D::SFString* _field)
 	}
 
 	// Parse SFEnum and SFBitMask
-
-	static const io::character VerticalBar ('|');
 
 	_field -> clear ();
 

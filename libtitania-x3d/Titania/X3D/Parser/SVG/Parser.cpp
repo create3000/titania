@@ -166,6 +166,49 @@ static constexpr size_t CIRCLE_DIMENSION = 64;
 static constexpr size_t GRADIENT_WIDTH   = 256;
 static constexpr size_t GRADIENT_HEIGHT  = 256;
 
+const std::map <std::string, Parser::ElementsFunction> Parser::xmlElementsIndex = {
+	std::make_pair ("svg", std::mem_fn (&Parser::svgElement)),
+};
+
+const std::map <std::string, Parser::ElementsFunction> Parser::elementsIndex = {
+	std::make_pair ("use",      std::mem_fn (&Parser::useElement)),
+	std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
+	std::make_pair ("switch",   std::mem_fn (&Parser::switchElement)),
+	std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
+	std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
+	std::make_pair ("circle",   std::mem_fn (&Parser::circleElement)),
+	std::make_pair ("ellipse",  std::mem_fn (&Parser::ellipseElement)),
+	std::make_pair ("polygon",  std::mem_fn (&Parser::polygonElement)),
+	std::make_pair ("text",     std::mem_fn (&Parser::textElement)),
+	std::make_pair ("image",    std::mem_fn (&Parser::imageElement)),
+	std::make_pair ("polyline", std::mem_fn (&Parser::polylineElement)),
+	std::make_pair ("path",     std::mem_fn (&Parser::pathElement)),
+};
+
+const std::map <std::string, Parser::PaintGradientFunction> Parser::paintGradientIndex = {
+	std::make_pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
+	std::make_pair ("radialGradient", std::mem_fn (&Parser::paintRadialGradientElement)),
+};
+
+const std::map <std::string, Parser::GradientFunction> Parser::gradientIndex = {
+	std::make_pair ("linearGradient", std::mem_fn (&Parser::linearGradientElement)),
+	std::make_pair ("radialGradient", std::mem_fn (&Parser::radialGradientElement)),
+};
+
+const std::map <std::string, Parser::StyleFunction> Parser::styleIndex =
+{
+	std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
+	std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
+	std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
+	std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
+	std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
+	std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
+	std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
+	std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
+	std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
+	std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
+};
+
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	       X3D::X3DParser (),
 	                scene (scene),
@@ -231,18 +274,12 @@ Parser::parseIntoScene ()
 void
 Parser::xmlElement (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("svg", std::mem_fn (&Parser::svgElement)),
-	};
-
 	try
 	{
 		if (not xmlElement)
 			return;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+		xmlElementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -357,23 +394,6 @@ Parser::elements (xmlpp::Element* const xmlElement)
 void
 Parser::element (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("use",      std::mem_fn (&Parser::useElement)),
-		std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
-		std::make_pair ("switch",   std::mem_fn (&Parser::switchElement)),
-		std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
-		std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
-		std::make_pair ("circle",   std::mem_fn (&Parser::circleElement)),
-		std::make_pair ("ellipse",  std::mem_fn (&Parser::ellipseElement)),
-		std::make_pair ("polygon",  std::mem_fn (&Parser::polygonElement)),
-		std::make_pair ("text",     std::mem_fn (&Parser::textElement)),
-		std::make_pair ("image",    std::mem_fn (&Parser::imageElement)),
-		std::make_pair ("polyline", std::mem_fn (&Parser::polylineElement)),
-		std::make_pair ("path",     std::mem_fn (&Parser::pathElement)),
-	};
-
 	try
 	{
 		if (not xmlElement)
@@ -1324,13 +1344,6 @@ Parser::paintURL (const basic::uri & url,
                   const X3D::Box2d & bbox,
                   const Cairo::RefPtr <Cairo::Context> & context)
 {
-	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const, const X3D::Box2d &, const Cairo::RefPtr <Cairo::Context> &)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
-		std::make_pair ("radialGradient", std::mem_fn (&Parser::paintRadialGradientElement)),
-	};
-
 	try
 	{
 		const auto xpath    = "//*[@id='" + url .fragment () + "']";
@@ -1344,7 +1357,7 @@ Parser::paintURL (const basic::uri & url,
 		if (not xmlElement)
 			return false;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement, bbox, context);
+		paintGradientIndex .at (xmlElement -> get_name ()) (this, xmlElement, bbox, context);
 		return true;
 	}
 	catch (const std::out_of_range &)
@@ -1402,19 +1415,12 @@ Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
 void
 Parser::gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
 {
-	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const, Gradient &)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("linearGradient", std::mem_fn (&Parser::linearGradientElement)),
-		std::make_pair ("radialGradient", std::mem_fn (&Parser::radialGradientElement)),
-	};
-
 	try
 	{
 		if (not xmlElement)
 			return;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement, gradient);
+		gradientIndex .at (xmlElement -> get_name ()) (this, xmlElement, gradient);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -2442,23 +2448,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 void
 Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & style)
 {
-	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
-
-	static const std::map <std::string, StyleFunction> stylesIndex =
-	{
-		std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
-		std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
-		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
-		std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
-		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
-		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
-		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
-		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
-		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
-		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
-	};
-
-	for (const auto & pair : stylesIndex)
+	for (const auto & pair : styleIndex)
 	{
 		const auto attribute = xmlElement -> get_attribute (pair .first);
 
@@ -2477,22 +2467,6 @@ Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & style)
 bool
 Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 {
-	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
-
-	static const std::map <std::string, StyleFunction> stylesIndex =
-	{
-		std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
-		std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
-		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
-		std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
-		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
-		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
-		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
-		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
-		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
-		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
-	};
-
 	if (not xmlAttribute)
 		return false;
 
@@ -2514,7 +2488,7 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 
 		try
 		{
-			stylesIndex .at (pair [0]) (this, pair [1], style);
+			styleIndex .at (pair [0]) (this, pair [1], style);
 		}
 		catch (const std::out_of_range &)
 		{ }

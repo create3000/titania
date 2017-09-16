@@ -410,6 +410,13 @@ private:
 	getBrowser () const
 	{ return scene -> getBrowser (); }
 
+	///  @name Static members
+
+	using ElementsFunction = std::function <void (JSONParser*, json_object* const)>;
+	
+	static const std::map <std::string, ElementsFunction> objectsIndex;
+	static const std::string                              ProtoInstance;
+
 	///  @name Members
 
 	const X3DScenePtr scene;

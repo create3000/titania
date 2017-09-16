@@ -104,7 +104,11 @@ X3DNetworkingContext::initialize ()
 
 const std::shared_ptr <std::mutex> &
 X3DNetworkingContext::getDownloadMutex ()
+//throw (Error <DISPOSED>)
 {
+	if (downloadMutexes .empty ())
+		throw Error <DISPOSED> ("X3DNetworkingContext::getDownloadMutex");
+
 	std::lock_guard <std::mutex> lock (downloadMutex);
 
 	// First try to find a free mutex.
@@ -190,7 +194,9 @@ X3DNetworkingContext::resetLoadCount ()
 
 void
 X3DNetworkingContext::dispose ()
-{ }
+{
+	downloadMutexes .clear ();
+}
 
 X3DNetworkingContext::~X3DNetworkingContext ()
 { }

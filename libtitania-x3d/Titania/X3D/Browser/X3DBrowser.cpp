@@ -692,6 +692,9 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	if (future)
+		future -> dispose ();
+
 	supportedFields     .reset ();
 	supportedNodes      .reset ();
 	supportedComponents .reset ();

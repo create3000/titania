@@ -563,6 +563,9 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
+	if (future)
+		future -> dispose ();
+
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

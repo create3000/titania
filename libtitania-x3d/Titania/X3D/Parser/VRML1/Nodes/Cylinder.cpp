@@ -68,6 +68,10 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+static const std::regex sides (R"/(ALL|SIDES)/");
+static const std::regex top (R"/(ALL|TOP)/");
+static const std::regex bottom (R"/(ALL|BOTTOM)/");
+
 const ComponentType Cylinder::component      = ComponentType::TITANIA;
 const std::string   Cylinder::typeName       = "Cylinder";
 const std::string   Cylinder::containerField = "children";
@@ -100,24 +104,18 @@ Cylinder::create (X3D::X3DExecutionContext* const executionContext) const
 bool
 Cylinder::getSide () const
 {
-	static const std::regex sides (R"/(ALL|SIDES)/");
-
 	return std::regex_search (parts () .str (), sides);
 }
 
 bool
 Cylinder::getTop () const
 {
-	static const std::regex bottom (R"/(ALL|TOP)/");
-
-	return std::regex_search (parts () .str (), bottom);
+	return std::regex_search (parts () .str (), top);
 }
 
 bool
 Cylinder::getBottom () const
 {
-	static const std::regex bottom (R"/(ALL|BOTTOM)/");
-
 	return std::regex_search (parts () .str (), bottom);
 }
 

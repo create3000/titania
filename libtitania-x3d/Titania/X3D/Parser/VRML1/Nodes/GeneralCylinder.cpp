@@ -70,6 +70,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
+static const std::regex sides (R"/(ALL|BOTTOM)/");
+static const std::regex bottom (R"/(ALL|TOP)/");
+
 const ComponentType GeneralCylinder::component      = ComponentType::TITANIA;
 const std::string   GeneralCylinder::typeName       = "GeneralCylinder";
 const std::string   GeneralCylinder::containerField = "children";
@@ -106,16 +109,12 @@ GeneralCylinder::create (X3D::X3DExecutionContext* const executionContext) const
 bool
 GeneralCylinder::getBeginCap () const
 {
-	static const std::regex sides (R"/(ALL|BOTTOM)/");
-
 	return std::regex_search (parts () .str (), sides);
 }
 
 bool
 GeneralCylinder::getEndCap () const
 {
-	static const std::regex bottom (R"/(ALL|TOP)/");
-
 	return std::regex_search (parts () .str (), bottom);
 }
 

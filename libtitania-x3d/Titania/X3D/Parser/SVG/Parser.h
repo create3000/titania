@@ -363,6 +363,18 @@ private:
 	GLenum
 	getFillRule (const Style & style);
 
+	///  @name Static members
+	using ElementsFunction      = std::function <void (Parser*, xmlpp::Element* const)>;
+	using PaintGradientFunction = std::function <void (Parser*, xmlpp::Element* const, const X3D::Box2d &, const Cairo::RefPtr <Cairo::Context> &)>;
+	using GradientFunction      = std::function <void (Parser*, xmlpp::Element* const, Gradient &)>;
+	using StyleFunction         = std::function <void (Parser*, const std::string &, Style &)>;
+
+	static const std::map <std::string, ElementsFunction>      xmlElementsIndex;
+	static const std::map <std::string, ElementsFunction>      elementsIndex;
+	static const std::map <std::string, PaintGradientFunction> paintGradientIndex;
+	static const std::map <std::string, GradientFunction>      gradientIndex;
+	static const std::map <std::string, StyleFunction>         styleIndex;
+
 	///  @name Members
 
 	const X3D::X3DScenePtr scene;

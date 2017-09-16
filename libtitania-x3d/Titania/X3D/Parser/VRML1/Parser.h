@@ -165,6 +165,10 @@ private:
 	using Function              = std::function <X3D::X3DBaseNode* (X3D::X3DExecutionContext* const)>;
 	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
+	static const io::string                          fields;
+	static const std::map <std::string, std::string> substitutions;
+	static const io::character                       VerticalBar;
+
 	///  @name Members
 
 	const X3D::X3DScenePtr scene;

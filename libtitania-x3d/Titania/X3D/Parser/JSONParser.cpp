@@ -67,6 +67,16 @@ extern "C" {
 namespace titania {
 namespace X3D {
 
+const std::map <std::string, JSONParser::ElementsFunction> JSONParser::objectsIndex = {
+	std::make_pair ("ExternProtoDeclare", std::mem_fn (&JSONParser::externProtoDeclareObject)),
+	std::make_pair ("ProtoDeclare",       std::mem_fn (&JSONParser::protoDeclareObject)),
+	std::make_pair ("ROUTE",              std::mem_fn (&JSONParser::routeObject)),
+	std::make_pair ("IMPORT",             std::mem_fn (&JSONParser::importObject)),
+	std::make_pair ("EXPORT",             std::mem_fn (&JSONParser::exportObject)),
+};
+
+const std::string JSONParser::ProtoInstance = "ProtoInstance";
+
 JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	            X3DParser (),
 	                scene (scene),
@@ -398,16 +408,6 @@ JSONParser::childrenArray (json_object* const jobj, MFNode & field)
 bool
 JSONParser::childObject (json_object* const jobj, SFNode & node)
 {
-	using ElementsFunction = std::function <void (JSONParser*, json_object* const)>;
-
-	static const std::map <std::string, ElementsFunction> objectsIndex = {
-		std::make_pair ("ExternProtoDeclare", std::mem_fn (&JSONParser::externProtoDeclareObject)),
-		std::make_pair ("ProtoDeclare",       std::mem_fn (&JSONParser::protoDeclareObject)),
-		std::make_pair ("ROUTE",              std::mem_fn (&JSONParser::routeObject)),
-		std::make_pair ("IMPORT",             std::mem_fn (&JSONParser::importObject)),
-		std::make_pair ("EXPORT",             std::mem_fn (&JSONParser::exportObject)),
-	};
-
 	if (not jobj)
 		return false;
 
@@ -607,8 +607,6 @@ JSONParser::exportObject (json_object* const jobj)
 void
 JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, SFNode & node)
 {
-	static const std::string ProtoInstance = "ProtoInstance";
-
 	// USE property
 
 	try

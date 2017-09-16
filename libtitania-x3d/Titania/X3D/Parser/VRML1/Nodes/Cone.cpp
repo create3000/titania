@@ -68,6 +68,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+static const std::regex sides (R"/(ALL|SIDES)/");
+static const std::regex bottom (R"/(ALL|BOTTOM)/");
+
 const ComponentType Cone::component      = ComponentType::TITANIA;
 const std::string   Cone::typeName       = "Cone";
 const std::string   Cone::containerField = "children";
@@ -100,7 +103,6 @@ Cone::create (X3D::X3DExecutionContext* const executionContext) const
 bool
 Cone::getSide () const
 {
-	static const std::regex sides (R"/(ALL|SIDES)/");
 
 	return std::regex_search (parts () .str (), sides);
 }
@@ -108,8 +110,6 @@ Cone::getSide () const
 bool
 Cone::getBottom () const
 {
-	static const std::regex bottom (R"/(ALL|BOTTOM)/");
-
 	return std::regex_search (parts () .str (), bottom);
 }
 

@@ -732,6 +732,9 @@ ExternProtoDeclaration::toJSONStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
+	if (future)
+		future -> dispose ();
+
 	getScene () -> removeExternProtoLoadCount (this);
 
 	removeChildObjects (url ());

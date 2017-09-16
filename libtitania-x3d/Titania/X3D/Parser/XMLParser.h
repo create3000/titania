@@ -213,6 +213,15 @@ private:
 	getBrowser () const
 	{ return scene -> getBrowser (); }
 
+	///  @name Static members
+
+	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
+	
+	static const std::map <std::string, ElementsFunction> xmlElementIndex;
+	static const std::map <std::string, ElementsFunction> x3dElementChildIndex;
+	static const std::map <std::string, ElementsFunction> headElementsIndex;
+	static const std::map <std::string, ElementsFunction> childElementIndex;
+
 	///  @name Members
 
 	const X3DScenePtr scene;

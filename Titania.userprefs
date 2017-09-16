@@ -4,8 +4,7 @@
     <Files>
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="419" Column="34" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="139" Column="66" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="878" Column="43" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/CatmullRomSplineInterpolator.h" Line="151" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

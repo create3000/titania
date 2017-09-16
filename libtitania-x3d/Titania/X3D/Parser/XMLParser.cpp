@@ -99,6 +99,39 @@ const io::number <double>      XMLGrammar::DoubleValue;
 const io::number <long double> XMLGrammar::LongDoubleValue;
 const io::number <int32_t>     XMLGrammar::IntegerValue;
 
+// XMLParser
+
+const std::map <std::string, XMLParser::ElementsFunction> XMLParser::xmlElementIndex = {
+	std::make_pair ("X3D",                std::mem_fn (&XMLParser::x3dElement)),
+	std::make_pair ("Scene",              std::mem_fn (&XMLParser::sceneElement)),
+	std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+	std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+	std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
+};
+
+const std::map <std::string, XMLParser::ElementsFunction> XMLParser::x3dElementChildIndex = {
+	std::make_pair ("head",  std::mem_fn (&XMLParser::headElement)),
+	std::make_pair ("Scene", std::mem_fn (&XMLParser::sceneElement)),
+};
+
+const std::map <std::string, XMLParser::ElementsFunction> XMLParser::headElementsIndex = {
+	std::make_pair ("component", std::mem_fn (&XMLParser::componentElement)),
+	std::make_pair ("unit",      std::mem_fn (&XMLParser::unitElement)),
+	std::make_pair ("meta",      std::mem_fn (&XMLParser::metaElement)),
+};
+
+const std::map <std::string, XMLParser::ElementsFunction> XMLParser::childElementIndex = {
+	std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+	std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+	std::make_pair ("IS",                 std::mem_fn (&XMLParser::isElement)),
+	std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
+	std::make_pair ("fieldValue",         std::mem_fn (&XMLParser::fieldValueElement)),
+	std::make_pair ("field",              std::mem_fn (&XMLParser::fieldElement)),
+	std::make_pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
+	std::make_pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
+	std::make_pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
+};
+
 XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	            X3DParser (),
 	                scene (scene),
@@ -147,22 +180,12 @@ XMLParser::parseIntoScene ()
 void
 XMLParser::xmlElement (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("X3D",                std::mem_fn (&XMLParser::x3dElement)),
-		std::make_pair ("Scene",              std::mem_fn (&XMLParser::sceneElement)),
-		std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
-		std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
-		std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
-	};
-
 	if (not xmlElement)
 		return;
 
-	const auto iter = elementsIndex .find (xmlElement -> get_name ());
+	const auto iter = xmlElementIndex .find (xmlElement -> get_name ());
 
-	if (iter == elementsIndex .end ())
+	if (iter == xmlElementIndex .end ())
 		nodeElement (xmlElement);
 	else
 		iter -> second (this, xmlElement);
@@ -209,19 +232,12 @@ XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 void
 XMLParser::x3dElementChild (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("head",  std::mem_fn (&XMLParser::headElement)),
-		std::make_pair ("Scene", std::mem_fn (&XMLParser::sceneElement)),
-	};
-
 	try
 	{
 		if (not xmlElement)
 			return;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+		x3dElementChildIndex .at (xmlElement -> get_name ()) (this, xmlElement);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -244,20 +260,12 @@ XMLParser::headElement (xmlpp::Element* const xmlElement)
 void
 XMLParser::headElementChild (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("component", std::mem_fn (&XMLParser::componentElement)),
-		std::make_pair ("unit",      std::mem_fn (&XMLParser::unitElement)),
-		std::make_pair ("meta",      std::mem_fn (&XMLParser::metaElement)),
-	};
-
 	try
 	{
 		if (not xmlElement)
 			return;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+		headElementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
 	}
 	catch (const std::out_of_range &)
 	{ }
@@ -403,26 +411,12 @@ XMLParser::childrenElements (xmlpp::Element* const xmlElement)
 bool
 XMLParser::childElement (xmlpp::Element* const xmlElement)
 {
-	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
-
-	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
-		std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
-		std::make_pair ("IS",                 std::mem_fn (&XMLParser::isElement)),
-		std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
-		std::make_pair ("fieldValue",         std::mem_fn (&XMLParser::fieldValueElement)),
-		std::make_pair ("field",              std::mem_fn (&XMLParser::fieldElement)),
-		std::make_pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
-		std::make_pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
-		std::make_pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
-	};
-
 	if (not xmlElement)
 		return false;
 
-	const auto iter = elementsIndex .find (xmlElement -> get_name ());
+	const auto iter = childElementIndex .find (xmlElement -> get_name ());
 
-	if (iter == elementsIndex .end ())
+	if (iter == childElementIndex .end ())
 		nodeElement (xmlElement);
 	else
 		iter -> second (this, xmlElement);
