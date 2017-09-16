@@ -1192,8 +1192,6 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 void
 X3DScene::dispose ()
 {
-	__LOG__ << getWorldURL () << std::endl;
-
 	metadatas     .clear ();
 	exportedNodes .clear ();
 
