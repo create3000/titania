@@ -1201,7 +1201,7 @@ X3DScene::dispose ()
 
 	removeChildObjects (getRootNodes ());
 }
-
+ 
 X3DScene::~X3DScene ()
 {
 	__LOG__ << getWorldURL () << std::endl;
