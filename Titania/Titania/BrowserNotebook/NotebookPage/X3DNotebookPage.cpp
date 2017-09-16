@@ -209,7 +209,6 @@ X3DNotebookPage::isSaved ()
 void
 X3DNotebookPage::updateTitle ()
 {
-	const bool modified  = getModified ();
 	const auto title     = getTitle ();
 	const auto protoPath = getProtoPath (mainBrowser -> getExecutionContext ());
 
@@ -221,9 +220,8 @@ X3DNotebookPage::updateTitle ()
 
 	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
 	{
-		getBrowserWindow () -> getHeaderBar () .set_title (mainBrowser -> getExecutionContext () -> getTitle ()
-		                                                   + (modified ? "*" : ""
-		                                                   + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), ".")))
+		getBrowserWindow () -> getHeaderBar () .set_title (title
+		                                                   + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
 		                                                   + " · "
 		                                                   + mainBrowser -> getName ());
 
@@ -241,7 +239,7 @@ X3DNotebookPage::getTitle () const
 	if (title .empty ())
 		title = getWorldURL () .basename ();
 
-	if (title .empty ())
+	if (title .empty () or getWorldURL () == get_page ("about/new.x3dv"))
 		title = _ ("New Scene");
 
 	if (modified)
@@ -267,15 +265,14 @@ X3DNotebookPage::initialized ()
 
 	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
 	{
-	   getCurrentScene () -> setWorldURL ("");
-		getCurrentScene () -> setEncoding (X3D::EncodingType::XML);
-		getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
-		getCurrentScene () -> removeMetaData ("comment");
-		getCurrentScene () -> removeMetaData ("created");
-		getCurrentScene () -> removeMetaData ("creator");
-		getCurrentScene () -> removeMetaData ("generator");
-		getCurrentScene () -> removeMetaData ("identifier");
-		getCurrentScene () -> removeMetaData ("modified");
+		getScene () -> setEncoding (X3D::EncodingType::XML);
+		getScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
+		getScene () -> removeMetaData ("comment");
+		getScene () -> removeMetaData ("created");
+		getScene () -> removeMetaData ("creator");
+		getScene () -> removeMetaData ("generator");
+		getScene () -> removeMetaData ("identifier");
+		getScene () -> removeMetaData ("modified");
 	}
 
 	updateTitle ();
