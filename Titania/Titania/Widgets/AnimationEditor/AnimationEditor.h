@@ -719,6 +719,8 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 				break;
 			}
 
+			keyVelocitys .resize (keys .size (), Type ());
+
 			const bool normalizeVelocity = false;
 			const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
 
@@ -872,6 +874,8 @@ AnimationEditor::setArrayInterpolator (const X3D::X3DPtr <Interpolator> & interp
 	
 				for (size_t i = 0, aiN = iN + a * components; i < keys .size (); ++ i, aiN += components * keySize)
 					keyValues .emplace_back (getValue <Type> (keyValue, aiN));
+
+				keyVelocitys .resize (keys .size (), Type ());
 
 				const bool normalizeVelocity = false;
 				const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
