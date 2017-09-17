@@ -131,10 +131,10 @@ private:
 	getDuration () const;
 
 	void
-	setFramesPerSecond (const int32_t value);
+	setFrameRate (const int32_t value);
 
 	int32_t
-	getFramesPerSecond () const;
+	getFrameRate () const;
 
 	bool
 	isActive () const;

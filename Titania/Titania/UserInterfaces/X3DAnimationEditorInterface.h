@@ -97,12 +97,12 @@ public:
 	{ return m_DurationAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getFPSAdjustment () const
-	{ return m_FPSAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getFrameAdjustment () const
 	{ return m_FrameAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFrameRateAdjustment () const
+	{ return m_FrameRateAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslationAdjustment () const
@@ -472,8 +472,8 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::Adjustment> m_DurationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_FPSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_FrameAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_FrameRateAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TranslationAdjustment;
 	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;

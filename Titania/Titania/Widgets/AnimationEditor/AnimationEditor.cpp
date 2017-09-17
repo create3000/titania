@@ -208,7 +208,7 @@ AnimationEditor::set_selection (const X3D::MFNode & selection)
 	X3DAnimationEditorInterface::set_selection (selection);
 
 	const bool haveSelection = not selection .empty ();
-	const auto groups        = getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
+	const auto groups        = getNodes <X3D::X3DNode> (selection, { X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
 
 	getNewButton ()       .set_sensitive (not groups .empty ());
 	getAddMemberButton () .set_sensitive (animation and haveSelection);
@@ -236,19 +236,29 @@ AnimationEditor::getDuration () const
 }
 
 void
-AnimationEditor::setFramesPerSecond (const int32_t value)
+AnimationEditor::setFrameRate (const int32_t value)
 {
 	if (animation)
-		animation -> setMetaData ("/Animation/framesPerSecond", value);
+		animation -> setMetaData ("/Animation/frameRate", value);
 
 	setTranslation (getTranslation ());
 }
 
 int32_t
-AnimationEditor::getFramesPerSecond () const
+AnimationEditor::getFrameRate () const
 {
 	if (animation)
-		return std::max <int32_t> (animation -> getMetaData <int32_t> ("/Animation/framesPerSecond", 10), 1);
+	{
+		const auto framesPerSecond = animation -> getMetaData <int32_t> ("/Animation/framesPerSecond", -1);
+
+		animation -> removeMetaData ("/Animation/framesPerSecond");
+
+		if (framesPerSecond not_eq -1)
+			const_cast <AnimationEditor*> (this) -> setFrameRate (framesPerSecond);
+	}
+
+	if (animation)
+		return std::max <int32_t> (animation -> getMetaData <int32_t> ("/Animation/frameRate", 10), 1);
 
 	return 10;
 }
@@ -298,10 +308,10 @@ AnimationEditor::on_new ()
 {
 	// Open »New Animation Dialog«.
 
-	getNewNameEntry ()         .set_text (_ ("Animation"));
+	getNewNameEntry () .set_text (_ ("Animation"));
 	getDurationAdjustment () -> set_value (10);
-	getFPSAdjustment ()      -> set_value (10);
-	getLoopSwitch ()           .set_active (false);
+	getFrameRateAdjustment () -> set_value (10);
+	getLoopSwitch () .set_active (false);
 
 	const auto responseId = getPropertiesDialog () .run ();
 
@@ -314,13 +324,13 @@ AnimationEditor::on_new ()
 
 	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
 	const auto name       = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text ());
-	const auto groups     = getSelection <X3D::X3DGroupingNode> ({ X3D::X3DConstants::X3DGroupingNode });
+	const auto groups     = getSelection <X3D::X3DNode> ({ X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
 	const auto group      = groups .back ();
 	const auto animation  = getCurrentContext () -> createNode <X3D::Group> ();
 	const auto timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
 	const auto timerName  = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text () + "Timer");
 
-	group -> children () .emplace_front (animation);
+	group -> getField <X3D::MFNode> ("children") .emplace_front (animation);
 	animation -> children () .emplace_front (timeSensor);
 	getCurrentContext () -> updateNamedNode (name, animation);
 	getCurrentContext () -> updateNamedNode (timerName, timeSensor);
@@ -331,7 +341,7 @@ AnimationEditor::on_new ()
 	set_animation (animation);
 
 	setDuration (getDurationAdjustment () -> get_value ());
-	setFramesPerSecond (getFPSAdjustment () -> get_value ());
+	setFrameRate (getFrameRateAdjustment () -> get_value ());
 
 	// Undo/Redo
 
@@ -367,7 +377,7 @@ AnimationEditor::on_new_name_changed ()
 void
 AnimationEditor::on_new_cycle_interval_changed ()
 {
-	getCycleIntervalLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFPSAdjustment () -> get_value ()));
+	getCycleIntervalLabel () .set_text (strfframes (getDurationAdjustment () -> get_value (), getFrameRateAdjustment () -> get_value ()));
 }
 
 void
@@ -467,7 +477,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		timeSensor -> isActive ()         .addInterest (&AnimationEditor::set_active, this);
 		timeSensor -> fraction_changed () .addInterest (&AnimationEditor::set_fraction, this);
 
-		timeSensor -> cycleInterval () = getDuration () / (double) getFramesPerSecond ();
+		timeSensor -> cycleInterval () = getDuration () / (double) getFrameRate ();
 		timeSensor -> isEvenLive (true);
 
 		set_active (); // Call this before set_interpolators.
@@ -1124,7 +1134,7 @@ AnimationEditor::on_current_frame_changed ()
 	
 	const int32_t frame = std::round (getFrameAdjustment () -> get_value ());
 
-	getTimeLabel () .set_text (strfframes (frame, getFramesPerSecond ()));
+	getTimeLabel () .set_text (strfframes (frame, getFrameRate ()));
 
 	if (animation)
 	{
@@ -1174,7 +1184,7 @@ AnimationEditor::on_time ()
 {
 	getNewNameEntry () .set_text (animation -> getName ());
 	getDurationAdjustment () -> set_value (getDuration ());
-	getFPSAdjustment () -> set_value (getFramesPerSecond ());
+	getFrameRateAdjustment () -> set_value (getFrameRate ());
 	getLoopSwitch () .set_active (timeSensor -> loop ());
 
 	const auto responseId = getPropertiesDialog () .run ();
@@ -1206,13 +1216,13 @@ AnimationEditor::on_time ()
 	undoStep -> addRedoFunction (&AnimationEditor::setDuration, this, getDurationAdjustment () -> get_value ());
 	setDuration (getDurationAdjustment () -> get_value ());
 
-	undoStep -> addUndoFunction (&AnimationEditor::setFramesPerSecond, this, getFramesPerSecond ());
-	undoStep -> addRedoFunction (&AnimationEditor::setFramesPerSecond, this, getFPSAdjustment () -> get_value ());
-	setFramesPerSecond (getFPSAdjustment () -> get_value ());
+	undoStep -> addUndoFunction (&AnimationEditor::setFrameRate, this, getFrameRate ());
+	undoStep -> addRedoFunction (&AnimationEditor::setFrameRate, this, getFrameRateAdjustment () -> get_value ());
+	setFrameRate (getFrameRateAdjustment () -> get_value ());
 
 	// Adjust TimeSensor
 
-	const auto cycleInterval = getDuration () / (double) getFramesPerSecond ();
+	const auto cycleInterval = getDuration () / (double) getFrameRate ();
 	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> cycleInterval ()), timeSensor -> cycleInterval ());
 	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> cycleInterval ()), cycleInterval);
 	timeSensor -> cycleInterval () = cycleInterval;

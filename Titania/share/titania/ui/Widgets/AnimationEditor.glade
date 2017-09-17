@@ -10,18 +10,18 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="FPSAdjustment">
-    <property name="lower">1</property>
-    <property name="upper">60</property>
-    <property name="value">10</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
   <object class="GtkAdjustment" id="FrameAdjustment">
     <property name="upper">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
     <signal name="value-changed" handler="on_current_frame_changed" swapped="no"/>
+  </object>
+  <object class="GtkAdjustment" id="FrameRateAdjustment">
+    <property name="lower">1</property>
+    <property name="upper">60</property>
+    <property name="value">10</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="TranslationAdjustment">
     <property name="step_increment">1</property>
@@ -908,7 +908,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
-                    <property name="adjustment">FPSAdjustment</property>
+                    <property name="adjustment">FrameRateAdjustment</property>
                     <property name="numeric">True</property>
                     <signal name="value-changed" handler="on_new_cycle_interval_changed" swapped="no"/>
                   </object>

@@ -80,8 +80,8 @@ X3DAnimationEditorInterface::create ()
 	// Get objects.
 	m_AccelGroup            = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_DurationAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DurationAdjustment"));
-	m_FPSAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FPSAdjustment"));
 	m_FrameAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameAdjustment"));
+	m_FrameRateAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FrameRateAdjustment"));
 	m_TranslationAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslationAdjustment"));
 	m_TreeViewSelection     = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
 	m_NameColumn            = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
