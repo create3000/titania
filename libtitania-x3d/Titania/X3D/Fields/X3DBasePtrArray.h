@@ -68,6 +68,7 @@ public:
 	///  @name Member types
 
 	using value_type = ValueType;
+	using size_type  = typename X3DArrayField <ValueType>::size_type;
 
 	using X3DArrayField <ValueType>::operator =;
 	using X3DArrayField <ValueType>::getValue;
@@ -150,6 +151,19 @@ public:
 	template <class InputIterator>
 	X3DBasePtrArray (InputIterator first, InputIterator last) :
 		X3DArrayField <ValueType> (first, last),
+		               cloneCount (0)
+	{ }
+
+	///  Construct new X3DBasePtrArray.
+	explicit
+	X3DBasePtrArray (const size_type count) :
+		X3DArrayField <ValueType> (count),
+		               cloneCount (0)
+	{ }
+
+	///  Construct new X3DBasePtrArray.
+	X3DBasePtrArray (const size_type count, const ValueType & value) :
+		X3DArrayField <ValueType> (count, value),
 		               cloneCount (0)
 	{ }
 

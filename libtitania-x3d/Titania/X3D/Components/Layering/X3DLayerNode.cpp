@@ -57,9 +57,12 @@
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "../EnvironmentalEffects/Background.h"
+#include "../EnvironmentalEffects/Fog.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
+#include "../Navigation/NavigationInfo.h"
+#include "../Navigation/X3DViewpointNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 

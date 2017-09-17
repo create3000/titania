@@ -122,37 +122,37 @@ TextureBackground::initialize ()
 void
 TextureBackground::set_frontTexture ()
 {
-	X3DBackgroundNode::set_frontTexture (x3d_cast <X3DTextureNode*> (frontTexture ()));
+	setFrontTexture (x3d_cast <X3DTextureNode*> (frontTexture ()));
 }
 
 void
 TextureBackground::set_backTexture ()
 {
-	X3DBackgroundNode::set_backTexture (x3d_cast <X3DTextureNode*> (backTexture ()));
+	setBackTexture (x3d_cast <X3DTextureNode*> (backTexture ()));
 }
 
 void
 TextureBackground::set_leftTexture ()
 {
-	X3DBackgroundNode::set_leftTexture (x3d_cast <X3DTextureNode*> (leftTexture ()));
+	setLeftTexture (x3d_cast <X3DTextureNode*> (leftTexture ()));
 }
 
 void
 TextureBackground::set_rightTexture ()
 {
-	X3DBackgroundNode::set_rightTexture (x3d_cast <X3DTextureNode*> (rightTexture ()));
+	setRightTexture (x3d_cast <X3DTextureNode*> (rightTexture ()));
 }
 
 void
 TextureBackground::set_topTexture ()
 {
-	X3DBackgroundNode::set_topTexture (x3d_cast <X3DTextureNode*> (topTexture ()));
+	setTopTexture (x3d_cast <X3DTextureNode*> (topTexture ()));
 }
 
 void
 TextureBackground::set_bottomTexture ()
 {
-	X3DBackgroundNode::set_bottomTexture (x3d_cast <X3DTextureNode*> (bottomTexture ()));
+	setBottomTexture (x3d_cast <X3DTextureNode*> (bottomTexture ()));
 }
 
 } // X3D

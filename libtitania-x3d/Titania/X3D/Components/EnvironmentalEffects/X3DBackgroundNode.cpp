@@ -53,19 +53,53 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
+
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
+#include "../Shaders/ComposedShader.h"
 
 #include <complex>
 
 namespace titania {
 namespace X3D {
 
-static constexpr float RADIUS = 1;
-
 //static constexpr float U_DIMENSION = 16;// LOW
-//static constexpr float U_DIMENSION = 24;// HIGH
-static constexpr float U_DIMENSION = 20; // MEDIUM
+//static constexpr float U_DIMENSION = 20; // MEDIUM
+static constexpr float U_DIMENSION = 24;// HIGH
+static constexpr float RADIUS      = 1;
+
+const std::vector <Matrix4d> X3DBackgroundNode::cubeRotations = {
+	Matrix4d (),                                       // front
+	Matrix4d (Rotation4d (0, 1, 0,  pi <double>)),     // back
+	Matrix4d (Rotation4d (0, 1, 0,  pi <double> / 2)), // left
+	Matrix4d (Rotation4d (0, 1, 0, -pi <double> / 2)), // right
+	Matrix4d (Rotation4d (1, 0, 0,  pi <double> / 2)), // top
+	Matrix4d (Rotation4d (1, 0, 0, -pi <double> / 2)), // bottom
+};
+
+const std::vector <Vector4f> X3DBackgroundNode::cubeTexCoords = {
+	// Triangle 1
+	Vector4f (1, 1, 0, 1),
+	Vector4f (0, 1, 0, 1),
+	Vector4f (0, 0, 0, 1),
+	// Triangle 2
+	Vector4f (1, 1, 0, 1),
+	Vector4f (0, 0, 0, 1),
+	Vector4f (1, 0, 0, 1),
+};
+
+const std::vector <Vector3d> X3DBackgroundNode::cubeVertices = {
+	// Triangle 1
+	Vector3d ( 1,  1, -1),
+	Vector3d (-1,  1, -1),
+	Vector3d (-1, -1, -1),
+	// Triangle 2
+	Vector3d ( 1,  1, -1),
+	Vector3d (-1, -1, -1),
+	Vector3d ( 1, -1, -1),
+};
+
+const double X3DBackgroundNode::cubeScale = std::sqrt (RADIUS * RADIUS / 2);
 
 X3DBackgroundNode::Fields::Fields () :
 	 groundAngle (new MFFloat ()),
@@ -78,26 +112,17 @@ X3DBackgroundNode::Fields::Fields () :
 X3DBackgroundNode::X3DBackgroundNode () :
 	     X3DBindableNode (),
 	              fields (),
-	        frontTexture (),
-	         backTexture (),
-	         leftTexture (),
-	        rightTexture (),
-	          topTexture (),
-	       bottomTexture (),
+	            textures (6),
 	              hidden (false),
 	transformationMatrix (),
-	            glColors (),
-	            glPoints (),
-	          numIndices ()
+	        sphereColors (),
+	      sphereVertices (),
+	cubeTexCoordBufferId (0),
+	  cubeVertexBufferId (0)
 {
 	addType (X3DConstants::X3DBackgroundNode);
 
-	addChildObjects (frontTexture,
-	                 backTexture,
-	                 leftTexture,
-	                 rightTexture,
-	                 topTexture,
-	                 bottomTexture);
+	addChildObjects (textures);
 	
 	skyAngle ()    .setUnit (UnitCategory::ANGLE);
 	groundAngle () .setUnit (UnitCategory::ANGLE);
@@ -109,6 +134,23 @@ X3DBackgroundNode::initialize ()
 	X3DBindableNode::initialize ();
 
 	addInterest (&X3DBackgroundNode::build, this);
+
+	// Generate buffers.
+
+	glGenBuffers (1, &cubeTexCoordBufferId);
+	glGenBuffers (1, &cubeVertexBufferId);
+
+	// Transfer cube data.
+
+	glBindBuffer (GL_ARRAY_BUFFER, cubeTexCoordBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4d) * cubeTexCoords .size (), cubeTexCoords .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_ARRAY_BUFFER, cubeVertexBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * cubeVertices .size (), cubeVertices .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	// Build sphere.
 
 	build ();
 }
@@ -130,23 +172,11 @@ X3DBackgroundNode::isTransparent () const
 	if (transparency () == 0.0f)
 		return false;
 
-	if (not frontTexture  or frontTexture  -> isTransparent ())
+	for (const auto & texture : textures)
+	{
+		if (not texture or texture -> isTransparent ())
 			return true;
-
-	if (not backTexture   or backTexture   -> isTransparent ())
-			return true;
-
-	if (not leftTexture   or leftTexture   -> isTransparent ())
-			return true;
-
-	if (not rightTexture  or rightTexture  -> isTransparent ())
-			return true;
-
-	if (not topTexture    or topTexture    -> isTransparent ())
-			return true;
-
-	if (not bottomTexture or bottomTexture -> isTransparent ())
-			return true;
+	}
 
 	return false;
 }
@@ -194,12 +224,10 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 	const auto    vAngleMax   = bottom ? pi_2 <float> : pi <float>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
 
-	numIndices += 4 * U_DIMENSION * V_DIMENSION;
-
 	for (int32_t v = 0; v < V_DIMENSION; ++ v)
 	{
-		float theta1 = math::clamp <float> (vAngle [v],     0, vAngleMax);
-		float theta2 = math::clamp <float> (vAngle [v + 1], 0, vAngleMax);
+		auto theta1 = math::clamp <float> (vAngle [v],     0, vAngleMax);
+		auto theta2 = math::clamp <float> (vAngle [v + 1], 0, vAngleMax);
 
 		if (bottom)
 		{
@@ -210,8 +238,8 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 		const auto z1 = std::polar (radius, theta1);
 		const auto z2 = std::polar (radius, theta2);
 
-		const Color3f c1 = getColor (vAngle [v],     color, angle);
-		const Color3f c2 = getColor (vAngle [v + 1], color, angle);
+		const auto c1 = getColor (vAngle [v],     color, angle);
+		const auto c2 = getColor (vAngle [v + 1], color, angle);
 
 		for (size_t u = 0; u < U_DIMENSION; ++ u)
 		{
@@ -222,27 +250,27 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 			phi = pi2 <float> * (u / U_DIMENSION);
 			y   = std::polar (-z1 .imag (), phi);
 
-			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
+			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z1 .real (), y .real ());
 
 			// p2
 			y = std::polar (-z2 .imag (), phi);
 
-			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
+			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p3
 			phi = pi2 <float> * (u1 / U_DIMENSION);
 			y   = std::polar (-z2 .imag (), phi);
 
-			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
+			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p4
 			y = std::polar (-z1 .imag (), phi);
 
-			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
+			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z1 .real (), y .real ());
 		}
 	}
 }
@@ -250,9 +278,8 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 void
 X3DBackgroundNode::build ()
 {
-	glColors .clear ();
-	glPoints .clear ();
-	numIndices = 0;
+	sphereColors   .clear ();
+	sphereVertices .clear ();
 
 	if (transparency () >= 1.0f)
 		return;
@@ -266,46 +293,44 @@ X3DBackgroundNode::build ()
 		const float     s = std::sqrt (RADIUS * RADIUS / 2);
 		const Color3f & c = skyColor () [0];
 
-		numIndices = 24;
-
-		for (int32_t i = 0; i < numIndices; ++ i)
-			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
-
 		// Back
-		glPoints .emplace_back (-s,  s, -s);
-		glPoints .emplace_back ( s,  s, -s);
-		glPoints .emplace_back ( s, -s, -s);
-		glPoints .emplace_back (-s, -s, -s);
+		sphereVertices .emplace_back (-s,  s, -s);
+		sphereVertices .emplace_back ( s,  s, -s);
+		sphereVertices .emplace_back ( s, -s, -s);
+		sphereVertices .emplace_back (-s, -s, -s);
 
 		// Front
-		glPoints .emplace_back ( s,  s,  s);
-		glPoints .emplace_back (-s,  s,  s);
-		glPoints .emplace_back (-s, -s,  s);
-		glPoints .emplace_back ( s, -s,  s);
+		sphereVertices .emplace_back ( s,  s,  s);
+		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back (-s, -s,  s);
+		sphereVertices .emplace_back ( s, -s,  s);
 
 		// Left
-		glPoints .emplace_back (-s,  s,  s);
-		glPoints .emplace_back (-s,  s, -s);
-		glPoints .emplace_back (-s, -s, -s);
-		glPoints .emplace_back (-s, -s,  s);
+		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back (-s,  s, -s);
+		sphereVertices .emplace_back (-s, -s, -s);
+		sphereVertices .emplace_back (-s, -s,  s);
 
 		// Right
-		glPoints .emplace_back (s,  s, -s);
-		glPoints .emplace_back (s,  s,  s);
-		glPoints .emplace_back (s, -s,  s);
-		glPoints .emplace_back (s, -s, -s);
+		sphereVertices .emplace_back (s,  s, -s);
+		sphereVertices .emplace_back (s,  s,  s);
+		sphereVertices .emplace_back (s, -s,  s);
+		sphereVertices .emplace_back (s, -s, -s);
 
 		// Top
-		glPoints .emplace_back (-s,  s,  s);
-		glPoints .emplace_back ( s,  s,  s);
-		glPoints .emplace_back ( s,  s, -s);
-		glPoints .emplace_back (-s,  s, -s);
+		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back ( s,  s,  s);
+		sphereVertices .emplace_back ( s,  s, -s);
+		sphereVertices .emplace_back (-s,  s, -s);
 
 		// Bottom
-		glPoints .emplace_back ( s, -s,  s);
-		glPoints .emplace_back (-s, -s,  s);
-		glPoints .emplace_back (-s, -s, -s);
-		glPoints .emplace_back ( s, -s, -s);
+		sphereVertices .emplace_back ( s, -s,  s);
+		sphereVertices .emplace_back (-s, -s,  s);
+		sphereVertices .emplace_back (-s, -s, -s);
+		sphereVertices .emplace_back ( s, -s, -s);
+
+		for (size_t i = 0, size = sphereVertices .size (); i < size; ++ i)
+			sphereColors .emplace_back (c .r (), c .g (), c .b (), opacity);
 	}
 	else
 	{
@@ -391,10 +416,14 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 
 		glLoadMatrixd (modelViewMatrix .data ());
 
+		renderObject -> getModelViewMatrix () .push (modelViewMatrix);
+
 		// Draw background sphere and texture cube.
 
 		drawSphere (renderObject);
 		drawCube   (renderObject);
+
+		renderObject -> getModelViewMatrix () .pop ();
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -404,6 +433,7 @@ void
 X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 {
 	if (transparency () >= 1.0f)
+		return;
 
 	// Draw
 
@@ -415,16 +445,16 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 	else
 		glDisable (GL_BLEND);
 
-	glEnable (GL_CULL_FACE);
+	glDisable (GL_CULL_FACE); /// XXX
 	glFrontFace (GL_CW);
 
 	glEnableClientState (GL_COLOR_ARRAY);
-	glColorPointer (4, GL_FLOAT, 0, glColors .data ());
+	glColorPointer (4, GL_FLOAT, 0, sphereColors .data ());
 
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, glPoints .data ());
+	glVertexPointer (3, GL_FLOAT, 0, sphereVertices .data ());
 
-	glDrawArrays (GL_QUADS, 0, numIndices);
+	glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
 
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
@@ -437,155 +467,132 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 void
 X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 {
-	static const auto s = std::sqrt (RADIUS * RADIUS / 2);
+	const auto & shaderNode = getBrowser () -> getGouraudShader ();
+
+	// GL
 
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);
 
-	glMatrixMode (GL_TEXTURE);
-	glLoadIdentity ();
-	glMatrixMode (GL_MODELVIEW);
-
+	glEnable (GL_CULL_FACE);
 	glFrontFace (GL_CCW);
-	glColor4f (1, 1, 1, 1);
 
-	if (frontTexture)
+	if (getBrowser () -> getFixedPipelineRequired ())
 	{
-		if (frontTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (frontTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
+		glDisable (GL_LIGHTING);
+		glColor4f (1, 1, 1, 1);
 
-			frontTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (1, 1);
-			glVertex3f (s, s, -s);
-			glTexCoord2f (0, 1);
-			glVertex3f (-s, s, -s);
-			glTexCoord2f (0, 0);
-			glVertex3f (-s, -s, -s);
-			glTexCoord2f (1, 0);
-			glVertex3f (s, -s, -s);
-			glEnd ();
+		glMatrixMode (GL_TEXTURE);
+		glLoadIdentity ();
+		glMatrixMode (GL_MODELVIEW);
+	
+		glBindBuffer (GL_ARRAY_BUFFER, cubeTexCoordBufferId);
+		glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+		glTexCoordPointer (4, GL_FLOAT, 0, 0);
+	
+		glBindBuffer (GL_ARRAY_BUFFER, cubeVertexBufferId);
+		glEnableClientState (GL_VERTEX_ARRAY);
+		glVertexPointer (3, GL_DOUBLE, 0, 0);
+
+		glPushMatrix ();
+		glScalef (cubeScale, cubeScale, cubeScale);
+	}
+	else
+	{
+		shaderNode -> enable ();
+	
+		// Uniforms
+	
+		glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
+		glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
+		glUniform1i (shaderNode -> getLightingUniformLocation (),      false);
+		glUniform1i (shaderNode -> getTextureTypeUniformLocation (),   2);
+
+		// ProjectionMatrix
+		// TexureMatrix
+
+		if (shaderNode -> isExtensionGPUShaderFP64Available ())
+		{
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
+			glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .data ());
+		}
+		else
+		{
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
+			glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .data ());
+		}
+
+		// ModelViewMatrix
+
+		renderObject -> getModelViewMatrix () .push ();
+		renderObject -> getModelViewMatrix () .scale (Vector3d (cubeScale, cubeScale, cubeScale));
+
+		// Attributes
+
+		shaderNode -> enableTexCoordAttrib ({ cubeTexCoordBufferId }, GL_FLOAT, { }, { });
+		shaderNode -> enableVertexAttrib (cubeVertexBufferId, GL_DOUBLE, 0, nullptr);
+	}
+
+	for (size_t i = 0; i < 6; ++ i)
+	{
+		const auto & texture = textures [i];
+
+		if (texture)
+		{
+			if (texture -> checkLoadState () == COMPLETE_STATE)
+			{
+				if (texture -> isTransparent ())
+					glEnable (GL_BLEND);
+				else
+					glDisable (GL_BLEND);
+
+				if (getBrowser () -> getFixedPipelineRequired ())
+				{
+					glPushMatrix ();
+					glMultMatrixd (cubeRotations [i] .data ());
+
+					texture -> draw (renderObject);
+	
+					glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
+
+					glPopMatrix ();
+				}
+				else
+				{
+					renderObject -> getModelViewMatrix () .push ();
+					renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
+	
+					if (shaderNode -> isExtensionGPUShaderFP64Available ())
+						glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .data ());
+					else
+						glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .data ());
+
+					texture -> setShaderUniforms (shaderNode);
+
+					glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
+	
+					renderObject -> getModelViewMatrix () .pop ();
+				}
+			}
 		}
 	}
 
-	if (backTexture)
+	if (getBrowser () -> getFixedPipelineRequired ())
 	{
-		if (backTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (backTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
+		glPopMatrix ();
+	}
+	else
+	{
+		shaderNode -> disableTexCoordAttrib ();
+		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
 
-			backTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (0, 0);
-			glVertex3f (s, -s, s);
-			glTexCoord2f (1, 0);
-			glVertex3f (-s, -s, s);
-			glTexCoord2f (1, 1);
-			glVertex3f (-s, s, s);
-			glTexCoord2f (0, 1);
-			glVertex3f (s, s, s);
-			glEnd ();
-		}
+		renderObject -> getModelViewMatrix () .pop ();
 	}
 
-	if (leftTexture)
-	{
-		if (leftTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (leftTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
-
-			leftTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (0, 1);
-			glVertex3f (-s, s, s);
-			glTexCoord2f (0, 0);
-			glVertex3f (-s, -s, s);
-			glTexCoord2f (1, 0);
-			glVertex3f (-s, -s, -s);
-			glTexCoord2f (1, 1);
-			glVertex3f (-s, s, -s);
-			glEnd ();
-		}
-	}
-
-	if (rightTexture)
-	{
-		if (rightTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (rightTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
-
-			rightTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (0, 1);
-			glVertex3f (s, s, -s);
-			glTexCoord2f (0, 0);
-			glVertex3f (s, -s, -s);
-			glTexCoord2f (1, 0);
-			glVertex3f (s, -s, s);
-			glTexCoord2f (1, 1);
-			glVertex3f (s, s, s);
-			glEnd ();
-		}
-	}
-
-	if (topTexture)
-	{
-		if (topTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (topTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
-
-			topTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (0, 1);
-			glVertex3f (-s, s, s);
-			glTexCoord2f (0, 0);
-			glVertex3f (-s, s, -s);
-			glTexCoord2f (1, 0);
-			glVertex3f (s, s, -s);
-			glTexCoord2f (1, 1);
-			glVertex3f (s, s, s);
-			glEnd ();
-		}
-	}
-
-	if (bottomTexture)
-	{
-		if (bottomTexture -> checkLoadState () == COMPLETE_STATE)
-		{
-			if (bottomTexture -> isTransparent ())
-				glEnable (GL_BLEND);
-			else
-				glDisable (GL_BLEND);
-
-			bottomTexture -> draw (renderObject);
-			glBegin (GL_QUADS);
-			glTexCoord2f (1, 0);
-			glVertex3f (s, -s, s);
-			glTexCoord2f (1, 1);
-			glVertex3f (s, -s, -s);
-			glTexCoord2f (0, 1);
-			glVertex3f (-s, -s, -s);
-			glTexCoord2f (0, 0);
-			glVertex3f (-s, -s, s);
-			glEnd ();
-		}
-	}
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glDisable (GL_TEXTURE_2D);
 
 	glDisable (GL_BLEND);
 	glDisable (GL_TEXTURE_2D);

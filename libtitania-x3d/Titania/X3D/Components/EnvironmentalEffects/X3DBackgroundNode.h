@@ -118,27 +118,27 @@ public:
 
 	const X3DPtr <X3DTextureNode> &
 	getFrontTexture () const
-	{ return frontTexture; }
+	{ return textures [0]; }
 
 	const X3DPtr <X3DTextureNode> &
 	getBackTexture () const
-	{ return backTexture; }
+	{ return textures [1]; }
 
 	const X3DPtr <X3DTextureNode> &
 	getLeftTexture () const
-	{ return leftTexture; }
+	{ return textures [2]; }
 
 	const X3DPtr <X3DTextureNode> &
 	getRightTexture () const
-	{ return rightTexture; }
+	{ return textures [3]; }
 
 	const X3DPtr <X3DTextureNode> &
 	getTopTexture () const
-	{ return topTexture; }
+	{ return textures [4]; }
 
 	const X3DPtr <X3DTextureNode> &
 	getBottomTexture () const
-	{ return bottomTexture; }
+	{ return textures [5]; }
 
 
 	///  @name Operations
@@ -172,28 +172,28 @@ protected:
 	///  @name Event handling
 
 	void
-	set_frontTexture (X3DTextureNode* const value)
-	{ frontTexture = value; }
+	setFrontTexture (X3DTextureNode* const value)
+	{ textures [0] = value; }
 
 	void
-	set_backTexture (X3DTextureNode* const value)
-	{ backTexture = value; }
+	setBackTexture (X3DTextureNode* const value)
+	{ textures [1] = value; }
 
 	void
-	set_leftTexture (X3DTextureNode* const value)
-	{ leftTexture = value; }
+	setLeftTexture (X3DTextureNode* const value)
+	{ textures [2] = value; }
 
 	void
-	set_rightTexture (X3DTextureNode* const value)
-	{ rightTexture = value; }
+	setRightTexture (X3DTextureNode* const value)
+	{ textures [3] = value; }
 
 	void
-	set_topTexture (X3DTextureNode* const value)
-	{ topTexture = value; }
+	setTopTexture (X3DTextureNode* const value)
+	{ textures [4] = value; }
 
 	void
-	set_bottomTexture (X3DTextureNode* const value)
-	{ bottomTexture = value; }
+	setBottomTexture (X3DTextureNode* const value)
+	{ textures [5] = value; }
 
 
 private:
@@ -227,7 +227,14 @@ private:
 	void
 	drawCube (X3DRenderObject* const renderObject);
 
-	///  @name Members
+	///  @name Static members
+
+	static const std::vector <Matrix4d> cubeRotations;
+	static const std::vector <Vector4f> cubeTexCoords;
+	static const std::vector <Vector3d> cubeVertices;
+	static const double                 cubeScale;
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -242,18 +249,15 @@ private:
 
 	Fields fields;
 
-	X3DPtr <X3DTextureNode> frontTexture;
-	X3DPtr <X3DTextureNode> backTexture;
-	X3DPtr <X3DTextureNode> leftTexture;
-	X3DPtr <X3DTextureNode> rightTexture;
-	X3DPtr <X3DTextureNode> topTexture;
-	X3DPtr <X3DTextureNode> bottomTexture;
+	///  @name Members
 
-	bool                   hidden;
-	Matrix4d               transformationMatrix;
-	std::vector <Color4f>  glColors;
-	std::vector <Vector3f> glPoints;
-	GLsizei                numIndices;
+	X3DPtrArray <X3DTextureNode> textures;
+	bool                         hidden;
+	Matrix4d                     transformationMatrix;
+	std::vector <Color4f>        sphereColors;
+	std::vector <Vector3f>       sphereVertices;
+	GLuint                       cubeTexCoordBufferId;
+	GLuint                       cubeVertexBufferId;
 
 };
 

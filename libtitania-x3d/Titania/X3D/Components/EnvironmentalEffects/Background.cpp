@@ -194,12 +194,12 @@ Background::initialize ()
 	topTexture        -> setup ();
 	bottomTexture     -> setup ();
 
-	set_frontTexture  (frontTexture);
-	set_backTexture   (backTexture);
-	set_leftTexture   (leftTexture);
-	set_rightTexture  (rightTexture);
-	set_topTexture    (topTexture);
-	set_bottomTexture (bottomTexture);
+	setFrontTexture  (frontTexture);
+	setBackTexture   (backTexture);
+	setLeftTexture   (leftTexture);
+	setRightTexture  (rightTexture);
+	setTopTexture    (topTexture);
+	setBottomTexture (bottomTexture);
 }
 
 } // X3D

@@ -953,9 +953,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	
 		if (context -> isTransparent () && not solid)
 		{
-			glEnable (GL_CULL_FACE);
 			glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
-	
+			glEnable (GL_CULL_FACE);
 			glCullFace (GL_FRONT);
 	
 			// Draw
@@ -964,7 +963,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			{
 				glDrawArrays (element .vertexMode (), element .first (), element .count ());
 			}
-	
+
 			glCullFace (GL_BACK);
 	
 			// Draw

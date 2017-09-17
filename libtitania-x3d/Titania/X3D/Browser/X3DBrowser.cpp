@@ -55,6 +55,7 @@
 #include "../Browser/Notification.h"
 #include "../Browser/RenderingProperties.h"
 #include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/LoadSensor.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/SupportedFields.h"

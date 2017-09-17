@@ -54,6 +54,8 @@
 
 #include <Titania/X3D/Browser/Navigation/X3DViewer.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/NavigationInfo.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 
 namespace titania {
 namespace puck {

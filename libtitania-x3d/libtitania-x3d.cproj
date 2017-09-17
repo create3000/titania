@@ -970,6 +970,8 @@
     <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.h" />
     <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.h" />
     <None Include="Titania\X3D\Components\VolumeRendering.h" />
+    <None Include="share\titania\shaders\Shaders\BackgroundSphereFragmentShader.fs" />
+    <None Include="share\titania\shaders\Shaders\BackgroundSphereVertexShader.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -53,11 +53,6 @@
 
 #include "../../Rendering/X3DRenderObject.h"
 
-#include "../EnvironmentalEffects/Fog.h"
-#include "../EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Navigation/NavigationInfo.h"
-#include "../Navigation/X3DViewpointNode.h"
-
 namespace titania {
 namespace X3D {
 

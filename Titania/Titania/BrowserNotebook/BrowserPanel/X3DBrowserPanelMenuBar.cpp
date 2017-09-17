@@ -55,10 +55,12 @@
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/X3DFogObject.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
 #include <Titania/X3D/Components/Lighting/X3DLightNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
 
 namespace titania {

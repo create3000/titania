@@ -51,6 +51,7 @@
 #include "X3DFlyViewer.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Browser.h"
 #include "../BrowserOptions.h"

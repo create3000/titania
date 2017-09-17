@@ -89,6 +89,10 @@ public:
 
 	///  @name Member access
 
+	bool
+	isExtensionGPUShaderFP64Available () const
+	{ return extensionGPUShaderFP64; }
+
 	virtual
 	GLuint
 	getProgramId () const = 0;
@@ -120,6 +124,14 @@ public:
 	{ return x3d_LinewidthScaleFactor; }
 
 	///  @name Uniform location access lighting
+
+	GLint
+	getLightingUniformLocation () const
+	{ return x3d_Lighting; }
+
+	GLint
+	getColorMaterialUniformLocation () const
+	{ return x3d_ColorMaterial; }
 
 	const std::vector <GLint> &
 	getLightTypeUniformLocation () const
@@ -239,10 +251,6 @@ public:
 
 	///  @name Uniform location access texture
 
-	bool
-	isExtensionGPUShaderFP64Available () const
-	{ return extensionGPUShaderFP64; }
-
 	GLint
 	getTextureTypeUniformLocation () const
 	{ return x3d_TextureType; }
@@ -250,6 +258,24 @@ public:
 	GLint
 	getTexture2DUniformLocation () const
 	{ return x3d_Texture2D; }
+
+	///  @name Matrices
+
+	GLint
+	getViewportUniformLocation () const
+	{ return x3d_Viewport; }
+
+	GLint
+	getProjectionMatrixUniformLocation () const
+	{ return x3d_ProjectionMatrix; }
+
+	GLint
+	getModelViewMatrixUniformLocation () const
+	{ return x3d_ModelViewMatrix; }
+
+	GLint
+	getNormalMatrixUniformLocation () const
+	{ return x3d_NormalMatrix; }
 
 	GLint
 	getTextureMatrixUniformLocation () const

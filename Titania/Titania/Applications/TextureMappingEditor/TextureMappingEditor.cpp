@@ -58,6 +58,7 @@
 #include <Titania/X3D/Components/Layering/X3DViewportNode.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h>
 #include <Titania/X3D/Components/Rendering/Coordinate.h>

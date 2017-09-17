@@ -80,6 +80,7 @@
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Editing/Combine.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Parser/Filter.h>
