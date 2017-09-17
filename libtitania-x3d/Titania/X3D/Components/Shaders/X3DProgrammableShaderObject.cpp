@@ -1074,20 +1074,7 @@ throw (std::domain_error)
 
 	// Clip planes
 
-	if (clipPlanes .empty ())
-	{
-		glUniform4fv (x3d_ClipPlane [0], 1, x3d_NoneClipPlane .data ());
-	}
-	else
-	{
-		const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
-
-		for (size_t i = 0; i < numClipPlanes; ++ i)
-			clipPlanes [i] -> setShaderUniforms (this, i);
-
-		if (numClipPlanes < browser -> getMaxClipPlanes ())
-			glUniform4fv (x3d_ClipPlane [numClipPlanes], 1, x3d_NoneClipPlane .data ());
-	}
+	setClipPlanes (browser, clipPlanes);
 
 	// Fog
 
@@ -1139,6 +1126,25 @@ throw (std::domain_error)
 	{
 		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .data ());
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .data ());
+	}
+}
+
+void
+X3DProgrammableShaderObject::setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes)
+{
+	if (clipPlanes .empty ())
+	{
+		glUniform4fv (x3d_ClipPlane [0], 1, x3d_NoneClipPlane .data ());
+	}
+	else
+	{
+		const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
+
+		for (size_t i = 0; i < numClipPlanes; ++ i)
+			clipPlanes [i] -> setShaderUniforms (this, i);
+
+		if (numClipPlanes < browser -> getMaxClipPlanes ())
+			glUniform4fv (x3d_ClipPlane [numClipPlanes], 1, x3d_NoneClipPlane .data ());
 	}
 }
 

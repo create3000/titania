@@ -56,6 +56,7 @@
 #include "../../Browser/Shaders/ShadingType.h"
 #include "../../Fields.h"
 
+#include "../../Rendering/ClipPlaneContainer.h"
 #include "../../Rendering/OpenGL.h"
 
 namespace titania {
@@ -300,6 +301,9 @@ public:
 	void
 	setLocalUniforms (ShapeContainer* const context)
 	throw (std::domain_error);
+
+	void
+	setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes);
 
 	virtual
 	void

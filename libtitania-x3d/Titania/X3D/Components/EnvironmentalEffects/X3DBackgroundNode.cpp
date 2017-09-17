@@ -114,6 +114,7 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	              fields (),
 	            textures (6),
 	              hidden (false),
+	          clipPlanes (),
 	transformationMatrix (),
 	        sphereColors (),
 	      sphereVertices (),
@@ -380,6 +381,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 		}
 		case TraverseType::DISPLAY:
 		{
+			clipPlanes = renderObject -> getClipPlanes ();
 			break;
 		}
 		default:
@@ -392,7 +394,9 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 {
 	try
 	{
-		if (getBrowser () -> getAlphaChannel () .top ())
+		const auto browser = renderObject -> getBrowser ();
+
+		if (browser -> getAlphaChannel () .top ())
 			return;
 
 		if (hidden)
@@ -467,7 +471,8 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 void
 X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 {
-	const auto & shaderNode = getBrowser () -> getGouraudShader ();
+	const auto   browser    = renderObject -> getBrowser ();
+	const auto & shaderNode = browser -> getGouraudShader ();
 
 	// GL
 
@@ -477,7 +482,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	glEnable (GL_CULL_FACE);
 	glFrontFace (GL_CCW);
 
-	if (getBrowser () -> getFixedPipelineRequired ())
+	if (browser -> getFixedPipelineRequired ())
 	{
 		glDisable (GL_LIGHTING);
 		glColor4f (1, 1, 1, 1);
@@ -500,13 +505,16 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	else
 	{
 		shaderNode -> enable ();
+
+		// Clip planes
+
+		shaderNode -> setClipPlanes (browser, clipPlanes);
 	
 		// Uniforms
 	
 		glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
 		glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
 		glUniform1i (shaderNode -> getLightingUniformLocation (),      false);
-		glUniform1i (shaderNode -> getTextureTypeUniformLocation (),   2);
 
 		// ProjectionMatrix
 		// TexureMatrix
@@ -537,48 +545,51 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	{
 		const auto & texture = textures [i];
 
-		if (texture)
+		if (not texture)
+			continue;
+
+		if (texture -> checkLoadState () not_eq COMPLETE_STATE)
+			continue;
+
+		if (texture -> isTransparent ())
+			glEnable (GL_BLEND);
+		else
+			glDisable (GL_BLEND);
+
+		if (browser -> getFixedPipelineRequired ())
 		{
-			if (texture -> checkLoadState () == COMPLETE_STATE)
-			{
-				if (texture -> isTransparent ())
-					glEnable (GL_BLEND);
-				else
-					glDisable (GL_BLEND);
+			glPushMatrix ();
+			glMultMatrixd (cubeRotations [i] .data ());
 
-				if (getBrowser () -> getFixedPipelineRequired ())
-				{
-					glPushMatrix ();
-					glMultMatrixd (cubeRotations [i] .data ());
+			texture -> draw (renderObject);
 
-					texture -> draw (renderObject);
-	
-					glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
+			glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
 
-					glPopMatrix ();
-				}
-				else
-				{
-					renderObject -> getModelViewMatrix () .push ();
-					renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
-	
-					if (shaderNode -> isExtensionGPUShaderFP64Available ())
-						glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .data ());
-					else
-						glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .data ());
+			glPopMatrix ();
+		}
+		else
+		{
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
 
-					texture -> setShaderUniforms (shaderNode);
+			if (shaderNode -> isExtensionGPUShaderFP64Available ())
+				glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .data ());
+			else
+				glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .data ());
 
-					glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
-	
-					renderObject -> getModelViewMatrix () .pop ();
-				}
-			}
+			texture -> setShaderUniforms (shaderNode);
+
+			glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
+
+			renderObject -> getModelViewMatrix () .pop ();
 		}
 	}
 
-	if (getBrowser () -> getFixedPipelineRequired ())
+	if (browser -> getFixedPipelineRequired ())
 	{
+		glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState (GL_VERTEX_ARRAY);
+
 		glPopMatrix ();
 	}
 	else
@@ -590,8 +601,6 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 		renderObject -> getModelViewMatrix () .pop ();
 	}
 
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
 	glDisable (GL_TEXTURE_2D);
 
 	glDisable (GL_BLEND);
