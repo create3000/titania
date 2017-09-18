@@ -182,7 +182,8 @@ BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 	worldInfo -> removeMetaData ("/Titania/Selection/previous");
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
 
-	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+	if (getAddMetadata (getCurrentScene ()))
+		getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 void

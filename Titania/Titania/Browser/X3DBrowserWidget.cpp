@@ -607,7 +607,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : pages)
 	{
-		const auto URL = page -> getMasterSceneURL ();
+		const auto URL = page -> getMainBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);

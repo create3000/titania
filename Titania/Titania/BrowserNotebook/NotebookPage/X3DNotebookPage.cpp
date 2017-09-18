@@ -239,7 +239,7 @@ X3DNotebookPage::getTitle () const
 	if (title .empty ())
 		title = getWorldURL () .basename ();
 
-	if (title .empty () or getWorldURL () == get_page ("about/new.x3dv"))
+	if (title .empty () or getScene () -> getWorldURL () .empty ())
 		title = _ ("New Scene");
 
 	if (modified)
@@ -265,6 +265,7 @@ X3DNotebookPage::initialized ()
 
 	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
 	{
+		getScene () -> setWorldURL ("");
 		getScene () -> setEncoding (X3D::EncodingType::XML);
 		getScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
 		getScene () -> removeMetaData ("comment");
