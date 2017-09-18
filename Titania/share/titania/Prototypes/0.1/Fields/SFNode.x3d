@@ -25,7 +25,7 @@
             <connect nodeField='keyValue' protoField='keyValue'/>
             <connect nodeField='value_changed' protoField='value_changed'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

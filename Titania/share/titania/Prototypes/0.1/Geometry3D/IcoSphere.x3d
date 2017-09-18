@@ -38,7 +38,7 @@
             <connect nodeField='order' protoField='order'/>
             <connect nodeField='radius' protoField='radius'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 var p = (1 + Math .sqrt (5)) / 2; // Golden ratio
 

@@ -20,7 +20,7 @@ PROTO QuadSphere [
     inputOutput    SFFloat radius IS radius
     initializeOnly SFNode  geometry USE Geometry
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

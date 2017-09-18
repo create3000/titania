@@ -57,7 +57,7 @@
           <field accessType='initializeOnly' type='SFNode' name='button'>
             <Switch USE='Switch'/>
           </field>
-<![CDATA[vrmlscript:
+<![CDATA[ecmascript:
 var DEFAULT  = 0;
 var OVER     = 1;
 var ACTIVE   = 2;

@@ -41,7 +41,7 @@
             <connect nodeField='minorDimension' protoField='minorDimension'/>
             <connect nodeField='majorDimension' protoField='majorDimension'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

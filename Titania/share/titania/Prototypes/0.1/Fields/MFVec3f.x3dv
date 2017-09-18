@@ -17,7 +17,7 @@ PROTO MFVec3f [
     inputOutput MFVec3f keyValue IS keyValue
     outputOnly  MFVec3f value_changed IS value_changed
 
-    url "javascript:
+    url "ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

@@ -249,6 +249,8 @@ AnimationEditor::getFrameRate () const
 {
 	if (animation)
 	{
+		// Never romove this block!
+
 		const auto framesPerSecond = animation -> getMetaData <int32_t> ("/Animation/framesPerSecond", -1);
 
 		animation -> removeMetaData ("/Animation/framesPerSecond");

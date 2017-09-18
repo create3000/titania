@@ -113,6 +113,8 @@ PKG_CHECK_MODULES(TITANIA,
 gtksourceviewmm-3.0)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
+gtkmm-3.0
+gl
 glibmm-2.4
 gstreamermm-1.0
 fontconfig
@@ -136,10 +138,6 @@ giomm-2.4)
 
 PKG_CHECK_MODULES(TITANIA_SQLITE,
 sqlite3)
-
-PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,
-gtkmm-3.0
-gl)
 
 PKG_CHECK_MODULES(TITANIA_STANDARD,
 giomm-2.4

@@ -40,7 +40,7 @@ PROTO Rotor [
     inputOutput    SFFloat angle IS angle
     initializeOnly SFNode  interpolator USE Interpolator
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

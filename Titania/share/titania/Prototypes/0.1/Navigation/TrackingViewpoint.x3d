@@ -47,7 +47,7 @@
             <connect nodeField='trackPoint' protoField='trackPoint'/>
             <connect nodeField='position' protoField='position'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

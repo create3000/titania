@@ -22,7 +22,7 @@ PROTO Delay [
       isActive IS isActive
     }
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

@@ -634,8 +634,6 @@ LTLIBOBJS
 LIBOBJS
 TITANIA_STANDARD_LIBS
 TITANIA_STANDARD_CFLAGS
-TITANIA_OPENGL_SURFACE_LIBS
-TITANIA_OPENGL_SURFACE_CFLAGS
 TITANIA_SQLITE_LIBS
 TITANIA_SQLITE_CFLAGS
 TITANIA_STREAM_LIBS
@@ -873,8 +871,6 @@ TITANIA_STREAM_CFLAGS
 TITANIA_STREAM_LIBS
 TITANIA_SQLITE_CFLAGS
 TITANIA_SQLITE_LIBS
-TITANIA_OPENGL_SURFACE_CFLAGS
-TITANIA_OPENGL_SURFACE_LIBS
 TITANIA_STANDARD_CFLAGS
 TITANIA_STANDARD_LIBS'
 
@@ -1580,11 +1576,6 @@ Some influential environment variables:
               C compiler flags for TITANIA_SQLITE, overriding pkg-config
   TITANIA_SQLITE_LIBS
               linker flags for TITANIA_SQLITE, overriding pkg-config
-  TITANIA_OPENGL_SURFACE_CFLAGS
-              C compiler flags for TITANIA_OPENGL_SURFACE, overriding
-              pkg-config
-  TITANIA_OPENGL_SURFACE_LIBS
-              linker flags for TITANIA_OPENGL_SURFACE, overriding pkg-config
   TITANIA_STANDARD_CFLAGS
               C compiler flags for TITANIA_STANDARD, overriding pkg-config
   TITANIA_STANDARD_LIBS
@@ -17689,7 +17680,9 @@ if test -n "$TITANIA_X3D_CFLAGS"; then
     pkg_cv_TITANIA_X3D_CFLAGS="$TITANIA_X3D_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glibmm-2.4
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17699,7 +17692,9 @@ libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "glibmm-2.4
+  ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17712,7 +17707,9 @@ libgtop-2.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_TITANIA_X3D_CFLAGS=`$PKG_CONFIG --cflags "glibmm-2.4
+  pkg_cv_TITANIA_X3D_CFLAGS=`$PKG_CONFIG --cflags "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17733,7 +17730,9 @@ if test -n "$TITANIA_X3D_LIBS"; then
     pkg_cv_TITANIA_X3D_LIBS="$TITANIA_X3D_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glibmm-2.4
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17743,7 +17742,9 @@ libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "glibmm-2.4
+  ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17756,7 +17757,9 @@ libgtop-2.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_TITANIA_X3D_LIBS=`$PKG_CONFIG --libs "glibmm-2.4
+  pkg_cv_TITANIA_X3D_LIBS=`$PKG_CONFIG --libs "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17786,7 +17789,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "glibmm-2.4
+	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17797,7 +17802,9 @@ json-c
 ImageMagick++
 libgtop-2.0" 2>&1`
         else
-	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "glibmm-2.4
+	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -17811,7 +17818,9 @@ libgtop-2.0" 2>&1`
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_X3D_PKG_ERRORS" >&5
 
-	as_fn_error $? "Package requirements (glibmm-2.4
+	as_fn_error $? "Package requirements (gtkmm-3.0
+gl
+glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
@@ -18160,107 +18169,6 @@ See \`config.log' for more details" "$LINENO" 5; }
 else
 	TITANIA_SQLITE_CFLAGS=$pkg_cv_TITANIA_SQLITE_CFLAGS
 	TITANIA_SQLITE_LIBS=$pkg_cv_TITANIA_SQLITE_LIBS
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-fi
-
-
-pkg_failed=no
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for TITANIA_OPENGL_SURFACE" >&5
-$as_echo_n "checking for TITANIA_OPENGL_SURFACE... " >&6; }
-
-if test -n "$TITANIA_OPENGL_SURFACE_CFLAGS"; then
-    pkg_cv_TITANIA_OPENGL_SURFACE_CFLAGS="$TITANIA_OPENGL_SURFACE_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
-gl\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
-gl") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TITANIA_OPENGL_SURFACE_CFLAGS=`$PKG_CONFIG --cflags "gtkmm-3.0
-gl" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$TITANIA_OPENGL_SURFACE_LIBS"; then
-    pkg_cv_TITANIA_OPENGL_SURFACE_LIBS="$TITANIA_OPENGL_SURFACE_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
-gl\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
-gl") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TITANIA_OPENGL_SURFACE_LIBS=`$PKG_CONFIG --libs "gtkmm-3.0
-gl" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        TITANIA_OPENGL_SURFACE_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gtkmm-3.0
-gl" 2>&1`
-        else
-	        TITANIA_OPENGL_SURFACE_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtkmm-3.0
-gl" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$TITANIA_OPENGL_SURFACE_PKG_ERRORS" >&5
-
-	as_fn_error $? "Package requirements (gtkmm-3.0
-gl) were not met:
-
-$TITANIA_OPENGL_SURFACE_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables TITANIA_OPENGL_SURFACE_CFLAGS
-and TITANIA_OPENGL_SURFACE_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details." "$LINENO" 5
-elif test $pkg_failed = untried; then
-     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables TITANIA_OPENGL_SURFACE_CFLAGS
-and TITANIA_OPENGL_SURFACE_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details" "$LINENO" 5; }
-else
-	TITANIA_OPENGL_SURFACE_CFLAGS=$pkg_cv_TITANIA_OPENGL_SURFACE_CFLAGS
-	TITANIA_OPENGL_SURFACE_LIBS=$pkg_cv_TITANIA_OPENGL_SURFACE_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 

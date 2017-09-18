@@ -57,7 +57,7 @@
             <connect nodeField='axis' protoField='axis'/>
             <connect nodeField='angle' protoField='angle'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

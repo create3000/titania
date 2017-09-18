@@ -17,7 +17,7 @@ PROTO SFInt32 [
     inputOutput SFInt32 keyValue IS keyValue
     outputOnly  SFInt32 value_changed IS value_changed
 
-    url "javascript:
+    url "ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

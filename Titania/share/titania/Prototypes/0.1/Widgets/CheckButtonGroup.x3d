@@ -51,7 +51,7 @@
           <IS>
             <connect nodeField='whichChoice' protoField='whichChoice'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

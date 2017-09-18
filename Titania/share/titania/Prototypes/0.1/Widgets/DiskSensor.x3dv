@@ -42,7 +42,7 @@ PROTO DiskSensor [
     initializeOnly SFFloat    value 0
     initializeOnly SFNode     sensor USE CylinderTouch
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

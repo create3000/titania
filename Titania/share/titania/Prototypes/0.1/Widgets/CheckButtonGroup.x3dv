@@ -38,7 +38,7 @@ PROTO CheckButtonGroup [
     initializeOnly SFNode buttons USE Buttons
     initializeOnly SFNode self USE CheckButtonGroup
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

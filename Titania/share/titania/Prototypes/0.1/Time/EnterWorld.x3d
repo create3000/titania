@@ -23,7 +23,7 @@
             <connect nodeField='isActive' protoField='isActive'/>
             <connect nodeField='enterTime' protoField='enterTime'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

@@ -17,7 +17,7 @@ PROTO MFMatrix4f [
     inputOutput MFMatrix4f keyValue IS keyValue
     outputOnly  MFMatrix4f value_changed IS value_changed
 
-    url "javascript:
+    url "ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

@@ -34,7 +34,7 @@
             <connect nodeField='cornerRadius' protoField='cornerRadius'/>
             <connect nodeField='size' protoField='size'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

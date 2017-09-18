@@ -22,7 +22,7 @@ PROTO Torus [
     exposedField SFInt32 majorDimension IS majorDimension
     field SFNode  geometry USE Geometry
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

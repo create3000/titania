@@ -46,7 +46,7 @@ PROTO Button [
     initializeOnly SFNode touchSensor USE Touch
     initializeOnly SFNode button USE Switch
 
-    url "vrmlscript:
+    url "ecmascript:
 var DEFAULT  = 0;
 var OVER     = 1;
 var ACTIVE   = 2;

@@ -38,7 +38,7 @@
             <connect nodeField='vDimension' protoField='vDimension'/>
             <connect nodeField='radius' protoField='radius'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

@@ -40,7 +40,7 @@ PROTO CheckButton [
     initializeOnly SFNode button USE Switch
     initializeOnly SFNode self USE CheckButtonScript
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

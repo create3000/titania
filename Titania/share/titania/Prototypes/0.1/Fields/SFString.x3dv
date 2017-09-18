@@ -17,7 +17,7 @@ PROTO SFString [
     inputOutput SFString keyValue IS keyValue
     outputOnly  SFString value_changed IS value_changed
 
-    url "javascript:
+    url "ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

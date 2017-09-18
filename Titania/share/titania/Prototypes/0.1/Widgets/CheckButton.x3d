@@ -55,7 +55,7 @@
             <connect nodeField='enterTime' protoField='enterTime'/>
             <connect nodeField='exitTime' protoField='exitTime'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {

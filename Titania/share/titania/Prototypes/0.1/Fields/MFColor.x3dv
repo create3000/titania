@@ -17,7 +17,7 @@ PROTO MFColor [
     inputOutput MFColor keyValue IS keyValue
     outputOnly  MFColor value_changed IS value_changed
 
-    url "javascript:
+    url "ecmascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

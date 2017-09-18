@@ -32,7 +32,7 @@ PROTO TrackingViewpoint [
     initializeOnly SFVec3f zAxis 0 0 1
     initializeOnly SFNode  viewpoint USE Viewpoint
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

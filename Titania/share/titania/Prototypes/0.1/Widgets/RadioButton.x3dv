@@ -38,7 +38,7 @@ PROTO RadioButton [
     }
     initializeOnly SFNode  self USE RadioButtonScript
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

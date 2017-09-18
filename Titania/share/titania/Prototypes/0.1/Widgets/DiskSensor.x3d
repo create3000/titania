@@ -61,7 +61,7 @@
             <connect nodeField='rotation_changed' protoField='rotation_changed'/>
             <connect nodeField='value_changed' protoField='value_changed'/>
           </IS>
-<![CDATA[javascript:
+<![CDATA[ecmascript:
 
 function initialize ()
 {
