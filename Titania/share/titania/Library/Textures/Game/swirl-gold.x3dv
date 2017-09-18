@@ -13,10 +13,10 @@ DEF swirl-gold Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Game/swirl-gold.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Game/swirl-gold.png",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Game/swirl-gold.png",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Game/swirl-gold.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Game/swirl-gold.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Game/swirl-gold.png",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Game/swirl-gold.png",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Game/swirl-gold.png"
         ]
         repeatS FALSE
         repeatT FALSE

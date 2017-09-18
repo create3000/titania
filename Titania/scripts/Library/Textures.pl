@@ -17,10 +17,10 @@ my $textures = "/home/holger/Projekte/Library/Textures/";
 
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/Library/1.0.0/Textures",
-	"https://cdn.rawgit.com/create3000/Library/1.0.0/Textures",
-	"http://rawgit.com/create3000/Library/1.0.0/Textures",
-	"https://rawgit.com/create3000/Library/1.0.0/Textures",
+	"http://cdn.rawgit.com/create3000/Library/1.0.1/Textures",
+	"https://cdn.rawgit.com/create3000/Library/1.0.1/Textures",
+	"http://rawgit.com/create3000/Library/1.0.1/Textures",
+	"https://rawgit.com/create3000/Library/1.0.1/Textures",
 );
 
 sub textures {

@@ -72,10 +72,10 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-   \"https://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/$name.x3dv\",
-   \"http://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/$name.x3dv\",
-   \"https://rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/$name.x3dv\",
-   \"http://rawgit.com/create3000/Library/1.0.0/Prototypes/1/1.0/Fields/$name.x3dv\",
+   \"https://cdn.rawgit.com/create3000/Library/1.0.1/Prototypes/1/1.0/Fields/$name.x3dv\",
+   \"http://cdn.rawgit.com/create3000/Library/1.0.1/Prototypes/1/1.0/Fields/$name.x3dv\",
+   \"https://rawgit.com/create3000/Library/1.0.1/Prototypes/1/1.0/Fields/$name.x3dv\",
+   \"http://rawgit.com/create3000/Library/1.0.1/Prototypes/1/1.0/Fields/$name.x3dv\",
 ]
 
 $name { }

@@ -13,10 +13,10 @@ DEF drop Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Effects/drop.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Effects/drop.png",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Effects/drop.png",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Effects/drop.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Effects/drop.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Effects/drop.png",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Effects/drop.png",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Effects/drop.png"
         ]
         repeatS FALSE
         repeatT FALSE

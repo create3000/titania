@@ -13,10 +13,10 @@ DEF teeth Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/teeth.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/teeth.jpg",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animal/teeth.jpg",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animal/teeth.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/teeth.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/teeth.jpg",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Animal/teeth.jpg",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Animal/teeth.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

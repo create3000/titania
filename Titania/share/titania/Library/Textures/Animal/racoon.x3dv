@@ -13,10 +13,10 @@ DEF racoon Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/racoon.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/racoon.jpg",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animal/racoon.jpg",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animal/racoon.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/racoon.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/racoon.jpg",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Animal/racoon.jpg",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Animal/racoon.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

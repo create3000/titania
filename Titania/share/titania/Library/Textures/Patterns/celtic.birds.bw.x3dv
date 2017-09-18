@@ -13,10 +13,10 @@ DEF celticbirdsbw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Patterns/celtic.birds.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Patterns/celtic.birds.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Patterns/celtic.birds.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Patterns/celtic.birds.bw.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Patterns/celtic.birds.bw.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Patterns/celtic.birds.bw.png",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Patterns/celtic.birds.bw.png",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Patterns/celtic.birds.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

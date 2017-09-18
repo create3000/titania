@@ -13,10 +13,10 @@ DEF woolybw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Textiles/wooly.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Textiles/wooly.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Textiles/wooly.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Textiles/wooly.bw.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Textiles/wooly.bw.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Textiles/wooly.bw.png",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Textiles/wooly.bw.png",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Textiles/wooly.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -13,10 +13,10 @@ DEF skin Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/skin.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Animal/skin.jpg",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Animal/skin.jpg",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Animal/skin.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/skin.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/skin.jpg",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Animal/skin.jpg",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Animal/skin.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -13,10 +13,10 @@ DEF brickwall2 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Stone/brickwall2.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.0/Textures/Stone/brickwall2.jpg",
-          "http://rawgit.com/create3000/Library/1.0.0/Textures/Stone/brickwall2.jpg",
-          "https://rawgit.com/create3000/Library/1.0.0/Textures/Stone/brickwall2.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Stone/brickwall2.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Stone/brickwall2.jpg",
+          "http://rawgit.com/create3000/Library/1.0.1/Textures/Stone/brickwall2.jpg",
+          "https://rawgit.com/create3000/Library/1.0.1/Textures/Stone/brickwall2.jpg"
         ]
         repeatS FALSE
         repeatT FALSE
