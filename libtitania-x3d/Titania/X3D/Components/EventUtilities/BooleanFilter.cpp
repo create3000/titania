@@ -101,7 +101,7 @@ BooleanFilter::set_boolean_ ()
 		inputTrue () = true;
 
 	else
-		inputFalse () = true;
+		inputFalse () = false;
 
 	inputNegate () = not set_boolean ();
 }
