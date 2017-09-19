@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Networking/LoadSensor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="196" Column="43" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/LoadSensor.cpp" Line="168" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.h" Line="155" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
