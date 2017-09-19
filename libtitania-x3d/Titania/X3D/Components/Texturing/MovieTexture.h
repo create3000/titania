@@ -157,6 +157,9 @@ private:
 	void
 	on_buffer_changed ();
 
+	void
+	set_url ();
+
 	virtual
 	void
 	update () final override;
@@ -169,6 +172,7 @@ private:
 
 	///  @name Members
 
+	SFTime   buffer;
 	MFString urlStack;
 	SFString URL;
 

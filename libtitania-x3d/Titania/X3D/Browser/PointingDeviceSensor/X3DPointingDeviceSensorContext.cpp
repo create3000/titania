@@ -139,6 +139,7 @@ X3DPointingDeviceSensorContext::set_cursor ()
 	catch (const std::out_of_range & error)
 	{
 		__LOG__ << error .what () << std::endl;
+		__LOG__ << (getPrivateCursor () == "DEFAULT" ? getCursor () : getPrivateCursor ()) << std::endl;
 
 		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	}

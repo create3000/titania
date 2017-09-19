@@ -66,6 +66,7 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSoundSourceNode (),
 	      X3DUrlObject (),
+	            buffer (),
 	          urlStack (),
 	               URL ()
 {
@@ -87,6 +88,8 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "cycleTime",        cycleTime ());           // non standard
 	addField (outputOnly,  "elapsedTime",      elapsedTime ());
 	addField (outputOnly,  "duration_changed", duration_changed ());
+
+	addChildObjects (buffer);
 }
 
 X3DBaseNode*
@@ -106,7 +109,9 @@ AudioClip::initialize ()
 
 	url () .addInterest (&AudioClip::set_url, this);
 
-	requestImmediateLoad ();
+	buffer .addInterest (&AudioClip::set_buffer, this);
+
+	set_url ();
 }
 
 void
@@ -168,6 +173,12 @@ AudioClip::on_error ()
 
 void
 AudioClip::set_url ()
+{
+	buffer .addEvent ();
+}
+
+void
+AudioClip::set_buffer ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

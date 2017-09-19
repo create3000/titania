@@ -159,6 +159,9 @@ private:
 	void
 	setTexture (const TexturePtr & texture) final override;
 
+	void
+	set_url ();
+
 	virtual
 	void
 	update () final override;
@@ -173,7 +176,8 @@ private:
 	static const std::string   containerField;
 
 	///  @name Members
-	
+
+	SFTime                 buffer;
 	bool                   resize;
 	X3DPtr <TextureFuture> future;
 

@@ -168,13 +168,16 @@ private:
 	void
 	set_url ();
 
+	void
+	set_buffer ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -184,7 +187,10 @@ private:
 	};
 
 	Fields fields;
-	
+
+	///  @name Members
+
+	SFTime buffer;
 	GLuint programId;
 	GLint  valid;
 

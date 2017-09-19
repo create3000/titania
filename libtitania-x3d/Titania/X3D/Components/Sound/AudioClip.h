@@ -133,6 +133,9 @@ private:
 	void
 	set_url ();
 
+	void
+	set_buffer ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -141,6 +144,7 @@ private:
 
 	///  @name Members
 
+	SFTime   buffer;
 	MFString urlStack;
 	SFString URL;
 

@@ -137,6 +137,9 @@ private:
 	void
 	setTexture (const Texture3DPtr &) final override;
 
+	void
+	set_url ();
+
 	virtual
 	void
 	update () final override;
@@ -149,6 +152,7 @@ private:
 
 	///  @name Members
 	
+	SFTime                   buffer;
 	X3DPtr <Texture3DFuture> future;
 
 

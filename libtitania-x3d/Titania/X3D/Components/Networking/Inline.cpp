@@ -74,9 +74,9 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	    X3DUrlObject (),
 	          fields (),
+	          buffer (),
 	           scene (),
 	           group (new Group (executionContext)),
-	          buffer (),
 	     preventLoad (false),
 	          future ()
 {
@@ -108,7 +108,8 @@ Inline::initialize ()
 	isLive () .addInterest (&Inline::set_live, this);
 
 	load () .addInterest (&Inline::set_load, this);
-	url ()  .addInterest (&Inline::set_url, this);
+	url ()  .addInterest (&Inline::set_url,  this);
+
 	buffer  .addInterest (&Inline::set_buffer, this);
 
 	if (scene)

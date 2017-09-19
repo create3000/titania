@@ -61,6 +61,7 @@
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
@@ -1086,30 +1087,30 @@ OutlineEditor::on_create_parent_viewport_activate ()
 	on_create_parent ("Viewport");
 }
 
-void
+X3D::SFNode
 OutlineEditor::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {
 	if (nodePath .empty ())
-		return;
+		return nullptr;
 
 	const auto iter = treeView -> get_model () -> get_iter (nodePath);
 
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
-		return;
+		return nullptr;
 
 	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
 	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
+	const auto   group            = X3D::SFNode (executionContext -> createNode (typeName));
 
 	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
 	{
 		// Root node
 
-		auto &       rootNodes        = executionContext -> getRootNodes ();
-		const auto   index            = treeView -> get_index (iter);
-		const auto   child            = rootNodes [index];
-		const auto   group            = executionContext -> createNode (typeName);
-		auto &       children         = group -> getField <X3D::MFNode> (fieldName);
+		auto &     rootNodes = executionContext -> getRootNodes ();
+		const auto index     = treeView -> get_index (iter);
+		const auto child     = rootNodes [index];
+		auto &     children  = group -> getField <X3D::MFNode> (fieldName);
 
 		X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
 		X3D::X3DEditor::replaceNode (executionContext, executionContext, rootNodes, index, group, undoStep);
@@ -1123,22 +1124,22 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		auto path = nodePath;
 
 		if (not path .up ())
-			return;
+			return nullptr;
 
 		const auto fieldIter = treeView -> get_model () -> get_iter (path);
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
-			return;
+			return nullptr;
 
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 
 		if (not path .up ())
-			return;
+			return nullptr;
 
 		const auto parentIter = treeView -> get_model () -> get_iter (path);
 
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
-			return;
+			return nullptr;
 
 		const auto & parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
@@ -1148,9 +1149,8 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		{
 			case X3D::X3DConstants::SFNode:
 			{
-				auto &     child    = *static_cast <X3D::SFNode*> (field);
-			   const auto group    = executionContext -> createNode (typeName);
-				auto &     children = group -> getField <X3D::MFNode> (fieldName);
+				auto & child    = *static_cast <X3D::SFNode*> (field);
+				auto & children = group -> getField <X3D::MFNode> (fieldName);
 
 				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
 				X3D::X3DEditor::replaceNode (executionContext, parent, child, group, undoStep);
@@ -1163,7 +1163,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				auto &       mfnode   = *static_cast <X3D::MFNode*> (field);
 				const auto   index    = treeView -> get_index (iter);
 				const auto & child    = mfnode [index];
-				const auto   group    = executionContext -> createNode (typeName);
 				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
 				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
@@ -1178,6 +1177,8 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	return group;
 }
 
 void

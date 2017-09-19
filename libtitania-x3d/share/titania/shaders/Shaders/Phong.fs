@@ -1,48 +1,4 @@
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
-//
-//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-// 
-//  Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
-// 
-//  All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
-// 
-//  The copyright notice above does not evidence any actual of intended
-//  publication of such source code, and is an unpublished work by create3000.
-//  This material contains CONFIDENTIAL INFORMATION that is the property of
-//  create3000.
-// 
-//  No permission is granted to copy, distribute, or create derivative works from
-//  the contents of this software, in whole or in part, without the prior written
-//  permission of create3000.
-// 
-//  NON-MILITARY USE ONLY
-// 
-//  All create3000 software are effectively free software with a non-military use
-//  restriction. It is free. Well commented source is provided. You may reuse the
-//  source in any way you please with the exception anything that uses it must be
-//  marked to indicate is contains 'non-military use only' components.
-// 
-//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-// 
-//  Copyright 2015, 2016 Holger Seelig <holger.seelig@yahoo.de>.
-// 
-//  This file is part of the Cobweb Project.
-// 
-//  Cobweb is free software: you can redistribute it and/or modify it under the
-//  terms of the GNU General Public License version 3 only, as published by the
-//  Free Software Foundation.
-// 
-//  Cobweb is distributed in the hope that it will be useful, but WITHOUT ANY
-//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-//  A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
-//  details (a copy is included in the LICENSE file that accompanied this code).
-// 
-//  You should have received a copy of the GNU General Public License version 3
-//  along with Cobweb.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
-//  copy of the GPLv3 License.
-// 
-//  For Silvio, Joy and Adi.
-
 
 precision mediump float;
 
@@ -263,24 +219,24 @@ getMaterialColor ()
 	}
 }
 
-vec3
-getFogColor (in vec3 color)
+float
+getFogInterpolant ()
 {
 	if (x3d_FogType == x3d_NoneFog)
-		return color;
+		return 1.0;
 
 	float dV = length (v);
 
 	if (dV >= x3d_FogVisibilityRange)
-		return x3d_FogColor;
+		return 0.0;
 
 	if (x3d_FogType == x3d_LinearFog)
-		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
+		return (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange;
 
 	if (x3d_FogType == x3d_ExponentialFog)
-		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
+		return exp (-dV / (x3d_FogVisibilityRange - dV));
 
-	return color;
+	return 1.0;
 }
 
 void
@@ -290,5 +246,5 @@ main ()
 
 	gl_FragColor = getMaterialColor ();
 
-	gl_FragColor .rgb = getFogColor (gl_FragColor .rgb);
+	gl_FragColor .rgb = mix (x3d_FogColor, gl_FragColor .rgb, getFogInterpolant ());
 }

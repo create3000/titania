@@ -73,6 +73,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DScriptNode (),
 	       fields (),
+	       buffer (),
 	   javaScript ()
 {
 	addType (X3DConstants::Script);
@@ -82,7 +83,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "directOutput", directOutput ());
 	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
 
-	addChildObjects (javaScript);
+	addChildObjects (buffer, javaScript);
 
 	setExtendedEventHandling (false);
 }
@@ -101,7 +102,9 @@ Script::initialize ()
 	metadata () .addInterest (&Script::catchEventsProcessed, this);
 	url ()      .addInterest (&Script::set_url, this);
 
-	requestImmediateLoad ();
+	buffer .addInterest (&Script::set_buffer, this);
+
+	set_url ();
 }
 
 void
@@ -169,6 +172,9 @@ Script::loadDocument (const SFString & URL, std::string & scheme, std::string & 
 void
 Script::requestImmediateLoad ()
 {
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
@@ -221,6 +227,12 @@ Script::requestImmediateLoad ()
 
 void
 Script::set_url ()
+{
+	buffer .addEvent ();
+}
+
+void
+Script::set_buffer ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

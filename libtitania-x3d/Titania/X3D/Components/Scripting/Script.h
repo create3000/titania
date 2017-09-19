@@ -164,6 +164,9 @@ private:
 	set_url ();
 
 	void
+	set_buffer ();
+
+	void
 	catchEventsProcessed ();
 
 	///  @name Static members
@@ -172,7 +175,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -184,6 +187,9 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
+	SFTime                        buffer;
 	X3DPtr <X3DJavaScriptContext> javaScript;
 
 };

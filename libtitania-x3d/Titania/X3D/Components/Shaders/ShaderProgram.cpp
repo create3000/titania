@@ -74,6 +74,7 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	               X3DUrlObject (),
 	X3DProgrammableShaderObject (),
 	                     fields (),
+	                     buffer (),
 	                  programId (0),
 	                      valid (false)
 {
@@ -82,6 +83,8 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "type",     type ());
 	addField (inputOutput,    "url",      url ());
+
+	addChildObjects (buffer);
 }
 
 X3DBaseNode*
@@ -100,8 +103,9 @@ ShaderProgram::initialize ()
 	type () .addInterest (&ShaderProgram::set_url, this);
 	url ()  .addInterest (&ShaderProgram::set_url, this);
 
-	if (getBrowser () -> getLoadUrlObjects ())
-		requestImmediateLoad ();
+	buffer .addInterest (&ShaderProgram::set_buffer, this);
+
+	set_url ();
 }
 
 void
@@ -138,6 +142,9 @@ throw (Error <DISPOSED>)
 void
 ShaderProgram::requestImmediateLoad ()
 {
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
+
 	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_separate_shader_objects"))
 	{
 		setLoadState (FAILED_STATE);
@@ -232,6 +239,12 @@ ShaderProgram::requestImmediateLoad ()
 
 void
 ShaderProgram::set_url ()
+{
+	buffer .addEvent ();
+}
+
+void
+ShaderProgram::set_buffer ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

@@ -66,7 +66,7 @@ PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
 	button_release_conncection (),
 	 motion_notify_conncection (),
 	  leave_notify_conncection (),
-                       cursor ("default"),
+                       cursor ("ARROW"),
 	                    button (0),
 	                    isOver (false)
 { }
@@ -208,7 +208,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	getBrowser () -> addEvent ();
 
 	button = 0;
-	cursor = "default";
+	cursor = "ARROW";
 	return false;
 }
 

@@ -1103,16 +1103,16 @@ BrowserWindow::on_create_parent_viewport_activated ()
 	on_create_parent ("Viewport");
 }
 
-void
+X3D::SFNode
 BrowserWindow::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {
 	auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
-		return;
+		return nullptr;
 
 	if (checkForClones (selection .cbegin (), selection .cend ()))
-		return;
+		return nullptr;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
 	const auto group    = X3D::X3DEditor::createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
@@ -1121,6 +1121,8 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	addUndoStep (undoStep);
 
 	expandNodes ({ group });
+
+	return group;
 }
 
 // View menu

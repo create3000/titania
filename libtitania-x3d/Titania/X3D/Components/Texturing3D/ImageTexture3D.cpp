@@ -64,6 +64,7 @@ ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
 	    X3DUrlObject (),
+	          buffer (),
 	          future ()
 {
 	addType (X3DConstants::ImageTexture3D);
@@ -75,7 +76,7 @@ ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatR",           repeatR ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	addChildObjects (future);
+	addChildObjects (buffer, future);
 }
 
 X3DBaseNode*
@@ -90,9 +91,11 @@ ImageTexture3D::initialize ()
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (&ImageTexture3D::update, this);
+	url () .addInterest (&ImageTexture3D::set_url, this);
 
-	requestAsyncLoad ();
+	buffer .addInterest (&ImageTexture3D::update, this);
+
+	set_url ();
 }
 
 void
@@ -142,6 +145,12 @@ ImageTexture3D::requestAsyncLoad ()
 	                                       getBrowser () -> getMinTextureSize (),
 	                                       getBrowser () -> getMaxTextureSize (),
 	                                       std::bind (&ImageTexture3D::setTexture, this, _1)));
+}
+
+void
+ImageTexture3D::set_url ()
+{
+	buffer .addEvent ();
 }
 
 void

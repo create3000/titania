@@ -71,6 +71,7 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	     X3DNode (),
 	X3DUrlObject (),
 	      fields (),
+	      buffer (),
 	    shaderId (0),
 	       valid (false),
 	    openGLES (false)
@@ -80,6 +81,8 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "type",     type ());
 	addField (inputOutput,    "url",      url ());
+
+	addChildObjects (buffer);
 }
 
 X3DBaseNode*
@@ -97,8 +100,9 @@ ShaderPart::initialize ()
 	type () .addInterest (&ShaderPart::set_url, this);
 	url ()  .addInterest (&ShaderPart::set_url, this);
 
-	if (getBrowser () -> getLoadUrlObjects ())
-		requestImmediateLoad ();
+	buffer .addInterest (&ShaderPart::set_buffer, this);
+
+	set_url ();
 }
 
 void
@@ -113,6 +117,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 ShaderPart::requestImmediateLoad ()
 {
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
@@ -161,6 +168,12 @@ ShaderPart::requestImmediateLoad ()
 
 void
 ShaderPart::set_url ()
+{
+	buffer .addEvent ();
+}
+
+void
+ShaderPart::set_buffer ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

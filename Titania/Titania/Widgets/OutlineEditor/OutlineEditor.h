@@ -283,7 +283,7 @@ private:
 	void
 	on_create_parent_viewport_activate () final override;
 
-	void
+	X3D::SFNode
 	on_create_parent (const std::string &, const std::string & = "children");
 
 	virtual

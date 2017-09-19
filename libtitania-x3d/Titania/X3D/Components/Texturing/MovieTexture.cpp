@@ -68,6 +68,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	X3DSoundSourceNode (),
 	      X3DUrlObject (),
 	   sigc::trackable (),
+	            buffer (),
 	          urlStack (),
 	               URL ()
 {
@@ -92,6 +93,8 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+
+	addChildObjects (buffer);
 }
 
 X3DBaseNode*
@@ -111,9 +114,11 @@ MovieTexture::initialize ()
 	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &MovieTexture::on_error));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
-	url () .addInterest (&MovieTexture::update, this);
+	url () .addInterest (&MovieTexture::set_url, this);
 
-	requestImmediateLoad ();
+	buffer .addInterest (&MovieTexture::update, this);
+
+	set_url ();
 }
 
 void
@@ -211,6 +216,12 @@ MovieTexture::on_buffer_changed ()
 	{
 	   __LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+MovieTexture::set_url ()
+{
+	buffer .addEvent ();
 }
 
 void

@@ -241,7 +241,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -252,9 +252,11 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
+	SFTime               buffer;
 	X3DScenePtr          scene;
 	X3DPtr <Group>       group;
-	SFTime               buffer;
 	bool                 preventLoad;
 	X3DPtr <SceneFuture> future;
 

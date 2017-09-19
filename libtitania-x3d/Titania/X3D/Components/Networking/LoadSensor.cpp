@@ -169,7 +169,7 @@ void
 LoadSensor::count ()
 {
 	size_t complete = 0;
-	size_t failed = 0;
+	size_t failed   = 0;
 
 	for (const auto & node : urlObjects)
 	{
@@ -179,23 +179,23 @@ LoadSensor::count ()
 		failed   += urlObject -> checkLoadState () == FAILED_STATE;
 	}
 
-	const float p = float (complete) / float (urlObjects .size ());
+	const bool  loaded = complete == urlObjects .size ();
+	const float p      = float (complete) / float (urlObjects .size ());
 
-	if (aborted or failed or complete == urlObjects .size ())
+	if (aborted or failed or loaded)
 	{
 		timeOut_connection .disconnect ();
 
-		const bool loaded = complete == urlObjects .size ();
-
 		isActive () = false;
 		isLoaded () = loaded;
-		progress () = float (complete) / float (urlObjects .size ());
+		progress () = p;
 
 		if (loaded)
 			loadTime () = getCurrentTime ();
 	}
 	else
 	{
+
 		if (isActive ())
 		{
 			progress () = p;
