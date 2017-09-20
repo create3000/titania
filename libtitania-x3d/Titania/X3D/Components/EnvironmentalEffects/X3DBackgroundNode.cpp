@@ -118,6 +118,8 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	transformationMatrix (),
 	        sphereColors (),
 	      sphereVertices (),
+	 sphereColorBufferId (0),
+	sphereVertexBufferId (0),
 	cubeTexCoordBufferId (0),
 	  cubeVertexBufferId (0)
 {
@@ -138,6 +140,8 @@ X3DBackgroundNode::initialize ()
 
 	// Generate buffers.
 
+	glGenBuffers (1, &sphereColorBufferId);
+	glGenBuffers (1, &sphereVertexBufferId);
 	glGenBuffers (1, &cubeTexCoordBufferId);
 	glGenBuffers (1, &cubeVertexBufferId);
 
@@ -210,30 +214,30 @@ X3DBackgroundNode::getColor (const float theta, const MFColor & color, const MFF
 }
 
 void
-X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float> & vAngle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
+X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <double> & vAngle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
 {
 	// p1 --- p4
 	//  |     |
 	//  |     |
 	// p2 --- p3
 
-	float phi = 0;
+	double phi = 0;
 
-	std::complex <float> y;
-	Vector3f             p;
+	std::complex <double> y;
+	Vector3f              p;
 	
-	const auto    vAngleMax   = bottom ? pi_2 <float> : pi <float>;
+	const auto    vAngleMax   = bottom ? pi_2 <double> : pi <double>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
 
 	for (int32_t v = 0; v < V_DIMENSION; ++ v)
 	{
-		auto theta1 = math::clamp <float> (vAngle [v],     0, vAngleMax);
-		auto theta2 = math::clamp <float> (vAngle [v + 1], 0, vAngleMax);
+		auto theta1 = math::clamp <double> (vAngle [v],     0, vAngleMax);
+		auto theta2 = math::clamp <double> (vAngle [v + 1], 0, vAngleMax);
 
 		if (bottom)
 		{
-			theta1 = pi <float> - theta1;
-			theta2 = pi <float> - theta2;
+			theta1 = pi <double> - theta1;
+			theta2 = pi <double> - theta2;
 		}
 
 		const auto z1 = std::polar (radius, theta1);
@@ -248,7 +252,7 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 			const size_t u1 = u < U_DIMENSION - 1 ? u + 1 : 0;
 
 			// p1
-			phi = pi2 <float> * (u / U_DIMENSION);
+			phi = pi2 <double> * (u / U_DIMENSION);
 			y   = std::polar (-z1 .imag (), phi);
 
 			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
@@ -261,7 +265,7 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p3
-			phi = pi2 <float> * (u1 / U_DIMENSION);
+			phi = pi2 <double> * (u1 / U_DIMENSION);
 			y   = std::polar (-z2 .imag (), phi);
 
 			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
@@ -291,7 +295,7 @@ X3DBackgroundNode::build ()
 	{
 		// Build cube
 
-		const float     s = std::sqrt (RADIUS * RADIUS / 2);
+		const double    s = std::sqrt (RADIUS * RADIUS / 2);
 		const Color3f & c = skyColor () [0];
 
 		// Back
@@ -339,12 +343,12 @@ X3DBackgroundNode::build ()
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
-			std::vector <float> vAngle (skyAngle () .begin (), skyAngle () .end ());
+			std::vector <double> vAngle (skyAngle () .begin (), skyAngle () .end ());
 
 			if (vAngle .empty () or vAngle .front () > 0)
 				vAngle .insert (vAngle .begin (), 0);
 
-			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? pi_2 <float> : pi <float>;
+			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? pi_2 <double> : pi <double>;
 
 			if (vAngle .back () < vAngleMax)
 				vAngle .emplace_back (vAngleMax);
@@ -354,10 +358,10 @@ X3DBackgroundNode::build ()
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			std::vector <float> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
+			std::vector <double> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
 
-			if (vAngle .empty () or vAngle .front () < pi_2 <float>)
-				vAngle .insert (vAngle .begin (), pi_2 <float>);
+			if (vAngle .empty () or vAngle .front () < pi_2 <double>)
+				vAngle .insert (vAngle .begin (), pi_2 <double>);
 
 			if (vAngle .back () > 0)
 				vAngle .emplace_back (0);
@@ -365,6 +369,14 @@ X3DBackgroundNode::build ()
 			buildHalfSphere (RADIUS, vAngle, groundAngle (), groundColor (), opacity, true);
 		}
 	}
+
+	// Transfer sphere data.
+
+	glBindBuffer (GL_ARRAY_BUFFER, sphereColorBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * sphereColors .size (), sphereColors .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_ARRAY_BUFFER, sphereVertexBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * sphereVertices .size (), sphereVertices .data (), GL_STATIC_COPY);
 }
 
 void
@@ -418,7 +430,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		modelViewMatrix .get (translation, rotation);
 		modelViewMatrix .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
 
-		glLoadMatrixd (modelViewMatrix .data ());
+		glLoadMatrixd (modelViewMatrix .data ()); // getFixedPipelineRequired
 
 		renderObject -> getModelViewMatrix () .push (modelViewMatrix);
 
@@ -439,29 +451,76 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 	if (transparency () >= 1.0f)
 		return;
 
+	if (sphereVertices .empty ())
+		return;
+
+	const auto   browser    = renderObject -> getBrowser ();
+	const auto & shaderNode = browser -> getBackgroundSphereShader ();
+
 	// Draw
 
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);
+
+	glEnable (GL_CULL_FACE);
+	glFrontFace (GL_CW);
 
 	if (transparency ())
 		glEnable (GL_BLEND);
 	else
 		glDisable (GL_BLEND);
 
-	glDisable (GL_CULL_FACE); /// XXX
-	glFrontFace (GL_CW);
+	if (browser -> getFixedPipelineRequired ())
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, sphereColorBufferId);
+		glEnableClientState (GL_COLOR_ARRAY);
+		glColorPointer (4, GL_FLOAT, 0, 0);
 
-	glEnableClientState (GL_COLOR_ARRAY);
-	glColorPointer (4, GL_FLOAT, 0, sphereColors .data ());
+		glBindBuffer (GL_ARRAY_BUFFER, sphereVertexBufferId);
+		glEnableClientState (GL_VERTEX_ARRAY);
+		glVertexPointer (3, GL_DOUBLE, 0, 0);
 
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, sphereVertices .data ());
+		glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
 
-	glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
+		glDisableClientState (GL_COLOR_ARRAY);
+		glDisableClientState (GL_VERTEX_ARRAY);
+	}
+	else
+	{
+		shaderNode -> enable ();
 
-	glDisableClientState (GL_COLOR_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
+		// Clip planes
+
+		shaderNode -> setClipPlanes (browser, clipPlanes);
+
+		// Enable vertex attribute arrays.
+
+		shaderNode -> enableColorAttrib  (sphereColorBufferId,  GL_FLOAT,  0, nullptr);
+		shaderNode -> enableVertexAttrib (sphereVertexBufferId, GL_DOUBLE, 0, nullptr);
+
+		// Uniforms
+
+		if (shaderNode -> isExtensionGPUShaderFP64Available ())
+		{
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
+			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .data ());
+		}
+		else
+		{
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
+			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .data ());
+		}
+
+		// Draw.
+
+		glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
+
+		// Disable vertex attribute arrays.
+
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
+	}
 
 	glDisable (GL_BLEND);
 	glDepthMask (GL_TRUE);
@@ -609,6 +668,34 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	glDepthMask (GL_TRUE);
 	glEnable (GL_DEPTH_TEST);
 }
+
+void
+X3DBackgroundNode::dispose ()
+{
+	try
+	{
+		ContextLock lock (getBrowser ());
+
+		if (sphereColorBufferId)
+			glDeleteBuffers (1, &sphereColorBufferId);
+
+		if (sphereVertexBufferId)
+			glDeleteBuffers (1, &sphereVertexBufferId);
+
+		if (cubeTexCoordBufferId)
+			glDeleteBuffers (1, &cubeTexCoordBufferId);
+
+		if (cubeVertexBufferId)
+			glDeleteBuffers (1, &cubeVertexBufferId);
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
+
+	X3DBindableNode::dispose ();
+}
+
+X3DBackgroundNode::~X3DBackgroundNode ()
+{ }
 
 } // X3D
 } // titania

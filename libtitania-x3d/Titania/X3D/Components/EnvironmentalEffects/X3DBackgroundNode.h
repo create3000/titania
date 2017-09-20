@@ -160,6 +160,15 @@ public:
 	void
 	draw (X3DRenderObject* const renderObject, const Vector4i &);
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+	
+	virtual
+	~X3DBackgroundNode () override;
+
 
 protected:
 
@@ -218,7 +227,7 @@ private:
 	getColor (const float, const MFColor &, const MFFloat &);
 
 	void
-	buildHalfSphere (const float, const std::vector <float> &, const MFFloat &, const MFColor &, const float, const bool);
+	buildHalfSphere (const double, const std::vector <double> &, const MFFloat &, const MFColor &, const float, const bool);
 
 	void
 	build ();
@@ -258,7 +267,9 @@ private:
 	ClipPlaneContainerArray      clipPlanes;
 	Matrix4d                     transformationMatrix;
 	std::vector <Color4f>        sphereColors;
-	std::vector <Vector3f>       sphereVertices;
+	std::vector <Vector3d>       sphereVertices;
+	GLuint                       sphereColorBufferId;
+	GLuint                       sphereVertexBufferId;
 	GLuint                       cubeTexCoordBufferId;
 	GLuint                       cubeVertexBufferId;
 

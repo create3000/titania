@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,88 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_ENVIRONMENTAL_EFFECTS_X3DENVIRONMENTAL_EFFECTS_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_ENVIRONMENTAL_EFFECTS_X3DENVIRONMENTAL_EFFECTS_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtr.h"
-#include "../Shaders/ShadingType.h"
 
 namespace titania {
 namespace X3D {
 
-class ComposedShader;
-class X3DShaderNode;
-
-class X3DShadersContext :
+class X3DEnvironmentalEffectsContext :
 	virtual public X3DBaseNode
 {
 public:
-
-	///  @name Member access
-
-	void
-	setShaders (const bool value)
-	{ shaders = value; }
-
-	const SFBool &
-	getShaders () const
-	{ return shaders; }
-
-	float
-	getShadingLanguageVersion () const
-	{ return shadingLanguageVersion; }
-
-	int32_t
-	getMaxVertexUniformVectors () const
-	{ return maxVertexUniformVectors; }
-
-	int32_t
-	getMaxFragmentUniformVectors () const
-	{ return maxFragmentUniformVectors; }
-
-	int32_t
-	getMaxVertexAttributes () const
-	{ return maxVertexAttributes; }
-
-	const X3DPtr <ComposedShader> &
-	getPointShader () const
-	{ return pointShader; }
-
-	const X3DPtr <ComposedShader> &
-	getWireframeShader () const
-	{ return wireframeShader; }
-
-	const X3DPtr <ComposedShader> &
-	getGouraudShader () const
-	{ return gouraudShader; }
-
-	const X3DPtr <ComposedShader> &
-	getPhongShader () const
-	{ return phongShader; }
-
-	const X3DPtr <ComposedShader> &
-	getDefaultShader () const
-	{ return defaultShader; }
-
-	void
-	setShader (X3DShaderNode* const value)
-	{ shaderNode = value; }
-
-	X3DShaderNode*
-	getShader () const
-	{ return shaderNode; }
-
-	void
-	setFixedPipeline (const bool);
-
-	const SFBool &
-	getFixedPipeline () const
-	{ return fixedPipeline; }
-
-	const SFBool &
-	getFixedPipelineRequired () const
-	{ return fixedPipelineRequired; }
 
 	///  @name Destruction
 
@@ -139,56 +70,35 @@ public:
 	{ }
 
 	virtual
-	~X3DShadersContext () override;
+	~X3DEnvironmentalEffectsContext () override;
 
 
 protected:
 
 	///  @name Friends
 
-	friend class X3DEnvironmentalEffectsContext;
+	friend class X3DBackgroundNode;
 
 	///  @name Construction
 
-	X3DShadersContext ();
+	X3DEnvironmentalEffectsContext ();
 
 	virtual
 	void
 	initialize () override;
 
-	///  Operations
+	///  @name Member access
 
-	X3DPtr <ComposedShader>
-	createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl);
+	const X3DPtr <ComposedShader> &
+	getBackgroundSphereShader () const
+	{ return backgroundSphereShader; }
 
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_loaded ();
-
-	void
-	set_shading ();
-
 	///  @name Members
 
-	SFBool                  shaders;
-	float                   shadingLanguageVersion;
-	int32_t                 maxVertexUniformVectors;
-	int32_t                 maxFragmentUniformVectors;
-	int32_t                 maxVertexAttributes;
-	SFBool                  fixedPipeline;
-	SFBool                  fixedPipelineRequired;
-	bool                    fixedPipelineDriver;
-	X3DPtr <ComposedShader> pointShader;
-	X3DPtr <ComposedShader> wireframeShader;
-	X3DPtr <ComposedShader> gouraudShader;
-	X3DPtr <ComposedShader> phongShader;
-	X3DPtr <ComposedShader> defaultShader;
-	X3DShaderNode*          shaderNode;
-
+	X3DPtr <ComposedShader> backgroundSphereShader;
 
 };
 

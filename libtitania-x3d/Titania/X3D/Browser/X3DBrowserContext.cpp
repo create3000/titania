@@ -85,6 +85,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                X3DTextContext (),
 	           X3DTexturingContext (),
 	    X3DCubeMapTexturingContext (),
+	X3DEnvironmentalEffectsContext (),
 	                X3DTimeContext (),
 	                X3DToolContext (),
 	             initializedOutput (),
@@ -156,6 +157,7 @@ X3DBrowserContext::initialize ()
 	X3DTextContext::initialize ();
 	X3DTexturingContext::initialize ();
 	X3DCubeMapTexturingContext::initialize ();
+	X3DEnvironmentalEffectsContext::initialize ();
 	X3DTimeContext::initialize ();
 	X3DToolContext::initialize ();
 
@@ -464,6 +466,7 @@ X3DBrowserContext::dispose ()
 
 	X3DToolContext::dispose ();
 	X3DTimeContext::dispose ();
+	X3DEnvironmentalEffectsContext::dispose ();
 	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturingContext::dispose ();
 	X3DTextContext::dispose ();
