@@ -290,7 +290,7 @@ FontStyle::initialize ()
 {
 	X3DFontStyleNode::initialize ();
 
-	getBrowser () -> getFontStyleOptions () .addInterest (&FontStyle::set_font, this);
+	getBrowser () -> getFontStyleOptions () -> addInterest (&FontStyle::set_font, this);
 
 	family  () .addInterest (&FontStyle::set_font, this);
 	style   () .addInterest (&FontStyle::set_font, this);
@@ -306,12 +306,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getFontStyleOptions () .removeInterest (&FontStyle::set_font, this);
+		getBrowser () -> getFontStyleOptions () -> removeInterest (&FontStyle::set_font, this);
 
 	X3DFontStyleNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getFontStyleOptions () .addInterest (&FontStyle::set_font, this);
+		getBrowser () -> getFontStyleOptions () -> addInterest (&FontStyle::set_font, this);
 }
 
 X3DPtr <X3DTextGeometry>
