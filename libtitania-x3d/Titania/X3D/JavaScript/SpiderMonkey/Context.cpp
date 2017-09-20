@@ -676,19 +676,6 @@ Context::callFunction (jsval function) const
 }
 
 void
-Context::catchEventsProcessed ()
-{
-	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
-	{
-		if (not JSVAL_IS_VOID (eventsProcessedFn))
-		{
-			getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
-			getScriptNode () -> addInterest (&Context::connectEventsProcessed, this);
-		}
-	}
-}
-
-void
 Context::connectEventsProcessed ()
 {
 	getScriptNode () -> removeInterest (&Context::connectEventsProcessed, this);

@@ -531,19 +531,6 @@ Context::set_shutdown ()
 }
 
 void
-Context::catchEventsProcessed ()
-{
-	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
-	{
-		if (program -> hasFunctionDeclaration ("eventsProcessed"))
-		{
-			getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
-			getScriptNode () -> addInterest (&Context::connectEventsProcessed, this);
-		}
-	}
-}
-
-void
 Context::connectEventsProcessed ()
 {
 	getScriptNode () -> removeInterest (&Context::connectEventsProcessed, this);

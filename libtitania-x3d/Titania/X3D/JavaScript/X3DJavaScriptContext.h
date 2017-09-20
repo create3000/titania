@@ -78,10 +78,6 @@ public:
 	getScriptNode () const
 	{ return script; }
 
-	virtual
-	void
-	catchEventsProcessed () = 0;
-
 	void
 	setError (const std::string &, const std::string &, const int32_t, const int32_t, std::string) const;
 

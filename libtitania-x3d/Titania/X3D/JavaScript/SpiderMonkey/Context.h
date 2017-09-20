@@ -142,10 +142,6 @@ public:
 	JSBool
 	require (const basic::uri &, jsval &);
 
-	virtual
-	void
-	catchEventsProcessed () final override;
-
 	///  @name Destruction
 
 	virtual

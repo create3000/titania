@@ -99,8 +99,7 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
-	metadata () .addInterest (&Script::catchEventsProcessed, this);
-	url ()      .addInterest (&Script::set_url, this);
+	url () .addInterest (&Script::set_url, this);
 
 	buffer .addInterest (&Script::set_buffer, this);
 
@@ -237,14 +236,6 @@ Script::set_buffer ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
-
-	catchEventsProcessed ();
-}
-
-void
-Script::catchEventsProcessed ()
-{
-	javaScript -> catchEventsProcessed ();
 }
 
 } // X3D

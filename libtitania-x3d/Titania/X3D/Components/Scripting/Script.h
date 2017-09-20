@@ -166,9 +166,6 @@ private:
 	void
 	set_buffer ();
 
-	void
-	catchEventsProcessed ();
-
 	///  @name Static members
 
 	static const ComponentType component;

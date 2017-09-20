@@ -127,10 +127,6 @@ public:
 	getFuture ()
 	{ return future; }
 
-	virtual
-	void
-	catchEventsProcessed () final override;
-
 	///  @name Destruction
 
 	virtual

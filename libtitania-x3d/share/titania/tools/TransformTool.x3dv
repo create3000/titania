@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V3.0.4
 
 PROFILE Full
 
@@ -10,7 +10,6 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
 META "modified" "Thu, 16 Mar 2017 15:35:46 GMT"
-META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -1561,9 +1560,7 @@ Collision {
                                     transparency 1
                                   }
                                 }
-                                geometry DEF Disk Disk2D {
-                                  solid FALSE
-                                }
+                                geometry DEF Disk Disk2D { }
                               }
                             }
                           ]
@@ -2319,10 +2316,15 @@ DEF ScaleHandlesScript Script {
   ]
 
   url "peaseblossom:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
-	var radius      = bboxSize1_2 .length ();
 
 	handle [0] .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
 	handle [1] .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
