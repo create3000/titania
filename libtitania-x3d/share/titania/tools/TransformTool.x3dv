@@ -1962,9 +1962,10 @@ DEF MoveScript Script {
   initializeOnly SFVec3f translation 0 0 0
   inputOutput    SFVec3f center 0 0 0
   initializeOnly SFVec3f size 0 0 0
-  initializeOnly SFInt32 events 0
+  initializeOnly SFInt32 events 4
 
   url "peaseblossom:
+
 function set_active (value)
 {
 	if (value)
@@ -1974,11 +1975,11 @@ function set_active (value)
 		translation = transform .translation;
 		center      = transform .center;
 		size        = bboxSize;
-
-		events = 4;
 	}
 	else
 		activeTool_changed = 0;
+
+	events = 4;
 }
 
 function constrainValue (value, xScale, yScale)
