@@ -1,15 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.h" Line="155" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.h" Line="153" Column="11" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderPart.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Scripting/Script.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Point.fs" Line="1" Column="1" />
       <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="1" Column="1" />
       <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Wireframe.fs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EventUtilities/BooleanFilter.cpp" Line="104" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EventUtilities/BooleanFilter.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

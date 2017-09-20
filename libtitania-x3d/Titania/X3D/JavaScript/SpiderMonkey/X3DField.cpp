@@ -73,6 +73,7 @@ JSFunctionSpec X3DField::functions [ ] = {
 	{ "isWritable",  isWritable,  0, 0 },
 
 	{ "equals",       equals, 1, 0 },
+	{ "assign",       assign, 1, 0 },
 
 	{ "toVRMLString", toVRMLString, 0, 0 },
 	{ "toXMLString",  toXMLString,  0, 0 },
@@ -218,6 +219,45 @@ X3DField::equals (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .equals: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DField::assign (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .assign: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <X3DField> (cx, vp);
+
+		try
+		{
+			const auto rhs = getArgument <X3DField> (cx, argv, 0);
+	
+			if (lhs -> getType () not_eq rhs -> getType ())
+				return ThrowException (cx, "%s .assign: both arguments must be of same type.");
+
+			lhs -> set (*rhs);
+			lhs -> addEvent ();
+
+			JS_SET_RVAL (cx, vp, JSVAL_VOID);
+			return true;
+		}
+		catch (const std::exception & error)
+		{
+			if (lhs -> getType () != X3D::X3DConstants::SFNode)
+				throw;
+
+			JS_SET_RVAL (cx, vp, static_cast <X3D::SFNode*> (lhs) -> getValue () == nullptr ? JSVAL_TRUE : JSVAL_FALSE);
+			return true;
+		}
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .assign: %s.", getClass () -> name, error .what ());
 	}
 }
 
