@@ -176,7 +176,6 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">Name:</property>
-                                        <property name="xalign">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -353,7 +352,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Sky Angle:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -379,7 +377,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Sky Color:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -630,7 +627,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Ground Angle:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -656,7 +652,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Ground Color:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -894,8 +889,8 @@
                                                   <object class="GtkLabel" id="FrontTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -940,7 +935,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -988,7 +982,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1192,8 +1185,8 @@
                                                   <object class="GtkLabel" id="BackTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1238,7 +1231,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1286,7 +1278,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1494,8 +1485,8 @@
                                                   <object class="GtkLabel" id="LeftTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1540,7 +1531,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1588,7 +1578,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1796,8 +1785,8 @@
                                                   <object class="GtkLabel" id="RightTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1842,7 +1831,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1890,7 +1878,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2098,8 +2085,8 @@
                                                   <object class="GtkLabel" id="TopTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2144,7 +2131,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2192,7 +2178,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2400,8 +2385,8 @@
                                                   <object class="GtkLabel" id="BottomTextureFormatLabel">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
                                                     <property name="label" translatable="yes">64 × 32 (RGB)</property>
-                                                    <property name="xalign">0</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2446,7 +2431,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Format:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2494,7 +2478,6 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">URL:</property>
-                                                <property name="xalign">0</property>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
