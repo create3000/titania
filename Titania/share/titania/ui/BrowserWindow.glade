@@ -7,9 +7,6 @@
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_browser_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="CobwebCompatibilityAction">
-    <signal name="toggled" handler="on_cobweb_compatibility_toggled" swapped="no"/>
-  </object>
   <object class="GtkToggleAction" id="EditorAction">
     <property name="label" translatable="yes">_Editor</property>
     <property name="draw_as_radio">True</property>
@@ -158,6 +155,9 @@
     <property name="can_focus">False</property>
     <property name="stock">Environment</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkToggleAction" id="X_ITECompatibilityAction">
+    <signal name="toggled" handler="on_cobweb_compatibility_toggled" swapped="no"/>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -1668,12 +1668,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserCobwebCompatibilityMenuItem">
-                <property name="related_action">CobwebCompatibilityAction</property>
+              <object class="GtkCheckMenuItem" id="BrowserX_ITECompatibilityMenuItem">
+                <property name="related_action">X_ITECompatibilityAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Cobweb Compatibility Mode</property>
-                <property name="use_underline">True</property>
+                <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
               </object>
             </child>
             <child>
@@ -3084,12 +3083,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCheckMenuItem" id="CobwebCompatibilityMenuItem">
-                                <property name="related_action">CobwebCompatibilityAction</property>
+                              <object class="GtkCheckMenuItem" id="X_ITECompatibilityMenuItem">
+                                <property name="related_action">X_ITECompatibilityAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Cobweb Compatibility Mode</property>
-                                <property name="use_underline">True</property>
+                                <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
                               </object>
                             </child>
                             <child>

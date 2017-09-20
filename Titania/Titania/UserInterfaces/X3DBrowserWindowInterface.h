@@ -93,10 +93,6 @@ public:
 	{ return m_BrowserAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getCobwebCompatibilityAction () const
-	{ return m_CobwebCompatibilityAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getEditorAction () const
 	{ return m_EditorAction; }
 
@@ -183,6 +179,10 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getWireframeAction () const
 	{ return m_WireframeAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getX_ITECompatibilityAction () const
+	{ return m_X_ITECompatibilityAction; }
 
 	Gtk::Image &
 	getFileImportImage () const
@@ -649,8 +649,8 @@ public:
 	{ return *m_BrowserHelpMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getBrowserCobwebCompatibilityMenuItem () const
-	{ return *m_BrowserCobwebCompatibilityMenuItem; }
+	getBrowserX_ITECompatibilityMenuItem () const
+	{ return *m_BrowserX_ITECompatibilityMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
@@ -1113,8 +1113,8 @@ public:
 	{ return *m_HelpMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getCobwebCompatibilityMenuItem () const
-	{ return *m_CobwebCompatibilityMenuItem; }
+	getX_ITECompatibilityMenuItem () const
+	{ return *m_X_ITECompatibilityMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
@@ -1408,10 +1408,6 @@ public:
 
 	virtual
 	void
-	on_cobweb_compatibility_toggled () = 0;
-
-	virtual
-	void
 	on_editor_toggled () = 0;
 
 	virtual
@@ -1497,6 +1493,10 @@ public:
 	virtual
 	void
 	on_wireframe_toggled () = 0;
+
+	virtual
+	void
+	on_cobweb_compatibility_toggled () = 0;
 
 	virtual
 	void
@@ -2003,7 +2003,6 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_CobwebCompatibilityAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
@@ -2026,6 +2025,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformToolModeAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_X_ITECompatibilityAction;
 	Gtk::Image* m_FileImportImage;
 	Gtk::Image* m_FileImportImage1;
 	Gtk::Menu* m_HistoryMenu;
@@ -2142,7 +2142,7 @@ private:
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
-	Gtk::CheckMenuItem* m_BrowserCobwebCompatibilityMenuItem;
+	Gtk::CheckMenuItem* m_BrowserX_ITECompatibilityMenuItem;
 	Gtk::ImageMenuItem* m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow* m_Window;
 	Gtk::Box* m_Widget;
@@ -2258,7 +2258,7 @@ private:
 	Gtk::MenuItem* m_ScenesMenuItem;
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;
-	Gtk::CheckMenuItem* m_CobwebCompatibilityMenuItem;
+	Gtk::CheckMenuItem* m_X_ITECompatibilityMenuItem;
 	Gtk::ImageMenuItem* m_InfoMenuItem;
 	Gtk::Box* m_Toolbar;
 	Gtk::Box* m_LocationBar;

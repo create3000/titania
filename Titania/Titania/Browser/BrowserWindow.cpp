@@ -144,7 +144,7 @@ void
 BrowserWindow::store ()
 {
 	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
-	getConfig () -> setItem ("cobwebCompatibility", getCobwebCompatibilityAction () -> get_active ());
+	getConfig () -> setItem ("cobwebCompatibility", getX_ITECompatibilityAction () -> get_active ());
 
 	X3DBrowserWindow::store ();
 }
@@ -204,9 +204,9 @@ BrowserWindow::configure ()
 	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
 
 	if (getConfig () -> hasKey ("cobwebCompatibility"))
-		getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
+		getX_ITECompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
 	else
-		getCobwebCompatibilityAction () -> set_active (true);
+		getX_ITECompatibilityAction () -> set_active (true);
 }
 
 void
@@ -265,7 +265,7 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 	
-		getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
+		getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
 	
 		on_transform_tool_mode_toggled ();
 	}
@@ -1948,7 +1948,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 void
 BrowserWindow::on_cobweb_compatibility_toggled ()
 {
-	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
+	getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
 }
 
 void
