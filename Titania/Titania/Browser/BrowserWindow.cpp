@@ -137,6 +137,9 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	//if (not getConfig () -> hasKey ("maximized"))
 	//	getWindow () .maximize ();
 
+	getX_ITECompatibilityMenuItem () .set_use_underline (false);
+	getBrowserX_ITECompatibilityMenuItem () .set_use_underline (false);
+
 	setup ();
 }
 
@@ -188,7 +191,7 @@ BrowserWindow::initialize ()
 	// Layout Menu
 
 	getGridTool ()            -> getVisible () .addInterest (&BrowserWindow::set_grid_visible,             this);
-	getAngleGridTool ()           -> getVisible () .addInterest (&BrowserWindow::set_angle_grid_visible,       this);
+	getAngleGridTool ()       -> getVisible () .addInterest (&BrowserWindow::set_angle_grid_visible,       this);
 	getAxonometricGridTool () -> getVisible () .addInterest (&BrowserWindow::set_axonometric_grid_visible, this);
 
 	// Window
