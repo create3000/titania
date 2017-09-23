@@ -2494,6 +2494,9 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
 
 	for (const auto & layer : layers)
 	{
+		if (layer -> getExecutionContext () not_eq executionContext)
+		   continue;
+
 		if (layer -> isLayer0 ())
 		   continue;
 
