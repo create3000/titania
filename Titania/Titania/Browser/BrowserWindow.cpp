@@ -451,6 +451,8 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
 	getKeys () .press (event);
 
+	getSelection () -> setSelectMultiple (getKeys () .shift () and not getKeys () .control ());
+
 	if (getCurrentBrowser () -> on_external_key_press_event (event))
 		return false;
 
@@ -459,8 +461,6 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 
 	if (not setAccelerators ())
 		return false;
-
-	getSelection () -> setSelectMultiple (getKeys () .shift () and not getKeys () .control ());
 
 	// Nudge selection.
 

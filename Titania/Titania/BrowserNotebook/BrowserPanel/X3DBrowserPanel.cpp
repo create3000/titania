@@ -173,17 +173,19 @@ X3DBrowserPanel::initialize ()
 X3D::BrowserPtr
 X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 {
+	const auto & mainBrowser = getPage () -> getMainBrowser ();
+
 	if (type == BrowserPanelType::MAIN_VIEW)
-		return getPage () -> getMainBrowser ();
+		return mainBrowser;
 
 	const auto browser = X3D::createBrowser (getMasterBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
 
 	// Setup dependent browser.
 
-	getPage () -> getMainBrowser () -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
-	getPage () -> getMainBrowser () -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
+	mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+	mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
 
-	browser -> setDependentContext (getPage () -> getMainBrowser ());
+	browser -> setDependentContext (mainBrowser);
 	browser -> setFrameRate (30);
 
 	set_fixed_pipeline ();
