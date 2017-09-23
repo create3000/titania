@@ -423,7 +423,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		const auto nearValue = renderObject -> getNavigationInfo () -> getNearValue ();
 		const auto farValue  = renderObject -> getNavigationInfo () -> getFarValue (renderObject -> getViewpoint ());
 
-		projectionMatrix = renderObject -> getViewpoint () -> getProjectionMatrix (nearValue, farValue * 1.2, viewport, true);
+		projectionMatrix = renderObject -> getViewpoint () -> getProjectionMatrix (nearValue, farValue * 1.3, viewport, true);
 
 		// Rotate and scale background.
 

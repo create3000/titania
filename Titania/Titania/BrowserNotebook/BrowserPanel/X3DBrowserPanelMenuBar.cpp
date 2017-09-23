@@ -78,8 +78,7 @@ X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 void
 X3DBrowserPanelMenuBar::initialize ()
 {
-	getPage () -> getMainBrowser () -> signal_map ()   .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
-	getPage () -> getMainBrowser () -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_mapped));
+	getPage () -> getMainBrowser () -> signal_hierarchy_changed () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_hierarchy_changed));
 
 	getPage () -> getMainBrowser () -> getExecutionContext () .addInterest (&X3DBrowserPanelMenuBar::set_scene, this);
 
@@ -90,7 +89,7 @@ X3DBrowserPanelMenuBar::initialize ()
 	getPage () -> getMainBrowser () -> getVisibilitySensorTools () .addInterest (&X3DBrowserPanelMenuBar::set_visibilitySensorTools, this);
 	getPage () -> getMainBrowser () -> getViewpointTools ()        .addInterest (&X3DBrowserPanelMenuBar::set_viewpointTools,        this);
 
-	on_main_browser_mapped ();
+	on_main_browser_hierarchy_changed (nullptr);
 
 	getStraightenHorizonMenuItem () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
 
@@ -168,10 +167,12 @@ X3DBrowserPanelMenuBar::set_scene ()
 }
 
 void
-X3DBrowserPanelMenuBar::on_main_browser_mapped ()
+X3DBrowserPanelMenuBar::on_main_browser_hierarchy_changed (Gtk::Widget* previous_toplevel)
 {
-	getMainViewMenuItem ()          .set_sensitive (not getPage () -> getMainBrowser () -> get_mapped ());
-	getMainViewSeparatorMenuItem () .set_sensitive (not getPage () -> getMainBrowser () -> get_mapped ());
+	const bool visible = getPage () -> getMainBrowser () -> get_parent ();
+
+	getMainViewMenuItem ()          .set_sensitive (not visible);
+	getMainViewSeparatorMenuItem () .set_sensitive (not visible);
 }
 
 void

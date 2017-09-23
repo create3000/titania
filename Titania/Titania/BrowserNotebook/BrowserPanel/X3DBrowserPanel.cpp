@@ -148,7 +148,17 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                 gridTransform,
 	                 gridSwitch,
 	                 grid);
+}
 
+void
+X3DBrowserPanel::setup ()
+{
+	X3DBrowserPanelInterface::setup ();
+
+	type = getBrowserPanelType (getId ());
+
+	if (type == BrowserPanelType::MAIN_VIEW)
+		set_type ();
 }
 
 void
@@ -156,9 +166,8 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	type = getBrowserPanelType (getId ());
-
-	set_type ();
+	if (type not_eq BrowserPanelType::MAIN_VIEW)
+		set_type ();
 }
 
 X3D::BrowserPtr

@@ -109,7 +109,7 @@ private:
 	set_scene ();
 
 	void
-	on_main_browser_mapped ();
+	on_main_browser_hierarchy_changed (Gtk::Widget* previous_toplevel);
 
 	void
 	set_undoHistory ();
