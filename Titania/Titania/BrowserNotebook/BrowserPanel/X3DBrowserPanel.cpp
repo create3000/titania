@@ -424,6 +424,9 @@ X3DBrowserPanel::set_fixed_pipeline ()
 void
 X3DBrowserPanel::set_viewer ()
 {
+	if (type == BrowserPanelType::MAIN_VIEW)
+		return;
+
 	const auto & mainViewer = getPage () -> getMainBrowser () -> getViewer ();
 
 	if (mainViewer -> isType ({ X3D::X3DConstants::X3DSelector, X3D::X3DConstants::LightSaber }))
