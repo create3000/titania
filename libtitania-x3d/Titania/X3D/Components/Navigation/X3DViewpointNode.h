@@ -207,7 +207,7 @@ public:
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const = 0;
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const = 0;
 
 	const Matrix4d &
 	getCameraSpaceMatrix () const

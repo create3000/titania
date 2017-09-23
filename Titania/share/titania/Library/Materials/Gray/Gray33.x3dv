@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V3.0.4
 
 META "comment" "World of Titania"
-META "created" "Thu, 30 Mar 2017 08:01:37 GMT"
+META "created" "Fri, 22 Sep 2017 01:02:06 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
-META "identifier" "file:///home/holger/.config/Titania/Materials/Gray/Gray33.x3dv"
-META "modified" "Thu, 30 Mar 2017 08:01:37 GMT"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Materials/Gray/Gray33.x3dv"
+META "modified" "Fri, 22 Sep 2017 01:02:06 GMT"
 META "titania magic" "Material"
 
 Transform {
@@ -14,7 +14,7 @@ Transform {
       material DEF Gray33 Material {
         ambientIntensity 0.267606
         diffuseColor 0.05 0.05 0.05
-        specularColor 0.247 0.0410355 0.116556
+        specularColor 0.0410355 0.101564 0.247
         shininess 0.370892
       }
     }

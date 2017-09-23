@@ -184,7 +184,7 @@ OrthoViewpoint::getLookAtDistance (const Box3d & bbox) const
 }
 
 Matrix4d
-OrthoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const
+OrthoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool) const
 {
 	const double width  = viewport [2];
 	const double height = viewport [3];

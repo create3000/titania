@@ -265,6 +265,7 @@ private:
 	X3DPtrArray <X3DTextureNode> textures;
 	bool                         hidden;
 	ClipPlaneContainerArray      clipPlanes;
+	Matrix4d                     projectionMatrix;
 	Matrix4d                     transformationMatrix;
 	std::vector <Color4f>        sphereColors;
 	std::vector <Vector3d>       sphereVertices;

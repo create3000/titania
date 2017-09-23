@@ -3013,7 +3013,6 @@
     <None Include="Titania\UserInterfaces\X3DRenderPanelInterface.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderPanel.h" />
     <None Include="Titania\BrowserNotebook\RenderPanel\RenderThread.h" />
-    <None Include="Titania" />
     <None Include="Titania\BrowserNotebook\RenderPanel\VideoEncoder.h" />
     <None Include="Titania\Bits\Cairo.h" />
     <None Include="Titania\Bits\String.h" />
@@ -3069,6 +3068,7 @@
     <None Include="share\titania\Library\Components\VolumeRendering\SilhouetteEnhancementVolumeStyle.x3dv" />
     <None Include="share\titania\Library\Components\VolumeRendering\ToneMappedVolumeStyle.x3dv" />
     <None Include="share\titania\Library\Components\VolumeRendering\VolumeData.x3dv" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -149,7 +149,7 @@ public:
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double, const double, const Vector4i &) const final override;
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const final override;
 
 
 private:
