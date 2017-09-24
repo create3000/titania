@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/titania">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h" Line="283" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="426" Column="119" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="135" Column="117" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="301" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="2487" Column="2" />
+      <File FileName="Titania/Titania/Revealer/GeometryEditor/GeometryEditor.cpp" Line="893" Column="44" />
+      <File FileName="Titania/titania" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="455" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="187" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

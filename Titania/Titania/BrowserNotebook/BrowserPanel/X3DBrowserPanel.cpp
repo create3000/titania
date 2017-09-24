@@ -420,6 +420,9 @@ X3DBrowserPanel::set_dependent_browser ()
 void
 X3DBrowserPanel::set_fixed_pipeline ()
 {
+	if (type == BrowserPanelType::MAIN_VIEW)
+		return;
+
 	browser -> setFixedPipeline (getPage () -> getMainBrowser () -> getFixedPipeline ());
 }
 
