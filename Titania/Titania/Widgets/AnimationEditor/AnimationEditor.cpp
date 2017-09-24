@@ -301,7 +301,10 @@ AnimationEditor::getFrameRate () const
 bool
 AnimationEditor::isActive () const
 {
-	return timeSensor -> isActive () and not timeSensor -> isPaused ();
+	if (timeSensor)
+		return timeSensor -> isActive () and not timeSensor -> isPaused ();
+	
+	return false;
 }
 
 void
@@ -1108,9 +1111,20 @@ AnimationEditor::on_clear_clipboard ()
 void
 AnimationEditor::on_first_frame ()
 {
-	timeSensor -> stopTime () = X3D::SFTime::now ();
+	if (selectedRange .first == selectedRange .second)
+	{
+		if (timeSensor)
+			timeSensor -> range () [0] = 0;
 
-	getFrameAdjustment () -> set_value (0);
+		getFrameAdjustment () -> set_value (0);
+	}
+	else
+	{
+		if (timeSensor)
+			timeSensor -> range () [0] = double (selectedRange .first) / double (getDuration ());
+
+		getFrameAdjustment () -> set_value (selectedRange .first);
+	}
 }
 
 void
@@ -1139,7 +1153,7 @@ AnimationEditor::on_play_pause ()
 		if (currentFrame >= lastFrame)
 			currentFrame = firstFrame;
 
-		timeSensor -> range () = { firstFrame / duration, currentFrame / duration, lastFrame / duration };
+		timeSensor -> range () = { currentFrame / duration, firstFrame / duration, lastFrame / duration };
 	}
 
 	// Start TimeSensor.
@@ -1157,9 +1171,20 @@ AnimationEditor::on_play_pause ()
 void
 AnimationEditor::on_last_frame ()
 {
-	timeSensor -> stopTime () = X3D::SFTime::now ();
+	if (selectedRange .first == selectedRange .second)
+	{
+		if (timeSensor)
+			timeSensor -> range () [0] = 1;
 
-	getFrameAdjustment () -> set_value (getDuration ());
+		getFrameAdjustment () -> set_value (getDuration ());
+	}
+	else
+	{
+		if (timeSensor)
+			timeSensor -> range () [0] =  double (selectedRange .second) /  double (getDuration ());
+
+		getFrameAdjustment () -> set_value (selectedRange .second);
+	}
 }
 
 void
@@ -1286,11 +1311,9 @@ AnimationEditor::set_active ()
 {
 	const bool active = isActive ();
 
-	getCutButton ()        .set_sensitive (not active);
-	getCopyButton ()       .set_sensitive (not active);
-	getPasteButton ()      .set_sensitive (not active);
-	getFirstFrameButton () .set_sensitive (not active);
-	getLastFrameButton ()  .set_sensitive (not active);
+	getCutButton ()   .set_sensitive (not active);
+	getCopyButton ()  .set_sensitive (not active);
+	getPasteButton () .set_sensitive (not active);
 
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (active ? "gtk-media-pause" : "gtk-media-play"));
 }
@@ -2588,6 +2611,8 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
 			
 			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
+
+			getFrameAdjustment () -> set_value (frame);
 		
 			if (keys .shift ())
 			{
@@ -2604,9 +2629,6 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			}
 
 			activeSelection = false;
-
-			if (not isActive ())	
-				getFrameAdjustment () -> set_value (frame);
 		}
 	}
 	else if (button == 2)
@@ -2750,12 +2772,25 @@ AnimationEditor::on_selection_changed ()
 {
 	set_key_type ();
 	getDrawingArea () .queue_draw ();
+
+	if (timeSensor)
+	{
+		if (selectedRange .first == selectedRange .second)
+		{
+			timeSensor -> range () = { double (getFrameAdjustment () -> get_value ()) / double (getDuration ()), 0, 1 };
+		}
+		else
+		{
+			timeSensor -> range () = { double (getFrameAdjustment () -> get_value ()) / double (getDuration ()),
+			                           double (selectedRange .first)  / double (getDuration ()),
+			                           double (selectedRange .second) / double (getDuration ()) };
+		}
+	}
 }
 
 void
 AnimationEditor::on_clear_selection ()
 {
-__LOG__ << std::endl;
 	activeSelection = false;
 	activeFrames   .clear ();
 	selectedFrames .clear ();

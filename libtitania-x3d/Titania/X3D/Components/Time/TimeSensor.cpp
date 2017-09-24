@@ -68,7 +68,7 @@ const std::string   TimeSensor::containerField = "children";
 
 TimeSensor::Fields::Fields () :
 	   cycleInterval (new SFTime (1)),
-	           range ({ 0, 0, 1 }),     // first, current, last
+	           range ({ 0, 0, 1 }),     // current, first, last (in fractions)
 	fraction_changed (new SFFloat ()),
 	            time (new SFTime ())
 { }
@@ -100,6 +100,8 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "elapsedTime",      elapsedTime ());
 	addField (outputOnly,  "fraction_changed", fraction_changed ());
 	addField (outputOnly,  "time",             time ());
+
+	addChildObjects (range ());
 }
 
 X3DBaseNode*
@@ -114,6 +116,20 @@ TimeSensor::initialize  ()
 	X3DTimeDependentNode::initialize  ();
 
 	cycleInterval () .addInterest (&TimeSensor::set_cycleInterval, this);
+	range ()         .addInterest (&TimeSensor::set_range,         this);
+}
+
+void
+TimeSensor::setRange (const float currentFraction, const float firstFraction, const float lastFraction)
+{
+	first  = firstFraction;
+	last   = lastFraction;
+	scale  = last - first;
+
+	const time_type offset = (currentFraction - first) * cycleInterval ();
+
+	interval = cycleInterval () * scale;
+	cycle    = getCurrentTime () - offset;
 }
 
 void
@@ -129,11 +145,10 @@ TimeSensor::prepareEvents ()
 			{
 				cycle += interval * std::floor ((getCurrentTime () - cycle) / interval);
 
-				time_type intpart;
+				set_fraction ();
 
-				fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
-				elapsedTime ()      = getElapsedTime ();
-				cycleTime ()        = getCurrentTime ();
+				elapsedTime () = getElapsedTime ();
+				cycleTime ()   = getCurrentTime ();
 			}
 		}
 		else
@@ -144,10 +159,9 @@ TimeSensor::prepareEvents ()
 	}
 	else
 	{
-		time_type intpart;
+		set_fraction ();
 
-		fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
-		elapsedTime ()      = getElapsedTime ();
+		elapsedTime () = getElapsedTime ();
 	}
 
 	time () = getCurrentTime ();
@@ -156,23 +170,24 @@ TimeSensor::prepareEvents ()
 void
 TimeSensor::set_cycleInterval ()
 {
-	interval = cycleInterval () * scale;
-	cycle    = getCurrentTime () - interval * fraction_changed ();
+	setRange (fraction_changed (), range () [1], range () [2]);
+}
+
+void
+TimeSensor::set_range ()
+{
+	setRange (range () [0], range () [1], range () [2]);
+
+	if (isActive () and not isPaused ())
+	 set_fraction ();
 }
 
 void
 TimeSensor::set_start ()
 {
-	first  = range () [0];
-	last   = range () [2];
-	scale  = last - first;
+	setRange (range () [0], range () [1], range () [2]);
 
-	const time_type offset = (range () [1] - first) * cycleInterval ();
-
-	interval = cycleInterval () * scale;
-	cycle    = getCurrentTime () - offset;
-
-	fraction_changed () = range () [1];
+	fraction_changed () = range () [0];
 	time ()             = getCurrentTime ();
 }
 
@@ -189,6 +204,14 @@ TimeSensor::set_resume (const time_type pauseInterval)
 void
 TimeSensor::set_stop ()
 { }
+
+void
+TimeSensor::set_fraction ()
+{
+	time_type intpart;
+
+	fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
+}
 
 TimeSensor::~TimeSensor ()
 { }

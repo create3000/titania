@@ -158,6 +158,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member access;
+
+	void
+	setRange (const float currentFraction, const float firstFraction, const float lastFraction);
+
 	///  @name Event handlers
 
 	virtual
@@ -166,6 +171,9 @@ private:
 
 	void
 	set_cycleInterval ();
+
+	void
+	set_range ();
 
 	virtual
 	void
@@ -182,6 +190,9 @@ private:
 	virtual
 	void
 	set_resume (const time_type) final override;
+
+	void
+	set_fraction ();
 
 	///  @name Static members
 
