@@ -318,6 +318,31 @@
                               </packing>
                             </child>
                             <child>
+                              <object class="GtkToggleToolButton" id="StraightenHorizonButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="tooltip_text" translatable="yes">Straighens the horizon of the currently bound viewpoint.</property>
+                                <property name="label" translatable="yes">Straighten Camera</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">Straighten</property>
+                                <signal name="toggled" handler="on_straighten_horizon_toggled" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorToolItem" id="separatortoolitem3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">False</property>
+                              </packing>
+                            </child>
+                            <child>
                               <object class="GtkToolButton" id="LookAtAllButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>

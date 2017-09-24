@@ -152,6 +152,10 @@ public:
 	getCheckerBoardButton () const
 	{ return *m_CheckerBoardButton; }
 
+	Gtk::ToggleToolButton &
+	getStraightenHorizonButton () const
+	{ return *m_StraightenHorizonButton; }
+
 	Gtk::ToolButton &
 	getLookAtAllButton () const
 	{ return *m_LookAtAllButton; }
@@ -272,6 +276,10 @@ public:
 
 	virtual
 	void
+	on_straighten_horizon_toggled () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual
@@ -362,6 +370,7 @@ private:
 	Gtk::ToolButton* m_ShadingButton;
 	Gtk::ToggleToolButton* m_TextureButton;
 	Gtk::ToggleToolButton* m_CheckerBoardButton;
+	Gtk::ToggleToolButton* m_StraightenHorizonButton;
 	Gtk::ToolButton* m_LookAtAllButton;
 	Gtk::ToggleToolButton* m_LookAtButton;
 	Gtk::ToggleButton* m_SelectColorButton;

@@ -144,14 +144,28 @@ public:
 	time () const
 	{ return *fields .time; }
 
+	///  @name Destruction
+
+	virtual
+	~TimeSensor () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Event handlers
 
 	virtual
 	void
 	prepareEvents () final override;
+
+	void
+	set_cycleInterval ();
 
 	virtual
 	void
@@ -175,7 +189,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -188,6 +202,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	time_type cycle;
 	time_type interval;

@@ -58,6 +58,7 @@
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Rendering/Color.h>
 #include <Titania/X3D/Components/Rendering/Coordinate.h>
@@ -137,6 +138,7 @@ ColorEditor::configure ()
 	getVisualizeGeometryButton () .set_active (getConfig () -> get <bool> ("visualizeGeometry", true));
 	getCheckerBoardButton ()      .set_active (getConfig () -> get <bool> ("checkerBoard"));
 	getTextureButton ()           .set_active (getConfig () -> get <bool> ("texture"));
+	getStraightenHorizonButton () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
 
 	switch (getConfig () -> get <int32_t> ("mode"))
 	{
@@ -187,6 +189,8 @@ ColorEditor::set_initialized ()
 		on_checkerboard_toggled ();
 
 		set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
+
+		configure ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -489,6 +493,22 @@ ColorEditor::on_checkerboard_toggled ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+ColorEditor::on_straighten_horizon_toggled ()
+{
+	preview -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
+
+	if (getStraightenHorizonButton () .get_active ())
+	{
+		const auto & activeLayer = preview -> getActiveLayer ();
+	
+		if (activeLayer)
+			activeLayer -> getViewpoint () -> straighten (preview -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+	}
+
+	getConfig () -> set <bool> ("straightenHorizon", getStraightenHorizonButton () .get_active ());
 }
 
 void

@@ -96,6 +96,7 @@ X3DColorEditorInterface::create ()
 	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 	m_builder -> get_widget ("TextureButton", m_TextureButton);
 	m_builder -> get_widget ("CheckerBoardButton", m_CheckerBoardButton);
+	m_builder -> get_widget ("StraightenHorizonButton", m_StraightenHorizonButton);
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("SelectColorButton", m_SelectColorButton);
@@ -141,6 +142,7 @@ X3DColorEditorInterface::create ()
 	// Connect object Gtk::ToggleToolButton with id 'TextureButton'.
 	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_texture_toggled));
 	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_checkerboard_toggled));
+	m_StraightenHorizonButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_straighten_horizon_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
 	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_look_at_all_clicked));

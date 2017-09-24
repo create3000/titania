@@ -109,6 +109,14 @@ TimeSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+TimeSensor::initialize  ()
+{
+	X3DTimeDependentNode::initialize  ();
+
+	cycleInterval () .addInterest (&TimeSensor::set_cycleInterval, this);
+}
+
+void
 TimeSensor::prepareEvents ()
 {
 	// The event order below is very important.
@@ -146,6 +154,13 @@ TimeSensor::prepareEvents ()
 }
 
 void
+TimeSensor::set_cycleInterval ()
+{
+	interval = cycleInterval () * scale;
+	cycle    = getCurrentTime () - interval * fraction_changed ();
+}
+
+void
 TimeSensor::set_start ()
 {
 	first  = range () [0];
@@ -173,6 +188,9 @@ TimeSensor::set_resume (const time_type pauseInterval)
 
 void
 TimeSensor::set_stop ()
+{ }
+
+TimeSensor::~TimeSensor ()
 { }
 
 } // X3D

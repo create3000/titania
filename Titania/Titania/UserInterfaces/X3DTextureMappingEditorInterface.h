@@ -240,6 +240,10 @@ public:
 	getRightArrowButton () const
 	{ return *m_RightArrowButton; }
 
+	Gtk::ToggleToolButton &
+	getRightStraightenHorizonButton () const
+	{ return *m_RightStraightenHorizonButton; }
+
 	Gtk::ToolButton &
 	getRightLookAtAllButton () const
 	{ return *m_RightLookAtAllButton; }
@@ -388,6 +392,10 @@ public:
 
 	virtual
 	void
+	on_right_straighten_horizon_toggled () = 0;
+
+	virtual
+	void
 	on_right_look_at_all_clicked () = 0;
 
 	virtual
@@ -464,6 +472,7 @@ private:
 	Gtk::Box* m_RightBox;
 	Gtk::RadioToolButton* m_RightHandButton;
 	Gtk::RadioToolButton* m_RightArrowButton;
+	Gtk::ToggleToolButton* m_RightStraightenHorizonButton;
 	Gtk::ToolButton* m_RightLookAtAllButton;
 	Gtk::ToggleToolButton* m_RightLookAtButton;
 	Gtk::Button* m_RemoveButton;

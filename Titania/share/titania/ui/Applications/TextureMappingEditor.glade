@@ -661,6 +661,31 @@
                                       </packing>
                                     </child>
                                     <child>
+                                      <object class="GtkToggleToolButton" id="RightStraightenHorizonButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="tooltip_text" translatable="yes">Straighens the horizon of the currently bound viewpoint.</property>
+                                        <property name="label" translatable="yes">Straighten Camera</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="stock_id">Straighten</property>
+                                        <signal name="toggled" handler="on_right_straighten_horizon_toggled" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorToolItem" id="separatortoolitem6">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="homogeneous">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
                                       <object class="GtkToolButton" id="RightLookAtAllButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -721,13 +746,13 @@
                       <object class="GtkBox" id="box7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <property name="spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Texture Stage:</property>
-                            <property name="xalign">1</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

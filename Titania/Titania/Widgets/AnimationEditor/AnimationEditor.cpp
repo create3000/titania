@@ -1233,10 +1233,6 @@ AnimationEditor::on_time ()
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (timeSensor -> loop ()), getLoopSwitch () .get_active ());
 	timeSensor -> loop () = getLoopSwitch () .get_active ();
 
-	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
-	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
-	timeSensor -> stopTime () = X3D::SFTime::now ();
-
 	// Build interpolators.
 	setInterpolators (undoStep);
 
@@ -1262,7 +1258,6 @@ AnimationEditor::set_active ()
 	getPasteButton ()      .set_sensitive (not active);
 	getFirstFrameButton () .set_sensitive (not active);
 	getLastFrameButton ()  .set_sensitive (not active);
-	getTimeButton ()       .set_sensitive (not active);
 
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (active ? "gtk-media-pause" : "gtk-media-play"));
 }

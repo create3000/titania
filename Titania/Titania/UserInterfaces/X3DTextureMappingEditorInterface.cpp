@@ -118,6 +118,7 @@ X3DTextureMappingEditorInterface::create ()
 	m_builder -> get_widget ("RightBox", m_RightBox);
 	m_builder -> get_widget ("RightHandButton", m_RightHandButton);
 	m_builder -> get_widget ("RightArrowButton", m_RightArrowButton);
+	m_builder -> get_widget ("RightStraightenHorizonButton", m_RightStraightenHorizonButton);
 	m_builder -> get_widget ("RightLookAtAllButton", m_RightLookAtAllButton);
 	m_builder -> get_widget ("RightLookAtButton", m_RightLookAtButton);
 	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
@@ -174,6 +175,9 @@ X3DTextureMappingEditorInterface::create ()
 	// Connect object Gtk::RadioToolButton with id 'RightHandButton'.
 	m_RightHandButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_right_hand_toggled));
 	m_RightArrowButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_right_arrow_toggled));
+
+	// Connect object Gtk::ToggleToolButton with id 'RightStraightenHorizonButton'.
+	m_RightStraightenHorizonButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_right_straighten_horizon_toggled));
 
 	// Connect object Gtk::ToolButton with id 'RightLookAtAllButton'.
 	m_RightLookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_right_look_at_all_clicked));

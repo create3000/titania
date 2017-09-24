@@ -206,6 +206,12 @@ private:
 	void
 	on_whole_object_clicked () final override;
 
+	///  @name Navigation
+
+	virtual
+	void
+	on_straighten_horizon_toggled () final override;
+
 	///  @name Look At
 
 	virtual

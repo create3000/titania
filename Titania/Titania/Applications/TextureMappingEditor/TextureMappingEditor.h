@@ -284,6 +284,14 @@ private:
 	void
 	on_right_arrow_toggled () final override;
 
+	///  @name Navigation
+
+	virtual
+	void
+	on_right_straighten_horizon_toggled () final override;
+
+	///  @name Look At
+
 	virtual
 	void
 	on_right_look_at_all_clicked () final override;

@@ -168,7 +168,10 @@ TextureMappingEditor::initialize ()
 void
 TextureMappingEditor::configure ()
 {
-	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
+	X3DTextureMappingEditorInterface::configure ();
+
+	getSnapCenterButton ()             .set_active (getConfig () -> getBoolean ("snapCenter"));
+	getRightStraightenHorizonButton () .set_active (getConfig () -> get <bool> ("rightStraightenHorizon"));
 }
 
 void
@@ -1132,6 +1135,22 @@ TextureMappingEditor::on_right_arrow_toggled ()
 {
 	right -> setPickable (true);
 	right -> grab_focus ();
+}
+
+void
+TextureMappingEditor::on_right_straighten_horizon_toggled ()
+{
+	right -> setStraightenHorizon (getRightStraightenHorizonButton () .get_active ());
+
+	if (getRightStraightenHorizonButton () .get_active ())
+	{
+		const auto & activeLayer = right -> getActiveLayer ();
+	
+		if (activeLayer)
+			activeLayer -> getViewpoint () -> straighten (right -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+	}
+
+	getConfig () -> set <bool> ("rightStraightenHorizon", getRightStraightenHorizonButton () .get_active ());
 }
 
 void
