@@ -86,6 +86,7 @@ X3DColorEditorInterface::create ()
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
 	m_builder -> get_widget ("RemoveUnusedColorsMenuItem", m_RemoveUnusedColorsMenuItem);
+	m_builder -> get_widget ("RemoveDublicateColorsMenuItem", m_RemoveDublicateColorsMenuItem);
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
@@ -119,6 +120,9 @@ X3DColorEditorInterface::create ()
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_undo));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_redo));
 	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_unused_colors_activate));
+
+	// Connect object Gtk::MenuItem with id 'RemoveDublicateColorsMenuItem'.
+	m_RemoveDublicateColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_dublicate_colors_activate));
 
 	// Connect object Gtk::ToolButton with id 'UndoButton'.
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_undo));

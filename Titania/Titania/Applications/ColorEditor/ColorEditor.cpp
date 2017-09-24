@@ -266,10 +266,14 @@ ColorEditor::set_undoHistory ()
 void
 ColorEditor::on_remove_unused_colors_activate ()
 {
+	// Find all used indices.
+
 	std::set <int32_t> indexIndex;
 
 	for (const auto & index : previewGeometry -> colorIndex ())
 		indexIndex .emplace (index);
+
+	// Create remop index with new indices and new colors array.
 
 	std::vector <int32_t> remap (previewColor -> color () .size ());
 	X3D::MFColorRGBA      colors;
@@ -284,6 +288,8 @@ ColorEditor::on_remove_unused_colors_activate ()
 			colors .emplace_back (previewColor -> color () [index]);
 		}
 	}
+
+	// Rewrite color indices.
 
 	X3D::MFInt32 colorIndex;
 
@@ -307,6 +313,61 @@ ColorEditor::on_remove_unused_colors_activate ()
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Colors"));
+
+	undoStep -> addObjects (previewGeometry);
+
+	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), previewGeometry -> colorIndex ());
+	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (previewGeometry -> colorIndex ()), colorIndex);
+	previewGeometry -> colorIndex () = std::move (colorIndex);
+
+	undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (previewColor -> color ()), previewColor -> color ());
+	undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (previewColor -> color ()), colors);
+	previewColor -> color () = std::move (colors);
+
+	addUndoStep (undoStep);
+}
+
+void
+ColorEditor::on_remove_dublicate_colors_activate ()
+{
+	// Find all unique colors.
+
+	std::map <X3D::Color4f, size_t> remap;
+	X3D::MFColorRGBA                colors;
+
+	for (int32_t index = 0, size = previewColor -> color () .size (); index < size; ++ index)
+	{
+		if (remap .emplace (previewColor -> color () [index], remap .size ()) .second)
+		{
+			colors .emplace_back (previewColor -> color () [index]);		
+		}
+	}	
+
+
+	// Rewrite color indices.
+
+	X3D::MFInt32 colorIndex;
+
+	colorIndex .reserve (previewGeometry -> colorIndex () .size ());
+
+	for (const auto & index : previewGeometry -> colorIndex ())
+	{
+		try
+		{
+			colorIndex .emplace_back (index < 0 ? -1 : remap .at (previewColor -> color () .at (index)));
+		}
+		catch (const std::out_of_range &)
+		{
+			colorIndex .emplace_back (0);
+		}
+	}
+
+	// Assign colorIndex and color.
+
+	if (colors .size () == previewColor -> color () .size ())
+		return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Dublicate Colors"));
 
 	undoStep -> addObjects (previewGeometry);
 

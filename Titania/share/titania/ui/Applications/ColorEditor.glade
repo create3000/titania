@@ -84,6 +84,15 @@
                         <signal name="activate" handler="on_remove_unused_colors_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="RemoveDublicateColorsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Remove _Dublicate Colors</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_remove_dublicate_colors_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

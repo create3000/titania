@@ -135,6 +135,10 @@ private:
 	void
 	on_remove_unused_colors_activate () final override;
 
+	virtual
+	void
+	on_remove_dublicate_colors_activate () final override;
+
 	/// @name Selection
 
 	virtual

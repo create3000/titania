@@ -112,6 +112,10 @@ public:
 	getRemoveUnusedColorsMenuItem () const
 	{ return *m_RemoveUnusedColorsMenuItem; }
 
+	Gtk::MenuItem &
+	getRemoveDublicateColorsMenuItem () const
+	{ return *m_RemoveDublicateColorsMenuItem; }
+
 	Gtk::ToolButton &
 	getUndoButton () const
 	{ return *m_UndoButton; }
@@ -240,6 +244,10 @@ public:
 
 	virtual
 	void
+	on_remove_dublicate_colors_activate () = 0;
+
+	virtual
+	void
 	on_hand_toggled () = 0;
 
 	virtual
@@ -344,6 +352,7 @@ private:
 	Gtk::ImageMenuItem* m_UndoMenuItem;
 	Gtk::ImageMenuItem* m_RedoMenuItem;
 	Gtk::ImageMenuItem* m_RemoveUnusedColorsMenuItem;
+	Gtk::MenuItem* m_RemoveDublicateColorsMenuItem;
 	Gtk::ToolButton* m_UndoButton;
 	Gtk::ToolButton* m_RedoButton;
 	Gtk::Box* m_PreviewBox;
