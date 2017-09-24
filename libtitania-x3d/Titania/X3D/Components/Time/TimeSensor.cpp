@@ -179,7 +179,7 @@ TimeSensor::set_range ()
 	setRange (range () [0], range () [1], range () [2]);
 
 	if (isActive () and not isPaused ())
-	 set_fraction ();
+		set_fraction ();
 }
 
 void

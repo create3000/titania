@@ -2735,6 +2735,8 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
 		
+			getFrameAdjustment () -> set_value (frame);
+
 			if (keys .shift ())
 				on_expand_selected_range (frame);
 
@@ -2742,9 +2744,6 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 				selectedRange .second = frame;
 
 			on_select_range ();
-	
-			if (not isActive ())
-				getFrameAdjustment () -> set_value (frame);
 		}
 	}
 

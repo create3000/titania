@@ -2,10 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="211" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="164" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1144" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="133" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="162" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="154" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
