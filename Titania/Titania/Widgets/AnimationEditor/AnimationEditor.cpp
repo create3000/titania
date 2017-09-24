@@ -217,13 +217,46 @@ AnimationEditor::set_selection (const X3D::MFNode & selection)
 void
 AnimationEditor::setDuration (const int32_t value)
 {
-	if (animation)
-		animation -> setMetaData ("/Animation/duration", value);
+	double scale = 1;
 
-	getFrameAdjustment () -> set_value (std::min <double> (getFrameAdjustment () -> get_value (), getDuration ()));
+	if (animation)
+	{
+		scale = double (value) / double (getDuration ());
+
+		animation -> setMetaData ("/Animation/duration", value);
+	}
+
 	getFrameAdjustment () -> set_upper (getDuration ());
+	getFrameAdjustment () -> set_value (std::min <double> (std::round (getFrameAdjustment () -> get_value () * scale), getDuration ()));
 	setTranslation (getTranslation ());
 	setLowerTranslation ();
+
+	// Scale seclection.
+
+	selectedBounds .first  = std::round (selectedBounds .first  * scale);
+	selectedBounds .second = std::round (selectedBounds .second * scale);
+	selectedRange  .first  = std::round (selectedRange  .first  * scale);
+	selectedRange  .second = std::round (selectedRange  .second * scale);
+
+	std::set <FrameKey> scaledActiveFrames;
+
+	for (const auto & frame : activeFrames)
+		scaledActiveFrames .emplace (std::round (std::get <0> (frame) * scale), std::get <1> (frame), std::get <2> (frame));
+
+	activeFrames = scaledActiveFrames;
+
+	std::set <FrameKey> scaledSelectedFrames;
+
+	for (const auto & frame : selectedFrames)
+		scaledSelectedFrames .emplace (std::round (std::get <0> (frame) * scale), std::get <1> (frame), std::get <2> (frame));
+
+	selectedFrames = scaledSelectedFrames;
+
+	for (auto & frame : movedFrames)
+		std::get <0> (frame) = std::round (std::get <0> (frame) * scale);
+
+	for (auto & frame : copiedFrames)
+		std::get <0> (frame) = std::round (std::get <0> (frame) * scale);
 }
 
 int32_t
@@ -1815,8 +1848,10 @@ AnimationEditor::moveKeyframes ()
 	for (const auto & interpolator : affectedInterpolators)
 		setInterpolator (interpolator, undoStep);
 
-	selectedFrames .clear ();
-	selectedFrames .insert (movedFrames .begin (), movedFrames .end ());
+	undoStep -> addUndoFunction (&AnimationEditor::setSelectedFrames, this, selectedFrames, animation);
+	undoStep -> addRedoFunction (&AnimationEditor::setSelectedFrames, this, std::set <FrameKey> (movedFrames .begin (), movedFrames .end ()), animation);
+	setSelectedFrames (std::set <FrameKey> (movedFrames .begin (), movedFrames .end ()), animation);
+
 	movedFrames .clear ();
 	on_selection_changed ();
 
@@ -2548,7 +2583,6 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 			
 			activeSelection = true;
 		}
-
 		else
 		{
 			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
@@ -2575,7 +2609,6 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 				getFrameAdjustment () -> set_value (frame);
 		}
 	}
-
 	else if (button == 2)
 	{
 		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "move"));
@@ -2722,6 +2755,7 @@ AnimationEditor::on_selection_changed ()
 void
 AnimationEditor::on_clear_selection ()
 {
+__LOG__ << std::endl;
 	activeSelection = false;
 	activeFrames   .clear ();
 	selectedFrames .clear ();
@@ -2793,6 +2827,7 @@ AnimationEditor::isSelected () const
 	return true;
 }
 
+/// Returns the range of the first selected keyframe to last selected keyframe;
 std::pair <int32_t, int32_t>
 AnimationEditor::getSelectedBounds () const
 {
@@ -2809,6 +2844,16 @@ AnimationEditor::getSelectedBounds () const
 		return std::make_pair (0, 0);
 
 	return std::make_pair (min, max);
+}
+
+void
+AnimationEditor::setSelectedFrames (const std::set <FrameKey> & value, const X3D::X3DPtr <X3D::Group> & affectedAnimation)
+{
+	if (animation not_eq affectedAnimation)
+		return;
+
+	selectedFrames .clear ();
+	selectedFrames .insert (value .begin (), value .end ());
 }
 
 bool

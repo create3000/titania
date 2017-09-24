@@ -98,6 +98,40 @@ public:
 private:
 
 	/***
+	 *  @name Member types
+	 **/
+
+	class Columns :
+		public Gtk::TreeModel::ColumnRecord
+	{
+	public:
+
+		Columns ()
+		{
+			add (id);
+			add (type);
+			add (name);
+			add (accessType);
+			add (tainted);
+			add (visible);
+		}
+
+		Gtk::TreeModelColumn <size_t> id;
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
+		Gtk::TreeModelColumn <std::string> name;
+		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
+		Gtk::TreeModelColumn <bool> tainted;
+		Gtk::TreeModelColumn <bool> visible;
+
+	};
+
+	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DNode>>;
+	using Interpolators     = std::set <X3D::X3DPtr <X3D::X3DNode>>;
+	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
+	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
+	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
+
+	/***
 	 *  @name Construction
 	 **/
 
@@ -477,6 +511,9 @@ private:
 	std::pair <int32_t, int32_t>
 	getSelectedBounds () const;
 
+	void
+	setSelectedFrames (const std::set <FrameKey> & value, const X3D::X3DPtr <X3D::Group> & affectedAnimation);
+
 	bool
 	pick (const X3D::Vector2d &);
 
@@ -512,40 +549,6 @@ private:
 
 	std::pair <int32_t, int32_t>
 	getFrameParams () const;
-
-	/***
-	 *  @name Member types
-	 **/
-
-	class Columns :
-		public Gtk::TreeModel::ColumnRecord
-	{
-	public:
-
-		Columns ()
-		{
-			add (id);
-			add (type);
-			add (name);
-			add (accessType);
-			add (tainted);
-			add (visible);
-		}
-
-		Gtk::TreeModelColumn <size_t> id;
-		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
-		Gtk::TreeModelColumn <std::string> name;
-		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
-		Gtk::TreeModelColumn <bool> tainted;
-		Gtk::TreeModelColumn <bool> visible;
-
-	};
-
-	using InterpolatorIndex = std::map <const X3D::X3DFieldDefinition*, X3D::X3DPtr <X3D::X3DNode>>;
-	using Interpolators     = std::set <X3D::X3DPtr <X3D::X3DNode>>;
-	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
-	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
-	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
 	/***
 	 *  @name Static members
