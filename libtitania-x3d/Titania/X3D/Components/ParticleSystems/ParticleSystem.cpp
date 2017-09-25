@@ -461,8 +461,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&ParticleSystem::set_shader, this);
 		getBrowser () -> getFixedPipelineRequired ()        .removeInterest (&ParticleSystem::set_shader, this);
 
-		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::animateParticles, this);
-		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::updateParticles, this);
+		getBrowser () -> sensorEvents ()    .removeInterest (&ParticleSystem::animateParticles, this);
+		getBrowser () -> sensorEvents ()    .removeInterest (&ParticleSystem::updateParticles, this);
 		getExecutionContext () -> isLive () .removeInterest (&ParticleSystem::set_live, this);
 	}
 
@@ -535,8 +535,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .addInterest (&ParticleSystem::animateParticles, this);
-			getBrowser () -> sensors () .addInterest (&ParticleSystem::updateParticles, this);
+			getBrowser () -> sensorEvents () .addInterest (&ParticleSystem::animateParticles, this);
+			getBrowser () -> sensorEvents () .addInterest (&ParticleSystem::updateParticles, this);
 
 			if (pauseTime)
 			{
@@ -549,8 +549,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .removeInterest (&ParticleSystem::animateParticles, this);
-			getBrowser () -> sensors () .removeInterest (&ParticleSystem::updateParticles, this);
+			getBrowser () -> sensorEvents () .removeInterest (&ParticleSystem::animateParticles, this);
+			getBrowser () -> sensorEvents () .removeInterest (&ParticleSystem::updateParticles, this);
 
 			if (pauseTime == 0)
 				pauseTime = SFTime::now ();
@@ -567,8 +567,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .addInterest (&ParticleSystem::animateParticles, this);
-				getBrowser () -> sensors () .addInterest (&ParticleSystem::updateParticles, this);
+				getBrowser () -> sensorEvents () .addInterest (&ParticleSystem::animateParticles, this);
+				getBrowser () -> sensorEvents () .addInterest (&ParticleSystem::updateParticles, this);
 				pauseTime = 0;
 			}
 			else
@@ -583,8 +583,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .removeInterest (&ParticleSystem::animateParticles, this);
-				getBrowser () -> sensors () .removeInterest (&ParticleSystem::updateParticles, this);
+				getBrowser () -> sensorEvents () .removeInterest (&ParticleSystem::animateParticles, this);
+				getBrowser () -> sensorEvents () .removeInterest (&ParticleSystem::updateParticles, this);
 			}
 
 			isActive () = false;

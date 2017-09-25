@@ -73,7 +73,9 @@ public:
 	VideoEncoder (const basic::uri & filename,
 	              const std::string & codec,
 	              const size_t frameRate,
-	              const size_t duration);
+	              const size_t duration,
+	              size_t width,
+	              size_t height);
 
 	///  @name Member access
 

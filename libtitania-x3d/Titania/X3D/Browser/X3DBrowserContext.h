@@ -130,14 +130,19 @@ public:
 	{ return initializedOutput; }
 
 	const Output &
-	sensors () const
-	noexcept (true)
-	{ return sensorsOutput; }
-
-	const Output &
 	prepareEvents () const
 	noexcept (true)
 	{ return prepareEventsOutput; }
+
+	const Output &
+	timeEvents () const
+	noexcept (true)
+	{ return timeEventsOutput; }
+
+	const Output &
+	sensorEvents () const
+	noexcept (true)
+	{ return sensorEventsOutput; }
 
 	const Output &
 	displayed () const
@@ -283,14 +288,15 @@ private:
 	///  @name Event handlers
 
 	void
-	set_sensors ();
+	set_sensorEvents ();
 
 	///  @name Members
 
 	SFBool initializedOutput;
 	Output pickedOutput;
 	Output prepareEventsOutput;
-	Output sensorsOutput;
+	Output timeEventsOutput;
+	Output sensorEventsOutput;
 	Output displayedOutput;
 	Output finishedOutput;
 	Output changedOutput;

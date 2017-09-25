@@ -218,6 +218,7 @@ private:
 
 	time_type cycle;
 	time_type interval;
+	time_type fraction;
 	time_type first;
 	time_type last;
 	time_type scale;

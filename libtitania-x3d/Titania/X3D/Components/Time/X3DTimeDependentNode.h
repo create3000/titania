@@ -299,7 +299,6 @@ private:
 	time_type resumeTimeValue;
 	time_type pauseTimeValue;
 	time_type stopTimeValue;
-	SFTime    time;
 
 	time_type start;
 	time_type pause;

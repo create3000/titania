@@ -99,7 +99,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> sensors ()         .removeInterest (&X3DEnvironmentalSensorNode::update, this);
+		getBrowser () -> sensorEvents ()    .removeInterest (&X3DEnvironmentalSensorNode::update, this);
 		getExecutionContext () -> isLive () .removeInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
 	}
 
@@ -129,11 +129,11 @@ X3DEnvironmentalSensorNode::set_enabled ()
 {
 	if (isCameraObject () and enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
 	{
-		getBrowser () -> sensors () .addInterest (&X3DEnvironmentalSensorNode::update, this);
+		getBrowser () -> sensorEvents () .addInterest (&X3DEnvironmentalSensorNode::update, this);
 	}
 	else
 	{
-		getBrowser () -> sensors () .removeInterest (&X3DEnvironmentalSensorNode::update, this);
+		getBrowser () -> sensorEvents () .removeInterest (&X3DEnvironmentalSensorNode::update, this);
 
 		if (isActive ())
 		{

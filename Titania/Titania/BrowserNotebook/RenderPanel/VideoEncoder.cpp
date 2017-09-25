@@ -64,7 +64,9 @@ using namespace std::placeholders;
 VideoEncoder::VideoEncoder (const basic::uri & filename,
                             const std::string & codec,
                             const size_t frameRate,
-                            const size_t duration) :
+                            const size_t duration,
+                            size_t width,
+                            size_t height) :
 	        filename (filename),
 	         command (),
 	            pipe (std::bind (&VideoEncoder::on_stdout, this, _1), std::bind (&VideoEncoder::on_stderr, this, _1)),
@@ -80,20 +82,51 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 		std::make_pair ("Xvid",  "libxvid"),
 	};
 
-	const auto iter   = codecs .find (codec);
-	const auto vcodec = iter not_eq codecs .end () ? iter -> second : "png";
+	if (basic::toupper (codec, std::locale::classic ()) == "WEB")
+	{
+		// WEBM for web
+		//ffmpeg -i original.mp4 -c:v libvpx -preset slow -s 1024x576 -qmin 0 -qmax 50 -an -b:v 400K -pass 1 homepage.webm
 
-	command = { "ffmpeg",
-	            "-y", // Overwrite output files without asking.
-	            "-f", "image2pipe",
-	            "-vcodec", "png",
-	            "-r", basic::to_string (frameRate, std::locale::classic ()),
-	            "-i", "-",
-	            "-vcodec", vcodec,
-	            "-q:v", "0",
-	            "-r", basic::to_string (frameRate, std::locale::classic ()),
-	            "-frames:v", basic::to_string (duration, std::locale::classic ()),
-	            filename .path () };
+		// MP4 for web
+		//ffmpeg -i original.mp4 -c:v libx264 -preset slow -s 1024x576 -an -b:v 370K homepage.mp4
+
+		width  += width  % 2;
+		height += height % 2;
+
+		const auto size = basic::to_string (width, std::locale::classic ()) + "x" + basic::to_string (height, std::locale::classic ());
+
+		command = { "ffmpeg",
+		            "-y", // Overwrite output files without asking.
+		            "-f", "image2pipe",
+		            "-vcodec", "png",
+		            "-r", basic::to_string (frameRate, std::locale::classic ()),
+		            "-i", "-",
+		            "-c:v", "libx264",
+		            "-preset", "slow",
+		            "-s", size,
+		            "-an",
+		            "-b:v", "370K",
+		            "-r", basic::to_string (frameRate, std::locale::classic ()),
+		            "-frames:v", basic::to_string (duration, std::locale::classic ()),
+		            filename .path () };
+	}
+	else
+	{
+		const auto iter   = codecs .find (codec);
+		const auto vcodec = iter not_eq codecs .end () ? iter -> second : "png";
+	
+		command = { "ffmpeg",
+		            "-y", // Overwrite output files without asking.
+		            "-f", "image2pipe",
+		            "-vcodec", "png",
+		            "-r", basic::to_string (frameRate, std::locale::classic ()),
+		            "-i", "-",
+		            "-vcodec", vcodec,
+		            "-q:v", "0",
+		            "-r", basic::to_string (frameRate, std::locale::classic ()),
+		            "-frames:v", basic::to_string (duration, std::locale::classic ()),
+		            filename .path () };
+	}
 }
 
 std::string

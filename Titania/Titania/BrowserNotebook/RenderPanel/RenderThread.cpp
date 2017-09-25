@@ -84,7 +84,7 @@ RenderThread::RenderThread (const basic::uri & url,
 	                frameNumber (0),
 	            loadCountSignal (),
 	            frameDispatcher (),
-	               videoEncoder (std::make_unique <VideoEncoder> (filename, codec, frameRate, duration)),
+	               videoEncoder (std::make_unique <VideoEncoder> (filename, codec, frameRate, duration, width, height)),
 	                     thread ()
 {
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);

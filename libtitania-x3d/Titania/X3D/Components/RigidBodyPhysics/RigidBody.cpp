@@ -169,7 +169,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		getBrowser () -> removeCollidableNodes (geometryNodes);
 
-		getBrowser () -> sensors () .removeInterest (&RigidBody::update, this);
+		getBrowser () -> sensorEvents () .removeInterest (&RigidBody::update, this);
 		getExecutionContext () -> isLive () .removeInterest (&RigidBody::set_fixed, this);
 	}
 
@@ -188,9 +188,9 @@ void
 RigidBody::set_fixed ()
 {
 	if (getExecutionContext () -> isLive () and isLive () and not fixed ())
-		getBrowser () -> sensors () .addInterest (&RigidBody::update, this);
+		getBrowser () -> sensorEvents () .addInterest (&RigidBody::update, this);
 	else
-		getBrowser () -> sensors () .removeInterest (&RigidBody::update, this);
+		getBrowser () -> sensorEvents () .removeInterest (&RigidBody::update, this);
 }
 
 void

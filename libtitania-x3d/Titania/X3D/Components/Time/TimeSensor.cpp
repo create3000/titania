@@ -80,6 +80,7 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	              fields (),
 	               cycle (0),
 	            interval (0),
+	            fraction (0),
 	               first (0),
 	                last (1),
 	               scale (1)
@@ -122,11 +123,12 @@ TimeSensor::initialize  ()
 void
 TimeSensor::setRange (const float currentFraction, const float firstFraction, const float lastFraction)
 {
-	first  = firstFraction;
-	last   = lastFraction;
-	scale  = last - first;
+	fraction = currentFraction;
+	first    = firstFraction;
+	last     = lastFraction;
+	scale    = last - first;
 
-	const time_type offset = (currentFraction - first) * cycleInterval ();
+	const time_type offset = (fraction - first) * cycleInterval ();
 
 	interval = cycleInterval () * scale;
 	cycle    = getCurrentTime () - offset;
@@ -136,7 +138,7 @@ void
 TimeSensor::set_cycleInterval ()
 {
 	if (isActive ())
-		setRange (fraction_changed (), range () [1], range () [2]);
+		setRange (fraction, range () [1], range () [2]);
 }
 
 void
@@ -167,7 +169,7 @@ TimeSensor::set_pause ()
 void
 TimeSensor::set_resume (const time_type pauseInterval)
 {
-	setRange (fraction_changed (), range () [1], range () [2]);
+	setRange (fraction, range () [1], range () [2]);
 }
 
 void
@@ -179,7 +181,7 @@ TimeSensor::set_fraction ()
 {
 	time_type intpart;
 
-	fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
+	fraction_changed () = fraction = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
 }
 
 void

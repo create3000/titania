@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="515" Column="18" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1331" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="195" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="172" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/X3DTimeDependentNode.cpp" Line="339" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/X3DTimeDependentNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp" Line="86" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

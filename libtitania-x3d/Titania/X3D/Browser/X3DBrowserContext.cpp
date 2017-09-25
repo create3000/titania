@@ -90,7 +90,8 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                X3DToolContext (),
 	             initializedOutput (),
 	           prepareEventsOutput (),
-	                 sensorsOutput (),
+	              timeEventsOutput (),
+	            sensorEventsOutput (),
 	               displayedOutput (),
 	                finishedOutput (),
 	                 changedOutput (),
@@ -190,7 +191,7 @@ X3DBrowserContext::setDependentContext (const X3DBrowserContextPtr & value)
 	{
 		dependentContext -> changed () .removeInterest (&X3DBrowserContext::addEvent, this);
 
-		sensors () .removeInterest (&X3DBrowserContext::set_sensors, this);
+		sensorEvents () .removeInterest (&X3DBrowserContext::set_sensorEvents, this);
 	}
 
 	dependentContext = value;
@@ -204,7 +205,7 @@ X3DBrowserContext::setDependentContext (const X3DBrowserContextPtr & value)
 		if (get_mapped ())
 			dependentContext -> changed () .addInterest (&X3DBrowserContext::addEvent, this);
 
-		sensors () .addInterest (&X3DBrowserContext::set_sensors, this);
+		sensorEvents () .addInterest (&X3DBrowserContext::set_sensorEvents, this);
 	}
 	else
 	{
@@ -233,9 +234,9 @@ X3DBrowserContext::on_unmap ()
 }
 
 void
-X3DBrowserContext::set_sensors ()
+X3DBrowserContext::set_sensorEvents ()
 {
-	dependentContext -> sensors () .processInterests ();
+	dependentContext -> sensorEvents () .processInterests ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -354,12 +355,15 @@ noexcept (true)
 		prepareEvents () .processInterests ();
 		getRouter () -> processEvents ();
 
+		timeEvents () .processInterests ();
+		getRouter () -> processEvents ();
+
 		getWorld () -> traverse (TraverseType::CAMERA, nullptr);
 
 		if (not getActiveCollisions () .empty ())
 			getWorld () -> traverse (TraverseType::COLLISION, nullptr);
 
-		sensors () .processInterests ();
+		sensorEvents () .processInterests ();
 		getRouter () -> processEvents ();
 
 		deleteObjectsAsync ();
@@ -459,7 +463,8 @@ X3DBrowserContext::dispose ()
 {
 	initializedOutput   .dispose ();
 	prepareEventsOutput .dispose ();
-	sensorsOutput       .dispose ();
+	timeEventsOutput    .dispose ();
+	sensorEventsOutput  .dispose ();
 	displayedOutput     .dispose ();
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();

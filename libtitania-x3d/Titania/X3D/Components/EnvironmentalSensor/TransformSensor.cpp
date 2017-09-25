@@ -116,11 +116,11 @@ TransformSensor::set_enabled ()
 {
 	if (enabled () and size () not_eq Vector3f () and targetObjectNode and isLive () and getExecutionContext () -> isLive ())
 	{
-		getBrowser () -> sensors () .addInterest (&TransformSensor::update, this);
+		getBrowser () -> sensorEvents () .addInterest (&TransformSensor::update, this);
 	}
 	else
 	{
-		getBrowser () -> sensors () .removeInterest (&TransformSensor::update, this);
+		getBrowser () -> sensorEvents () .removeInterest (&TransformSensor::update, this);
 			
 		if (isActive ())
 		{

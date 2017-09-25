@@ -331,7 +331,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %%"), 100 * renderClock .average () / clock .average ()));
 		string .emplace_back (basic::sprintf (_ ("Shapes:                    %zd + %zd"), numOpaqueShapes, numTransparentShapes));
-		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 2));
+		string .emplace_back (basic::sprintf (_ ("Sensors:                   %zd"), getBrowser () -> sensorEvents () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 2));
 		// Remove BrowserTimings and Console from sensors (-2).
 	}
 	catch (const X3DError & error)
