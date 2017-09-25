@@ -105,7 +105,7 @@ void
 Clipboard::set_string_ ()
 {
 	Gtk::Clipboard::get () -> set ({ Gtk::TargetEntry (target ()) },
-	                               sigc::mem_fun (this, &Clipboard::on_get), sigc::mem_fun (this, &Clipboard::on_clear));
+	                                 sigc::mem_fun (this, &Clipboard::on_get), sigc::mem_fun (this, &Clipboard::on_clear));
 
 	string_changed () = set_string ();
 }
@@ -129,6 +129,7 @@ Clipboard::on_received_targets (const std::vector <Glib::ustring> & receivedTarg
 	const auto iter = std::find_if (receivedTargets .begin (), receivedTargets .end (),
 	                                [&] (const Glib::ustring & receivedTarget)
 	                                {
+__LOG__ << receivedTarget << std::endl;
 	                                   return receivedTarget == target ();
 											  });
 

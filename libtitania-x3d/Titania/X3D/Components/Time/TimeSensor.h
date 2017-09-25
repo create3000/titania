@@ -165,10 +165,6 @@ private:
 
 	///  @name Event handlers
 
-	virtual
-	void
-	prepareEvents () final override;
-
 	void
 	set_cycleInterval ();
 
@@ -193,6 +189,10 @@ private:
 
 	void
 	set_fraction ();
+
+	virtual
+	void
+	set_time () final override;
 
 	///  @name Static members
 

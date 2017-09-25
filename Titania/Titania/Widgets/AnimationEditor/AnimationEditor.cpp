@@ -1111,6 +1111,8 @@ AnimationEditor::on_clear_clipboard ()
 void
 AnimationEditor::on_first_frame ()
 {
+	const auto selectedRange = getSelectedRange ();
+
 	if (selectedRange .first == selectedRange .second)
 	{
 		if (timeSensor)
@@ -1132,16 +1134,17 @@ AnimationEditor::on_play_pause ()
 {
 	// Determine range to play and frame where the animation should start.
 
+	if (not timeSensor)
+		return;
+
 	if (not timeSensor -> isActive ())
 	{
-		const double  duration     = getDuration ();
-		int32_t       firstFrame   = selectedRange .first;
-		int32_t       lastFrame    = selectedRange .second;
-		double        currentFrame = getFrameAdjustment () -> get_value ();
-
-		if (firstFrame > lastFrame)
-			std::swap (firstFrame, lastFrame);
-
+		const double duration      = getDuration ();
+		const auto   selectedRange = getSelectedRange ();
+		int32_t      firstFrame    = selectedRange .first;
+		int32_t      lastFrame     = selectedRange .second;
+		double       currentFrame  = getFrameAdjustment () -> get_value ();
+	
 		if (firstFrame == lastFrame)
 		{
 			firstFrame = 0;
@@ -1149,10 +1152,10 @@ AnimationEditor::on_play_pause ()
 		}
 		else
 			currentFrame = math::clamp <double> (currentFrame, firstFrame, lastFrame);
-
+	
 		if (currentFrame >= lastFrame)
 			currentFrame = firstFrame;
-
+	
 		timeSensor -> range () = { currentFrame / duration, firstFrame / duration, lastFrame / duration };
 	}
 
@@ -1171,6 +1174,8 @@ AnimationEditor::on_play_pause ()
 void
 AnimationEditor::on_last_frame ()
 {
+	const auto selectedRange = getSelectedRange ();
+
 	if (selectedRange .first == selectedRange .second)
 	{
 		if (timeSensor)
@@ -2608,9 +2613,15 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 		}
 		else
 		{
-			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::XTERM));
-			
 			const auto frame = std::round ((event -> x - getTranslation ()) / getScale ());
+
+			getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
+
+			if (timeSensor)
+			{
+				if (timeSensor -> isActive ())
+					timeSensor -> pauseTime () = X3D::SFTime::now ();
+			}
 
 			getFrameAdjustment () -> set_value (frame);
 		
@@ -2675,6 +2686,12 @@ AnimationEditor::on_button_release_event (GdkEventButton* event)
 					on_selection_changed ();
 				}
 			}
+		}
+
+		if (timeSensor)
+		{
+			if (timeSensor -> isPaused ())
+				timeSensor -> resumeTime () = X3D::SFTime::now ();
 		}
 	}
 
@@ -2774,6 +2791,8 @@ AnimationEditor::on_selection_changed ()
 
 	if (timeSensor)
 	{
+		const auto selectedRange = getSelectedRange ();
+
 		if (selectedRange .first == selectedRange .second)
 		{
 			timeSensor -> range () = { double (getFrameAdjustment () -> get_value ()) / double (getDuration ()), 0, 1 };
@@ -2825,14 +2844,10 @@ AnimationEditor::on_expand_selected_range (const int32_t frame)
 void
 AnimationEditor::on_select_range ()
 {
+	const auto selectedRange = getSelectedRange ();
+
 	if (selectedRange .first == selectedRange .second)
 		return;
-
-	int32_t firstFrame = selectedRange .first;
-	int32_t lastFrame  = selectedRange .second;
-	
-	if (firstFrame > lastFrame)
-		std::swap (firstFrame, lastFrame);
 
 	selectedFrames .clear ();
 
@@ -2842,7 +2857,7 @@ AnimationEditor::on_select_range ()
 	
 		std::get <0> (f);
 
-		if (std::get <0> (f) >= firstFrame and std::get <0> (f) <= lastFrame)
+		if (std::get <0> (f) >= selectedRange .first and std::get <0> (f) <= selectedRange .second)
 			selectedFrames .emplace (f);
 	}
 
@@ -2878,6 +2893,18 @@ AnimationEditor::getSelectedBounds () const
 		return std::make_pair (0, 0);
 
 	return std::make_pair (min, max);
+}
+
+std::pair <int32_t, int32_t>
+AnimationEditor::getSelectedRange () const
+{
+	int32_t firstFrame = selectedRange .first;
+	int32_t lastFrame  = selectedRange .second;
+
+	if (firstFrame > lastFrame)
+		std::swap (firstFrame, lastFrame);
+
+	return std::make_pair (firstFrame, lastFrame);
 }
 
 void
@@ -3026,14 +3053,15 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	if (not animation)
 		return false;
 
-	const int  width      = getDrawingArea () .get_width ();
-	const int  height     = getDrawingArea () .get_height ();
-	const auto fc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	const auto sc         = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	const auto sb         = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-	const auto yPad       = getNameCellRenderer () -> property_ypad ();
-	const auto firstFrame = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
-	const auto lastFrame  = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
+	const int  width         = getDrawingArea () .get_width ();
+	const int  height        = getDrawingArea () .get_height ();
+	const auto fc            = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto sc            = getTreeView () .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto sb            = getTreeView () .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	const auto yPad          = getNameCellRenderer () -> property_ypad ();
+	const auto firstFrame    = std::max <int32_t> (0, std::floor (-getTranslation () / getScale ()));
+	const auto lastFrame     = std::min <int32_t> (getDuration (), std::ceil ((width - getTranslation ()) / getScale ())) + 1;
+	const auto selectedRange = getSelectedRange ();
 
 	// Draw selection range.
 

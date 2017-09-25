@@ -184,10 +184,6 @@ protected:
 	initialize () override;
 	
 	///  @name Event handling
-	
-	virtual
-	void
-	prepareEvents () = 0;
 
 	void
 	set_loop ();
@@ -207,6 +203,10 @@ protected:
 	virtual
 	void
 	set_stop () = 0;
+
+	virtual
+	void
+	set_time () = 0;
 
 	// Wrapper functions
 
@@ -299,6 +299,7 @@ private:
 	time_type resumeTimeValue;
 	time_type pauseTimeValue;
 	time_type stopTimeValue;
+	SFTime    time;
 
 	time_type start;
 	time_type pause;

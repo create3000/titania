@@ -164,7 +164,7 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 	menu .show_all ();
 
 	clipboard -> string_changed () .addInterest (&Gtk::ImageMenuItem::set_sensitive, pasteMenuItem, true);
-	clipboard -> target () = "model/x3d+vrml+color";
+	clipboard -> target () = "titania-x3d-color";
 	clipboard -> setup ();
 
 	// Setup

@@ -133,7 +133,57 @@ TimeSensor::setRange (const float currentFraction, const float firstFraction, co
 }
 
 void
-TimeSensor::prepareEvents ()
+TimeSensor::set_cycleInterval ()
+{
+	if (isActive ())
+		setRange (fraction_changed (), range () [1], range () [2]);
+}
+
+void
+TimeSensor::set_range ()
+{
+	if (isActive ())
+	{
+		setRange (range () [0], range () [1], range () [2]);
+
+		if (not isPaused ())
+			set_fraction ();
+	}
+}
+
+void
+TimeSensor::set_start ()
+{
+	setRange (range () [0], range () [1], range () [2]);
+
+	fraction_changed () = range () [0];
+	time ()             = getCurrentTime ();
+}
+
+void
+TimeSensor::set_pause ()
+{ }
+
+void
+TimeSensor::set_resume (const time_type pauseInterval)
+{
+	setRange (fraction_changed (), range () [1], range () [2]);
+}
+
+void
+TimeSensor::set_stop ()
+{ }
+
+void
+TimeSensor::set_fraction ()
+{
+	time_type intpart;
+
+	fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
+}
+
+void
+TimeSensor::set_time ()
 {
 	// The event order below is very important.
 
@@ -165,52 +215,6 @@ TimeSensor::prepareEvents ()
 	}
 
 	time () = getCurrentTime ();
-}
-
-void
-TimeSensor::set_cycleInterval ()
-{
-	setRange (fraction_changed (), range () [1], range () [2]);
-}
-
-void
-TimeSensor::set_range ()
-{
-	setRange (range () [0], range () [1], range () [2]);
-
-	if (isActive () and not isPaused ())
-		set_fraction ();
-}
-
-void
-TimeSensor::set_start ()
-{
-	setRange (range () [0], range () [1], range () [2]);
-
-	fraction_changed () = range () [0];
-	time ()             = getCurrentTime ();
-}
-
-void
-TimeSensor::set_pause ()
-{ }
-
-void
-TimeSensor::set_resume (const time_type pauseInterval)
-{
-	cycle += pauseInterval;
-}
-
-void
-TimeSensor::set_stop ()
-{ }
-
-void
-TimeSensor::set_fraction ()
-{
-	time_type intpart;
-
-	fraction_changed () = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
 }
 
 TimeSensor::~TimeSensor ()

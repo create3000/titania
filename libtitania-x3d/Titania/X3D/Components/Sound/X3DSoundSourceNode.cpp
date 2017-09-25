@@ -122,12 +122,6 @@ X3DSoundSourceNode::getStream () const
 }
 
 void
-X3DSoundSourceNode::prepareEvents ()
-{
-	elapsedTime () = getElapsedTime ();
-}
-
-void
 X3DSoundSourceNode::on_end ()
 {
 	end = getCurrentTime ();
@@ -217,6 +211,12 @@ void
 X3DSoundSourceNode::on_duration_changed ()
 {
 	duration_changed () = mediaStream -> getDuration ();
+}
+
+void
+X3DSoundSourceNode::set_time ()
+{
+	elapsedTime () = getElapsedTime ();
 }
 
 void

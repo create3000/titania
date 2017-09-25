@@ -511,6 +511,9 @@ private:
 	std::pair <int32_t, int32_t>
 	getSelectedBounds () const;
 
+	std::pair <int32_t, int32_t>
+	getSelectedRange () const;
+
 	void
 	setSelectedFrames (const std::set <FrameKey> & value, const X3D::X3DPtr <X3D::Group> & affectedAnimation);
 
