@@ -84,7 +84,7 @@ X3DRenderingSurface::X3DRenderingSurface () :
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	Gtk::DrawingArea (),
 	      initialized (false),
-	          context (new RenderingContext (get_display (), other ? other -> context : nullptr)),
+	          context (new RenderingContext (other ? other -> context : nullptr)),
 	       extensions (),
 	     antialiasing (0),
 	        frameRate (60),

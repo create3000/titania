@@ -3,9 +3,10 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="2694" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="221" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="113" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/share/gtksourceview-3.0/styles/x_ite.xml" Line="78" Column="60" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -64,8 +64,7 @@ public:
 
 	///  @name Construction
 
-	RenderingContext (const Glib::RefPtr <Gdk::Display> & display,
-	                  const std::shared_ptr <RenderingContext> & sharedContext);
+	RenderingContext (const std::shared_ptr <RenderingContext> & sharedContext);
 
 	///  @name Operations
 

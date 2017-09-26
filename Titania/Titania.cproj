@@ -3068,8 +3068,8 @@
     <None Include="share\titania\Library\Components\VolumeRendering\SilhouetteEnhancementVolumeStyle.x3dv" />
     <None Include="share\titania\Library\Components\VolumeRendering\ToneMappedVolumeStyle.x3dv" />
     <None Include="share\titania\Library\Components\VolumeRendering\VolumeData.x3dv" />
-    <None Include="titania" />
     <None Include="share\gtksourceview-3.0\styles\x_ite.xml" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

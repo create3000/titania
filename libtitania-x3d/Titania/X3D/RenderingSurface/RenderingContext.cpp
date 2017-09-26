@@ -57,14 +57,14 @@ extern "C"
 #include <gdk/gdkx.h>
 }
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
-RenderingContext::RenderingContext (const Glib::RefPtr <Gdk::Display> & display,
-                                    const std::shared_ptr <RenderingContext> & sharedContext) :
-	      display (display),
+RenderingContext::RenderingContext (const std::shared_ptr <RenderingContext> & sharedContext) :
 	sharedContext (sharedContext),
-	     xDisplay (gdk_x11_display_get_xdisplay (display -> gobj ())),
+	     xDisplay (XOpenDisplay (nullptr)),
 	      xPixmap (createPixmap (xDisplay, 1, 1)),
 	    xDrawable (createDrawable (xDisplay, xPixmap)),
 	  xVisualInfo (createVisualInfo (xDisplay)),

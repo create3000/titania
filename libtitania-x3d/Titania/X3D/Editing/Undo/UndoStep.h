@@ -53,6 +53,7 @@
 
 #include <Titania/LOG.h>
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>

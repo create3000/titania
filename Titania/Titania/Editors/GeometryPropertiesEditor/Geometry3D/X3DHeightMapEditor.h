@@ -369,7 +369,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 
 	minMaxInput = input;
 
-	const auto heighHashValue = node -> getMetaData <X3D::MFString> (HEIGHT_HASH);
+	const auto heighHashValue = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH);
 
 	beginUndoGroup ("height", undoStep);
 

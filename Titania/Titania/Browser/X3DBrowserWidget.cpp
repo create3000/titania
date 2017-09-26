@@ -344,6 +344,8 @@ X3DBrowserWidget::setPage (const NotebookPagePtr & value)
 
 	setBrowser (browser);
 	
+	page -> updateTitle ();
+
 	browser -> initialized () .addInterest (&X3DBrowserWidget::set_executionContext, this);
 	browser -> getUrlError () .addInterest (&X3DBrowserWidget::set_urlError, this);
 

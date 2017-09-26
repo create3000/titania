@@ -121,6 +121,9 @@ public:
 	isSaved ();
 
 	void
+	updateTitle ();
+
+	void
 	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
 
 	const std::unique_ptr <BackgroundImage> &
@@ -168,9 +171,6 @@ protected:
 	initialize () override;
 
 	///  @name Operations
-
-	void
-	updateTitle ();
 
 	std::string
 	getTitle () const;
