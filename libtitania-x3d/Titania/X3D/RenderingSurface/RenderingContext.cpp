@@ -198,6 +198,8 @@ RenderingContext::~RenderingContext ()
 
 	if (xPixmap)
 		XFreePixmap (xDisplay, xPixmap);
+
+	XCloseDisplay (xDisplay);
 }
 
 } // X3D

@@ -84,7 +84,7 @@ X3DSoundSourceNode::initialize ()
 
 	getBrowser () -> addSoundSource (this);
 
-	mediaStream .reset (new MediaStream (getBrowser () -> get_display ()));
+	mediaStream .reset (new MediaStream ());
 
 	speed () .addInterest (&X3DSoundSourceNode::set_speed, this);
 	pitch () .addInterest (&X3DSoundSourceNode::set_pitch, this);

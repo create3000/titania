@@ -99,7 +99,7 @@ public:
 
 	///  @name Construction
 
-	MediaStream (const Glib::RefPtr <Gdk::Display> & display);
+	MediaStream ();
 
 	void
 	setup ();
@@ -218,8 +218,8 @@ private:
 
 	///  @name Member access
 
-	const Glib::RefPtr <Gdk::Display> display;
-	Window                            xWindow;
+	Display* xDisplay;
+	Window   xWindow;
 
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;

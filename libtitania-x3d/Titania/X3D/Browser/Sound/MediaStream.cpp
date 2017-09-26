@@ -68,9 +68,9 @@ namespace X3D {
  *   https://github.com/GNOME/gstreamermm/blob/master/examples/media_player_gtkmm/player_window.cc
  */
 
-MediaStream::MediaStream (const Glib::RefPtr <Gdk::Display> & display) :
-	                  display (display),
-	                  xWindow (createWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), 16, 16)),
+MediaStream::MediaStream () :
+	                 xDisplay (XOpenDisplay (nullptr)),
+	                  xWindow (createWindow (xDisplay, 16, 16)),
 	                   player (),
 	                    vsink (),
 	                    width (-1),
@@ -315,7 +315,7 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 		return;
 	}
 
-	XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
+	XMoveResizeWindow (xDisplay, xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
 
 	vsink -> set_window_handle (xWindow);
 }
@@ -434,7 +434,7 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 					width  = w;
 					height = h;
 		
-					XMoveResizeWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow, 0, 0, width, height);
+					XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
 				}
 			}
 		}
@@ -499,7 +499,9 @@ MediaStream::~MediaStream ()
 	player -> set_state (Gst::STATE_NULL);
 
 	if (xWindow)
-		XDestroyWindow (gdk_x11_display_get_xdisplay (display -> gobj ()), xWindow);
+		XDestroyWindow (xDisplay, xWindow);
+
+	XCloseDisplay (xDisplay);
 }
 
 } // X3D
