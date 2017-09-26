@@ -147,7 +147,11 @@ X3DUserInterface::on_initialize ()
 	connectFocusEvent (getWidget ());
 
 	if (isFullscreen ())
+	{
+		windowStateConnection = getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_window_state_event));
+
 		getWindow () .fullscreen ();
+	}
 
 	set_fullscreen (isFullscreen ());
 
