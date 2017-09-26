@@ -209,6 +209,9 @@ private:
 	on_unmap ();
 
 	bool
+	on_initial_window_state_event (GdkEventWindowState* event);
+
+	bool
 	on_window_state_event (GdkEventWindowState* event);
 
 	bool
@@ -254,6 +257,7 @@ private:
 	///  @name Members
 
 	std::shared_ptr <Configuration> config;
+	sigc::connection                windowStateConnection;
 	sigc::connection                mapConnection;
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;

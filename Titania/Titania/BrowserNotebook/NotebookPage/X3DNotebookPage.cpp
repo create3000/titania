@@ -96,6 +96,7 @@ X3DNotebookPage::initialize ()
 	getMainBrowser () -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
 	getMainBrowser () -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
 
+	getBox1 () .remove ();
 	getBox1 () .add (*getMainBrowser ());
 	getBox1 () .show_all ();
 

@@ -93,12 +93,13 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface () :
-	X3DBaseInterface (),
-	          config (),
-	   mapConnection (),
-	   userInterface (),
-	         dialogs (new DialogIndex ()),
-	     initialized (false)
+	     X3DBaseInterface (),
+	               config (),
+	windowStateConnection (),
+	        mapConnection (),
+	        userInterface (),
+	              dialogs (new DialogIndex ()),
+	          initialized (false)
 {
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -145,13 +146,13 @@ X3DUserInterface::on_initialize ()
 
 	connectFocusEvent (getWidget ());
 
-	configure ();
-	initialize ();
-
 	if (isFullscreen ())
 		getWindow () .fullscreen ();
 
 	set_fullscreen (isFullscreen ());
+
+	configure ();
+	initialize ();
 
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
 
@@ -193,14 +194,24 @@ X3DUserInterface::on_unmap ()
 }
 
 bool
+X3DUserInterface::on_initial_window_state_event (GdkEventWindowState* event)
+{
+	windowStateConnection .disconnect ();
+
+	configure ();
+
+	return false;
+}
+
+bool
 X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 {
 	const bool maximized  = event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED;
 	const bool fullscreen = event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
 
-	getConfig () -> set ("maximized",  maximized);
+	getConfig () -> set ("maximized", maximized);
 
-	if (fullscreen not_eq getConfig () -> getBoolean ("fullscreen"))
+	if (fullscreen not_eq getConfig () -> get <bool> ("fullscreen"))
 	{
 		getConfig () -> set ("fullscreen", fullscreen);
 		set_fullscreen (fullscreen);
@@ -388,7 +399,11 @@ X3DUserInterface::restoreInterface ()
 	}
 
 	if (isMaximized ())
+	{
+		windowStateConnection = getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_window_state_event));
+
 		getWindow () .maximize ();
+	}
 }
 
 void

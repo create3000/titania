@@ -136,7 +136,7 @@ X3DBrowserWidget::initialize ()
 
 	basic::split (std::back_inserter (worldURLs), getConfig () -> getString ("worldURL"), "\n");
 	basic::split (std::back_inserter (histories), getConfig () -> getString ("history"),  "\n");
-	basic::split (std::back_inserter (recent), getConfig () -> getString ("recent"),  "\n");
+	basic::split (std::back_inserter (recent),    getConfig () -> getString ("recent"),   "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
@@ -609,7 +609,7 @@ X3DBrowserWidget::quit ()
 
 	for (const auto & page : pages)
 	{
-		const auto URL = page -> getMainBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+		const auto URL = page -> getMasterSceneURL ();
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
