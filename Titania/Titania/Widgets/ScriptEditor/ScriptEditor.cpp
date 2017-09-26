@@ -137,7 +137,7 @@ ScriptEditor::initialize ()
 
 	// Observe context change.
 
-	getCurrentBrowser () -> getExecutionContext () .addInterest (&ScriptEditor::set_executionContext, this);
+	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
 
 	set_executionContext ();
 
