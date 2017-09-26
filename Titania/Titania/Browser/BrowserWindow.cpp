@@ -1134,9 +1134,9 @@ void
 BrowserWindow::on_menubar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> setItem ("menubarFullscreen", getMenubarAction () -> get_active ());
+		getConfig () -> set ("menubarFullscreen", getMenubarAction () -> get_active ());
 	else
-		getConfig () -> setItem ("menubar", getMenubarAction () -> get_active ());
+		getConfig () -> set ("menubar", getMenubarAction () -> get_active ());
 	
 	getMenubar () .set_visible (getMenubarAction () -> get_active ());
 }
@@ -1145,9 +1145,9 @@ void
 BrowserWindow::on_toolbar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> setItem ("toolbarFullscreen", getToolbarAction () -> get_active ());
+		getConfig () -> set ("toolbarFullscreen", getToolbarAction () -> get_active ());
 	else
-		getConfig () -> setItem ("toolbar", getToolbarAction () -> get_active ());
+		getConfig () -> set ("toolbar", getToolbarAction () -> get_active ());
 
 	getToolbar () .set_visible (getToolbarAction () -> get_active ());
 }
@@ -1156,9 +1156,9 @@ void
 BrowserWindow::on_sidebar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> setItem ("sidebarFullscreen", getSidebarAction () -> get_active ());
+		getConfig () -> set ("sidebarFullscreen", getSidebarAction () -> get_active ());
 	else
-		getConfig () -> setItem ("sidebar", getSidebarAction () -> get_active ());
+		getConfig () -> set ("sidebar", getSidebarAction () -> get_active ());
 	
 	getSidebarBox () .set_visible (getSidebarAction () -> get_active ());
 }
@@ -1167,9 +1167,9 @@ void
 BrowserWindow::on_footer_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> setItem ("footerFullscreen", getFooterAction () -> get_active ());
+		getConfig () -> set ("footerFullscreen", getFooterAction () -> get_active ());
 	else
-		getConfig () -> setItem ("footer", getFooterAction () -> get_active ());
+		getConfig () -> set ("footer", getFooterAction () -> get_active ());
 
 	getFooterBox () .set_visible (getFooterAction () -> get_active ());
 }
@@ -1178,9 +1178,9 @@ void
 BrowserWindow::on_tabs_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> setItem ("tabsFullscreen", getTabsAction () -> get_active ());
+		getConfig () -> set ("tabsFullscreen", getTabsAction () -> get_active ());
 	else
-		getConfig () -> setItem ("tabs", getTabsAction () -> get_active ());
+		getConfig () -> set ("tabs", getTabsAction () -> get_active ());
 
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }

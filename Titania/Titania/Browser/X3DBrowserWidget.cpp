@@ -191,52 +191,52 @@ X3DBrowserWidget::configure ()
 	// Meta data
 
 	if (not getConfig () -> hasKey ("addStandardMetaData"))
-		getConfig () -> setItem ("addStandardMetaData", true);
+		getConfig () -> set ("addStandardMetaData", true);
 
 
 	// ToolBar
 
 	if (not getConfig () -> hasKey ("menubar"))
-		getConfig () -> setItem ("menubar", true);
+		getConfig () -> set ("menubar", true);
 
 	if (not getConfig () -> hasKey ("menubarFullscreen"))
-		getConfig () -> setItem ("menubarFullscreen", false);
+		getConfig () -> set ("menubarFullscreen", false);
 	
 
 	// ToolBar
 
 	if (not getConfig () -> hasKey ("toolbar"))
-		getConfig () -> setItem ("toolbar", true);
+		getConfig () -> set ("toolbar", true);
 
 	if (not getConfig () -> hasKey ("toolbarFullscreen"))
-		getConfig () -> setItem ("toolbarFullscreen", false);
+		getConfig () -> set ("toolbarFullscreen", false);
 
 	
 	// SideBar
 
 	if (not getConfig () -> hasKey ("sidebar"))
-		getConfig () -> setItem ("sidebar", true);
+		getConfig () -> set ("sidebar", true);
 
 	if (not getConfig () -> hasKey ("sidebarFullscreen"))
-		getConfig () -> setItem ("sidebarFullscreen", false);
+		getConfig () -> set ("sidebarFullscreen", false);
 
 
 	// Footer
 
 	if (not getConfig () -> hasKey ("footer"))
-		getConfig () -> setItem ("footer", true);
+		getConfig () -> set ("footer", true);
 
 	if (not getConfig () -> hasKey ("footerFullscreen"))
-		getConfig () -> setItem ("footerFullscreen", false);
+		getConfig () -> set ("footerFullscreen", false);
 
 
 	// TAbs
 
 	if (not getConfig () -> hasKey ("tabs"))
-		getConfig () -> setItem ("tabs", true);
+		getConfig () -> set ("tabs", true);
 
 	if (not getConfig () -> hasKey ("tabsFullscreen"))
-		getConfig () -> setItem ("tabsFullscreen", false);
+		getConfig () -> set ("tabsFullscreen", false);
 
 	
 	// RenderingProperties
@@ -251,7 +251,7 @@ X3DBrowserWidget::configure ()
 		getRubberbandAction () -> set_active (getConfig () -> getBoolean ("rubberBand"));
 
 	if (not getConfig () -> hasKey ("isLive"))
-		getConfig () -> setItem ("isLive", true);
+		getConfig () -> set ("isLive", true);
 
 	
 	// isLive
@@ -285,28 +285,28 @@ X3DBrowserWidget::set_fullscreen (const bool value)
 {
 	if (value)
 	{
-		getMenubarAction () -> set_active (getConfig () -> getBoolean ("menubarFullscreen"));
-		getToolbarAction () -> set_active (getConfig () -> getBoolean ("toolbarFullscreen"));
-		getSidebarAction () -> set_active (getConfig () -> getBoolean ("sidebarFullscreen"));
-		getFooterAction ()  -> set_active (getConfig () -> getBoolean ("footerFullscreen"));
-		getTabsAction ()    -> set_active (getConfig () -> getBoolean ("tabsFullscreen"));
+		getMenubarAction () -> set_active (getConfig () -> get <bool> ("menubarFullscreen"));
+		getToolbarAction () -> set_active (getConfig () -> get <bool> ("toolbarFullscreen"));
+		getSidebarAction () -> set_active (getConfig () -> get <bool> ("sidebarFullscreen"));
+		getFooterAction ()  -> set_active (getConfig () -> get <bool> ("footerFullscreen"));
+		getTabsAction ()    -> set_active (getConfig () -> get <bool> ("tabsFullscreen"));
 	}
 	else
 	{
-		getMenubarAction () -> set_active (getConfig () -> getBoolean ("menubar"));
-		getToolbarAction () -> set_active (getConfig () -> getBoolean ("toolbar"));
-		getSidebarAction () -> set_active (getConfig () -> getBoolean ("sidebar"));
-		getFooterAction ()  -> set_active (getConfig () -> getBoolean ("footer"));
-		getTabsAction ()    -> set_active (getConfig () -> getBoolean ("tabs"));
+		getMenubarAction () -> set_active (getConfig () -> get <bool> ("menubar"));
+		getToolbarAction () -> set_active (getConfig () -> get <bool> ("toolbar"));
+		getSidebarAction () -> set_active (getConfig () -> get <bool> ("sidebar"));
+		getFooterAction ()  -> set_active (getConfig () -> get <bool> ("footer"));
+		getTabsAction ()    -> set_active (getConfig () -> get <bool> ("tabs"));
 	}
 }
 
 void
 X3DBrowserWidget::store ()
 {
-	getConfig () -> setItem ("vPaned",            getVPaned () .get_position ());
-	getConfig () -> setItem ("hPaned",            getHPaned () .get_position ());
-	getConfig () -> setItem ("straightenHorizon", getStraightenHorizonButton () .get_active ());
+	getConfig () -> set ("vPaned",            getVPaned () .get_position ());
+	getConfig () -> set ("hPaned",            getHPaned () .get_position ());
+	getConfig () -> set ("straightenHorizon", getStraightenHorizonButton () .get_active ());
 
 	X3DBrowserWindowInterface::store ();
 }

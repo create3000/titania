@@ -146,6 +146,9 @@ X3DUserInterface::on_initialize ()
 
 	connectFocusEvent (getWidget ());
 
+	configure ();
+	initialize ();
+
 	if (isFullscreen ())
 	{
 		windowStateConnection = getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_window_state_event));
@@ -154,9 +157,6 @@ X3DUserInterface::on_initialize ()
 	}
 
 	set_fullscreen (isFullscreen ());
-
-	configure ();
-	initialize ();
 
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
 

@@ -55,6 +55,7 @@
 extern "C"
 {
 #include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 }
 
 #include <Titania/Backtrace.h>
@@ -110,8 +111,11 @@ MediaStream::createWindow (Display* const xDisplay, const int32_t width, const i
 	const auto xScreen = DefaultScreen (xDisplay);
 	const auto xBlack  = BlackPixel (xDisplay, xScreen);
 	const auto xWhite  = WhitePixel (xDisplay, xScreen);
+	const auto xWindow = XCreateSimpleWindow (xDisplay, RootWindow (xDisplay, xScreen), 0, 0, width, height, 0, xBlack, xWhite);
 
-	return XCreateSimpleWindow (xDisplay, RootWindow (xDisplay, xScreen), 0, 0, width, height, 0, xBlack, xWhite);
+	XSync (xDisplay, FALSE);
+
+	return xWindow;
 }
 
 void
@@ -316,6 +320,7 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 	}
 
 	XMoveResizeWindow (xDisplay, xWindow, 0, 0, vsink -> get_width (), vsink -> get_height ());
+	XSync (xDisplay, FALSE);
 
 	vsink -> set_window_handle (xWindow);
 }
@@ -435,6 +440,7 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 					height = h;
 		
 					XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
+					XSync (xDisplay, FALSE);
 				}
 			}
 		}
