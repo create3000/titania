@@ -67,11 +67,11 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
+OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
-	                dragDrop (new OutlineDragDrop (this)),
+	                dragDrop (new OutlineDragDrop (outlineEditor, this)),
 	            overUserData (new UserData ()),
 	        selectedUserData (new UserData ()),
 	         matchingContext (),

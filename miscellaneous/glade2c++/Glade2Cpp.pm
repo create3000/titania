@@ -89,7 +89,7 @@ sub getPrototype
 {
 	my ($self, $class, $name) = @_;
 
-	return $self -> {prototypes} {"$class::$name"} if exists $self -> {prototypes} {"$class::$name"};
+	return $self -> {prototypes} {"$class\::$name"} if exists $self -> {prototypes} {"$class\::$name"};
 
 	my @result = `find /usr/include/gtkmm-3.0/gtkmm -name \\*.h -exec grep -I -P 'virtual.*?on_$name\\s*\\(' {} \\;`;
 	my $handler = shift @result;
@@ -330,14 +330,14 @@ sub cpp_signal_handler
 
 	my $prototype = $self -> getPrototype ($attributes {name});
 	$prototype =~ s/on_($attributes{name})/$attributes{handler}/s;
-	$prototype =~ s/\s*virtual\s+(\w+)/\\t$1\\n\\t$self->{class_name}::/s;
+	$prototype =~ s/\s*virtual\s+(\w+)/\\t$1\\n\\t$self->{class_name}\::/s;
 	$prototype =~ s/\(/ (/s;
 
 	my $function  = $self -> getPrototype ($attributes {name});
 	$function =~ s/^\s+//s;
 	$function =~ s/;//s;
 	$function =~ s/on_($attributes{name})/$attributes{handler}/s;
-	$function =~ s/virtual\s+(\w+)\s+/$1\n$self->{class_name}::/s;
+	$function =~ s/virtual\s+(\w+)\s+/$1\n$self->{class_name}\::/s;
 	my $return_type = $1;
 
 	$function .= "\n{\n";
@@ -956,3 +956,345 @@ EventBox::focus_out_event
   virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
 EventBox::key_press_event
   virtual bool on_key_press_event(GdkEventKey* key_event);
+toggled
+  virtual void on_toggled();
+activate
+  virtual void on_activate();
+focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);
+style_updated
+  virtual void on_style_updated();
+button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
+clicked
+  virtual void on_clicked();
+icon_release
+
+page_reordered
+
+switch_page
+  virtual void on_switch_page(Widget* page, guint page_number);
+value_changed
+  virtual void on_value_changed();
+changed
+  virtual void on_selection_changed();
+response
+  virtual void on_response(int response_id);
+delete_text
+  virtual void on_delete_text(int start_pos, int end_pos);
+insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+row_activated
+  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
+map
+  virtual void on_map();
+unmap
+  virtual void on_unmap();
+search_changed
+
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+enter_notify_event
+  virtual bool on_enter_notify_event(GdkEventCrossing* crossing_event);
+file_set
+  virtual void on_file_set();
+edited
+  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
+match_selected
+  virtual bool on_match_selected(const TreeModel::iterator& iter);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+delete_event
+  virtual bool on_delete_event(GdkEventAny* any_event);
+focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+size_allocate
+  virtual void on_size_allocate(Allocation& allocation);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+draw
+  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
+mark_set
+  virtual void on_mark_set(const TextBuffer::iterator& location, const Glib::RefPtr<TextBuffer::Mark>& mark);
+page_reordered
+
+configure_event
+  virtual bool on_configure_event(GdkEventConfigure* configure_event);
+scroll_event
+  virtual bool on_scroll_event(GdkEventScroll* scroll_event);
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+map
+  virtual void on_map();
+unmap
+  virtual void on_unmap();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+clicked
+  virtual void on_clicked();
+map
+  virtual void on_map();
+unmap
+  virtual void on_unmap();
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+row_activated
+  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+delete_text
+  virtual void on_delete_text(int start_pos, int end_pos);
+insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();
+value_changed
+  virtual void on_value_changed();
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+toggled
+  virtual void on_toggled();
+changed
+  virtual void on_selection_changed();
+toggled
+  virtual void on_toggled();
+changed
+  virtual void on_selection_changed();
+toggled
+  virtual void on_toggled();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+enter_notify_event
+  virtual bool on_enter_notify_event(GdkEventCrossing* crossing_event);
+map
+  virtual void on_map();
+unmap
+  virtual void on_unmap();
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+value_changed
+  virtual void on_value_changed();
+file_set
+  virtual void on_file_set();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
+focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+row_activated
+  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+toggled
+  virtual void on_toggled();
+edited
+  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
+row_activated
+  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
+changed
+  virtual void on_selection_changed();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+delete_text
+  virtual void on_delete_text(int start_pos, int end_pos);
+insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+clicked
+  virtual void on_clicked();
+clicked
+  virtual void on_clicked();
+changed
+  virtual void on_selection_changed();
+delete_text
+  virtual void on_delete_text(int start_pos, int end_pos);
+insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+match_selected
+  virtual bool on_match_selected(const TreeModel::iterator& iter);
+map
+  virtual void on_map();
+unmap
+  virtual void on_unmap();
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+row_activated
+  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
+clicked
+  virtual void on_clicked();
+activate
+  virtual void on_activate();
+activate
+  virtual void on_activate();

@@ -33,7 +33,7 @@
   <color name="white"      value="#abb2bf"/>
   <color name="blue"       value="#61afef"/>
   <color name="red"        value="#e06c75"/>
-  <color name="cyan"       value="#e06c75"/>
+  <color name="cyan"       value="#6ce0dd"/>
   <color name="green"      value="#98c379"/>
   <color name="orange"     value="#d19a66"/>
   <color name="magenta"    value="#d19a66"/> <!-- orange -->
@@ -64,69 +64,37 @@
   <style name="def:shebang"                 foreground="blue" bold="true"/>
   <style name="def:doc-comment-element"     italic="true"/>
 
-  <!-- Constants -->
-  <style name="def:constant"                foreground="green"/>
-  <style name="def:special-char"            foreground="yellow"/>
 
   <!-- Identifiers -->
-  <style name="def:identifier"              foreground="cyan"/>
-
   <!-- Statements -->
-  <style name="keyword"                     foreground="violet" bold="true"/>
+  <style name="def:identifier"              foreground="cyan"/>
+  <style name="def:keyword"                 foreground="violet"/> <!--- keyword -->
+  <style name="def:statement"               foreground="red"/> <!--- properties -->
+  <style name="def:builtin"                 foreground="cyan"/> <!--- function -->
 
   <!-- Types -->
-  <style name="def::keyword"                foreground="red"/>
-  <style name="def:boolean"                 foreground="orange"/>
   <style name="def:type"                    foreground="orange"/>
-  <style name="def:special-constant"        foreground="orange"/>
-  <style name="def:special-char"            foreground="yellow"/>
+
+  <!-- Constants -->
+  <style name="def:constant"                foreground="green"/>
+  <style name="def:boolean"                 foreground="orange"/>
+  <style name="def:decimal"                 foreground="yellow"/>
+  <style name="def:base-n-integer"          foreground="yellow"/>
+  <style name="def:floating-point"          foreground="yellow"/>
+  <style name="def:complex"                 foreground="yellow"/>
+  <style name="def:character"               foreground="yellow"/>
   <style name="def:string"                  foreground="green"/>
-  <style name="def:builtin"                 foreground="cyan"/>
-  <style name="def:statement"               foreground="violet"/>
-  <style name="def:error"                   foreground="purple"/>
+  <style name="def:special-char"            foreground="magenta"/>
+  <style name="def:special-constant"        foreground="orange"/>
 
   <!-- Others -->
   <style name="def:preprocessor"            foreground="purple"/>
-  <style name="def:error"                   background="red" bold="true"/>
+  <style name="def:error"                   foreground="purple"/>
   <style name="def:warning"                 background="yellow"/>
   <style name="def:note"                    foreground="blue" background="yellow" bold="true"/>
   <style name="def:underlined"              italic="true" underline="single"/>
 
-  <!-- Heading styles, uncomment to enable -->
-  <!--
-  <style name="def:heading0"                scale="5.0"/>
-  <style name="def:heading1"                scale="2.5"/>
-  <style name="def:heading2"                scale="2.0"/>
-  <style name="def:heading3"                scale="1.7"/>
-  <style name="def:heading4"                scale="1.5"/>
-  <style name="def:heading5"                scale="1.3"/>
-  <style name="def:heading6"                scale="1.2"/>
-  -->
-
-  <!-- Language specific styles -->
-  <style name="diff:added-line"             foreground="#008B8B"/>
-  <style name="diff:removed-line"           foreground="#6A5ACD"/>
-  <style name="diff:changed-line"           use-style="def:preprocessor"/>
-  <style name="diff:special-case"           use-style="def:constant"/>
-  <style name="diff:location"               use-style="def:statement"/>
-  <style name="diff:diff-file"              use-style="def:type"/>
-
-  <style name="xml:tags"                    foreground="cyan"/>
-  <style name="xml:attribute-name"          foreground="violet"/>
-  <style name="xml:namespace"               foreground="green" bold="true"/>
-
   <style name="js:object"                   foreground="orange"/>
   <style name="js:constructors"             foreground="orange"/>
-
-  <style name="latex:display-math"          foreground="#6A5ACD"/>
-  <style name="latex:command"               foreground="#2E8B57" bold="true"/>
-  <style name="latex:include"               use-style="def:preprocessor"/>
-
-  <style name="sh:variable"                 foreground="#6A5ACD"/>
-
-  <!-- legacy styles for old lang files -->
-  <style name="Others"                      foreground="#2E8B57" bold="true"/>
-  <style name="Others 2"                    foreground="#008B8B"/>
-  <style name="Others 3"                    foreground="#6A5ACD"/>
 
 </style-scheme>

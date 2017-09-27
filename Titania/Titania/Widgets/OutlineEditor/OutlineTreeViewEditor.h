@@ -56,6 +56,7 @@
 namespace titania {
 namespace puck {
 
+class OutlineEditor;
 class OutlineDragDrop;
 
 class OutlineTreeViewEditor :
@@ -65,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	OutlineTreeViewEditor (X3DBrowserWindow* const, const X3D::X3DExecutionContextPtr &);
+	OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor);
 
 	virtual
 	~OutlineTreeViewEditor () final override;

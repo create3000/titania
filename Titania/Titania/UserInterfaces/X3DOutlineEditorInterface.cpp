@@ -80,6 +80,11 @@ X3DOutlineEditorInterface::create ()
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("DragActionMenu", m_DragActionMenu);
+	m_builder -> get_widget ("DragMoveMenuItem", m_DragMoveMenuItem);
+	m_builder -> get_widget ("DragCopyMenuItem", m_DragCopyMenuItem);
+	m_builder -> get_widget ("DragLinkMenuItem", m_DragLinkMenuItem);
+	m_builder -> get_widget ("DragCancelMenuItem", m_DragCancelMenuItem);
 	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);

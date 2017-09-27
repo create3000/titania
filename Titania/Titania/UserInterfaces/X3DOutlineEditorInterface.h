@@ -89,6 +89,26 @@ public:
 	{ return m_builder; }
 
 	Gtk::Menu &
+	getDragActionMenu () const
+	{ return *m_DragActionMenu; }
+
+	Gtk::MenuItem &
+	getDragMoveMenuItem () const
+	{ return *m_DragMoveMenuItem; }
+
+	Gtk::MenuItem &
+	getDragCopyMenuItem () const
+	{ return *m_DragCopyMenuItem; }
+
+	Gtk::MenuItem &
+	getDragLinkMenuItem () const
+	{ return *m_DragLinkMenuItem; }
+
+	Gtk::MenuItem &
+	getDragCancelMenuItem () const
+	{ return *m_DragCancelMenuItem; }
+
+	Gtk::Menu &
 	getSceneMenu () const
 	{ return *m_SceneMenu; }
 
@@ -558,6 +578,11 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Menu* m_DragActionMenu;
+	Gtk::MenuItem* m_DragMoveMenuItem;
+	Gtk::MenuItem* m_DragCopyMenuItem;
+	Gtk::MenuItem* m_DragLinkMenuItem;
+	Gtk::MenuItem* m_DragCancelMenuItem;
 	Gtk::Menu* m_SceneMenu;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;

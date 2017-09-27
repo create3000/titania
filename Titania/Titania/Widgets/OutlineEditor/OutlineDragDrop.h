@@ -60,13 +60,14 @@
 namespace titania {
 namespace puck {
 
+class OutlineEditor;
 class OutlineTreeViewEditor;
 
 class OutlineDragDrop
 {
 public:
 
-	OutlineDragDrop (OutlineTreeViewEditor* const);
+	OutlineDragDrop (OutlineEditor* const outlineEditor, OutlineTreeViewEditor* const treeView);
 
 
 private:
@@ -102,31 +103,25 @@ private:
 
 	void
 	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time);
+	                                    int x, int y,
+	                                    const Gtk::SelectionData & selection_data,
+	                                    guint info,
+	                                    guint time);
 
 	void
-	on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time);
+	on_drag_action_activate (const Gdk::DragAction & action);
 
 	void
-	on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time);
+	on_drag_data_base_node_received (const Gdk::DragAction action, int x, int y);
 
-	void
-	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time);
+	bool
+	on_drag_data_base_node_insert_into_node_received (const Gdk::DragAction action, int x, int y);
+
+	bool
+	on_drag_data_base_node_on_field_received (const Gdk::DragAction action, int x, int y);
+
+	bool
+	on_drag_data_base_node_insert_into_array_received (const Gdk::DragAction action, int x, int y);
 
 	void
 	remove_source_node (const X3D::X3DExecutionContextPtr & sourceContext,
@@ -145,11 +140,13 @@ private:
 
 	///  @name Members
 
+	OutlineEditor*         const outlineEditor;
 	OutlineTreeViewEditor* const treeView;
 	Gtk::TreePath                sourcePath;
 	size_t                       sourceId;
 	OutlineIterType              sourceType;
 	size_t                       nodeId;
+	X3D::Vector2i                pointer;
 
 };
 
