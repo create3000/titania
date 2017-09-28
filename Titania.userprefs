@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/gtksourceview-3.0/styles/x_ite.xml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/Library/Prototypes/Engines/Rotor.x3dv">
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="219" Column="1" />
       <File FileName="Titania/share/gtksourceview-3.0/styles/x_ite.xml" Line="92" Column="43" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Engines/Rotor.x3dv" Line="23" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -13,6 +13,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/share/titania/Library/Prototypes/Engines/Rotor.x3dv" line="20" column="26" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

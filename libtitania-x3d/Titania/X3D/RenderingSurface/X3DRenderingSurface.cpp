@@ -108,7 +108,6 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
 
 	frameBuffer -> setup ();
-	frameBuffer -> bind ();
 
 	timeoutDispatcher -> connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
 }
@@ -224,6 +223,8 @@ X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
 		reshapeSignal .emit (x, y, w, h);
 
 		on_timeout ();
+
+		frameBuffer -> unbind ();
 	}
 	catch (const std::exception & error)
 	{
@@ -255,11 +256,15 @@ X3DRenderingSurface::on_timeout ()
 		ContextLock lock (this);
 	
 		timeoutConnection .disconnect ();
+
+		frameBuffer -> bind ();
 	
 		on_render ();
 		renderSignal .emit ();
 
 		queue_draw ();
+
+		frameBuffer -> unbind ();
 	}
 	catch (const std::exception & error)
 	{
@@ -278,6 +283,7 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 
 		ContextLock lock (this);
 
+		frameBuffer -> bind ();
 		frameBuffer -> readPixels (GL_BGRA);
 
 		const auto state   = get_style_context () -> get_state ();
@@ -302,6 +308,8 @@ X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 		                                      margin .get_top (),
 		                                      get_width ()  - margin .get_left () - margin .get_right (),
 		                                      get_height () - margin .get_top ()  - margin .get_bottom ());
+
+		frameBuffer -> unbind ();
 	}
 	catch (const std::exception & error)
 	{
