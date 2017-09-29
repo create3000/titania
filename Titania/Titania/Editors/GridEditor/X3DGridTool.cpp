@@ -164,11 +164,15 @@ X3DGridTool::set_activeLayer ()
 	getTool () -> snapToCenter () .removeInterest (&X3DGridTool::set_snapToCenter, this);
 	getTool () -> snapToCenter () .addInterest (&X3DGridTool::connectSnapToCenter, this);
 
+	getTool () -> collision () .removeInterest (&X3DGridTool::set_collision, this);
+	getTool () -> collision () .addInterest (&X3DGridTool::connectCollision, this);
+
 	getTool () -> isActive () .addInterest (&X3DGridTool::set_active, this);
 
 	getTool () -> enabled ()      = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snap",         X3D::SFBool (true));
 	getTool () -> snapDistance () = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapDistance", X3D::SFDouble (0.25));
 	getTool () -> snapToCenter () = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapToCenter", X3D::SFBool (true));
+	getTool () -> collision ()    = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/collision",    X3D::SFBool (false));
 
 	fromMetadata ();
 }
@@ -323,6 +327,14 @@ X3DGridTool::set_snapToCenter ()
 }
 
 void
+X3DGridTool::set_collision ()
+{
+	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/collision", getTool () -> collision ());
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+void
 X3DGridTool::set_active ()
 {
 	const X3D::MFNode tool = { getTool () };
@@ -430,6 +442,13 @@ X3DGridTool::connectSnapToCenter (const X3D::SFBool & field)
 {
 	field .removeInterest (&X3DGridTool::connectSnapToCenter, this);
 	field .addInterest (&X3DGridTool::set_snapToCenter, this);
+}
+
+void
+X3DGridTool::connectCollision (const X3D::SFBool & field)
+{
+	field .removeInterest (&X3DGridTool::connectCollision, this);
+	field .addInterest (&X3DGridTool::set_collision, this);
 }
 
 void

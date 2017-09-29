@@ -461,7 +461,7 @@ X3DRenderObject::gravite ()
 	{
 		// Terrain following and gravitation
 
-		if (getBrowser () -> getActiveLayer () -> getNavigationInfo () == getNavigationInfo ())
+		if (getBrowser () -> getActiveLayer () == getLayer ())
 		{
 			if (getBrowser () -> getCurrentViewer () not_eq X3DConstants::WalkViewer)
 				return;

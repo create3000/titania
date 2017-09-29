@@ -81,6 +81,7 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	addField (inputOutput, "collision",       collision ());
 	addField (outputOnly,  "isActive",        isActive ());
 
 	dimension ()       = { 5, 16, 10 };

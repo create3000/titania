@@ -258,21 +258,27 @@ X3DGridEditorInterface::create ()
 	m_builder -> get_widget ("AxonometricGridLineColorButton", m_AxonometricGridLineColorButton);
 	m_builder -> get_widget ("AxonometricGridColorBox", m_AxonometricGridColorBox);
 	m_builder -> get_widget ("AxonometricGridColorButton", m_AxonometricGridColorButton);
-	m_builder -> get_widget ("GridSnappingScrolledWindow", m_GridSnappingScrolledWindow);
+	m_builder -> get_widget ("GridAdditonalScrolledWindow", m_GridAdditonalScrolledWindow);
 	m_builder -> get_widget ("GridSnappingExpander", m_GridSnappingExpander);
-	m_builder -> get_widget ("GridEnabledCheckButton", m_GridEnabledCheckButton);
+	m_builder -> get_widget ("GridEnableSnappingCheckButton", m_GridEnableSnappingCheckButton);
 	m_builder -> get_widget ("GridSnapToCenterCheckButton", m_GridSnapToCenterCheckButton);
 	m_builder -> get_widget ("GridSnapDistanceSpinButton", m_GridSnapDistanceSpinButton);
-	m_builder -> get_widget ("AngleSnappingScrolledWindow", m_AngleSnappingScrolledWindow);
+	m_builder -> get_widget ("GridCollisionExpander", m_GridCollisionExpander);
+	m_builder -> get_widget ("GridCollisionCheckButton", m_GridCollisionCheckButton);
+	m_builder -> get_widget ("AngleAdditonalScrolledWindow", m_AngleAdditonalScrolledWindow);
 	m_builder -> get_widget ("AngleSnappingExpander", m_AngleSnappingExpander);
-	m_builder -> get_widget ("AngleEnabledCheckButton", m_AngleEnabledCheckButton);
+	m_builder -> get_widget ("AngleEnableSnappingCheckButton", m_AngleEnableSnappingCheckButton);
 	m_builder -> get_widget ("AngleSnapToCenterCheckButton", m_AngleSnapToCenterCheckButton);
 	m_builder -> get_widget ("AngleSnapDistanceSpinButton", m_AngleSnapDistanceSpinButton);
-	m_builder -> get_widget ("AxonometricGridSnappingScrolledWindow", m_AxonometricGridSnappingScrolledWindow);
+	m_builder -> get_widget ("AngleCollisionExpander", m_AngleCollisionExpander);
+	m_builder -> get_widget ("AngleCollisionCheckButton", m_AngleCollisionCheckButton);
+	m_builder -> get_widget ("AxonometricGridAdditonalScrolledWindow", m_AxonometricGridAdditonalScrolledWindow);
 	m_builder -> get_widget ("AxonometricGridSnappingExpander", m_AxonometricGridSnappingExpander);
-	m_builder -> get_widget ("AxonometricGridEnabledCheckButton", m_AxonometricGridEnabledCheckButton);
+	m_builder -> get_widget ("AxonometricGridEnableSnappingCheckButton", m_AxonometricGridEnableSnappingCheckButton);
 	m_builder -> get_widget ("AxonometricGridSnapToCenterCheckButton", m_AxonometricGridSnapToCenterCheckButton);
 	m_builder -> get_widget ("AxonometricGridSnapDistanceSpinButton", m_AxonometricGridSnapDistanceSpinButton);
+	m_builder -> get_widget ("AxonometricGridCollisiongExpander", m_AxonometricGridCollisiongExpander);
+	m_builder -> get_widget ("AxonometricGridCollsionCheckButton", m_AxonometricGridCollsionCheckButton);
 
 	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_grid_toggled));

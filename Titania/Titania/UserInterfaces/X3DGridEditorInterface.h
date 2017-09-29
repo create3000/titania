@@ -801,16 +801,16 @@ public:
 	{ return *m_AxonometricGridColorButton; }
 
 	Gtk::ScrolledWindow &
-	getGridSnappingScrolledWindow () const
-	{ return *m_GridSnappingScrolledWindow; }
+	getGridAdditonalScrolledWindow () const
+	{ return *m_GridAdditonalScrolledWindow; }
 
 	Gtk::Expander &
 	getGridSnappingExpander () const
 	{ return *m_GridSnappingExpander; }
 
 	Gtk::CheckButton &
-	getGridEnabledCheckButton () const
-	{ return *m_GridEnabledCheckButton; }
+	getGridEnableSnappingCheckButton () const
+	{ return *m_GridEnableSnappingCheckButton; }
 
 	Gtk::CheckButton &
 	getGridSnapToCenterCheckButton () const
@@ -820,17 +820,25 @@ public:
 	getGridSnapDistanceSpinButton () const
 	{ return *m_GridSnapDistanceSpinButton; }
 
+	Gtk::Expander &
+	getGridCollisionExpander () const
+	{ return *m_GridCollisionExpander; }
+
+	Gtk::CheckButton &
+	getGridCollisionCheckButton () const
+	{ return *m_GridCollisionCheckButton; }
+
 	Gtk::ScrolledWindow &
-	getAngleSnappingScrolledWindow () const
-	{ return *m_AngleSnappingScrolledWindow; }
+	getAngleAdditonalScrolledWindow () const
+	{ return *m_AngleAdditonalScrolledWindow; }
 
 	Gtk::Expander &
 	getAngleSnappingExpander () const
 	{ return *m_AngleSnappingExpander; }
 
 	Gtk::CheckButton &
-	getAngleEnabledCheckButton () const
-	{ return *m_AngleEnabledCheckButton; }
+	getAngleEnableSnappingCheckButton () const
+	{ return *m_AngleEnableSnappingCheckButton; }
 
 	Gtk::CheckButton &
 	getAngleSnapToCenterCheckButton () const
@@ -840,17 +848,25 @@ public:
 	getAngleSnapDistanceSpinButton () const
 	{ return *m_AngleSnapDistanceSpinButton; }
 
+	Gtk::Expander &
+	getAngleCollisionExpander () const
+	{ return *m_AngleCollisionExpander; }
+
+	Gtk::CheckButton &
+	getAngleCollisionCheckButton () const
+	{ return *m_AngleCollisionCheckButton; }
+
 	Gtk::ScrolledWindow &
-	getAxonometricGridSnappingScrolledWindow () const
-	{ return *m_AxonometricGridSnappingScrolledWindow; }
+	getAxonometricGridAdditonalScrolledWindow () const
+	{ return *m_AxonometricGridAdditonalScrolledWindow; }
 
 	Gtk::Expander &
 	getAxonometricGridSnappingExpander () const
 	{ return *m_AxonometricGridSnappingExpander; }
 
 	Gtk::CheckButton &
-	getAxonometricGridEnabledCheckButton () const
-	{ return *m_AxonometricGridEnabledCheckButton; }
+	getAxonometricGridEnableSnappingCheckButton () const
+	{ return *m_AxonometricGridEnableSnappingCheckButton; }
 
 	Gtk::CheckButton &
 	getAxonometricGridSnapToCenterCheckButton () const
@@ -859,6 +875,14 @@ public:
 	Gtk::SpinButton &
 	getAxonometricGridSnapDistanceSpinButton () const
 	{ return *m_AxonometricGridSnapDistanceSpinButton; }
+
+	Gtk::Expander &
+	getAxonometricGridCollisiongExpander () const
+	{ return *m_AxonometricGridCollisiongExpander; }
+
+	Gtk::CheckButton &
+	getAxonometricGridCollsionCheckButton () const
+	{ return *m_AxonometricGridCollsionCheckButton; }
 
 	///  @name Signal handlers
 
@@ -1136,21 +1160,27 @@ private:
 	Gtk::Button* m_AxonometricGridLineColorButton;
 	Gtk::Box* m_AxonometricGridColorBox;
 	Gtk::Button* m_AxonometricGridColorButton;
-	Gtk::ScrolledWindow* m_GridSnappingScrolledWindow;
+	Gtk::ScrolledWindow* m_GridAdditonalScrolledWindow;
 	Gtk::Expander* m_GridSnappingExpander;
-	Gtk::CheckButton* m_GridEnabledCheckButton;
+	Gtk::CheckButton* m_GridEnableSnappingCheckButton;
 	Gtk::CheckButton* m_GridSnapToCenterCheckButton;
 	Gtk::SpinButton* m_GridSnapDistanceSpinButton;
-	Gtk::ScrolledWindow* m_AngleSnappingScrolledWindow;
+	Gtk::Expander* m_GridCollisionExpander;
+	Gtk::CheckButton* m_GridCollisionCheckButton;
+	Gtk::ScrolledWindow* m_AngleAdditonalScrolledWindow;
 	Gtk::Expander* m_AngleSnappingExpander;
-	Gtk::CheckButton* m_AngleEnabledCheckButton;
+	Gtk::CheckButton* m_AngleEnableSnappingCheckButton;
 	Gtk::CheckButton* m_AngleSnapToCenterCheckButton;
 	Gtk::SpinButton* m_AngleSnapDistanceSpinButton;
-	Gtk::ScrolledWindow* m_AxonometricGridSnappingScrolledWindow;
+	Gtk::Expander* m_AngleCollisionExpander;
+	Gtk::CheckButton* m_AngleCollisionCheckButton;
+	Gtk::ScrolledWindow* m_AxonometricGridAdditonalScrolledWindow;
 	Gtk::Expander* m_AxonometricGridSnappingExpander;
-	Gtk::CheckButton* m_AxonometricGridEnabledCheckButton;
+	Gtk::CheckButton* m_AxonometricGridEnableSnappingCheckButton;
 	Gtk::CheckButton* m_AxonometricGridSnapToCenterCheckButton;
 	Gtk::SpinButton* m_AxonometricGridSnapDistanceSpinButton;
+	Gtk::Expander* m_AxonometricGridCollisiongExpander;
+	Gtk::CheckButton* m_AxonometricGridCollsionCheckButton;
 
 };
 

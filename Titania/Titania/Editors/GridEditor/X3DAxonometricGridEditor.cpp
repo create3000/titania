@@ -65,7 +65,7 @@ static constexpr int INDICES = 4;
 
 X3DAxonometricGridEditor::X3DAxonometricGridEditor () :
 	X3DGridEditorInterface (),
-	               enabled (this, getAxonometricGridEnabledCheckButton (), "enabled"),
+	               enabled (this, getAxonometricGridEnableSnappingCheckButton (), "enabled"),
 	           translation (this,
 	                        getAxonometricGridTranslationXAdjustment (),
 	                        getAxonometricGridTranslationYAdjustment (),
@@ -201,7 +201,14 @@ X3DAxonometricGridEditor::set_axonometric_grid_visible ()
 {
 	changing = true;
 
-	getAxonometricGridCheckButton () .set_active (getBrowserWindow () -> getAxonometricGridTool () -> getVisible ());
+	const auto visible = getBrowserWindow () -> getAxonometricGridTool () -> getVisible ();
+
+	getAxonometricGridTransformBox ()            .set_sensitive (visible);
+	getAxonometricGridMajorLinesBox ()           .set_sensitive (visible);
+	getAxonometricGridColorsBox ()               .set_sensitive (visible);
+	getAxonometricGridAdditonalScrolledWindow () .set_visible   (visible);
+
+	getAxonometricGridCheckButton () .set_active (visible);
 
 	changing = false;
 }
@@ -213,11 +220,6 @@ X3DAxonometricGridEditor::on_axonometric_grid_toggled ()
 		return;
 
 	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (getAxonometricGridCheckButton () .get_active ());
-
-	getAxonometricGridTransformBox ()           .set_sensitive (getAxonometricGridCheckButton () .get_active ());
-	getAxonometricGridMajorLinesBox ()          .set_sensitive (getAxonometricGridCheckButton () .get_active ());
-	getAxonometricGridColorsBox ()              .set_sensitive (getAxonometricGridCheckButton () .get_active ());
-	getAxonometricGridSnappingScrolledWindow () .set_visible   (getAxonometricGridCheckButton () .get_active ());
 }
 
 void

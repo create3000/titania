@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V3.1.0
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V3.1.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/GridTool.x3dv"
-META "modified" "Wed, 30 Aug 2017 16:12:08 GMT"
+META "modified" "Fri, 29 Sep 2017 09:46:02 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -161,101 +161,103 @@ function set_translation (value)
   title "GridTool"
 }
 
-DEF GridTool Collision {
+DEF Grid_1 Collision {
   enabled FALSE
-  children [
-    DEF Grid_1 TouchGroup {
-      enabled FALSE
-      children DEF _1 Grid {
-        transparency 0.8
+  children TouchGroup {
+    enabled FALSE
+    children DEF _1 Grid {
+      transparency 0.8
+    }
+  }
+}
+
+DEF Handles Collision {
+  enabled FALSE
+  children DEF _2 Transform {
+    children [
+      DEF Center Transform {
+        children [
+          DEF _3 PlaneSensor {
+            axisRotation 1 0 0 1.5708
+            autoOffset FALSE
+          }
+          DEF _4 Transform {
+            children ScreenGroup {
+              children DEF Sphere Transform {
+                scale 4 4 4
+                children Shape {
+                  appearance DEF _5 Appearance {
+                    material Material {
+                      diffuseColor 1 0.7 0
+                    }
+                    shaders ToolShader { }
+                  }
+                  geometry Sphere { }
+                }
+              }
+            }
+          }
+        ]
       }
-    }
-    DEF _2 Transform {
-      children [
-        DEF Center Transform {
-          children [
-            DEF _3 PlaneSensor {
-              axisRotation 1 0 0 1.5708
-              autoOffset FALSE
-            }
-            DEF _4 Transform {
-              children ScreenGroup {
-                children DEF Sphere Transform {
-                  scale 4 4 4
-                  children Shape {
-                    appearance DEF _5 Appearance {
-                      material Material {
-                        diffuseColor 1 0.7 0
-                      }
-                      shaders ToolShader { }
-                    }
-                    geometry Sphere { }
+      DEF DimensionHandle Transform {
+        children [
+          DEF _6 PlaneSensor {
+            axisRotation 1 0 0 1.5708
+            autoOffset FALSE
+            offset 5 0 5
+          }
+          DEF _7 Transform {
+            translation 5 0 5
+            children ScreenGroup {
+              children DEF Edge Transform {
+                scale 3 3 3
+                children Shape {
+                  appearance USE _5
+                  geometry Extrusion {
+                    convex FALSE
+                    crossSection [
+                      1 1,
+                      1 -5,
+                      -1 -5,
+                      -1 -1,
+                      -5 -1,
+                      -5 1,
+                      1 1
+                    ]
+                    spine [
+                      0 -1 0,
+                      0 1 0
+                    ]
                   }
                 }
               }
             }
-          ]
-        }
-        DEF DimensionHandle Transform {
-          children [
-            DEF _6 PlaneSensor {
-              axisRotation 1 0 0 1.5708
-              autoOffset FALSE
-              offset 5 0 5
-            }
-            DEF _7 Transform {
-              translation 5 0 5
-              children ScreenGroup {
-                children DEF Edge Transform {
-                  scale 3 3 3
-                  children Shape {
-                    appearance USE _5
-                    geometry Extrusion {
-                      convex FALSE
-                      crossSection [
-                        1 1,
-                        1 -5,
-                        -1 -5,
-                        -1 -1,
-                        -5 -1,
-                        -5 1,
-                        1 1
-                      ]
-                      spine [
-                        0 -1 0,
-                        0 1 0
-                      ]
-                    }
-                  }
+          }
+        ]
+      }
+      DEF ScaleHandle Transform {
+        children [
+          DEF _8 PlaneSensor {
+            axisRotation 1 0 0 1.5708
+            autoOffset FALSE
+            offset 5 0 -5
+          }
+          DEF _9 Transform {
+            translation 5 0 -5
+            children ScreenGroup {
+              children DEF Box Transform {
+                scale 3 3 3
+                children Shape {
+                  appearance USE _5
+                  geometry Box { }
                 }
               }
             }
-          ]
-        }
-        DEF ScaleHandle Transform {
-          children [
-            DEF _8 PlaneSensor {
-              axisRotation 1 0 0 1.5708
-              autoOffset FALSE
-              offset 5 0 -5
-            }
-            DEF _9 Transform {
-              translation 5 0 -5
-              children ScreenGroup {
-                children DEF Box Transform {
-                  scale 3 3 3
-                  children Shape {
-                    appearance USE _5
-                    geometry Box { }
-                  }
-                }
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+          }
+        ]
+      }
+    ]
+  }
 }
 
 DEF DimensionScript Script {
@@ -359,6 +361,7 @@ DEF Tool Script {
   inputOutput SFFloat    lineTransparency 0.8
   inputOutput SFColor    majorLineColor 1 0.7 0.7
   inputOutput SFFloat    majorLineTransparency 0.6
+  inputOutput SFBool     collision FALSE
   inputOutput SFBool     isActive FALSE
 
   url "ecmascript:
@@ -402,5 +405,6 @@ ROUTE _3.isActive TO Tool.set_isActive
 ROUTE _6.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
 ROUTE Tool.rotation_changed TO _2.set_rotation
+ROUTE Tool.collision_changed TO Grid_1.set_enabled
 
 EXPORT Tool

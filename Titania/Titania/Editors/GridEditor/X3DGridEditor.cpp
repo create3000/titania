@@ -65,7 +65,7 @@ static constexpr int INDICES = 3;
 
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
-	               enabled (this, getGridEnabledCheckButton (), "enabled"),
+	               enabled (this, getGridEnableSnappingCheckButton (), "enabled"),
 	           translation (this,
 	                        getGridTranslationXAdjustment (),
 	                        getGridTranslationYAdjustment (),
@@ -104,6 +104,7 @@ X3DGridEditor::X3DGridEditor () :
 	                        "majorLineColor"),
 	          snapDistance (this, getGridSnapDistanceAdjustment (), getGridSnapDistanceSpinButton (), "snapDistance"),
 	          snapToCenter (this, getGridSnapToCenterCheckButton (), "snapToCenter"),
+	             collision (this, getGridCollisionCheckButton (), "collision"),
 	              undoStep (),
 	              changing (false)
 {
@@ -150,6 +151,7 @@ X3DGridEditor::initialize ()
 	majorLineColor   .setNodes (gridTools);
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
+	collision        .setNodes (gridTools);
 
 	getBrowserWindow () -> getGridTool () -> getVisible () .addInterest (&X3DGridEditor::set_grid_visible, this);
 
@@ -175,7 +177,14 @@ X3DGridEditor::set_grid_visible ()
 {
 	changing = true;
 
-	getGridCheckButton () .set_active (getBrowserWindow () -> getGridTool () -> getVisible ());
+	const auto visible = getBrowserWindow () -> getGridTool () -> getVisible ();
+
+	getGridCheckButton () .set_active (visible);
+
+	getGridTransformBox ()            .set_sensitive (visible);
+	getGridMajorLinesBox ()           .set_sensitive (visible);
+	getGridColorsBox ()               .set_sensitive (visible);
+	getGridAdditonalScrolledWindow () .set_visible   (visible);
 
 	changing = false;
 }
@@ -187,11 +196,6 @@ X3DGridEditor::on_grid_toggled ()
 		return;
 
 	getBrowserWindow () -> getGridTool () -> setVisible (getGridCheckButton () .get_active ());
-
-	getGridTransformBox ()           .set_sensitive (getGridCheckButton () .get_active ());
-	getGridMajorLinesBox ()          .set_sensitive (getGridCheckButton () .get_active ());
-	getGridColorsBox ()              .set_sensitive (getGridCheckButton () .get_active ());
-	getGridSnappingScrolledWindow () .set_visible   (getGridCheckButton () .get_active ());
 }
 
 void

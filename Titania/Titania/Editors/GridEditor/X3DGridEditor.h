@@ -157,6 +157,7 @@ private:
 	SFColorRGBAButton                  majorLineColor;
 	X3DFieldAdjustment <X3D::SFDouble> snapDistance;
 	X3DFieldToggleButton <X3D::SFBool> snapToCenter;
+	X3DFieldToggleButton <X3D::SFBool> collision;
 	X3D::UndoStepPtr                   undoStep;
 	bool                               changing;
 

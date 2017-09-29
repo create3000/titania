@@ -87,6 +87,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	addField (inputOutput, "collision",       collision ());
 	addField (outputOnly,  "isActive",        isActive ());
 
 	angle () .setUnit (UnitCategory::ANGLE);

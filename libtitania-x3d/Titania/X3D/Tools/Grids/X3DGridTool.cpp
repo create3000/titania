@@ -69,6 +69,7 @@ X3DGridTool::Fields::Fields () :
 	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
 	   snapToCenter (new SFBool (true)),
 	   snapDistance (new SFDouble (0.25)),
+	      collision (new SFBool ()),
 	       isActive (new SFBool (true))
 { }
 
@@ -146,6 +147,7 @@ X3DGridTool::realize ()
 		set_majorLineOffset .addInterest (majorLineOffset ());
 		set_majorLineOffset .addEventObject (majorLineOffset ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
+		collision () .addInterest (getToolNode () -> getField <SFBool> ("collision"));
 		getToolNode () -> getField <SFBool> ("isActive") .addInterest (isActive ());
 
 		color ()          .addInterest (&X3DGridTool::set_color, this);

@@ -172,6 +172,14 @@ public:
 	{ return *fields .snapDistance; }
 
 	SFBool &
+	collision ()
+	{ return *fields .collision; }
+
+	const SFBool &
+	collision () const
+	{ return *fields .collision; }
+
+	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
 
@@ -272,6 +280,7 @@ private:
 		SFColorRGBA* const majorLineColor;
 		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
+		SFBool* const collision;
 		SFBool* const isActive;
 	};
 

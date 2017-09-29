@@ -1778,7 +1778,6 @@
     <Folder Include="Titania\X3D\Tools\Text\" />
     <Folder Include="Titania\X3D\Tools\Geometry2D\" />
     <Folder Include="Titania\X3D\Tools\NURBS\" />
-    <Folder Include="share\titania\ui\" />
     <Folder Include="Titania\X3D\RenderingSurface\" />
     <Folder Include="Titania\X3D\Components\VolumeRendering\" />
     <Folder Include="Titania\X3D\Browser\EnvironmentalEffects\" />

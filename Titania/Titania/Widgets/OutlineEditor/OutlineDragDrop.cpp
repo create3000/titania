@@ -529,8 +529,8 @@ OutlineDragDrop::on_drag_data_base_node_received (const Gdk::DragAction action, 
 		return;
 
 	// With bool and on_drag_data_base_node_insert_into_array_received this will not work.
-	if (on_drag_data_base_node_insert_into_node_received (action, x, y))
-		return;
+	//if (on_drag_data_base_node_insert_into_node_received (action, x, y))
+	//	return;
 
 	if (on_drag_data_base_node_on_field_received (action, x, y))
 		return;

@@ -1812,8 +1812,16 @@ BrowserWindow::set_grid_visible ()
 {
 	changing = true;
 
-	getGridLayoutToolMenuItem ()        .set_active (getGridTool () -> getVisible ());
-	getBrowserGridLayoutToolMenuItem () .set_active (getGridTool () -> getVisible ());
+	const auto visible = getGridTool () -> getVisible ();
+
+	if (visible)
+	{
+		getAngleGridTool ()       -> setVisible (false);
+		getAxonometricGridTool () -> setVisible (false);
+	}
+
+	getGridLayoutToolMenuItem ()        .set_active (visible);
+	getBrowserGridLayoutToolMenuItem () .set_active (visible);
 
 	changing = false;
 }
@@ -1823,8 +1831,16 @@ BrowserWindow::set_angle_grid_visible ()
 {
 	changing = true;
 
-	getAngleLayoutToolMenuItem ()        .set_active (getAngleGridTool () -> getVisible ());
-	getBrowserAngleLayoutToolMenuItem () .set_active (getAngleGridTool () -> getVisible ());
+	const auto visible = getAngleGridTool () -> getVisible ();
+
+	if (visible)
+	{
+		getGridTool ()            -> setVisible (false);
+		getAxonometricGridTool () -> setVisible (false);
+	}
+
+	getAngleLayoutToolMenuItem ()        .set_active (visible);
+	getBrowserAngleLayoutToolMenuItem () .set_active (visible);
 
 	changing = false;
 }
@@ -1834,8 +1850,16 @@ BrowserWindow::set_axonometric_grid_visible ()
 {
 	changing = true;
 
-	getAxonometricGridLayoutToolMenuItem ()        .set_active (getAxonometricGridTool () -> getVisible ());
-	getBrowserAxonometricGridLayoutToolMenuItem () .set_active (getAxonometricGridTool () -> getVisible ());
+	const auto visible = getAxonometricGridTool () -> getVisible ();
+
+	if (visible)
+	{
+		getGridTool ()      -> setVisible (false);
+		getAngleGridTool () -> setVisible (false);
+	}
+
+	getAxonometricGridLayoutToolMenuItem ()        .set_active (visible);
+	getBrowserAxonometricGridLayoutToolMenuItem () .set_active (visible);
 
 	changing = false;
 }
@@ -1845,9 +1869,6 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 {
 	if (changing)
 		return;
-
-	getAngleGridTool ()           -> setVisible (false);
-	getAxonometricGridTool () -> setVisible (false);
 
 	// Toggle grid.
 
@@ -1862,9 +1883,6 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 	if (changing)
 		return;
 
-	getGridTool ()            -> setVisible (false);
-	getAxonometricGridTool () -> setVisible (false);
-
 	// Toggle angle grid.
 
 	getAngleGridTool () -> setVisible (getAngleLayoutToolMenuItem () .get_active ());
@@ -1877,9 +1895,6 @@ BrowserWindow::on_axonometric_layout_tool_toggled ()
 {
 	if (changing)
 		return;
-
-	getGridTool ()  -> setVisible (false);
-	getAngleGridTool () -> setVisible (false);
 
 	// Toggle axonometric grid.
 

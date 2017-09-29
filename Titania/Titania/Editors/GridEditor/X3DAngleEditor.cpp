@@ -62,7 +62,7 @@ static constexpr int INDICES = 3;
 
 X3DAngleEditor::X3DAngleEditor () :
 	X3DGridEditorInterface (),
-	               enabled (this, getAngleEnabledCheckButton (), "enabled"),
+	               enabled (this, getAngleEnableSnappingCheckButton (), "enabled"),
 	           translation (this,
 	                        getAngleTranslationXAdjustment (),
 	                        getAngleTranslationYAdjustment (),
@@ -172,7 +172,14 @@ X3DAngleEditor::set_angle_grid_visible ()
 {
 	changing = true;
 
-	getAngleCheckButton () .set_active (getBrowserWindow () -> getAngleGridTool () -> getVisible ());
+	const auto visible = getBrowserWindow () -> getAngleGridTool () -> getVisible ();
+
+	getAngleTransformBox ()            .set_sensitive (visible);
+	getAngleMajorLinesBox ()           .set_sensitive (visible);
+	getAngleColorsBox ()               .set_sensitive (visible);
+	getAngleAdditonalScrolledWindow () .set_visible   (visible);
+
+	getAngleCheckButton () .set_active (visible);
 
 	changing = false;
 }
@@ -184,11 +191,6 @@ X3DAngleEditor::on_angle_toggled ()
 		return;
 
 	getBrowserWindow () -> getAngleGridTool () -> setVisible (getAngleCheckButton () .get_active ());
-
-	getAngleTransformBox ()           .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleMajorLinesBox ()          .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleColorsBox ()              .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleSnappingScrolledWindow () .set_visible   (getAngleCheckButton () .get_active ());
 }
 
 void

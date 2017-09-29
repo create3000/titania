@@ -160,6 +160,10 @@ protected:
 	
 	virtual
 	void
+	set_collision ();
+	
+	virtual
+	void
 	set_active ();
 
 
@@ -213,6 +217,9 @@ private:
 	
 	void
 	connectSnapToCenter (const X3D::SFBool &);
+	
+	void
+	connectCollision (const X3D::SFBool &);
 
 	///  @name Members
 
