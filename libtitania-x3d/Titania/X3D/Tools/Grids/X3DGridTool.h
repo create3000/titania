@@ -251,6 +251,9 @@ private:
 	getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d &, const Matrix4d, const Vector3d &) const;
 
 	void
+	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
+
+	void
 	connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool);
 
 	void

@@ -285,7 +285,6 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		Matrix4d snap;
 		snap .set (getSnapPosition (position * inverse (grid)) * grid - position);
 	
-		const auto matrix        = master -> getMatrix () * master -> getTransformationMatrix ();
 		const auto currentMatrix = absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
 	
 		if (master -> getKeepCenter ())
@@ -298,34 +297,9 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		master -> translation () .removeInterest (&X3DGridTool::set_translation, this);
 		master -> translation () .addInterest (&X3DGridTool::connectTranslation, this, master);
 	
-		// Apply translation to translation group.
-	
-		if (master -> grouping ())
-		{
-			const auto differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
-		
-			for (const auto & tool : getBrowser () -> getTransformTools ())
-			{
-				try
-				{
-					if (tool == master)
-						continue;
-	
-					if (not tool -> grouping ())
-						continue;
-			
-					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-	
-					if (tool -> translation () .getTainted ())
-					{
-						tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-						tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
-					}
-				}
-				catch (const std::exception &)
-				{ }
-			}
-		}
+		// Apply transformation to transformation group.
+
+		setTransformGroup (master, absoluteMatrix * snap);
 	}
 	catch (const std::exception &)
 	{ }
@@ -423,34 +397,9 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		master -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
 		master -> rotation () .addInterest (&X3DGridTool::connectRotation, this, master);
 	
-		// Apply translation to translation group.
-	
-		if (master -> grouping ())
-		{
-			const auto differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
-		
-			for (const auto & tool : getBrowser () -> getTransformTools ())
-			{
-				try
-				{
-					if (tool == master)
-						continue;
-	
-					if (not tool -> grouping ())
-						continue;
-		
-					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-	
-					if (tool -> translation () .getTainted ())
-					{
-						tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-						tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
-					}
-				}
-				catch (const std::exception &)
-				{ }
-			}
-		}
+		// Apply transformation to transformation group.
+
+		setTransformGroup (master, currentMatrix * master -> getTransformationMatrix ());
 	}
 	catch (const std::exception &)
 	{ }
@@ -475,7 +424,6 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 	
 		const auto currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
-		const auto matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 	
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
@@ -487,34 +435,9 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		master -> scale () .removeInterest (&X3DGridTool::set_scale, this);
 		master -> scale () .addInterest (&X3DGridTool::connectScale, this, master);
 	
-		// Apply translation to translation group.
+		// Apply transformation to transformation group.
 
-		if (master -> grouping ())
-		{
-			const auto differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
-		
-			for (const auto & tool : getBrowser () -> getTransformTools ())
-			{
-				try
-				{
-					if (tool == master)
-						continue;
-	
-					if (not tool -> grouping ())
-						continue;
-	
-					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-	
-					if (tool -> scale () .getTainted ())
-					{
-						tool -> scale () .removeInterest (&X3DGridTool::set_scale, this);
-						tool -> scale () .addInterest (&X3DGridTool::connectScale, this, tool);
-					}
-				}
-				catch (const std::exception &)
-				{ }
-			}
-		}
+		setTransformGroup (master, currentMatrix * master -> getTransformationMatrix ());
 	}
 	catch (const std::exception &)
 	{ }
@@ -698,6 +621,39 @@ X3DGridTool::getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const 
 	translation .set (distanceFromCenter - scaledMatrix .mult_dir_matrix (distanceFromCenter));
 
 	return translation;
+}
+
+/// Apply transformation to transformation group.
+void
+X3DGridTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix)
+{
+	if (not master -> grouping ())
+		return;
+
+	if (not master -> transformationGroup ())
+		return;
+
+	const auto groupMatrix      = master -> getGroupMatrix () * master -> getTransformationMatrix ();
+	const auto differenceMatrix = inverse (groupMatrix) * snapMatrix;
+
+	for (const auto & tool : getBrowser () -> getTransformTools ())
+	{
+		try
+		{
+			if (tool == master)
+				continue;
+
+			if (not tool -> grouping ())
+				continue;
+
+			if (not tool -> transformationGroup ())
+				continue;
+
+			tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+		}
+		catch (const std::exception &)
+		{ }
+	}
 }
 
 void

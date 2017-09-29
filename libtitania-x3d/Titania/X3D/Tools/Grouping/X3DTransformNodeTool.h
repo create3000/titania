@@ -127,6 +127,7 @@ public:
 
 	///  @name Hidden fields
 
+	/// If true, this node takes part can be transform group leader.
 	SFBool &
 	grouping ()
 	{ return *fields .grouping; }
@@ -135,6 +136,7 @@ public:
 	grouping () const
 	{ return *fields .grouping; }
 
+	/// Available tool.
 	MFString &
 	tools ()
 	{ return *fields .tools; }
@@ -143,6 +145,7 @@ public:
 	tools () const
 	{ return *fields .tools; }
 
+	/// 
 	SFBool &
 	scaleXAxis ()
 	{ return *fields .scaleXAxis; }
@@ -247,6 +250,16 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	/// If true, this node is part of a tranformation group.
+	SFBool &
+	transformationGroup ()
+	{ return *fields .transformationGroup; }
+
+	const SFBool &
+	transformationGroup () const
+	{ return *fields .transformationGroup; }
+
+	/// If true, if the user has actived (clicked) on of the handles.
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
@@ -255,6 +268,7 @@ public:
 	isActive () const
 	{ return *fields .isActive; }
 
+	/// Send if the tool was touched by the user.
 	SFTime &
 	touchTime ()
 	{ return *fields .touchTime; }
@@ -297,6 +311,10 @@ public:
 	const Matrix4d &
 	getTransformationMatrix () const
 	{ return transformationMatrix; }
+
+	const Matrix4d &
+	getGroupMatrix () const
+	{ return groupMatrix; }
 
 	ToolType
 	getActiveTool () const
@@ -349,6 +367,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_transformationGroup ();
+
+	void
 	set_tools ();
 
 	void
@@ -373,6 +394,7 @@ private:
 		Fields ();
 
 		SFBool* const grouping;
+		SFBool* const transformationGroup;
 		MFString* const tools;
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;
@@ -395,7 +417,7 @@ private:
 	
 	std::set <ToolType> availableTools;
 	Matrix4d            transformationMatrix;
-	Matrix4d            matrix;
+	Matrix4d            groupMatrix;
 	UndoMatrix          undoMatrix;
 	bool                changing;
 

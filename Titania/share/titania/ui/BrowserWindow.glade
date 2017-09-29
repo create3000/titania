@@ -2,17 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkToggleAction" id="AngleGridAction">
-    <property name="label" translatable="yes">_Browser</property>
-    <property name="short_label" translatable="yes">_Browser</property>
-    <property name="draw_as_radio">True</property>
-    <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="AxonometricAction">
-    <property name="label" translatable="yes">_Browser</property>
-    <property name="short_label" translatable="yes">_Browser</property>
-    <property name="draw_as_radio">True</property>
-  </object>
   <object class="GtkToggleAction" id="BrowserAction">
     <property name="label" translatable="yes">_Browser</property>
     <property name="draw_as_radio">True</property>
@@ -52,12 +41,6 @@
     <property name="label" translatable="yes">_Gouraud</property>
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_gouraud_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="GridAction">
-    <property name="label" translatable="yes">_Browser</property>
-    <property name="short_label" translatable="yes">_Browser</property>
-    <property name="draw_as_radio">True</property>
-    <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
   </object>
   <object class="GtkMenu" id="HistoryMenu">
     <property name="visible">True</property>
@@ -3023,27 +3006,26 @@
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
-                                <property name="related_action">GridAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                                 <property name="use_underline">True</property>
+                                <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
                                 <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AngleLayoutToolMenuItem">
-                                <property name="related_action">AngleGridAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                                 <property name="use_underline">True</property>
+                                <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
                                 <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AxonometricGridLayoutToolMenuItem">
-                                <property name="related_action">AxonometricAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
