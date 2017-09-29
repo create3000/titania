@@ -190,10 +190,15 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 {
 	if (pageDependent)
 	{
+		const bool exists = this -> getBrowserWindow () -> getCurrentPage () -> hasDialog (name);
+
 		auto page = this -> getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
 
-		page -> setName (this -> getName () + "." + page -> getName ());
-		page -> reparent (*boxes .at (name), this -> getWindow ());
+		if (not exists)
+		{
+			page -> setName (this -> getName () + "." + page -> getName ());
+			page -> reparent (*boxes .at (name), this -> getWindow ());
+		}
 
 		return std::dynamic_pointer_cast <Type> (page);
 	}

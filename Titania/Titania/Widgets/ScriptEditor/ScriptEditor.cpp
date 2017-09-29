@@ -92,6 +92,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	getTextView () .get_style_context () -> add_class ("titania-console");
+	getTextView () .set_focus_on_click (true);
 	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
 	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());

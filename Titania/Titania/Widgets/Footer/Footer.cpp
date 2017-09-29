@@ -67,6 +67,7 @@ Footer::Footer (X3DBrowserWindow* const browserWindow) :
 	X3DNotebook <X3DFooterInterface> ()
 {
 	setPageDependent (true);
+
 	addPage ("Console",         getConsoleBox         ());
 	addPage ("ScriptEditor",    getScriptEditorBox    ());
 	addPage ("RouteGraph",      getRouteGraphBox      ());
