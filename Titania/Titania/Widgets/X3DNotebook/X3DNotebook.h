@@ -124,6 +124,12 @@ protected:
 
 private:
 
+	///  @name Member access
+
+	template <class Type>
+	std::shared_ptr <Type>
+	getDependentPage (const std::string & name) const;
+
 	///  @name Event handlers
 
 	void
@@ -189,25 +195,31 @@ std::shared_ptr <Type>
 X3DNotebook <Interface>::getPage (const std::string & name) const
 {
 	if (pageDependent)
-	{
-		const bool exists = this -> getBrowserWindow () -> getCurrentPage () -> hasDialog (name);
+		return this -> getDependentPage <Type> (name);
 
-		auto page = this -> getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
-
-		if (not exists)
-		{
-			page -> setName (this -> getName () + "." + page -> getName ());
-			page -> reparent (*boxes .at (name), this -> getWindow ());
-		}
-
-		return std::dynamic_pointer_cast <Type> (page);
-	}
-
-	auto & page = const_cast <Pages &> (pages) .at (name);
+	auto & page = const_cast <X3DNotebook*> (this) -> pages .at (name);
 
 	if (not page)
 	{
 		page = this -> createDialog (name);
+		page -> setName (this -> getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), this -> getWindow ());
+	}
+
+	return std::dynamic_pointer_cast <Type> (page);
+}
+
+template <class Interface>
+template <class Type>
+std::shared_ptr <Type>
+X3DNotebook <Interface>::getDependentPage (const std::string & name) const
+{
+	const bool exists = this -> getBrowserWindow () -> getCurrentPage () -> hasDialog (name);
+
+	auto page = this -> getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
+
+	if (not exists)
+	{
 		page -> setName (this -> getName () + "." + page -> getName ());
 		page -> reparent (*boxes .at (name), this -> getWindow ());
 	}
