@@ -365,16 +365,18 @@ GeometryPropertiesEditor::on_color_changed ()
 	   {
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »color«"));
 
-		   X3D::X3DPtr <X3D::X3DColorNode> node (getCurrentContext () -> createNode (getColorTypeButton () .get_active_text ()));
+		   X3D::X3DPtr <X3D::X3DColorNode> node;
 
-			if (colorNodes .size () and node -> getType () .back () == X3D::X3DConstants::Color)
-				node = X3D::X3DPtr <X3D::X3DColorNode> (colorNodes .back ());
+			if (colorNodes .size () and getColorTypeButton () .get_active_text () == colorNodes .back () -> getTypeName ())
+				node = colorNodes .back ();
 
-			else if (colorRGBANodes .size () and node -> getType () .back () == X3D::X3DConstants::ColorRGBA)
-				node = X3D::X3DPtr <X3D::X3DColorNode> (colorRGBANodes .back ());
+			else if (colorRGBANodes .size () and getColorTypeButton () .get_active_text () == colorRGBANodes .back () -> getTypeName ())
+				node = colorNodes .back ();
 
 			else
 			{
+				node = getCurrentContext () -> createNode (getColorTypeButton () .get_active_text ());
+
 				// Assign and convert existing color node if switched from Color to ColorRGBA or back.
 
 				if (colorNodes .size () and node -> getType () .back () == X3D::X3DConstants::ColorRGBA)
@@ -451,8 +453,11 @@ GeometryPropertiesEditor::set_color_buffer ()
 {
 	changing = true;
 
-	colorNodes     = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::Color });
-	colorRGBANodes = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::ColorRGBA });
+	colorNodes     = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::Color });
+	colorRGBANodes = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::ColorRGBA });
+
+	const auto colorClones     = std::count_if (colorNodes .begin (),     colorNodes .end (),     [&] (const X3D::SFNode & node) { return node == colorNodes     .back (); });
+	const auto colorRGBAClones = std::count_if (colorRGBANodes .begin (), colorRGBANodes .end (), [&] (const X3D::SFNode & node) { return node == colorRGBANodes .back (); });
 
 	size_t numColorFields    = 0;
 	size_t numColorNodes     = 0;
@@ -481,28 +486,28 @@ GeometryPropertiesEditor::set_color_buffer ()
 
 	getColorsBox () .set_visible (not geometryNodes .empty () and numColorFields == geometryNodes .size ());
 
-	if (numColorNodes == geometryNodes .size ())
+	if (colorClones and colorClones == colorNodes .size ())
 	{
 		// Color
 		getColorTypeButton ()   .set_active (1);
 		getColorUnlinkButton () .set_sensitive (colorNodes .size () == 1 and colorNodes .back () -> getCloneCount () > 1);
 	}
-	else if (numColorRGBANodes == geometryNodes .size ())
+	else if (colorRGBAClones and colorRGBAClones == colorRGBANodes .size ())
 	{
 		// ColorRGBA
 		getColorTypeButton ()   .set_active (2);
 		getColorUnlinkButton () .set_sensitive (colorRGBANodes .size () == 1 and colorRGBANodes .back () -> getCloneCount () > 1);
 	}
-	else if (numColorNodes or numColorRGBANodes)
+	else if (colorNodes .empty () and colorRGBANodes .empty ())
 	{
-		// Inconsitent
-		getColorTypeButton ()   .set_active (-1);
+		// None
+		getColorTypeButton ()   .set_active (0);
 		getColorUnlinkButton () .set_sensitive (false);
 	}
 	else
 	{
-		// None
-		getColorTypeButton ()   .set_active (0);
+		// Inconsitent
+		getColorTypeButton ()   .set_active (-1);
 		getColorUnlinkButton () .set_sensitive (false);
 	}
 

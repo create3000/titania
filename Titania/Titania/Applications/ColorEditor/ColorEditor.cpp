@@ -581,7 +581,6 @@ ColorEditor::on_remove_clicked ()
 	geometry -> colorIndex () .clear ();
 
 	X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), nullptr, undoStep);
-	X3D::X3DEditor::requestUpdateInstances (geometry, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -608,25 +607,60 @@ ColorEditor::on_apply_clicked ()
 
 	if (previewColor -> isTransparent ())
 	{
-		const auto color = geometry -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+		bool reuseColor = false;
+	
+		auto color = X3D::X3DPtr <X3D::ColorRGBA> ();
 
-		color -> color () = previewColor -> color ();
+		if (geometry -> color () and geometry -> color () -> isType ({ X3D::X3DConstants::ColorRGBA }))
+		{
+			reuseColor = true;
+
+			color = geometry -> getColor ();
+		}
+		else
+			color = geometry -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
+
+		if (reuseColor)
+		{
+			undoStep -> addObjects (color);
+			undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), color -> color ());
+		}
+
+		color -> assign (previewColor);
+
+		if (reuseColor)
+			undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (color -> color ()), color -> color ());
 
 		X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
 	}
 	else
 	{
-		const auto color = geometry -> getExecutionContext () -> createNode <X3D::Color> ();
+		bool reuseColor = false;
+	
+		auto color = X3D::X3DPtr <X3D::Color> ();
 
-		for (const auto & c : previewColor -> color ())
-			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
+		if (geometry -> color () and geometry -> color () -> isType ({ X3D::X3DConstants::Color }))
+		{
+			reuseColor = true;
+
+			color = geometry -> getColor ();
+		}
+		else
+			color = geometry -> getExecutionContext () -> createNode <X3D::Color> ();
+
+		if (reuseColor)
+		{
+			undoStep -> addObjects (color);
+			undoStep -> addUndoFunction (&X3D::MFColor::setValue, std::ref (color -> color ()), color -> color ());
+		}
+
+		color -> assign (previewColor);
+
+		if (reuseColor)
+			undoStep -> addRedoFunction (&X3D::MFColor::setValue, std::ref (color -> color ()), color -> color ());
 
 		X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
 	}
-
-	geometry -> getExecutionContext () -> realize ();
-
-	X3D::X3DEditor::requestUpdateInstances (geometry, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -941,8 +975,7 @@ ColorEditor::set_colorIndex ()
 			}
 		}
 
-		for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
-			previewColor -> color () .emplace_back (colorNode -> get1Color (i));
+		previewColor -> assign (colorNode);
 	}
 	else
 	{
