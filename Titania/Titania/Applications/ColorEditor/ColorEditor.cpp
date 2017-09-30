@@ -589,7 +589,7 @@ void
 ColorEditor::on_apply_clicked ()
 {
 	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
-	const auto colorPerVertex = isColorPerVertex (previewGeometry);
+	const auto colorPerVertex = previewGeometry -> isColorPerVertex ();
 
 	geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);
 	geometry -> colorIndex () .addInterest (&ColorEditor::connectColorIndex, this);
@@ -663,106 +663,13 @@ ColorEditor::on_apply_clicked ()
 
 	// colorIndex
 
-	const auto colorIndex = getColorIndex (previewGeometry, colorPerVertex);
+	const auto colorIndex = previewGeometry -> getColorIndex (colorPerVertex);
 
 	undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), geometry -> colorIndex ());
 	undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), colorIndex);
 	geometry -> colorIndex () = colorIndex;
 
 	getBrowserWindow () -> addUndoStep (undoStep);
-}
-
-X3D::MFInt32
-ColorEditor::getColorIndex (const X3D::X3DPtr <X3D::IndexedFaceSet> & geometry, const bool colorPerVertex)
-{
-	if (colorPerVertex == geometry -> colorPerVertex ())
-		return geometry -> colorIndex ();
-
-	X3D::MFInt32 colorIndex;
-
-	if (colorPerVertex)
-	{
-		// colorPerFace to colorPerVertex
-
-		size_t face = 0;
-
-		for (const auto & index : geometry -> coordIndex ())
-		{
-			if (index < 0)
-			{
-				++ face;
-				colorIndex .emplace_back (-1);
-				continue;
-			}
-
-			if (face < geometry -> colorIndex () .size ())
-				colorIndex .emplace_back (geometry -> colorIndex () .get1Value (face));
-			else
-				colorIndex .emplace_back (face);
-		}
-	}
-	else
-	{
-		// colorPerVertex to colorPerFace
-
-		size_t face  = 0;
-		bool   first = true;
-
-		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
-		{
-			const int32_t index = geometry -> coordIndex () [i];
-
-			if (index < 0)
-			{
-				++ face;
-				first = true;
-				continue;
-			}
-
-			if (first)
-			{
-				first = false;
-
-				if (i < geometry -> colorIndex ()  .size ())
-				{
-					colorIndex .emplace_back (geometry -> colorIndex () [i]);
-				}
-				else
-					colorIndex .emplace_back (face);
-			}
-		}
-	}
-
-	return colorIndex;
-}
-
-bool
-ColorEditor::isColorPerVertex (const X3D::X3DPtr <X3D::IndexedFaceSet> & geometry)
-{
-	ssize_t bits = -1;
-
-	for (const int32_t index : geometry -> colorIndex ())
-	{
-		if (index < 0)
-		{
-			bits = -1;
-			continue;
-		}
-
-		if (bits == -1)
-		{
-			bits = index;
-		}
-		else
-		{
-			bits &= index;
-
-			if (bits not_eq index)
-				return true;
-		}
-	}
-
-	return false;
 }
 
 void
@@ -1058,7 +965,7 @@ ColorEditor::set_colorIndex ()
 		}
 		else
 		{
-			previewGeometry -> colorIndex () = getColorIndex (geometry, true);
+			previewGeometry -> colorIndex () = geometry -> getColorIndex (true);
 		}
 
 		previewColor -> assign (colorNode);

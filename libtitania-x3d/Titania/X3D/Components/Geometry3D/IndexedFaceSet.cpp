@@ -463,6 +463,97 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 	}
 }
 
+bool
+IndexedFaceSet::isColorPerVertex () const
+{
+	int32_t first = -1;
+
+	for (const int32_t index : colorIndex ())
+	{
+		if (index < 0)
+		{
+			first = -1;
+			continue;
+		}
+
+		if (first == -1)
+		{
+			first = index;
+		}
+		else
+		{
+			if (index not_eq first)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+MFInt32
+IndexedFaceSet::getColorIndex (const bool colorPerVertex) const
+{
+	if (colorPerVertex == this -> colorPerVertex ())
+		return colorIndex ();
+
+	MFInt32 colorIndices;
+
+	if (colorPerVertex)
+	{
+		// colorPerFace to colorPerVertex
+
+		size_t face = 0;
+
+		for (const auto & index : coordIndex ())
+		{
+			if (index < 0)
+			{
+				++ face;
+				colorIndices .emplace_back (-1);
+				continue;
+			}
+
+			if (face < colorIndex () .size ())
+				colorIndices .emplace_back (colorIndex () [face]);
+			else
+				colorIndices .emplace_back (face);
+		}
+	}
+	else
+	{
+		// colorPerVertex to colorPerFace
+
+		size_t face  = 0;
+		bool   first = true;
+
+		for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
+		{
+			const int32_t index = coordIndex () [i];
+
+			if (index < 0)
+			{
+				++ face;
+				first = true;
+				continue;
+			}
+
+			if (first)
+			{
+				first = false;
+
+				if (i < colorIndex () .size ())
+				{
+					colorIndices .emplace_back (colorIndex () [i]);
+				}
+				else
+					colorIndices .emplace_back (face);
+			}
+		}
+	}
+
+	return colorIndices;
+}
+
 void
 IndexedFaceSet::addColors ()
 {

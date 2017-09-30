@@ -181,6 +181,12 @@ public:
 
 	///  @name Operations
 
+	bool
+	isColorPerVertex () const;
+
+	MFInt32
+	getColorIndex (const bool colorPerVertex) const;
+
 	virtual
 	void
 	addColors ();
