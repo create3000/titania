@@ -154,11 +154,21 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			{
 			   if (colorPerVertex ())
 			   {
-					const auto color0 = getColor () -> get1Color (colorIndex () .get1Value (startEdge .index0));
-					const auto color1 = getColor () -> get1Color (colorIndex () .get1Value (startEdge .index1));
+					const auto colorIndex0 = colorIndex () .get1Value (startEdge .index0);
+					const auto colorIndex1 = colorIndex () .get1Value (startEdge .index1);
 
-					startColor = getColor () -> getSize ();
-					getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
+					if (colorIndex0 == colorIndex1)
+					{
+						startColor = colorIndex0;
+					}
+					else
+					{
+						const auto color0 = getColor () -> get1Color (colorIndex0);
+						const auto color1 = getColor () -> get1Color (colorIndex1);
+	
+						startColor = getColor () -> getSize ();
+						getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
+					}
 				}
 			}
 
@@ -175,11 +185,21 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			{
 			   if (normalPerVertex ())
 			   {
-					const auto normal0 = getNormal () -> get1Vector (normalIndex () .get1Value (startEdge .index0));
-					const auto normal1 = getNormal () -> get1Vector (normalIndex () .get1Value (startEdge .index1));
+					const auto normalIndex0 = normalIndex () .get1Value (startEdge .index0);
+					const auto normalIndex1 = normalIndex () .get1Value (startEdge .index1);
 
-					startNormal = getNormal () -> getSize ();
-					getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
+					if (normalIndex0 == normalIndex1)
+					{
+						startNormal = normalIndex0;
+					}
+					else
+					{
+						const auto normal0 = getNormal () -> get1Vector (normalIndex0);
+						const auto normal1 = getNormal () -> get1Vector (normalIndex1);
+	
+						startNormal = getNormal () -> getSize ();
+						getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
+					}
 				}
 			}
 			
@@ -218,11 +238,21 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			{
 			   if (colorPerVertex ())
 			   {
-					const auto color0 = getColor () -> get1Color (colorIndex () .get1Value (endEdge .index0));
-					const auto color1 = getColor () -> get1Color (colorIndex () .get1Value (endEdge .index1));
+					const auto colorIndex0 = colorIndex () .get1Value (endEdge .index0);
+					const auto colorIndex1 = colorIndex () .get1Value (endEdge .index1);
 
-					endColor = getColor () -> getSize ();
-					getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
+					if (colorIndex0 == colorIndex1)
+					{
+						endColor = colorIndex0;
+					}
+					else
+					{
+						const auto color0 = getColor () -> get1Color (colorIndex0);
+						const auto color1 = getColor () -> get1Color (colorIndex1);
+	
+						endColor = getColor () -> getSize ();
+						getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
+					}
 				}
 			}
 			
@@ -239,11 +269,21 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			{
 			   if (normalPerVertex ())
 			   {
-					const auto normal0 = getNormal () -> get1Vector (normalIndex () .get1Value (endEdge .index0));
-					const auto normal1 = getNormal () -> get1Vector (normalIndex () .get1Value (endEdge .index1));
+					const auto normalIndex0 = normalIndex () .get1Value (endEdge .index0);
+					const auto normalIndex1 = normalIndex () .get1Value (endEdge .index1);
 
-					endNormal = getNormal () -> getSize ();
-					getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
+					if (normalIndex0 == normalIndex1)
+					{
+						endNormal = normalIndex0;
+					}
+					else
+					{
+						const auto normal0 = getNormal () -> get1Vector (normalIndex0);
+						const auto normal1 = getNormal () -> get1Vector (normalIndex1);
+	
+						endNormal = getNormal () -> getSize ();
+						getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
+					}
 				}
 			}
 			
@@ -523,12 +563,22 @@ X3DIndexedFaceSetCutObject::addPoint (const size_t cutFace, const size_t face, c
 			{
 			   if (colorPerVertex ())
 			   {
-					const auto color1 = getColor () -> get1Color (colorIndex () .get1Value (edge .index0));
-					const auto color2 = getColor () -> get1Color (colorIndex () .get1Value (edge .index1));
+					const auto colorIndex0 = colorIndex () .get1Value (edge .index0);
+					const auto colorIndex1 = colorIndex () .get1Value (edge .index1);
 
-					const auto color = getColor () -> getSize ();
-					getColor () -> set1Color (color, lerp (color1, color2, t)); // Interpolation in RGB space
-					colorIndex () .emplace_back (color);
+					if (colorIndex0 == colorIndex1)
+					{
+						colorIndex () .emplace_back (colorIndex0);
+					}
+					else
+					{
+						const auto color1 = getColor () -> get1Color (colorIndex0);
+						const auto color2 = getColor () -> get1Color (colorIndex1);
+	
+						const auto color = getColor () -> getSize ();
+						getColor () -> set1Color (color, lerp (color1, color2, t)); // Interpolation in RGB space
+						colorIndex () .emplace_back (color);
+					}
 				}
 			}
 
@@ -546,12 +596,22 @@ X3DIndexedFaceSetCutObject::addPoint (const size_t cutFace, const size_t face, c
 			{
 			   if (normalPerVertex ())
 			   {
-					const auto normal1 = getNormal () -> get1Vector (normalIndex () .get1Value (edge .index0));
-					const auto normal2 = getNormal () -> get1Vector (normalIndex () .get1Value (edge .index1));
+					const auto normalIndex0 = normalIndex () .get1Value (edge .index0);
+					const auto normalIndex1 = normalIndex () .get1Value (edge .index1);
 
-					const auto normal = getNormal () -> getSize ();
-					getNormal () -> set1Vector (normal, lerp (normal1, normal2, t));
-					normalIndex () .emplace_back (normal);
+					if (normalIndex0 == normalIndex1)
+					{
+						normalIndex () .emplace_back (normalIndex0);
+					}
+					else
+					{
+						const auto normal1 = getNormal () -> get1Vector (normalIndex0);
+						const auto normal2 = getNormal () -> get1Vector (normalIndex1);
+	
+						const auto normal = getNormal () -> getSize ();
+						getNormal () -> set1Vector (normal, lerp (normal1, normal2, t));
+						normalIndex () .emplace_back (normal);
+					}
 				}
 			}
 
@@ -677,13 +737,20 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 
 						if (iter == colors .end ())
 						{
-							const auto color0 = getColor () -> get1Color (point0);
-							const auto color1 = getColor () -> get1Color (point1);
+							if (point0 == point1)
+							{
+								startColor = point0;
+							}
+							else
+							{
+								const auto color0 = getColor () -> get1Color (point0);
+								const auto color1 = getColor () -> get1Color (point1);
+			
+								startColor = getColor () -> getSize ();
+								getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
 		
-							startColor = getColor () -> getSize ();
-							getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
-	
-							colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startColor);
+								colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startColor);
+							}
 						}
 						else
 						{
@@ -724,13 +791,20 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 
 						if (iter == normals .end ())
 						{
-							const auto normal0 = getNormal () -> get1Vector (point0);
-							const auto normal1 = getNormal () -> get1Vector (point1);
-		
-							startNormal = getNormal () -> getSize ();
-							getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
-
-							normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startNormal);
+							if (point0 == point1)
+							{
+								startNormal = point0;
+							}
+							else
+							{
+								const auto normal0 = getNormal () -> get1Vector (point0);
+								const auto normal1 = getNormal () -> get1Vector (point1);
+			
+								startNormal = getNormal () -> getSize ();
+								getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
+	
+								normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startNormal);
+							}
 						}
 						else
 						{
@@ -792,13 +866,20 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 
 						if (iter == colors .end ())
 						{
-							const auto color0 = getColor () -> get1Color (point0);
-							const auto color1 = getColor () -> get1Color (point1);
+							if (point0 == point1)
+							{
+								endColor = point0;
+							}
+							else
+							{
+								const auto color0 = getColor () -> get1Color (point0);
+								const auto color1 = getColor () -> get1Color (point1);
+			
+								endColor = getColor () -> getSize ();
+								getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
 		
-							endColor = getColor () -> getSize ();
-							getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
-	
-							colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endColor);
+								colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endColor);
+							}
 						}
 						else
 						{
@@ -839,13 +920,20 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 
 						if (iter == normals .end ())
 						{
-							const auto normal0 = getNormal () -> get1Vector (point0);
-							const auto normal1 = getNormal () -> get1Vector (point1);
+							if (point0 == point1)
+							{
+								endNormal = point0;
+							}
+							else
+							{
+								const auto normal0 = getNormal () -> get1Vector (point0);
+								const auto normal1 = getNormal () -> get1Vector (point1);
+			
+								endNormal = getNormal () -> getSize ();
+								getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
 		
-							endNormal = getNormal () -> getSize ();
-							getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
-	
-							normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endNormal);
+								normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endNormal);
+							}
 						}
 						else
 						{
