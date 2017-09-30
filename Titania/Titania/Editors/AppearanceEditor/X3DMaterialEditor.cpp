@@ -434,6 +434,8 @@ X3DMaterialEditor::on_material_changed ()
 
 	addRedoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
+	getHeaderBar () .set_subtitle (materialNode ? materialNode -> getTypeName () : "");
+
 	if (isTwoSidedMaterial)
 		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and twoSidedMaterial -> getCloneCount () > 1);
 	else
@@ -464,6 +466,8 @@ X3DMaterialEditor::set_node ()
 	const bool    hasField  = (active not_eq -2);
 
 	materialNode = std::move (std::get <0> (tuple));
+
+	getHeaderBar () .set_subtitle (materialNode ? materialNode -> getTypeName () : "");
 
 	material           = materialNode;
 	twoSidedMaterial   = materialNode;

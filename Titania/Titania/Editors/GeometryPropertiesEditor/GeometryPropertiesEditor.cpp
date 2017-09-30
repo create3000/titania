@@ -289,13 +289,13 @@ GeometryPropertiesEditor::set_buffer ()
 
 	geometryNode = geometryNodes .empty () ? nullptr : geometryNodes .back ();
 
-	const auto count = geometryNode
-	                   ? std::count_if (geometryNodes .begin (),
-	                                    geometryNodes .end (),
-	                                    [&] (const X3D::SFNode & node) { return node -> getType () .back () == geometryNode -> getType () .back (); })
-	                   : 0;
+	const auto typeCount = geometryNode
+	                       ? std::count_if (geometryNodes .begin (),
+	                                        geometryNodes .end (),
+	                                        [&] (const X3D::SFNode & node) { return node -> getType () .back () == geometryNode -> getType () .back (); })
+	                       : 0;
 
-	const auto allSameType = count and count == geometryNodes .size ();
+	const auto allSameType = typeCount and typeCount == geometryNodes .size ();
 
 	// Adjust widgets.
 
@@ -312,9 +312,11 @@ GeometryPropertiesEditor::set_buffer ()
 
 	// Normals Box
 
+	getHeaderBar () .set_subtitle (geometryNode ? geometryNode -> getTypeName () : "");
+
 	getGeometryComboBoxText () .set_sensitive (not shapeNodes .empty ());
 
-	if (allSameType and numGeometryNodes == shapeNodes .size ())
+	if (geometryNodes .size () == 1 and numGeometryNodes == shapeNodes .size ())
 		getGeometryComboBoxText () .set_active_text (geometryNode -> getTypeName ());
 	else if (geometryNodes .empty ())
 		getGeometryComboBoxText () .set_active (0);
