@@ -615,7 +615,7 @@ ColorEditor::on_apply_clicked ()
 		{
 			reuseColor = true;
 
-			color = geometry -> getColor ();
+			color = geometry -> color ();
 		}
 		else
 			color = geometry -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
@@ -643,7 +643,7 @@ ColorEditor::on_apply_clicked ()
 		{
 			reuseColor = true;
 
-			color = geometry -> getColor ();
+			color = geometry -> color ();
 		}
 		else
 			color = geometry -> getExecutionContext () -> createNode <X3D::Color> ();
