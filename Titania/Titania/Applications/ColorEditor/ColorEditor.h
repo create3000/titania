@@ -232,6 +232,14 @@ private:
 	void
 	on_apply_clicked () final override;
 
+	static
+	bool
+	isColorPerVertex (const X3D::X3DPtr <X3D::IndexedFaceSet> & geometry);
+
+	static
+	X3D::MFInt32
+	getColorIndex (const X3D::X3DPtr <X3D::IndexedFaceSet> & geometry, const bool colorPerVertex);
+
 	void
 	connectColorIndex ();
 
