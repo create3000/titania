@@ -146,6 +146,25 @@ private:
 	void
 	set_buffer ();
 
+	void
+	set_normal ();
+
+	virtual
+	void
+	on_add_normals_clicked () final override;
+
+	virtual
+	void
+	on_remove_normals_clicked () final override;
+
+	virtual
+	void
+	on_color_per_vertex_toggled () final override;
+
+	virtual
+	void
+	on_normal_per_vertex_toggled () final override;
+
 	virtual
 	void
 	on_color_changed () final override;
@@ -159,17 +178,6 @@ private:
 
 	void
 	set_color_buffer ();
-
-	void
-	set_normal ();
-
-	virtual
-	void
-	on_add_normals_clicked () final override;
-
-	virtual
-	void
-	on_remove_normals_clicked () final override;
 
 	virtual
 	void

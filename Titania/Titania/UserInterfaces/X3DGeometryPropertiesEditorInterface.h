@@ -424,6 +424,10 @@ public:
 	getGeometryUnlinkButton () const
 	{ return *m_GeometryUnlinkButton; }
 
+	Gtk::Box &
+	getGeometryBox () const
+	{ return *m_GeometryBox; }
+
 	Gtk::Stack &
 	getGeometryStack () const
 	{ return *m_GeometryStack; }
@@ -1168,10 +1172,6 @@ public:
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
 
-	Gtk::Box &
-	getColorsBox () const
-	{ return *m_ColorsBox; }
-
 	Gtk::Expander &
 	getColorExpander () const
 	{ return *m_ColorExpander; }
@@ -1231,6 +1231,10 @@ public:
 	Gtk::Button &
 	getColorRGBAButton () const
 	{ return *m_ColorRGBAButton; }
+
+	Gtk::Box &
+	getColorsBox () const
+	{ return *m_ColorsBox; }
 
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
@@ -1388,6 +1392,14 @@ public:
 
 	virtual
 	void
+	on_color_per_vertex_toggled () = 0;
+
+	virtual
+	void
+	on_normal_per_vertex_toggled () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1526,6 +1538,7 @@ private:
 	Gtk::Box* m_SelectGeometryBox;
 	Gtk::ComboBoxText* m_GeometryComboBoxText;
 	Gtk::Button* m_GeometryUnlinkButton;
+	Gtk::Box* m_GeometryBox;
 	Gtk::Stack* m_GeometryStack;
 	Gtk::Box* m_Arc2DBox;
 	Gtk::Expander* m_Arc2DExpander;
@@ -1712,7 +1725,6 @@ private:
 	Gtk::Box* m_NormalsBox;
 	Gtk::Button* m_AddNormalsButton;
 	Gtk::Button* m_RemoveNormalsButton;
-	Gtk::Box* m_ColorsBox;
 	Gtk::Expander* m_ColorExpander;
 	Gtk::ComboBoxText* m_ColorTypeButton;
 	Gtk::Button* m_ColorUnlinkButton;
@@ -1728,6 +1740,7 @@ private:
 	Gtk::Button* m_RemoveColorRGBAButton;
 	Gtk::Box* m_ColorRGBABox;
 	Gtk::Button* m_ColorRGBAButton;
+	Gtk::Box* m_ColorsBox;
 	Gtk::EventBox* m_PrimitiveCountEventBox;
 	Gtk::Expander* m_PrimitiveCountExpander;
 	Gtk::Box* m_PrimitiveCountBox;

@@ -186,8 +186,16 @@ public:
 	isColorPerVertex () const;
 
 	virtual
+	bool
+	isNormalPerVertex () const;
+
+	virtual
 	MFInt32
 	getColorIndex (const bool colorPerVertex) const;
+
+	virtual
+	MFInt32
+	getNormalIndex (const bool normalPerVertex) const;
 
 	virtual
 	void
@@ -286,6 +294,12 @@ private:
 
 	void
 	tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons);
+
+	bool
+	isPerVertex (const MFInt32 & index) const;
+
+	MFInt32
+	getIndex (const bool perVertex, const bool currentPerVertex, const MFInt32 & currentIndices) const;
 
 	void
 	rebuildIndices (const size_t faceIndex,

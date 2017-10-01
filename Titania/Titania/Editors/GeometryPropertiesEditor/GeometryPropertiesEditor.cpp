@@ -351,6 +351,221 @@ GeometryPropertiesEditor::set_buffer ()
 }
 
 void
+GeometryPropertiesEditor::set_normal ()
+{
+	bool normal = false;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			if (normal or_eq node -> getField <X3D::SFNode> ("normal"))
+				break;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getRemoveNormalsButton () .set_sensitive (normal);
+}
+
+void
+GeometryPropertiesEditor::on_add_normals_clicked ()
+{
+	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Add Normals"));
+
+	for (const auto & geometry : geometries)
+	{
+		for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::ElevationGrid:
+				{
+					const auto elevationGrid = dynamic_cast <X3D::ElevationGrid*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), elevationGrid -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
+					elevationGrid -> normalPerVertex () = true;
+
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
+
+					elevationGrid -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (elevationGrid -> normal ()), elevationGrid -> normal ());
+					break;
+				}
+				case X3D::X3DConstants::GeoElevationGrid:
+				{
+					const auto geoElevationGrid = dynamic_cast <X3D::GeoElevationGrid*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), geoElevationGrid -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
+					geoElevationGrid -> normalPerVertex () = true;
+
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
+
+					geoElevationGrid -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (geoElevationGrid -> normal ()), geoElevationGrid -> normal ());
+					break;
+				}
+				case X3D::X3DConstants::IndexedFaceSet:
+				{
+					const auto indexedFaceSet = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), indexedFaceSet -> normalPerVertex ());
+					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), true);
+					indexedFaceSet -> normalPerVertex () = true;
+
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
+
+					indexedFaceSet -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue,  std::ref (indexedFaceSet -> normal ()),      indexedFaceSet -> normal ());
+					break;
+				}
+				case X3D::X3DConstants::X3DComposedGeometryNode:
+				{
+					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
+
+					undoStep -> addObjects (geometry);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
+
+					composedGeometryNode -> addNormals ();
+
+					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (composedGeometryNode -> normal ()), composedGeometryNode -> normal ());
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+GeometryPropertiesEditor::on_remove_normals_clicked ()
+{
+	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Remove Normals"));
+
+	for (const auto & geometry : geometries)
+	{
+		try
+		{
+			auto & normalIndex = geometry -> getField <X3D::MFInt32> ("normalIndex");
+
+			undoStep -> addObjects (geometry);
+			undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (normalIndex), normalIndex);
+			undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (normalIndex));
+			normalIndex .clear ();
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		try
+		{
+			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+GeometryPropertiesEditor::on_color_per_vertex_toggled ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> ();
+
+	for (const auto & geometryNode : geometryNodes)
+	{
+		for (const auto & type : geometryNode -> getType ())
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::IndexedFaceSet:
+				{
+					X3D::X3DPtr <X3D::IndexedFaceSet> geometry (geometryNode);
+
+					if (getColorPerVertexCheckButton () .get_active () == geometry -> colorPerVertex ())
+						break;
+
+					if (not geometry -> getColor ())
+						break;
+
+					const auto colorIndex = geometry -> getColorIndex (getColorPerVertexCheckButton () .get_active ());
+
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), geometry -> colorIndex ());
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> colorIndex ()), colorIndex);
+					geometry -> colorIndex () = colorIndex;
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+GeometryPropertiesEditor::on_normal_per_vertex_toggled ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> ();
+
+	for (const auto & geometryNode : geometryNodes)
+	{
+		for (const auto & type : geometryNode -> getType ())
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::IndexedFaceSet:
+				{
+					X3D::X3DPtr <X3D::IndexedFaceSet> geometry (geometryNode);
+
+					if (getNormalPerVertexCheckButton () .get_active () == geometry -> normalPerVertex ())
+						break;
+
+					if (not geometry -> getNormal ())
+						break;
+
+					const auto normalIndex = geometry -> getNormalIndex (getNormalPerVertexCheckButton () .get_active ());
+
+					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> normalIndex ()), geometry -> normalIndex ());
+					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (geometry -> normalIndex ()), normalIndex);
+					geometry -> normalIndex () = normalIndex;
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 GeometryPropertiesEditor::on_color_changed ()
 {
 	if (changing)
@@ -512,143 +727,6 @@ GeometryPropertiesEditor::set_color_buffer ()
 	colorRGBA .setNodes (numColorRGBANodes == geometryNodes .size () ? colorRGBANodes : X3D::MFNode ());
 
 	changing = false;
-}
-
-void
-GeometryPropertiesEditor::set_normal ()
-{
-	bool normal = false;
-
-	for (const auto & node : geometryNodes)
-	{
-		try
-		{
-			if (normal or_eq node -> getField <X3D::SFNode> ("normal"))
-				break;
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	getRemoveNormalsButton () .set_sensitive (normal);
-}
-
-void
-GeometryPropertiesEditor::on_add_normals_clicked ()
-{
-	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Add Normals"));
-
-	for (const auto & geometry : geometries)
-	{
-		for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
-		{
-			switch (type)
-			{
-				case X3D::X3DConstants::ElevationGrid:
-				{
-					const auto elevationGrid = dynamic_cast <X3D::ElevationGrid*> (geometry .getValue ());
-
-					undoStep -> addObjects (geometry);
-					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), elevationGrid -> normalPerVertex ());
-					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
-					elevationGrid -> normalPerVertex () = true;
-
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
-
-					elevationGrid -> addNormals ();
-
-					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (elevationGrid -> normal ()), elevationGrid -> normal ());
-					break;
-				}
-				case X3D::X3DConstants::GeoElevationGrid:
-				{
-					const auto geoElevationGrid = dynamic_cast <X3D::GeoElevationGrid*> (geometry .getValue ());
-
-					undoStep -> addObjects (geometry);
-					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), geoElevationGrid -> normalPerVertex ());
-					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
-					geoElevationGrid -> normalPerVertex () = true;
-
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
-
-					geoElevationGrid -> addNormals ();
-
-					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (geoElevationGrid -> normal ()), geoElevationGrid -> normal ());
-					break;
-				}
-				case X3D::X3DConstants::IndexedFaceSet:
-				{
-					const auto indexedFaceSet = dynamic_cast <X3D::IndexedFaceSet*> (geometry .getValue ());
-
-					undoStep -> addObjects (geometry);
-					undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), indexedFaceSet -> normalPerVertex ());
-					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (indexedFaceSet -> normalPerVertex ()), true);
-					indexedFaceSet -> normalPerVertex () = true;
-
-					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
-
-					indexedFaceSet -> addNormals ();
-
-					undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
-					undoStep -> addRedoFunction (&X3D::SFNode::setValue,  std::ref (indexedFaceSet -> normal ()),      indexedFaceSet -> normal ());
-					break;
-				}
-				case X3D::X3DConstants::X3DComposedGeometryNode:
-				{
-					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
-
-					undoStep -> addObjects (geometry);
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
-
-					composedGeometryNode -> addNormals ();
-
-					undoStep -> addRedoFunction (&X3D::SFNode::setValue, std::ref (composedGeometryNode -> normal ()), composedGeometryNode -> normal ());
-					break;
-				}
-				default:
-					continue;
-			}
-
-			break;
-		}
-	}
-
-	getBrowserWindow () -> addUndoStep (undoStep);
-}
-
-void
-GeometryPropertiesEditor::on_remove_normals_clicked ()
-{
-	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Remove Normals"));
-
-	for (const auto & geometry : geometries)
-	{
-		try
-		{
-			auto & normalIndex = geometry -> getField <X3D::MFInt32> ("normalIndex");
-
-			undoStep -> addObjects (geometry);
-			undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (normalIndex), normalIndex);
-			undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (normalIndex));
-			normalIndex .clear ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-		try
-		{
-			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
-
-			X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

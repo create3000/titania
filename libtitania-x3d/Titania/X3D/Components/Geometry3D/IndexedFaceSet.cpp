@@ -466,9 +466,21 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 bool
 IndexedFaceSet::isColorPerVertex () const
 {
+	return isPerVertex (colorIndex ());
+}
+
+bool
+IndexedFaceSet::isNormalPerVertex () const
+{
+	return isPerVertex (normalIndex ());
+}
+
+bool
+IndexedFaceSet::isPerVertex (const MFInt32 & indices) const
+{
 	int32_t first = -1;
 
-	for (const int32_t index : colorIndex ())
+	for (const int32_t index : indices)
 	{
 		if (index < 0)
 		{
@@ -493,14 +505,26 @@ IndexedFaceSet::isColorPerVertex () const
 MFInt32
 IndexedFaceSet::getColorIndex (const bool colorPerVertex) const
 {
-	if (colorPerVertex == this -> colorPerVertex ())
-		return colorIndex ();
+	return getIndex (colorPerVertex, this -> colorPerVertex (), colorIndex ());
+}
 
-	MFInt32 colorIndices;
+MFInt32
+IndexedFaceSet::getNormalIndex (const bool normalPerVertex) const
+{
+	return getIndex (normalPerVertex, this -> normalPerVertex (), normalIndex ());
+}
 
-	if (colorPerVertex)
+MFInt32
+IndexedFaceSet::getIndex (const bool perVertex, const bool currentPerVertex, const MFInt32 & currentIndices) const
+{
+	if (perVertex == currentPerVertex)
+		return currentIndices;
+
+	MFInt32 indices;
+
+	if (perVertex)
 	{
-		// colorPerFace to colorPerVertex
+		// PerFace to PerVertex
 
 		size_t face = 0;
 
@@ -509,19 +533,19 @@ IndexedFaceSet::getColorIndex (const bool colorPerVertex) const
 			if (index < 0)
 			{
 				++ face;
-				colorIndices .emplace_back (-1);
+				indices .emplace_back (-1);
 				continue;
 			}
 
-			if (face < colorIndex () .size ())
-				colorIndices .emplace_back (colorIndex () [face]);
+			if (face < currentIndices .size ())
+				indices .emplace_back (currentIndices [face]);
 			else
-				colorIndices .emplace_back (face);
+				indices .emplace_back (face);
 		}
 	}
 	else
 	{
-		// colorPerVertex to colorPerFace
+		// PerVertex to PerFace
 
 		size_t face  = 0;
 		bool   first = true;
@@ -541,17 +565,17 @@ IndexedFaceSet::getColorIndex (const bool colorPerVertex) const
 			{
 				first = false;
 
-				if (i < colorIndex () .size ())
+				if (i < currentIndices .size ())
 				{
-					colorIndices .emplace_back (colorIndex () [i]);
+					indices .emplace_back (currentIndices [i]);
 				}
 				else
-					colorIndices .emplace_back (face);
+					indices .emplace_back (index);
 			}
 		}
 	}
 
-	return colorIndices;
+	return indices;
 }
 
 void

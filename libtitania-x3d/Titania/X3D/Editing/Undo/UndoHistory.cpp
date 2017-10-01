@@ -97,6 +97,9 @@ UndoHistory::addUndoStep (const UndoStepPtr & undoStep, const time_type time)
 
 	if (not undoList .empty () and time == undoList .back () -> getTime ())
 	{
+		if (undoList .back () -> getDescription () .empty ())
+			undoList .back () -> setDescription (undoStep -> getDescription ());
+
 		undoList .back () -> addUndoFunction (&UndoStep::undo, undoStep);
 		undoList .back () -> addRedoFunction (&UndoStep::redo, undoStep);
 	}

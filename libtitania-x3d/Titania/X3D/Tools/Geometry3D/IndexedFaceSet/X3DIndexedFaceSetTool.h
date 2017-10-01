@@ -158,9 +158,19 @@ public:
 	{ return getNode <IndexedFaceSet> () -> isColorPerVertex (); }
 
 	virtual
+	bool
+	isNormalPerVertex () const final override
+	{ return getNode <IndexedFaceSet> () -> isNormalPerVertex (); }
+
+	virtual
 	MFInt32
 	getColorIndex (const bool colorPerVertex) const final override
 	{ return getNode <IndexedFaceSet> () -> getColorIndex (colorPerVertex); }
+
+	virtual
+	MFInt32
+	getNormalIndex (const bool normalPerVertex) const final override
+	{ return getNode <IndexedFaceSet> () -> getNormalIndex (normalPerVertex); }
 
 	virtual
 	void

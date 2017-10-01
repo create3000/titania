@@ -164,6 +164,7 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("SelectGeometryBox", m_SelectGeometryBox);
 	m_builder -> get_widget ("GeometryComboBoxText", m_GeometryComboBoxText);
 	m_builder -> get_widget ("GeometryUnlinkButton", m_GeometryUnlinkButton);
+	m_builder -> get_widget ("GeometryBox", m_GeometryBox);
 	m_builder -> get_widget ("GeometryStack", m_GeometryStack);
 	m_builder -> get_widget ("Arc2DBox", m_Arc2DBox);
 	m_builder -> get_widget ("Arc2DExpander", m_Arc2DExpander);
@@ -350,7 +351,6 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("NormalsBox", m_NormalsBox);
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
-	m_builder -> get_widget ("ColorsBox", m_ColorsBox);
 	m_builder -> get_widget ("ColorExpander", m_ColorExpander);
 	m_builder -> get_widget ("ColorTypeButton", m_ColorTypeButton);
 	m_builder -> get_widget ("ColorUnlinkButton", m_ColorUnlinkButton);
@@ -366,6 +366,7 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("RemoveColorRGBAButton", m_RemoveColorRGBAButton);
 	m_builder -> get_widget ("ColorRGBABox", m_ColorRGBABox);
 	m_builder -> get_widget ("ColorRGBAButton", m_ColorRGBAButton);
+	m_builder -> get_widget ("ColorsBox", m_ColorsBox);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);
@@ -425,6 +426,10 @@ X3DGeometryPropertiesEditorInterface::create ()
 
 	// Connect object Gtk::ToggleButton with id 'IndexedLineSetLSystemUniformSizeButton'.
 	m_IndexedLineSetLSystemUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_lsystem_uniform_size_clicked));
+
+	// Connect object Gtk::CheckButton with id 'ColorPerVertexCheckButton'.
+	m_ColorPerVertexCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_per_vertex_toggled));
+	m_NormalPerVertexCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_normal_per_vertex_toggled));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
