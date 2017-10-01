@@ -85,7 +85,7 @@ UndoHistory::getRedoDescription () const
 }
 
 void
-UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
+UndoHistory::addUndoStep (const UndoStepPtr & undoStep, const time_type time)
 {
 	if (undoStep -> getUndoFunctions () .empty ())
 		return;
@@ -93,7 +93,16 @@ UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 	if (int32_t (undoList .size ()) - 1 < savedIndex)
 		savedIndex = -1;
 
-	undoList .emplace_back (undoStep);
+	undoStep -> setTime (time);
+
+	if (not undoList .empty () and time == undoList .back () -> getTime ())
+	{
+		undoList .back () -> addUndoFunction (&UndoStep::undo, undoStep);
+		undoList .back () -> addRedoFunction (&UndoStep::redo, undoStep);
+	}
+	else
+		undoList .emplace_back (undoStep);
+
 	redoList .clear ();
 
 	processInterests ();

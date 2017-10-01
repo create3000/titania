@@ -129,7 +129,7 @@ Clipboard::on_received_targets (const std::vector <Glib::ustring> & receivedTarg
 	const auto iter = std::find_if (receivedTargets .begin (), receivedTargets .end (),
 	                                [&] (const Glib::ustring & receivedTarget)
 	                                {
-__LOG__ << receivedTarget << std::endl;
+//__LOG__ << receivedTarget << std::endl;
 	                                   return receivedTarget == target ();
 											  });
 

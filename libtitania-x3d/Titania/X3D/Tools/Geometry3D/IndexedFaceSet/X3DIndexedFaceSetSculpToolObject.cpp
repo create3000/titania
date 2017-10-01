@@ -158,11 +158,11 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active ()
 
 			undoStep = std::make_shared <UndoStep> (_ (height () >= 0.0 ? "Pull Polygons" : "Push Polygons"));
 	
-			undoSetCoordPoint (undoStep);
+			undoSetCoord (undoStep);
 		}
 		else
 		{
-			redoSetCoordPoint (undoStep);
+			redoSetCoord (undoStep);
 	
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 		}

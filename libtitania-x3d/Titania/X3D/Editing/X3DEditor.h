@@ -350,37 +350,37 @@ public:
 
 	static
 	void
-	undoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
+	undoSetColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
 
 	///  @name X3DComposedGeometryNode
 	
 	static
 	void
-	undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
+	undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	undoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
+	undoSetNormal (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
+	undoSetCoord (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
+	redoSetColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
+	redoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
+	redoSetNormal (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
+	redoSetCoord (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
 
 	///  @name Array handling
 
@@ -520,11 +520,11 @@ private:
 	
 	static
 	void
-	undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
+	undoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
+	redoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 
 };
 

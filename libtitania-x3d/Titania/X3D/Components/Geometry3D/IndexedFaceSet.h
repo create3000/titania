@@ -181,9 +181,11 @@ public:
 
 	///  @name Operations
 
+	virtual
 	bool
 	isColorPerVertex () const;
 
+	virtual
 	MFInt32
 	getColorIndex (const bool colorPerVertex) const;
 
@@ -215,7 +217,7 @@ public:
 	rebuildCoord ();
 
 	void
-	mergePoints (const double);
+	mergePoints (const double distance);
 
 	virtual
 	NodeType

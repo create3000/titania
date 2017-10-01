@@ -69,6 +69,7 @@ UndoStep::UndoStep () :
 { }
 
 UndoStep::UndoStep (const std::string & description) :
+	         time (0),
 	  description (description),
 	    variables (),
 	undoFunctions (),

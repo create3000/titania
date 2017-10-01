@@ -614,7 +614,7 @@ X3DBrowserEditor::quit ()
 void
 X3DBrowserEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
-	getCurrentPage () -> getUndoHistory () .addUndoStep (undoStep);
+	getCurrentPage () -> getUndoHistory () .addUndoStep (undoStep, getCurrentBrowser () -> getCurrentTime ());
 }
 
 void

@@ -95,7 +95,7 @@ public:
 	setSaved ();
 
 	void
-	addUndoStep (const UndoStepPtr &);
+	addUndoStep (const UndoStepPtr & undoStep, const time_type time);
 
 	void
 	removeUndoStep ();

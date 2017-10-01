@@ -2896,7 +2896,7 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
 	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
 	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> coordIndex    ()), geometryNode -> coordIndex    ());
 
-	undoSetCoordPoint (geometryNode -> getCoord (), undoStep);
+	undoSetCoord (geometryNode -> getCoord (), undoStep);
 
 	geometryNode -> mergePoints (distance);
 
@@ -2905,7 +2905,7 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> coordIndex    ()), geometryNode -> coordIndex    ());
 
-	redoSetCoordPoint (geometryNode -> getCoord (), undoStep);
+	redoSetCoord (geometryNode -> getCoord (), undoStep);
 
 	// Prototype support
 
@@ -2923,7 +2923,7 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
  */
 
 void
-X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
+X3DEditor::undoSetColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
 {
 	if (not colorNode)
 	   return;
@@ -2956,7 +2956,7 @@ X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 }
 
 void
-X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
+X3DEditor::undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	if (not texCoordNode)
 	   return;
@@ -2968,12 +2968,12 @@ X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			const X3DPtr <MultiTextureCoordinate> node (texCoordNode);
 
 			for (const auto & texCoordNode : node -> getTexCoord ())
-				undoSetTexCoordPointImpl (texCoordNode, undoStep);
+				undoSetTexCoordImpl (texCoordNode, undoStep);
 
 			break;
 		}
 		default:
-		   undoSetTexCoordPointImpl (texCoordNode, undoStep);
+		   undoSetTexCoordImpl (texCoordNode, undoStep);
 			break;
 	}
 
@@ -2983,7 +2983,7 @@ X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 }
 
 void
-X3DEditor::undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
+X3DEditor::undoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (texCoordNode);
 
@@ -3016,7 +3016,7 @@ X3DEditor::undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & t
 }
 
 void
-X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
+X3DEditor::undoSetNormal (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
 {
 	if (not normalNode)
 	   return;
@@ -3042,7 +3042,7 @@ X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 }
 
 void
-X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
+X3DEditor::undoSetCoord (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
 {
 	if (not coordNode)
 	   return;
@@ -3082,7 +3082,7 @@ X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, cons
 }
 
 void
-X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
+X3DEditor::redoSetColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
 {
 	if (not colorNode)
 	   return;
@@ -3115,7 +3115,7 @@ X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 }
 
 void
-X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
+X3DEditor::redoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	if (not texCoordNode)
 	   return;
@@ -3127,12 +3127,12 @@ X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			const X3DPtr <MultiTextureCoordinate> node (texCoordNode);
 
 			for (const auto & texCoordNode : node -> getTexCoord ())
-				redoSetTexCoordPointImpl (texCoordNode, undoStep);
+				redoSetTexCoordImpl (texCoordNode, undoStep);
 
 			break;
 		}
 		default:
-		   redoSetTexCoordPointImpl (texCoordNode, undoStep);
+		   redoSetTexCoordImpl (texCoordNode, undoStep);
 			break;
 	}
 
@@ -3142,7 +3142,7 @@ X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 }
 
 void
-X3DEditor::redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
+X3DEditor::redoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (texCoordNode);
 
@@ -3175,7 +3175,7 @@ X3DEditor::redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & t
 }
 
 void
-X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
+X3DEditor::redoSetNormal (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
 {
 	if (not normalNode)
 	   return;
@@ -3201,7 +3201,7 @@ X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 }
 
 void
-X3DEditor::redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
+X3DEditor::redoSetCoord (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
 {
 	if (not coordNode)
 	   return;

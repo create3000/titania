@@ -299,9 +299,6 @@ GeometryPropertiesEditor::set_buffer ()
 
 	// Adjust widgets.
 
-	const auto widgets  = getGeometryStack () .get_children ();
-	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* widget) { return widget -> get_visible (); });
-
 	solid             .setNodes (geometryNodes);
 	ccw               .setNodes (geometryNodes);
 	convex            .setNodes (geometryNodes);
@@ -325,7 +322,7 @@ GeometryPropertiesEditor::set_buffer ()
 
 	getSelectGeometryBox ()    .set_sensitive (not shapeNodes .empty ());
 	getGeometryUnlinkButton () .set_sensitive (geometryNodes .size () == 1 and geometryNode -> getCloneCount () > 1);
-	getGeometryStack ()        .set_visible (visibles == 1 and allSameType and numGeometryNodes == shapeNodes .size ());
+	getGeometryStack ()        .set_visible (typeCount == 1 and allSameType and numGeometryNodes == shapeNodes .size ());
 	getNormalsBox ()           .set_sensitive (false);
 
 	for (const auto & node : geometryNodes)

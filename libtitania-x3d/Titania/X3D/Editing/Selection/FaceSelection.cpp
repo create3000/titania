@@ -78,6 +78,7 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	       coordNode (),
 	       faceIndex (),
 	     faceNumbers (),
+	        numFaces (0),
 	      pointIndex ()
 {
 	addType (X3DConstants::FaceSelection);
@@ -158,6 +159,8 @@ FaceSelection::set_coordIndex (const MFInt32 & coordIndex)
 
 		++ vertex;
 	}
+
+	numFaces = coordIndex .empty () ? 0 : faceNumber + (coordIndex .back () not_eq -1);
 }
 
 ///  Updates the coordinate node of this selection.
@@ -224,7 +227,7 @@ FaceSelection::getFaces () const
 size_t
 FaceSelection::getNumFaces () const
 {
-	return faceNumbers .size ();
+	return numFaces;
 }
 
 size_t

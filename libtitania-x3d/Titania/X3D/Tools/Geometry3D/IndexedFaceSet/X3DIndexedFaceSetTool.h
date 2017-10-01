@@ -153,6 +153,16 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isColorPerVertex () const final override
+	{ return getNode <IndexedFaceSet> () -> isColorPerVertex (); }
+
+	virtual
+	MFInt32
+	getColorIndex (const bool colorPerVertex) const final override
+	{ return getNode <IndexedFaceSet> () -> getColorIndex (colorPerVertex); }
+
+	virtual
 	void
 	addColors () final override
 	{ getNode <IndexedFaceSet> () -> addColors (); }

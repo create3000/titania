@@ -219,10 +219,10 @@ private:
 	void
 	set_deleteSelectedFaces ();
 
-	void
-	deleteSelectedFaces (const UndoStepPtr &);
-
 	///  @name Operations
+
+	void
+	deleteFaces (const std::set <size_t> & selectedFaces);
 
 	std::vector <int32_t>
 	splitPoints (const std::vector <int32_t> &);

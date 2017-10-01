@@ -219,6 +219,7 @@ private:
 	X3DPtr <X3DCoordinateNode> coordNode;
 	FaceIndex                  faceIndex;
 	FaceNumbers                faceNumbers;
+	size_t                     numFaces;
 	PointIndex                 pointIndex;
 
 };

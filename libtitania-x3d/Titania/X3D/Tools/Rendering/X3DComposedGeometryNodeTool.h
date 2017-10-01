@@ -220,28 +220,28 @@ protected:
 	///  @name Undo/Redo handling
 
 	void
-	undoSetColorColor (const UndoStepPtr &);
+	undoSetColor (const UndoStepPtr &);
 
 	void
-	undoSetTexCoordPoint (const UndoStepPtr &);
+	undoSetTexCoord (const UndoStepPtr &);
 
 	void
-	undoSetNormalVector (const UndoStepPtr &);
+	undoSetNormal (const UndoStepPtr &);
 
 	void
-	undoSetCoordPoint (const UndoStepPtr &);
+	undoSetCoord (const UndoStepPtr &);
 
 	void
-	redoSetColorColor (const UndoStepPtr &);
+	redoSetColor (const UndoStepPtr &);
 
 	void
-	redoSetTexCoordPoint (const UndoStepPtr &);
+	redoSetTexCoord (const UndoStepPtr &);
 
 	void
-	redoSetNormalVector (const UndoStepPtr &);
+	redoSetNormal (const UndoStepPtr &);
 
 	void
-	redoSetCoordPoint (const UndoStepPtr &);
+	redoSetCoord (const UndoStepPtr &);
 
 
 private:
@@ -252,10 +252,10 @@ private:
 	set_loadState ();
 
 	void
-	undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
 
 	void
-	redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	redoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
 
 };
 

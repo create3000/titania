@@ -592,10 +592,10 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetColorColor    (undoStep);
-	undoSetTexCoordPoint (undoStep);
-	undoSetNormalVector  (undoStep);
-	undoSetCoordPoint    (undoStep);
+	undoSetColor    (undoStep);
+	undoSetTexCoord (undoStep);
+	undoSetNormal  (undoStep);
+	undoSetCoord    (undoStep);
 
 	auto selection = X3DIndexedFaceSetCutObject::cut (cutFace, cutEdge, startPoints, endPoints);
 
@@ -612,10 +612,10 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	rebuildNormal   ();
 	rewriteArray (rebuildCoord (), selection);
 
-	redoSetCoordPoint    (undoStep);
-	redoSetNormalVector  (undoStep);
-	redoSetTexCoordPoint (undoStep);
-	redoSetColorColor    (undoStep);
+	redoSetCoord    (undoStep);
+	redoSetNormal  (undoStep);
+	redoSetTexCoord (undoStep);
+	redoSetColor    (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);

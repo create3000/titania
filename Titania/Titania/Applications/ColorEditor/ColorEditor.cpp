@@ -588,7 +588,7 @@ ColorEditor::on_remove_clicked ()
 void
 ColorEditor::on_apply_clicked ()
 {
-	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
 	const auto colorPerVertex = previewGeometry -> isColorPerVertex ();
 
 	geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);

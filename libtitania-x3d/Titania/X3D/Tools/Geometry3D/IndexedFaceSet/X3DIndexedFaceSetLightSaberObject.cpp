@@ -155,10 +155,10 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 		undoSetTexCoordIndex (undoStep);
 		undoSetNormalIndex   (undoStep);
 		undoSetCoordIndex    (undoStep);
-		undoSetColorColor    (undoStep);
-		undoSetTexCoordPoint (undoStep);
-		undoSetNormalVector  (undoStep);
-		undoSetCoordPoint    (undoStep);
+		undoSetColor    (undoStep);
+		undoSetTexCoord (undoStep);
+		undoSetNormal  (undoStep);
+		undoSetCoord    (undoStep);
 
 		auto selection = X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
 	
@@ -172,10 +172,10 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 		rebuildNormal   ();
 		rewriteArray (rebuildCoord (), selection);
 	
-		redoSetCoordPoint    (undoStep);
-		redoSetNormalVector  (undoStep);
-		redoSetTexCoordPoint (undoStep);
-		redoSetColorColor    (undoStep);
+		redoSetCoord    (undoStep);
+		redoSetNormal  (undoStep);
+		redoSetTexCoord (undoStep);
+		redoSetColor    (undoStep);
 		redoSetCoordIndex    (undoStep);
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);

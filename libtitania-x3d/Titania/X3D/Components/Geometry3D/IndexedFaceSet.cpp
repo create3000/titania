@@ -812,29 +812,46 @@ IndexedFaceSet::rebuildIndices ()
 
 		if (index < 0)
 		{
-		   ++ face;
-
-			if (not colorIndex () .empty () and colorPerVertex ())
-				color .emplace_back (-1);
+			if (not colorIndex () .empty ())
+			{
+				if (colorPerVertex ())
+					color .emplace_back (-1);
+				else
+					color .emplace_back (getFaceColorIndex (faceNumber));
+			}
 
 			if (not texCoordIndex () .empty ())
 				texCoord .emplace_back (-1);
 
 			if (not normalIndex () .empty ())
-				normal .emplace_back (-1);
+			{
+				if (normalPerVertex ())
+					normal .emplace_back (-1);
+				else
+					normal .emplace_back (getFaceNormalIndex (faceNumber));
+			}
 
 			coord .emplace_back (-1);
+
+		   ++ face;
+
 			continue;
 		}
 
 		if (not colorIndex () .empty ())
-			color .emplace_back (colorPerVertex () ? getVertexColorIndex (vertex) : getFaceColorIndex (faceNumber));
+		{
+			if (colorPerVertex ())
+				color .emplace_back (getVertexColorIndex (vertex));
+		}
 
 		if (not texCoordIndex () .empty ())
 			texCoord .emplace_back (getVertexTexCoordIndex (vertex));
 
 		if (not normalIndex () .empty ())
-			normal .emplace_back (normalPerVertex () ? getVertexNormalIndex (vertex) : getFaceNormalIndex (faceNumber));
+		{
+			if (normalPerVertex ())
+				normal .emplace_back (getVertexNormalIndex (vertex));
+		}
 
 		coord .emplace_back (index);
 	}

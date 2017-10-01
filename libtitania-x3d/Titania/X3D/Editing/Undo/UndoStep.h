@@ -51,12 +51,14 @@
 #ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_STEP_H__
 #define __TITANIA_X3D_EDITOR_UNDO_UNDO_STEP_H__
 
-#include <Titania/LOG.h>
+#include "../../Types/Time.h"
 
 #include <functional>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
@@ -80,6 +82,14 @@ public:
 	UndoStep (const std::string &);
 
 	///  @name Member access
+
+	void
+	setTime (const time_type value)
+	{ time = value; }
+
+	time_type
+	getTime () const
+	{ return time; }
 
 	void
 	setDescription (const std::string & value)
@@ -137,6 +147,7 @@ private:
 
 	using Variables = std::function <void ()>;
 
+	time_type                  time;
 	std::string                description;
 	std::vector <Variables>    variables;
 	std::vector <UndoFunction> undoFunctions;

@@ -293,7 +293,7 @@ private:
 	virtual
 	void
 	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
-	{ undoHistory .addUndoStep (undoStep); }
+	{ undoHistory .addUndoStep (undoStep, X3D::SFTime::now ()); }
 
 	virtual
 	void
