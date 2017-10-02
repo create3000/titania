@@ -65,6 +65,17 @@ GetDisplayName (const SFNode & node)
 }
 
 std::string
+GetDescription (const SFNode & node)
+{
+	std::string name = GetDisplayName (node);
+
+	if (not name .empty ())
+		name = " »" + name + "«";
+
+	return node -> getTypeName () + name;
+}
+
+std::string
 GetNameFromURI (const basic::uri & uri)
 {
 	return GetNameFromString (uri .basename (false));

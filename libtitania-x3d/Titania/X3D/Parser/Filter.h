@@ -59,9 +59,13 @@
 namespace titania {
 namespace X3D {
 
-///  Return the display name of @@ node.
+///  Return the display name of @a node.
 std::string
 GetDisplayName (const SFNode & node);
+
+///  Return the typeName and the display name of @a node.
+std::string
+GetDescription (const SFNode & node);
 
 ///  Creates a display name from @a uri. Filters all bad characters.
 std::string

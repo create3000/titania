@@ -1304,28 +1304,23 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
 std::string
 OutlineDragDrop::get_node_action_string (Gdk::DragAction action, const X3D::SFNode & node) const
 {
-	std::string name = X3D::GetDisplayName (node);
-
-	if (not name .empty ())
-		name = " »" + name + "«";
-
-	name = node -> getTypeName () + name;
+	const auto description = X3D::GetDescription (node);
 
 	switch (action)
 	{
 		case Gdk::ACTION_LINK:
-         return "Clone Node " + name;
+         return "Clone Node " + description;
 		case Gdk::ACTION_MOVE:
-         return "Move Node " + name;
+         return "Move Node " + description;
 		case Gdk::ACTION_COPY:
-			return "Copy Node " + name;
+			return "Copy Node " + description;
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_ASK:
 		case Gdk::ACTION_PRIVATE:
 		   break;
 	}
 
-   return "Move Node " + name;
+   return "Move Node " + description;
 }
 
 } // puck

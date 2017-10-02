@@ -67,6 +67,7 @@
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/String.h>
@@ -628,7 +629,7 @@ OutlineEditor::on_add_reference_activate (const X3D::SFNode & node, const X3D::F
 {
 	const auto field     = fieldPtr .getValue ();
 	const auto reference = referencePtr .getValue ();
-	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
+	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To %s »%s«"), node -> getTypeName () .c_str (), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	X3D::X3DEditor::addReference (node, field, reference, undoStep);
@@ -644,7 +645,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::SFNode & node, const X3D
 {
 	const auto field     = fieldPtr .getValue ();
 	const auto reference = referencePtr .getValue ();
-	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
+	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To %s »%s«"), node -> getTypeName () .c_str (), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	X3D::X3DEditor::removeReference (node, field, reference, undoStep);
@@ -1098,7 +1099,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return nullptr;
 
-	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node %s"), typeName .c_str ()));
 	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 	const auto   group            = X3D::SFNode (executionContext -> createNode (typeName));
@@ -1202,10 +1203,11 @@ OutlineEditor::on_remove_parent_activate ()
 	if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
 	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 	const auto   executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
+	const auto & parentNode       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 	const auto   field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Parent Node %s"), X3D::GetDescription (parentNode) .c_str ()));
 
 	getBrowserWindow () -> getSelection () -> setNodes ({ });
 
@@ -1267,9 +1269,9 @@ OutlineEditor::on_remove_parent_activate ()
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						applyTransformation (*static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
+						applyTransformation (sfnode, *static_cast <X3D::SFNode*> (secondField), undoStep);
 
-						X3D::X3DEditor::replaceNode (executionContext, secondParent, sfnode, *static_cast <X3D::SFNode*> (secondField), undoStep);
+						X3D::X3DEditor::replaceNode (executionContext, secondParent, *static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
 						break;
 					}
 					case X3D::X3DConstants::MFNode:
