@@ -1673,7 +1673,10 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdgesFunction (const std::vector <s
 		const auto index0 = coordIndex () [i0] .getValue ();
 		const auto index1 = coordIndex () [i1] .getValue ();
 
-		selectedEdges [std::minmax (index0, index1)] .emplace (std::minmax (i0, i1)); 
+		if (ssize_t (i0 - i1) < -1)
+			selectedEdges [std::minmax (index0, index1)] .emplace (i1, i0); 
+		else
+			selectedEdges [std::minmax (index0, index1)] .emplace (i0, i1); 
 	}
 }
 

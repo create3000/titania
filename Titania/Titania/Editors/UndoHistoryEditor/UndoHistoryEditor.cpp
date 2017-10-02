@@ -63,6 +63,8 @@ namespace Columns {
 static constexpr int NUMBER      = 0;
 static constexpr int DESCRIPTION = 1;
 static constexpr int SENSITIVE   = 2;
+static constexpr int TIME        = 3;
+static constexpr int TIME_VALUE  = 4;
 
 }
 
@@ -120,10 +122,16 @@ UndoHistoryEditor::set_undoHistory ()
 
 	for (const auto & undoStep : undoHistory .getUndoList ())
 	{
-		const auto row = getListStore () -> append ();
+		const auto   row  = getListStore () -> append ();
+		const time_t time = undoStep -> getTime ();
+
+		std::ostringstream timeStream;
+
+		timeStream << std::put_time (std::localtime (&time), "%c"); // "%c %Z"
 
 		row -> set_value (Columns::NUMBER,      number);
 		row -> set_value (Columns::DESCRIPTION, undoStep -> getDescription ());
+		row -> set_value (Columns::TIME,        timeStream .str ());
 		row -> set_value (Columns::SENSITIVE,   true);
 
 		++ number;
@@ -131,10 +139,16 @@ UndoHistoryEditor::set_undoHistory ()
 
 	for (const auto & undoStep : undoHistory .getRedoList ())
 	{
-		const auto row = getListStore () -> append ();
+		const auto   row  = getListStore () -> append ();
+		const time_t time = undoStep -> getTime ();
+	
+		std::ostringstream timeStream;
+
+		timeStream << std::put_time (std::localtime (&time), "%c"); // "%c %Z"
 
 		row -> set_value (Columns::NUMBER,      number);
 		row -> set_value (Columns::DESCRIPTION, undoStep -> getDescription ());
+		row -> set_value (Columns::TIME,        timeStream .str ());
 		row -> set_value (Columns::SENSITIVE,   false);
 
 		++ number;

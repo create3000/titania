@@ -268,7 +268,18 @@ protected:
 	   REMOVE
 	};
 
-	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+	struct EdgeCompare
+	{
+
+		bool
+		operator () (const std::pair <size_t, size_t> & lhs, const std::pair <size_t, size_t> & rhs)
+		{
+			return std::minmax (lhs .first, lhs .second) < std::minmax (rhs .first, rhs .second);
+		}
+
+	};
+
+	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>, EdgeCompare>>;
 	using SelectedHoles = std::vector <std::vector <int32_t>>;
 
 	///  @name Construction

@@ -81,6 +81,8 @@ X3DUndoHistoryEditorInterface::create ()
 	m_ListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
 	m_NumberColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NumberColumn"));
 	m_DescriptionColumn = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
+	m_TimeColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TimeColumn"));
+	m_TimeRenderer      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TimeRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);

@@ -578,11 +578,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	   for (const auto & pair : edge .second)
 	   {
-			if (ssize_t (pair .first - pair .second) < -1)
-				edges .emplace_back (pair .second, pair .first);
-			else
-				edges .emplace_back (pair);
-
+			edges .emplace_back (pair);
 			break;
 		}
 	}
@@ -633,11 +629,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	   for (const auto & pair : edge .second)
 		{
-			if (ssize_t (pair .first - pair .second) < -1)
-				edges .emplace_back (pair .second, pair .first);
-			else
-				edges .emplace_back (pair);
-
+			edges .emplace_back (pair);
 			break;
 		}
 	}

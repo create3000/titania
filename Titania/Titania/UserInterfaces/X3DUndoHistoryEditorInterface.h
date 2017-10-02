@@ -100,6 +100,14 @@ public:
 	getDescriptionColumn () const
 	{ return m_DescriptionColumn; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTimeColumn () const
+	{ return m_TimeColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getTimeRenderer () const
+	{ return m_TimeRenderer; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -169,6 +177,8 @@ private:
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NumberColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_DescriptionColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_TimeColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_TimeRenderer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
