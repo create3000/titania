@@ -578,7 +578,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	   for (const auto & pair : edge .second)
 	   {
-			if (pair .second - pair .first > 1)
+			if (ssize_t (pair .first - pair .second) < -1)
 				edges .emplace_back (pair .second, pair .first);
 			else
 				edges .emplace_back (pair);
@@ -633,10 +633,12 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	   for (const auto & pair : edge .second)
 		{
-			if (pair .second - pair .first > 1)
+			if (ssize_t (pair .first - pair .second) < -1)
 				edges .emplace_back (pair .second, pair .first);
 			else
 				edges .emplace_back (pair);
+
+			break;
 		}
 	}
 
@@ -761,9 +763,6 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 void
 X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 {
-__LOG__ << this << std::endl;
-__LOG__ << getSelectedFaces () .size () << std::endl;
-
 	if (getSelectedFaces () .empty ())
 		return;
 
@@ -971,10 +970,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		{
 			if (colorPerVertex ())
 			{
-				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .second));
-				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .first));
-				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .first));
-				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .first));
 				colorIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -985,10 +984,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	   if (texCoordIndex () .size ())
 	   {
-			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .second));
-			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .first));
-			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .first));
-			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .first));
 			texCoordIndex () .set1Value (size + 4, -1);
 		}
 
@@ -996,10 +995,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		{
 			if (normalPerVertex ())
 			{
-				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .second));
-				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .first));
-				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .first));
-				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .first));
 				normalIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -1008,10 +1007,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			}
 		}
 
-		coordIndex () .emplace_back (coordIndex () [edge .second]);
 		coordIndex () .emplace_back (coordIndex () [edge .first]);
-		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
+		coordIndex () .emplace_back (coordIndex () [edge .second]);
 		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
+		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
 		coordIndex () .emplace_back (-1);
 
 		++ numFaces;
