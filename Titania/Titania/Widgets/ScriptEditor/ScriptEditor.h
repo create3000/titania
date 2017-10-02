@@ -151,6 +151,9 @@ private:
 	set_live ();
 
 	bool
+	on_text_view_button_press_event (GdkEventButton* event);
+
+	bool
 	on_focus_in_event (GdkEventFocus*);
 
 	bool

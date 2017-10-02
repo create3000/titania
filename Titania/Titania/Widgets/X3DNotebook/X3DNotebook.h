@@ -202,8 +202,8 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 	if (not page)
 	{
 		page = this -> createDialog (name);
-		page -> setName (this -> getName () + "." + page -> getName ());
 		page -> reparent (*boxes .at (name), this -> getWindow ());
+		page -> setName (this -> getName () + "." + page -> getName ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);
@@ -220,8 +220,8 @@ X3DNotebook <Interface>::getDependentPage (const std::string & name) const
 
 	if (not exists)
 	{
-		page -> setName (this -> getName () + "." + page -> getName ());
 		page -> reparent (*boxes .at (name), this -> getWindow ());
+		page -> setName (this -> getName () + "." + page -> getName ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);

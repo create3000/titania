@@ -115,8 +115,9 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_redo_changed));
 
-	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
-	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
+	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_text_view_button_press_event), false);
+	getTextView () .signal_focus_in_event ()     .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
 
 	getTextView () .show ();
 
@@ -316,8 +317,16 @@ ScriptEditor::set_live ()
 }
 
 bool
+ScriptEditor::on_text_view_button_press_event (GdkEventButton* event)
+{
+__LOG__ << getTextView () .has_focus () << std::endl;
+	return false;
+}
+
+bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
+__LOG__ << std::endl;
 	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
@@ -326,6 +335,7 @@ ScriptEditor::on_focus_in_event (GdkEventFocus*)
 bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
+__LOG__ << std::endl;
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> setAccelerators (true);
 	return false;
