@@ -60,6 +60,7 @@
 #include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
+#include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Parser/Parser.h>
 
 #include <Titania/String.h>
@@ -482,7 +483,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 
 				// Reorder extern protos.
 
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Reorder Extern Prototypes"));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Move Extern Prototype »%s«"), sourceExternProto -> getName () .c_str ()));
 
 				// Remove extern protos.
 				
@@ -695,7 +696,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 	    treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::NULL_)
 	   return true;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action, sourceNode)));
 
 	// Handle link
 
@@ -933,7 +934,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Gdk::Dr
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action, sourceNode)));
 
 	// Handle link
 
@@ -1173,7 +1174,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Gdk::DragAction
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action, sourceNode)));
 
 	// Handle link
 
@@ -1300,24 +1301,31 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
 	}
 }
 
-const char*
-OutlineDragDrop::get_node_action_string (Gdk::DragAction action) const
+std::string
+OutlineDragDrop::get_node_action_string (Gdk::DragAction action, const X3D::SFNode & node) const
 {
+	std::string name = X3D::GetDisplayName (node);
+
+	if (not name .empty ())
+		name = " »" + name + "«";
+
+	name = node -> getTypeName () + name;
+
 	switch (action)
 	{
 		case Gdk::ACTION_LINK:
-         return "Clone Node";
+         return "Clone Node " + name;
 		case Gdk::ACTION_MOVE:
-         return "Move Node";
+         return "Move Node " + name;
 		case Gdk::ACTION_COPY:
-			return "Copy Node";
+			return "Copy Node " + name;
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_ASK:
 		case Gdk::ACTION_PRIVATE:
 		   break;
 	}
 
-   return "Move Node";
+   return "Move Node " + name;
 }
 
 } // puck

@@ -194,7 +194,7 @@ SFNode::setProperty (pb::pbObject* const object, const pb::Identifier & identifi
 	{
 		const auto field = lhs -> getValue () -> getField (identifier .getString ());
 
-		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::outputOnly)
+		if (field -> getAccessType () == X3D::outputOnly)
 			return;
 
 		setValue (field, value);

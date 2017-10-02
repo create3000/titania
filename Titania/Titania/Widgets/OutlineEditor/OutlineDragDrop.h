@@ -130,8 +130,8 @@ private:
 	                    size_t sourceIndex,
 	                    const X3D::UndoStepPtr & undoStep);
 
-	const char*
-	get_node_action_string (Gdk::DragAction) const;
+	std::string
+	get_node_action_string (Gdk::DragAction, const X3D::SFNode & node) const;
 
 	///  @name Static members
 

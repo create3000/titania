@@ -84,8 +84,8 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::Arc2D);
 
 	addField (inputOutput,    "metadata",   metadata ());
-	addField (inputOutput,    "startAngle", startAngle ());
-	addField (inputOutput,    "endAngle",   endAngle ());
+	addField (initializeOnly, "startAngle", startAngle ());
+	addField (initializeOnly, "endAngle",   endAngle ());
 	addField (initializeOnly, "radius",     radius ());
 	addField (initializeOnly, "options",    options ());
 

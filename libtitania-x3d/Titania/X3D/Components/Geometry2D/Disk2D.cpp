@@ -86,8 +86,8 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::Disk2D);
 
 	addField (inputOutput,    "metadata",    metadata ());
-	addField (inputOutput,    "innerRadius", innerRadius ());
-	addField (inputOutput,    "outerRadius", outerRadius ());
+	addField (initializeOnly, "innerRadius", innerRadius ());
+	addField (initializeOnly, "outerRadius", outerRadius ());
 	addField (initializeOnly, "solid",       solid ());
 	addField (initializeOnly, "options",     options ());
 

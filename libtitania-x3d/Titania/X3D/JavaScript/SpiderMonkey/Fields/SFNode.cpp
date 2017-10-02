@@ -260,7 +260,7 @@ SFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval
 		{
 			const auto field = lhs -> getValue () -> getField (name);
 
-			if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::outputOnly)
+			if (field -> getAccessType () == X3D::outputOnly)
 				return true;
 
 			if (not setValue (cx, field, vp))
