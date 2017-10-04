@@ -86,6 +86,12 @@ protected:
 
 	X3DDragSensorNode ();
 
+	///  @name Event handlers
+
+	virtual
+	void
+	set_motion (const HitPtr & hit, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
+
 
 private:
 

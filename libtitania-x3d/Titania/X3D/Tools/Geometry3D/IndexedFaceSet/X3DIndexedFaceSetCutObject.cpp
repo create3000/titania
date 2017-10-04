@@ -98,11 +98,12 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
                                  const std::vector <int32_t> & startPoints,
                                  const std::vector <int32_t> & endPoints)
 {
-	const auto numFaces   = getFaceSelection () -> getNumFaces ();
-	const auto faceNumber = getFaceSelection () -> getFaceNumber (cutFace);
-	const auto vertices   = getFaceSelection () -> getFaceVertices (cutFace);
-	const auto startEdge  = getFaceSelection () -> getClosestEdge (cutEdge .first,  vertices);
-	const auto endEdge    = getFaceSelection () -> getClosestEdge (cutEdge .second, vertices);
+	const auto numFaces    = getFaceSelection () -> getNumFaces ();
+	const auto faceNumber  = getFaceSelection () -> getFaceNumber (cutFace);
+	const auto vertices    = getFaceSelection () -> getFaceVertices (cutFace);
+	const auto startEdge   = getFaceSelection () -> getClosestEdge (cutEdge .first,  vertices);
+	const auto endEdge     = getFaceSelection () -> getClosestEdge (cutEdge .second, vertices);
+	auto       fillIndices = std::map <size_t, size_t> ();
 
 	std::vector <int32_t> selection;
 
@@ -504,13 +505,13 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (startPoints .size () == 2)
 	{
 		for (const auto & face : adjacentFaces1)
-			addPoint (cutFace, face, startPoint, cutEdge .first);
+			addPoint (cutFace, face, startPoint, cutEdge .first, fillIndices);
 	}
 
 	if (endPoints .size () == 2)
 	{
 		for (const auto & face : adjacentFaces2)
-			addPoint (cutFace, face, endPoint, cutEdge .second);
+			addPoint (cutFace, face, endPoint, cutEdge .second, fillIndices);
 	}
 
 	// Invalidate old face.
@@ -518,11 +519,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	const size_t begin = vertices .front ();
 	const size_t end   = vertices .back () + 1;
 
+	fillIndices .emplace (faceNumber, end - begin);
+
 	if (not colorPerVertex ())
-		colorIndex () .insert (colorIndex () .begin () + faceNumber, end - begin, SFInt32 (-1));
+	{
+		for (const auto & pair : basic::make_reverse_range (fillIndices))
+			colorIndex () .insert (colorIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+	}
 
 	if (not normalPerVertex ())
-		normalIndex () .insert (normalIndex () .begin () + faceNumber, end - begin, SFInt32 (-1));
+	{
+		for (const auto & pair : basic::make_reverse_range (fillIndices))
+			normalIndex () .insert (normalIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+	}
 
 	std::fill (coordIndex () .begin () + begin, coordIndex () .begin () + end, -1);
 
@@ -533,7 +542,7 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 
 // Insert a point on the edge of the adjacent faces
 void
-X3DIndexedFaceSetCutObject::addPoint (const size_t cutFace, const size_t face, const int32_t index, const Vector3d & point)
+X3DIndexedFaceSetCutObject::addPoint (const size_t cutFace, const size_t face, const int32_t index, const Vector3d & point, std::map <size_t, size_t> & fillIndices)
 {
 	if (face == cutFace)
 		return;
@@ -655,11 +664,7 @@ X3DIndexedFaceSetCutObject::addPoint (const size_t cutFace, const size_t face, c
 	const size_t begin = vertices .front ();
 	const size_t end   = vertices .back () + 1;
 
-	if (not colorPerVertex ())
-		colorIndex () .insert (colorIndex () .begin () + faceNumber, end - begin, SFInt32 (-1));
-
-	if (not normalPerVertex ())
-		normalIndex () .insert (normalIndex () .begin () + faceNumber, end - begin, SFInt32 (-1));
+	fillIndices .emplace (faceNumber, end - begin);
 
 	std::fill (coordIndex () .begin () + begin, coordIndex () .begin () + end, -1);
 }

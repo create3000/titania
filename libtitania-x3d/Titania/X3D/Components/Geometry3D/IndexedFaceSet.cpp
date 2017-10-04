@@ -368,7 +368,6 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 	}
 }
 
-
 void
 IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons)
 {

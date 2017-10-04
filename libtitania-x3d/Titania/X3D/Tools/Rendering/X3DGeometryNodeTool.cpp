@@ -84,10 +84,7 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	          fields (),
 	       selection (),
 	  normalToolNode (new NormalTool (getExecutionContext ())), 
-	   coordToolNode (new CoordinateTool (getExecutionContext ())),
-	        viewport (),
-	projectionMatrix (),
-	 modelViewMatrix ()
+	   coordToolNode (new CoordinateTool (getExecutionContext ()))
 {
 	addType (X3DConstants::X3DGeometryNodeTool);
 
@@ -373,10 +370,6 @@ X3DGeometryNodeTool::set_selection (const MFVec3d &)
 void
 X3DGeometryNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	viewport         [type] = renderObject -> getViewVolumes () .back () .getViewport ();
-	projectionMatrix [type] = renderObject -> getProjectionMatrix () .get ();
-	modelViewMatrix  [type] = renderObject -> getModelViewMatrix () .get ();
-
 	getNode <X3DGeometryNode> () -> traverse (type, renderObject);
 
 	normalToolNode -> traverse (type, renderObject);

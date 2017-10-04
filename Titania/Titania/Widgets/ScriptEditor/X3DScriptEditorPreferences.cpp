@@ -124,7 +124,7 @@ X3DScriptEditorPreferences::initialize ()
 
 	// Color Themes
 
-	std::string themeId = "tango";
+	std::string themeId = "tango"; // x_ite
 	
 	if (getConfig () -> hasKey ("colorTheme"))
 		themeId = getConfig () -> getString ("colorTheme");

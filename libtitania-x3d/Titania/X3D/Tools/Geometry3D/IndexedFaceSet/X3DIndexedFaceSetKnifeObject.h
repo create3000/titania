@@ -122,14 +122,26 @@ private:
 	setEndMagicSelection (PlaneSensor* const planeSensor);
 
 	bool
-	snapToCenter (const std::pair <size_t, size_t> &, Vector3d &);
+	snapToCenter (const std::pair <size_t, size_t> & edge,
+	              Vector3d & point,
+	              const Matrix4d & modelViewMatrix,
+	              const Matrix4d & projectionMatrix,
+	              const Vector4i & viewport);
 
 	bool
-	snapToVertex (const size_t, std::vector <int32_t> &, Vector3d &);
+	snapToVertex (const size_t face,
+	              std::vector <int32_t> & points,
+	              Vector3d & vertex,
+	              const Matrix4d & modelViewMatrix,
+	              const Matrix4d & projectionMatrix,
+	              const Vector4i & viewport);
 
 	Vector3d
-	getClosestPoint (const std::pair <size_t, size_t> &,
-	                 const std::pair <Vector3d, Vector3d> &) const;
+	getClosestPoint (const std::pair <size_t, size_t> & edge,
+	                 const std::pair <Vector3d, Vector3d> & cutPoints,
+	                 const Matrix4d & modelViewMatrix,
+	                 const Matrix4d & projectionMatrix,
+	                 const Vector4i & viewport) const;
 
 	void
 	cut ();

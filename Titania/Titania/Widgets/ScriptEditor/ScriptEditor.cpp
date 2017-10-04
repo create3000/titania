@@ -156,10 +156,10 @@ ScriptEditor::configure ()
 	// Config
 
 	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+		getPaned () .set_position (getConfig () -> get <int32_t> ("paned"));
 
 	if (getConfig () -> hasKey ("sidePaned"))
-		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
+		getSidePaned () .set_position (getConfig () -> get <int32_t> ("sidePaned"));
 }
 
 void
@@ -336,6 +336,7 @@ bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
 __LOG__ << std::endl;
+backtrace ();
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> setAccelerators (true);
 	return false;
@@ -636,8 +637,8 @@ ScriptEditor::store ()
 {
 	save ();
 
-	getConfig () -> setItem ("paned",      getPaned ()     .get_position ());
-	getConfig () -> setItem ("sidePaned",  getSidePaned () .get_position ());
+	getConfig () -> set <int32_t> ("paned",      getPaned ()     .get_position ());
+	getConfig () -> set <int32_t> ("sidePaned",  getSidePaned () .get_position ());
 
 	X3DScriptEditorInterface::store ();
 }

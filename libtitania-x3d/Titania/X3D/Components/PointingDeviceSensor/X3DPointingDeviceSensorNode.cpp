@@ -67,9 +67,12 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 { }
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	X3DSensorNode (),
-	       fields (),
-	     disabled (false)
+	   X3DSensorNode (),
+	          fields (),
+	        disabled (false),
+	        viewport (),
+	projectionMatrix (),
+	 modelViewMatrix ()
 {
 	addType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -144,8 +147,12 @@ X3DPointingDeviceSensorNode::set_enabled ()
 }
 
 void
-X3DPointingDeviceSensorNode::set_over (const bool over, const HitPtr &, const Matrix4d &, const Matrix4d &, const Vector4i &)
+X3DPointingDeviceSensorNode::set_over (const bool over, const HitPtr &, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 {
+	setViewport (viewport);
+	setProjectionMatrix (projectionMatrix);
+	setModelViewMatrix (modelViewMatrix);
+
 	if (over not_eq isOver ())
 	{
 		isOver () = over;
@@ -156,8 +163,12 @@ X3DPointingDeviceSensorNode::set_over (const bool over, const HitPtr &, const Ma
 }
 
 void
-X3DPointingDeviceSensorNode::set_active (const bool active, const HitPtr & hit, const Matrix4d &, const Matrix4d &, const Vector4i &)
+X3DPointingDeviceSensorNode::set_active (const bool active, const HitPtr & hit, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 {
+	setViewport (viewport);
+	setProjectionMatrix (projectionMatrix);
+	setModelViewMatrix (modelViewMatrix);
+
 	if (active not_eq isActive ())
 		isActive () = active;
 }

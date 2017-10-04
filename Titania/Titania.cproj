@@ -3069,7 +3069,7 @@
     <None Include="share\titania\Library\Components\VolumeRendering\ToneMappedVolumeStyle.x3dv" />
     <None Include="share\titania\Library\Components\VolumeRendering\VolumeData.x3dv" />
     <None Include="titania" />
-    <None Include="share\titania\share\gtksourceview-3.0\styles\x_ite.xml" />
+    <None Include="share\gtksourceview-3.0\styles\x_ite.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3224,8 +3224,7 @@
     <Folder Include="share\titania\ui\icons\Primitives\" />
     <Folder Include="Titania\Widgets\RouteGraph\" />
     <Folder Include="share\titania\Library\Components\VolumeRendering\" />
-    <Folder Include="share\titania\share\" />
-    <Folder Include="share\titania\share\gtksourceview-3.0\" />
+    <Folder Include="share\gtksourceview-3.0\styles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

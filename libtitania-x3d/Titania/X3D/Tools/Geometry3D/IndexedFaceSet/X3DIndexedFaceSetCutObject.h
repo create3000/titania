@@ -104,7 +104,11 @@ private:
 	///  @name Operations
 
 	void
-	addPoint (const size_t, const size_t, const int32_t, const Vector3d &);
+	addPoint (const size_t cutFace,
+	          const size_t face,
+	          const int32_t index,
+	          const Vector3d & point,
+	          std::map <size_t, size_t> & fillIndices);
 
 	///  @name Fields
 

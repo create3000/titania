@@ -120,7 +120,7 @@ X3DUserInterface::setup ()
 
 	config .reset (new Configuration (getName ()));
 
-	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
+	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_map));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
@@ -129,11 +129,21 @@ X3DUserInterface::setup ()
 }
 
 void
+X3DUserInterface::on_initial_map ()
+{
+	mapConnection .disconnect ();
+
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::on_initialize), Glib::PRIORITY_HIGH_IDLE);
+}
+
+void
 X3DUserInterface::on_initialize ()
 {
 	//__LOG__ << "Initializing widget: " << getName () << std::endl;
 
-	mapConnection .disconnect ();
+	if (initialized)
+		return;
+
 	initialized = true;
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
@@ -150,11 +160,7 @@ X3DUserInterface::on_initialize ()
 	initialize ();
 
 	if (isFullscreen ())
-	{
-		windowStateConnection = getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_window_state_event));
-
 		getWindow () .fullscreen ();
-	}
 
 	set_fullscreen (isFullscreen ());
 
@@ -195,16 +201,6 @@ X3DUserInterface::on_unmap ()
 	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection, this);
 
 	set_selection ({ });
-}
-
-bool
-X3DUserInterface::on_initial_window_state_event (GdkEventWindowState* event)
-{
-	windowStateConnection .disconnect ();
-
-	configure ();
-
-	return false;
 }
 
 bool
@@ -403,11 +399,7 @@ X3DUserInterface::restoreInterface ()
 	}
 
 	if (isMaximized ())
-	{
-		windowStateConnection = getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_window_state_event));
-
 		getWindow () .maximize ();
-	}
 }
 
 void

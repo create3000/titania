@@ -88,6 +88,20 @@ public:
 	isOver () const
 	{ return *fields .isOver; }
 
+	///  @name Member access
+
+	const Vector4i &
+	getViewport () const
+	{ return viewport; }
+
+	const Matrix4d &
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
+
+	const Matrix4d &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
 	///  @name Operations
 
 	void
@@ -107,6 +121,20 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	void
+	setViewport (const Vector4i & value)
+	{ viewport = value; }
+
+	void
+	setProjectionMatrix (const Matrix4d & value)
+	{ projectionMatrix = value; }
+
+	void
+	setModelViewMatrix (const Matrix4d & value)
+	{ modelViewMatrix = value; }
 
 	///  @name Event handlers
 
@@ -148,7 +176,7 @@ private:
 	void
 	set_enabled ();
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -160,7 +188,12 @@ private:
 
 	Fields fields;
 
-	bool        disabled;
+	///  @name Members
+
+	bool     disabled;
+	Vector4i viewport;
+	Matrix4d projectionMatrix;
+	Matrix4d modelViewMatrix;
 
 };
 

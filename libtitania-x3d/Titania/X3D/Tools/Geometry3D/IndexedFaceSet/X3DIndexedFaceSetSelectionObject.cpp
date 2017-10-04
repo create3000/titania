@@ -540,10 +540,13 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 void
 X3DIndexedFaceSetSelectionObject::setHotSelection (const std::vector <int32_t> & coincidentPoints)
 {
-	const auto & hitPoint = touchSensor -> getHitPoint ();
-	auto         index    = coincidentPoints [0];
-	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
-	auto         face     = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
+	const auto & viewport         = touchSensor -> getViewport ();
+	const auto & projectionMatrix = touchSensor -> getProjectionMatrix ();
+	const auto & modelViewMatrix  = touchSensor -> getModelViewMatrix ();
+	const auto & hitPoint         = touchSensor -> getHitPoint ();
+	auto         index            = coincidentPoints [0];
+	const auto   faces            = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto         face             = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
 
 	const auto point    = getCoord () -> get1Point (index);
 	const auto vertices = getFaceSelection () -> getFaceVertices (face);
@@ -556,8 +559,8 @@ X3DIndexedFaceSetSelectionObject::setHotSelection (const std::vector <int32_t> &
 	if (vertices .size () >= 3)
 	{
 		const auto edge          = getFaceSelection () -> getClosestEdge (hitPoint, vertices);
-		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
-		const auto pointDistance = getDistance (hitPoint, point);
+		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint), modelViewMatrix, projectionMatrix, viewport);
+		const auto pointDistance = getDistance (hitPoint, point, modelViewMatrix, projectionMatrix, viewport);
 
 		// Hot edge and points for near point or face
 
@@ -590,10 +593,13 @@ X3DIndexedFaceSetSelectionObject::setHotSelection (const std::vector <int32_t> &
 void
 X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t> & coincidentPoints)
 {
-	const auto & hitPoint = touchSensor -> getHitPoint ();
-	auto         index    = coincidentPoints [0];
-	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
-	auto         face     = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
+	const auto & viewport         = touchSensor -> getViewport ();
+	const auto & projectionMatrix = touchSensor -> getProjectionMatrix ();
+	const auto & modelViewMatrix  = touchSensor -> getModelViewMatrix ();
+	const auto & hitPoint         = touchSensor -> getHitPoint ();
+	auto         index            = coincidentPoints [0];
+	const auto   faces            = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto         face             = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
 
 	const auto point    = getCoord () -> get1Point (index);
 	const auto vertices = getFaceSelection () -> getFaceVertices (face);
@@ -606,8 +612,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 	if (vertices .size () >= 3)
 	{
 		const auto edge          = getFaceSelection () -> getClosestEdge (hitPoint, vertices);
-		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
-		const auto pointDistance = getDistance (hitPoint, point);
+		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint), modelViewMatrix, projectionMatrix, viewport);
+		const auto pointDistance = getDistance (hitPoint, point, modelViewMatrix, projectionMatrix, viewport);
 
 		// Hot edge and points for near point or face
 
@@ -1824,12 +1830,16 @@ X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <int32_t> & p
 
 ///  Returns the sceen distance in pixels between @a point1 and @a point2.
 double
-X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Vector3d & point2)
+X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1,
+                                               const Vector3d & point2,
+                                               const Matrix4d & modelViewMatrix,
+                                               const Matrix4d & projectionMatrix,
+                                               const Vector4i & viewport)
 {
 	try
 	{
-		const auto p1 = ViewVolume::projectPoint (point1, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
-		const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (TraverseType::POINTER), getProjectionMatrix (TraverseType::POINTER), getViewport (TraverseType::POINTER));
+		const auto p1 = ViewVolume::projectPoint (point1, modelViewMatrix, projectionMatrix, viewport);
+		const auto p2 = ViewVolume::projectPoint (point2, modelViewMatrix, projectionMatrix, viewport);
 
 		return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
 	}

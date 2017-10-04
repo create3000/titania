@@ -237,18 +237,6 @@ protected:
 	void
 	initialize () override;
 
-	const Vector4i &
-	getViewport (const TraverseType type) const
-	{ return const_cast <X3DGeometryNodeTool*> (this) -> viewport [type]; }
-
-	const Matrix4d &
-	getProjectionMatrix (const TraverseType type) const
-	{ return const_cast <X3DGeometryNodeTool*> (this) -> projectionMatrix [type]; }
-
-	const Matrix4d &
-	getModelViewMatrix (const TraverseType type) const
-	{ return const_cast <X3DGeometryNodeTool*> (this) -> modelViewMatrix [type]; }
-
 	virtual
 	void
 	set_selection (const MFVec3d &);
@@ -286,10 +274,6 @@ private:
 	MFVec3d                 selection;
 	X3DPtr <NormalTool>     normalToolNode;
 	X3DPtr <CoordinateTool> coordToolNode;
-
-	std::map <TraverseType, Vector4i> viewport;
-	std::map <TraverseType, Matrix4d> projectionMatrix;
-	std::map <TraverseType, Matrix4d> modelViewMatrix;
 
 };
 

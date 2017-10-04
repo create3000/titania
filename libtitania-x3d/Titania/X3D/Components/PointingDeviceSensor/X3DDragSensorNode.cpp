@@ -67,5 +67,13 @@ X3DDragSensorNode::X3DDragSensorNode () :
 	trackPoint_changed () .setUnit (UnitCategory::LENGTH);
 }
 
+void
+X3DDragSensorNode::set_motion (const HitPtr &, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
+{
+	setViewport (viewport);
+	setProjectionMatrix (projectionMatrix);
+	setModelViewMatrix (modelViewMatrix);
+}
+
 } // X3D
 } // titania

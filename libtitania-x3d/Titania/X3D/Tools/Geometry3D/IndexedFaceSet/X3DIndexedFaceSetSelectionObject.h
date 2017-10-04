@@ -391,7 +391,11 @@ protected:
 	isInSelection (const std::vector <int32_t> &, const std::vector <size_t> &) const;
 
 	double
-	getDistance (const Vector3d &, const Vector3d &);
+	getDistance (const Vector3d & point1,
+	             const Vector3d & point2,
+	             const Matrix4d & modelViewMatrix,
+	             const Matrix4d & projectionMatrix,
+	             const Vector4i & viewport);
 
 	//double
 	//getArea (const std::vector <size_t> &);

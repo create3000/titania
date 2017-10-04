@@ -200,6 +200,9 @@ private:
 	///  @name Event handlers
 
 	void
+	on_initial_map ();
+
+	void
 	on_initialize ();
 
 	void
@@ -207,9 +210,6 @@ private:
 
 	void
 	on_unmap ();
-
-	bool
-	on_initial_window_state_event (GdkEventWindowState* event);
 
 	bool
 	on_window_state_event (GdkEventWindowState* event);

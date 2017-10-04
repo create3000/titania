@@ -211,12 +211,14 @@ CylinderSensor::set_active (const bool active,
 
 void
 CylinderSensor::set_motion (const HitPtr & hit,
-                            const Matrix4d &,
-                            const Matrix4d &,
-                            const Vector4i &)
+                            const Matrix4d & modelViewMatrix,
+                            const Matrix4d & projectionMatrix,
+                            const Vector4i & viewport)
 {
 	try
 	{
+		X3DDragSensorNode::set_motion (hit, modelViewMatrix, projectionMatrix, viewport);
+
 		const auto hitRay = hit -> hitRay * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
