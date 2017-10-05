@@ -591,7 +591,7 @@ private:
 	void
 	restoreSelectedFaces (const SFNode &, const std::vector <int32_t> &);
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -618,6 +618,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	X3DPtr <Switch>            toolSwitch;
 	X3DPtr <TouchSensor>       touchSensor;

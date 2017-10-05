@@ -61,6 +61,11 @@ class X3DImportedNodesEditor :
 {
 public:
 
+	///  @name Member access
+
+	void
+	setNode (const X3D::SFNode & node);
+
 	///  @name Destruction
 
 	virtual
@@ -77,9 +82,6 @@ protected:
 	void
 	initialize () override
 	{ }
-
-	void
-	setNode (const X3D::SFNode &);
 
 
 private:

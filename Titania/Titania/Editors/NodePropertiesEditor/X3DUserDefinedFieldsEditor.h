@@ -61,10 +61,10 @@ class X3DUserDefinedFieldsEditor :
 {
 public:
 
-	///  @name Destruction
+	///  @name Member access
 
 	void
-	setNode (const X3D::SFNode &);
+	setNode (const X3D::SFNode & node);
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getUserDefinedFieldsListStore () const

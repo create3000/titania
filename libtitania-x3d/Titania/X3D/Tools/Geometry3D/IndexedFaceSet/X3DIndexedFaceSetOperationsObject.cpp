@@ -865,9 +865,9 @@ X3DIndexedFaceSetOperationsObject::formNewFace (const std::vector <std::vector <
 
 	for (const auto & hole : holes)
 	{
-		if (colorIndex () .size ())
+		if (colorIndex () .size () and getColor ())
 		{
-			if (not colorPerVertex () and getColor ())
+			if (not colorPerVertex ())
 				colorIndex () .emplace_back (getColor () -> getSize ());
 		}
 
