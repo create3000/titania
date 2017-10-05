@@ -603,11 +603,17 @@ X3DBrowserPanel::set_grid ()
 		if (getPage () -> getMainBrowser () not_eq getCurrentBrowser ())
 			return;
 	
+		const auto & executionContext = browser -> getExecutionContext ();
+		const bool   perspective      = type == BrowserPanelType::PERSPECTIVE_VIEW;
+
+		executionContext -> getNamedNode <X3D::Switch> ("GridLayerGridPerspectiveSwitch") -> whichChoice () = perspective;
+		executionContext -> getNamedNode <X3D::Switch> ("LayerGridPerspectiveSwitch") -> whichChoice ()     = not perspective;
+
 		if (getBrowserWindow () -> getGridTool () -> getVisible ())
 		{
 			const auto plane = getBrowserWindow () -> getGridTool () -> getPlane ();
 	
-			if (type == BrowserPanelType::PERSPECTIVE_VIEW or plane == getPlane ())
+			if (perspective or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 1;
 			}
@@ -650,7 +656,7 @@ X3DBrowserPanel::set_grid ()
 		{
 			const auto plane = getBrowserWindow () -> getAngleGridTool () -> getPlane ();
 
-			if (type == BrowserPanelType::PERSPECTIVE_VIEW or plane == getPlane ())
+			if (perspective or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 2;
 			}
@@ -692,7 +698,7 @@ X3DBrowserPanel::set_grid ()
 		{
 			const auto plane = getBrowserWindow () -> getAxonometricGridTool () -> getPlane ();
 
-			if (type == BrowserPanelType::PERSPECTIVE_VIEW or plane == getPlane ())
+			if (perspective or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 3;
 			}

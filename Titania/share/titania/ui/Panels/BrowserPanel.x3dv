@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.1.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Thu, 05 Oct 2017 03:38:12 GMT"
+META "modified" "Thu, 05 Oct 2017 04:40:44 GMT"
 META "titania-add-metadata" "true"
 
 EXTERNPROTO Grid [
@@ -203,8 +203,10 @@ LayerSet {
           ]
         }
         DEF GridTransform Transform {
-          children DEF GridSwitch Switch {
-            children DEF Grid Grid { }
+          children DEF GridLayerGridPerspectiveSwitch Switch {
+            children DEF GridSwitch Switch {
+              children DEF Grid Grid { }
+            }
           }
         }
       ]
@@ -250,6 +252,9 @@ LayerSet {
         }
         USE PerspectiveViewpoint
         USE OrthoViewpoint
+        DEF LayerGridPerspectiveSwitch Switch {
+          children USE GridSwitch
+        }
         DEF Group Group { }
       ]
     }

@@ -30,6 +30,7 @@
        scheme did -->
 
   <!-- Palette -->
+  <color name="black"      value="#000000"/>
   <color name="white"      value="#abb2bf"/>
   <color name="blue"       value="#61afef"/>
   <color name="red"        value="#e06c75"/>
@@ -54,10 +55,10 @@
   <style name="bracket-mismatch"            foreground="white" background="red"/>
 
   <!-- Right Margin -->
-  <style name="right-margin"                foreground="#000000" background="#000000"/>
+  <style name="right-margin"                foreground="black" background="black"/>
 
   <!-- Search Matching -->
-  <style name="search-match"                background="yellow"/>
+  <style name="search-match"                foreground="black" background="yellow"/>
 
   <!-- Comments -->
   <style name="def:comment"                 foreground="gray"/>
