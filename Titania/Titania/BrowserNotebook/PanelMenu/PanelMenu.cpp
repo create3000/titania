@@ -61,15 +61,27 @@ namespace puck {
 PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const PanelType panelType_) :
 	     X3DBaseInterface (browserWindow, page -> getMainBrowser ()),
 	X3DPanelMenuInterface (get_ui ("Widgets/PanelMenu.glade")),
+	                 page (page),
 	            panelType (panelType_),
 	            menuItems ({ std::make_pair (PanelType::BROWSER_PANEL, &getBrowserPanelMenuItem ()),
-	                         std::make_pair (PanelType::RENDER_PANEL,  &getRenderPanelMenuItem ()) })
+	                         std::make_pair (PanelType::RENDER_PANEL,  &getRenderPanelMenuItem ()) }),
+	             changing (false)
 {
 	addChildObjects (panelType);
 
 	menuItems .at (panelType) -> get_style_context () -> add_class ("titania-menu-item-selected");
 
 	setup ();
+}
+
+void
+PanelMenu::initialize ()
+{
+	X3DPanelMenuInterface::initialize ();
+
+	page -> getMultiView () .addInterest (this, &PanelMenu::set_multi_view);
+
+	set_multi_view ();
 }
 
 void
@@ -82,6 +94,25 @@ void
 PanelMenu::on_render_panel_activate ()
 {
 	panelType = PanelType::RENDER_PANEL;
+}
+
+void
+PanelMenu::set_multi_view ()
+{
+	changing = true;
+
+	getMultiViewMenuItem () .set_active (page -> getMultiView ());
+
+	changing = false;
+}
+
+void
+PanelMenu::on_multi_view_activate ()
+{
+	if (changing)
+		return;
+
+	page -> setMultiView (getMultiViewMenuItem () .get_active ());
 }
 
 PanelMenu::~PanelMenu ()

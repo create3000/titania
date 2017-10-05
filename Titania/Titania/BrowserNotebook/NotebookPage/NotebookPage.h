@@ -80,6 +80,13 @@ public:
 	getPanels () const
 	{ return panels; }
 
+	void
+	setMultiView (const bool value);
+
+	const X3D::SFBool &
+	getMultiView () const
+	{ return multiView; }
+
 	///  @name Destruction
 
 	virtual
@@ -145,19 +152,12 @@ private:
 	getActiveView () const
 	{ return activeView; }
 
-	void
-	setMultiView (const bool value);
-
-	bool
-	getMultiView () const
-	{ return multiView; }
-
 	///  @name Members
 
 	std::vector <Gtk::Widget*> boxes;
 	PanelArray                 panels;
 	size_t                     activeView;
-	bool                       multiView;
+	X3D::SFBool                multiView;
 
 };
 

@@ -100,6 +100,10 @@ public:
 	getRenderPanelMenuItem () const
 	{ return *m_RenderPanelMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getMultiViewMenuItem () const
+	{ return *m_MultiViewMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -113,6 +117,10 @@ public:
 	virtual
 	void
 	on_render_panel_activate () = 0;
+
+	virtual
+	void
+	on_multi_view_activate () = 0;
 
 	///  @name Destruction
 
@@ -141,6 +149,7 @@ private:
 	Gtk::Menu* m_Widget;
 	Gtk::MenuItem* m_BrowserPanelMenuItem;
 	Gtk::MenuItem* m_RenderPanelMenuItem;
+	Gtk::CheckMenuItem* m_MultiViewMenuItem;
 	Gtk::Window* m_Window;
 
 };

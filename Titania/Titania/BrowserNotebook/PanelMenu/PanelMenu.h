@@ -83,6 +83,12 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Event handlers
 
 	virtual
@@ -93,10 +99,19 @@ private:
 	void
 	on_render_panel_activate () final override;
 
+	void
+	set_multi_view ();
+
+	virtual
+	void
+	on_multi_view_activate () final override;
+
 	///  @name Members
 
+	NotebookPage* const                  page;
 	X3D::SFEnum <PanelType>              panelType;
 	std::map <PanelType, Gtk::MenuItem*> menuItems;
+	bool                                 changing;
 
 };
 

@@ -67,6 +67,8 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	              activeView (1),
 	               multiView (false)
 {
+	addChildObjects (multiView);
+
 	unparent (getWidget ());
 
 	setup ();

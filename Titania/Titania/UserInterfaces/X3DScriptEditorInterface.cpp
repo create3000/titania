@@ -156,8 +156,6 @@ X3DScriptEditorInterface::create ()
 	m_builder -> get_widget ("GoToLineEntry", m_GoToLineEntry);
 	m_builder -> get_widget ("GoToLineButton", m_GoToLineButton);
 	m_builder -> get_widget ("HideGoToLineButton", m_HideGoToLineButton);
-
-	// Connect object Gtk::CheckMenuItem with id 'CaseSensitiveMenuItem'.
 	m_CaseSensitiveMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_case_sensitve_toggled));
 	m_AtWordBoundariesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_at_word_boundaries_toggled));
 	m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_regex_toggled));
