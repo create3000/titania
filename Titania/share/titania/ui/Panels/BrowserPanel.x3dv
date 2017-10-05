@@ -1,14 +1,14 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V3.1.0
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V3.1.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Fri, 23 Jun 2017 04:32:29 GMT"
-META "titania-add-world-info" "true"
+META "modified" "Thu, 05 Oct 2017 03:38:12 GMT"
+META "titania-add-metadata" "true"
 
 EXTERNPROTO Grid [
   inputOutput    SFVec3f    translation
@@ -128,6 +128,20 @@ WorldInfo {
           }
         ]
       }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value DEF type_1 MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value [
+            "",
+            "MAIN_VIEW",
+            "",
+            ""
+          ]
+        }
+      }
     ]
   }
 }
@@ -180,6 +194,7 @@ LayerSet {
         }
         DEF PerspectiveViewpoint Viewpoint { }
         DEF OrthoViewpoint OrthoViewpoint {
+          position 0 0 1000
           fieldOfView [
             -5,
             -5,

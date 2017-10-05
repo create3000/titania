@@ -182,14 +182,8 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 
 	// Setup dependent browser.
 
-	mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
-	mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
-
 	browser -> setDependentContext (mainBrowser);
 	browser -> setFrameRate (30);
-
-	set_fixed_pipeline ();
-	set_viewer ();
 
 	return browser;
 }
@@ -355,6 +349,13 @@ X3DBrowserPanel::set_dependent_browser ()
 	{
 		// Setup dependent browser.
 
+		const auto & mainBrowser = getPage () -> getMainBrowser ();
+	
+		mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+		mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
+
+		// Setup dependent browser.
+
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ()); // here!
 		browser -> set_opacity (1);
@@ -407,6 +408,8 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
 
+		set_fixed_pipeline ();
+		set_viewer ();
 		set_background_texture ();
 		set_background_texture_transparency ();
 		set_activeLayer ();

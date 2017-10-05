@@ -150,7 +150,8 @@ X3DShadersContext::setFixedPipeline (const bool value)
 {
 	fixedPipeline = value;
 
-	set_shading ();
+	if (isInitialized ())
+		set_shading ();
 }
 
 X3DPtr <ComposedShader>
@@ -190,6 +191,7 @@ X3DShadersContext::set_shading ()
 {
 	fixedPipelineRequired = fixedPipeline or
 	                        not getBrowser () -> getLoadSensor () -> isLoaded () or
+									//not getBackgroundSphereShader () -> isValid () or
 									not pointShader -> isValid () or
 									not wireframeShader -> isValid () or
 									not gouraudShader -> isValid () or
