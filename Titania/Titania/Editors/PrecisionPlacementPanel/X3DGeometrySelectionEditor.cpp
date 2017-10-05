@@ -105,7 +105,7 @@ X3DGeometrySelectionEditor::initialize ()
 void
 X3DGeometrySelectionEditor::configure ()
 {
-	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
+	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("geometrySelectionUniformScale"));
 
 	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DGeometrySelectionEditor::set_geometries, this);
 

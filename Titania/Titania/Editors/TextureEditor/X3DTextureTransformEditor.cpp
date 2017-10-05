@@ -88,7 +88,7 @@ X3DTextureTransformEditor::X3DTextureTransformEditor () :
 void
 X3DTextureTransformEditor::configure ()
 {
-	getTextureTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("textureTransformUniformScale"));
+	getTextureTransformUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("textureTransformUniformScale"));
 }
 
 void

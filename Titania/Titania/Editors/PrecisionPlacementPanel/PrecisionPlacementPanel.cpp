@@ -119,7 +119,7 @@ PrecisionPlacementPanel::configure ()
 	X3DEnvironmentalSensorEditor::configure ();
 	X3DGeometrySelectionEditor::configure ();
 
-	getBBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("bboxUniformSize"));
+	getBBoxUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("bboxUniformSize"));
 }
 
 void

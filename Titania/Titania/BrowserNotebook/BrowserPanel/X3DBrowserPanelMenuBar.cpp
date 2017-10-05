@@ -91,7 +91,7 @@ X3DBrowserPanelMenuBar::initialize ()
 
 	on_main_browser_hierarchy_changed (nullptr);
 
-	getStraightenHorizonMenuItem () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
+	getStraightenHorizonMenuItem () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 
 	set_lightTools            (getPage () -> getMainBrowser () -> getLightTools ());
 	set_proximitySensorTools  (getPage () -> getMainBrowser () -> getProximitySensorTools ());
@@ -237,7 +237,7 @@ X3DBrowserPanelMenuBar::on_straighten_horizon_toggled ()
 	if (changing)
 		return;
 
-	getConfig () -> set <bool> ("straightenHorizon", getStraightenHorizonMenuItem () .get_active ());
+	getConfig () -> setItem <bool> ("straightenHorizon", getStraightenHorizonMenuItem () .get_active ());
 	getLocalBrowser () -> setStraightenHorizon (getStraightenHorizonMenuItem () .get_active ());
 
 	if (getStraightenHorizonMenuItem () .get_active ())

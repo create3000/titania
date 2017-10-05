@@ -69,51 +69,24 @@ public:
 	/// @name Key lockup
 
 	bool
-	hasKey (const std::string & key) const;
+	hasItem (const std::string & key) const;
 
 	/// @name Set configuration value
 
-	void
-	setItem (const std::string & key, const bool value);
-
-	void
-	setItem (const std::string & key, const int value);
-
-	void
-	setItem (const std::string & key, const double value);
-
-	void
-	setItem (const std::string & key, const char* value);
-
-	void
-	setItem (const std::string & key, const std::string & value);
-
 	template <class Type>
 	void
-	set (const std::string & key, const Type & value);
+	setItem (const std::string & key, const Type & value);
 
 	/// @name Get configuration value
 
-	bool
-	getBoolean (const std::string & key) const;
-
-	int
-	getInteger (const std::string & key) const;
-
-	double
-	getDouble (const std::string & key) const;
-
-	Glib::ustring
-	getString (const std::string & key) const;
-
 	template <class Type>
 	Type
-	get (const std::string & key, const Type & defaultValue = Type ()) const;
+	getItem (const std::string & key, const Type & defaultValue = Type ()) const;
 
 	/// @name Remove configuration value
 
 	void
-	removeKey (const std::string & key) const;
+	removeItem (const std::string & key) const;
 
 	///  @name Destruction
 
@@ -121,6 +94,8 @@ public:
 
 
 private:
+
+	///  @name Member types
 
 	using cstr_type = char*;
 
@@ -148,6 +123,32 @@ private:
 
 	};
 
+	///  @name Member access
+
+	void
+	setBoolean (const std::string & key, const bool value);
+
+	void
+	setInteger (const std::string & key, const int value);
+
+	void
+	setDouble (const std::string & key, const double value);
+
+	void
+	setString (const std::string & key, const Glib::ustring & value);
+
+	bool
+	getBoolean (const std::string & key) const;
+
+	int
+	getInteger (const std::string & key) const;
+
+	double
+	getDouble (const std::string & key) const;
+
+	Glib::ustring
+	getString (const std::string & key) const;
+
 	///  @name Static members
 
 	static KeyFile keyfile;
@@ -160,7 +161,7 @@ private:
 
 template <class Type>
 void
-Configuration::set (const std::string & key, const Type & value)
+Configuration::setItem (const std::string & key, const Type & value)
 {
 	std::ostringstream osstream;
 
@@ -174,48 +175,56 @@ Configuration::set (const std::string & key, const Type & value)
 template <>
 inline
 void
-Configuration::set (const std::string & key, const bool & value)
+Configuration::setItem (const std::string & key, const bool & value)
 {
-	setItem (key, value);
+	setBoolean (key, value);
 }
 
 template <>
 inline
 void
-Configuration::set (const std::string & key, const int & value)
+Configuration::setItem (const std::string & key, const int & value)
 {
-	setItem (key, value);
+	setInteger (key, value);
 }
 
 template <>
 inline
 void
-Configuration::set (const std::string & key, const double & value)
+Configuration::setItem (const std::string & key, const double & value)
 {
-	setItem (key, value);
+	setDouble (key, value);
 }
 
 template <>
 inline
 void
-Configuration::set (const std::string & key, const std::string & value)
+Configuration::setItem (const std::string & key, const Glib::ustring & value)
 {
-	setItem (key, value);
+	setString (key, value);
 }
 
 template <>
 inline
 void
-Configuration::set (const std::string & key, const cstr_type & value)
+Configuration::setItem (const std::string & key, const std::string & value)
 {
-	setItem (key, value);
+	setString (key, value);
+}
+
+template <>
+inline
+void
+Configuration::setItem (const std::string & key, const cstr_type & value)
+{
+	setString (key, value);
 }
 
 template <class Type>
 Type
-Configuration::get (const std::string & key, const Type & defaultValue) const
+Configuration::getItem (const std::string & key, const Type & defaultValue) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 	{
 		std::istringstream isstream (getString (key));
 	
@@ -234,9 +243,9 @@ Configuration::get (const std::string & key, const Type & defaultValue) const
 template <>
 inline
 bool
-Configuration::get (const std::string & key, const bool & defaultValue) const
+Configuration::getItem (const std::string & key, const bool & defaultValue) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return getBoolean (key);
 
 	return defaultValue;
@@ -245,9 +254,9 @@ Configuration::get (const std::string & key, const bool & defaultValue) const
 template <>
 inline
 int
-Configuration::get (const std::string & key, const int & defaultValue) const
+Configuration::getItem (const std::string & key, const int & defaultValue) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return getInteger (key);
 
 	return defaultValue;
@@ -256,9 +265,9 @@ Configuration::get (const std::string & key, const int & defaultValue) const
 template <>
 inline
 double
-Configuration::get (const std::string & key, const double & defaultValue) const
+Configuration::getItem (const std::string & key, const double & defaultValue) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return getDouble (key);
 
 	return defaultValue;
@@ -267,9 +276,20 @@ Configuration::get (const std::string & key, const double & defaultValue) const
 template <>
 inline
 Glib::ustring
-Configuration::get (const std::string & key, const Glib::ustring & defaultValue) const
+Configuration::getItem (const std::string & key, const Glib::ustring & defaultValue) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
+		return getString (key);
+
+	return defaultValue;
+}
+
+template <>
+inline
+std::string
+Configuration::getItem (const std::string & key, const std::string & defaultValue) const
+{
+	if (hasItem (key))
 		return getString (key);
 
 	return defaultValue;

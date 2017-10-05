@@ -83,7 +83,7 @@ GridEditor::configure ()
 	X3DAngleEditor::configure ();
 	X3DAxonometricGridEditor::configure ();
 
-	getGridNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getGridNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

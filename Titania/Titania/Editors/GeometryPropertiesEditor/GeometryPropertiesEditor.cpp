@@ -151,7 +151,7 @@ GeometryPropertiesEditor::configure ()
 	X3DPrimitiveCountEditor::configure ();
 	X3DGeometryTool::configure ();
 
-	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getGeometryChildNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

@@ -88,10 +88,10 @@ X3DDialogInterface::restoreExpanders (Gtk::Widget & widget)
 		if (expander -> get_name () .empty ())
 			continue;
 
-		if (not getConfig () -> hasKey (expander -> get_name ()))
+		if (not getConfig () -> hasItem (expander -> get_name ()))
 			continue;
 
-		expander -> set_expanded (getConfig () -> getBoolean (expander -> get_name ()));
+		expander -> set_expanded (getConfig () -> getItem <bool> (expander -> get_name ()));
 
 		expander -> property_expanded () .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DDialogInterface::on_expander_expanded), expander));
 	}

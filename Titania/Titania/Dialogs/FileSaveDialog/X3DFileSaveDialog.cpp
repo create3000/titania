@@ -107,9 +107,9 @@ X3DFileSaveDialog::run (const basic::uri & url)
 {
 	if (not url .empty () and url .is_local ())
 	{
-		if (getConfig () -> hasKey ("currentFolder"))
+		if (getConfig () -> hasItem ("currentFolder"))
 		{
-			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+			getWindow () .set_current_folder (getConfig () -> getItem <std::string> ("currentFolder"));
 			getWindow () .set_current_name (url .basename ());
 		}
 		else
@@ -120,8 +120,8 @@ X3DFileSaveDialog::run (const basic::uri & url)
 	}
 	else
 	{
-		if (getConfig () -> hasKey ("currentFolder"))
-			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+		if (getConfig () -> hasItem ("currentFolder"))
+			getWindow () .set_current_folder (getConfig () -> getItem <std::string> ("currentFolder"));
 		else
 			getWindow () .set_current_folder (Glib::get_home_dir ());
 
@@ -131,10 +131,10 @@ X3DFileSaveDialog::run (const basic::uri & url)
 			getWindow () .set_current_name (url .basename ());
 	}
 
-	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
+	if (getBrowserWindow () -> getConfig () -> getItem <bool> ("addStandardMetaData"))
 	{
 		getOutputStyleBox ()    .set_visible (true);
-		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
+		getOutputStyleButton () .set_active (getConfig () -> getItem <int32_t> ("outputStyle"));
 	}
 	else
 	{
@@ -142,7 +142,7 @@ X3DFileSaveDialog::run (const basic::uri & url)
 		getOutputStyleButton () .set_active (0);
 	}
 
-	setFileFilter (getConfig () -> getString ("fileFilter"));
+	setFileFilter (getConfig () -> getItem <std::string> ("fileFilter"));
 
 	const auto success = X3DBaseFileSaveDialog::run ();
 

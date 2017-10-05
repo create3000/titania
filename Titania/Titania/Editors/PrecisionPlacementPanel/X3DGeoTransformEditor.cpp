@@ -121,7 +121,7 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 void
 X3DGeoTransformEditor::configure ()
 {
-	getGeoTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("geoTransformUniformScale"));
+	getGeoTransformUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("geoTransformUniformScale"));
 }
 
 void

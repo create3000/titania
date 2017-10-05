@@ -209,11 +209,11 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 	const bool maximized  = event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED;
 	const bool fullscreen = event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
 
-	getConfig () -> set ("maximized", maximized);
+	getConfig () -> setItem <bool> ("maximized", maximized);
 
-	if (fullscreen not_eq getConfig () -> get <bool> ("fullscreen"))
+	if (fullscreen not_eq getConfig () -> getItem <bool> ("fullscreen"))
 	{
-		getConfig () -> set ("fullscreen", fullscreen);
+		getConfig () -> setItem <bool> ("fullscreen", fullscreen);
 		set_fullscreen (fullscreen);
 	}
 
@@ -322,7 +322,7 @@ X3DUserInterface::restoreDialogs ()
 
 	auto dialogNames = std::vector <std::string> ();
 
-	basic::split (std::back_inserter (dialogNames), getConfig () -> get <std::string> ("dialogs"), ";");
+	basic::split (std::back_inserter (dialogNames), getConfig () -> getItem <std::string> ("dialogs"), ";");
 
 	for (const auto & dialogName : dialogNames)
 	{
@@ -386,16 +386,16 @@ X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
 
-	if (getConfig () -> hasKey ("x") and getConfig () -> hasKey ("y"))
+	if (getConfig () -> hasItem ("x") and getConfig () -> hasItem ("y"))
 	{
-		getWindow () .move (getConfig () -> getInteger ("x"),
-		                    getConfig () -> getInteger ("y"));
+		getWindow () .move (getConfig () -> getItem <int32_t> ("x"),
+		                    getConfig () -> getItem <int32_t> ("y"));
 	}
 
-	if (getConfig () -> get <int32_t> ("width") > 0 and getConfig () -> get <int32_t> ("height") > 0)
+	if (getConfig () -> getItem <int32_t> ("width") > 0 and getConfig () -> getItem <int32_t> ("height") > 0)
 	{
-		getWindow () .resize (getConfig () -> get <int32_t> ("width"),
-		                      getConfig () -> get <int32_t> ("height"));
+		getWindow () .resize (getConfig () -> getItem <int32_t> ("width"),
+		                      getConfig () -> getItem <int32_t> ("height"));
 	}
 
 	if (isMaximized ())
@@ -420,12 +420,12 @@ X3DUserInterface::saveInterface ()
 		int32_t x, y, width, height;
 
 		getWindow () .get_position (x, y);
-		getConfig () -> set ("x", x);
-		getConfig () -> set ("y", y);
+		getConfig () -> setItem <int32_t> ("x", x);
+		getConfig () -> setItem <int32_t> ("y", y);
 
 		getWindow () .get_size (width, height);
-		getConfig () -> set ("width",  width);
-		getConfig () -> set ("height", height);
+		getConfig () -> setItem <int32_t> ("width",  width);
+		getConfig () -> setItem <int32_t> ("height", height);
 	}
 
 	getWindow () .hide (); // Hide window as last command.
@@ -464,9 +464,9 @@ X3DUserInterface::store ()
 		dialogNames .resize (dialogNames .size () - 1);
 
 	if (dialogNames .empty ())
-		getConfig () -> removeKey ("dialogs");
+		getConfig () -> removeItem ("dialogs");
 	else
-		getConfig () -> set ("dialogs", dialogNames);
+		getConfig () -> setItem ("dialogs", dialogNames);
 }
 
 void

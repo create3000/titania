@@ -85,7 +85,7 @@ NodePropertiesEditor::configure ()
 {
 	X3DNodePropertiesEditorInterface::configure ();
 
-	getNodeChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getNodeChildNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

@@ -119,7 +119,7 @@ RenderPanel::configure ()
 {
 	X3DRenderPanelInterface::configure ();
 
-	getLoopButton () .set_active (getConfig () -> get <bool> ("loop"));
+	getLoopButton () .set_active (getConfig () -> getItem <bool> ("loop"));
 }
 
 std::shared_ptr <ViewpointList>
@@ -452,7 +452,7 @@ RenderPanel::on_stderr ()
 void
 RenderPanel::store ()
 {
-	getConfig () -> set <bool> ("loop", getLoopButton () .get_active ());
+	getConfig () -> setItem <bool> ("loop", getLoopButton () .get_active ());
 
 	X3DRenderPanelInterface::store ();
 }

@@ -98,10 +98,10 @@ AppearanceEditor::configure ()
 	X3DAppearanceEditorInterface::configure ();
 	X3DMaterialPaletteEditor::configure ();
 
-	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
 
-	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getAppearanceChildNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

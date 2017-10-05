@@ -155,11 +155,11 @@ ScriptEditor::configure ()
 
 	// Config
 
-	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> get <int32_t> ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
 
-	if (getConfig () -> hasKey ("sidePaned"))
-		getSidePaned () .set_position (getConfig () -> get <int32_t> ("sidePaned"));
+	if (getConfig () -> hasItem ("sidePaned"))
+		getSidePaned () .set_position (getConfig () -> getItem <int32_t> ("sidePaned"));
 }
 
 void
@@ -637,8 +637,8 @@ ScriptEditor::store ()
 {
 	save ();
 
-	getConfig () -> set <int32_t> ("paned",      getPaned ()     .get_position ());
-	getConfig () -> set <int32_t> ("sidePaned",  getSidePaned () .get_position ());
+	getConfig () -> setItem <int32_t> ("paned",      getPaned ()     .get_position ());
+	getConfig () -> setItem <int32_t> ("sidePaned",  getSidePaned () .get_position ());
 
 	X3DScriptEditorInterface::store ();
 }

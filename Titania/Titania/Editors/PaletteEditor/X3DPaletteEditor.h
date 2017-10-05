@@ -342,7 +342,7 @@ X3DPaletteEditor <Type>::set_browser ()
 
 		refreshPalette ();
 	
-		const size_t paletteIndex = this -> getConfig () -> getInteger ("palette");
+		const size_t paletteIndex = this -> getConfig () -> template getItem <int32_t> ("palette");
 	
 		if (paletteIndex < folders .size ())
 			this -> getPaletteComboBoxText () .set_active (paletteIndex);

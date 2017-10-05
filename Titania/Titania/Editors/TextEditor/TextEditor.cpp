@@ -99,7 +99,7 @@ TextEditor::configure ()
 {
 	X3DTextEditorInterface::configure ();
 
-	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getTextNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

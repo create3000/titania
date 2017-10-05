@@ -76,14 +76,14 @@ X3DFileOpenDialog::getUrl () const
 bool
 X3DFileOpenDialog::run ()
 {
-	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
+	getRelativePathSwitch () .set_active (getConfig () -> getItem <bool> ("relativePath"));
 
-	if (getConfig () -> hasKey ("currentFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getItem <std::string> ("currentFolder"));
 	else
 		getWindow () .set_current_folder (Glib::get_home_dir ());
 
-	setFileFilter (getConfig () -> getString ("fileFilter"));
+	setFileFilter (getConfig () -> getItem <std::string> ("fileFilter"));
 
 	const auto responseId = getWindow () .run ();
 

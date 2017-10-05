@@ -115,17 +115,17 @@ X3DSculpToolBrushEditor::set_initalized ()
 			getMasterBrowser () -> getExecutionContext () -> updateNamedNode ("SculpToolBrush", brush);
 			getMasterBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (brush);
 
-			if (getConfig () -> hasKey ("brushType"))
+			if (getConfig () -> hasItem ("brushType"))
 			{
-				brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
-				brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
-				brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
-				brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
-				brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
-				brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
-				brush -> setField <X3D::SFDouble> ("pressure",  getConfig () -> get <X3D::SFDouble> ("brushPressure"));
-				brush -> setField <X3D::SFDouble> ("scale",     getConfig () -> get <X3D::SFDouble> ("brushScale"));
-				brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
+				brush -> setField <X3D::SFString> ("type",      getConfig () -> getItem <X3D::SFString> ("brushType"));
+				brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> getItem <X3D::SFDouble> ("brushRadius"));
+				brush -> setField <X3D::SFDouble> ("height",    getConfig () -> getItem <X3D::SFDouble> ("brushHeight"));
+				brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> getItem <X3D::SFDouble> ("brushWarp"));
+				brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> getItem <X3D::SFDouble> ("brushSharpness"));
+				brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> getItem <X3D::SFDouble> ("brushHardness"));
+				brush -> setField <X3D::SFDouble> ("pressure",  getConfig () -> getItem <X3D::SFDouble> ("brushPressure"));
+				brush -> setField <X3D::SFDouble> ("scale",     getConfig () -> getItem <X3D::SFDouble> ("brushScale"));
+				brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> getItem <X3D::SFDouble> ("brushSpacing"));
 			}
 		}
 
@@ -170,15 +170,15 @@ X3DSculpToolBrushEditor::store ()
 {
 	try
 	{
-		getConfig () -> set <X3D::SFString> ("brushType",      brush -> getField <X3D::SFString> ("type"));
-		getConfig () -> set <X3D::SFDouble> ("brushRadius",    brush -> getField <X3D::SFDouble> ("radius"));
-		getConfig () -> set <X3D::SFDouble> ("brushHeight",    brush -> getField <X3D::SFDouble> ("height"));
-		getConfig () -> set <X3D::SFDouble> ("brushWarp",      brush -> getField <X3D::SFDouble> ("warp"));
-		getConfig () -> set <X3D::SFDouble> ("brushSharpness", brush -> getField <X3D::SFDouble> ("sharpness"));
-		getConfig () -> set <X3D::SFDouble> ("brushHardness",  brush -> getField <X3D::SFDouble> ("hardness"));
-		getConfig () -> set <X3D::SFDouble> ("brushPressure",  brush -> getField <X3D::SFDouble> ("pressure"));
-		getConfig () -> set <X3D::SFDouble> ("brushScale",     brush -> getField <X3D::SFDouble> ("scale"));
-		getConfig () -> set <X3D::SFDouble> ("brushSpacing",   brush -> getField <X3D::SFDouble> ("spacing"));
+		getConfig () -> setItem <X3D::SFString> ("brushType",      brush -> getField <X3D::SFString> ("type"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushRadius",    brush -> getField <X3D::SFDouble> ("radius"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushHeight",    brush -> getField <X3D::SFDouble> ("height"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushWarp",      brush -> getField <X3D::SFDouble> ("warp"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushSharpness", brush -> getField <X3D::SFDouble> ("sharpness"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushHardness",  brush -> getField <X3D::SFDouble> ("hardness"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushPressure",  brush -> getField <X3D::SFDouble> ("pressure"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushScale",     brush -> getField <X3D::SFDouble> ("scale"));
+		getConfig () -> setItem <X3D::SFDouble> ("brushSpacing",   brush -> getField <X3D::SFDouble> ("spacing"));
 	}
 	catch (const X3D::X3DError & error)
 	{ }

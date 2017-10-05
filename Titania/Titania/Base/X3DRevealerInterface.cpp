@@ -88,7 +88,7 @@ X3DRevealerInterface::configure ()
 {
 	X3DUserInterface::configure ();
 
-	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
+	const auto margin = getConfig () -> getItem <X3D::Vector2d> ("margin");
 
 	getWidget () .set_margin_left (margin .x ());
 	getWidget () .set_margin_top  (margin .y ());
@@ -158,7 +158,7 @@ X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event
 void
 X3DRevealerInterface::store ()
 {
-	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
+	getConfig () -> setItem ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
 
 	X3DUserInterface::store ();
 }

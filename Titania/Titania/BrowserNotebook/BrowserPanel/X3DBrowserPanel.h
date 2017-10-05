@@ -181,9 +181,6 @@ private:
 	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
 	X3D::X3DPtr <X3D::Transform>        gridTransform;
-	X3D::X3DPtr <X3D::Switch>           gridSwitch;
-	X3D::SFNode                         grid;
-
 };
 
 } // puck

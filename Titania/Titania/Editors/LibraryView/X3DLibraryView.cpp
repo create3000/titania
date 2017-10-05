@@ -311,7 +311,7 @@ X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVi
 void
 X3DLibraryView::restoreExpanded ()
 {
-	const auto expanded = getConfig () -> getString ("expanded");
+	const auto expanded = getConfig () -> getItem <std::string> ("expanded");
 	auto       paths    = std::vector <std::string> ();
 
 	basic::split (std::back_inserter (paths), expanded, ";");
@@ -319,7 +319,7 @@ X3DLibraryView::restoreExpanded ()
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);
 
-	scrollFreezer -> restore (getConfig () -> getDouble ("hadjustment"), getConfig () -> getDouble ("vadjustment"));
+	scrollFreezer -> restore (getConfig () -> getItem <double> ("hadjustment"), getConfig () -> getItem <double> ("vadjustment"));
 }
 
 void

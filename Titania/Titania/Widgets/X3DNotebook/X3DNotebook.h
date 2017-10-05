@@ -161,7 +161,7 @@ X3DNotebook <Interface>::configure ()
 {
 	Interface::configure ();
 
-	const auto currentPage = this -> getConfig () -> template get <int32_t> ("currentPage");
+	const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
 	const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
 
 	this -> getNotebook () .set_current_page (currentPage);
@@ -234,7 +234,7 @@ X3DNotebook <Interface>::getCurrentPage () const
 {
 	try
 	{
-		const size_t currentPage = this -> getConfig () -> template get <int32_t> ("currentPage");
+		const size_t currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
 
 		return getPage <Type> (userInterfaces .at (currentPage));
 	}
@@ -248,7 +248,7 @@ template <class Interface>
 void
 X3DNotebook <Interface>::set_browser ()
 {
-	on_switch_page (nullptr, this -> getConfig () -> template get <int32_t> ("currentPage"));
+	on_switch_page (nullptr, this -> getConfig () -> template getItem <int32_t> ("currentPage"));
 }
 
 template <class Interface>
@@ -271,7 +271,7 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 			page -> reparent (*boxes .at (name), this -> getWindow ());
 	}
 
-	this -> getConfig () -> template set <int32_t> ("currentPage", int (pageNumber));
+	this -> getConfig () -> template setItem <int32_t> ("currentPage", int (pageNumber));
 }
 
 template <class Interface>

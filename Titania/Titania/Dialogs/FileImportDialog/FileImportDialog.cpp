@@ -173,9 +173,9 @@ FileImportDialog::setFilter (const std::string & name)
 void
 FileImportDialog::run ()
 {
-	if (getConfig () -> hasKey ("importType"))
+	if (getConfig () -> hasItem ("importType"))
 	{
-		switch (getConfig () -> getInteger ("importType"))
+		switch (getConfig () -> getItem <int32_t> ("importType"))
 		{
 			case ImportType::EXTERN_PROTOS:
 				getImportExternProtosButton () .set_active (true);
@@ -198,12 +198,12 @@ FileImportDialog::run ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		if (getConfig () -> hasKey ("currentFolder"))
-			getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
+		if (getConfig () -> hasItem ("currentFolder"))
+			getWindow () .set_current_folder_uri (getConfig () -> getItem <std::string> ("currentFolder"));
 		else
 			getWindow () .set_current_folder (Glib::get_home_dir ());
 		
-		setFilter (getConfig () -> getString ("filter"));
+		setFilter (getConfig () -> getItem <std::string> ("filter"));
 		
 		const auto responseId = getWindow () .run ();
 

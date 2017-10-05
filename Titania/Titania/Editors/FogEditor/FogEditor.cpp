@@ -92,8 +92,8 @@ FogEditor::configure ()
 {
 	X3DFogEditorInterface::configure ();
 
-	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
 }
 
 void

@@ -130,7 +130,7 @@ X3DMaterialEditor::set_initialized ()
 	{ }
 
 	set_preview ();
-	set_whichChoice (getConfig () -> getInteger ("whichChoice"));
+	set_whichChoice (getConfig () -> getItem <int32_t> ("whichChoice"));
 }
 
 void

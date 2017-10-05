@@ -100,7 +100,7 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 void
 X3DIndexedLineSetEditor::configure ()
 {
-	getIndexedLineSetLSystemUniformSizeButton () .set_active (getConfig () -> getBoolean ("indexedLineSetLSystemUniformSize"));
+	getIndexedLineSetLSystemUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("indexedLineSetLSystemUniformSize"));
 }
 
 void

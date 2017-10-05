@@ -79,7 +79,7 @@ RouteGraph::configure ()
 	X3DRouteGraphInterface::configure ();
 	X3DRouteGraph::configure ();
 
-	getAddConnectedNodesMenuItem () .set_active (getConfig () -> get <bool> ("addConnectedNodes", true));
+	getAddConnectedNodesMenuItem () .set_active (getConfig () -> getItem <bool> ("addConnectedNodes", true));
 }
 
 void
@@ -328,7 +328,7 @@ RouteGraph::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 RouteGraph::store ()
 {
-	getConfig () -> set <bool> ("addConnectedNodes", getAddConnectedNodesMenuItem () .get_active ());
+	getConfig () -> setItem <bool> ("addConnectedNodes", getAddConnectedNodesMenuItem () .get_active ());
 
 	X3DRouteGraph::store ();
 	X3DRouteGraphInterface::store ();

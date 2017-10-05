@@ -131,10 +131,10 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 		getTextureQualityLowAction (),
 	};
 
-	//if (getConfig () -> getBoolean ("transparent"))
+	//if (getConfig () -> getItem <bool> ("transparent"))
 	//	setTransparent (true);
 
-	//if (not getConfig () -> hasKey ("maximized"))
+	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
 	getX_ITECompatibilityMenuItem () .set_use_underline (false);
@@ -204,10 +204,10 @@ BrowserWindow::configure ()
 {
 	X3DBrowserWindow::configure ();
 
-	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
+	getTransformToolModeAction () -> set_active (getConfig () -> getItem <int32_t> ("transformToolMode"));
 
-	if (getConfig () -> hasKey ("cobwebCompatibility"))
-		getX_ITECompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
+	if (getConfig () -> hasItem ("cobwebCompatibility"))
+		getX_ITECompatibilityAction () -> set_active (getConfig () -> getItem <bool> ("cobwebCompatibility"));
 	else
 		getX_ITECompatibilityAction () -> set_active (true);
 }
@@ -464,7 +464,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 
 	// Nudge selection.
 
-	const bool editMode = getConfig () -> getBoolean ("arrow");
+	const bool editMode = getConfig () -> getItem <bool> ("arrow");
 
 	if (editMode)
 	{
@@ -1134,9 +1134,9 @@ void
 BrowserWindow::on_menubar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> set ("menubarFullscreen", getMenubarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("menubarFullscreen", getMenubarAction () -> get_active ());
 	else
-		getConfig () -> set ("menubar", getMenubarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("menubar", getMenubarAction () -> get_active ());
 	
 	getMenubar () .set_visible (getMenubarAction () -> get_active ());
 }
@@ -1145,9 +1145,9 @@ void
 BrowserWindow::on_toolbar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> set ("toolbarFullscreen", getToolbarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("toolbarFullscreen", getToolbarAction () -> get_active ());
 	else
-		getConfig () -> set ("toolbar", getToolbarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("toolbar", getToolbarAction () -> get_active ());
 
 	getToolbar () .set_visible (getToolbarAction () -> get_active ());
 }
@@ -1156,9 +1156,9 @@ void
 BrowserWindow::on_sidebar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> set ("sidebarFullscreen", getSidebarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("sidebarFullscreen", getSidebarAction () -> get_active ());
 	else
-		getConfig () -> set ("sidebar", getSidebarAction () -> get_active ());
+		getConfig () -> setItem <bool> ("sidebar", getSidebarAction () -> get_active ());
 	
 	getSidebarBox () .set_visible (getSidebarAction () -> get_active ());
 }
@@ -1167,9 +1167,9 @@ void
 BrowserWindow::on_footer_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> set ("footerFullscreen", getFooterAction () -> get_active ());
+		getConfig () -> setItem <bool> ("footerFullscreen", getFooterAction () -> get_active ());
 	else
-		getConfig () -> set ("footer", getFooterAction () -> get_active ());
+		getConfig () -> setItem <bool> ("footer", getFooterAction () -> get_active ());
 
 	getFooterBox () .set_visible (getFooterAction () -> get_active ());
 }
@@ -1178,9 +1178,9 @@ void
 BrowserWindow::on_tabs_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () -> set ("tabsFullscreen", getTabsAction () -> get_active ());
+		getConfig () -> setItem <bool> ("tabsFullscreen", getTabsAction () -> get_active ());
 	else
-		getConfig () -> set ("tabs", getTabsAction () -> get_active ());
+		getConfig () -> setItem <bool> ("tabs", getTabsAction () -> get_active ());
 
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }
@@ -1266,7 +1266,7 @@ BrowserWindow::setEditing (const bool enabled)
 
 	if (enabled)
 	{
-		if (getConfig () -> getBoolean ("hand"))
+		if (getConfig () -> getItem <bool> ("hand"))
 			getHandButton () .set_active (true);
 
 		else

@@ -88,7 +88,7 @@ TextureEditor::configure ()
 	X3DTextureNodeEditor::configure ();
 	X3DTextureTransformNodeEditor::configure ();
 
-	getTextureChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getTextureChildNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

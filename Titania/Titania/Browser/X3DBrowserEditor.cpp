@@ -122,23 +122,23 @@ void
 X3DBrowserEditor::configure ()
 {
 	// Workspace
-	if (not getConfig () -> hasKey ("environment"))
+	if (not getConfig () -> hasItem ("environment"))
 		getConfig () -> setItem ("environment", 1);
 
-	if (getConfig () -> getInteger ("environment") == 1)
+	if (getConfig () -> getItem <int32_t> ("environment") == 1)
 		getEditorAction () -> set_active (true);
 	else
 		getBrowserAction () -> set_active (true);
 
 	// SelectLowest
-	if (getConfig () -> hasKey ("selectLowest"))
-		getSelectLowestAction () -> set_active (getConfig () -> getBoolean ("selectLowest"));
+	if (getConfig () -> hasItem ("selectLowest"))
+		getSelectLowestAction () -> set_active (getConfig () -> getItem <bool> ("selectLowest"));
 	else
 		getSelectLowestAction () -> set_active (true);
 
 	// FollowPrimarySelection
-	if (getConfig () -> hasKey ("followPrimarySelection"))
-		getFollowPrimarySelectionAction () -> set_active (getConfig () -> getBoolean ("followPrimarySelection"));
+	if (getConfig () -> hasItem ("followPrimarySelection"))
+		getFollowPrimarySelectionAction () -> set_active (getConfig () -> getItem <bool> ("followPrimarySelection"));
 	else
 		getFollowPrimarySelectionAction () -> set_active (true);
 

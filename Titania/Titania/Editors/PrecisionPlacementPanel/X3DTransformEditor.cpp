@@ -99,7 +99,7 @@ X3DTransformEditor::X3DTransformEditor () :
 void
 X3DTransformEditor::configure ()
 {
-	getTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("transformUniformScale"));
+	getTransformUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("transformUniformScale"));
 }
 
 void

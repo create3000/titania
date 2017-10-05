@@ -178,7 +178,7 @@ X3DAxonometricGridEditor::initialize ()
 void
 X3DAxonometricGridEditor::configure ()
 {
-	getAxonometricGridUniformScaleButton () .set_active (getConfig () -> getBoolean ("axonometricGridUniformScale"));
+	getAxonometricGridUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("axonometricGridUniformScale"));
 }
 
 void

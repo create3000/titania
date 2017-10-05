@@ -72,7 +72,7 @@ X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 void
 X3DComposedCubeMapTextureEditor::configure ()
 {
-	getComposedCubeMapNotebook () .set_current_page (getConfig () -> getInteger ("composedCubeMapPage"));
+	getComposedCubeMapNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("composedCubeMapPage"));
 }
 
 void

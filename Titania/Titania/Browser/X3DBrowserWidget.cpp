@@ -113,10 +113,10 @@ X3DBrowserWidget::initialize ()
 
 	// History
 
-	if (not getConfig () -> hasKey ("rememberHistory"))
+	if (not getConfig () -> hasItem ("rememberHistory"))
 		getConfig () -> setItem ("rememberHistory", -1);
 
-	getHistory () -> setSize (getConfig () -> getInteger ("rememberHistory"));
+	getHistory () -> setSize (getConfig () -> getItem <int32_t> ("rememberHistory"));
 
 	recentView -> initialize ();
 
@@ -134,9 +134,9 @@ X3DBrowserWidget::initialize ()
 	auto       histories = std::vector <std::string> ();
 	auto       recent    = std::vector <std::string> ();
 
-	basic::split (std::back_inserter (worldURLs), getConfig () -> getString ("worldURL"), "\n");
-	basic::split (std::back_inserter (histories), getConfig () -> getString ("history"),  "\n");
-	basic::split (std::back_inserter (recent),    getConfig () -> getString ("recent"),   "\n");
+	basic::split (std::back_inserter (worldURLs), getConfig () -> getItem <std::string> ("worldURL"), "\n");
+	basic::split (std::back_inserter (histories), getConfig () -> getItem <std::string> ("history"),  "\n");
+	basic::split (std::back_inserter (recent),    getConfig () -> getItem <std::string> ("recent"),   "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
@@ -154,7 +154,7 @@ X3DBrowserWidget::initialize ()
 
 	if (empty)
 	{
-		const size_t pageNumber = getConfig () -> getInteger ("currentPage");
+		const size_t pageNumber = getConfig () -> getItem <int32_t> ("currentPage");
 
 		if (pageNumber < pages .size ())
 			getBrowserNotebook () .set_current_page (pageNumber);
@@ -190,68 +190,68 @@ X3DBrowserWidget::configure ()
 
 	// Meta data
 
-	if (not getConfig () -> hasKey ("addStandardMetaData"))
-		getConfig () -> set ("addStandardMetaData", true);
+	if (not getConfig () -> hasItem ("addStandardMetaData"))
+		getConfig () -> setItem <bool> ("addStandardMetaData", true);
 
 
 	// ToolBar
 
-	if (not getConfig () -> hasKey ("menubar"))
-		getConfig () -> set ("menubar", true);
+	if (not getConfig () -> hasItem ("menubar"))
+		getConfig () -> setItem <bool> ("menubar", true);
 
-	if (not getConfig () -> hasKey ("menubarFullscreen"))
-		getConfig () -> set ("menubarFullscreen", false);
+	if (not getConfig () -> hasItem ("menubarFullscreen"))
+		getConfig () -> setItem <bool> ("menubarFullscreen", false);
 	
 
 	// ToolBar
 
-	if (not getConfig () -> hasKey ("toolbar"))
-		getConfig () -> set ("toolbar", true);
+	if (not getConfig () -> hasItem ("toolbar"))
+		getConfig () -> setItem <bool> ("toolbar", true);
 
-	if (not getConfig () -> hasKey ("toolbarFullscreen"))
-		getConfig () -> set ("toolbarFullscreen", false);
+	if (not getConfig () -> hasItem ("toolbarFullscreen"))
+		getConfig () -> setItem <bool> ("toolbarFullscreen", false);
 
 	
 	// SideBar
 
-	if (not getConfig () -> hasKey ("sidebar"))
-		getConfig () -> set ("sidebar", true);
+	if (not getConfig () -> hasItem ("sidebar"))
+		getConfig () -> setItem <bool> ("sidebar", true);
 
-	if (not getConfig () -> hasKey ("sidebarFullscreen"))
-		getConfig () -> set ("sidebarFullscreen", false);
+	if (not getConfig () -> hasItem ("sidebarFullscreen"))
+		getConfig () -> setItem <bool> ("sidebarFullscreen", false);
 
 
 	// Footer
 
-	if (not getConfig () -> hasKey ("footer"))
-		getConfig () -> set ("footer", true);
+	if (not getConfig () -> hasItem ("footer"))
+		getConfig () -> setItem <bool> ("footer", true);
 
-	if (not getConfig () -> hasKey ("footerFullscreen"))
-		getConfig () -> set ("footerFullscreen", false);
+	if (not getConfig () -> hasItem ("footerFullscreen"))
+		getConfig () -> setItem <bool> ("footerFullscreen", false);
 
 
 	// TAbs
 
-	if (not getConfig () -> hasKey ("tabs"))
-		getConfig () -> set ("tabs", true);
+	if (not getConfig () -> hasItem ("tabs"))
+		getConfig () -> setItem <bool> ("tabs", true);
 
-	if (not getConfig () -> hasKey ("tabsFullscreen"))
-		getConfig () -> set ("tabsFullscreen", false);
+	if (not getConfig () -> hasItem ("tabsFullscreen"))
+		getConfig () -> setItem <bool> ("tabsFullscreen", false);
 
 	
 	// RenderingProperties
 
-	if (getConfig () -> hasKey ("renderingProperties"))
-		getRenderingPropertiesAction () -> set_active (getConfig () -> getBoolean ("renderingProperties"));
+	if (getConfig () -> hasItem ("renderingProperties"))
+		getRenderingPropertiesAction () -> set_active (getConfig () -> getItem <bool> ("renderingProperties"));
 
 	
 	// Rubberband
 
-	if (getConfig () -> hasKey ("rubberBand"))
-		getRubberbandAction () -> set_active (getConfig () -> getBoolean ("rubberBand"));
+	if (getConfig () -> hasItem ("rubberBand"))
+		getRubberbandAction () -> set_active (getConfig () -> getItem <bool> ("rubberBand"));
 
-	if (not getConfig () -> hasKey ("isLive"))
-		getConfig () -> set ("isLive", true);
+	if (not getConfig () -> hasItem ("isLive"))
+		getConfig () -> setItem <bool> ("isLive", true);
 
 	
 	// isLive
@@ -261,16 +261,16 @@ X3DBrowserWidget::configure ()
 
 	// VPaned
 
-	if (getConfig () -> hasKey ("vPaned"))
-		getVPaned () .set_position (getConfig () -> getInteger ("vPaned"));
+	if (getConfig () -> hasItem ("vPaned"))
+		getVPaned () .set_position (getConfig () -> getItem <int32_t> ("vPaned"));
 
 	
 	// HPaned
 
-	if (getConfig () -> hasKey ("hPaned"))
-		getHPaned () .set_position (getConfig () -> getInteger ("hPaned"));
+	if (getConfig () -> hasItem ("hPaned"))
+		getHPaned () .set_position (getConfig () -> getItem <int32_t> ("hPaned"));
 
-	getStraightenHorizonButton () .set_active (getConfig () -> getBoolean ("straightenHorizon"));
+	getStraightenHorizonButton () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 }
 
 void
@@ -285,28 +285,28 @@ X3DBrowserWidget::set_fullscreen (const bool value)
 {
 	if (value)
 	{
-		getMenubarAction () -> set_active (getConfig () -> get <bool> ("menubarFullscreen"));
-		getToolbarAction () -> set_active (getConfig () -> get <bool> ("toolbarFullscreen"));
-		getSidebarAction () -> set_active (getConfig () -> get <bool> ("sidebarFullscreen"));
-		getFooterAction ()  -> set_active (getConfig () -> get <bool> ("footerFullscreen"));
-		getTabsAction ()    -> set_active (getConfig () -> get <bool> ("tabsFullscreen"));
+		getMenubarAction () -> set_active (getConfig () -> getItem <bool> ("menubarFullscreen"));
+		getToolbarAction () -> set_active (getConfig () -> getItem <bool> ("toolbarFullscreen"));
+		getSidebarAction () -> set_active (getConfig () -> getItem <bool> ("sidebarFullscreen"));
+		getFooterAction ()  -> set_active (getConfig () -> getItem <bool> ("footerFullscreen"));
+		getTabsAction ()    -> set_active (getConfig () -> getItem <bool> ("tabsFullscreen"));
 	}
 	else
 	{
-		getMenubarAction () -> set_active (getConfig () -> get <bool> ("menubar"));
-		getToolbarAction () -> set_active (getConfig () -> get <bool> ("toolbar"));
-		getSidebarAction () -> set_active (getConfig () -> get <bool> ("sidebar"));
-		getFooterAction ()  -> set_active (getConfig () -> get <bool> ("footer"));
-		getTabsAction ()    -> set_active (getConfig () -> get <bool> ("tabs"));
+		getMenubarAction () -> set_active (getConfig () -> getItem <bool> ("menubar"));
+		getToolbarAction () -> set_active (getConfig () -> getItem <bool> ("toolbar"));
+		getSidebarAction () -> set_active (getConfig () -> getItem <bool> ("sidebar"));
+		getFooterAction ()  -> set_active (getConfig () -> getItem <bool> ("footer"));
+		getTabsAction ()    -> set_active (getConfig () -> getItem <bool> ("tabs"));
 	}
 }
 
 void
 X3DBrowserWidget::store ()
 {
-	getConfig () -> set ("vPaned",            getVPaned () .get_position ());
-	getConfig () -> set ("hPaned",            getHPaned () .get_position ());
-	getConfig () -> set ("straightenHorizon", getStraightenHorizonButton () .get_active ());
+	getConfig () -> setItem <int32_t> ("vPaned",            getVPaned () .get_position ());
+	getConfig () -> setItem <int32_t> ("hPaned",            getHPaned () .get_position ());
+	getConfig () -> setItem <bool>    ("straightenHorizon", getStraightenHorizonButton () .get_active ());
 
 	X3DBrowserWindowInterface::store ();
 }
@@ -381,7 +381,7 @@ X3DBrowserWidget::isLive (const bool value)
 bool
 X3DBrowserWidget::isLive () const
 {
-	return getConfig () -> getBoolean ("isLive");
+	return getConfig () -> getItem <bool> ("isLive");
 }
 
 void
@@ -436,7 +436,7 @@ X3DBrowserWidget::append (const basic::uri & URL)
 bool
 X3DBrowserWidget::getShowTabs () const
 {
-	const bool showTabs = isFullscreen () ? getConfig () -> getBoolean ("tabsFullscreen") : getConfig () -> getBoolean ("tabs");
+	const bool showTabs = isFullscreen () ? getConfig () -> getItem <bool> ("tabsFullscreen") : getConfig () -> getItem <bool> ("tabs");
 
 	return pages .size () > 1 and showTabs;
 }
@@ -468,7 +468,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 
 		recentView -> loadPreview (scene -> getBrowser ());
 
-		if (getConfig () -> getBoolean ("addStandardMetaData"))
+		if (getConfig () -> getItem <bool> ("addStandardMetaData"))
 			scene -> addStandardMetaData ();
 
 		setOutputStyle (scene, outputStyle);
@@ -512,7 +512,7 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, const std::str
 {
 	scene -> removeMetaData ("outputStyle"); // TODO: remove this line.
 
-	if (getConfig () -> getBoolean ("addStandardMetaData"))
+	if (getConfig () -> getItem <bool> ("addStandardMetaData"))
 	{
 		if (outputStyle == "nicest")
 			scene -> removeMetaData ("titania-output-style");

@@ -237,11 +237,11 @@ private:
 	GtkSourceSearchSettings* searchSettings;
 	GtkSourceSearchContext* searchContext;
 
-	X3D::Keys keys;
+	X3D::Keys                        keys;
 	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
-	sigc::connection searchConnection;
-	std::deque <Glib::ustring> recentSearches;
-	std::deque <Glib::ustring> recentReplaces;
+	sigc::connection                 searchConnection;
+	std::deque <Glib::ustring>       recentSearches;
+	std::deque <Glib::ustring>       recentReplaces;
 	bool replace;
 
 };

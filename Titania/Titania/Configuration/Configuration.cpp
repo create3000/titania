@@ -88,37 +88,31 @@ Configuration::Configuration (const std::string & group) :
 { }
 
 bool
-Configuration::hasKey (const std::string & key) const
+Configuration::hasItem (const std::string & key) const
 {
 	return keyfile -> has_group (group) and keyfile -> has_key (group, key);
 }
 
 void
-Configuration::setItem (const std::string & key, const bool value)
+Configuration::setBoolean (const std::string & key, const bool value)
 {
 	keyfile -> set_boolean (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & key, const int value)
+Configuration::setInteger (const std::string & key, const int value)
 {
 	 keyfile -> set_integer (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & key, const double value)
+Configuration::setDouble (const std::string & key, const double value)
 {
 	 keyfile -> set_double (group, key, value);
 }
 
 void
-Configuration::setItem (const std::string & key, const char* value)
-{
-	 keyfile -> set_string (group, key, value);
-}
-
-void
-Configuration::setItem (const std::string & key, const std::string & value)
+Configuration::setString (const std::string & key, const Glib::ustring & value)
 {
 	 keyfile -> set_string (group, key, value);
 }
@@ -126,7 +120,7 @@ Configuration::setItem (const std::string & key, const std::string & value)
 bool
 Configuration::getBoolean (const std::string & key) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return keyfile -> get_boolean (group, key);
 		
 	return false;
@@ -135,7 +129,7 @@ Configuration::getBoolean (const std::string & key) const
 int
 Configuration::getInteger (const std::string & key) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return keyfile -> get_integer (group, key);
 
 	return 0;
@@ -144,7 +138,7 @@ Configuration::getInteger (const std::string & key) const
 double
 Configuration::getDouble (const std::string & key) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return keyfile -> get_double (group, key);
 
 	return 0;
@@ -153,16 +147,16 @@ Configuration::getDouble (const std::string & key) const
 Glib::ustring
 Configuration::getString (const std::string & key) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		return keyfile -> get_string (group, key);
 		
 	return "";
 }
 
 void
-Configuration::removeKey (const std::string & key) const
+Configuration::removeItem (const std::string & key) const
 {
-	if (hasKey (key))
+	if (hasItem (key))
 		keyfile -> remove_key (group, key);
 }
 

@@ -105,14 +105,14 @@ X3DScriptEditorSearch::initialize ()
 
 	// Search Menu
 
-	getCaseSensitiveMenuItem ()      .set_active (getConfig () -> getBoolean ("searchCaseSensitive"));
-	getAtWordBoundariesMenuItem ()   .set_active (getConfig () -> getBoolean ("searchAtWordBoundaries"));
-	getRegularExpressionMenuItem ()  .set_active (getConfig () -> getBoolean ("searchRegularExpression"));
-	getWithinSelectionMenuItem ()    .set_active (getConfig () -> getBoolean ("searchWithinSelection"));
-	getWrapAroundMenuItemMenuItem () .set_active (getConfig () -> getBoolean ("searchWrapAround"));
+	getCaseSensitiveMenuItem ()      .set_active (getConfig () -> getItem <bool> ("searchCaseSensitive"));
+	getAtWordBoundariesMenuItem ()   .set_active (getConfig () -> getItem <bool> ("searchAtWordBoundaries"));
+	getRegularExpressionMenuItem ()  .set_active (getConfig () -> getItem <bool> ("searchRegularExpression"));
+	getWithinSelectionMenuItem ()    .set_active (getConfig () -> getItem <bool> ("searchWithinSelection"));
+	getWrapAroundMenuItemMenuItem () .set_active (getConfig () -> getItem <bool> ("searchWrapAround"));
 
-	basic::basic_split <Glib::ustring> (std::back_inserter (recentSearches), getConfig () -> getString ("recentSearches"), ";");
-	basic::basic_split <Glib::ustring> (std::back_inserter (recentReplaces), getConfig () -> getString ("recentReplaces"), ";");
+	basic::basic_split <Glib::ustring> (std::back_inserter (recentSearches), getConfig () -> getItem <Glib::ustring> ("recentSearches"), ";");
+	basic::basic_split <Glib::ustring> (std::back_inserter (recentReplaces), getConfig () -> getItem <Glib::ustring> ("recentReplaces"), ";");
 
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
@@ -124,9 +124,9 @@ X3DScriptEditorSearch::initialize ()
 
 	// Restore search and replace strings
 
-	getSearchEntry ()   .set_text (getConfig () -> getString ("searchString"));
-	getReplaceEntry ()  .set_text (getConfig () -> getString ("replaceString"));
-	getGoToLineEntry () .set_text (getConfig () -> getString ("lineNumber"));
+	getSearchEntry ()   .set_text (getConfig () -> getItem <std::string> ("searchString"));
+	getReplaceEntry ()  .set_text (getConfig () -> getItem <std::string> ("replaceString"));
+	getGoToLineEntry () .set_text (getConfig () -> getItem <std::string> ("lineNumber"));
 
 	// Search Menu Icon (workaround issue, as settings are not applied from builder)
 
@@ -138,12 +138,12 @@ X3DScriptEditorSearch::initialize ()
 
 	// Enable Search Widget
 
-	getToggleReplaceButton () .set_active (getConfig () -> getBoolean ("replaceEnabled"));
+	getToggleReplaceButton () .set_active (getConfig () -> getItem <bool> ("replaceEnabled"));
 
-	if (getConfig () -> getBoolean ("searchEnabled"))
+	if (getConfig () -> getItem <bool> ("searchEnabled"))
 		on_enable_search ();
 
-	else if (getConfig () -> getBoolean ("goToLineEnabled"))
+	else if (getConfig () -> getItem <bool> ("goToLineEnabled"))
 		on_enable_go_to_line ();
 }
 

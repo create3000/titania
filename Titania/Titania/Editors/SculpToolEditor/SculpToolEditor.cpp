@@ -95,10 +95,10 @@ SculpToolEditor::configure ()
 	X3DSculpToolEditorInterface::configure ();
 	X3DSculpToolBrushEditor::configure ();
 
-	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 
 	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&SculpToolEditor::set_geometries, this);
 

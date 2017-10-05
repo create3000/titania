@@ -169,7 +169,7 @@ X3DGridEditor::initialize ()
 void
 X3DGridEditor::configure ()
 {
-	getGridUniformScaleButton () .set_active (getConfig () -> getBoolean ("gridUniformScale"));
+	getGridUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("gridUniformScale"));
 }
 
 void

@@ -108,7 +108,7 @@ X3DBrowserWindow::setEditing (const bool value)
 {
 	X3DBrowserEditor::setEditing (value);
 
-	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getBoolean ("geometryEditor"));
+	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getItem <bool> ("geometryEditor"));
 }
 
 const std::shared_ptr <OutlineTreeViewEditor> &
@@ -152,7 +152,7 @@ X3DBrowserWindow::save (const basic::uri & worldURL, const std::string & outputS
 void
 X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 {
-	if (getConfig () -> getBoolean ("followPrimarySelection"))
+	if (getConfig () -> getItem <bool> ("followPrimarySelection"))
 	{
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &X3DBrowserWindow::expandNodesImpl), nodes));
 	}

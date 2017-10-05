@@ -86,10 +86,10 @@ HistoryEditor::configure ()
 {
 	X3DHistoryEditorInterface::configure ();
 
-	if (getConfig () -> hasKey ("sortColumn"))
+	if (getConfig () -> hasItem ("sortColumn"))
 	{
-		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
-		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
+		const auto sortColumn = getConfig () -> getItem <int32_t> ("sortColumn");
+		const auto sortOrder  = getConfig () -> getItem <int32_t> ("sortOrder");
 
 		getTreeModelSort () -> set_sort_column (sortColumn, Gtk::SortType (sortOrder));
 	}
@@ -98,7 +98,7 @@ HistoryEditor::configure ()
 		getTreeModelSort () -> set_sort_column (Columns::LAST_ACCESS_TIME, Gtk::SORT_DESCENDING);
 	}
 
-	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
+	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getItem <int32_t> ("rememberHistory");
 
 	switch (rememberHistory)
 	{
@@ -124,14 +124,14 @@ HistoryEditor::configure ()
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
 		getBrowserWindow () -> getIconFactory () -> createIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
 
-	if (getConfig () -> hasKey ("titleColumnSize"))
-		getTitleColumn () -> set_fixed_width (getConfig () -> getInteger ("titleColumnSize"));
+	if (getConfig () -> hasItem ("titleColumnSize"))
+		getTitleColumn () -> set_fixed_width (getConfig () -> getItem <int32_t> ("titleColumnSize"));
 
-	if (getConfig () -> hasKey ("worldURLColumnSize"))
-		getWorlURLColumn () -> set_fixed_width (getConfig () -> getInteger ("worldURLColumnSize"));
+	if (getConfig () -> hasItem ("worldURLColumnSize"))
+		getWorlURLColumn () -> set_fixed_width (getConfig () -> getItem <int32_t> ("worldURLColumnSize"));
 
-	if (getConfig () -> hasKey ("lastAccessColumnSize"))
-		getLastAccessColumn () -> set_fixed_width (getConfig () -> getInteger ("lastAccessColumnSize"));
+	if (getConfig () -> hasItem ("lastAccessColumnSize"))
+		getLastAccessColumn () -> set_fixed_width (getConfig () -> getItem <int32_t> ("lastAccessColumnSize"));
 }
 
 void

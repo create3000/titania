@@ -199,8 +199,8 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
-	if (getConfig () -> hasKey ("currentFolder"))
-		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder (getConfig () -> getItem <std::string> ("currentFolder"));
 	else
 		getWindow () .set_current_folder (Glib::get_home_dir ());
 
@@ -287,19 +287,19 @@ FileExportImageDialog::options ()
 
 	// Restore image options.
 
-	if (getConfig () -> hasKey ("imageWidth"))
-		getImageWidthAdjustment () -> set_value (getConfig () -> getInteger ("imageWidth"));
+	if (getConfig () -> hasItem ("imageWidth"))
+		getImageWidthAdjustment () -> set_value (getConfig () -> getItem <int32_t> ("imageWidth"));
 
-	if (getConfig () -> hasKey ("imageHeight"))
-		getImageHeightAdjustment () -> set_value (getConfig () -> getInteger ("imageHeight"));
+	if (getConfig () -> hasItem ("imageHeight"))
+		getImageHeightAdjustment () -> set_value (getConfig () -> getItem <int32_t> ("imageHeight"));
 
-	getImageAlphaChannelSwitch () .set_active (getConfig () -> getBoolean ("imageAlphaChannel"));
+	getImageAlphaChannelSwitch () .set_active (getConfig () -> getItem <bool> ("imageAlphaChannel"));
 
-	if (getConfig () -> hasKey ("imageAntialiasing"))
-		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getInteger ("imageAntialiasing"), antialiasing));
+	if (getConfig () -> hasItem ("imageAntialiasing"))
+		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getItem <int32_t> ("imageAntialiasing"), antialiasing));
 
-	if (getConfig () -> hasKey ("imageCompression"))
-		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
+	if (getConfig () -> hasItem ("imageCompression"))
+		getImageCompressionAdjustment () -> set_value (getConfig () -> getItem <int32_t> ("imageCompression"));
 
 	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));
 

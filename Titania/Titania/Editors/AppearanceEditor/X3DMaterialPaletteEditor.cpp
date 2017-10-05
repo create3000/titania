@@ -75,7 +75,7 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 void
 X3DMaterialPaletteEditor::configure ()
 {
-	getPaletteFaceCombo () .set_active (getConfig () -> getInteger ("paletteFace"));
+	getPaletteFaceCombo () .set_active (getConfig () -> getItem <int32_t> ("paletteFace"));
 }
 
 X3D::SFNode

@@ -160,7 +160,7 @@ RecentView::set_scene ()
 		previousPage_changed .addInterest (&RecentView::set_page, this, scene .getValue (), std::cref (previousPage_changed));
 		nextPage_changed     .addInterest (&RecentView::set_page, this, scene .getValue (), std::cref (nextPage_changed));
 
-		set_page (scene, X3D::SFInt32 (getConfig () -> getInteger ("currentPage")));
+		set_page (scene, X3D::SFInt32 (getConfig () -> getItem <int32_t> ("currentPage")));
 	}
 	catch (...)
 	{ }

@@ -164,7 +164,7 @@ X3DAngleEditor::initialize ()
 void
 X3DAngleEditor::configure ()
 {
-	getAngleUniformScaleButton () .set_active (getConfig () -> getBoolean ("angleUniformScale"));
+	getAngleUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("angleUniformScale"));
 }
 
 void

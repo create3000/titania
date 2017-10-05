@@ -68,7 +68,7 @@ X3DRectangle2DEditor::X3DRectangle2DEditor () :
 void
 X3DRectangle2DEditor::configure ()
 {
-	getRectangle2DUniformSizeButton () .set_active (getConfig () -> getBoolean ("rectangle2DUniformSize"));
+	getRectangle2DUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("rectangle2DUniformSize"));
 }
 
 void

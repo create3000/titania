@@ -65,7 +65,7 @@ X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
 bool
 X3DBaseFileSaveDialog::run ()
 {
-	setFileFilter (getConfig () -> getString ("fileFilter"));
+	setFileFilter (getConfig () -> getItem <std::string> ("fileFilter"));
 
 	const auto responseId = getWindow () .run ();
 

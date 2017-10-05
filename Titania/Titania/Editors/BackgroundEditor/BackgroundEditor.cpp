@@ -135,10 +135,10 @@ BackgroundEditor::configure ()
 {
 	X3DBackgroundEditorInterface::configure ();
 
-	if (getConfig () -> hasKey ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
 
-	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
+	getTexturesNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("texturePage"));
 }
 
 void

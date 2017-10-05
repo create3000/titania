@@ -138,35 +138,35 @@ GeometryEditor::configure ()
 	X3DGeometryEditorInterface::configure ();
 
 	changing = true;
-	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
+	set_selector (SelectorType (getConfig () -> getItem <size_t> ("selector")));
 	changing = false;
 
-	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
+	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> getItem <X3D::SFBool> ("normalEnabled"), true);
 
-	if (getConfig () -> hasKey ("normalLength"))
-		normalEditor -> setField <X3D::SFFloat> ("length", getConfig () -> get <X3D::SFFloat> ("normalLength"));
+	if (getConfig () -> hasItem ("normalLength"))
+		normalEditor -> setField <X3D::SFFloat> ("length", getConfig () -> getItem <X3D::SFFloat> ("normalLength"));
 
-	if (getConfig () -> hasKey ("normalColor"))
-		normalEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("normalColor"));
+	if (getConfig () -> hasItem ("normalColor"))
+		normalEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> getItem <X3D::SFColorRGBA> ("normalColor"));
 
-	if (getConfig () -> hasKey ("edgeColor"))
-		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
+	if (getConfig () -> hasItem ("edgeColor"))
+		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> getItem <X3D::SFColorRGBA> ("edgeColor"));
 
-	coordEditor -> setField <X3D::SFString> ("selectionType", getConfig () -> get <X3D::SFString> ("selectionType"));
+	coordEditor -> setField <X3D::SFString> ("selectionType", getConfig () -> getItem <X3D::SFString> ("selectionType"));
 
-	if (getConfig () -> get <X3D::SFString> ("selectionType") == "FACES")
+	if (getConfig () -> getItem <X3D::SFString> ("selectionType") == "FACES")
 		getFacesMenuItem () .set_active (true);
-	else if (getConfig () -> get <X3D::SFString> ("selectionType") == "EDGES")
+	else if (getConfig () -> getItem <X3D::SFString> ("selectionType") == "EDGES")
 		getEdgesMenuItem () .set_active (true);
 	else
 		getPointsMenuItem () .set_active (true);
 
-	//getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
-	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
-	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
-	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasKey ("axisAlignedBoundingBox"));
-	//getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
-	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasKey ("cutSnapping"));
+	//getPaintSelectionButton ()              .set_active (getConfig () -> getItem <bool> ("paintSelection"));
+	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> getItem <bool> ("selectLineLoop"));
+	getTransformToolButton ()               .set_active (getConfig () -> getItem <bool> ("transform"));
+	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> getItem <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
+	//getCutPolygonsButton ()                 .set_active (getConfig () -> getItem <bool> ("cutPolygons"));
+	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> getItem <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
 }
 
 void
@@ -1132,18 +1132,18 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
-	getConfig () -> set ("paintSelection",         getPaintSelectionButton () .get_active ());
-	getConfig () -> set ("normalEnabled",          normalEditor -> getField <X3D::SFBool>      ("load"));
-	getConfig () -> set ("normalLength",           normalEditor -> getField <X3D::SFFloat>     ("length"));
-	getConfig () -> set ("normalColor",            normalEditor -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("selectionType",          coordEditor  -> getField <X3D::SFString>    ("selectionType"));
-	getConfig () -> set ("selectLineLoop",         getSelectLineLoopMenuItem () .get_active ());
-	getConfig () -> set ("transform",              getTransformToolButton () .get_active ());
-	getConfig () -> set ("axisAlignedBoundingBox", getAxisAlignedBoundingBoxMenuItem () .get_active ());
-	getConfig () -> set ("edgeColor",              coordEditor -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("selector",               size_t (selector));
-	getConfig () -> set ("cutPolygons",            getCutPolygonsButton () .get_active ());
-	getConfig () -> set ("cutSnapping",            getCutPolygonsEnableSnappingMenuItem () .get_active ());
+	getConfig () -> setItem ("paintSelection",         getPaintSelectionButton () .get_active ());
+	getConfig () -> setItem ("normalEnabled",          normalEditor -> getField <X3D::SFBool>      ("load"));
+	getConfig () -> setItem ("normalLength",           normalEditor -> getField <X3D::SFFloat>     ("length"));
+	getConfig () -> setItem ("normalColor",            normalEditor -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> setItem ("selectionType",          coordEditor  -> getField <X3D::SFString>    ("selectionType"));
+	getConfig () -> setItem ("selectLineLoop",         getSelectLineLoopMenuItem () .get_active ());
+	getConfig () -> setItem ("transform",              getTransformToolButton () .get_active ());
+	getConfig () -> setItem ("axisAlignedBoundingBox", getAxisAlignedBoundingBoxMenuItem () .get_active ());
+	getConfig () -> setItem ("edgeColor",              coordEditor -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> setItem ("selector",               size_t (selector));
+	getConfig () -> setItem ("cutPolygons",            getCutPolygonsButton () .get_active ());
+	getConfig () -> setItem ("cutSnapping",            getCutPolygonsEnableSnappingMenuItem () .get_active ());
 
 	X3DGeometryEditorInterface::store ();
 }

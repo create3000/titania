@@ -169,11 +169,11 @@ protected:
 	
 	bool
 	isMaximized () const
-	{ return getConfig () -> getBoolean ("maximized"); }
+	{ return getConfig () -> getItem <bool> ("maximized"); }
 
 	bool
 	isFullscreen () const
-	{ return getConfig () -> getBoolean ("fullscreen"); }
+	{ return getConfig () -> getItem <bool> ("fullscreen"); }
 
 	virtual
 	void

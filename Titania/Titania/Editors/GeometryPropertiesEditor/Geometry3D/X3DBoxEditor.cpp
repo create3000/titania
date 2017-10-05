@@ -69,7 +69,7 @@ X3DBoxEditor::X3DBoxEditor () :
 void
 X3DBoxEditor::configure ()
 {
-	getBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("boxUniformSize"));
+	getBoxUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("boxUniformSize"));
 }
 
 void

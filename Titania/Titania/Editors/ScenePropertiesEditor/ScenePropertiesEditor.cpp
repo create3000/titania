@@ -83,7 +83,7 @@ ScenePropertiesEditor::configure ()
 	X3DUnitEditor::configure ();
 	X3DWorldInfoEditor::configure ();
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void

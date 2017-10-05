@@ -77,7 +77,7 @@ X3DEnvironmentalSensorEditor::X3DEnvironmentalSensorEditor () :
 void
 X3DEnvironmentalSensorEditor::configure ()
 {
-	getEnvironmentalSensorUniformSizeButton () .set_active (getConfig () -> getBoolean ("environmentalSensorUniformSize"));
+	getEnvironmentalSensorUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("environmentalSensorUniformSize"));
 }
 
 void

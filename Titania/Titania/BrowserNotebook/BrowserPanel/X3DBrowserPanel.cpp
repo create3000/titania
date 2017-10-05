@@ -138,16 +138,12 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                 browser (getPage () -> getMainBrowser ()),
 	             activeLayer (),
 	               viewpoint (),
-	           gridTransform (),
-	              gridSwitch (),
-	                    grid ()
+	           gridTransform ()
 {
 	addChildObjects (browser,
 	                 activeLayer,
 	                 viewpoint,
-	                 gridTransform,
-	                 gridSwitch,
-	                 grid);
+	                 gridTransform);
 }
 
 void
@@ -366,6 +362,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		const auto   gridLayer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("GridLayer");
 		const auto   layer                = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
 		const auto   backgroundAppearance = executionContext -> getNamedNode <X3D::Appearance> ("BackgroundImageAppearance");
+		const auto   gridSwitch           = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
 
 		const auto & gridTool            = getBrowserWindow () -> getGridTool ()            -> getTool ();
 		const auto & angleGridTool       = getBrowserWindow () -> getAngleGridTool ()       -> getTool ();
@@ -376,8 +373,6 @@ X3DBrowserPanel::set_dependent_browser ()
 		backgroundAppearance -> texture () = getPage () -> getBackgroundImage () -> getTexture ();
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
-		gridSwitch    = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
-		grid          = executionContext -> getNamedNode ("Grid");
 
 		layer -> getNavigationInfoStack () -> setLock (true);
 		layer -> getViewpointStack ()      -> setLock (true);
@@ -401,8 +396,6 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
-
-		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations .at (type));
 
 		// Connect to active layer.
 
@@ -604,7 +597,11 @@ X3DBrowserPanel::set_grid ()
 			return;
 	
 		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   gridSwitch       = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
+		const auto   grid             = executionContext -> getNamedNode ("Grid");
 		const bool   perspective      = type == BrowserPanelType::PERSPECTIVE_VIEW;
+
+		grid -> setField <X3D::SFRotation> ("rotation", X3D::Rotation4d (1, 0, 0, math::pi <double> / 2) * orientations .at (type));
 
 		executionContext -> getNamedNode <X3D::Switch> ("GridLayerGridPerspectiveSwitch") -> whichChoice () = perspective;
 		executionContext -> getNamedNode <X3D::Switch> ("LayerGridPerspectiveSwitch") -> whichChoice ()     = not perspective;
@@ -746,9 +743,6 @@ X3DBrowserPanel::set_grid ()
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
-
-		if (gridSwitch)
-			gridSwitch -> whichChoice () = -1;
 	}
 }
 

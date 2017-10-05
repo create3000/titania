@@ -166,10 +166,10 @@ AnimationEditor::initialize ()
 	X3DAnimationEditorInterface::initialize ();
 	X3DEditorObject::initialize ();
 
-	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
+	getScaleKeyframesButton () .set_active (getConfig () -> getItem <bool> ("scaleKeyframes"));
 
-	if (getConfig () -> hasKey ("hPaned"))
-		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
+	if (getConfig () -> hasItem ("hPaned"))
+		getAnimationBox () .set_position (getConfig () -> getItem <int32_t> ("hPaned"));
 
 	getCurrentBrowser () -> getExecutionContext () .addInterest (&AnimationEditor::set_animation, this, nullptr);
 

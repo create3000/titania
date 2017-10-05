@@ -135,12 +135,12 @@ ColorEditor::configure ()
 {
 	X3DColorEditorInterface::configure ();
 
-	getVisualizeGeometryButton () .set_active (getConfig () -> get <bool> ("visualizeGeometry", true));
-	getCheckerBoardButton ()      .set_active (getConfig () -> get <bool> ("checkerBoard"));
-	getTextureButton ()           .set_active (getConfig () -> get <bool> ("texture"));
-	getStraightenHorizonButton () .set_active (getConfig () -> get <bool> ("straightenHorizon"));
+	getVisualizeGeometryButton () .set_active (getConfig () -> getItem <bool> ("visualizeGeometry", true));
+	getCheckerBoardButton ()      .set_active (getConfig () -> getItem <bool> ("checkerBoard"));
+	getTextureButton ()           .set_active (getConfig () -> getItem <bool> ("texture"));
+	getStraightenHorizonButton () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 
-	switch (getConfig () -> get <int32_t> ("mode"))
+	switch (getConfig () -> getItem <int32_t> ("mode"))
 	{
 		case SINGLE_VERTEX:
 		{
@@ -406,7 +406,7 @@ ColorEditor::on_visualize_geometry_toggled ()
 		if (previewGeometry)
 			previewGeometry -> getField <X3D::SFNode> ("coordTool") -> setField <X3D::SFBool> ("load", getVisualizeGeometryButton () .get_active ());
 
-		getConfig () -> set <bool> ("visualizeGeometry", getVisualizeGeometryButton () .get_active ());
+		getConfig () -> setItem <bool> ("visualizeGeometry", getVisualizeGeometryButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -469,7 +469,7 @@ ColorEditor::on_texture_toggled ()
 	{
 		setTexture (getTextureButton () .get_active ());
 
-		getConfig () -> set <bool> ("texture", getTextureButton () .get_active ());
+		getConfig () -> setItem <bool> ("texture", getTextureButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -487,7 +487,7 @@ ColorEditor::on_checkerboard_toggled ()
 		else
 			layerSet -> order () = { 1, 3, 4 };
 
-		getConfig () -> set <bool> ("checkerBoard", getCheckerBoardButton () .get_active ());
+		getConfig () -> setItem <bool> ("checkerBoard", getCheckerBoardButton () .get_active ());
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -508,7 +508,7 @@ ColorEditor::on_straighten_horizon_toggled ()
 			activeLayer -> getViewpoint () -> straighten (preview -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
 	}
 
-	getConfig () -> set <bool> ("straightenHorizon", getStraightenHorizonButton () .get_active ());
+	getConfig () -> setItem <bool> ("straightenHorizon", getStraightenHorizonButton () .get_active ());
 }
 
 void
@@ -538,7 +538,7 @@ ColorEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
 
-	getConfig () -> set <int32_t> ("mode", mode);
+	getConfig () -> setItem <int32_t> ("mode", mode);
 }
 
 void
@@ -546,7 +546,7 @@ ColorEditor::on_adjacent_vertices_clicked ()
 {
 	mode = ADJACENT_VERTICES;
 
-	getConfig () -> set <int32_t> ("mode", mode);
+	getConfig () -> setItem <int32_t> ("mode", mode);
 }
 
 void
@@ -554,7 +554,7 @@ ColorEditor::on_single_face_clicked ()
 {
 	mode = SINGLE_FACE;
 
-	getConfig () -> set <int32_t> ("mode", mode);
+	getConfig () -> setItem <int32_t> ("mode", mode);
 }
 
 void
@@ -562,7 +562,7 @@ ColorEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
 
-	getConfig () -> set <int32_t> ("mode", mode);
+	getConfig () -> setItem <int32_t> ("mode", mode);
 }
 
 void

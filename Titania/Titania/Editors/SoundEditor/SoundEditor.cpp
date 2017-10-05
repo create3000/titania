@@ -103,7 +103,7 @@ SoundEditor::configure ()
 {
 	X3DSoundEditorInterface::configure ();
 
-	getSoundNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getSoundNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
 
 void
