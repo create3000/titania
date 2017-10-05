@@ -107,7 +107,7 @@ PanelMenu::set_multi_view ()
 }
 
 void
-PanelMenu::on_multi_view_activate ()
+PanelMenu::on_multi_view_toggled ()
 {
 	if (changing)
 		return;

@@ -104,7 +104,7 @@ private:
 
 	virtual
 	void
-	on_multi_view_activate () final override;
+	on_multi_view_toggled () final override;
 
 	///  @name Members
 

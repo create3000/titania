@@ -120,7 +120,7 @@ public:
 
 	virtual
 	void
-	on_multi_view_activate () = 0;
+	on_multi_view_toggled () = 0;
 
 	///  @name Destruction
 

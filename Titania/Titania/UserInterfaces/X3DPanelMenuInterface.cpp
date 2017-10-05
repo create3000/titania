@@ -91,7 +91,7 @@ X3DPanelMenuInterface::create ()
 	m_RenderPanelMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPanelMenuInterface::on_render_panel_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'MultiViewMenuItem'.
-	m_MultiViewMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPanelMenuInterface::on_multi_view_activate));
+	m_MultiViewMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPanelMenuInterface::on_multi_view_toggled));
 }
 
 X3DPanelMenuInterface::~X3DPanelMenuInterface ()

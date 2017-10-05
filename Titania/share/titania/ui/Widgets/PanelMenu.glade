@@ -35,7 +35,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Multi View</property>
-        <signal name="toggled" handler="on_multi_view_activate" swapped="no"/>
+        <signal name="toggled" handler="on_multi_view_toggled" swapped="no"/>
         <accelerator key="space" signal="activate"/>
       </object>
     </child>
