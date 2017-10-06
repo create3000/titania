@@ -232,6 +232,7 @@ private:
 
 	std::vector <int32_t>
 	extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges,
+	                      const bool flipNewFaces,
 	                      const std::set <size_t> & faces,
 	                      const bool duplicateFaces);
 

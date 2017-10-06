@@ -587,7 +587,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	edges .erase (std::unique (edges .begin (), edges .end ()), edges .end ());
 
-	const auto selection = extrudeSelectedEdges (edges, { }, false);
+	const auto selection = extrudeSelectedEdges (edges, true, { }, false);
 
 	redoSetCoord (undoStep);
 	redoSetCoordIndex (undoStep);
@@ -648,7 +648,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	std::vector <int32_t> facesPoints;
 
-	auto selection = extrudeSelectedEdges (edges, getSelectedFaces (), flatFaces);
+	auto selection = extrudeSelectedEdges (edges, false, getSelectedFaces (), flatFaces);
 
 	for (const auto & face : getSelectedFaces ())
 	{
@@ -946,6 +946,7 @@ X3DIndexedFaceSetOperationsObject::formNewFace (const std::vector <std::vector <
 /// The array @a edges must be an  array of unique edges.
 std::vector <int32_t>
 X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges,
+                                                         const bool flipNewFaces,
                                                          const std::set <size_t> & faces,
                                                          const bool duplicateFaces)
 {
@@ -973,8 +974,8 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 	{
 		const auto size       = coordIndex () .size ();
 		const auto faceNumber = getFaceSelection () -> getFaceNumber (edge .first);
-		const auto first      = edge .first;
-		const auto second     = edge .second;
+		const auto first      = flipNewFaces ? edge .second : edge .first;
+		const auto second     = flipNewFaces ? edge .first  : edge .second;
 
 		if (colorIndex () .size ())
 		{
