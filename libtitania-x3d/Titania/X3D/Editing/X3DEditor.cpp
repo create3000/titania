@@ -2679,7 +2679,7 @@ X3DEditor::transformToZero (const SFNode & child,
 			}
 			case X3DConstants::X3DTransformNode:
 			{
-				X3DPtr <X3DTransformNode> transform (child);
+				const X3DPtr <X3DTransformNode> transform (child);
 
 				const auto matrix = transform -> getCurrentMatrix ();
 
@@ -2697,6 +2697,15 @@ X3DEditor::transformToZero (const SFNode & child,
 				modelViewMatrix .pop ();
 				return;
 			}
+			case X3DConstants::Collision:
+			{
+				const auto & proxy = child -> getField <SFNode> ("proxy");
+
+				if (proxy)
+					transformToZero (proxy, modelViewMatrix, coords, undoStep);
+
+				// Proceed with next step.
+			}
 			case X3DConstants::X3DGroupingNode:
 			{
 				transformToZero (child -> getField <MFNode> ("children"), modelViewMatrix, coords, undoStep);
@@ -2704,8 +2713,8 @@ X3DEditor::transformToZero (const SFNode & child,
 			}
 			case X3DConstants::X3DShapeNode:
 			{
-				X3DPtr <X3DShapeNode>    shape (child);
-				X3DPtr <X3DGeometryNode> geometry (shape -> geometry ());
+				const X3DPtr <X3DShapeNode>    shape (child);
+				const X3DPtr <X3DGeometryNode> geometry (shape -> geometry ());
 
 				if (geometry)
 					transformToZero (geometry, modelViewMatrix .get (), coords, undoStep);
@@ -2726,7 +2735,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry,
 {
 	try
 	{
-		X3DPtr <X3DCoordinateNode> coord (geometry -> getField <SFNode> ("coord"));
+		const X3DPtr <X3DCoordinateNode> coord (geometry -> getField <SFNode> ("coord"));
 
 		if (coord)
 			transformToZero (coord, matrix, coords, undoStep);
@@ -2748,7 +2757,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 	{
 		case X3DConstants::Coordinate:
 		{
-			X3DPtr <Coordinate> coordinate (coord);
+			const X3DPtr <Coordinate> coordinate (coord);
 
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
@@ -2761,7 +2770,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 		}
 		case X3DConstants::CoordinateDouble:
 		{
-			X3DPtr <CoordinateDouble> coordinate (coord);
+			const X3DPtr <CoordinateDouble> coordinate (coord);
 
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
@@ -2774,7 +2783,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 		}
 		case X3DConstants::GeoCoordinate:
 		{
-			X3DPtr <GeoCoordinate> coordinate (coord);
+			const X3DPtr <GeoCoordinate> coordinate (coord);
 
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());

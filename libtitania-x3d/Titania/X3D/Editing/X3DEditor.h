@@ -529,7 +529,7 @@ private:
 };
 
 /***
- *  Traverses @a selection and returns all nodes of a type specified in @a types.
+ *  Traverses @a selection and returns all visible nodes of a type specified in @a types.
  */
 template <class NodeType>
 X3DPtrArray <NodeType>
@@ -551,7 +551,8 @@ X3DEditor::getNodes (const MFNode & selection, const std::set <X3DConstants::Nod
 		}
 		
 		return true;
-	});
+	},
+	TRAVERSE_ROOT_NODES | TRAVERSE_VISIBLE_NODES);
 
 	return nodes;
 }
