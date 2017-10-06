@@ -128,6 +128,8 @@ BackgroundEditor::initialize ()
 	
 	skyColor    .setColorsSize (16);
 	groundColor .setColorsSize (16);
+
+	set_background (nullptr);
 }
 
 void

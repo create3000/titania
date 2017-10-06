@@ -85,6 +85,8 @@ FogEditor::initialize ()
 	fogList -> getHeaderBar () .set_visible (false);
 	fogList -> getTreeView () .set_headers_visible (true);
 	fogList -> reparent (getFogListBox (), getWindow ());
+
+	set_fog (nullptr);
 }
 
 void

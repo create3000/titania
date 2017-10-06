@@ -159,6 +159,9 @@ private:
 	set_viewer ();
 
 	void
+	set_active_navigationInfo ();
+
+	void
 	set_background_texture ();
 
 	void
@@ -189,6 +192,7 @@ private:
 	BrowserPanelType                    type;
 	X3D::BrowserPtr                     browser;
 	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
+	X3D::X3DPtr <X3D::NavigationInfo>   activeNavigationInfo;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
 	X3D::X3DPtr <X3D::Transform>        gridTransform;
 };

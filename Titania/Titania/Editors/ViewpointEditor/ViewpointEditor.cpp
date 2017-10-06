@@ -92,6 +92,8 @@ ViewpointEditor::initialize ()
 	viewpointList -> getHeaderBar () .set_visible (false);
 	viewpointList -> getTreeView () .set_headers_visible (true);
 	viewpointList -> reparent (getViewpointListBox (), getWindow ());
+
+	set_viewpoint (nullptr);
 }
 
 void

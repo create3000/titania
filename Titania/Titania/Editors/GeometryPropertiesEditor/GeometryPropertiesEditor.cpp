@@ -698,13 +698,13 @@ GeometryPropertiesEditor::set_color_buffer ()
 
 	getColorsBox () .set_visible (not geometryNodes .empty () and numColorFields == geometryNodes .size ());
 
-	if (colorClones and colorClones == colorNodes .size ())
+	if (colorClones and colorClones == geometryNodes .size ())
 	{
 		// Color
 		getColorTypeButton ()   .set_active (1);
 		getColorUnlinkButton () .set_sensitive (colorNodes .size () == 1 and colorNodes .back () -> getCloneCount () > 1);
 	}
-	else if (colorRGBAClones and colorRGBAClones == colorRGBANodes .size ())
+	else if (colorRGBAClones and colorRGBAClones == geometryNodes .size ())
 	{
 		// ColorRGBA
 		getColorTypeButton ()   .set_active (2);

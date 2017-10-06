@@ -105,6 +105,8 @@ NavigationInfoEditor::initialize ()
 	avatarSize0 .setIndex (0);
 	avatarSize1 .setIndex (1);
 	avatarSize2 .setIndex (2);
+
+	set_navigationInfo (nullptr);
 }
 
 void

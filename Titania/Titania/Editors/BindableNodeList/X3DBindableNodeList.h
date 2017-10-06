@@ -339,6 +339,7 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 		getStack (activeLayer) -> addInterest (&X3DBindableNodeList::set_stack, this);
 
 		set_list ();
+		setSelection (X3D::X3DPtr <Type> (getStack (activeLayer) -> getTop ()), not selectNamedNode);
 	}
 	else
 	{

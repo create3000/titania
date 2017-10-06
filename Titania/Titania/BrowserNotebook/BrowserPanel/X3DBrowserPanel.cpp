@@ -137,6 +137,7 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                    type (defaultTypes [getId ()]),
 	                 browser (getPage () -> getMainBrowser ()),
 	             activeLayer (),
+	    activeNavigationInfo (),
 	               viewpoint (),
 	           gridTransform ()
 {
@@ -170,6 +171,8 @@ X3D::BrowserPtr
 X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 {
 	const auto & mainBrowser = getPage () -> getMainBrowser ();
+
+	activeNavigationInfo = nullptr;
 
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return mainBrowser;
@@ -359,8 +362,9 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		const auto & mainBrowser = getPage () -> getMainBrowser ();
 	
-		mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
-		mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
+		mainBrowser -> getFixedPipeline ()        .addInterest (&X3DBrowserPanel::set_fixed_pipeline,        this);
+		mainBrowser -> getViewer ()               .addInterest (&X3DBrowserPanel::set_viewer,                this);
+		mainBrowser -> getActiveNavigationInfo () .addInterest (&X3DBrowserPanel::set_active_navigationInfo, this);
 
 		// Setup dependent browser.
 
@@ -415,6 +419,7 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		set_fixed_pipeline ();
 		set_viewer ();
+		set_active_navigationInfo ();
 		set_background_texture ();
 		set_background_texture_transparency ();
 		set_activeLayer ();
@@ -450,6 +455,32 @@ X3DBrowserPanel::set_viewer ()
 	{
 		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 	}
+}
+
+void
+X3DBrowserPanel::set_active_navigationInfo ()
+{
+	try
+	{
+		if (type == BrowserPanelType::MAIN_VIEW)
+			return;
+	
+		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
+
+		if (activeNavigationInfo)
+			activeNavigationInfo -> headlight () .removeInterest (layer -> getNavigationInfo () -> headlight ());
+	
+		activeNavigationInfo = getPage () -> getMainBrowser () -> getActiveNavigationInfo ();
+
+		if (activeNavigationInfo)
+		{
+			activeNavigationInfo -> headlight () .addInterest (layer -> getNavigationInfo () -> headlight ());
+			layer -> getNavigationInfo () -> headlight () = activeNavigationInfo -> headlight ();
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{ }
 }
 
 void
