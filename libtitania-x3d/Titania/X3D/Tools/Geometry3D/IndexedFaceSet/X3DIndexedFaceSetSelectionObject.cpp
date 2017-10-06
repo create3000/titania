@@ -78,6 +78,9 @@ X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	      replaceSelection (new MFInt32 ()),
 	          addSelection (new MFInt32 ()),
 	       removeSelection (new MFInt32 ()),
+	 replaceSelectedPoints (new MFInt32 ()),
+	     addSelectedPoints (new MFInt32 ()),
+	  removeSelectedPoints (new MFInt32 ()),
 	  replaceSelectedEdges (new MFInt32 ()),
 	      addSelectedEdges (new MFInt32 ()),
 	   removeSelectedEdges (new MFInt32 ()),
@@ -148,20 +151,23 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetSelectionObject::set_loadState, this);
 
-	toolType ()             .addInterest (&X3DIndexedFaceSetSelectionObject::set_toolType, this);
-	selectionType ()        .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectionType, this);
-	getCoord ()             .addInterest (&X3DIndexedFaceSetSelectionObject::set_coord, this);
-	selectAll ()            .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectAll_, this);
-	deselectAll ()          .addInterest (&X3DIndexedFaceSetSelectionObject::set_deselectAll_, this);
-	replaceSelection ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelection_, this);
-	addSelection ()         .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelection_, this);
-	removeSelection ()      .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelection_, this);
-	replaceSelectedEdges () .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_, this);
-	addSelectedEdges ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_, this);
-	removeSelectedEdges ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_, this);
-	replaceSelectedFaces () .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_, this);
-	addSelectedFaces ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_, this);
-	removeSelectedFaces ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_, this);
+	toolType ()              .addInterest (&X3DIndexedFaceSetSelectionObject::set_toolType,               this);
+	selectionType ()         .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectionType,          this);
+	getCoord ()              .addInterest (&X3DIndexedFaceSetSelectionObject::set_coord,                  this);
+	selectAll ()             .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectAll_,             this);
+	deselectAll ()           .addInterest (&X3DIndexedFaceSetSelectionObject::set_deselectAll_,           this);
+	replaceSelection ()      .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelection_,      this);
+	addSelection ()          .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelection_,          this);
+	removeSelection ()       .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelection_,       this);
+	replaceSelectedPoints () .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedPoints_, this);
+	addSelectedPoints ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedPoints_,     this);
+	removeSelectedPoints ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedPoints_,  this);
+	replaceSelectedEdges ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_,  this);
+	addSelectedEdges ()      .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_,      this);
+	removeSelectedEdges ()   .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_,   this);
+	replaceSelectedFaces ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_,  this);
+	addSelectedFaces ()      .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_,      this);
+	removeSelectedFaces ()   .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_,   this);
 
 	selection -> geometry () = getNode <IndexedFaceSet> ();
 	selection -> setup ();
@@ -313,6 +319,33 @@ void
 X3DIndexedFaceSetSelectionObject::set_removeSelection_ ()
 {
 	select (std::vector <int32_t> (removeSelection () .begin (), removeSelection () .end ()), SelectActionType::REMOVE);
+
+	touchTime () = getCurrentTime ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_replaceSelectedPoints_ ()
+{
+	selectPoints (std::vector <int32_t> (replaceSelectedPoints () .begin (), replaceSelectedPoints () .end ()), SelectActionType::REPLACE);
+	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_addSelectedPoints_ ()
+{
+	selectPoints (std::vector <int32_t> (addSelectedPoints () .begin (), addSelectedPoints () .end ()), SelectActionType::ADD);
+	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_removeSelectedPoints_ ()
+{
+	selectPoints (std::vector <int32_t> (removeSelectedPoints () .begin (), removeSelectedPoints () .end ()), SelectActionType::REMOVE);
+	updateGeometries ();
 
 	touchTime () = getCurrentTime ();
 }
@@ -1666,18 +1699,46 @@ X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1,
 void
 X3DIndexedFaceSetSelectionObject::undoRestoreSelection (const UndoStepPtr & undoStep)
 {
+	std::vector <int32_t> faces;
+
+	for (const auto & face : getSelectedFaces ())
+	{
+		for (const auto & vertex : selection -> getFaceVertices (face))
+			faces .emplace_back (coordIndex () [vertex]);
+	}
+	
+	if (not faces .empty ())
+	{
+		undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelectedFaces, SFNode (this), faces);
+		return;
+	}
+
+	std::vector <int32_t> edges;
+
+	for (const auto & edge : getSelectedEdges ())
+	{
+		edges .emplace_back (edge .first .first);
+		edges .emplace_back (edge .first .second);
+	}
+	
+	if (not edges .empty ())
+	{
+		undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelectedEdges, SFNode (this), edges);
+		return;
+	}
+
 	std::vector <int32_t> points;
 
 	for (const auto & selectedPoint : getSelectedPoints ())
 		points .emplace_back (selectedPoint .first);
 
-	undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points);
+	undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelectedPoints, SFNode (this), points);
 }
 
 void
-X3DIndexedFaceSetSelectionObject::redoRestoreSelection (const std::vector <int32_t> & points, const UndoStepPtr & undoStep)
+X3DIndexedFaceSetSelectionObject::redoRestoreSelectedPoints (const std::vector <int32_t> & points, const UndoStepPtr & undoStep)
 {
-	undoStep -> addRedoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points);
+	undoStep -> addRedoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelectedPoints,  SFNode (this), points);
 }
 
 void
@@ -1693,12 +1754,12 @@ X3DIndexedFaceSetSelectionObject::redoRestoreSelectedFaces (const std::vector <i
 }
 
 void
-X3DIndexedFaceSetSelectionObject::restoreSelection (const SFNode & node, const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::restoreSelectedPoints (const SFNode & node, const std::vector <int32_t> & points)
 {
 	X3DPtr <X3DIndexedFaceSetSelectionObject> tool (node);
 
 	if (tool)
-		tool -> replaceSelection () .assign (points .begin (), points .end ());
+		tool -> replaceSelectedPoints () .assign (points .begin (), points .end ());
 }
 
 void

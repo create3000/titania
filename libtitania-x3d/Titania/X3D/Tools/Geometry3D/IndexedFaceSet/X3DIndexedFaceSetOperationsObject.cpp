@@ -119,10 +119,10 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetColor    (undoStep);
-	undoSetTexCoord (undoStep);
-	undoSetNormal  (undoStep);
-	undoSetCoord    (undoStep);
+	undoSetColor         (undoStep);
+	undoSetTexCoord      (undoStep);
+	undoSetNormal        (undoStep);
+	undoSetCoord         (undoStep);
 
 	set_copyGeometry ();
 	deleteFaces (getSelectedFaces ());
@@ -134,16 +134,16 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	rebuildNormal   ();
 	rebuildCoord    ();
 
-	redoSetCoord    (undoStep);
-	redoSetNormal  (undoStep);
-	redoSetTexCoord (undoStep);
-	redoSetColor    (undoStep);
+	redoSetCoord         (undoStep);
+	redoSetNormal        (undoStep);
+	redoSetTexCoord      (undoStep);
+	redoSetColor         (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex    (undoStep);
-	redoRestoreSelection ({ }, undoStep);
 
+	redoRestoreSelectedFaces ({ }, undoStep);
 	replaceSelection () = MFInt32 ();
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
@@ -380,24 +380,24 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		undoSetTexCoordIndex (undoStep);
 		undoSetNormalIndex   (undoStep);
 		undoSetCoordIndex    (undoStep);
-		undoSetColor    (undoStep);
-		undoSetTexCoord (undoStep);
-		undoSetNormal  (undoStep);
-		undoSetCoord    (undoStep);
+		undoSetColor         (undoStep);
+		undoSetTexCoord      (undoStep);
+		undoSetNormal        (undoStep);
+		undoSetCoord         (undoStep);
 
 		const auto selection = Combine () .combine (X3DExecutionContextPtr (getExecutionContext ()), geometries, X3DPtr <IndexedFaceSet> (this), getCoord (), targetMatrix);
 
-		redoSetCoord    (undoStep);
-		redoSetNormal  (undoStep);
-		redoSetTexCoord (undoStep);
-		redoSetColor    (undoStep);
+		redoSetCoord         (undoStep);
+		redoSetNormal        (undoStep);
+		redoSetTexCoord      (undoStep);
+		redoSetColor         (undoStep);
 		redoSetCoordIndex    (undoStep);
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);
 		redoSetColorIndex    (undoStep);
-		redoRestoreSelection (selection, undoStep);
 
-		replaceSelection () .assign (selection .begin (), selection .end ());
+		redoRestoreSelectedFaces (selection, undoStep);
+		replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}
@@ -423,10 +423,10 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetColor    (undoStep);
-	undoSetTexCoord (undoStep);
-	undoSetNormal  (undoStep);
-	undoSetCoord    (undoStep);
+	undoSetColor         (undoStep);
+	undoSetTexCoord      (undoStep);
+	undoSetNormal        (undoStep);
+	undoSetCoord         (undoStep);
 
 	// Normaly not needed.
 	//	if (getColor () and colorIndex () .empty ())
@@ -481,17 +481,17 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	rebuildNormal   ();
 	rewriteArray (rebuildCoord (), selection);
 
-	redoSetCoord    (undoStep);
-	redoSetNormal  (undoStep);
-	redoSetTexCoord (undoStep);
-	redoSetColor    (undoStep);
+	redoSetCoord         (undoStep);
+	redoSetNormal        (undoStep);
+	redoSetTexCoord      (undoStep);
+	redoSetColor         (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex    (undoStep);
-	redoRestoreSelection ({ masterPoint }, undoStep);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	redoRestoreSelectedPoints ({ masterPoint }, undoStep);
+	replaceSelectedPoints () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -506,7 +506,7 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetCoord    (undoStep);
+	undoSetCoord         (undoStep);
 
 	std::vector <int32_t> points;
 
@@ -519,11 +519,11 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 
 	const auto selection = splitPoints (points);
 
-	redoSetCoord    (undoStep);
+	redoSetCoord         (undoStep);
 	redoSetCoordIndex    (undoStep);
-	redoRestoreSelection (selection, undoStep);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	redoRestoreSelectedPoints (selection, undoStep);
+	replaceSelectedPoints () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -684,7 +684,7 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetCoord    (undoStep);
+	undoSetCoord         (undoStep);
 
 	std::vector <size_t> vertices;
 
@@ -705,11 +705,11 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	rewriteArray (rebuildCoord (), selection);
 
-	redoSetCoord    (undoStep);
+	redoSetCoord         (undoStep);
 	redoSetCoordIndex    (undoStep);
-	redoRestoreSelection (selection, undoStep);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	redoRestoreSelectedFaces (selection, undoStep);
+	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -727,7 +727,7 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
-	undoSetNormal  (undoStep);
+	undoSetNormal        (undoStep);
 
 	flipVertexOrdering (getSelectedFaces ());
 
@@ -740,7 +740,7 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 
 	// Redo
 
-	redoSetNormal  (undoStep);
+	redoSetNormal        (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
@@ -770,12 +770,12 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
 
-	std::set <int32_t> selection;
+	std::vector <int32_t> selection;
 
 	for (const auto & edge : getSelectedEdges ())
 	{
-		selection .emplace (edge .first .first);
-		selection .emplace (edge .first .second);
+		selection .emplace_back (edge .first .first);
+		selection .emplace_back (edge .first .second);
 	}
 
 	deleteFaces (getSelectedFaces ());
@@ -795,10 +795,10 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex    (undoStep);
-	redoRestoreSelection ({ }, undoStep);
+
+	redoRestoreSelectedEdges (selection, undoStep);
 
 	replaceSelection () = MFInt32 ();
-
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

@@ -79,6 +79,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (X3DBaseNode* const node) :
 	addField (inputOutput, "replaceSelection",       replaceSelection ());
 	addField (inputOutput, "addSelection",           addSelection ());
 	addField (inputOutput, "removeSelection",        removeSelection ());
+	addField (inputOutput, "replaceSelectedPoints",  replaceSelectedPoints ());
+	addField (inputOutput, "addSelectedPoints",      addSelectedPoints ());
+	addField (inputOutput, "removeSelectedPoints",   removeSelectedPoints ());
 	addField (inputOutput, "replaceSelectedEdges",   replaceSelectedEdges ());
 	addField (inputOutput, "addSelectedEdges",       addSelectedEdges ());
 	addField (inputOutput, "removeSelectedEdges",    removeSelectedEdges ());

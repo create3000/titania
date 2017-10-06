@@ -644,8 +644,8 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex    (undoStep);
-	redoRestoreSelection ({ }, undoStep);
 
+	redoRestoreSelectedEdges (selection, undoStep);
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

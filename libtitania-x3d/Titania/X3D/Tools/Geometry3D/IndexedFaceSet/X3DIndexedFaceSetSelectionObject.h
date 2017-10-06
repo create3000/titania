@@ -145,6 +145,32 @@ public:
 	removeSelection () const
 	{ return *fields .removeSelection; }
 
+	// SelectedPoints
+
+	MFInt32 &
+	replaceSelectedPoints ()
+	{ return *fields .replaceSelectedPoints; }
+
+	const MFInt32 &
+	replaceSelectedPoints () const
+	{ return *fields .replaceSelectedPoints; }
+
+	MFInt32 &
+	addSelectedPoints ()
+	{ return *fields .addSelectedPoints; }
+
+	const MFInt32 &
+	addSelectedPoints () const
+	{ return *fields .addSelectedPoints; }
+
+	MFInt32 &
+	removeSelectedPoints ()
+	{ return *fields .removeSelectedPoints; }
+
+	const MFInt32 &
+	removeSelectedPoints () const
+	{ return *fields .removeSelectedPoints; }
+
 	// SelectedEdges
 
 	MFInt32 &
@@ -403,16 +429,16 @@ protected:
 	///  @name Undo/redo handling
 
 	void
-	undoRestoreSelection (const UndoStepPtr &);
+	undoRestoreSelection (const UndoStepPtr & undoStep);
 
 	void
-	redoRestoreSelection (const std::vector <int32_t> &, const UndoStepPtr &);
+	redoRestoreSelectedPoints (const std::vector <int32_t> & points, const UndoStepPtr & undoStep);
 
 	void
-	redoRestoreSelectedEdges (const std::vector <int32_t> &, const UndoStepPtr &);
+	redoRestoreSelectedEdges (const std::vector <int32_t> & points, const UndoStepPtr & undoStep);
 
 	void
-	redoRestoreSelectedFaces (const std::vector <int32_t> &, const UndoStepPtr &);
+	redoRestoreSelectedFaces (const std::vector <int32_t> & points, const UndoStepPtr & undoStep);
 
 
 private:
@@ -442,6 +468,15 @@ private:
 
 	void
 	set_removeSelection_ ();
+
+	void
+	set_replaceSelectedPoints_ ();
+
+	void
+	set_addSelectedPoints_ ();
+
+	void
+	set_removeSelectedPoints_ ();
 
 	void
 	set_replaceSelectedEdges_ ();
@@ -581,15 +616,15 @@ private:
 
 	static
 	void
-	restoreSelection (const SFNode &, const std::vector <int32_t> &);
+	restoreSelectedPoints (const SFNode & node, const std::vector <int32_t> & points);
 
 	static
 	void
-	restoreSelectedEdges (const SFNode &, const std::vector <int32_t> &);
+	restoreSelectedEdges (const SFNode & node, const std::vector <int32_t> & points);
 
 	static
 	void
-	restoreSelectedFaces (const SFNode &, const std::vector <int32_t> &);
+	restoreSelectedFaces (const SFNode & node, const std::vector <int32_t> & points);
 
 	///  @name Fields
 
@@ -605,6 +640,9 @@ private:
 		MFInt32* const replaceSelection;
 		MFInt32* const addSelection;
 		MFInt32* const removeSelection;
+		MFInt32* const replaceSelectedPoints;
+		MFInt32* const addSelectedPoints;
+		MFInt32* const removeSelectedPoints;
 		MFInt32* const replaceSelectedEdges;
 		MFInt32* const addSelectedEdges;
 		MFInt32* const removeSelectedEdges;

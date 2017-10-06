@@ -172,16 +172,16 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 		rebuildNormal   ();
 		rewriteArray (rebuildCoord (), selection);
 	
-		redoSetCoord    (undoStep);
-		redoSetNormal  (undoStep);
-		redoSetTexCoord (undoStep);
-		redoSetColor    (undoStep);
+		redoSetCoord         (undoStep);
+		redoSetNormal        (undoStep);
+		redoSetTexCoord      (undoStep);
+		redoSetColor         (undoStep);
 		redoSetCoordIndex    (undoStep);
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);
 		redoSetColorIndex    (undoStep);
-		redoRestoreSelection ({ }, undoStep);
 
+		redoRestoreSelectedEdges (selection, undoStep);
 		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
