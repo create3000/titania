@@ -70,8 +70,8 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SIZE_MIN            = 1e-7;
-static constexpr size_t TRANSLATIONS_EVENTS = 4;
+static constexpr double SIZE_MIN = 1e-7;
+static constexpr size_t EVENTS   = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
 	             transform (new SFBool ()),
@@ -90,9 +90,9 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	                   transformTool (),
 	              selectionTransform (new Transform (getExecutionContext ())),
 	                  selectionCoord (),
-	                    translations (0),
 	                    axisRotation (),
 	                          active (false),
+	                         events (0),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	addType (X3DConstants::X3DIndexedFaceSetTransformObject);
@@ -240,7 +240,8 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 void
 X3DIndexedFaceSetTransformObject::set_selection ()
 {
-	set_transform ();
+	if (transform ())
+		set_transform ();
 }
 
 void
@@ -336,8 +337,9 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 
 		undoSetCoord (undoStep);
 
-		translations = 0;
+		events = 0;
 
+		setTranslate (false);
 		setTranslation (Vector3d ());
 	}
 	else
@@ -366,7 +368,7 @@ void
 X3DIndexedFaceSetTransformObject::set_plane_sensor_translation ()
 {
 	// Prevent accidentially move.
-	if (translations ++ < TRANSLATIONS_EVENTS)
+	if (events ++ < EVENTS)
 		return;
 
 	setTranslate (true);
@@ -390,8 +392,19 @@ X3DIndexedFaceSetTransformObject::set_transform_active (const bool value)
 {
 	active = value;
 
-	if (not active and getTranslate ())
-		set_transform ();
+	if (active)
+	{
+		events = 0;
+
+		setTranslate (false);
+	}
+	else
+	{
+		if (getTranslate ())
+			set_transform ();
+
+		setTranslate (false);
+	}
 
 	set_plane_sensor_active (active);
 }
@@ -402,6 +415,10 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	try
 	{
 		if (not active)
+			return;
+	
+		// Prevent accidentially move.
+		if (events ++ < EVENTS)
 			return;
 	
 		setTranslate (true);

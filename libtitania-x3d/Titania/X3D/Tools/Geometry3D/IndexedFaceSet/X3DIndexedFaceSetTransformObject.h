@@ -183,9 +183,9 @@ private:
 	X3DPtr <Transform>        selectionTransform;
 	X3DPtr <CoordinateDouble> selectionCoord;
 
-	size_t                    translations;
 	Matrix4d                  axisRotation;
 	bool                      active;
+	size_t                    events;
 	UndoStepPtr               undoStep;
 
 };
