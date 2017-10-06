@@ -587,15 +587,15 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	edges .erase (std::unique (edges .begin (), edges .end ()), edges .end ());
 
-	const auto selection = extrudeSelectedEdges (edges, { });
+	const auto selection = extrudeSelectedEdges (edges, { }, false);
 
 	redoSetCoord (undoStep);
 	redoSetCoordIndex (undoStep);
 	if (normalIndex   () .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
-	redoRestoreSelectedEdges (selection, undoStep);
 
+	redoRestoreSelectedEdges (selection, undoStep);
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
@@ -616,6 +616,8 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	undoSetCoordIndex (undoStep);
 	undoSetCoord (undoStep);
 
+	bool flatFaces = false;
+
 	std::vector <std::pair <size_t, size_t>> edges;
 	std::vector <int32_t>                    points;
 
@@ -626,6 +628,8 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 		points .emplace_back (edge .first .first);
 		points .emplace_back (edge .first .second);
+
+		flatFaces |= edge .second .size () == 1;
 
 	   for (const auto & pair : edge .second)
 		{
@@ -644,7 +648,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	std::vector <int32_t> facesPoints;
 
-	auto selection = extrudeSelectedEdges (edges, getSelectedFaces ());
+	auto selection = extrudeSelectedEdges (edges, getSelectedFaces (), flatFaces);
 
 	for (const auto & face : getSelectedFaces ())
 	{
@@ -667,9 +671,9 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	if (normalIndex   () .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
-	redoRestoreSelectedEdges (std::vector <int32_t> (selection .begin (), selection .end ()), undoStep);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	redoRestoreSelectedFaces (std::vector <int32_t> (selection .begin (), selection .end ()), undoStep);
+	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -941,7 +945,9 @@ X3DIndexedFaceSetOperationsObject::formNewFace (const std::vector <std::vector <
 
 /// The array @a edges must be an  array of unique edges.
 std::vector <int32_t>
-X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges, const std::set <size_t> & faces)
+X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges,
+                                                         const std::set <size_t> & faces,
+                                                         const bool duplicateFaces)
 {
 	std::map <int32_t, size_t>  pointIndex;
 	std::map <int32_t, int32_t> points;
@@ -967,15 +973,17 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 	{
 		const auto size       = coordIndex () .size ();
 		const auto faceNumber = getFaceSelection () -> getFaceNumber (edge .first);
+		const auto first      = edge .first;
+		const auto second     = edge .second;
 
 		if (colorIndex () .size ())
 		{
 			if (colorPerVertex ())
 			{
-				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .first));
-				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .second));
-				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .second));
-				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (first));
+				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (second));
+				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (second));
+				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (first));
 				colorIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -986,10 +994,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	   if (texCoordIndex () .size ())
 	   {
-			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .first));
-			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .second));
-			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .second));
-			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (first));
+			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (second));
+			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (second));
+			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (first));
 			texCoordIndex () .set1Value (size + 4, -1);
 		}
 
@@ -997,10 +1005,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		{
 			if (normalPerVertex ())
 			{
-				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .first));
-				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .second));
-				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .second));
-				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (first));
+				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (second));
+				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (second));
+				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (first));
 				normalIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -1009,10 +1017,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			}
 		}
 
-		coordIndex () .emplace_back (coordIndex () [edge .first]);
-		coordIndex () .emplace_back (coordIndex () [edge .second]);
-		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
-		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
+		coordIndex () .emplace_back (coordIndex ()         [first]);
+		coordIndex () .emplace_back (coordIndex ()         [second]);
+		coordIndex () .emplace_back (points [coordIndex () [second]]);
+		coordIndex () .emplace_back (points [coordIndex () [first]]);
 		coordIndex () .emplace_back (-1);
 
 		++ numFaces;
@@ -1020,21 +1028,44 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	 if (not faces .empty ())
 	 {
-		std::map <size_t, int32_t> vertices;
-		
-		for (const auto & face : faces)
+		if (duplicateFaces )
 		{
-			for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+			for (const auto & face : faces)
 			{
-				const auto iter = points .find (coordIndex () [vertex]);
+				const auto vertices = getFaceSelection () -> getFaceVertices (face);
 
-			   if (iter not_eq points .end ())
-					vertices .emplace (vertex, iter -> second);
+				for (const auto & vertex : vertices)
+				{
+					const auto iter = points .find (coordIndex () [vertex]);
+	
+				   if (iter not_eq points .end ())
+						coordIndex () .emplace_back (iter -> second);
+				}
+
+				coordIndex () .emplace_back (-1);
+
+				for (size_t i = 0, size = vertices .size () / 2; i < size; ++ i)
+					std::swap (coordIndex () [vertices [i]], coordIndex () [vertices [vertices .size () - i - 1]]);
 			}
 		}
-
-		for (const auto & vertex : vertices)
-			coordIndex () [vertex .first] = vertex .second;
+		else
+		{
+			std::map <size_t, int32_t> vertices;
+			
+			for (const auto & face : faces)
+			{
+				for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+				{
+					const auto iter = points .find (coordIndex () [vertex]);
+	
+				   if (iter not_eq points .end ())
+						vertices .emplace (vertex, iter -> second);
+				}
+			}
+	
+			for (const auto & vertex : vertices)
+				coordIndex () [vertex .first] = vertex .second;
+		}
 	}
 
 	std::vector <int32_t> selection;

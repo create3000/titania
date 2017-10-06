@@ -231,7 +231,9 @@ private:
 	formNewFace (const std::vector <std::vector <int32_t>> &);
 
 	std::vector <int32_t>
-	extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> &, const std::set <size_t> &);
+	extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges,
+	                      const std::set <size_t> & faces,
+	                      const bool duplicateFaces);
 
 	std::vector <int32_t>
 	chipOf (const std::vector <size_t> &);
