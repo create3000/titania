@@ -122,6 +122,14 @@ RenderPanel::configure ()
 	getLoopButton () .set_active (getConfig () -> getItem <bool> ("loop"));
 }
 
+void
+RenderPanel::lookAtSelection ()
+{ }
+
+void
+RenderPanel::lookAtAll ()
+{ }
+
 std::shared_ptr <ViewpointList>
 RenderPanel::getViewpointList () const
 {

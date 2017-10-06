@@ -2767,13 +2767,13 @@ BrowserWindow::on_straighten_horizon_toggled ()
 void
 BrowserWindow::on_look_at_selection_clicked ()
 {
-	getCurrentBrowser () -> lookAtSelection ();
+	getCurrentPage () -> lookAtSelection ();
 }
 
 void
 BrowserWindow::on_look_at_all_clicked ()
 {
-	getCurrentBrowser () -> lookAtAllObjectsInActiveLayer ();
+	getCurrentPage () -> lookAtAll ();
 }
 
 void

@@ -260,6 +260,18 @@ NotebookPage::setMultiView (const bool value)
 }
 
 void
+NotebookPage::lookAtSelection ()
+{
+	getActivePanel () -> lookAtSelection ();
+}
+
+void
+NotebookPage::lookAtAll ()
+{
+	getActivePanel () -> lookAtAll ();
+}
+
+void
 NotebookPage::shutdown ()
 {
 	X3DNotebookPage::shutdown ();

@@ -249,6 +249,18 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 }
 
 void
+X3DBrowserPanel::lookAtSelection ()
+{
+	browser -> lookAtSelection ();
+}
+
+void
+X3DBrowserPanel::lookAtAll ()
+{
+	browser -> lookAtAllObjectsInActiveLayer ();
+}
+
+void
 X3DBrowserPanel::set_type ()
 {
 	switch (type)

@@ -76,6 +76,10 @@ public:
 
 	///  @name Member access
 
+	const PanelPtr &
+	getActivePanel () const
+	{ return panels [activeView]; }
+
 	const PanelArray &
 	getPanels () const
 	{ return panels; }
@@ -86,6 +90,14 @@ public:
 	const X3D::SFBool &
 	getMultiView () const
 	{ return multiView; }
+
+	///  @name Operations
+
+	void
+	lookAtSelection ();
+
+	void
+	lookAtAll ();
 
 	///  @name Destruction
 

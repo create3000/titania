@@ -74,6 +74,16 @@ public:
 
 	RenderPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id);
 
+	///  @name Operations
+
+	virtual
+	void
+	lookAtSelection () final override;
+
+	virtual
+	void
+	lookAtAll () final override;
+
 	///  @name Destruction
 
 	virtual

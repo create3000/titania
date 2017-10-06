@@ -66,7 +66,7 @@ const std::string   OctahedronOptions::typeName       = "OctahedronOptions";
 const std::string   OctahedronOptions::containerField = "options";
 
 OctahedronOptions::Fields::Fields () :
-	sphericalInterpolation (new SFBool (true)),
+	sphericalInterpolation (new SFBool ()),
 	                 order (new SFInt32 (2))
 { }
 

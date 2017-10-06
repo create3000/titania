@@ -75,6 +75,16 @@ public:
 	getLocalBrowser () const
 	{ return browser; }
 
+	///  @name Operations
+
+	virtual
+	void
+	lookAtSelection () final override;
+
+	virtual
+	void
+	lookAtAll () final override;
+
 	///  @name Destruction
 
 	virtual

@@ -87,6 +87,14 @@ public:
 	hasFocus () const
 	{ return focus; }
 
+	virtual
+	void
+	lookAtSelection () = 0;
+
+	virtual
+	void
+	lookAtAll () = 0;
+
 	/// @name Destruction
 
 	virtual
