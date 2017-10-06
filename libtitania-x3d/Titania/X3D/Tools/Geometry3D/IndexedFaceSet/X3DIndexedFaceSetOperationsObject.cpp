@@ -770,6 +770,14 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
 
+	std::set <int32_t> selection;
+
+	for (const auto & edge : getSelectedEdges ())
+	{
+		selection .emplace (edge .first .first);
+		selection .emplace (edge .first .second);
+	}
+
 	deleteFaces (getSelectedFaces ());
 
 	// Remove degenerated edges and faces.
@@ -790,6 +798,8 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	redoRestoreSelection ({ }, undoStep);
 
 	replaceSelection () = MFInt32 ();
+
+	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
