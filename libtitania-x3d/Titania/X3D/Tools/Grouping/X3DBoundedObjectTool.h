@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DBOUNDED_OBJECT_TOOL_H__
 
 #include "../Core/X3DBaseTool.h"
+#include "../../Browser/Shape/Linetypes.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 
 namespace titania {
@@ -108,7 +109,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBoundedObjectTool (const Color3f &);
+	X3DBoundedObjectTool (const Color3f & color);
 
 	virtual
 	void
@@ -125,9 +126,9 @@ protected:
 	{ displayCenter = value; }
 
 	void
-	setLinetype (const int32_t value);
+	setLinetype (const LineType value);
 
-	int32_t
+	LineType
 	getLinetype () const
 	{ return linetype; }
 
@@ -153,10 +154,10 @@ private:
 
 	///  @name Members
 
-	int32_t  linetype;
-	bool     displayCenter;
-	Color3f  color;
-	Matrix4d matrix;
+	LineType  linetype;
+	bool      displayCenter;
+	Color3f   color;
+	Matrix4d  matrix;
 
 };
 

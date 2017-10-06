@@ -78,7 +78,7 @@ public:
 	{
 		addType (X3DConstants::GeoTransformTool);
 
-		setLinetype (1);
+		setLinetype (LineType::SOLID);
 		setDisplayCenter (true);
 	}
 

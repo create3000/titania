@@ -92,7 +92,17 @@ public:
 	proxy () const final override
 	{ return getNode <Collision> () -> proxy (); }
 
-	///  @name Operations
+	///  @name Member access
+
+	virtual
+	void
+	setShowProxy (const bool value) final override
+	{ getNode <Collision> () -> setShowProxy (value); }
+
+	virtual
+	bool
+	getShowProxy () const final override
+	{ return getNode <Collision> () -> getShowProxy (); }
 
 	virtual
 	void

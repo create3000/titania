@@ -113,6 +113,17 @@ public:
 	proxy () const
 	{ return *fields .proxy; }
 
+	///  @name Member access
+
+	virtual
+	void
+	setShowProxy (const bool value);
+
+	virtual
+	bool
+	getShowProxy () const
+	{ return showProxy; }
+
 	///  @name Event handlers
 
 	void
@@ -150,13 +161,17 @@ protected:
 	void
 	set_proxy ();
 
+	virtual
+	void
+	set_cameraObjects () final override;
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -169,6 +184,10 @@ protected:
 	Fields fields;
 
 	X3DPtr <X3DChildNode> proxyNode;
+
+	///  @name Members
+
+	bool showProxy;
 
 };
 

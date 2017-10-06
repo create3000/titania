@@ -51,7 +51,6 @@
 #include "CollisionTool.h"
 
 #include "../ToolColors.h"
-#include "../../Browser/Shape/Linetypes.h"
 
 namespace titania {
 namespace X3D {
@@ -79,12 +78,7 @@ CollisionTool::realize ()
 void
 CollisionTool::set_enabled (const bool value)
 {
-	try
-	{
-		getToolNode () -> setField <SFInt32> ("linetype", int32_t (value ? LineType::SOLID : LineType::DOTTED));
-	}
-	catch (const X3DError & error)
-	{ }
+	setLinetype (value ? LineType::SOLID : LineType::DOTTED);
 }
 
 } // X3D

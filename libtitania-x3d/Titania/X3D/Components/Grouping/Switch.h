@@ -109,7 +109,12 @@ public:
 
 	virtual
 	void
-	setWhichChoice (const int32_t);
+	setPrivateChoice (const int32_t value);
+
+	virtual
+	int32_t
+	getPrivateChoice () const
+	{ return privateChoice; }
 
 	virtual
 	int32_t

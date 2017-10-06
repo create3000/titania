@@ -72,7 +72,8 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	  X3DSensorNode (),
 	         fields (),
-	      proxyNode ()
+	      proxyNode (),
+	      showProxy (false)
 {
 	addType (X3DConstants::Collision);
 
@@ -114,6 +115,14 @@ Collision::initialize ()
 }
 
 void
+Collision::setShowProxy (const bool value)
+{
+	showProxy = value;
+
+	set_cameraObjects ();
+}
+
+void
 Collision::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive () and enabled ())
@@ -126,19 +135,28 @@ Collision::set_live ()
 void
 Collision::set_active (bool value)
 {
-	if (isActive () not_eq value)
-	{
-		isActive () = value;
+	if (value == isActive ())
+		return;
 
-		if (isActive ())
-			collideTime () = getCurrentTime ();
-	}
+	isActive () = value;
+
+	if (isActive ())
+		collideTime () = getCurrentTime ();
 }
 
 void
 Collision::set_proxy ()
 {
 	proxyNode .set (x3d_cast <X3DChildNode*> (proxy ()));
+}
+
+void
+Collision::set_cameraObjects ()
+{
+	if (showProxy)
+		setCameraObject (proxyNode and proxyNode -> isCameraObject ());
+	else
+		X3DGroupingNode::set_cameraObjects ();
 }
 
 void
@@ -165,7 +183,14 @@ Collision::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type, renderObject);
+			if (showProxy)
+			{
+				if (proxyNode and not isHidden ())
+					proxyNode -> traverse (type, renderObject);
+			}
+			else
+				X3DGroupingNode::traverse (type, renderObject);
+
 			break;
 		}
 	}

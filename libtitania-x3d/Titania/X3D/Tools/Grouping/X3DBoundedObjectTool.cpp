@@ -61,7 +61,7 @@ namespace X3D {
 X3DBoundedObjectTool::X3DBoundedObjectTool (const Color3f & color) :
 	X3DBoundedObject (),
 	     X3DBaseTool (),
-	        linetype (3),
+	        linetype (LineType::DOTTED),
 	   displayCenter (false),
 	           color (color)
 {
@@ -83,16 +83,23 @@ X3DBoundedObjectTool::realize ()
 
 		tool -> setField <SFBool>  ("displayCenter", displayCenter);
 		tool -> setField <SFColor> ("color",         color);
-		tool -> setField <SFInt32> ("linetype",      linetype);
+		tool -> setField <SFInt32> ("linetype",      int32_t (linetype));
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
 void
-X3DBoundedObjectTool::setLinetype (const int32_t value)
+X3DBoundedObjectTool::setLinetype (const LineType value)
 {
-	linetype = value;
+	try
+	{
+		linetype = value;
+
+		getToolNode () -> setField <SFInt32> ("linetype", int32_t (linetype));
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 Box3d
@@ -122,7 +129,6 @@ X3DBoundedObjectTool::reshape ()
 		const auto   bbox = getGroupBBox ();
 		const auto & tool = getToolNode ();
 
-		tool -> setField <SFInt32> ("linetype",   linetype,        true);
 		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
 		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 

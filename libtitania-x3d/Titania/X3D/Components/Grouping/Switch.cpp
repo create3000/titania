@@ -99,7 +99,7 @@ Switch::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	whichChoice () .addInterest (&Switch::setWhichChoice, this, -1);
+	whichChoice () .addInterest (&Switch::setPrivateChoice, this, -1);
 }
 
 Box3d
@@ -119,7 +119,7 @@ Switch::getBBox () const
 }
 
 void
-Switch::setWhichChoice (const int32_t value)
+Switch::setPrivateChoice (const int32_t value)
 {
 	privateChoice = value;
 

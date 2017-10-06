@@ -90,8 +90,13 @@ public:
 
 	virtual
 	void
-	setWhichChoice (const int32_t value) final override
-	{ getNode <Switch> () -> setWhichChoice (value); }
+	setPrivateChoice (const int32_t value) final override
+	{ getNode <Switch> () -> setPrivateChoice (value); }
+
+	virtual
+	int32_t
+	getPrivateChoice () const final override
+	{ return getNode <Switch> () -> getPrivateChoice (); }
 
 	virtual
 	int32_t

@@ -66,6 +66,7 @@
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/Collision.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
@@ -300,19 +301,50 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 
 	for (const auto & node : X3D::X3DEditor::getParentNodes (selection .back ()))
 	{
-		const auto switchNode = dynamic_cast <X3D::Switch*> (node .getValue ());
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3D::X3DConstants::Collision:
+				{
+					const auto collisionNode = dynamic_cast <X3D::Collision*> (node .getValue ());
+			
+					if (selection .back () == collisionNode -> proxy ())
+					{
+						collisionNode -> setShowProxy (true);
+						break;
+					}
 
-		if (not switchNode)
-			continue;
+					const auto iter = std::find (collisionNode -> children () .begin (),
+					                             collisionNode -> children () .end (),
+					                             selection .back ());
+					
+					if (iter == collisionNode -> children () .end ())
+						break;
 
-		const auto iter = std::find (switchNode -> children () .begin (),
-		                             switchNode -> children () .end (),
-		                             selection .back ());
+					collisionNode -> setShowProxy (false);
+					break;
+				}
+				case X3D::X3DConstants::Switch:
+				{
+					const auto switchNode = dynamic_cast <X3D::Switch*> (node .getValue ());
+			
+					const auto iter = std::find (switchNode -> children () .begin (),
+					                             switchNode -> children () .end (),
+					                             selection .back ());
+			
+					if (iter == switchNode -> children () .end ())
+						break;
 
-		if (iter == switchNode -> children () .end ())
-			continue;
+					switchNode -> setPrivateChoice (iter - switchNode -> children () .begin ());
+					break;
+				}
+				default:
+					continue;
+			}
 
-		switchNode -> setWhichChoice (iter - switchNode -> children () .begin ());
+			break;
+		}
 	}
 }
 

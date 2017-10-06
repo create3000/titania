@@ -139,7 +139,7 @@ X3DTransformNodeTool::initialize ()
 	{
 		X3DTransformMatrix3DNodeTool::initialize ();
 
-		setLinetype (1);
+		setLinetype (LineType::SOLID);
 	}
 	else
 	{

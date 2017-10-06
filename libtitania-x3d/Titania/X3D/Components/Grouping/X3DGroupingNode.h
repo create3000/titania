@@ -158,6 +158,10 @@ protected:
 	void
 	set_children ();
 
+	virtual
+	void
+	set_cameraObjects ();
+
 
 private:
 
@@ -171,10 +175,6 @@ private:
 
 	void
 	set_removeChildren ();
-
-	virtual
-	void
-	set_cameraObjects ();
 
 	///  @name Operations
 
