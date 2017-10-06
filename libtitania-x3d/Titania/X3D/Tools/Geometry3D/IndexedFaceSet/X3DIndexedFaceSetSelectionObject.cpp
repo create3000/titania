@@ -786,7 +786,9 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 			{
 				case SelectionType::POINTS:
 				{
-					activePoints = { index };
+					const auto vertex = getFaceSelection () -> getClosestVertex (hitPoint, vertices);
+
+					activePoints = { coordIndex () [vertex] };
 					break;
 				}
 				case SelectionType::EDGES:
@@ -1703,7 +1705,7 @@ X3DIndexedFaceSetSelectionObject::undoRestoreSelection (const UndoStepPtr & undo
 
 	for (const auto & face : getSelectedFaces ())
 	{
-		for (const auto & vertex : selection -> getFaceVertices (face))
+		for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
 			faces .emplace_back (coordIndex () [vertex]);
 	}
 	
