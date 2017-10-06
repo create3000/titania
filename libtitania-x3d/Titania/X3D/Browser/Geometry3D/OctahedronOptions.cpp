@@ -66,7 +66,8 @@ const std::string   OctahedronOptions::typeName       = "OctahedronOptions";
 const std::string   OctahedronOptions::containerField = "options";
 
 OctahedronOptions::Fields::Fields () :
-	order (new SFInt32 (2))
+	sphericalInterpolation (new SFBool (true)),
+	                 order (new SFInt32 (2))
 { }
 
 OctahedronOptions::OctahedronOptions (X3DExecutionContext* const executionContext) :
@@ -76,7 +77,8 @@ OctahedronOptions::OctahedronOptions (X3DExecutionContext* const executionContex
 {
 	addType (X3DConstants::OctahedronOptions);
 
-	addField (inputOutput, "order", order ());
+	addField (inputOutput, "sphericalInterpolation", sphericalInterpolation ());
+	addField (inputOutput, "order",                  order ());
 }
 
 OctahedronOptions*
@@ -88,7 +90,7 @@ OctahedronOptions::create (X3DExecutionContext* const executionContext) const
 void
 OctahedronOptions::build () 
 {
-	octahedron3 <double> sphere (order ());
+	octahedron3 <double> sphere (order (), sphericalInterpolation ());
 
 	for (const auto & index : sphere .tex_coord_index ())
 	{
@@ -111,7 +113,7 @@ OctahedronOptions::toPrimitive (X3DExecutionContext* const executionContext) con
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	octahedron3 <double> sphere (order ());
+	octahedron3 <double> sphere (order (), sphericalInterpolation ());
 
 	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
 	const auto coord    = executionContext -> createNode <Coordinate> ();

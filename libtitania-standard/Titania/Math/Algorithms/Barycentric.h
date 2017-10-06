@@ -163,6 +163,43 @@ barycentric_triangle (const vector3 <Type> & barycentric)
 	return std::make_tuple (A, B, C);
 }
 
+template <class Type, class Vector>
+Type
+spherical_barycentric_coordinate (const Type x,
+                                  const Vector & point0,
+                                  const Vector & point1)
+{
+	if (x == 0)
+		return 0;
+
+	const auto a1 = std::acos (clamp <Type> (dot (point0, point1), -1, 1));
+	const auto a2 = a1 * x;
+	const auto s1 = 2 * std::sin (a1 / 2);
+	const auto s2 = 2 * std::sin (a2 / 2);
+	const auto b1 = std::asin (sin (a1) / s1);
+	const auto b2 = std::asin (sin (a2) / s2);
+
+	const auto c1 = pi <Type> - (b2 + b2 - b1);
+	const auto s  = s2 / std::sin (c1) * std::sin (b2);
+
+	return s;
+}
+
+template <class Type, class Vector>
+inline
+vector3 <Type>
+spherical_barycentric_coordinates (const vector3 <Type> & barycentric,
+                                   const Vector & point0,
+                                   const Vector & point1,
+                                   const Vector & point2)
+{
+	const auto x = spherical_barycentric_coordinate (barycentric .x (), point0, point1);
+	const auto y = spherical_barycentric_coordinate (barycentric .y (), point1, point2);
+	const auto z = spherical_barycentric_coordinate (barycentric .z (), point2, point0);
+
+	return vector3 <Type> (x, y, z);
+}
+
 } // math
 } // titania
 

@@ -62,8 +62,10 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                 octahedronDimension (this, getOctahedronDimensionAdjustment (), getOctahedronDimensionSpinButton (), "order"),
-	                icosahedronDimension (this, getIcosahedronDimensionAdjustment (), getIcosahedronDimensionSpinButton (), "order"),
+	    octahedronSphericalInterpolation (this, getOctahedronSphericalInterpolationCheckButton (),  "sphericalInterpolation"),
+	                     octahedronOrder (this, getOctahedronDimensionAdjustment (), getOctahedronDimensionSpinButton (), "order"),
+	   icosahedronSphericalInterpolation (this, getIcosahedronSphericalInterpolationCheckButton (),  "sphericalInterpolation"),
+	                    icosahedronOrder (this, getIcosahedronDimensionAdjustment (), getIcosahedronDimensionSpinButton (), "order"),
 	                      quadXDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
 	                      quadYDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
 	                               nodes (),
@@ -191,10 +193,12 @@ X3DSphereEditor::set_options ()
 	if (optionsNodes .empty ())
 		optionsNodes .emplace_back (getCurrentBrowser () -> getSphereOptions ());
 
-	quadXDimension       .setNodes (optionsNodes);
-	quadYDimension       .setNodes (optionsNodes);
-	icosahedronDimension .setNodes (optionsNodes);
-	octahedronDimension  .setNodes (optionsNodes);
+	quadXDimension                    .setNodes (optionsNodes);
+	quadYDimension                    .setNodes (optionsNodes);
+	icosahedronSphericalInterpolation .setNodes (optionsNodes);
+	icosahedronOrder                  .setNodes (optionsNodes);
+	octahedronSphericalInterpolation  .setNodes (optionsNodes);
+	octahedronOrder                   .setNodes (optionsNodes);
 
 	// Set global widget.
 

@@ -3018,7 +3018,7 @@
                                                           </object>
                                                           <packing>
                                                             <property name="left_attach">0</property>
-                                                            <property name="top_attach">0</property>
+                                                            <property name="top_attach">1</property>
                                                           </packing>
                                                         </child>
                                                         <child>
@@ -3030,6 +3030,33 @@
                                                             <property name="adjustment">OctahedronDimensionAdjustment</property>
                                                             <property name="climb_rate">1.5</property>
                                                             <property name="value">3</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="left_attach">1</property>
+                                                            <property name="top_attach">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="label73">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="xalign">0</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="left_attach">0</property>
+                                                            <property name="top_attach">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="OctahedronSphericalInterpolationCheckButton">
+                                                            <property name="label" translatable="yes">Spherical Interpolation</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Use values defined by browser settings of primitive quality.</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="xalign">0</property>
+                                                            <property name="draw_indicator">True</property>
                                                           </object>
                                                           <packing>
                                                             <property name="left_attach">1</property>
@@ -3058,7 +3085,7 @@
                                                           </object>
                                                           <packing>
                                                             <property name="left_attach">0</property>
-                                                            <property name="top_attach">0</property>
+                                                            <property name="top_attach">1</property>
                                                           </packing>
                                                         </child>
                                                         <child>
@@ -3073,6 +3100,33 @@
                                                           </object>
                                                           <packing>
                                                             <property name="left_attach">1</property>
+                                                            <property name="top_attach">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="IcosahedronSphericalInterpolationCheckButton">
+                                                            <property name="label" translatable="yes">Spherical Interpolation</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">False</property>
+                                                            <property name="tooltip_text" translatable="yes">Use values defined by browser settings of primitive quality.</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="xalign">0</property>
+                                                            <property name="draw_indicator">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="left_attach">1</property>
+                                                            <property name="top_attach">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="label74">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="xalign">0</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="left_attach">0</property>
                                                             <property name="top_attach">0</property>
                                                           </packing>
                                                         </child>

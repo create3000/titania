@@ -89,6 +89,14 @@ public:
 
 	///  @name Fields
 
+	SFBool &
+	sphericalInterpolation ()
+	{ return *fields .sphericalInterpolation; }
+
+	const SFBool &
+	sphericalInterpolation () const
+	{ return *fields .sphericalInterpolation; }
+
 	SFInt32 &
 	order ()
 	{ return *fields .order; }
@@ -139,6 +147,7 @@ private:
 	{
 		Fields ();
 
+		SFBool* const sphericalInterpolation;
 		SFInt32* const order;
 	};
 

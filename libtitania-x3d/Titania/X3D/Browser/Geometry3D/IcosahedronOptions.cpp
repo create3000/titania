@@ -66,7 +66,8 @@ const std::string   IcosahedronOptions::typeName       = "IcosahedronOptions";
 const std::string   IcosahedronOptions::containerField = "options";
 
 IcosahedronOptions::Fields::Fields () :
-	order (new SFInt32 (2))
+	sphericalInterpolation (new SFBool (true)),
+	                 order (new SFInt32 (2))
 { }
 
 IcosahedronOptions::IcosahedronOptions (X3DExecutionContext* const executionContext) :
@@ -76,7 +77,8 @@ IcosahedronOptions::IcosahedronOptions (X3DExecutionContext* const executionCont
 {
 	addType (X3DConstants::IcosahedronOptions);
 
-	addField (inputOutput, "order", order ());
+	addField (inputOutput, "sphericalInterpolation", sphericalInterpolation ());
+	addField (inputOutput, "order",                  order ());
 }
 
 IcosahedronOptions*
@@ -88,7 +90,7 @@ IcosahedronOptions::create (X3DExecutionContext* const executionContext) const
 void
 IcosahedronOptions::build () 
 {
-	icosahedron3 <double> sphere (order ());
+	icosahedron3 <double> sphere (order (), sphericalInterpolation ());
 
 	for (const auto & index : sphere .tex_coord_index ())
 	{
@@ -111,7 +113,7 @@ IcosahedronOptions::toPrimitive (X3DExecutionContext* const executionContext) co
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	icosahedron3 <double> sphere (order ());
+	icosahedron3 <double> sphere (order (), sphericalInterpolation ());
 
 	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
 	const auto coord    = executionContext -> createNode <Coordinate> ();

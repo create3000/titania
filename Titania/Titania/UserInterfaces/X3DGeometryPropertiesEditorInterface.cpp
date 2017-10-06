@@ -262,8 +262,10 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("QuadSphereYDimensionSpinButton", m_QuadSphereYDimensionSpinButton);
 	m_builder -> get_widget ("OctahedronOptionsGrid", m_OctahedronOptionsGrid);
 	m_builder -> get_widget ("OctahedronDimensionSpinButton", m_OctahedronDimensionSpinButton);
+	m_builder -> get_widget ("OctahedronSphericalInterpolationCheckButton", m_OctahedronSphericalInterpolationCheckButton);
 	m_builder -> get_widget ("IcosahedronOptionsGrid", m_IcosahedronOptionsGrid);
 	m_builder -> get_widget ("IcosahedronDimensionSpinButton", m_IcosahedronDimensionSpinButton);
+	m_builder -> get_widget ("IcosahedronSphericalInterpolationCheckButton", m_IcosahedronSphericalInterpolationCheckButton);
 	m_builder -> get_widget ("GeoElevationGridBox", m_GeoElevationGridBox);
 	m_builder -> get_widget ("GeoElevationGridExpander", m_GeoElevationGridExpander);
 	m_builder -> get_widget ("GeoElevationGridXDimensionSpinButton", m_GeoElevationGridXDimensionSpinButton);

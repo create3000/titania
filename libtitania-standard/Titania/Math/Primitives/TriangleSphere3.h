@@ -70,6 +70,10 @@ public:
 
 	///  @name Member access
 
+	bool
+	spherical_interpolation () const
+	{ return m_spherical_interpolation; }
+
 	size_t
 	dimension () const
 	{ return m_dimension; }
@@ -100,7 +104,7 @@ protected:
 
 	///  @name Construction
 
-	triangle_sphere3 (const size_t dimension);
+	triangle_sphere3 (const size_t dimension, const bool spherical_interpolation);
 
 	///  @name Operations
 
@@ -166,18 +170,20 @@ private:
 	std::map <int32_t, int32_t>    m_vertex_point_cache;
 	std::vector <int32_t>          m_tex_coord_index;
 	std::vector <vector2 <Type>>   m_tex_points;
+	bool                           m_spherical_interpolation;
 
 };
 
 template <class Type>
-triangle_sphere3 <Type>::triangle_sphere3 (const size_t dimension) :
-	         m_dimension (std::max <size_t> (1, dimension)),
-	       m_coord_index (),
-	           m_simplex (),
-	            m_points (),
-	       m_point_cache (),
-	  m_edge_point_cache (),
-	m_vertex_point_cache ()
+triangle_sphere3 <Type>::triangle_sphere3 (const size_t dimension, const bool spherical_interpolation) :
+	              m_dimension (std::max <size_t> (1, dimension)),
+	            m_coord_index (),
+	                m_simplex (),
+	                 m_points (),
+	            m_point_cache (),
+	       m_edge_point_cache (),
+	     m_vertex_point_cache (),
+	m_spherical_interpolation (spherical_interpolation)
 { }
 
 template <class Type>
@@ -333,7 +339,6 @@ triangle_sphere3 <Type>::create_triangles ()
 }
 
 template <class Type>
-inline
 vector3 <Type>
 triangle_sphere3 <Type>::create_point (const vector3 <Type> & point0,
                                        const vector3 <Type> & point1,
@@ -343,8 +348,13 @@ triangle_sphere3 <Type>::create_point (const vector3 <Type> & point0,
                                        const int32_t z
 )
 {
+	auto barycentric = vector3 <Type> (x, y, z) / Type (m_dimension);
+
+	if (m_spherical_interpolation)
+		barycentric = spherical_barycentric_coordinates (barycentric, point0, point1, point2);
+
 	// Barycentric coordinates.
-	return from_barycentric (vector3 <Type> (x, y, z) / Type (m_dimension), point0, point1, point2);
+	return from_barycentric (barycentric, point0, point1, point2);
 }
 
 template <class Type>
@@ -483,7 +493,7 @@ public:
 
 	///  @name Construction
 
-	octahedron3 (const size_t dimension);
+	octahedron3 (const size_t dimension, const bool spherical_interpolation);
 
 	///  @name Destruction
 
@@ -502,8 +512,8 @@ private:
 };
 
 template <class Type>
-octahedron3 <Type>::octahedron3 (const size_t dimension) :
-	triangle_sphere3 <Type> (dimension)
+octahedron3 <Type>::octahedron3 (const size_t dimension, const bool spherical_interpolation) :
+	triangle_sphere3 <Type> (dimension, spherical_interpolation)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();
@@ -543,7 +553,7 @@ public:
 
 	///  @name Construction
 
-	icosahedron3 (const size_t dimension);
+	icosahedron3 (const size_t dimension, const bool spherical_interpolation);
 
 	///  @name Destruction
 
@@ -562,8 +572,8 @@ private:
 };
 
 template <class Type>
-icosahedron3 <Type>::icosahedron3 (const size_t dimension) :
-	triangle_sphere3 <Type> (dimension)
+icosahedron3 <Type>::icosahedron3 (const size_t dimension, const bool spherical_interpolation) :
+	triangle_sphere3 <Type> (dimension, spherical_interpolation)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();
