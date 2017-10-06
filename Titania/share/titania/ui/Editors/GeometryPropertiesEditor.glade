@@ -3013,7 +3013,7 @@
                                                           <object class="GtkLabel" id="label133">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">Dimension:</property>
+                                                            <property name="label" translatable="yes">Order:</property>
                                                             <property name="xalign">0</property>
                                                           </object>
                                                           <packing>
@@ -3022,7 +3022,7 @@
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="OctahedronDimensionSpinButton">
+                                                          <object class="GtkSpinButton" id="OctahedronOrderSpinButton">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="halign">start</property>
@@ -3080,7 +3080,7 @@
                                                           <object class="GtkLabel" id="label132">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">Dimension:</property>
+                                                            <property name="label" translatable="yes">Order:</property>
                                                             <property name="xalign">0</property>
                                                           </object>
                                                           <packing>
@@ -3089,7 +3089,7 @@
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="IcosahedronDimensionSpinButton">
+                                                          <object class="GtkSpinButton" id="IcosahedronOrderSpinButton">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="halign">start</property>

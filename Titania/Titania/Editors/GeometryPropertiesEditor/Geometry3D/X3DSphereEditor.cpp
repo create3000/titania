@@ -55,17 +55,17 @@
 #include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-
+ 
 namespace titania {
 namespace puck {
 
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	    octahedronSphericalInterpolation (this, getOctahedronSphericalInterpolationCheckButton (),  "sphericalInterpolation"),
-	                     octahedronOrder (this, getOctahedronDimensionAdjustment (), getOctahedronDimensionSpinButton (), "order"),
-	   icosahedronSphericalInterpolation (this, getIcosahedronSphericalInterpolationCheckButton (),  "sphericalInterpolation"),
-	                    icosahedronOrder (this, getIcosahedronDimensionAdjustment (), getIcosahedronDimensionSpinButton (), "order"),
+	    octahedronSphericalInterpolation (this, getOctahedronSphericalInterpolationCheckButton (), "sphericalInterpolation"),
+	                     octahedronOrder (this, getOctahedronDimensionAdjustment (), getOctahedronOrderSpinButton (), "order"),
+	   icosahedronSphericalInterpolation (this, getIcosahedronSphericalInterpolationCheckButton (), "sphericalInterpolation"),
+	                    icosahedronOrder (this, getIcosahedronDimensionAdjustment (), getIcosahedronOrderSpinButton (), "order"),
 	                      quadXDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
 	                      quadYDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
 	                               nodes (),

@@ -813,8 +813,8 @@ public:
 	{ return *m_OctahedronOptionsGrid; }
 
 	Gtk::SpinButton &
-	getOctahedronDimensionSpinButton () const
-	{ return *m_OctahedronDimensionSpinButton; }
+	getOctahedronOrderSpinButton () const
+	{ return *m_OctahedronOrderSpinButton; }
 
 	Gtk::CheckButton &
 	getOctahedronSphericalInterpolationCheckButton () const
@@ -825,8 +825,8 @@ public:
 	{ return *m_IcosahedronOptionsGrid; }
 
 	Gtk::SpinButton &
-	getIcosahedronDimensionSpinButton () const
-	{ return *m_IcosahedronDimensionSpinButton; }
+	getIcosahedronOrderSpinButton () const
+	{ return *m_IcosahedronOrderSpinButton; }
 
 	Gtk::CheckButton &
 	getIcosahedronSphericalInterpolationCheckButton () const
@@ -1643,10 +1643,10 @@ private:
 	Gtk::SpinButton* m_QuadSphereXDimensionSpinButton;
 	Gtk::SpinButton* m_QuadSphereYDimensionSpinButton;
 	Gtk::Grid* m_OctahedronOptionsGrid;
-	Gtk::SpinButton* m_OctahedronDimensionSpinButton;
+	Gtk::SpinButton* m_OctahedronOrderSpinButton;
 	Gtk::CheckButton* m_OctahedronSphericalInterpolationCheckButton;
 	Gtk::Grid* m_IcosahedronOptionsGrid;
-	Gtk::SpinButton* m_IcosahedronDimensionSpinButton;
+	Gtk::SpinButton* m_IcosahedronOrderSpinButton;
 	Gtk::CheckButton* m_IcosahedronSphericalInterpolationCheckButton;
 	Gtk::Box* m_GeoElevationGridBox;
 	Gtk::Expander* m_GeoElevationGridExpander;
