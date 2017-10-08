@@ -156,7 +156,6 @@ X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 			setMetaData ();
 	
 		getCurrentPage () -> getUndoHistory () .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
-		getCurrentBrowser () -> shutdown ()  .removeInterest (&X3DBrowserEditor::set_shutdown,    this);
 	}
 
 	X3DBrowserWidget::setPage (value);
@@ -164,8 +163,7 @@ X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 	if (getCurrentPage ())
 	{
 		getCurrentPage () -> getUndoHistory () .addInterest (&X3DBrowserEditor::set_undoHistory, this);
-		getCurrentBrowser () -> shutdown ()  .addInterest (&X3DBrowserEditor::set_shutdown,    this);
-	
+
 		set_undoHistory ();
 	}
 }
@@ -173,63 +171,12 @@ X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 void
 X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
-	const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (getCurrentBrowser ()));
+	const auto & browserOptions = getCurrentBrowser () -> getBrowserOptions ();
 
-	browserOptions -> assign (getCurrentBrowser () -> getBrowserOptions ());
-
-	auto scene = dynamic_cast <X3D::X3DScene*> (value .getValue ());
-
-	if (not scene)
-		scene = value -> getScene ();
-
-	if (scene == getCurrentScene ())
-	{
-		// Shutdown is immediately processed.
-		getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
-		getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
-
-		X3DBrowserWidget::setCurrentContext (value);
-	}
-	else
-	{
-		if (getCurrentPage () -> isSaved ())
-		{
-			// Shutdown is immediately processed.
-			getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
-			getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
-
-			getCurrentPage () -> reset ();
-
-			X3DBrowserWidget::setCurrentContext (value);
-		}
-		else
-		{
-		   // Do nothing.
-			return;
-		}
-	}
+	X3DBrowserWidget::setCurrentContext (value);
 
 	if (getEditing ())
 		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
-}
-
-void
-X3DBrowserEditor::set_shutdown ()
-{
-	if (getCurrentPage () -> isSaved ())
-	{
-		getCurrentPage () -> reset ();
-	}
-	else
-		// Cancel shutdown, there will be no further shutdown now.
-		X3DBrowserWidget::setCurrentContext (getCurrentContext ());
-}
-
-void
-X3DBrowserEditor::connectShutdown ()
-{
-	getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::connectShutdown, this);
-	getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::set_shutdown, this);
 }
 
 void

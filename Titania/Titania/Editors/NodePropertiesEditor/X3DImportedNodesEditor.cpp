@@ -134,7 +134,10 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 
 		// Update ListStore.
 
-		iter -> set_value (IMPORTED, false);
+		if (inlineNode -> checkLoadState () == X3D::COMPLETE_STATE)
+			iter -> set_value (IMPORTED, false);
+		else
+			getImportedNodesListStore () -> erase (iter);
 	}
 
 	const bool valid = validateImportedName (exportedName, importedName);
@@ -273,12 +276,6 @@ X3DImportedNodesEditor::validateImportedName (const std::string & exportedName, 
 void
 X3DImportedNodesEditor::set_importedNodes ()
 {
-	if (inlineNode -> getExportedNodes () .empty ())
-	{
-		getImportedNodesBox () .set_visible (false);
-		return;
-	}
-
 	getImportedNodesBox () .set_visible (true);
 
 	getImportedNodesListStore () -> clear ();
@@ -298,7 +295,7 @@ X3DImportedNodesEditor::set_importedNodes ()
 		{ }
 	}
 
-	try
+	if (inlineNode -> checkLoadState () == X3D::COMPLETE_STATE)
 	{
 		for (const auto & pair : inlineNode -> getExportedNodes ())
 		{
@@ -333,9 +330,26 @@ X3DImportedNodesEditor::set_importedNodes ()
 			{ }
 		}
 	}
-	catch (...)
+	else
 	{
-		getImportedNodesBox () .set_visible (false);
+		for (const auto & pair : importedNodes)
+		{
+			try
+			{
+				const auto          iter         = getImportedNodesListStore () -> append ();
+				const auto &        importedNode = pair .second;
+				const std::string & exportedName = importedNode -> getExportedName ();
+				const std::string & importedName = importedNode -> getImportedName ();
+
+				iter -> set_value (TYPE_NAME,     std::string ("ImportedNode"));
+				iter -> set_value (EXPORTED_NAME, importedNode -> getExportedName ());
+				iter -> set_value (IMPORTED,      true);
+				iter -> set_value (IMPORTED_NAME, importedName == exportedName ? "" : importedName);
+				iter -> set_value (NOT_VALID,     not validateImportedName (exportedName, importedName));
+			}
+			catch (...)
+			{ }
+		}
 	}
 }
 

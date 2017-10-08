@@ -75,11 +75,17 @@ public:
 	getMainBrowser () const
 	{ return mainBrowser; }
 
-	X3D::X3DScenePtr
-	getMasterScene () const;
+	const X3D::X3DScenePtr &
+	getMasterScene () const
+	{ return masterScene; }
 
-	X3D::X3DScenePtr
-	getScene () const;
+	const X3D::X3DScenePtr &
+	getScene () const
+	{ return scene; }
+
+	const X3D::X3DExecutionContextPtr &
+	getExecutionContext () const
+	{ return executionContext; }
 
 	const basic::uri &
 	getMasterSceneURL () const;
@@ -132,13 +138,6 @@ public:
 
 	///  @name Destruction
 
-	void
-	reset ();
-
-	virtual
-	void
-	shutdown ();
-
 	virtual
 	void
 	dispose () override;
@@ -153,27 +152,26 @@ protected:
 
 	X3DNotebookPage (const basic::uri & startUrl);
 
-	virtual
-	void
-	loaded ();
-
-	virtual
-	void
-	initialized ();
-
-
-protected:
-
 	///  @name Construction
 
 	virtual
 	void
 	initialize () override;
 
+	virtual
+	void
+	loaded ();
+
+
+private:
+
 	///  @name Operations
 
 	std::string
 	getTitle () const;
+
+	void
+	reset ();
 
 	///  @name Event handlers
 
@@ -193,7 +191,10 @@ protected:
 	set_loadCount ();
 
 	void
-	set_shutdown ();
+	set_scene ();
+
+	void
+	set_executionContext ();
 
 	void
 	set_soundSources ();
@@ -207,12 +208,15 @@ protected:
 
 	///  @name Members
 
-	X3D::BrowserPtr  mainBrowser;
-	basic::uri       url; // Start URL
-	BrowserHistory   browserHistory;
-	X3D::UndoHistory undoHistory;
-	bool             modified;
-	bool             saveConfirmed;
+	X3D::BrowserPtr             mainBrowser;
+	X3D::X3DScenePtr            masterScene;
+	X3D::X3DScenePtr            scene;
+	X3D::X3DExecutionContextPtr executionContext;
+	basic::uri                  url; // Start URL
+	BrowserHistory              browserHistory;
+	X3D::UndoHistory            undoHistory;
+	bool                        modified;
+	bool                        saveConfirmed;
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 	

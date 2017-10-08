@@ -66,6 +66,9 @@ namespace puck {
 X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
 	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	             masterScene (mainBrowser -> getExecutionContext ()),
+	                   scene (mainBrowser -> getExecutionContext ()),
+	        executionContext (mainBrowser -> getExecutionContext ()),
 	                     url (startUrl),
 	          browserHistory (mainBrowser),
 	             undoHistory (),
@@ -75,7 +78,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
 {
-	addChildObjects (mainBrowser);
+	addChildObjects (mainBrowser, masterScene, scene, executionContext);
 
 	mainBrowser -> isStrict (false);
 
@@ -93,11 +96,14 @@ X3DNotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
 
-	getMainBrowser () -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
-	getMainBrowser () -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
+	mainBrowser -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
+	mainBrowser -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
+
+	getScene ()            .addInterest (this, &X3DNotebookPage::set_scene);
+	getExecutionContext () .addInterest (this, &X3DNotebookPage::set_executionContext);
 
 	getBox1 () .remove ();
-	getBox1 () .add (*getMainBrowser ());
+	getBox1 () .add (*mainBrowser);
 	getBox1 () .show_all ();
 
 	set_soundSources ();
@@ -110,25 +116,10 @@ X3DNotebookPage::getPageNumber () const
 	return getBrowserWindow () -> getBrowserNotebook () .page_num (getWidget ());
 }
 
-X3D::X3DScenePtr
-X3DNotebookPage::getMasterScene () const
-{
-	return X3D::X3DScenePtr (mainBrowser -> getExecutionContext () -> getMasterScene ());
-}
-
-X3D::X3DScenePtr
-X3DNotebookPage::getScene () const
-{
-	if (mainBrowser -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene }))
-		return X3D::X3DScenePtr (mainBrowser -> getExecutionContext ());
-
-	return X3D::X3DScenePtr (mainBrowser -> getExecutionContext () -> getScene ());
-}
-
 const basic::uri &
 X3DNotebookPage::getMasterSceneURL () const
 {
-	const auto & worldURL = mainBrowser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+	const auto & worldURL = getMasterScene () -> getWorldURL ();
 
 	if (mainBrowser -> isInitialized () and not worldURL .empty ())
 	   return worldURL;
@@ -260,27 +251,6 @@ X3DNotebookPage::loaded ()
 { }
 
 void
-X3DNotebookPage::initialized ()
-{
-	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
-
-	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
-	{
-		getScene () -> setWorldURL ("");
-		getScene () -> setEncoding (X3D::EncodingType::XML);
-		getScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
-		getScene () -> removeMetaData ("comment");
-		getScene () -> removeMetaData ("created");
-		getScene () -> removeMetaData ("creator");
-		getScene () -> removeMetaData ("generator");
-		getScene () -> removeMetaData ("identifier");
-		getScene () -> removeMetaData ("modified");
-	}
-
-	updateTitle ();
-}
-
-void
 X3DNotebookPage::reset ()
 {
 	// Reset.
@@ -300,14 +270,6 @@ X3DNotebookPage::reset ()
 }
 
 void
-X3DNotebookPage::shutdown ()
-{
-	// Reset.
-
-	reset ();
-}
-
-void
 X3DNotebookPage::set_browser ()
 {
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser, this);
@@ -320,7 +282,7 @@ X3DNotebookPage::set_splashScreen ()
 {
 	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,          this);
-	mainBrowser -> shutdown ()        .addInterest (&X3DNotebookPage::set_shutdown,        this);
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,     this);
 	mainBrowser -> getLoadingTotal () .addInterest (&X3DNotebookPage::set_loadCount,       this);
 	mainBrowser -> getLoadCount ()    .addInterest (&X3DNotebookPage::set_loadCount,       this);
 
@@ -333,19 +295,55 @@ void
 X3DNotebookPage::set_loaded ()
 {
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
 
 	getBox1 () .set_visible (false);
 	getBox1 () .remove ();
 
 	loaded ();
-	initialized ();
 }
 
 void
 X3DNotebookPage::set_initialized ()
 {
-	initialized ();
+	const auto &     currentMaster  = mainBrowser -> getExecutionContext () -> getMasterScene ();
+	X3D::X3DScenePtr currentScene   = nullptr;
+	const auto &     currentContext = mainBrowser -> getExecutionContext ();
+
+	// Update scene.
+
+	if (currentContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		currentScene = currentContext;
+	else
+		currentScene = currentContext -> getScene ();
+
+	if (currentScene not_eq scene)
+	{
+		// Scene of this page has changed.
+
+		if (isSaved ())
+		{
+			// Scene is now saved to file or changes are discarded.
+
+			reset ();
+
+			scene = currentScene;
+		}
+		else
+		{
+			mainBrowser -> replaceWorld (executionContext);
+			return;
+		}
+	}
+
+	// Update masterScene.
+
+	if (currentMaster not_eq masterScene)
+		masterScene = currentMaster;
+
+	// Update executionContext.
+
+	if (currentContext not_eq executionContext)
+		executionContext = currentContext;
 }
 
 void
@@ -357,15 +355,34 @@ X3DNotebookPage::set_loadCount ()
 }
 
 void
-X3DNotebookPage::set_shutdown ()
+X3DNotebookPage::set_scene ()
 {
-	shutdown ();
+	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
+
+	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
+	{
+		getScene () -> setWorldURL ("");
+		getScene () -> setEncoding (X3D::EncodingType::XML);
+		getScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
+		getScene () -> removeMetaData ("comment");
+		getScene () -> removeMetaData ("created");
+		getScene () -> removeMetaData ("creator");
+		getScene () -> removeMetaData ("generator");
+		getScene () -> removeMetaData ("identifier");
+		getScene () -> removeMetaData ("modified");
+	}
+}
+
+void
+X3DNotebookPage::set_executionContext ()
+{
+	updateTitle ();
 }
 
 void
 X3DNotebookPage::set_soundSources ()
 {
-	getMuteButton () .set_visible (getMainBrowser () -> getSoundSources () .size ());
+	getMuteButton () .set_visible (mainBrowser -> getSoundSources () .size ());
 }
 
 void
@@ -373,9 +390,9 @@ X3DNotebookPage::set_mute ()
 {
 	changing = true;
 
-	getMuteButton () .set_active (getMainBrowser () -> getMute ());
+	getMuteButton () .set_active (mainBrowser -> getMute ());
 
-	if (getMainBrowser () -> getMute ())
+	if (mainBrowser -> getMute ())
 		getMuteImage () .set (Gtk::StockID ("audio-volume-muted"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 	else
 		getMuteImage () .set (Gtk::StockID ("audio-volume-high"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
@@ -389,7 +406,7 @@ X3DNotebookPage::on_mute_toggled ()
 	if (changing)
 		return;
 
-	getMainBrowser () -> setMute (getMuteButton () .get_active ());
+	mainBrowser -> setMute (getMuteButton () .get_active ());
 }
 
 void

@@ -102,10 +102,6 @@ public:
 	///  @name Destruction
 
 	virtual
-	void
-	shutdown () final override;
-
-	virtual
 	~NotebookPage () final override;
 
 
@@ -121,11 +117,10 @@ private:
 	void
 	loaded () final override;
 
-	virtual
-	void
-	initialized () final override;
-
 	///  @name Event handlers
+
+	void
+	set_scene ();
 
 	virtual
 	void

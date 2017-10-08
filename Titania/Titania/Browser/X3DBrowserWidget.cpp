@@ -664,15 +664,19 @@ X3DBrowserWidget::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_executionContext ()
 {
-	if (getCurrentBrowser () -> getExecutionContext () == executionContext)
-	   return;
+	X3D::X3DScenePtr currentScene   = nullptr;
+	const auto &     currentContext = getCurrentBrowser () -> getExecutionContext ();
 
-	if (getCurrentBrowser () -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene }))
-		scene = getCurrentBrowser () -> getExecutionContext ();
+	if (currentContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		currentScene = currentContext;
 	else
-		scene = getCurrentBrowser () -> getExecutionContext () -> getScene ();
+		currentScene = currentContext -> getScene ();
 
-	executionContext = getCurrentBrowser () -> getExecutionContext ();
+	if (currentScene not_eq scene)
+		scene = currentScene;
+
+	if (currentContext not_eq executionContext)
+		executionContext = currentContext;
 }
 
 void

@@ -242,12 +242,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_shutdown ();
-
-	void
-	connectShutdown ();
-
-	void
 	set_executionContext ();
 
 	///  @name File handling

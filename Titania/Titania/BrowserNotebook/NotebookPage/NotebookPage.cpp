@@ -78,6 +78,8 @@ void
 NotebookPage::initialize ()
 {
 	X3DNotebookPage::initialize ();
+
+	getScene () .addInterest (this, &NotebookPage::set_scene);
 }
 
 void
@@ -90,10 +92,8 @@ NotebookPage::loaded ()
 }
 
 void
-NotebookPage::initialized ()
+NotebookPage::set_scene ()
 {
-	X3DNotebookPage::initialized ();
-
 	if (getBrowserWindow () -> getEditing ())
 	{
 		const auto worldInfo  = createWorldInfo (getScene ());
@@ -269,12 +269,6 @@ void
 NotebookPage::lookAtAll ()
 {
 	getActivePanel () -> lookAtAll ();
-}
-
-void
-NotebookPage::shutdown ()
-{
-	X3DNotebookPage::shutdown ();
 }
 
 NotebookPage::~NotebookPage ()
