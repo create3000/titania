@@ -130,25 +130,6 @@ public:
 	preventNextLoad () final override
 	{ getNode <Inline> () -> preventNextLoad (); }
 
-	///  @name Exported node handling
-
-	virtual
-	SFNode
-	getExportedNode (const std::string & exportedName) const
-	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return getNode <Inline> () -> getExportedNode (exportedName); }
-
-	virtual
-	const ExportedNodeIndex &
-	getExportedNodes () const
-	throw (Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ return getNode <Inline> () -> getExportedNodes (); }
-
 	///  @name Root node handling
 
 	virtual
@@ -171,6 +152,25 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Inline> () -> getInternalScene (); }
+
+	///  @name Exported node handling
+
+	virtual
+	SFNode
+	getExportedNode (const std::string & exportedName) const
+	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode <Inline> () -> getExportedNode (exportedName); }
+
+	virtual
+	const ExportedNodeIndex &
+	getExportedNodes () const
+	throw (Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return getNode <Inline> () -> getExportedNodes (); }
 
 	///  @name Operations
 

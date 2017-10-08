@@ -110,30 +110,22 @@ Inline::initialize ()
 	load () .addInterest (&Inline::set_load, this);
 	url ()  .addInterest (&Inline::set_url,  this);
 
-	buffer  .addInterest (&Inline::set_buffer, this);
+	buffer .addInterest (&Inline::set_buffer, this);
 
-	if (scene)
+	if (X3D_PARALLEL)
 	{
-		setLoadState (COMPLETE_STATE);
-		setScene (std::move (scene));
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+
+		if (load ())
+			buffer .addEvent ();
 	}
 	else
 	{
-		if (X3D_PARALLEL)
-		{
-			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+		if (load ())
+			requestImmediateLoad ();
 
-			if (load ())
-				buffer .addEvent ();
-		}
 		else
-		{
-			if (load ())
-				requestImmediateLoad ();
-
-			else
-				setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
-		}
+			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 	}
 
 	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
@@ -168,6 +160,40 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		set_live ();
 	}
+}
+
+Box3d
+Inline::getBBox () const
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+		return group -> getBBox ();
+
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
+}
+
+SFNode
+Inline::getExportedNode (const std::string & exportedName) const
+throw (Error <INVALID_NAME>,
+       Error <NODE_NOT_AVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (scene)
+		return scene -> getExportedNode (exportedName);
+
+	throw Error <DISPOSED> ("Inline::getExportedNode: scene is disposed.");
+}
+
+const ExportedNodeIndex &
+Inline::getExportedNodes () const
+throw (Error <NODE_NOT_AVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (scene)
+		return scene -> getExportedNodes ();
+
+	throw Error <DISPOSED> ("Inline::getExportedNodes: scene is disposed.");
 }
 
 void
@@ -212,76 +238,6 @@ Inline::setScene (X3DScenePtr && value)
 	scene = std::move (value);
 
 	group -> children () = scene -> getRootNodes ();
-}
-
-const X3DScenePtr &
-Inline::accessScene () const
-throw (Error <NODE_NOT_AVAILABLE>,
-	    Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (load ())
-	{
-		if (checkLoadState () == COMPLETE_STATE)
-			return scene;
-
-		if (isInitialized ())
-		{
-			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-				future -> wait ();
-
-			return scene;
-		}
-		else
-		{
-			// Thread save part
-
-			try
-			{
-				const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene (false));
-
-				FileLoader (getExecutionContext ()) .parseIntoScene (scene, url ());
-
-				const_cast <Inline*> (this) -> setLoadState (COMPLETE_STATE);
-
-				return scene;
-			}
-			catch (const X3DError & error)
-			{ }
-
-			// End thread save part
-		}
-	}
-
-	return scene;
-}
-
-Box3d
-Inline::getBBox () const
-{
-	if (bboxSize () == Vector3f (-1, -1, -1))
-		return group -> getBBox ();
-
-	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
-}
-
-SFNode
-Inline::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
-	    Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return accessScene () -> getExportedNode (exportedName);
-}
-
-const ExportedNodeIndex &
-Inline::getExportedNodes () const
-throw (Error <NODE_NOT_AVAILABLE>,
-	    Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return accessScene () -> getExportedNodes ();
 }
 
 void

@@ -54,6 +54,7 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Fields/SFNode.h"
 #include "../Fields/X3DWeakPtr.h"
+#include "../Routing/Route.h"
 #include "../Types/Pointer.h"
 
 namespace titania {
@@ -68,10 +69,10 @@ public:
 
 	///  @name Construction
 
-	ImportedNode (X3DExecutionContext* const,
-	              const X3DPtr <Inline> &,
-	              const std::string &,
-	              const std::string &)
+	ImportedNode (X3DExecutionContext* const executionContext,
+	              const X3DPtr <Inline> & inlineNode,
+	              const std::string & exportedName,
+	              const std::string & importedName)
 	throw (Error <INVALID_NAME>,
 	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -86,7 +87,7 @@ public:
 
 	virtual
 	ImportedNode*
-	copy (X3DExecutionContext* const, const CopyType) const
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
@@ -128,19 +129,24 @@ public:
 	getExportedNode () const
 	throw (Error <DISPOSED>);
 
+	///  @name Route handling
+
+	void
+	addRoute (const SFNode & sourceNode, const std::string & sourceField, const SFNode & destinationNode, const std::string & destinationField);
+
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 	///  @name Destruction
 
@@ -152,7 +158,35 @@ public:
 	~ImportedNode () final override;
 
 
+protected:
+
+	///  @name Friends
+
+	friend class X3DExecutionContext;	
+
+
+	///  @name Member access
+
+	void
+	setImportedName (const std::string & value)
+	{ importedName = value; }
+
+
 private:
+
+	///  @name Member types
+
+	struct UnresolvedRoute
+	{
+		X3DWeakPtr <X3DBaseNode> sourceNode;
+		std::string              sourceField;
+		X3DWeakPtr <X3DBaseNode> destinationNode;
+		std::string              destinationField;
+		X3DWeakPtr <Route>       route;
+	};
+
+	using UnresolvedRouteId = std::tuple <size_t, std::string, size_t, std::string>;
+	using UnresolvedRoutes  = std::map <UnresolvedRouteId, UnresolvedRoute>;
 
 	///  @name Construction
 
@@ -164,10 +198,21 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Route handling
+
+	void
+	resolveRoute (UnresolvedRoute & route);
+
+	void
+	deleteRoutes ();
+
+	void
+	set_loadState ();
+
 	///  @name Destruction
 
 	void
-	set_node ();
+	set_inlineNode ();
 
 	///  @name Static members
 
@@ -177,11 +222,10 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtr <Inline>      inlineNode;
-	X3DWeakPtr <X3DBaseNode> exportedNode;
-
-	const std::string exportedName;
-	const std::string importedName;
+	X3DWeakPtr <Inline> inlineNode;
+	const std::string   exportedName;
+	std::string         importedName;
+	UnresolvedRoutes    routeIndex;
 
 };
 

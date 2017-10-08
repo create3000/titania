@@ -128,7 +128,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
-		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
+		X3D::X3DEditor::removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -149,7 +149,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
-		updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, importedName, undoStep);
+		X3D::X3DEditor::updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, importedName, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -170,13 +170,11 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 
 	X3D::FilterNonIdCharacters (value);
 
-	bool        imported = false;
 	std::string exportedName;
 	std::string importedName;
 
 	const auto iter = getImportedNodesListStore () -> get_iter (path);
 
-	iter -> get_value (IMPORTED,      imported);
 	iter -> get_value (EXPORTED_NAME, exportedName);
 	iter -> get_value (IMPORTED_NAME, importedName);
 
@@ -199,10 +197,7 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 	inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 	inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
-	if (imported)
-		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
-
-	updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, newImportedName, undoStep);
+	X3D::X3DEditor::updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, newImportedName, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -349,64 +344,6 @@ X3DImportedNodesEditor::connectImportedNodes (const X3D::SFTime & field)
 {
 	field .removeInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 	field .addInterest (&X3DImportedNodesEditor::set_importedNodes, this);
-}
-
-void
-X3DImportedNodesEditor::updateImportedNode (const X3D::X3DExecutionContextPtr & executionContext,
-                                            const X3D::X3DPtr <X3D::Inline> & inlineNode,
-                                            const std::string & exportedName,
-                                            const std::string & importedName,
-                                            const X3D::UndoStepPtr & undoStep)
-{
-	try
-	{
-		const auto & importedNode = executionContext -> getImportedNodes () .at (importedName);
-
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-		                             executionContext,
-		                             importedNode -> getInlineNode (),
-		                             importedNode -> getExportedName (),
-		                             importedNode -> getImportedName ());
-	}
-	catch (...)
-	{
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeImportedNode,
-		                             executionContext,
-		                             importedName);
-	}
-
-	undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-	                             executionContext,
-	                             inlineNode,
-	                             exportedName,
-	                             importedName);
-
-	executionContext -> updateImportedNode (inlineNode, exportedName, importedName);
-}
-
-void
-X3DImportedNodesEditor::removeImportedNode (const X3D::X3DExecutionContextPtr & executionContext,
-                                            const std::string & importedName,
-                                            const X3D::UndoStepPtr & undoStep)
-{
-	try
-	{
-		const auto & importedNode = executionContext -> getImportedNodes () .at (importedName);
-
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateImportedNode,
-		                             executionContext,
-		                             importedNode -> getInlineNode (),
-		                             importedNode -> getExportedName (),
-		                             importedNode -> getImportedName ());
-	}
-	catch (...)
-	{ }
-
-	undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeImportedNode,
-	                             executionContext,
-	                             importedName);
-
-	executionContext -> removeImportedNode (importedName);
 }
 
 X3DImportedNodesEditor::~X3DImportedNodesEditor ()

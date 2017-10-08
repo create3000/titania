@@ -172,7 +172,19 @@ public:
 
 	static
 	void
+	updateImportedNode (const X3DExecutionContextPtr & executionContext,
+	                    const X3DPtr <Inline> & inlineNode,
+	                    const std::string & exportedName,
+	                    const std::string & importedName,
+	                    const UndoStepPtr & undoStep);
+
+	static
+	void
 	removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <X3DPtr <Inline>> &, const UndoStepPtr & undoStep);
+
+	static
+	void
+	removeImportedNode (const X3DExecutionContextPtr & executionContext, const std::string & importedName, const UndoStepPtr & undoStep);
 
 	///  @name Named node handling
 

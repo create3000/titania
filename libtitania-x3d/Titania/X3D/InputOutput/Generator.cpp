@@ -76,6 +76,7 @@ Generator::Generator (std::ostream & ostream) :
 	          namesByNode (),
 	              newName (0),
 	        importedNames (),
+	           routeNodes (),
 	  containerFieldStack (1),
 	            emptyName ()
 {
@@ -200,6 +201,8 @@ void
 Generator::AddNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
 	get (ostream) -> nodes .emplace (baseNode -> getId ());
+
+	get (ostream) -> AddRouteNode (ostream, baseNode);
 }
 
 const std::string &
@@ -332,6 +335,18 @@ void
 Generator::AddImportedNode (std::ostream & ostream, const X3DBaseNode* const exportedNode, const std::string & importedName)
 {
 	get (ostream) -> importedNames [exportedNode -> getId ()] = importedName;
+}
+
+void
+Generator::AddRouteNode (std::ostream & ostream, const X3DBaseNode* const routeNode)
+{
+	get (ostream) -> routeNodes .emplace (routeNode -> getId ());
+}
+
+bool
+Generator::ExistsRouteNode (std::ostream & ostream, const X3DBaseNode* const routeNode)
+{
+	return get (ostream) -> routeNodes .count (routeNode -> getId ());
 }
 
 const std::string &

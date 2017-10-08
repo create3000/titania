@@ -76,12 +76,9 @@ InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
 	                          getURLReloadButton (),
 	                          getURLChooserColumn (),
 	                          "url")),
-	              inlineNode (),
-	               loadState (false)
+	              inlineNode ()
 {
 	addChildObjects (inlineNode);
-
-	getLoadCheckButton () .signal_clicked () .connect (sigc::mem_fun (this, &InlineEditor::on_load_clicked));
 
 	setup ();
 }
@@ -110,14 +107,11 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 	if (inlineNode)
 	{
 		inlineNode -> checkLoadState () .addInterest (&InlineEditor::set_loadState, this);
-	
-		loadState = inlineNode -> load ();
 
 		set_loadState (inlineNode -> checkLoadState ());
 	}
 	else
 	{
-		loadState = false;
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
 
@@ -220,22 +214,6 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	getBrowserWindow () -> getSelection () -> setNodes ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 	getBrowserWindow () -> expandNodes ({ group });
-}
-
-void
-InlineEditor::on_load_clicked ()
-{
-	if (not inlineNode)
-		return;
-
-	if (inlineNode -> load () == loadState)
-		return;
-
-	// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
-	if (loadState and load .getOwnUndoStep ())
-		X3D::X3DEditor::removeImportedNodes (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), { inlineNode }, load .getOwnUndoStep ());				
-
-	loadState = inlineNode -> load ();
 }
 
 void

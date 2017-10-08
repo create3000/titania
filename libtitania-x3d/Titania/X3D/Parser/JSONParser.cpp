@@ -535,6 +535,10 @@ JSONParser::routeObject (json_object* const jobj)
 
 						getExecutionContext () -> addRoute (fromNode, fromFieldCharacters, toNode, toFieldCharacters);
 					}
+					catch (const Error <IMPORTED_NODE> & error)
+					{
+						// Imported nodes
+					}
 					catch (const X3DError & error)
 					{
 						getBrowser () -> println (error .what ());

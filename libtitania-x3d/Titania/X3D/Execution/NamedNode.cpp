@@ -90,8 +90,6 @@ NamedNode::initialize ()
 
 	node .addInterest (&NamedNode::set_node, this);
 
-	shutdown () .addInterest (&X3DWeakPtr <X3DBaseNode>::dispose, node);
-
 	set_node ();
 }
 

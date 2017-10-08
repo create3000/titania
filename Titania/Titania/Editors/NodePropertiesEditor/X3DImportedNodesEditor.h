@@ -108,22 +108,6 @@ private:
 	void
 	connectImportedNodes (const X3D::SFTime &);
 
-	///  @name X3DApplicationContext
-
-	static
-	void
-	updateImportedNode (const X3D::X3DExecutionContextPtr &,
-                       const X3D::X3DPtr <X3D::Inline> &,
-                       const std::string &,
-                       const std::string &,
-                       const X3D::UndoStepPtr &);
-
-	static
-	void
-	removeImportedNode (const X3D::X3DExecutionContextPtr &,
-                       const std::string &,
-                       const X3D::UndoStepPtr &);
-
 	///  @name Members
 
 	X3D::X3DPtr <X3D::Inline> inlineNode;

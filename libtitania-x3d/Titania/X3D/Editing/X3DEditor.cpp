@@ -1068,6 +1068,53 @@ X3DEditor::removeNamedNodes (const X3DExecutionContextPtr & executionContext, co
 	}
 }
 
+void
+X3DEditor::updateImportedNode (const X3DExecutionContextPtr & executionContext,
+                               const X3DPtr <Inline> & inlineNode,
+                               const std::string & exportedName,
+                               const std::string & importedName,
+                               const UndoStepPtr & undoStep)
+{
+	const auto & iter = executionContext -> getImportedNodes () .find (importedName);
+
+	if (iter == executionContext -> getImportedNodes () .end ())
+	{
+		undoStep -> addUndoFunction (&X3DExecutionContext::removeImportedNode,
+		                             executionContext,
+		                             importedName);
+	}
+	else
+	{
+		const auto & importedNode = iter -> second;
+	
+		if (importedNode -> getInlineNode () not_eq inlineNode or importedNode -> getExportedName () not_eq exportedName)
+		{
+			removeImportedNode (executionContext, importedName, undoStep);
+		}
+		else
+		{
+			undoStep -> addUndoFunction (&X3DExecutionContext::updateImportedNode,
+			                             executionContext,
+			                             importedNode -> getInlineNode (),
+			                             importedNode -> getExportedName (),
+			                             importedNode -> getImportedName ());
+		}
+	}
+
+	try
+	{
+		undoStep -> addRedoFunction (&X3DExecutionContext::updateImportedNode,
+		                             executionContext,
+		                             inlineNode,
+		                             exportedName,
+		                             importedName);
+	
+		executionContext -> updateImportedNode (inlineNode, exportedName, importedName);
+	}
+	catch (...)
+	{ }
+}
+
 /***
  *  Only pass inline nodes that are loaded and should be unloaded.
  */
@@ -1078,38 +1125,55 @@ X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
 	{
+		const auto & importedNode = pair .second;
+		const auto   inlineNode   = importedNode -> getInlineNode ();
+
+		if (inlineNodes .count (inlineNode))
+			removeImportedNode (executionContext, pair .first, undoStep);
+	}
+}
+
+/***
+ *  Removes imported node importedName.
+ */
+void
+X3DEditor::removeImportedNode (const X3DExecutionContextPtr & executionContext, const std::string & importedName, const UndoStepPtr & undoStep)
+{
+	try
+	{
+		// Remove nodes imported from node
+	
+		const auto iter = executionContext -> getImportedNodes () .find (importedName);
+	
+		if (iter == executionContext -> getImportedNodes () .end ())
+			return;
+
+		const auto & importedNode = iter -> second;
+		const auto   inlineNode   = importedNode -> getInlineNode ();
+
+		// Delete routes.
+
 		try
 		{
-			const auto & importedNode = pair .second;
-			const auto   inlineNode   = importedNode -> getInlineNode ();
-
-			if (inlineNodes .count (inlineNode))
-			{
-				// Delete routes.
-
-				try
-				{
-					deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);
-				}
-				catch (const X3DError &)
-				{ }
-
-				// Remove imported node.
-
-				undoStep -> addUndoFunction (&X3DExecutionContext::addImportedNode, executionContext,
-				                             inlineNode,
-				                             importedNode -> getExportedName (),
-				                             importedNode -> getImportedName ());
-
-				undoStep -> addRedoFunction (&X3DExecutionContext::removeImportedNode, executionContext,
-				                             importedNode -> getImportedName ());
-
-				executionContext -> removeImportedNode (importedNode -> getImportedName ());
-			}
+			deleteRoutes (executionContext, importedNode -> getExportedNode (), undoStep);
 		}
-		catch (const X3DError & error)
+		catch (const X3DError &)
 		{ }
+
+		// Remove imported node.
+
+		undoStep -> addUndoFunction (&X3DExecutionContext::addImportedNode, executionContext,
+		                             inlineNode,
+		                             importedNode -> getExportedName (),
+		                             importedNode -> getImportedName ());
+
+		undoStep -> addRedoFunction (&X3DExecutionContext::removeImportedNode, executionContext,
+		                             importedNode -> getImportedName ());
+
+		executionContext -> removeImportedNode (importedNode -> getImportedName ());
 	}
+	catch (const X3DError & error)
+	{ }
 }
 
 /***

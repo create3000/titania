@@ -55,6 +55,7 @@
 
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 namespace titania {
@@ -142,6 +143,15 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
 			sfnode -> fields_changed () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
+			break;
+		}
+		case OutlineIterType::ImportedNode:
+		{
+			const auto & sfnode       = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+			const auto   inlineNode   = importedNode -> getInlineNode ();
+
+			inlineNode -> getInternalScene () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
 			break;
 		}
 		default:
@@ -359,6 +369,15 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			break;
 		}
 		case OutlineIterType::ImportedNode:
+		{
+			const auto & sfnode       = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+			const auto   inlineNode   = importedNode -> getInlineNode ();
+
+			inlineNode -> getInternalScene () .removeInterest (&OutlineTreeObserver::toggle_path, this);
+			clear_open_path (iter);
+			break;
+		}
 		case OutlineIterType::ExportedNode:
 		{
 			clear_open_path (iter);

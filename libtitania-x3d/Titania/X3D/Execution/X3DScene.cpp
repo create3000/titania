@@ -310,18 +310,7 @@ X3DScene::removeExportedNode (const std::string & exportedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto iter = exportedNodes .find (exportedName);
-	
-	if (iter == exportedNodes .end ())
-		return;
-		
-	const auto & exportedNode = iter -> second;
-
-	auto & shutdown = const_cast <Output &> (exportedNode -> shutdown ());
-	shutdown .processInterests ();
-	shutdown .dispose ();
-
-	exportedNodes .erase (iter);
+	exportedNodes .erase (exportedName);
 
 	exportedNodesOutput = getCurrentTime ();
 }

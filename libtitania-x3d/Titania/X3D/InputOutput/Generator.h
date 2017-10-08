@@ -136,6 +136,14 @@ public:
 	AddImportedNode (std::ostream & ostream, const X3DBaseNode* const, const std::string &);
 
 	static
+	void
+	AddRouteNode (std::ostream & ostream, const X3DBaseNode* const);
+
+	static
+	bool
+	ExistsRouteNode (std::ostream & ostream, const X3DBaseNode* const);
+
+	static
 	const std::string &
 	LocalName (std::ostream & ostream, const X3DBaseNode* const);
 
@@ -236,6 +244,7 @@ private:
 	NameIndexByNode            namesByNode;
 	size_t                     newName;
 	ImportedNamesIndex         importedNames;
+	NodeIdSet                  routeNodes;
 	FieldStack                 containerFieldStack;
 	const std::string          emptyName;
 

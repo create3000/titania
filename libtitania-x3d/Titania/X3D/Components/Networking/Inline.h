@@ -128,31 +128,6 @@ public:
 	preventNextLoad ()
 	{ preventLoad = true; }
 
-	///  @name Exported node handling
-
-	virtual
-	SFNode
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	const ExportedNodeIndex &
-	getExportedNodes () const
-	throw (Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	template <class Type>
-	X3DPtr <Type>
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	///  @name Root node handling
 
 	virtual
@@ -175,6 +150,31 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return scene; }
+
+	///  @name Exported node handling
+
+	virtual
+	SFNode
+	getExportedNode (const std::string & exportedName) const
+	throw (Error <INVALID_NAME>,
+	       Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	template <class Type>
+	X3DPtr <Type>
+	getExportedNode (const std::string & exportedName) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	virtual
+	const ExportedNodeIndex &
+	getExportedNodes () const
+	throw (Error <NODE_NOT_AVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Operations
 
@@ -206,16 +206,10 @@ private:
 	///  @name Event handlers
 
 	void
-	setSceneAsync (X3DScenePtr &&);
+	setSceneAsync (X3DScenePtr && scene);
 
 	void
-	setScene (X3DScenePtr &&);
-
-	const X3DScenePtr &
-	accessScene () const
-	throw (Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setScene (X3DScenePtr && scene);
 
 	void
 	requestAsyncLoad ();
@@ -264,18 +258,18 @@ private:
 
 template <class Type>
 X3DPtr <Type>
-Inline::getExportedNode (const std::string & name) const
+Inline::getExportedNode (const std::string & exportedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DPtr <Type> node (getExportedNode (name));
+	X3DPtr <Type> node (getExportedNode (exportedName));
 
 	if (node)
 		return node;
 
-	throw Error <INVALID_NODE> ("Invalid node: node '" + name + "' has other type.");
+	throw Error <INVALID_NODE> ("Invalid node: node '" + exportedName + "' has other type.");
 }
 
 } // X3D

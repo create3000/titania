@@ -1,8 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp">
     <Files>
       <File FileName="Titania/share/gtksourceview-3.0/styles/x_ite.xml" Line="61" Column="47" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="326" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/ImportedNode.h" Line="57" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/ImportedNode.cpp" Line="183" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="641" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="518" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.h" Line="137" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="329" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

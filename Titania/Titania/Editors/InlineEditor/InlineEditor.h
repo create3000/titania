@@ -113,9 +113,6 @@ private:
 	on_fold_back_into_scene_clicked () final override;
 
 	void
-	on_load_clicked ();
-
-	void
 	set_loadState (const X3D::LoadState);
 
 	///  @name Members
@@ -123,9 +120,7 @@ private:
 	NameEntry                           nodeName;
 	X3DFieldToggleButton <X3D::SFBool>  load;
 	std::unique_ptr <MFStringURLWidget> url;
-
-	X3D::X3DPtr <X3D::Inline> inlineNode;
-	bool                      loadState;
+	X3D::X3DPtr <X3D::Inline>           inlineNode;
 
 };
 

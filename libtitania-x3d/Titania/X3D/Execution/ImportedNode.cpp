@@ -50,6 +50,7 @@
 
 #include "ImportedNode.h"
 
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/X3DExecutionContext.h"
 
@@ -70,13 +71,13 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  inlineNode (inlineNode_),
-	exportedNode (inlineNode_ -> getExportedNode (exportedName)),
 	exportedName (exportedName),
-	importedName (importedName)
+	importedName (importedName),
+	  routeIndex ()
 {
 	addType (X3DConstants::ImportedNode);
 
-	addChildObjects (inlineNode, exportedNode);
+	addChildObjects (inlineNode);
 }
 
 X3DBaseNode*
@@ -107,13 +108,13 @@ ImportedNode::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	inlineNode   .addInterest (&ImportedNode::set_node, this);
-	exportedNode .addInterest (&ImportedNode::set_node, this);
+	if (inlineNode)
+		inlineNode -> checkLoadState () .addInterest (this, &ImportedNode::set_loadState);
 
-	shutdown () .addInterest (&X3DWeakPtr <Inline>::dispose, inlineNode);
-	shutdown () .addInterest (&X3DWeakPtr <X3DBaseNode>::dispose, exportedNode);
+	inlineNode .addInterest (&ImportedNode::set_inlineNode, this);
 
-	set_node ();
+	set_loadState ();
+	set_inlineNode ();
 }
 
 X3DPtr <Inline>
@@ -130,16 +131,98 @@ SFNode
 ImportedNode::getExportedNode () const
 throw (Error <DISPOSED>)
 {
-	if (exportedNode)
-		return SFNode (exportedNode);
-
-	throw Error <DISPOSED> ("ImportedNodee::getExportedNode: Exported node '" + exportedName + "' is already disposed.");
+	try
+	{
+		return inlineNode -> getInternalScene () -> getExportedNode (exportedName);
+	}
+	catch (const X3DError &)
+	{
+		throw Error <DISPOSED> ("ImportedNode::getInlineNode: Inline node is already disposed.");
+	}
 }
 
 void
-ImportedNode::set_node ()
+ImportedNode::addRoute (const SFNode & sourceNode, const std::string & sourceField, const SFNode & destinationNode, const std::string & destinationField)
 {
-	if (not inlineNode or not exportedNode)
+	// Add route.
+	
+	const auto id   = UnresolvedRouteId (sourceNode -> getId (), sourceField, destinationNode -> getId (), destinationField);
+	const auto pair = routeIndex .emplace (id, UnresolvedRoute { sourceNode, sourceField, destinationNode, destinationField });
+
+	// Try to resolve source or destination node routes.
+
+	if (inlineNode)
+	{
+		if (inlineNode -> checkLoadState () == COMPLETE_STATE)
+			resolveRoute (pair .first -> second);
+	}
+}
+
+void
+ImportedNode::resolveRoute (UnresolvedRoute & route)
+{
+	try
+	{
+		SFNode sourceNode (route .sourceNode);
+		SFNode destinationNode (route .destinationNode);
+		const X3DPtr <ImportedNode> importedSourceNode (route .sourceNode);
+		const X3DPtr <ImportedNode> importedDestinationNode (route .destinationNode);
+
+		if (importedSourceNode)
+			sourceNode = importedSourceNode -> getExportedNode ();
+
+		if (importedDestinationNode)
+			destinationNode = importedDestinationNode -> getExportedNode ();
+
+		route .route = getExecutionContext () -> addSimpleRoute (sourceNode, route .sourceField, destinationNode, route .destinationField);
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
+}
+
+void
+ImportedNode::deleteRoutes ()
+{
+	for (const auto & pair : routeIndex)
+	{
+		const auto & route = pair .second;
+
+		if (route .route)
+			getExecutionContext () -> deleteRoute (RoutePtr (route .route));
+	}
+}
+
+void
+ImportedNode::set_loadState ()
+{
+	switch (inlineNode -> checkLoadState ())
+	{
+		case NOT_STARTED_STATE:
+		case FAILED_STATE:
+		{
+			deleteRoutes ();
+			break;
+		}
+		case IN_PROGRESS_STATE:
+			break;
+		case COMPLETE_STATE:
+		{
+			deleteRoutes ();
+
+			for (auto & pair : routeIndex)
+				resolveRoute (pair .second);
+
+			break;
+		}
+	}
+}
+
+void
+ImportedNode::set_inlineNode ()
+{
+	if (not inlineNode)
 		getExecutionContext () -> removeImportedNode (importedName);
 }
 
@@ -150,8 +233,6 @@ ImportedNode::toStream (std::ostream & ostream) const
 	{
 		if (Generator::ExistsNode (ostream, getInlineNode ()))
 		{
-			Generator::AddImportedNode (ostream, getExportedNode (), importedName);
-
 			if (not getComments () .empty ())
 			{
 				ostream << Generator::TidyBreak;
@@ -184,6 +265,50 @@ ImportedNode::toStream (std::ostream & ostream) const
 					<< Generator::Space
 					<< importedName;
 			}
+
+			try
+			{
+				Generator::AddRouteNode (ostream, this);
+				Generator::AddImportedNode (ostream, getExportedNode (), getImportedName ());
+			}
+			catch (const X3DError & error)
+			{
+				// Output unresolved routes.
+	
+				for (const auto & pair : routeIndex)
+				{
+					const auto & route            = pair .second;
+					const auto & sourceNode       = route .sourceNode;
+					const auto & sourceField      = route .sourceField;
+					const auto & destinationNode  = route .destinationNode;
+					const auto & destinationField = route .destinationField;
+	
+					if (Generator::ExistsRouteNode (ostream, sourceNode) and Generator::ExistsRouteNode (ostream, destinationNode))
+					{
+						const X3DPtr <ImportedNode> importedSourceNode (sourceNode);
+						const X3DPtr <ImportedNode> importedDestinationNode (destinationNode);
+	
+						const auto & sourceNodeName      = importedSourceNode ? importedSourceNode -> getImportedName () : Generator::Name (ostream, sourceNode);
+						const auto & destinationNodeName = importedDestinationNode ? importedDestinationNode -> getImportedName () : Generator::Name (ostream, destinationNode);
+	
+						ostream
+							<< Generator::Break
+							<< Generator::Break
+							<< Generator::Indent
+							<< "ROUTE"
+							<< Generator::Space
+							<< sourceNodeName
+							<< '.'
+							<< sourceField
+							<< Generator::Space
+							<< "TO"
+							<< Generator::Space
+							<< destinationNodeName
+							<< '.'
+							<< destinationField;
+					}
+				}
+			}
 		}
 	}
 	catch (const X3DError &)
@@ -197,8 +322,6 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 {
 	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{
-		Generator::AddImportedNode (ostream, getExportedNode (), importedName);
-
 		ostream
 			<< Generator::Indent
 			<< "<IMPORT"
@@ -222,6 +345,57 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 
 		ostream
 			<< "/>";
+
+		try
+		{
+			Generator::AddRouteNode (ostream, this);
+			Generator::AddImportedNode (ostream, getExportedNode (), getImportedName ());
+		}
+		catch (const X3DError & error)
+		{
+			// Output unresolved routes.
+
+			for (const auto & pair : routeIndex)
+			{
+				const auto & route            = pair .second;
+				const auto & sourceNode       = route .sourceNode;
+				const auto & sourceField      = route .sourceField;
+				const auto & destinationNode  = route .destinationNode;
+				const auto & destinationField = route .destinationField;
+
+				if (Generator::ExistsRouteNode (ostream, sourceNode) and Generator::ExistsRouteNode (ostream, destinationNode))
+				{
+					const X3DPtr <ImportedNode> importedSourceNode (sourceNode);
+					const X3DPtr <ImportedNode> importedDestinationNode (destinationNode);
+
+					const auto & sourceNodeName      = importedSourceNode ? importedSourceNode -> getImportedName () : Generator::Name (ostream, sourceNode);
+					const auto & destinationNodeName = importedDestinationNode ? importedDestinationNode -> getImportedName () : Generator::Name (ostream, destinationNode);
+
+					ostream
+						<< Generator::Break
+						<< Generator::Break
+						<< Generator::Indent
+						<< "<ROUTE"
+						<< Generator::Space
+						<< "fromNode='"
+						<< XMLEncode (sourceNodeName)
+						<< "'"
+						<< Generator::Space
+						<< "fromField='"
+						<< XMLEncode (sourceField)
+						<< "'"
+						<< Generator::Space
+						<< "toNode='"
+						<< XMLEncode (destinationNodeName)
+						<< "'"
+						<< Generator::Space
+						<< "toField='"
+						<< XMLEncode (destinationField)
+						<< "'"
+						<< "/>";
+				}
+			}
+		}
 	}
 	else
 		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
@@ -234,8 +408,6 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 {
 	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{
-		Generator::AddImportedNode (ostream, getExportedNode (), importedName);
-
 		ostream
 			<< '{'
 			<< Generator::TidySpace
@@ -295,6 +467,102 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< '}';
+
+		try
+		{
+			Generator::AddRouteNode (ostream, this);
+			Generator::AddImportedNode (ostream, getExportedNode (), getImportedName ());
+		}
+		catch (const X3DError & error)
+		{
+			// Output unresolved routes.
+
+			for (const auto & pair : routeIndex)
+			{
+				const auto & route            = pair .second;
+				const auto & sourceNode       = route .sourceNode;
+				const auto & sourceField      = route .sourceField;
+				const auto & destinationNode  = route .destinationNode;
+				const auto & destinationField = route .destinationField;
+
+				if (Generator::ExistsRouteNode (ostream, sourceNode) and Generator::ExistsRouteNode (ostream, destinationNode))
+				{
+					const X3DPtr <ImportedNode> importedSourceNode (sourceNode);
+					const X3DPtr <ImportedNode> importedDestinationNode (destinationNode);
+
+					const auto & sourceNodeName      = importedSourceNode ? importedSourceNode -> getImportedName () : Generator::Name (ostream, sourceNode);
+					const auto & destinationNodeName = importedDestinationNode ? importedDestinationNode -> getImportedName () : Generator::Name (ostream, destinationNode);
+
+					ostream
+						<< Generator::TidyBreak
+						<< Generator::Indent
+						<< '{'
+						<< Generator::TidySpace
+						<< '"'
+						<< "ROUTE"
+						<< '"'
+						<< ':'
+						<< Generator::TidyBreak
+						<< Generator::IncIndent
+						<< Generator::Indent
+						<< '{'
+						<< Generator::TidyBreak
+						<< Generator::IncIndent;
+
+					ostream
+						<< Generator::Indent
+						<< '"'
+						<< "@fromNode"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (sourceNodeName)
+						<< ','
+						<< Generator::TidyBreak;
+
+					ostream
+						<< Generator::Indent
+						<< '"'
+						<< "@fromField"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (sourceField)
+						<< ','
+						<< Generator::TidyBreak;
+
+					ostream
+						<< Generator::Indent
+						<< '"'
+						<< "@toNode"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (destinationNodeName)
+						<< ','
+						<< Generator::TidyBreak;
+
+					ostream
+						<< Generator::Indent
+						<< '"'
+						<< "@toField"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (destinationField)
+						<< Generator::TidyBreak;
+
+					ostream
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< '}'
+						<< Generator::TidyBreak
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< '}';
+				}
+			}
+		}
 	}
 	else
 		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
@@ -303,6 +571,8 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 void
 ImportedNode::dispose ()
 {
+	deleteRoutes ();
+
 	X3DBaseNode::dispose ();
 }
 

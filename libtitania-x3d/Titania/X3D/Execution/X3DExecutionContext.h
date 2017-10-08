@@ -251,6 +251,12 @@ public:
 
 	///  @name Imported nodes handling
 
+	bool
+	isImportedNode (const SFNode & node) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	const ImportedNodePtr &
 	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
@@ -295,12 +301,6 @@ public:
 	       Error <DISPOSED>)
 	{ return importedNodes; }
 
-	bool
-	isImportedNode (const SFNode & node) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
 	const SFTime &
 	importedNodes_changed () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -308,6 +308,12 @@ public:
 	{ return importedNodesOutput; }
 
 	///  @name Named/Imported node handling
+
+	bool
+	isLocalNode (const SFNode & node) const
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	SFNode
 	getLocalNode (const std::string &) const
@@ -317,12 +323,6 @@ public:
 
 	const std::string &
 	getLocalName (const SFNode &) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	bool
-	isLocalNode (const SFNode & node) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -489,12 +489,7 @@ public:
 	          const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	const RoutePtr &
-	addRoute (Route* const)
-	throw (Error <INVALID_NODE>,
+          Error <IMPORTED_NODE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
@@ -569,6 +564,7 @@ public:
 protected:
 
 	friend class ExternProtoDeclaration;
+	friend class ImportedNode;
 	friend class Inline;
 	friend class X3DBaseNode;
 	friend class X3DParser;
@@ -586,6 +582,17 @@ protected:
 	void
 	addUninitializedNode (X3DBaseNode* const node)
 	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	///  @name Route handling
+
+	const RoutePtr &
+	addSimpleRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
+	                const SFNode & destinationNode, const std::string & destinationFieldId)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_FIELD>,
+	       Error <IMPORTED_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  @name Import handling
@@ -631,19 +638,18 @@ private:
 	getVeryUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;
 
 	void
-	removeImportedName (const ImportedNamesIndex::iterator &);
-
-	void
 	set_sceneGraph ();
 
 	void
 	set_bbox ();
 
-	RouteId
-	getRouteId (const SFNode &, const std::string &,
-	            const SFNode &, const std::string &)
+	///  @name Route handling
+
+	const RoutePtr &
+	addRoute (Route* const)
 	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>);
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Import handling
 
@@ -686,7 +692,6 @@ private:
 	NamedNodeIndex                           namedNodes;
 	SFTime                                   namedNodesOutput;
 	ImportedNodeIndex                        importedNodes;
-	ImportedNamesIndex                       importedNames;
 	SFTime                                   importedNodesOutput;
 	ProtoArray                               prototypes;
 	SFTime                                   prototypesOutput;

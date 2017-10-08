@@ -279,13 +279,18 @@ OutlineCellRenderer::on_data ()
 			{
 				const auto & sfnode       = *static_cast <X3D::SFNode*> (get_object ());
 				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+				const auto   inlineNode   = importedNode -> getInlineNode ();
 				const auto   exportedNode = importedNode -> getExportedNode ();
 
-				property_markup () = get_node_name (exportedNode, importedNode -> getImportedName ());
+				property_markup () = get_node_name (exportedNode, X3D::GetDisplayName (inlineNode) + "." + importedNode -> getImportedName ());
 			}
 			catch (...)
 			{
-				property_text () = "";
+				const auto & sfnode       = *static_cast <X3D::SFNode*> (get_object ());
+				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+				const auto   inlineNode   = importedNode -> getInlineNode ();
+
+				property_markup () = get_node_name (sfnode,  X3D::GetDisplayName (inlineNode) + "." + importedNode -> getImportedName ());
 			}
 			break;
 		}
@@ -851,15 +856,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 	{
 		if (not value -> equals (*field))
 		{
-			const auto undoStep   = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
-			const auto inlineNode = X3D::X3DPtr <X3D::Inline> (node);
-
-			if (inlineNode and (
-				(field -> getName () == "load" and value -> toString () == "FALSE") or 
-				 field -> getName () == "url"))
-			{
-				X3D::X3DEditor::removeImportedNodes (treeView -> get_execution_context (), { inlineNode }, undoStep);
-			}
+			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 			undoStep -> addObjects (node);
 

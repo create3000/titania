@@ -1248,15 +1248,6 @@ Parser::routeStatement ()
 				{
 					FilterBadUTF8Characters (_eventOutId);
 
-					try
-					{
-						_fromNode -> getField (_eventOutId);
-					}
-					catch (const Error <INVALID_NAME> &)
-					{
-						exception ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
-					}
-
 					comments ();
 
 					if (Grammar::TO (istream))
@@ -1281,21 +1272,15 @@ Parser::routeStatement ()
 
 									try
 									{
-										_toNode -> getField (_eventInId);
-									}
-									catch (const Error <INVALID_NAME> &)
-									{
-										exception ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
-										
-										return true;
-									}
-
-									try
-									{
 										const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 	
 										_route -> addComments (getComments ());
 	
+										return true;
+									}
+									catch (const Error <IMPORTED_NODE> & error)
+									{
+										// Imported nodes
 										return true;
 									}
 									catch (const X3DError & error)

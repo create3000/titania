@@ -817,10 +817,17 @@ XMLParser::routeElement (xmlpp::Element* const xmlElement)
 
 					if (stringAttribute (xmlElement -> get_attribute ("toField"), destinationField))
 					{
-						const auto sourceNode       = getExecutionContext () -> getLocalNode (sourceNodeName);
-						const auto destinationNode  = getExecutionContext () -> getLocalNode (destinationNodeName);
-
-						getExecutionContext () -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+						try
+						{
+							const auto sourceNode       = getExecutionContext () -> getLocalNode (sourceNodeName);
+							const auto destinationNode  = getExecutionContext () -> getLocalNode (destinationNodeName);
+	
+							getExecutionContext () -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+						}
+						catch (const Error <IMPORTED_NODE> & error)
+						{
+							// Imported nodes
+						}
 					}
 					else
 						getBrowser () -> println ("Bad ROUTE statement: Expected toField attribute.");

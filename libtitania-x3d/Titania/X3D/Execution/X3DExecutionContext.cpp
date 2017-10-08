@@ -79,7 +79,6 @@ X3DExecutionContext::X3DExecutionContext () :
 	            worldInfo (),
 	           namedNodes (),
 	        importedNodes (),
-	        importedNames (),
 	  importedNodesOutput (),
 	           prototypes (),
 	     prototypesOutput (),
@@ -358,18 +357,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (iter == namedNodes .end ())
 		return;
 
-	const auto & namedNode = iter -> second;
-
 	try
 	{
+		const auto & namedNode = iter -> second;
+
 		namedNode -> getLocalNode () -> setName ("");
 	}
 	catch (const X3DError &)
 	{ }
-
-	auto & shutdown = const_cast <Output &> (namedNode -> shutdown ());
-	shutdown .processInterests ();
-	shutdown .dispose ();
 
 	namedNodes .erase (iter);
 
@@ -449,6 +444,35 @@ X3DExecutionContext::getVeryUniqueName (X3DExecutionContext* const executionCont
 
 // Imported nodes handling
 
+bool
+X3DExecutionContext::isImportedNode (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not node)
+		throw Error <INVALID_NODE> ("Node is NULL.");
+
+	const auto count = std::count_if (importedNodes .begin (),
+	                                  importedNodes .end (),
+	                                  [&] (const ImportedNodeIndex::value_type & pair)
+	{
+		try
+		{
+			const auto & importedNode = pair .second;
+			
+			if (importedNode -> getExportedNode () == node)
+				return true;
+		}
+		catch (const X3DError &)
+		{ }
+
+		return false;
+	});
+
+	return count;
+}
+
 const ImportedNodePtr &
 X3DExecutionContext::addImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
@@ -477,13 +501,40 @@ throw (Error <INVALID_NODE>,
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't update imported node: Inline node is NULL.");
 
-	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.
+	// We do not throw Error <IMPORTED_NODE> as X3DPrototypeInctances can be of type Inline.std::find_if
 
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update imported node: exported node name is empty.");
 
 	if (importedName .empty ())
 		importedName = exportedName;
+
+	const auto iter = std::find_if (importedNodes .begin (),
+	                                importedNodes .end (),
+	                                [&] (const ImportedNodeIndex::value_type & pair)
+	{
+		const auto & importedNode = pair .second;
+		
+		if (importedNode -> getInlineNode () == inlineNode and importedNode -> getExportedName () == exportedName)
+			return true;
+
+		return false;
+	});
+
+	if (iter not_eq importedNodes .end ())
+	{
+		const auto & importedNode = iter -> second;
+		
+		importedNodes .erase (iter);
+
+		const auto & renamedImportedNode = importedNodes .emplace (importedName, importedNode) .first -> second;
+
+		renamedImportedNode -> setImportedName (importedName);
+
+		importedNodesOutput = getCurrentTime ();
+
+		return renamedImportedNode;
+	}
 
 	// Remove imported node!!!
 
@@ -501,13 +552,6 @@ throw (Error <INVALID_NODE>,
 	else
 		addUninitializedNode (importedNode);
 
-	// Add imported name.
-
-	const auto exportedNode = importedNode -> getExportedNode ();
-
-	importedNode -> shutdown () .addInterest (&X3DExecutionContext::removeImportedName, this,
-	                                          importedNames .emplace (exportedNode -> getId (), importedName));
-
 	importedNodesOutput = getCurrentTime ();
 
 	return importedNode;
@@ -518,24 +562,9 @@ X3DExecutionContext::removeImportedNode (const std::string & importedName)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto iter = importedNodes .find (importedName);
-
-	if (iter == importedNodes .end ())
-		return;
-
-	auto & shutdown = const_cast <Output &> (iter -> second -> shutdown ());
-	shutdown .processInterests ();
-	shutdown .dispose ();
-
-	importedNodes .erase (iter);
+	importedNodes .erase (importedName);
 
 	importedNodesOutput = getCurrentTime ();
-}
-
-void
-X3DExecutionContext::removeImportedName (const ImportedNamesIndex::iterator & iter)
-{
-	importedNames .erase (iter);
 }
 
 SFNode
@@ -550,18 +579,6 @@ throw (Error <INVALID_NAME>,
 		return iter -> second -> getExportedNode ();
 
 	throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
-}
-
-bool
-X3DExecutionContext::isImportedNode (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (not node)
-		throw Error <INVALID_NODE> ("Node is NULL.");
-
-	return importedNames .count (node -> getId ());
 }
 
 /***
@@ -593,49 +610,6 @@ X3DExecutionContext::getVeryUniqueImportedName (const X3DExecutionContext* const
 	return uniqueName;
 }
 
-SFNode
-X3DExecutionContext::getLocalNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return getNamedNode (name);
-	}
-	catch (const X3DError &)
-	{
-		try
-		{
-			return getImportedNode (name);
-		}
-		catch (const X3DError &)
-		{
-			throw Error <INVALID_NAME> ("Unknown named or imported node '" + name + "'.");
-		}
-	}
-}
-
-const std::string &
-X3DExecutionContext::getLocalName (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (not node)
-		throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
-
-	if (node -> getExecutionContext () == this)
-		return node -> getName ();
-
-	auto equalRange = importedNames .equal_range (node -> getId ());
-
-	if (equalRange .first not_eq equalRange .second)
-		return (-- equalRange .second) -> second;
-
-	throw Error <INVALID_NODE> ("Couldn't get local name: node is shared.");
-}
-
 bool
 X3DExecutionContext::isLocalNode (const SFNode & node) const
 throw (Error <INVALID_NODE>,
@@ -652,6 +626,63 @@ throw (Error <INVALID_NODE>,
 		return true;
 
 	return false;
+}
+
+// Returns either a X3DNode with name @a name or a node of type ImportedNode.
+SFNode
+X3DExecutionContext::getLocalNode (const std::string & name) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		return getNamedNode (name);
+	}
+	catch (const X3DError &)
+	{
+		const auto iter = importedNodes .find (name);
+	
+		if (iter not_eq importedNodes .end ())
+			return SFNode (iter -> second);
+
+		throw Error <INVALID_NAME> ("Unknown named or imported node '" + name + "'.");
+	}
+}
+
+const std::string &
+X3DExecutionContext::getLocalName (const SFNode & node) const
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not node)
+		throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
+
+	if (node -> getExecutionContext () == this)
+		return node -> getName ();
+
+	const auto iter = std::find_if (importedNodes .begin (),
+	                                importedNodes .end (),
+	                                [&] (const ImportedNodeIndex::value_type & pair)
+	{
+		try
+		{
+			const auto & importedNode = pair .second;
+			
+			if (importedNode -> getExportedNode () == node)
+				return true;
+		}
+		catch (const X3DError &)
+		{ }
+
+		return false;
+	});
+
+	if (iter == importedNodes .end ())
+		throw Error <INVALID_NODE> ("Couldn't get local name: node is shared.");
+
+	return iter -> first;
 }
 
 //	Proto declaration handling
@@ -1112,108 +1143,66 @@ X3DExecutionContext::addRoute (const SFNode & sourceNode,      const std::string
                                const SFNode & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>,
+       Error <IMPORTED_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto routeKey = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+	if (not sourceNode)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: source node is NULL.");
+
+	if (not destinationNode)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: destination node is NULL.");
+
+	// Imported nodes handling.
+
+	X3DPtr <ImportedNode> importedSourceNode (sourceNode);
+	X3DPtr <ImportedNode> importedDestinationNode (destinationNode);
 
 	try
 	{
-		// Silently return if route already exists.
-
-		return routes .rfind (routeKey);
+		// If sourceNode is shared node try to find the corresponding ImportedNode.
+		if (sourceNode -> getExecutionContext () != this)
+			importedSourceNode = getLocalNode (getLocalName (sourceNode));
 	}
-	catch (const std::out_of_range &)
+	catch (const X3DError &)
 	{
-		// Add route.
-
-		const auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
-
-		if (getRealized ())
-			route -> setup ();
-		else
-			addUninitializedNode (route);
-
-		routesOutput = getCurrentTime ();
-
-		return route;
+		// Source node is shared but not imported.
 	}
+
+	try
+	{
+		// If destinationNode is shared node try to find the corresponding ImportedNode.
+		if (destinationNode -> getExecutionContext () != this)
+			importedDestinationNode = getLocalNode (getLocalName (destinationNode));
+	}
+	catch (const X3DError &)
+	{
+		// Destination node is shared but not imported.
+	}
+
+	if (importedSourceNode)
+		importedSourceNode -> addRoute (importedSourceNode, sourceFieldId, destinationNode, destinationFieldId);
+
+	if (importedDestinationNode)
+		importedDestinationNode -> addRoute (sourceNode, sourceFieldId, importedDestinationNode, destinationFieldId);
+
+	// If either sourceNode or destinationNode is an ImportedNode return here without value.
+	if (importedSourceNode == sourceNode or importedDestinationNode == destinationNode)
+		throw Error <IMPORTED_NODE> ("Bad ROUTE specification: either sourceNode or destinationNode are imported nodes.");
+
+	return addSimpleRoute (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 }
 
 const RoutePtr &
-X3DExecutionContext::addRoute (Route* const value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (not value)
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
-
-	if (value -> getExecutionContext () not_eq this)
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
-
-	routes .push_back (value -> getKey (), RoutePtr (value));
-
-	auto & route = routes .back ();
-
-	route .setTainted (true);
-	route .addParent (this);
-
-	return route;
-}
-
-void
-X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
-                                  const SFNode & destinationNode, const std::string & destinationFieldId)
+X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
+                                     const SFNode & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>,
+       Error <IMPORTED_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	try
-	{
-		const auto routeKey = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
-
-		routes .rfind (routeKey) -> disconnect ();
-		routes .erase (routeKey);
-
-		routesOutput = getCurrentTime ();
-	}
-	catch (const std::out_of_range &)
-	{
-		// Silently return if route not exists.
-	}
-}
-
-void
-X3DExecutionContext::deleteRoute (Route* const route)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (not route)
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
-
-	if (route -> getExecutionContext () not_eq this)
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
-
-	const auto routeKey = route -> getKey ();
-
-	route -> disconnect ();
-	routes .erase (routeKey);
-}
-
-RouteId
-X3DExecutionContext::getRouteId (const SFNode & sourceNode,      const std::string & sourceFieldId,
-                                 const SFNode & destinationNode, const std::string & destinationFieldId)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>)
-{
-	if (not sourceNode .getValue ())
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: source node is NULL.");
-
-	if (not destinationNode .getValue ())
-		throw Error <INVALID_NODE> ("Bad ROUTE specification: destination node is NULL.");
+	// Create route and return.
 
 	X3DFieldDefinition* sourceField = nullptr;
 
@@ -1246,7 +1235,98 @@ throw (Error <INVALID_NODE>,
 	if (sourceField -> getType () not_eq destinationField -> getType ())
 		throw Error <INVALID_FIELD> ("ROUTE types " + sourceField -> getTypeName () + " and " + destinationField -> getTypeName () + " do not match.");
 
-	return std::make_pair (sourceField, destinationField);
+	const auto routeKey = std::make_pair (sourceField, destinationField);
+
+	try
+	{
+		// Silently return if route already exists.
+
+		return routes .rfind (routeKey);
+	}
+	catch (const std::out_of_range &)
+	{
+		// Add route.
+
+		const auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
+
+		if (getRealized ())
+			route -> setup ();
+		else
+			addUninitializedNode (route);
+
+		return route;
+	}
+}
+
+const RoutePtr &
+X3DExecutionContext::addRoute (Route* const value)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not value)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
+
+	if (value -> getExecutionContext () not_eq this)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
+
+	routes .push_back (value -> getKey (), RoutePtr (value));
+
+	auto & route = routes .back ();
+
+	route .setTainted (true);
+	route .addParent (this);
+
+	routesOutput = getCurrentTime ();
+
+	return route;
+}
+
+void
+X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
+                                  const SFNode & destinationNode, const std::string & destinationFieldId)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_FIELD>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		if (not sourceNode)
+			return;
+
+		if (not destinationNode)
+			return;
+
+		const auto routeKey = RouteId (sourceNode -> getField (sourceFieldId), destinationNode -> getField (destinationFieldId));
+
+		routes .rfind (routeKey) -> disconnect ();
+		routes .erase (routeKey);
+
+		routesOutput = getCurrentTime ();
+	}
+	catch (const std::exception & error)
+	{
+		// Silently return if route not exists.
+	}
+}
+
+void
+X3DExecutionContext::deleteRoute (Route* const route)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not route)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
+
+	if (route -> getExecutionContext () not_eq this)
+		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
+
+	const auto routeKey = route -> getKey ();
+
+	route -> disconnect ();
+	routes .erase (routeKey);
 }
 
 void
@@ -1809,7 +1889,6 @@ X3DExecutionContext::dispose ()
 {
 	namedNodes    .clear ();
 	importedNodes .clear ();
-	importedNames .clear ();
 	prototypes    .clear ();
 	externProtos  .clear ();
 	routes        .clear ();
