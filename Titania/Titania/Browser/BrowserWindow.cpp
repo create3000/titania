@@ -1262,6 +1262,7 @@ BrowserWindow::setEditing (const bool enabled)
 	getSidebar () -> getOutlineEditorBox ()   .set_visible (enabled);
 	getSidebar () -> getNodeEditorBox ()      .set_visible (enabled);
 	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
+	getFooter ()  -> getRouteGraphBox ()      .set_visible (enabled);
 	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
 
 	if (enabled)
@@ -2224,14 +2225,6 @@ BrowserWindow::on_hand_button_toggled ()
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
-
-	const bool enabled = not getHandButton () .get_active () and getEditing ();
-
-	getPlayPauseButton ()       .set_visible (enabled);
-	getSelectSeparator ()       .set_visible (enabled);
-	getSelectParentButton ()    .set_visible (enabled);
-	getSelectChildButton ()     .set_visible (enabled);
-	getLookAtSelectionButton () .set_visible (enabled);
 
 	getConfig () -> setItem ("hand", getHandButton () .get_active ());
 }

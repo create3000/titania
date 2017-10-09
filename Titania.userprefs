@@ -1,13 +1,8 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="243" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="532" Column="55" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="775" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
