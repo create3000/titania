@@ -507,15 +507,15 @@ Selection::setHierarchy (const SFNode & node, const MFNode & other)
 	}
 }
 
-X3D::MFNode
-Selection::getGeometries (const X3D::MFNode & nodes) const
+MFNode
+Selection::getGeometries (const MFNode & nodes) const
 {
-	static const std::set <NodeType> geometryTypes = { X3D::X3DConstants::X3DGeometryNode };
-	static const std::set <NodeType> protoTypes    = { X3D::X3DConstants::X3DPrototypeInstance };
+	static const std::set <NodeType> geometryTypes = { X3DConstants::X3DGeometryNode };
+	static const std::set <NodeType> protoTypes    = { X3DConstants::X3DPrototypeInstance };
 
-	auto geometryNodes = X3DEditor::getNodes <X3D::X3DBaseNode> (nodes, geometryTypes);
+	auto geometryNodes = X3DEditor::getNodes <X3DBaseNode> (nodes, geometryTypes);
 
-	const auto protoInstances = X3DEditor::getNodes <X3D::X3DBaseNode> (nodes, protoTypes);
+	const auto protoInstances = X3DEditor::getNodes <X3DBaseNode> (nodes, protoTypes);
 
 	for (const auto & protoInstance : protoInstances)
 	{
@@ -526,20 +526,20 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 			if (innerNode -> isType (geometryTypes))
 				geometryNodes .emplace_back (protoInstance);
 		}
-		catch (const X3D::X3DError &)
+		catch (const X3DError &)
 		{ }
 	}
 
 	return geometryNodes;
 }
 
-X3D::MFNode
-Selection::getLowest (const X3D::MFNode & nodes) const
+MFNode
+Selection::getLowest (const MFNode & nodes) const
 {
-	X3D::MFNode lowestNodes;
+	MFNode lowestNodes;
 
-	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
-	[&] (X3D::SFNode & node)
+	X3D::traverse (const_cast <MFNode &> (nodes),
+	[&] (SFNode & node)
 	{
 		size_t nodeFields = 0;
 
@@ -561,7 +561,7 @@ Selection::getLowest (const X3D::MFNode & nodes) const
 
 		return true;
 	},
-	X3D::TRAVERSE_ROOT_NODES);
+	TRAVERSE_ROOT_NODES);
 
 	return lowestNodes;
 }
@@ -576,11 +576,13 @@ Selection::getTransform (const MFNode & hierarchy) const
 	static const NodeTypeSet lowestTypes = {
 		X3DConstants::X3DEnvironmentalSensorNode,
 		X3DConstants::X3DLightNode,
+		X3DConstants::X3DPrototypeInstance,
 		X3DConstants::X3DTransformNode,
 		X3DConstants::X3DViewpointNode,
 	};
 
 	static const NodeTypeSet highestTypes = {
+		X3DConstants::X3DPrototypeInstance,
 		X3DConstants::X3DTransformNode,
 	};
 
@@ -595,17 +597,24 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not lowest)
 				continue;
 				
-			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+			const auto executionContext = lowest -> getExecutionContext ();
+
+			if (executionContext not_eq getBrowser () -> getExecutionContext ())
+			{
+				if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }) and executionContext -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+					return SFNode (executionContext);
+
 				continue;
+			}
 
 			if (lowest -> isType (geometryTypes))
 				continue;
-			
-			if (not node)
-				node = lowest;
 
 			if (lowest -> isType (lowestTypes))
 				return lowest;
+			
+			if (not node)
+				node = lowest;
 		}
 	}
 	else
@@ -617,14 +626,21 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not highest)
 				continue;
 
-			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-				continue;
+			const auto executionContext = highest -> getExecutionContext ();
 
-			if (not node)
-				node = highest;
+			if (executionContext not_eq getBrowser () -> getExecutionContext ())
+			{
+				if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }) and executionContext -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+					return SFNode (executionContext);
+
+				continue;
+			}
 
 			if (highest -> isType (highestTypes))
 				return highest;
+
+			if (not node)
+				node = highest;
 		}
 
 		// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.

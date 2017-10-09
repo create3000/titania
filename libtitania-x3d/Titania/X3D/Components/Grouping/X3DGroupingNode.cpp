@@ -51,6 +51,7 @@
 #include "X3DGroupingNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
 
@@ -328,7 +329,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 	{
 		case TraverseType::POINTER:
 		{
-			renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
 
 			if (not pointingDeviceSensors .empty ())
 			{
@@ -350,7 +351,6 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			if (not pointingDeviceSensors .empty ())
 				renderObject -> getBrowser () -> getSensors () .pop_back ();
 
-			renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 			return;
 		}
 		case TraverseType::CAMERA:

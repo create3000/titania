@@ -115,9 +115,8 @@ ScriptEditor::initialize ()
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_undo_changed));
 	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_redo_changed));
 
-	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_text_view_button_press_event), false);
-	getTextView () .signal_focus_in_event ()     .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
-	getTextView () .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
+	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
 
 	getTextView () .show ();
 
@@ -314,16 +313,6 @@ ScriptEditor::set_live ()
 		modified = false;
 	   set_node (nullptr);
 	}
-}
-
-bool
-ScriptEditor::on_text_view_button_press_event (GdkEventButton* event)
-{
-	// Prevent bug in text view in 17.10.
-	if (not getTextView () .has_focus ())
-		getTextView () .grab_focus ();
-
-	return false;
 }
 
 bool

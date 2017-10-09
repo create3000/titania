@@ -51,6 +51,7 @@
 #include "Switch.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
@@ -164,12 +165,11 @@ Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		case TraverseType::POINTER:
 		{
-			renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
 		
 			if (childNode)
 				childNode -> traverse (type, renderObject);
-		
-			renderObject -> getBrowser () -> getHierarchy () .pop_back ();
+
 			break;
 		}
 		default:

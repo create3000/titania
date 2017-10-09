@@ -53,6 +53,7 @@
 #include "../../Browser/BrowserOptions.h"
 #include "../../Bits/Cast.h"
 #include "../../Browser/Networking/config.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Browser/ParticleSystems/BVH.h"

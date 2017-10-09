@@ -118,20 +118,17 @@ protected:
 	///  @name Friends
 
 	friend class Anchor;
-	friend class Inline;
+	friend class HierarchyGuard;
 	friend class LayerSet;
-	friend class LOD;
 	friend class LightSaber;
 	friend class ParicleSystem;
 	friend class PointingDevice;
 	friend class Selection;
 	friend class Shape;
-	friend class Switch;
 	friend class X3DGroupingNode;
 	friend class X3DLayerNode;
 	friend class X3DPointingDeviceSensorNode;
 	friend class X3DSelector;
-	friend class X3DToolObject;
 	friend class X3DViewer;
 
 	///  @name Construction

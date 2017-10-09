@@ -51,6 +51,7 @@
 #include "Shape.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/Hit.h"
 #include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
@@ -182,8 +183,8 @@ Shape::pointer (X3DRenderObject* const renderObject)
 	if (not renderObject -> getViewVolumes () .back () .intersects (bbox))
 		return;
 
-	renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
-	renderObject -> getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
+	HierarchyGuard guard (renderObject -> getBrowser (), this);
+	HierarchyGuard guardGeometry (renderObject -> getBrowser (), getGeometry ());
 
 	switch (browser -> getSelectionType ())
 	{
@@ -197,9 +198,6 @@ Shape::pointer (X3DRenderObject* const renderObject)
 			cut (renderObject);
 			break;
 	}
-
-	renderObject -> getBrowser () -> getHierarchy () .pop_back ();
-	renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 }
 
 void

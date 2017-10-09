@@ -51,9 +51,11 @@
 #include "X3DPrototypeInstance.h"
 
 #include "../../Bits/Traverse.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DScene.h"
 #include "../../Prototype/ExternProtoDeclaration.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Networking/X3DUrlObject.h"
 
 #include "../../Tools/Core/X3DToolObject.h"

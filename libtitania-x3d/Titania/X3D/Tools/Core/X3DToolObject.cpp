@@ -51,6 +51,7 @@
 #include "X3DToolObject.h"
 
 #include "../../Browser/Selection.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
@@ -145,7 +146,7 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			renderObject -> getBrowser () -> getHierarchy () .emplace_back (this);
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
 		
 			try
 			{
@@ -156,7 +157,6 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 				__LOG__ << error .what () << std::endl;
 			}
 
-			renderObject -> getBrowser () -> getHierarchy () .pop_back ();
 			break;
 		}
 		default:
