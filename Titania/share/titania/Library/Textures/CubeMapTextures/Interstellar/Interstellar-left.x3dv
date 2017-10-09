@@ -13,10 +13,10 @@ DEF Interstellar-left Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Interstellar/Interstellar-left.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

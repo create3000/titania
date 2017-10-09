@@ -319,14 +319,16 @@ ScriptEditor::set_live ()
 bool
 ScriptEditor::on_text_view_button_press_event (GdkEventButton* event)
 {
-__LOG__ << getTextView () .has_focus () << std::endl;
+	// Prevent bug in text view in 17.10.
+	if (not getTextView () .has_focus ())
+		getTextView () .grab_focus ();
+
 	return false;
 }
 
 bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
-__LOG__ << std::endl;
 	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
@@ -335,8 +337,6 @@ __LOG__ << std::endl;
 bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
-__LOG__ << std::endl;
-backtrace ();
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> setAccelerators (true);
 	return false;

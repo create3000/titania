@@ -13,10 +13,10 @@ DEF ViolentDays-top Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -1780,10 +1780,17 @@ OutlineEditor::restoreExpanded ()
 
 		treeView -> getScrollFreezer () -> restore (std::get <1> (item), std::get <2> (item));
 
-		for (const auto & path : paths)
-			treeView -> expand_row (Gtk::TreePath (path), false);
+		for (const auto & path_expanded : paths)
+		{
+			auto pair = std::vector <std::string> ();
+	
+			basic::split (std::back_inserter (pair), path_expanded, "\t");
 
-		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
+			if (pair .empty ())
+				continue;
+
+			treeView -> expand_row (Gtk::TreePath (pair [0]), false, pair .size () > 1 and pair [1] == "1");
+		}
 	}
 	catch (const std::exception & error)
 	{
@@ -1846,7 +1853,7 @@ OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::dequ
 
 		if (expanded)
 		{
-			paths .emplace_back (path .to_string ());
+			paths .emplace_back (path .to_string () + "\t" + (treeView -> is_full_expanded (child) ? "1" : "0"));
 			getExpanded (child -> children (), paths);
 		}
 	}

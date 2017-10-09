@@ -148,23 +148,13 @@ X3DBrowserPanel::X3DBrowserPanel () :
 }
 
 void
-X3DBrowserPanel::setup ()
-{
-	X3DBrowserPanelInterface::setup ();
-
-	type = getBrowserPanelType (getId ());
-
-	if (type == BrowserPanelType::MAIN_VIEW)
-		set_type ();
-}
-
-void
 X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
-	if (type not_eq BrowserPanelType::MAIN_VIEW)
-		set_type ();
+	type = getBrowserPanelType (getId ());
+
+	set_type ();
 }
 
 X3D::BrowserPtr
@@ -390,15 +380,6 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		gridTransform = executionContext -> getNamedNode <X3D::Transform> ("GridTransform");
 
-		layer -> getNavigationInfoStack () -> setLock (true);
-		layer -> getViewpointStack ()      -> setLock (true);
-		layer -> getBackgroundStack ()     -> setLock (true);
-		layer -> getFogStack ()            -> setLock (true);
-
-		gridSwitch -> children () .emplace_back (gridTool            -> getTool ());
-		gridSwitch -> children () .emplace_back (angleGridTool       -> getTool ());
-		gridSwitch -> children () .emplace_back (axonometricGridTool -> getTool ());
-
 		if (type == BrowserPanelType::PERSPECTIVE_VIEW)
 		{
 			executionContext -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> type () = { "EXAMINE" };
@@ -409,6 +390,15 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		gridLayer -> getViewpointStack () -> pushOnTop (viewpoint, true);
 		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
+
+		layer -> getNavigationInfoStack () -> setLock (true);
+		layer -> getViewpointStack ()      -> setLock (true);
+		layer -> getBackgroundStack ()     -> setLock (true);
+		layer -> getFogStack ()            -> setLock (true);
+
+		gridSwitch -> children () .emplace_back (gridTool            -> getTool ());
+		gridSwitch -> children () .emplace_back (angleGridTool       -> getTool ());
+		gridSwitch -> children () .emplace_back (axonometricGridTool -> getTool ());
 
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
@@ -781,12 +771,8 @@ X3DBrowserPanel::set_grid ()
 			gridSwitch -> whichChoice () = -1;
 		}
 	}
-	catch (const X3D::Error <X3D::DISPOSED> & error)
-	{ }
 	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	{ }
 }
 
 void

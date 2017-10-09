@@ -13,10 +13,10 @@ DEF temple Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Reflect/temple.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Reflect/temple.png",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/Reflect/temple.png",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/Reflect/temple.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Reflect/temple.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Reflect/temple.png",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/Reflect/temple.png",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/Reflect/temple.png"
         ]
         repeatS FALSE
         repeatT FALSE

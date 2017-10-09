@@ -13,50 +13,50 @@ DEF Sunset Transform {
       texture ComposedCubeMapTexture {
         front ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
           ]
         }
         back ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
           ]
         }
         left ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-left.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-left.jpg"
           ]
         }
         right ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-right.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-right.jpg"
           ]
         }
         top ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
           ]
         }
         bottom ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-            "http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-            "https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg"
+            "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+            "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+            "http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+            "https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg"
           ]
         }
       }

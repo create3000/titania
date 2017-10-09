@@ -74,6 +74,8 @@ class X3DOutlineTreeView :
 {
 public:
 
+	using Gtk::TreeView::expand_row;
+
 	///  @name Member access
 
 	const Glib::RefPtr <OutlineTreeModel> &
@@ -198,7 +200,10 @@ public:
 	expand_to (X3D::X3DChildObject* const);
 
 	void
-	collapse_row (const Gtk::TreeModel::Path &);
+	expand_row (const Gtk::TreeModel::Path & path, const bool open_all, const bool full_expand);
+
+	void
+	collapse_row (const Gtk::TreeModel::Path & path);
 
 	void
 	update ();
@@ -320,14 +325,14 @@ private:
 
 	///  @name Members
 
-	Glib::RefPtr <OutlineTreeModel> model;
-	const std::unique_ptr <OutlineSelection> selection;
-	Gtk::TreeViewColumn* column;
+	Glib::RefPtr <OutlineTreeModel>             model;
+	const std::unique_ptr <OutlineSelection>    selection;
+	Gtk::TreeViewColumn*                        column;
 	const std::unique_ptr <OutlineTreeObserver> treeObserver;
-	const std::unique_ptr <OutlineRouteGraph> routeGraph;
-	OutlineCellRenderer* const cellrenderer;
-	Gtk::CellRendererText* const padCellrenderer;
-	size_t expandLevel;
+	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
+	OutlineCellRenderer* const                  cellrenderer;
+	Gtk::CellRendererText* const                padCellrenderer;
+	size_t                                      expandLevel;
 
 	bool externProtos;
 	bool prototypes;
@@ -339,7 +344,7 @@ private:
 	bool useLocale;
 
 	std::unique_ptr <ScrollFreezer> scrollFreezer;
-	X3D::SFTime rootNodesBuffer;
+	X3D::SFTime                     rootNodesBuffer;
 
 };
 

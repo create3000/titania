@@ -65,10 +65,6 @@ class X3DBrowserPanel :
 {
 public:
 
-	virtual
-	void
-	setup () override;
-
 	///  @name Member access
 
 	const X3D::BrowserPtr &

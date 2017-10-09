@@ -19,10 +19,10 @@ my $textures = "/home/holger/Projekte/Library/Textures/CubeMapTextures/";
 
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures",
-	"https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures",
-	"http://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures",
-	"https://rawgit.com/create3000/Library/1.0.1/Textures/CubeMapTextures",
+	"http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures",
+	"https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures",
+	"http://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures",
+	"https://rawgit.com/create3000/Library/1.0.2/Textures/CubeMapTextures",
 );
 
 sub url {

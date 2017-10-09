@@ -13,10 +13,10 @@ DEF hedgehog Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/hedgehog.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/hedgehog.jpg",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/Animal/hedgehog.jpg",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/Animal/hedgehog.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animal/hedgehog.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animal/hedgehog.jpg",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/Animal/hedgehog.jpg",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/Animal/hedgehog.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

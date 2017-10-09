@@ -1,16 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
     <Files>
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="243" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.h" Line="110" Column="1" />
-      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp" Line="173" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="259" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1185" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Route.cpp" Line="102" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/ImportedNode.cpp" Line="172" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/ImportedNode.h" Line="215" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1034" Column="64" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="532" Column="55" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

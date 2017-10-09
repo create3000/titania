@@ -13,10 +13,10 @@ DEF tiger Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/tiger.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Animal/tiger.jpg",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/Animal/tiger.jpg",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/Animal/tiger.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animal/tiger.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animal/tiger.jpg",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/Animal/tiger.jpg",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/Animal/tiger.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

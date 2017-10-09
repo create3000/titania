@@ -13,10 +13,10 @@ DEF plaidbw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Textiles/plaid.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.1/Textures/Textiles/plaid.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.1/Textures/Textiles/plaid.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.1/Textures/Textiles/plaid.bw.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Textiles/plaid.bw.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Textiles/plaid.bw.png",
+          "http://rawgit.com/create3000/Library/1.0.2/Textures/Textiles/plaid.bw.png",
+          "https://rawgit.com/create3000/Library/1.0.2/Textures/Textiles/plaid.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

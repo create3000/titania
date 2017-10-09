@@ -187,7 +187,8 @@ X3DBrowserEditor::set_executionContext ()
 
 	// Restore Viewpoint, and NavigationInfo from meta data.
 
-	getMetaData ();
+	if (not getHandButton () .get_active ())
+		getMetaData ();
 
 	// Restore context or save context path in History.
 
