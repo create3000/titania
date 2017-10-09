@@ -1254,7 +1254,7 @@ BrowserWindow::setEditing (const bool enabled)
 	getSelectParentButton ()    .set_visible (enabled);
 	getSelectChildButton ()     .set_visible (enabled);
 	getViewerSeparator ()       .set_visible (enabled);
-	getLookAtSelectionButton () .set_visible (enabled and getArrowButton () .get_active ());
+	getLookAtSelectionButton () .set_visible (enabled);
 
 	getBrowserNotebook () .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
 

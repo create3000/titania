@@ -3961,6 +3961,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkToolButton" id="LookAtSelectionButton">
+                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="tooltip_text" translatable="yes">Look at selected objects.</property>
                                     <property name="label" translatable="yes">Look At Selection</property>

@@ -153,9 +153,6 @@ traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags,
 	if (not node)
 		return true;
 
-	if (node -> getPrivate ())
-		return true;
-
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
 		switch (type)
@@ -483,9 +480,6 @@ void
 find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags, Hierarchies & hierarchies, Hierarchy & hierarchy, NodeSet & seen)
 {
 	if (not node)
-		return;
-
-	if (node -> getPrivate ())
 		return;
 
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
