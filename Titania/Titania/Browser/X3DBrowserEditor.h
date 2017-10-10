@@ -91,10 +91,6 @@ public:
 
 	virtual
 	void
-	open (const basic::uri & URL) final override;
-
-	virtual
-	void
 	load (const basic::uri & URL) final override;
 
 	X3D::MFNode

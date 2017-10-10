@@ -435,16 +435,6 @@ X3DBrowserEditor::blank ()
 }
 
 void
-X3DBrowserEditor::open (const basic::uri & URL)
-{
-	if (getEditing ())
-		X3DBrowserWidget::open (URL);
-
-	else
-		load (URL);
-}
-
-void
 X3DBrowserEditor::load (const basic::uri & URL)
 {
 	if (getCurrentPage () -> isSaved ())
