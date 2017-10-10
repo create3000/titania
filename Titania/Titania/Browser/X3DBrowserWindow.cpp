@@ -144,7 +144,13 @@ X3DBrowserWindow::save (const basic::uri & worldURL, const std::string & outputS
 	const auto scriptEditor = footer -> getPage <ScriptEditor> ("ScriptEditor");
 
 	if (scriptEditor -> getModified ())
-		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Script"));
+
+		scriptEditor -> apply (undoStep);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 
 	return X3DBrowserEditor::save (worldURL, outputStyle, copy);
 }

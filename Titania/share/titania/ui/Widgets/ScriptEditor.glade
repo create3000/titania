@@ -294,7 +294,7 @@
                           <object class="GtkToolButton" id="ApplyButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Click to apply script then it notifies you whether the script is valid (Ctrl-S).</property>
+                            <property name="tooltip_text" translatable="yes">Click to apply script then it notifies you whether the script is valid.</property>
                             <property name="valign">start</property>
                             <property name="label" translatable="yes">Load State</property>
                             <property name="use_underline">True</property>
