@@ -280,6 +280,13 @@ public:
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
+	///  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+	void
+	updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>);
+
 	///  Removes the field named @a name from the set of user defined fields of this node.
 	virtual
 	void

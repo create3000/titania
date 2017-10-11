@@ -737,6 +737,31 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
+ *  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ */
+void
+X3DBaseNode::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_FIELD>,
+       Error <DISPOSED>)
+{
+	auto userDefinedFields = getUserDefinedFields ();
+	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), field);
+
+	if (iter == userDefinedFields .end ())
+		return;
+
+	FieldArray lock (userDefinedFields .begin (), userDefinedFields .end ());
+
+	setUserDefinedFields ({ });
+	field -> setAccessType (accessType);
+	field -> setName (name);
+	setUserDefinedFields (userDefinedFields);
+
+	fieldsOutput = SFTime::now ();
+}
+
+/***
  *  Removes @a field from the set of user defined fields.  You are self responsible to remove all routes of this field
  *  from and to this node before you remove the field.
  */

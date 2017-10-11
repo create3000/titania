@@ -421,23 +421,34 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 			{
 				// Edit field.
 
-				X3D::X3DFieldDefinition* const field = getCurrentBrowser () -> getSupportedField (getFieldTypeLabel () .get_text ()) -> create ();
-
-				field -> setName (getFieldNameEntry () .get_text ());
-				field -> setAccessType (accessTypes .at (getAccessTypeLabel () .get_text ()));
+				const auto accessType = accessTypes .at (getAccessTypeLabel () .get_text ());
+				const auto typeName   = getFieldTypeLabel () .get_text ();
+				const auto name       = getFieldNameEntry () .get_text ();
 
 				// Replace field in list store.
 
-				replaceUserDefinedField (userDefinedField, field);
+				updateUserDefinedField (accessType, typeName, name, userDefinedField);
 
 				// Add user defined field.
 
-				const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update User-Defined Field »%s«"), field -> getName () .c_str ()));
+				const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update User-Defined Field »%s«"), name .c_str ()));
 
 				node -> fields_changed () .removeInterest (&X3DUserDefinedFieldsEditor::set_fields, this);
 				node -> fields_changed () .addInterest (&X3DUserDefinedFieldsEditor::connectFields, this);
 
-				X3D::X3DEditor::replaceUserDefinedField (node, userDefinedField, field, undoStep);
+				if (typeName == userDefinedField -> getTypeName ())
+				{
+					X3D::X3DEditor::updateUserDefinedField (node, accessType, name, userDefinedField, undoStep);
+				}
+				else
+				{
+					const auto newField = getCurrentBrowser () -> getSupportedField (typeName) -> create ();
+	
+					newField -> setName (name);
+					newField -> setAccessType (accessType);
+
+					X3D::X3DEditor::replaceUserDefinedField (node, userDefinedField, newField, undoStep);
+				}
 
 				getBrowserWindow () -> addUndoStep (undoStep);
 			}
@@ -489,10 +500,10 @@ X3DUserDefinedFieldsEditor::addUserDefinedField (X3D::X3DFieldDefinition* const 
 }
 
 void
-X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* const oldField, X3D::X3DFieldDefinition* const newField)
+X3DUserDefinedFieldsEditor::updateUserDefinedField (const X3D::AccessType accessType, const std::string & typeName, const std::string & name, X3D::X3DFieldDefinition* const field)
 {
 	const auto userDefinedFields = node -> getUserDefinedFields ();
-	const auto pos               = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
+	const auto pos               = std::find (userDefinedFields .begin (), userDefinedFields .end (), field);
 
 	if (pos == userDefinedFields .end ())
 		return;
@@ -503,9 +514,9 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* co
 
 	const auto iter = getUserDefinedFieldsListStore () -> children () [index];
 
-	(*iter) [columns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + newField -> getTypeName () + ".svg"));
-	(*iter) [columns .name]       = newField -> getName ();
-	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::to_string (newField -> getAccessType ()) + ".png"));
+	(*iter) [columns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + typeName + ".svg"));
+	(*iter) [columns .name]       = name;
+	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::to_string (accessType) + ".png"));
 }
 
 void

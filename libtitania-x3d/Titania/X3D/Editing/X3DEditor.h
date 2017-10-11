@@ -273,7 +273,11 @@ public:
 	static
 	void
 	addUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
+	static
+	void
+	updateUserDefinedField (const SFNode & node, const AccessType accessType, const std::string & name, X3DFieldDefinition* const field, const UndoStepPtr & undoStep);
+
 	static
 	void
 	replaceUserDefinedField (const SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);

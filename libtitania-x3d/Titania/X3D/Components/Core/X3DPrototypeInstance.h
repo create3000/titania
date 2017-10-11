@@ -287,9 +287,10 @@ private:
 
 	///  @name Members
 
-	X3DProtoDeclarationNodePtr protoNode;
-	SFTime                     typeNameOutput;
-	SFBool                     live;
+	X3DProtoDeclarationNodePtr                          protoNode;
+	SFTime                                              typeNameOutput;
+	SFBool                                              live;
+	std::map <X3DFieldDefinition*, X3DFieldDefinition*> fieldMappings;
 
 };
 

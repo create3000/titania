@@ -1735,6 +1735,113 @@ X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const f
 
 ///  This function is with reference handling.
 void
+X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessType, const std::string & name, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+{
+	auto userDefinedFields = node -> getUserDefinedFields ();
+	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), field);
+
+	if (iter == userDefinedFields .end ())
+		return;
+
+	// Save all involved fields.
+
+	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()));
+
+	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
+	// functions we will execute later.
+
+	std::deque <std::function <void ()>>  addRoutes;
+
+	// Reassign IS reference to the new field.
+
+	const auto references = field -> getReferences ();
+
+	undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+
+	for (const auto & reference : references)
+	{
+		undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, reference);
+		undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, reference);
+		field -> removeReference (reference);
+	}
+
+	for (const auto & reference : references)
+	{
+		if (reference -> isReference (accessType))
+		{
+			undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, reference);
+			undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, reference);
+			field -> addReference (reference);
+		}
+	}
+
+	// Create addRoutes functions for input and output routes.
+
+	if (accessType & inputOnly and field -> isInput ())
+	{
+		for (const auto & route : field -> getInputRoutes ())
+		{
+			const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == field -> getName ();
+
+			addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
+			                                    route -> getSourceNode (),
+			                                    selfConnection ? name : route -> getSourceField (),
+			                                    node,
+			                                    name,
+			                                    undoStep));
+		}
+	}
+
+	if (accessType & outputOnly and field -> isOutput ())
+	{
+		for (const auto & route : field -> getOutputRoutes ())
+		{
+			const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == field -> getName ();
+
+			addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
+			                                    node,
+			                                    name,
+			                                    route -> getDestinationNode (),
+			                                    selfConnection ? name : route -> getDestinationField (),
+			                                    undoStep));
+		}
+	}
+
+	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
+
+	removeRoutes (field, undoStep);
+
+	// Update user defined fields.
+
+	undoStep -> addUndoFunction (&X3DBaseNode::updateUserDefinedField, node, field -> getAccessType (), field -> getName (), field);
+	undoStep -> addRedoFunction (&X3DBaseNode::updateUserDefinedField, node, accessType, name, field);
+	node -> updateUserDefinedField (accessType, name, field);
+
+	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field.
+
+	for (const auto & addRoute : addRoutes)
+	{
+		try
+		{
+			addRoute ();
+		}
+		catch (const X3DError &)
+		{ }
+	}
+
+	// Handle IS references, if node is proto.
+
+	replaceReferences (ProtoDeclarationPtr (node), field, field, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (node, undoStep);
+}
+
+///  This function is with reference handling.
+void
 X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
@@ -1742,6 +1849,10 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 	if (iter == userDefinedFields .end ())
 		return;
+
+	// Save all involved fields.
+
+	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (newField));
 
 	// Handle IS references, if node is proto.
 
@@ -1764,10 +1875,18 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 		// Reassign IS reference to the new field.
 
-		for (const auto & reference : oldField -> getReferences ())
+		const auto references = oldField -> getReferences ();
+	
+		undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+
+		for (const auto & reference : references)
 		{
-			if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == inputOutput)
+			if (reference -> isReference (newField -> getAccessType ()))
+			{
+				undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, newField, reference);
+				undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    newField, reference);
 				newField -> addReference (reference);
+			}
 		}
 
 		// Create addRoutes functions for input and output routes.
@@ -1804,10 +1923,6 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 			}
 		}
 	}
-
-	// Save all involved fields.
-
-	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (newField));
 
 	// Remove user data from old field.
 
@@ -1943,8 +2058,6 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 void
 X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
-	__LOG__ << std::endl;
-
 	using namespace std::placeholders;
 	
 	undoStep -> addObjects (proto);
@@ -1960,9 +2073,6 @@ X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const o
 	{
 		if (field -> getReferences () .count (oldProtoField))
 		{
-			__LOG__ << node -> getTypeName () << std::endl;
-			__LOG__ << newProtoField -> isReference (field -> getAccessType ()) << std::endl;
-
 			undoStep -> addObjects (node);
 			removeReference (node, field, oldProtoField, undoStep);
 

@@ -77,7 +77,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	X3DExecutionContext (),
 	          protoNode (p_protoNode),
 	     typeNameOutput (),
-	               live (true)
+	               live (true),
+	      fieldMappings ()
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 
@@ -88,11 +89,15 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	protoNode -> addInstance (this);
 	protoNode -> name_changed () .addInterest (typeNameOutput);
 
-	for (const auto & userDefinedField : protoNode -> getUserDefinedFields ())
+	for (const auto & protoField : protoNode -> getUserDefinedFields ())
 	{
-		addField (userDefinedField -> getAccessType (),
-		          userDefinedField -> getName (),
-		          *userDefinedField -> copy (FLAT_COPY));
+		const auto field = protoField -> copy (FLAT_COPY);
+
+		addField (protoField -> getAccessType (),
+		          protoField -> getName (),
+		          *field);
+
+		fieldMappings .emplace (protoField, field);
 	}
 
 	if (protoNode -> isExternproto ())
@@ -178,14 +183,11 @@ X3DPrototypeInstance::construct ()
 		if (not metadata () .isSet ())
 			metadata () = proto -> metadata ();
 
-		const auto & fieldDefinitions = proto -> getFieldDefinitions ();
-
-		for (const auto & fieldDefinition : fieldDefinitions)
+		for (const auto & protoField : proto -> getFieldDefinitions ())
 		{
 			try
 			{
-				const auto protoField = proto -> getField (fieldDefinition -> getName ());
-				const auto field      = getField (fieldDefinition -> getName ());
+				const auto field = getField (protoField -> getName ());
 
 				// Return if something is wrong.
 				if (field -> getAccessType () not_eq protoField -> getAccessType ())
@@ -213,9 +215,13 @@ X3DPrototypeInstance::construct ()
 			{
 				// Definition exists in proto but does not exist in extern proto.
 
-				addField (fieldDefinition -> getAccessType (),
-				          fieldDefinition -> getName (),
-				          *fieldDefinition -> copy (FLAT_COPY));
+				const auto field = protoField -> copy (FLAT_COPY);
+
+				addField (protoField -> getAccessType (),
+				          protoField -> getName (),
+				          *field);
+
+				fieldMappings .emplace (protoField, field);
 			}
 		}
 
@@ -252,40 +258,41 @@ X3DPrototypeInstance::update ()
 		X3DExecutionContext::dispose ();
 
 		const auto proto  = protoNode -> getProtoDeclaration ();
-		auto       fields = std::map <std::string, FieldPtr> ();
+		const auto fields = FieldArray (getFieldDefinitions () .begin (), getFieldDefinitions () .end ());
+		const auto map    = fieldMappings;
 
-		for (const auto & fieldDefinition : getFieldDefinitions ())
-			fields .emplace (fieldDefinition -> getName (), fieldDefinition);
+		for (const auto & fieldPtr : fields)
+			removeField (fieldPtr .getValue () -> getName ());
 
-		for (const auto & pair : fields)
-			removeField (pair .second .getValue () -> getName ());
+		fieldMappings .clear ();
 
-		for (const auto & fieldDefinition : proto -> getFieldDefinitions ())
+		for (const auto & protoField : proto -> getFieldDefinitions ())
 		{
-			const auto iter = fields .find (fieldDefinition -> getName ());
+			const auto iter = map .find (protoField);
 
-			if (iter not_eq fields .end ())
+			if (iter not_eq map .end ())
 			{
-				const auto previous = iter -> second .getValue ();
+				const auto field = iter -> second;
 
-				if (previous -> getType () == fieldDefinition -> getType ())
-				{
-					addField (fieldDefinition -> getAccessType (),
-					          fieldDefinition -> getName (),
-					          *previous);
+				addField (protoField -> getAccessType (),
+				          protoField -> getName (),
+				          *field);
 
-					continue;
-				}
+				fieldMappings .emplace (protoField, field);
+
+				continue;
 			}
 
-			addField (fieldDefinition -> getAccessType (),
-			          fieldDefinition -> getName (),
-			          *fieldDefinition -> copy (FLAT_COPY));
+			const auto field = protoField -> copy (FLAT_COPY);
+
+			addField (protoField -> getAccessType (),
+			          protoField -> getName (),
+			          *field);
+
+			fieldMappings .emplace (protoField, field);
 		}
 
 		construct ();
-
-		const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 	}
 	catch (const X3DError & error)
 	{

@@ -182,7 +182,7 @@ private:
 	addUserDefinedField (X3D::X3DFieldDefinition* const);
 
 	void
-	replaceUserDefinedField (X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const);
+	updateUserDefinedField (const X3D::AccessType accessType, const std::string & typeName, const std::string & name, X3D::X3DFieldDefinition* const field);
 
 	void
 	set_fields ();
