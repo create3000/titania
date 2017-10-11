@@ -481,6 +481,15 @@ private:
 
 	static
 	void
+	getAddRouteFunctions (const SFNode & node,
+	                      const AccessType accessType,
+	                      const std::string & name,
+	                      X3DFieldDefinition* const field,
+	                      const UndoStepPtr & undoStep,
+	                      std::deque <std::function <void ()>> & functions);
+
+	static
+	void
 	removeRoutes (X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static

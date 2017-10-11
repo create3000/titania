@@ -128,6 +128,7 @@ public:
 protected:
 
 	friend class ExternProtoDeclaration;
+	friend class X3DEditor;
 	friend class X3DPrototypeInstance;
 
 	///  @name Construction
@@ -150,13 +151,13 @@ protected:
 	removeInstance (X3DPrototypeInstance* const instance)
 	{ instances .erase (instance); }
 
+	void
+	updateInstances ();
+
 
 private:
 
 	///  @name Event handlers
-
-	void
-	updateInstances ();
 
 	void
 	set_fields ();

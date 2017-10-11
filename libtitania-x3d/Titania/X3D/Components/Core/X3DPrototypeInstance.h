@@ -65,6 +65,8 @@ class X3DPrototypeInstance :
 {
 public:
 
+	using X3DNode::getField;
+
 	///  @name Construction
 
 	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoDeclarationNodePtr &);

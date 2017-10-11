@@ -392,6 +392,18 @@ X3DPrototypeInstance::setProtoNode (X3DProtoDeclarationNode* const value)
 	update ();
 }
 
+X3DProtoDeclarationNode*
+X3DPrototypeInstance::findProtoDeclaration (const std::string & name, const AvailableType & available) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (protoNode)
+		return protoNode -> getProtoDeclaration () -> findProtoDeclaration (name, available);
+
+	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
+}
+
 X3DBaseNode*
 X3DPrototypeInstance::getInnerNode ()
 throw (Error <DISPOSED>)
@@ -414,18 +426,6 @@ throw (Error <DISPOSED>)
 		throw Error <DISPOSED> ("Root node not available.");
 
 	return getRootNodes () .front ();
-}
-
-X3DProtoDeclarationNode*
-X3DPrototypeInstance::findProtoDeclaration (const std::string & name, const AvailableType & available) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (protoNode)
-		return protoNode -> getProtoDeclaration () -> findProtoDeclaration (name, available);
-
-	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
 
 void

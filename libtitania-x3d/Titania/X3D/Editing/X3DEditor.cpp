@@ -1743,14 +1743,14 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 	if (iter == userDefinedFields .end ())
 		return;
 
+	const ProtoDeclarationPtr proto (node);
+
 	// Save all involved fields.
 
 	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()));
 
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
 	// functions we will execute later.
-
-	std::deque <std::function <void ()>>  addRoutes;
 
 	// Reassign IS reference to the new field.
 
@@ -1777,41 +1777,34 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 
 	// Create addRoutes functions for input and output routes.
 
-	if (accessType & inputOnly and field -> isInput ())
-	{
-		for (const auto & route : field -> getInputRoutes ())
-		{
-			const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == field -> getName ();
+	std::deque <std::function <void ()>>  addRouteFunctions;
 
-			addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
-			                                    route -> getSourceNode (),
-			                                    selfConnection ? name : route -> getSourceField (),
-			                                    node,
-			                                    name,
-			                                    undoStep));
-		}
-	}
-
-	if (accessType & outputOnly and field -> isOutput ())
-	{
-		for (const auto & route : field -> getOutputRoutes ())
-		{
-			const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == field -> getName ();
-
-			addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
-			                                    node,
-			                                    name,
-			                                    route -> getDestinationNode (),
-			                                    selfConnection ? name : route -> getDestinationField (),
-			                                    undoStep));
-		}
-	}
+	getAddRouteFunctions (node, accessType, name, field, undoStep, addRouteFunctions);
 
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
 
 	removeRoutes (field, undoStep);
+
+	if (proto)
+	{
+		for (const auto instance : proto -> getInstances ())
+		{
+			try
+			{
+				// Create addRoutes functions for input and output routes.
+	
+				const auto instanceField = instance -> getField (field -> getName ());
+	
+				getAddRouteFunctions (SFNode (instance), accessType, name, instanceField, undoStep, addRouteFunctions);
+	
+				removeRoutes (instanceField, undoStep);
+			}
+			catch (const X3DError &)
+			{ }
+		}
+
+		undoStep -> addUndoFunction (&ProtoDeclaration::updateInstances, proto);
+	}
 
 	// Update user defined fields.
 
@@ -1819,13 +1812,22 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 	undoStep -> addRedoFunction (&X3DBaseNode::updateUserDefinedField, node, accessType, name, field);
 	node -> updateUserDefinedField (accessType, name, field);
 
-	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field.
+	// Prototype support
 
-	for (const auto & addRoute : addRoutes)
+	if (proto)
+	{
+		// Immediately update instance to add possible routes now.
+		undoStep -> addRedoFunction (&ProtoDeclaration::updateInstances, proto);
+		proto -> updateInstances (); 
+	}
+
+	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field and create undo/redo steps.
+
+	for (const auto & addRouteFunction : addRouteFunctions)
 	{
 		try
 		{
-			addRoute ();
+			addRouteFunction ();
 		}
 		catch (const X3DError &)
 		{ }
@@ -1833,11 +1835,7 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 
 	// Handle IS references, if node is proto.
 
-	replaceReferences (ProtoDeclarationPtr (node), field, field, undoStep);
-
-	// Prototype support
-
-	requestUpdateInstances (node, undoStep);
+	replaceReferences (proto, field, field, undoStep);
 }
 
 ///  This function is with reference handling.
@@ -1856,16 +1854,18 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 	// Handle IS references, if node is proto.
 
+	const ProtoDeclarationPtr proto (node);
+
 	if (oldField -> getType () == newField -> getType ())
-		replaceReferences (ProtoDeclarationPtr (node), oldField, newField, undoStep);
+		replaceReferences (proto, oldField, newField, undoStep);
 
 	else
-		removeReferences (ProtoDeclarationPtr (node), oldField, undoStep);
+		removeReferences (proto, oldField, undoStep);
 
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
 	// functions we will execute later.
 
-	std::deque <std::function <void ()>>  addRoutes;
+	std::deque <std::function <void ()>>  addRouteFunctions;
 
 	if (newField -> getType () == oldField -> getType ())
 	{
@@ -1891,37 +1891,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 		// Create addRoutes functions for input and output routes.
 
-		if (newField -> isInput () and oldField -> isInput ())
-		{
-			for (const auto & route : oldField -> getInputRoutes ())
-			{
-				const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
-
-				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
-				                                    route -> getSourceNode (),
-				                                    selfConnection ? newField -> getName () : route -> getSourceField (),
-				                                    node,
-				                                    newField -> getName (),
-				                                    undoStep));
-			}
-		}
-
-		if (newField -> isOutput () and oldField -> isOutput ())
-		{
-			for (const auto & route : oldField -> getOutputRoutes ())
-			{
-				const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
-
-				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
-				                                    node,
-				                                    newField -> getName (),
-				                                    route -> getDestinationNode (),
-				                                    selfConnection ? newField -> getName () : route -> getDestinationField (),
-				                                    undoStep));
-			}
-		}
+		getAddRouteFunctions (node, newField -> getAccessType (), newField -> getName (), oldField,  undoStep, addRouteFunctions);
 	}
 
 	// Remove user data from old field.
@@ -1933,6 +1903,28 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
 
 	removeRoutes (oldField, undoStep);
+
+	if (proto)
+	{
+		for (const auto instance : proto -> getInstances ())
+		{
+			try
+			{
+				// Create addRoutes functions for input and output routes.
+	
+				const auto instanceField = instance -> getField (oldField -> getName ());
+	
+				if (newField -> getType () == oldField -> getType ())
+					getAddRouteFunctions (SFNode (instance), newField -> getAccessType (), newField -> getName (), instanceField, undoStep, addRouteFunctions);
+
+				removeRoutes (instanceField, undoStep);
+			}
+			catch (const X3DError &)
+			{ }
+		}
+
+		undoStep -> addUndoFunction (&ProtoDeclaration::updateInstances, proto);
+	}
 
 	// Restore old user defined fields in undo.
 
@@ -1948,21 +1940,67 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 	node -> setUserDefinedFields (userDefinedFields);
 
-	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field.
+	// Prototype support
 
-	for (const auto & addRoute : addRoutes)
+	if (proto)
+	{
+		// Immediately update instance to add possible routes now.
+		undoStep -> addRedoFunction (&ProtoDeclaration::updateInstances, proto);
+		proto -> updateInstances ();
+	}
+
+	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field and create undo/redo steps.
+
+	for (const auto & addRouteFunction : addRouteFunctions)
 	{
 		try
 		{
-			addRoute ();
+			addRouteFunction ();
 		}
 		catch (const X3DError &)
 		{ }
 	}
+}
 
-	// Prototype support
+void
+X3DEditor::getAddRouteFunctions (const SFNode & node,
+                                 const AccessType accessType,
+                                 const std::string & name,
+                                 X3DFieldDefinition* const field,
+                                 const UndoStepPtr & undoStep,
+                                 std::deque <std::function <void ()>> & functions)
+{
+	if (accessType & inputOnly and field -> isInput ())
+	{
+		for (const auto & route : field -> getInputRoutes ())
+		{
+			const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == field -> getName ();
 
-	requestUpdateInstances (node, undoStep);
+			functions .emplace_back (std::bind (&X3DEditor::addRoute,
+			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
+			                                    route -> getSourceNode (),
+			                                    selfConnection ? name : route -> getSourceField (),
+			                                    node,
+			                                    name,
+			                                    undoStep));
+		}
+	}
+
+	if (accessType & outputOnly and field -> isOutput ())
+	{
+		for (const auto & route : field -> getOutputRoutes ())
+		{
+			const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == field -> getName ();
+
+			functions .emplace_back (std::bind (&X3DEditor::addRoute,
+			                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
+			                                    node,
+			                                    name,
+			                                    route -> getDestinationNode (),
+			                                    selfConnection ? name : route -> getDestinationField (),
+			                                    undoStep));
+		}
+	}
 }
 
 ///  This function is with reference handling.
