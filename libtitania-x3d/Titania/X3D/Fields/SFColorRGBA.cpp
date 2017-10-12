@@ -61,7 +61,7 @@ template <>
 const std::string X3DField <Color4f>::typeName ("SFColorRGBA");
 
 template <>
-const X3DConstants::FieldType X3DField <Color4f>::type = X3DConstants::SFColorRGBA;
+const FieldType X3DField <Color4f>::type = X3DConstants::SFColorRGBA;
 
 template class X3DField <Color4f>;
 

@@ -63,10 +63,10 @@ template <>
 const std::string X3DField <Matrix4f>::typeName ("SFMatrix4f");
 
 template <>
-const X3DConstants::FieldType X3DField <Matrix4d>::type = X3DConstants::SFMatrix4d;
+const FieldType X3DField <Matrix4d>::type = X3DConstants::SFMatrix4d;
 
 template <>
-const X3DConstants::FieldType X3DField <Matrix4f>::type = X3DConstants::SFMatrix4f;
+const FieldType X3DField <Matrix4f>::type = X3DConstants::SFMatrix4f;
 
 template class X3DField <Matrix4d>;
 template class X3DField <Matrix4f>;

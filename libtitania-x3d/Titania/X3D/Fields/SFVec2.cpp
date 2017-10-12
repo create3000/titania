@@ -60,10 +60,10 @@ template <>
 const std::string X3DField <Vector2f>::typeName ("SFVec2f");
 
 template <>
-const X3DConstants::FieldType X3DField <Vector2d>::type = X3DConstants::SFVec2d;
+const FieldType X3DField <Vector2d>::type = X3DConstants::SFVec2d;
 
 template <>
-const X3DConstants::FieldType X3DField <Vector2f>::type = X3DConstants::SFVec2f;
+const FieldType X3DField <Vector2f>::type = X3DConstants::SFVec2f;
 
 template class X3DField <Vector2d>;
 template class X3DField <Vector2f>;

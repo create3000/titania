@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoDeclarationNodePtr &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoDeclarationNodePtr & protoNode);
 
 	virtual
 	X3DPrototypeInstance*
@@ -211,7 +211,7 @@ public:
 
 	virtual
 	X3DProtoDeclarationNode*
-	findProtoDeclaration (const std::string &, const AvailableType &) const
+	findProtoDeclaration (const std::string & name, const AvailableType & available) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
@@ -230,9 +230,6 @@ public:
 
 	///  @name Operations
 
-	void
-	update ();
-
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
@@ -249,21 +246,33 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class X3DProtoDeclarationNode;
+
+	///  @name Construction
+
+	void
+	update ();
 
 
 private:

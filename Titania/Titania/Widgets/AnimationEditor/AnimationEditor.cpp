@@ -816,7 +816,7 @@ AnimationEditor::removeNode (const X3D::SFNode & node)
 void
 AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 {
-	static const std::set <X3D::X3DConstants::FieldType> fieldTypes = {
+	static const std::set <X3D::FieldType> fieldTypes = {
 	   X3D::X3DConstants::SFBool,
 		X3D::X3DConstants::SFColor,
 		X3D::X3DConstants::SFFloat,

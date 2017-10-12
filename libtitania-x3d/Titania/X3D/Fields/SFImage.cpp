@@ -57,7 +57,7 @@ template <>
 const std::string X3DField <Image>::typeName ("SFImage");
 
 template <>
-const X3DConstants::FieldType X3DField <Image>::type = X3DConstants::SFImage;
+const FieldType X3DField <Image>::type = X3DConstants::SFImage;
 
 template class X3DField <Image>;
 

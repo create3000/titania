@@ -237,7 +237,7 @@ public:
 
 	///  Returns the type of the object.
 	virtual
-	X3DConstants::FieldType
+	FieldType
 	getType () const final override
 	{ return X3DConstants::MFNode; }
 

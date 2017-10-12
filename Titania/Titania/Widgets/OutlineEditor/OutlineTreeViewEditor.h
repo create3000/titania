@@ -134,7 +134,7 @@ private:
 
 	///  @name Members
 
-	using FieldType = X3D::X3DConstants::FieldType;
+	using FieldType = X3D::FieldType;
 
 	std::unique_ptr <OutlineDragDrop> dragDrop;
 	UserDataPtr overUserData;

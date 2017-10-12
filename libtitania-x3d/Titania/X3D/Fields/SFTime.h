@@ -125,7 +125,7 @@ public:
 	{ return typeName; }
 
 	virtual
-	X3DConstants::FieldType
+	FieldType
 	getType () const final override
 	{ return type; }
 
@@ -223,7 +223,7 @@ private:
 
 	static const std::string typeName;
 
-	static const X3DConstants::FieldType type;
+	static const FieldType type;
 
 };
 

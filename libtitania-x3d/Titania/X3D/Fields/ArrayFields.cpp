@@ -136,61 +136,61 @@ const std::string X3DField <Array <SFVec4f>>::typeName ("MFVec4f");
 // type
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFBool>>::type = X3DConstants::MFBool;
+const FieldType X3DField <Array <SFBool>>::type = X3DConstants::MFBool;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFColor>>::type = X3DConstants::MFColor;
+const FieldType X3DField <Array <SFColor>>::type = X3DConstants::MFColor;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFColorRGBA>>::type = X3DConstants::MFColorRGBA;
+const FieldType X3DField <Array <SFColorRGBA>>::type = X3DConstants::MFColorRGBA;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFDouble>>::type = X3DConstants::MFDouble;
+const FieldType X3DField <Array <SFDouble>>::type = X3DConstants::MFDouble;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFFloat>>::type = X3DConstants::MFFloat;
+const FieldType X3DField <Array <SFFloat>>::type = X3DConstants::MFFloat;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFImage>>::type = X3DConstants::MFImage;
+const FieldType X3DField <Array <SFImage>>::type = X3DConstants::MFImage;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFMatrix3d>>::type = X3DConstants::MFMatrix3d;
+const FieldType X3DField <Array <SFMatrix3d>>::type = X3DConstants::MFMatrix3d;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFMatrix3f>>::type = X3DConstants::MFMatrix3f;
+const FieldType X3DField <Array <SFMatrix3f>>::type = X3DConstants::MFMatrix3f;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFMatrix4d>>::type = X3DConstants::MFMatrix4d;
+const FieldType X3DField <Array <SFMatrix4d>>::type = X3DConstants::MFMatrix4d;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFMatrix4f>>::type = X3DConstants::MFMatrix4f;
+const FieldType X3DField <Array <SFMatrix4f>>::type = X3DConstants::MFMatrix4f;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFRotation>>::type = X3DConstants::MFRotation;
+const FieldType X3DField <Array <SFRotation>>::type = X3DConstants::MFRotation;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFString>>::type = X3DConstants::MFString;
+const FieldType X3DField <Array <SFString>>::type = X3DConstants::MFString;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFTime>>::type = X3DConstants::MFTime;
+const FieldType X3DField <Array <SFTime>>::type = X3DConstants::MFTime;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec2d>>::type = X3DConstants::MFVec2d;
+const FieldType X3DField <Array <SFVec2d>>::type = X3DConstants::MFVec2d;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec2f>>::type = X3DConstants::MFVec2f;
+const FieldType X3DField <Array <SFVec2f>>::type = X3DConstants::MFVec2f;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec3d>>::type = X3DConstants::MFVec3d;
+const FieldType X3DField <Array <SFVec3d>>::type = X3DConstants::MFVec3d;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec3f>>::type = X3DConstants::MFVec3f;
+const FieldType X3DField <Array <SFVec3f>>::type = X3DConstants::MFVec3f;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec4d>>::type = X3DConstants::MFVec4d;
+const FieldType X3DField <Array <SFVec4d>>::type = X3DConstants::MFVec4d;
 
 template <>
-const X3DConstants::FieldType X3DField <Array <SFVec4f>>::type = X3DConstants::MFVec4f;
+const FieldType X3DField <Array <SFVec4f>>::type = X3DConstants::MFVec4f;
 
 // MFString
 

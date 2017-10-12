@@ -100,7 +100,7 @@ public:
 	/// @name Common members
 
 	virtual
-	X3DConstants::FieldType
+	FieldType
 	getType () const override
 	{ return type; }
 
@@ -254,7 +254,7 @@ private:
 	static const std::string   typeName;
 
 	///  Type identifer for X3DFields.
-	static const X3DConstants::FieldType type;
+	static const FieldType type;
 
 	/// @name Members
 
@@ -267,7 +267,7 @@ template <class InternalType>
 const std::string X3DField <InternalType>::typeName = "X3DField";
 
 template <class InternalType>
-const X3DConstants::FieldType X3DField <InternalType>::type = X3DConstants::SFBool;
+const FieldType X3DField <InternalType>::type = X3DConstants::SFBool;
 
 ///  @relates X3DField
 ///  @name Comparision operations

@@ -131,7 +131,7 @@ public:
 	///  @name Field services
 
 	virtual
-	X3DConstants::FieldType
+	FieldType
 	getType () const final override
 	{ return X3DConstants::SFNode; }
 

@@ -68,16 +68,16 @@ template <>
 const std::string X3DField <int32_t>::typeName ("SFInt32");
 
 template <>
-const X3DConstants::FieldType X3DField <bool>::type = X3DConstants::SFBool;
+const FieldType X3DField <bool>::type = X3DConstants::SFBool;
 
 template <>
-const X3DConstants::FieldType X3DField <double>::type = X3DConstants::SFDouble;
+const FieldType X3DField <double>::type = X3DConstants::SFDouble;
 
 template <>
-const X3DConstants::FieldType X3DField <float>::type = X3DConstants::SFFloat;
+const FieldType X3DField <float>::type = X3DConstants::SFFloat;
 
 template <>
-const X3DConstants::FieldType X3DField <int32_t>::type = X3DConstants::SFInt32;
+const FieldType X3DField <int32_t>::type = X3DConstants::SFInt32;
 
 template <>
 void

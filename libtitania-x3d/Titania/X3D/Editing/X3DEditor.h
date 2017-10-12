@@ -481,6 +481,10 @@ private:
 
 	static
 	void
+	addReferences (const SFNode & node, const std::string & fieldName, const FieldDefinitionSet & references);
+
+	static
+	void
 	getAddRouteFunctions (const SFNode & node,
 	                      const AccessType accessType,
 	                      const std::string & name,

@@ -113,7 +113,7 @@ public:
 	///  @name Member access
 
 	virtual
-	X3DConstants::FieldType
+	FieldType
 	getType () const = 0;
 
 	void

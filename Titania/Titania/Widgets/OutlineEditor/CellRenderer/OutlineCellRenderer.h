@@ -211,8 +211,8 @@ private:
 	//	void
 	//	edited (const Glib::ustring & path, const Glib::ustring & new_text);
 
-	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>                 FieldTypeImageIndex;
-	typedef std::map <const X3D::X3DConstants::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>>   AccessTypeImageIndex;
+	using FieldTypeImageIndex  = std::map <const X3D::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>;
+	using AccessTypeImageIndex = std::map <const X3D::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>>;
 
 	X3DOutlineTreeView* const treeView;
 

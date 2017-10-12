@@ -60,7 +60,7 @@ template <>
 const std::string X3DField <String>::typeName ("SFString");
 
 template <>
-const X3DConstants::FieldType X3DField <String>::type = X3DConstants::SFString;
+const FieldType X3DField <String>::type = X3DConstants::SFString;
 
 template class X3DField <String>;
 
