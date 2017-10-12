@@ -75,8 +75,7 @@ public:
 
 	X3DBindableNodeStack (X3DExecutionContext* const executionContext, const pointer_type & node) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
-		      stack ({ node }),
-		       lock (false)
+		      stack ({ node })
 	{
 		node -> shutdown () .addInterest (&X3DBindableNodeStack::erase, this, node);
 	}
@@ -108,14 +107,6 @@ public:
 
 	///  @name Member access
 
-	void
-	setLock (const bool value)
-	{ lock = value; }
-
-	bool
-	getLock () const
-	{ return lock; }
-
 	const pointer_type &
 	getTop () const
 	{ return stack .top (); }
@@ -136,8 +127,6 @@ public:
 			node -> isBound ()  = true;
 			node -> bindTime () = getCurrentTime ();
 		}
-		else if (lock)
-			return;
 
 		if (stack .empty ())
 			return;
@@ -167,9 +156,6 @@ public:
 	bool
 	pop (const pointer_type & node)
 	{
-		if (lock)
-			return false;
-
 		if (stack .empty ())
 			return false;
 
@@ -220,7 +206,6 @@ private:
 	///  @name Members
 
 	stack_type stack;
-	bool       lock;
 
 };
 

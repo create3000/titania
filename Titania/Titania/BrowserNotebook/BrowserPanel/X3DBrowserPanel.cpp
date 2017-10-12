@@ -391,11 +391,6 @@ X3DBrowserPanel::set_dependent_browser ()
 		gridLayer -> getViewpointStack () -> pushOnTop (viewpoint, true);
 		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
 
-		layer -> getNavigationInfoStack () -> setLock (true);
-		layer -> getViewpointStack ()      -> setLock (true);
-		layer -> getBackgroundStack ()     -> setLock (true);
-		layer -> getFogStack ()            -> setLock (true);
-
 		gridSwitch -> children () .emplace_back (gridTool            -> getTool ());
 		gridSwitch -> children () .emplace_back (angleGridTool       -> getTool ());
 		gridSwitch -> children () .emplace_back (axonometricGridTool -> getTool ());
