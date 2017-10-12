@@ -2288,7 +2288,12 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 std::vector <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return findParents <X3DLayerNode> (this, TRAVERSE_VISIBLE_NODES);
+	auto layers = findParents <X3DLayerNode> (this, TRAVERSE_VISIBLE_NODES);
+	auto iter   = std::remove_if (layers .begin (), layers .end (), [&] (X3DLayerNode* const layer) { return layer -> getBrowser () not_eq getBrowser (); });
+
+	layers .erase (iter, layers .end ());
+
+	return layers;
 }
 
 } // X3D
