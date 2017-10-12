@@ -127,25 +127,29 @@ VisibilitySensor::update ()
 void
 VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (enabled ())
+	if (renderObject -> getBrowser () not_eq getBrowser ())
+		return;
+
+	if (not enabled ())
+		return;
+
+	if (type not_eq TraverseType::DISPLAY)
+		return;
+
+	setTraversed (true);
+
+	if (visible)
+		return;
+		
+	if (size () == Vector3f (-1, -1, -1))
 	{
-		if (type == TraverseType::DISPLAY)
-		{
-			setTraversed (true);
+		visible = true;
+	}
+	else
+	{
+		const auto bbox = Box3d (size () .getValue (), center () .getValue ()) * renderObject -> getModelViewMatrix () .get ();
 
-			if (visible)
-				return;
-				
-			if (size () == Vector3f (-1, -1, -1))
-				visible = true;
-
-			else
-			{
-				const auto bbox = Box3d (size () .getValue (), center () .getValue ()) * renderObject -> getModelViewMatrix () .get ();
-
-				visible = renderObject -> getViewVolumes () .back () .intersects (bbox);
-			}
-		}
+		visible = renderObject -> getViewVolumes () .back () .intersects (bbox);
 	}
 }
 

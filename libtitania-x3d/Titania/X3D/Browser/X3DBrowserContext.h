@@ -285,11 +285,6 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_sensorEvents ();
-
 	///  @name Members
 
 	SFBool initializedOutput;

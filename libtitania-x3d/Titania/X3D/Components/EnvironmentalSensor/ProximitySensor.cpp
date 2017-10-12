@@ -180,38 +180,41 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 {
 	try
 	{
-		if (enabled ())
-		{
-			switch (type)
-			{
-				case TraverseType::CAMERA:
-				{
-					viewpointNode   = renderObject -> getViewpoint ();
-					modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
-					return;
-				}
-				case TraverseType::DISPLAY:
-				{
-					setTraversed (true);
-	
-					if (inside)
-						return;
-	
-					if (size () == Vector3f (-1, -1, -1))
-						inside = true;
-	
-					else
-					{
-						const auto bbox = Box3d (size () .getValue (), center () .getValue ());
+		if (renderObject -> getBrowser () not_eq getBrowser ())
+			return;
 
-						inside = bbox .intersects (inverse (renderObject -> getModelViewMatrix () .get ()) .origin ());
-					}
-	
-					return;
-				}
-				default:
-					return;
+		if (not enabled ())
+			return;
+
+		switch (type)
+		{
+			case TraverseType::CAMERA:
+			{
+				viewpointNode   = renderObject -> getViewpoint ();
+				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+				return;
 			}
+			case TraverseType::DISPLAY:
+			{
+				setTraversed (true);
+
+				if (inside)
+					return;
+
+				if (size () == Vector3f (-1, -1, -1))
+					inside = true;
+
+				else
+				{
+					const auto bbox = Box3d (size () .getValue (), center () .getValue ());
+
+					inside = bbox .intersects (inverse (renderObject -> getModelViewMatrix () .get ()) .origin ());
+				}
+
+				return;
+			}
+			default:
+				return;
 		}
 	}
 	catch (const std::domain_error &)

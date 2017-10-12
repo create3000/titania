@@ -151,12 +151,33 @@ public:
 	{
 		if (temp not_eq list)
 		{
-			for (auto & node : list)
+			// Find nodes that are not traversed, ie. possibly hidden by a Switch node.
+
+			list_type difference;
+
+			for (const auto & node : list)
+			{
+				if (not std::count (temp .begin (), temp .end (), node))
+					difference .emplace_back (node);
+			}
+
+			// Disable hidden nodes.
+
+			for (auto & node : difference)
+			{
 				node -> shutdown () .removeInterest (&X3DBindableNodeList::erase, this);
+
+				if (node -> isBound ())
+					node -> set_bind () = false;
+			}
+
+			// Replace current list.
 
 			replace (temp);
 
 			list = std::move (temp);
+
+			// Connect to shutdown.
 
 			for (auto & node : list)
 				node -> shutdown () .addInterest (&X3DBindableNodeList::erase, this, node);

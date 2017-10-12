@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V3.1.0
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V3.1.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 25 Jun 2017 09:52:37 GMT"
+META "modified" "Thu, 12 Oct 2017 04:55:57 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -340,49 +340,48 @@ Collision {
         }
         DEF Knife Group {
           children [
-            DEF _3 ProximitySensor {
-              size -1 -1 -1
-            }
             DEF KnifeStartPointSwitch Switch {
               whichChoice 0
               children [
                 Group { }
                 DEF KnifeStartPoint Transform {
-                  rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
-                  children DEF _4 ScreenGroup {
-                    children [
-                      DepthBuffer {
-                        enabled FALSE
-                        depthOffset 3000
-                        children Shape {
-                          appearance Appearance {
-                            lineProperties LineProperties {
-                              linetype 2
-                              linewidthScaleFactor 1
+                  children Billboard {
+                    axisOfRotation 0 0 0
+                    children DEF _3 ScreenGroup {
+                      children [
+                        DepthBuffer {
+                          enabled FALSE
+                          depthOffset 3000
+                          children Shape {
+                            appearance Appearance {
+                              lineProperties LineProperties {
+                                linetype 2
+                                linewidthScaleFactor 1
+                              }
+                              material Material {
+                                diffuseColor 0 0 0
+                              }
                             }
-                            material Material {
-                              diffuseColor 0 0 0
+                            geometry DEF _4 Circle2D {
+                              radius 3
                             }
-                          }
-                          geometry DEF _5 Circle2D {
-                            radius 3
                           }
                         }
-                      }
-                      DepthBuffer {
-                        enabled FALSE
-                        depthOffset 4000
-                        children Shape {
-                          appearance Appearance {
-                            material Material {
-                              diffuseColor 0 0 0
-                              emissiveColor 1 1 1
+                        DepthBuffer {
+                          enabled FALSE
+                          depthOffset 4000
+                          children Shape {
+                            appearance Appearance {
+                              material Material {
+                                diffuseColor 0 0 0
+                                emissiveColor 1 1 1
+                              }
                             }
+                            geometry USE _4
                           }
-                          geometry USE _5
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
               ]
@@ -393,23 +392,25 @@ Collision {
                 Group {
                   children [
                     DEF KnifeEndPoint Transform {
-                      rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
-                      children USE _4
+                      children Billboard {
+                        axisOfRotation 0 0 0
+                        children USE _3
+                      }
                     }
                     DepthBuffer {
                       enabled FALSE
                       depthOffset 1000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _6 LineProperties {
+                          lineProperties DEF _5 LineProperties {
                             linetype 2
                             linewidthScaleFactor 3
                           }
-                          material DEF _7 Material {
+                          material DEF _6 Material {
                             diffuseColor 0 0 0
                           }
                         }
-                        geometry DEF _8 LineSet {
+                        geometry DEF _7 LineSet {
                           vertexCount 2
                           coord DEF KnifeLineCoordinate CoordinateDouble {
                             point [
@@ -425,7 +426,7 @@ Collision {
                       depthOffset 2000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _9 LineProperties {
+                          lineProperties DEF _8 LineProperties {
                             linetype 2
                             linewidthScaleFactor 1
                           }
@@ -434,7 +435,7 @@ Collision {
                             emissiveColor 1 1 1
                           }
                         }
-                        geometry USE _8
+                        geometry USE _7
                       }
                     }
                   ]
@@ -445,38 +446,40 @@ Collision {
               children [
                 Group { }
                 DEF KnifeArc Transform {
-                  rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
-                  children ScreenGroup {
-                    children [
-                      DepthBuffer {
-                        enabled FALSE
-                        depthOffset 1000
-                        children Shape {
-                          appearance Appearance {
-                            lineProperties LineProperties {
-                              linewidthScaleFactor 3
+                  children Billboard {
+                    axisOfRotation 0 0 0
+                    children ScreenGroup {
+                      children [
+                        DepthBuffer {
+                          enabled FALSE
+                          depthOffset 1000
+                          children Shape {
+                            appearance Appearance {
+                              lineProperties LineProperties {
+                                linewidthScaleFactor 3
+                              }
+                              material USE _6
                             }
-                            material USE _7
-                          }
-                          geometry DEF KnifeArcGeometry Arc2D {
-                            radius 10
-                          }
-                        }
-                      }
-                      DepthBuffer {
-                        enabled FALSE
-                        depthOffset 2000
-                        children Shape {
-                          appearance Appearance {
-                            material Material {
-                              diffuseColor 0 0 0
-                              emissiveColor 1 1 1
+                            geometry DEF KnifeArcGeometry Arc2D {
+                              radius 10
                             }
                           }
-                          geometry USE KnifeArcGeometry
                         }
-                      }
-                    ]
+                        DepthBuffer {
+                          enabled FALSE
+                          depthOffset 2000
+                          children Shape {
+                            appearance Appearance {
+                              material Material {
+                                diffuseColor 0 0 0
+                                emissiveColor 1 1 1
+                              }
+                            }
+                            geometry USE KnifeArcGeometry
+                          }
+                        }
+                      ]
+                    }
                   }
                 }
               ]
@@ -501,7 +504,7 @@ Collision {
                           diffuseColor 0 0 0
                         }
                       }
-                      geometry DEF _10 Circle2D { }
+                      geometry DEF _9 Circle2D { }
                     }
                   }
                   DepthBuffer {
@@ -514,7 +517,7 @@ Collision {
                           emissiveColor 1 1 1
                         }
                       }
-                      geometry USE _10
+                      geometry USE _9
                     }
                   }
                 ]
@@ -539,11 +542,8 @@ ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveCol
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
 ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
-ROUTE _6.linetype_changed TO _9.set_linetype
-ROUTE _9.linetype_changed TO _6.set_linetype
-ROUTE _3.orientation_changed TO KnifeStartPoint.set_rotation
-ROUTE _3.orientation_changed TO KnifeEndPoint.set_rotation
-ROUTE _3.orientation_changed TO KnifeArc.set_rotation
+ROUTE _5.linetype_changed TO _8.set_linetype
+ROUTE _8.linetype_changed TO _5.set_linetype
 ROUTE ToolSwitch.whichChoice_changed TO SelectionSwitch.set_whichChoice
 
 EXPORT ActiveEdgesGeometry
