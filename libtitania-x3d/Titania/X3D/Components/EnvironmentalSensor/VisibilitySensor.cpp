@@ -140,7 +140,7 @@ VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const rend
 
 	if (visible)
 		return;
-		
+
 	if (size () == Vector3f (-1, -1, -1))
 	{
 		visible = true;

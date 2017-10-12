@@ -98,7 +98,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
+		getBrowser () -> getSelection () -> getEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		getExecutionContext () -> isLive () .removeInterest (&X3DPointingDeviceSensorNode::set_live, this);
 	}
 
@@ -106,6 +106,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
+		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		getExecutionContext () -> isLive () .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
 
 		set_live ();
