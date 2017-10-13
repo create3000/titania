@@ -756,24 +756,7 @@ X3DBrowserPanelMenuBar::on_layers_activate (const X3D::X3DPtr <X3D::X3DLayerNode
 void
 X3DBrowserPanelMenuBar::on_layer_activate (const size_t layerNumber)
 {
-	try
-	{
-		const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
-
-		if (layerNumber == 0)
-		{
-			setLayer (layerSet -> getLayer0 ());
-		}
-		else
-		{
-			const X3D::X3DPtr <X3D::X3DLayerNode> layerNode (layerSet -> layers () .at (layerNumber - 1));
-
-			if (layerNode)
-				setLayer (layerNode);
-		}
-	}
-	catch (const std::out_of_range &)
-	{ }
+	setLayer (layerNumber);
 }
 
 /*

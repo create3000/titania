@@ -350,7 +350,7 @@ X3DBrowserPanel::setLayer (const int32_t layerNumber)
 {
 	try
 	{
-		const auto & layerSet= getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+		const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
 
 		if (layerNumber == 0)
 		{
@@ -384,6 +384,7 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 		{
 			const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
 
+			layerNode -> isLive () .removeInterest (&X3DBrowserPanel::set_live, this);
 			layerNode -> getNavigationInfoStack () -> removeInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
 			layerNode -> children () .removeInterest (group -> children ());
 		}
@@ -395,7 +396,7 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 
 	layerNode = value;
 
-	setLayerNumber (layerNode);
+	setLayerNumber (getLayerNumber (layerNode));
 
 	try
 	{
@@ -410,6 +411,7 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 			const auto userCenterOfRotation = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
 			const auto fieldOfViewScale     = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
 
+			layerNode -> isLive () .addInterest (&X3DBrowserPanel::set_live, this);
 			layerNode -> getNavigationInfoStack () -> addInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
 			layerNode -> children () .addInterest (group -> children ());
 			group -> children () = layerNode -> children ();
@@ -528,12 +530,13 @@ X3DBrowserPanel::set_dependent_browser ()
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
 
+		getPage () -> getExecutionContext () .addInterest (&X3DBrowserPanel::set_execution_context, this);
+
 		set_fixed_pipeline ();
 		set_viewer ();
 		set_background_texture ();
 		set_background_texture_transparency ();
-
-		setLayer (getLayerNumber ());
+		set_execution_context ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -608,6 +611,19 @@ X3DBrowserPanel::set_background_texture_transparency ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+X3DBrowserPanel::set_live ()
+{
+	if (not layerNode -> isLive ())
+		setLayer (-1);
+}
+
+void
+X3DBrowserPanel::set_execution_context ()
+{
+	setLayer (getLayerNumber ());
 }
 
 void

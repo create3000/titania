@@ -114,6 +114,9 @@ protected:
 	setLocalBrowser (const X3D::BrowserPtr & value);
 
 	void
+	setLayer (const int32_t layerNumber);
+
+	void
 	setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & layer);
 
 	const X3D::X3DPtr <X3D::X3DLayerNode> &
@@ -150,9 +153,6 @@ private:
 	getPlane () const;
 
 	void
-	setLayer (const int32_t layerNumber);
-
-	void
 	setLayerNumber (const int32_t layerNumber);
 	
 	int32_t
@@ -180,6 +180,12 @@ private:
 
 	void
 	set_background_texture_transparency ();
+
+	void
+	set_live ();
+
+	void
+	set_execution_context ();
 
 	void
 	set_navigationInfoStack ();
