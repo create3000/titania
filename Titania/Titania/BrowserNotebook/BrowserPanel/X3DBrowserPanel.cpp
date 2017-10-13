@@ -167,9 +167,6 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 {
 	const auto & mainBrowser = getPage () -> getMainBrowser ();
 
-	layerNode          = nullptr;
-	navigationInfoNode = nullptr;
-
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return mainBrowser;
 
@@ -457,12 +454,19 @@ X3DBrowserPanel::setLayerNumber (const int32_t layerNumber)
 int32_t
 X3DBrowserPanel::getLayerNumber () const
 {
-	const auto worldInfo        = const_cast <X3DBrowserPanel*> (this) -> createWorldInfo (getPage () -> getScene ());
-	auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
+	try
+	{
+		const auto worldInfo        = getWorldInfo (getPage () -> getScene ());
+		auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
 
-	layerNumberArray .resize (8, X3D::SFInt32 (-1));
-
-	return layerNumberArray [size_t (type)];
+		layerNumberArray .resize (8, X3D::SFInt32 (-1));
+	
+		return layerNumberArray [size_t (type)];
+	}
+	catch (const X3D::X3DError &)
+	{
+		return -1;
+	}
 }
 
 int32_t
