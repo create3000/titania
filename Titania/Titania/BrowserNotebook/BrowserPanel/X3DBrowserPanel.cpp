@@ -146,6 +146,10 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                 navigationInfoNode,
 	                 viewpoint,
 	                 gridTransform);
+
+	#ifndef TITANIA_FEATUREx
+	getLayersMenuItem () .set_visible (false);
+	#endif
 }
 
 void
@@ -530,7 +534,11 @@ X3DBrowserPanel::set_dependent_browser ()
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
 
+		#ifndef TITANIA_FEATUREx
+		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::setLayer, this);
+		#else
 		getPage () -> getExecutionContext () .addInterest (&X3DBrowserPanel::set_execution_context, this);
+		#endif
 
 		set_fixed_pipeline ();
 		set_viewer ();
@@ -623,7 +631,11 @@ X3DBrowserPanel::set_live ()
 void
 X3DBrowserPanel::set_execution_context ()
 {
+	#ifndef TITANIA_FEATUREx
+	setLayer (-1);
+	#else
 	setLayer (getLayerNumber ());
+	#endif
 }
 
 void
