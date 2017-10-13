@@ -346,25 +346,24 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 {
 	X3DBrowserWindow::set_selection (selection);
 
-	const bool inScene        = not inPrototypeInstance ();
-	const bool haveSelection  = inScene and selection .size ();
-	const bool haveSelections = inScene and selection .size () > 1;
+	const bool inScene          = not inPrototypeInstance ();
+	const bool haveSelection    = inScene and selection .size ();
+	const bool haveSelections   = inScene and selection .size () > 1;
+	const bool executionContext = getExecutionContext (selection);
 
 	// Window menu
 
-	getCutMenuItem ()    .set_sensitive (haveSelection);
-	getCopyMenuItem ()   .set_sensitive (haveSelection);
-	getDeleteMenuItem () .set_sensitive (haveSelection);
+	getCutMenuItem ()    .set_sensitive (haveSelection and executionContext);
+	getCopyMenuItem ()   .set_sensitive (haveSelection and executionContext);
+	getDeleteMenuItem () .set_sensitive (haveSelection and executionContext);
 
-	getCloneMenuItem ()       .set_sensitive (haveSelection);
-	getCreateCloneMenuItem () .set_sensitive (haveSelections);
-	getUnlinkCloneMenuItem () .set_sensitive (haveSelection);
+	getCloneMenuItem () .set_sensitive (haveSelection and executionContext);
 
-	getGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
-	getUngroupMenuItem ()            .set_sensitive (haveSelection);
-	getAddToGroupMenuItem ()         .set_sensitive (haveSelections);
-	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
-	getCreateParentMenuItem ()       .set_sensitive (haveSelection);
+	getGroupSelectedNodesMenuItem () .set_sensitive (haveSelection and executionContext);
+	getUngroupMenuItem ()            .set_sensitive (haveSelection and executionContext);
+	getAddToGroupMenuItem ()         .set_sensitive (haveSelections and executionContext);
+	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection and executionContext);
+	getCreateParentMenuItem ()       .set_sensitive (haveSelection and executionContext);
 
 	getDeselectAllMenuItem ()           .set_sensitive (selection .size ());
 	getHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
@@ -375,19 +374,17 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	// Browser menu
 
-	getBrowserCutMenuItem ()    .set_sensitive (haveSelection);
-	getBrowserCopyMenuItem ()   .set_sensitive (haveSelection);
-	getBrowserDeleteMenuItem () .set_sensitive (haveSelection);
+	getBrowserCutMenuItem ()    .set_sensitive (haveSelection and executionContext);
+	getBrowserCopyMenuItem ()   .set_sensitive (haveSelection and executionContext);
+	getBrowserDeleteMenuItem () .set_sensitive (haveSelection and executionContext);
 
-	getBrowserCloneMenuItem ()       .set_sensitive (haveSelection);
-	getBrowserCreateCloneMenuItem () .set_sensitive (haveSelections);
-	getBrowserUnlinkCloneMenuItem () .set_sensitive (haveSelection);
+	getBrowserCloneMenuItem () .set_sensitive (haveSelection and executionContext);
 
-	getBrowserGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
-	getBrowserUngroupMenuItem ()            .set_sensitive (haveSelection);
-	getBrowserAddToGroupMenuItem ()         .set_sensitive (haveSelections);
-	getBrowserDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
-	getBrowserCreateParentMenuItem ()       .set_sensitive (haveSelection);
+	getBrowserGroupSelectedNodesMenuItem () .set_sensitive (haveSelection and executionContext);
+	getBrowserUngroupMenuItem ()            .set_sensitive (haveSelection and executionContext);
+	getBrowserAddToGroupMenuItem ()         .set_sensitive (haveSelections and executionContext);
+	getBrowserDetachFromGroupMenuItem ()    .set_sensitive (haveSelection and executionContext);
+	getBrowserCreateParentMenuItem ()       .set_sensitive (haveSelection and executionContext);
 
 	getBrowserDeselectAllMenuItem ()           .set_sensitive (selection .size ());
 	getBrowserHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
@@ -793,11 +790,12 @@ BrowserWindow::on_cut_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Nodes"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Cut Nodes"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	getSelection () -> clearNodes (undoStep);
 
-	cutNodes (getCurrentContext (), selection, undoStep);
+	cutNodes (executionContext, selection, undoStep);
 
 	getSelection () -> undoRestoreNodes (undoStep);
 
@@ -810,12 +808,13 @@ BrowserWindow::on_copy_activated ()
 	if (getGeometryEditor () -> on_copy ())
 		return;
 
-	const auto selection = getSelection () -> getNodes ();
+	const auto selection        = getSelection () -> getNodes ();
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	if (selection .empty ())
 		return;
 
-	copyNodes (getCurrentContext (), selection);
+	copyNodes (executionContext, selection);
 }
 
 void
@@ -824,11 +823,12 @@ BrowserWindow::on_paste_activated ()
 	if (getGeometryEditor () -> on_paste ())
 		return;
 
-	auto selection = getSelection () -> getNodes ();
+	auto       selection        = getSelection () -> getNodes ();
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste Nodes"));
 
-	pasteNodes (getCurrentContext (), selection, undoStep);
+	pasteNodes (executionContext ? executionContext : getCurrentContext (), selection, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -841,7 +841,8 @@ BrowserWindow::on_delete_activated ()
 	if (getGeometryEditor () -> on_delete ())
 		return;
 
-	const auto selection = getSelection () -> getNodes ();
+	const auto selection        = getSelection () -> getNodes ();
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	if (selection .empty ())
 		return;
@@ -853,7 +854,7 @@ BrowserWindow::on_delete_activated ()
 
 	getSelection () -> clearNodes (undoStep);
 
-	removeNodesFromScene (getCurrentContext (), selection, true, undoStep);
+	removeNodesFromScene (executionContext, selection, true, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -866,14 +867,15 @@ BrowserWindow::on_create_clone_activated ()
 	if (selection .size () < 2)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create Clone"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create Clone"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	const auto clone = selection .back ();
 	selection .pop_back ();
 
 	getSelection () -> clearNodes (undoStep);
 
-	X3D::X3DEditor::createClone (getCurrentContext (), clone, selection, undoStep);
+	X3D::X3DEditor::createClone (executionContext, clone, selection, undoStep);
 
 	getSelection () -> setNodes ({ clone }, undoStep);
 
@@ -888,9 +890,10 @@ BrowserWindow::on_unlink_clone_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
-	auto nodes = X3D::X3DEditor::unlinkClone (getCurrentContext (), selection, undoStep);
+	auto nodes = X3D::X3DEditor::unlinkClone (executionContext, selection, undoStep);
 
 	getSelection () -> setNodes (nodes, undoStep);
 
@@ -908,8 +911,9 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group Selection"));
-	const auto group    = X3D::X3DEditor::groupNodes (getCurrentContext (), "Transform", selection, undoStep);
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Group Selection"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
+	const auto group            = X3D::X3DEditor::groupNodes (executionContext, "Transform", selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -928,11 +932,12 @@ BrowserWindow::on_ungroup_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup Selection"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Ungroup Selection"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	getSelection () -> clearNodes (undoStep);
 
-	const auto nodes = X3D::X3DEditor::ungroupNodes (getCurrentContext (), selection, undoStep);
+	const auto nodes = X3D::X3DEditor::ungroupNodes (executionContext, selection, undoStep);
 
 	getSelection () -> setNodes (nodes, undoStep);
 
@@ -950,14 +955,15 @@ BrowserWindow::on_add_to_group_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend () - 1))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Selection To Group"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Add Selection To Group"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	getSelection () -> undoRestoreNodes (undoStep);
 
 	const auto group = selection .back ();
 	selection .pop_back ();
 
-	if (X3D::X3DEditor::addToGroup (getCurrentContext (), group, selection, undoStep))
+	if (X3D::X3DEditor::addToGroup (executionContext, group, selection, undoStep))
 	{
 		getSelection () -> setNodes (selection, undoStep);
 
@@ -976,12 +982,13 @@ BrowserWindow::on_detach_from_group_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach Selection From Group"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Detach Selection From Group"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 	getSelection () -> undoRestoreNodes (undoStep);
 	getSelection () -> redoRestoreNodes (undoStep);
 
-	X3D::X3DEditor::detachFromGroup (getCurrentContext (), selection, getKeys () .shift (), undoStep);
+	X3D::X3DEditor::detachFromGroup (executionContext, selection, getKeys () .shift (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1117,8 +1124,9 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return nullptr;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
-	const auto group    = X3D::X3DEditor::createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
+	const auto group            = X3D::X3DEditor::createParentGroup (executionContext, typeName, fieldName, selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -2784,12 +2792,26 @@ BrowserWindow::on_look_at_toggled ()
 	}
 }
 
+X3D::X3DExecutionContext*
+BrowserWindow::getExecutionContext (const X3D::MFNode & nodes) const
+{
+	std::set <X3D::X3DExecutionContext*> executionContexts;
+
+	for (const auto & node : nodes)
+		executionContexts .emplace (node -> getExecutionContext ());
+
+	if (executionContexts .size () == 1)
+		return *executionContexts .begin ();
+
+	return nullptr;
+}
+
 bool
 BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
 {
 	static const X3D::NodeTypeSet metaDataType = { X3D::X3DConstants::X3DMetadataObject };
 
-	const auto clones = std::count_if (first, last, [] (const X3D::SFNode & node)
+	const auto clones = std::count_if (first, last, [ ] (const X3D::SFNode & node)
 	{
 		const auto metaCloneCount = node -> isType (metaDataType) ? 0 : node -> getMetaCloneCount ();
 

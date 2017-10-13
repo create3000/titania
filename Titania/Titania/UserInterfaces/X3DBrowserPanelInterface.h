@@ -213,6 +213,14 @@ public:
 	{ return *m_HideAllObjectIconsMenuItem; }
 
 	Gtk::MenuItem &
+	getLayersMenuItem () const
+	{ return *m_LayersMenuItem; }
+
+	Gtk::Menu &
+	getLayersMenu () const
+	{ return *m_LayersMenu; }
+
+	Gtk::MenuItem &
 	getPanelsMenuItem () const
 	{ return *m_PanelsMenuItem; }
 
@@ -360,6 +368,10 @@ public:
 
 	virtual
 	void
+	on_layers_activate () = 0;
+
+	virtual
+	void
 	on_main_view_activate () = 0;
 
 	virtual
@@ -445,6 +457,8 @@ private:
 	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
 	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
+	Gtk::MenuItem* m_LayersMenuItem;
+	Gtk::Menu* m_LayersMenu;
 	Gtk::MenuItem* m_PanelsMenuItem;
 	Gtk::MenuItem* m_CameraMenuItem;
 	Gtk::MenuItem* m_MainViewMenuItem;

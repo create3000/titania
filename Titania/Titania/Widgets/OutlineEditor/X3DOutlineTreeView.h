@@ -91,7 +91,7 @@ public:
 	{ return scrollFreezer; }
 
 	void
-	set_execution_context (const X3D::X3DExecutionContextPtr &);
+	set_execution_context (const X3D::X3DExecutionContextPtr & value);
 
 	const X3D::X3DExecutionContextPtr &
 	get_execution_context () const;
@@ -271,6 +271,9 @@ private:
 
 	Gtk::TreeModel::Path
 	get_open_path (const Gtk::TreeModel::iterator &) const;
+	
+	X3D::X3DScene*
+	get_scene (X3D::X3DExecutionContext* const executionContext) const;
 
 	void
 	set_rootNodes ();

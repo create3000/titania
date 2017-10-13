@@ -809,6 +809,9 @@ private:
 	void
 	on_look_at_toggled () final override;
 
+	X3D::X3DExecutionContext*
+	getExecutionContext (const X3D::MFNode & nodes) const;
+
 	bool
 	checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last);
 

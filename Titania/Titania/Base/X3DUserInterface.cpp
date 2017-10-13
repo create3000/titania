@@ -190,17 +190,31 @@ X3DUserInterface::on_map ()
 {
 	restoreInterface ();
 
-	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DEditorInterface::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DEditorInterface::set_selection_and_check, this);
 
-	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
+	set_selection_and_check (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void
 X3DUserInterface::on_unmap ()
 {
-	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection_and_check, this);
 
-	set_selection ({ });
+	set_selection_and_check ({ });
+}
+
+void
+X3DUserInterface::set_selection_and_check (const X3D::MFNode & selection)
+{
+	std::set <X3D::X3DExecutionContext*> executionContexts;
+
+	for (const auto & node : selection)
+		executionContexts .emplace (node -> getExecutionContext ());
+
+	if (executionContexts .size () == 1)
+		set_selection (selection);
+	else
+		set_selection ({ });
 }
 
 bool

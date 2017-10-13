@@ -101,6 +101,8 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
 	void
 	setType (const BrowserPanelType value);
 
@@ -110,6 +112,13 @@ protected:
 	virtual
 	void
 	setLocalBrowser (const X3D::BrowserPtr & value);
+
+	void
+	setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & layer);
+
+	const X3D::X3DPtr <X3D::X3DLayerNode> &
+	getLayer () const
+	{ return layerNode; }
 
 	///  @name Event handlers
 
@@ -140,6 +149,18 @@ private:
 	int32_t
 	getPlane () const;
 
+	void
+	setLayer (const int32_t layerNumber);
+
+	void
+	setLayerNumber (const int32_t layerNumber);
+	
+	int32_t
+	getLayerNumber () const;
+
+	int32_t
+	getLayerNumber (const X3D::X3DPtr <X3D::X3DLayerNode> & layerNode) const;
+
 	///  @name Event handlers
 
 	void
@@ -155,16 +176,13 @@ private:
 	set_viewer ();
 
 	void
-	set_active_navigationInfo ();
-
-	void
 	set_background_texture ();
 
 	void
 	set_background_texture_transparency ();
 
 	void
-	set_activeLayer ();
+	set_navigationInfoStack ();
 
 	void
 	connectViewpoint ();
@@ -187,8 +205,8 @@ private:
 
 	BrowserPanelType                    type;
 	X3D::BrowserPtr                     browser;
-	X3D::X3DPtr <X3D::X3DLayerNode>     activeLayer;
-	X3D::X3DPtr <X3D::NavigationInfo>   activeNavigationInfo;
+	X3D::X3DPtr <X3D::X3DLayerNode>     layerNode;
+	X3D::X3DPtr <X3D::NavigationInfo>   navigationInfoNode;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
 	X3D::X3DPtr <X3D::Transform>        gridTransform;
 };

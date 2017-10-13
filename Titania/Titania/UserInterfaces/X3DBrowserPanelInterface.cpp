@@ -111,6 +111,8 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
 	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
+	m_builder -> get_widget ("LayersMenuItem", m_LayersMenuItem);
+	m_builder -> get_widget ("LayersMenu", m_LayersMenu);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
 	m_builder -> get_widget ("CameraMenuItem", m_CameraMenuItem);
 	m_builder -> get_widget ("MainViewMenuItem", m_MainViewMenuItem);
@@ -161,6 +163,7 @@ X3DBrowserPanelInterface::create ()
 
 	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
 	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_hide_all_object_icons_activated));
+	m_LayersMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_layers_activate));
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
 	m_PerspectiveViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_perspective_view_activate));
 	m_TopViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_top_view_activate));

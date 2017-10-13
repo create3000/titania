@@ -212,6 +212,9 @@ private:
 	Hierarchies
 	findNode (const SFNode & node) const;
 
+	Hierarchies
+	findNode (const SFNode & parent, const SFNode & node) const;
+
 	///  @name Static members
 
 	static const ComponentType component;

@@ -252,6 +252,18 @@ private:
 	void
 	on_hide_all_object_icons_activated () final override;
 
+	///  @name Layers menu
+
+	virtual
+	void
+	on_layers_activate () final override;
+
+	void
+	on_layers_activate (const X3D::X3DPtr <X3D::X3DLayerNode> & layer, const size_t layerNumber);
+
+	void
+	on_layer_activate (const size_t layerNumber);
+
 	///  @name Camera menu
 
 	virtual

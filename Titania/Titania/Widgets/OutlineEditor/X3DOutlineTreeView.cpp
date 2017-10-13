@@ -452,6 +452,15 @@ X3DOutlineTreeView::get_alt_key ()
 	return getBrowserWindow () -> getKeys () .alt ();
 }
 
+X3D::X3DScene*
+X3DOutlineTreeView::get_scene (X3D::X3DExecutionContext* const executionContext) const
+{
+	if (executionContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		return dynamic_cast <X3D::X3DScene*> (executionContext);
+
+	return executionContext -> getScene ();
+}
+
 void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
@@ -665,12 +674,16 @@ X3DOutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gt
 		{
 			const auto & localNode = *static_cast <X3D::SFNode*> (get_object (iter));
 
-			if (localNode)
-			{
-				if (localNode -> getExecutionContext () == get_execution_context ())
-					selection -> select (localNode);
-			}
+			if (not localNode)
+				break;
 
+			if (get_scene (localNode -> getExecutionContext ()) not_eq get_scene (get_execution_context ()))
+				break;
+
+			if (localNode -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+				break;
+
+			selection -> select (localNode);
 			break;
 		}
 		case OutlineIterType::ExportedNode:
@@ -681,13 +694,22 @@ X3DOutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gt
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (sfnode -> getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
 
-				if (exportedNode -> getExecutionContext () == get_execution_context ())
-					selection -> select (localNode);
+				if (not localNode)
+					break;
+	
+				if (get_scene (localNode -> getExecutionContext ()) not_eq get_scene (get_execution_context ()))
+					break;
+	
+				if (localNode -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+					break;
+
+				selection -> select (localNode);
+				break;
 			}
 			catch (...)
-			{ }
-
-			break;
+			{
+				break;
+			}
 		}
 		default:
 			break;

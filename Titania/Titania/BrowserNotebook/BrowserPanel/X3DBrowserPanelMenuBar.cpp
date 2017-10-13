@@ -698,6 +698,85 @@ X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
 }
 
 /*
+ *  Layers menu
+ */
+
+void
+X3DBrowserPanelMenuBar::on_layers_activate ()
+{
+	// Remove all menu items.
+
+	for (auto & widget : getLayersMenu () .get_children ())
+	   getLayersMenu () .remove (*widget);
+	
+	// Rebuild menu.
+
+	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+
+	on_layers_activate (layerSet -> getLayer0 (), 0);
+
+	size_t layerNumber = 1;
+
+	for (const auto & node : layerSet -> layers ())
+	{
+		const X3D::X3DPtr <X3D::X3DLayerNode> layerNode (node);
+
+		if (layerNode)
+			on_layers_activate (layerNode, layerNumber);
+
+	   ++ layerNumber;
+	}
+
+	getLayersMenu () .show_all ();
+}
+
+void
+X3DBrowserPanelMenuBar::on_layers_activate (const X3D::X3DPtr <X3D::X3DLayerNode> & layer, const size_t layerNumber)
+{
+	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+	const auto   menuItem = Gtk::manage (new Gtk::MenuItem ());
+	auto         name     = std::string ();
+
+	if (layer == layerSet -> getLayer0 ())
+		name = _ ("Default Layer");
+	else if (layer -> getName () .empty ())
+		name = std::to_string (layerNumber);
+	else
+		name = layer -> getName ();
+
+	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_layer_activate), layerNumber));
+	menuItem -> set_label (layer -> getTypeName () + " »" +  name  + "«");
+
+	if (layer == getLayer ())
+	   menuItem -> get_style_context () -> add_class ("titania-menu-item-selected");
+
+	getLayersMenu () .append (*menuItem);
+}
+
+void
+X3DBrowserPanelMenuBar::on_layer_activate (const size_t layerNumber)
+{
+	try
+	{
+		const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+
+		if (layerNumber == 0)
+		{
+			setLayer (layerSet -> getLayer0 ());
+		}
+		else
+		{
+			const X3D::X3DPtr <X3D::X3DLayerNode> layerNode (layerSet -> layers () .at (layerNumber - 1));
+
+			if (layerNode)
+				setLayer (layerNode);
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+/*
  *  Camera menu
  */
 

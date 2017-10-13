@@ -211,6 +211,9 @@ private:
 	void
 	on_unmap ();
 
+	void
+	set_selection_and_check (const X3D::MFNode & selection);
+
 	bool
 	on_window_state_event (GdkEventWindowState* event);
 

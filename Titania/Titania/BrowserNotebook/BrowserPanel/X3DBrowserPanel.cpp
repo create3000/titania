@@ -136,13 +136,14 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	X3DBrowserPanelInterface (),
 	                    type (defaultTypes [getId ()]),
 	                 browser (getPage () -> getMainBrowser ()),
-	             activeLayer (),
-	    activeNavigationInfo (),
+	               layerNode (),
+	      navigationInfoNode (),
 	               viewpoint (),
 	           gridTransform ()
 {
 	addChildObjects (browser,
-	                 activeLayer,
+	                 layerNode,
+	                 navigationInfoNode,
 	                 viewpoint,
 	                 gridTransform);
 }
@@ -162,7 +163,8 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 {
 	const auto & mainBrowser = getPage () -> getMainBrowser ();
 
-	activeNavigationInfo = nullptr;
+	layerNode          = nullptr;
+	navigationInfoNode = nullptr;
 
 	if (type == BrowserPanelType::MAIN_VIEW)
 		return mainBrowser;
@@ -344,6 +346,135 @@ X3DBrowserPanel::getPlane () const
 }
 
 void
+X3DBrowserPanel::setLayer (const int32_t layerNumber)
+{
+	try
+	{
+		const auto & layerSet= getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+
+		if (layerNumber == 0)
+		{
+			setLayer (layerSet -> getLayer0 ());
+		}
+		else
+		{
+			const X3D::X3DPtr <X3D::X3DLayerNode> layerNode (layerSet -> layers () .at (layerNumber - 1));
+
+			if (layerNode)
+				setLayer (layerNode);	
+			else
+				setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
+		}
+	}
+	catch (const std::out_of_range & error)
+	{
+		setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
+	}
+}
+
+void
+X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
+{
+	if (type == BrowserPanelType::MAIN_VIEW)
+		return;
+
+	try
+	{
+		if (layerNode)
+		{
+			const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
+
+			layerNode -> getNavigationInfoStack () -> removeInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
+			layerNode -> children () .removeInterest (group -> children ());
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	layerNode = value;
+
+	setLayerNumber (layerNode);
+
+	try
+	{
+		const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
+
+		group -> setPrivate (true);
+
+		if (layerNode)
+		{
+			const auto userPosition         = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position", positions .at (type));
+			const auto userOrientation      = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation", orientations .at (type));
+			const auto userCenterOfRotation = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
+			const auto fieldOfViewScale     = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
+
+			layerNode -> getNavigationInfoStack () -> addInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
+			layerNode -> children () .addInterest (group -> children ());
+			group -> children () = layerNode -> children ();
+
+			viewpoint -> removeInterest (&X3DBrowserPanel::set_viewpoint, this);
+			viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
+
+			viewpoint -> positionOffset ()         = userPosition - viewpoint -> getPosition ();
+			viewpoint -> orientationOffset ()      = ~viewpoint -> getOrientation () * userOrientation;
+			viewpoint -> centerOfRotationOffset () = userCenterOfRotation - viewpoint -> getCenterOfRotation ();
+			viewpoint -> fieldOfViewScale ()       = fieldOfViewScale;
+		}
+		else
+		{
+			group -> children () .clear ();
+		}
+
+		set_navigationInfoStack ();
+		set_grid ();
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+void
+X3DBrowserPanel::setLayerNumber (const int32_t layerNumber)
+{
+	const auto worldInfo        = createWorldInfo (getPage () -> getScene ());
+	auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
+
+	layerNumberArray .resize (8, X3D::SFInt32 (-1));
+
+	layerNumberArray [size_t (type)] = layerNumber;
+
+	worldInfo -> setMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber", layerNumberArray);
+}
+
+int32_t
+X3DBrowserPanel::getLayerNumber () const
+{
+	const auto worldInfo        = const_cast <X3DBrowserPanel*> (this) -> createWorldInfo (getPage () -> getScene ());
+	auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
+
+	layerNumberArray .resize (8, X3D::SFInt32 (-1));
+
+	return layerNumberArray [size_t (type)];
+}
+
+int32_t
+X3DBrowserPanel::getLayerNumber (const X3D::X3DPtr <X3D::X3DLayerNode> & layerNode) const
+{
+	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+	const auto   iter     = std::find (layerSet -> layers () .begin (), layerSet -> layers () .end (), layerNode);
+
+	if (layerNode == layerSet -> getLayer0 ())
+		return 0;
+
+	else if (iter not_eq layerSet -> layers () .end ())
+		return (iter - layerSet -> layers () .begin ()) + 1;
+
+	return -1;
+}
+
+void
 X3DBrowserPanel::set_dependent_browser ()
 {
 	try
@@ -352,9 +483,8 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		const auto & mainBrowser = getPage () -> getMainBrowser ();
 	
-		mainBrowser -> getFixedPipeline ()        .addInterest (&X3DBrowserPanel::set_fixed_pipeline,        this);
-		mainBrowser -> getViewer ()               .addInterest (&X3DBrowserPanel::set_viewer,                this);
-		mainBrowser -> getActiveNavigationInfo () .addInterest (&X3DBrowserPanel::set_active_navigationInfo, this);
+		mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
+		mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
 
 		// Setup dependent browser.
 
@@ -398,16 +528,12 @@ X3DBrowserPanel::set_dependent_browser ()
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
 
-		// Connect to active layer.
-
-		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::set_activeLayer, this);
-
 		set_fixed_pipeline ();
 		set_viewer ();
-		set_active_navigationInfo ();
 		set_background_texture ();
 		set_background_texture_transparency ();
-		set_activeLayer ();
+
+		setLayer (getLayerNumber ());
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -440,32 +566,6 @@ X3DBrowserPanel::set_viewer ()
 	{
 		browser -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 	}
-}
-
-void
-X3DBrowserPanel::set_active_navigationInfo ()
-{
-	try
-	{
-		if (type == BrowserPanelType::MAIN_VIEW)
-			return;
-	
-		const auto & executionContext = browser -> getExecutionContext ();
-		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
-
-		if (activeNavigationInfo)
-			activeNavigationInfo -> headlight () .removeInterest (layer -> getNavigationInfo () -> headlight ());
-	
-		activeNavigationInfo = getPage () -> getMainBrowser () -> getActiveNavigationInfo ();
-
-		if (activeNavigationInfo)
-		{
-			activeNavigationInfo -> headlight () .addInterest (layer -> getNavigationInfo () -> headlight ());
-			layer -> getNavigationInfo () -> headlight () = activeNavigationInfo -> headlight ();
-		}
-	}
-	catch (const X3D::X3DError & error)
-	{ }
 }
 
 void
@@ -511,76 +611,59 @@ X3DBrowserPanel::set_background_texture_transparency ()
 }
 
 void
-X3DBrowserPanel::set_activeLayer ()
+X3DBrowserPanel::set_navigationInfoStack ()
 {
 	try
 	{
-		if (activeLayer)
+		if (type == BrowserPanelType::MAIN_VIEW)
+			return;
+	
+		const auto & executionContext = browser -> getExecutionContext ();
+		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
+
+		if (navigationInfoNode)
+			navigationInfoNode -> headlight () .removeInterest (layer -> getNavigationInfo () -> headlight ());
+	
+		if (layerNode)
 		{
-			const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
-
-			activeLayer -> children () .removeInterest (group -> children ());
-		}
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
-	activeLayer = getPage () -> getMainBrowser () -> getActiveLayer ();
-
-	try
-	{
-		const auto group = browser -> getExecutionContext () -> getNamedNode <X3D::Group> ("Group");
-
-		group -> setPrivate (true);
-
-		if (activeLayer)
-		{
-			const auto userPosition         = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position", positions .at (type));
-			const auto userOrientation      = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation", orientations .at (type));
-			const auto userCenterOfRotation = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
-			const auto fieldOfViewScale     = getMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
-
-			activeLayer -> children () .addInterest (group -> children ());
-			group -> children () = activeLayer -> children ();
-
-			viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);
-
-			viewpoint -> positionOffset ()         = userPosition - viewpoint -> getPosition ();
-			viewpoint -> orientationOffset ()      = ~viewpoint -> getOrientation () * userOrientation;
-			viewpoint -> centerOfRotationOffset () = userCenterOfRotation - viewpoint -> getCenterOfRotation ();
-			viewpoint -> fieldOfViewScale ()       = fieldOfViewScale;
+			navigationInfoNode = layerNode -> getNavigationInfoStack () -> getTop ();
+	
+			if (navigationInfoNode)
+			{
+				navigationInfoNode -> headlight () .addInterest (layer -> getNavigationInfo () -> headlight ());
+				layer -> getNavigationInfo () -> headlight () = navigationInfoNode -> headlight ();
+			}
 		}
 		else
 		{
-			group -> children () .clear ();
+			navigationInfoNode = nullptr;
 		}
-
-		set_grid ();
 	}
 	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	{ }
 }
 
 void
 X3DBrowserPanel::connectViewpoint ()
 {
-	viewpoint -> removeInterest (&X3DBrowserPanel::connectViewpoint, this);
-	viewpoint -> addInterest (&X3DBrowserPanel::set_viewpoint, this);
-
-	browser -> getExecutionContext () -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> transitionType () = { "ANIMATE" };
+	try
+	{
+		viewpoint -> removeInterest (&X3DBrowserPanel::connectViewpoint, this);
+		viewpoint -> addInterest (&X3DBrowserPanel::set_viewpoint, this);
+	
+		browser -> getExecutionContext () -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> transitionType () = { "ANIMATE" };
+	}
+	catch (const X3D::X3DError & error)
+	{ }
 }
 
 void
 X3DBrowserPanel::set_viewpoint ()
 {
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
-	setMetaData (getPage () -> getMainBrowser (), "/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
+	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
 
 	getPage () -> setModified (true);
 

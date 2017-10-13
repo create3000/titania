@@ -139,12 +139,7 @@ Selection::set_sceneGraph ()
 	geometryNodes = std::move (value);
 
 	for (const auto & node : geometryNodes)
-	{
-		if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-			continue;
-
 		node -> addTool ();
-	}
 }
 
 bool
@@ -182,12 +177,7 @@ Selection::setSelectGeometry (const bool value)
 			geometryNodes = getGeometries (nodes);
 
 			for (const auto & node : geometryNodes)
-			{
-				if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-					continue;
-	
 				node -> addTool ();
-			}
 		}
 		else
 		{
@@ -204,12 +194,7 @@ Selection::setSelectGeometry (const bool value)
 			geometryNodes .clear ();
 
 			for (const auto & node : nodes)
-			{
-				if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-					continue;
-
 				node -> addTool ();
-			}
 		}
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
@@ -233,9 +218,6 @@ Selection::addNodes (const MFNode & value)
 		for (const auto & node : value)
 		{
 			if (not node)
-				continue;
-
-			if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
 
 			if (isSelected (node))
@@ -336,12 +318,19 @@ Selection::setNodes (const MFNode & value)
 
 			if (not lowestNodes .empty ())
 			{
-				const auto hierarchies = findNode (lowestNodes .back ());
+				auto hierarchies       = findNode (value .back ());
+				auto lowestHierarchies = findNode (value .back (), lowestNodes .front ());
 
-				for (const auto & hierarchy : hierarchies)
+				for (auto & hierarchy : hierarchies)
 				{
 					clearHierarchy = false;
-	
+
+					for (const auto & lowestHierarchy : lowestHierarchies)
+					{
+						hierarchy .insert (hierarchy .end (), lowestHierarchy .begin () + 1, lowestHierarchy .end ());
+						break;
+					}
+
 					setHierarchy (value .back (), MFNode (hierarchy .begin (), hierarchy .end ()));
 					break;
 				}
@@ -471,12 +460,14 @@ Selection::selectNode (X3DBrowser* const browser)
 }
 
 void
-Selection::setHierarchy (const SFNode & node, const MFNode & other)
+Selection::setHierarchy (const SFNode & node, const MFNode & value)
 {
 	// Update hierarchy.
 
+	const auto executionContext = node ? node -> getExecutionContext () : nullptr;
+
 	masterSelection = node;
-	hierarchy       = other;
+	hierarchy       = value;
 
 	// Erase NULL nodes.
 
@@ -487,7 +478,7 @@ Selection::setHierarchy (const SFNode & node, const MFNode & other)
 	const auto iter = std::find_if (hierarchy .begin (),
 	                                hierarchy .end (),
 	                                [&] (const SFNode & node)
-	                                { return node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext (); });
+	                                { return node -> getExecutionContext () not_eq executionContext; });
 
 	if (iter == hierarchy .end ())
 		return;
@@ -502,7 +493,7 @@ Selection::setHierarchy (const SFNode & node, const MFNode & other)
 
 	if (protoInstance -> isType ({ X3DConstants::X3DPrototypeInstance }))
 	{
-		if (protoInstance -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+		if (protoInstance -> getExecutionContext () == executionContext)
 			hierarchy .emplace_back (protoInstance);
 	}
 }
@@ -541,22 +532,34 @@ Selection::getLowest (const MFNode & nodes) const
 	X3D::traverse (const_cast <MFNode &> (nodes),
 	[&] (SFNode & node)
 	{
-		size_t nodeFields = 0;
+		size_t children = 0;
 
 		for (const auto & field : node -> getFieldDefinitions ())
 		{
 			switch (field -> getType ())
 			{
 				case X3DConstants::SFNode:
-				case X3DConstants::MFNode:
-					++ nodeFields;
+				{
+					const auto sfnode = static_cast <SFNode*> (field);
+
+					if (sfnode -> getValue ())
+						++ children;
+
 					break;
+				}
+				case X3DConstants::MFNode:
+				{
+					const auto mfnode = static_cast <MFNode*> (field);
+
+					children += mfnode -> size ();
+					break;
+				}
 				default:
 					break;
 			}
 		}
 
-		if (nodeFields == 1)
+		if (children == 0)
 			lowestNodes .emplace_back (node);
 
 		return true;
@@ -596,16 +599,11 @@ Selection::getTransform (const MFNode & hierarchy) const
 		{
 			if (not lowest)
 				continue;
-				
+
 			const auto executionContext = lowest -> getExecutionContext ();
 
-			if (executionContext not_eq getBrowser () -> getExecutionContext ())
-			{
-				if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }) and executionContext -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					return SFNode (executionContext);
-
-				continue;
-			}
+			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
+				return SFNode (executionContext);
 
 			if (lowest -> isType (geometryTypes))
 				continue;
@@ -628,13 +626,8 @@ Selection::getTransform (const MFNode & hierarchy) const
 
 			const auto executionContext = highest -> getExecutionContext ();
 
-			if (executionContext not_eq getBrowser () -> getExecutionContext ())
-			{
-				if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }) and executionContext -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					return SFNode (executionContext);
-
-				continue;
-			}
+			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
+				return SFNode (executionContext);
 
 			if (highest -> isType (highestTypes))
 				return highest;
@@ -651,9 +644,6 @@ Selection::getTransform (const MFNode & hierarchy) const
 			{
 				if (not highest)
 					continue;
-
-				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-					continue;
 	
 				if (x3d_cast <X3DChildNode*> (highest))
 					return highest;
@@ -667,13 +657,23 @@ Selection::getTransform (const MFNode & hierarchy) const
 Hierarchies
 Selection::findNode (const SFNode & node) const
 {
-	return find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+	return find (node -> getExecutionContext () -> getRootNodes (),
 		          node,
 		          TRAVERSE_ROOT_NODES |
-		          TRAVERSE_PROTOTYPE_INSTANCES |
 		          TRAVERSE_INLINE_NODES |
 		          TRAVERSE_TOOL_OBJECTS |
-		          TRAVERSE_VISIBLE_NODES);
+		          TRAVERSE_META_DATA);
+}
+
+Hierarchies
+Selection::findNode (const SFNode & parent, const SFNode & node) const
+{
+	return find (parent,
+		          node,
+		          TRAVERSE_ROOT_NODES |
+		          TRAVERSE_INLINE_NODES |
+		          TRAVERSE_TOOL_OBJECTS |
+		          TRAVERSE_META_DATA);
 }
 
 } // X3D

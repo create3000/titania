@@ -144,7 +144,10 @@ public:
 
 	void
 	pushBack (const pointer_type & node)
-	{ temp .emplace_back (node); }
+	{
+		if (node -> getBrowser () == getBrowser ())
+			temp .emplace_back (node);
+	}
 
 	void
 	update ()
