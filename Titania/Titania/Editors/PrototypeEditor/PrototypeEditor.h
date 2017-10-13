@@ -82,6 +82,14 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member access
+
+	void
+	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & protoNode);
+	
+	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
+	getProto () const;
+
 	///  @name Event handlers
 
 	void

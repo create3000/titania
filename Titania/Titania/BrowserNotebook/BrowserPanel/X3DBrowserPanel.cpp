@@ -147,7 +147,7 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                 viewpoint,
 	                 gridTransform);
 
-	#ifndef TITANIA_FEATUREx
+	#ifndef TITANIA_FEATURE
 	getLayersMenuItem () .set_visible (false);
 	#endif
 }
@@ -631,7 +631,7 @@ X3DBrowserPanel::set_live ()
 void
 X3DBrowserPanel::set_execution_context ()
 {
-	#ifndef TITANIA_FEATUREx
+	#ifndef TITANIA_FEATURE
 	setLayer (-1);
 	#else
 	setLayer (getLayerNumber ());

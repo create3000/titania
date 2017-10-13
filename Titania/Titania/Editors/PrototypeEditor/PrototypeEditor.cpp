@@ -115,9 +115,43 @@ PrototypeEditor::initialize ()
 	getCurrentContext () .addInterest (&PrototypeEditor::set_executionContext, this);
 
 	set_executionContext ();
+}
 
-	if (getCurrentContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-		set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (getCurrentContext ()));
+void
+PrototypeEditor::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & protoNode)
+{
+	const auto path = getNodePath (protoNode);
+
+	createWorldInfo (getCurrentScene ()) -> setMetaData ("/Titania/Prototype/path", X3D::MFString (path .begin (), path .end ()));
+}
+
+X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
+PrototypeEditor::getProto () const
+{
+	try
+	{
+		auto path = getWorldInfo (getCurrentScene ()) -> getMetaData <X3D::MFString> ("/Titania/Prototype/path");
+
+		X3D::X3DProtoDeclarationNode* protoNode = getCurrentContext () -> findProtoDeclaration (path .at (0));
+
+		path .pop_front ();
+
+		for (const auto & name : path)
+		{
+			const auto proto = dynamic_cast <X3D::ProtoDeclaration*> (protoNode);
+
+			if (not proto)
+				break;
+
+			protoNode = proto -> findProtoDeclaration (name);
+		}
+
+		return X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode);
+	}
+	catch (const std::exception &)
+	{
+		return nullptr;
+	}
 }
 
 void
@@ -134,24 +168,8 @@ PrototypeEditor::set_executionContext ()
 	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
 	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
 
-	// Setup widgets
-
-	//getEditLabel ()   .set_text (_ ("Edit Protoype Properties"));
-	getHeaderBar () .set_subtitle (_ ("Select a prototype to display its properties."));
-
-	getCreateInstanceButton ()  .set_sensitive (false);
-	getNameBox ()               .set_sensitive (false);
-	getURLScrolledWindow ()     .set_visible (false);
-	getUpdateInstancesButton () .set_sensitive (false);
-
 	on_create_prototype_menu ();
-
-	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (nullptr);
-
-	nodeName .setNode (nullptr);
-	url .setNodes ({ });
-	urlNode -> removeUserDefinedField ("url");
-	nodeIndex -> setProto (nullptr);
+	set_prototype (getProto ());
 }
 
 void
@@ -205,55 +223,79 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 
 	protoNode = value;
 
-	//const auto editText   = protoNode -> isExternproto () ? _ ("Edit Extern Protoype Properties") : _ ("Edit Protoype Properties");
-	//getEditLabel () .set_text (editText);
+	setProto (protoNode);
 
-	// Header
-
-	getEditPrototypeImage () .set_sensitive (true);
-	getEditPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
-
-	// Create instance button
-
-	getCreateInstanceButton () .set_sensitive (true);
-	getNameBox () .set_sensitive (true);
-	getUpdateInstancesButton () .set_sensitive (true);
-
-	// Select prototype button
-
-	getPrototypeImage () .set_sensitive (true);
-	getPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
-
-	// Name entry and Interface
-
-	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (protoNode);
-
-	// Name
-
-	protoNode -> name_changed () .addInterest (&PrototypeEditor::set_name, this);
-	nodeName .setNode (protoNode);
-	set_name ();
-
-	// URL
-
-	getURLScrolledWindow () .set_visible (protoNode -> isExternproto ());
-
-	if (protoNode -> isExternproto ())
+	if (protoNode)
 	{
-	   X3D::X3DPtr <X3D::X3DUrlObject> urlObject (protoNode); 
-
-		urlNode -> addUserDefinedField (urlObject -> url () .getAccessType (), "url", &urlObject -> url ());
-
-		url .setNodes ({ urlNode });
+		//const auto editText   = protoNode -> isExternproto () ? _ ("Edit Extern Protoype Properties") : _ ("Edit Protoype Properties");
+		//getEditLabel () .set_text (editText);
+	
+		// Header
+	
+		getEditPrototypeImage () .set_sensitive (true);
+		getEditPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
+	
+		// Create instance button
+	
+		getCreateInstanceButton () .set_sensitive (true);
+		getNameBox () .set_sensitive (true);
+		getUpdateInstancesButton () .set_sensitive (true);
+	
+		// Select prototype button
+	
+		getPrototypeImage () .set_sensitive (true);
+		getPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
+	
+		// Name entry and Interface
+	
+		nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (protoNode);
+	
+		// Name
+	
+		protoNode -> name_changed () .addInterest (&PrototypeEditor::set_name, this);
+		nodeName .setNode (protoNode);
+		set_name ();
+	
+		// URL
+	
+		getURLScrolledWindow () .set_visible (protoNode -> isExternproto ());
+	
+		if (protoNode -> isExternproto ())
+		{
+		   X3D::X3DPtr <X3D::X3DUrlObject> urlObject (protoNode); 
+	
+			urlNode -> addUserDefinedField (urlObject -> url () .getAccessType (), "url", &urlObject -> url ());
+	
+			url .setNodes ({ urlNode });
+		}
+		else
+		{
+			urlNode -> removeUserDefinedField ("url");
+	
+			url .setNodes ({ });
+		}
+	
+		nodeIndex -> setProto (protoNode);
 	}
 	else
 	{
-		urlNode -> removeUserDefinedField ("url");
+		// Setup widgets
+	
+		//getEditLabel ()   .set_text (_ ("Edit Protoype Properties"));
+		getHeaderBar () .set_subtitle (_ ("Select a prototype to display its properties."));
+	
+		getCreateInstanceButton ()  .set_sensitive (false);
+		getNameBox ()               .set_sensitive (false);
+		getURLScrolledWindow ()     .set_visible (false);
+		getUpdateInstancesButton () .set_sensitive (false);
 
+		nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (nullptr);
+	
+		nodeName .setNode (nullptr);
 		url .setNodes ({ });
+		urlNode -> removeUserDefinedField ("url");
+		nodeIndex -> setProto (nullptr);
 	}
-
-	nodeIndex -> setProto (protoNode);
 }
 
 void
