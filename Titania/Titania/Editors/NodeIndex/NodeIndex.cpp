@@ -672,10 +672,12 @@ NodeIndex::set_name (const size_t index)
 	
 		const auto iter = getListStore () -> get_iter (path);
 
-		iter -> set_value (Columns::NAME, getNodeName (nodes .at (index)));
+		iter -> set_value (Columns::NAME, getNameFromNode (nodes .at (index)));
 	}
-	catch (const std::out_of_range &)
-	{ }
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
