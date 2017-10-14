@@ -360,18 +360,19 @@ AnimationEditor::on_new ()
 
 	// Create new animation.
 
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
-	const auto name       = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text ());
-	const auto groups     = getSelection <X3D::X3DNode> ({ X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
-	const auto group      = groups .back ();
-	const auto animation  = getCurrentContext () -> createNode <X3D::Group> ();
-	const auto timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
-	const auto timerName  = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text () + "Timer");
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
+	const auto groups           = getSelection <X3D::X3DNode> ({ X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
+	const auto group            = groups .back ();
+	const auto executionContext = X3D::X3DExecutionContextPtr (group -> getExecutionContext ());
+	const auto name             = executionContext -> getUniqueName (getNewNameEntry () .get_text ());
+	const auto animation        = executionContext -> createNode <X3D::Group> ();
+	const auto timeSensor       = executionContext -> createNode <X3D::TimeSensor> ();
+	const auto timerName        = executionContext -> getUniqueName (getNewNameEntry () .get_text () + "Timer");
 
 	group -> getField <X3D::MFNode> ("children") .emplace_front (animation);
 	animation -> children () .emplace_front (timeSensor);
-	getCurrentContext () -> updateNamedNode (name, animation);
-	getCurrentContext () -> updateNamedNode (timerName, timeSensor);
+	executionContext -> updateNamedNode (name, animation);
+	executionContext -> updateNamedNode (timerName, timeSensor);
 
 	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
@@ -384,7 +385,7 @@ AnimationEditor::on_new ()
 	// Undo/Redo
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { animation }, true, undoRemoveNode);
+	getBrowserWindow () -> removeNodesFromScene (executionContext, { animation }, true, undoRemoveNode);
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
@@ -499,11 +500,11 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 		if (timeSensors .empty ())
 		{
-			const auto timerName = getCurrentContext () -> getUniqueName (X3D::GetDisplayName (animation) + "Timer");
+			const auto timerName = animation -> getExecutionContext () -> getUniqueName (X3D::GetDisplayName (animation) + "Timer");
 
-			timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
+			timeSensor = animation -> getExecutionContext () -> createNode <X3D::TimeSensor> ();
 
-			getCurrentContext () -> updateNamedNode (timerName, timeSensor);
+			animation -> getExecutionContext () -> updateNamedNode (timerName, timeSensor);
 
 			animation -> children () .emplace_front (timeSensor);
 		}
@@ -654,9 +655,10 @@ AnimationEditor::on_remove_member ()
 		{
 		   // Remove Animation
 
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
+			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
+			const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
 
-			getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { animation }, true, undoStep);
+			getBrowserWindow () -> removeNodesFromScene (executionContext, { animation }, true, undoStep);
 			addUndoStep (undoStep);
 			break;
 		}
@@ -683,11 +685,12 @@ AnimationEditor::on_remove_member ()
 					if (iter == interpolatorIndex .end ())
 						continue;
 
-					const auto & interpolator = iter -> second;
+					const auto   executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+					const auto & interpolator     = iter -> second;
 
 					interpolatorsToRemove .emplace (interpolator);
 
-					X3D::X3DEditor::deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+					X3D::X3DEditor::deleteRoute (executionContext, interpolator, "value_changed", node, field -> getName (), undoStep);
 
 					interpolatorIndex .erase (iter);
 				}
@@ -706,7 +709,9 @@ AnimationEditor::on_remove_member ()
 				
 				if (not interpolators .empty ())
 				{
-					getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
+					const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+
+					getBrowserWindow () -> removeNodesFromScene (executionContext, X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
@@ -728,17 +733,18 @@ AnimationEditor::on_remove_member ()
 
 			try
 			{
-				const auto   parent       = selected -> parent ();
-				const auto & node         = nodes .at ((*parent) [columns .id]);
-				const auto   field        = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
-				const auto & interpolator = interpolatorIndex .at (field);
+				const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
+				const auto   executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+				const auto   parent           = selected -> parent ();
+				const auto & node             = nodes .at ((*parent) [columns .id]);
+				const auto   field            = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
+				const auto & interpolator     = interpolatorIndex .at (field);
 					
 				// We have found the interpolators connected to this node and field.
 				
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
 
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
-				X3D::X3DEditor::deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+				X3D::X3DEditor::deleteRoute (executionContext, interpolator, "value_changed", node, field -> getName (), undoStep);
 
 				interpolatorIndex .erase (field);
 
@@ -756,7 +762,11 @@ AnimationEditor::on_remove_member ()
 				}
 						
 				if (not isConnectedToOtherMembers)
-					getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { interpolator }, true, undoStep);
+				{
+					const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+
+					getBrowserWindow () -> removeNodesFromScene (executionContext, { interpolator }, true, undoStep);
+				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
 				addUndoStep (undoStep);
@@ -1259,9 +1269,10 @@ AnimationEditor::on_time ()
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
-	const auto undoStep        = std::make_shared <X3D::UndoStep> (_ ("Edit Keyframe Animation Properties"));
-	const auto name            = getNewNameEntry () .get_text ();
-	const bool durationChanged = getDuration () not_eq getDurationAdjustment () -> get_value ();
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Edit Keyframe Animation Properties"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+	const auto name             = getNewNameEntry () .get_text ();
+	const bool durationChanged  = getDuration () not_eq getDurationAdjustment () -> get_value ();
 
 	undoStep -> addUndoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
@@ -1273,7 +1284,7 @@ AnimationEditor::on_time ()
 
 	undoStep -> addObjects (timeSensor);
 
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, animation, undoStep);
+	X3D::X3DEditor::updateNamedNode (executionContext, name, animation, undoStep);
 
 	// Adjust metadata
 
@@ -1931,7 +1942,8 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 void
 AnimationEditor::removeKeyframes ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Keyframes"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Keyframes"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
@@ -1964,7 +1976,7 @@ AnimationEditor::removeKeyframes ()
 			interpolatorsToRemove .emplace_back (interpolator);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), interpolatorsToRemove, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (executionContext, interpolatorsToRemove, true, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -2454,8 +2466,9 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto interpolator = getCurrentContext () -> createNode (typeName);
-		const auto name         = getInterpolatorName (node, field);
+		const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+		const auto interpolator     = executionContext -> createNode (typeName);
+		const auto name             = getInterpolatorName (node, field);
 		
 		interpolator -> addInterest (&AnimationEditor::queue_draw, this);
 		interpolator -> getField ("value_changed") -> addInterest (&AnimationEditor::set_value, this);
@@ -2466,9 +2479,9 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 
 		undoStep -> addObjects (animation);
 		X3D::X3DEditor::pushBackIntoArray (animation, animation -> children (), interpolator, undoStep);
-		X3D::X3DEditor::addRoute (getCurrentContext (), timeSensor, "fraction_changed", interpolator, "set_fraction", undoStep);
-		X3D::X3DEditor::addRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
-		X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, interpolator, undoStep);
+		X3D::X3DEditor::addRoute (executionContext, timeSensor, "fraction_changed", interpolator, "set_fraction", undoStep);
+		X3D::X3DEditor::addRoute (executionContext, interpolator, "value_changed", node, field -> getName (), undoStep);
+		X3D::X3DEditor::updateNamedNode (executionContext, name, interpolator, undoStep);
 
 		return interpolatorNode;
 	}
