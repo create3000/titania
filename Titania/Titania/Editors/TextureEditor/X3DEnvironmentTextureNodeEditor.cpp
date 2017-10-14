@@ -71,11 +71,11 @@ X3DEnvironmentTextureNodeEditor::configure ()
 }
 
 void
-X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	setComposedCubeMapTexture  (value);
-	setGeneratedCubeMapTexture (value);
-	setImageCubeMapTexture     (value);
+	setComposedCubeMapTexture  (executionContext, value);
+	setGeneratedCubeMapTexture (executionContext, value);
+	setImageCubeMapTexture     (executionContext, value);
 
 	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (value), value);
 }

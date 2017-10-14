@@ -68,11 +68,11 @@ X3DTexture3DNodeEditor::X3DTexture3DNodeEditor () :
 }
 
 void
-X3DTexture3DNodeEditor::setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DTexture3DNodeEditor::setTexture3DNode (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	setComposedTexture3D (value);
-	setImageTexture3D (value);
-	setPixelTexture3D (value);
+	setComposedTexture3D (executionContext, value);
+	setImageTexture3D    (executionContext, value);
+	setPixelTexture3D    (executionContext, value);
 
 	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (value), value);
 }

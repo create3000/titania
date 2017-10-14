@@ -143,9 +143,11 @@ SoundEditor::on_new_sound_clicked ()
 void
 SoundEditor::on_remove_sound_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Sound"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Sound"));
+	const auto & soundNode        = nodeName .getNode ();
+	const auto & executionContext = X3D::X3DExecutionContextPtr (soundNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (executionContext, { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

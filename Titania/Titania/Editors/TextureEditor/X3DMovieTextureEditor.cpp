@@ -80,7 +80,7 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 }
 
 void
-X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DMovieTextureEditor::setMovieTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	if (movieTexture)
 	{
@@ -98,7 +98,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	getMovieTextureControlsBox () .set_sensitive (movieTexture);
 
 	if (not movieTexture)
-		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
+		movieTexture = executionContext -> createNode <X3D::MovieTexture> ();
 
 	movieTexture -> isActive ()         .addInterest (&X3DMovieTextureEditor::set_active,      this);
 	movieTexture -> isPaused ()         .addInterest (&X3DMovieTextureEditor::set_active,      this);

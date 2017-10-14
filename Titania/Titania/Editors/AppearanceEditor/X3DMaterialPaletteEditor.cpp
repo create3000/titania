@@ -95,9 +95,13 @@ X3DMaterialPaletteEditor::setTouchTime (const basic::uri & URL)
 	{
 		// Apply selected material to selection.
 
-		auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
+		auto       selection        = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 		if (selection .empty ())
+			return;
+
+		if (not executionContext)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
@@ -107,7 +111,7 @@ X3DMaterialPaletteEditor::setTouchTime (const basic::uri & URL)
 
 		magicImport .setFrontMaterial (frontMaterial);
 
-		if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
+		if (magicImport .import (executionContext, selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)

@@ -79,7 +79,7 @@ protected:
 	///  @name Construction
 
 	void
-	setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setPixelTexture3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::PixelTexture3D> &

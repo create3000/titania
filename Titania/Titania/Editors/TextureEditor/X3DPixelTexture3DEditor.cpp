@@ -62,7 +62,7 @@ X3DPixelTexture3DEditor::X3DPixelTexture3DEditor () :
 }
 
 void
-X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	if (pixelTexture)
 	{
@@ -74,7 +74,7 @@ X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 	getPixelTexture3DBox () .set_visible (pixelTexture);
 
 	if (not pixelTexture)
-		pixelTexture = getCurrentContext () -> createNode <X3D::PixelTexture3D> ();
+		pixelTexture = executionContext -> createNode <X3D::PixelTexture3D> ();
 
 	//pixelTexture -> image () .addInterest (&X3DPixelTexture3DEditor::set_image, this);
 

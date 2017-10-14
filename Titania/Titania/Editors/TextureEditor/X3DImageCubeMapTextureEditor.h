@@ -82,7 +82,7 @@ protected:
 	///  @name Construction
 
 	void
-	setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setImageCubeMapTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::ImageCubeMapTexture> &

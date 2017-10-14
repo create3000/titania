@@ -159,6 +159,8 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 
 	// Set field.
 
+	const auto & executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (sounds));
+
 	addUndoFunction <X3D::SFNode> (sounds, "source", undoStep);
 
 	for (const auto & sound : sounds)
@@ -171,9 +173,9 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 			field .addInterest (&X3DSoundSourceNodeEditor::connectSource, this);
 
 			if (getSoundSourceComboBoxText () .get_active_row_number () > 0)
-				X3D::X3DEditor::replaceNode (getCurrentContext (), sound, field, soundSourceNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, sound, field, soundSourceNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), sound, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, sound, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -214,10 +216,11 @@ X3DSoundSourceNodeEditor::set_node ()
 
 	undoStep .reset ();
 
-	auto  tuple             = getSelection <X3D::X3DSoundSourceNode> (sounds, "source");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	const auto executionContext  = X3D::X3DExecutionContextPtr (getExecutionContext (sounds, true));
+	auto       tuple             = getSelection <X3D::X3DSoundSourceNode> (sounds, "source");
+	const      int32_t active    = std::get <1> (tuple);
+	const      bool    hasParent = std::get <2> (tuple);
+	const      bool    hasField  = (active not_eq -2);
 
 	soundSourceNode = std::move (std::get <0> (tuple));
 
@@ -225,10 +228,10 @@ X3DSoundSourceNodeEditor::set_node ()
 	movieTexture = soundSourceNode;
 
 	if (not audioClip)
-		audioClip = getCurrentContext () -> createNode <X3D::AudioClip> ();
+		audioClip = executionContext -> createNode <X3D::AudioClip> ();
 
 	if (not movieTexture)
-		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
+		movieTexture = executionContext -> createNode <X3D::MovieTexture> ();
 
 	if (not soundSourceNode)
 		soundSourceNode = audioClip;

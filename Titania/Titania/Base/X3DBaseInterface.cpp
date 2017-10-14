@@ -273,6 +273,23 @@ X3DBaseInterface::getUndoStep () const
 	return browserWindow -> getUndoStep ();
 }
 
+X3D::X3DExecutionContext*
+X3DBaseInterface::getExecutionContext (const X3D::MFNode & nodes, const bool currentIfEmpty) const
+{
+	if (currentIfEmpty and nodes .empty ())
+		return getCurrentContext ();
+
+	std::set <X3D::X3DExecutionContext*> executionContexts;
+
+	for (const auto & node : nodes)
+		executionContexts .emplace (node -> getExecutionContext ());
+
+	if (executionContexts .size () == 1)
+		return *executionContexts .begin ();
+
+	return nullptr;
+}
+
 std::string
 X3DBaseInterface::getNodeName (const X3D::SFNode & node) const
 {

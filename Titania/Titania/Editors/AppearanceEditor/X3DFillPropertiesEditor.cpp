@@ -121,6 +121,8 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 		getFillPropertiesCheckButton () .set_inconsistent (false);
 		getFillPropertiesBox ()         .set_sensitive (getFillPropertiesCheckButton () .get_active ());
 
+		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+
 		for (const auto & appearance : appearances)
 		{
 			try
@@ -132,12 +134,12 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 
 				if (getFillPropertiesCheckButton () .get_active ())
 				{
-					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, fillProperties, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, appearance, field, fillProperties, undoStep);
 					previewAppearance -> fillProperties () = fillProperties;
 				}
 				else
 				{
-					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, appearance, field, nullptr, undoStep);
 					previewAppearance -> fillProperties () = nullptr;
 				}
 			}
@@ -181,13 +183,15 @@ X3DFillPropertiesEditor::set_node ()
 		previewAppearance -> fillProperties () = fillProperties;
 
 		if (fillProperties)
+		{
 			fillProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
-
+		}
 		else
 		{
-			fillProperties = new X3D::FillProperties (getCurrentContext ());
+			const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+
+			fillProperties = executionContext -> createNode <X3D::FillProperties> ();
 			fillProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
-			fillProperties -> setup ();
 		}
 
 		changing = true;

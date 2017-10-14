@@ -181,6 +181,8 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (texts));
+
 	addUndoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
 
 	for (const auto & text : texts)
@@ -193,9 +195,9 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 			field .addInterest (&X3DFontStyleNodeEditor::connectFontStyle, this);
 
 			if (getFontStyleComboBoxText () .get_active_row_number () > 0)
-				X3D::X3DEditor::replaceNode (getCurrentContext (), text, field, fontStyleNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, text, field, fontStyleNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), text, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, text, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -229,10 +231,11 @@ X3DFontStyleNodeEditor::set_node ()
 	if (fontStyleNode)
 		fontStyleNode -> style () .removeInterest (&X3DFontStyleNodeEditor::set_style, this);
 
-	auto  tuple             = getSelection <X3D::X3DFontStyleNode> (texts, "fontStyle");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (texts, true));
+	auto  tuple                    = getSelection <X3D::X3DFontStyleNode> (texts, "fontStyle");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
 	fontStyleNode = std::move (std::get <0> (tuple));
 
@@ -240,10 +243,10 @@ X3DFontStyleNodeEditor::set_node ()
 	screenFontStyle = fontStyleNode;
 
 	if (not fontStyle)
-		fontStyle = getCurrentContext () -> createNode <X3D::FontStyle> ();
+		fontStyle = executionContext -> createNode <X3D::FontStyle> ();
 
 	if (not screenFontStyle)
-		screenFontStyle = getCurrentContext () -> createNode <X3D::ScreenFontStyle> ();
+		screenFontStyle = executionContext -> createNode <X3D::ScreenFontStyle> ();
 
 	if (not fontStyleNode)
 		fontStyleNode = fontStyle;

@@ -67,11 +67,11 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 }
 
 void
-X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	setImageTexture (value);
-	setPixelTexture (value);
-	setMovieTexture (value);
+	setImageTexture (executionContext, value);
+	setPixelTexture (executionContext, value);
+	setMovieTexture (executionContext, value);
 
 	setTexture2DNode (X3D::X3DPtr <X3D::X3DTexture2DNode> (value), value);
 }

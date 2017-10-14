@@ -173,6 +173,8 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+
 	addUndoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
 	for (const auto & appearance : appearances)
@@ -185,9 +187,9 @@ X3DTextureNodeEditor::on_texture_changed ()
 			field .addInterest (&X3DTextureNodeEditor::connectTexture, this);
 
 			if (getTextureComboBoxText () .get_active_row_number () > 0)
-				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, textureNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, appearance, field, textureNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, appearance, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -197,10 +199,10 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
 
-	setMultiTexture           (textureNode);
-	setTexture2DNode          (textureNode);
-	setTexture3DNode          (textureNode);
-	setEnvironmentTextureNode (textureNode);
+	setMultiTexture           (executionContext, textureNode);
+	setTexture2DNode          (executionContext, textureNode);
+	setTexture3DNode          (executionContext, textureNode);
+	setEnvironmentTextureNode (executionContext, textureNode);
 	X3DTexturePropertiesEditor::set_selection (appearances);
 
 	getTextureNameGrid () .set_sensitive (textureNode);
@@ -235,17 +237,18 @@ X3DTextureNodeEditor::set_node ()
 		IMAGE_CUBE_MAP_TEXTURE
 	};
 
-	auto       tuple     = getSelection <X3D::X3DTextureNode> (appearances, "texture");
-	const int  active    = std::get <1> (tuple);
-	const bool hasParent = std::get <2> (tuple);
-	const bool hasField  = (active not_eq -2);
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+	auto       tuple            = getSelection <X3D::X3DTextureNode> (appearances, "texture");
+	const int  active           = std::get <1> (tuple);
+	const bool hasParent        = std::get <2> (tuple);
+	const bool hasField         = (active not_eq -2);
 
 	textureNode = std::move (std::get <0> (tuple));
 
-	setMultiTexture           (textureNode);
-	setTexture2DNode          (textureNode);
-	setTexture3DNode          (textureNode);
-	setEnvironmentTextureNode (textureNode);
+	setMultiTexture           (executionContext, textureNode);
+	setTexture2DNode          (executionContext, textureNode);
+	setTexture3DNode          (executionContext, textureNode);
+	setEnvironmentTextureNode (executionContext, textureNode);
 
 	getTextureNameGrid () .set_sensitive (textureNode);
 

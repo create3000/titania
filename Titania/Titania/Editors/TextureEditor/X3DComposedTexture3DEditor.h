@@ -79,7 +79,7 @@ protected:
 	///  @name Construction
 
 	void
-	setComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setComposedTexture3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::ComposedTexture3D> &

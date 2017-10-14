@@ -81,7 +81,7 @@ protected:
 	///  @name Member access
 
 	void
-	setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setTexture2DNode (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::ImageTexture> &

@@ -142,6 +142,8 @@ TextEditor::on_text_toggled ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+
 	addUndoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 
 	for (const auto & shapeNode : shapeNodes)
@@ -154,9 +156,9 @@ TextEditor::on_text_toggled ()
 			field .addInterest (&TextEditor::connectGeometry, this);
 
 			if (getTextCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, text, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, shapeNode, field, text, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, shapeNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -196,7 +198,7 @@ TextEditor::set_node ()
 
 	if (text)
 	{
-		measure = getCurrentContext () -> createNode <X3D::Text> ();
+		measure = text -> getExecutionContext () -> createNode <X3D::Text> ();
 		measure -> lineBounds () .addInterest (&TextEditor::set_lineBounds, this);
 
 		text -> length ()    .addInterest (&TextEditor::set_length, this);

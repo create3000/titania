@@ -85,7 +85,7 @@ protected:
 	///  @name Construction
 
 	void
-	setComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setComposedCubeMapTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &

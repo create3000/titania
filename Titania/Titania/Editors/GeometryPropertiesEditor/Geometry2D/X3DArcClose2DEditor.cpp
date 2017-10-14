@@ -107,7 +107,8 @@ X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Use Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Use Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
 
 	if (getArcClose2DUseGlobalOptionsCheckButton () .get_active ())
 	{
@@ -115,7 +116,7 @@ X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
 		{
 			auto & options = node -> getField <X3D::SFNode> ("options");
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, nullptr, undoStep);
 		}
 	}
 	else
@@ -123,9 +124,9 @@ X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
 		for (const auto & node : nodes)
 		{
 			auto &     options    = node -> getField <X3D::SFNode> ("options");
-			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getArcClose2DOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getArcClose2DOptions () -> copy (executionContext, X3D::FLAT_COPY));
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, optionNode, undoStep);
 		}
 	}
 

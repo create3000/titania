@@ -109,6 +109,8 @@ X3DViewportEditor::on_viewport_toggled ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+
 	addUndoFunction <X3D::SFNode> (nodes, "viewport", undoStep);
 
 	for (const auto & node : nodes)
@@ -121,9 +123,9 @@ X3DViewportEditor::on_viewport_toggled ()
 			field .addInterest (&X3DViewportEditor::connectViewport, this);
 
 			if (getViewportCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, viewport, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, node, field, viewport, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, node, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -159,7 +161,8 @@ X3DViewportEditor::set_node ()
 
 	// Find Viewport in selection
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto   executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
 
 	viewport = selection .empty () ? nullptr : selection .back ();
 
@@ -176,17 +179,14 @@ X3DViewportEditor::set_node ()
 
 			changing = true;
 
-			getCreateViewportBox () .set_visible (true);
+			getCreateViewportBox ()   .set_visible (true);
 			getViewportCheckButton () .set_active (viewport);
-			getViewportBox () .set_sensitive (viewport);
+			getViewportBox ()         .set_sensitive (viewport);
 
 			changing = false;
-
+		
 			if (not viewport)
-			{
-				viewport = new X3D::Viewport (getCurrentContext ());
-				viewport -> setup ();
-			}
+				viewport = selection .back () -> getExecutionContext () -> createNode <X3D::Viewport> ();
 		}
 	}
 	catch (const X3D::X3DError &)

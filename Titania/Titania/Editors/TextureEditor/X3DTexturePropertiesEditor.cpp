@@ -139,6 +139,8 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (textureNodes));
+
 	addUndoFunction <X3D::SFNode> (textureNodes, "textureProperties", undoStep);
 
 	for (const auto & textureNode : textureNodes)
@@ -151,9 +153,9 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 			field .addInterest (&X3DTexturePropertiesEditor::connectTextureProperties, this);
 
 			if (getTexturePropertiesCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), textureNode, field, textureProperties, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, textureNode, field, textureProperties, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), textureNode, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, textureNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -175,15 +177,16 @@ X3DTexturePropertiesEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto          tuple     = getSelection <X3D::TextureProperties> (textureNodes, "textureProperties");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	const auto    executionContext = getExecutionContext (textureNodes, true);
+	auto          tuple            = getSelection <X3D::TextureProperties> (textureNodes, "textureProperties");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
 	textureProperties = std::move (std::get <0> (tuple));
 
 	if (not textureProperties)
-		textureProperties = getCurrentContext () -> createNode <X3D::TextureProperties> ();
+		textureProperties = executionContext -> createNode <X3D::TextureProperties> ();
 
 	changing = true;
 

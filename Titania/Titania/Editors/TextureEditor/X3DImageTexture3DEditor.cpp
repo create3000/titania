@@ -74,14 +74,14 @@ X3DImageTexture3DEditor::X3DImageTexture3DEditor () :
 }
 
 void
-X3DImageTexture3DEditor::setImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DImageTexture3DEditor::setImageTexture3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	imageTexture = value;
 
 	getImageTexture3DBox () .set_visible (imageTexture);
 
 	if (not imageTexture)
-		imageTexture = getCurrentContext () -> createNode <X3D::ImageTexture3D> ();
+		imageTexture = executionContext -> createNode <X3D::ImageTexture3D> ();
 
 	url -> setNodes ({ imageTexture });
 }

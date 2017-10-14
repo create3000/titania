@@ -103,7 +103,8 @@ X3DConeEditor::on_cone_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Cone Use Global Options To »%s«", getConeUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Cone Use Global Options To »%s«", getConeUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
 
 	if (getConeUseGlobalOptionsCheckButton () .get_active ())
 	{
@@ -111,7 +112,7 @@ X3DConeEditor::on_cone_use_global_options_toggled ()
 		{
 			auto & options = node -> getField <X3D::SFNode> ("options");
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, nullptr, undoStep);
 		}
 	}
 	else
@@ -119,9 +120,9 @@ X3DConeEditor::on_cone_use_global_options_toggled ()
 		for (const auto & node : nodes)
 		{
 			auto &     options    = node -> getField <X3D::SFNode> ("options");
-			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getConeOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getConeOptions () -> copy (executionContext, X3D::FLAT_COPY));
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, optionNode, undoStep);
 		}
 	}
 

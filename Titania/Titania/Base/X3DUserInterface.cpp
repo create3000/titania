@@ -206,12 +206,7 @@ X3DUserInterface::on_unmap ()
 void
 X3DUserInterface::set_selection_and_check (const X3D::MFNode & selection)
 {
-	std::set <X3D::X3DExecutionContext*> executionContexts;
-
-	for (const auto & node : selection)
-		executionContexts .emplace (node -> getExecutionContext ());
-
-	if (executionContexts .size () == 1)
+	if (getExecutionContext (selection))
 		set_selection (selection);
 	else
 		set_selection ({ });

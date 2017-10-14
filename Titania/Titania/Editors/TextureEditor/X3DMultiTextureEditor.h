@@ -81,7 +81,7 @@ protected:
 	///  @name Construction
 
 	void
-	setMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setMultiTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::MultiTexture> &

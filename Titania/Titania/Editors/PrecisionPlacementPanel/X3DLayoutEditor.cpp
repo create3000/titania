@@ -108,6 +108,8 @@ X3DLayoutEditor::on_layout_toggled ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+
 	addUndoFunction <X3D::SFNode> (nodes, "layout", undoStep);
 
 	for (const auto & node : nodes)
@@ -120,9 +122,9 @@ X3DLayoutEditor::on_layout_toggled ()
 			field .addInterest (&X3DLayoutEditor::connectLayout, this);
 
 			if (getLayoutCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, layout, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, node, field, layout, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, node, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -158,7 +160,8 @@ X3DLayoutEditor::set_node ()
 
 	// Find Layout in selection
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto   executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
 
 	layout = selection .empty () ? nullptr : selection .back ();
 
@@ -175,17 +178,14 @@ X3DLayoutEditor::set_node ()
 
 			changing = true;
 
-			getCreateLayoutBox () .set_visible (true);
+			getCreateLayoutBox ()   .set_visible (true);
 			getLayoutCheckButton () .set_active (layout);
-			getLayoutBox () .set_sensitive (layout);
+			getLayoutBox ()         .set_sensitive (layout);
 			
 			changing = false;
-
+		
 			if (not layout)
-			{
-				layout = new X3D::Layout (getCurrentContext ());
-				layout -> setup ();
-			}
+				layout = selection .back () -> getExecutionContext () -> createNode <X3D::Layout> ();
 		}
 	}
 	catch (const X3D::X3DError &)

@@ -181,11 +181,12 @@ X3DMaterialEditor::on_paste ()
 {
 	try
 	{
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Paste Material"));
-		const auto scene     = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
-		auto       selection = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Paste Material"));
+		const auto scene            = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
+		auto       selection        = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
 
-		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
+		if (MagicImport (getBrowserWindow ()) .import (executionContext, selection, scene, undoStep))
 			addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError & error)
@@ -396,6 +397,8 @@ X3DMaterialEditor::on_material_changed ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+
 	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
 	for (const auto & appearance : appearances)
@@ -411,17 +414,17 @@ X3DMaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, appearance, field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, material, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, appearance, field, material, undoStep);
 					break;
 				}
 				case 2:
 				{
-					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, twoSidedMaterial, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, appearance, field, twoSidedMaterial, undoStep);
 					break;
 				}
 				default:
@@ -460,10 +463,11 @@ X3DMaterialEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto          tuple     = getSelection <X3D::X3DMaterialNode> (appearances, "material");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	const auto    executionContext = getExecutionContext (appearances, true);
+	auto          tuple            = getSelection <X3D::X3DMaterialNode> (appearances, "material");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
 	materialNode = std::move (std::get <0> (tuple));
 
@@ -474,16 +478,10 @@ X3DMaterialEditor::set_node ()
 	isTwoSidedMaterial = twoSidedMaterial;
 
 	if (not material)
-	{
-		material = new X3D::Material (getCurrentContext ());
-		material -> setup ();
-	}
+		material = executionContext -> createNode <X3D::Material> ();
 
 	if (not twoSidedMaterial)
-	{
-		twoSidedMaterial = new X3D::TwoSidedMaterial (getCurrentContext ());
-		twoSidedMaterial -> setup ();
-	}
+		twoSidedMaterial = executionContext -> createNode <X3D::TwoSidedMaterial> ();
 
 	set_widgets ();
 

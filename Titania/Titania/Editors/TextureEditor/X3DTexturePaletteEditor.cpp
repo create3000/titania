@@ -96,15 +96,19 @@ X3DTexturePaletteEditor::setTouchTime (const basic::uri & URL)
 {
 	try
 	{
-		auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
+		auto selection              = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
 
 		if (selection .empty ())
+			return;
+
+		if (not executionContext)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Palette"));
 		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ URL .str () });
 
-		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
+		if (MagicImport (getBrowserWindow ()) .import (executionContext, selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)

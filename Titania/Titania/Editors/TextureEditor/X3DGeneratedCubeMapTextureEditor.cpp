@@ -64,14 +64,14 @@ X3DGeneratedCubeMapTextureEditor::X3DGeneratedCubeMapTextureEditor () :
 }
 
 void
-X3DGeneratedCubeMapTextureEditor::setGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DGeneratedCubeMapTextureEditor::setGeneratedCubeMapTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	generatedCubeMapTexture = value;
 
 	getGeneratedCubeMapTextureBox () .set_visible (generatedCubeMapTexture);
 
 	if (not generatedCubeMapTexture)
-		generatedCubeMapTexture = getCurrentContext () -> createNode <X3D::GeneratedCubeMapTexture> ();
+		generatedCubeMapTexture = executionContext -> createNode <X3D::GeneratedCubeMapTexture> ();
 
 	const X3D::MFNode nodes = { generatedCubeMapTexture };
 

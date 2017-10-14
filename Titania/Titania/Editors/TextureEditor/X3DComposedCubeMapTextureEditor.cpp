@@ -76,7 +76,7 @@ X3DComposedCubeMapTextureEditor::configure ()
 }
 
 void
-X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	if (cubeMapTexture)
 	{
@@ -93,7 +93,7 @@ X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DPtr <X
 	getComposedCubeMapTextureBox () .set_visible (cubeMapTexture);
 
 	if (not cubeMapTexture)
-		cubeMapTexture = getCurrentContext () -> createNode <X3D::ComposedCubeMapTexture> ();
+		cubeMapTexture = executionContext -> createNode <X3D::ComposedCubeMapTexture> ();
 
 	cubeMapTexture -> front ()  .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, frontPreview,  std::cref (cubeMapTexture -> front ()));
 	cubeMapTexture -> back ()   .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, backPreview,   std::cref (cubeMapTexture -> back ()));

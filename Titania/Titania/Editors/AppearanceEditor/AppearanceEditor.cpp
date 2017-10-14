@@ -139,6 +139,8 @@ AppearanceEditor::on_appearance_toggled ()
 
 	getAppearanceCheckButton () .set_inconsistent (false);
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+
 	for (const auto & shapeNode : shapeNodes)
 	{
 		try
@@ -149,9 +151,9 @@ AppearanceEditor::on_appearance_toggled ()
 			field .addInterest (&AppearanceEditor::connectAppearance, this);
 
 			if (getAppearanceCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, appearanceNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, shapeNode, field, appearanceNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, shapeNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -175,15 +177,16 @@ AppearanceEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto          tuple     = getSelection <X3D::X3DAppearanceNode> (shapeNodes, "appearance");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes, true));
+	auto          tuple            = getSelection <X3D::X3DAppearanceNode> (shapeNodes, "appearance");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
 	appearanceNode = std::move (std::get <0> (tuple));
 
 	if (not appearanceNode)
-		appearanceNode = getCurrentContext ()-> createNode <X3D::Appearance> ();
+		appearanceNode = executionContext -> createNode <X3D::Appearance> ();
 
 	changing = true;
 

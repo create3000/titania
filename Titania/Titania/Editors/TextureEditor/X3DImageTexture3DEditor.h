@@ -80,7 +80,7 @@ protected:
 	///  @name Construction
 
 	void
-	setImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+	setImageTexture3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::ImageTexture3D> &

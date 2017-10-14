@@ -92,12 +92,12 @@ X3DTextureTransformEditor::configure ()
 }
 
 void
-X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
+X3DTextureTransformEditor::setTextureTransform (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureTransformNode> & value)
 {
 	textureTransform = value;
 
 	if (not textureTransform)
-		textureTransform = getCurrentContext () -> createNode <X3D::TextureTransform> ();
+		textureTransform = executionContext -> createNode <X3D::TextureTransform> ();
 
 	const X3D::MFNode nodes = { textureTransform };
 

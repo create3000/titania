@@ -2792,20 +2792,6 @@ BrowserWindow::on_look_at_toggled ()
 	}
 }
 
-X3D::X3DExecutionContext*
-BrowserWindow::getExecutionContext (const X3D::MFNode & nodes) const
-{
-	std::set <X3D::X3DExecutionContext*> executionContexts;
-
-	for (const auto & node : nodes)
-		executionContexts .emplace (node -> getExecutionContext ());
-
-	if (executionContexts .size () == 1)
-		return *executionContexts .begin ();
-
-	return nullptr;
-}
-
 bool
 BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
 {

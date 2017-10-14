@@ -180,8 +180,9 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	{
 	   try
 	   {
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+			const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+		   auto       node             = executionContext -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
@@ -190,7 +191,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			{
 				auto & field = shapeNode -> geometry ();
 
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, shapeNode, field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -202,13 +203,14 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	}
 	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
 	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
 
 		for (const auto & shapeNode : shapeNodes)
 		{
 			auto & field = shapeNode -> geometry ();
 
-			X3D::X3DEditor::removeNode (getCurrentContext (), shapeNode, field, undoStep);
+			X3D::X3DEditor::removeNode (executionContext, shapeNode, field, undoStep);
 		}
 
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -372,11 +374,13 @@ GeometryPropertiesEditor::set_normal ()
 void
 GeometryPropertiesEditor::on_add_normals_clicked ()
 {
-	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Add Normals"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Add Normals"));
+	const auto geometries       = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
 	for (const auto & geometry : geometries)
 	{
+		const auto executionContext = X3D::X3DExecutionContextPtr (geometry -> getExecutionContext ());
+
 		for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
 		{
 			switch (type)
@@ -390,7 +394,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
 					elevationGrid -> normalPerVertex () = true;
 
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, geometry, elevationGrid -> normal (), nullptr, undoStep);
 
 					elevationGrid -> addNormals ();
 
@@ -406,7 +410,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
 					geoElevationGrid -> normalPerVertex () = true;
 
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, geometry, geoElevationGrid -> normal (), nullptr, undoStep);
 
 					geoElevationGrid -> addNormals ();
 
@@ -423,7 +427,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					indexedFaceSet -> normalPerVertex () = true;
 
 					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, geometry, indexedFaceSet -> normal (), nullptr, undoStep);
 
 					indexedFaceSet -> addNormals ();
 
@@ -436,7 +440,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
 
 					undoStep -> addObjects (geometry);
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, geometry, composedGeometryNode -> normal (), nullptr, undoStep);
 
 					composedGeometryNode -> addNormals ();
 
@@ -457,11 +461,13 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 void
 GeometryPropertiesEditor::on_remove_normals_clicked ()
 {
-	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Remove Normals"));
+	const auto geometries = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
 	for (const auto & geometry : geometries)
 	{
+		const auto executionContext = X3D::X3DExecutionContextPtr (geometry -> getExecutionContext ());
+
 		try
 		{
 			auto & normalIndex = geometry -> getField <X3D::MFInt32> ("normalIndex");
@@ -478,7 +484,7 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 		{
 			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, geometry, normal, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -571,6 +577,8 @@ GeometryPropertiesEditor::on_color_changed ()
 	if (changing)
 		return;
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (geometryNode -> getExecutionContext ());
+
 	if (getColorTypeButton () .get_active_row_number () > 0)
 	{
 	   try
@@ -587,7 +595,7 @@ GeometryPropertiesEditor::on_color_changed ()
 
 			else
 			{
-				node = getCurrentContext () -> createNode (getColorTypeButton () .get_active_text ());
+				node = executionContext -> createNode (getColorTypeButton () .get_active_text ());
 
 				// Assign and convert existing color node if switched from Color to ColorRGBA or back.
 
@@ -613,7 +621,7 @@ GeometryPropertiesEditor::on_color_changed ()
 				{
 					auto & field = geometryNode -> getField <X3D::SFNode> ("color");
 
-					X3D::X3DEditor::replaceNode (getCurrentContext (), geometryNode, field, node, undoStep);
+					X3D::X3DEditor::replaceNode (executionContext, geometryNode, field, node, undoStep);
 				}
 				catch (const X3D::X3DError &)
 				{ }
@@ -636,7 +644,7 @@ GeometryPropertiesEditor::on_color_changed ()
 			{
 				auto & field = geometryNode -> getField <X3D::SFNode> ("color");
 
-				X3D::X3DEditor::removeNode (getCurrentContext (), geometryNode, field, undoStep);
+				X3D::X3DEditor::removeNode (executionContext, geometryNode, field, undoStep);
 			}
 			catch (const X3D::X3DError &)
 			{ }

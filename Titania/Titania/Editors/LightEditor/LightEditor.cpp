@@ -125,9 +125,11 @@ LightEditor::on_new_light_popup_clicked ()
 void
 LightEditor::on_remove_light_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));
+	const auto & lightNode        = nodeName .getNode ();
+	const auto   executionContext = X3D::X3DExecutionContextPtr (lightNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> removeNodesFromScene (executionContext, { lightNode }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

@@ -160,6 +160,8 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	// Set field.
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+
 	addUndoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
 	for (const auto & appearance : appearances)
@@ -172,9 +174,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			field .addInterest (&X3DTextureTransformNodeEditor::connectTextureTransform, this);
 
 			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
-				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, textureTransformNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, appearance, field, textureTransformNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, appearance, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -200,16 +202,17 @@ X3DTextureTransformNodeEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto          tuple     = getSelection <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField = (active not_eq -2);
+	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+	auto          tuple            = getSelection <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
 	textureTransformNode = std::move (std::get <0> (tuple));
 
-	setTextureTransform         (textureTransformNode);
-	setTextureTransform3D       (textureTransformNode);
-	setTextureTransformMatrix3D (textureTransformNode);
+	setTextureTransform         (executionContext, textureTransformNode);
+	setTextureTransform3D       (executionContext, textureTransformNode);
+	setTextureTransformMatrix3D (executionContext, textureTransformNode);
 
 	getTextureTransformNameGrid () .set_sensitive (textureTransformNode);
 

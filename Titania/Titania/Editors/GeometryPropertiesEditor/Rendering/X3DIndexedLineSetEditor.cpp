@@ -135,14 +135,15 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 	if (changing)
 		return;
 
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change IndexedLineSet Type To »%s«", getIndexedLineSetTypeButton () .get_active_text () .c_str ())));
-	auto       optionNode = X3D::SFNode ();
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change IndexedLineSet Type To »%s«", getIndexedLineSetTypeButton () .get_active_text () .c_str ())));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	auto       optionNode       = X3D::SFNode ();
 
 	switch (getIndexedLineSetTypeButton () .get_active_row_number ())
 	{
 		case 1:
 		{
-			optionNode = X3D::MakePtr <X3D::LSystem> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::LSystem> (executionContext);
 			break;
 		}
 		default:
@@ -156,14 +157,14 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 	for (const auto & node : nodes)
 	{
 		auto &     options = node -> getField <X3D::SFNode> ("options");
-		const auto copy    = optionNode ? X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY)) : optionNode;
+		const auto copy    = optionNode ? X3D::SFNode (optionNode -> copy (executionContext, X3D::FLAT_COPY)) : optionNode;
 
 		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (node -> getField <X3D::MFInt32> ("colorIndex")), node -> getField <X3D::MFInt32> ("colorIndex"));
 		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (node -> getField <X3D::MFInt32> ("coordIndex")), node -> getField <X3D::MFInt32> ("coordIndex"));
 		undoStep -> addUndoFunction (&X3D::SFNode::setValue,  std::ref (node -> getField <X3D::SFNode> ("color")),       node -> getField <X3D::SFNode> ("color"));
 		undoStep -> addUndoFunction (&X3D::SFNode::setValue,  std::ref (node -> getField <X3D::SFNode> ("coord")),       node -> getField <X3D::SFNode> ("coord"));
 
-		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
+		X3D::X3DEditor::replaceNode (executionContext, node, options, copy, undoStep);
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

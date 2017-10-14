@@ -104,7 +104,8 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Sphere Use Global Options To »%s«", getSphereUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Sphere Use Global Options To »%s«", getSphereUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
 
 	if (getSphereUseGlobalOptionsCheckButton () .get_active ())
 	{
@@ -112,7 +113,7 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 		{
 			auto & options = node -> getField <X3D::SFNode> ("options");
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, nullptr, undoStep);
 		}
 	}
 	else
@@ -120,9 +121,9 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 		for (const auto & node : nodes)
 		{
 			auto &     options    = node -> getField <X3D::SFNode> ("options");
-			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getSphereOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getSphereOptions () -> copy (executionContext, X3D::FLAT_COPY));
 
-			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+			X3D::X3DEditor::replaceNode (executionContext, node, options, optionNode, undoStep);
 		}
 	}
 
@@ -135,24 +136,25 @@ X3DSphereEditor::on_sphere_type_changed ()
 	if (changing)
 		return;
 
-	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change Sphere Type To »%s«", getSphereTypeButton () .get_active_text () .c_str ())));
-	auto       optionNode = X3D::SFNode ();
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change Sphere Type To »%s«", getSphereTypeButton () .get_active_text () .c_str ())));
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	auto       optionNode       = X3D::SFNode ();
 
 	switch (getSphereTypeButton () .get_active_row_number ())
 	{
 		case 0:
 		{
-			optionNode = X3D::MakePtr <X3D::OctahedronOptions> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::OctahedronOptions> (executionContext);
 			break;
 		}
 		case 1:
 		{
-			optionNode = X3D::MakePtr <X3D::IcosahedronOptions> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::IcosahedronOptions> (executionContext);
 			break;
 		}
 		default:
 		{
-			optionNode = X3D::MakePtr <X3D::QuadSphereOptions> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::QuadSphereOptions> (executionContext);
 			break;
 		}
 	}
@@ -160,9 +162,9 @@ X3DSphereEditor::on_sphere_type_changed ()
 	for (const auto & node : nodes)
 	{
 		auto &     options = node -> getField <X3D::SFNode> ("options");
-		const auto copy    = X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY));
+		const auto copy    = X3D::SFNode (optionNode -> copy (executionContext, X3D::FLAT_COPY));
 
-		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
+		X3D::X3DEditor::replaceNode (executionContext, node, options, copy, undoStep);
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

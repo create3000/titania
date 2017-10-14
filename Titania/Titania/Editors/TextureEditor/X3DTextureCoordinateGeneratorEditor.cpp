@@ -120,6 +120,8 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 	if (changing)
 		return;
 
+	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (geometryNodes));
+
 	addUndoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 
 	getTextureCoordinateGeneratorCheckButton () .set_inconsistent (false);
@@ -135,9 +137,9 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 			field .addInterest (&X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator, this);
 
 			if (getTextureCoordinateGeneratorCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, field, textureCoordinateGenerator, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, geometry, field, textureCoordinateGenerator, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, geometry, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -159,18 +161,16 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 {
 	undoStep .reset ();
 
-	auto       tuple     = getSelection <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
-	const int  active    = std::get <1> (tuple);
-	const bool hasParent = std::get <2> (tuple);
-	const bool hasField  = (active not_eq -2);
+	const auto executionContext = getExecutionContext (geometryNodes, true);
+	auto       tuple            = getSelection <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
+	const int  active           = std::get <1> (tuple);
+	const bool hasParent        = std::get <2> (tuple);
+	const bool hasField         = (active not_eq -2);
 
 	textureCoordinateGenerator = std::move (std::get <0> (tuple));
 
 	if (not textureCoordinateGenerator)
-	{
-		textureCoordinateGenerator = new X3D::TextureCoordinateGenerator (getCurrentContext ());
-		textureCoordinateGenerator -> setup ();
-	}
+		textureCoordinateGenerator = executionContext -> createNode <X3D::TextureCoordinateGenerator> ();
 
 	changing = true;
 

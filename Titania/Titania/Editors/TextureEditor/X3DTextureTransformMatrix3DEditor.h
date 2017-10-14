@@ -83,7 +83,7 @@ protected:
 	///  @name Construction
 
 	void
-	setTextureTransformMatrix3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
+	setTextureTransformMatrix3D (const X3D::X3DExecutionContextPtr & executionContext, const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
 	const X3D::X3DPtr <X3D::TextureTransformMatrix3D> &
 	getTextureTransformMatrix3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
