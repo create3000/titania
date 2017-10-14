@@ -54,6 +54,7 @@
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ExportedNode.h"
 #include "../Execution/ImportedNode.h"
+#include "../Parser/Filter.h"
 
 #include <Titania/String/to_string.h>
 #include <regex>
@@ -72,9 +73,9 @@ Generator::Generator (std::ostream & ostream) :
 	   exportedNodesIndex (),
 	   importedNodesIndex (),
 	                nodes (),
+	              newName (0),
 	                names (),
 	          namesByNode (),
-	              newName (0),
 	        importedNames (),
 	           routeNodes (),
 	  containerFieldStack (1),
@@ -109,30 +110,22 @@ Generator::get (std::ostream & ostream)
 void
 Generator::PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const executionContext)
 {
-	get (ostream) -> executionContextStack .emplace_back (executionContext);
-
-	get (ostream) -> exportedNodesIndex .emplace (executionContext, NodeIdSet ());
-	get (ostream) -> importedNodesIndex .emplace (executionContext, NodeIdSet ());
+	get (ostream) -> executionContextStack .emplace_back (const_cast <X3DExecutionContext*> (executionContext));
+	get (ostream) -> exportedNodesIndex    .emplace_back ();
+	get (ostream) -> importedNodesIndex    .emplace_back ();
 }
 
 void
 Generator::PopExecutionContext (std::ostream & ostream)
 {
 	get (ostream) -> executionContextStack .pop_back ();
-
-	if (get (ostream) -> executionContextStack .back ())
-		return;
-
-	get (ostream) -> exportedNodesIndex .clear ();
-	get (ostream) -> importedNodesIndex .clear ();
+	get (ostream) -> exportedNodesIndex    .pop_back ();
+	get (ostream) -> importedNodesIndex    .pop_back ();
 }
 
 void
 Generator::EnterScope (std::ostream & ostream)
 {
-	if (get (ostream) -> level == 0)
-		get (ostream) -> newName = 0;
-
 	++ get (ostream) -> level;
 }
 
@@ -143,6 +136,8 @@ Generator::LeaveScope (std::ostream & ostream)
 
 	if (get (ostream) -> level == 0)
 	{
+		get (ostream) -> newName = 0;
+
 		get (ostream) -> nodes         .clear ();
 		get (ostream) -> names         .clear ();
 		get (ostream) -> namesByNode   .clear ();
@@ -153,7 +148,7 @@ Generator::LeaveScope (std::ostream & ostream)
 void
 Generator::ExportedNodes (std::ostream & ostream, const ExportedNodeIndex & exportedNodes)
 {
-	auto & index = get (ostream) -> exportedNodesIndex .at (get (ostream) -> executionContextStack .back ());
+	auto & index = get (ostream) -> exportedNodesIndex .back ();
 
 	for (const auto & exportedNode : exportedNodes)
 	{
@@ -169,7 +164,7 @@ Generator::ExportedNodes (std::ostream & ostream, const ExportedNodeIndex & expo
 void
 Generator::ImportedNodes (std::ostream & ostream, const ImportedNodeIndex & importedNodes)
 {
-	auto & index = get (ostream) -> importedNodesIndex .at (get (ostream) -> executionContextStack .back ());
+	auto & index = get (ostream) -> importedNodesIndex .back ();
 
 	for (const auto & importedNode : importedNodes)
 	{
@@ -227,7 +222,7 @@ Generator::Name (const X3DBaseNode* const baseNode)
 	{
 		if (needsName (baseNode))
 		{
-			std::string name = getUniqueName ();
+			const auto name = getUniqueName ("");
 
 			names [name]                       = baseNode;
 			namesByNode [baseNode -> getId ()] = name;
@@ -241,41 +236,12 @@ Generator::Name (const X3DBaseNode* const baseNode)
 	}
 
 	// The node has a name
- 	
-	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
-	std::string name      = baseNode -> getName ();
-	const bool  hasNumber = std::regex_match (name, _TrailingNumbers);
+	auto       name       = RemoveTrailingNumber (baseNode -> getName ()); // Don't remove tailing number for stable underscore names. Option?
+	const auto uniqueName = name .empty () ? needsName (baseNode) : name not_eq baseNode -> getName ();
 
-	name = std::regex_replace (name, _TrailingNumbers, "");
-
-	if (name .empty ())
-	{
-		if (needsName (baseNode))
-			name = getUniqueName ();
-
-		else
-			return emptyName;
-	}
-	else
-	{
-		size_t      i       = 0;
-		std::string newName = hasNumber ? name + '_' + basic::to_string (++ i, std::locale::classic ()) : name;
-
-		try
-		{
-			for (; ;)
-			{
-				names .at (newName);
-
-				newName = name + '_' + basic::to_string (++ i, std::locale::classic ());
-			}
-		}
-		catch (const std::out_of_range &)
-		{
-			name = newName;
-		}
-	}
+	if (uniqueName or (name .size () and names .count (name)))
+		name = getUniqueName (name);
 
 	names [name]                       = baseNode;
 	namesByNode [baseNode -> getId ()] = name;
@@ -294,7 +260,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 
 	try
 	{
-		const auto & index = exportedNodesIndex .at (baseNode -> getExecutionContext ());
+		const auto & index = exportedNodesIndex .back ();
 
 		if (index .count (baseNode -> getId ()))
 			return true;
@@ -304,7 +270,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 
 	try
 	{
-		const auto & index = importedNodesIndex .at (baseNode -> getExecutionContext ());
+		const auto & index = importedNodesIndex .back ();
 
 		if (index .count (baseNode -> getId ()))
 			return true;
@@ -316,19 +282,17 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 }
 
 std::string
-Generator::getUniqueName ()
+Generator::getUniqueName (const std::string & name)
 {
-	std::string name;
+	std::string uniqueName;
 
-	for (; ;)
+	do
 	{
-		name = '_' + basic::to_string (++ newName, std::locale::classic ());
-
-		if (names .count (name))
-			continue;
-
-		return name;
+		uniqueName = name + '_' + basic::to_string (++ newName, std::locale::classic ());
 	}
+	while (names .count (uniqueName));
+
+	return uniqueName;
 }
 
 void

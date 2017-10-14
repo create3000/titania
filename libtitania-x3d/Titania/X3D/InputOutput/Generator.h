@@ -209,7 +209,7 @@ private:
 	needsName (const X3DBaseNode* const baseNode);
 
 	std::string
-	getUniqueName ();
+	getUniqueName (const std::string & name);
 
 	///  @name Destruction
 
@@ -219,11 +219,11 @@ private:
 
 	///  @name Member types
 
-	using ExecutionContextStack = std::vector <const X3DExecutionContext*>;
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 	using NodeIdSet             = std::set <size_t>;
 	using NameIndex             = std::map <std::string, const X3DBaseNode*>;
 	using NameIndexByNode       = std::map <size_t, std::string>;
-	using LocalNodeSet          = std::map <const X3DExecutionContext*, NodeIdSet>;
+	using LocalNodeSet          = std::vector <NodeIdSet>;
 	using ImportedNamesIndex    = std::map <size_t, std::string>;
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
@@ -240,9 +240,9 @@ private:
 	LocalNodeSet               exportedNodesIndex;
 	LocalNodeSet               importedNodesIndex;
 	NodeIdSet                  nodes;
+	size_t                     newName;
 	NameIndex                  names;
 	NameIndexByNode            namesByNode;
-	size_t                     newName;
 	ImportedNamesIndex         importedNames;
 	NodeIdSet                  routeNodes;
 	FieldStack                 containerFieldStack;

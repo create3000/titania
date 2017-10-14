@@ -64,6 +64,7 @@
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 
+#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/Stream/GZStream.h>
 #include <fstream>
@@ -129,6 +130,23 @@ X3DBrowserWidget::initialize ()
 
 	// Restore pages.
 
+	const auto files_exists = [ ] (const std::vector <std::string> & files)
+	{
+		std::vector <std::string> filtered;
+
+		for (const auto & file : files)
+		{
+			const auto uri = basic::uri (file);
+
+			if (uri .is_local () and not os::file_exists (uri .path ()))
+				continue;
+
+			filtered .emplace_back (file);
+		}
+
+		return filtered;
+	};
+
 	const auto empty     = pages .empty ();
 	auto       worldURLs = std::vector <std::string> ();
 	auto       histories = std::vector <std::string> ();
@@ -137,6 +155,10 @@ X3DBrowserWidget::initialize ()
 	basic::split (std::back_inserter (worldURLs), getConfig () -> getItem <std::string> ("worldURL"), "\n");
 	basic::split (std::back_inserter (histories), getConfig () -> getItem <std::string> ("history"),  "\n");
 	basic::split (std::back_inserter (recent),    getConfig () -> getItem <std::string> ("recent"),   "\n");
+
+	worldURLs = files_exists (worldURLs);
+	histories = files_exists (histories);
+	recent    = files_exists (recent);
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
@@ -413,6 +435,8 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 NotebookPagePtr
 X3DBrowserWidget::append (const basic::uri & URL)
 {
+__LOG__ << URL << std::endl;
+
 	const auto page    = std::make_shared <NotebookPage> (getBrowserWindow (), URL);
 	const auto browser = page -> getMainBrowser ();
 
