@@ -123,7 +123,7 @@ TimeSensor::initialize  ()
 void
 TimeSensor::setRange (const float currentFraction, const float firstFraction, const float lastFraction)
 {
-	fraction = currentFraction;
+	fraction = currentFraction >= 1 ? 0 : currentFraction;
 	first    = firstFraction;
 	last     = lastFraction;
 	scale    = last - first;
@@ -197,14 +197,15 @@ TimeSensor::set_time ()
 			{
 				cycle += interval * std::floor ((getCurrentTime () - cycle) / interval);
 
-				fraction_changed () = last;
-				elapsedTime ()      = getElapsedTime ();
-				cycleTime ()        = getCurrentTime ();
+				fraction_changed () = fraction = last;
+
+				elapsedTime () = getElapsedTime ();
+				cycleTime ()   = getCurrentTime ();
 			}
 		}
 		else
 		{
-			fraction_changed () = last;
+			fraction_changed () = fraction = last;
 			stop ();
 		}
 	}

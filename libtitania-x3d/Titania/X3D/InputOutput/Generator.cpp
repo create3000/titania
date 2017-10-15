@@ -136,8 +136,6 @@ Generator::LeaveScope (std::ostream & ostream)
 
 	if (get (ostream) -> level == 0)
 	{
-		get (ostream) -> newName = 0;
-
 		get (ostream) -> nodes         .clear ();
 		get (ostream) -> names         .clear ();
 		get (ostream) -> namesByNode   .clear ();
