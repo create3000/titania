@@ -70,6 +70,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/FileExportProtoDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveVideoDialog.cpp \

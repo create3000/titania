@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,61 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_EXPORT_PROTO_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_EXPORT_PROTO_DIALOG_H__
 
-#include "X3DBaseFileSaveDialog.h"
+#include "X3DFileSaveDialog.h"
 
 namespace titania {
 namespace puck {
 
-class X3DFileSaveDialog :
-	public X3DBaseFileSaveDialog
+class FileExportProtoDialog :
+	public X3DFileSaveDialog
 {
 public:
 
-	///  @name Operations
+	///  @name Construction
+
+	FileExportProtoDialog (X3DBrowserWindow* const browserWindow);
+
+	///  @name Destruction
 
 	bool
-	save (const bool copy);
+	run (const X3D::ProtoDeclarationPtr & prototype, const X3D::UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
 	virtual
-	~X3DFileSaveDialog () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DFileSaveDialog ();
-
-	///  @name Filter handling
-
-	virtual
-	void
-	setFileFilter (const std::string & name) final override;
-
-	///  @name Member access
-
-	virtual
-	std::string
-	getSuffix () const final override;
-
-	virtual
-	const std::set <std::string> &
-	getKnownFileTypes () const final override;
-
-	///  @name Operations
-
-	bool
-	run (const basic::uri & url);
-
-	///  @name Export nodes
-
-	bool
-	exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep);
+	~FileExportProtoDialog () final override;
 
 };
 

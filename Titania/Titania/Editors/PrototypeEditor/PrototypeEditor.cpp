@@ -57,6 +57,7 @@
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
+#include "../../Dialogs/FileSaveDialog/FileExportProtoDialog.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -366,7 +367,16 @@ PrototypeEditor::on_import_extern_proto_clicked ()
 void
 PrototypeEditor::on_convert_prototype_clicked ()
 {
+	const auto dialog   = std::dynamic_pointer_cast <FileExportProtoDialog> (addDialog ("FileExportProtoDialog"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("Convert Prototype To Extern Proto");
+	const auto proto    = X3D::ProtoDeclarationPtr (protoNode);
 
+	if (dialog -> run (proto, undoStep))
+	{
+		setProtoDeclarationNode (getCurrentContext () -> getExternProtoDeclaration (proto -> getName ()));
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 }
 
 void

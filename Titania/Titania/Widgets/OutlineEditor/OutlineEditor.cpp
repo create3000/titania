@@ -511,7 +511,7 @@ OutlineEditor::on_copy_activate ()
 	}
 
 	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
+	const auto   executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 
 	getBrowserWindow () -> copyNodes (executionContext, { node });
 }

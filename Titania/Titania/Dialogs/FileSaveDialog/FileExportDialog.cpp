@@ -53,13 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
-#include <Titania/X3D/Bits/Traverse.h>
-#include <Titania/X3D/Editing/X3DEditor.h>
-
-#include <Titania/OS.h>
-
-#include <regex>
-
 namespace titania {
 namespace puck {
 
@@ -76,65 +69,18 @@ FileExportDialog::FileExportDialog (X3DBrowserWindow* const browserWindow) :
 
 // Export nodes
 
-std::pair <basic::uri, bool>
+bool
 FileExportDialog::run (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	const bool success = X3DFileSaveDialog::run (getCurrentScene () -> getWorldURL () .parent () + _ ("inline.x3d"));
 
 	if (not success)
-		return std::make_pair ("", false);
+		return false;
 
-	const auto worldURL = getUrl ();
+	if (not exportNodes (nodes, getUrl (), getOutputStyleButton () .get_active_text (), undoStep))
+		return false;
 
-	if (not exportNodes (nodes, worldURL, getOutputStyleButton () .get_active_text (), undoStep))
-		return std::make_pair (worldURL, false);
-
-	return std::make_pair (worldURL, true);
-}
-
-bool
-FileExportDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep)
-{
-	using namespace std::placeholders;
-
-	// Temporarily change url's in protos
-
-	const auto protoUndoStep = std::make_shared <X3D::UndoStep> ("Traverse");
-
-	X3D::traverse (getCurrentContext (),
-	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, protoUndoStep, _1),
-
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATION_BODY);
-
-	// Change url's in nodes
-
-	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
-	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
-
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATION_BODY |
-	               X3D::TRAVERSE_ROOT_NODES);
-
-	// Export nodes to stream
-
-	std::ostringstream osstream;
-
-	X3D::X3DEditor::exportNodes (osstream, getCurrentContext (), nodes, false);
-
-	// Undo url change in protos
-
-	protoUndoStep -> undo ();
-
-	// Save scene
-
-	basic::ifilestream stream (osstream .str ());
-
-	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
-
-	return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
+	return true;
 }
 
 FileExportDialog::~FileExportDialog ()

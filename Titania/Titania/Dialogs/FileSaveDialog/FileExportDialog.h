@@ -67,21 +67,13 @@ public:
 
 	///  @name Operations
 
-	std::pair <basic::uri, bool>
+	bool
 	run (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
 	virtual
 	~FileExportDialog () final override;
-
-
-private:
-
-	///  @name Export nodes
-
-	bool
-	exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep);
 
 };
 

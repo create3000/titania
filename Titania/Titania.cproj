@@ -335,6 +335,7 @@
     <Compile Include="Titania\Widgets\RouteGraph\X3DRouteGraph.cpp" />
     <Compile Include="Titania\Widgets\RouteGraph\X3DRouteGraphPage.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\FileImportAsExternProtoDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3072,6 +3073,7 @@
     <None Include="titania" />
     <None Include="share\gtksourceview-3.0\styles\x_ite.xml" />
     <None Include="Titania\Dialogs\FileOpenDialog\FileImportAsExternProtoDialog.h" />
+    <None Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -96,9 +96,9 @@ FileImportAsExternProtoDialog::run ()
 {
 	try
 	{
-		const auto response = X3DFileOpenDialog::run ();
+		const auto success = X3DFileOpenDialog::run ();
 
-		if (not response)
+		if (not success)
 			return false;
 
 		const auto uri   = getUrl ();

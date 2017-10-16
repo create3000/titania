@@ -167,6 +167,7 @@ am_titania_OBJECTS =  \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.$(OBJEXT) \
+	Titania/Dialogs/FileSaveDialog/FileExportProtoDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveVideoDialog.$(OBJEXT) \
@@ -681,6 +682,7 @@ titania_SOURCES = \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/FileExportProtoDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveVideoDialog.cpp \
@@ -1264,6 +1266,9 @@ Titania/Dialogs/FileSaveDialog/FileExportDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/FileExportImageDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileSaveDialog/FileExportProtoDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.$(OBJEXT):  \
@@ -2268,6 +2273,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/X3DFileOpenDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileExportDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileExportImageDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileExportProtoDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveACopyDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveVideoDialog.Po@am__quote@

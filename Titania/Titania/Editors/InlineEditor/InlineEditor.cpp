@@ -167,9 +167,9 @@ InlineEditor::on_convert_master_selection_clicked ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
 	const auto exported         = fileExportDialog -> run (nodes, undoStep);
 
-	if (exported .second)
+	if (exported)
 	{
-		const auto worldURL   = exported .first;
+		const auto worldURL   = fileExportDialog -> getUrl ();
 		const auto name       = X3D::GetNameFromURI (worldURL);
 		const auto inlineNode = executionContext -> createNode <X3D::Inline> ();
 		const auto url        = X3D::MFString ({ executionContext -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () });
