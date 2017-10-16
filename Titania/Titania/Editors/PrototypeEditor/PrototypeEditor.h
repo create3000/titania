@@ -90,6 +90,9 @@ private:
 	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
 	getProto () const;
 
+	void
+	setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr & protoNode);
+
 	///  @name Event handlers
 
 	void
@@ -99,7 +102,7 @@ private:
 	on_create_prototype_menu ();
 
 	void
-	set_prototype (const X3D::X3DProtoDeclarationNodePtr &);
+	on_prototype_activate (const X3D::X3DProtoDeclarationNodePtr & protoNode);
 
 	void
 	on_create_proto_popup_clicked () final override;

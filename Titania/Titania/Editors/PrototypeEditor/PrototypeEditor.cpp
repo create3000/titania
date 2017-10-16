@@ -53,6 +53,7 @@
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
@@ -123,6 +124,8 @@ PrototypeEditor::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & pr
 	const auto path = getNodePath (protoNode);
 
 	createWorldInfo (getCurrentScene ()) -> setMetaData ("/Titania/Prototype/path", X3D::MFString (path .begin (), path .end ()));
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
 
 X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
@@ -155,75 +158,12 @@ PrototypeEditor::getProto () const
 }
 
 void
-PrototypeEditor::set_executionContext ()
-{
-	if (executionContext)
-	{
-		executionContext -> prototypes_changed ()   .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
-		executionContext -> externProtos_changed () .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
-	}
-
-	executionContext = getCurrentContext ();
-
-	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
-	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
-
-	on_create_prototype_menu ();
-	set_prototype (getProto ());
-}
-
-void
-PrototypeEditor::on_create_prototype_menu ()
-{
-	getEditPrototypeImage () .set_sensitive (false);
-	getEditPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
-
-	getPrototypeImage () .set_sensitive (false);
-	getPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
-	getPrototypeLabel () .set_text (_ ("Select a Prototype"));
-
-	// Find all available proto objects
-
-	const auto protoIndex = getCurrentContext () -> findProtoDeclarations ();
-	auto       protoNodes = std::vector <X3D::X3DPtr <X3D::X3DProtoDeclarationNode>> ();
-
-	for (const auto & pair : protoIndex)
-		protoNodes .emplace_back (std::move (pair .second));
-
-	// Sort by name and extern protos on top
-
-	std::sort (protoNodes .begin (), protoNodes .end (),
-	           [ ] (const X3D::X3DProtoDeclarationNodePtr & lhs, const X3D::X3DProtoDeclarationNodePtr & rhs)
-	           { return std::make_pair (not lhs -> isExternproto (), lhs -> getName ()) < std::make_pair (not rhs -> isExternproto (), rhs -> getName ()); });
-
-	// Remove all menu items
-
-	for (const auto & widget : getSelectPrototypeMenu () .get_children ())
-		getSelectPrototypeMenu () .remove (*widget);
-
-	for (const auto & protoNode : protoNodes)
-	{
-		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
-		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, protoNode -> getName ()));
-
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &PrototypeEditor::set_prototype), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode)));
-
-		menuItem -> set_always_show_image (true);
-		menuItem -> show ();
-
-		getSelectPrototypeMenu () .append (*menuItem);
-	}
-}
-
-void
-PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
+PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr & value)
 {
 	if (protoNode)
 		protoNode -> name_changed () .removeInterest (&PrototypeEditor::set_name, this);
 
 	protoNode = value;
-
-	setProto (protoNode);
 
 	if (protoNode)
 	{
@@ -262,7 +202,7 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 	
 		if (protoNode -> isExternproto ())
 		{
-		   X3D::X3DPtr <X3D::X3DUrlObject> urlObject (protoNode); 
+		   const X3D::X3DPtr <X3D::X3DUrlObject> urlObject (protoNode); 
 	
 			urlNode -> addUserDefinedField (urlObject -> url () .getAccessType (), "url", &urlObject -> url ());
 	
@@ -299,6 +239,75 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 }
 
 void
+PrototypeEditor::set_executionContext ()
+{
+	if (executionContext)
+	{
+		executionContext -> prototypes_changed ()   .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
+		executionContext -> externProtos_changed () .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
+	}
+
+	executionContext = getCurrentContext ();
+
+	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
+	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
+
+	on_create_prototype_menu ();
+	setProtoDeclarationNode (getProto ());
+}
+
+void
+PrototypeEditor::on_create_prototype_menu ()
+{
+	getEditPrototypeImage () .set_sensitive (false);
+	getEditPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
+
+	getPrototypeImage () .set_sensitive (false);
+	getPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
+	getPrototypeLabel () .set_text (_ ("Select a Prototype"));
+
+	// Find all available proto objects
+
+	const auto protoIndex = getCurrentContext () -> findProtoDeclarations ();
+	auto       protoNodes = std::vector <X3D::X3DPtr <X3D::X3DProtoDeclarationNode>> ();
+
+	for (const auto & pair : protoIndex)
+		protoNodes .emplace_back (std::move (pair .second));
+
+	// Sort by name and extern protos on top
+
+	std::sort (protoNodes .begin (), protoNodes .end (),
+	           [ ] (const X3D::X3DProtoDeclarationNodePtr & lhs, const X3D::X3DProtoDeclarationNodePtr & rhs)
+	           { return std::make_pair (not lhs -> isExternproto (), lhs -> getName ()) < std::make_pair (not rhs -> isExternproto (), rhs -> getName ()); });
+
+	// Remove all menu items
+
+	for (const auto & widget : getSelectPrototypeMenu () .get_children ())
+		getSelectPrototypeMenu () .remove (*widget);
+
+	for (const auto & protoNode : protoNodes)
+	{
+		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
+		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, protoNode -> getName ()));
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &PrototypeEditor::on_prototype_activate), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode)));
+
+		menuItem -> set_always_show_image (true);
+		menuItem -> show ();
+
+		getSelectPrototypeMenu () .append (*menuItem);
+	}
+}
+
+void
+PrototypeEditor::on_prototype_activate (const X3D::X3DProtoDeclarationNodePtr & protoNode)
+{
+	setProtoDeclarationNode (protoNode);
+
+	setProto (protoNode);
+}
+
+void
 PrototypeEditor::on_create_proto_popup_clicked ()
 {
 	getCreateProtoPopover () .popup ();
@@ -314,7 +323,8 @@ PrototypeEditor::on_create_proto_clicked ()
 
 	getCurrentContext () -> updateProtoDeclaration (typeName, proto);
 
-	set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (proto));
+	setProtoDeclarationNode (proto);
+	setProto (proto);
 }
 
 void
@@ -327,7 +337,8 @@ PrototypeEditor::on_create_externproto_clicked ()
 
 	getCurrentContext () -> updateExternProtoDeclaration (typeName, externProto);
 
-	set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (externProto));
+	setProtoDeclarationNode (externProto);
+	setProto (externProto);
 }
 
 void

@@ -301,6 +301,9 @@ X3DBaseInterface::getNodeName (const X3D::SFNode & node) const
 std::deque <std::string>
 X3DBaseInterface::getNodePath (const X3D::SFNode & node) const
 {
+	if (not node)
+		return { };
+
 	auto path = getProtoPath (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()));
 
 	path .emplace_back (getNodeName (node));
@@ -311,6 +314,9 @@ X3DBaseInterface::getNodePath (const X3D::SFNode & node) const
 std::deque <std::string>
 X3DBaseInterface::getProtoPath (X3D::X3DExecutionContext* executionContext) const
 {
+	if (not executionContext)
+		return { };
+
 	auto path = std::deque <std::string> ();
 
 	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
@@ -326,6 +332,9 @@ X3DBaseInterface::getProtoPath (X3D::X3DExecutionContext* executionContext) cons
 std::deque <std::string>
 X3DBaseInterface::getContextPath (X3D::X3DExecutionContext* executionContext) const
 {
+	if (not executionContext)
+		return { };
+
 	auto path = std::deque <std::string> ();
 
 	const auto masterScene = executionContext -> getMasterScene ();
