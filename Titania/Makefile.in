@@ -161,6 +161,7 @@ am_titania_OBJECTS =  \
 	Titania/Configuration/config.$(OBJEXT) \
 	Titania/Configuration/Configuration.$(OBJEXT) \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.$(OBJEXT) \
+	Titania/Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.$(OBJEXT) \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.$(OBJEXT) \
 	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.$(OBJEXT) \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.$(OBJEXT) \
@@ -674,6 +675,7 @@ titania_SOURCES = \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
@@ -1240,6 +1242,9 @@ Titania/Dialogs/FileOpenDialog/$(am__dirstamp):
 Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Dialogs/FileOpenDialog/$(DEPDIR)
 	@: > Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileOpenDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileOpenDialog/FileOpenDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileOpenDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
@@ -2257,6 +2262,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/Configuration.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileImportDialog/$(DEPDIR)/FileImportDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileImportAsExternProtoDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileOpenDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileOpenFontDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/X3DFileOpenDialog.Po@am__quote@

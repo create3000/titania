@@ -125,6 +125,10 @@ public:
 	{ return *m_CreateProtoPopupButton; }
 
 	Gtk::Button &
+	getImportExternProtoButton () const
+	{ return *m_ImportExternProtoButton; }
+
+	Gtk::Button &
 	getCreateInstanceButton () const
 	{ return *m_CreateInstanceButton; }
 
@@ -151,6 +155,10 @@ public:
 	Gtk::Button &
 	getRenameButton () const
 	{ return *m_RenameButton; }
+
+	Gtk::Button &
+	getConvertProtoButton () const
+	{ return *m_ConvertProtoButton; }
 
 	Gtk::Notebook &
 	getPrototypeNotebook () const
@@ -197,16 +205,16 @@ public:
 	{ return *m_CreateProtoPopover; }
 
 	Gtk::Button &
-	getNewProtoButton () const
-	{ return *m_NewProtoButton; }
+	getNewExternProtoButton () const
+	{ return *m_NewExternProtoButton; }
 
 	Gtk::Label &
 	getCreateExternProtoButton () const
 	{ return *m_CreateExternProtoButton; }
 
 	Gtk::Button &
-	getNewExternProtoButton () const
-	{ return *m_NewExternProtoButton; }
+	getNewProtoButton () const
+	{ return *m_NewProtoButton; }
 
 	Gtk::Label &
 	getCreatePrototypeButton () const
@@ -220,7 +228,15 @@ public:
 
 	virtual
 	void
+	on_import_extern_proto_clicked () = 0;
+
+	virtual
+	void
 	on_create_instance_clicked () = 0;
+
+	virtual
+	void
+	on_convert_prototype_clicked () = 0;
 
 	virtual
 	void
@@ -267,6 +283,7 @@ private:
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Image* m_EditPrototypeImage;
 	Gtk::Button* m_CreateProtoPopupButton;
+	Gtk::Button* m_ImportExternProtoButton;
 	Gtk::Button* m_CreateInstanceButton;
 	Gtk::MenuButton* m_MenuButton;
 	Gtk::Image* m_PrototypeImage;
@@ -274,6 +291,7 @@ private:
 	Gtk::Box* m_NameBox;
 	Gtk::Entry* m_NameEntry;
 	Gtk::Button* m_RenameButton;
+	Gtk::Button* m_ConvertProtoButton;
 	Gtk::Notebook* m_PrototypeNotebook;
 	Gtk::Expander* m_InterfaceExpander;
 	Gtk::Box* m_InterfaceBox;
@@ -285,9 +303,9 @@ private:
 	Gtk::Box* m_InstancesBox;
 	Gtk::Button* m_UpdateInstancesButton;
 	Gtk::Popover* m_CreateProtoPopover;
-	Gtk::Button* m_NewProtoButton;
-	Gtk::Label* m_CreateExternProtoButton;
 	Gtk::Button* m_NewExternProtoButton;
+	Gtk::Label* m_CreateExternProtoButton;
+	Gtk::Button* m_NewProtoButton;
 	Gtk::Label* m_CreatePrototypeButton;
 
 };

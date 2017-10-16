@@ -53,6 +53,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../Prototype/ExternProtoDeclaration.h"
 
 #include <iomanip>
 
@@ -163,6 +164,23 @@ ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 //       Error <DISPOSED>)
 {
 	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
+}
+
+ExternProtoDeclarationPtr
+ProtoDeclaration::createExternProtoDeclaration (X3DExecutionContext* const executionContext, const MFString & url)
+{
+	FieldDefinitionArray externInterfaceDeclarations;
+
+	for (const auto & fieldDefinition : getFieldDefinitions ())
+	{
+	   externInterfaceDeclarations .emplace_back (fieldDefinition -> copy (FLAT_COPY));
+		externInterfaceDeclarations .back () -> setAccessType (fieldDefinition -> getAccessType ());
+		externInterfaceDeclarations .back () -> setName (fieldDefinition -> getName ());
+	}
+
+	const auto externproto = executionContext -> createExternProtoDeclaration (getName (), externInterfaceDeclarations, url);
+
+	return externproto;
 }
 
 void

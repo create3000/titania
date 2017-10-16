@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,102 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
-#define __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_OPEN_DIALOG_FILE_IMPORT_AS_EXTERN_PROTO_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_OPEN_DIALOG_FILE_IMPORT_AS_EXTERN_PROTO_DIALOG_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrototypeEditorInterface.h"
+#include "X3DFileOpenDialog.h"
 
 namespace titania {
 namespace puck {
 
-class NodePropertiesEditor;
-class NodeIndex;
-
-class PrototypeEditor :
-	virtual public X3DPrototypeEditorInterface
+class FileImportAsExternProtoDialog :
+	public X3DFileOpenDialog
 {
 public:
 
 	///  @name Construction
 
-	PrototypeEditor (X3DBrowserWindow* const browserWindow);
+	FileImportAsExternProtoDialog (X3DBrowserWindow* const browserWindow);
+
+	///  @name Operations
+
+	bool
+	run ();
 
 	///  @name Destruction
 
 	virtual
-	~PrototypeEditor () final override;
+	~FileImportAsExternProtoDialog () final override;
+
 
 private:
 
-	///  @name Construction
+	///  @name Operations
 
 	virtual
 	void
-	initialize () final override;
+	setFileFilter (const std::string & name) final override;
 
-	///  @name Member access
-
-	void
-	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & protoNode);
-	
-	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
-	getProto () const;
-
-	void
-	setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr & protoNode);
-
-	///  @name Event handlers
-
-	void
-	set_executionContext ();
-
-	void
-	set_name ();
-
-	void
-	on_create_prototype_menu ();
-
-	void
-	on_prototype_activate (const X3D::X3DProtoDeclarationNodePtr & protoNode);
-
-	void
-	on_create_proto_popup_clicked () final override;
-
-	virtual
-	void
-	on_create_proto_clicked () final override;
-
-	virtual
-	void
-	on_create_externproto_clicked () final override;
-
-	virtual
-	void
-	on_import_extern_proto_clicked () final override;
-
-	virtual
-	void
-	on_convert_prototype_clicked () final override;
-
-	virtual
-	void
-	on_create_instance_clicked () final override;
-
-	virtual
-	void
-	on_update_instances_clicked () final override;
-
-	///  @name Members
-
-	NameEntry                              nodeName;
-	MFStringURLWidget                      url;
-	std::unique_ptr <NodePropertiesEditor> nodePropertiesEditor;
-	std::unique_ptr <NodeIndex>            nodeIndex;
-
-	X3D::X3DExecutionContextPtr                executionContext;
-	X3D::X3DPtr <X3D::X3DProtoDeclarationNode> protoNode;
-	X3D::X3DPtr <X3D::FieldSet>                urlNode;
 };
 
 } // puck

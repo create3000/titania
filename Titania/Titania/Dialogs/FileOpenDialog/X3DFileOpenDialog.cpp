@@ -63,6 +63,14 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"))
 {
 	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
+
+	const auto worldURL = getCurrentScene () -> getWorldURL ();
+
+	if (not worldURL .empty () and worldURL .is_local ())
+		getWindow () .set_uri (worldURL .filename () .str ());
+
+	else
+		getWindow () .set_filename (Glib::get_home_dir () + "/" + _ ("scene.x3d"));
 }
 
 basic::uri

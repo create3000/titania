@@ -75,6 +75,18 @@ public:
 	                   const Glib::RefPtr <Gtk::TreeViewColumn> &,
 	                   const std::string &);
 
+	///  @name Member access
+
+	void
+	setFragment (const std::string & value)
+	{ fragment = value; }
+
+	const std::string &
+	getFragment () const
+	{ return fragment; }
+
+	///  @name Destruction
+
 	virtual
 	~MFStringURLWidget () final override;
 
@@ -107,6 +119,7 @@ private:
 	Gtk::Button &                            reloadButton;
 	const Glib::RefPtr <Gtk::TreeViewColumn> URLChooserColumn;
 	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
+	std::string                              fragment;
 
 };
 

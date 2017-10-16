@@ -89,6 +89,7 @@ X3DPrototypeEditorInterface::create ()
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("EditPrototypeImage", m_EditPrototypeImage);
 	m_builder -> get_widget ("CreateProtoPopupButton", m_CreateProtoPopupButton);
+	m_builder -> get_widget ("ImportExternProtoButton", m_ImportExternProtoButton);
 	m_builder -> get_widget ("CreateInstanceButton", m_CreateInstanceButton);
 	m_builder -> get_widget ("MenuButton", m_MenuButton);
 	m_builder -> get_widget ("PrototypeImage", m_PrototypeImage);
@@ -96,6 +97,7 @@ X3DPrototypeEditorInterface::create ()
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("ConvertProtoButton", m_ConvertProtoButton);
 	m_builder -> get_widget ("PrototypeNotebook", m_PrototypeNotebook);
 	m_builder -> get_widget ("InterfaceExpander", m_InterfaceExpander);
 	m_builder -> get_widget ("InterfaceBox", m_InterfaceBox);
@@ -107,17 +109,19 @@ X3DPrototypeEditorInterface::create ()
 	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
 	m_builder -> get_widget ("UpdateInstancesButton", m_UpdateInstancesButton);
 	m_builder -> get_widget ("CreateProtoPopover", m_CreateProtoPopover);
-	m_builder -> get_widget ("NewProtoButton", m_NewProtoButton);
-	m_builder -> get_widget ("CreateExternProtoButton", m_CreateExternProtoButton);
 	m_builder -> get_widget ("NewExternProtoButton", m_NewExternProtoButton);
+	m_builder -> get_widget ("CreateExternProtoButton", m_CreateExternProtoButton);
+	m_builder -> get_widget ("NewProtoButton", m_NewProtoButton);
 	m_builder -> get_widget ("CreatePrototypeButton", m_CreatePrototypeButton);
 
 	// Connect object Gtk::Button with id 'CreateProtoPopupButton'.
 	m_CreateProtoPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_popup_clicked));
+	m_ImportExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_import_extern_proto_clicked));
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
+	m_ConvertProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_convert_prototype_clicked));
 	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
-	m_NewProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
-	m_NewExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
+	m_NewExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
+	m_NewProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
 }
 
 X3DPrototypeEditorInterface::~X3DPrototypeEditorInterface ()

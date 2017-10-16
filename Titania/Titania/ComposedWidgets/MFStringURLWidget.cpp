@@ -66,7 +66,8 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
 	    userInterface (userInterface),
 	     reloadButton (reloadButton),
 	 URLChooserColumn (URLChooserColumn),
-	   fileOpenDialog ()
+	   fileOpenDialog (),
+	         fragment ()
 {
 	treeView     .signal_button_release_event () .connect (sigc::mem_fun (this, &MFStringURLWidget::on_button_release_event));
 	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (this, &MFStringURLWidget::on_reload_clicked));
@@ -134,6 +135,8 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
+
+		URL .fragment (fragment);
 
 		set1Value (path .front (), URL .str ());
 	}

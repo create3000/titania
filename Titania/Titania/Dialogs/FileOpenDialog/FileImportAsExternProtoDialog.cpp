@@ -48,19 +48,17 @@
  *
  ******************************************************************************/
 
-#include "FileOpenDialog.h"
+#include "FileImportAsExternProtoDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-#include <Titania/OS.h>
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 namespace titania {
 namespace puck {
 
-static constexpr auto X3D_FILTER       = "All X3D Files";
-static constexpr auto IMAGES_FILTER    = "All Images";
-static constexpr auto AUDIO_FILTER     = "All Audio";
-static constexpr auto VIDEOS_FILTER    = "All Videos";
+static constexpr auto X3D_FILTER = "All X3D Files";
 
 static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
 static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
@@ -70,21 +68,16 @@ static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed 
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 
-static constexpr auto AUTODESK_3DS_MAX_FILE_FILTER = "Autodesk 3DS Max File (*.3ds)";
-static constexpr auto WAVEFRONT_OBJ_FILE_FILTER    = "Wavefront OBJ File (*.obj)";
-static constexpr auto PDF_FILE_FILTER              = "Portable Document Format (*.pdf)";
-static constexpr auto SVG_FILE_FILTER              = "SVG File (*.svg, *.svgz)";
-
-FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
+FileImportAsExternProtoDialog::FileImportAsExternProtoDialog (X3DBrowserWindow* const browserWindow) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileOpenDialog ()
 {
-	setName ("FileOpenDialog");
+	setName ("FileImportAsExternProtoDialog");
+
+	getWindow () .set_title (_ ("Import Prototype As Extern Proto …"));
+	getRelativePathBox () .set_visible (true);
 
 	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
-	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
-	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
-	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
 
 	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
 	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
@@ -95,37 +88,52 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
 	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
 
-	getFileFilterAutodesk3DSMax ()  -> set_name (_ (AUTODESK_3DS_MAX_FILE_FILTER));
-	getFileFilterWavefrontOBJ ()    -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
-	getFileFilterPDF ()             -> set_name (_ (PDF_FILE_FILTER));
-	getFileFilterSVG ()             -> set_name (_ (SVG_FILE_FILTER));
-
 	setup ();
 }
 
 bool
-FileOpenDialog::loadURL ()
+FileImportAsExternProtoDialog::run ()
 {
-	if (not X3DFileOpenDialog::run ())
+	try
+	{
+		const auto response = X3DFileOpenDialog::run ();
+
+		if (not response)
+			return false;
+
+		const auto uri   = getUrl ();
+		const auto scene = getCurrentBrowser () -> createX3DFromURL ({ uri .str () });
+
+		for (const auto & prototype : scene -> getProtoDeclarations ())
+		{
+			const basic::uri worldURL (uri + "#" + prototype -> getName ());
+
+			X3D::MFString url;
+
+			if (getRelativePathSwitch () .get_active ())
+				url .emplace_back (getCurrentContext () -> getWorldURL () .relative_path (worldURL) .str ());
+			else
+				url .emplace_back (worldURL .str ());
+
+			const auto externproto = prototype -> createExternProtoDeclaration (getCurrentContext (), url);
+
+			getCurrentContext () -> updateExternProtoDeclaration (prototype -> getName (), externproto);
+		}
+
+		return true;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		getCurrentBrowser () -> print (error .what ());
+
 		return false;
-
-	getBrowserWindow () -> open (getUrl ());
-	return true;
-}
-
-bool
-FileOpenDialog::run ()
-{
-	return X3DFileOpenDialog::run ();
+	}
 }
 
 void
-FileOpenDialog::setFileFilter (const std::string & name)
+FileImportAsExternProtoDialog::setFileFilter (const std::string & name)
 {
 	getWindow () .add_filter (getFileFilterX3D ());
-	getWindow () .add_filter (getFileFilterImage ());
-	getWindow () .add_filter (getFileFilterAudio ());
-	getWindow () .add_filter (getFileFilterVideo ());
 
 	getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
 	getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
@@ -136,27 +144,10 @@ FileOpenDialog::setFileFilter (const std::string & name)
 	getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
 	getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
 
-	getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
-	getWindow () .add_filter (getFileFilterWavefrontOBJ ());
-
-	if (os::program_exists ("inkscape"))
-		getWindow () .add_filter (getFileFilterPDF ());
-
-	getWindow () .add_filter (getFileFilterSVG ());
-
 	// Media filter
 
 	if (name == _(X3D_FILTER))
 		getWindow () .set_filter (getFileFilterX3D ());
-
-	else if (name == _(IMAGES_FILTER))
-		getWindow () .set_filter (getFileFilterImage ());
-
-	else if (name == _(AUDIO_FILTER))
-		getWindow () .set_filter (getFileFilterAudio ());
-
-	else if (name == _(VIDEOS_FILTER))
-		getWindow () .set_filter (getFileFilterVideo ());
 
 	// X3D
 
@@ -183,27 +174,13 @@ FileOpenDialog::setFileFilter (const std::string & name)
 	else if (name == _(COMPRESSED_VRML97_ENCODING_FILTER))
 		getWindow () .set_filter (getFileFilterCompressedVrmlEncoding ());
 
-	// Other
-
-	else if (name == _(AUTODESK_3DS_MAX_FILE_FILTER))
-		getWindow () .set_filter (getFileFilterAutodesk3DSMax ());
-
-	else if (name == _(WAVEFRONT_OBJ_FILE_FILTER))
-		getWindow () .set_filter (getFileFilterWavefrontOBJ ());
-
-	else if (name == _(PDF_FILE_FILTER))
-		getWindow () .set_filter (getFileFilterPDF ());
-
-	else if (name == _(SVG_FILE_FILTER))
-		getWindow () .set_filter (getFileFilterSVG ());
-
 	// All X3D
 
 	else
 		getWindow () .set_filter (getFileFilterX3D ());
 }
 
-FileOpenDialog::~FileOpenDialog ()
+FileImportAsExternProtoDialog::~FileImportAsExternProtoDialog ()
 {
 	dispose ();
 }

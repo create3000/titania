@@ -198,7 +198,10 @@ public:
 	virtual
 	X3DPrototypeInstance*
 	createInstance (X3DExecutionContext* const executionContext) final override;
-	
+
+	ExternProtoDeclarationPtr
+	createExternProtoDeclaration (X3DExecutionContext* const executionContext, const MFString & url);
+
 	///  @name Load handling
 
 	virtual

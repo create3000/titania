@@ -56,6 +56,7 @@
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -177,8 +178,9 @@ PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr 
 	
 		// Create instance button
 	
-		getCreateInstanceButton () .set_sensitive (true);
 		getNameBox () .set_sensitive (true);
+		getConvertProtoButton ()    .set_visible (not protoNode -> isExternproto ());
+		getCreateInstanceButton ()  .set_sensitive (true);
 		getUpdateInstancesButton () .set_sensitive (true);
 	
 		// Select prototype button
@@ -224,6 +226,7 @@ PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr 
 		//getEditLabel ()   .set_text (_ ("Edit Protoype Properties"));
 		getHeaderBar () .set_subtitle (_ ("Select a prototype to display its properties."));
 	
+		getConvertProtoButton ()    .set_visible (false);
 		getCreateInstanceButton ()  .set_sensitive (false);
 		getNameBox ()               .set_sensitive (false);
 		getURLScrolledWindow ()     .set_visible (false);
@@ -254,6 +257,17 @@ PrototypeEditor::set_executionContext ()
 
 	on_create_prototype_menu ();
 	setProtoDeclarationNode (getProto ());
+}
+
+void
+PrototypeEditor::set_name ()
+{
+	const auto headerText = protoNode -> isExternproto () ? _ ("Extern Prototype »%s«") : _ ("Prototype »%s«");
+
+	getHeaderBar () .set_subtitle (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
+	getPrototypeLabel () .set_text (protoNode -> getName ());
+
+	url .setFragment (protoNode -> getName ());
 }
 
 void
@@ -342,6 +356,20 @@ PrototypeEditor::on_create_externproto_clicked ()
 }
 
 void
+PrototypeEditor::on_import_extern_proto_clicked ()
+{
+	const auto dialog = std::dynamic_pointer_cast <FileImportAsExternProtoDialog> (addDialog ("FileImportAsExternProtoDialog"));
+
+	dialog -> run ();
+}
+
+void
+PrototypeEditor::on_convert_prototype_clicked ()
+{
+
+}
+
+void
 PrototypeEditor::on_create_instance_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), protoNode -> getName () .c_str ()));
@@ -355,15 +383,6 @@ void
 PrototypeEditor::on_update_instances_clicked ()
 {
 	X3D::X3DEditor::requestUpdateInstances (X3D::X3DExecutionContextPtr (protoNode), std::make_shared <X3D::UndoStep> ());
-}
-
-void
-PrototypeEditor::set_name ()
-{
-	const auto headerText = protoNode -> isExternproto () ? _ ("Extern Prototype »%s«") : _ ("Prototype »%s«");
-
-	getHeaderBar () .set_subtitle (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
-	getPrototypeLabel () .set_text (protoNode -> getName ());
 }
 
 PrototypeEditor::~PrototypeEditor ()
