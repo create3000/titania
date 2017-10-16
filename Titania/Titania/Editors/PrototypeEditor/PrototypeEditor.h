@@ -99,6 +99,9 @@ private:
 	set_executionContext ();
 
 	void
+	set_prototypes ();
+
+	void
 	set_name ();
 
 	void

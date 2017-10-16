@@ -247,16 +247,23 @@ PrototypeEditor::set_executionContext ()
 {
 	if (executionContext)
 	{
-		executionContext -> prototypes_changed ()   .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
-		executionContext -> externProtos_changed () .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
+		executionContext -> prototypes_changed ()   .removeInterest (&PrototypeEditor::set_prototypes, this);
+		executionContext -> externProtos_changed () .removeInterest (&PrototypeEditor::set_prototypes, this);
 	}
 
 	executionContext = getCurrentContext ();
 
-	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
-	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
+	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::set_prototypes, this);
+	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::set_prototypes, this);
 
+	set_prototypes ();
+}
+
+void
+PrototypeEditor::set_prototypes ()
+{
 	on_create_prototype_menu ();
+
 	setProtoDeclarationNode (getProto ());
 }
 
@@ -367,9 +374,9 @@ PrototypeEditor::on_import_extern_proto_clicked ()
 void
 PrototypeEditor::on_convert_prototype_clicked ()
 {
-	const auto dialog   = std::dynamic_pointer_cast <FileExportProtoDialog> (addDialog ("FileExportProtoDialog"));
-	const auto undoStep = std::make_shared <X3D::UndoStep> ("Convert Prototype To Extern Proto");
 	const auto proto    = X3D::ProtoDeclarationPtr (protoNode);
+	const auto dialog   = std::dynamic_pointer_cast <FileExportProtoDialog> (addDialog ("FileExportProtoDialog"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Convert Prototype »%s« To Extern Proto"), proto -> getName () .c_str ()));
 
 	if (dialog -> run (proto, undoStep))
 	{
