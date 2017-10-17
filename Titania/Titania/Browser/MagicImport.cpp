@@ -423,8 +423,8 @@ MagicImport::importProtoDeclaration (const X3D::X3DExecutionContextPtr & executi
 
 	if (prototypeInstance)
 	{
-		const auto name          = prototypeInstance -> getProtoNode () -> getName ();
-		const bool isExternProto = prototypeInstance -> getProtoNode () -> isExternproto ();
+		const auto name          = prototypeInstance -> getProtoDeclarationNode () -> getName ();
+		const bool isExternProto = prototypeInstance -> getProtoDeclarationNode () -> isExternproto ();
 
 		try
 		{
@@ -456,7 +456,7 @@ MagicImport::importProtoDeclaration (const X3D::X3DExecutionContextPtr & executi
 			}
 		}
 
-		const X3D::SFNode protoNode (prototypeInstance -> getProtoNode () -> copy (executionContext, X3D::COPY_OR_CLONE));
+		const X3D::SFNode protoNode (prototypeInstance -> getProtoDeclarationNode () -> copy (executionContext, X3D::COPY_OR_CLONE));
 
 		if (isExternProto)
 		{

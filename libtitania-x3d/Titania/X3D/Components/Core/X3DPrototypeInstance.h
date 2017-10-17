@@ -203,11 +203,11 @@ public:
 	throw (Error <DISPOSED>);
 
 	const X3DProtoDeclarationNodePtr &
-	getProtoNode () const
+	getProtoDeclarationNode () const
 	{ return protoNode; }
 
 	void
-	setProtoNode (X3DProtoDeclarationNode* const value);
+	setProtoDeclarationNode (const X3DProtoDeclarationNodePtr & value);
 
 	virtual
 	X3DProtoDeclarationNode*

@@ -131,6 +131,10 @@ private:
 
 	virtual
 	void
+	on_fold_extern_proto_back_clicked () final override;
+
+	virtual
+	void
 	on_create_instance_clicked () final override;
 
 	virtual

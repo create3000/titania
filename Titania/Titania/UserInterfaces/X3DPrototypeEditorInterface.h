@@ -160,6 +160,10 @@ public:
 	getConvertProtoButton () const
 	{ return *m_ConvertProtoButton; }
 
+	Gtk::Button &
+	getFoldExternProtoBackButton () const
+	{ return *m_FoldExternProtoBackButton; }
+
 	Gtk::Notebook &
 	getPrototypeNotebook () const
 	{ return *m_PrototypeNotebook; }
@@ -240,6 +244,10 @@ public:
 
 	virtual
 	void
+	on_fold_extern_proto_back_clicked () = 0;
+
+	virtual
+	void
 	on_update_instances_clicked () = 0;
 
 	virtual
@@ -292,6 +300,7 @@ private:
 	Gtk::Entry* m_NameEntry;
 	Gtk::Button* m_RenameButton;
 	Gtk::Button* m_ConvertProtoButton;
+	Gtk::Button* m_FoldExternProtoBackButton;
 	Gtk::Notebook* m_PrototypeNotebook;
 	Gtk::Expander* m_InterfaceExpander;
 	Gtk::Box* m_InterfaceBox;

@@ -82,54 +82,14 @@ FileExportProtoDialog::run (const X3D::ProtoDeclarationPtr & prototype, const X3
 	if (not exportNodes ({ prototype }, getUrl (), getOutputStyleButton () .get_active_text (), undoStep))
 		return false;
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
-	const auto worldURL         = basic::uri  (getUrl () + "#" + prototype -> getName ());
+	const auto worldURL = getUrl () + "#" + prototype -> getName ();
 
 	X3D::MFString url;
 
-	url .emplace_back (executionContext -> getWorldURL () .relative_path (worldURL) .str ());
-	url .emplace_back (worldURL .str ());
+	url .emplace_back (prototype -> getExecutionContext () -> getWorldURL () .relative_path (worldURL));
+	url .emplace_back (worldURL);
 
-	const auto externproto = prototype -> createExternProtoDeclaration (executionContext, url);
-
-	undoStep -> addObjects (executionContext, prototype, externproto);
-
-	externproto -> requestAsyncLoad ();
-
-	// Update extern proto
-
-	try
-	{
-		const auto currentExternproto = executionContext -> getExternProtoDeclaration (externproto -> getName ());
-
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externproto -> getName (), currentExternproto);
-	}
-	catch (const X3D::X3DError &)
-	{
-		undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externproto -> getName ());
-	}
-
-	undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externproto -> getName (), externproto);
-	executionContext -> updateExternProtoDeclaration (externproto -> getName (), externproto);
-
-	// Remove prototype
-
-	undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
-	undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
-	executionContext -> removeProtoDeclaration (prototype -> getName ());
-
-	// Update instances
-
-	for (const auto & node : std::set <X3D::X3DPrototypeInstance*> (prototype -> getInstances ()))
-	{
-		const X3D::X3DPtr <X3D::X3DPrototypeInstance> instance (node);
-
-		undoStep -> addObjects (instance);
-
-		undoStep -> addUndoFunction (&X3D::X3DPrototypeInstance::setProtoNode, instance, prototype);
-		undoStep -> addRedoFunction (&X3D::X3DPrototypeInstance::setProtoNode, instance, externproto);
-		instance -> setProtoNode (externproto);
-	}
+	X3D::X3DEditor::convertProtoToExternProto (prototype, url, undoStep);
 
 	return true;
 }

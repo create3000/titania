@@ -98,6 +98,7 @@ X3DPrototypeEditorInterface::create ()
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("ConvertProtoButton", m_ConvertProtoButton);
+	m_builder -> get_widget ("FoldExternProtoBackButton", m_FoldExternProtoBackButton);
 	m_builder -> get_widget ("PrototypeNotebook", m_PrototypeNotebook);
 	m_builder -> get_widget ("InterfaceExpander", m_InterfaceExpander);
 	m_builder -> get_widget ("InterfaceBox", m_InterfaceBox);
@@ -119,6 +120,7 @@ X3DPrototypeEditorInterface::create ()
 	m_ImportExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_import_extern_proto_clicked));
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 	m_ConvertProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_convert_prototype_clicked));
+	m_FoldExternProtoBackButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_fold_extern_proto_back_clicked));
 	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 	m_NewExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
 	m_NewProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));

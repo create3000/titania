@@ -179,10 +179,11 @@ PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr 
 	
 		// Create instance button
 	
-		getNameBox () .set_sensitive (true);
-		getConvertProtoButton ()    .set_visible (not protoNode -> isExternproto ());
-		getCreateInstanceButton ()  .set_sensitive (true);
-		getUpdateInstancesButton () .set_sensitive (true);
+		getNameBox ()                   .set_sensitive (true);
+		getConvertProtoButton ()        .set_visible (not protoNode -> isExternproto ());
+		getFoldExternProtoBackButton () .set_visible (protoNode -> isExternproto ());
+		getCreateInstanceButton ()      .set_sensitive (true);
+		getUpdateInstancesButton ()     .set_sensitive (true);
 	
 		// Select prototype button
 	
@@ -227,11 +228,12 @@ PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr 
 		//getEditLabel ()   .set_text (_ ("Edit Protoype Properties"));
 		getHeaderBar () .set_subtitle (_ ("Select a prototype to display its properties."));
 	
-		getConvertProtoButton ()    .set_visible (false);
-		getCreateInstanceButton ()  .set_sensitive (false);
-		getNameBox ()               .set_sensitive (false);
-		getURLScrolledWindow ()     .set_visible (false);
-		getUpdateInstancesButton () .set_sensitive (false);
+		getNameBox ()                   .set_sensitive (false);
+		getConvertProtoButton ()        .set_visible (false);
+		getFoldExternProtoBackButton () .set_visible (false);
+		getCreateInstanceButton ()      .set_sensitive (false);
+		getURLScrolledWindow ()         .set_visible (false);
+		getUpdateInstancesButton ()     .set_sensitive (false);
 
 		nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (nullptr);
 	
@@ -276,6 +278,8 @@ PrototypeEditor::set_name ()
 	getPrototypeLabel () .set_text (protoNode -> getName ());
 
 	url .setFragment (protoNode -> getName ());
+
+	setProto (protoNode);
 }
 
 void
@@ -384,6 +388,17 @@ PrototypeEditor::on_convert_prototype_clicked ()
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
+}
+
+void
+PrototypeEditor::on_fold_extern_proto_back_clicked ()
+{
+	const auto externproto = X3D::ExternProtoDeclarationPtr (protoNode);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Fold Extern Proto »%s« Back Into Scene"), externproto -> getName () .c_str ()));
+
+	X3D::X3DEditor::foldExternProtoBackIntoScene (externproto, undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

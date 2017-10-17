@@ -279,11 +279,25 @@ X3DPrototypeInstance::update ()
 				          *field);
 
 				fieldMappings .emplace (protoField, field);
-
 				continue;
 			}
 
 			const auto field = protoField -> copy (FLAT_COPY);
+
+			for (const auto & pair : map)
+			{
+				const auto currentField = pair .second;
+
+				if (protoField -> getType () == currentField -> getType ())
+				{
+					if (protoField -> getName () == currentField -> getName ())
+					{
+						field -> set (*currentField);
+						field -> isSet (true);
+						break;
+					}
+				}
+			}
 
 			addField (protoField -> getAccessType (),
 			          protoField -> getName (),
@@ -374,7 +388,7 @@ throw (Error <DISPOSED>)
 }
 
 void
-X3DPrototypeInstance::setProtoNode (X3DProtoDeclarationNode* const value)
+X3DPrototypeInstance::setProtoDeclarationNode (const X3DProtoDeclarationNodePtr & value)
 {
 	if (protoNode)
 	{
@@ -387,9 +401,9 @@ X3DPrototypeInstance::setProtoNode (X3DProtoDeclarationNode* const value)
 	protoNode -> addInstance (this);
 	protoNode -> name_changed () .addInterest (typeNameOutput);
 
-	typeNameOutput = getCurrentTime ();
-
 	update ();
+
+	typeNameOutput = getCurrentTime ();
 }
 
 X3DProtoDeclarationNode*

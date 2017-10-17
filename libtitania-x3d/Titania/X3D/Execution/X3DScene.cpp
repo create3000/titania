@@ -360,8 +360,8 @@ X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string ex
 
 // Import handling
 
-void
-X3DScene::import (X3DExecutionContext* const executionContext, MFNode & field)
+MFNode
+X3DScene::import (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -372,17 +372,19 @@ throw (Error <INVALID_NAME>,
 	if (getProfile () or not getComponents () .empty ())
 	   setProfile (getBrowser () -> getProfile ("Full"));
 
-	//importMetaData (executionContext); // Makes no sense.
+	//importMetaData (other); // Makes no sense.
 
 	const auto scene = dynamic_cast <X3DScene*> (executionContext);
 
 	if (scene)
 		updateExportedNodes (scene);
 
-	X3DExecutionContext::import (executionContext, field);
+	const auto nodes = X3DExecutionContext::import (executionContext);
 
 	if (scene)
 		importExportedNodes (scene);
+
+	return nodes;
 }
 
 void

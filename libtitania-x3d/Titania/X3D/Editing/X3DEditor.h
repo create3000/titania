@@ -199,18 +199,24 @@ public:
 	static
 	void
 	updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
-	                        const std::string &,
-	                        const ProtoDeclarationPtr &,
-	                        const UndoStepPtr &)
-	throw (Error <DISPOSED>);
+	                        const std::string & name,
+	                        const ProtoDeclarationPtr & prototype,
+	                        const UndoStepPtr & undoStep);
+
+	static
+	void
+	convertProtoToExternProto (const ProtoDeclarationPtr & prototype, const MFString & url, const UndoStepPtr & undoStep);
 
 	static
 	void
 	updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
-	                              const std::string &,
-	                              const ExternProtoDeclarationPtr &,
-	                              const UndoStepPtr &)
-	throw (Error <DISPOSED>);
+	                              const std::string & name,
+	                              const ExternProtoDeclarationPtr & externproto,
+	                              const UndoStepPtr & undoStep);
+
+	static
+	void
+	foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & externproto, const UndoStepPtr & undoStep);
 
 	///  @name Route handling
 
@@ -466,6 +472,14 @@ private:
 	static
 	void
 	removeNamedNodes (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr & undoStep);
+
+	static
+	void
+	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoArray & protos);
+
+	static
+	void
+	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoArray & protos);
 
 	static
 	void

@@ -98,28 +98,6 @@ throw (Error <INVALID_NAME>,
 	switch (type)
 	{
 		case CLONE:
-		{
-			try
-			{
-				const auto found = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-	
-				if (found)
-				{
-					const auto instances = getInstances ();
-
-					for (const auto & instance : instances)
-						instance -> setProtoNode (const_cast <ExternProtoDeclaration*> (found));
-
-					return found;
-				}
-			}
-			catch (const Error <INVALID_NAME> &)
-			{ }
-
-			executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
-
-			return const_cast <ExternProtoDeclaration*> (this);
-		}
 		case COPY_OR_CLONE:
 		{
 			executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));

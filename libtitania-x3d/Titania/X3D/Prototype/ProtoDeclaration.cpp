@@ -93,28 +93,6 @@ throw (Error <INVALID_NAME>,
 	switch (type)
 	{
 		case CLONE:
-		{
-			try
-			{
-				const auto found = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-	
-				if (found)
-				{
-					const auto instances = getInstances ();
-
-					for (const auto & instance : instances)
-						instance -> setProtoNode (const_cast <ProtoDeclaration*> (found));
-
-					return found;
-				}
-			}
-			catch (const Error <INVALID_NAME> &)
-			{ }
-
-			executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
-
-			return const_cast <ProtoDeclaration*> (this);
-		}
 		case COPY_OR_CLONE:
 		{
 			executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));

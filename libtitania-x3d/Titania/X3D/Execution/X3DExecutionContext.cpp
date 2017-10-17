@@ -119,7 +119,12 @@ X3DExecutionContext::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	const bool sameBrowser = value -> getBrowser () == getBrowser ();
+
 	X3DBaseNode::setExecutionContext (value);
+
+	if (sameBrowser)
+		return;
 
 	const MFNode nodes (getParents () .begin (), getParents () .end ());
 
@@ -1360,8 +1365,8 @@ throw (Error <INVALID_NAME>,
 
 // Import handling
 
-void
-X3DExecutionContext::import (X3DExecutionContext* const executionContext, MFNode & field)
+MFNode
+X3DExecutionContext::import (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -1372,8 +1377,6 @@ throw (Error <INVALID_NAME>,
 	updateNamedNodes (executionContext);
 
 	importNodes (executionContext);
-	field .append (std::move (executionContext -> getRootNodes ()));
-
 	importNamedNodes (executionContext);
 	importExternProtos (executionContext, CLONE);
 	importProtos (executionContext, CLONE);
@@ -1383,6 +1386,8 @@ throw (Error <INVALID_NAME>,
 	importRoutes (executionContext);
 
 	realize ();
+
+	return executionContext -> getRootNodes ();
 }
 
 void

@@ -530,8 +530,8 @@ public:
 	///  @name Import handling
 
 	virtual
-	void
-	import (X3DExecutionContext* const, MFNode &)
+	MFNode
+	import (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
