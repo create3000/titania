@@ -73,7 +73,6 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="ImportExternProtoButton">
-                    <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Import prototypes as extern proto.</property>
