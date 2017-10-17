@@ -1337,15 +1337,15 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 	if (name .empty ())
 		return;
 
-	if (name == prototype -> getName ())
-		return;
+	// Restore prototypes.
 
-	const auto uniqueName = executionContext -> getUniqueProtoName (name);
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
+
+	// Update prototype
 
 	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
-	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, uniqueName, prototype);
-
-	executionContext -> updateProtoDeclaration (uniqueName, prototype);
+	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, name, prototype);
+	executionContext -> updateProtoDeclaration (name, prototype);
 
 	// Prototype support
 
@@ -1421,17 +1421,15 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	if (name .empty ())
 		return;
 
-	if (name == externProto -> getName ())
-		return;
+	// Restore extern protos.
+
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 
 	// Update name.
 
-	const auto uniqueName = executionContext -> getUniqueExternProtoName (name);
-
 	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
-	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, uniqueName, externProto);
-
-	executionContext -> updateExternProtoDeclaration (uniqueName, externProto);
+	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, name, externProto);
+	executionContext -> updateExternProtoDeclaration (name, externProto);
 
 	// Update url.
 

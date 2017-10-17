@@ -344,13 +344,16 @@ PrototypeEditor::on_create_proto_clicked ()
 {
 	getCreateProtoPopover () .popdown ();
 
-	const auto typeName = getCurrentContext () -> getUniqueProtoName ("NewPrototype");
-	const auto proto    = getCurrentContext () -> createProtoDeclaration (typeName, { });
+	const auto name     = getCurrentContext () -> getUniqueProtoName ("NewPrototype");
+	const auto proto    = getCurrentContext () -> createProtoDeclaration (name, { });
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create New Prototype »%s«"), name .c_str ()));
 
-	getCurrentContext () -> updateProtoDeclaration (typeName, proto);
+	X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), name, proto, undoStep);
 
 	setProtoDeclarationNode (proto);
 	setProto (proto);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -358,13 +361,16 @@ PrototypeEditor::on_create_externproto_clicked ()
 {
 	getCreateProtoPopover () .popdown ();
 
-	const auto typeName    = getCurrentContext () -> getUniqueExternProtoName ("NewExternProto");
-	const auto externProto = getCurrentContext () -> createExternProtoDeclaration (typeName, { }, { });
+	const auto name        = getCurrentContext () -> getUniqueExternProtoName ("NewExternProto");
+	const auto externproto = getCurrentContext () -> createExternProtoDeclaration (name, { }, { });
+	const auto undoStep    = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create New Extern Proto »%s«"), name .c_str ()));
 
-	getCurrentContext () -> updateExternProtoDeclaration (typeName, externProto);
+	X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), name, externproto, undoStep);
 
-	setProtoDeclarationNode (externProto);
-	setProto (externProto);
+	setProtoDeclarationNode (externproto);
+	setProto (externproto);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

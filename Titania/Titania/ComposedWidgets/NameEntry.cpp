@@ -154,7 +154,7 @@ NameEntry::on_clicked ()
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Extern Prototype To »%s«", name .c_str ())));
 
-		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), name, X3D::ExternProtoDeclarationPtr (node), undoStep);
+		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueExternProtoName (name), X3D::ExternProtoDeclarationPtr (node), undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -162,7 +162,7 @@ NameEntry::on_clicked ()
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Prototype To »%s«", name .c_str ())));
 
-		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), name, X3D::ProtoDeclarationPtr (node), undoStep);
+		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueProtoName (name), X3D::ProtoDeclarationPtr (node), undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
