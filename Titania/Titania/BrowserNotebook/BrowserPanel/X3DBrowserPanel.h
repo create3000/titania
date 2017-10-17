@@ -191,10 +191,10 @@ private:
 	set_navigationInfoStack ();
 
 	void
-	connectViewpoint ();
+	set_viewpoint ();
 
 	void
-	set_viewpoint ();
+	connectViewpoint ();
 
 	void
 	set_grid ();

@@ -407,10 +407,14 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 
 		if (layerNode)
 		{
-			const auto userPosition         = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position", positions .at (type));
-			const auto userOrientation      = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation", orientations .at (type));
-			const auto userCenterOfRotation = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
-			const auto fieldOfViewScale     = layerNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
+			const auto metaDataNode = layerNode -> isLayer0 ()
+			                          ? X3D::X3DPtr <X3D::X3DNode> (createWorldInfo (getPage () -> getScene ()))
+			                          : X3D::X3DPtr <X3D::X3DNode> (layerNode);
+
+			const auto userPosition         = metaDataNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position", positions .at (type));
+			const auto userOrientation      = metaDataNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation", orientations .at (type));
+			const auto userCenterOfRotation = metaDataNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", X3D::Vector3d ());
+			const auto fieldOfViewScale     = metaDataNode -> getMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", 1.0);
 
 			layerNode -> isLive () .addInterest (&X3DBrowserPanel::set_live, this);
 			layerNode -> getNavigationInfoStack () -> addInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
@@ -676,6 +680,32 @@ X3DBrowserPanel::set_navigationInfoStack ()
 }
 
 void
+X3DBrowserPanel::set_viewpoint ()
+{
+	if (layerNode -> isLayer0 ())
+	{
+		const auto worldInfo = createWorldInfo (getPage () -> getScene ());
+
+		worldInfo -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
+		worldInfo -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+		worldInfo -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+		worldInfo -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	}
+	else
+	{
+		layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
+		layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+		layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
+		layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
+	}
+
+	getPage () -> setModified (true);
+
+	if (type not_eq BrowserPanelType::PERSPECTIVE_VIEW)
+		gridTransform -> translation () = viewpoint -> getUserPosition () * axes .at (type) - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
+}
+
+void
 X3DBrowserPanel::connectViewpoint ()
 {
 	try
@@ -687,20 +717,6 @@ X3DBrowserPanel::connectViewpoint ()
 	}
 	catch (const X3D::X3DError & error)
 	{ }
-}
-
-void
-X3DBrowserPanel::set_viewpoint ()
-{
-	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/position",         viewpoint -> getUserPosition ());
-	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/orientation",      viewpoint -> getUserOrientation ());
-	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
-	layerNode -> setMetaData ("/Titania/BrowserPanel/viewpoints/" + names .at (type) + "Viewpoint/fieldOfViewScale", viewpoint -> fieldOfViewScale ());
-
-	getPage () -> setModified (true);
-
-	if (type not_eq BrowserPanelType::PERSPECTIVE_VIEW)
-		gridTransform -> translation () = viewpoint -> getUserPosition () * axes .at (type) - X3D::Vector3d (0, 0, 10) * viewpoint -> getUserOrientation ();
 }
 
 void
