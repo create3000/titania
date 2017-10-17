@@ -217,7 +217,6 @@ RouteGraphPage::save ()
 
 X3D::SFNode
 RouteGraphPage::getNode (const size_t id) const
-throw (std::runtime_error)
 {
 	X3D::SFNode found;
 
@@ -891,14 +890,13 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 					getBrowserWindow () -> addUndoStep (undoStep);
 				}
 
-
 				context -> drag_finish (true, false, time);
+				return;
 			}
 			catch (const std::exception & error)
 			{
 				__LOG__ << error .what () << std::endl;
 			}
-			return;
 		}
 	}
 

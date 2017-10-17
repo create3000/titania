@@ -168,8 +168,7 @@ private:
 	queueSave ();
 
 	X3D::SFNode
-	getNode (const size_t id) const
-	throw (std::runtime_error);
+	getNode (const size_t id) const;
 
 	void
 	addConnectedNodes (const X3D::SFNode & node, const X3D::Vector2i & position);

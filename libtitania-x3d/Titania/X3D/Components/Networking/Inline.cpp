@@ -76,7 +76,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	    X3DUrlObject (),
 	          fields (),
 	          buffer (),
-	           scene (),
+	           scene (executionContext -> getBrowser () -> createScene (false)),
 	           group (new Group (executionContext)),
 	     preventLoad (false),
 	          future ()

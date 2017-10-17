@@ -306,7 +306,7 @@ traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags,
 				{
 					if (flags & TRAVERSE_EXTERNPROTO_DECLARATION_SCENE)
 					{
-						ExternProtoDeclarationPtr externProto (node);
+						const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node .getValue ());
 
 						if (traverse (externProto -> getInternalScene (), callback, flags, seen))
 							continue;
