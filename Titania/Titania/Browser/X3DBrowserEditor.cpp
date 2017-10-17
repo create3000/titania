@@ -458,9 +458,6 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		{
 			const auto scene = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
 
-			if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
-				return selection;
-
 			X3D::MFNode importedNodes;
 
 			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
@@ -480,6 +477,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 				                                             undoStep);
 			}
 
+			// Bind bindables
 			magicImport .process (getCurrentContext (), importedNodes, scene, undoStep);
 
 			nodes .append (std::move (importedNodes));
@@ -491,34 +489,6 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 	}
 
 	return nodes;
-}
-
-X3D::MFNode
-X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep)
-{
-	// Import As Inline
-
-	for (const auto & worldURL : url)
-	{
-		const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (worldURL);
-
-		std::string string;
-
-		string += "DEF " + X3D::GetNameFromURI (worldURL) + " Transform {";
-		string += "  children Inline {";
-		string += "    url [";
-		string += "      \"" + relativePath + "\"";
-		string += "      \"" + worldURL + "\"";
-		string += "    ]";
-		string += "  }";
-		string += "}";
-
-		const auto scene = getCurrentBrowser () -> createX3DFromString (string);
-
-		return X3D::X3DEditor::importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
-	}
-
-	return X3D::MFNode ();
 }
 
 bool

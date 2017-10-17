@@ -528,7 +528,7 @@ throw (Error <INVALID_NODE>,
 
 	if (iter not_eq importedNodes .end ())
 	{
-		const auto & importedNode = iter -> second;
+		const auto importedNode = iter -> second;
 		
 		importedNodes .erase (iter);
 

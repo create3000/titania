@@ -152,7 +152,7 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 }
 
 basic::uri
-FileImportDialog::getURL () const
+FileImportDialog::getUrl () const
 {
 	return "file://" + getWindow () .get_file () -> get_path ();
 }
@@ -173,131 +173,27 @@ FileImportDialog::setFilter (const std::string & name)
 void
 FileImportDialog::run ()
 {
-	if (getConfig () -> hasItem ("importType"))
-	{
-		switch (getConfig () -> getItem <int32_t> ("importType"))
-		{
-			case ImportType::EXTERN_PROTOS:
-				getImportExternProtosButton () .set_active (true);
-				break;
-		   case ImportType::PROTOS:
-				getImportProtosButton () .set_active (true);
-				break;
-		   case ImportType::SCENE:
-				getImportSceneButton () .set_active (true);
-				break;
-		   default:
-				getImportAsInlineButton () .set_active (true);
-				break;
-		}
-	}
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getItem <std::string> ("currentFolder"));
+	else
+		getWindow () .set_current_folder (Glib::get_home_dir ());
+	
+	setFilter (getConfig () -> getItem <std::string> ("filter"));
+		
+	const auto responseId = getWindow () .run ();
 
-	const auto responseId = getImportDialog () .run ();
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
 
-	getImportDialog () .hide ();
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		if (getConfig () -> hasItem ("currentFolder"))
-			getWindow () .set_current_folder_uri (getConfig () -> getItem <std::string> ("currentFolder"));
-		else
-			getWindow () .set_current_folder (Glib::get_home_dir ());
-		
-		setFilter (getConfig () -> getItem <std::string> ("filter"));
-		
-		const auto responseId = getWindow () .run ();
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import Scene"));
+		const auto nodes    = getBrowserWindow () -> import ({ getUrl () }, undoStep);
 
-		getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-
-		if (getWindow () .get_filter ())
-			getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
-
-		if (responseId == Gtk::RESPONSE_OK)
-		{
-		   if (getImportExternProtosButton () .get_active ())
-		   {
-				getConfig () -> setItem ("importType", ImportType::EXTERN_PROTOS);
-
-				try
-				{
-					const auto uri   = getURL ();
-					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ uri .str () });
-
-					for (const auto & prototype : scene -> getProtoDeclarations ())
-					{
-						const auto & name = prototype -> getName ();
-
-						X3D::FieldDefinitionArray _externInterfaceDeclarations;
-
-						for (const auto & fieldDefinition : prototype -> getFieldDefinitions ())
-						{
-						   _externInterfaceDeclarations .emplace_back (fieldDefinition -> copy (X3D::FLAT_COPY));
-							_externInterfaceDeclarations .back () -> setAccessType (fieldDefinition -> getAccessType ());
-							_externInterfaceDeclarations .back () -> setName (fieldDefinition -> getName ());
-						}
-
-						basic::uri worldURL (uri + "#" + name);
-			
-						const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (worldURL);
-
-						X3D::MFString url;
-
-						url .emplace_back (relativePath .str ());
-						url .emplace_back (worldURL .str ());
-						
-						const X3D::ExternProtoDeclarationPtr externproto = getCurrentContext () -> createExternProtoDeclaration (name, _externInterfaceDeclarations, url);
-
-						getCurrentContext () -> updateExternProtoDeclaration (name, externproto);
-					}
-				}
-				catch (const X3D::X3DError & error)
-				{
-					getCurrentBrowser () -> print (error .what ());
-				}
-			}
-
-			else if (getImportProtosButton () .get_active ())
-			{
-				try
-				{
-				   // The URLs of the proto body must be rewriten, probable by setting execution context.
-
-					getConfig () -> setItem ("importType", ImportType::PROTOS);
-
-					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ getURL () .str () });
-
-					for (const auto & prototype : scene -> getProtoDeclarations ())
-						getCurrentContext () -> updateProtoDeclaration (prototype -> getName (), prototype);
-				}
-				catch (const X3D::X3DError & error)
-				{
-					getCurrentBrowser () -> print (error .what ());
-				}
-			}
-
-			else if (getImportSceneButton () .get_active ())
-			{
-				getConfig () -> setItem ("importType", ImportType::SCENE);
-
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Magic Import"));
-				const auto nodes    = getBrowserWindow () -> import ({ getURL () }, undoStep);
-
-				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
-				getBrowserWindow () -> addUndoStep (undoStep);
-			}
-
-			else if (getImportAsInlineButton () .get_active ())
-			{
-				getConfig () -> setItem ("importType", ImportType::INLINE);
-
-				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
-				const auto nodes    = getBrowserWindow () -> importAsInline ({ getURL () }, undoStep);
-
-				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
-				getBrowserWindow () -> addUndoStep (undoStep);
-			}
-
-		}
+		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
 	quit ();

@@ -96,9 +96,6 @@ public:
 	X3D::MFNode
 	import (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
 
-	X3D::MFNode
-	importAsInline (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
-
 	virtual
 	bool
 	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy) override;

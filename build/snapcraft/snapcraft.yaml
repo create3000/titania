@@ -1,5 +1,5 @@
 name: titania
-version: 3.0.0
+version: 3.1.0
 summary: Titania is a X3D/VRML editor and browser for Ubuntu.
 description: Titania is a X3D/VRML editor and browser for Ubuntu.
 confinement: strict

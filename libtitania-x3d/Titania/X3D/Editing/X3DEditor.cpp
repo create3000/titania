@@ -55,6 +55,7 @@
 #include "../Bits/Traverse.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/EnvironmentalEffects/Background.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
@@ -212,6 +213,13 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 		undoStep -> addObjects (parent);
 		undoStep -> addUndoFunction ((resize) & MFNode::resize, std::ref (field), size);
 
+		// Restore WorldInfo
+
+		const auto worldInfo         = executionContext -> getWorldInfo ();
+		const auto importedWorldInfo = scene -> getWorldInfo ();
+	
+		undoStep -> addUndoFunction (&X3DExecutionContext::setWorldInfo, executionContext, worldInfo);
+
 		// Restore protos
 
 		undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
@@ -301,6 +309,14 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 
 		const auto importedNodes = executionContext -> import (scene);
 
+		// Remove nodes undo step
+
+		const auto undoRemoveNodes = std::make_shared <UndoStep> ();
+		removeNodesFromScene (executionContext, importedNodes, false, undoRemoveNodes);
+		undoStep -> addUndoFunction (&UndoStep::redo, undoRemoveNodes);
+		undoStep -> addRedoFunction (&UndoStep::undo, undoRemoveNodes);
+		undoRemoveNodes -> undo ();
+
 		// Restore protos
 
 		undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
@@ -311,6 +327,14 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 		using append = X3DArrayField <SFNode> &(MFNode::*) (const X3DArrayField <SFNode>&);
 		undoStep -> addRedoFunction ((append) &MFNode::append, std::ref (field), importedNodes);
 		field .append (importedNodes);
+
+		// Remove imported WorldInfo and restore old one.
+
+		if (importedWorldInfo)
+			removeNodesFromScene (executionContext, { importedWorldInfo }, true, undoStep);
+
+		undoStep -> addRedoFunction (&X3DExecutionContext::setWorldInfo, executionContext, worldInfo);
+		executionContext -> setWorldInfo (worldInfo);
 
 		// Prototype support
 
@@ -1104,7 +1128,9 @@ X3DEditor::removeExportedNodes (const X3DScenePtr & scene, const std::set <SFNod
 {
 	// Remove exported nodes
 
-	for (const auto & pair : ExportedNodeIndex (scene -> getExportedNodes ()))
+	const auto exportedNodes = scene -> getExportedNodes ();
+
+	for (const auto & pair : exportedNodes)
 	{
 		try
 		{
@@ -1201,7 +1227,9 @@ X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext,
 {
 	// Remove nodes imported from node
 
-	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
+	const auto importedNodes = executionContext -> getImportedNodes ();
+
+	for (const auto & pair : importedNodes)
 	{
 		const auto & importedNode = pair .second;
 		const auto   inlineNode   = importedNode -> getInlineNode ();
@@ -1337,13 +1365,9 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 	if (name .empty ())
 		return;
 
-	// Restore prototypes.
-
-	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
-
 	// Update prototype
 
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, name, prototype);
 	executionContext -> updateProtoDeclaration (name, prototype);
 
@@ -1421,13 +1445,9 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	if (name .empty ())
 		return;
 
-	// Restore extern protos.
-
-	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
-
 	// Update name.
 
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, name, externProto);
 	executionContext -> updateExternProtoDeclaration (name, externProto);
 
