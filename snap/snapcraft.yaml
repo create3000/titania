@@ -44,6 +44,7 @@ parts:
       - libgmp-dev
       - libmpfr-dev
     stage-packages:
+      - libc6
       - libgtkmm-3.0-1v5
       - libgtksourceviewmm-3.0-0v5
       - libglu1-mesa
@@ -68,6 +69,11 @@ parts:
       - language-pack-de
       - libc-bin
       - ffmpeg
+      - gstreamer1.0-plugins-base
+      - gstreamer1.0-plugins-good
+      - gstreamer1.0-plugins-bad
+      - gstreamer1.0-plugins-ugly
+      - inkscape
   glue:
     plugin: copy
     files:

@@ -100,9 +100,6 @@
     <None Include="..\ltmain.sh">
       <Link>ltmain.sh</Link>
     </None>
-    <None Include="snapcraft\snapcraft.yaml" />
-    <None Include="snapcraft\setup\gui\icon.png" />
-    <None Include="snapcraft\titania-wrapper" />
     <None Include="..\AUTHORS.md">
       <Link>AUTHORS.md</Link>
     </None>

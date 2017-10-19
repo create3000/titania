@@ -1,10 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Time/TimeSensor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="132" Column="9" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
