@@ -1,33 +1,39 @@
+titania (3.1.1) artful; urgency=medium
+
+  * Fixed bug in selection
+ 
+ -- Holger Seelig <holger.seelig@yahoo.de>  Wed, 25 Oct 2017 11:22:11 +0200
+
 titania (3.1.0) artful; urgency=medium
 
   * Various improvments.
  
- -- Holger Seelig <holger@qualle>  Tue, 26 Sep 2017 08:47:08 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 26 Sep 2017 08:47:08 +0200
 
 titania (3.0.4) zesty; urgency=medium
 
   * Implemented proto editing in Outline Editor.
  
- -- Holger Seelig <holger@qualle>  Sat, 06 May 2017 03:26:50 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Sat, 06 May 2017 03:26:50 +0200
 
 titania (3.0.3) zesty; urgency=medium
 
   * Bug fixes.
  
- -- Holger Seelig <holger@qualle>  Mon, 17 Apr 2017 02:14:37 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Mon, 17 Apr 2017 02:14:37 +0200
 
 titania (3.0.2) zesty; urgency=medium
 
   * Fixed GradientTool.
  
- -- Holger Seelig <holger@qualle>  Fri, 14 Apr 2017 11:11:58 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Fri, 14 Apr 2017 11:11:58 +0200
 
 titania (3.0.1) zesty; urgency=medium
 
   * Fixes for Zesty.
   * New Primitive Options.
 
- -- Holger Seelig <holger@qualle>  Sun, 09 Apr 2017 13:30:45 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Sun, 09 Apr 2017 13:30:45 +0200
 
 titania (3.0.0) zesty; urgency=medium
 
@@ -36,118 +42,118 @@ titania (3.0.0) zesty; urgency=medium
   * JSON Enconding Parser and Generator.
   * 3DS File Format Parser.
 
- -- Holger Seelig <holger@qualle>  Sun, 26 Feb 2017 09:51:09 +0100
+ -- Holger Seelig <holger.seelig@yahoo.de>  Sun, 26 Feb 2017 09:51:09 +0100
 
 titania (2.0.1) xenial; urgency=medium
 
   * Various fixed and user interface improvements.
 
- -- Holger Seelig <holger@qualle>  Thu, 06 Oct 2016 07:56:58 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 06 Oct 2016 07:56:58 +0200
 
 titania (2.0.0) xenial; urgency=medium
 
   * Various fixed and user interface improvements.
 
- -- Holger Seelig <holger@qualle>  Thu, 22 Sep 2016 10:56:51 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 22 Sep 2016 10:56:51 +0200
 
 titania (1.4.10) xenial; urgency=medium
 
   * Various fixed and user interface improvements.
 
- -- Holger Seelig <holger@qualle>  Fri, 16 Sep 2016 21:01:32 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Fri, 16 Sep 2016 21:01:32 +0200
 
 titania (1.4.9) xenial; urgency=medium
 
   * Various fixed and user interface improvements.
 
- -- Holger Seelig <holger@qualle>  Mon, 08 Aug 2016 22:57:51 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Mon, 08 Aug 2016 22:57:51 +0200
 
 titania (1.4.8) xenial; urgency=medium
 
   * Fixed issue with geometry selection.
 
- -- Holger Seelig <holger@qualle>  Tue, 28 Jun 2016 12:39:20 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 28 Jun 2016 12:39:20 +0200
 
 titania (1.4.7) xenial; urgency=medium
 
   * Fixed fatal bug in FontFace.cpp.
 
- -- Holger Seelig <holger@qualle>  Tue, 28 Jun 2016 12:39:20 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 28 Jun 2016 12:39:20 +0200
 
 titania (1.4.6) xenial; urgency=medium
 
   * Fixed fatal bug in X3DGeometryNode creation
 
- -- Holger Seelig <holger@qualle>  Tue, 21 Jun 2016 06:58:54 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 21 Jun 2016 06:58:54 +0200
 
 titania (1.4.5) xenial; urgency=medium
 
   * Fixes performance leak in LOD and Switch
   * Memory leak in Text
 
- -- Holger Seelig <holger@qualle>  Tue, 31 May 2016 09:47:48 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 31 May 2016 09:47:48 +0200
 
 titania (1.4.4) xenial; urgency=medium
 
   * Fixes fatal bug with infinite redraw of whole window.
 
- -- Holger Seelig <holger@qualle>  Thu, 12 May 2016 06:32:03 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 12 May 2016 06:32:03 +0200
 
 titania (1.4.3) xenial; urgency=medium
 
   * Bump version number.
 
- -- Holger Seelig <holger@qualle>  Tue, 03 May 2016 07:17:32 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 03 May 2016 07:17:32 +0200
 
 titania (1.4.2) xenial; urgency=medium
 
   * Bump version number.
   * date -R
 
- -- Holger Seelig <holger@qualle>  Thu, 24 April 2016 06:02:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 24 April 2016 06:02:00 +0200
 
 titania (1.4.1) xenial; urgency=medium
 
   * Fixed some bugs, and added some enhancements.
 
- -- Holger Seelig <holger@qualle>  Thu, 8 April 2016 16:46:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 8 April 2016 16:46:00 +0200
 
 titania (1.4.0) xenial; urgency=medium
 
   * Implemented Geometry Editor.
 
- -- Holger Seelig <holger@qualle>  Thu, 9 March 2016 09:26:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 9 March 2016 09:26:00 +0200
 
 titania (1.2.1) wily; urgency=medium
 
   * Implemented Prototype Editor.
 
- -- Holger Seelig <holger@qualle>  Thu, 5 Nov 2015 09:01:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Thu, 5 Nov 2015 09:01:00 +0200
 
 titania (1.2.0) trusty; urgency=medium
 
   * Bump version number.
 
- -- Holger Seelig <holger@qualle>  Mo, 12 Oct 2015 10:42:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Mo, 12 Oct 2015 10:42:00 +0200
 
 titania (1.1.1) trusty; urgency=medium
 
   * Fixed fatal crash in font rendering.
 
- -- Holger Seelig <holger@qualle>  Tue, 22 Sep 2015 11:21:00 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 22 Sep 2015 11:21:00 +0200
 
 titania (1.1.0) trusty; urgency=medium
 
   * Implemented drag n drop in Outline Editor.
   * Many bug fixes.
 
- -- Holger Seelig <holger@qualle>  We, 9 Sep 2015 06:59:52 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  We, 9 Sep 2015 06:59:52 +0200
 
 titania (1.0.0) trusty; urgency=medium
 
   * Changed version number.
 
- -- Holger Seelig <holger@qualle>  Tue, 14 Aug 2015 09:24:43 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 14 Aug 2015 09:24:43 +0200
 
  titania (0.7.8) trusty; urgency=medium
 
@@ -161,7 +167,7 @@ titania (1.0.0) trusty; urgency=medium
   * Fixed bug when exporting x3d file with Viewpoint anchor url.
   * Fixed bug with XML export of CDATA Script urls.
 
- -- Holger Seelig <holger@qualle>  Tue, 14 Apr 2015 15:24:57 +0200
+ -- Holger Seelig <holger.seelig@yahoo.de>  Tue, 14 Apr 2015 15:24:57 +0200
 
 titania (0.7.7) trusty; urgency=medium
 

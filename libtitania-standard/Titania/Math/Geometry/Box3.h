@@ -170,6 +170,10 @@ public:
 	empty () const
 	{ return m_matrix [3] [3] == 0; }
 
+	///  Returns the volume of this box.
+	Type
+	volume () const;
+
 	///  Returns the size of this box.
 	vector3 <Type>
 	size () const;
@@ -186,11 +190,6 @@ public:
 	///  Returns the scaled axes of this box.
 	std::array <vector3 <Type>, 3> 
 	axes () const;
-
-	///  Returns the volume of this box.
-	Type
-	volume () const
-	{ return std::abs (matrix () .submatrix () .determinant ()) * 8; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -285,6 +284,27 @@ private:
 };
 
 template <class Type>
+inline
+Type
+box3 <Type>::volume () const
+{
+	if (empty ())
+		return 0;
+
+	return std::abs (matrix () .submatrix () .determinant ()) * 8;
+}
+
+template <class Type>
+inline
+vector3 <Type>
+box3 <Type>::size () const
+{
+	const auto extents = absolute_extents ();
+
+	return extents .second - extents .first;
+}
+
+template <class Type>
 std::vector <vector3 <Type>> 
 box3 <Type>::points () const
 {
@@ -366,16 +386,6 @@ box3 <Type>::extents () const
 	extents .second += center ();
 
 	return extents;
-}
-
-template <class Type>
-inline
-vector3 <Type>
-box3 <Type>::size () const
-{
-	const auto extents = absolute_extents ();
-
-	return extents .second - extents .first;
 }
 
 template <class Type>

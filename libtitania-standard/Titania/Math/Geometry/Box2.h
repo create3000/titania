@@ -170,6 +170,10 @@ public:
 	empty () const
 	{ return m_matrix [2] [2] == 0; }
 
+	///  Returns the area of this box.
+	Type
+	area () const;
+
 	///  Returns the size of this box.
 	vector2 <Type>
 	size () const;
@@ -186,11 +190,6 @@ public:
 	///  Returns the scaled axes of this box.
 	std::array <vector2 <Type>, 2> 
 	axes () const;
-
-	///  Returns the area of this box.
-	Type
-	area () const
-	{ return std::abs (matrix () .submatrix () .determinant ()) * 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box2 inplace.
@@ -290,6 +289,16 @@ box2 <Type>::extents () const
 	extents .second += center ();
 
 	return extents;
+}
+
+template <class Type>
+Type
+box2 <Type>::area () const
+{
+	if (empty ())
+		return 0;
+
+	return std::abs (matrix () .submatrix () .determinant ()) * 4;
 }
 
 template <class Type>

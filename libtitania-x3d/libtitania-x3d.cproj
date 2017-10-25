@@ -815,7 +815,6 @@
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DObjectTool.h" />
     <None Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.h" />
-    <None Include="Titania\X3D\Browser\RigidBodyPhysics\CollidableNodesSet.h" />
     <None Include="Titania\X3D\Parser\Autodesk\Parser.h" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.h" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.rc" />
@@ -974,6 +973,7 @@
     <None Include="share\titania\shaders\Shaders\PointSet.fs" />
     <None Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HierarchyGuard.h" />
+    <None Include="Titania\X3D\Browser\RigidBodyPhysics\CollidableNodesSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

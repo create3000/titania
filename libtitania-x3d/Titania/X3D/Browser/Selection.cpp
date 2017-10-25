@@ -422,7 +422,11 @@ Selection::selectNode (X3DBrowser* const browser)
 	// Get selected node.
 
 	const auto & nearestHit = browser -> getNearestHit ();
-	const auto   node       = getTransform (nearestHit -> hierarchy);
+
+	if (nearestHit -> shape -> getExecutionContext () -> getPrivate ())
+		return false;
+
+	const auto node = getTransform (nearestHit -> hierarchy);
 
 	// Select node or remove from selection.
 
