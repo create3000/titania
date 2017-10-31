@@ -91,7 +91,7 @@ Shape::create (X3DExecutionContext* const executionContext) const
 bool
 Shape::isTransparent () const
 {
-	if (getAppearance () -> isTransparent ())
+	if (getAppearance () and getAppearance () -> isTransparent ())
 		return true;
 
 	if (getGeometry () and getGeometry () -> isTransparent ())

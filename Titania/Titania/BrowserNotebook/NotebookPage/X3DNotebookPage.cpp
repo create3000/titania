@@ -207,8 +207,8 @@ X3DNotebookPage::updateTitle ()
 	getBrowserWindow () -> getBrowserNotebook () .set_menu_label_text (getWidget (), title);
 
 	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-	getTabLabel () .set_text (title);
-	getTabLabel () .set_tooltip_text (title);
+	getTabLabel () .set_text (getMasterSceneURL () .basename ());
+	getTabLabel () .set_tooltip_text (getMasterSceneURL () .str ());
 
 	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
 	{

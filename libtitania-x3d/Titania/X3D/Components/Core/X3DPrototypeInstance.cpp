@@ -270,6 +270,8 @@ X3DPrototypeInstance::update ()
 		{
 			const auto iter = map .find (protoField);
 
+			// Reuse old field.
+
 			if (iter not_eq map .end ())
 			{
 				const auto field = iter -> second;
@@ -283,6 +285,8 @@ X3DPrototypeInstance::update ()
 			}
 
 			const auto field = protoField -> copy (FLAT_COPY);
+
+			// Find suitable field and assign value. Probably access type has changed.
 
 			for (const auto & pair : map)
 			{
@@ -298,6 +302,8 @@ X3DPrototypeInstance::update ()
 					}
 				}
 			}
+
+			// Otherwise create new field.
 
 			addField (protoField -> getAccessType (),
 			          protoField -> getName (),

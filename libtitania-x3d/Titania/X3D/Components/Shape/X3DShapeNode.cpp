@@ -93,7 +93,7 @@ X3DShapeNode::initialize ()
 		glBindProgramPipeline = [ ] (GLuint) { };
 
 	appearance () .addInterest (&X3DShapeNode::set_appearance, this);
-	geometry ()   .addInterest (&X3DShapeNode::set_geometry, this);
+	geometry ()   .addInterest (&X3DShapeNode::set_geometry,   this);
 
 	set_appearance ();
 	set_geometry ();

@@ -1,11 +1,8 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="127" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp" Line="1" Column="1" />
-      <File FileName="debian/control" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="522" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

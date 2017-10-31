@@ -78,25 +78,24 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 }
 
 void
-X3DPrimitiveCountEditor::on_map_primitive_count ()
-{
-	on_primitive_count_count_changed ();
-}
-
-void
 X3DPrimitiveCountEditor::configure ()
 {
 	getPrimitiveCountCountButton () .set_active (getConfig () -> getItem <int32_t> ("primitiveCount"));
 }
 
 void
+X3DPrimitiveCountEditor::on_map_primitive_count ()
+{
+	on_primitive_count_count_changed ();
+}
+void
 X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 {
 	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
-	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::update, this);
-	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::set_browser, this);
-	getCurrentContext () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::update,               this);
+	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::set_browser,          this);
+	getCurrentContext () .removeInterest (&X3DPrimitiveCountEditor::update,               this);
 	getCurrentContext () .removeInterest (&X3DPrimitiveCountEditor::set_executionContext, this);
 
 	if (browser)
