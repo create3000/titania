@@ -121,7 +121,7 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 		getFillPropertiesCheckButton () .set_inconsistent (false);
 		getFillPropertiesBox ()         .set_sensitive (getFillPropertiesCheckButton () .get_active ());
 
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+		const auto executionContext = X3D::X3DExecutionContextPtr (getSelectionContext (appearances));
 
 		for (const auto & appearance : appearances)
 		{
@@ -188,7 +188,7 @@ X3DFillPropertiesEditor::set_node ()
 		}
 		else
 		{
-			const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+			const auto executionContext = X3D::X3DExecutionContextPtr (getSelectionContext (appearances, true));
 
 			fillProperties = executionContext -> createNode <X3D::FillProperties> ();
 			fillProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());

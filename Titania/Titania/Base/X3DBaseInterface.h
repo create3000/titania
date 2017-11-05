@@ -165,7 +165,7 @@ public:
 	 */
 
 	X3D::X3DExecutionContext*
-	getExecutionContext (const X3D::MFNode & nodes, const bool currentIfEmpty = false) const;
+	getSelectionContext (const X3D::MFNode & nodes, const bool currentIfEmpty = false) const;
 
 	std::string
 	getNodeName (const X3D::SFNode & node) const;

@@ -139,7 +139,7 @@ AppearanceEditor::on_appearance_toggled ()
 
 	getAppearanceCheckButton () .set_inconsistent (false);
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (shapeNodes));
 
 	for (const auto & shapeNode : shapeNodes)
 	{
@@ -177,7 +177,7 @@ AppearanceEditor::set_node ()
 {
 	undoStep .reset ();
 
-	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes, true));
+	const auto    executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 	auto          tuple            = getSelection <X3D::X3DAppearanceNode> (shapeNodes, "appearance");
 	const int32_t active           = std::get <1> (tuple);
 	const bool    hasParent        = std::get <2> (tuple);

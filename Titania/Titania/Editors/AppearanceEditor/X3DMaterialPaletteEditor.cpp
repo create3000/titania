@@ -96,12 +96,9 @@ X3DMaterialPaletteEditor::setTouchTime (const basic::uri & URL)
 		// Apply selected material to selection.
 
 		auto       selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (selection, true));
 
 		if (selection .empty ())
-			return;
-
-		if (not executionContext)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));

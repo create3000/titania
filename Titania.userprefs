@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="522" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp" Line="217" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="99" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

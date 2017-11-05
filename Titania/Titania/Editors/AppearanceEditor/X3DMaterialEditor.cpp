@@ -184,7 +184,10 @@ X3DMaterialEditor::on_paste ()
 		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Paste Material"));
 		const auto scene            = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
 		auto       selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (selection));
+
+		if (not executionContext)
+			return;
 
 		if (MagicImport (getBrowserWindow ()) .import (executionContext, selection, scene, undoStep))
 			addUndoStep (undoStep);
@@ -397,7 +400,7 @@ X3DMaterialEditor::on_material_changed ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 
 	addUndoFunction <X3D::SFNode> (appearances, "material", undoStep);
 
@@ -463,7 +466,7 @@ X3DMaterialEditor::set_node ()
 {
 	undoStep .reset ();
 
-	const auto    executionContext = getExecutionContext (appearances, true);
+	const auto    executionContext = getSelectionContext (appearances, true);
 	auto          tuple            = getSelection <X3D::X3DMaterialNode> (appearances, "material");
 	const int32_t active           = std::get <1> (tuple);
 	const bool    hasParent        = std::get <2> (tuple);

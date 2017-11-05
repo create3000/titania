@@ -217,10 +217,7 @@ X3DUsedMaterialsEditor::set_node (const X3D::SFNode & node)
 
 		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Used Materials Index"));
 		const auto appearances      = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
-
-		if (not executionContext)
-			return;
+		const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 
 		for (const auto & appearance : appearances)
 			X3D::X3DEditor::replaceNode (executionContext, appearance, appearance -> material (), node, undoStep);

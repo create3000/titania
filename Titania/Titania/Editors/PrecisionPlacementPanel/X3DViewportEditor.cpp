@@ -109,7 +109,7 @@ X3DViewportEditor::on_viewport_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 
 	addUndoFunction <X3D::SFNode> (nodes, "viewport", undoStep);
 
@@ -162,7 +162,7 @@ X3DViewportEditor::set_node ()
 	// Find Viewport in selection
 
 	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
+	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection, true));
 
 	viewport = selection .empty () ? nullptr : selection .back ();
 

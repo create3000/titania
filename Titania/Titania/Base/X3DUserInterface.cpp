@@ -206,7 +206,7 @@ X3DUserInterface::on_unmap ()
 void
 X3DUserInterface::set_selection_and_check (const X3D::MFNode & selection)
 {
-	if (getExecutionContext (selection))
+	if (getSelectionContext (selection))
 		set_selection (selection);
 	else
 		set_selection ({ });

@@ -173,7 +173,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 
 	addUndoFunction <X3D::SFNode> (appearances, "texture", undoStep);
 
@@ -237,7 +237,7 @@ X3DTextureNodeEditor::set_node ()
 		IMAGE_CUBE_MAP_TEXTURE
 	};
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 	auto       tuple            = getSelection <X3D::X3DTextureNode> (appearances, "texture");
 	const int  active           = std::get <1> (tuple);
 	const bool hasParent        = std::get <2> (tuple);

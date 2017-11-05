@@ -195,7 +195,7 @@ X3DUsedTexturesEditor::set_node (const X3D::SFNode & node)
 
 		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Used Textures Index"));
 		const auto appearances      = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 
 		if (not executionContext)
 			return;

@@ -160,7 +160,7 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 
 	addUndoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
@@ -202,7 +202,7 @@ X3DTextureTransformNodeEditor::set_node ()
 {
 	undoStep .reset ();
 
-	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances, true));
+	const auto    executionContext = X3D::MakePtr (getSelectionContext (appearances, true));
 	auto          tuple            = getSelection <X3D::X3DTextureTransformNode> (appearances, "textureTransform");
 	const int32_t active           = std::get <1> (tuple);
 	const bool    hasParent        = std::get <2> (tuple);

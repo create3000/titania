@@ -108,7 +108,7 @@ X3DDisk2DEditor::on_disk2d_use_global_options_toggled ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Disk2D Use Global Options To »%s«", getDisk2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 
 	if (getDisk2DUseGlobalOptionsCheckButton () .get_active ())
 	{

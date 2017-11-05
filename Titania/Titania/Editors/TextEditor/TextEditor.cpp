@@ -142,7 +142,7 @@ TextEditor::on_text_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 
 	addUndoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 

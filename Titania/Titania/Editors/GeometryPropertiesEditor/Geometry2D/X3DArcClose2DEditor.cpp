@@ -108,7 +108,7 @@ X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Use Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 
 	if (getArcClose2DUseGlobalOptionsCheckButton () .get_active ())
 	{

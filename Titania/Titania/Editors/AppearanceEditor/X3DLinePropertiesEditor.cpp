@@ -119,7 +119,7 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 		getLinePropertiesCheckButton () .set_inconsistent (false);
 		getLinePropertiesBox ()         .set_sensitive (getLinePropertiesCheckButton () .get_active ());
 
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (appearances));
+		const auto executionContext = X3D::X3DExecutionContextPtr (getSelectionContext (appearances));
 
 		for (const auto & appearance : appearances)
 		{
@@ -186,7 +186,7 @@ X3DLinePropertiesEditor::set_node ()
 		}
 		else
 		{
-			const auto executionContext = getExecutionContext (appearances, true);
+			const auto executionContext = getSelectionContext (appearances, true);
 
 			lineProperties = executionContext  -> createNode <X3D::LineProperties> ();
 			lineProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());

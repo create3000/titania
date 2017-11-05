@@ -274,7 +274,7 @@ X3DBaseInterface::getUndoStep () const
 }
 
 X3D::X3DExecutionContext*
-X3DBaseInterface::getExecutionContext (const X3D::MFNode & nodes, const bool currentIfEmpty) const
+X3DBaseInterface::getSelectionContext (const X3D::MFNode & nodes, const bool currentIfEmpty) const
 {
 	if (currentIfEmpty and nodes .empty ())
 		return getCurrentContext ();

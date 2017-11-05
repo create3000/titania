@@ -106,7 +106,7 @@ X3DArc2DEditor::on_arc2d_use_global_options_toggled ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Arc2D Use Global Options To »%s«", getArc2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 
 	if (getArc2DUseGlobalOptionsCheckButton () .get_active ())
 	{

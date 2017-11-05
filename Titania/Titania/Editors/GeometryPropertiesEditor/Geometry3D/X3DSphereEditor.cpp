@@ -105,7 +105,7 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Sphere Use Global Options To »%s«", getSphereUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes));
 
 	if (getSphereUseGlobalOptionsCheckButton () .get_active ())
 	{
@@ -137,7 +137,7 @@ X3DSphereEditor::on_sphere_type_changed ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change Sphere Type To »%s«", getSphereTypeButton () .get_active_text () .c_str ())));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 	auto       optionNode       = X3D::SFNode ();
 
 	switch (getSphereTypeButton () .get_active_row_number ())

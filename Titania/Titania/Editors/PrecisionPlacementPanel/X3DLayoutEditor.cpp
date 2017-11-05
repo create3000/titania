@@ -108,7 +108,7 @@ X3DLayoutEditor::on_layout_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 
 	addUndoFunction <X3D::SFNode> (nodes, "layout", undoStep);
 
@@ -161,7 +161,7 @@ X3DLayoutEditor::set_node ()
 	// Find Layout in selection
 
 	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection, true));
+	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection, true));
 
 	layout = selection .empty () ? nullptr : selection .back ();
 

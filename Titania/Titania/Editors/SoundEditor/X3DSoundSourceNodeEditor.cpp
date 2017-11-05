@@ -159,7 +159,7 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 
 	// Set field.
 
-	const auto & executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (sounds));
+	const auto & executionContext = X3D::MakePtr (getSelectionContext (sounds, true));
 
 	addUndoFunction <X3D::SFNode> (sounds, "source", undoStep);
 
@@ -216,7 +216,7 @@ X3DSoundSourceNodeEditor::set_node ()
 
 	undoStep .reset ();
 
-	const auto executionContext  = X3D::X3DExecutionContextPtr (getExecutionContext (sounds, true));
+	const auto executionContext  = X3D::MakePtr (getSelectionContext (sounds, true));
 	auto       tuple             = getSelection <X3D::X3DSoundSourceNode> (sounds, "source");
 	const      int32_t active    = std::get <1> (tuple);
 	const      bool    hasParent = std::get <2> (tuple);

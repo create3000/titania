@@ -136,7 +136,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change IndexedLineSet Type To »%s«", getIndexedLineSetTypeButton () .get_active_text () .c_str ())));
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (nodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
 	auto       optionNode       = X3D::SFNode ();
 
 	switch (getIndexedLineSetTypeButton () .get_active_row_number ())

@@ -181,7 +181,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	   try
 	   {
 			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-			const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+			const auto executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 		   auto       node             = executionContext -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
@@ -204,7 +204,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
 	{
 		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (shapeNodes));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 
 		for (const auto & shapeNode : shapeNodes)
 		{

@@ -120,7 +120,7 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 	if (changing)
 		return;
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (geometryNodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (geometryNodes, true));
 
 	addUndoFunction <X3D::SFNode> (geometryNodes, "texCoord", undoStep);
 
@@ -161,7 +161,7 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 {
 	undoStep .reset ();
 
-	const auto executionContext = getExecutionContext (geometryNodes, true);
+	const auto executionContext = getSelectionContext (geometryNodes, true);
 	auto       tuple            = getSelection <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
 	const int  active           = std::get <1> (tuple);
 	const bool hasParent        = std::get <2> (tuple);

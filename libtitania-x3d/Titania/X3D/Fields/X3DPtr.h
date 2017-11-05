@@ -684,12 +684,21 @@ operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 ///  @name Utiliy functions
 
 ///  Constructs an object of type InternalType and wraps it in a X3DPtr using
-///  args as the parameter list for the constructor of Type.
+///  @a args as the parameter list for the constructor of Type.
 template <class InternalType, class ... Args>
 X3DPtr <InternalType>
 MakePtr (Args && ... args)
 {
 	return X3DPtr <InternalType> (new InternalType (std::forward <Args> (args) ...));
+}
+
+///  Constructs an object of type InternalType and wraps it in a X3DPtr using
+///  value as the parameter for the X3DPtr.
+template <class InternalType, class ... Args>
+X3DPtr <InternalType>
+MakePtr (InternalType* const value)
+{
+	return X3DPtr <InternalType> (value);
 }
 
 } // X3D

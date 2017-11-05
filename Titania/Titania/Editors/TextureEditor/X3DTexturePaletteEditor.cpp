@@ -97,7 +97,7 @@ X3DTexturePaletteEditor::setTouchTime (const basic::uri & URL)
 	try
 	{
 		auto selection              = getBrowserWindow () -> getSelection () -> getNodes ();
-		const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (selection));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (selection, true));
 
 		if (selection .empty ())
 			return;

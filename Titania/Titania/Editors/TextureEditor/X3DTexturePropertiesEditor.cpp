@@ -139,7 +139,7 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (textureNodes));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (textureNodes, true));
 
 	addUndoFunction <X3D::SFNode> (textureNodes, "textureProperties", undoStep);
 
@@ -177,7 +177,7 @@ X3DTexturePropertiesEditor::set_node ()
 {
 	undoStep .reset ();
 
-	const auto    executionContext = getExecutionContext (textureNodes, true);
+	const auto    executionContext = getSelectionContext (textureNodes, true);
 	auto          tuple            = getSelection <X3D::TextureProperties> (textureNodes, "textureProperties");
 	const int32_t active           = std::get <1> (tuple);
 	const bool    hasParent        = std::get <2> (tuple);

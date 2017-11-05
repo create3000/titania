@@ -181,7 +181,7 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 
 	// Set field.
 
-	const auto executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (texts));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (texts, true));
 
 	addUndoFunction <X3D::SFNode> (texts, "fontStyle", undoStep);
 
@@ -231,7 +231,7 @@ X3DFontStyleNodeEditor::set_node ()
 	if (fontStyleNode)
 		fontStyleNode -> style () .removeInterest (&X3DFontStyleNodeEditor::set_style, this);
 
-	const auto    executionContext = X3D::X3DExecutionContextPtr (getExecutionContext (texts, true));
+	const auto    executionContext = X3D::MakePtr (getSelectionContext (texts, true));
 	auto  tuple                    = getSelection <X3D::X3DFontStyleNode> (texts, "fontStyle");
 	const int32_t active           = std::get <1> (tuple);
 	const bool    hasParent        = std::get <2> (tuple);
