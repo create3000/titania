@@ -292,13 +292,49 @@ X3DPrototypeInstance::update ()
 			{
 				const auto currentField = pair .second;
 
-				if (protoField -> getType () == currentField -> getType ())
+				if (protoField -> getName () == currentField -> getName ())
 				{
-					if (protoField -> getName () == currentField -> getName ())
+					if (protoField -> getType () == currentField -> getType ())
 					{
 						field -> set (*currentField);
 						field -> isSet (true);
 						break;
+					}
+					else
+					{
+						switch (protoField -> getType ())
+						{
+							case X3DConstants::SFNode:
+							{
+								if (currentField -> getType () == X3DConstants::MFNode)
+								{
+									const auto mfnode = static_cast <MFNode*> (currentField);
+	
+									if (not mfnode -> empty ())
+										field -> set (mfnode -> front ());
+	
+									field -> isSet (true);
+								}
+	
+								break;
+							}
+							case X3DConstants::MFNode:
+							{
+								if (currentField -> getType () == X3DConstants::SFNode)
+								{
+									const auto sfnode = static_cast <SFNode*> (currentField);
+	
+									field -> set (MFNode ({ *sfnode }));
+									field -> isSet (true);
+								}
+	
+								break;
+							}
+							default:
+							{
+								break;
+							}
+						}
 					}
 				}
 			}
