@@ -182,7 +182,7 @@ private:
 	connectChildren ();
 
 	void
-	add (const MFNode &);
+	add (const size_t first, const MFNode & children);
 
 	void
 	clear ();
@@ -191,7 +191,7 @@ private:
 
 	static const Matrix4d matrix;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -203,6 +203,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	bool                                      hidden;
 	MFBool                                    visible;

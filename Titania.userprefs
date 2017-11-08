@@ -1,11 +1,8 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="234" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="348" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,8 +11,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" line="240" column="16" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" line="240" column="16" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

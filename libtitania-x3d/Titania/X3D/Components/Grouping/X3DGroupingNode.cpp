@@ -160,8 +160,10 @@ X3DGroupingNode::set_addChildren ()
 		children () .addInterest (&X3DGroupingNode::connectChildren, this);
 	}
 
+	const auto first = children () .size ();
+
 	children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
-	add (addChildren ());
+	add (first, addChildren ());
 
 	addChildren () .set ({ });
 	addChildren () .setTainted (false);
@@ -193,7 +195,7 @@ void
 X3DGroupingNode::set_children ()
 {
 	clear ();
-	add (children ());
+	add (0, children ());
 }
 
 void
@@ -204,12 +206,12 @@ X3DGroupingNode::connectChildren ()
 }
 
 void
-X3DGroupingNode::add (const MFNode & children)
+X3DGroupingNode::add (const size_t first, const MFNode & children)
 {
 	if (hidden)
 		return;
 
-	size_t i = 0;
+	size_t i = first;
 
 	for (const auto & node : children)
 	{

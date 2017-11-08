@@ -120,15 +120,15 @@ protected:
 	void
 	initialize () override;
 
-
-private:
-
 	///  @name Member access
 
 	virtual
 	const MFBool &
 	getVisible () const final override
 	{ return visible (); }
+
+
+private:
 
 	///  @name Static members
 
