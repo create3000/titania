@@ -148,6 +148,7 @@ protected:
 	isHidden () const
 	{ return hidden; }
 
+	// Must only be used it in CADLayer!
 	virtual
 	const MFBool &
 	getVisible () const
@@ -157,6 +158,10 @@ protected:
 
 	void
 	set_children ();
+
+	virtual
+	void
+	remove (const MFNode & children);
 
 	virtual
 	void

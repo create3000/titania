@@ -127,6 +127,12 @@ protected:
 	getVisible () const final override
 	{ return visible (); }
 
+	///  @name Operations
+
+	virtual
+	void
+	remove (const MFNode & children);
+
 
 private:
 

@@ -95,5 +95,11 @@ CADLayer::initialize ()
 	visible () .addInterest (&CADLayer::set_children, static_cast <X3DGroupingNode*> (this));
 }
 
+void
+CADLayer::remove (const MFNode & children)
+{
+	set_children ();
+}
+
 } // X3D
 } // titania

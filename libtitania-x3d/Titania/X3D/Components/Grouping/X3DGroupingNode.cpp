@@ -186,9 +186,9 @@ X3DGroupingNode::set_removeChildren ()
 
 	children () .set_difference (removeChildren ());
 
-	removeChildren () .set ({ });
+	remove (removeChildren ());
 
-	set_children ();
+	removeChildren () .set ({ });
 }
 
 void
@@ -247,6 +247,7 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 							childNode -> isCameraObject () .addInterest (&X3DGroupingNode::set_cameraObjects, this);
 
 							childNodes .emplace_back (childNode);
+
 							// Procceed with next step.
 						}
 						case X3DConstants::X3DLightNode:
@@ -291,6 +292,109 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 		}
 
 		++ i;
+	}
+
+	set_cameraObjects ();
+}
+
+void
+X3DGroupingNode::remove (const MFNode & children)
+{
+	for (const auto & node : children)
+	{
+		if (node)
+		{
+			try
+			{
+				const auto innerNode = node -> getInnerNode ();
+
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				{
+					switch (type)
+					{
+						case X3DConstants::X3DPointingDeviceSensorNode:
+						{
+							pointingDeviceSensors .erase (std::remove (pointingDeviceSensors .begin (),
+							                                           pointingDeviceSensors .end (),
+							                                           dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode)),
+							                              pointingDeviceSensors .end ());
+							break;
+						}
+						case X3DConstants::ClipPlane:
+						{
+							clipPlanes .erase (std::remove (clipPlanes .begin (),
+							                                clipPlanes .end (),
+							                                dynamic_cast <ClipPlane*> (innerNode)),
+							                   clipPlanes .end ());
+							break;
+						}
+						case X3DConstants::LocalFog :
+						{
+							localFogs .erase (std::remove (localFogs .begin (),
+							                               localFogs .end (),
+							                               dynamic_cast <LocalFog*> (innerNode)),
+							                  localFogs .end ());
+							break;
+						}
+						case X3DConstants::X3DLightNodeTool:
+						{
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
+
+							childNodes .erase (std::remove (childNodes .begin (),
+							                                childNodes .end (),
+							                                childNode),
+							                   childNodes .end ());
+
+							// Procceed with next step.
+						}
+						case X3DConstants::X3DLightNode:
+						{
+							lights .erase (std::remove (lights .begin (),
+							                            lights .end (),
+							                            dynamic_cast <X3DLightNode*> (innerNode)),
+							               lights .end ());
+							break;
+						}
+						case X3DConstants::X3DChildNode:
+						{
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
+
+							childNodes .erase (std::remove (childNodes .begin (),
+							                                childNodes .end (),
+							                                childNode),
+							                   childNodes .end ());
+							break;
+						}
+						case X3DConstants::BooleanFilter:
+						case X3DConstants::BooleanToggle:
+						case X3DConstants::CollisionSensor:
+						case X3DConstants::NurbsOrientationInterpolator:
+						case X3DConstants::NurbsPositionInterpolator:
+						case X3DConstants::NurbsSurfaceInterpolator:
+						case X3DConstants::RigidBodyCollection:
+						case X3DConstants::TimeSensor:
+						case X3DConstants::X3DFollowerNode:
+						case X3DConstants::X3DInfoNode:
+						case X3DConstants::X3DInterpolatorNode:
+						case X3DConstants::X3DLayoutNode:
+						case X3DConstants::X3DScriptNode:
+						case X3DConstants::X3DSequencerNode:
+						case X3DConstants::X3DTriggerNode:
+							break;
+						default:
+							continue;
+					}
+
+					break;
+				}
+			}
+			catch (const X3DError &)
+			{ }
+		}
 	}
 
 	set_cameraObjects ();
