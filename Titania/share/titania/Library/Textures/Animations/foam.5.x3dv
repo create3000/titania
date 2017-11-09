@@ -13,10 +13,10 @@ DEF foam5 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animations/foam.5.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Animations/foam.5.png",
-          "http://rawgit.com/create3000/Library/1.0.2/Textures/Animations/foam.5.png",
-          "https://rawgit.com/create3000/Library/1.0.2/Textures/Animations/foam.5.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Animations/foam.5.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Animations/foam.5.png",
+          "http://rawgit.com/create3000/Library/1.0.3/Textures/Animations/foam.5.png",
+          "https://rawgit.com/create3000/Library/1.0.3/Textures/Animations/foam.5.png"
         ]
         repeatS FALSE
         repeatT FALSE

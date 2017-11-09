@@ -108,9 +108,12 @@ public:
 	getBBox () const final override;
 
 	virtual
+	Matrix4d
+	getCollidableMatrix () const final override;
+
+	virtual
 	const CollidableGeometry &
-	getCollidableGeometry () const
-	throw (Error <INVALID_NODE>);
+	getCollidableGeometry () const final override;
 
 	///  @name Operations
 

@@ -54,7 +54,6 @@
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtrArray.h"
 #include "../../Types/Pointer.h"
-#include "CollidableNodesSet.h"
 
 namespace titania {
 namespace X3D {
@@ -72,9 +71,9 @@ public:
 	void
 	removeCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & collidableNodes);
 
-	const CollidableNodesSet &
-	getCollidableNodes () const
-	{ return collidableNodes; }
+	const X3DPtr <CollisionCollection> &
+	getDefaultCollider () const
+	{ return colliderNode; }
 
 	///  @name Destruction
 
@@ -102,7 +101,7 @@ private:
 
 	///  @name Members
 
-	CollidableNodesSet collidableNodes;
+	X3DPtr <CollisionCollection> colliderNode;
 
 };
 

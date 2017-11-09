@@ -1,21 +1,17 @@
-#X3D V3.3 utf8 Titania V1.2.1
+#X3D V3.3 utf8 Titania V3.1.1
 
-META "comment" "World of Titania"
-META "created" "Mon, 16 Nov 2015 10:22:25 GMT"
-META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.1, http://titania.create3000.de"
-META "modified" "Mon, 16 Nov 2015 10:22:25 GMT"
+PROFILE Full
 
 EXTERNPROTO SFBool [
-  inputOnly   SFTime set_triggerTime
+  inputOutput SFTime triggerTime
   inputOutput SFBool keyValue
   outputOnly  SFBool value_changed
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/SFBool.x3dv",
-  "http://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/SFBool.x3dv",
-  "https://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/SFBool.x3dv",
-  "http://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/SFBool.x3dv"
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d"
 ]
 
 SFBool { }

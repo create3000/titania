@@ -77,11 +77,10 @@ CollisionCollection::Fields::Fields () :
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      X3DChildNode (),
-	            fields (),
-	   collidableNodes (),
-	collidableNodesSet ()
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DChildNode (),
+	           fields (),
+	  collidableNodes ()
 {
 	addType (X3DConstants::CollisionCollection);
 
@@ -122,25 +121,35 @@ CollisionCollection::initialize ()
 void
 CollisionCollection::set_collidables ()
 {
-	std::vector <X3DNBodyCollidableNode*> value;
-
-	for (const auto & node : collidables ())
+	try
 	{
-		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
-		
-		if (collidableNode)
-			value .emplace_back (collidableNode);
+		// Get collidable nodes.
 
-		//const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
-		
-		//if (collisionSpaceNode)
-		//	value .emplace_back (collisionSpaceNode);
+		collidableNodes .clear ();
+
+		for (const auto & node : collidables ())
+		{
+			const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
+
+			if (collidableNode)
+			{
+				collidableNodes .emplace_back (collidableNode);
+				continue;
+			}
+
+			const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+
+			if (collisionSpaceNode)
+			{
+				for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
+					collidableNodes .emplace_back (collidableNode);
+			}
+		}
 	}
-
-	collidableNodes .set (value .begin (), value .end ());
-
-	collidableNodesSet .clear ();
-	collidableNodesSet .insert (collidableNodes .begin (), collidableNodes .end ());
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 } // X3D

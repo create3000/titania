@@ -66,7 +66,6 @@ class RigidBody;
 class CollidableGeometry {
 public:
 
-	mutable Matrix4d               matrix;
 	Box3d                          bbox;
 	std::vector <Vector3d>         points;
 	std::vector <Vector3d>         edges;
@@ -117,9 +116,12 @@ public:
 	getBody () const;
 
 	virtual
+	Matrix4d
+	getCollidableMatrix () const = 0;
+
+	virtual
 	const CollidableGeometry &
-	getCollidableGeometry () const
-	throw (Error <INVALID_NODE>) = 0;
+	getCollidableGeometry () const = 0;
 
 	///  @name Destruction
 

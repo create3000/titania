@@ -13,10 +13,10 @@ DEF smallpinktile Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Surfaces/small.pink.tile.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Surfaces/small.pink.tile.png",
-          "http://rawgit.com/create3000/Library/1.0.2/Textures/Surfaces/small.pink.tile.png",
-          "https://rawgit.com/create3000/Library/1.0.2/Textures/Surfaces/small.pink.tile.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/small.pink.tile.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/small.pink.tile.png",
+          "http://rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/small.pink.tile.png",
+          "https://rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/small.pink.tile.png"
         ]
         repeatS FALSE
         repeatT FALSE

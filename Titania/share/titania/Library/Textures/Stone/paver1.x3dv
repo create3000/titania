@@ -13,10 +13,10 @@ DEF paver1 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Stone/paver1.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Stone/paver1.jpg",
-          "http://rawgit.com/create3000/Library/1.0.2/Textures/Stone/paver1.jpg",
-          "https://rawgit.com/create3000/Library/1.0.2/Textures/Stone/paver1.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Stone/paver1.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Stone/paver1.jpg",
+          "http://rawgit.com/create3000/Library/1.0.3/Textures/Stone/paver1.jpg",
+          "https://rawgit.com/create3000/Library/1.0.3/Textures/Stone/paver1.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

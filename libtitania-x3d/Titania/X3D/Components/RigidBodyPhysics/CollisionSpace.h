@@ -105,6 +105,12 @@ public:
 	collidables () const
 	{ return *fields .collidables; }
 
+	///  @name Member access
+
+	virtual
+	std::vector <X3DNBodyCollidableNode*>
+	getCollidables () const final override;
+
 
 private:
 

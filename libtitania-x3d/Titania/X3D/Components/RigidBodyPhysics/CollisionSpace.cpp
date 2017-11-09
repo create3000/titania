@@ -51,6 +51,7 @@
 #include "CollisionSpace.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -83,6 +84,33 @@ X3DBaseNode*
 CollisionSpace::create (X3DExecutionContext* const executionContext) const
 {
 	return new CollisionSpace (executionContext);
+}
+
+std::vector <X3DNBodyCollidableNode*>
+CollisionSpace::getCollidables () const
+{
+	std::vector <X3DNBodyCollidableNode*> collidableNodes;
+
+	for (const auto & node : collidables ())
+	{
+		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
+
+		if (collidableNode)
+		{
+			collidableNodes .emplace_back (collidableNode);
+			continue;
+		}
+
+		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+
+		if (collisionSpaceNode)
+		{
+			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
+				collidableNodes .emplace_back (collidableNode);
+		}
+	}
+
+	return collidableNodes;
 }
 
 } // X3D

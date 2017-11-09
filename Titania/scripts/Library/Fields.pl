@@ -30,13 +30,13 @@ foreach my $name ($keyFile -> get_groups ())
 	say FILE "#X3D V3.3 utf8 Titania
 
 PROTO $name [
-  inputOutput  SFTime triggerTime 0
+  inputOnly  SFTime   set_triggerTime
   inputOutput  $name  keyValue $value
   outputOnly   $name  value_changed
 ]
 {
   DEF $name Script {
-    inputOutput   SFTime triggerTime IS triggerTime
+    inputOnly     SFTime set_triggerTime IS set_triggerTime
     inputOutput   $name  keyValue IS keyValue
     outputOnly    $name  value_changed IS value_changed
 
@@ -75,10 +75,10 @@ EXTERNPROTO $name [
   outputOnly   $name  value_changed
 ]
 [
-   \"https://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/$name.x3d\",
-   \"http://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/$name.x3d\",
-   \"https://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/$name.x3d\",
-   \"http://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/$name.x3d\",
+   \"https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/$name.x3d\",
+   \"http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/$name.x3d\",
+   \"https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/$name.x3d\",
+   \"http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/$name.x3d\",
 ]
 
 $name { }

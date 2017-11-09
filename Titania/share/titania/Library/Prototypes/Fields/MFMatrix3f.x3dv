@@ -1,21 +1,17 @@
-#X3D V3.3 utf8 Titania V1.2.1
+#X3D V3.3 utf8 Titania V3.1.1
 
-META "comment" "World of Titania"
-META "created" "Mon, 16 Nov 2015 10:23:03 GMT"
-META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.1, http://titania.create3000.de"
-META "modified" "Mon, 16 Nov 2015 10:23:03 GMT"
+PROFILE Full
 
 EXTERNPROTO MFMatrix3f [
-  inputOnly   SFTime     set_triggerTime
+  inputOutput SFTime     triggerTime
   inputOutput MFMatrix3f keyValue
   outputOnly  MFMatrix3f value_changed
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/MFMatrix3f.x3dv",
-  "http://cdn.rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/MFMatrix3f.x3dv",
-  "https://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/MFMatrix3f.x3dv",
-  "http://rawgit.com/create3000/Library/1.0.2/Prototypes/Fields/MFMatrix3f.x3dv"
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/MFMatrix3f.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/MFMatrix3f.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/MFMatrix3f.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/MFMatrix3f.x3d"
 ]
 
 MFMatrix3f { }

@@ -124,16 +124,20 @@ CollidableShape::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
 }
 
-const CollidableGeometry &
-CollidableShape::getCollidableGeometry () const
-throw (Error <INVALID_NODE>)
+Matrix4d
+CollidableShape::getCollidableMatrix () const
 {
 	if (geometryNode)
-	{
-		collidableGeometry .matrix = getMatrix ();
+		return getMatrix ();
 
+	throw Error <INVALID_NODE> ("CollidableOffset::getCollidableMatrix");
+}
+
+const CollidableGeometry &
+CollidableShape::getCollidableGeometry () const
+{
+	if (geometryNode)
 		return collidableGeometry;
-	}
 
 	throw Error <INVALID_NODE> ("CollidableShape::getCollidableGeometry");
 }

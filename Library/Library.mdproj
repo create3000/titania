@@ -699,6 +699,7 @@
     <None Include="Tests\ParticleSystems\PointEmitter.x3dv" />
     <None Include="Tests\Texturing\images\colors\rgba.png" />
     <None Include="Tests\images\ubuntu.png" />
+    <None Include="Tests\RigidBodyPhysics\Ball.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

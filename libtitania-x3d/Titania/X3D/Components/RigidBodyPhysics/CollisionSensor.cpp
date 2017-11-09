@@ -67,9 +67,9 @@ const std::string   CollisionSensor::typeName       = "CollisionSensor";
 const std::string   CollisionSensor::containerField = "children";
 
 CollisionSensor::Fields::Fields () :
-	     collider (new SFNode ()),
 	intersections (new MFNode ()),
-	     contacts (new MFNode ())
+	     contacts (new MFNode ()),
+	     collider (new SFNode ())
 { }
 
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
@@ -82,10 +82,10 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
-	addField (inputOutput, "collider",      collider ());
 	addField (outputOnly,  "isActive",      isActive ());
 	addField (outputOnly,  "intersections", intersections ());
 	addField (outputOnly,  "contacts",      contacts ());
+	addField (inputOutput, "collider",      collider ());
 
 	addField (VRML_V2_0, "collidables", "collider");
 
@@ -149,13 +149,13 @@ CollisionSensor::set_collider ()
 {
 	colliderNode = x3d_cast <CollisionCollection*> (collider ());
 
-	if (not colliderNode)
-	{
-		colliderNode = new CollisionCollection (getExecutionContext ());
+	if (colliderNode)
+		return;
 
-		colliderNode -> enabled () = true;
-		colliderNode -> setup ();
-	}
+	colliderNode = new CollisionCollection (getExecutionContext ());
+
+	colliderNode -> enabled () = true;
+	colliderNode -> setup ();
 }
 
 void
@@ -168,14 +168,16 @@ CollisionSensor::update ()
 	X3DPtrArray <Contact>                contactNodes;
 	X3DPtrArray <X3DNBodyCollidableNode> intersectionNodes;
 
-	for (const auto & collidableNode1 : (colliderNode == collider () ? colliderNode -> getCollidables () : getBrowser () -> getCollidableNodes ()))
+	const auto & collidableNodes = (colliderNode == collider () ? colliderNode -> getCollidables () : getBrowser () -> getDefaultCollider () -> getCollidables ());
+
+	for (const auto & collidableNode1 : collidableNodes)
 	{
 		try
 		{
 			const auto & collidableGeometry1 = collidableNode1 -> getCollidableGeometry ();
-			const auto & matrix1             = collidableGeometry1 .matrix;
+			const auto & matrix1             = collidableNode1 -> getCollidableMatrix ();;
 	
-			for (const auto & collidableNode2 : (colliderNode == collider () ? colliderNode -> getCollidables () : getBrowser () -> getCollidableNodes ()))
+			for (const auto & collidableNode2 : collidableNodes)
 			{
 				try
 				{
@@ -185,7 +187,7 @@ CollisionSensor::update ()
 					triangles1 .clear ();
 
 					const auto & collidableGeometry2 = collidableNode2 -> getCollidableGeometry ();
-					const auto & matrix2             = collidableGeometry2 .matrix;
+					const auto & matrix2             = collidableNode2 -> getCollidableMatrix ();
 					const auto   matrix              = matrix1 * inverse (matrix2);
 
 					const bool intersects = collidableGeometry1 .bvh -> intersects (collidableGeometry2 .bbox,

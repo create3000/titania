@@ -51,13 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLISION_COLLECTION_H__
 #define __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLISION_COLLECTION_H__
 
-#include "../../Browser/RigidBodyPhysics/CollidableNodesSet.h"
 #include "../Core/X3DChildNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DNBodyCollidableNode;
+
+using CollidableIndex = std::map <Vector3i, std::set <X3DNBodyCollidableNode*>>;
 
 class CollisionCollection :
 	virtual public X3DChildNode
@@ -176,9 +177,9 @@ public:
 
 	///  @name Member access
 
-	const CollidableNodesSet &
+	const X3DPtrArray <X3DNBodyCollidableNode> &
 	getCollidables () const
-	{ return collidableNodesSet; }
+	{ return collidableNodes; }
 
 
 private:
@@ -221,7 +222,6 @@ private:
 	Fields fields;
 
 	X3DPtrArray <X3DNBodyCollidableNode> collidableNodes;
-	CollidableNodesSet                   collidableNodesSet;
 
 };
 

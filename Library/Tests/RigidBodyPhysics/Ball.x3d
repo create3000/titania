@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.2//EN" "http://www.web3d.org/specifications/x3d-3.2.dtd">
+<X3D profile='Full' version='3.2' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.2.xsd'>
+  <head>
+    <component name='RigidBodyPhysics' level='2'/>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='1 January 2008'/>
+    <meta name='creator' content='Alan Hudson and Justin Couch'/>
+    <meta name='description' content='Example scene for RigidBodyPhysics component'/>
+    <meta name='generator' content='Titania V3.1.1, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Library/Tests/Components/RigidBodyPhysics/Ball.x3d'/>
+    <meta name='license' content='../license.html'/>
+    <meta name='modified' content='Thu, 09 Nov 2017 03:14:51 GMT'/>
+    <meta name='reference' content='http://www.xj3d.org/extensions/index.html#Physics'/>
+    <meta name='reference' content='originals/ball_bounce.x3dv'/>
+    <meta name='reference' content='http://www.web3d.org/x3d/specifications/ISO-IEC-FDIS-19775-1.2-X3D-AbstractSpecification/Part01/components/rigid_physics.html'/>
+    <meta name='titania-add-metadata' content='true'/>
+    <meta name='titania-output-style' content='Nicest'/>
+    <meta name='title' content='BallBounce.x3d'/>
+    <meta name='translated' content='26 December 2008'/>
+    <meta name='translator' content='Don Brutzman'/>
+    <meta name='warning' content='under development'/>
+  </head>
+  <Scene>
+    <ExternProtoDeclare name='SFVec3f' url='"https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFVec3f.x3d", "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFVec3f.x3d", "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFVec3f.x3d", "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFVec3f.x3d"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='SFVec3f' name='keyValue'/>
+      <field accessType='outputOnly' type='SFVec3f' name='value_changed'/>
+    </ExternProtoDeclare>
+    <WorldInfo
+        title='Ball'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+        <MetadataSet DEF='NavigationInfo' containerField='value'
+            name='NavigationInfo'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='type' containerField='value'
+              name='type'
+              reference='http://titania.create3000.de'
+              value='"EXAMINE"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Viewpoint' containerField='value'
+            name='Viewpoint'
+            reference='http://titania.create3000.de'>
+          <MetadataDouble DEF='position' containerField='value'
+              name='position'
+              reference='http://titania.create3000.de'
+              value='0.163045004010201, 0.517361998558044, 3.96304988861084'/>
+          <MetadataDouble DEF='orientation' containerField='value'
+              name='orientation'
+              reference='http://titania.create3000.de'
+              value='-0.953173328486538, 0.301788803080712, 0.0195990866370239, 0.136056767411982'/>
+          <MetadataDouble DEF='centerOfRotation' containerField='value'
+              name='centerOfRotation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 0'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+          <MetadataSet DEF='nodes' containerField='value'
+              name='nodes'
+              reference='http://titania.create3000.de'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <Viewpoint
+        position='0.163045 0.517362 3.96305'
+        orientation='-0.953173328486538 0.301788803080712 0.0195990866370239 0.136056767411982'/>
+    <Group>
+      <CollidableShape DEF='Ball'
+          translation='57.2889 -5962.84 -0.21568'>
+        <Shape containerField='shape'>
+          <Appearance>
+            <Material DEF='Rococo16'
+                ambientIntensity='0.226102'
+                diffuseColor='0.894461 0.382776 0.904409'
+                specularColor='0.0955906 0.0955906 0.0955906'
+                shininess='0.078125'/>
+          </Appearance>
+          <Sphere
+              radius='0.1'/>
+        </Shape>
+      </CollidableShape>
+      <CollidableShape DEF='Ground'>
+        <Shape containerField='shape'>
+          <Appearance>
+            <Material DEF='Neon12'
+                ambientIntensity='0.341463'
+                diffuseColor='0 0.891542 1'
+                specularColor='0.661 0.661 0.661'
+                shininess='0.0284553'
+                transparency='0.186992'/>
+          </Appearance>
+          <Box
+              size='20 0.1 20'/>
+        </Shape>
+      </CollidableShape>
+    </Group>
+    <RigidBodyCollection DEF='_1'>
+      <RigidBody DEF='_2'
+          position='57.2889 -5962.84 -0.21568'
+          linearVelocity='1.35503 -341.776 -0.00618264'
+          finiteRotationAxis='0 1 0'>
+        <CollidableShape USE='Ball' containerField='geometry'/>
+      </RigidBody>
+    </RigidBodyCollection>
+    <CollisionSensor DEF='_3'>
+      <CollisionCollection>
+        <CollidableShape USE='Ball' containerField='collidables'/>
+        <CollidableShape USE='Ground' containerField='collidables'/>
+      </CollisionCollection>
+    </CollisionSensor>
+    <Group DEF='ResetButton'>
+      <TouchSensor DEF='_4'
+          description='Reset Button'/>
+      <ProtoInstance name='SFVec3f' DEF='Position'>
+        <fieldValue name='keyValue' value='0 1 0'/>
+      </ProtoInstance>
+      <ProtoInstance name='SFVec3f' DEF='Velocity'>
+        <fieldValue name='keyValue' value='1 0 0'/>
+      </ProtoInstance>
+      <Transform DEF='Box'
+          translation='1.78987 0.933582 0'
+          scale='0.108593 0.108593 0.108593'>
+        <Shape>
+          <Appearance>
+            <Material/>
+          </Appearance>
+          <Box/>
+        </Shape>
+      </Transform>
+    </Group>
+    <ROUTE fromNode='_3' fromField='contacts' toNode='_1' toField='set_contacts'/>
+    <ROUTE fromNode='Position' fromField='value_changed' toNode='_2' toField='set_position'/>
+    <ROUTE fromNode='Velocity' fromField='value_changed' toNode='_2' toField='set_linearVelocity'/>
+    <ROUTE fromNode='_4' fromField='touchTime' toNode='Position' toField='set_triggerTime'/>
+    <ROUTE fromNode='_4' fromField='touchTime' toNode='Velocity' toField='set_triggerTime'/>
+  </Scene>
+</X3D>

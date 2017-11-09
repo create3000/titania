@@ -1,11 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/scripts/Library/Fields.pl">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="250" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.h" Line="65" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.cpp" Line="71" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.cpp" Line="216" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.h" Line="159" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollidableShape.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/X3DNBodyCollidableNode.cpp" Line="69" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/X3DNBodyCollidableNode.h" Line="162" Column="21" />
+      <File FileName="Titania/scripts/Library/Fields.pl" Line="33" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

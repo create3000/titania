@@ -973,7 +973,6 @@
     <None Include="share\titania\shaders\Shaders\PointSet.fs" />
     <None Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HierarchyGuard.h" />
-    <None Include="Titania\X3D\Browser\RigidBodyPhysics\CollidableNodesSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

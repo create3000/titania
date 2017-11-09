@@ -62,6 +62,8 @@ class X3DNBodyCollisionSpaceNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
@@ -70,9 +72,17 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	///  @name Member access
+
 	virtual
 	Box3d
 	getBBox () const final override;
+
+	virtual
+	std::vector <X3DNBodyCollidableNode*>
+	getCollidables () const = 0;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -80,6 +90,8 @@ public:
 
 
 protected:
+
+	///  @name Construction
 
 	X3DNBodyCollisionSpaceNode ();
 
@@ -89,6 +101,8 @@ protected:
 
 
 private:
+
+	///  @name Fields
 
 	struct Fields
 	{

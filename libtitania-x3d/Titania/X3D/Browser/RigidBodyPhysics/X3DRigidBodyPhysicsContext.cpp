@@ -51,36 +51,57 @@
 #include "X3DRigidBodyPhysicsContext.h"
 
 #include "../X3DBrowser.h"
+#include "../../Components/RigidBodyPhysics/CollisionCollection.h"
 #include "../../Components/RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
 
 X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
-	          X3DBaseNode (),
-	      collidableNodes ()
-{ }
+	 X3DBaseNode (),
+	colliderNode (new CollisionCollection (getExecutionContext ()))
+{
+	addChildObjects (colliderNode);
+}
 
 void
 X3DRigidBodyPhysicsContext::initialize ()
-{ }
+{
+	colliderNode -> enabled () = true;
+	colliderNode -> setup ();
+}
 
 void
 X3DRigidBodyPhysicsContext::addCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
 {
-	for (const auto & collidableNode : value)
-		collidableNodes .emplace (collidableNode);
+	std::set <size_t> set;
 
-	__LOG__ << collidableNodes .size () << std::endl;
+	for (const auto & value : colliderNode -> collidables ())
+		set .emplace (value ? value -> getId () : 0);
+
+	auto addCollidableNodes = value;
+
+	addCollidableNodes .erase (std::remove_if (addCollidableNodes .begin (), addCollidableNodes .end (),
+	                                          [&set] (const SFNode & value) { return set .count (value ? value -> getId () : 0); }),
+	                           addCollidableNodes .end ());
+
+	for (const auto & collidableNode : addCollidableNodes)
+		colliderNode -> collidables () .emplace_back (collidableNode);
+
+	__LOG__ << colliderNode -> collidables () .size () << std::endl;
 }
 
 void
 X3DRigidBodyPhysicsContext::removeCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
 {
-	for (const auto & collidableNode : value)
-		collidableNodes .erase (collidableNode);
+	auto & collidables = colliderNode -> collidables ();
 
-	__LOG__ << collidableNodes .size () << std::endl;
+	for (const auto & collidableNode : value)
+	{
+		collidables .erase (std::remove (collidables .begin (), collidables .end (), collidableNode), collidables .end ());
+	}
+
+	__LOG__ << colliderNode -> collidables () .size () << std::endl;
 }
 
 X3DRigidBodyPhysicsContext::~X3DRigidBodyPhysicsContext ()

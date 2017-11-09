@@ -371,10 +371,10 @@ DEF Fire2 Transform {
       }
       texture ImageTexture {
         url [
-          "http://rawgit.com/create3000/Library/1.0.2/Textures/Effects/fire2.png",
-          "https://rawgit.com/create3000/Library/1.0.2/Textures/Effects/fire2.png",
-          "http://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Effects/fire2.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.2/Textures/Effects/fire2.png"
+          "http://rawgit.com/create3000/Library/1.0.3/Textures/Effects/fire2.png",
+          "https://rawgit.com/create3000/Library/1.0.3/Textures/Effects/fire2.png",
+          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Effects/fire2.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Effects/fire2.png"
         ]
       }
     }
