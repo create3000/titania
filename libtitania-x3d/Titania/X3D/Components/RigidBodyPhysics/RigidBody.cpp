@@ -247,19 +247,30 @@ RigidBody::set_geometry ()
 void
 RigidBody::update ()
 {
+	if (autoDisable ())
+	{
+		if (abs (linearVelocity () .getValue ()) <  0.001)
+			return;
+	}
+	else
+	{
+		if (abs (linearVelocity () .getValue ()) < disableLinearSpeed ())
+			return;
+	}
+
 	const float currentFrameRate   = getBrowser () -> getCurrentFrameRate ();
 	const auto  linearDamping      = linearVelocity () * linearDampingFactor () .getValue ();
 	auto        linearAcceleration = useGlobalGravity () ? gravity : Vector3f ();
 
 	if (mass ())
 		linearAcceleration += force / mass () .getValue ();
-	
-	linearVelocity () = linearVelocity () + linearAcceleration / currentFrameRate;
+
+	linearVelocity () += linearAcceleration / currentFrameRate;
 	
 	if (autoDamp ())
 		linearVelocity () -= linearDamping;
 
-	position () = position () + linearVelocity () / currentFrameRate;
+	position () += linearVelocity () / currentFrameRate;
 }
 
 void

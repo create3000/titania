@@ -8,14 +8,13 @@
     <meta name='creator' content='Alan Hudson and Justin Couch'/>
     <meta name='description' content='Example scene for RigidBodyPhysics component'/>
     <meta name='generator' content='Titania V3.1.1, http://titania.create3000.de'/>
-    <meta name='identifier' content='file:///home/holger/Projekte/Library/Tests/Components/RigidBodyPhysics/Ball.x3d'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/RigidBodyPhysics/Ball.x3d'/>
     <meta name='license' content='../license.html'/>
-    <meta name='modified' content='Thu, 09 Nov 2017 03:14:51 GMT'/>
+    <meta name='modified' content='Thu, 09 Nov 2017 14:59:26 GMT'/>
     <meta name='reference' content='http://www.xj3d.org/extensions/index.html#Physics'/>
     <meta name='reference' content='originals/ball_bounce.x3dv'/>
     <meta name='reference' content='http://www.web3d.org/x3d/specifications/ISO-IEC-FDIS-19775-1.2-X3D-AbstractSpecification/Part01/components/rigid_physics.html'/>
     <meta name='titania-add-metadata' content='true'/>
-    <meta name='titania-output-style' content='Nicest'/>
     <meta name='title' content='BallBounce.x3d'/>
     <meta name='translated' content='26 December 2008'/>
     <meta name='translator' content='Don Brutzman'/>
@@ -58,7 +57,7 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='0.163045004010201, 0.517361998558044, 3.96304988861084'/>
+              value='0.178437351040461, 0.566203919591394, 4.33718394611735'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
@@ -86,7 +85,7 @@
         orientation='-0.953173328486538 0.301788803080712 0.0195990866370239 0.136056767411982'/>
     <Group>
       <CollidableShape DEF='Ball'
-          translation='57.2889 -5962.84 -0.21568'>
+          translation='0.823777 0.227147 5.49173e-17'>
         <Shape containerField='shape'>
           <Appearance>
             <Material DEF='Rococo16'
@@ -114,11 +113,14 @@
         </Shape>
       </CollidableShape>
     </Group>
-    <RigidBodyCollection DEF='_1'>
+    <RigidBodyCollection DEF='_1'
+        gravity='0 -1 0'>
       <RigidBody DEF='_2'
-          position='57.2889 -5962.84 -0.21568'
-          linearVelocity='1.35503 -341.776 -0.00618264'
-          finiteRotationAxis='0 1 0'>
+          position='0.823777 0.227147 5.49173e-17'
+          linearVelocity='3.41459e-11 -0.349479 -5.36491e-19'
+          finiteRotationAxis='0 1 0'
+          autoDamp='true'
+          linearDampingFactor='0.01'>
         <CollidableShape USE='Ball' containerField='geometry'/>
       </RigidBody>
     </RigidBodyCollection>
@@ -135,7 +137,7 @@
         <fieldValue name='keyValue' value='0 1 0'/>
       </ProtoInstance>
       <ProtoInstance name='SFVec3f' DEF='Velocity'>
-        <fieldValue name='keyValue' value='1 0 0'/>
+        <fieldValue name='keyValue' value='0.5 0.006 0'/>
       </ProtoInstance>
       <Transform DEF='Box'
           translation='1.78987 0.933582 0'

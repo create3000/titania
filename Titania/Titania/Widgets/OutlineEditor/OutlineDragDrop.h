@@ -82,6 +82,23 @@ private:
 	bool
 	on_button_press_event (GdkEventButton* event);
 
+	std::pair <Gtk::TreePath, Gtk::TreePath>
+	get_proto_limits (const Gtk::TreePath & path, X3D::ProtoDeclaration* const prototype) const;
+
+	Gtk::TreePath
+	get_proto_first_limit (Gtk::TreePath path,
+	                       X3D::ProtoDeclaration* const prototype,
+	                       const std::vector <X3D::ProtoDeclarationPtr> & prototypes) const;
+	
+	Gtk::TreePath
+	get_proto_second_limit (Gtk::TreePath path,
+	                         X3D::ProtoDeclaration* const prototype,
+                            const std::vector <X3D::ProtoDeclarationPtr> & prototypes) const;
+
+	bool
+	is_proto_in_proto (X3D::ProtoDeclaration* const source,
+                      X3D::ProtoDeclaration* const destination) const;
+
 	void
 	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time);
 
@@ -89,7 +106,7 @@ private:
 	on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
 
 	bool
-	on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
+	on_drag_motion_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time, const OutlineIterType type);
 
 	bool
 	on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time);
@@ -100,6 +117,13 @@ private:
 	                       const Gtk::SelectionData & selection_data,
 	                       guint info,
 	                       guint time);
+
+	void
+	on_drag_data_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                             int x, int y,
+	                             const Gtk::SelectionData & selection_data,
+	                             guint info,
+	                             guint time);
 
 	void
 	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
@@ -140,13 +164,14 @@ private:
 
 	///  @name Members
 
-	OutlineEditor*         const outlineEditor;
-	OutlineTreeViewEditor* const treeView;
-	Gtk::TreePath                sourcePath;
-	size_t                       sourceId;
-	OutlineIterType              sourceType;
-	size_t                       nodeId;
-	X3D::Vector2i                pointer;
+	OutlineEditor* const                     outlineEditor;
+	OutlineTreeViewEditor* const             treeView;
+	Gtk::TreePath                            sourcePath;
+	size_t                                   sourceId;
+	OutlineIterType                          sourceType;
+	size_t                                   nodeId;
+	std::pair <Gtk::TreePath, Gtk::TreePath> protoLimits;
+	X3D::Vector2i                            pointer;
 
 };
 

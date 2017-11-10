@@ -769,6 +769,7 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 //			
 //			break;
 //		}
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{

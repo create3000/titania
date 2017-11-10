@@ -57,6 +57,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Widgets/Sidebar/Sidebar.h"
 
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -82,6 +83,7 @@ OutlineDragDrop::OutlineDragDrop (OutlineEditor* const outlineEditor, OutlineTre
 	     sourceId (0),
 	   sourceType (OutlineIterType::NULL_),
 	       nodeId (0),
+	  protoLimits (),
 	      pointer ()
 {
 	// Drag & Drop
@@ -134,10 +136,19 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 
 			switch (sourceType)
 			{
+				case OutlineIterType::ProtoDeclaration:
+				{
+					const auto sfnode = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
+					protoLimits = get_proto_limits (sourcePath, dynamic_cast <X3D::ProtoDeclaration*> (sfnode -> getValue ()));
+					// Proceed with next step:
+				}
 				case OutlineIterType::ExternProtoDeclaration:
 				case OutlineIterType::X3DBaseNode:
+				{
 					nodeId = static_cast <X3D::SFNode*> (treeView -> get_object (iter)) -> getValue () -> getId ();
 					break;
+				}
 				case OutlineIterType::NULL_:
 				default:
 					break;
@@ -146,6 +157,100 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 	}
 
 	return false;
+}
+
+std::pair <Gtk::TreePath, Gtk::TreePath>
+OutlineDragDrop::get_proto_limits (const Gtk::TreePath & path, X3D::ProtoDeclaration* const prototype) const
+{
+	const auto executionContext = prototype -> getExecutionContext ();
+
+	std::vector <X3D::ProtoDeclarationPtr> prototypes (executionContext -> getProtoDeclarations () .begin (),
+	                                                   executionContext -> getProtoDeclarations () .end ());
+
+	const auto first  = get_proto_first_limit  (path, prototype, prototypes);
+	const auto second = get_proto_second_limit (path, prototype, prototypes);
+
+	return std::make_pair (first, second);
+}
+
+Gtk::TreePath
+OutlineDragDrop::get_proto_first_limit (Gtk::TreePath path,
+                                        X3D::ProtoDeclaration* const prototype,
+                                        const std::vector <X3D::ProtoDeclarationPtr> & prototypes) const
+{
+	auto iter = std::find (prototypes .rbegin (), prototypes .rend (), prototype);
+
+	if (iter == prototypes .rend ())
+		return path;
+
+	++ iter;
+
+	while (iter not_eq prototypes .rend ())
+	{
+		path .prev ();
+
+		if (is_proto_in_proto (*iter, prototype))
+		{
+			path .next ();
+			break;
+		}
+		
+		++ iter;
+	}
+
+	return path;
+}
+
+Gtk::TreePath
+OutlineDragDrop::get_proto_second_limit (Gtk::TreePath path,
+                                         X3D::ProtoDeclaration* const prototype,
+                                         const std::vector <X3D::ProtoDeclarationPtr> & prototypes) const
+{
+	auto iter = std::find (prototypes .begin (), prototypes .end (), prototype);
+
+	if (iter == prototypes .end ())
+		return path;
+
+	++ iter;
+
+	while (iter not_eq prototypes .end ())
+	{
+		path .next ();
+
+		if (is_proto_in_proto (prototype, *iter))
+		{
+			path .prev ();
+			break;
+		}
+
+		++ iter;
+	}
+
+	return path;
+}
+
+bool
+OutlineDragDrop::is_proto_in_proto (X3D::ProtoDeclaration* const source,
+                                    X3D::ProtoDeclaration* const destination) const
+{
+	const auto traversed = X3D::traverse (destination, [&] (X3D::SFNode & node)
+	{
+		const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
+
+		if (instance)
+		{
+			if (instance -> getProtoDeclarationNode () == source)
+				return false;
+		}
+
+		return true;
+	},
+	X3D::TRAVERSE_PROTO_DECLARATIONS |
+	X3D::TRAVERSE_PROTO_DECLARATION_BODY |
+	X3D::TRAVERSE_ROOT_NODES |
+	X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	return not traversed;
 }
 
 void
@@ -160,6 +265,7 @@ OutlineDragDrop::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & conte
 			selection_data .set (dragNodeIdType, basic::to_string (nodeId, std::locale::classic ()));
 			break;
 		case OutlineIterType::NULL_:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ExternProtoDeclaration:
 		default:
 			break;
@@ -184,8 +290,10 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 
 	switch (treeView -> get_data_type (iter))
 	{
+		case OutlineIterType::ProtoDeclaration:
+			return not on_drag_motion_proto (context, x, y, time, OutlineIterType::ProtoDeclaration);
 		case OutlineIterType::ExternProtoDeclaration:
-			return not on_drag_motion_extern_proto (context, x, y, time);
+			return not on_drag_motion_proto (context, x, y, time, OutlineIterType::ExternProtoDeclaration);
 		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DBaseNode:
 			return not on_drag_motion_base_node (context, x, y, time);
@@ -198,7 +306,7 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 }
 
 bool
-OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
+OutlineDragDrop::on_drag_motion_proto (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time, const OutlineIterType type)
 {
 	Gtk::TreeModel::Path      destinationPath;
 	Gtk::TreeViewDropPosition position;
@@ -207,6 +315,13 @@ OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragConte
 
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
+		if (sourcePath == destinationPath)
+			return false;
+
+		const auto   sourceIter    = treeView -> get_model () -> get_iter (sourcePath);
+		const auto & sourceNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
+		const auto   sourceContext = sourceNode ? sourceNode -> getExecutionContext () : treeView -> get_execution_context ();
+
 		switch (position)
 		{
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
@@ -224,12 +339,25 @@ OutlineDragDrop::on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragConte
 				if (not treeView -> get_model () -> iter_is_valid (iter))
 					return false;
 
-				if (treeView -> get_data_type (iter) not_eq OutlineIterType::ExternProtoDeclaration)
+				if (treeView -> get_data_type (iter) == OutlineIterType::ProtoDeclaration)
+				{
+					if (destinationPath < protoLimits .first)
+						break;
+
+					if (destinationPath > protoLimits .second)
+						break;
+				}
+
+				if (treeView -> get_data_type (iter) not_eq type)
 					break;
 
-				const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto & destNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   destContext = destNode -> getExecutionContext ();
 
-				if (sfnode -> getExecutionContext () not_eq treeView -> get_execution_context ())
+				if (destContext not_eq sourceContext)
+					return false;
+
+				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
 				return true;
@@ -250,13 +378,6 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
 		if (sourcePath == destinationPath)
-			return false;
-
-		const auto   sourceIter    = treeView -> get_model () -> get_iter (sourcePath);
-		const auto & sourceNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
-		const auto   sourceContext = sourceNode ? sourceNode -> getExecutionContext () : treeView -> get_execution_context ();
-
-		if (sourceContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 			return false;
 
 		// Drag on field
@@ -391,6 +512,11 @@ OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & 
 
 	switch (treeView -> get_data_type (iter))
 	{
+		case OutlineIterType::ProtoDeclaration:
+		{
+			on_drag_data_proto_received (context, x, y, selection_data, info, time);
+			return;
+		}
 		case OutlineIterType::ExternProtoDeclaration:
 		{
 			on_drag_data_extern_proto_received (context, x, y, selection_data, info, time);
@@ -418,6 +544,101 @@ OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & 
 }
 
 void
+OutlineDragDrop::on_drag_data_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                              int x, int y,
+                                              const Gtk::SelectionData & selection_data,
+                                              guint info,
+                                              guint time)
+{
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
+
+	if (not treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
+	   return;
+
+	//__LOG__ << destinationPath .to_string () << std::endl;
+
+	// Get source extern proto.
+
+	const auto   sourceIter    = treeView -> get_model () -> get_iter (sourcePath);
+	const auto & sourceNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
+	const auto   sourceProto   = X3D::ProtoDeclarationPtr (sourceNode);
+	const auto   sourceContext = sourceProto -> getExecutionContext ();
+
+	// Get destination extern proto.
+
+	const auto   destIter  = treeView -> get_model () -> get_iter (destinationPath);
+	const auto & destNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (destIter));
+	const auto   destProto = X3D::ProtoDeclarationPtr (destNode);
+
+	// Get destination extern protos.
+	
+
+	std::vector <X3D::ProtoDeclarationPtr> destProtos (sourceContext -> getProtoDeclarations () .begin (),
+	                                                   sourceContext -> getProtoDeclarations () .end ());
+
+	// Insert source extern proto in destination extern protos.
+
+	{
+		const auto eraseIndex  = treeView -> get_index (sourceIter);
+		auto       insertIndex = treeView -> get_index (destIter);
+
+		switch (position)
+		{
+			case Gtk::TREE_VIEW_DROP_AFTER:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+			{
+				++ insertIndex;
+				// Procced with next case.
+			}
+			case Gtk::TREE_VIEW_DROP_BEFORE:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+			{
+				if (eraseIndex < insertIndex)
+				{
+					destProtos .emplace (destProtos .begin () + insertIndex, sourceProto);
+					destProtos .erase (destProtos .begin () + eraseIndex);
+				}
+				else
+				{
+					destProtos .erase (destProtos .begin () + eraseIndex);
+					destProtos .emplace (destProtos .begin () + insertIndex, sourceProto);
+				}
+
+				// Reorder extern protos.
+
+				const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Move Prototype »%s«"), sourceProto -> getName () .c_str ()));
+
+				// Remove extern protos.
+				
+				const auto currentProtos = sourceContext -> getProtoDeclarations ();
+
+				for (const auto & externProto : basic::make_reverse_range (currentProtos))
+				{
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, sourceContext, externProto -> getName (), externProto);
+					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, sourceContext, externProto -> getName ());
+
+					sourceContext -> removeProtoDeclaration (externProto -> getName ());
+				}
+
+				// Add extern protos.
+
+				for (const auto & externProto : destProtos)
+				{
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, sourceContext, externProto -> getName ());
+					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, sourceContext, externProto -> getName (), externProto);
+
+					sourceContext -> updateProtoDeclaration (externProto -> getName (), externProto);
+				}
+
+				getBrowserWindow () -> addUndoStep (undoStep);
+				break;
+			}
+		}
+	}
+}
+
+void
 OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> & context,
                                                      int x, int y,
                                                      const Gtk::SelectionData & selection_data,
@@ -434,24 +655,22 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 
 	// Get source extern proto.
 
-	const auto   sourceIter = treeView -> get_model () -> get_iter (sourcePath);
-	const auto & sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
-
-	const X3D::ExternProtoDeclarationPtr sourceExternProto (sourceNode);
+	const auto   sourceIter        = treeView -> get_model () -> get_iter (sourcePath);
+	const auto & sourceNode        = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
+	const auto   sourceExternProto = X3D::ExternProtoDeclarationPtr (sourceNode);
+	const auto   sourceContext     = sourceExternProto -> getExecutionContext ();
 
 	// Get destination extern proto.
 
-	const auto   destIter = treeView -> get_model () -> get_iter (destinationPath);
-	const auto & destNode = *static_cast <X3D::SFNode*> (treeView -> get_object (destIter));
-
-	const X3D::ExternProtoDeclarationPtr destExternProto (destNode);
+	const auto   destIter        = treeView -> get_model () -> get_iter (destinationPath);
+	const auto & destNode        = *static_cast <X3D::SFNode*> (treeView -> get_object (destIter));
+	const auto   destExternProto = X3D::ExternProtoDeclarationPtr (destNode);
 
 	// Get destination extern protos.
 	
-	const auto executionContext = destExternProto -> getExecutionContext ();
 
-	std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (executionContext -> getExternProtoDeclarations () .begin (),
-	                                                               executionContext -> getExternProtoDeclarations () .end ());
+	std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (sourceContext -> getExternProtoDeclarations () .begin (),
+	                                                               sourceContext -> getExternProtoDeclarations () .end ());
 
 	// Insert source extern proto in destination extern protos.
 
@@ -487,24 +706,24 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 
 				// Remove extern protos.
 				
-				const auto currentExternProtos = executionContext -> getExternProtoDeclarations ();
+				const auto currentExternProtos = sourceContext -> getExternProtoDeclarations ();
 
 				for (const auto & externProto : basic::make_reverse_range (currentExternProtos))
 				{
-					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
-					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, sourceContext, externProto -> getName (), externProto);
+					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, sourceContext, externProto -> getName ());
 
-					executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+					sourceContext -> removeExternProtoDeclaration (externProto -> getName ());
 				}
 
 				// Add extern protos.
 
 				for (const auto & externProto : destExternProtos)
 				{
-					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
-					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, sourceContext, externProto -> getName ());
+					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, sourceContext, externProto -> getName (), externProto);
 
-					executionContext -> updateExternProtoDeclaration (externProto -> getName (), externProto);
+					sourceContext -> updateExternProtoDeclaration (externProto -> getName (), externProto);
 				}
 
 				getBrowserWindow () -> addUndoStep (undoStep);

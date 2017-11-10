@@ -182,7 +182,8 @@ RigidBodyCollection::set_contacts_ ()
 		for (const auto & pair : range)
 		{
 			const auto & contactNode    = pair .second;
-			const auto & contactNormal  = contactNode -> contactNormal () .getValue ();
+			const auto & contactNormal  = negate (contactNode -> contactNormal () .getValue ());
+			const auto & contactDepth   = contactNode -> depth () .getValue ();
 			const auto & linearVelocity = bodyNode -> linearVelocity () .getValue ();
 
 			__LOG__ << contactNode -> geometry1 () -> getName () << " : " << bodyNode .getValue () << std::endl;
@@ -196,7 +197,8 @@ RigidBodyCollection::set_contacts_ ()
 			__LOG__ << reflect (negate (linearVelocity), contactNormal) << std::endl;
 			__LOG__ << reflect (linearVelocity, contactNormal) << std::endl;
 
-			bodyNode -> linearVelocity () = reflect (linearVelocity, contactNormal);
+			bodyNode -> position ()       += contactNormal * contactDepth;
+			bodyNode -> linearVelocity ()  = reflect (linearVelocity, contactNormal);
 		}
 	}
 }
