@@ -79,6 +79,8 @@ Generator::Generator (std::ostream & ostream) :
 	        importedNames (),
 	           routeNodes (),
 	  containerFieldStack (1),
+	                units (true),
+	       unitCategories (),
 	            emptyName ()
 {
 	set (ostream, this);
@@ -325,6 +327,29 @@ Generator::LocalName (std::ostream & ostream, const X3DBaseNode* baseNode)
 	}
 
 	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + baseNode -> getTypeName () + "'.");
+}
+
+UnitCategory
+Generator::Unit (std::ostream & ostream, const UnitCategory category)
+{
+	if (get (ostream) -> unitCategories .empty ())
+		return category;
+
+	return get (ostream) -> unitCategories .back ();
+}
+
+long double
+Generator::ToUnit (std::ostream & ostream, const UnitCategory unit, const long double value)
+{
+	if (get (ostream) -> units)
+	{
+		const auto executionContext = ExecutionContext (ostream);
+	
+		if (executionContext)
+			return executionContext -> toUnit (unit, value);
+	}
+
+	return value;
 }
 
 void

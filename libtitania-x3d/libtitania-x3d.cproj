@@ -706,7 +706,6 @@
     <None Include="Titania\X3D\Thread\X3DInterruptibleThread.h" />
     <None Include="share\titania\tools\SnapTarget.x3dv" />
     <None Include="Titania\X3D\Browser\Sound\MediaStream.h" />
-    <None Include="Titania\X3D\Configuration\X3DUnitContext.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
     <None Include="Titania\X3D\Configuration\UnitCategory.h" />
     <None Include="Titania\X3D\Rendering\ShapeContainer.h" />
@@ -1448,7 +1447,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DRoute.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
-    <Compile Include="Titania\X3D\Configuration\X3DUnitContext.cpp" />
     <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionContainer.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\BVH.cpp" />

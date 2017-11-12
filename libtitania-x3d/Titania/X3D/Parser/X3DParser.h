@@ -65,9 +65,13 @@ class X3DParser
 {
 public:
 
+	///  @name Construction
+
 	virtual
 	void
 	parseIntoScene () = 0;
+
+	///  @name Destruction
 
 	virtual
 	~X3DParser ();
@@ -75,11 +79,33 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class XMLParser;
+
+	///  @name Construction
+
 	X3DParser ();
+
+	///  @name Operations
 
 	std::string
 	save (std::istream & istream, const std::string & suffix)
 	throw (Error <INVALID_X3D>);
+
+	void
+	setUnits (const std::string & generator);
+
+	void
+	setUnits (const bool value)
+	{ units = value; }
+
+	bool
+	getUnits () const
+	{ return units; }
+
+	long double
+	fromUnit (const UnitCategory unit, long double value) const;
 
 	void
 	addUninitializedNode (X3DBaseNode* const baseNode);
@@ -108,6 +134,7 @@ private:
 
 	///  @name Members
 
+	bool                  units;
 	ExecutionContextStack executionContextStack;
 
 };

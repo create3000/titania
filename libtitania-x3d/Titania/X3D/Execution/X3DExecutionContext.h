@@ -54,6 +54,7 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
+#include "../Configuration/UnitCategory.h"
 #include "../Execution/EncodingType.h"
 #include "../Execution/ImportedNodeIndex.h"
 #include "../Execution/NamedNodeIndex.h"
@@ -159,6 +160,18 @@ public:
 
 	bool
 	hasComponent (const ComponentType &) const;
+
+	///  @name Unit handling
+
+	virtual
+	long double
+	fromUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) = 0;
+
+	virtual
+	long double
+	toUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) = 0;
 
 	///  @name WorldInfo handling
 

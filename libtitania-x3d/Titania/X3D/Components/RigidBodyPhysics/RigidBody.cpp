@@ -132,6 +132,8 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "geometry",             geometry ());
 
 	addChildObjects (geometryNodes);
+
+	// XXX: Define units!!!
 }
 
 X3DBaseNode*

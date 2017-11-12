@@ -62,6 +62,7 @@ enum class UnitCategory :
 	NONE,
 
 	// Standard units
+
 	ANGLE,
 	FORCE,
 	LENGTH,

@@ -257,6 +257,8 @@ X3DExternProtoDeclaration::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp
 
 		std::ostringstream osstream;
 
+		osstream .imbue (std::locale::classic ());
+
 		Generator::SpecificationVersion (osstream, version);
 		Generator::NicestStyle (osstream);
 
@@ -283,6 +285,8 @@ X3DExternProtoDeclaration::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
 		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
 
 		if (version == VRML_V2_0)
 			version = LATEST_VERSION;

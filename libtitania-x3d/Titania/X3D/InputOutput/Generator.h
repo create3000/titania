@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include "../Bits/X3DConstants.h"
+#include "../Configuration/UnitCategory.h"
 #include "../InputOutput/X3DGenerator.h"
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/ImportedNodeIndex.h"
@@ -164,6 +165,34 @@ public:
 
 	static
 	void
+	Units (std::ostream & ostream, const bool value)
+	{ get (ostream) -> units = value; }
+
+	static
+	bool
+	Units (std::ostream & ostream)
+	{ return get (ostream) -> units; }
+
+	static
+	void
+	PushUnitCategory (std::ostream & ostream, const UnitCategory unit)
+	{ get (ostream) -> unitCategories .emplace_back (unit); }
+
+	static
+	void
+	PopUnitCategory (std::ostream & ostream)
+	{ get (ostream) -> unitCategories .pop_back (); }
+
+	static
+	UnitCategory
+	Unit (std::ostream & ostream, const UnitCategory unit);
+
+	static
+	long double
+	ToUnit (std::ostream & ostream, const UnitCategory unit, const long double value);
+
+	static
+	void
 	XMLEncode (std::ostream & ostream, const std::string & string);
 
 	///  @name Destruction
@@ -246,6 +275,8 @@ private:
 	ImportedNamesIndex         importedNames;
 	NodeIdSet                  routeNodes;
 	FieldStack                 containerFieldStack;
+	bool                       units;
+	std::vector <UnitCategory> unitCategories;
 	const std::string          emptyName;
 
 };

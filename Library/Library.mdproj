@@ -700,6 +700,9 @@
     <None Include="Tests\Texturing\images\colors\rgba.png" />
     <None Include="Tests\images\ubuntu.png" />
     <None Include="Tests\RigidBodyPhysics\Ball.x3d" />
+    <None Include="Tests\Basic\units.x3d" />
+    <None Include="Tests\Basic\units.json" />
+    <None Include="Tests\Basic\units.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

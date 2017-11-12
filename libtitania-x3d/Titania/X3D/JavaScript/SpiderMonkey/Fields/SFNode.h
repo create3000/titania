@@ -98,13 +98,15 @@ private:
 
 	///  @name Functions
 
-	static JSBool getNodeTypeName (JSContext*, uint32_t, jsval*);
-	static JSBool getNodeName     (JSContext*, uint32_t, jsval*);
-	static JSBool getNodeType     (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeTypeName (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool getNodeName     (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool getNodeType     (JSContext* cx, uint32_t argc, jsval* vp);
 
-	static JSBool getFieldDefinitions (JSContext*, uint32_t, jsval*);
+	static JSBool getFieldDefinitions (JSContext* cx, uint32_t argc, jsval* vp);
 
-	static JSBool toString (JSContext*, uint32_t, jsval*);
+	static JSBool toString     (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool toVRMLString (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool toXMLString  (JSContext* cx, uint32_t argc, jsval* vp);
 
 	///  @name Static members
 

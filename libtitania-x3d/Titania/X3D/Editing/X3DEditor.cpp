@@ -435,6 +435,7 @@ X3DEditor::exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & e
 
 	Generator::CompactStyle (ostream);
 	Generator::EnterScope (ostream);
+	Generator::Units (ostream, false);
 
 	if (not protoNodes .empty ())
 	{

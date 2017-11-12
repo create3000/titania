@@ -55,10 +55,13 @@
 
 #include <Titania/OS/mkstemps.h>
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 
 X3DParser::X3DParser () :
+	                units (true),
 	executionContextStack ()
 { }
 
@@ -77,6 +80,41 @@ throw (Error <INVALID_X3D>)
 	ofstream << istream .rdbuf ();
 
 	return filename;
+}
+
+void
+X3DParser::setUnits (const std::string & generator)
+{
+	const std::regex version (R"/(Titania\s+V(\d+))/");
+
+	std::smatch match;
+
+	if (std::regex_match (generator, match, version))
+	{
+		int32_t major = 0;
+
+		std::istringstream isstream (match .str (1));
+
+		isstream >> major;
+
+		// Before version 4 units are wrongly implemented.
+		if (major < 4)
+		{
+			units = false;
+			return;
+		}
+	}
+
+	units = true;
+}
+
+long double
+X3DParser::fromUnit (const UnitCategory unit, long double value) const
+{
+	if (units)
+		return getExecutionContext () -> fromUnit (unit, value);
+
+	return value;
 }
 
 void

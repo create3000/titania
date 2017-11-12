@@ -114,6 +114,9 @@ private:
 	static JSBool updateExportedNode (JSContext *, uint32_t, jsval*);
 	static JSBool getExportedNode    (JSContext *, uint32_t, jsval*);
 
+	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
+
 	///  @name Destruction
 
 	static void finalize (JSContext*, JSObject*);

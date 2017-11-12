@@ -53,7 +53,7 @@
 
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Configuration/X3DUnitContext.h"
+#include "../Configuration/UnitArray.h"
 
 #include <map>
 
@@ -64,8 +64,7 @@ using MetaDataIndex = std::multimap <std::string, std::string>;
 
 class X3DScene :
 	virtual public X3DBaseNode,
-	public X3DExecutionContext,
-	public X3DUnitContext
+	public X3DExecutionContext
 {
 public:
 
@@ -87,10 +86,11 @@ public:
 	       Error <DISPOSED>)
 	{ worldURL = value; }
 
+	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
+	       Error <DISPOSED>) override
 	{ return worldURL; }
 
 	void
@@ -177,6 +177,39 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
 	{ return components; }
+
+	///  @name Unit handling
+
+	void
+	updateUnit (const std::string & category, const std::string & name, const long double conversionFactor)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const Unit &
+	getUnit (const UnitCategory category) const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+	
+	const UnitArray &
+	getUnits () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return units; }
+
+	virtual
+	long double
+	fromUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) final override;
+
+	virtual
+	long double
+	toUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) final override;
+
+	const SFTime &
+	units_changed () const
+	{ return unitsOutput; }
 
 	///  @name MetaData handling
 
@@ -345,6 +378,11 @@ private:
 	void
 	updateExportedNodes (X3DScene* const) const;
 
+	///  @name Static members
+
+	static const UnitIndex unitCategories;
+	static const UnitArray standardUnits;
+
 	///  @name Members
 
 	basic::uri               worldURL;
@@ -354,6 +392,8 @@ private:
 	std::string              comment;
 	ProfileInfoPtr           profile;
 	ComponentInfoArray       components;
+	UnitArray                units;
+	SFTime                   unitsOutput;
 	MetaDataIndex            metadatas;
 	SFTime                   metaDataOutput;
 	ExportedNodeIndex        exportedNodes;

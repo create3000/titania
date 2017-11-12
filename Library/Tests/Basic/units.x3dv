@@ -1,0 +1,309 @@
+#X3D V3.3 utf8 Titania V4.0.0
+
+PROFILE Full
+
+UNIT angle degree 0.0174532925199432958
+UNIT length millimetre 0.001
+
+META "comment" "World of Titania"
+META "created" "Sat, 11 Nov 2017 10:31:22 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv"
+META "modified" "Sat, 11 Nov 2017 14:56:28 GMT"
+META "titania-add-metadata" "true"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.57448865894519,
+              4.86990426137609,
+              8.59098469023695
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.942642889989629,
+              0.325794428406228,
+              0.0726799310089114,
+              0.538750894528946
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 2
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF layerNumber MetadataInteger {
+            name "layerNumber"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              0,
+              0,
+              0,
+              0,
+              -1,
+              -1,
+              -1
+            ]
+          }
+          DEF type_2 MetadataString {
+            name "type"
+            reference "http://titania.create3000.de"
+            value [
+              "",
+              "",
+              "PERSPECTIVE_VIEW",
+              ""
+            ]
+          }
+          DEF viewpoints MetadataSet {
+            name "viewpoints"
+            reference "http://titania.create3000.de"
+            value DEF PerspectiveViewpoint MetadataSet {
+              name "PerspectiveViewpoint"
+              reference "http://titania.create3000.de"
+              value [
+                DEF position_3 MetadataDouble {
+                  name "position"
+                  reference "http://titania.create3000.de"
+                  value [
+                    5.79274282060911,
+                    8.66356479102737,
+                    13.3896181648896
+                  ]
+                }
+                DEF orientation_4 MetadataDouble {
+                  name "orientation"
+                  reference "http://titania.create3000.de"
+                  value [
+                    0.801904563148803,
+                    -0.585498277354457,
+                    -0.118915258970795,
+                    5.61702289686151
+                  ]
+                }
+                DEF centerOfRotation_5 MetadataDouble {
+                  name "centerOfRotation"
+                  reference "http://titania.create3000.de"
+                  value [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+                DEF fieldOfViewScale MetadataDouble {
+                  name "fieldOfViewScale"
+                  reference "http://titania.create3000.de"
+                  value 1
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF Box Transform {
+  translation 1000 0 0
+  rotation 0 0 1 45
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1,
+        5,
+        4,
+        7,
+        6,
+        -1,
+        3,
+        2,
+        6,
+        7,
+        -1,
+        4,
+        5,
+        1,
+        0,
+        -1,
+        4,
+        0,
+        3,
+        7,
+        -1,
+        1,
+        5,
+        6,
+        2,
+        -1
+      ]
+      texCoord TextureCoordinate {
+        point [
+          0 0,
+          1 0,
+          1 1,
+          0 1
+        ]
+      }
+      coord DEF _6 Coordinate {
+        point [
+          -1000 -1000 1000,
+          1000 -1000 1000,
+          1000 1000 1000,
+          -1000 1000 1000,
+          -1000 -1000 -1000,
+          1000 -1000 -1000,
+          1000 1000 -1000,
+          -1000 1000 -1000
+        ]
+      }
+    }
+  }
+}
+
+SpotLight {
+  location 0 0 5000
+  beamWidth 60
+}
+
+DEF NewScript Script {
+  initializeOnly SFNode transform USE Box
+  initializeOnly SFNode coord USE _6
+
+  url "ecmascript:
+
+function initialize ()
+{
+	print (Browser .currentScene .toVRMLString ());
+	print (transform .toVRMLString ());
+
+	// There must be no units applied.
+	print (transform .rotation .angle);
+	print (transform .rotation);
+	print (coord .point);
+	print (coord .point [0]);
+}
+"
+}

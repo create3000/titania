@@ -218,6 +218,13 @@ JSONParser::headObject (json_object* const jobj)
 	}
 	catch (const X3DError &)
 	{ }
+
+	try
+	{
+		setUnits (scene -> getMetaData ("generator"));
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
@@ -1411,7 +1418,7 @@ JSONParser::sfdoubleValue (json_object* const jobj, SFDouble* const field)
 	if (not doubleValue (jobj, value))
 		return false;
 
-	*field = value;
+	*field = fromUnit (field -> getUnit (), value);
 
 	return true;
 }
@@ -1429,12 +1436,13 @@ JSONParser::mfdoubleValue (json_object* const jobj, MFDouble* const field)
 
 	double value = 0;
 
+	const auto    unit = field -> getUnit ();
 	const int32_t size = json_object_array_length (jobj);
 
 	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i), value))
-			field -> emplace_back (value);
+			field -> emplace_back (fromUnit (unit, value));
 		else
 			field -> emplace_back ();
 	}
@@ -1450,7 +1458,7 @@ JSONParser::sffloatValue (json_object* const jobj, SFFloat* const field)
 	if (not doubleValue (jobj, value))
 		return false;
 
-	*field = value;
+	*field = fromUnit (field -> getUnit (), value);
 
 	return true;
 }
@@ -1468,12 +1476,13 @@ JSONParser::mffloatValue (json_object* const jobj, MFFloat* const field)
 
 	double value = 0;
 
+	const auto    unit = field -> getUnit ();
 	const int32_t size = json_object_array_length (jobj);
 
 	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i), value))
-			field -> emplace_back (value);
+			field -> emplace_back (fromUnit (unit, value));
 		else
 			field -> emplace_back ();
 	}
@@ -2132,7 +2141,7 @@ JSONParser::rotation4dValue (json_object* const jobj, const int32_t i, Rotation4
 			{
 				if (doubleValue (json_object_array_get_idx (jobj, i + 3), angle))
 				{
-					value = Rotation4d (x, y, z, angle);
+					value = Rotation4d (x, y, z, fromUnit (UnitCategory::ANGLE, angle));
 					return true;
 				}
 			}
@@ -2234,7 +2243,7 @@ JSONParser::sfvec2dValue (json_object* const jobj, SFVec2d* const field)
 		{
 			Vector2d value;
 	
-			if (vector2dValue (jobj, 0, value))
+			if (vector2dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2260,13 +2269,14 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 
 	Vector2d value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 2;
 
 	for (int32_t i = 0; i < size; i += 2)
 	{
-		if (vector2dValue (jobj, i, value))
+		if (vector2dValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2276,7 +2286,7 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 }
 
 bool
-JSONParser::vector2dValue (json_object* const jobj, const int32_t i, Vector2d & value)
+JSONParser::vector2dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector2d & value)
 {
 	double x, y;
 
@@ -2284,7 +2294,8 @@ JSONParser::vector2dValue (json_object* const jobj, const int32_t i, Vector2d & 
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
 		{
-			value = Vector2d (x, y);
+			value = Vector2d (fromUnit (unit, x),
+			                  fromUnit (unit, y));
 			return true;
 		}
 	}
@@ -2306,7 +2317,7 @@ JSONParser::sfvec2fValue (json_object* const jobj, SFVec2f* const field)
 		{
 			Vector2f value;
 	
-			if (vector2fValue (jobj, 0, value))
+			if (vector2fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2332,13 +2343,14 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 
 	Vector2f value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 2;
 
 	for (int32_t i = 0; i < size; i += 2)
 	{
-		if (vector2fValue (jobj, i, value))
+		if (vector2fValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2348,7 +2360,7 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 }
 
 bool
-JSONParser::vector2fValue (json_object* const jobj, const int32_t i, Vector2f & value)
+JSONParser::vector2fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector2f & value)
 {
 	double x, y;
 
@@ -2356,7 +2368,8 @@ JSONParser::vector2fValue (json_object* const jobj, const int32_t i, Vector2f & 
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
 		{
-			value = Vector2f (x, y);
+			value = Vector2f (fromUnit (unit, x),
+			                  fromUnit (unit, y));
 			return true;
 		}
 	}
@@ -2378,7 +2391,7 @@ JSONParser::sfvec3dValue (json_object* const jobj, SFVec3d* const field)
 		{
 			Vector3d value;
 	
-			if (vector3dValue (jobj, 0, value))
+			if (vector3dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2404,13 +2417,14 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 
 	Vector3d value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 3;
 
 	for (int32_t i = 0; i < size; i += 3)
 	{
-		if (vector3dValue (jobj, i, value))
+		if (vector3dValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2420,7 +2434,7 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 }
 
 bool
-JSONParser::vector3dValue (json_object* const jobj, const int32_t i, Vector3d & value)
+JSONParser::vector3dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector3d & value)
 {
 	double x, y, z;
 
@@ -2430,7 +2444,9 @@ JSONParser::vector3dValue (json_object* const jobj, const int32_t i, Vector3d & 
 		{
 			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
 			{
-				value = Vector3d (x, y, z);
+				value = Vector3d (fromUnit (unit, x),
+				                  fromUnit (unit, y),
+				                  fromUnit (unit, z));
 				return true;
 			}
 		}
@@ -2453,7 +2469,7 @@ JSONParser::sfvec3fValue (json_object* const jobj, SFVec3f* const field)
 		{
 			Vector3f value;
 	
-			if (vector3fValue (jobj, 0, value))
+			if (vector3fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2479,13 +2495,14 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 
 	Vector3f value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 3;
 
 	for (int32_t i = 0; i < size; i += 3)
 	{
-		if (vector3fValue (jobj, i, value))
+		if (vector3fValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2495,7 +2512,7 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 }
 
 bool
-JSONParser::vector3fValue (json_object* const jobj, const int32_t i, Vector3f & value)
+JSONParser::vector3fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector3f & value)
 {
 	double x, y, z;
 
@@ -2505,7 +2522,9 @@ JSONParser::vector3fValue (json_object* const jobj, const int32_t i, Vector3f & 
 		{
 			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
 			{
-				value = Vector3f (x, y, z);
+				value = Vector3f (fromUnit (unit, x),
+				                  fromUnit (unit, y),
+				                  fromUnit (unit, z));
 				return true;
 			}
 		}
@@ -2528,7 +2547,7 @@ JSONParser::sfvec4dValue (json_object* const jobj, SFVec4d* const field)
 		{
 			Vector4d value;
 	
-			if (vector4dValue (jobj, 0, value))
+			if (vector4dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2554,13 +2573,14 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 
 	Vector4d value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
 	for (int32_t i = 0; i < size; i += 4)
 	{
-		if (vector4dValue (jobj, i, value))
+		if (vector4dValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2570,7 +2590,7 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 }
 
 bool
-JSONParser::vector4dValue (json_object* const jobj, const int32_t i, Vector4d & value)
+JSONParser::vector4dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector4d & value)
 {
 	double x, y, z, w;
 
@@ -2582,7 +2602,10 @@ JSONParser::vector4dValue (json_object* const jobj, const int32_t i, Vector4d & 
 			{
 				if (doubleValue (json_object_array_get_idx (jobj, i + 3), w))
 				{
-					value = Vector4d (x, y, z, w);
+					value = Vector4d (fromUnit (unit, x),
+					                  fromUnit (unit, y),
+					                  fromUnit (unit, z),
+					                  fromUnit (unit, w));
 					return true;
 				}
 			}
@@ -2606,7 +2629,7 @@ JSONParser::sfvec4fValue (json_object* const jobj, SFVec4f* const field)
 		{
 			Vector4f value;
 	
-			if (vector4fValue (jobj, 0, value))
+			if (vector4fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
 				return true;
@@ -2632,13 +2655,14 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 
 	Vector4f value;
 
-	int32_t size = json_object_array_length (jobj);
+	const auto unit = field -> getUnit ();
+	int32_t    size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
 	for (int32_t i = 0; i < size; i += 4)
 	{
-		if (vector4fValue (jobj, i, value))
+		if (vector4fValue (jobj, i, unit, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -2648,7 +2672,7 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 }
 
 bool
-JSONParser::vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value)
+JSONParser::vector4fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector4f & value)
 {
 	double x, y, z, w;
 
@@ -2660,7 +2684,10 @@ JSONParser::vector4fValue (json_object* const jobj, const int32_t i, Vector4f & 
 			{
 				if (doubleValue (json_object_array_get_idx (jobj, i + 3), w))
 				{
-					value = Vector4f (x, y, z, w);
+					value = Vector4f (fromUnit (unit, x),
+					                  fromUnit (unit, y),
+					                  fromUnit (unit, z),
+					                  fromUnit (unit, w));
 					return true;
 				}
 			}

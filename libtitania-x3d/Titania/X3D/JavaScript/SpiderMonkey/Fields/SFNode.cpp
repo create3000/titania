@@ -81,7 +81,9 @@ JSFunctionSpec SFNode::functions [ ] = {
 	{ "getNodeType",         getNodeType,         0, 0 },
 	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
 
-	{ "toString",            toString,            0, 0 },
+	{ "toString",     toString,     0, 0 },
+	{ "toVRMLString", toVRMLString, 0, 0 },
+	{ "toXMLString",  toXMLString,  0, 0 },
 
 	{ 0 }
 
@@ -397,6 +399,71 @@ SFNode::toString (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .toString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+SFNode::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto context          = getContext (cx);
+		const auto executionContext = context -> getExecutionContext ();
+		const auto lhs              = getThis <X3DField> (cx, vp);
+		const auto version          = executionContext -> getSpecificationVersion ();
+
+		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
+
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
+		Generator::PushExecutionContext (osstream, executionContext);
+
+		lhs -> toStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toVRMLString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+SFNode::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto context          = getContext (cx);
+		const auto executionContext = context -> getExecutionContext ();
+		const auto lhs              = getThis <X3DField> (cx, vp);
+		auto       version          = executionContext -> getSpecificationVersion ();
+
+		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
+
+		if (version == VRML_V2_0)
+			version = LATEST_VERSION;
+
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
+		Generator::PushExecutionContext (osstream, executionContext);
+
+		lhs -> toXMLStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toXMLString: %s.", getClass () -> name, error .what ());
 	}
 }
 

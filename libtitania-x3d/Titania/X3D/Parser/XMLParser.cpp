@@ -255,6 +255,13 @@ XMLParser::headElement (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError &)
 	{ }
+
+	try
+	{
+		setUnits (scene -> getMetaData ("generator"));
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
@@ -1082,6 +1089,9 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 	istream .imbue (std::locale::classic ());
 
 	Parser parser (istream, scene);
+
+	parser .setUnits (getUnits ());
+	parser .pushExecutionContext (getExecutionContext ());
 
 	switch (field -> getType ())
 	{

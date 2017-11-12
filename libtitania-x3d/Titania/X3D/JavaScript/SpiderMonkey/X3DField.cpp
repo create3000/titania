@@ -75,8 +75,6 @@ JSFunctionSpec X3DField::functions [ ] = {
 	{ "equals",       equals, 1, 0 },
 	{ "assign",       assign, 1, 0 },
 
-	{ "toVRMLString", toVRMLString, 0, 0 },
-	{ "toXMLString",  toXMLString,  0, 0 },
 	{ "toString",     toString,     0, 0 },
 
 	{ 0 }
@@ -262,63 +260,6 @@ X3DField::assign (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
-X3DField::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto context = getContext (cx);
-		const auto lhs     = getThis <X3DField> (cx, vp);
-		const auto version = context -> getExecutionContext () -> getSpecificationVersion ();
-
-		std::ostringstream osstream;
-
-		Generator::SpecificationVersion (osstream, version);
-		Generator::NicestStyle (osstream);
-
-		lhs -> toStream (osstream);
-
-		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .toVRMLString: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
-X3DField::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto context = getContext (cx);
-		const auto lhs     = getThis <X3DField> (cx, vp);
-		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
-
-		std::ostringstream osstream;
-
-		if (version == VRML_V2_0)
-			version = LATEST_VERSION;
-
-		Generator::SpecificationVersion (osstream, version);
-		Generator::NicestStyle (osstream);
-
-		lhs -> toXMLStream (osstream);
-
-		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .toXMLString: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
 X3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
@@ -329,6 +270,8 @@ X3DField::toString (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs = getThis <X3DField> (cx, vp);
 
 		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
 
 		Generator::NicestStyle (osstream);
 

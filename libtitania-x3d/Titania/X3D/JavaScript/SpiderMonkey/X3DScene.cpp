@@ -84,6 +84,9 @@ JSFunctionSpec X3DScene::functions [ ] = {
 	{ "updateExportedNode", updateExportedNode, 2, 0 },
 	{ "getExportedNode",    getExportedNode,    1, 0 },
 
+	{ "toVRMLString", toVRMLString, 0, 0 },
+	{ "toXMLString",  toXMLString,  0, 0 },
+
 	{ 0 }
 
 };
@@ -339,6 +342,58 @@ X3DScene::getExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .getExportedNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+
+		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
+
+		Generator::NicestStyle (osstream);
+
+		executionContext -> toStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toVRMLString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+
+		std::ostringstream osstream;
+
+		osstream .imbue (std::locale::classic ());
+
+		Generator::NicestStyle (osstream);
+
+		executionContext -> toXMLStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toXMLString: %s.", getClass () -> name, error .what ());
 	}
 }
 

@@ -136,9 +136,7 @@ private:
 	static JSBool equals (JSContext* cx, uint32_t argc, jsval* vp);
 	static JSBool assign (JSContext* cx, uint32_t argc, jsval* vp);
 
-	static JSBool toVRMLString (JSContext* cx, uint32_t argc, jsval* vp);
-	static JSBool toXMLString  (JSContext* cx, uint32_t argc, jsval* vp);
-	static JSBool toString     (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool toString (JSContext* cx, uint32_t argc, jsval* vp);
 
 	///  @name Static members
 

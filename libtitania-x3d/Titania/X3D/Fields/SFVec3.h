@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_SFVEC3_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/Generator.h"
 #include "../Types/Numbers.h"
 
 namespace titania {
@@ -84,6 +85,7 @@ public:
 	using X3DField <InternalType>::addEvent;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;
+	using X3DField <InternalType>::getUnit;
 	using X3DField <InternalType>::operator =;
 
 	///  @name Construction
@@ -529,7 +531,15 @@ inline
 void
 SFVec3 <InternalType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
+	const auto unit = Generator::Unit (ostream, getUnit ());
+
+	ostream
+		<< Generator::SetPrecision <value_type>
+		<< Generator::ToUnit (ostream, unit, getValue () .x ())
+		<< Generator::Space
+		<< Generator::ToUnit (ostream, unit, getValue () .y ())
+		<< Generator::Space
+		<< Generator::ToUnit (ostream, unit, getValue () .z ());
 }
 
 template <class InternalType>
@@ -547,12 +557,12 @@ SFVec3 <InternalType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '['
-		<< X3DGenerator::TidySpace;
+		<< Generator::TidySpace;
 
 	toJSONStreamValue (ostream);
 
 	ostream
-		<< X3DGenerator::TidySpace
+		<< Generator::TidySpace
 		<< ']';
 }
 
@@ -561,15 +571,17 @@ inline
 void
 SFVec3 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 {
+	const auto unit = Generator::Unit (ostream, getUnit ());
+
 	ostream
-		<< X3DGenerator::SetPrecision <value_type>
-		<< getValue () .x ()
+		<< Generator::SetPrecision <value_type>
+		<< Generator::ToUnit (ostream, unit, getValue () .x ())
 		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () .y ()
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, getValue () .y ())
 		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () .z ();
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, getValue () .z ());
 }
 
 ///  @relates SFVec3

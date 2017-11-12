@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_SFROTATION4_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/Generator.h"
 #include "../Types/Numbers.h"
 #include "SFVec3.h"
 
@@ -467,7 +468,19 @@ inline
 void
 SFRotation4 <InternalType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
+	value_type x, y, z, angle;
+
+	getValue () .get (x, y, z, angle);
+
+	ostream
+		<< Generator::SetPrecision <value_type>
+		<< x
+		<< Generator::Space
+		<< y
+		<< Generator::Space
+		<< z
+		<< Generator::Space
+		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, angle);
 }
 
 template <class InternalType>
@@ -485,12 +498,12 @@ SFRotation4 <InternalType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '['
-		<< X3DGenerator::TidySpace;
+		<< Generator::TidySpace;
 
 	toJSONStreamValue (ostream);
 
 	ostream
-		<< X3DGenerator::TidySpace
+		<< Generator::TidySpace
 		<< ']';
 }
 
@@ -504,17 +517,17 @@ SFRotation4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 	getValue () .get (x, y, z, angle);
 
 	ostream
-		<< X3DGenerator::SetPrecision <value_type>
+		<< Generator::SetPrecision <value_type>
 		<< x
 		<< ','
-		<< X3DGenerator::TidySpace
+		<< Generator::TidySpace
 		<< y
 		<< ','
-		<< X3DGenerator::TidySpace
+		<< Generator::TidySpace
 		<< z
 		<< ','
-		<< X3DGenerator::TidySpace
-		<< angle;
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, angle);
 }
 
 ///  @relates SFRotation4

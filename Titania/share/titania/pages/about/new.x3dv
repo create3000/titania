@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V3.0.3
+#X3D V3.3 utf8 Titania V4.0.0
 
 PROFILE Full
 
 META "comment" "World of Titania"
-META "created" "Fri, 28 Apr 2017 15:24:36 GMT"
+META "created" "Sun, 12 Nov 2017 18:10:42 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.3, http://titania.create3000.de"
-META "identifier" ""
-META "modified" "Fri, 28 Apr 2017 15:24:36 GMT"
+META "generator" "Titania V4.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/new.x3dv"
+META "modified" "Sun, 12 Nov 2017 18:10:57 GMT"
 META "titania-add-metadata" "true"
 
 WorldInfo {
@@ -33,49 +33,197 @@ WorldInfo {
           value TRUE
         }
       }
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
+      DEF Selection MetadataSet {
+        name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF position MetadataDouble {
-            name "position"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF layerNumber MetadataInteger {
+            name "layerNumber"
             reference "http://titania.create3000.de"
             value [
-              5.87788544764696,
-              6.46984938591101,
-              13.8524443931466
+              -1,
+              0,
+              0,
+              0,
+              0,
+              -1,
+              -1,
+              -1
             ]
           }
-          DEF orientation MetadataDouble {
-            name "orientation"
+          DEF type_2 MetadataString {
+            name "type"
             reference "http://titania.create3000.de"
             value [
-              -0.704047462871212,
-              0.695566762376517,
-              0.143192350010952,
-              0.568941727555854
+              "TOP_VIEW",
+              "MAIN_VIEW",
+              "PERSPECTIVE_VIEW",
+              "FRONT_VIEW"
             ]
           }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
+          DEF viewpoints MetadataSet {
+            name "viewpoints"
             reference "http://titania.create3000.de"
             value [
-              -1.77635683940025e-15,
-              -7.105427357601e-15,
-              3.5527136788005e-15
+              DEF PerspectiveViewpoint MetadataSet {
+                name "PerspectiveViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_3 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      5.87788534164429,
+                      6.46984958648682,
+                      13.8524446487427
+                    ]
+                  }
+                  DEF orientation_4 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.704047462871212,
+                      0.695566762376517,
+                      0.143192350010952,
+                      0.568941727555854
+                    ]
+                  }
+                  DEF centerOfRotation_5 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1
+                  }
+                ]
+              }
+              DEF TopViewpoint MetadataSet {
+                name "TopViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_6 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.0320612526145463,
+                      10.8662109375,
+                      0.0937320149966475
+                    ]
+                  }
+                  DEF orientation_7 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      1,
+                      0,
+                      0,
+                      4.71238898038469
+                    ]
+                  }
+                  DEF centerOfRotation_8 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.0320612526145463,
+                      0,
+                      0.0937320149966475
+                    ]
+                  }
+                  DEF fieldOfViewScale_9 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.21023944190259
+                  }
+                ]
+              }
+              DEF FrontViewpoint MetadataSet {
+                name "FrontViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_10 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.00884759203065143,
+                      0.0177734813359099,
+                      10000
+                    ]
+                  }
+                  DEF orientation_11 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                  DEF centerOfRotation_12 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.00884759203065143,
+                      0.0177734813359099,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale_13 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.212467484375
+                  }
+                ]
+              }
             ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 1
           }
         ]
       }
     ]
   }
+}
+
+DEF InitialView Viewpoint {
+  description "Initial View"
+  position 5.87789 6.46985 13.8524
+  orientation -0.704047462871212 0.695566762376517 0.143192350010952 0.568941727555854
+  centerOfRotation -2.35089e-07 2.42392e-07 -1.34569e-08
 }

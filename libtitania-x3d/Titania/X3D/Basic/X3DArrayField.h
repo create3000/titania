@@ -101,6 +101,7 @@ public:
 	using X3DField <internal_type>::addEvent;
 	using X3DField <internal_type>::getType;
 	using X3DField <internal_type>::getValue;
+	using X3DField <internal_type>::getUnit;
 	using X3DField <internal_type>::operator =;
 
 	///  @name Construction
@@ -949,32 +950,40 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 	{
 		case 0:
 		{
-			ostream << X3DGenerator::EmptyBrackets;
+			ostream << Generator::EmptyBrackets;
 			return;
 		}
 		case 1:
 		{
+			Generator::PushUnitCategory (ostream, getUnit ());
+
 			ostream << front ();
+
+			Generator::PopUnitCategory (ostream);
 			return;
 		}
 		default:
 		{
-			ostream << X3DGenerator::OpenBracket;
+			Generator::PushUnitCategory (ostream, getUnit ());
+
+			ostream << Generator::OpenBracket;
 
 			for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< value
-					<< X3DGenerator::Comma
-					<< X3DGenerator::ListBreak;
+					<< Generator::Comma
+					<< Generator::ListBreak;
 
-				if (X3DGenerator::HasListBreak (ostream))
-					ostream << X3DGenerator::Indent;
+				if (Generator::HasListBreak (ostream))
+					ostream << Generator::Indent;
 			}
 
 			ostream
 				<< back ()
-				<< X3DGenerator::CloseBracket;
+				<< Generator::CloseBracket;
+
+			Generator::PopUnitCategory (ostream);
 
 			return;
 		}
@@ -988,15 +997,19 @@ X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 	if (empty ())
 		return;
 
+	Generator::PushUnitCategory (ostream, getUnit ());
+
 	for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 	{
 		ostream
 			<< XMLEncode (value)
-			<< X3DGenerator::Comma
-			<< X3DGenerator::TidySpace;
+			<< Generator::Comma
+			<< Generator::TidySpace;
 	}
 
 	ostream << XMLEncode (back ());
+
+	Generator::PopUnitCategory (ostream);
 }
 
 template <class ValueType>
@@ -1007,41 +1020,45 @@ X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 	{
 		ostream
 			<< '['
-			<< X3DGenerator::TidySpace
+			<< Generator::TidySpace
 			<< ']';
 	}
 	else
 	{
+		Generator::PushUnitCategory (ostream, getUnit ());
+
 		ostream
 			<< '['
-			<< X3DGenerator::ListBreak
-			<< X3DGenerator::IncIndent;
+			<< Generator::ListBreak
+			<< Generator::IncIndent;
 
 		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
-			if (X3DGenerator::HasListBreak (ostream))
-				ostream << X3DGenerator::Indent;
+			if (Generator::HasListBreak (ostream))
+				ostream << Generator::Indent;
 
 			value .toJSONStreamValue (ostream);
 
 			ostream
 				<< ','
-				<< X3DGenerator::ListBreak;
+				<< Generator::ListBreak;
 		}
 
-		if (X3DGenerator::HasListBreak (ostream))
-			ostream << X3DGenerator::Indent;
+		if (Generator::HasListBreak (ostream))
+			ostream << Generator::Indent;
 
 		back () .toJSONStreamValue (ostream);
 
 		ostream
-			<< X3DGenerator::ListBreak
- 			<< X3DGenerator::DecIndent;
+			<< Generator::ListBreak
+ 			<< Generator::DecIndent;
 
-		if (X3DGenerator::HasListBreak (ostream))
-			ostream << X3DGenerator::Indent;
+		if (Generator::HasListBreak (ostream))
+			ostream << Generator::Indent;
 
 		ostream << ']';
+
+		Generator::PopUnitCategory (ostream);
 	}
 }
 

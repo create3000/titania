@@ -91,6 +91,10 @@ SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "surface",     surface ());
 
 	addChildObjects (surfaceNode);
+
+	speed ()       .setUnit (UnitCategory::SPEED);
+	mass ()        .setUnit (UnitCategory::MASS);
+	surfaceArea () .setUnit (UnitCategory::AREA);
 }
 
 X3DBaseNode*

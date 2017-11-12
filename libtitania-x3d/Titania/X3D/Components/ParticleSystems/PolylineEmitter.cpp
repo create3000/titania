@@ -90,6 +90,10 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "coord",          coord ());
 
 	addChildObjects (polylineNode);
+
+	speed ()       .setUnit (UnitCategory::SPEED);
+	mass ()        .setUnit (UnitCategory::MASS);
+	surfaceArea () .setUnit (UnitCategory::AREA);
 }
 
 X3DBaseNode*

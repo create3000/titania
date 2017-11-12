@@ -50,6 +50,8 @@
 
 #include "X3DScalar.h"
 
+#include "../Execution/X3DExecutionContext.h"
+#include "../InputOutput/Generator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {
@@ -171,14 +173,18 @@ template <>
 void
 X3DScalar <double>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <double> << getValue ();
+	const auto unit = Generator::Unit (ostream, getUnit ());
+
+	ostream << Generator::SetPrecision <double> << Generator::ToUnit (ostream, unit, getValue ());
 }
 
 template <>
 void
 X3DScalar <float>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <float> << getValue ();
+	const auto unit = Generator::Unit (ostream, getUnit ());
+
+	ostream << Generator::SetPrecision <float> << Generator::ToUnit (ostream, unit, getValue ());
 }
 
 template <>

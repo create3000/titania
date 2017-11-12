@@ -428,7 +428,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
-	Titania/X3D/Configuration/X3DUnitContext.cpp \
 	Titania/X3D/Editing/Combine.cpp \
 	Titania/X3D/Editing/Selection/FaceSelection.cpp \
 	Titania/X3D/Editing/Undo/UndoGroup.cpp \

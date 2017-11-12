@@ -309,15 +309,15 @@ X3DExecutionContext::fromUnit (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv         = JS_ARGV (cx, vp);
-		const auto scene        = getThis <X3DExecutionContext> (cx, vp) -> getScene ();
-		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
-		const auto value        = getArgument <double> (cx, argv, 1);
+		const auto argv             = JS_ARGV (cx, vp);
+		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+		const auto unitCategory     = getArgument <int32_t> (cx, argv, 0);
+		const auto value            = getArgument <double> (cx, argv, 1);
 
 		if (unitCategories .count (unitCategory) == 0)
 			return ThrowException (cx, "%s .fromUnit: unknown base unit.", getClass () -> name);
 
-		return JS_NewNumberValue (cx, scene -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+		return JS_NewNumberValue (cx, executionContext -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -333,15 +333,15 @@ X3DExecutionContext::toUnit (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto argv         = JS_ARGV (cx, vp);
-		const auto scene        = getThis <X3DExecutionContext> (cx, vp) -> getScene ();
-		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
-		const auto value        = getArgument <double> (cx, argv, 1);
+		const auto argv             = JS_ARGV (cx, vp);
+		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+		const auto unitCategory     = getArgument <int32_t> (cx, argv, 0);
+		const auto value            = getArgument <double> (cx, argv, 1);
 
 		if (unitCategories .count (unitCategory) == 0)
 			return ThrowException (cx, "%s .toUnit: unknown base unit.", getClass () -> name);
 
-		return JS_NewNumberValue (cx, scene -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+		return JS_NewNumberValue (cx, executionContext -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -642,13 +642,15 @@ X3DExecutionContext::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 
-		std::ostringstream ostream;
+		std::ostringstream osstream;
 
-		Generator::NicestStyle (ostream);
+		osstream .imbue (std::locale::classic ());
 
-		executionContext -> X3D::X3DExecutionContext::toStream (ostream);
+		Generator::NicestStyle (osstream);
 
-		return JS_NewStringValue (cx, ostream .str (), &JS_RVAL (cx, vp));
+		executionContext -> X3D::X3DExecutionContext::toStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -666,13 +668,15 @@ X3DExecutionContext::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 
-		std::ostringstream ostream;
+		std::ostringstream osstream;
 
-		Generator::NicestStyle (ostream);
+		osstream .imbue (std::locale::classic ());
 
-		executionContext -> X3D::X3DExecutionContext::toXMLStream (ostream);
+		Generator::NicestStyle (osstream);
 
-		return JS_NewStringValue (cx, ostream .str (), &JS_RVAL (cx, vp));
+		executionContext -> X3D::X3DExecutionContext::toXMLStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

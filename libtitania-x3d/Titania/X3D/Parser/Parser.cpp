@@ -282,6 +282,13 @@ Parser::x3dScene ()
 	catch (const X3DError &)
 	{ }
 
+	try
+	{
+		setUnits (scene -> getMetaData ("generator"));
+	}
+	catch (const X3DError &)
+	{ }
+
 	statements ();
 
 	scene -> addInnerComments (getComments ());
@@ -2214,7 +2221,7 @@ Parser::sfdoubleValue (SFDouble* _field)
 
 	if (Double (value))
 	{
-		_field -> setValue (value);
+		_field -> setValue (fromUnit (_field -> getUnit (), value));
 		return true;
 	}
 
@@ -2229,6 +2236,8 @@ Parser::mfdoubleValue (MFDouble* _field)
 	_field -> clear ();
 
 	SFDouble value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfdoubleValue (&value))
 	{
@@ -2259,6 +2268,8 @@ Parser::sfdoubleValues (MFDouble* _field)
 
 	SFDouble value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfdoubleValue (&value))
@@ -2274,7 +2285,7 @@ Parser::sffloatValue (SFFloat* _field)
 
 	if (Float (value))
 	{
-		_field -> setValue (value);
+		_field -> setValue (fromUnit (_field -> getUnit (), value));
 		return true;
 	}
 
@@ -2289,6 +2300,8 @@ Parser::mffloatValue (MFFloat* _field)
 	_field -> clear ();
 
 	SFFloat value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sffloatValue (&value))
 	{
@@ -2317,6 +2330,8 @@ Parser::sffloatValues (MFFloat* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFFloat value;
+
+	value .setUnit (_field -> getUnit ());
 
 	_field -> clear ();
 
@@ -2908,7 +2923,7 @@ Parser::sfrotationValue (SFRotation* _field)
 			{
 				if (Double (angle))
 				{
-					_field -> setValue (Rotation4d (x, y, z, angle));
+					_field -> setValue (Rotation4d (x, y, z, fromUnit (UnitCategory::ANGLE, angle)));
 					return true;
 				}
 			}
@@ -3090,7 +3105,10 @@ Parser::sfvec2dValue (SFVec2d* _field)
 	{
 		if (Double (y))
 		{
-			_field -> setValue (Vector2d (x, y));
+			const auto unit = _field -> getUnit ();
+
+			_field -> setValue (Vector2d (fromUnit (unit, x),
+			                              fromUnit (unit, y)));
 			return true;
 		}
 
@@ -3108,6 +3126,8 @@ Parser::mfvec2dValue (MFVec2d* _field)
 	_field -> clear ();
 
 	SFVec2d value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec2dValue (&value))
 	{
@@ -3137,6 +3157,8 @@ Parser::sfvec2dValues (MFVec2d* _field)
 
 	SFVec2d value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfvec2dValue (&value))
@@ -3154,7 +3176,10 @@ Parser::sfvec2fValue (SFVec2f* _field)
 	{
 		if (Float (y))
 		{
-			_field -> setValue (Vector2f (x, y));
+			const auto unit = _field -> getUnit ();
+
+			_field -> setValue (Vector2f (fromUnit (unit, x),
+			                              fromUnit (unit, y)));
 			return true;
 		}
 
@@ -3172,6 +3197,8 @@ Parser::mfvec2fValue (MFVec2f* _field)
 	_field -> clear ();
 
 	SFVec2f value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec2fValue (&value))
 	{
@@ -3201,6 +3228,8 @@ Parser::sfvec2fValues (MFVec2f* _field)
 
 	SFVec2f value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfvec2fValue (&value))
@@ -3220,7 +3249,11 @@ Parser::sfvec3dValue (SFVec3d* _field)
 		{
 			if (Double (z))
 			{
-				_field -> setValue (Vector3d (x, y, z));
+				const auto unit = _field -> getUnit ();
+
+				_field -> setValue (Vector3d (fromUnit (unit, x),
+				                              fromUnit (unit, y),
+				                              fromUnit (unit, z)));
 				return true;
 			}
 		}
@@ -3239,6 +3272,8 @@ Parser::mfvec3dValue (MFVec3d* _field)
 	_field -> clear ();
 
 	SFVec3d value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec3dValue (&value))
 	{
@@ -3268,6 +3303,8 @@ Parser::sfvec3dValues (MFVec3d* _field)
 
 	SFVec3d value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfvec3dValue (&value))
@@ -3287,7 +3324,11 @@ Parser::sfvec3fValue (SFVec3f* _field)
 		{
 			if (Float (z))
 			{
-				_field -> setValue (Vector3f (x, y, z));
+				const auto unit = _field -> getUnit ();
+
+				_field -> setValue (Vector3f (fromUnit (unit, x),
+				                              fromUnit (unit, y),
+				                              fromUnit (unit, z)));
 				return true;
 			}
 		}
@@ -3306,6 +3347,8 @@ Parser::mfvec3fValue (MFVec3f* _field)
 	_field -> clear ();
 
 	SFVec3f value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec3fValue (&value))
 	{
@@ -3335,6 +3378,8 @@ Parser::sfvec3fValues (MFVec3f* _field)
 
 	SFVec3f value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfvec3fValue (&value))
@@ -3356,7 +3401,12 @@ Parser::sfvec4dValue (SFVec4d* _field)
 			{
 				if (Double (w))
 				{
-					_field -> setValue (Vector4d (x, y, z, w));
+					const auto unit = _field -> getUnit ();
+
+					_field -> setValue (Vector4d (fromUnit (unit, x),
+					                              fromUnit (unit, y),
+					                              fromUnit (unit, z),
+					                              fromUnit (unit, w)));
 					return true;
 				}
 			}
@@ -3376,6 +3426,8 @@ Parser::mfvec4dValue (MFVec4d* _field)
 	_field -> clear ();
 
 	SFVec4d value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec4dValue (&value))
 	{
@@ -3405,6 +3457,8 @@ Parser::sfvec4dValues (MFVec4d* _field)
 
 	SFVec4d value;
 
+	value .setUnit (_field -> getUnit ());
+
 	_field -> clear ();
 
 	while (sfvec4dValue (&value))
@@ -3426,7 +3480,12 @@ Parser::sfvec4fValue (SFVec4f* _field)
 			{
 				if (Float (w))
 				{
-					_field -> setValue (Vector4f (x, y, z, w));
+					const auto unit = _field -> getUnit ();
+
+					_field -> setValue (Vector4f (fromUnit (unit, x),
+					                              fromUnit (unit, y),
+					                              fromUnit (unit, z),
+					                              fromUnit (unit, w)));
 					return true;
 				}
 			}
@@ -3446,6 +3505,8 @@ Parser::mfvec4fValue (MFVec4f* _field)
 	_field -> clear ();
 
 	SFVec4f value;
+
+	value .setUnit (_field -> getUnit ());
 
 	if (sfvec4fValue (&value))
 	{
@@ -3474,6 +3535,8 @@ Parser::sfvec4fValues (MFVec4f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFVec4f value;
+
+	value .setUnit (_field -> getUnit ());
 
 	_field -> clear ();
 

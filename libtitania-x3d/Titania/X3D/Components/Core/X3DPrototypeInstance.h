@@ -186,6 +186,20 @@ public:
 	       Error <DISPOSED>) final override
 	{ return protoNode -> getProtoDeclaration () -> getComponents (); }
 
+	///  @name Unit handling
+
+	virtual
+	long double
+	fromUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> fromUnit (category, value); }
+
+	virtual
+	long double
+	toUnit (const UnitCategory category, const long double value) const
+	throw (Error <DISPOSED>) final override
+	{ return protoNode -> getProtoDeclaration () -> toUnit (category, value); }
+
 	///  @name Member access
 
 	virtual

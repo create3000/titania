@@ -355,7 +355,7 @@ private:
 	mfvec2dValue (json_object* const jobj, MFVec2d* const field);
 
 	bool
-	vector2dValue (json_object* const jobj, const int32_t i, Vector2d & value);
+	vector2dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector2d & value);
 
 	bool
 	sfvec2fValue (json_object* const jobj, SFVec2f* const field);
@@ -364,7 +364,7 @@ private:
 	mfvec2fValue (json_object* const jobj, MFVec2f* const field);
 
 	bool
-	vector2fValue (json_object* const jobj, const int32_t i, Vector2f & value);
+	vector2fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector2f & value);
 
 	bool
 	sfvec3dValue (json_object* const jobj, SFVec3d* const field);
@@ -373,7 +373,7 @@ private:
 	mfvec3dValue (json_object* const jobj, MFVec3d* const field);
 
 	bool
-	vector3dValue (json_object* const jobj, const int32_t i, Vector3d & value);
+	vector3dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector3d & value);
 
 	bool
 	sfvec3fValue (json_object* const jobj, SFVec3f* const field);
@@ -382,7 +382,7 @@ private:
 	mfvec3fValue (json_object* const jobj, MFVec3f* const field);
 
 	bool
-	vector3fValue (json_object* const jobj, const int32_t i, Vector3f & value);
+	vector3fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector3f & value);
 
 	bool
 	sfvec4dValue (json_object* const jobj, SFVec4d* const field);
@@ -391,7 +391,7 @@ private:
 	mfvec4dValue (json_object* const jobj, MFVec4d* const field);
 
 	bool
-	vector4dValue (json_object* const jobj, const int32_t i, Vector4d & value);
+	vector4dValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector4d & value);
 
 	bool
 	sfvec4fValue (json_object* const jobj, SFVec4f* const field);
@@ -400,7 +400,7 @@ private:
 	mfvec4fValue (json_object* const jobj, MFVec4f* const field);
 
 	bool
-	vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value);
+	vector4fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector4f & value);
 
 	static
 	struct json_object*

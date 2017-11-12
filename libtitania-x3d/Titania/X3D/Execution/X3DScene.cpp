@@ -70,10 +70,26 @@ namespace X3D {
 static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
+const UnitIndex X3DScene::unitCategories = {
+	std::make_pair ("angle",  UnitCategory::ANGLE),
+	std::make_pair ("force",  UnitCategory::FORCE),
+	std::make_pair ("length", UnitCategory::LENGTH),
+	std::make_pair ("mass",   UnitCategory::MASS)
+
+};
+
+const UnitArray X3DScene::standardUnits = {
+	Unit ("none",   "none",     1),
+	Unit ("angle",  "radian",   1),
+	Unit ("force",  "newton",   1),
+	Unit ("length", "metre",    1),
+	Unit ("mass",   "kilogram", 1)
+
+};
+
 X3DScene::X3DScene () :
 	         X3DBaseNode (),
 	 X3DExecutionContext (),
-	      X3DUnitContext (),
 	            worldURL (),
 	            encoding (EncodingType::SCRIPTED),
 	specificationVersion (LATEST_VERSION),
@@ -81,6 +97,8 @@ X3DScene::X3DScene () :
 	             comment ("Titania"),
 	             profile (),
 	          components (),
+	               units (standardUnits),
+	         unitsOutput (),
 	           metadatas (),
 	      metaDataOutput (),
 	       exportedNodes (),
@@ -89,6 +107,7 @@ X3DScene::X3DScene () :
 	addType (X3DConstants::X3DScene);
 
 	addChildObjects (getRootNodes (),
+	                 unitsOutput,
 	                 metaDataOutput,
 	                 exportedNodesOutput);
 }
@@ -98,7 +117,6 @@ X3DScene::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DExecutionContext::initialize ();
-	X3DUnitContext::initialize ();
 }
 
 std::string
@@ -166,6 +184,100 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		components .push_back (component -> getType (), component);
 	}
+}
+
+// Unit handling
+
+void
+X3DScene::updateUnit (const std::string & category, const std::string & name, const long double conversionFactor)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		const auto & unitCategory = unitCategories .at (category);
+
+		units [size_t (unitCategory)] = Unit (category, name, conversionFactor);
+
+		unitsOutput = getCurrentTime ();
+	}
+	catch (const std::out_of_range &)
+	{
+		throw Error <INVALID_NAME> ("Unkown standard unit category '" + category + "'.");
+	}
+}
+
+const Unit &
+X3DScene::getUnit (const UnitCategory category) const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return units [size_t (category)];
+}
+
+long double
+X3DScene::fromUnit (const UnitCategory category, const long double value) const
+throw (Error <DISPOSED>)
+{
+	switch (category)
+	{
+	   case UnitCategory::NONE:
+			return value;
+	   
+		// Base units
+	   case UnitCategory::ANGLE:
+	   case UnitCategory::FORCE:
+	   case UnitCategory::LENGTH:
+	   case UnitCategory::MASS:
+			return value * getUnit (category) .getConversionFactor ();
+	
+		// Derived units
+		case UnitCategory::ACCELERATION:
+			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::ANGULAR_RATE:
+			return value * getUnit (UnitCategory::ANGLE) .getConversionFactor ();
+		case UnitCategory::AREA:
+			return value * std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
+		case UnitCategory::SPEED:
+			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::VOLUME:
+			return value * std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
+	}
+
+	return value;
+}
+
+long double
+X3DScene::toUnit (const UnitCategory category, const long double value) const
+throw (Error <DISPOSED>)
+{
+	switch (category)
+	{
+	   case UnitCategory::NONE:
+			return value;
+	   
+		// Base units
+	   case UnitCategory::ANGLE:
+	   case UnitCategory::FORCE:
+	   case UnitCategory::LENGTH:
+	   case UnitCategory::MASS:
+			return value / getUnit (category) .getConversionFactor ();
+	
+		// Derived units
+		case UnitCategory::ACCELERATION:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::ANGULAR_RATE:
+			return value / getUnit (UnitCategory::ANGLE) .getConversionFactor ();
+		case UnitCategory::AREA:
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
+		case UnitCategory::SPEED:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::VOLUME:
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
+	}
+
+	return value;
 }
 
 // MetaData handling
@@ -1186,7 +1298,6 @@ X3DScene::dispose ()
 	metadatas     .clear ();
 	exportedNodes .clear ();
 
-	X3DUnitContext::dispose ();
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
 

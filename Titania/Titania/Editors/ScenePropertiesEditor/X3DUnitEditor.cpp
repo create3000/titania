@@ -250,6 +250,7 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 		adjustment -> set_value (value);
 	}
 	
+	getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
 	getCurrentScene () -> updateUnit (category, name, value);
 
 	getBrowserWindow () -> getCurrentPage () -> setModified (true);
