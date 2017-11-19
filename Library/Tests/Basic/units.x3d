@@ -9,7 +9,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.0, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv'/>
-    <meta name='modified' content='Sun, 19 Nov 2017 07:05:43 GMT'/>
+    <meta name='modified' content='Sun, 19 Nov 2017 13:05:53 GMT'/>
     <meta name='titania-add-metadata' content='true'/>
     <meta name='titania-output-style' content='Nicest'/>
   </head>
@@ -150,8 +150,8 @@
 
 function initialize ()
 {
-	print (Browser .currentScene .toVRMLString ());
-	print (transform .toVRMLString ());
+	print (Browser .currentScene .toXMLString ());
+	print (transform .toXMLString ());
 
 	// There must be no units applied.
 	print (transform .rotation .angle);
