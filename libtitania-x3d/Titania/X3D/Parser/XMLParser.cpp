@@ -142,7 +142,7 @@ XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::is
 {
 	xmlParser -> set_throw_messages (true);
 	xmlParser -> set_validate (false);
-	xmlParser -> set_include_default_attributes (true);
+	xmlParser -> set_include_default_attributes (false);
 }
 
 void

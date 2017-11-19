@@ -10,8 +10,9 @@ META "created" "Sat, 11 Nov 2017 10:31:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv"
-META "modified" "Sun, 19 Nov 2017 07:11:21 GMT"
+META "modified" "Sun, 19 Nov 2017 13:01:10 GMT"
 META "titania-add-metadata" "true"
+META "titania-output-style" "Nicest"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -296,8 +297,8 @@ DEF NewScript Script {
 
 function initialize ()
 {
-	print (Browser .currentScene .toVRMLString ());
-	print (transform .toVRMLString ());
+	print (Browser .currentScene .toXMLString ());
+	print (transform .toXMLString ());
 
 	// There must be no units applied.
 	print (transform .rotation .angle);

@@ -125,7 +125,7 @@ X3DParser::addRootNode (X3D::SFNode && rootNode)
 void
 X3DParser::setUnits (const std::string & generator)
 {
-	const std::regex version (R"/(Titania\s+V(\d+))/");
+	const std::regex version (R"/(Titania\s+V(\d+).*)/");
 
 	std::smatch match;
 

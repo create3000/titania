@@ -28,7 +28,7 @@
         },
         {
           "@name": "modified",
-          "@content": "Sun, 19 Nov 2017 07:05:51 GMT"
+          "@content": "Sun, 19 Nov 2017 13:01:02 GMT"
         },
         {
           "@name": "titania-add-metadata",
@@ -483,8 +483,8 @@
 "",
 "function initialize ()",
 "{",
-"\tprint (Browser .currentScene .toVRMLString ());",
-"\tprint (transform .toVRMLString ());",
+"\tprint (Browser .currentScene .toXMLString ());",
+"\tprint (transform .toXMLString ());",
 "",
 "\t// There must be no units applied.",
 "\tprint (transform .rotation .angle);",
