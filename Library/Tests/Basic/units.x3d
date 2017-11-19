@@ -7,9 +7,9 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sat, 11 Nov 2017 10:31:22 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V3.1.1, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.0.0, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv'/>
-    <meta name='modified' content='Sat, 11 Nov 2017 12:31:58 GMT'/>
+    <meta name='modified' content='Sun, 19 Nov 2017 07:05:43 GMT'/>
     <meta name='titania-add-metadata' content='true'/>
     <meta name='titania-output-style' content='Nicest'/>
   </head>
@@ -101,11 +101,11 @@
               <MetadataDouble DEF='position_3' containerField='value'
                   name='position'
                   reference='http://titania.create3000.de'
-                  value='5.8850989459338, 8.45585974782039, 13.4818079350415'/>
+                  value='5.79274282060911, 8.66356479102737, 13.3896181648896'/>
               <MetadataDouble DEF='orientation_4' containerField='value'
                   name='orientation'
                   reference='http://titania.create3000.de'
-                  value='0.795239540015634, -0.597085422390731, -0.105276171872864, 5.62704484881688'/>
+                  value='0.801904563148803, -0.585498277354457, -0.118915258970795, 5.61702289686151'/>
               <MetadataDouble DEF='centerOfRotation_5' containerField='value'
                   name='centerOfRotation'
                   reference='http://titania.create3000.de'
@@ -131,7 +131,7 @@
             coordIndex='0, 1, 2, 3, -1, 5, 4, 7, 6, -1, 3, 2, 6, 7, -1, 4, 5, 1, 0, -1, 4, 0, 3, 7, -1, 1, 5, 6, 2, -1'>
           <TextureCoordinate
               point='0 0, 1 0, 1 1, 0 1'/>
-          <Coordinate
+          <Coordinate DEF='_6'
               point='-1000 -1000 1000, 1000 -1000 1000, 1000 1000 1000, -1000 1000 1000, -1000 -1000 -1000, 1000 -1000 -1000, 1000 1000 -1000, -1000 1000 -1000'/>
         </IndexedFaceSet>
       </Shape>
@@ -139,5 +139,27 @@
     <SpotLight
         location='0 0 5000'
         beamWidth='60'/>
+    <Script DEF='NewScript'>
+      <field accessType='initializeOnly' type='SFNode' name='transform'>
+        <Transform USE='Box'/>
+      </field>
+      <field accessType='initializeOnly' type='SFNode' name='coord'>
+        <Coordinate USE='_6'/>
+      </field>
+<![CDATA[ecmascript:
+
+function initialize ()
+{
+	print (Browser .currentScene .toVRMLString ());
+	print (transform .toVRMLString ());
+
+	// There must be no units applied.
+	print (transform .rotation .angle);
+	print (transform .rotation);
+	print (coord .point);
+	print (coord .point [0]);
+}
+]]>
+    </Script>
   </Scene>
 </X3D>

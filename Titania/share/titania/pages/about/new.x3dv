@@ -3,12 +3,13 @@
 PROFILE Full
 
 META "comment" "World of Titania"
-META "created" "Sun, 12 Nov 2017 18:10:42 GMT"
+META "created" "Sun, 12 Nov 2017 22:36:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.0.0, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/new.x3dv"
-META "modified" "Sun, 12 Nov 2017 18:10:57 GMT"
+META "identifier" ""
+META "modified" "Sun, 12 Nov 2017 22:36:28 GMT"
 META "titania-add-metadata" "true"
+META "titania-output-style" "Nicest"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -219,11 +220,4 @@ WorldInfo {
       }
     ]
   }
-}
-
-DEF InitialView Viewpoint {
-  description "Initial View"
-  position 5.87789 6.46985 13.8524
-  orientation -0.704047462871212 0.695566762376517 0.143192350010952 0.568941727555854
-  centerOfRotation -2.35089e-07 2.42392e-07 -1.34569e-08
 }

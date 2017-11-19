@@ -187,9 +187,7 @@ public:
 	       Error <DISPOSED>);
 
 	const Unit &
-	getUnit (const UnitCategory category) const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getUnit (const UnitCategory unit) const;
 	
 	const UnitArray &
 	getUnits () const
@@ -199,12 +197,12 @@ public:
 
 	virtual
 	long double
-	fromUnit (const UnitCategory category, const long double value) const
+	fromUnit (const UnitCategory unit, const long double value) const
 	throw (Error <DISPOSED>) final override;
 
 	virtual
 	long double
-	toUnit (const UnitCategory category, const long double value) const
+	toUnit (const UnitCategory unit, const long double value) const
 	throw (Error <DISPOSED>) final override;
 
 	const SFTime &

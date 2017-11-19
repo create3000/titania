@@ -1,11 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp">
     <Files>
       <File FileName="Library/Tests/Basic/units.x3dv" Line="1" Column="1" />
       <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="327" Column="1" />
-      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp" Line="362" Column="47" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/MFStringGeoSystem.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp" Line="76" Column="29" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment3.h" Line="383" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="126" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

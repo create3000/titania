@@ -93,17 +93,6 @@ protected:
 	save (std::istream & istream, const std::string & suffix)
 	throw (Error <INVALID_X3D>);
 
-	void
-	setUnits (const std::string & generator);
-
-	void
-	setUnits (const bool value)
-	{ units = value; }
-
-	bool
-	getUnits () const
-	{ return units; }
-
 	long double
 	fromUnit (const UnitCategory unit, long double value) const;
 
@@ -125,6 +114,17 @@ protected:
 	void
 	addRootNode (X3D::SFNode && rootNode);
 
+	void
+	setUnits (const std::string & generator);
+
+	void
+	setUnits (const bool value)
+	{ units = value; }
+
+	bool
+	getUnits () const
+	{ return units; }
+
 
 private:
 
@@ -134,8 +134,8 @@ private:
 
 	///  @name Members
 
-	bool                  units;
 	ExecutionContextStack executionContextStack;
+	bool                  units;
 
 };
 

@@ -120,7 +120,6 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "height",          height ());
 
 	geoGridOrigin () .setUnit (UnitCategory::LENGTH);
-	yScale ()        .setUnit (UnitCategory::LENGTH);
 	//xSpacing ()      .setUnit (???); // degree, or utm, set dynamically if geosystem changes
 	//zSpacing ()      .setUnit (???); // degree, or utm, set dynamically if geosystem changes
 	creaseAngle ()   .setUnit (UnitCategory::ANGLE);

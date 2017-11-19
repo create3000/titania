@@ -20,15 +20,15 @@
         },
         {
           "@name": "generator",
-          "@content": "Titania V3.1.1, http://titania.create3000.de"
+          "@content": "Titania V4.0.0, http://titania.create3000.de"
         },
         {
           "@name": "identifier",
-          "@content": "file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3d"
+          "@content": "file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv"
         },
         {
           "@name": "modified",
-          "@content": "Sat, 11 Nov 2017 10:39:43 GMT"
+          "@content": "Sun, 19 Nov 2017 07:05:51 GMT"
         },
         {
           "@name": "titania-add-metadata",
@@ -274,9 +274,9 @@
                                         "@name": "position",
                                         "@reference": "http://titania.create3000.de",
                                         "@value": [
-                                          5.8850989459338,
-                                          8.45585974782039,
-                                          13.4818079350415
+                                          5.79274282060911,
+                                          8.66356479102737,
+                                          13.3896181648896
                                         ]
                                       }
                                     },
@@ -286,10 +286,10 @@
                                         "@name": "orientation",
                                         "@reference": "http://titania.create3000.de",
                                         "@value": [
-                                          0.795239540015634,
-                                          -0.597085422390731,
-                                          -0.105276171872864,
-                                          5.62704484881688
+                                          0.801904563148803,
+                                          -0.585498277354457,
+                                          -0.118915258970795,
+                                          5.61702289686151
                                         ]
                                       }
                                     },
@@ -423,6 +423,7 @@
                       },
                       "-coord": { "Coordinate":
                         {
+                          "@DEF": "_6",
                           "@point": [
                             -1000, -1000, 1000,
                             1000, -1000, 1000,
@@ -444,9 +445,54 @@
         },
         { "SpotLight":
           {
-            "@DEF": "_6",
             "@location": [ 0, 0, 5000 ],
             "@beamWidth": 60
+          }
+        },
+        { "Script":
+          {
+            "@DEF": "NewScript",
+            "field": [
+              {
+                "@accessType": "initializeOnly",
+                "@type": "SFNode",
+                "@name": "transform",
+                "-children": [
+                  { "Transform":
+                    {
+                      "@USE": "Box"
+                    }
+                  }
+                ]
+              },
+              {
+                "@accessType": "initializeOnly",
+                "@type": "SFNode",
+                "@name": "coord",
+                "-children": [
+                  { "Coordinate":
+                    {
+                      "@USE": "_6"
+                    }
+                  }
+                ]
+              }
+            ],
+            "#sourceText": [
+"ecmascript:",
+"",
+"function initialize ()",
+"{",
+"\tprint (Browser .currentScene .toVRMLString ());",
+"\tprint (transform .toVRMLString ());",
+"",
+"\t// There must be no units applied.",
+"\tprint (transform .rotation .angle);",
+"\tprint (transform .rotation);",
+"\tprint (coord .point);",
+"\tprint (coord .point [0]);",
+"}"
+            ]
           }
         }
       ]

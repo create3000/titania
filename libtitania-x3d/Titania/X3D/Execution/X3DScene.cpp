@@ -196,9 +196,9 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto & unitCategory = unitCategories .at (category);
+		const auto & unit = unitCategories .at (category);
 
-		units [size_t (unitCategory)] = Unit (category, name, conversionFactor);
+		units [size_t (unit)] = Unit (category, name, conversionFactor);
 
 		unitsOutput = getCurrentTime ();
 	}
@@ -209,18 +209,23 @@ throw (Error <INVALID_NAME>,
 }
 
 const Unit &
-X3DScene::getUnit (const UnitCategory category) const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DScene::getUnit (const UnitCategory unit) const
 {
-	return units [size_t (category)];
+	try
+	{
+		return units .at (size_t (unit));
+	}
+	catch (const std::out_of_range &)
+	{
+		throw Error <INVALID_NAME> ("X3DScene::getUnit: invalid unit category.");
+	}
 }
 
 long double
-X3DScene::fromUnit (const UnitCategory category, const long double value) const
+X3DScene::fromUnit (const UnitCategory unit, const long double value) const
 throw (Error <DISPOSED>)
 {
-	switch (category)
+	switch (unit)
 	{
 	   case UnitCategory::NONE:
 			return value;
@@ -230,7 +235,7 @@ throw (Error <DISPOSED>)
 	   case UnitCategory::FORCE:
 	   case UnitCategory::LENGTH:
 	   case UnitCategory::MASS:
-			return value * getUnit (category) .getConversionFactor ();
+			return value * getUnit (unit) .getConversionFactor ();
 	
 		// Derived units
 		case UnitCategory::ACCELERATION:
@@ -249,10 +254,10 @@ throw (Error <DISPOSED>)
 }
 
 long double
-X3DScene::toUnit (const UnitCategory category, const long double value) const
+X3DScene::toUnit (const UnitCategory unit, const long double value) const
 throw (Error <DISPOSED>)
 {
-	switch (category)
+	switch (unit)
 	{
 	   case UnitCategory::NONE:
 			return value;
@@ -262,7 +267,7 @@ throw (Error <DISPOSED>)
 	   case UnitCategory::FORCE:
 	   case UnitCategory::LENGTH:
 	   case UnitCategory::MASS:
-			return value / getUnit (category) .getConversionFactor ();
+			return value / getUnit (unit) .getConversionFactor ();
 	
 		// Derived units
 		case UnitCategory::ACCELERATION:
