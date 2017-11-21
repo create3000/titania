@@ -28,7 +28,7 @@
         },
         {
           "@name": "modified",
-          "@content": "Sun, 19 Nov 2017 13:01:02 GMT"
+          "@content": "Sun, 19 Nov 2017 13:38:05 GMT"
         },
         {
           "@name": "titania-add-metadata",
@@ -446,6 +446,7 @@
         { "SpotLight":
           {
             "@location": [ 0, 0, 5000 ],
+            "@radius": 200000,
             "@beamWidth": 60
           }
         },

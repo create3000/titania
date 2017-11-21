@@ -2,12 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/units.x3dv">
     <Files>
-      <File FileName="Library/Tests/Basic/units.x3dv" Line="1" Column="1" />
+      <File FileName="Library/Tests/Basic/units.x3dv" Line="299" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DBoundedObject.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Transform.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DTransformNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/XMLParser.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/X3DParser.cpp" Line="1" Column="1" />
+      <File FileName="Library/Tests/Basic/units.x3d" Line="161" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

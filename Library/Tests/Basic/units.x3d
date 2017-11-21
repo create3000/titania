@@ -9,7 +9,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.0, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Basic/units.x3dv'/>
-    <meta name='modified' content='Sun, 19 Nov 2017 13:05:53 GMT'/>
+    <meta name='modified' content='Sun, 19 Nov 2017 13:37:56 GMT'/>
     <meta name='titania-add-metadata' content='true'/>
     <meta name='titania-output-style' content='Nicest'/>
   </head>
@@ -138,6 +138,7 @@
     </Transform>
     <SpotLight
         location='0 0 5000'
+        radius='200000'
         beamWidth='60'/>
     <Script DEF='NewScript'>
       <field accessType='initializeOnly' type='SFNode' name='transform'>

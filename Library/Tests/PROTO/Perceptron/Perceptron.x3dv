@@ -1,77 +1,116 @@
-#VRML V2.0 utf8 Titania 0.1
+#X3D V3.3 utf8 Titania V4.0.0
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Sun, 19 Nov 2017 16:46:19 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/PROTO/Perceptron/Perceptron.x3dv"
+META "modified" "Sun, 19 Nov 2017 17:00:24 GMT"
 
 EXTERNPROTO Button [
-  exposedField SFBool enabled
-  eventOut     SFBool isOver
-  eventOut     SFBool isActive
-  eventOut     SFTime touchTime
-  eventIn      MFNode addChildren
-  eventIn      MFNode removeChildren
-  exposedField MFNode children
+  inputOutput    SFBool   enabled
+  inputOutput    SFString description
+  outputOnly     SFBool   isOver
+  outputOnly     SFBool   isActive
+  outputOnly     SFTime   touchTime
+  initializeOnly SFVec3f  bboxSize
+  initializeOnly SFVec3f  bboxCenter
+  inputOnly      MFNode   addChildren
+  inputOnly      MFNode   removeChildren
+  inputOutput    MFNode   children
 ]
-"/home/holger/Projekte/Library/Prototypes/0/Button/Button/Button.x3dv"
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/Button.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/Button.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/Button.x3d"
+]
 
 EXTERNPROTO CheckButton [
-  exposedField SFBool enabled
-  eventOut     SFBool isActive
-  eventOut     SFTime enterTime
-  eventOut     SFTime exitTime
-  eventIn      MFNode addChildren
-  eventIn      MFNode removeChildren
-  exposedField MFNode children
+  inputOutput    SFBool  enabled
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  enterTime
+  outputOnly     SFTime  exitTime
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
 ]
-"/home/holger/Projekte/Library/Prototypes/0/Button/CheckButton/CheckButton.x3dv"
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/CheckButton.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/CheckButton.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Widgets/CheckButton.x3d"
+]
 
 EXTERNPROTO SFBool [
-  eventIn SFTime set_triggerTime
-  exposedField SFBool keyValue
-  eventOut     SFBool value_changed
+  inputOnly   SFTime set_triggerTime
+  inputOutput SFBool keyValue
+  outputOnly  SFBool value_changed
 ]
-"/home/holger/Projekte/Library/Prototypes/0/Fields/SFBool/SFBool.x3dv"
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFBool.x3d"
+]
 
 EXTERNPROTO SFFloat [
-  eventIn SFTime  set_triggerTime
-  exposedField SFFloat keyValue
-  eventOut     SFFloat value_changed
+  inputOnly   SFTime  set_triggerTime
+  inputOutput SFFloat keyValue
+  outputOnly  SFFloat value_changed
 ]
-"/home/holger/Projekte/Library/Prototypes/0/Fields/SFFloat/SFFloat.x3dv"
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFFloat.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFFloat.x3d",
+  "https://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFFloat.x3d",
+  "http://rawgit.com/create3000/Library/1.0.3/Prototypes/Fields/SFFloat.x3d"
+]
 
 EXTERNPROTO SFFloatConverter [
-  eventOut     SFFloat value_changed
-  exposedField MFNode  children
+  outputOnly  SFFloat value_changed
+  inputOutput MFNode  children
 ]
-"/home/holger/Projekte/Library/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrl"
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrl",
+  "http://cdn.rawgit.com/create3000/Library/1.0.0/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrld",
+  "https://rawgit.com/create3000/Library/1.0.0/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrl",
+  "http://rawgit.com/create3000/Library/1.0.0/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrld"
+]
 
 PROTO Perceptron [
-  eventIn      SFFloat set_value
-  exposedField SFFloat learningFactor 0.5
-  eventOut     SFFloat keyValue_changed
-  exposedField MFFloat weight [ ]
-  exposedField MFNode  children [ ]
+  inputOnly   SFFloat set_value
+  inputOutput SFFloat learningFactor 0.5
+  outputOnly  SFFloat keyValue_changed
+  inputOutput MFFloat weight [ ]
+  inputOutput MFNode  children [ ]
 ]
 {
   PROTO Fields [
-    exposedField MFFloat weight [ ]
-    exposedField MFNode  children [ ]
+    inputOutput MFFloat weight [ ]
+    inputOutput MFNode  children [ ]
   ]
   {
     Group { }
   }
 
   DEF Perceptron Script {
-    eventIn      SFFloat set_value IS set_value
-    eventIn      SFFloat set_keyValue
-    eventIn      MFFloat set_weight
-    eventIn      MFNode  set_children
-    eventOut     SFFloat keyValue_changed IS keyValue_changed
-    exposedField SFFloat learningFactor IS learningFactor
-    field        MFFloat weight [ ]
-    field        MFNode  children [ ]
-    field        SFNode  fields DEF Fields Fields {
+    inputOnly      SFFloat set_value IS set_value
+    inputOnly      SFFloat set_keyValue
+    inputOnly      MFFloat set_weight
+    inputOnly      MFNode  set_children
+    outputOnly     SFFloat keyValue_changed IS keyValue_changed
+    inputOutput    SFFloat learningFactor IS learningFactor
+    initializeOnly MFFloat weight [ ]
+    initializeOnly MFNode  children [ ]
+    initializeOnly SFNode  fields DEF Fields Fields {
       weight IS weight
       children IS children
     }
-    field        SFNode  self USE Perceptron
+    initializeOnly SFNode  self USE Perceptron
 
     url "vrmlscript:
 function initialize ()
@@ -127,9 +166,9 @@ function set_children (value)
 
 DEF A_Button CheckButton {
   children [
-    Button {
+    DEF _1 Button {
       children [
-        DEF _0 Transform {
+        DEF _2 Transform {
           translation -2.5 0 0
           children DEF Default Shape {
             appearance Appearance {
@@ -138,13 +177,13 @@ DEF A_Button CheckButton {
             geometry Box { }
           }
         }
-        USE _0
-        USE _0
+        USE _2
+        USE _2
       ]
     }
-    Button {
+    DEF _3 Button {
       children [
-        DEF _1 Transform {
+        DEF _4 Transform {
           translation -2.5 0 0
           children DEF Active Shape {
             appearance Appearance {
@@ -155,8 +194,8 @@ DEF A_Button CheckButton {
             geometry Box { }
           }
         }
-        USE _1
-        USE _1
+        USE _4
+        USE _4
       ]
     }
   ]
@@ -164,22 +203,22 @@ DEF A_Button CheckButton {
 
 DEF B_Button CheckButton {
   children [
-    Button {
+    DEF _5 Button {
       children [
-        DEF _2 Transform {
+        DEF _6 Transform {
           children USE Default
         }
-        USE _2
-        USE _2
+        USE _6
+        USE _6
       ]
     }
-    Button {
+    DEF _7 Button {
       children [
-        DEF _3 Transform {
+        DEF _8 Transform {
           children USE Active
         }
-        USE _3
-        USE _3
+        USE _8
+        USE _8
       ]
     }
   ]
@@ -187,24 +226,24 @@ DEF B_Button CheckButton {
 
 DEF ResultButton CheckButton {
   children [
-    Button {
+    DEF _9 Button {
       children [
-        DEF _4 Transform {
+        DEF _10 Transform {
           translation 2.5 0 0
           children USE Default
         }
-        USE _4
-        USE _4
+        USE _10
+        USE _10
       ]
     }
-    Button {
+    DEF _11 Button {
       children [
-        DEF _5 Transform {
+        DEF _12 Transform {
           translation 2.5 0 0
           children USE Active
         }
-        USE _5
-        USE _5
+        USE _12
+        USE _12
       ]
     }
   ]
@@ -221,26 +260,29 @@ DEF Learn Transform {
   }
 }
 
-DEF _6 SFFloatConverter {
+DEF _13 SFFloatConverter {
   children DEF Input_A SFBool { }
 }
 
-DEF _8 SFFloatConverter {
+DEF _14 SFFloatConverter {
   children DEF Input_B SFBool { }
 }
 
 DEF AND Perceptron {
-  weight [ 0, 0 ]
+  weight [
+    0.75,
+    0.5
+  ]
   children [
-    DEF _10 SFFloat { }
-    DEF _11 SFFloat { }
+    DEF _15 SFFloat { }
+    DEF _16 SFFloat { }
   ]
 }
 
 DEF Level Script {
-  eventIn  SFFloat set_keyValue
-  eventOut SFBool  value_changed
-  field    SFFloat level 0.5
+  inputOnly      SFFloat set_keyValue
+  outputOnly     SFBool  value_changed
+  initializeOnly SFFloat level 0.5
 
   url "vrmlscript:
 function set_keyValue (value)
@@ -252,18 +294,19 @@ function set_keyValue (value)
 
 DEF Result SFBool { }
 
-DEF _12 SFFloatConverter {
-  children DEF _13 SFBool { }
+DEF _17 SFFloatConverter {
+  children DEF _18 SFBool {
+    keyValue TRUE
+  }
 }
 
 ROUTE A_Button.enabled_changed TO Input_A.set_keyValue
 ROUTE B_Button.enabled_changed TO Input_B.set_keyValue
-ROUTE _6.value_changed TO _10.set_keyValue
-ROUTE _8.value_changed TO _11.set_keyValue
 ROUTE AND.keyValue_changed TO Level.set_keyValue
 ROUTE Level.value_changed TO ResultButton.set_enabled
 ROUTE ResultButton.enabled_changed TO Result.set_keyValue
 ROUTE LearnButton.touchTime TO Result.set_triggerTime
-ROUTE Result.value_changed TO _13.set_keyValue
-ROUTE _12.value_changed TO AND.set_value
-ROUTE Learn.translation_changed TO _0.set_translation
+ROUTE Result.value_changed TO _18.set_keyValue
+ROUTE _17.value_changed TO AND.set_value
+ROUTE _13.value_changed TO _15.set_keyValue
+ROUTE _14.value_changed TO _16.set_keyValue

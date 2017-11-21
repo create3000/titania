@@ -329,7 +329,8 @@ NodeIndex::setDisplayProtoNodes (const bool value)
 void
 NodeIndex::setNamedNodes ()
 {
-	executionContext -> sceneGraph_changed () .removeInterest (&NodeIndex::refresh, this);
+	if (executionContext)
+		executionContext -> sceneGraph_changed () .removeInterest (&NodeIndex::refresh, this);
 
 	indexType = NAMED_NODES_INDEX;
 
@@ -339,7 +340,8 @@ NodeIndex::setNamedNodes ()
 void
 NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 {
-	executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
+	if (executionContext)
+		executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
 	indexType = TYPE_INDEX;
 	types     = value;
@@ -350,7 +352,8 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 void
 NodeIndex::setAnimations ()
 {
-	executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
+	if (executionContext)
+		executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
 	indexType = ANIMATION_INDEX;
 
@@ -360,7 +363,8 @@ NodeIndex::setAnimations ()
 void
 NodeIndex::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
 {
-	executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
+	if (executionContext)
+		executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
 	protoNode = value;
 	indexType = PROTO_INDEX;
