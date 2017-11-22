@@ -10,7 +10,7 @@
     <meta name='generator' content='Titania V4.0.0, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/RigidBodyPhysics/Ball.x3d'/>
     <meta name='license' content='../license.html'/>
-    <meta name='modified' content='Wed, 22 Nov 2017 06:08:28 GMT'/>
+    <meta name='modified' content='Wed, 22 Nov 2017 10:43:46 GMT'/>
     <meta name='reference' content='http://www.xj3d.org/extensions/index.html#Physics'/>
     <meta name='reference' content='originals/ball_bounce.x3dv'/>
     <meta name='reference' content='http://www.web3d.org/x3d/specifications/ISO-IEC-FDIS-19775-1.2-X3D-AbstractSpecification/Part01/components/rigid_physics.html'/>
@@ -52,19 +52,7 @@
               value='false'/>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'>
-            <DirectionalLight DEF='_1' containerField='value'
-                direction='-0.333952 -0.752192 -0.568052'>
-              <MetadataSet DEF='DirectionalLight'
-                  name='DirectionalLight'
-                  reference='http://titania.create3000.de'>
-                <MetadataFloat DEF='location' containerField='value'
-                    name='location'
-                    reference='http://titania.create3000.de'
-                    value='0, 2.27923, 0'/>
-              </MetadataSet>
-            </DirectionalLight>
-          </MetadataSet>
+              reference='http://titania.create3000.de'/>
         </MetadataSet>
         <MetadataSet DEF='BrowserPanel' containerField='value'
             name='BrowserPanel'
@@ -99,19 +87,19 @@
             <MetadataSet DEF='RightViewpoint' containerField='value'
                 name='RightViewpoint'
                 reference='http://titania.create3000.de'>
-              <MetadataDouble DEF='position_2' containerField='value'
+              <MetadataDouble DEF='position_1' containerField='value'
                   name='position'
                   reference='http://titania.create3000.de'
                   value='10000, 0.758800919677031, -0.163593061870808'/>
-              <MetadataDouble DEF='orientation_3' containerField='value'
+              <MetadataDouble DEF='orientation_2' containerField='value'
                   name='orientation'
                   reference='http://titania.create3000.de'
                   value='0, 1, 0, 1.5707963267949'/>
-              <MetadataDouble DEF='centerOfRotation_4' containerField='value'
+              <MetadataDouble DEF='centerOfRotation_3' containerField='value'
                   name='centerOfRotation'
                   reference='http://titania.create3000.de'
                   value='0, 0.758800919677031, -0.163593061870808'/>
-              <MetadataDouble DEF='fieldOfViewScale_5' containerField='value'
+              <MetadataDouble DEF='fieldOfViewScale_4' containerField='value'
                   name='fieldOfViewScale'
                   reference='http://titania.create3000.de'
                   value='0.418120335219177'/>
@@ -128,13 +116,23 @@
     <NavigationInfo
         headlight='false'/>
     <Viewpoint
-        position='0.575709 4.08243 9.59792'
-        orientation='-0.968076681577428 0.243713937730696 0.0585752092769047 0.486698971048178'
-        centerOfRotation='-0.533583 -0.61114 0.464807'/>
-    <DirectionalLight USE='_1'/>
+        position='1.10696 4.21881 9.93518'
+        orientation='-0.968076678053831 0.243713944540765 0.0585752391769834 0.486698971924329'
+        centerOfRotation='-0.0471507 -0.664379 0.433086'/>
+    <DirectionalLight DEF='_5'
+        direction='-0.333952 -0.752192 -0.568052'>
+      <MetadataSet DEF='DirectionalLight'
+          name='DirectionalLight'
+          reference='http://titania.create3000.de'>
+        <MetadataFloat DEF='location' containerField='value'
+            name='location'
+            reference='http://titania.create3000.de'
+            value='0, 2.27923, 0'/>
+      </MetadataSet>
+    </DirectionalLight>
     <Group>
       <CollidableShape DEF='Ball'
-          translation='1.86121 -1158.77 -0.156871'>
+          translation='3.15104 -121.617 0.145246'>
         <Shape containerField='shape'>
           <Appearance>
             <ImageTexture
@@ -164,8 +162,8 @@
     <RigidBodyCollection DEF='_6'
         gravity='0 -1 0'>
       <RigidBody DEF='_7'
-          position='1.86121 -1158.77 -0.156871'
-          linearVelocity='7.00649e-44 -2.09648 -7.00649e-44'
+          position='3.15104 -121.617 0.145246'
+          linearVelocity='1.06642e-08 -2.53406 6.204e-10'
           finiteRotationAxis='0 1 0'
           autoDamp='true'
           linearDampingFactor='0.01'>

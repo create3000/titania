@@ -422,7 +422,11 @@ Selection::selectNode (X3DBrowser* const browser)
 	// Get selected node.
 
 	const auto & nearestHit = browser -> getNearestHit ();
-	const auto   node       = getSelection (nearestHit -> hierarchy);
+
+	if (not nearestHit -> sensors .empty ())
+		return false;
+
+	const auto node = getSelection (nearestHit -> hierarchy);
 
 	// Select node or remove from selection.
 
