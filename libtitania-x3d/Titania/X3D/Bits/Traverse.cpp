@@ -157,19 +157,21 @@ traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags,
 	{
 		switch (type)
 		{
-			case X3DConstants::X3DMetadataObject:
-			{
-				if (flags & TRAVERSE_META_DATA)
-					break;
-
-				return true;
-			}
+			case X3DConstants::RigidBody:
+			case X3DConstants::RigidBodyCollection:
 			case X3DConstants::Script:
 			{
 				if (flags & TRAVERSE_VISIBLE_NODES)
 					return true;
 
 				break;
+			}
+			case X3DConstants::X3DMetadataObject:
+			{
+				if (flags & TRAVERSE_META_DATA)
+					break;
+
+				return true;
 			}
 			default:
 				continue;
@@ -486,19 +488,21 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 	{
 		switch (type)
 		{
-			case X3DConstants::X3DMetadataObject:
-			{
-				if (flags & TRAVERSE_META_DATA)
-					break;
-
-				return;
-			}
+			case X3DConstants::RigidBody:
+			case X3DConstants::RigidBodyCollection:
 			case X3DConstants::Script:
 			{
 				if (flags & TRAVERSE_VISIBLE_NODES)
 					return;
 
 				break;
+			}
+			case X3DConstants::X3DMetadataObject:
+			{
+				if (flags & TRAVERSE_META_DATA)
+					break;
+
+				return;
 			}
 			default:
 				continue;

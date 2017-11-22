@@ -207,7 +207,7 @@ private:
 	getLowest (const MFNode & nodes) const;
 
 	SFNode
-	getTransform (const MFNode & hierarchy) const;
+	getSelection (const MFNode & hierarchy) const;
 
 	Hierarchies
 	findNode (const SFNode & node) const;

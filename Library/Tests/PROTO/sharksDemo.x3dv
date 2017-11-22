@@ -1,0 +1,311 @@
+#X3D V3.3 utf8 Titania V4.0.0
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Tue, 21 Nov 2017 06:38:42 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.0.0, http://titania.create3000.de"
+META "identifier" "http://accad.osu.edu/~mlewis/VRML/Class/w6/behave/sharksDemo.wrl"
+META "modified" "Tue, 21 Nov 2017 06:38:42 GMT"
+META "titania-output-style" "Nicest"
+
+PROTO AvoidConeChaser [
+  initializeOnly SFVec3f position 0 0 0
+  initializeOnly SFVec3f goal 0 0 0
+  initializeOnly SFFloat speed 1
+  initializeOnly MFVec3f obstacles [ ]
+  initializeOnly SFInt32 index 0
+  initializeOnly SFVec3f direction 0 0 1
+  initializeOnly SFVec3f scale 1 1 1
+  initializeOnly SFFloat turnLimit 1
+  # radians per second
+  inputOnly      SFVec3f set_goal
+  inputOnly      MFVec3f obstacles_changed
+  outputOnly     MFFloat report_position
+]
+{
+  Group {
+    children [
+      DEF MOVEME Transform {
+        translation IS position
+        children Transform {
+          translation 0 0 -0.25
+          rotation 1 0 0 1.57
+          scale IS scale
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Cone { }
+          }
+        }
+      }
+      DEF HEART TimeSensor {
+        loop TRUE
+      }
+      # update direction and position when receive "heartbeats"
+      DEF SCRIPT Script {
+        inputOnly      SFTime     beat
+        inputOnly      SFVec3f    set_goal IS set_goal
+        inputOnly      MFVec3f    obstacles_changed IS obstacles_changed
+        outputOnly     SFVec3f    position_changed
+        outputOnly     SFRotation rotation_changed
+        # update own rotation
+        outputOnly     MFFloat    report_position IS report_position
+        initializeOnly SFInt32    index IS index
+        initializeOnly SFVec3f    direction IS direction
+        initializeOnly SFVec3f    position IS position
+        initializeOnly SFVec3f    goal IS goal
+        initializeOnly SFFloat    speed IS speed
+        initializeOnly SFTime     lastBeat 0
+        initializeOnly MFVec3f    obstacles IS obstacles
+        initializeOnly SFFloat    repulse 10
+        initializeOnly SFFloat    attract 2
+        initializeOnly SFFloat    power 2
+        initializeOnly SFFloat    rotation 0
+        initializeOnly SFFloat    turnLimit IS turnLimit
+        # max radians per second
+        initializeOnly SFFloat    changeAngle 0
+        # desired amount to rotate by
+        initializeOnly SFFloat    twopi 6.2832
+        # so don't keep recalculating
+        initializeOnly SFBool     first TRUE
+
+        url "vrmlscript:
+
+// clamp val between min and max numbers
+function clamp(val, min, max) {
+   if(val<min) return min;
+   else if(val > max) return max;
+   else return val;
+}
+
+function repulseForce(obstacle) {
+   v = position.subtract(obstacle);
+   ods = repulse * 1/Math.pow(v.length(), power);
+   return v.normalize().multiply(ods);
+}
+
+// Every so often, a script node's eventsProcessed function is called
+// after a few events have been received.  Complicated calculations should
+// go here.  In this case, calculating the new direction we should be
+// travelling.
+function eventsProcessed() {
+   // OLD:   desiredDirection = goal.subtract(position).normalize();
+   // NEW:
+   // compute force of attraction towards goal ('Go G-Force!')
+   gforce = goal.subtract(position).normalize().multiply(attract);
+
+   // compute repulsive force away from obstacles
+   rforce = new SFVec3f(0,0,0);
+   for(i=0; i<obstacles.length; i++) {
+      if(i!=index) {
+	 r = repulseForce(obstacles[i]);
+	 rforce = rforce.add(r);
+      }
+   }
+   force = gforce.add(rforce);
+   desiredDirection = force.normalize();
+
+   // calc rotation from z to be going in desiredDirection
+   a = new SFVec3f(0, 0, 1);
+   b = desiredDirection;
+   adb = a.dot(b);
+   desiredRotation = Math.acos(a.dot(b));
+   if(b.x < 0) desiredRotation = twopi - desiredRotation;
+
+   // calc angle we need to change to reach desiredRotation
+   desiredAngle = desiredRotation - rotation;
+   if(desiredAngle > Math.PI) desiredAngle += -twopi;
+   else if(desiredAngle < -Math.PI) desiredAngle += twopi;
+
+   // clamp the angle to our turnLimit to slow turn
+   changeAngle = clamp(desiredAngle, -turnLimit, turnLimit);
+}
+
+function calcDirection(t) {
+   // update direction and rotation
+   maxAngleThisBeat = turnLimit * t;
+   angle = clamp(changeAngle, -maxAngleThisBeat, maxAngleThisBeat);
+   rotation += angle;
+   if (rotation < 0) rotation = rotation + twopi;
+   if (rotation > twopi) rotation = rotation - twopi;
+   r = new SFRotation(0, 1, 0, rotation);
+   rotation_changed = r;
+   x = Math.round(direction.x * 10) / 10;
+   y = Math.round(direction.y * 10) / 10;
+   z = Math.round(direction.z * 10) / 10;
+   direction = r.multVec(new SFVec3f(0, 0, 1));
+}
+
+function set_goal(val) {
+   goal = val;
+}
+
+function beat(val) {
+   if(first) { // initialize lastBeat on first heartbeat
+      first = FALSE;
+   }
+   else {
+      timeElapsed = val - lastBeat;
+      calcDirection(timeElapsed);
+      position = position.add(direction.multiply(speed*timeElapsed));
+      position_changed = position;
+      report_position = new MFFloat(index, position.x, position.y, position.z);
+   }
+   lastBeat = val;
+}
+
+function obstacles_changed(val) {
+   obstacles = val;
+}
+
+"
+      }
+    ]
+  }
+
+  ROUTE HEART.time TO SCRIPT.beat
+  ROUTE SCRIPT.position_changed TO MOVEME.set_translation
+  ROUTE SCRIPT.rotation_changed TO MOVEME.set_rotation
+}
+
+PROTO TouchFloor [
+  initializeOnly SFVec3f scale 1 1 1
+  initializeOnly SFColor color 0.2 0.2 0.2
+  outputOnly     SFVec3f hitPoint_changed
+]
+{
+  Transform {
+    children [
+      DEF TOUCH TouchSensor {
+        hitPoint_changed IS hitPoint_changed
+      }
+      Transform {
+        scale IS scale
+        children DEF FLOOR Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor IS color
+            }
+          }
+          geometry IndexedFaceSet {
+            coordIndex [
+              0,
+              1,
+              2,
+              3
+            ]
+            coord Coordinate {
+              point [
+                1 0 1,
+                1 0 -1,
+                -1 0 -1,
+                -1 0 1
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+NavigationInfo {
+  type "EXAMINE"
+}
+
+Viewpoint {
+  position 0 10 10
+  orientation 1 0 0 5.48318530717959
+}
+
+DEF TOUCH_1 TouchFloor {
+  scale 10 1 10
+  color 0.1 0.1 0.5
+}
+
+DEF CHASER0 AvoidConeChaser {
+  position 5 0 -3
+  speed 1.75
+  scale 0.1 0.25 0.75
+  turnLimit 0.75
+}
+
+DEF CHASER1 AvoidConeChaser {
+  position -5 0 -5
+  speed 1.25
+  index 1
+  scale 0.1 0.25 0.75
+}
+
+DEF CHASER2 AvoidConeChaser {
+  position -5 0 4
+  speed 1.5
+  index 2
+  scale 0.1 0.25 0.75
+  turnLimit 0.75
+}
+
+DEF CHASER3 AvoidConeChaser {
+  position -3 0 4
+  index 3
+  scale 0.1 0.25 0.75
+}
+
+DEF CHASER4 AvoidConeChaser {
+  position 3 0 1
+  speed 2
+  index 4
+  scale 0.1 0.25 0.75
+  turnLimit 0.5
+}
+
+DEF SCRIPT_2 Script {
+  inputOnly      SFTime  beat
+  inputOnly      MFFloat update_position
+  outputOnly     MFVec3f chasers_moved
+  initializeOnly MFVec3f chaserPositions [
+    -4.95122 0 -1.77579,
+    -0.784498 0 0.358298,
+    -6.25604 0 5.0344,
+    -0.83054 0 0.979232,
+    4.42106 0 11.451
+  ]
+  initializeOnly SFInt32 numChasers 5
+
+  url "vrmlscript:
+
+function initialize() {
+   chaserPositions = new MFVec3f();
+}
+
+function update_position(val) {
+   i = val[0];
+   x = val[1];  y = val[2];  z = val[3];
+   chaserPositions[i] = new SFVec3f(x, y, z);
+}
+
+function beat(val) {
+   chasers_moved = chaserPositions;
+}
+
+"
+}
+
+DEF SIMCLOCK TimeSensor {
+  loop TRUE
+}
+
+ROUTE CHASER0.report_position TO SCRIPT_2.update_position
+ROUTE CHASER1.report_position TO SCRIPT_2.update_position
+ROUTE CHASER2.report_position TO SCRIPT_2.update_position
+ROUTE CHASER3.report_position TO SCRIPT_2.update_position
+ROUTE CHASER4.report_position TO SCRIPT_2.update_position
+ROUTE SIMCLOCK.time TO SCRIPT_2.beat
+ROUTE SCRIPT_2.chasers_moved TO CHASER0.obstacles_changed
+ROUTE SCRIPT_2.chasers_moved TO CHASER1.obstacles_changed
+ROUTE SCRIPT_2.chasers_moved TO CHASER2.obstacles_changed
+ROUTE SCRIPT_2.chasers_moved TO CHASER3.obstacles_changed
+ROUTE SCRIPT_2.chasers_moved TO CHASER4.obstacles_changed

@@ -422,11 +422,7 @@ Selection::selectNode (X3DBrowser* const browser)
 	// Get selected node.
 
 	const auto & nearestHit = browser -> getNearestHit ();
-
-	if (nearestHit -> shape -> getExecutionContext () -> getPrivate ())
-		return false;
-
-	const auto node = getTransform (nearestHit -> hierarchy);
+	const auto   node       = getSelection (nearestHit -> hierarchy);
 
 	// Select node or remove from selection.
 
@@ -574,7 +570,7 @@ Selection::getLowest (const MFNode & nodes) const
 }
 
 SFNode
-Selection::getTransform (const MFNode & hierarchy) const
+Selection::getSelection (const MFNode & hierarchy) const
 {
 	static const NodeTypeSet geometryTypes = {
 		X3DConstants::X3DGeometryNode,
@@ -609,6 +605,9 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
 				return SFNode (executionContext);
 
+			if (executionContext -> getPrivate ())
+				continue;
+
 			if (lowest -> isType (geometryTypes))
 				continue;
 
@@ -632,6 +631,9 @@ Selection::getTransform (const MFNode & hierarchy) const
 
 			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
 				return SFNode (executionContext);
+
+			if (executionContext -> getPrivate ())
+				continue;
 
 			if (highest -> isType (highestTypes))
 				return highest;
