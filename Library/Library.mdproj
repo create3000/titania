@@ -704,6 +704,7 @@
     <None Include="Tests\Basic\units.json" />
     <None Include="Tests\Basic\units.x3dv" />
     <None Include="Tests\PROTO\sharksDemo.x3dv" />
+    <None Include="Tests\RigidBodyPhysics\pattern.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
