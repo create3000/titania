@@ -148,8 +148,8 @@ X3DUserInterface::on_initialize ()
 
 	connectFocusEvent (getWidget ());
 
-	set_fullscreen (isFullscreen ());
 	configure ();
+	set_fullscreen (isFullscreen ());
 
 	initialize ();
 
