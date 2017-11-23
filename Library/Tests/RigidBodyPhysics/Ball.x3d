@@ -7,10 +7,10 @@
     <meta name='created' content='1 January 2008'/>
     <meta name='creator' content='Alan Hudson and Justin Couch'/>
     <meta name='description' content='Example scene for RigidBodyPhysics component'/>
-    <meta name='generator' content='Titania V4.0.0, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.0.1, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/RigidBodyPhysics/Ball.x3d'/>
     <meta name='license' content='../license.html'/>
-    <meta name='modified' content='Wed, 22 Nov 2017 10:43:46 GMT'/>
+    <meta name='modified' content='Wed, 22 Nov 2017 14:14:02 GMT'/>
     <meta name='reference' content='http://www.xj3d.org/extensions/index.html#Physics'/>
     <meta name='reference' content='originals/ball_bounce.x3dv'/>
     <meta name='reference' content='http://www.web3d.org/x3d/specifications/ISO-IEC-FDIS-19775-1.2-X3D-AbstractSpecification/Part01/components/rigid_physics.html'/>
@@ -70,7 +70,7 @@
               <MetadataDouble DEF='position' containerField='value'
                   name='position'
                   reference='http://titania.create3000.de'
-                  value='0.649794561270828, 0.791997800641926, 10000'/>
+                  value='-0.0483974122486793, 0.783699473200821, 10000'/>
               <MetadataDouble DEF='orientation' containerField='value'
                   name='orientation'
                   reference='http://titania.create3000.de'
@@ -78,11 +78,11 @@
               <MetadataDouble DEF='centerOfRotation' containerField='value'
                   name='centerOfRotation'
                   reference='http://titania.create3000.de'
-                  value='0.649794561270828, 0.791997800641926, 0'/>
+                  value='-0.0483974122486793, 0.783699473200821, 0'/>
               <MetadataDouble DEF='fieldOfViewScale' containerField='value'
                   name='fieldOfViewScale'
                   reference='http://titania.create3000.de'
-                  value='0.418120335219177'/>
+                  value='0.481609445458766'/>
             </MetadataSet>
             <MetadataSet DEF='RightViewpoint' containerField='value'
                 name='RightViewpoint'
@@ -90,7 +90,7 @@
               <MetadataDouble DEF='position_1' containerField='value'
                   name='position'
                   reference='http://titania.create3000.de'
-                  value='10000, 0.758800919677031, -0.163593061870808'/>
+                  value='10000, 0.835422415145837, -0.255489969196878'/>
               <MetadataDouble DEF='orientation_2' containerField='value'
                   name='orientation'
                   reference='http://titania.create3000.de'
@@ -98,11 +98,100 @@
               <MetadataDouble DEF='centerOfRotation_3' containerField='value'
                   name='centerOfRotation'
                   reference='http://titania.create3000.de'
-                  value='0, 0.758800919677031, -0.163593061870808'/>
+                  value='0, 0.835422415145837, -0.255489969196878'/>
               <MetadataDouble DEF='fieldOfViewScale_4' containerField='value'
                   name='fieldOfViewScale'
                   reference='http://titania.create3000.de'
-                  value='0.418120335219177'/>
+                  value='0.513342083279505'/>
+            </MetadataSet>
+            <MetadataSet DEF='TopViewpoint' containerField='value'
+                name='TopViewpoint'
+                reference='http://titania.create3000.de'>
+              <MetadataDouble DEF='position_5' containerField='value'
+                  name='position'
+                  reference='http://titania.create3000.de'
+                  value='-0.12322520380435, 10000, 0.0600833616394929'/>
+              <MetadataDouble DEF='orientation_6' containerField='value'
+                  name='orientation'
+                  reference='http://titania.create3000.de'
+                  value='1, 0, 0, 4.71238898038469'/>
+              <MetadataDouble DEF='centerOfRotation_7' containerField='value'
+                  name='centerOfRotation'
+                  reference='http://titania.create3000.de'
+                  value='-0.12322520380435, 0, 0.0600833616394929'/>
+              <MetadataDouble DEF='fieldOfViewScale_8' containerField='value'
+                  name='fieldOfViewScale'
+                  reference='http://titania.create3000.de'
+                  value='1.1025'/>
+            </MetadataSet>
+          </MetadataSet>
+        </MetadataSet>
+        <MetadataSet DEF='RouteGraph' containerField='value'
+            name='RouteGraph'
+            reference='http://titania.create3000.de'>
+          <MetadataSet DEF='pages' containerField='value'
+              name='pages'
+              reference='http://titania.create3000.de'>
+            <MetadataSet DEF='Page0' containerField='value'
+                name='Page0'
+                reference='http://titania.create3000.de'>
+              <MetadataString DEF='pageName' containerField='value'
+                  name='pageName'
+                  reference='http://titania.create3000.de'
+                  value='"Logic"'/>
+              <MetadataDouble DEF='scrollPosition' containerField='value'
+                  name='scrollPosition'
+                  reference='http://titania.create3000.de'
+                  value='0, 0'/>
+              <MetadataDouble DEF='nodePositions' containerField='value'
+                  name='nodePositions'
+                  reference='http://titania.create3000.de'
+                  value='537, 18, 199, 51'/>
+              <MetadataSet DEF='nodes_9' containerField='value'
+                  name='nodes'
+                  reference='http://titania.create3000.de'>
+                <RigidBodyCollection DEF='_10' containerField='value'>
+                  <RigidBody DEF='_11'
+                      position='0 2 0'
+                      linearVelocity='3.81464 2.16735 -2.27782'
+                      finiteRotationAxis='0 1 0'
+                      autoDamp='true'
+                      linearDampingFactor='0.01'>
+                    <CollidableShape DEF='Ball' containerField='geometry'
+                        translation='0 2 0'>
+                      <Shape containerField='shape'>
+                        <Appearance>
+                          <ImageTexture
+                              url='"pattern.png"'/>
+                        </Appearance>
+                        <Sphere
+                            radius='0.3'/>
+                      </Shape>
+                    </CollidableShape>
+                  </RigidBody>
+                </RigidBodyCollection>
+                <CollisionSensor DEF='_12' containerField='value'>
+                  <CollisionCollection>
+                    <CollidableShape USE='Ball' containerField='collidables'/>
+                    <CollidableShape DEF='Ground' containerField='collidables'>
+                      <Shape containerField='shape'>
+                        <Appearance>
+                          <Material DEF='Neon12'
+                              ambientIntensity='0.341463'
+                              diffuseColor='0.248138 0.248138 0.248138'
+                              specularColor='0.661 0.661 0.661'
+                              shininess='0.0284553'/>
+                        </Appearance>
+                        <IndexedFaceSet
+                            coordIndex='4, 0, 7, -1, 7, 0, 3, -1, 0, 4, 5, -1, 1, 0, 5, -1, 4, 7, 5, -1, 5, 7, 6, -1, 13, 15, 6, -1, 12, 3, 2, -1, 7, 3, 12, -1, 14, 12, 2, -1, 7, 12, 13, -1, 7, 13, 6, -1, 6, 15, 2, -1, 15, 14, 2, -1, 3, 0, 1, -1, 2, 3, 1, -1, 1, 5, 6, -1, 2, 1, 6, -1, 13, 12, 8, -1, 10, 13, 8, -1, 14, 9, 12, -1, 12, 9, 8, -1, 14, 15, 9, -1, 9, 15, 11, -1, 11, 15, 13, -1, 10, 11, 13, -1, 9, 11, 8, -1, 8, 11, 10, -1'>
+                          <Coordinate
+                              point='-5 -0.51 5, 5 -0.51 5, 5 0.51 5, -5 0.51 5, -5 -0.51 -5, 5 -0.51 -5, 5 0.51 -5, -5 0.51 -5, -4 0.0180644 4, 4 0.0180644 4, -4 0.0180644 -4, 4 0.0180644 -4, -4 0.51 4, -4 0.51 -4, 4 0.51 4, 4 0.51 -4'/>
+                        </IndexedFaceSet>
+                      </Shape>
+                    </CollidableShape>
+                  </CollisionCollection>
+                </CollisionSensor>
+              </MetadataSet>
             </MetadataSet>
           </MetadataSet>
         </MetadataSet>
@@ -119,7 +208,7 @@
         position='1.10696 4.21881 9.93518'
         orientation='-0.968076678053831 0.243713944540765 0.0585752391769834 0.486698971924329'
         centerOfRotation='-0.0471507 -0.664379 0.433086'/>
-    <DirectionalLight DEF='_5'
+    <DirectionalLight
         direction='-0.333952 -0.752192 -0.568052'>
       <MetadataSet DEF='DirectionalLight'
           name='DirectionalLight'
@@ -131,53 +220,13 @@
       </MetadataSet>
     </DirectionalLight>
     <Group>
-      <CollidableShape DEF='Ball'
-          translation='3.15104 -121.617 0.145246'>
-        <Shape containerField='shape'>
-          <Appearance>
-            <ImageTexture
-                url='"pattern.png"'/>
-          </Appearance>
-          <Sphere
-              radius='0.3'/>
-        </Shape>
-      </CollidableShape>
-      <CollidableShape DEF='Ground'>
-        <Shape containerField='shape'>
-          <Appearance>
-            <Material DEF='Neon12'
-                ambientIntensity='0.341463'
-                diffuseColor='0.248138 0.248138 0.248138'
-                specularColor='0.661 0.661 0.661'
-                shininess='0.0284553'/>
-          </Appearance>
-          <IndexedFaceSet
-              coordIndex='4, 0, 7, -1, 7, 0, 3, -1, 0, 4, 5, -1, 1, 0, 5, -1, 4, 7, 5, -1, 5, 7, 6, -1, 13, 15, 6, -1, 12, 3, 2, -1, 7, 3, 12, -1, 14, 12, 2, -1, 7, 12, 13, -1, 7, 13, 6, -1, 6, 15, 2, -1, 15, 14, 2, -1, 3, 0, 1, -1, 2, 3, 1, -1, 1, 5, 6, -1, 2, 1, 6, -1, 13, 12, 8, -1, 10, 13, 8, -1, 14, 9, 12, -1, 12, 9, 8, -1, 14, 15, 9, -1, 9, 15, 11, -1, 11, 15, 13, -1, 10, 11, 13, -1, 9, 11, 8, -1, 8, 11, 10, -1'>
-            <Coordinate
-                point='-5 -0.51 5, 5 -0.51 5, 5 0.51 5, -5 0.51 5, -5 -0.51 -5, 5 -0.51 -5, 5 0.51 -5, -5 0.51 -5, -4 0.0180644 4, 4 0.0180644 4, -4 0.0180644 -4, 4 0.0180644 -4, -4 0.51 4, -4 0.51 -4, 4 0.51 4, 4 0.51 -4'/>
-          </IndexedFaceSet>
-        </Shape>
-      </CollidableShape>
+      <CollidableShape USE='Ball'/>
+      <CollidableShape USE='Ground'/>
     </Group>
-    <RigidBodyCollection DEF='_6'
-        gravity='0 -1 0'>
-      <RigidBody DEF='_7'
-          position='3.15104 -121.617 0.145246'
-          linearVelocity='1.06642e-08 -2.53406 6.204e-10'
-          finiteRotationAxis='0 1 0'
-          autoDamp='true'
-          linearDampingFactor='0.01'>
-        <CollidableShape USE='Ball' containerField='geometry'/>
-      </RigidBody>
-    </RigidBodyCollection>
-    <CollisionSensor DEF='_8'>
-      <CollisionCollection>
-        <CollidableShape USE='Ball' containerField='collidables'/>
-        <CollidableShape USE='Ground' containerField='collidables'/>
-      </CollisionCollection>
-    </CollisionSensor>
+    <RigidBodyCollection USE='_10'/>
+    <CollisionSensor USE='_12'/>
     <Group DEF='ResetButton'>
-      <TouchSensor DEF='_9'
+      <TouchSensor DEF='_13'
           description='Reset Button'/>
       <ProtoInstance name='SFVec3f' DEF='Position'>
         <fieldValue name='keyValue' value='0 2 0'/>
@@ -196,10 +245,10 @@
         </Shape>
       </Transform>
     </Group>
-    <ROUTE fromNode='_8' fromField='contacts' toNode='_6' toField='set_contacts'/>
-    <ROUTE fromNode='Position' fromField='value_changed' toNode='_7' toField='set_position'/>
-    <ROUTE fromNode='Velocity' fromField='value_changed' toNode='_7' toField='set_linearVelocity'/>
-    <ROUTE fromNode='_9' fromField='touchTime' toNode='Position' toField='set_triggerTime'/>
-    <ROUTE fromNode='_9' fromField='touchTime' toNode='Velocity' toField='set_triggerTime'/>
+    <ROUTE fromNode='_12' fromField='contacts' toNode='_10' toField='set_contacts'/>
+    <ROUTE fromNode='Position' fromField='value_changed' toNode='_11' toField='set_position'/>
+    <ROUTE fromNode='Velocity' fromField='value_changed' toNode='_11' toField='set_linearVelocity'/>
+    <ROUTE fromNode='_13' fromField='touchTime' toNode='Position' toField='set_triggerTime'/>
+    <ROUTE fromNode='_13' fromField='touchTime' toNode='Velocity' toField='set_triggerTime'/>
   </Scene>
 </X3D>

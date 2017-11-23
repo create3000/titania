@@ -120,20 +120,12 @@ X3DUserInterface::setup ()
 
 	config .reset (new Configuration (getName ()));
 
-	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initial_map));
+	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
 
 	restoreInterface ();
-}
-
-void
-X3DUserInterface::on_initial_map ()
-{
-	mapConnection .disconnect ();
-
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::on_initialize), Glib::PRIORITY_HIGH_IDLE);
 }
 
 void
@@ -146,23 +138,22 @@ X3DUserInterface::on_initialize ()
 
 	initialized = true;
 
+	mapConnection .disconnect ();
+
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 
 	mapConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (this, &X3DUserInterface::on_unmap));
 
-	on_map ();
-
 	connectFocusEvent (getWidget ());
 
+	set_fullscreen (isFullscreen ());
 	configure ();
+
 	initialize ();
 
-	if (isFullscreen ())
-		getWindow () .fullscreen ();
-
-	set_fullscreen (isFullscreen ());
+	on_map ();
 
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
 
@@ -224,6 +215,11 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 	{
 		getConfig () -> setItem <bool> ("fullscreen", fullscreen);
 		set_fullscreen (fullscreen);
+	}
+
+	if ((maximized || fullscreen))
+	{
+		configure ();
 	}
 
 	return false;
@@ -409,6 +405,9 @@ X3DUserInterface::restoreInterface ()
 
 	if (isMaximized ())
 		getWindow () .maximize ();
+
+	if (isFullscreen ())
+		getWindow () .fullscreen ();
 }
 
 void

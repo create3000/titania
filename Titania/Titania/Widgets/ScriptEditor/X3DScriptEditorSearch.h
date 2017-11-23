@@ -51,20 +51,15 @@
 #ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_SEARCH_H__
 #define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_SEARCH_H__
 
-#include "../../UserInterfaces/X3DScriptEditorInterface.h"
+#include "X3DScriptEditor.h"
 
 #include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcpp"
-#include <gtksourceviewmm.h>
-#pragma GCC diagnostic pop
 
 namespace titania {
 namespace puck {
 
 class X3DScriptEditorSearch :
-	virtual public X3DScriptEditorInterface
+	virtual public X3DScriptEditor
 {
 public:
 
@@ -82,19 +77,15 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
+	virtual
+	void
+	configure () override;
+
+	///  @name Destruction
 
 	virtual
-	const Glib::RefPtr <Gsv::Buffer> &
-	getTextBuffer () const = 0;
-
-	virtual
-	Gsv::View &
-	getTextView () = 0;
-
-	virtual
-	const Gsv::View &
-	getTextView () const = 0;
+	void
+	store () override;
 
 
 private:

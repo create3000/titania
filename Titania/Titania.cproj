@@ -273,7 +273,6 @@
     <Compile Include="Titania\Base\X3DApplicationInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\ScriptEditor.cpp" />
-    <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.cpp" />
@@ -336,6 +335,8 @@
     <Compile Include="Titania\Widgets\RouteGraph\X3DRouteGraphPage.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\FileImportAsExternProtoDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.cpp" />
+    <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptNodeEditor.cpp" />
+    <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2953,7 +2954,6 @@
     <None Include="Titania\Widgets\AnimationEditor\AnimationEditor.h" />
     <None Include="Titania\Widgets\ScriptEditor\ScriptEditor.h" />
     <None Include="Titania\Widgets\ScriptEditor\ScriptEditorDatabase.h" />
-    <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.h" />
@@ -3074,6 +3074,8 @@
     <None Include="share\gtksourceview-3.0\styles\x_ite.xml" />
     <None Include="Titania\Dialogs\FileOpenDialog\FileImportAsExternProtoDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.h" />
+    <None Include="Titania\Widgets\ScriptEditor\X3DScriptNodeEditor.h" />
+    <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

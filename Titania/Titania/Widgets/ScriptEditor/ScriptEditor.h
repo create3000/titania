@@ -52,17 +52,12 @@
 #define __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 #include "X3DScriptEditor.h"
+#include "X3DScriptNodeEditor.h"
 #include "X3DScriptEditorPreferences.h"
 #include "X3DScriptEditorSearch.h"
 #include "X3DShaderEditor.h"
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcpp"
-#include <gtksourceviewmm.h>
-#pragma GCC diagnostic pop
 
 namespace titania {
 namespace puck {
@@ -72,8 +67,8 @@ class NodeIndex;
 class Console;
 
 class ScriptEditor :
-	virtual public X3DScriptEditorInterface,
-	public X3DScriptEditor,
+	virtual public X3DScriptEditor,
+	public X3DScriptNodeEditor,
 	public X3DShaderEditor,
 	public X3DScriptEditorSearch,
 	public X3DScriptEditorPreferences
@@ -98,24 +93,6 @@ public:
 
 	virtual
 	~ScriptEditor () final override;
-
-
-protected:
-
-	virtual
-	const Glib::RefPtr <Gsv::Buffer> &
-	getTextBuffer () const final override
-	{ return textBuffer; }
-
-	virtual
-	Gsv::View &
-	getTextView () final override
-	{ return textView; }
-
-	virtual
-	const Gsv::View &
-	getTextView () const final override
-	{ return textView; }
 
 
 private:
@@ -226,8 +203,6 @@ private:
 	///  @name Members
 
 	bool                                         modified;
-	Glib::RefPtr <Gsv::Buffer>                   textBuffer;
-	Gsv::View                                    textView;
 	std::unique_ptr <NodeIndex>                  nodeIndex;
 	std::unique_ptr <Console>                    console;
 	NameEntry                                    nodeName;

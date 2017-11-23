@@ -70,13 +70,17 @@ static constexpr int BOLD   = 700;
 };
 
 X3DScriptEditorPreferences::X3DScriptEditorPreferences () :
-	     X3DScriptEditorInterface (),
-	                  themeIndex (0)
+	X3DScriptEditor (),
+	    themeIndex (0)
 {
 }
 
 void
 X3DScriptEditorPreferences::initialize ()
+{ }
+
+void
+X3DScriptEditorPreferences::configure ()
 {
 	// View
 
@@ -291,8 +295,7 @@ X3DScriptEditorPreferences::on_color_theme_activated (const Gtk::TreeModel::Path
 }
 
 X3DScriptEditorPreferences::~X3DScriptEditorPreferences ()
-{
-}
+{ }
 
 } // puck
 } // titania

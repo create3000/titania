@@ -67,8 +67,8 @@ const std::map <std::string, std::string> X3DShaderEditor::shaderTypes = {
 };
 
 X3DShaderEditor::X3DShaderEditor () :
-	     X3DScriptEditorInterface (),
-	                         node ()
+	X3DScriptEditor (),
+	           node ()
 {
 	addChildObjects (node);
 }

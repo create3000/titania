@@ -51,8 +51,8 @@
 #ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSHADER_EDITOR_H__
 #define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSHADER_EDITOR_H__
 
+#include "X3DScriptEditor.h"
 #include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 #include <Titania/X3D/Components/Shaders/ShaderPart.h>
 
@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 class X3DShaderEditor :
-	virtual public X3DScriptEditorInterface
+	virtual public X3DScriptEditor
 {
 public:
 

@@ -53,7 +53,6 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
-#include "../../Configuration/config.h"
 #include "../../Widgets/Console/Console.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 #include "ScriptEditorDatabase.h"
@@ -68,14 +67,12 @@ namespace puck {
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	  X3DScriptEditorInterface (get_ui ("Widgets/ScriptEditor.glade")),
 	           X3DScriptEditor (),
+	       X3DScriptNodeEditor (),
 	           X3DShaderEditor (),
 	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
 	                  modified (false),
-	                textBuffer (Gsv::Buffer::create ()),
-	                  textView (textBuffer),
 	                 nodeIndex (new NodeIndex (browserWindow)),
 	                   console (new Console (browserWindow)),
 	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
@@ -85,14 +82,10 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	                      node (),
 	                     index (0)
 {
-	Gsv::init ();
-
 	addChildObjects (node);
 
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
-	getTextView () .get_style_context () -> add_class ("titania-console");
-	getTextView () .set_focus_on_click (true);
 	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
 	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
@@ -105,8 +98,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 void
 ScriptEditor::initialize ()
 {
-	X3DScriptEditorInterface::initialize ();
 	X3DScriptEditor::initialize ();
+	X3DScriptNodeEditor::initialize ();
 	X3DShaderEditor::initialize ();
 	X3DScriptEditorPreferences::initialize ();
 
@@ -117,10 +110,6 @@ ScriptEditor::initialize ()
 
 	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
 	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
-
-	getTextView () .show ();
-
-	getScrolledWindow () .add (getTextView ());
 
 	// Node index
 
@@ -150,7 +139,9 @@ ScriptEditor::initialize ()
 void
 ScriptEditor::configure ()
 {
-	X3DScriptEditorInterface::configure ();
+	X3DScriptEditor::configure ();
+	X3DScriptEditorSearch::configure ();
+	X3DScriptEditorPreferences::configure ();
 
 	// Config
 
@@ -240,7 +231,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	if (value == node)
 		return;
 
-	X3DScriptEditor::set_node (value);
+	X3DScriptNodeEditor::set_node (value);
 	X3DShaderEditor::set_node (value);
 
 	if (node)
@@ -629,7 +620,9 @@ ScriptEditor::store ()
 	getConfig () -> setItem <int32_t> ("paned",      getPaned ()     .get_position ());
 	getConfig () -> setItem <int32_t> ("sidePaned",  getSidePaned () .get_position ());
 
-	X3DScriptEditorInterface::store ();
+	X3DScriptEditorPreferences::store ();
+	X3DScriptEditorSearch::store ();
+	X3DScriptEditor::store ();
 }
 
 /*

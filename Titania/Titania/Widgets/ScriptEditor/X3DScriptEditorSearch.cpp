@@ -69,19 +69,15 @@ static constexpr size_t RECENT_SEARCHES_MAX = 16;
 static constexpr size_t RECENT_TEXT_LENGTH  = 32;
 
 X3DScriptEditorSearch::X3DScriptEditorSearch () :
-	X3DScriptEditorInterface (),
-	          searchSettings (),
-	           searchContext (),
-	                    keys (),
-	              searchMark (),
-	        searchConnection (),
-	          recentSearches (),
-	          recentReplaces (),
-	                 replace (false)
-{ }
-
-void
-X3DScriptEditorSearch::initialize ()
+	 X3DScriptEditor (),
+	  searchSettings (),
+	   searchContext (),
+	            keys (),
+	      searchMark (),
+	searchConnection (),
+	  recentSearches (),
+	  recentReplaces (),
+	         replace (false)
 {
 	// Initialize members
 
@@ -96,13 +92,35 @@ X3DScriptEditorSearch::initialize ()
 
 	// Search & Replace
 
-	getSearchRevealer () .unparent ();
-	getSearchOverlay () .add_overlay (getSearchRevealer ());
-
 	g_signal_connect (searchContext, "notify::occurrences-count", G_CALLBACK (&X3DScriptEditorSearch::on_occurences_changed), this);
 
 	gtk_source_search_context_set_highlight (searchContext, true);
 
+	// Search Menu Icon (workaround issue, as settings are not applied from builder)
+
+	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
+	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
+
+	getReplaceEntry ()  .property_primary_icon_name () = "";
+	getGoToLineEntry () .property_primary_icon_name () = "";
+}
+
+void
+X3DScriptEditorSearch::initialize ()
+{
+	// Search & Replace
+
+	const auto container = getSearchRevealer () .get_parent ();
+
+	if (container)
+	   container -> remove (getSearchRevealer ());
+
+	getSearchOverlay () .add_overlay (getSearchRevealer ());
+}
+
+void
+X3DScriptEditorSearch::configure ()
+{
 	// Search Menu
 
 	getCaseSensitiveMenuItem ()      .set_active (getConfig () -> getItem <bool> ("searchCaseSensitive"));
@@ -127,14 +145,6 @@ X3DScriptEditorSearch::initialize ()
 	getSearchEntry ()   .set_text (getConfig () -> getItem <std::string> ("searchString"));
 	getReplaceEntry ()  .set_text (getConfig () -> getItem <std::string> ("replaceString"));
 	getGoToLineEntry () .set_text (getConfig () -> getItem <std::string> ("lineNumber"));
-
-	// Search Menu Icon (workaround issue, as settings are not applied from builder)
-
-	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
-	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
-
-	getReplaceEntry ()  .property_primary_icon_name () = "";
-	getGoToLineEntry () .property_primary_icon_name () = "";
 
 	// Enable Search Widget
 
@@ -690,7 +700,8 @@ X3DScriptEditorSearch::on_go_to_line_key_press_event (GdkEventKey* event)
  * Destruction
  */
 
-X3DScriptEditorSearch::~X3DScriptEditorSearch ()
+void
+X3DScriptEditorSearch::store ()
 {
 	// Search & Replace
 
@@ -716,7 +727,10 @@ X3DScriptEditorSearch::~X3DScriptEditorSearch ()
 
 	getConfig () -> setItem ("recentSearches", basic::join (recentSearches, ";"));
 	getConfig () -> setItem ("recentReplaces", basic::join (recentReplaces, ";"));
+}
 
+X3DScriptEditorSearch::~X3DScriptEditorSearch ()
+{
 	//how to delete searchContext;
 	//how to delete searchSettings;
 }

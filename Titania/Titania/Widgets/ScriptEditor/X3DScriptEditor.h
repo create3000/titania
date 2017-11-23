@@ -51,16 +51,18 @@
 #ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_H__
 #define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
-#include <Titania/X3D/Components/Scripting/Script.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcpp"
+#include <gtksourceviewmm.h>
+#pragma GCC diagnostic pop
 
 namespace titania {
 namespace puck {
 
 class X3DScriptEditor :
-	virtual public X3DScriptEditorInterface
+	public X3DScriptEditorInterface
 {
 public:
 
@@ -73,18 +75,25 @@ protected:
 
 	X3DScriptEditor ();
 
-	virtual
-	void
-	initialize () override;
+	///  @name Member access
 
-	void
-	set_node (const X3D::SFNode &);
+	const Glib::RefPtr <Gsv::Buffer> &
+	getTextBuffer () const
+	{ return textBuffer; }
 
-	///  @name Members
+	Gsv::View &
+	getTextView ()
+	{ return textView; }
 
-	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> directOutput;
-	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> mustEvaluate;
-	X3D::X3DPtr <X3D::Script> scriptNode;
+	const Gsv::View &
+	getTextView () const
+	{ return textView; }
+
+
+private:
+
+	Glib::RefPtr <Gsv::Buffer> textBuffer;
+	Gsv::View                  textView;
 
 };
 

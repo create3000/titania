@@ -200,9 +200,6 @@ private:
 	///  @name Event handlers
 
 	void
-	on_initial_map ();
-
-	void
 	on_initialize ();
 
 	void

@@ -48,96 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
-#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
+#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_NODE_EDITOR_H__
+#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_NODE_EDITOR_H__
 
 #include "X3DScriptEditor.h"
+#include "../../ComposedWidgets.h"
+
+#include <Titania/X3D/Components/Scripting/Script.h>
 
 namespace titania {
 namespace puck {
 
-class X3DScriptEditorPreferences :
+class X3DScriptNodeEditor :
 	virtual public X3DScriptEditor
 {
 public:
 
-	virtual
-	~X3DScriptEditorPreferences () override;
+	~X3DScriptNodeEditor () = default;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DScriptEditorPreferences ();
+	X3DScriptNodeEditor ();
 
 	virtual
 	void
 	initialize () override;
 
-	virtual
 	void
-	configure () override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () override
-	{ }
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_preferences_clicked () final override;
-
-	virtual
-	bool
-	on_preferences_delete_event (GdkEventAny*) final override;
-
-	virtual
-	void
-	on_show_line_numbers_toggled () final override;
-
-	virtual
-	void
-	on_show_right_margin_toggled () final override;
-
-	virtual
-	void
-	on_right_margin_changed () final override;
-
-	virtual
-	void
-	on_wrap_mode_changed () final override;
-
-	virtual
-	void
-	on_highlight_current_line_togged () final override;
-
-	virtual
-	void
-	on_highlight_matching_brackets_toggled () final override;
-
-	virtual
-	void
-	on_tab_width_changed () final override;
-
-	virtual
-	void
-	on_insert_spaces_instead_of_tabs_toggled () final override;
-
-	virtual
-	void
-	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	set_node (const X3D::SFNode &);
 
 	///  @name Members
 
-	size_t themeIndex;
+	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> directOutput;
+	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> mustEvaluate;
+	X3D::X3DPtr <X3D::Script> scriptNode;
 
 };
 

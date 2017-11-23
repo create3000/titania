@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,100 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
-#define __TITANIA_WIDGETS_SCRIPT_EDITOR_X3DSCRIPT_EDITOR_PREFERENCES_H__
-
-#include "X3DScriptEditor.h"
+#include "X3DScriptNodeEditor.h"
 
 namespace titania {
 namespace puck {
 
-class X3DScriptEditorPreferences :
-	virtual public X3DScriptEditor
+X3DScriptNodeEditor::X3DScriptNodeEditor () :
+	X3DScriptEditor (),
+	   directOutput (this, getDirectOutputToggleButton (), "directOutput"),
+	   mustEvaluate (this, getMustEvaluateToggleButton (), "mustEvaluate"),
+	     scriptNode ()
 {
-public:
+	addChildObjects (scriptNode);
+}
 
-	virtual
-	~X3DScriptEditorPreferences () override;
+void
+X3DScriptNodeEditor::initialize ()
+{ }
 
+void
+X3DScriptNodeEditor::set_node (const X3D::SFNode & value)
+{
+	scriptNode = value;
 
-protected:
+	getDirectOutputToggleButton () .set_visible (scriptNode);
+	getMustEvaluateToggleButton () .set_visible (scriptNode);
 
-	///  @name Construction
+	const auto nodes = scriptNode ? X3D::MFNode ({ scriptNode }) : X3D::MFNode ();
 
-	X3DScriptEditorPreferences ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	configure () override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () override
-	{ }
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_preferences_clicked () final override;
-
-	virtual
-	bool
-	on_preferences_delete_event (GdkEventAny*) final override;
-
-	virtual
-	void
-	on_show_line_numbers_toggled () final override;
-
-	virtual
-	void
-	on_show_right_margin_toggled () final override;
-
-	virtual
-	void
-	on_right_margin_changed () final override;
-
-	virtual
-	void
-	on_wrap_mode_changed () final override;
-
-	virtual
-	void
-	on_highlight_current_line_togged () final override;
-
-	virtual
-	void
-	on_highlight_matching_brackets_toggled () final override;
-
-	virtual
-	void
-	on_tab_width_changed () final override;
-
-	virtual
-	void
-	on_insert_spaces_instead_of_tabs_toggled () final override;
-
-	virtual
-	void
-	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	///  @name Members
-
-	size_t themeIndex;
-
-};
+	directOutput .setNodes (nodes);
+	mustEvaluate .setNodes (nodes);
+}
 
 } // puck
 } // titania
-
-#endif

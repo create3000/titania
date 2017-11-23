@@ -50,34 +50,23 @@
 
 #include "X3DScriptEditor.h"
 
+#include "../../Configuration/config.h"
+
 namespace titania {
 namespace puck {
 
 X3DScriptEditor::X3DScriptEditor () :
-	     X3DScriptEditorInterface (),
-	                 directOutput (this, getDirectOutputToggleButton (), "directOutput"),
-	                 mustEvaluate (this, getMustEvaluateToggleButton (), "mustEvaluate"),
-	                   scriptNode ()
+	X3DScriptEditorInterface (get_ui ("Widgets/ScriptEditor.glade")),
+	              textBuffer (Gsv::Buffer::create ()),
+	                textView (textBuffer)
 {
-	addChildObjects (scriptNode);
-}
+	Gsv::init ();
 
-void
-X3DScriptEditor::initialize ()
-{ }
+	getTextView () .get_style_context () -> add_class ("titania-console");
+	getTextView () .set_focus_on_click (true);
+	getTextView () .show ();
 
-void
-X3DScriptEditor::set_node (const X3D::SFNode & value)
-{
-	scriptNode = value;
-
-	getDirectOutputToggleButton () .set_visible (scriptNode);
-	getMustEvaluateToggleButton () .set_visible (scriptNode);
-
-	const auto nodes = scriptNode ? X3D::MFNode ({ scriptNode }) : X3D::MFNode ();
-
-	directOutput .setNodes (nodes);
-	mustEvaluate .setNodes (nodes);
+	getScrolledWindow () .add (getTextView ());
 }
 
 } // puck
