@@ -1,11 +1,6 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/X3DUserInterface.cpp">
-    <Files>
-      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="220" Column="31" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
