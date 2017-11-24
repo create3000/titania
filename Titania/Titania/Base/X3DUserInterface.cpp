@@ -125,6 +125,12 @@ X3DUserInterface::setup ()
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
 
+	if (isMaximized ())
+		getWindow () .maximize ();
+
+	if (isFullscreen ())
+		getWindow () .fullscreen ();
+
 	restoreInterface ();
 }
 
@@ -149,8 +155,8 @@ X3DUserInterface::on_initialize ()
 	connectFocusEvent (getWidget ());
 
 	configure ();
-	set_fullscreen (isFullscreen ());
-
+	on_maximized (isMaximized ());
+	on_fullscreen (isFullscreen ());
 	initialize ();
 
 	on_map ();
@@ -209,20 +215,31 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 	const bool maximized  = event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED;
 	const bool fullscreen = event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
 
-	getConfig () -> setItem <bool> ("maximized", maximized);
+	if (maximized not_eq getConfig () -> getItem <bool> ("maximized"))
+	{
+		getConfig () -> setItem <bool> ("maximized", maximized);
+		on_maximized (maximized);
+	}
 
 	if (fullscreen not_eq getConfig () -> getItem <bool> ("fullscreen"))
 	{
 		getConfig () -> setItem <bool> ("fullscreen", fullscreen);
-		set_fullscreen (fullscreen);
-	}
-
-	if ((maximized || fullscreen))
-	{
-		configure ();
+		on_fullscreen (fullscreen);
 	}
 
 	return false;
+}
+
+void
+X3DUserInterface::on_maximized (const bool value)
+{
+	restoreInterface ();
+}
+
+void
+X3DUserInterface::on_fullscreen (const bool value)
+{
+	restoreInterface ();
 }
 
 bool
@@ -391,23 +408,30 @@ X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
 
-	if (getConfig () -> hasItem ("x") and getConfig () -> hasItem ("y"))
-	{
-		getWindow () .move (getConfig () -> getItem <int32_t> ("x"),
-		                    getConfig () -> getItem <int32_t> ("y"));
-	}
-
-	if (getConfig () -> getItem <int32_t> ("width") > 0 and getConfig () -> getItem <int32_t> ("height") > 0)
-	{
-		getWindow () .resize (getConfig () -> getItem <int32_t> ("width"),
-		                      getConfig () -> getItem <int32_t> ("height"));
-	}
+	std::string state;
 
 	if (isMaximized ())
-		getWindow () .maximize ();
+		state = "Maximized";
 
 	if (isFullscreen ())
-		getWindow () .fullscreen ();
+		state = "Fullscreen";
+
+	if (getConfig () -> hasItem ("x" + state) and getConfig () -> hasItem ("y" + state))
+	{
+		getWindow () .move (getConfig () -> getItem <int32_t> ("x" + state),
+		                    getConfig () -> getItem <int32_t> ("y" + state));
+	}
+
+	if (getConfig () -> getItem <int32_t> ("width" + state) > 0 and getConfig () -> getItem <int32_t> ("height" + state) > 0)
+	{
+__LOG__ << getName () << std::endl;
+__LOG__ << state << std::endl;
+__LOG__ << getConfig () -> getItem <int32_t> ("width"  + state) << std::endl;
+__LOG__ << getConfig () -> getItem <int32_t> ("height" + state) << std::endl;
+
+		getWindow () .resize (getConfig () -> getItem <int32_t> ("width"  + state),
+		                      getConfig () -> getItem <int32_t> ("height" + state));
+	}
 }
 
 void
@@ -423,18 +447,24 @@ X3DUserInterface::saveInterface ()
 	if (not getWindow () .get_mapped ())
 		return;
 
-	if (not isMaximized () and not isFullscreen ())
-	{
-		int32_t x, y, width, height;
+	std::string state;
 
-		getWindow () .get_position (x, y);
-		getConfig () -> setItem <int32_t> ("x", x);
-		getConfig () -> setItem <int32_t> ("y", y);
+	if (isMaximized ())
+		state = "Maximized";
 
-		getWindow () .get_size (width, height);
-		getConfig () -> setItem <int32_t> ("width",  width);
-		getConfig () -> setItem <int32_t> ("height", height);
-	}
+	if (isFullscreen ())
+		state = "Fullscreen";
+
+	int32_t x, y, width, height;
+
+	getWindow () .get_position (x, y);
+	getWindow () .get_size (width, height);
+
+	getConfig () -> setItem <int32_t> ("x" + state, x);
+	getConfig () -> setItem <int32_t> ("y" + state, y);
+
+	getConfig () -> setItem <int32_t> ("width"  + state, width);
+	getConfig () -> setItem <int32_t> ("height" + state, height);
 
 	getWindow () .hide (); // Hide window as last command.
 }

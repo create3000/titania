@@ -490,7 +490,7 @@ private:
 
 	virtual
 	void
-	set_fullscreen (const bool) final override;
+	on_fullscreen (const bool) final override;
 
 	///  @name Selection
 

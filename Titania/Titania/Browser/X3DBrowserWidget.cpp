@@ -303,8 +303,10 @@ X3DBrowserWidget::set_masterBrowser ()
 }
 
 void
-X3DBrowserWidget::set_fullscreen (const bool value)
+X3DBrowserWidget::on_fullscreen (const bool value)
 {
+	X3DBrowserWindowInterface::on_fullscreen (value);
+
 	if (value)
 	{
 		getMenubarAction () -> set_active (getConfig () -> getItem <bool> ("menubarFullscreen"));

@@ -177,8 +177,11 @@ protected:
 
 	virtual
 	void
-	set_fullscreen (const bool)
-	{ }
+	on_maximized (const bool value);
+
+	virtual
+	void
+	on_fullscreen (const bool value);
 
 	virtual
 	void

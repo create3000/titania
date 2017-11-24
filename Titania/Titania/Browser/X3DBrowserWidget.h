@@ -197,7 +197,7 @@ protected:
 
 	virtual
 	void
-	set_fullscreen (const bool) override;
+	on_fullscreen (const bool) override;
 
 	///  @name Destruction
 

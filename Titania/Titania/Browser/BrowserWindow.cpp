@@ -1569,9 +1569,9 @@ BrowserWindow::on_unfullscreen_activated ()
 }
 
 void
-BrowserWindow::set_fullscreen (const bool value)
+BrowserWindow::on_fullscreen (const bool value)
 {
-	X3DBrowserWindow::set_fullscreen (value);
+	X3DBrowserWindow::on_fullscreen (value);
 
 	if (value)
 	{
