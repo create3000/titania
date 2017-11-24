@@ -424,11 +424,6 @@ X3DUserInterface::restoreInterface ()
 
 	if (getConfig () -> getItem <int32_t> ("width" + state) > 0 and getConfig () -> getItem <int32_t> ("height" + state) > 0)
 	{
-__LOG__ << getName () << std::endl;
-__LOG__ << state << std::endl;
-__LOG__ << getConfig () -> getItem <int32_t> ("width"  + state) << std::endl;
-__LOG__ << getConfig () -> getItem <int32_t> ("height" + state) << std::endl;
-
 		getWindow () .resize (getConfig () -> getItem <int32_t> ("width"  + state),
 		                      getConfig () -> getItem <int32_t> ("height" + state));
 	}
