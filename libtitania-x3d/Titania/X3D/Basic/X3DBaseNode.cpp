@@ -2083,8 +2083,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 								<< '"'
 								<< ':'
 								<< Generator::TidySpace
-								<< JSONEncode (field)
-								<< Generator::TidyBreak;
+								<< JSONEncode (field);
 
 							break;
 						}
@@ -2105,8 +2104,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 								<< Generator::TidyBreak
 								<< Generator::DecIndent
 								<< Generator::Indent
-								<< ']'
-								<< Generator::TidyBreak;
+								<< ']';
 
 							break;
 						}
@@ -2119,8 +2117,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 								<< '"'
 								<< ':'
 								<< Generator::TidySpace
-								<< JSONEncode (field)
-								<< Generator::TidyBreak;
+								<< JSONEncode (field);
 
 							break;
 						}
@@ -2134,6 +2131,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			}
 
 			ostream
+				<< Generator::TidyBreak
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< '}';
