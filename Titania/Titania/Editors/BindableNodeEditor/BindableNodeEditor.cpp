@@ -66,10 +66,10 @@ BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
 	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade")),
 	X3DNotebook <X3DBindableNodeEditorInterface> ()
 {
-	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
-	addPage ("FogEditor",                getFogEditorBox            ());
-	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
-	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
+	addPage ("BackgroundEditor",     getBackgroundEditorBox     ());
+	addPage ("FogEditor",            getFogEditorBox            ());
+	addPage ("NavigationInfoEditor", getNavigationInfoEditorBox ());
+	addPage ("ViewpointEditor",      getViewpointEditorBox      ());
 
 	setup ();
 }

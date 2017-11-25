@@ -96,10 +96,6 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
-
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -152,7 +148,6 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_ConsoleBox;
 	Gtk::Box* m_ScriptEditorBox;

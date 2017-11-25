@@ -162,9 +162,9 @@ X3DNotebook <Interface>::configure ()
 	Interface::configure ();
 
 	const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
-	const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
 
-	this -> getNotebook () .set_current_page (currentPage);
+	// Defer restore of page to correcly setup userinterface like pane positions.
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this -> getNotebook (), &Gtk::Notebook::set_current_page), currentPage));
 }
 
 template <class Interface>
@@ -202,8 +202,8 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 	if (not page)
 	{
 		page = this -> createDialog (name);
-		page -> reparent (*boxes .at (name), this -> getWindow ());
 		page -> setName (this -> getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), this -> getWindow ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);
@@ -220,8 +220,8 @@ X3DNotebook <Interface>::getDependentPage (const std::string & name) const
 
 	if (not exists)
 	{
-		page -> reparent (*boxes .at (name), this -> getWindow ());
 		page -> setName (this -> getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), this -> getWindow ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);
@@ -265,7 +265,6 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 		const auto page = getPage <X3DUserInterface> (name);
 
 		page -> getWidget () .set_visible (true);
-		this -> getLabel () .set_text (_ (page -> getWidget () .get_name ()));
 
 		if (pageDependent)
 			page -> reparent (*boxes .at (name), this -> getWindow ());

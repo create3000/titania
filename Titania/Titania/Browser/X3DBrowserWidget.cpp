@@ -214,63 +214,15 @@ X3DBrowserWidget::configure ()
 
 	if (not getConfig () -> hasItem ("addStandardMetaData"))
 		getConfig () -> setItem <bool> ("addStandardMetaData", true);
-
-
-	// ToolBar
-
-	if (not getConfig () -> hasItem ("menubar"))
-		getConfig () -> setItem <bool> ("menubar", true);
-
-	if (not getConfig () -> hasItem ("menubarFullscreen"))
-		getConfig () -> setItem <bool> ("menubarFullscreen", false);
-	
-
-	// ToolBar
-
-	if (not getConfig () -> hasItem ("toolbar"))
-		getConfig () -> setItem <bool> ("toolbar", true);
-
-	if (not getConfig () -> hasItem ("toolbarFullscreen"))
-		getConfig () -> setItem <bool> ("toolbarFullscreen", false);
-
-	
-	// SideBar
-
-	if (not getConfig () -> hasItem ("sidebar"))
-		getConfig () -> setItem <bool> ("sidebar", true);
-
-	if (not getConfig () -> hasItem ("sidebarFullscreen"))
-		getConfig () -> setItem <bool> ("sidebarFullscreen", false);
-
-
-	// Footer
-
-	if (not getConfig () -> hasItem ("footer"))
-		getConfig () -> setItem <bool> ("footer", true);
-
-	if (not getConfig () -> hasItem ("footerFullscreen"))
-		getConfig () -> setItem <bool> ("footerFullscreen", false);
-
-
-	// TAbs
-
-	if (not getConfig () -> hasItem ("tabs"))
-		getConfig () -> setItem <bool> ("tabs", true);
-
-	if (not getConfig () -> hasItem ("tabsFullscreen"))
-		getConfig () -> setItem <bool> ("tabsFullscreen", false);
-
 	
 	// RenderingProperties
 
-	if (getConfig () -> hasItem ("renderingProperties"))
-		getRenderingPropertiesAction () -> set_active (getConfig () -> getItem <bool> ("renderingProperties"));
+	getRenderingPropertiesAction () -> set_active (getConfig () -> getItem <bool> ("renderingProperties"));
 
 	
 	// Rubberband
 
-	if (getConfig () -> hasItem ("rubberBand"))
-		getRubberbandAction () -> set_active (getConfig () -> getItem <bool> ("rubberBand"));
+	getRubberbandAction () -> set_active (getConfig () -> getItem <bool> ("rubberBand", true));
 
 	if (not getConfig () -> hasItem ("isLive"))
 		getConfig () -> setItem <bool> ("isLive", true);
@@ -286,11 +238,11 @@ X3DBrowserWidget::configure ()
 	if (getConfig () -> hasItem ("vPaned"))
 		getVPaned () .set_position (getConfig () -> getItem <int32_t> ("vPaned"));
 
-	
 	// HPaned
 
 	if (getConfig () -> hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () -> getItem <int32_t> ("hPaned"));
+
 
 	getStraightenHorizonButton () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 }
@@ -317,11 +269,11 @@ X3DBrowserWidget::on_fullscreen (const bool value)
 	}
 	else
 	{
-		getMenubarAction () -> set_active (getConfig () -> getItem <bool> ("menubar"));
-		getToolbarAction () -> set_active (getConfig () -> getItem <bool> ("toolbar"));
-		getSidebarAction () -> set_active (getConfig () -> getItem <bool> ("sidebar"));
-		getFooterAction ()  -> set_active (getConfig () -> getItem <bool> ("footer"));
-		getTabsAction ()    -> set_active (getConfig () -> getItem <bool> ("tabs"));
+		getMenubarAction () -> set_active (getConfig () -> getItem <bool> ("menubar", true));
+		getToolbarAction () -> set_active (getConfig () -> getItem <bool> ("toolbar", true));
+		getSidebarAction () -> set_active (getConfig () -> getItem <bool> ("sidebar", true));
+		getFooterAction ()  -> set_active (getConfig () -> getItem <bool> ("footer",  true));
+		getTabsAction ()    -> set_active (getConfig () -> getItem <bool> ("tabs",    true));
 	}
 }
 

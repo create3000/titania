@@ -125,13 +125,13 @@ X3DUserInterface::setup ()
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
 
+	restoreInterface ();
+
 	if (isMaximized ())
 		getWindow () .maximize ();
 
 	if (isFullscreen ())
 		getWindow () .fullscreen ();
-
-	restoreInterface ();
 }
 
 void
@@ -293,7 +293,7 @@ X3DUserInterface::unparent (Gtk::Widget & widget)
 	const auto container = widget .get_parent ();
 
 	if (container)
-	   container -> remove (getWidget ());
+	   container -> remove (widget);
 }
 
 void
@@ -301,10 +301,7 @@ X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);
 
-	const auto container = getWidget () .get_parent ();
-
-	if (container)
-	   container -> remove (getWidget ());
+	unparent (getWidget ());
 
 	for (const auto & widget : box .get_children ())
 		box .remove (*widget);
@@ -317,10 +314,7 @@ X3DUserInterface::reparent (Gtk::Overlay & overlay, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);
 
-	const auto container = getWidget () .get_parent ();
-
-	if (container)
-	   container -> remove (getWidget ());
+	unparent (getWidget ());
 
 	overlay .add_overlay (getWidget ());
 }

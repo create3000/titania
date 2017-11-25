@@ -84,11 +84,15 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (node);
 
+	// Apply Button
+
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+
+	// Text Buffer
 
 	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
-	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
+	// Title Bar
 
 	setTitleBar (getPreferencesDialog (), getPreferencesHeaderBar ());
 
@@ -114,12 +118,16 @@ ScriptEditor::initialize ()
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (&ScriptEditor::set_node, this);
-	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
+
+	// Node index
+
+	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setDisplayProtoNodes (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Script,
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });
+	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 
 	// Widgets
 

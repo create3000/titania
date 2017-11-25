@@ -110,10 +110,7 @@ X3DScriptEditorSearch::initialize ()
 {
 	// Search & Replace
 
-	const auto container = getSearchRevealer () .get_parent ();
-
-	if (container)
-	   container -> remove (getSearchRevealer ());
+	unparent (getSearchRevealer ());
 
 	getSearchOverlay () .add_overlay (getSearchRevealer ());
 }

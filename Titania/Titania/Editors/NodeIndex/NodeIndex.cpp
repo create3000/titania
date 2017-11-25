@@ -309,13 +309,11 @@ NodeIndex::setShowWidget (const bool value)
 	{
 		getHeaderBar () .set_visible (false);
 		getFooterBox () .set_visible (false);
-		getScrolledWindow () .set_size_request (0, 0);
 	}
 	else
 	{
 		getHeaderBar () .set_visible (true);
 		getFooterBox () .set_visible (true);
-		getScrolledWindow () .set_size_request (-1, 240);
 	}
 }
 
