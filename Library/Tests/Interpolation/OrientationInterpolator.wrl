@@ -1,27 +1,99 @@
-#VRML V2.0 utf8
-
-META "title" "OrientationInterpolator"
-
-EXTERNPROTO ParticleShape [
-  exposedField SFColor color
-]
-"ParticleShape.wrl"
+#VRML V2.0 utf8 Titania V4.0.2
 
 EXTERNPROTO LineTrail [
-  exposedField SFTime  cycleInterval
-  exposedField SFVec3f point
-  field        SFInt32 dimension
+  exposedField   SFBool  enabled
+  exposedField   SFTime  cycleInterval
+  exposedField   SFTime  resetTime
+  exposedField   SFVec3f point
+  field          SFInt32 dimension
 ]
 "LineTrail.wrl"
+
+Background {
+  skyAngle [
+    1.0621,
+    1.5708
+  ]
+  skyColor [
+    0.059 0.059 0.059,
+    0.064215 0.064215 0.064215,
+    0.123 0.123 0.123
+  ]
+  groundAngle 1.5708
+  groundColor [
+    0.492 0.492 0.492,
+    0.123 0.123 0.123
+  ]
+}
 
 Viewpoint {
   position 0 0 5
 }
 
 DEF Cone Transform {
-  children ParticleShape {
-    color 1 0 1
-  }
+  rotation -0.155139521343613 0.987892569522251 0 0.695324158345866
+  children [
+    DEF Cross Transform {
+      rotation 1 0 0 1.5708
+      children Shape {
+        appearance Appearance {
+          material Material {
+            emissiveColor 0.28636 0.554905 0.904409
+          }
+        }
+        geometry IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              -1 0 0,
+              1 0 0,
+              0 0 1,
+              0 0 -1
+            ]
+          }
+        }
+      }
+    }
+    DEF Cone_1 Transform {
+      translation 0 0 0.1
+      rotation 1 0 0 1.5708
+      children Shape {
+        appearance Appearance {
+          material DEF Rococo24 Material {
+            ambientIntensity 0.226102
+            diffuseColor 0.28636 0.554905 0.904409
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+          }
+        }
+        geometry Cone {
+          height 1.6
+          bottomRadius 0.7
+        }
+      }
+    }
+    DEF Sphere Transform {
+      children Shape {
+        appearance Appearance {
+          material DEF Rococo24_2 Material {
+            ambientIntensity 0.226102
+            diffuseColor 0.28636 0.554905 0.904409
+            specularColor 0.0955906 0.0955906 0.0955906
+            shininess 0.078125
+            transparency 0.401639
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+  ]
 }
 
 Shape {
@@ -32,6 +104,7 @@ Shape {
   }
   geometry DEF Trail LineTrail {
     cycleInterval 0.1
+    point 0.632878 0.0993877 0.767846
     dimension 100
   }
 }
@@ -42,14 +115,26 @@ DEF Timer TimeSensor {
 }
 
 DEF Interpolator OrientationInterpolator {
-  key [ 0, 0.25, 0.5, 0.75, 1 ]
-  keyValue [ -0 -1 -0 0.785398, 1 0 0 0.785398, 0 1 0 0.785398, -1 -0 -0 0.785398, -0 -1 -0 0.785398 ]
+  key [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ]
+  keyValue [
+    -0 -1 -0 0.785398,
+    1 0 0 0.785398,
+    0 1 0 0.785398,
+    -1 -0 -0 0.785398,
+    -0 -1 -0 0.785398
+  ]
 }
 
 DEF MultVec Script {
-  eventIn  SFRotation set_rotation
-  eventOut SFVec3f    vector_changed
-  field    SFVec3f    vector 0 0 1
+  eventIn        SFRotation set_rotation
+  eventOut       SFVec3f    vector_changed
+  field          SFVec3f    vector 0 0 1
 
   url "vrmlscript:
 function set_rotation (value, time)
@@ -59,7 +144,6 @@ function set_rotation (value, time)
 "
 }
 
-ROUTE Timer.cycleTime TO Trail.set_resetTime
 ROUTE Timer.fraction_changed TO Interpolator.set_fraction
 ROUTE Interpolator.value_changed TO Cone.set_rotation
 ROUTE Interpolator.value_changed TO MultVec.set_rotation

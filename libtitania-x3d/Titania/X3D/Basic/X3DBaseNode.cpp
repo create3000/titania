@@ -2039,9 +2039,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 				<< '"'
 				<< ':'
 				<< Generator::TidySpace
-				<< SFString (field -> getName ())
-				<< ','
-				<< Generator::TidyBreak;
+				<< SFString (field -> getName ());
 
 			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
 			// for this field.
@@ -2069,6 +2067,10 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 				else
 				{
 					// Output value
+
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
 
 					switch (field -> getType ())
 					{
