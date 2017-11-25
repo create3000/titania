@@ -159,12 +159,18 @@ template <class Interface>
 void
 X3DNotebook <Interface>::configure ()
 {
-	Interface::configure ();
-
-	const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
-
-	// Defer restore of page to correcly setup userinterface like pane positions.
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this -> getNotebook (), &Gtk::Notebook::set_current_page), currentPage));
+	try
+	{
+		Interface::configure ();
+	
+		const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
+		const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
+	
+		// Defer restore of page to correcly setup userinterface like pane positions.
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this -> getNotebook (), &Gtk::Notebook::set_current_page), currentPage), Glib::PRIORITY_HIGH_IDLE);
+	}
+	catch (const std::out_of_range & error)
+	{ }
 }
 
 template <class Interface>

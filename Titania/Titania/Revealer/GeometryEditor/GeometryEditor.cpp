@@ -859,7 +859,7 @@ GeometryEditor::on_edit_toggled ()
 	
 		// Restore viewer.
 	
-		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+		getCurrentBrowser () -> setViewerType (privateViewer);
 	}
 }
 
@@ -875,7 +875,7 @@ GeometryEditor::on_paint_selection_toggled ()
 
 	if (not getPaintSelectionButton () .get_active ())
 	{
-		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+		getCurrentBrowser () -> setViewerType (privateViewer);
 		coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 		return;
 	}
@@ -890,7 +890,7 @@ GeometryEditor::on_paint_selection_toggled ()
 			getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
 			getCurrentBrowser () -> getViewer () .addInterest (&GeometryEditor::connectViewer, this);
 
-			getCurrentBrowser () -> setPrivateViewer (privateViewer);
+			getCurrentBrowser () -> setViewerType (privateViewer);
 
 			coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionButton () .get_active ());
@@ -898,7 +898,7 @@ GeometryEditor::on_paint_selection_toggled ()
 		}
 		case SelectorType::RECTANGLE:
 		{
-			getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
+			getCurrentBrowser () -> setViewerType (X3D::X3DConstants::RectangleSelection);
 
 			coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
@@ -906,7 +906,7 @@ GeometryEditor::on_paint_selection_toggled ()
 		}
 		case SelectorType::LASSO:
 		{
-			getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
+			getCurrentBrowser () -> setViewerType (X3D::X3DConstants::LassoSelection);
 
 			coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
@@ -1069,12 +1069,12 @@ GeometryEditor::set_cut_polygons ()
 	{
 		getBrowserWindow () -> getSelection () -> setEnabled (true);
 
-		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LightSaber);
+		getCurrentBrowser () -> setViewerType (X3D::X3DConstants::LightSaber);
 
 		coordEditor -> setField <X3D::SFString> ("toolType", "CUT");
 	}
 	else
-		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+		getCurrentBrowser () -> setViewerType (privateViewer);
 }
 
 bool

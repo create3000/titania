@@ -254,13 +254,13 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentPage () -> getBrowserHistory () .addInterest (&BrowserWindow::set_browserHistory, this);
 	
 		// Initialize
-	
+
 		set_activeLayer ();
+		set_viewer ();
 		set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 		set_shading          (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
 		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
-		set_viewer ();
 		set_straighten_horizon ();
 	
 		set_browserHistory ();

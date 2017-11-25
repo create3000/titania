@@ -337,13 +337,7 @@ X3DBrowserEditor::getMetaData ()
 void
 X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 {
-	if (getEditing () and not getHandButton () .get_active ())
-		getCurrentBrowser () -> setPrivateViewer (viewer);
-	else
-	{
-		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
-		getCurrentBrowser () -> setViewerType (viewer);
-	}
+	getCurrentBrowser () -> setViewerType (viewer);
 }
 
 // File operations

@@ -242,6 +242,14 @@ X3DNavigationContext::set_viewpoint ()
 void
 X3DNavigationContext::set_viewer ()
 {
+__LOG__ << getBrowser () -> getWorldURL () << std::endl;
+__LOG__ << getName () << std::endl;
+__LOG__ << int (X3DConstants::DefaultViewer) << std::endl;
+__LOG__ << int (getPrivateViewer ()) << std::endl;
+__LOG__ << int (X3DConstants::ExamineViewer) << std::endl;
+__LOG__ << int (getViewerType ()) << std::endl;
+
+
 	const auto type = getCurrentViewer ();
 
 	getBrowser () -> setCursor ("ARROW");
