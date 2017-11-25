@@ -133,6 +133,9 @@ private:
 	///  @name Event handlers
 
 	void
+	on_idle ();
+
+	void
 	set_browser ();
 
 	///  @name Members
@@ -159,15 +162,22 @@ template <class Interface>
 void
 X3DNotebook <Interface>::configure ()
 {
+	Interface::configure ();
+
+	// Defer restore of page to correcly setup userinterface like pane positions.
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DNotebook::on_idle));
+}
+
+template <class Interface>
+void
+X3DNotebook <Interface>::on_idle ()
+{
 	try
 	{
-		Interface::configure ();
-	
 		const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
 		const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
-	
-		// Defer restore of page to correcly setup userinterface like pane positions.
-		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this -> getNotebook (), &Gtk::Notebook::set_current_page), currentPage), Glib::PRIORITY_HIGH_IDLE);
+
+		this -> getNotebook () .set_current_page (currentPage);
 	}
 	catch (const std::out_of_range & error)
 	{ }
