@@ -301,7 +301,7 @@ X3DPrimitiveCountEditor::traverse (X3D::SFNode & node)
 			case X3D::X3DConstants::X3DShapeNode:
 			{
 				const auto shapeNode = dynamic_cast <X3D::X3DShapeNode*> (node .getValue ());
-			
+
 			   if (shapeNode -> isTransparent ())
 			      ++ transparentShapes;
 			   else
