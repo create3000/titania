@@ -142,6 +142,60 @@ public:
 	getBBox () const final override;
 
 	///  @name Operations
+	virtual
+	void
+	isLockedToCamera (const bool value) final override
+	{ getNode <X3DViewpointNode> () -> isLockedToCamera (value); }
+
+	virtual
+	const SFBool &
+	isLockedToCamera () const final override
+	{ return getNode <X3DViewpointNode> () -> isLockedToCamera (); }
+
+	virtual
+	void
+	applyUserOffsets () final override
+	{ getNode <X3DViewpointNode> () -> applyUserOffsets (); }
+
+	virtual
+	void
+	resetUserOffsets () final override
+	{ getNode <X3DViewpointNode> () -> resetUserOffsets (); }
+
+	virtual
+	void
+	straighten (const bool horizon = false) final override
+	{ getNode <X3DViewpointNode> () -> straighten (horizon); }
+
+	virtual
+	Rotation4d
+	straightenHorizon (const Rotation4d & orientation) const final override
+	{ return getNode <X3DViewpointNode> () -> straightenHorizon (orientation); }
+
+	virtual
+	Rotation4d
+	straightenView (const Rotation4d & orientation) const final override
+	{ return getNode <X3DViewpointNode> () -> straightenView (orientation); }
+
+	virtual
+	void
+	lookAt (Vector3d point, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2) final override
+	{ getNode <X3DViewpointNode> () -> lookAt (point, factor, straighten, cycleInterval); }
+
+	virtual
+	void
+	lookAt (Box3d bbox, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2) final override
+	{ getNode <X3DViewpointNode> () -> lookAt (bbox, factor, straighten, cycleInterval); }
+
+	virtual
+	void
+	transitionStart (X3DViewpointNode* const fromViewpoint) final override
+	{ getNode <X3DViewpointNode> () -> transitionStart (fromViewpoint); }
+
+	virtual
+	void
+	transitionStop () final override
+	{ getNode <X3DViewpointNode> () -> transitionStop (); }
 
 	virtual
 	void

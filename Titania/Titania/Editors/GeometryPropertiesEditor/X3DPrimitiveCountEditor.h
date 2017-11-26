@@ -108,7 +108,7 @@ private:
 	on_primitive_count_count_changed () final override;
 
 	void
-	update ();
+	update (const bool displayed);
 
 	bool
 	traverse (X3D::SFNode &);

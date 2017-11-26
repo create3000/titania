@@ -5,9 +5,9 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Tue, 12 Aug 2014 04:27:36 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V1.4.1, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.0.2, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/GeoCoordinate.x3d'/>
-    <meta name='modified' content='Wed, 13 Apr 2016 13:32:23 GMT'/>
+    <meta name='modified' content='Sat, 25 Nov 2017 16:06:54 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='QuadSphere' url='"https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d", "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d", "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d", "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d"'>
@@ -65,73 +65,75 @@
         skyColor='0.2 0.2 0.2'/>
     <Transform DEF='GeoViewpoints'>
       <GeoViewpoint DEF='Zero'
-          description='Zero'
           geoSystem='"GD", "WE", "longitude_first"'
+          description='Zero'
           position='0 0 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='NorthPole'
           description='North Pole'
           position='90 0 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='SouthPole'
           description='South Pole'
           position='-90 0 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='London'
           description='London'
           position='51 0 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='Leipzig'
           description='Leipzig'
           position='51.31 12.37 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='Nairobi'
           description='Nairobi'
           position='-1.33 36.84 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='NewYork'
           description='New York'
           position='39.99 -72.99 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='RioDeJaneiro'
           description='Rio de Janeiro'
-          position='-22.00 -42.97 13621864'
-          orientation='-1 0 0 1.5708'/>
+          position='-22 -42.97 13621864'
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='Sydney'
           description='Sydney'
           position='-37.01 143.98 13621864'
-          orientation='-1 0 0 1.5708'/>
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='Tokyo'
           description='Tokyo'
-          position='35.00 138.99 13621864'
-          orientation='-1 0 0 1.5708'/>
+          position='35 138.99 13621864'
+          orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
       <GeoViewpoint DEF='MenloPark'
           description='Menlo Park'
           position='37.45 -122.1834 13621864'
-          orientation='-1 0 0 1.5708'/>
-      <GeoViewpoint DEF='Floor'
-          description='Floor'
-          position='0 0 10'/>
-      <GeoViewpoint DEF='LeipzigDown'
-          description='Leipzig down'
-          position='51.31 12.37 10'
-          fieldOfView='1.37854'/>
-      <GeoViewpoint DEF='UTMMenloPark'
-          description='UTM Menlo Park '
-          geoSystem='"UTM", "WE", "Z10"'
-          position='4145173 572227 13621864'
           orientation='-1 0 0 1.5708'
+          centerOfRotation='-56.3205925360818 -40.8183506610198 -6262282.93095481'/>
+      <GeoViewpoint DEF='UTMMenloPark'
+          geoSystem='"UTM", "WE", "Z10"'
+          description='UTM Menlo Park '
+          position='4153603.92759802 594759.412887271 13621864'
+          orientation='-0.999995010546454 -0.00313182293937362 0.000412997910010724 1.56951439079855'
+          centerOfRotation='1039686.95787579 26999691.3079166 -6277396.31330616'
           fieldOfView='0.785'/>
       <GeoViewpoint DEF='UTMNewSeeland'
-          description='UTM New Seeland'
           geoSystem='"UTM", "WE", "Z60", "S"'
-          position='5427419.7 314369.5 13621864'
-          orientation='-1 0 0 1.5708'/>
+          description='UTM New Seeland'
+          position='5340947.73344923 319266.304201755 13621864'
+          orientation='0.999999921009475 2.10830258236386e-05 -0.000396908742472581 4.70878179778642'
+          centerOfRotation='-134687642.22724 -152229936.343916 -6277396.31330616'/>
     </Transform>
-    <Viewpoint
-        description='Viewpoint'
-        position='2e+07 0 0'
-        orientation='0.575100054818252 0.584481055712445 0.57240005456089 2.09027'/>
     <Transform DEF='Earth'
         scale='6.37814e+06 6.37814e+06 6.35675e+06'>
       <Shape DEF='Axes'>
@@ -185,7 +187,7 @@
         </Appearance>
         <PointSet>
           <GeoCoordinate
-              point='0 0 0, 90 0 0, -90 0 0, 51 0 0, 51.31 12.37 0, -76.20 36.84 0, 39.992 -72.994 0, -22.00 -42.97 0, -37.01 143.98 0, 35.007 138.999 0, 37.45 -122.1834 0'>
+              point='0 0 0, 90 0 0, -90 0 0, 51 0 0, 51.31 12.37 0, -76.2 36.84 0, 39.992 -72.994 0, -22 -42.97 0, -37.01 143.98 0, 35.007 138.999 0, 37.45 -122.1834 0'>
             <GeoOrigin
                 geoSystem='"GC"'/>
           </GeoCoordinate>
@@ -193,9 +195,9 @@
       </Shape>
     </Transform>
     <Transform DEF='Axes_1'>
-      <GeoTransform DEF='Zero_1'
+      <GeoTransform DEF='Zero_2'
           scale='1e+06 1e+06 1e+06'>
-        <Shape DEF='Axes_2'>
+        <Shape DEF='Axes_3'>
           <IndexedLineSet
               colorPerVertex='false'
               colorIndex='0, 1, 2'
@@ -207,70 +209,70 @@
           </IndexedLineSet>
         </Shape>
       </GeoTransform>
-      <GeoTransform DEF='NorthPole_1'
+      <GeoTransform DEF='NorthPole_4'
           scale='1e+06 1e+06 1e+06'
           geoCenter='90 0 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='SouthPole_1'
+      <GeoTransform DEF='SouthPole_5'
           scale='1e+06 1e+06 1e+06'
           geoCenter='-90 0 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='London_1'
+      <GeoTransform DEF='London_6'
           scale='1e+06 1e+06 1e+06'
           geoCenter='51.39 0 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='Leipzig_1'
+      <GeoTransform DEF='Leipzig_7'
           scale='1e+06 1e+06 1e+06'
           geoCenter='51.31 12.37 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='Nairobi_1'
+      <GeoTransform DEF='Nairobi_8'
           scale='1e+06 1e+06 1e+06'
           geoCenter='-1.33 36.84 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='NewYork_1'
+      <GeoTransform DEF='NewYork_9'
           scale='1e+06 1e+06 1e+06'
           geoCenter='39.99 -72.99 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='RioDeJaneiro_1'
+      <GeoTransform DEF='RioDeJaneiro_10'
           scale='1e+06 1e+06 1e+06'
-          geoCenter='-22.00 -42.97 0'>
-        <Shape USE='Axes_2'/>
+          geoCenter='-22 -42.97 0'>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='Sydney_1'
+      <GeoTransform DEF='Sydney_11'
           scale='1e+06 1e+06 1e+06'
           geoCenter='-37.01 143.98 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='Tokyo_1'
+      <GeoTransform DEF='Tokyo_12'
           scale='1e+06 1e+06 1e+06'
-          geoCenter='35.00 138.99 0'>
-        <Shape USE='Axes_2'/>
+          geoCenter='35 138.99 0'>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
-      <GeoTransform DEF='MenloPark_1'
+      <GeoTransform DEF='MenloPark_13'
           scale='1e+06 1e+06 1e+06'
           geoCenter='37.45 -122.1834 0'>
-        <Shape USE='Axes_2'/>
+        <Shape USE='Axes_3'/>
       </GeoTransform>
     </Transform>
     <Transform DEF='Texts'>
-      <GeoLocation DEF='Zero_2'
+      <GeoLocation DEF='Zero_14'
           geoCoords='0 0 1000000'>
         <Billboard DEF='BZERO'
             axisOfRotation='0 0 0'>
           <Shape DEF='ZERO'>
-            <Appearance DEF='_1'>
+            <Appearance DEF='_15'>
               <Material
                   diffuseColor='0 0 0'/>
             </Appearance>
             <Text
                 string='"Zero"'>
-              <ScreenFontStyle DEF='_2'
+              <ScreenFontStyle DEF='_16'
                   family='"Ubuntu Condensed", "Ubuntu", "SANS"'/>
             </Text>
           </Shape>
@@ -281,10 +283,10 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"North Pole"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -294,10 +296,10 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"South Pole"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -307,10 +309,10 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"London"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -320,10 +322,10 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Leipzig"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -333,10 +335,10 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Nairobi"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -346,23 +348,23 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"New York"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
       </GeoLocation>
       <GeoLocation DEF='RioDeJaneiroText'
-          geoCoords='-22.00 -42.97 1000000'>
+          geoCoords='-22 -42.97 1000000'>
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Rio de Janeiro"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -372,23 +374,23 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Sydney"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
       </GeoLocation>
       <GeoLocation DEF='TokyoText'
-          geoCoords='35.00 138.99 1000000'>
+          geoCoords='35 138.99 1000000'>
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Tokyo"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
@@ -398,46 +400,14 @@
         <Billboard
             axisOfRotation='0 0 0'>
           <Shape>
-            <Appearance USE='_1'/>
+            <Appearance USE='_15'/>
             <Text
                 string='"Menlo Park"'>
-              <ScreenFontStyle USE='_2'/>
+              <ScreenFontStyle USE='_16'/>
             </Text>
           </Shape>
         </Billboard>
       </GeoLocation>
-    </Transform>
-    <GeoProximitySensor DEF='_3'
-        size='-1 -1 -1'/>
-    <Transform DEF='Satellite'>
-      <TimeSensor DEF='_4'
-          cycleInterval='10'
-          loop='true'/>
-      <GeoPositionInterpolator DEF='_5'
-          key='0, 0.25, 0.5, 0.75, 1'
-          keyValue='0 0 1500000, 0 90 1500000, 0 180 1500000, 0 -90 1500000, 0 0 1500000'/>
-      <GeoTransform DEF='_6'
-          scale='200000 200000 200000'
-          geoCenter='0 0 1500000'>
-        <Transform DEF='Axes_3'
-            scale='2 2 2'>
-          <Shape DEF='Axes12'>
-            <IndexedLineSet
-                colorPerVertex='false'
-                colorIndex='0, 1, 2'
-                coordIndex='0, 1, -1, 0, 2, -1, 0, 3, -1'>
-              <Color
-                  color='1 0 0, 0 1 0, 0 0 1'/>
-              <Coordinate
-                  point='0 0 0, 1 0 0, 0 1 0, 0 0 1'/>
-            </IndexedLineSet>
-          </Shape>
-        </Transform>
-        <Transform DEF='tie'>
-          <Inline
-              url='"tie.x3dv", "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/tie.x3dv"'/>
-        </Transform>
-      </GeoTransform>
     </Transform>
     <Transform DEF='UTM'>
       <Shape>
@@ -467,16 +437,5 @@
         </PointSet>
       </Shape>
     </Transform>
-    <Script DEF='Debug'>
-      <field accessType='inputOnly' type='SFVec3d' name='set_geoCoord'/>
-<![CDATA[vrmlscript:
-function set_geoCoord (value, time)
-{
-	print ('geoCoord: ' + value);
-}]]> 
-    </Script>
-    <ROUTE fromNode='_3' fromField='geoCoord_changed' toNode='Debug' toField='set_geoCoord'/>
-    <ROUTE fromNode='_5' fromField='geovalue_changed' toNode='_6' toField='set_geoCenter'/>
-    <ROUTE fromNode='_4' fromField='fraction_changed' toNode='_5' toField='set_fraction'/>
   </Scene>
 </X3D>

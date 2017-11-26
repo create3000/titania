@@ -227,37 +227,48 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
 	isLockedToCamera (const bool);
 
+	virtual
 	const SFBool &
 	isLockedToCamera () const
 	{ return lockToCamera; }
 
+	virtual
 	void
 	applyUserOffsets ();
 
+	virtual
 	void
 	resetUserOffsets ();
 
+	virtual
 	void
 	straighten (const bool horizon = false);
 
+	virtual
 	Rotation4d
 	straightenHorizon (const Rotation4d & orientation) const;
 
+	virtual
 	Rotation4d
 	straightenView (const Rotation4d & orientation) const;
 
+	virtual
 	void
 	lookAt (Vector3d point, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
+	virtual
 	void
 	lookAt (Box3d bbox, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
+	virtual
 	void
 	transitionStart (X3DViewpointNode* const fromViewpoint);
 
+	virtual
 	void
 	transitionStop ();
 
