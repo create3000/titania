@@ -82,6 +82,8 @@ protected:
 	void
 	configure () override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	store () override;
@@ -90,6 +92,14 @@ protected:
 private:
 
 	///  @name Construction
+
+	void
+	connect ();
+	
+	void
+	disconnect ();
+
+	///  @name Event handlers
 
 	virtual
 	void

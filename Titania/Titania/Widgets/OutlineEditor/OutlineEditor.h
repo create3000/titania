@@ -347,6 +347,9 @@ private:
 	Gtk::TreePath
 	getPathAtPosition (const double, const double);
 
+	X3D::X3DExecutionContextPtr
+	getParentContext (Gtk::TreePath parentPath) const;
+
 	// Expanded
 
 	void
