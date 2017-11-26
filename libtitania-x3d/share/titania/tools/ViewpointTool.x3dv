@@ -1,14 +1,13 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V4.0.2
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V4.0.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/ViewpointTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 10:31:01 GMT"
-META "outputStyle" "nicest"
+META "modified" "Sun, 26 Nov 2017 01:22:58 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -39,22 +38,27 @@ WorldInfo {
               whichChoice TRUE
               children [
                 DEF _2 Group { }
-                DEF TransformTool Transform {
-                  children ScreenGroup {
-                    children DEF Box Transform {
-                      scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
-                      children Shape {
-                        appearance Appearance {
-                          material Material {
-                            transparency 1
+                DEF TransformToolSwitch Switch {
+                  whichChoice 0
+                  children [
+                    Group { }
+                    DEF TransformTool Transform {
+                      children ScreenGroup {
+                        children DEF Box Transform {
+                          children Shape {
+                            appearance Appearance {
+                              material Material {
+                                transparency 1
+                              }
+                            }
+                            geometry Box {
+                              size 60 60 60
+                            }
                           }
-                        }
-                        geometry Box {
-                          size 60 60 60
                         }
                       }
                     }
-                  }
+                  ]
                 }
               ]
             }
@@ -217,14 +221,14 @@ Collision {
                 geometry Cylinder { }
               }
             }
-            DEF Cylinder_1 Transform {
+            DEF Cylinder_6 Transform {
               translation -4.9011e-06 0.512245 -1.22191
               rotation 8.03429999994739e-10 -3.6189799999763e-06 0.999999999993451 4.71239
               scale 0.999983 0.999983 1
               scaleOrientation 2.18250999999023e-06 -2.04758999999083e-06 -0.999999999995522 0.784907
               children USE _4
             }
-            DEF Box_1 Transform {
+            DEF Box_7 Transform {
               translation -2.8327e-21 -0.13107 -0.550901
               scale 1 1.22448 1.25897
               children Shape {
@@ -235,13 +239,13 @@ Collision {
             DEF Lenses Switch {
               whichChoice 0
               children [
-                DEF Viewpoint_1 Transform {
+                DEF Viewpoint_8 Transform {
                   children [
                     DEF Pyramid Transform {
                       translation 1.1422e-21 -0.0999999 0.945998
                       rotation 0.999999999993201 3.68565999997494e-06 1.20211999999183e-07 4.71239
                       scale 1.22447 1.22447 1.22447
-                      scaleOrientation 0.997968674291364 0.0016424394639544 0.0636853792149007 0.198092
+                      scaleOrientation 0.997968674291363 0.0016424394639544 0.0636853792149007 0.198092
                       children Shape {
                         appearance USE _5
                         geometry DEF Cube IndexedFaceSet {
@@ -280,7 +284,7 @@ Collision {
                       translation 1.1422e-21 -0.0999999 1.18352
                       scale 0.709888 0.709874 0.709874
                       scaleOrientation -0.999999999999964 2.6894099999999e-08 -2.65377999999991e-07 1.5708
-                      children DEF _6 Shape {
+                      children DEF _9 Shape {
                         appearance USE _5
                         geometry Rectangle2D { }
                       }
@@ -289,11 +293,11 @@ Collision {
                 }
                 DEF OrthoViewpoint Transform {
                   children [
-                    DEF Box_2 Transform {
+                    DEF Box_10 Transform {
                       translation 5.50571e-21 -0.0862152 1.44525
                       children Shape {
                         appearance USE _5
-                        geometry DEF Cube_1 IndexedFaceSet {
+                        geometry DEF Cube_11 IndexedFaceSet {
                           solid FALSE
                           coordIndex [
                             4,
@@ -337,21 +341,21 @@ Collision {
                         }
                       }
                     }
-                    DEF Rectangle2D_1 Transform {
+                    DEF Rectangle2D_12 Transform {
                       translation -6.98802e-20 -0.0862152 1.46945
-                      children USE _6
+                      children USE _9
                     }
                   ]
                 }
               ]
             }
-            DEF _7 BooleanSwitch {
+            DEF _13 BooleanSwitch {
               whichChoice TRUE
               children [
-                DEF _8 Transform {
+                DEF _14 Transform {
                   scale 0.0833333 0.0833333 0.0833333
                 }
-                DEF Cylinder_2 Transform {
+                DEF Cylinder_15 Transform {
                   translation -4.9011e-06 0.512245 -1.22191
                   rotation 1.0121099999934e-08 -3.60999999997648e-06 0.999999999993484 4.71239
                   scale 0.182131 1.15274 0.182131
@@ -376,7 +380,7 @@ Collision {
   ]
 }
 
-ROUTE Tool.isBound_changed TO _7.set_whichChoice
+ROUTE Tool.isBound_changed TO _13.set_whichChoice
 ROUTE TransformTool.translation_changed TO _3.set_translation
 ROUTE TransformTool.rotation_changed TO _3.set_rotation
 ROUTE Tool.whichChoice_changed_changed TO Lenses.set_whichChoice
@@ -384,3 +388,4 @@ ROUTE Tool.selected_changed TO _1.set_whichChoice
 
 EXPORT Tool
 EXPORT TransformTool
+EXPORT TransformToolSwitch

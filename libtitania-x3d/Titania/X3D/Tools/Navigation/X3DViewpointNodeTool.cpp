@@ -54,6 +54,7 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/Transform.h"
+#include "../../Components/Grouping/Switch.h"
 
 #include "../Grouping/X3DTransformNodeTool.h"
 
@@ -64,12 +65,13 @@ X3DViewpointNodeTool::X3DViewpointNodeTool () :
 	   X3DViewpointNode (),
 	X3DBindableNodeTool (),
 	   X3DBoundedObject (),
+	         switchNode (),
 	      startPosition (),
 	   startOrientation ()
 {
 	addType (X3DConstants::X3DViewpointNodeTool);
 
-	addChildObjects (bboxSize (), bboxCenter ());
+	addChildObjects (switchNode, bboxSize (), bboxCenter ());
 }
 
 void
@@ -90,6 +92,8 @@ X3DViewpointNodeTool::initialize ()
 	X3DBindableNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
+	positionOffset () .addInterest (&X3DViewpointNodeTool::set_positionOffset, this);
+
 	getBrowser () -> addViewpointTool (this);
 
 	requestAsyncLoad ({ get_tool ("ViewpointTool.x3dv") .str () });
@@ -108,10 +112,39 @@ X3DViewpointNodeTool::realize ()
 		getTransformTool () -> setField <SFBool>   ("displayCenter", false);
 
 		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
+
+		switchNode = getInlineNode () -> getExportedNode <Switch> ("TransformToolSwitch");
+
+		set_positionOffset ();
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DViewpointNodeTool::set_positionOffset ()
+{
+	try
+	{
+		if (isBound ())
+		{
+			if (abs (positionOffset () .getValue ()) < 1)
+			{
+				if (switchNode -> whichChoice ())
+					switchNode -> whichChoice () = false;
+	
+				return;
+			}
+		}
+	
+		if (not switchNode -> whichChoice ())
+			switchNode -> whichChoice () = true;
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

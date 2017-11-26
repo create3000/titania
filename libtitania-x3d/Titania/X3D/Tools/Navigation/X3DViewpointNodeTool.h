@@ -244,10 +244,14 @@ protected:
 
 private:
 
+	void
+	set_positionOffset ();
+
 	///  @name Members
 
-	Vector3d   startPosition;
-	Rotation4d startOrientation;
+	X3DPtr <Switch> switchNode;
+	Vector3d        startPosition;
+	Rotation4d      startOrientation;
 
 };
 
