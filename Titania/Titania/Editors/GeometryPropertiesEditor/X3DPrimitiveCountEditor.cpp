@@ -312,7 +312,7 @@ X3DPrimitiveCountEditor::traverse (X3D::SFNode & node)
 			case X3D::X3DConstants::X3DGeometryNode:
 			{
 				const auto geometry = dynamic_cast <X3D::X3DGeometryNode*> (node .getValue ());
-			
+
 				for (const auto & element : geometry -> getElements ())
 					count (element);
 
