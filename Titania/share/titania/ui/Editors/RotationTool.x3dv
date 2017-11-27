@@ -1,13 +1,15 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V4.0.2
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 27 Oct 2015 05:52:57 GMT"
+META "generator" "Titania V4.0.2, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/RotationTool.x3dv"
+META "modified" "Mon, 27 Nov 2017 14:12:56 GMT"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 [
   "../../tools/library/ToolShader.x3dv",
   "/usr/share/titania/tools/library/ToolShader.x3dv"
@@ -85,28 +87,27 @@ DEF GlobalLight DirectionalLight {
   direction -0.729952 -0.438144 -0.524595
 }
 
-DEF _1 SphereSensor { }
+DEF _2 SphereSensor { }
 
 DEF Objects Transform {
   children [
     DEF LocalLight DirectionalLight { }
-    DEF CenterPoint_1 ScreenGroup {
+    DEF CenterPoint_3 ScreenGroup {
       children Shape {
         appearance Appearance {
           material Material {
             diffuseColor 1 1 0
           }
-          shaders ToolShader {
-          }
+          shaders ToolShader { }
         }
         geometry Sphere {
           radius 3
         }
       }
     }
-    DEF Axes_1 Group {
+    DEF Axes_4 Group {
       children [
-        DEF Axes_2 Transform {
+        DEF Axes_5 Transform {
           children Shape {
             appearance Appearance {
               lineProperties LineProperties {
@@ -133,7 +134,7 @@ DEF Objects Transform {
                   0 0 1
                 ]
               }
-              coord DEF AxesCoord_1 Coordinate {
+              coord DEF AxesCoord_6 Coordinate {
                 point [
                   -1 0 0,
                   1 0 0,
@@ -146,21 +147,20 @@ DEF Objects Transform {
             }
           }
         }
-        DEF XHandle_1 Transform {
+        DEF XHandle_7 Transform {
           translation 1 0 0
           children ScreenGroup {
             children Transform {
               translation 6 0 0
               rotation 0 0 -1 1.5708
               children Shape {
-                appearance DEF Red_1 Appearance {
+                appearance DEF Red_8 Appearance {
                   material Material {
                     diffuseColor 1 0 0
                   }
-                  shaders ToolShader {
-                  }
+                  shaders ToolShader { }
                 }
-                geometry DEF Arrow_1 Cone {
+                geometry DEF Arrow_9 Cone {
                   height 12
                   bottomRadius 4
                 }
@@ -168,39 +168,37 @@ DEF Objects Transform {
             }
           }
         }
-        DEF YHandle_1 Transform {
+        DEF YHandle_10 Transform {
           translation 0 1 0
           children ScreenGroup {
             children Transform {
               translation 0 6 0
               children Shape {
-                appearance DEF Green_1 Appearance {
+                appearance DEF Green_11 Appearance {
                   material Material {
                     diffuseColor 0 1 0
                   }
-                  shaders ToolShader {
-                  }
+                  shaders ToolShader { }
                 }
-                geometry USE Arrow_1
+                geometry USE Arrow_9
               }
             }
           }
         }
-        DEF ZHandle_1 Transform {
+        DEF ZHandle_12 Transform {
           translation 0 0 1
           children ScreenGroup {
             children Transform {
               translation 0 0 6
               rotation 1 0 0 1.5708
               children Shape {
-                appearance DEF Blue_1 Appearance {
+                appearance DEF Blue_13 Appearance {
                   material Material {
                     diffuseColor 0 0 1
                   }
-                  shaders ToolShader {
-                  }
+                  shaders ToolShader { }
                 }
-                geometry USE Arrow_1
+                geometry USE Arrow_9
               }
             }
           }
@@ -235,11 +233,13 @@ function initialize ()
 }
 
 DEF Tool Script {
-  inputOutput SFRotation inputRotation 0 0 1 0
-  inputOutput SFRotation outputRotation 0 0 1 0
-  outputOnly  SFRotation axis_changed
-  outputOnly  SFFloat    angle_changed
-  outputOnly  SFRotation angleRotation_changed
+  inputOutput    SFRotation inputRotation 0 0 1 0
+  inputOutput    SFRotation outputRotation 0 0 1 0
+  outputOnly     SFRotation axis_changed
+  outputOnly     SFRotation angleRotation_changed
+  initializeOnly SFNode     arc DEF _14 Arc2D {
+    endAngle 0
+  }
 
   url "javascript:
 
@@ -258,18 +258,19 @@ function set_outputRotation (value)
 function set_rotation (rotation)
 {
 	axis_changed          = new SFRotation (zAxis, rotation .getAxis ());
-	angle_changed         = rotation .angle;
 	angleRotation_changed = new SFRotation (zAxis, rotation .angle);
+
+	arc .endAngle = rotation .angle;
 }
 "
   directOutput TRUE
 }
 
-DEF Axis_1 Transform {
+DEF Axis_15 Transform {
   children [
     DEF AxisHandle Transform {
       translation 0 0 1
-      children DEF _2 ScreenGroup {
+      children DEF _16 ScreenGroup {
         children Transform {
           translation 0 0 6
           rotation 1 0 0 1.5708
@@ -278,8 +279,7 @@ DEF Axis_1 Transform {
               material Material {
                 diffuseColor 1 1 1
               }
-              shaders ToolShader {
-              }
+              shaders ToolShader { }
             }
             geometry DEF Arrow Cone {
               height 12
@@ -309,7 +309,7 @@ DEF Axis_1 Transform {
       }
     }
     DEF AxisToAngleLine Shape {
-      appearance DEF _3 Appearance {
+      appearance DEF _17 Appearance {
         #file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/RotationTool.x3dv
         lineProperties LineProperties {
           linetype 3
@@ -329,7 +329,7 @@ DEF Axis_1 Transform {
         color Color {
           color 1 1 1
         }
-        coord DEF AxesCoord_2 Coordinate {
+        coord DEF AxesCoord_18 Coordinate {
           point [
             0 0 0,
             1 0 0
@@ -338,25 +338,22 @@ DEF Axis_1 Transform {
       }
     }
     DEF Angle Shape {
-      appearance USE _3
-      geometry DEF _4 Arc2D {
-        endAngle 0
-      }
+      appearance USE _17
+      geometry USE _14
     }
     DEF AngleHandle Transform {
-      children DEF AxisHandle_1 Transform {
+      children DEF AxisHandle_19 Transform {
         translation 1 0 0
         rotation -1 0 0 1.507
-        children USE _2
+        children USE _16
       }
     }
   ]
 }
 
-ROUTE _1.rotation_changed TO Objects.set_rotation
-ROUTE Tool.inputRotation_changed TO _1.set_offset
+ROUTE _2.rotation_changed TO Objects.set_rotation
+ROUTE Tool.inputRotation_changed TO _2.set_offset
 ROUTE Tool.inputRotation_changed TO Objects.set_rotation
-ROUTE _1.rotation_changed TO Tool.set_outputRotation
-ROUTE Tool.axis_changed TO Axis_1.set_rotation
-ROUTE Tool.angle_changed TO _4.set_endAngle
+ROUTE _2.rotation_changed TO Tool.set_outputRotation
+ROUTE Tool.axis_changed TO Axis_15.set_rotation
 ROUTE Tool.angleRotation_changed TO AngleHandle.set_rotation
