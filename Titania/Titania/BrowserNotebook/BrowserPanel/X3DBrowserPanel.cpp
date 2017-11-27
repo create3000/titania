@@ -146,10 +146,6 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	                 navigationInfoNode,
 	                 viewpoint,
 	                 gridTransform);
-
-	#ifndef TITANIA_FEATUREx
-	getLayersMenuItem () .set_visible (false);
-	#endif
 }
 
 void
@@ -157,9 +153,12 @@ X3DBrowserPanel::initialize ()
 {
 	X3DBrowserPanelInterface::initialize ();
 
+	getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::setLayer, this);
+
 	type = getBrowserPanelType (getId ());
 
 	set_type ();
+	setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
 }
 
 X3D::BrowserPtr
@@ -382,7 +381,10 @@ void
 X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 {
 	if (type == BrowserPanelType::MAIN_VIEW)
+	{
+		layerNode = value;
 		return;
+	}
 
 	try
 	{
@@ -401,8 +403,6 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 	}
 
 	layerNode = value;
-
-	setLayerNumber (getLayerNumber (layerNode));
 
 	try
 	{
@@ -446,51 +446,6 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-void
-X3DBrowserPanel::setLayerNumber (const int32_t layerNumber)
-{
-	const auto worldInfo        = createWorldInfo (getPage () -> getScene ());
-	auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
-
-	layerNumberArray .resize (8, X3D::SFInt32 (-1));
-
-	layerNumberArray [size_t (type)] = layerNumber;
-
-	worldInfo -> setMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber", layerNumberArray);
-}
-
-int32_t
-X3DBrowserPanel::getLayerNumber () const
-{
-	try
-	{
-		const auto worldInfo        = getWorldInfo (getPage () -> getScene ());
-		auto       layerNumberArray = worldInfo -> getMetaData <X3D::MFInt32> ("/Titania/BrowserPanel/layerNumber");
-
-		layerNumberArray .resize (8, X3D::SFInt32 (-1));
-	
-		return layerNumberArray [size_t (type)];
-	}
-	catch (const X3D::X3DError &)
-	{
-		return -1;
-	}
-}
-
-int32_t
-X3DBrowserPanel::getLayerNumber (const X3D::X3DPtr <X3D::X3DLayerNode> & layerNode) const
-{
-	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
-	const auto   iter     = std::find (layerSet -> layers () .begin (), layerSet -> layers () .end (), layerNode);
-
-	if (layerNode == layerSet -> getLayer0 ())
-		return 0;
-
-	else if (iter not_eq layerSet -> layers () .end ())
-		return (iter - layerSet -> layers () .begin ()) + 1;
-
-	return -1;
 }
 
 void
@@ -546,12 +501,6 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
-
-		#ifndef TITANIA_FEATURExx
-		getPage () -> getMainBrowser () -> getActiveLayer () .addInterest (&X3DBrowserPanel::setLayer, this);
-		#else
-		getPage () -> getExecutionContext () .addInterest (&X3DBrowserPanel::set_execution_context, this);
-		#endif
 
 		set_fixed_pipeline ();
 		set_viewer ();
@@ -644,11 +593,7 @@ X3DBrowserPanel::set_live ()
 void
 X3DBrowserPanel::set_execution_context ()
 {
-	#ifndef TITANIA_FEATUREx
 	setLayer (-1);
-	#else
-	setLayer (getLayerNumber ());
-	#endif
 }
 
 void

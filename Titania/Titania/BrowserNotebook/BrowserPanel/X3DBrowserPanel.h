@@ -113,12 +113,6 @@ protected:
 	void
 	setLocalBrowser (const X3D::BrowserPtr & value);
 
-	void
-	setLayer (const int32_t layerNumber);
-
-	void
-	setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & layer);
-
 	const X3D::X3DPtr <X3D::X3DLayerNode> &
 	getLayer () const
 	{ return layerNode; }
@@ -153,13 +147,10 @@ private:
 	getPlane () const;
 
 	void
-	setLayerNumber (const int32_t layerNumber);
-	
-	int32_t
-	getLayerNumber () const;
+	setLayer (const int32_t layerNumber);
 
-	int32_t
-	getLayerNumber (const X3D::X3DPtr <X3D::X3DLayerNode> & layerNode) const;
+	void
+	setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & layer);
 
 	///  @name Event handlers
 

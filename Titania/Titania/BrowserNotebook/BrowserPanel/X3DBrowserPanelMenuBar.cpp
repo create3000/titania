@@ -756,7 +756,9 @@ X3DBrowserPanelMenuBar::on_layers_activate (const X3D::X3DPtr <X3D::X3DLayerNode
 void
 X3DBrowserPanelMenuBar::on_layer_activate (const size_t layerNumber)
 {
-	setLayer (layerNumber);
+	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
+
+	layerSet -> privateActiveLayer () = layerNumber;
 }
 
 /*
