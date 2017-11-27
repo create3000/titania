@@ -204,6 +204,7 @@ X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 		switch (getAccessType () & reference -> getAccessType ())
 		{
 			case initializeOnly:
+				reference -> addInterest (this);
 				break;
 			case inputOnly:
 				reference -> addInterest (this);
