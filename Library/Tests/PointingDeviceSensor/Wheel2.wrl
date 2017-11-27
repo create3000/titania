@@ -1,85 +1,221 @@
-#VRML V2.0 utf8 Titania V0.6.7
+#VRML V2.0 utf8 Titania V4.0.2
 
-EXTERNPROTO Number [
-  exposedField SFFloat value
-  exposedField SFInt32 precision
-  exposedField SFFloat length
-  exposedField SFFloat maxExtent
-  field        SFBool  solid
-  eventOut     SFVec3f origin
-  eventOut     SFVec2f textBounds
-  exposedField SFNode  fontStyle
+PROTO DiskSensor [
+  exposedField SFBool     enabled TRUE
+  exposedField SFString   description ""
+  exposedField SFRotation axisRotation 0 0 1 0
+  exposedField SFFloat    factor 0.159155
+  exposedField SFFloat    minValue 0
+  exposedField SFFloat    maxValue -1
+  exposedField SFFloat    offset 0
+  exposedField SFBool     autoOffset TRUE
+  eventOut    SFBool     isActive
+  eventOut    SFBool     isOver
+  eventOut    SFVec3f    trackPoint_changed
+  eventOut    SFRotation rotation_changed
+  eventOut    SFFloat    value_changed
 ]
-[
-  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Number.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Number.x3dv",
-  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Geometry3D/Number.x3dv"
-]
+{
+  DEF CylinderTouch CylinderSensor {
+    enabled IS enabled
+    description IS description
+    axisRotation IS axisRotation
+    diskAngle 1.69282e+07
+    autoOffset IS autoOffset
+    trackPoint_changed IS trackPoint_changed
+    isOver IS isOver
+    isActive IS isActive
+  }
 
-EXTERNPROTO DiskSensor [
-  exposedField SFBool     enabled
-  exposedField SFString   description
-  exposedField SFRotation axisRotation
-  exposedField SFFloat    diskAngle
-  exposedField SFFloat    factor
-  exposedField SFFloat    minValue
-  exposedField SFFloat    maxValue
-  exposedField SFFloat    offset
-  exposedField SFBool     autoOffset
-  eventOut     SFBool     isActive
-  eventOut     SFBool     isOver
-  eventOut     SFVec3f    trackPoint_changed
-  eventOut     SFRotation rotation_changed
-  eventOut     SFFloat    value_changed
+  DEF DiskSensorScript Script {
+    eventIn        SFRotation set_rotation
+    eventIn        SFBool     set_active
+    exposedField   SFFloat    factor IS factor
+    exposedField   SFFloat    minValue IS minValue
+    exposedField   SFFloat    maxValue IS maxValue
+    exposedField   SFFloat    offset IS offset
+    eventOut       SFRotation rotation_changed IS rotation_changed
+    eventOut       SFFloat    value_changed IS value_changed
+    field          SFVec3f    startVector 0 0 1
+    field          SFFloat    value 0
+    field          SFNode     sensor USE CylinderTouch
+
+    url "ecmascript:
+
+function initialize ()
+{
+	set_offset ();
+}
+
+function set_factor ()
+{
+	set_offset ();
+}
+
+function set_offset ()
+{
+	value          = offset;
+	sensor .offset = offset / factor;
+}
+
+function set_rotation (rotation)
+{
+	var endVector     = rotation .multVec (sensor .axisRotation .multVec (new SFVec3f (0, 0, 1)));
+	var deltaRotation = new SFRotation (startVector, endVector);
+
+	startVector = endVector;
+
+	var axis  = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
+	var angle = axis .dot (deltaRotation .getAxis ());
+	var sign  = angle > 0 ? 1 : -1;
+
+	value += sign * deltaRotation .angle * factor;
+
+	if (minValue > maxValue || (value > minValue && value < maxValue))
+	{
+		rotation_changed = rotation_changed .multiply (deltaRotation);
+		value_changed    = value;
+	}
+	else
+	{
+		value = Math .max (minValue, Math .min (maxValue, value));
+
+		if (value != value_changed)
+		{
+			var axis = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
+			
+			rotation_changed = new SFRotation (axis, -value / factor);
+			value_changed    = value;
+		}
+	}
+}
+
+function set_active (active)
+{
+	if (active)
+	{
+		var axis = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
+
+		rotation_changed = new SFRotation (axis, sensor .offset);
+		startVector      = rotation_changed .multVec (sensor .axisRotation .multVec (new SFVec3f (0, 0, 1)));
+		value            = offset;
+	}
+	else
+	{
+		if (sensor .autoOffset)
+			offset = value;
+	}
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE CylinderTouch.rotation_changed TO DiskSensorScript.set_rotation
+  ROUTE CylinderTouch.isActive TO DiskSensorScript.set_active
+}
+
+PROTO Number [
+  exposedField   SFFloat value 0
+  exposedField   SFInt32 precision 0
+  exposedField   SFFloat length 0
+  exposedField   SFFloat maxExtent 0
+  field          SFBool  solid TRUE
+  eventOut       SFVec3f origin
+  eventOut       SFVec2f textBounds
+  exposedField   SFNode  fontStyle NULL
 ]
-[
-  "../../../Titania/share/titania/Prototypes/0.1/Widgets/DiskSensor.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/DiskSensor.x3dv",
-  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/DiskSensor.x3dv"
-]
+{
+  DEF Number Text {
+    maxExtent IS maxExtent
+    solid IS solid
+    origin IS origin
+    textBounds IS textBounds
+    fontStyle IS fontStyle
+  }
+
+  DEF NumberScript Script {
+    exposedField   SFFloat value IS value
+    exposedField   SFInt32 precision IS precision
+    exposedField   SFFloat length IS length
+    field          SFNode  text USE Number
+
+    url "ecmascript:
+
+function initialize ()
+{
+	set_value (value);
+	set_length (length);
+}
+
+function set_value (value)
+{
+	text .string = new MFString (value .toFixed (precision));
+}
+
+function set_precision ()
+{
+	set_value (value);
+}
+
+function set_length (length)
+{
+	text .length = new MFFloat (length);
+}
+"
+    directOutput TRUE
+  }
+}
+
+Background {
+  skyAngle [
+    62.5802,
+    90.0002
+  ]
+  skyColor [
+    0.2 0.2 0.2,
+    0.2 0.2 0.2,
+    0.3 0.3 0.3
+  ]
+  groundAngle [
+    64.4463,
+    90.0002
+  ]
+  groundColor [
+    0.4 0.4 0.4,
+    0.4 0.4 0.4,
+    0.3 0.3 0.3
+  ]
+}
 
 Transform {
   children [
     DEF DiskSensor DiskSensor {
       description "DiskSensor"
+      axisRotation 1 0 0 2.03540569948579
     }
     DEF Cylinder Transform {
-      children [
-        Shape {
-          appearance Appearance {
-            material Material { }
-          }
-          geometry DEF _1 Cylinder {
-            height 0.3
+      children Shape {
+        appearance Appearance {
+          material DEF _1 Material {
+            diffuseColor 0.167 0.167 0.167
           }
         }
-        Shape {
-          appearance Appearance {
-            fillProperties FillProperties {
-              filled FALSE
-              hatched FALSE
-            }
-            lineProperties LineProperties {
-              linewidthScaleFactor 1
-            }
-            material Material {
-              diffuseColor 0 0 0
-            }
-          }
-          geometry USE _1
+        geometry ArcClose2D {
+          startAngle 15
+          endAngle 345
         }
-      ]
+      }
     }
-    DEF Number Transform {
+    DEF Number_2 Transform {
       translation 2 0 0
       scale 0.5 0.5 0.5
       children Shape {
         appearance Appearance {
-          material Material { }
+          material USE _1
         }
-        geometry DEF _2 Number {
+        geometry DEF _3 Number {
           precision 3
-          fontStyle FontStyle {
+          fontStyle DEF _4 FontStyle {
             family "TYPEWRITER"
             justify [
               "MIDDLE",
@@ -92,5 +228,9 @@ Transform {
   ]
 }
 
-ROUTE DiskSensor.value_changed TO _2.set_value
+Viewpoint {
+  position 0 0 3.86769
+}
+
 ROUTE DiskSensor.rotation_changed TO Cylinder.set_rotation
+ROUTE DiskSensor.value_changed TO _3.set_value

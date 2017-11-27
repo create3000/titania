@@ -570,6 +570,9 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	Generator::SpecificationVersion (ostream, specificationVersion);
 
+	if (specificationVersion == VRML_V2_0)
+		Generator::Units (ostream, false);
+
 	ostream
 		<< '#'
 		<< specificationVersion
@@ -731,6 +734,9 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	Generator::SpecificationVersion (ostream, specificationVersion);
 
+	if (specificationVersion == VRML_V2_0)
+		Generator::Units (ostream, false);
+
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		<< Generator::ForceBreak;
@@ -863,6 +869,10 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		specificationVersion = LATEST_VERSION;
 
 	Generator::SpecificationVersion (ostream, specificationVersion);
+
+	if (specificationVersion == VRML_V2_0)
+		Generator::Units (ostream, false);
+
 	Generator::PushExecutionContext (ostream, this);
 	Generator::EnterScope (ostream);
 	Generator::ExportedNodes (ostream, getExportedNodes ());

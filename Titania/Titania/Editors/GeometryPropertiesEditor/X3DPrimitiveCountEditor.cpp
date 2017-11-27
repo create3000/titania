@@ -110,7 +110,10 @@ X3DPrimitiveCountEditor::connect ()
 			// Rendered objects
 
 			if (browser)
+			{
 				browser -> displayed () .addInterest (&X3DPrimitiveCountEditor::update, this, true);
+				browser -> addEvent ();
+			}
 
 			break;
 		}
@@ -126,6 +129,8 @@ X3DPrimitiveCountEditor::connect ()
 			break;
 		}
 	}
+
+	
 
 	update (false);
 }
