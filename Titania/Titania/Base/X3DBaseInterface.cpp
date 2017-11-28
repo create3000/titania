@@ -50,13 +50,13 @@
 
 #include "X3DBaseInterface.h"
 
+#include "../Browser/X3DBrowserWindow.h"
+#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
+
+#include <Titania/String.h>
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Execution/X3DExecutionContext.h>
-
-#include "../Browser/X3DBrowserWindow.h"
-
-#include <Titania/String.h>
 
 #include <cassert>
 
@@ -216,7 +216,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	if (getAddMetadata (scene))
 		return getWorldInfo (scene, true);
 
-	return getBrowserWindow () -> getDefaultWorldInfo ();
+	return getBrowserWindow () -> getCurrentPage () -> getDefaultWorldInfo ();
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
@@ -227,7 +227,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	if (const_cast <X3DBaseInterface*> (this) -> getAddMetadata (scene))
 		return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
 
-	return getBrowserWindow () -> getDefaultWorldInfo ();
+	return getBrowserWindow () -> getCurrentPage () -> getDefaultWorldInfo ();
 }
 
 ///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it

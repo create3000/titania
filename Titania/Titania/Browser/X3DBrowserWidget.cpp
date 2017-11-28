@@ -452,7 +452,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		setOutputStyle (scene, outputStyle);
 		X3D::X3DEditor::setWorldURL (scene, worldURL, undoStep);
 
-		X3D::FileGenerator::write (scene, worldURL, outputStyle);
+		X3D::FileGenerator::write (scene, worldURL, outputStyle, getAddMetadata (scene));
 
 		if (copy)
 			undoStep -> undo ();

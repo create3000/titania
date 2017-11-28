@@ -283,7 +283,9 @@ X3DBaseInterface::setMetaData (const X3D::BrowserPtr & browser, const std::strin
 	const auto & layerSet = browser -> getWorld () -> getLayerSet ();
 
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+	{
 		layerSet -> getActiveLayer () -> setMetaData (key, value);
+	}
 	else
 	{
 		const auto scene = browser -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene })

@@ -193,6 +193,16 @@ public:
 
 	static
 	void
+	MetaData (std::ostream & ostream, const bool value)
+	{ get (ostream) -> metadata = value; }
+
+	static
+	bool
+	MetaData (std::ostream & ostream)
+	{ return get (ostream) -> metadata; }
+
+	static
+	void
 	XMLEncode (std::ostream & ostream, const std::string & string);
 
 	///  @name Destruction
@@ -277,6 +287,7 @@ private:
 	FieldStack                 containerFieldStack;
 	bool                       units;
 	std::vector <UnitCategory> unitCategories;
+	bool                       metadata;
 	const std::string          emptyName;
 
 };

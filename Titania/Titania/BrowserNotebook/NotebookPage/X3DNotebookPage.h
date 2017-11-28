@@ -109,6 +109,10 @@ public:
 	getUndoHistory () const
 	{ return undoHistory; }
 
+	const X3D::X3DPtr <X3D::WorldInfo> &
+	getDefaultWorldInfo () const
+	{ return defaultWorldInfo; }
+
 	void
 	setModified (const bool value);
 
@@ -208,15 +212,16 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr             mainBrowser;
-	X3D::X3DScenePtr            masterScene;
-	X3D::X3DScenePtr            scene;
-	X3D::X3DExecutionContextPtr executionContext;
-	basic::uri                  url; // Start URL
-	BrowserHistory              browserHistory;
-	X3D::UndoHistory            undoHistory;
-	bool                        modified;
-	bool                        saveConfirmed;
+	X3D::BrowserPtr              mainBrowser;
+	X3D::X3DScenePtr             masterScene;
+	X3D::X3DScenePtr             scene;
+	X3D::X3DExecutionContextPtr  executionContext;
+	basic::uri                   url; // Start URL
+	BrowserHistory               browserHistory;
+	X3D::UndoHistory             undoHistory;
+	X3D::X3DPtr <X3D::WorldInfo> defaultWorldInfo;
+	bool                         modified;
+	bool                         saveConfirmed;
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 	

@@ -73,7 +73,7 @@ const std::set <std::string> FileGenerator::knowFileTypes = {
 };
 
 void
-FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle)
+FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle, const bool metadata)
 throw (Error <INVALID_URL>,
        Error <NOT_SUPPORTED>,
        Error <DISPOSED>,
@@ -93,7 +93,8 @@ throw (Error <INVALID_URL>,
 		std::make_pair (".wrz",   generate_wrl),
 	};
 
-	ostream << SetStyle (outputStyle);
+	Generator::Style    (ostream, outputStyle);
+	Generator::MetaData (ostream, metadata);
 
 	bool saved = false;
 
@@ -112,7 +113,7 @@ throw (Error <INVALID_URL>,
 }
 
 void
-FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle)
+FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle, const bool metadata)
 throw (Error <INVALID_URL>,
        Error <NOT_SUPPORTED>,
        Error <DISPOSED>,
@@ -144,13 +145,13 @@ throw (Error <INVALID_URL>,
 			{
 				basic::ogzstream ostream (worldURL .path ());
 		
-				write (ostream, scene, worldURL .suffix (), outputStyle);
+				write (ostream, scene, worldURL .suffix (), outputStyle, metadata);
 			}
 			else
 			{
 				std::ofstream ostream (worldURL .path ());
 		
-				write (ostream, scene, worldURL .suffix (), outputStyle);
+				write (ostream, scene, worldURL .suffix (), outputStyle, metadata);
 			}
 		}
 		catch (const std::out_of_range &)

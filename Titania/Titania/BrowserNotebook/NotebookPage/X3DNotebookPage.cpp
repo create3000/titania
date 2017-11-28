@@ -59,6 +59,7 @@
 #include "../BrowserPanel/BrowserPanel.h"
 
 #include <Titania/String.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
 
 namespace titania {
 namespace puck {
@@ -72,13 +73,14 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                     url (startUrl),
 	          browserHistory (mainBrowser),
 	             undoHistory (),
+	        defaultWorldInfo (mainBrowser -> createNode <X3D::WorldInfo> ()),
 	                modified (false),
 	           saveConfirmed (false),
 	            fileMonitors (),
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
 {
-	addChildObjects (mainBrowser, masterScene, scene, executionContext);
+	addChildObjects (mainBrowser, masterScene, scene, executionContext, defaultWorldInfo);
 
 	mainBrowser -> isStrict (false);
 

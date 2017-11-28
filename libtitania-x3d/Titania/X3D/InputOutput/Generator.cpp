@@ -81,6 +81,7 @@ Generator::Generator (std::ostream & ostream) :
 	  containerFieldStack (1),
 	                units (true),
 	       unitCategories (),
+	             metadata (true),
 	            emptyName ()
 {
 	set (ostream, this);

@@ -69,7 +69,6 @@
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
-#include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Execution/World.h>
 
@@ -84,12 +83,9 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	           gridTool (new GridTool (this)),
 	      angleGridTool (new AngleGridTool (this)),
 	axonometricGridTool (new AxonometricGridTool (this)),
-	   defaultWorldInfo (defaultBrowser -> getExecutionContext () -> createNode <X3D::WorldInfo> ()),
 	               keys (),
 	       accelerators (true)
-{
-	addChildObjects (defaultWorldInfo);
-}  
+{ }  
 
 void
 X3DBrowserWindow::initialize ()

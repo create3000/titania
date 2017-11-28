@@ -72,6 +72,8 @@ public:
 		       antialiasing (4),
 		      fixedPipeline (false),
 		     exportFilename (),
+		        exportStyle (),
+		     exportMetadata (true),
 		               list (),
 		               help (false)
 	{
@@ -83,6 +85,7 @@ public:
 		Glib::OptionEntry optionFixedPipeline;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
+		Glib::OptionEntry optionExportMetadata;
 		Glib::OptionEntry optionList;
 		Glib::OptionEntry optionHelp;
 
@@ -131,6 +134,10 @@ public:
 		optionExportStyle .set_arg_description ("nicest|compact|small|smallest");
 		optionExportStyle .set_description ("Set output style for export.");
 
+		optionAntialiasing .set_short_name ('m');
+		optionAntialiasing .set_long_name ("metadata");
+		optionAntialiasing .set_description ("Set whether to export metadata.");
+
 		optionList .set_short_name ('l');
 		optionList .set_long_name ("list");
 		optionList .set_arg_description ("profiles|components|nodes|fields");
@@ -147,6 +154,7 @@ public:
 		imageGroup  .add_entry (optionFixedPipeline,  fixedPipeline);
 		exportGroup .add_entry (optionExportFilename, exportFilename);
 		exportGroup .add_entry (optionExportStyle,    exportStyle);
+		exportGroup .add_entry (optionExportStyle,    exportMetadata);
 		listGroup   .add_entry (optionList,           list);
 
 		set_main_group (mainGroup);
@@ -169,6 +177,7 @@ public:
 	bool                        fixedPipeline;
 	Glib::ustring               exportFilename;
 	Glib::ustring               exportStyle;
+	bool                        exportMetadata;
 	Glib::ustring               list;
 	bool                        help;
 

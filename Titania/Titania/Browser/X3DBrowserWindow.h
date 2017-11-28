@@ -119,10 +119,6 @@ public:
 	getAxonometricGridTool () const
 	{ return axonometricGridTool; }
 
-	const X3D::X3DPtr <X3D::WorldInfo> &
-	getDefaultWorldInfo () const
-	{ return defaultWorldInfo; }
-
 	/// @name File oerations
 
 	virtual
@@ -190,13 +186,12 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <GeometryEditor>    geometryEditor;
-	std::shared_ptr <Sidebar>           sidebar;
-	std::shared_ptr <Footer>            footer;
-	std::shared_ptr <X3DGridTool>       gridTool;
-	std::shared_ptr <X3DGridTool>       angleGridTool;
-	std::shared_ptr <X3DGridTool>       axonometricGridTool;
-	X3D::X3DPtr <X3D::WorldInfo>        defaultWorldInfo;
+	std::shared_ptr <GeometryEditor> geometryEditor;
+	std::shared_ptr <Sidebar>        sidebar;
+	std::shared_ptr <Footer>         footer;
+	std::shared_ptr <X3DGridTool>    gridTool;
+	std::shared_ptr <X3DGridTool>    angleGridTool;
+	std::shared_ptr <X3DGridTool>    axonometricGridTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

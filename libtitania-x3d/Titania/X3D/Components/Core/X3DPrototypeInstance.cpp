@@ -626,17 +626,8 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	}
 
 	FieldDefinitionArray fields   = getChangedFields ();
-	const auto &         metadata = this -> metadata ();
 
-	if (&metadata == &X3DNode::metadata ())
-	{
-		fields .erase (std::remove_if (fields .begin (),
-		                               fields .end (),
-		                               [&] (X3DFieldDefinition* const field) { return field == &X3DNode::metadata (); }),
-		               fields .end ());
-	}
-
-	if (fields .empty () and (&metadata == &X3DNode::metadata () ? not metadata : true))
+	if (fields .empty ())
 	{
 		ostream << "/>";
 	}
@@ -804,16 +795,6 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			}
 		}
 
-		if (&metadata == &X3DNode::metadata ())
-		{
-			if (metadata)
-			{
-				ostream
-					<< XMLEncode (metadata)
-					<< Generator::TidyBreak;
-			}
-		}
-
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent
@@ -954,21 +935,10 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 
 	// Fields
 
-	FieldDefinitionArray fields   = getChangedFields ();
-	const auto &         metadata = this -> metadata ();
-
-	if (&metadata == &X3DNode::metadata ())
-	{
-		fields .erase (std::remove_if (fields .begin (),
-		                               fields .end (),
-		                               [&] (X3DFieldDefinition* const field) { return field == &X3DNode::metadata (); }),
-		               fields .end ());
-	}
-
-
+	FieldDefinitionArray fields = getChangedFields ();
 	FieldDefinitionArray references;
 
-	if (fields .empty () and (&metadata == &X3DNode::metadata () ? not metadata : true))
+	if (fields .empty ())
 		;
 	else
 	{
@@ -1239,28 +1209,6 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< '}';
-		}
-
-		if (&metadata == &X3DNode::metadata ())
-		{
-			if (metadata)
-			{
-				if (not fields .empty ())
-				{
-					ostream
-						<< ','
-						<< Generator::TidyBreak;
-				}
-	
-				ostream
-					<< Generator::Indent
-					<< '"'
-					<< "-metadata"
-					<< '"'
-					<< ':'
-					<< Generator::TidySpace
-					<< JSONEncode (metadata);
-			}
 		}
 
 		lastProperty = true;
