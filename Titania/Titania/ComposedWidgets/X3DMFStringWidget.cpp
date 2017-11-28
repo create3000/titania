@@ -73,7 +73,9 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	     defaultValue (defaultValue),
 	           string (),
 	         undoStep (),
-	           buffer ()
+	           buffer (),
+	            focus (false),
+	          editing (false)
 {
 	addChildObjects (nodes, string, buffer);
 
@@ -86,7 +88,9 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	treeView .signal_key_press_event ()             .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_key_press_event), false);
 	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_drag_data_received));
 	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_selection_changed));
+	cellRenderer -> signal_editing_started ()       .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_editing_started));
 	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_edited));
+	cellRenderer -> signal_editing_canceled ()      .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_editing_canceled));
 	addButton .signal_clicked ()                    .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_add_clicked));
 	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_remove_clicked));
 
@@ -171,16 +175,24 @@ X3DMFStringWidget::append (const Glib::ustring & value)
 }
 
 bool
+X3DMFStringWidget::getAccelerators () const
+{
+	return not (focus or editing);
+}
+
+bool
 X3DMFStringWidget::on_focus_in_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> setAccelerators (false);
+	focus = true;
+	getBrowserWindow () -> setAccelerators (getAccelerators ());
 	return false;
 }
 
 bool
 X3DMFStringWidget::on_focus_out_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> setAccelerators (true);
+	focus = false;
+	getBrowserWindow () -> setAccelerators (getAccelerators ());
 	return false;
 }
 
@@ -206,11 +218,28 @@ X3DMFStringWidget::on_selection_changed ()
 }
 
 void
+X3DMFStringWidget::on_editing_started (Gtk::CellEditable* const, const Glib::ustring &)
+{
+	editing = true;
+	getBrowserWindow () -> setAccelerators (getAccelerators ());
+}
+
+void
 X3DMFStringWidget::on_edited (const Glib::ustring & pathString, const Glib::ustring & text)
 {
 	const auto path = Gtk::TreePath (pathString);
 
 	set1Value (Gtk::TreePath (pathString), text);
+
+	editing = false;
+	getBrowserWindow () -> setAccelerators (getAccelerators ());
+}
+
+void
+X3DMFStringWidget::on_editing_canceled ()
+{
+	editing = false;
+	getBrowserWindow () -> setAccelerators (getAccelerators ());
 }
 
 void

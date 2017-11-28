@@ -156,6 +156,11 @@ private:
 
 	};
 
+	///  @name Member access
+
+	bool
+	getAccelerators () const;
+
 	///  @name Event handlers
 
 	bool
@@ -177,8 +182,15 @@ private:
 	                       guint,
 	                       guint);
 
+
+	void
+	on_editing_started (Gtk::CellEditable* const, const Glib::ustring &);
+	
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
+
+	void
+	on_editing_canceled ();
 
 	void
 	on_string_changed ();
@@ -204,6 +216,8 @@ private:
 	X3D::MFString                              string;
 	X3D::UndoStepPtr                           undoStep;
 	X3D::SFTime                                buffer;
+	bool                                       focus;
+	bool                                       editing;
 
 };
 

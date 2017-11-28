@@ -178,6 +178,7 @@ X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
 		{
 			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_in_event));
 			widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
+			continue;
 		}
 	}
 }
