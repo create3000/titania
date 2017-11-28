@@ -823,12 +823,11 @@ BrowserWindow::on_paste_activated ()
 	if (getGeometryEditor () -> on_paste ())
 		return;
 
-	auto       selection        = getSelection () -> getNodes ();
-	const auto executionContext = X3D::MakePtr (getSelectionContext (selection));
+	auto selection = getSelection () -> getNodes ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste Nodes"));
 
-	pasteNodes (executionContext ? executionContext : getCurrentContext (), selection, undoStep);
+	pasteNodes (getCurrentContext (), selection, undoStep);
 
 	addUndoStep (undoStep);
 }
