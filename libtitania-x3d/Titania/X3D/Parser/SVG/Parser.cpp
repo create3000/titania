@@ -2251,7 +2251,12 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 												y  += ay;
 											}
 
-											math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, BEZIER_TOLERANCE, points);
+											math::bezier::cubic_curve (X3D::Vector2d (ax, ay),
+											                           X3D::Vector2d (x1, y1),
+											                           X3D::Vector2d (x2, y2),
+											                           X3D::Vector2d (x, y),
+											                           BEZIER_STEPS,
+											                           BEZIER_TOLERANCE, points);
 
 											ax = x;
 											ay = y;
@@ -2326,7 +2331,12 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 										}
 									}
 
-									math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, BEZIER_TOLERANCE, points);
+									math::bezier::cubic_curve (X3D::Vector2d (ax, ay),
+									                           X3D::Vector2d (x1, y1),
+									                           X3D::Vector2d (x2, y2),
+									                           X3D::Vector2d (x, y),
+									                           BEZIER_STEPS,
+									                           BEZIER_TOLERANCE, points);
 
 									ax = x;
 									ay = y;
@@ -2422,12 +2432,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 				vstream .get ();
 
 				if (not points .empty ())
-				{
-					ax = points .back () .x ();
-					ay = points .back () .y ();
-
 					contours .emplace_back (std::move (points), true);
-				}
 
 				commaWhiteSpaces (vstream);
 				continue;
