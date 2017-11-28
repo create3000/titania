@@ -83,14 +83,14 @@ public:
 		{
 			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
 
-			X3D::FileGenerator::write (std::cout, scene, suffix, options .exportStyle, options .exportMetadata);
+			X3D::FileGenerator::write (std::cout, scene, suffix, options .exportStyle, not options .exportRemoveMetadata);
 		}
 		else
 		{
 			if (outputFilename .is_relative ())
 				outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
 
-			X3D::FileGenerator::write (scene, outputFilename, options .exportStyle, options .exportMetadata);
+			X3D::FileGenerator::write (scene, outputFilename, options .exportStyle, not options .exportRemoveMetadata);
 		}
 
 		return 0;

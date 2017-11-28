@@ -64,18 +64,18 @@ public:
 
 	CommandOptions (int & argc, char** & argv) :
 		Glib::OptionContext ("- Titania X3D Editor"),
-		          filenames (),
-		      imageFilename (),
-		              width (300),
-		             height (100),
-		       alphaChannel (false),
-		       antialiasing (4),
-		      fixedPipeline (false),
-		     exportFilename (),
-		        exportStyle (),
-		     exportMetadata (true),
-		               list (),
-		               help (false)
+		           filenames (),
+		       imageFilename (),
+		               width (300),
+		              height (100),
+		        alphaChannel (false),
+		        antialiasing (4),
+		       fixedPipeline (false),
+		      exportFilename (),
+		         exportStyle (),
+		exportRemoveMetadata (false),
+		                list (),
+		                help (false)
 	{
 		Glib::OptionEntry optionExportImage;
 		Glib::OptionEntry optionWidth;
@@ -85,7 +85,7 @@ public:
 		Glib::OptionEntry optionFixedPipeline;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
-		Glib::OptionEntry optionExportMetadata;
+		Glib::OptionEntry optionExportRemoveMetadata;
 		Glib::OptionEntry optionList;
 		Glib::OptionEntry optionHelp;
 
@@ -134,9 +134,9 @@ public:
 		optionExportStyle .set_arg_description ("nicest|compact|small|smallest");
 		optionExportStyle .set_description ("Set output style for export.");
 
-		optionAntialiasing .set_short_name ('m');
-		optionAntialiasing .set_long_name ("metadata");
-		optionAntialiasing .set_description ("Set whether to export metadata.");
+		optionExportRemoveMetadata .set_short_name ('m');
+		optionExportRemoveMetadata .set_long_name ("remove-metadata");
+		optionExportRemoveMetadata .set_description ("Set whether to export metadata.");
 
 		optionList .set_short_name ('l');
 		optionList .set_long_name ("list");
@@ -145,17 +145,17 @@ public:
 
 		set_description ("Copyright 2010 Holger Seelig <holger.seelig@yahoo.de>. License GPLv3+");
 
-		mainGroup   .add_entry (optionHelp,           help);
-		imageGroup  .add_entry (optionExportImage,    imageFilename);
-		imageGroup  .add_entry (optionWidth,          width);
-		imageGroup  .add_entry (optionHeight,         height);
-		imageGroup  .add_entry (optionAlphaChannel,   alphaChannel);
-		imageGroup  .add_entry (optionAntialiasing,   antialiasing);
-		imageGroup  .add_entry (optionFixedPipeline,  fixedPipeline);
-		exportGroup .add_entry (optionExportFilename, exportFilename);
-		exportGroup .add_entry (optionExportStyle,    exportStyle);
-		exportGroup .add_entry (optionExportStyle,    exportMetadata);
-		listGroup   .add_entry (optionList,           list);
+		mainGroup   .add_entry (optionHelp,                 help);
+		imageGroup  .add_entry (optionExportImage,          imageFilename);
+		imageGroup  .add_entry (optionWidth,                width);
+		imageGroup  .add_entry (optionHeight,               height);
+		imageGroup  .add_entry (optionAlphaChannel,         alphaChannel);
+		imageGroup  .add_entry (optionAntialiasing,         antialiasing);
+		imageGroup  .add_entry (optionFixedPipeline,        fixedPipeline);
+		exportGroup .add_entry (optionExportFilename,       exportFilename);
+		exportGroup .add_entry (optionExportStyle,          exportStyle);
+		exportGroup .add_entry (optionExportRemoveMetadata, exportRemoveMetadata);
+		listGroup   .add_entry (optionList,                 list);
 
 		set_main_group (mainGroup);
 		add_group (imageGroup);
@@ -177,7 +177,7 @@ public:
 	bool                        fixedPipeline;
 	Glib::ustring               exportFilename;
 	Glib::ustring               exportStyle;
-	bool                        exportMetadata;
+	bool                        exportRemoveMetadata;
 	Glib::ustring               list;
 	bool                        help;
 
