@@ -453,9 +453,6 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	if (getCurrentBrowser () -> on_external_key_press_event (event))
 		return false;
 
-	if (not getCurrentBrowser () -> has_focus ())
-	   return false;
-
 	if (not setAccelerators ())
 		return false;
 
