@@ -606,6 +606,9 @@ Selection::getSelection (const MFNode & hierarchy) const
 
 			const auto executionContext = lowest -> getExecutionContext ();
 
+			if (executionContext not_eq getBrowser () -> getExecutionContext ())
+				continue;
+
 			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
 				return SFNode (executionContext);
 
@@ -632,6 +635,9 @@ Selection::getSelection (const MFNode & hierarchy) const
 				continue;
 
 			const auto executionContext = highest -> getExecutionContext ();
+
+			if (executionContext not_eq getBrowser () -> getExecutionContext ())
+				continue;
 
 			if (executionContext -> isType ({ X3DConstants::X3DPrototypeInstance }))
 				return SFNode (executionContext);
