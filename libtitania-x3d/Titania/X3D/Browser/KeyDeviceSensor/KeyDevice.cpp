@@ -153,7 +153,7 @@ KeyDevice::on_action_key_release_event (GdkEventKey* event)
 bool
 KeyDevice::on_key_press_event (GdkEventKey* event)
 {
-	if (getBrowser () -> getSelection () -> getEnabled ())
+	if (getBrowser () -> getSelectable ())
 		return false;
 
 	if (gtk_im_context_filter_keypress (imContextPress, event))
@@ -175,7 +175,7 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 bool
 KeyDevice::on_key_release_event (GdkEventKey* event)
 {
-	if (getBrowser () -> getSelection () -> getEnabled ())
+	if (getBrowser () -> getSelectable ())
 		return false;
 
 	event -> type = GDK_KEY_PRESS;

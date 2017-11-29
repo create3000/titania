@@ -69,7 +69,6 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	   X3DSensorNode (),
 	          fields (),
-	        disabled (false),
 	        viewport (),
 	projectionMatrix (),
 	 modelViewMatrix ()
@@ -82,56 +81,7 @@ X3DPointingDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()                          .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
-	getExecutionContext () -> isLive () .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
-	isLive ()                           .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
-
 	enabled () .addInterest (&X3DPointingDeviceSensorNode::set_enabled, this);
-
-	set_live ();
-}
-
-void
-X3DPointingDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (isInitialized ())
-	{
-		getBrowser () -> getSelection () -> getEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
-		getExecutionContext () -> isLive () .removeInterest (&X3DPointingDeviceSensorNode::set_live, this);
-	}
-
-	X3DSensorNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
-		getExecutionContext () -> isLive () .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
-
-		set_live ();
-	}
-}
-
-void
-X3DPointingDeviceSensorNode::set_live ()
-{
-	if (enabled () and getExecutionContext () -> isLive () and isLive ())
-	{
-		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
-		set_disabled ();
-	}
-	else
-	{
-		getBrowser () -> getSelection () -> getEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
-		disabled = true;
-	}
-}
-
-void
-X3DPointingDeviceSensorNode::set_disabled ()
-{
-	disabled = getBrowser () -> getSelection () -> getEnabled () and not getScene () -> getPrivate ();
 }
 
 void
@@ -177,7 +127,13 @@ X3DPointingDeviceSensorNode::set_active (const bool active, const HitPtr & hit, 
 void
 X3DPointingDeviceSensorNode::push (X3DRenderObject* const renderObject)
 {
-	if (disabled)
+	if (not enabled ())
+		return;
+
+	if (not getExecutionContext () -> isLive () or not isLive ())
+		return;
+
+	if (not getScene () -> getPrivate () and renderObject -> getBrowser () -> getSelectable ())
 		return;
 
 	auto & sensors   = renderObject -> getBrowser () -> getSensors () .back ();

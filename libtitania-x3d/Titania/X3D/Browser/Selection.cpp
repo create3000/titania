@@ -69,7 +69,6 @@ const std::string   Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	            enabled (false),
 	     selectMultiple (false),
 	       selectLowest (false),
 	     selectGeometry (false),
@@ -82,8 +81,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::Selection);
 
-	addChildObjects (enabled,
-	                 selectMultiple,
+	addChildObjects (selectMultiple,
 	                 selectLowest,
 	                 selectGeometry,
 	                 touchTime,
@@ -406,9 +404,6 @@ Selection::getChildren ()
 bool
 Selection::selectNode (X3DBrowser* const browser)
 {
-	if (not getEnabled ())
-		return false;
-
 	// Selected highest or lowest Node, or clear selection.
 
 	if (browser -> getHits () .empty ())
@@ -597,7 +592,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 
 	if (selectLowest)
 	{
-		// Find lowes Transform.
+		// Find lowest Transform.
 	
 		for (const auto & lowest : basic::make_reverse_range (hierarchy))
 		{

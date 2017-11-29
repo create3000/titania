@@ -62,14 +62,6 @@ class X3DPointingDeviceSensorNode :
 {
 public:
 
-	///  @name Construction
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
 	///  @name Fields
 
 	SFString &
@@ -168,12 +160,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_live ();
-
-	void
-	set_disabled ();
-
-	void
 	set_enabled ();
 
 	///  @name Fields
@@ -190,7 +176,6 @@ private:
 
 	///  @name Members
 
-	bool     disabled;
 	Vector4i viewport;
 	Matrix4d projectionMatrix;
 	Matrix4d modelViewMatrix;

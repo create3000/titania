@@ -65,7 +65,7 @@ namespace puck {
 
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	         enabled (getCurrentBrowser () -> getSelection () -> getEnabled ()),  
+	         enabled (getCurrentBrowser () -> getSelectable ()),  
 	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
 	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
@@ -106,7 +106,7 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> getEnabled ()        .removeInterest (enabled);
+		browser -> getSelectable ()       .removeInterest (enabled);
 		selection -> getSelectMultiple () .removeInterest (selectMultiple);
 		selection -> getSelectLowest ()   .removeInterest (selectLowest);
 		selection -> getSelectGeometry () .removeInterest (selectGeometry);
@@ -122,12 +122,12 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> setEnabled        (enabled);
+		browser -> setSelectable       (enabled);
 		selection -> setSelectMultiple (selectMultiple);
 		selection -> setSelectLowest   (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
 
-		selection -> getEnabled ()        .addInterest (enabled);
+		browser -> getSelectable ()       .addInterest (enabled);
 		selection -> getSelectMultiple () .addInterest (selectMultiple);
 		selection -> getSelectLowest ()   .addInterest (selectLowest);
 		selection -> getSelectGeometry () .addInterest (selectGeometry);
@@ -190,7 +190,7 @@ void
 BrowserSelection::setEnabled (const bool value)
 {
 	enabled = value;
-	browser -> getSelection () -> setEnabled (value);
+	browser -> setSelectable (value);
 }
 
 void

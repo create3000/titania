@@ -72,6 +72,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       X3DBaseNode (),
 	   pointingDevice  (new PointingDevice (getBrowser ())),
 	          pickable (true),
+	        selectable (false),
 	            cursor ("ARROW"),
 	     privateCursor ("DEFAULT"),
 	           pointer (),
@@ -91,6 +92,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 {
 	addChildObjects (pointingDevice,
 	                 pickable,
+	                 selectable,
 	                 cursor,
 	                 privateCursor,
 	                 selectedLayer);
@@ -237,11 +239,14 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent (const double x, const dou
 	// Selection
 	pointer = Vector2d (x, y);
 
-	// TODO: Sometimes there is no selection.
-	if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, SFTime::now ()) < SELECTION_TIME)
+	if (selectable)
 	{
-		if (getBrowser () -> getSelection () -> selectNode (getBrowser ()))
-			return true;
+		// TODO: Sometimes there is no selection.
+		if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, SFTime::now ()) < SELECTION_TIME)
+		{
+			if (getBrowser () -> getSelection () -> selectNode (getBrowser ()))
+				return true;
+		}
 	}
 
 	const auto nearestHit = getHits () .empty ()

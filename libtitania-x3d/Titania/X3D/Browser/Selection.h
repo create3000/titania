@@ -94,14 +94,6 @@ public:
 	///  @name Member access
 
 	void
-	setEnabled (const bool value)
-	{ enabled = value; }
-
-	const SFBool &
-	getEnabled () const
-	{ return enabled; }
-
-	void
 	setSelectMultiple (const bool value)
 	{ selectMultiple = value; }
 
@@ -223,7 +215,6 @@ private:
 
 	///  @name Members
 
-	SFBool enabled;
 	SFBool selectMultiple;
 	SFBool selectLowest;
 	SFBool selectGeometry;

@@ -79,6 +79,14 @@ public:
 	{ return pickable; }
 
 	void
+	setSelectable (const bool value)
+	{ selectable = value; }
+
+	const SFBool &
+	getSelectable () const
+	{ return selectable; }
+
+	void
 	setCursor (const std::string & value)
 	noexcept (true)
 	{ cursor = value; }
@@ -244,6 +252,7 @@ private:
 
 	X3DPtr <PointingDevice>                        pointingDevice;
 	SFBool                                         pickable;
+	SFBool                                         selectable;
 	SFString                                       cursor;
 	SFString                                       privateCursor;
 	Vector2d                                       pointer;
