@@ -136,5 +136,17 @@ ExplosionEmitter::resetShader ()
 	reset = true;
 }
 
+Vector3f
+ExplosionEmitter::getRandomPosition () const
+{
+	return position ();
+}
+
+Vector3f
+ExplosionEmitter::getRandomVelocity () const
+{
+	return getSphericalRandomVelocity ();
+}
+
 } // X3D
 } // titania

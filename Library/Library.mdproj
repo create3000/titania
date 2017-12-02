@@ -705,6 +705,9 @@
     <None Include="Tests\Basic\units.x3dv" />
     <None Include="Tests\PROTO\sharksDemo.x3dv" />
     <None Include="Tests\RigidBodyPhysics\pattern.png" />
+    <None Include="Tests\ParticleSystems\SoftSystem\PointEmitter.x3d" />
+    <None Include="Tests\ParticleSystems\SoftSystem\PointEmitter-ColorRamp.x3d" />
+    <None Include="Tests\ParticleSystems\SoftSystem\ConeEmitter.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -756,6 +759,7 @@
     <Folder Include="Tests\PROTO\solaris\" />
     <Folder Include="Examples\" />
     <Folder Include="Tests\3rd Party\Autodesk\" />
+    <Folder Include="Tests\ParticleSystems\SoftSystem\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

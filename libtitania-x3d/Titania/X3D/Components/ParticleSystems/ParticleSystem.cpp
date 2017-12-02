@@ -50,6 +50,8 @@
 
 #include "ParticleSystem.h"
 
+#include "../../Browser/ParticleSystems/SoftSystem.h"
+
 #include "../../Browser/BrowserOptions.h"
 #include "../../Bits/Cast.h"
 #include "../../Browser/Networking/config.h"
@@ -60,10 +62,14 @@
 #include "../../Browser/ParticleSystems/Random.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../ParticleSystems/BoundedPhysicsModel.h"
+#include "../ParticleSystems/X3DParticleEmitterNode.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
 #include "../Shape/X3DAppearanceNode.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 #include <cstddef>
 
@@ -310,7 +316,8 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	  boundedSurfaceBufferId (0),
 	      boundedVolumeMapId (0),
 	   boundedVolumeBufferId (0),
-	           sortAlgorithm (new OddEvenMergeSort ())
+	           sortAlgorithm (new OddEvenMergeSort ()),
+	              softSystem (new SoftSystem (this))
 {
 	addType (X3DConstants::ParticleSystem);
 
@@ -362,11 +369,11 @@ ParticleSystem::initialize ()
 {
 	X3DShapeNode::initialize ();
 
-	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
+	if (isSoftSystem ())
+	{
+		softSystem -> initialize ();
 		return;
-
-	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_transform_feedback3"))
-		return;
+	}
 
 	// Generate transform buffers
 
@@ -452,11 +459,31 @@ ParticleSystem::initialize ()
 	set_geometry ();
 }
 
+bool
+ParticleSystem::isSoftSystem () const
+{
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
+		return true;
+
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_transform_feedback3"))
+		return true;
+
+	return false;
+}
+
 void
 ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (isSoftSystem ())
+	{
+		const auto e = getExecutionContext ();
+		X3DShapeNode::setExecutionContext (executionContext);
+		softSystem -> setExecutionContext (e);
+		return;
+	}
+
 	if (isInitialized ())
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&ParticleSystem::set_shader, this);
@@ -485,6 +512,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 bool
 ParticleSystem::isTransparent () const
 {
+	if (isSoftSystem ())
+		return softSystem -> isTransparent ();
+
 	if (getAppearance () -> isTransparent ())
 		return true;
 
@@ -988,9 +1018,9 @@ ParticleSystem::set_physics ()
 
 	physicsModelNodes .clear ();
 
-	for (auto & node : physics ())
+	for (const auto & node : physics ())
 	{
-		auto physicsNode = x3d_cast <X3DParticlePhysicsModelNode*> (node);
+		const auto physicsNode = x3d_cast <X3DParticlePhysicsModelNode*> (node);
 
 		if (physicsNode)
 			physicsModelNodes .emplace_back (physicsNode);
@@ -998,14 +1028,14 @@ ParticleSystem::set_physics ()
 
 	// BoundedPhysicsModel
 
-	for (auto & physicsNode : boundedPhysicsModelNodes)
+	for (const auto & physicsNode : boundedPhysicsModelNodes)
 		physicsNode -> removeInterest (boundedPhysicsModelNodes);
 
 	boundedPhysicsModelNodes .clear ();
 
-	for (auto & node : physics ())
+	for (const auto & node : physics ())
 	{
-		auto physicsNode = x3d_cast <BoundedPhysicsModel*> (node);
+		const auto physicsNode = x3d_cast <BoundedPhysicsModel*> (node);
 
 		if (physicsNode)
 		{
@@ -1321,8 +1351,6 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 	{
 		if (getGeometry ())
 			getGeometry () -> traverse (type, renderObject);
-		else
-			return;
 	}
 }
 
@@ -1520,6 +1548,12 @@ ParticleSystem::updateGeometry (const Matrix4d & modelViewMatrix)
 void
 ParticleSystem::depth (const X3DShapeContainer* const context)
 {
+	if (isSoftSystem ())
+	{
+		softSystem -> depth (context);
+		return;
+	}
+
 	// Geometry shader.
 
 	if (geometryTypeId == GeometryType::SPRITE)
@@ -1604,6 +1638,12 @@ ParticleSystem::draw (ShapeContainer* const context)
 {
 	try
 	{
+		if (isSoftSystem ())
+		{
+			softSystem -> draw (context);
+			return;
+		}
+
 		// Geometry shader.
 	
 		if (geometryTypeId == GeometryType::SPRITE)
@@ -1890,6 +1930,8 @@ ParticleSystem::dispose ()
 	try
 	{
 		ContextLock lock (getBrowser ());
+
+		softSystem -> dispose ();
 
 		// Particle buffer
 

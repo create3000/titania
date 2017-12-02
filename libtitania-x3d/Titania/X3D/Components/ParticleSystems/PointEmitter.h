@@ -126,6 +126,17 @@ public:
 	setShaderFields (const X3DPtr <ComposedShader> &) const final override;
 
 
+protected:
+
+	virtual
+	Vector3f
+	getRandomPosition () const final override;
+
+	virtual
+	Vector3f
+	getRandomVelocity () const final override;
+
+
 private:
 
 	///  @name Static members

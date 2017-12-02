@@ -51,16 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 
-#include "../ParticleSystems/BoundedPhysicsModel.h"
-#include "../ParticleSystems/X3DParticleEmitterNode.h"
-#include "../Rendering/X3DColorNode.h"
 #include "../Shape/X3DShapeNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 #include <array>
 
 namespace titania {
 namespace X3D {
+
+class SoftSystem;
 
 class ParticleSystem :
 	virtual public X3DShapeNode
@@ -294,6 +292,12 @@ protected:
 
 private:
 
+	///  @name Friends
+
+	friend class SoftSystem;
+
+	///  @name Member types
+
 	class Particle;
 	class Vertex;
 	class OddEvenMergeSort;
@@ -308,6 +312,11 @@ private:
 		SPRITE,
 		GEOMETRY,
 	};
+
+	///  @name Member access
+
+	bool
+	isSoftSystem () const;
 
 	///  @name Event handlers
 
@@ -473,6 +482,7 @@ private:
 	GLuint                                    boundedVolumeBufferId;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
+	std::unique_ptr <SoftSystem>       softSystem;
 
 };
 

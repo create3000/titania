@@ -972,6 +972,7 @@
     <None Include="share\titania\shaders\Shaders\PointSet.fs" />
     <None Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HierarchyGuard.h" />
+    <None Include="Titania\X3D\Browser\ParticleSystems\SoftSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1678,6 +1679,7 @@
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.cpp" />
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.cpp" />
     <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h.cpp" />
+    <Compile Include="Titania\X3D\Browser\ParticleSystems\SoftSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

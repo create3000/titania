@@ -134,5 +134,22 @@ ConeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 	}
 }
 
+Vector3f
+ConeEmitter::getRandomPosition () const
+{
+	return position ();
+}
+
+Vector3f
+ConeEmitter::getRandomVelocity () const
+{
+	if (direction () == Vector3f ())
+		return getSphericalRandomVelocity ();
+
+	const Rotation4f rotation (Vector3f (0, 0, 1), direction () .getValue ());
+
+	return getRandomSpeed () * (getRandomNormalWithAngle (angle ()) * rotation);
+}
+
 } // X3D
 } // titania

@@ -129,5 +129,20 @@ PointEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 	}
 }
 
+Vector3f
+PointEmitter::getRandomPosition () const
+{
+	return position ();
+}
+
+Vector3f
+PointEmitter::getRandomVelocity () const
+{
+	if (direction () == Vector3f ())
+		return getSphericalRandomVelocity ();
+
+	return normalize (direction () .getValue ()) * getRandomSpeed ();
+}
+
 } // X3D
 } // titania

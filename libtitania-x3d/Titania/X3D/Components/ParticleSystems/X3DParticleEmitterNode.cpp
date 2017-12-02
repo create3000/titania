@@ -50,6 +50,8 @@
 
 #include "X3DParticleEmitterNode.h"
 
+#include "../../Browser/ParticleSystems/Random.h"
+
 namespace titania {
 namespace X3D {
 
@@ -89,6 +91,220 @@ X3DParticleEmitterNode::setShaderFields (const X3DPtr <ComposedShader> & shader)
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+time_type
+X3DParticleEmitterNode::getRandomLifetime (const time_type particleLifetime, const time_type lifetimeVariation) const
+{
+	const auto v   = particleLifetime * lifetimeVariation;
+	const auto min = std::max <time_type> (0, particleLifetime - v);
+	const auto max = particleLifetime + v;
+
+	return random1 (0, 1) * (max - min) + min;
+}
+
+float
+X3DParticleEmitterNode::getRandomSpeed () const
+{
+	const auto v   = speed () * variation ();
+	const auto min = std::max <float> (0, speed () - v);
+	const auto max = speed () + v;
+
+	return random1 (0, 1) * (max - min) + min;
+}
+
+Vector3f
+X3DParticleEmitterNode::getSphericalRandomVelocity () const
+{
+	return getRandomNormal () * getRandomSpeed ();
+}
+
+Vector3f
+X3DParticleEmitterNode::getRandomNormal () const
+{
+	const auto theta = random1 (-1, 1) * pi <float>;
+	const auto cphi  = random1 (-1, 1);
+	const auto phi   = std::acos (cphi);
+	const auto r     = std::sin (phi);
+
+	return Vector3f (std::sin (theta) * r,
+	                 std::cos (theta) * r,
+	                 cphi);
+}
+
+Vector3f
+X3DParticleEmitterNode::getRandomNormalWithAngle (const float angle) const
+{
+	const auto theta = (random1 (0, 1) * 2 - 1) * pi <float>;
+	const auto cphi  = random1 (std::cos (angle), 1);
+	const auto phi   = std::acos (cphi);
+	const auto r     = std::sin (phi);
+
+	return Vector3f (std::sin (theta) * r,
+	                 std::cos (theta) * r,
+	                 cphi);
+}
+
+Vector3f
+X3DParticleEmitterNode::getRandomNormalWithDirectionAndAngle (const Vector3f & direction, const float angle) const
+{
+	Rotation4f rotation (Vector3f (0, 0, 1), direction);
+
+	return rotation * getRandomNormalWithAngle (angle);
+}
+
+Vector3f
+X3DParticleEmitterNode::getRandomSurfaceNormal () const
+{
+	const auto theta = random1 (-1, 1) * pi <float>;
+	const auto cphi  = std::pow (random1 (0, 1), 1.0/3.0);
+	const auto phi   = std::acos (cphi);
+	const auto r     = std::sin (phi);
+
+	return Vector3f (std::sin (theta) * r,
+	                 std::cos (theta) * r,
+	                 cphi);
+}
+
+void
+X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type deltaTime) const
+{
+	auto &       particles         = softSystem -> particles;
+	const auto & numParticles      = softSystem -> numParticles;
+	const auto & createParticles   = softSystem -> createParticles;
+	const auto & particleLifetime  = softSystem -> particleLifetime;
+	const auto & lifetimeVariation = softSystem -> lifetimeVariation;
+	const auto & speeds            = softSystem -> speeds;            // speed of velocities
+	const auto & velocities        = softSystem -> velocities;        // resulting velocities from forces
+	const auto & turbulences       = softSystem -> turbulences;       // turbulences
+	const auto & numForces         = softSystem -> numForces;         // number of forces
+	//const auto & boundedPhysics    = softSystem -> boundedVertices .size ();
+	//const auto & boundedVolume     = softSystem -> boundedVolume;
+
+	std::vector <Rotation4f> rotations; // rotation to direction of force
+
+	for (const auto & velocity : velocities)
+		rotations .emplace_back (Vector3f (0, 0, 1), velocity .getValue ());
+
+	for (auto & particle : particles)
+	{
+		const auto elapsedTime = particle .elapsedTime + deltaTime;
+
+		if (elapsedTime > particle .lifetime)
+		{
+			// Create new particle or hide particle.
+
+			particle .lifetime    = getRandomLifetime (particleLifetime, lifetimeVariation);
+			particle .elapsedTime = 0;
+
+			if (createParticles)
+			{
+				particle .position = getRandomPosition ();
+				particle .velocity = getRandomVelocity ();
+			}
+			else
+				particle .position = Vector3f (std::numeric_limits <float>::infinity (),
+				                               std::numeric_limits <float>::infinity (),
+				                               std::numeric_limits <float>::infinity ());
+		}
+		else
+		{
+			// Animate particle.
+
+			auto & position = particle .position;
+			auto & velocity = particle .velocity;
+
+			for (size_t f = 0; f < numForces; ++ f)
+			{
+				velocity += speeds [f] .getValue () * (getRandomNormalWithAngle (turbulences [f]) * rotations [f]);
+			}
+
+//			if (boundedPhysics)
+//			{
+//				const auto fromPosition = position;
+//
+//				position += velocity * deltaTime;
+//	
+//				bounce (boundedVolume, fromPosition, position, velocity);
+//			}
+//			else
+			{
+				position += velocity * float (deltaTime);
+			}
+
+			particle .elapsedTime = elapsedTime;
+		}
+	}
+
+	// Animate color if needed.
+
+	if (softSystem -> colorMaterial)
+	{
+		getColors (particles,
+		           softSystem -> particleSystem -> colorKey (),
+		           softSystem -> colorRamp,
+		           numParticles);
+	}
+}
+
+void
+X3DParticleEmitterNode::getColors (std::vector <SoftSystem::Particle> & particles,
+                                   const MFFloat & colorKeys,
+                                   const std::vector <Color4f> & colorRamp,
+                                   const size_t numParticles) const
+{
+	const size_t size   = colorKeys .size ();
+	size_t       index0 = 0;
+	size_t       index1 = 0;
+	float        weight = 0;
+
+	for (auto & particle : particles)
+	{
+		// Determine index0, index1 and weight.
+
+		const float fraction = particle .elapsedTime / particle .lifetime;
+
+		if (size == 1 || fraction <= colorKeys [0])
+		{
+			index0 = 0;
+			index1 = 0;
+			weight = 0;
+		}
+		else if (fraction >= colorKeys [size - 1])
+		{
+			index0 = size - 2;
+			index1 = size - 1;
+			weight = 1;
+		}
+		else
+		{
+			const auto iter = std::upper_bound (colorKeys .begin (), colorKeys .end (), fraction);
+
+			if (iter not_eq colorKeys .end ())
+			{
+				index1 = iter - colorKeys .begin ();
+				index0 = index1 - 1;
+		
+				const float key0 = colorKeys [index0];
+				const float key1 = colorKeys [index1];
+		
+				weight = clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
+			}
+			else
+			{
+				index0 = 0;
+				index1 = 0;
+				weight = 0;
+			}
+		}
+
+		// Interpolate and set color.
+
+		const auto & color0 = colorRamp [index0];
+		const auto & color1 = colorRamp [index1];
+
+		particle .color = lerp (color0, color1, weight);
 	}
 }
 

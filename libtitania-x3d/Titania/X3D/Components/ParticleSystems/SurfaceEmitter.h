@@ -129,6 +129,17 @@ public:
 	dispose () final override;
 
 
+protected:
+
+	virtual
+	Vector3f
+	getRandomPosition () const final override;
+
+	virtual
+	Vector3f
+	getRandomVelocity () const final override;
+
+
 private:
 
 	///  @name Construction

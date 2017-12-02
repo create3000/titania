@@ -241,6 +241,18 @@ PolylineEmitter::set_polyline ()
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
+Vector3f
+PolylineEmitter::getRandomPosition () const
+{
+	return Vector3f ();
+}
+
+Vector3f
+PolylineEmitter::getRandomVelocity () const
+{
+	return Vector3f ();
+}
+
 void
 PolylineEmitter::dispose ()
 {

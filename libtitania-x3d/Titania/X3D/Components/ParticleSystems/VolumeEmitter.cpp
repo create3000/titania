@@ -271,6 +271,18 @@ VolumeEmitter::set_geometry ()
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
+Vector3f
+VolumeEmitter::getRandomPosition () const
+{
+	return Vector3f ();
+}
+
+Vector3f
+VolumeEmitter::getRandomVelocity () const
+{
+	return Vector3f ();
+}
+
 void
 VolumeEmitter::dispose ()
 {

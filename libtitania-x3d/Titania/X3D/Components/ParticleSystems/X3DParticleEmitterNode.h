@@ -55,6 +55,8 @@
 #include "../Shaders/ComposedShader.h"
 #include "../../Types/Geometry.h"
 
+#include "../../Browser/ParticleSystems/SoftSystem.h"
+
 namespace titania {
 namespace X3D {
 
@@ -135,12 +137,58 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class SoftSystem;
+
 	///  @name Construction
 
 	X3DParticleEmitterNode ();
 
+	///  @name Operations for SoftSystem
+
+	virtual
+	Vector3f
+	getRandomPosition () const = 0;
+
+	virtual
+	Vector3f
+	getRandomVelocity () const = 0;
+
+	time_type
+	getRandomLifetime (const time_type particleLifetime, const time_type lifetimeVariation) const;
+	
+	float
+	getRandomSpeed () const;
+
+	Vector3f
+	getSphericalRandomVelocity () const;
+	
+	Vector3f
+	getRandomNormal () const;
+	
+	Vector3f
+	getRandomNormalWithAngle (const float angle) const;
+	
+	Vector3f
+	getRandomNormalWithDirectionAndAngle (const Vector3f & direction, const float angle) const;
+	
+	Vector3f
+	getRandomSurfaceNormal () const;
+
+	void
+	animate (SoftSystem* const softSystem, const time_type deltaTime) const;
+
 
 private:
+
+	///  @name Member access
+
+	void
+	getColors (std::vector <SoftSystem::Particle> & particles,
+	           const MFFloat & colorKeys,
+	           const std::vector <Color4f> & colorRamp,
+	           const size_t numParticles) const;
 
 	///  @name Members
 

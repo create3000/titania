@@ -197,6 +197,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Notification.lo \
 	Titania/X3D/Browser/ParticleSystems/BVH.lo \
 	Titania/X3D/Browser/ParticleSystems/Random.lo \
+	Titania/X3D/Browser/ParticleSystems/SoftSystem.lo \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.lo \
@@ -1147,6 +1148,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Notification.cpp \
 	Titania/X3D/Browser/ParticleSystems/BVH.cpp \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
+	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
@@ -2150,6 +2152,9 @@ Titania/X3D/Browser/ParticleSystems/BVH.lo:  \
 	Titania/X3D/Browser/ParticleSystems/$(am__dirstamp) \
 	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/ParticleSystems/Random.lo:  \
+	Titania/X3D/Browser/ParticleSystems/$(am__dirstamp) \
+	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/ParticleSystems/SoftSystem.lo:  \
 	Titania/X3D/Browser/ParticleSystems/$(am__dirstamp) \
 	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.lo:  \
@@ -4909,6 +4914,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Networking/$(DEPDIR)/config.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/BVH.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/Random.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/SoftSystem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/HitArray.Plo@am__quote@

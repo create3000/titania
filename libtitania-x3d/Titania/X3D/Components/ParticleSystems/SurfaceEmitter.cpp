@@ -259,6 +259,18 @@ SurfaceEmitter::set_geometry ()
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
+Vector3f
+SurfaceEmitter::getRandomPosition () const
+{
+	return Vector3f ();
+}
+
+Vector3f
+SurfaceEmitter::getRandomVelocity () const
+{
+	return Vector3f ();
+}
+
 void
 SurfaceEmitter::dispose ()
 {
