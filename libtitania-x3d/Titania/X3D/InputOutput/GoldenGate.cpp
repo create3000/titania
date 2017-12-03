@@ -327,15 +327,18 @@ bool
 GoldenGate::isVRML1 (std::istream & istream)
 {
 	const auto   state     = istream .rdstate ();
-	auto         data      = std::string (32, 0);
+	auto         data      = std::string (16, 0);
 	const size_t data_size = istream .rdbuf () -> sgetn (&data [0], data .size ());
 
 	// Reset stream.
 
-	istream .clear (state);
-
 	for (size_t i = 0; i < data_size; ++ i)
-		istream .unget ();
+	{
+		if (not istream .unget ())
+			break;
+	}
+
+	istream .clear (state);
 
 	static const std::regex VRML1 (R"/(^#VRML\s+V1.[01])/");
 

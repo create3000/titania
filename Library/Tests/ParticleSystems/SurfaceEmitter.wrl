@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.4
+#VRML V2.0 utf8 Titania V4.0.2
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -6,22 +6,17 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 8
+  position 5.2762 -6.00576 -0.304192
+  orientation 0.881725225842242 0.37009600001274 0.292556963492611 1.70639541119539
 }
 
-DEF _1 Transform {
+Transform {
   children ParticleSystem {
     geometryType "POINT"
     maxParticles 10000
     particleLifetime 10
     lifetimeVariation 0.01
     particleSize 0.1 0.1
-    colorKey [
-      0,
-      0.1,
-      0.4,
-      1
-    ]
     emitter SurfaceEmitter {
       speed 0.05
       mass 0.01
@@ -63,6 +58,12 @@ DEF _1 Transform {
         }
       }
     }
+    colorKey [
+      0,
+      0.1,
+      0.4,
+      1
+    ]
     colorRamp ColorRGBA {
       color [
         1 0.38 0 1,

@@ -51,6 +51,7 @@
 #include "X3DParticleEmitterNode.h"
 
 #include "../../Browser/ParticleSystems/Random.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -92,6 +93,20 @@ X3DParticleEmitterNode::setShaderFields (const X3DPtr <ComposedShader> & shader)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+// Operations for SoftSystem
+
+bool
+X3DParticleEmitterNode::isSoftSystem () const
+{
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
+		return true;
+
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_transform_feedback3"))
+		return true;
+
+	return false;
 }
 
 time_type
@@ -187,8 +202,9 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 	for (const auto & velocity : velocities)
 		rotations .emplace_back (Vector3f (0, 0, 1), velocity .getValue ());
 
-	for (auto & particle : particles)
+	for (size_t i = 0; i < numParticles; ++ i)
 	{
+		auto &     particle    = particles [i];
 		const auto elapsedTime = particle .elapsedTime + deltaTime;
 
 		if (elapsedTime > particle .lifetime)
@@ -259,8 +275,10 @@ X3DParticleEmitterNode::getColors (std::vector <SoftSystem::Particle> & particle
 	size_t       index1 = 0;
 	float        weight = 0;
 
-	for (auto & particle : particles)
+	for (size_t i = 0; i < numParticles; ++ i)
 	{
+		auto & particle = particles [i];
+
 		// Determine index0, index1 and weight.
 
 		const float fraction = particle .elapsedTime / particle .lifetime;

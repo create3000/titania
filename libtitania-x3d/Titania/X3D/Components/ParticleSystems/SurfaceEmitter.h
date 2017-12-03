@@ -183,6 +183,13 @@ private:
 	bool                     pointEmitter;
 	bool                     solid;
 
+	// Soft system.
+
+	std::vector <float>    areaSoFarArray;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
+	Vector3f               direction;
+
 };
 
 } // X3D

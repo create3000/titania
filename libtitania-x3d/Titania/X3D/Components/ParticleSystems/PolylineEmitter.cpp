@@ -51,6 +51,7 @@
 #include "PolylineEmitter.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Browser/ParticleSystems/Random.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -76,7 +77,9 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	           lengthMapId (0),
 	        lengthBufferId (0),
 	          polylineNode (new IndexedLineSet (executionContext)),
-	          pointEmitter (false)
+	          pointEmitter (false),
+	      lengthSoFarArray (1),
+	             polylines ()
 {
 	addType (X3DConstants::PolylineEmitter);
 
@@ -107,16 +110,18 @@ PolylineEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
 
-	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
-		return;
+	if (isSoftSystem ())
+	{ }
+	else
+	{
+		// Polyline map
 
-	// Polyline map
-
-	glGenTextures (1, &polylineMapId);
-	glGenBuffers  (1, &polylineBufferId);
-
-	glGenTextures (1, &lengthMapId);
-	glGenBuffers  (1, &lengthBufferId);
+		glGenTextures (1, &polylineMapId);
+		glGenBuffers  (1, &polylineBufferId);
+	
+		glGenTextures (1, &lengthMapId);
+		glGenBuffers  (1, &lengthBufferId);
+	}
 
 	// Setup
 
@@ -193,64 +198,139 @@ PolylineEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 PolylineEmitter::set_polyline ()
 {
-	const auto polylineArrayAux = polylineNode -> getPolylines ();
-
-	const std::vector <Vector3f> polylineArray (polylineArrayAux .begin (), polylineArrayAux .end ());
-
-	if (polylineArray .empty ())
+	if (isSoftSystem ())
 	{
-		pointEmitter = true;
-
-		glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
-
-		glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
-	}
-	else
-	{
-		pointEmitter = false;
-
-		glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, polylineArray .size () * sizeof (Vector3f), polylineArray .data (), GL_STATIC_COPY);
+		const auto polylinesAux = polylineNode -> getPolylines ();
+	
+		polylines .assign (polylinesAux .begin (), polylinesAux .end ());
 
 		// Length map
 
-		float               length = 0;
-		std::vector <float> lengthArray (1);
+		lengthSoFarArray .resize (1);
 
-		for (size_t i = 0, size = polylineArray .size (); i < size; i += 2)
+		float lengthSoFar = 0;
+
+		for (size_t i = 0, size = polylines .size (); i < size; i += 2)
 		{
-			length += abs (polylineArray [i + 1] - polylineArray [i]);
-			lengthArray .emplace_back (length);
+			lengthSoFar += abs (polylines [i + 1] - polylines [i]);
+			lengthSoFarArray .emplace_back (lengthSoFar);
 		}
-
-		glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, lengthArray .size () * sizeof (float), lengthArray .data (), GL_STATIC_COPY);
 	}
-
-	// Update textures
-
-	glBindTexture (GL_TEXTURE_BUFFER, polylineMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, polylineBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, lengthMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, lengthBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, 0);
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	else
+	{
+		const auto polylineArrayAux = polylineNode -> getPolylines ();
+	
+		const std::vector <Vector3f> polylineArray (polylineArrayAux .begin (), polylineArrayAux .end ());
+	
+		if (polylineArray .empty ())
+		{
+			pointEmitter = true;
+	
+			glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
+			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+	
+			glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
+			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+		}
+		else
+		{
+			pointEmitter = false;
+	
+			glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
+			glBufferData (GL_TEXTURE_BUFFER, polylineArray .size () * sizeof (Vector3f), polylineArray .data (), GL_STATIC_COPY);
+	
+			// Length map
+	
+			float               length = 0;
+			std::vector <float> lengthArray (1);
+	
+			for (size_t i = 0, size = polylineArray .size (); i < size; i += 2)
+			{
+				length += abs (polylineArray [i + 1] - polylineArray [i]);
+				lengthArray .emplace_back (length);
+			}
+	
+			glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
+			glBufferData (GL_TEXTURE_BUFFER, lengthArray .size () * sizeof (float), lengthArray .data (), GL_STATIC_COPY);
+		}
+	
+		// Update textures
+	
+		glBindTexture (GL_TEXTURE_BUFFER, polylineMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, polylineBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, lengthMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, lengthBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	}
 }
 
 Vector3f
 PolylineEmitter::getRandomPosition () const
 {
-	return Vector3f ();
+	if (polylines .empty ())
+		return Vector3f ();
+
+	// Determine index0 and weight.
+
+	const size_t size     = lengthSoFarArray .size ();
+	const float  fraction = random1 (0, 1) * lengthSoFarArray [size - 1];
+	size_t       index0   = 0;
+	size_t       index1   = 0;
+	float        weight   = 0;
+
+	if (size == 1 || fraction <= lengthSoFarArray [0])
+	{
+		index0 = 0;
+		weight = 0;
+	}
+	else if (fraction >= lengthSoFarArray [size - 1])
+	{
+		index0 = size - 2;
+		weight = 1;
+	}
+	else
+	{
+		const auto iter = std::upper_bound (lengthSoFarArray .begin (), lengthSoFarArray .end (), fraction);
+
+		if (iter not_eq lengthSoFarArray .end ())
+		{
+			index1 = iter - lengthSoFarArray .begin ();
+			index0 = index1 - 1;
+	
+			const auto key0 = lengthSoFarArray [index0];
+			const auto key1 = lengthSoFarArray [index1];
+	
+			weight = clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
+		}
+		else
+		{
+			index0 = 0;
+			weight = 0;
+		}
+	}
+
+	// Interpolate and set position.
+
+	index0 *= 2;
+	index1  = index0 + 1;
+
+	const auto vertex1  = polylines [index0];
+	const auto vertex2  = polylines [index1];
+	const auto position = vertex1 + weight * (vertex2 - vertex1);
+
+	return position;
 }
 
 Vector3f
 PolylineEmitter::getRandomVelocity () const
 {
-	return Vector3f ();
+	if (direction () == Vector3f ())
+		return getSphericalRandomVelocity ();
+
+	return normalize (direction () .getValue ()) * getRandomSpeed ();
 }
 
 void

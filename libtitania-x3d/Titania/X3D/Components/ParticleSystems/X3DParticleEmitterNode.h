@@ -147,6 +147,9 @@ protected:
 
 	///  @name Operations for SoftSystem
 
+	bool
+	isSoftSystem () const;
+
 	virtual
 	Vector3f
 	getRandomPosition () const = 0;

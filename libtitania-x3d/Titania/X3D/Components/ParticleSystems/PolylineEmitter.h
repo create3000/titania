@@ -201,6 +201,9 @@ private:
 	X3DPtr <IndexedLineSet> polylineNode;
 	bool                    pointEmitter;
 
+	std::vector <float>    lengthSoFarArray;
+	std::vector <Vector3f> polylines;
+
 };
 
 } // X3D

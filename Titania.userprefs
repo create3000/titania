@@ -1,49 +1,19 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="319" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="2009" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.h" Line="205" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp" Line="678" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp" Line="184" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/PointEmitter.cpp" Line="143" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/PointEmitter.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/Random.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="322" Column="2" />
+      <File FileName="libtitania-standard/Titania/InputOutput/InverseCharacter.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/InputOutput/InverseCharacter.h" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/InputOutput/SingleLineComment.h" Line="77" Column="72" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="Library" expanded="True">
-              <Node name="Tests" expanded="True">
-                <Node name="Lighting" expanded="True" />
-                <Node name="ParticleSystems" expanded="True">
-                  <Node name="SoftSystem" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Browser" expanded="True">
-                    <Node name="ParticleSystems" expanded="True">
-                      <Node name="SoftSystem.cpp" selected="True" />
-                    </Node>
-                    <Node name="Rendering" expanded="True" />
-                  </Node>
-                  <Node name="Components" expanded="True">
-                    <Node name="EnvironmentalEffects" expanded="True" />
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="Rendering" expanded="True" />
-                    <Node name="Shape" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

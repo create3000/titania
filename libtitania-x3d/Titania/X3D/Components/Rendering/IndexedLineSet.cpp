@@ -269,6 +269,9 @@ IndexedLineSet::getPolylines () const
 	{
 		// Create two vertices for each line.
 
+		if (polyline .empty ())
+			continue;
+
 		for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
 		{
 			for (size_t index = line, end = line + 2; index < end; ++ index)
@@ -285,7 +288,7 @@ IndexedLineSet::getPolylines () const
 std::vector <std::vector <size_t>> 
 IndexedLineSet::getPolylineIndices () const
 {
-	std::vector <std::vector <size_t>>  polylines;
+	std::vector <std::vector <size_t>> polylines;
 	std::vector <size_t>               polyline;
 
 	if (not coordIndex () .empty ())
