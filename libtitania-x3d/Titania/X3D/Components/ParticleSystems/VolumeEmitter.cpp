@@ -315,95 +315,98 @@ VolumeEmitter::getRandomPosition () const
 {
 	// Get random point on surface
 
-	const auto normals  = bvh -> getNormals ();
-	const auto vertices = bvh -> getVertices ();
+	const auto & normals  = bvh -> getNormals ();
+	const auto & vertices = bvh -> getVertices ();
 
-	// Determine index0.
-
-	const size_t size     = areaSoFarArray .size ();
-	const float  fraction = random1 (0, 1) * areaSoFarArray [size - 1];
-	size_t       index0   = 0;
-
-	if (size == 1 || fraction <= areaSoFarArray [0])
+	if (not vertices .empty ())
 	{
-		index0 = 0;
-	}
-	else if (fraction >= areaSoFarArray [size - 1])
-	{
-		index0 = size - 2;
-	}
-	else
-	{
-		const auto iter = std::upper_bound (areaSoFarArray .begin (), areaSoFarArray .end (), fraction);
-
-		if (iter not_eq areaSoFarArray .end ())
-		{
-			index0 = (iter - areaSoFarArray .begin ()) - 1;
-		}
-		else
+		// Determine index0.
+	
+		const size_t size     = areaSoFarArray .size ();
+		const float  fraction = random1 (0, 1) * areaSoFarArray [size - 1];
+		size_t       index0   = 0;
+	
+		if (size == 1 || fraction <= areaSoFarArray [0])
 		{
 			index0 = 0;
 		}
-	}
-
-	// Random barycentric coordinates.
-
-	auto u = random1 (0, 1);
-	auto v = random1 (0, 1);
-
-	if (u + v > 1)
-	{
-		u = 1 - u;
-		v = 1 - v;
-	}
-
-	const auto t = 1 - u - v;
-
-	// Interpolate and determine random point on surface and normal.
-
-	const auto i = index0 * 3;
-
-	const auto point  = u * vertices [i + 0] + v * vertices [i + 1] + t * vertices [i + 2];
-	const auto normal = u * normals  [i + 0] + v * normals  [i + 1] + t * normals  [i + 2];
-
-	const auto surfaceNormal = getRandomSurfaceNormal () * Rotation4f (Vector3f (0, 0, 1), normal);
-
-	// Setup random line throu volume for intersection text
-	// and a plane corresponding to the line for intersection sorting.
-
-	const Line3f line (point, surfaceNormal);
-
-	// Find random point in volume.
-
-	std::vector <Vector3f> intersectionNormals;
-	std::vector <Vector3f> intersections;
-
-	auto numIntersections = bvh -> intersects (line, intersections, intersectionNormals);
-
-	numIntersections -= numIntersections % 2; // We need an even count of intersections.
-
-	if (numIntersections)
-	{
-		// Sort intersections along line with a little help from the plane.
-
-		const Plane3f plane (point, surfaceNormal);
-
-		std::sort (intersections .begin (), intersections .end (),
-		[&] (const Vector3f & lhs, const Vector3f & rhs)
+		else if (fraction >= areaSoFarArray [size - 1])
 		{
-			return plane .distance (lhs) < plane .distance (rhs);
-		});
-
-		// Select random intersection pair.
-
-		const auto index  = std::round (random1 (0, numIntersections / 2 - 1)) * 2;
-		const auto point0 = intersections [index];
-		const auto point1 = intersections [index + 1];
-		const auto t      = random1 (0, 1);
-
-		const auto position = lerp (point0, point1, t);
+			index0 = size - 2;
+		}
+		else
+		{
+			const auto iter = std::upper_bound (areaSoFarArray .begin (), areaSoFarArray .end (), fraction);
 	
-		return position;
+			if (iter not_eq areaSoFarArray .end ())
+			{
+				index0 = (iter - areaSoFarArray .begin ()) - 1;
+			}
+			else
+			{
+				index0 = 0;
+			}
+		}
+	
+		// Random barycentric coordinates.
+	
+		auto u = random1 (0, 1);
+		auto v = random1 (0, 1);
+	
+		if (u + v > 1)
+		{
+			u = 1 - u;
+			v = 1 - v;
+		}
+	
+		const auto t = 1 - u - v;
+	
+		// Interpolate and determine random point on surface and normal.
+	
+		const auto i = index0 * 3;
+	
+		const auto point  = u * vertices [i + 0] + v * vertices [i + 1] + t * vertices [i + 2];
+		const auto normal = u * normals  [i + 0] + v * normals  [i + 1] + t * normals  [i + 2];
+	
+		const auto surfaceNormal = getRandomSurfaceNormal () * Rotation4f (Vector3f (0, 0, 1), normal);
+	
+		// Setup random line throu volume for intersection text
+		// and a plane corresponding to the line for intersection sorting.
+	
+		const Line3f line (point, surfaceNormal);
+	
+		// Find random point in volume.
+	
+		std::vector <Vector3f> intersectionNormals;
+		std::vector <Vector3f> intersections;
+	
+		auto numIntersections = bvh -> intersects (line, intersections, intersectionNormals);
+	
+		numIntersections -= numIntersections % 2; // We need an even count of intersections.
+	
+		if (numIntersections)
+		{
+			// Sort intersections along line with a little help from the plane.
+	
+			const Plane3f plane (point, surfaceNormal);
+	
+			std::sort (intersections .begin (), intersections .end (),
+			[&] (const Vector3f & lhs, const Vector3f & rhs)
+			{
+				return plane .distance (lhs) < plane .distance (rhs);
+			});
+	
+			// Select random intersection pair.
+	
+			const auto   index  = std::round (random1 (0, numIntersections / 2 - 1)) * 2;
+			const auto & point0 = intersections [index];
+			const auto & point1 = intersections [index + 1];
+			const auto   t      = random1 (0, 1);
+	
+			const auto position = lerp (point0, point1, t);
+		
+			return position;
+		}
 	}
 
 	// Discard point.
