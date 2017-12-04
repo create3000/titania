@@ -104,9 +104,28 @@ public:
 
 	///  @name Construction
 
-	BVH (std::vector <vector3 <Type>> &&);
+	BVH (const std::vector <vector3 <Type>> & normals,
+	     const std::vector <vector3 <Type>> & vertices);
+
+	BVH (std::vector <vector3 <Type>> && normals,
+	     std::vector <vector3 <Type>> && vertices);
+
+	///  @name Member access
+
+	const std::vector <vector3 <Type>> &
+	getNormals () const
+	{ return normals; }
+
+	const std::vector <vector3 <Type>> &
+	getVertices () const
+	{ return vertices; }
 
 	///  @name Operations
+
+	size_t
+	intersects (const line3 <Type> & line,
+	            std::vector <vector3 <Type>> & intersections,
+	            std::vector <vector3 <Type>> & intersectionNormals) const;
 
 	bool
 	intersects (const box3 <Type> & bbox,
@@ -137,6 +156,7 @@ private:
 	
 	///  @name Members
 
+	std::vector <vector3 <Type>> normals;
 	std::vector <vector3 <Type>> vertices;
 	std::unique_ptr <BVHNode>    root;
 
@@ -222,6 +242,12 @@ public:
 	{ }
 
 	virtual
+	void
+	intersects (const line3 <Type> & line,
+	            std::vector <vector3 <Type>> & intersections,
+	            std::vector <vector3 <Type>> & intersectionNormals) const = 0;
+
+	virtual
 	bool
 	intersects (const box3 <Type> & bbox,
 	            const std::vector <vector3 <Type>> & points,
@@ -235,6 +261,10 @@ public:
 	toArray (std::vector <ArrayValue> &) const = 0;
 
 protected:
+
+	const vector3 <Type> &
+	getNormal (const size_t triangle, const size_t index) const
+	{ return tree -> normals [triangle * 3 + index]; }
 
 	const vector3 <Type> &
 	getVertex (const size_t triangle, const size_t index) const
@@ -268,6 +298,36 @@ public:
 		 BVHNode (tree),
 		triangle (triangle)
 	{ }
+
+	virtual
+	void
+	intersects (const line3 <Type> & line,
+	            std::vector <vector3 <Type>> & intersections,
+	            std::vector <vector3 <Type>> & intersectionNormals) const final override
+	{
+		const auto & a = this -> getVertex (triangle, 0);
+		const auto & b = this -> getVertex (triangle, 1);
+		const auto & c = this -> getVertex (triangle, 2);
+
+		const auto intersection = line .intersects (a, b, c);
+
+		if (intersection .second)
+		{
+			const auto u = intersection .first .x ();
+			const auto v = intersection .first .y ();
+			const auto t = intersection .first .z ();
+
+			// Determine vectors for X3DPointingDeviceSensors.
+
+			intersections .emplace_back (u * a + v * b + t * c);
+
+			const auto & n0 = this -> getNormal (triangle, 0);
+			const auto & n1 = this -> getNormal (triangle, 1);
+			const auto & n2 = this -> getNormal (triangle, 2);
+
+			intersectionNormals .emplace_back (t * n0 + u * n1 + v * n2);
+		}
+	}
 
 	virtual
 	bool
@@ -390,6 +450,19 @@ public:
 	}
 
 	virtual
+	void
+	intersects (const line3 <Type> & line,
+	            std::vector <vector3 <Type>> & intersections,
+	            std::vector <vector3 <Type>> & intersectionNormals) const final override
+	{
+		if (bbox .intersects (line))
+		{
+			left  -> intersects (line, intersections, intersectionNormals);
+			right -> intersects (line, intersections, intersectionNormals);
+		}
+	}
+
+	virtual
 	bool
 	intersects (const box3 <Type> & bbox,
 	            const std::vector <vector3 <Type>> & points,
@@ -400,8 +473,9 @@ public:
 	{
 		if (this -> bbox .intersects (bbox))
 		{
-			bool intersects = left -> intersects (bbox, points, edges, normals, matrix, triangles);
+			bool intersects = false;
 
+			intersects |= left -> intersects  (bbox, points, edges, normals, matrix, triangles);
 			intersects |= right -> intersects (bbox, points, edges, normals, matrix, triangles);
 
 			return intersects;
@@ -459,7 +533,15 @@ private:
 // BVH
 
 template <class Type>
-BVH <Type>::BVH (std::vector <vector3 <Type>> && vertices_) :
+BVH <Type>::BVH (const std::vector <vector3 <Type>> & normals_,
+                 const std::vector <vector3 <Type>> & vertices_) :
+	BVH (std::vector <vector3 <Type>> (normals_), std::vector <vector3 <Type>> (vertices_))
+{ }
+
+template <class Type>
+BVH <Type>::BVH (std::vector <vector3 <Type>> && normals_,
+                 std::vector <vector3 <Type>> && vertices_) :
+	 normals (std::move (normals_)),
 	vertices (std::move (vertices_)),
 	    root ()
 {
@@ -486,6 +568,21 @@ BVH <Type>::BVH (std::vector <vector3 <Type>> && vertices_) :
 }
 
 template <class Type>
+size_t
+BVH <Type>::intersects (const line3 <Type> & line,
+                        std::vector <vector3 <Type>> & intersections,
+                        std::vector <vector3 <Type>> & intersectionNormals) const
+{
+	intersections       .clear ();
+	intersectionNormals .clear ();
+
+	if (root)
+		root -> intersects (line, intersections, intersectionNormals);
+
+	return intersections .size ();
+}
+
+template <class Type>
 bool
 BVH <Type>::intersects (const box3 <Type> & bbox,
 	                     const std::vector <vector3 <Type>> & points,
@@ -496,6 +593,8 @@ BVH <Type>::intersects (const box3 <Type> & bbox,
 {
 	try
 	{
+		triangles .clear ();
+
 		if (root)
 			return root -> intersects (bbox * inverse (matrix), points, edges, normals, matrix, triangles);
 	}

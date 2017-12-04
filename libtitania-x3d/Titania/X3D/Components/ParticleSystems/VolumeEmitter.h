@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+template <class Type>
+class BVH;
+
 class VolumeEmitter :
 	public X3DParticleEmitterNode
 {
@@ -214,6 +217,11 @@ private:
 	X3DPtr <IndexedFaceSet> surfaceNode;
 	bool                    pointEmitter;
 	bool                    solid;
+
+	// Soft system
+
+	std::vector <float>           areaSoFarArray;
+	std::unique_ptr <BVH <float>> bvh;
 
 };
 

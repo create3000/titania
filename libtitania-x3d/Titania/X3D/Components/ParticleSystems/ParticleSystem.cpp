@@ -1074,7 +1074,7 @@ ParticleSystem::set_boundedPhysicsModel ()
 
 		// BVH
 
-		const BVH <float> tree (std::move (vertices));
+		const BVH <float> tree (std::move (normals), std::move (vertices));
 		const auto treeArray = tree .toArray ();
 
 		glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);

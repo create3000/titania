@@ -52,6 +52,7 @@
 
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/ParticleSystems/BVH.h"
+#include "../../Browser/ParticleSystems/Random.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -83,7 +84,9 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	        volumeBufferId (0),
 	           surfaceNode (new IndexedFaceSet (executionContext)),
 	          pointEmitter (false),
-	                 solid (true)
+	                 solid (true),
+	        areaSoFarArray (1),
+	                   bvh (new BVH <float> (std::vector <Vector3f> (), std::vector <Vector3f> ()))
 {
 	addType (X3DConstants::VolumeEmitter);
 
@@ -115,22 +118,24 @@ VolumeEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
 
-	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
-		return;
-
-	// Surface map
-
-	glGenTextures (1, &normalMapId);
-	glGenBuffers  (1, &normalBufferId);
-
-	glGenTextures (1, &surfaceMapId);
-	glGenBuffers  (1, &surfaceBufferId);
-
-	glGenTextures (1, &surfaceAreaMapId);
-	glGenBuffers  (1, &surfaceAreaBufferId);
-
-	glGenTextures (1, &volumeMapId);
-	glGenBuffers  (1, &volumeBufferId);
+	if (isSoftSystem ())
+	{ }
+	else
+	{
+		// Surface map
+	
+		glGenTextures (1, &normalMapId);
+		glGenBuffers  (1, &normalBufferId);
+	
+		glGenTextures (1, &surfaceMapId);
+		glGenBuffers  (1, &surfaceBufferId);
+	
+		glGenTextures (1, &surfaceAreaMapId);
+		glGenBuffers  (1, &surfaceAreaBufferId);
+	
+		glGenTextures (1, &volumeMapId);
+		glGenBuffers  (1, &volumeBufferId);
+	}
 
 	// Setup
 
@@ -211,76 +216,210 @@ VolumeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 VolumeEmitter::set_geometry ()
 {
-	// Triangulate
-
-	std::vector <Color4f>  colors;
-	TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
-	std::vector <Vector3f> normals;
-	std::vector <Vector3d> verticesAux;
-
-	surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
-
-	std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
-
-	float               surfaceArea = 0;
-	std::vector <float> surfaceAreas (1);
-
-	for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+	if (isSoftSystem ())
 	{
-		surfaceArea += Triangle3f (vertices [i], vertices [i + 1], vertices [i + 2]) .area ();
-		surfaceAreas .emplace_back (surfaceArea);
+		// Triangulate
+	
+		std::vector <Color4f>  colors;
+		TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
+		std::vector <Vector3f> normals;
+		std::vector <Vector3d> verticesAux;
+
+		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
+	
+		std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
+
+		// Calculate area so far
+
+		areaSoFarArray .resize (1);
+
+		float areaSoFar = 0;
+	
+		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+		{
+			areaSoFar += Triangle3f (vertices [i + 0], vertices [i + 1], vertices [i + 2]) .area ();
+			areaSoFarArray .emplace_back (areaSoFar);
+		}
+
+		// BVH
+
+		bvh = std::make_unique <BVH <float>> (std::move (normals), std::move (vertices));
 	}
+	else
+	{
+		// Triangulate
+	
+		std::vector <Color4f>  colors;
+		TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
+		std::vector <Vector3f> normals;
+		std::vector <Vector3d> verticesAux;
+	
+		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
+	
+		std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
+	
+		// Calculate area so far
 
-	// Upload
-
-	pointEmitter = vertices .empty ();
-	solid        = surfaceNode -> getSolid ();
-
-	glBindBuffer (GL_TEXTURE_BUFFER, normalBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), pointEmitter ? 0 : normals .data (), GL_STATIC_COPY);
-
-	glBindBuffer (GL_TEXTURE_BUFFER, surfaceBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), pointEmitter ? 0 : vertices .data (), GL_STATIC_COPY);
-
-	glBindBuffer (GL_TEXTURE_BUFFER, surfaceAreaBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), pointEmitter ? 0 : surfaceAreas .data (), GL_STATIC_COPY);
-
-	// BVH
-
-	const BVH <float> tree (std::move (vertices));
-	const auto treeArray = tree .toArray ();
-
-	glBindBuffer (GL_TEXTURE_BUFFER, volumeBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH <float>::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);
-
-	// Update textures
-
-	glBindTexture (GL_TEXTURE_BUFFER, normalMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, normalBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, surfaceMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, surfaceBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, surfaceAreaMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, surfaceAreaBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, volumeMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, volumeBufferId);
-
-	glBindTexture (GL_TEXTURE_BUFFER, 0);
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+		float               surfaceArea = 0;
+		std::vector <float> surfaceAreas (1);
+	
+		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+		{
+			surfaceArea += Triangle3f (vertices [i], vertices [i + 1], vertices [i + 2]) .area ();
+			surfaceAreas .emplace_back (surfaceArea);
+		}
+	
+		// Upload
+	
+		pointEmitter = vertices .empty ();
+		solid        = surfaceNode -> getSolid ();
+	
+		glBindBuffer (GL_TEXTURE_BUFFER, normalBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), pointEmitter ? 0 : normals .data (), GL_STATIC_COPY);
+	
+		glBindBuffer (GL_TEXTURE_BUFFER, surfaceBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), pointEmitter ? 0 : vertices .data (), GL_STATIC_COPY);
+	
+		glBindBuffer (GL_TEXTURE_BUFFER, surfaceAreaBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), pointEmitter ? 0 : surfaceAreas .data (), GL_STATIC_COPY);
+	
+		// BVH
+	
+		const BVH <float> tree (std::move (normals), std::move (vertices));
+		const auto treeArray = tree .toArray ();
+	
+		glBindBuffer (GL_TEXTURE_BUFFER, volumeBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH <float>::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);
+	
+		// Update textures
+	
+		glBindTexture (GL_TEXTURE_BUFFER, normalMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, normalBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, surfaceMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, surfaceBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, surfaceAreaMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, surfaceAreaBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, volumeMapId);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, volumeBufferId);
+	
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	}
 }
 
 Vector3f
 VolumeEmitter::getRandomPosition () const
 {
-	return Vector3f ();
+	// Get random point on surface
+
+	const auto normals  = bvh -> getNormals ();
+	const auto vertices = bvh -> getVertices ();
+
+	// Determine index0.
+
+	const size_t size     = areaSoFarArray .size ();
+	const float  fraction = random1 (0, 1) * areaSoFarArray [size - 1];
+	size_t       index0   = 0;
+
+	if (size == 1 || fraction <= areaSoFarArray [0])
+	{
+		index0 = 0;
+	}
+	else if (fraction >= areaSoFarArray [size - 1])
+	{
+		index0 = size - 2;
+	}
+	else
+	{
+		const auto iter = std::upper_bound (areaSoFarArray .begin (), areaSoFarArray .end (), fraction);
+
+		if (iter not_eq areaSoFarArray .end ())
+		{
+			index0 = (iter - areaSoFarArray .begin ()) - 1;
+		}
+		else
+		{
+			index0 = 0;
+		}
+	}
+
+	// Random barycentric coordinates.
+
+	auto u = random1 (0, 1);
+	auto v = random1 (0, 1);
+
+	if (u + v > 1)
+	{
+		u = 1 - u;
+		v = 1 - v;
+	}
+
+	const auto t = 1 - u - v;
+
+	// Interpolate and determine random point on surface and normal.
+
+	const auto i = index0 * 3;
+
+	const auto point  = u * vertices [i + 0] + v * vertices [i + 1] + t * vertices [i + 2];
+	const auto normal = u * normals  [i + 0] + v * normals  [i + 1] + t * normals  [i + 2];
+
+	const auto surfaceNormal = getRandomSurfaceNormal () * Rotation4f (Vector3f (0, 0, 1), normal);
+
+	// Setup random line throu volume for intersection text
+	// and a plane corresponding to the line for intersection sorting.
+
+	const Line3f line (point, surfaceNormal);
+
+	// Find random point in volume.
+
+	std::vector <Vector3f> intersectionNormals;
+	std::vector <Vector3f> intersections;
+
+	auto numIntersections = bvh -> intersects (line, intersections, intersectionNormals);
+
+	numIntersections -= numIntersections % 2; // We need an even count of intersections.
+
+	if (numIntersections)
+	{
+		// Sort intersections along line with a little help from the plane.
+
+		const Plane3f plane (point, surfaceNormal);
+
+		std::sort (intersections .begin (), intersections .end (),
+		[&] (const Vector3f & lhs, const Vector3f & rhs)
+		{
+			return plane .distance (lhs) < plane .distance (rhs);
+		});
+
+		// Select random intersection pair.
+
+		const auto index  = std::round (random1 (0, numIntersections / 2 - 1)) * 2;
+		const auto point0 = intersections [index];
+		const auto point1 = intersections [index + 1];
+		const auto t      = random1 (0, 1);
+
+		const auto position = lerp (point0, point1, t);
+	
+		return position;
+	}
+
+	// Discard point.
+
+	return Vector3f (std::numeric_limits <float>::infinity (),
+	                 std::numeric_limits <float>::infinity (),
+	                 std::numeric_limits <float>::infinity ());
 }
 
 Vector3f
 VolumeEmitter::getRandomVelocity () const
 {
-	return Vector3f ();
+	if (direction () == Vector3f ())
+		return getSphericalRandomVelocity ();
+
+	return normalize (direction () .getValue ()) * getRandomSpeed ();
 }
 
 void

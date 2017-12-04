@@ -237,7 +237,7 @@ CollidableShape::set_collidableGeometry ()
 
 		// Create BVH
 
-		collidableGeometry .bvh .reset (new BVH <double> (std::move (vertices)));
+		collidableGeometry .bvh .reset (new BVH <double> ({ }, std::move (vertices)));
 	}
 }
 
