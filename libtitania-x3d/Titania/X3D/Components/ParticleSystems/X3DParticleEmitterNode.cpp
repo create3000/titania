@@ -50,6 +50,7 @@
 
 #include "X3DParticleEmitterNode.h"
 
+#include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/ParticleSystems/Random.h"
 #include "../../Browser/X3DBrowser.h"
 
@@ -194,8 +195,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 	const auto & velocities        = softSystem -> velocities;        // resulting velocities from forces
 	const auto & turbulences       = softSystem -> turbulences;       // turbulences
 	const auto & numForces         = softSystem -> numForces;         // number of forces
-	//const auto & boundedPhysics    = softSystem -> boundedVertices .size ();
-	//const auto & boundedVolume     = softSystem -> boundedVolume;
+	const auto & boundedVolume     = softSystem -> boundedVolume;
 
 	std::vector <Rotation4f> rotations; // rotation to direction of force
 
@@ -236,15 +236,15 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 				velocity += speeds [f] .getValue () * (getRandomNormalWithAngle (turbulences [f]) * rotations [f]);
 			}
 
-//			if (boundedPhysics)
-//			{
-//				const auto fromPosition = position;
-//
-//				position += velocity * deltaTime;
-//	
-//				bounce (boundedVolume, fromPosition, position, velocity);
-//			}
-//			else
+			if (boundedVolume)
+			{
+				const auto fromPosition = position;
+
+				position += velocity * float (deltaTime);
+	
+				bounce (boundedVolume, fromPosition, position, velocity);
+			}
+			else
 			{
 				position += velocity * float (deltaTime);
 			}
@@ -261,6 +261,65 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 		           softSystem -> particleSystem -> colorKey (),
 		           softSystem -> colorRamp,
 		           numParticles);
+	}
+}
+
+void
+X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
+                                const Vector3f & fromPosition,
+                                Vector3f & toPosition,
+                                Vector3f & velocity) const
+{
+	const auto normal = normalize (velocity);
+
+	const Line3f line (fromPosition, normal);
+
+	std::vector <Vector3f> intersectionNormals;
+	std::vector <Vector3f> intersections;
+
+	const auto numIntersections = boundedVolume -> intersects (line, intersections, intersectionNormals);
+
+	if (numIntersections)
+	{
+		std::vector <size_t> indices;
+
+		for (size_t i = 0; i < numIntersections; ++ i)
+			indices .emplace_back (i);
+
+		const Plane3f plane (fromPosition, normal);
+
+		std::sort (indices .begin (), indices .end (),
+		[&] (const size_t lhs, const size_t rhs)
+		{
+			return plane .distance (intersections [lhs]) < plane .distance (intersections [rhs]);
+		});
+
+		const auto iter = std::upper_bound (indices .begin (), indices .end (), 0.0f,
+		[&] (const float lhs, const size_t rhs)
+		{
+			return lhs < plane .distance (intersections [rhs]);
+		});
+		
+		if (iter not_eq indices .end ())
+		{
+			const auto   index              = *iter;
+			const auto & intersection       = intersections [index];
+			const auto & intersectionNormal = intersectionNormals [index];
+
+			const Plane3f plane (intersection, intersectionNormal);
+
+			if (plane .distance (fromPosition) * plane .distance (toPosition) < 0)
+			{
+				const auto dot2 = 2 * dot (intersectionNormal, velocity);
+
+				velocity -= intersectionNormal * dot2;
+
+				const auto normal   = normalize (velocity);
+				const auto distance = abs (intersection - fromPosition);
+
+				toPosition = intersection + normal * distance;
+			}
+		}
 	}
 }
 

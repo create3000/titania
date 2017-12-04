@@ -108,7 +108,7 @@ BoundedPhysicsModel::set_geometry ()
 }
 
 void
-BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & normals, std::vector <Vector3f> & vertices_) const
+BoundedPhysicsModel::addGeometry (std::vector <Vector3f> & normals, std::vector <Vector3f> & vertices_) const
 {
 	if (enabled () and geometryNode)
 	{

@@ -56,6 +56,9 @@
 namespace titania {
 namespace X3D {
 
+template <class Type>
+class BVH;
+
 class SoftSystem
 {
 public:
@@ -200,7 +203,6 @@ private:
 	std::vector <Vector3d>  vertexArray;
 	size_t                  texCoordCount;
 	size_t                  vertexCount;
-	X3DPtr <ComposedShader> shaderNode;
 	GeometryType            shaderGeometryType;
 	std::vector <Particle>  particles;
 	bool                    colorMaterial;
@@ -221,11 +223,13 @@ private:
 	time_type                                 deltaTime;
 	std::vector <Color4f>                     colorRamp;
 	std::vector <Vector4f>                    texCoordRamp;
+	std::unique_ptr <BVH <float>>             boundedVolume;
 	X3DPtr <X3DParticleEmitterNode>           emitterNode;
 	X3DPtrArray <X3DParticlePhysicsModelNode> physicsModelNodes;
 	X3DPtrArray <BoundedPhysicsModel>         boundedPhysicsModelNodes;
 	X3DPtr <X3DColorNode>                     colorRampNode;
 	X3DPtr <X3DTextureCoordinateNode>         texCoordRampNode;
+	X3DPtr <ComposedShader>                   shaderNode;
 
 };
 

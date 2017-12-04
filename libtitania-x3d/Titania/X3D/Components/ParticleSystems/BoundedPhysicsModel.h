@@ -108,7 +108,7 @@ public:
 	{ }
 
 	void
-	addTriangles (std::vector <Vector3f> &, std::vector <Vector3f> &) const;
+	addGeometry (std::vector <Vector3f> & normals, std::vector <Vector3f> & vertices) const;
 
 
 private:

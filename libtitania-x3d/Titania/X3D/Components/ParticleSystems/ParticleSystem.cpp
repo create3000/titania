@@ -1058,7 +1058,7 @@ ParticleSystem::set_boundedPhysicsModel ()
 		std::vector <Vector3f> vertices;
 
 		for (auto & physicsNode : boundedPhysicsModelNodes)
-			physicsNode -> addTriangles (normals, vertices);
+			physicsNode -> addGeometry (normals, vertices);
 
 		// Update shader
 

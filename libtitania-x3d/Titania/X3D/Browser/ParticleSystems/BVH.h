@@ -573,9 +573,6 @@ BVH <Type>::intersects (const line3 <Type> & line,
                         std::vector <vector3 <Type>> & intersections,
                         std::vector <vector3 <Type>> & intersectionNormals) const
 {
-	intersections       .clear ();
-	intersectionNormals .clear ();
-
 	if (root)
 		root -> intersects (line, intersections, intersectionNormals);
 
@@ -593,8 +590,6 @@ BVH <Type>::intersects (const box3 <Type> & bbox,
 {
 	try
 	{
-		triangles .clear ();
-
 		if (root)
 			return root -> intersects (bbox * inverse (matrix), points, edges, normals, matrix, triangles);
 	}

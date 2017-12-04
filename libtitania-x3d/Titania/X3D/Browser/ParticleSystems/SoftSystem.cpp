@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/BrowserOptions.h"
+#include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/ParticleSystems/BoundedPhysicsModel.h"
 #include "../../Components/ParticleSystems/X3DParticleEmitterNode.h"
@@ -83,7 +84,6 @@ SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	             vertexArray (),
 	           texCoordCount (0),
 	             vertexCount (0),
-	              shaderNode (),
 	      shaderGeometryType (GeometryType::GEOMETRY_POINTS),
 	               particles (),
 	           colorMaterial (false),
@@ -103,11 +103,13 @@ SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	               deltaTime (0),
 	               colorRamp (),
 	            texCoordRamp (),
+	           boundedVolume (),
 	             emitterNode (),
           physicsModelNodes (),
 	boundedPhysicsModelNodes (),
               colorRampNode (),
-           texCoordRampNode ()
+           texCoordRampNode (),
+	              shaderNode ()
 {
 	particleSystem -> addChildObjects (shaderNode,
 	                                   emitterNode,
@@ -484,7 +486,18 @@ SoftSystem::set_physics ()
 void
 SoftSystem::set_boundedPhysics ()
 {
+	std::vector <Vector3f> boundedNormals;
+	std::vector <Vector3f> boundedVertices;
 
+	for (const auto & boundedPhysicsModelNode : boundedPhysicsModelNodes)
+	{
+		boundedPhysicsModelNode -> addGeometry (boundedNormals, boundedVertices);
+	}
+
+	if (boundedVertices .empty ())
+		boundedVolume .reset ();
+	else
+		boundedVolume = std::make_unique <BVH <float>> (std::move (boundedNormals), std::move (boundedVertices));
 }
 
 void

@@ -62,6 +62,9 @@ namespace X3D {
 
 class ParticleSystem;
 
+template <class Type>
+class BVH;
+
 class X3DParticleEmitterNode :
 	virtual public X3DNode
 {
@@ -186,6 +189,12 @@ protected:
 private:
 
 	///  @name Member access
+
+	void
+	bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
+	        const Vector3f & fromPosition,
+	        Vector3f & toPosition,
+	        Vector3f & velocity) const;
 
 	void
 	getColors (std::vector <SoftSystem::Particle> & particles,
