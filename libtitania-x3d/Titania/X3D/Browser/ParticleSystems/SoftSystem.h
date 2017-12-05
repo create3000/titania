@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_PARTICLE_SYSTEMS_SOFT_SYSTEM_H__
 #define __TITANIA_X3D_BROWSER_PARTICLE_SYSTEMS_SOFT_SYSTEM_H__
 
+#include "../../Browser/ParticleSystems/SoftParticle.h"
 #include "../../Components/ParticleSystems/ParticleSystem.h"
 
 namespace titania {
@@ -125,6 +126,9 @@ private:
 	set_lifetimeVariation ();
 
 	void
+	set_particleElasticity ();
+
+	void
 	set_emitter ();
 
 	void
@@ -167,55 +171,35 @@ private:
 	void
 	updateQuad (const Matrix4d & modelViewMatrix, const bool state);
 
-	///  @name Member types
-
-	struct Particle
-	{
-		Particle () :
-			   lifetime (-1),
-			elapsedTime (0),
-			   position (),
-			   velocity (),
-			      color (1, 1, 1, 1),
-			   distance (0)
-		{ }
-
-		time_type lifetime;
-		time_type elapsedTime;
-		Vector3f position;
-		Vector3f velocity;
-		Color4f color;
-		float distance;
-	};
-
 	///  @name Members
 
 	ParticleSystem* const particleSystem;
 
-	GLenum                  primitiveMode;
-	GLuint                  colorBufferId;
-	std::vector <GLuint>    texCoordBufferIds;
-	GLuint                  normalBufferId;
-	GLuint                  vertexBufferId;
-	std::vector <Color4f>   colorArray;
-	std::vector <Vector4f>  texCoordArray;
-	std::vector <Vector3f>  normalArray;
-	std::vector <Vector3d>  vertexArray;
-	size_t                  texCoordCount;
-	size_t                  vertexCount;
-	GeometryType            shaderGeometryType;
-	std::vector <Particle>  particles;
-	bool                    colorMaterial;
-	bool                    texCoordAnim;
-	MFVec3f                 velocities;
-	MFFloat                 speeds;
-	MFFloat                 turbulences;
-	size_t                  numForces;
+	GLenum                     primitiveMode;
+	GLuint                     colorBufferId;
+	std::vector <GLuint>       texCoordBufferIds;
+	GLuint                     normalBufferId;
+	GLuint                     vertexBufferId;
+	std::vector <Color4f>      colorArray;
+	std::vector <Vector4f>     texCoordArray;
+	std::vector <Vector3f>     normalArray;
+	std::vector <Vector3d>     vertexArray;
+	size_t                     texCoordCount;
+	size_t                     vertexCount;
+	GeometryType               shaderGeometryType;
+	std::vector <SoftParticle> particles;
+	bool                       colorMaterial;
+	bool                       texCoordAnim;
+	MFVec3f                    velocities;
+	MFFloat                    speeds;
+	MFFloat                    turbulences;
+	size_t                     numForces;
 
 	ParticleSystem::GeometryType              geometryType;
 	bool                                      createParticles;
 	time_type                                 particleLifetime;
 	time_type                                 lifetimeVariation;
+	float                                     particleElasticity;
 	size_t                                    maxParticles;
 	size_t                                    numParticles;
 	time_type                                 creationTime;

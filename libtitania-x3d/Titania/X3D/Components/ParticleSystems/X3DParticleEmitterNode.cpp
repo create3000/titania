@@ -52,6 +52,7 @@
 
 #include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/ParticleSystems/Random.h"
+#include "../../Browser/ParticleSystems/SoftSystem.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {
@@ -186,18 +187,19 @@ X3DParticleEmitterNode::getRandomSurfaceNormal () const
 void
 X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type deltaTime) const
 {
-	auto &       particles         = softSystem -> particles;
-	const auto & numParticles      = softSystem -> numParticles;
-	const auto & createParticles   = softSystem -> createParticles;
-	const auto & particleLifetime  = softSystem -> particleLifetime;
-	const auto & lifetimeVariation = softSystem -> lifetimeVariation;
-	const auto & speeds            = softSystem -> speeds;            // speed of velocities
-	const auto & velocities        = softSystem -> velocities;        // resulting velocities from forces
-	const auto & turbulences       = softSystem -> turbulences;       // turbulences
-	const auto & numForces         = softSystem -> numForces;         // number of forces
-	const auto & boundedVolume     = softSystem -> boundedVolume;
+	auto &       particles          = softSystem -> particles;
+	const auto & numParticles       = softSystem -> numParticles;
+	const auto & createParticles    = softSystem -> createParticles;
+	const auto & particleLifetime   = softSystem -> particleLifetime;
+	const auto & lifetimeVariation  = softSystem -> lifetimeVariation;
+	const auto & particleElasticity = softSystem -> particleElasticity;
+	const auto & speeds             = softSystem -> speeds;            // speed of velocities
+	const auto & velocities         = softSystem -> velocities;        // resulting velocities from forces
+	const auto & turbulences        = softSystem -> turbulences;       // turbulences
+	const auto & numForces          = softSystem -> numForces;         // number of forces
+	const auto & boundedVolume      = softSystem -> boundedVolume;
 
-	std::vector <Rotation4f> rotations; // rotation to direction of force
+	std::vector <Rotation4f> rotations; // rotations to directions of forces
 
 	for (const auto & velocity : velocities)
 		rotations .emplace_back (Vector3f (0, 0, 1), velocity .getValue ());
@@ -242,7 +244,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 				position += velocity * float (deltaTime);
 	
-				bounce (boundedVolume, fromPosition, position, velocity);
+				bounce (boundedVolume, particleElasticity, fromPosition, position, velocity);
 			}
 			else
 			{
@@ -266,6 +268,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 void
 X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
+                                const float particleElasticity,
                                 const Vector3f & fromPosition,
                                 Vector3f & toPosition,
                                 Vector3f & velocity) const
@@ -313,6 +316,7 @@ X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVol
 				const auto dot2 = 2 * dot (intersectionNormal, velocity);
 
 				velocity -= intersectionNormal * dot2;
+//				velocity *= particleElasticity;
 
 				const auto normal   = normalize (velocity);
 				const auto distance = abs (intersection - fromPosition);
@@ -324,7 +328,7 @@ X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVol
 }
 
 void
-X3DParticleEmitterNode::getColors (std::vector <SoftSystem::Particle> & particles,
+X3DParticleEmitterNode::getColors (std::vector <SoftParticle> & particles,
                                    const MFFloat & colorKeys,
                                    const std::vector <Color4f> & colorRamp,
                                    const size_t numParticles) const

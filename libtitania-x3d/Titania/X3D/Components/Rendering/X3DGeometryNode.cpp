@@ -951,22 +951,24 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	
 		const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
 	
+		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
 		if (context -> isTransparent () && not solid)
 		{
-			glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 			glEnable (GL_CULL_FACE);
-			glCullFace (GL_FRONT);
 	
 			// Draw
+
+			glCullFace (GL_FRONT);
 	
 			for (const auto & element : elements)
 			{
 				glDrawArrays (element .vertexMode (), element .first (), element .count ());
 			}
 
-			glCullFace (GL_BACK);
-	
 			// Draw
+
+			glCullFace (GL_BACK);
 	
 			for (const auto & element : elements)
 			{
@@ -982,8 +984,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	
 			else
 				glDisable (GL_CULL_FACE);
-	
-			glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 	
 			for (const auto & element : elements)
 			{
@@ -1025,6 +1025,119 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	}
 	catch (const std::exception &)
 	{ }
+}
+
+void
+X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles)
+{
+	// Soft system draw.
+
+	try
+	{
+		const auto browser    = context -> getBrowser ();
+		const auto shaderNode = browser -> getShader ();
+
+		if (not shaderNode)
+			return;
+
+		context -> setGeometryType  (geometryType);
+		context -> setColorMaterial (not colors .empty ());
+
+		// Setup shader
+
+		//shaderNode -> enable ();
+		shaderNode -> setLocalUniforms (context);
+
+		// Enable vertex attribute nodes
+
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+
+		if (not colors .empty ())
+			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
+
+		if (not texCoords .empty ())
+			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
+
+		if (not normals .empty ())
+			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
+
+		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
+
+		// Draw particles.
+	
+		auto       modelViewMatrix = context -> getModelViewMatrix ();
+		const auto origin          = modelViewMatrix .origin ();
+	
+		// Draw depending on ccw, transparency and solid.
+	
+		const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
+	
+		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
+		if (context -> isTransparent () && not solid)
+		{
+			for (size_t p = 0; p < numParticles; ++ p)
+			{
+				modelViewMatrix .origin (origin);
+				modelViewMatrix .translate (particles [p] .position);
+
+				shaderNode -> setMatrices (inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+
+				glEnable (GL_CULL_FACE);
+				glCullFace (GL_FRONT);
+		
+				for (const auto & element : elements)
+				{
+					glDrawArrays (element .vertexMode (), element .first (), element .count ());
+				}
+
+				glCullFace (GL_BACK);
+		
+				for (const auto & element : elements)
+				{
+					glDrawArrays (element .vertexMode (), element .first (), element .count ());
+				}
+			}	
+		}
+		else
+		{
+			if (solid)
+				glEnable (GL_CULL_FACE);
+			else
+				glDisable (GL_CULL_FACE);
+
+			for (size_t p = 0; p < numParticles; ++ p)
+			{
+				modelViewMatrix .origin (origin);
+				modelViewMatrix .translate (particles [p] .position);
+
+				shaderNode -> setMatrices (inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+
+				for (const auto & element : elements)
+				{
+					glDrawArrays (element .vertexMode (), element .first (), element .count ());
+				}
+			}
+		}
+
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> disable (shaderNode);
+
+		// Disable shader
+
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
+		shaderNode -> disableNormalAttrib ();
+		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
+
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

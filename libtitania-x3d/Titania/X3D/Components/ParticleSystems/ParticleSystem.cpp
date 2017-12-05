@@ -260,20 +260,21 @@ const std::string   ParticleSystem::typeName       = "ParticleSystem";
 const std::string   ParticleSystem::containerField = "children";
 
 ParticleSystem::Fields::Fields () :
-	          enabled (new SFBool (true)),
-	     geometryType (new SFString ("QUAD")),
-	  createParticles (new SFBool (true)),
-	     maxParticles (new SFInt32 (200)),
-	 particleLifetime (new SFFloat (5)),
-	lifetimeVariation (new SFFloat (0.25)),
-	     particleSize (new SFVec2f (0.02, 0.02)),
-	         colorKey (new MFFloat ()),
-	      texCoordKey (new MFFloat ()),
-	         isActive (new SFBool ()),
-	          emitter (new SFNode ()),
-	        colorRamp (new SFNode ()),
-	     texCoordRamp (new SFNode ()),
-	          physics (new MFNode ())
+	           enabled (new SFBool (true)),
+	      geometryType (new SFString ("QUAD")),
+	   createParticles (new SFBool (true)),
+	      maxParticles (new SFInt32 (200)),
+	  particleLifetime (new SFFloat (5)),
+	 lifetimeVariation (new SFFloat (0.25)),
+	      particleSize (new SFVec2f (0.02, 0.02)),
+//	particleElasticity (new SFFloat (1)),
+	          colorKey (new MFFloat ()),
+	       texCoordKey (new MFFloat ()),
+	          isActive (new SFBool ()),
+	           emitter (new SFNode ()),
+	         colorRamp (new SFNode ()),
+	      texCoordRamp (new SFNode ()),
+	           physics (new MFNode ())
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
@@ -328,9 +329,10 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "maxParticles",      maxParticles ());
 	addField (inputOutput,    "createParticles",   createParticles ());
 
-	addField (inputOutput,    "particleLifetime",  particleLifetime ());
-	addField (inputOutput,    "lifetimeVariation", lifetimeVariation ());
-	addField (inputOutput,    "particleSize",      particleSize ());
+	addField (inputOutput,    "particleLifetime",   particleLifetime ());
+	addField (inputOutput,    "lifetimeVariation",  lifetimeVariation ());
+	addField (inputOutput,    "particleSize",       particleSize ());
+//	addField (inputOutput,    "particleElasticity", particleElasticity ());
 
 	addField (initializeOnly, "emitter",           emitter ());
 	addField (initializeOnly, "physics",           physics ());
@@ -372,6 +374,10 @@ ParticleSystem::initialize ()
 	if (isSoftSystem ())
 	{
 		softSystem -> initialize ();
+
+		geometryType () .addInterest (&ParticleSystem::set_geometryType, this);
+
+		set_geometryType ();
 		return;
 	}
 
@@ -630,26 +636,33 @@ ParticleSystem::set_enabled ()
 void
 ParticleSystem::set_geometryType ()
 {
+	static const std::map <std::string, GeometryType> geometryTypes = {
+		std::make_pair ("POINT",    GeometryType::POINT),
+		std::make_pair ("LINE",     GeometryType::LINE),
+		std::make_pair ("TRIANGLE", GeometryType::TRIANGLE),
+		std::make_pair ("QUAD",     GeometryType::QUAD),
+		std::make_pair ("GEOMETRY", GeometryType::GEOMETRY),
+		std::make_pair ("SPRITE",   GeometryType::SPRITE)
+	};
+
 	try
 	{
-		static const std::map <std::string, GeometryType> geometryTypes = {
-			std::make_pair ("POINT",    GeometryType::POINT),
-			std::make_pair ("LINE",     GeometryType::LINE),
-			std::make_pair ("TRIANGLE", GeometryType::TRIANGLE),
-			std::make_pair ("QUAD",     GeometryType::QUAD),
-			std::make_pair ("GEOMETRY", GeometryType::GEOMETRY),
-			std::make_pair ("SPRITE",   GeometryType::SPRITE)
-		};
+		geometryTypeId = geometryTypes .at (geometryType ());
+	}
+	catch (const std::out_of_range &)
+	{
+		geometryTypeId = GeometryType::QUAD;
+	}
 
-		try
-		{
-			geometryTypeId = geometryTypes .at (geometryType ());
-		}
-		catch (const std::out_of_range &)
-		{
-			geometryTypeId = GeometryType::QUAD;
-		}
+	if (not isSoftSystem ())
+		set_vertices ();
+}
 
+void
+ParticleSystem::set_vertices ()
+{
+	try
+	{
 		//
 
 		MFVec4f                texCoord;

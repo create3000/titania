@@ -349,6 +349,13 @@ ProgramShader::disableVertexAttrib ()
 }
 
 void
+ProgramShader::setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> setMatrices (normalMatrix, modelViewMatrix);
+}
+
+void
 ProgramShader::dispose ()
 {
 	try

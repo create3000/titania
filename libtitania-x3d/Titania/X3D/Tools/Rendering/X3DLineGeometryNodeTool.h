@@ -99,6 +99,11 @@ public:
 	draw (ShapeContainer* const context) override
 	{ X3DGeometryNodeTool::draw (context); }
 
+	virtual
+	void
+	drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles) final override
+	{ X3DGeometryNodeTool::drawParticles (context, particles, numParticles); }
+
 	///  @name Destruction
 
 	virtual

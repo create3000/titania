@@ -1332,6 +1332,21 @@ X3DProgrammableShaderObject::disableVertexAttrib ()
 	glDisableVertexAttribArray (x3d_Vertex);
 }
 
+void
+X3DProgrammableShaderObject::setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix)
+{
+	glUniformMatrix3fv (x3d_NormalMatrix, 1, true, normalMatrix .data ());
+
+	if (extensionGPUShaderFP64)
+	{
+		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .data ());
+	}
+	else
+	{
+		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .data ());
+	}
+}
+
 /*
  *
  *  Destruction

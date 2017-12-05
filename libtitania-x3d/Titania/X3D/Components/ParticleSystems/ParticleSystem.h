@@ -171,6 +171,16 @@ public:
 	particleSize () const
 	{ return *fields .particleSize; }
 
+//	virtual
+//	SFFloat &
+//	particleElasticity ()
+//	{ return *fields .particleElasticity; }
+//
+//	virtual
+//	const SFFloat &
+//	particleElasticity () const
+//	{ return *fields .particleElasticity; }
+
 	virtual
 	MFFloat &
 	colorKey ()
@@ -330,6 +340,9 @@ private:
 	set_geometryType ();
 
 	void
+	set_vertices ();
+
+	void
 	set_shader ();
 
 	void
@@ -433,6 +446,7 @@ private:
 		SFFloat* const particleLifetime;
 		SFFloat* const lifetimeVariation;
 		SFVec2f* const particleSize;
+//		SFFloat* const particleElasticity;
 		MFFloat* const colorKey;
 		MFFloat* const texCoordKey;
 		SFBool* const isActive;

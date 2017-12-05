@@ -388,6 +388,17 @@ X3DGeometryNodeTool::draw (ShapeContainer* const context)
 }
 
 void
+X3DGeometryNodeTool::drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles)
+{
+	if (PolygonModeLock (GL_FILL) .front () == GL_FILL)
+	{
+		PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
+
+		getNode <X3DGeometryNode> () -> drawParticles (context, particles, numParticles);
+	}
+}
+
+void
 X3DGeometryNodeTool::dispose ()
 {
 	X3DNodeTool::dispose ();

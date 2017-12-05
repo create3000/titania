@@ -211,6 +211,10 @@ public:
 	draw (ShapeContainer* const) override;
 
 	virtual
+	void
+	drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles);
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

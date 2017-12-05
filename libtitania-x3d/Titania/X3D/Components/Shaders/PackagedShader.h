@@ -220,6 +220,11 @@ public:
 	disableVertexAttrib () final override
 	{ }
 
+	virtual
+	void
+	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) final override
+	{ }
+
 	///  @name Destruction
 
 	virtual

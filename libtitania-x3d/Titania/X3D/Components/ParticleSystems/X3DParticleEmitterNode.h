@@ -55,12 +55,13 @@
 #include "../Shaders/ComposedShader.h"
 #include "../../Types/Geometry.h"
 
-#include "../../Browser/ParticleSystems/SoftSystem.h"
+#include "../../Browser/ParticleSystems/SoftParticle.h"
 
 namespace titania {
 namespace X3D {
 
 class ParticleSystem;
+class SoftSystem;
 
 template <class Type>
 class BVH;
@@ -121,16 +122,16 @@ public:
 
 	virtual
 	void
-	addShaderFields (const X3DPtr <ComposedShader> &) const;	
+	addShaderFields (const X3DPtr <ComposedShader> & shader) const;	
 
 	virtual
 	void
-	setTextureBuffer (const X3DPtr <ComposedShader> &) const
+	setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 	{ }
 
 	virtual
 	void
-	setShaderFields (const X3DPtr <ComposedShader> &) const;
+	setShaderFields (const X3DPtr <ComposedShader> & shader) const;
 
 	virtual
 	void
@@ -192,12 +193,13 @@ private:
 
 	void
 	bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
+	        const float particleElasticity,
 	        const Vector3f & fromPosition,
 	        Vector3f & toPosition,
 	        Vector3f & velocity) const;
 
 	void
-	getColors (std::vector <SoftSystem::Particle> & particles,
+	getColors (std::vector <SoftParticle> & particles,
 	           const MFFloat & colorKeys,
 	           const std::vector <Color4f> & colorRamp,
 	           const size_t numParticles) const;

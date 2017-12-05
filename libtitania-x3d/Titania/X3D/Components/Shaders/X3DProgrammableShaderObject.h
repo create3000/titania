@@ -364,6 +364,10 @@ public:
 	void
 	disableVertexAttrib ();
 
+	virtual
+	void
+	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix);
+
 
 protected:
 

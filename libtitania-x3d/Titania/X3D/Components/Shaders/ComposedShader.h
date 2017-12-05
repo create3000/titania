@@ -225,6 +225,11 @@ public:
 	disableVertexAttrib () final override
 	{ X3DProgrammableShaderObject::disableVertexAttrib (); }
 
+	virtual
+	void
+	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) final override
+	{ X3DProgrammableShaderObject::setMatrices (normalMatrix, modelViewMatrix); }
+
 	///  @name Destruction
 
 	virtual

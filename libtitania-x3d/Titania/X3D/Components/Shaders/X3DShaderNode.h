@@ -185,6 +185,10 @@ public:
 
 	virtual
 	void
+	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) = 0;
+
+	virtual
+	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 

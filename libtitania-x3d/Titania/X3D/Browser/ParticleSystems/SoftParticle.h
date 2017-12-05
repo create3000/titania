@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,76 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DLINE_GEOMETRY_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_X3DLINE_GEOMETRY_H__
+#ifndef __TITANIA_X3D_BROWSER_PARTICLE_SYSTEMS_SOFT_PARTICLE_H__
+#define __TITANIA_X3D_BROWSER_PARTICLE_SYSTEMS_SOFT_PARTICLE_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Types/Numbers.h"
+#include "../../Types/Time.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DLineGeometryNode :
-	virtual public X3DGeometryNode
+struct SoftParticle
 {
-public:
+	SoftParticle () :
+		   lifetime (-1),
+		elapsedTime (0),
+		   position (),
+		   velocity (),
+		      color (1, 1, 1, 1),
+		   distance (0)
+	{ }
 
-	///  @name Operations
-
-	virtual
-	bool
-	intersects (Line3d line,
-	            const ClipPlaneContainerArray & clipPlanes,
-	            Matrix4d modelViewMatrix,
-	            std::vector <IntersectionPtr> & intersections) const override;
-
-	virtual
-	bool
-	intersects (Box3d box,
-	            const ClipPlaneContainerArray & clipPlanes,
-	            Matrix4d modelViewMatrix) const override;
-
-	virtual
-	std::vector <Vector3d>
-	intersects (X3DRenderObject* const renderObject,
-	            const std::shared_ptr <FrameBuffer> & frameBuffer,
-	            const std::shared_ptr <FrameBuffer> & depthBuffer,
-	            std::vector <IntersectionPtr> & intersections) override;
-
-	virtual
-	void
-	depth (const X3DShapeContainer* const context) override;
-
-	virtual
-	void
-	draw (ShapeContainer* const context) override;
-
-	virtual
-	void
-	drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles) override;
-
-	///  @name Destruction
-
-	virtual
-	~X3DLineGeometryNode () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DLineGeometryNode ();
-
-	///  @name Member access
-
-	virtual
-	const X3DPtr <ComposedShader> &
-	getShaderNode (X3DBrowser* const browser) = 0;
-
-
-private:
-
-	///  @name Members
-
+	time_type lifetime;
+	time_type elapsedTime;
+	Vector3f  position;
+	Vector3f  velocity;
+	Color4f   color;
+	float     distance;
 };
 
 } // X3D

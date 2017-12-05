@@ -160,6 +160,76 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	}
 }
 
+void
+X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles)
+{
+	try
+	{
+		const auto browser       = context -> getBrowser ();
+		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
+		auto       shaderNode    = browser -> getShader ();
+	
+		if (not shaderNode)
+			return;
+	
+		if (shaderNode == browser -> getDefaultShader ())
+			shaderNode = getShaderNode (browser);
+	
+		// Setup shader.
+	
+		context -> setGeometryType  (getGeometryType ());
+		context -> setColorMaterial (not getColors () .empty ());
+	
+		//shaderNode -> enable ();
+		shaderNode -> setLocalUniforms (context);
+	
+		// Setup vertex attributes.
+	
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
+	
+		if (not getColors () .empty ())
+			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
+	
+		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
+	
+		// Draw
+
+		auto       modelViewMatrix = context -> getModelViewMatrix ();
+		const auto origin          = modelViewMatrix .origin ();
+
+		for (size_t p = 0; p < numParticles; ++ p)
+		{
+			modelViewMatrix .origin (origin);
+			modelViewMatrix .translate (particles [p] .position);
+
+			shaderNode -> setMatrices (inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+
+			// Wireframes are always solid so only one drawing call is needed.
+		
+			for (const auto & element : getElements ())
+			{
+				glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
+			}
+		}
+	
+		// VertexAttribs
+	
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> disable (shaderNode);
+	
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
+	
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
 X3DLineGeometryNode::~X3DLineGeometryNode ()
 { }
 

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
+#include "../../Browser/ParticleSystems/SoftParticle.h"
 #include "../../Browser/PointingDeviceSensor/Intersection.h"
 #include "../../Browser/Rendering/GeometryType.h"
 #include "../../Browser/Shaders/ShadingType.h"
@@ -216,11 +217,15 @@ public:
 
 	virtual
 	void
-	depth (const X3DShapeContainer* const);
+	depth (const X3DShapeContainer* const context);
 
 	virtual
 	void
-	draw (ShapeContainer* const);
+	draw (ShapeContainer* const context);
+
+	virtual
+	void
+	drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles);
 
 	virtual
 	NodeType
@@ -358,7 +363,7 @@ protected:
 	addMirrorVertices (const GLenum, const bool);
 
 	void
-	set_shading (const ShadingType &);
+	set_shading (const ShadingType & value);
 
 	void
 	set_fixedPipeline ();
