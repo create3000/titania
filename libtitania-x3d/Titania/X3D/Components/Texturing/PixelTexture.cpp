@@ -159,9 +159,9 @@ PixelTexture::update ()
 
 				for (size_t w = 0; w < width; ++ w)
 				{
-					const auto & pixel = array [row + w];
+					const uint32_t pixel = array [row + w];
+					const uint8_t  color = pixel >> 8;
 
-					const uint8_t color = pixel >> 8;
 					pixels .emplace_back (color);
 					pixels .emplace_back (color);
 					pixels .emplace_back (color);
@@ -187,7 +187,7 @@ PixelTexture::update ()
 
 				for (size_t w = 0; w < width; ++ w)
 				{
-					const auto & pixel = array [row + w];
+					const uint32_t pixel = array [row + w];
 			
 					pixels .emplace_back (pixel >> 16);
 					pixels .emplace_back (pixel >> 8);
@@ -213,7 +213,7 @@ PixelTexture::update ()
 
 				for (size_t w = 0; w < width; ++ w)
 				{
-					const auto & pixel = array [row + w];
+					const uint32_t pixel = array [row + w];
 			
 					pixels .emplace_back (pixel >> 24);
 					pixels .emplace_back (pixel >> 16);
