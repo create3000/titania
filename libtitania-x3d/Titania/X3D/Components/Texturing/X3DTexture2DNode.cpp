@@ -270,12 +270,21 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 			// Copy image to array.
 
 			const auto stride = 3;
+			const auto size   = width * height * stride;
 
-			std::vector <uint8_t> image (width * height * stride);
+			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
+
+			for (size_t i = 0; i < size; i += stride)
+			{
+				const auto pixel = image [i];
+
+				image [i + 1] = pixel;
+				image [i + 2] = pixel;
+			}
 
 			return image;
 		}
@@ -283,13 +292,22 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 		{
 			// Copy image to array.
 
-			const auto stride    = 4;
+			const auto stride = 4;
+			const auto size   = width * height * stride;
 
-			std::vector <uint8_t> image (width * height * stride);
+			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
+
+			for (size_t i = 0; i < size; i += stride)
+			{
+				const auto pixel = image [i];
+
+				image [i + 1] = pixel;
+				image [i + 2] = pixel;
+			}
 
 			return image;
 		}
@@ -298,7 +316,9 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 			// Copy image to array.
 
 			const auto stride = components ();
-			std::vector <uint8_t> image (width * height * stride);
+			const auto size   = width * height * stride;
+
+			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
@@ -311,8 +331,9 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 			// Copy image to array.
 
 			const auto stride = components ();
+			const auto size   = width * height * stride;
 
-			std::vector <uint8_t> image (width * height * stride);
+			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());

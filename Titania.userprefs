@@ -1,18 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="319" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp" Line="678" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/PointEmitter.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/Random.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="322" Column="2" />
-      <File FileName="libtitania-standard/Titania/InputOutput/InverseCharacter.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/InputOutput/InverseCharacter.h" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/InputOutput/SingleLineComment.h" Line="77" Column="72" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="343" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="379" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.h" Line="192" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp" Line="988" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.h" Line="209" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp" Line="55" Column="52" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h" Line="215" Column="121" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp" Line="397" Column="70" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

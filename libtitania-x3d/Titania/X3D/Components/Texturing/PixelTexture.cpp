@@ -282,9 +282,10 @@ throw (Error <INVALID_NODE>,
 
 				for (int32_t w = 0; w < rowStride; w += stride)
 				{
-					auto p = first + (row + w);
+					const auto     p = first + (row + w);
+					const uint32_t r = *p;
 
-					array .emplace_back (*p);
+					array .emplace_back (r);
 				}
 			}
 
@@ -311,13 +312,11 @@ throw (Error <INVALID_NODE>,
 
 				for (int32_t w = 0; w < rowStride; w += stride)
 				{
-					auto p = first + (row + w);
+					const auto     p = first + (row + w);
+					const uint32_t r = *p;
+					const uint32_t a = *(p + 3);
 
-					uint32_t point = *p << 8; // The value is in the red channel.
-					p     += 3;
-					point |= *p;
-
-					array .emplace_back (point);
+					array .emplace_back ((r << 8) | (a));
 				}
 			}
 
@@ -344,13 +343,12 @@ throw (Error <INVALID_NODE>,
 
 				for (int32_t w = 0; w < rowStride; w += stride)
 				{
-					auto p = first + (row + w);
+					auto           p = first + (row + w);
+					const uint32_t r = *p ++;
+					const uint32_t g = *p ++;
+					const uint32_t b = *p;
 
-					uint32_t point = *p ++ << 16;
-					point |= *p ++ << 8;
-					point |= *p;
-
-					array .emplace_back (point);
+					array .emplace_back ((r << 16) | (g << 8) | (b));
 				}
 			}
 
@@ -377,14 +375,13 @@ throw (Error <INVALID_NODE>,
 
 				for (int32_t w = 0; w < rowStride; w += stride)
 				{
-					auto p = first + (row + w);
+					auto           p = first + (row + w);
+					const uint32_t r = *p ++;
+					const uint32_t g = *p ++;
+					const uint32_t b = *p ++;
+					const uint32_t a = *p;
 
-					uint32_t point = *p ++ << 24;
-					point |= *p ++ << 16;
-					point |= *p ++ << 8;
-					point |= *p;
-
-					array .emplace_back (point);
+					array .emplace_back ((r << 24) | (g << 16) | (b << 8) | (a));
 				}
 			}
 
