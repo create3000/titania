@@ -264,8 +264,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
 	glUniform1iv (x3d_TextureType,          1, textureType    .data ());
 	glUniform1iv (x3d_Texture,              1, texture2D      .data ()); // depreciated
-	glUniform1iv (x3d_Texture2D,            1, texture2D      .data ()); // Set texture to active texture unit 0.
-	glUniform1iv (x3d_CubeMapTexture,       1, cubeMapTexture .data ()); // Set cube map texture to active texture unit 1.
+	glUniform1iv (x3d_Texture2D,            1, texture2D      .data ()); // Set texture to active texture unit 2.
+	glUniform1iv (x3d_CubeMapTexture,       1, cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
 
 	glUseProgram (0);
 }
