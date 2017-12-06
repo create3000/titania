@@ -22,25 +22,6 @@ DEF Shader Transform {
       shaders DEF ComposedShader ComposedShader {
         language "GLSL"
         parts [
-          DEF FragmentShader ShaderPart {
-            type "FRAGMENT"
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform vec3  x3d_DiffuseColor;
-uniform float x3d_Transparency;
-
-varying vec3 normal;
-
-void
-main ()
-{
-	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
-
-	gl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);
-}"
-          }
           DEF VertexShader ShaderPart {
             url "data:text/plain,
 
@@ -61,6 +42,25 @@ main ()
 	normal = x3d_NormalMatrix * x3d_Normal;
 
 	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+}"
+          }
+          DEF FragmentShader ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+
+precision mediump float;
+
+uniform vec3  x3d_DiffuseColor;
+uniform float x3d_Transparency;
+
+varying vec3 normal;
+
+void
+main ()
+{
+	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
+
+	gl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);
 }"
           }
         ]
