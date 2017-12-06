@@ -55,7 +55,6 @@
 #include "../../Execution/BindableNodeStack.h"
 
 #include "../Layering/X3DLayerNode.h"
-#include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shaders/ComposedShader.h"
 
@@ -116,7 +115,6 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	            textures (6),
 	              hidden (false),
 	          clipPlanes (),
-	    projectionMatrix (),
 	transformationMatrix (),
 	        sphereColors (),
 	      sphereVertices (),
@@ -419,15 +417,12 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		PolygonModeLock polygonMode (GL_FILL);
 
 		// Get background scale.
+		// Use reder object projection matrix for generated cub map texture.
 
-		const auto nearValue = renderObject -> getNavigationInfo () -> getNearValue ();
-		const auto farValue  = renderObject -> getNavigationInfo () -> getFarValue (renderObject -> getViewpoint ());
-
-		projectionMatrix = renderObject -> getViewpoint () -> getProjectionMatrix (nearValue, farValue * 1.3, viewport, true);
+		const auto farValue        = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z ();
+		auto       modelViewMatrix = transformationMatrix;
 
 		// Rotate and scale background.
-
-		auto modelViewMatrix = transformationMatrix;
 
 		Vector3d   translation;
 		Rotation4d rotation;
@@ -438,11 +433,6 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 
 		if (browser -> getFixedPipelineRequired ())
 		{
-			glMatrixMode (GL_PROJECTION);
-			glPushMatrix ();
-			glLoadMatrixd (projectionMatrix .data ());
-
-			glMatrixMode (GL_MODELVIEW);
 			glLoadMatrixd (modelViewMatrix .data ());
 
 			// Draw background sphere and texture cube.
@@ -527,12 +517,12 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 
 		if (shaderNode -> isExtensionGPUShaderFP64Available ())
 		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, projectionMatrix .data ());
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
 			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .data ());
 		}
 		else
 		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (projectionMatrix) .data ());
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
 			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .data ());
 		}
 
@@ -605,12 +595,12 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 		if (shaderNode -> isExtensionGPUShaderFP64Available ())
 		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, projectionMatrix .data ());
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
 			glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .data ());
 		}
 		else
 		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (projectionMatrix) .data ());
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
 			glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .data ());
 		}
 
