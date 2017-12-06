@@ -122,6 +122,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	      x3d_ModelViewMatrix (-1),
 	         x3d_NormalMatrix (-1),
 	        x3d_TextureMatrix (-1),
+	    x3d_CameraSpaceMatrix (-1),
 	                x3d_Color (-1),
 	             x3d_TexCoord (-1),
 	               x3d_Normal (-1),
@@ -244,11 +245,12 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	const auto x3d_Texture = glGetUniformLocation (program, "x3d_Texture"); // depreciated
 
-	x3d_Viewport         = glGetUniformLocation (program, "x3d_Viewport");
-	x3d_ProjectionMatrix = glGetUniformLocation (program, "x3d_ProjectionMatrix");
-	x3d_ModelViewMatrix  = glGetUniformLocation (program, "x3d_ModelViewMatrix");
-	x3d_NormalMatrix     = glGetUniformLocation (program, "x3d_NormalMatrix");
-	x3d_TextureMatrix    = glGetUniformLocation (program, "x3d_TextureMatrix");
+	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
+	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
+	x3d_ModelViewMatrix   = glGetUniformLocation (program, "x3d_ModelViewMatrix");
+	x3d_NormalMatrix      = glGetUniformLocation (program, "x3d_NormalMatrix");
+	x3d_TextureMatrix     = glGetUniformLocation (program, "x3d_TextureMatrix");
+	x3d_CameraSpaceMatrix = glGetUniformLocation (program, "x3d_CameraSpaceMatrix");
 
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
 	x3d_TexCoord = glGetAttribLocation (program, "x3d_TexCoord");
@@ -1029,9 +1031,10 @@ X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 void
 X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
-	const auto & browser          = renderObject -> getBrowser ();
-	const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
-	const auto & globalLights     = renderObject -> getGlobalLights ();
+	const auto & browser           = renderObject -> getBrowser ();
+	const auto & cameraSpaceMatrix = renderObject -> getCameraSpaceMatrix () .get ();
+	const auto & projectionMatrix  = renderObject -> getProjectionMatrix () .get ();
+	const auto & globalLights      = renderObject -> getGlobalLights ();
 
 	// Set viewport.
 
@@ -1040,9 +1043,15 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 	// Set projection matrix.
 
 	if (extensionGPUShaderFP64)
-		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, projectionMatrix .data ());
+	{
+		glUniformMatrix4dv (x3d_ProjectionMatrix,  1, false, projectionMatrix  .data ());
+		glUniformMatrix4dv (x3d_CameraSpaceMatrix, 1, false, cameraSpaceMatrix .data ());
+	}
 	else
-		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (projectionMatrix) .data ());
+	{
+		glUniformMatrix4fv (x3d_ProjectionMatrix,  1, false, Matrix4f (projectionMatrix)  .data ());
+		glUniformMatrix4fv (x3d_CameraSpaceMatrix, 1, false, Matrix4f (cameraSpaceMatrix) .data ());
+	}
 
 	// Set global lights.
 

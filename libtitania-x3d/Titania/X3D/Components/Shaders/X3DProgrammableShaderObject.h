@@ -282,6 +282,10 @@ public:
 	getTextureMatrixUniformLocation () const
 	{ return x3d_TextureMatrix; }
 
+	GLint
+	getCameraSpaceMatrixUniformLocation () const
+	{ return x3d_CameraSpaceMatrix; }
+
 	///  @name Special
 
 	void
@@ -467,6 +471,7 @@ private:
 	GLint x3d_ModelViewMatrix;
 	GLint x3d_NormalMatrix;
 	GLint x3d_TextureMatrix;
+	GLint x3d_CameraSpaceMatrix;
 
 	GLint x3d_Color;
 	GLint x3d_TexCoord;
