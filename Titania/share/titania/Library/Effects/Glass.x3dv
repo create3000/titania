@@ -1,0 +1,291 @@
+#X3D V3.3 utf8 Titania V4.0.2
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Wed, 06 Dec 2017 14:14:01 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.0.2, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Glass.x3dv"
+META "modified" "Thu, 07 Dec 2017 00:28:48 GMT"
+
+PROTO FresnelShader [
+  inputOutput SFFloat refraction 1
+  inputOutput SFFloat reflection 0.1
+  inputOutput SFNode  cubeMapTexture NULL
+]
+{
+  DEF FresnelShader ComposedShader {
+    inputOutput SFFloat refraction IS refraction
+    inputOutput SFFloat reflection IS reflection
+    inputOutput SFNode  cubMapTexture IS cubeMapTexture
+
+    language "GLSL"
+    parts [
+      DEF VertexShader ShaderPart {
+        url "data:text/plain,
+
+precision mediump float;
+
+uniform float refraction;
+uniform float reflection;
+
+uniform bool  x3d_Lighting;  // true if a X3DMaterialNode is attached, otherwise false
+
+uniform mat4 x3d_CameraSpaceMatrix;
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat3 x3d_NormalMatrix;
+
+attribute vec3 x3d_Normal;
+attribute vec4 x3d_Vertex;
+
+varying vec3 v;  // point on geometry
+varying vec3 vN; // normalized normal vector at this point on geometry
+varying vec3 vReflect;
+varying vec3 vRefract[3];
+varying float vReflectionFactor;
+
+void
+main ()
+{
+	mat4 modelMatrix   = x3d_CameraSpaceMatrix * x3d_ModelViewMatrix;
+	vec4 position      = x3d_ModelViewMatrix * x3d_Vertex;
+	vec4 worldPosition = modelMatrix * x3d_Vertex;
+	vec3 worldNormal   = normalize (mat3 (modelMatrix [0] .xyz, modelMatrix [1] .xyz, modelMatrix [2] .xyz) * x3d_Normal);
+	vec3 I             = normalize (worldPosition .xyz - x3d_CameraSpaceMatrix [3] .xyz);
+
+	vReflect           = reflect (I, worldNormal);
+	vRefract [0]       = refract (I, worldNormal, refraction);
+	vRefract [1]       = refract (I, worldNormal, refraction * 0.99);
+	vRefract [2]       = refract (I, worldNormal, refraction * 0.98);
+	vReflectionFactor  = pow (1.0 + dot (I, worldNormal), 1.0 - reflection);
+	
+	if (x3d_Lighting)
+		vN = normalize (x3d_NormalMatrix * x3d_Normal);
+		
+	v = position .xyz;
+
+	gl_Position = x3d_ProjectionMatrix * position;
+}
+
+"
+      }
+      DEF FragmentShader ShaderPart {
+        type "FRAGMENT"
+        url "data:text/plain,
+
+precision mediump float;
+
+uniform bool  x3d_Lighting; // true if a X3DMaterialNode is attached, otherwise false
+
+uniform int   x3d_LightType [x3d_MaxLights];
+//uniform bool  x3d_LightOn [x3d_MaxLights];
+uniform vec3  x3d_LightColor [x3d_MaxLights];
+uniform float x3d_LightIntensity [x3d_MaxLights];
+//uniform float x3d_LightAmbientIntensity [x3d_MaxLights];
+uniform vec3  x3d_LightAttenuation [x3d_MaxLights];
+uniform vec3  x3d_LightLocation [x3d_MaxLights];
+uniform vec3  x3d_LightDirection [x3d_MaxLights];
+uniform float x3d_LightRadius [x3d_MaxLights];
+uniform float x3d_LightBeamWidth [x3d_MaxLights];
+uniform float x3d_LightCutOffAngle [x3d_MaxLights];
+
+uniform bool x3d_SeparateBackColor;
+
+uniform vec3  x3d_SpecularColor;
+uniform float x3d_Shininess;
+uniform float x3d_Transparency;
+
+uniform vec3  x3d_BackSpecularColor;
+uniform float x3d_BackShininess;
+uniform float x3d_BackTransparency;
+
+uniform samplerCube cubMapTexture;
+
+varying vec3 v;  // point on geometry
+varying vec3 vN; // normalized normal vector at this point on geometry
+varying vec3 vReflect;
+varying vec3 vRefract [3];
+varying float vReflectionFactor;
+
+vec4
+getTextureColor ()
+{
+	vec4 reflectedColor = textureCube (cubMapTexture, vec3 (vReflect .xy, -vReflect .z));
+	vec4 refractedColor = vec4 (1.0);
+
+	refractedColor .r = textureCube (cubMapTexture, vec3 (vRefract [0] .xy, -vRefract [0] .z)) .r;
+	refractedColor .g = textureCube (cubMapTexture, vec3 (vRefract [1] .xy, -vRefract [1] .z)) .g;
+	refractedColor .b = textureCube (cubMapTexture, vec3 (vRefract [2] .xy, -vRefract [2] .z)) .b;
+
+	return mix (refractedColor, reflectedColor, clamp (vReflectionFactor, 0.0, 1.0));
+}
+
+float
+getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
+{
+	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
+	
+	if (spotAngle >= cutOffAngle)
+		return 0.0;
+	else if (spotAngle <= beamWidth)
+		return 1.0;
+
+	return (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
+}
+
+vec4
+getMaterialColor ()
+{
+	vec4 textureColor = getTextureColor ();
+	
+	if (x3d_Lighting)
+	{
+		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
+		vec3  V  = normalize (-v); // normalized vector from point on geometry to viewer's position
+		float dV = length (v);
+
+		// Calculate diffuseFactor & alpha
+
+		bool  frontColor    = gl_FrontFacing || ! x3d_SeparateBackColor;
+		vec3  specularColor = frontColor ? x3d_SpecularColor : x3d_BackSpecularColor;
+		float shininess     = frontColor ? x3d_Shininess     : x3d_BackShininess;
+		float transparency  = frontColor ? x3d_Transparency  : x3d_BackTransparency;
+		float alpha         = 1.0 - transparency;
+
+		alpha *= textureColor .a;
+
+		// Apply light sources
+
+		vec3 finalColor = textureColor .rgb;
+
+		for (int i = 0; i < x3d_MaxLights; ++ i)
+		{
+			int lightType = x3d_LightType [i];
+
+			if (lightType == x3d_NoneLight)
+				break;
+
+			vec3  vL = x3d_LightLocation [i] - v;
+			float dL = length (vL);
+			bool  di = lightType == x3d_DirectionalLight;
+
+			if (di || dL <= x3d_LightRadius [i])
+			{
+				vec3 d = x3d_LightDirection [i];
+				vec3 c = x3d_LightAttenuation [i];
+				vec3 L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
+				vec3 H = normalize (L + V);             // Specular term
+
+				float lightAngle            = dot (N, L);      // Angle between normal and light ray.
+				float specularFactor        = shininess > 0.0 ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
+				float attenuationFactor     = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
+				float spotFactor            = lightType == x3d_SpotLight ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
+				float attenuationSpotFactor = attenuationFactor * spotFactor;
+				vec3  specularTerm          = specularColor * specularFactor;
+
+				finalColor += attenuationSpotFactor * x3d_LightColor [i] * x3d_LightIntensity [i] * specularTerm;
+			}
+		}
+
+		return vec4 (finalColor, alpha);
+	}
+	else
+	{
+		return textureColor;
+	}
+}
+
+void
+main ()
+{
+	gl_FragColor = getMaterialColor ();
+}
+"
+      }
+    ]
+  }
+}
+
+DEF Sphere Transform {
+  children Shape {
+    appearance Appearance {
+      material TwoSidedMaterial {
+        separateBackColor TRUE
+        specularColor 0 0.192168 0.357
+        shininess 0.073718
+        transparency 0.291667
+        backSpecularColor 0.44 0.115049 0.334728
+        backShininess 0.0541516
+        backTransparency 0.270758
+      }
+      shaders FresnelShader {
+        cubeMapTexture DEF _1 ComposedCubeMapTexture {
+          front ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
+            ]
+            textureProperties DEF _2 TextureProperties {
+              minificationFilter "DEFAULT"
+              magnificationFilter "DEFAULT"
+              boundaryModeS "CLAMP_TO_EDGE"
+              boundaryModeT "CLAMP_TO_EDGE"
+              boundaryModeR "CLAMP_TO_EDGE"
+              textureCompression "DEFAULT"
+            }
+          }
+          back ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-back.jpg"
+            ]
+            textureProperties USE _2
+          }
+          left ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-left.jpg"
+            ]
+            textureProperties USE _2
+          }
+          right ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
+            ]
+            textureProperties USE _2
+          }
+          top ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-top.jpg"
+            ]
+            textureProperties USE _2
+          }
+          bottom ImageTexture {
+            url [
+              "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+              "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+              "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+              "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
+            ]
+            textureProperties USE _2
+          }
+        }
+      }
+    }
+    geometry Sphere { }
+  }
+}

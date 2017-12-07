@@ -3076,6 +3076,7 @@
     <None Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptNodeEditor.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
+    <None Include="share\titania\Library\Effects\Glass.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

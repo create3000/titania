@@ -120,12 +120,12 @@ Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
 
-	fillProperties ()   .addInterest (&Appearance::set_fillProperties, this);
-	lineProperties ()   .addInterest (&Appearance::set_lineProperties, this);
-	material ()         .addInterest (&Appearance::set_material, this);
-	texture ()          .addInterest (&Appearance::set_texture, this);
+	fillProperties ()   .addInterest (&Appearance::set_fillProperties,   this);
+	lineProperties ()   .addInterest (&Appearance::set_lineProperties,   this);
+	material ()         .addInterest (&Appearance::set_material,         this);
+	texture ()          .addInterest (&Appearance::set_texture,          this);
 	textureTransform () .addInterest (&Appearance::set_textureTransform, this);
-	shaders ()          .addInterest (&Appearance::set_shaders, this);
+	shaders ()          .addInterest (&Appearance::set_shaders,          this);
 
 	shaderNodes .addInterest (&Appearance::set_shader, this);
 

@@ -708,6 +708,7 @@
     <None Include="Tests\ParticleSystems\SoftSystem\PointEmitter.x3d" />
     <None Include="Tests\ParticleSystems\SoftSystem\PointEmitter-ColorRamp.x3d" />
     <None Include="Tests\ParticleSystems\SoftSystem\ConeEmitter.x3d" />
+    <None Include="Tests\Shaders\soap-bubble.shader.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

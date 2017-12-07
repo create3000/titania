@@ -484,7 +484,10 @@ X3DMaterialEditor::set_node ()
 		material = executionContext -> createNode <X3D::Material> ();
 
 	if (not twoSidedMaterial)
+	{
 		twoSidedMaterial = executionContext -> createNode <X3D::TwoSidedMaterial> ();
+		twoSidedMaterial -> separateBackColor () = true;
+	}
 
 	set_widgets ();
 
