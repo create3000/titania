@@ -685,6 +685,8 @@ Parser::fieldValue (X3D::X3DFieldDefinition* const field)
 
 	X3D::Parser parser (istream, scene);
 
+	parser .setUnits (false);
+
 	switch (field -> getType ())
 	{
 		case X3D::X3DConstants::SFBool:
