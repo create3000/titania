@@ -95,6 +95,33 @@ public:
 	~AnimationEditor () final override;
 
 
+protected:
+
+	/***
+	 *  @name Construction
+	 **/
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	configure () final override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) final override;
+
+	/***
+	 *  @name Destruction
+	 **/
+
+	virtual
+	void
+	store () final override;
+
+
 private:
 
 	/***
@@ -130,18 +157,6 @@ private:
 	using FrameKey          = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath>;
 	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
-
-	/***
-	 *  @name Construction
-	 **/
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode & selection) final override;
 
 	/***
 	 *  @name Member access

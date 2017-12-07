@@ -166,11 +166,6 @@ AnimationEditor::initialize ()
 	X3DAnimationEditorInterface::initialize ();
 	X3DEditorObject::initialize ();
 
-	getScaleKeyframesButton () .set_active (getConfig () -> getItem <bool> ("scaleKeyframes"));
-
-	if (getConfig () -> hasItem ("hPaned"))
-		getAnimationBox () .set_position (getConfig () -> getItem <int32_t> ("hPaned"));
-
 	getCurrentBrowser () -> getExecutionContext () .addInterest (&AnimationEditor::set_animation, this, nullptr);
 
 	nodeIndex -> getNode () .addInterest (&AnimationEditor::set_animation, this);
@@ -179,6 +174,17 @@ AnimationEditor::initialize ()
 	nodeIndex -> setAnimations ();
 
 	set_animation (nullptr);
+}
+
+void
+AnimationEditor::configure ()
+{
+	X3DAnimationEditorInterface::configure ();
+
+	getScaleKeyframesButton () .set_active (getConfig () -> getItem <bool> ("scaleKeyframes"));
+
+	if (getConfig () -> hasItem ("hPaned"))
+		getAnimationBox () .set_position (getConfig () -> getItem <int32_t> ("hPaned"));
 }
 
 void
@@ -3294,6 +3300,15 @@ AnimationEditor::getFrameParams () const
 		return iter -> second;
 
 	return std::make_pair (1, 5);
+}
+
+void
+AnimationEditor::store ()
+{
+	getConfig () -> setItem ("scaleKeyframes", getScaleKeyframesButton () .get_active ());
+	getConfig () -> setItem ("hPaned",         getAnimationBox () .get_position ());
+
+	X3DAnimationEditorInterface::store ();
 }
 
 void
