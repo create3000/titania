@@ -197,10 +197,10 @@ TimeSensor::set_time ()
 			{
 				cycle += interval * std::floor ((getCurrentTime () - cycle) / interval);
 
-				set_fraction ();
-
 				elapsedTime () = getElapsedTime ();
 				cycleTime ()   = getCurrentTime ();
+
+				set_fraction ();
 			}
 		}
 		else
@@ -211,9 +211,9 @@ TimeSensor::set_time ()
 	}
 	else
 	{
-		set_fraction ();
-
 		elapsedTime () = getElapsedTime ();
+
+		set_fraction ();
 	}
 
 	time () = getCurrentTime ();
