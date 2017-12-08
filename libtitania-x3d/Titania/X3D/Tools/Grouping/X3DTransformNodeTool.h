@@ -309,8 +309,8 @@ public:
 	addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter);
 
 	const Matrix4d &
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
+	getModelMatrix () const
+	{ return modelMatrix; }
 
 	const Matrix4d &
 	getGroupMatrix () const
@@ -416,7 +416,7 @@ private:
 	Fields fields;
 	
 	std::set <ToolType> availableTools;
-	Matrix4d            transformationMatrix;
+	Matrix4d            modelMatrix;
 	Matrix4d            groupMatrix;
 	UndoMatrix          undoMatrix;
 	bool                changing;

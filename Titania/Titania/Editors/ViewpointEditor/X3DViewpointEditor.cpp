@@ -128,7 +128,7 @@ X3DViewpointEditor::on_new_viewpoint_clicked ()
 		cameraSpaceMatrix .get (position, orientation);
 		node -> setPosition (position);
 		node -> setOrientation (orientation);
-		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getTransformationMatrix ());
+		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getModelMatrix ());
 
 		const X3D::X3DPtr <X3D::Viewpoint> viewpoint (activeViewpoint);
 

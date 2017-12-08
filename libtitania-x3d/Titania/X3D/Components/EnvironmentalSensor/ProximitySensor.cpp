@@ -122,7 +122,7 @@ ProximitySensor::update ()
 	{
 		if (inside and getTraversed ())
 		{
-			Matrix4d centerOfRotationMatrix = viewpointNode -> getTransformationMatrix ();
+			Matrix4d centerOfRotationMatrix = viewpointNode -> getModelMatrix ();
 			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
 			centerOfRotationMatrix *= inverse (modelViewMatrix);
 

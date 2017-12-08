@@ -85,7 +85,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	               updateType (UpdateType::NONE),
 	                 renderer (new DependentRenderer (executionContext)),
 	              frameBuffer (),
-	     transformationMatrix ()
+	              modelMatrix ()
 {
 	addType (X3DConstants::GeneratedCubeMapTexture);
 
@@ -194,7 +194,7 @@ GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* con
 
 	renderObject -> getGeneratedCubeMapTextures () .emplace (this);
 
-	transformationMatrix = renderObject -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
+	modelMatrix = renderObject -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 }
 
 void
@@ -252,7 +252,7 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 		// Setup inverse texture space matrix.
 
-		renderer -> getCameraSpaceMatrix () .push (transformationMatrix);
+		renderer -> getCameraSpaceMatrix () .push (modelMatrix);
 		renderer -> getCameraSpaceMatrix () .rotate (rotation);
 		renderer -> getCameraSpaceMatrix () .scale (scale [i]);
 

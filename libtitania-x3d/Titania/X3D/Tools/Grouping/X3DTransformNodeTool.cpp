@@ -91,7 +91,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	            X3DTransformNode (),
 	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
 	              availableTools (),
-	        transformationMatrix (),
+	                 modelMatrix (),
 	                 groupMatrix (),
 	                  undoMatrix (),
 	                    changing (false)
@@ -263,7 +263,7 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 		Vector3d t, s;
 		Rotation4d r, so;
 
-		auto relativeMatrix = transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
+		auto relativeMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
 
 		// Connected Axes handling
 		if (not connectedAxes () .empty ())
@@ -457,7 +457,7 @@ X3DTransformNodeTool::eventsProcessed ()
 		if (not transformationGroup ())
 			return;
 
-		const auto differenceMatrix = inverse (groupMatrix * transformationMatrix) * getMatrix () * transformationMatrix;
+		const auto differenceMatrix = inverse (groupMatrix * modelMatrix) * getMatrix () * modelMatrix;
 
 		for (const auto & tool : getBrowser () -> getTransformTools ())
 		{
@@ -524,7 +524,7 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 	
 		if (type == TraverseType::CAMERA)
 		{
-			transformationMatrix = renderObject -> getModelViewMatrix () .get ();
+			modelMatrix = renderObject -> getModelViewMatrix () .get ();
 		}
 	
 		// Tool

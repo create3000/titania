@@ -568,9 +568,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto transformationMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
-		const auto matrix               = transformationMatrix * targetMatrix;
-		const auto matrixNegative       = determinant (matrix) < 0;
+		const auto modelMatrix    = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
+		const auto matrix         = modelMatrix * targetMatrix;
+		const auto matrixNegative = determinant (matrix) < 0;
 
 		face              = 0;
 		size_t first      = 0;

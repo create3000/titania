@@ -181,7 +181,7 @@ X3DGeoViewpointEditor::on_new_geo_viewpoint_clicked ()
 		cameraSpaceMatrix .get (position, orientation);
 		node -> setPosition (position);
 		node -> setOrientation (orientation);
-		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getTransformationMatrix ());
+		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getModelMatrix ());
 	}
 	catch (const X3D::X3DError &)
 	{ }	

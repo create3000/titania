@@ -202,7 +202,7 @@ protected:
 	setHitRay (const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
 	void
-	addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
+	addHit (const Matrix4d & modelMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
 
 	std::vector <PointingDeviceSensorContainerSet> &
 	getSensors ()

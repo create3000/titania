@@ -178,7 +178,7 @@ X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & projectionMatrix, co
 }
 
 void
-X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
+X3DPointingDeviceSensorContext::addHit (const Matrix4d & modelMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
 	// Or do this in Selection
 
@@ -196,7 +196,7 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 	//
 
 	hits .emplace_back (new Hit (pointer,
-	                             transformationMatrix,
+	                             modelMatrix,
 	                             hitRay,
 	                             intersection,
 	                             enabledSensors .back (),

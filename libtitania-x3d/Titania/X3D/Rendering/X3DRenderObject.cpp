@@ -200,7 +200,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 		// The viewer is alway a straight box depending on the upVector.
 		rotation *= viewpoint -> straightenHorizon (rotation);
 
-		auto cameraSpaceProjectionMatrix = viewpoint -> getTransformationMatrix ();
+		auto cameraSpaceProjectionMatrix = viewpoint -> getModelMatrix ();
 		cameraSpaceProjectionMatrix .translate (viewpoint -> getUserPosition ());
 		cameraSpaceProjectionMatrix .rotate (rotation);
 		cameraSpaceProjectionMatrix .inverse ();
@@ -400,7 +400,7 @@ X3DRenderObject::collide ()
 {
 	// Collision
 
-	// TODO: transform collisionBox by getNavigationInfo () -> getTransformationMatrix ()
+	// TODO: transform collisionBox by getNavigationInfo () -> getModelMatrix ()
 
 	const auto collisionRadius2 = 2.2 * getNavigationInfo () -> getCollisionRadius ();
 	const auto collisionBox     = Box3d (Vector3d (collisionRadius2, collisionRadius2, collisionRadius2), Vector3d ());
@@ -487,7 +487,7 @@ X3DRenderObject::gravite ()
 		const auto upVector = viewpoint -> getUpVector ();
 		const auto down     = Rotation4d (zAxis, upVector);
 
-		auto cameraSpaceProjectionMatrix = viewpoint -> getTransformationMatrix ();
+		auto cameraSpaceProjectionMatrix = viewpoint -> getModelMatrix ();
 		cameraSpaceProjectionMatrix .translate (viewpoint -> getUserPosition ());
 		cameraSpaceProjectionMatrix .rotate (down);
 		cameraSpaceProjectionMatrix .inverse ();

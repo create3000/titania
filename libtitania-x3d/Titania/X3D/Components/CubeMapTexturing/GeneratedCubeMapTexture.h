@@ -219,7 +219,7 @@ private:
 	UpdateType                    updateType;
 	X3DPtr <DependentRenderer>    renderer;
 	std::unique_ptr <FrameBuffer> frameBuffer;
-	Matrix4d                      transformationMatrix;
+	Matrix4d                      modelMatrix;
 
 };
 

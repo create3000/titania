@@ -61,10 +61,10 @@ const std::string   Tool::typeName       = "Tool";
 const std::string   Tool::containerField = "children";
 
 Tool::Tool (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	         X3DChildNode (),
-	        X3DToolObject (),
-	 transformationMatrix ()
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DChildNode (),
+	X3DToolObject (),
+	  modelMatrix ()
 {
 	addType (X3DConstants::Tool);
 
@@ -97,7 +97,7 @@ void
 Tool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type == TraverseType::CAMERA)
-		transformationMatrix = renderObject -> getModelViewMatrix () .get ();
+		modelMatrix = renderObject -> getModelViewMatrix () .get ();
 
 	X3DToolObject::traverse (type, renderObject);
 }

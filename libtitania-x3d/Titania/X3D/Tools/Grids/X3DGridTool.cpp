@@ -263,7 +263,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Get absolute position.
 	
-		const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
+		const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getModelMatrix ();
 	
 		Vector3d position;
 	
@@ -280,12 +280,12 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-		grid *= getTool () -> getTransformationMatrix ();
+		grid *= getTool () -> getModelMatrix ();
 
 		Matrix4d snap;
 		snap .set (getSnapPosition (position * inverse (grid)) * grid - position);
 	
-		const auto currentMatrix = absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
+		const auto currentMatrix = absoluteMatrix * snap * inverse (master -> getModelMatrix ());
 	
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
@@ -321,8 +321,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 //__LOG__ << std::endl;
 
-		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix (); // Matrix before transformation
-		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getTransformationMatrix (); // Matrix after transformation
+		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getModelMatrix (); // Matrix after transformation
 
 		std::vector <double> distances = { dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
 		                                   dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
@@ -335,7 +335,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-		grid *= getTool () -> getTransformationMatrix ();
+		grid *= getTool () -> getModelMatrix ();
 
 		const auto index1 = (index0 + 1) % y .size ();
 		const auto index2 = (index0 + 2) % y .size ();
@@ -369,8 +369,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
 
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * inverse (gridRotation) * rotationPlane;
-		const auto snapRotation = Rotation4d (inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (vectorToSnap),
-                                            inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (snapVector));
+		const auto snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (vectorToSnap),
+                                            inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
 
 		Matrix4d currentMatrix;
 		currentMatrix .set (master -> translation ()      .getValue (),
@@ -399,7 +399,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply transformation to transformation group.
 
-		setTransformGroup (master, currentMatrix * master -> getTransformationMatrix ());
+		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
 	}
 	catch (const std::exception &)
 	{ }
@@ -437,7 +437,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply transformation to transformation group.
 
-		setTransformGroup (master, currentMatrix * master -> getTransformationMatrix ());
+		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
 	}
 	catch (const std::exception &)
 	{ }
@@ -454,7 +454,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	// Get absolute position.
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
-	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
+	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
 	const auto geometry       = master -> X3DGroupingNode::getBBox ();          // BBox of the geometry.
 	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
@@ -464,7 +464,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 
 	Matrix4d grid;
 	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-	grid *= getTool () -> getTransformationMatrix ();
+	grid *= getTool () -> getModelMatrix ();
 
 	const size_t axis         = tool % 3;
 	const double sgn          = tool < 3 ? 1 : -1;
@@ -537,7 +537,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	// Get absolute position.
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
-	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
+	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
 	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
 	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
@@ -604,7 +604,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 
 	snap *= getOffset (master, bbox, snap, points [tool] - bbox .center ());
 
-	return absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
+	return absoluteMatrix * snap * inverse (master -> getModelMatrix ());
 }
 
 Matrix4d
@@ -633,7 +633,7 @@ X3DGridTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master
 	if (not master -> transformationGroup ())
 		return;
 
-	const auto groupMatrix      = master -> getGroupMatrix () * master -> getTransformationMatrix ();
+	const auto groupMatrix      = master -> getGroupMatrix () * master -> getModelMatrix ();
 	const auto differenceMatrix = inverse (groupMatrix) * snapMatrix;
 
 	for (const auto & tool : getBrowser () -> getTransformTools ())

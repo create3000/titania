@@ -100,8 +100,8 @@ public:
 	///  @name Operations
 
 	const Matrix4d &
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
+	getModelMatrix () const
+	{ return modelMatrix; }
 
 	virtual
 	void
@@ -135,7 +135,7 @@ private:
 
 	///  @name Members
 
-	Matrix4d transformationMatrix;
+	Matrix4d modelMatrix;
 
 };
 

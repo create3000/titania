@@ -152,11 +152,11 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 void
 X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 {
-	const auto transformationMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
-	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
+	const auto modelMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
+	const auto geometry    = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
 	geometry -> solid ()           = solid ();
-	geometry -> ccw ()             = determinant (transformationMatrix) >= 0 ? ccw () : not ccw ();
+	geometry -> ccw ()             = determinant (modelMatrix) >= 0 ? ccw () : not ccw ();
 	geometry -> convex ()          = convex ();
 	geometry -> creaseAngle ()     = creaseAngle ();
 	geometry -> colorPerVertex ()  = colorPerVertex ();
@@ -351,7 +351,7 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 	if (coord)
 	{
 		for (const auto & index : basic::reverse (coordArray))
-			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second) * transformationMatrix);
+			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second) * modelMatrix);
 	}
 
 	// Print out geometry

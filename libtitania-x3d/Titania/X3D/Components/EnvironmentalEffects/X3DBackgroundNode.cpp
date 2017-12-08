@@ -115,7 +115,7 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	            textures (6),
 	              hidden (false),
 	          clipPlanes (),
-	transformationMatrix (),
+	         modelMatrix (),
 	        sphereColors (),
 	      sphereVertices (),
 	 sphereColorBufferId (0),
@@ -388,7 +388,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 		{
 			renderObject -> getLayer () -> getBackgrounds () -> pushBack (this);
 			
-			transformationMatrix = renderObject -> getModelViewMatrix () .get ();
+			modelMatrix = renderObject -> getModelViewMatrix () .get ();
 			break;
 		}
 		case TraverseType::DISPLAY:
@@ -417,10 +417,10 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		PolygonModeLock polygonMode (GL_FILL);
 
 		// Get background scale.
-		// Use reder object projection matrix for generated cub map texture.
+		// Use render object projection matrix for generated cub map texture.
 
 		const auto farValue        = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z ();
-		auto       modelViewMatrix = transformationMatrix;
+		auto       modelViewMatrix = modelMatrix;
 
 		// Rotate and scale background.
 

@@ -85,7 +85,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	             X3DBindableNode (),
 	          X3DViewpointObject (),
 	                      fields (),
-	        transformationMatrix (),
+	                 modelMatrix (),
 	           cameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	    inverseCameraSpaceMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
 	                  timeSensor (new TimeSensor (getBrowser () -> getPrivateScene ())),
@@ -233,7 +233,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
                                              Vector3d & relativeScale,
                                              Rotation4d & relativeScaleOrientation) const
 {
-	const Matrix4d differenceMatrix = inverse (getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
+	const Matrix4d differenceMatrix = inverse (getModelMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
 
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -402,7 +402,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 
 	try
 	{
-		point = point * inverse (getTransformationMatrix ());
+		point = point * inverse (getModelMatrix ());
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
@@ -423,7 +423,7 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 
 	try
 	{
-		bbox *= inverse (getTransformationMatrix ());
+		bbox *= inverse (getModelMatrix ());
 
 		const double minDistance    = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 		const auto   lookAtDistance = getLookAtDistance (bbox);
@@ -619,7 +619,7 @@ X3DViewpointNode::traverse (const TraverseType type, X3DRenderObject* const rend
 
 			renderObject -> getLayer () -> getViewpoints () -> pushBack (this);
 
-			setTransformationMatrix (modelViewMatrix);
+			setModelMatrix (modelViewMatrix);
 
 			if (isBound ())
 			{

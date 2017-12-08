@@ -218,8 +218,8 @@ public:
 	{ return inverseCameraSpaceMatrix; }
 
 	const Matrix4d &
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
+	getModelMatrix () const
+	{ return modelMatrix; }
 
 	virtual
 	Vector3d
@@ -346,8 +346,8 @@ private:
 	setCameraSpaceMatrix (const Matrix4d & value);
 
 	void
-	setTransformationMatrix (const Matrix4d & value)
-	{ transformationMatrix = value; }
+	setModelMatrix (const Matrix4d & value)
+	{ modelMatrix = value; }
 
 	///  @name Operations
 
@@ -391,7 +391,7 @@ private:
 
 	///  @name Members
 
-	Matrix4d transformationMatrix;
+	Matrix4d modelMatrix;
 	Matrix4d cameraSpaceMatrix;
 	Matrix4d inverseCameraSpaceMatrix;
 

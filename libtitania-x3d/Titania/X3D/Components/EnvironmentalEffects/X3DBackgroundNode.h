@@ -266,7 +266,7 @@ private:
 	bool                         hidden;
 	ClipPlaneContainerArray      clipPlanes;
 	Matrix4d                     projectionMatrix;
-	Matrix4d                     transformationMatrix;
+	Matrix4d                     modelMatrix;
 	std::vector <Color4f>        sphereColors;
 	std::vector <Vector3d>       sphereVertices;
 	GLuint                       sphereColorBufferId;

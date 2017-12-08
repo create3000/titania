@@ -207,8 +207,8 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 	{
 		using namespace std::placeholders;
 
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
-		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
+		const auto modelMatrix         = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
+		auto       invLightSpaceMatrix = global () ? modelMatrix : Matrix4d ();
 
 		invLightSpaceMatrix .translate (location () .getValue ());
 		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
@@ -286,7 +286,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		#endif
 	
 		if (not global ())
-			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
+			invLightSpaceMatrix .mult_left (inverse (modelMatrix));
 
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 		return true;
