@@ -109,10 +109,9 @@ class basic_uri
 {
 public:
 
-	typedef std::invalid_argument        parse_error;
-	typedef StringT                      string_type;
-	typedef typename StringT::value_type char_type;
-	typedef size_t                       size_type;
+	using string_type = StringT;
+	using char_type = typename StringT::value_type;
+	using size_type = size_t;
 
 	struct Value
 	{
@@ -131,7 +130,7 @@ public:
 		string_type string;
 	};
 
-	typedef Value value_type;
+	using value_type = Value;
 
 	///  @name Constructors
 
@@ -155,12 +154,10 @@ public:
 	{ }
 
 	///  Construct a URI from @a string.
-	basic_uri (const string_type &)
-	throw (parse_error);
+	basic_uri (const string_type &);
 
 	///  Construct a URI from @a string.
-	basic_uri (const char_type*)
-	throw (parse_error);
+	basic_uri (const char_type*);
 
 	///  Construct a URI from @a uri and @a base uri.
 	basic_uri (const basic_uri &, const basic_uri &);
@@ -398,7 +395,7 @@ private:
 	{
 	public:
 
-		typedef typename string_type::size_type size_type;
+		using size_type = typename string_type::size_type;
 
 		static
 		void
@@ -511,8 +508,7 @@ basic_uri <StringT>::basic_uri (Value && value) :
 
 template <class StringT>
 inline
-basic_uri <StringT>::basic_uri (const string_type & string)
-throw (parse_error) :
+basic_uri <StringT>::basic_uri (const string_type & string) :
 	basic_uri ()
 {
 	parser::parse (*this, string);
@@ -520,8 +516,7 @@ throw (parse_error) :
 
 template <class StringT>
 inline
-basic_uri <StringT>::basic_uri (const char_type* string)
-throw (parse_error) :
+basic_uri <StringT>::basic_uri (const char_type* string) :
 	basic_uri ()
 {
 	parser::parse (*this, string);
@@ -1063,8 +1058,9 @@ basic_uri <StringT>::parser::port (string_type & authority, const size_type firs
 	}
 	catch (...)
 	{
-		if (pos not_eq last - first)
-			throw parse_error ("basic_uri parse error: Invalid port number.");
+		__LOG__ << "basic_uri parse error: Invalid port number." << std::endl;
+
+		uri .value .port = 0;
 	}
 
 	tidyUpAuthority (portString, authority);
@@ -1324,7 +1320,7 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 
 ///  @relates basic_uri
 
-typedef basic_uri <std::string>  uri;
+using uri = basic_uri <std::string>;
 
 //
 extern template class basic_uri <std::string>;
