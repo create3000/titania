@@ -419,7 +419,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		// Get background scale.
 		// Use render object projection matrix for generated cub map texture.
 
-		const auto farValue        = -ViewVolume::unProjectPoint (0, 0, 1, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z () * 0.85;
+		const auto farValue        = -ViewVolume::unProjectPoint (0, 0, 1, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z () * 0.8;
 		auto       modelViewMatrix = modelMatrix;
 
 		// Rotate and scale background.

@@ -494,6 +494,35 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 
 		hitPoints .erase (std::unique (hitPoints .begin (), hitPoints .end ()), hitPoints .end ());
 
+		// Remove point behind a polygon.
+
+		const auto invModelViewMatrix = inverse (modelViewMatrix);
+		const auto origin             = invModelViewMatrix .origin ();
+		auto       intersections      = std::vector <IntersectionPtr> ();
+
+		const auto iter = std::remove_if (hitPoints .begin (), hitPoints .end (), [&] (const Vector3d & point)
+		{
+			const auto line = Line3d (origin, point, points_type ());
+			const auto z    = (point * modelViewMatrix) .z ();
+	
+			intersections .clear ();
+
+			if (intersects (line, { }, modelViewMatrix, intersections))
+			{
+				const auto iter = std::find_if (intersections .begin (), intersections .end (),
+				[&] (const IntersectionPtr & intersection)
+				{
+					return (intersection -> point * modelViewMatrix) .z () - z > 1e-5;
+				});
+
+				return iter not_eq intersections .end ();
+			}
+
+			return true;
+		});
+		
+		hitPoints .erase (iter, hitPoints .end ());
+
 		return hitPoints;
 	}
 	catch (const std::exception & error)

@@ -223,17 +223,17 @@ Shape::touch (X3DRenderObject* const renderObject)
 	
 		// Sort desc
 		std::sort (itersections .begin (), itersections .end (),
-		           [ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs)
-		           {
-		              return lhs -> point .z () > rhs -> point .z ();
-		           });
+		[ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs)
+		{
+			return lhs -> point .z () > rhs -> point .z ();
+		});
 
 		// Find first point that is not greater than near plane;
 		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -renderObject -> getNavigationInfo () -> getNearValue (),
-		                                           [ ] (const IntersectionPtr & lhs, const float & rhs)
-		                                           {
-		                                              return lhs -> point .z () > rhs;
-		                                           });
+		[ ] (const IntersectionPtr & lhs, const float & rhs)
+		{
+			return lhs -> point .z () > rhs;
+		});
 
 		// There are only intersections behind the camera.
 		if (itersection == itersections .end ())
