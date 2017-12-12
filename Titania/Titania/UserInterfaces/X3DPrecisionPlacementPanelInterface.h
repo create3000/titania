@@ -337,6 +337,26 @@ public:
 	{ return m_LayoutSizeYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getParticleSystemLifetimeVariationAdjustment () const
+	{ return m_ParticleSystemLifetimeVariationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getParticleSystemMaxParticlesAdjustment () const
+	{ return m_ParticleSystemMaxParticlesAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getParticleSystemParticleLifetimeAdjustment () const
+	{ return m_ParticleSystemParticleLifetimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getParticleSystemParticleSizeXAdjustment () const
+	{ return m_ParticleSystemParticleSizeXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getParticleSystemParticleSizeYAdjustment () const
+	{ return m_ParticleSystemParticleSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getRangeColorAdjustment () const
 	{ return m_RangeColorAdjustment; }
 
@@ -801,6 +821,46 @@ public:
 	{ return *m_EnvironmentalSensorEnabledCheckButton; }
 
 	Gtk::Expander &
+	getParticleSystemExpander () const
+	{ return *m_ParticleSystemExpander; }
+
+	Gtk::ComboBoxText &
+	getParticleSystemGeometryTypeButton () const
+	{ return *m_ParticleSystemGeometryTypeButton; }
+
+	Gtk::CheckButton &
+	getParticleSystemEnabledCheckButton () const
+	{ return *m_ParticleSystemEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getParticleSystemCreateParticlesCheckButton () const
+	{ return *m_ParticleSystemCreateParticlesCheckButton; }
+
+	Gtk::SpinButton &
+	getParticleSystemMaxParticlesSpinButton () const
+	{ return *m_ParticleSystemMaxParticlesSpinButton; }
+
+	Gtk::SpinButton &
+	getParticleSystemParticleLifetimeSpinButton () const
+	{ return *m_ParticleSystemParticleLifetimeSpinButton; }
+
+	Gtk::SpinButton &
+	getParticleSystemLifetimeVariationSpinButton () const
+	{ return *m_ParticleSystemLifetimeVariationSpinButton; }
+
+	Gtk::Box &
+	getParticleSystemParticleSizeBox () const
+	{ return *m_ParticleSystemParticleSizeBox; }
+
+	Gtk::ToggleButton &
+	getParticleSystemUniformParticleSizeButton () const
+	{ return *m_ParticleSystemUniformParticleSizeButton; }
+
+	Gtk::Image &
+	getParticleSystemUniformParticleSizeImage () const
+	{ return *m_ParticleSystemUniformParticleSizeImage; }
+
+	Gtk::Expander &
 	getLayoutExpander () const
 	{ return *m_LayoutExpander; }
 
@@ -1116,6 +1176,10 @@ public:
 
 	virtual
 	void
+	on_particle_system_uniform_particle_size_toggled () = 0;
+
+	virtual
+	void
 	on_layout_toggled () = 0;
 
 	virtual
@@ -1224,6 +1288,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemLifetimeVariationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemMaxParticlesAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleLifetimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
@@ -1340,6 +1409,16 @@ private:
 	Gtk::Image* m_EnvironmentalSensorUniformSizeImage;
 	Gtk::Box* m_EnvironmentalSensorCenterBox;
 	Gtk::CheckButton* m_EnvironmentalSensorEnabledCheckButton;
+	Gtk::Expander* m_ParticleSystemExpander;
+	Gtk::ComboBoxText* m_ParticleSystemGeometryTypeButton;
+	Gtk::CheckButton* m_ParticleSystemEnabledCheckButton;
+	Gtk::CheckButton* m_ParticleSystemCreateParticlesCheckButton;
+	Gtk::SpinButton* m_ParticleSystemMaxParticlesSpinButton;
+	Gtk::SpinButton* m_ParticleSystemParticleLifetimeSpinButton;
+	Gtk::SpinButton* m_ParticleSystemLifetimeVariationSpinButton;
+	Gtk::Box* m_ParticleSystemParticleSizeBox;
+	Gtk::ToggleButton* m_ParticleSystemUniformParticleSizeButton;
+	Gtk::Image* m_ParticleSystemUniformParticleSizeImage;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;

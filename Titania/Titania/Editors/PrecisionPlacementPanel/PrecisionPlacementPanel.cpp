@@ -70,6 +70,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	              X3DGeoTransformEditor (),
 	               X3DGeoLocationEditor (),
 	       X3DEnvironmentalSensorEditor (),
+	            X3DParticleSystemEditor (),
 	         X3DGeometrySelectionEditor (),
 	                           nodeName (this, getNameEntry (), getRenameButton ()),
 	                           bboxSize (this,
@@ -107,6 +108,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DGeoTransformEditor::initialize ();
 	X3DGeoLocationEditor::initialize ();
 	X3DEnvironmentalSensorEditor::initialize ();
+	X3DParticleSystemEditor::initialize ();
 	X3DGeometrySelectionEditor::initialize ();
 }
 
@@ -117,6 +119,7 @@ PrecisionPlacementPanel::configure ()
 	X3DTransformEditor::configure ();
 	X3DGeoTransformEditor::configure ();
 	X3DEnvironmentalSensorEditor::configure ();
+	X3DParticleSystemEditor::configure ();
 	X3DGeometrySelectionEditor::configure ();
 
 	getBBoxUniformSizeButton () .set_active (getConfig () -> getItem <bool> ("bboxUniformSize"));
@@ -160,6 +163,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DGeoTransformEditor::set_selection (selection);
 	X3DGeoLocationEditor::set_selection (selection);
 	X3DEnvironmentalSensorEditor::set_selection (selection);
+	X3DParticleSystemEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();
@@ -276,6 +280,7 @@ PrecisionPlacementPanel::store ()
 	getConfig () -> setItem ("bboxUniformSize", getBBoxUniformSizeButton () .get_active ());
 
 	X3DGeometrySelectionEditor::store ();
+	X3DParticleSystemEditor::store ();
 	X3DEnvironmentalSensorEditor::store ();
 	X3DGeoTransformEditor::store ();
 	X3DTransformEditor::store ();

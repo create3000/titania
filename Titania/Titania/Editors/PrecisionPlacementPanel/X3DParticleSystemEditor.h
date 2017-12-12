@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,111 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DBillboardEditor.h"
-#include "X3DCollisionEditor.h"
-#include "X3DEnvironmentalSensorEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
-#include "X3DLODEditor.h"
-#include "X3DLayoutEditor.h"
-#include "X3DSwitchEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DGeometrySelectionEditor.h"
-#include "X3DParticleSystemEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DSwitchEditor,
-	public X3DBillboardEditor,
-	public X3DCollisionEditor,
-	public X3DLODEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor,
-	public X3DEnvironmentalSensorEditor,
-	public X3DParticleSystemEditor,
-	public X3DGeometrySelectionEditor
+class X3DParticleSystemEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel () final override;
+	~X3DParticleSystemEditor () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
-	virtual
-	void
-	configure () final override;
+	X3DParticleSystemEditor ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override
+	{ }
 
 	virtual
 	void
-	on_map () final override;
+	configure () override;
 
 	virtual
 	void
-	on_unmap () final override;
-
-	void
-	set_execution_context ();
+	set_selection (const X3D::MFNode & selection) override;
 
 	virtual
 	void
-	set_selection (const X3D::MFNode & selection) final override;
+	store () override;
+
+
+private:
 
 	///  @name Event handlers
 
 	virtual
 	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	on_bbox_uniform_size_clicked () final override;
-
-	virtual
-	void
-	on_fill_bounding_box_fields_clicked () final override;
-
-	void
-	set_bbox ();
-	
-	virtual
-	void
-	store () final override;
+	on_particle_system_uniform_particle_size_toggled () final override;
 
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
-
-	X3D::X3DExecutionContextPtr         executionContext;
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
-	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
+	X3DFieldToggleButton <X3D::SFBool> enabled;
+	SFStringComboBoxText               geometryType;
+	X3DFieldAdjustment <X3D::SFInt32>  maxParticles;
+	X3DFieldToggleButton <X3D::SFBool> createParticles;
+	X3DFieldAdjustment <X3D::SFFloat>  particleLifetime;
+	X3DFieldAdjustment <X3D::SFFloat>  lifetimeVariation;
+	X3DFieldAdjustment2 <X3D::SFVec2f> particleSize;
 
 };
 

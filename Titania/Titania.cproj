@@ -337,6 +337,7 @@
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportProtoDialog.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptNodeEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3077,6 +3078,7 @@
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptNodeEditor.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
     <None Include="share\titania\Library\Effects\Glass.x3dv" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
