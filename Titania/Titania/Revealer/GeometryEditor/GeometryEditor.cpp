@@ -380,7 +380,7 @@ GeometryEditor::set_viewer ()
 			break;
 		default:
 		{
-			privateViewer = browser-> getPrivateViewer ();
+			privateViewer = browser-> getViewerType ();
 			break;
 		}
 	}
