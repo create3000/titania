@@ -4426,7 +4426,6 @@
                                 <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkGrid" id="PointEmitterBox">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
@@ -4451,7 +4450,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkGrid" id="ConeEmitterBox">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
@@ -4476,7 +4474,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkGrid" id="PolylineEmitterBox">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
@@ -4501,7 +4498,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkGrid" id="VolumeEmitterBox">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
@@ -4526,7 +4522,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkGrid" id="ExplosionEmitterBox">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>

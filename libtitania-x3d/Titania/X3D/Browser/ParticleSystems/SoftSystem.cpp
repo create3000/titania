@@ -258,6 +258,8 @@ SoftSystem::set_enabled ()
 			}
 
 			particleSystem -> isActive () = false;
+
+			numParticles = 0;
 		}
 	}
 
