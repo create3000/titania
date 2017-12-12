@@ -439,10 +439,6 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 	
 			drawSphere (renderObject);
 			drawCube   (renderObject);
-
-			glMatrixMode (GL_PROJECTION);
-			glPopMatrix ();
-			glMatrixMode (GL_MODELVIEW);
 		}
 		else
 		{
