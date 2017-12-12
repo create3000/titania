@@ -54,8 +54,6 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
-#include <Titania/X3D/Components/Layering/Viewport.h>
-
 namespace titania {
 namespace puck {
 

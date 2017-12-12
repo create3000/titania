@@ -125,6 +125,22 @@ public:
 	{ return m_BillboardAxisOfRotationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getEmitterMassAdjustment () const
+	{ return m_EmitterMassAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEmitterSpeedAdjustment () const
+	{ return m_EmitterSpeedAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEmitterSurfaceAreaAdjustment () const
+	{ return m_EmitterSurfaceAreaAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEmitterVariationAdjustment () const
+	{ return m_EmitterVariationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getEnvironmentalSensorCenterXAdjustment () const
 	{ return m_EnvironmentalSensorCenterXAdjustment; }
 
@@ -969,6 +985,58 @@ public:
 	{ return *m_ViewportClipBoundaryBottomSpinButton; }
 
 	Gtk::Expander &
+	getEmitterExpander () const
+	{ return *m_EmitterExpander; }
+
+	Gtk::Grid &
+	getCreateEmitterBox () const
+	{ return *m_CreateEmitterBox; }
+
+	Gtk::CheckButton &
+	getEmitterCheckButton () const
+	{ return *m_EmitterCheckButton; }
+
+	Gtk::Grid &
+	getPointEmitterBox () const
+	{ return *m_PointEmitterBox; }
+
+	Gtk::Grid &
+	getConeEmitterBox () const
+	{ return *m_ConeEmitterBox; }
+
+	Gtk::Grid &
+	getPolylineEmitterBox () const
+	{ return *m_PolylineEmitterBox; }
+
+	Gtk::Grid &
+	getVolumeEmitterBox () const
+	{ return *m_VolumeEmitterBox; }
+
+	Gtk::Grid &
+	getExplosionEmitterBox () const
+	{ return *m_ExplosionEmitterBox; }
+
+	Gtk::Grid &
+	getEmitterBox () const
+	{ return *m_EmitterBox; }
+
+	Gtk::SpinButton &
+	getEmitterSpeedSpinButton () const
+	{ return *m_EmitterSpeedSpinButton; }
+
+	Gtk::SpinButton &
+	getEmitterVariationSpinButton () const
+	{ return *m_EmitterVariationSpinButton; }
+
+	Gtk::SpinButton &
+	getEmitterMassSpinButton () const
+	{ return *m_EmitterMassSpinButton; }
+
+	Gtk::SpinButton &
+	getEmitterSurfaceAreaSpinButton () const
+	{ return *m_EmitterSurfaceAreaSpinButton; }
+
+	Gtk::Expander &
 	getGeometrySelectionExpander () const
 	{ return *m_GeometrySelectionExpander; }
 
@@ -1187,6 +1255,10 @@ public:
 	on_viewport_toggled () = 0;
 
 	virtual
+	void
+	on_emitter_toggled () = 0;
+
+	virtual
 	bool
 	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) = 0;
 
@@ -1235,6 +1307,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EmitterMassAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EmitterSpeedAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EmitterSurfaceAreaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EmitterVariationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterZAdjustment;
@@ -1446,6 +1522,19 @@ private:
 	Gtk::SpinButton* m_ViewportClipBoundaryLeftSpinButton;
 	Gtk::SpinButton* m_ViewportClipBoundaryRightSpinButton;
 	Gtk::SpinButton* m_ViewportClipBoundaryBottomSpinButton;
+	Gtk::Expander* m_EmitterExpander;
+	Gtk::Grid* m_CreateEmitterBox;
+	Gtk::CheckButton* m_EmitterCheckButton;
+	Gtk::Grid* m_PointEmitterBox;
+	Gtk::Grid* m_ConeEmitterBox;
+	Gtk::Grid* m_PolylineEmitterBox;
+	Gtk::Grid* m_VolumeEmitterBox;
+	Gtk::Grid* m_ExplosionEmitterBox;
+	Gtk::Grid* m_EmitterBox;
+	Gtk::SpinButton* m_EmitterSpeedSpinButton;
+	Gtk::SpinButton* m_EmitterVariationSpinButton;
+	Gtk::SpinButton* m_EmitterMassSpinButton;
+	Gtk::SpinButton* m_EmitterSurfaceAreaSpinButton;
 	Gtk::Expander* m_GeometrySelectionExpander;
 	Gtk::Grid* m_GeometrySelectionBox;
 	Gtk::Box* m_GeometrySelectionTranslationBox;

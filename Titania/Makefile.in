@@ -247,6 +247,7 @@ am_titania_OBJECTS =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DLODEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.$(OBJEXT) \
@@ -764,6 +765,7 @@ titania_SOURCES = \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLODEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
@@ -1658,6 +1660,9 @@ Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.$(OBJEXT):  \
 Titania/Editors/PrecisionPlacementPanel/X3DLODEditor.$(OBJEXT):  \
 	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.$(OBJEXT):  \
+	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.$(OBJEXT):  \
 	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
@@ -2363,6 +2368,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DGeometrySelectionEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DLODEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DLayoutEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleEmitterNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleSystemEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DSwitchEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTransformEditor.Po@am__quote@

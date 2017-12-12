@@ -53,6 +53,8 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/Layout/Layout.h>
+
 namespace titania {
 namespace puck {
 

@@ -53,6 +53,8 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/Layering/Viewport.h>
+
 namespace titania {
 namespace puck {
 
@@ -192,7 +194,7 @@ X3DViewportEditor::set_node ()
 	catch (const X3D::X3DError &)
 	{ }
 
-	getViewportExpander () .set_visible (viewport);
+	getViewportExpander ()  .set_visible (viewport);
 	getCreateViewportBox () .set_visible (not nodes .empty ());
 
 	const auto viewports = viewport ? X3D::MFNode ({ viewport }) : X3D::MFNode ();

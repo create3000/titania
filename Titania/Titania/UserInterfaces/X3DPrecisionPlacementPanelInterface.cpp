@@ -87,6 +87,10 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_BillboardAxisOfRotationXAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationXAdjustment"));
 	m_BillboardAxisOfRotationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationYAdjustment"));
 	m_BillboardAxisOfRotationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationZAdjustment"));
+	m_EmitterMassAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmitterMassAdjustment"));
+	m_EmitterSpeedAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmitterSpeedAdjustment"));
+	m_EmitterSurfaceAreaAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmitterSurfaceAreaAdjustment"));
+	m_EmitterVariationAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmitterVariationAdjustment"));
 	m_EnvironmentalSensorCenterXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterXAdjustment"));
 	m_EnvironmentalSensorCenterYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterYAdjustment"));
 	m_EnvironmentalSensorCenterZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterZAdjustment"));
@@ -300,6 +304,19 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ViewportClipBoundaryLeftSpinButton", m_ViewportClipBoundaryLeftSpinButton);
 	m_builder -> get_widget ("ViewportClipBoundaryRightSpinButton", m_ViewportClipBoundaryRightSpinButton);
 	m_builder -> get_widget ("ViewportClipBoundaryBottomSpinButton", m_ViewportClipBoundaryBottomSpinButton);
+	m_builder -> get_widget ("EmitterExpander", m_EmitterExpander);
+	m_builder -> get_widget ("CreateEmitterBox", m_CreateEmitterBox);
+	m_builder -> get_widget ("EmitterCheckButton", m_EmitterCheckButton);
+	m_builder -> get_widget ("PointEmitterBox", m_PointEmitterBox);
+	m_builder -> get_widget ("ConeEmitterBox", m_ConeEmitterBox);
+	m_builder -> get_widget ("PolylineEmitterBox", m_PolylineEmitterBox);
+	m_builder -> get_widget ("VolumeEmitterBox", m_VolumeEmitterBox);
+	m_builder -> get_widget ("ExplosionEmitterBox", m_ExplosionEmitterBox);
+	m_builder -> get_widget ("EmitterBox", m_EmitterBox);
+	m_builder -> get_widget ("EmitterSpeedSpinButton", m_EmitterSpeedSpinButton);
+	m_builder -> get_widget ("EmitterVariationSpinButton", m_EmitterVariationSpinButton);
+	m_builder -> get_widget ("EmitterMassSpinButton", m_EmitterMassSpinButton);
+	m_builder -> get_widget ("EmitterSurfaceAreaSpinButton", m_EmitterSurfaceAreaSpinButton);
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
 	m_builder -> get_widget ("GeometrySelectionBox", m_GeometrySelectionBox);
 	m_builder -> get_widget ("GeometrySelectionTranslationBox", m_GeometrySelectionTranslationBox);
@@ -372,6 +389,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
 	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
+	m_EmitterCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_toggled));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

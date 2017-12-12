@@ -52,6 +52,8 @@
 
 #include "../../ComposedWidgets/NormalTool.h"
 
+#include <Titania/X3D/Components/Navigation/Billboard.h>
+
 namespace titania {
 namespace puck {
 

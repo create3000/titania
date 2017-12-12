@@ -55,8 +55,6 @@
 #include "../../ComposedWidgets/RangeTool.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
-#include <Titania/X3D/Components/Navigation/LOD.h>
-
 namespace titania {
 namespace puck {
 

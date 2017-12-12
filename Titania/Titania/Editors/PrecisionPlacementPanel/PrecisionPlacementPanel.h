@@ -63,8 +63,9 @@
 #include "X3DSwitchEditor.h"
 #include "X3DTransformEditor.h"
 #include "X3DViewportEditor.h"
-#include "X3DGeometrySelectionEditor.h"
+#include "X3DParticleEmitterNodeEditor.h"
 #include "X3DParticleSystemEditor.h"
+#include "X3DGeometrySelectionEditor.h"
 
 namespace titania {
 namespace puck {
@@ -82,6 +83,7 @@ class PrecisionPlacementPanel :
 	public X3DGeoLocationEditor,
 	public X3DEnvironmentalSensorEditor,
 	public X3DParticleSystemEditor,
+	public X3DParticleEmitterNodeEditor,
 	public X3DGeometrySelectionEditor
 {
 public:

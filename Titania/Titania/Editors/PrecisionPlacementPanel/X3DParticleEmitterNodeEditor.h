@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DLAYOUT_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DLAYOUT_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DemitterNode_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DemitterNode_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
@@ -57,7 +57,7 @@
 namespace titania {
 namespace puck {
 
-class X3DLayoutEditor :
+class X3DParticleEmitterNodeEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
@@ -65,14 +65,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLayoutEditor () override;
+	~X3DParticleEmitterNodeEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DLayoutEditor ();
+	X3DParticleEmitterNodeEditor ();
 
 	virtual
 	void
@@ -89,10 +89,10 @@ private:
 
 	virtual
 	void
-	on_layout_toggled () final override;
+	on_emitter_toggled () final override;
 
 	void
-	set_layout ();
+	set_emitter ();
 
 	void
 	set_node ();
@@ -101,28 +101,21 @@ private:
 	set_widgets ();
 
 	void
-	connectLayout (const X3D::SFNode &);
+	connectEmitter (const X3D::SFNode &);
 
 	///  @name Members
 
-	X3D::MFNode               nodes;
-	X3D::SFTime               layoutBuffer;
-	X3D::X3DPtr <X3D::Layout> layout;
-	X3D::UndoStepPtr          undoStep;
-	bool                      changing;
+	X3DFieldAdjustment <X3D::SFFloat> speed;
+	X3DFieldAdjustment <X3D::SFFloat> variation;
+	X3DFieldAdjustment <X3D::SFFloat> mass;
+	X3DFieldAdjustment <X3D::SFFloat> surfaceArea;
 
-	MFStringComboBoxText               alignX;          
-	MFStringComboBoxText               alignY;          
-	MFStringComboBoxText               offsetUnitsX;          
-	MFStringComboBoxText               offsetUnitsY;          
-	X3DFieldAdjustment <X3D::MFFloat>  offsetX;
-	X3DFieldAdjustment <X3D::MFFloat>  offsetY;
-	MFStringComboBoxText               sizeUnitsX;          
-	MFStringComboBoxText               sizeUnitsY;          
-	X3DFieldAdjustment <X3D::MFFloat>  sizeX;
-	X3DFieldAdjustment <X3D::MFFloat>  sizeY;
-	MFStringComboBoxText               scaleModeX;          
-	MFStringComboBoxText               scaleModeY;          
+	X3D::MFNode                               nodes;
+	X3D::SFTime                               emitterBuffer;
+	X3D::X3DPtr <X3D::X3DParticleEmitterNode> emitterNode;
+	X3D::UndoStepPtr                          undoStep;
+	bool                                      changing;
+
 };
 
 } // puck
