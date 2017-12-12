@@ -276,6 +276,8 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 
 	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
 
+	scene -> addMetaData ("titania-add-metadata", "true");
+
 	return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
 }
 
