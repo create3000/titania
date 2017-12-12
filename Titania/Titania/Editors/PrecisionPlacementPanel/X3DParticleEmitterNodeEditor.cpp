@@ -115,19 +115,12 @@ X3DParticleEmitterNodeEditor::on_emitter_toggled ()
 
 	addUndoFunction <X3D::SFNode> (parents, "emitter", undoStep);
 
-	for (const auto & node : parents)
+	for (const auto & parent : parents)
 	{
-		try
-		{
-			auto & field = node -> getField <X3D::SFNode> ("emitter");
-
-			if (getEmitterCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (executionContext, node, field, newEmitterNode, undoStep);
-			else
-				X3D::X3DEditor::replaceNode (executionContext, node, field, nullptr, undoStep);
-		}
-		catch (const X3D::X3DError &)
-		{ }
+		if (getEmitterCheckButton () .get_active ())
+			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), newEmitterNode, undoStep);
+		else
+			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), nullptr, undoStep);
 	}
 
 	addRedoFunction <X3D::SFNode> (parents, "emitter", undoStep);
@@ -136,24 +129,31 @@ X3DParticleEmitterNodeEditor::on_emitter_toggled ()
 void
 X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 {
-	if (changing)
-		return;
-
-	if (getEmitterTypeButton () .get_active_row_number () == -1)
-	{ }
-	else
+	try
 	{
-		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
-	   auto       node             = executionContext -> createNode (getEmitterTypeButton () .get_active_text ());
-
-	   if (emitterNode and emitterNode -> getType () .back () == node -> getType () .back ())
-			node = emitterNode;
-
-		for (const auto & parent : parents)
-			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), node, undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
+		if (changing)
+			return;
+	
+		if (getEmitterTypeButton () .get_active_row_number () == -1)
+		{ }
+		else
+		{
+			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+			const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+		   auto       node             = executionContext -> createNode (getEmitterTypeButton () .get_active_text ());
+	
+		   if (emitterNode and emitterNode -> getType () .back () == node -> getType () .back ())
+				node = emitterNode;
+	
+			for (const auto & parent : parents)
+				X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), node, undoStep);
+	
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -179,10 +179,9 @@ X3DParticleEmitterNodeEditor::set_node ()
 
 	// Find Emitter in selection
 
-	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection, true));
-	const auto   pair             = getNode <X3D::X3DParticleEmitterNode> (selection, "emitter");
-	const bool   inconsistent     = pair .second == -1;
+	const auto & selection    = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto   pair         = getNode <X3D::X3DParticleEmitterNode> (selection, "emitter");
+	const bool   inconsistent = pair .second == -1;
 
 	emitterNode = selection .empty () ? nullptr : selection .back ();
 

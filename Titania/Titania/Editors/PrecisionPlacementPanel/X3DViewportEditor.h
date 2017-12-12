@@ -100,21 +100,18 @@ private:
 	void
 	set_widgets ();
 
-	void
-	connectViewport (const X3D::SFNode &);
-
 	///  @name Members
-
-	X3D::MFNode                 nodes;
-	X3D::SFTime                 viewportBuffer;
-	X3D::X3DPtr <X3D::Viewport> viewport;
-	X3D::UndoStepPtr            undoStep;
-	bool                        changing;
 
 	X3DFieldAdjustment <X3D::MFFloat> clipBoundary0;
 	X3DFieldAdjustment <X3D::MFFloat> clipBoundary1;
 	X3DFieldAdjustment <X3D::MFFloat> clipBoundary2;
 	X3DFieldAdjustment <X3D::MFFloat> clipBoundary3;
+
+	X3D::MFNode                 parents;
+	X3D::SFTime                 viewportBuffer;
+	X3D::X3DPtr <X3D::Viewport> viewportNode;
+	X3D::UndoStepPtr            undoStep;
+	bool                        changing;
 
 };
 

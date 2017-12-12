@@ -100,16 +100,7 @@ private:
 	void
 	set_widgets ();
 
-	void
-	connectLayout (const X3D::SFNode &);
-
 	///  @name Members
-
-	X3D::MFNode               nodes;
-	X3D::SFTime               layoutBuffer;
-	X3D::X3DPtr <X3D::Layout> layout;
-	X3D::UndoStepPtr          undoStep;
-	bool                      changing;
 
 	MFStringComboBoxText               alignX;          
 	MFStringComboBoxText               alignY;          
@@ -123,6 +114,12 @@ private:
 	X3DFieldAdjustment <X3D::MFFloat>  sizeY;
 	MFStringComboBoxText               scaleModeX;          
 	MFStringComboBoxText               scaleModeY;          
+
+	X3D::MFNode               parents;
+	X3D::SFTime               layoutBuffer;
+	X3D::X3DPtr <X3D::Layout> layoutNode;
+	X3D::UndoStepPtr          undoStep;
+	bool                      changing;
 };
 
 } // puck

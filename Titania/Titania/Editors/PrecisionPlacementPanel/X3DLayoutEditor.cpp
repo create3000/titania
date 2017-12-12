@@ -60,11 +60,6 @@ namespace puck {
 
 X3DLayoutEditor::X3DLayoutEditor () :
 	X3DPrecisionPlacementPanelInterface (),
-	                              nodes (),
-	                       layoutBuffer (),
-	                             layout (),
-	                           undoStep (),
-	                           changing (false),
 	                             alignX (this, getLayoutAlignXComboBoxText (), "align", 0, "CENTER"),
 	                             alignY (this, getLayoutAlignYComboBoxText (), "align", 1, "CENTER"),
 	                       offsetUnitsX (this, getLayoutOffsetUnitsXComboBoxText (), "offsetUnits", 0, "WORLD"),
@@ -76,9 +71,14 @@ X3DLayoutEditor::X3DLayoutEditor () :
 	                              sizeX (this, getLayoutSizeXAdjustment (), getLayoutSizeXSpinButton (), "size"),
 	                              sizeY (this, getLayoutSizeYAdjustment (), getLayoutSizeYSpinButton (), "size"),
 	                         scaleModeX (this, getLayoutScaleModeXComboBoxText (), "scaleMode", 0, "NONE"),
-	                         scaleModeY (this, getLayoutScaleModeYComboBoxText (), "scaleMode", 1, "NONE")
+	                         scaleModeY (this, getLayoutScaleModeYComboBoxText (), "scaleMode", 1, "NONE"),
+	                            parents (),
+	                       layoutBuffer (),
+	                         layoutNode (),
+	                           undoStep (),
+	                           changing (false)
 {
-	addChildObjects (nodes, layoutBuffer, layout);
+	addChildObjects (parents, layoutBuffer, layoutNode);
 
 	layoutBuffer .addInterest (&X3DLayoutEditor::set_node, this);
 
@@ -110,29 +110,27 @@ X3DLayoutEditor::on_layout_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	const auto newLayoutNode    = layoutNode ? layoutNode : executionContext -> createNode <X3D::Layout> ();
 
-	addUndoFunction <X3D::SFNode> (nodes, "layout", undoStep);
+	addUndoFunction <X3D::SFNode> (parents, "layout", undoStep);
 
-	for (const auto & node : nodes)
+	for (const auto & parent : parents)
 	{
 		try
 		{
-			auto & field = node -> getField <X3D::SFNode> ("layout");
-
-			field .removeInterest (&X3DLayoutEditor::set_layout, this);
-			field .addInterest (&X3DLayoutEditor::connectLayout, this);
+			auto & field = parent -> getField <X3D::SFNode> ("layout");
 
 			if (getLayoutCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (executionContext, node, field, layout, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, parent, field, newLayoutNode, undoStep);
 			else
-				X3D::X3DEditor::replaceNode (executionContext, node, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, parent, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	addRedoFunction <X3D::SFNode> (nodes, "layout", undoStep);
+	addRedoFunction <X3D::SFNode> (parents, "layout", undoStep);
 }
 
 void
@@ -144,79 +142,72 @@ X3DLayoutEditor::set_layout ()
 void
 X3DLayoutEditor::set_node ()
 {
+	changing = true;
+
 	undoStep .reset ();
 
 	// Remove selection
 
-	for (const auto & node : nodes)
+	for (const auto & parent : parents)
 	{
 		try
 		{
-			node -> getField <X3D::SFNode> ("layout") .removeInterest (&X3DLayoutEditor::set_layout, this);
+			parent -> getField <X3D::SFNode> ("layout") .removeInterest (&X3DLayoutEditor::set_layout, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	nodes .clear ();
+	parents .clear ();
 
 	// Find Layout in selection
 
-	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection, true));
+	const auto & selection    = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto   pair         = getNode <X3D::Layout> (selection, "layout");
+	const bool   inconsistent = pair .second == -1;
 
-	layout = selection .empty () ? nullptr : selection .back ();
+	layoutNode = selection .empty () ? nullptr : selection .back ();
 
-	try
+	if (pair .second not_eq -2)
 	{
-		if (not selection .empty ())
-		{
-			auto & field = selection .back () -> getField <X3D::SFNode> ("layout");
-			
-			field .addInterest (&X3DLayoutEditor::set_layout, this);
-
-			nodes  = { selection .back () };
-			layout = field;
-
-			changing = true;
-
-			getCreateLayoutBox ()   .set_visible (true);
-			getLayoutCheckButton () .set_active (layout);
-			getLayoutBox ()         .set_sensitive (layout);
-			
-			changing = false;
-		
-			if (not layout)
-				layout = selection .back () -> getExecutionContext () -> createNode <X3D::Layout> ();
-		}
+		parents    = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::LayoutLayer, X3D::X3DConstants::LayoutGroup });
+		layoutNode = pair .first;
 	}
-	catch (const X3D::X3DError &)
-	{ }
 
-	getLayoutExpander () .set_visible (layout);
-	getCreateLayoutBox () .set_visible (not nodes .empty ());
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("layout") .addInterest (&X3DLayoutEditor::set_layout, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-	const auto layouts = layout ? X3D::MFNode ({ layout }) : X3D::MFNode ();
+	getLayoutExpander ()    .set_visible (layoutNode or not parents .empty ());
+	getCreateLayoutBox ()   .set_visible (not parents .empty ());
+	getLayoutCheckButton () .set_active (layoutNode and not inconsistent);
+	getLayoutCheckButton () .set_inconsistent (inconsistent);
+	getLayoutBox ()         .set_sensitive (layoutNode and not inconsistent);
 
-	alignX       .setNodes (layouts);
-	alignY       .setNodes (layouts);
-	offsetUnitsX .setNodes (layouts);
-	offsetUnitsY .setNodes (layouts);
-	offsetX      .setNodes (layouts);
-	offsetY      .setNodes (layouts);
-	sizeUnitsX   .setNodes (layouts);
-	sizeUnitsY   .setNodes (layouts);
-	sizeX        .setNodes (layouts);
-	sizeY        .setNodes (layouts);
-	scaleModeX   .setNodes (layouts);
-	scaleModeY   .setNodes (layouts);
-}
+	// Widgets
 
-void
-X3DLayoutEditor::connectLayout (const X3D::SFNode & field)
-{
-	field .removeInterest (&X3DLayoutEditor::connectLayout, this);
-	field .addInterest (&X3DLayoutEditor::set_layout, this);
+	const auto layoutNodes = layoutNode ? X3D::MFNode ({ layoutNode }) : X3D::MFNode ();
+
+	alignX       .setNodes (layoutNodes);
+	alignY       .setNodes (layoutNodes);
+	offsetUnitsX .setNodes (layoutNodes);
+	offsetUnitsY .setNodes (layoutNodes);
+	offsetX      .setNodes (layoutNodes);
+	offsetY      .setNodes (layoutNodes);
+	sizeUnitsX   .setNodes (layoutNodes);
+	sizeUnitsY   .setNodes (layoutNodes);
+	sizeX        .setNodes (layoutNodes);
+	sizeY        .setNodes (layoutNodes);
+	scaleModeX   .setNodes (layoutNodes);
+	scaleModeY   .setNodes (layoutNodes);
+
+	changing = false;
 }
 
 X3DLayoutEditor::~X3DLayoutEditor ()

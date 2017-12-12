@@ -147,7 +147,6 @@ protected:
 	getSelection (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class FieldType, class NodeType>
-	static
 	std::pair <X3D::X3DPtr <FieldType>, int32_t>
 	getNode (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
@@ -282,34 +281,41 @@ template <class FieldType, class NodeType>
 std::pair <X3D::X3DPtr <FieldType>, int32_t>
 X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
-	X3D::X3DPtr <FieldType> found;
-	int32_t                 active = -2;
+	const auto executionContext = this -> getSelectionContext (nodes, true);
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	if (executionContext)
 	{
-		try
+		X3D::X3DPtr <FieldType> found;
+		int32_t                 active = -2;
+	
+		for (const auto & node : basic::make_reverse_range (nodes))
 		{
-			const auto & field = node -> template getField <X3D::SFNode> (fieldName);
-
-			if (active < 0)
+			try
 			{
-				found  = field;
-				active = bool (found);
+				const auto & field = node -> template getField <X3D::SFNode> (fieldName);
+	
+				if (active < 0)
+				{
+					found  = field;
+					active = bool (found);
+				}
+				else if (field not_eq found)
+				{
+					if (not found)
+						found = field;
+	
+					active = -1;
+					break;
+				}
 			}
-			else if (field not_eq found)
-			{
-				if (not found)
-					found = field;
-
-				active = -1;
-				break;
-			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+	
+		return std::make_pair (std::move (found), active);
 	}
 
-	return std::make_pair (std::move (found), active);
+	return std::make_pair (nullptr, -2);
 }
 
 /***
