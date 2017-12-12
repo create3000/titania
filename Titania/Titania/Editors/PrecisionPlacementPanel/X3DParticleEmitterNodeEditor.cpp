@@ -53,6 +53,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
+#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
 #include <Titania/X3D/Components/ParticleSystems/PointEmitter.h>
 #include <Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.h>
 
@@ -77,13 +78,13 @@ X3DParticleEmitterNodeEditor::X3DParticleEmitterNodeEditor () :
 	                                     getEmitterSurfaceAreaAdjustment (),
 	                                     getEmitterSurfaceAreaSpinButton (),
 	                                     "surfaceArea"),
-	                              nodes (),
+	                            parents (),
 	                      emitterBuffer (),
 	                        emitterNode (),
 	                           undoStep (),
 	                           changing (false)
 {
-	addChildObjects (nodes, emitterBuffer, emitterNode);
+	addChildObjects (parents, emitterBuffer, emitterNode);
 
 	emitterBuffer .addInterest (&X3DParticleEmitterNodeEditor::set_node, this);
 }
@@ -109,21 +110,19 @@ X3DParticleEmitterNodeEditor::on_emitter_toggled ()
 
 	// Set field.
 
-	const auto executionContext = X3D::MakePtr (getSelectionContext (nodes, true));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	const auto newEmitterNode   = emitterNode ? emitterNode : executionContext -> createNode <X3D::PointEmitter> ();
 
-	addUndoFunction <X3D::SFNode> (nodes, "emitter", undoStep);
+	addUndoFunction <X3D::SFNode> (parents, "emitter", undoStep);
 
-	for (const auto & node : nodes)
+	for (const auto & node : parents)
 	{
 		try
 		{
 			auto & field = node -> getField <X3D::SFNode> ("emitter");
 
-			field .removeInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
-			field .addInterest (&X3DParticleEmitterNodeEditor::connectEmitter, this);
-
 			if (getEmitterCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (executionContext, node, field, emitterNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, node, field, newEmitterNode, undoStep);
 			else
 				X3D::X3DEditor::replaceNode (executionContext, node, field, nullptr, undoStep);
 		}
@@ -131,7 +130,31 @@ X3DParticleEmitterNodeEditor::on_emitter_toggled ()
 		{ }
 	}
 
-	addRedoFunction <X3D::SFNode> (nodes, "emitter", undoStep);
+	addRedoFunction <X3D::SFNode> (parents, "emitter", undoStep);
+}
+
+void
+X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
+{
+	if (changing)
+		return;
+
+	if (getEmitterTypeButton () .get_active_row_number () == -1)
+	{ }
+	else
+	{
+		const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	   auto       node             = executionContext -> createNode (getEmitterTypeButton () .get_active_text ());
+
+	   if (emitterNode and emitterNode -> getType () .back () == node -> getType () .back ())
+			node = emitterNode;
+
+		for (const auto & parent : parents)
+			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), node, undoStep);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 }
 
 void
@@ -143,57 +166,53 @@ X3DParticleEmitterNodeEditor::set_emitter ()
 void
 X3DParticleEmitterNodeEditor::set_node ()
 {
+	changing = true;
+
 	undoStep .reset ();
 
 	// Remove selection
 
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			node -> getField <X3D::SFNode> ("emitter") .removeInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	for (const auto & parent : parents)
+		parent -> emitter () .removeInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
 
-	nodes .clear ();
+	parents .clear ();
 
 	// Find Emitter in selection
 
 	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
 	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection, true));
+	const auto   pair             = getNode <X3D::X3DParticleEmitterNode> (selection, "emitter");
+	const bool   inconsistent     = pair .second == -1;
 
 	emitterNode = selection .empty () ? nullptr : selection .back ();
 
-	try
+	if (pair .second == -2)
 	{
-		if (not selection .empty ())
-		{
-			auto & field = selection .back () -> getField <X3D::SFNode> ("emitter");
-
-			field .addInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
-
-			nodes       = { selection .back () };
-			emitterNode = field;
-
-			changing = true;
-
-			getCreateEmitterBox ()   .set_visible (true);
-			getEmitterCheckButton () .set_active (emitterNode);
-			getEmitterBox ()         .set_sensitive (emitterNode);
-
-			changing = false;
-		
-			if (not emitterNode)
-				emitterNode = selection .back () -> getExecutionContext () -> createNode <X3D::PointEmitter> ();
-		}
+		if (emitterNode)
+			getEmitterExpander () .set_label (_ (refineName (emitterNode -> getTypeName ())));
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	else
+	{
+		parents     = getSelection <X3D::ParticleSystem> ({ X3D::X3DConstants::ParticleSystem });
+		emitterNode = pair .first;
 
-	getEmitterExpander ()  .set_visible (emitterNode);
-	getCreateEmitterBox () .set_visible (not nodes .empty ());
+		getEmitterExpander () .set_label (_ (refineName ("Particle Emitter")));
+	}
+
+	for (const auto & parent : parents)
+		parent -> emitter () .addInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
+
+	if (inconsistent)
+		getEmitterTypeButton () .set_active (-1);
+	else
+		getEmitterTypeButton () .set_active_text (emitterNode -> getTypeName ());
+
+	getEmitterExpander ()    .set_visible (emitterNode or not parents .empty ());
+	getCreateEmitterBox ()   .set_visible (not parents .empty ());
+	getEmitterCheckButton () .set_active (emitterNode and not inconsistent);
+	getEmitterCheckButton () .set_inconsistent (inconsistent);
+	getEmitterTypeButton ()  .set_sensitive (emitterNode or inconsistent);
+	getEmitterBox ()         .set_sensitive (emitterNode and not inconsistent);
 
 	// Widgets
 
@@ -203,13 +222,8 @@ X3DParticleEmitterNodeEditor::set_node ()
 	variation   .setNodes (emitterNodes);
 	mass        .setNodes (emitterNodes);
 	surfaceArea .setNodes (emitterNodes);
-}
 
-void
-X3DParticleEmitterNodeEditor::connectEmitter (const X3D::SFNode & field)
-{
-	field .removeInterest (&X3DParticleEmitterNodeEditor::connectEmitter, this);
-	field .addInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
+	changing = false;
 }
 
 X3DParticleEmitterNodeEditor::~X3DParticleEmitterNodeEditor ()

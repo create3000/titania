@@ -996,6 +996,10 @@ public:
 	getEmitterCheckButton () const
 	{ return *m_EmitterCheckButton; }
 
+	Gtk::ComboBoxText &
+	getEmitterTypeButton () const
+	{ return *m_EmitterTypeButton; }
+
 	Gtk::Grid &
 	getPointEmitterBox () const
 	{ return *m_PointEmitterBox; }
@@ -1257,6 +1261,10 @@ public:
 	virtual
 	void
 	on_emitter_toggled () = 0;
+
+	virtual
+	void
+	on_emitter_type_changed () = 0;
 
 	virtual
 	bool
@@ -1525,6 +1533,7 @@ private:
 	Gtk::Expander* m_EmitterExpander;
 	Gtk::Grid* m_CreateEmitterBox;
 	Gtk::CheckButton* m_EmitterCheckButton;
+	Gtk::ComboBoxText* m_EmitterTypeButton;
 	Gtk::Grid* m_PointEmitterBox;
 	Gtk::Grid* m_ConeEmitterBox;
 	Gtk::Grid* m_PolylineEmitterBox;

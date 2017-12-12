@@ -1,13 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="15" Column="15" />
-      <File FileName="Titania/share/titania/Library/Effects/Glass.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

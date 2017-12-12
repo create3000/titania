@@ -4404,6 +4404,36 @@
                                     <property name="top_attach">0</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <object class="GtkLabel" id="label74">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Type:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBoxText" id="EmitterTypeButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <items>
+                                      <item>PointEmitter</item>
+                                      <item>ConeEmitter</item>
+                                      <item translatable="yes">PolylineEmitter</item>
+                                      <item>SurfaceEmitter</item>
+                                      <item>VolumeEmitter</item>
+                                      <item>ExplosionEmitter</item>
+                                    </items>
+                                    <signal name="changed" handler="on_emitter_type_changed" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4683,7 +4713,7 @@
                           <object class="GtkLabel" id="label76">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Emitter</property>
+                            <property name="label" translatable="yes">Particle Emitter</property>
                           </object>
                         </child>
                       </object>

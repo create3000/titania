@@ -91,6 +91,10 @@ private:
 	void
 	on_emitter_toggled () final override;
 
+	virtual
+	void
+	on_emitter_type_changed () final override;
+
 	void
 	set_emitter ();
 
@@ -100,9 +104,6 @@ private:
 	void
 	set_widgets ();
 
-	void
-	connectEmitter (const X3D::SFNode &);
-
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFFloat> speed;
@@ -110,7 +111,7 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat> mass;
 	X3DFieldAdjustment <X3D::SFFloat> surfaceArea;
 
-	X3D::MFNode                               nodes;
+	X3D::X3DPtrArray <X3D::ParticleSystem>    parents;
 	X3D::SFTime                               emitterBuffer;
 	X3D::X3DPtr <X3D::X3DParticleEmitterNode> emitterNode;
 	X3D::UndoStepPtr                          undoStep;

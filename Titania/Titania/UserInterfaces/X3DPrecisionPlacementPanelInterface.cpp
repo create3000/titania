@@ -307,6 +307,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("EmitterExpander", m_EmitterExpander);
 	m_builder -> get_widget ("CreateEmitterBox", m_CreateEmitterBox);
 	m_builder -> get_widget ("EmitterCheckButton", m_EmitterCheckButton);
+	m_builder -> get_widget ("EmitterTypeButton", m_EmitterTypeButton);
 	m_builder -> get_widget ("PointEmitterBox", m_PointEmitterBox);
 	m_builder -> get_widget ("ConeEmitterBox", m_ConeEmitterBox);
 	m_builder -> get_widget ("PolylineEmitterBox", m_PolylineEmitterBox);
@@ -390,6 +391,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
 	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 	m_EmitterCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_toggled));
+
+	// Connect object Gtk::ComboBoxText with id 'EmitterTypeButton'.
+	m_EmitterTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_type_changed));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
