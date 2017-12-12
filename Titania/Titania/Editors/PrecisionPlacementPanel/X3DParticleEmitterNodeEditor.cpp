@@ -100,33 +100,6 @@ X3DParticleEmitterNodeEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
-X3DParticleEmitterNodeEditor::on_emitter_toggled ()
-{
-	if (changing)
-		return;
-
-	getEmitterCheckButton () .set_inconsistent (false);
-	getEmitterBox ()         .set_sensitive (getEmitterCheckButton () .get_active ());
-
-	// Set field.
-
-	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
-	const auto newEmitterNode   = emitterNode ? emitterNode : executionContext -> createNode <X3D::PointEmitter> ();
-
-	addUndoFunction <X3D::SFNode> (parents, "emitter", undoStep);
-
-	for (const auto & parent : parents)
-	{
-		if (getEmitterCheckButton () .get_active ())
-			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), newEmitterNode, undoStep);
-		else
-			X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), nullptr, undoStep);
-	}
-
-	addRedoFunction <X3D::SFNode> (parents, "emitter", undoStep);
-}
-
-void
 X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 {
 	try
@@ -136,9 +109,19 @@ X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 	
 		if (getEmitterTypeButton () .get_active_row_number () == -1)
 		{ }
+		else if (getEmitterTypeButton () .get_active_row_number () == 0)
+		{
+			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »emitter«"));
+			const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+
+			for (const auto & parent : parents)
+				X3D::X3DEditor::replaceNode (executionContext, parent, parent -> emitter (), nullptr, undoStep);
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
 		else
 		{
-			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Change Field »emitter«"));
 			const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
 		   auto       node             = executionContext -> createNode (getEmitterTypeButton () .get_active_text ());
 	
@@ -201,17 +184,14 @@ X3DParticleEmitterNodeEditor::set_node ()
 	for (const auto & parent : parents)
 		parent -> emitter () .addInterest (&X3DParticleEmitterNodeEditor::set_emitter, this);
 
-	if (inconsistent)
+	if (not emitterNode or inconsistent)
 		getEmitterTypeButton () .set_active (-1);
 	else
 		getEmitterTypeButton () .set_active_text (emitterNode -> getTypeName ());
 
-	getEmitterExpander ()    .set_visible (emitterNode or not parents .empty ());
-	getCreateEmitterBox ()   .set_visible (not parents .empty ());
-	getEmitterCheckButton () .set_active (emitterNode and not inconsistent);
-	getEmitterCheckButton () .set_inconsistent (inconsistent);
-	getEmitterTypeButton ()  .set_sensitive (emitterNode or inconsistent);
-	getEmitterBox ()         .set_sensitive (emitterNode and not inconsistent);
+	getEmitterExpander ()  .set_visible (emitterNode or not parents .empty ());
+	getCreateEmitterBox () .set_visible (not parents .empty ());
+	getEmitterBox ()       .set_sensitive (emitterNode and not inconsistent);
 
 	// Widgets
 

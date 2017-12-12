@@ -89,10 +89,6 @@ private:
 
 	virtual
 	void
-	on_emitter_toggled () final override;
-
-	virtual
-	void
 	on_emitter_type_changed () final override;
 
 	void

@@ -992,10 +992,6 @@ public:
 	getCreateEmitterBox () const
 	{ return *m_CreateEmitterBox; }
 
-	Gtk::CheckButton &
-	getEmitterCheckButton () const
-	{ return *m_EmitterCheckButton; }
-
 	Gtk::ComboBoxText &
 	getEmitterTypeButton () const
 	{ return *m_EmitterTypeButton; }
@@ -1257,10 +1253,6 @@ public:
 	virtual
 	void
 	on_viewport_toggled () = 0;
-
-	virtual
-	void
-	on_emitter_toggled () = 0;
 
 	virtual
 	void
@@ -1532,7 +1524,6 @@ private:
 	Gtk::SpinButton* m_ViewportClipBoundaryBottomSpinButton;
 	Gtk::Expander* m_EmitterExpander;
 	Gtk::Grid* m_CreateEmitterBox;
-	Gtk::CheckButton* m_EmitterCheckButton;
 	Gtk::ComboBoxText* m_EmitterTypeButton;
 	Gtk::Grid* m_PointEmitterBox;
 	Gtk::Grid* m_ConeEmitterBox;

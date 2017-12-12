@@ -4366,16 +4366,6 @@
                                 <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
-                                  <object class="GtkLabel" id="label66">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">0</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkBox" id="box3">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -4383,20 +4373,7 @@
                                     <property name="resize_mode">immediate</property>
                                     <property name="spacing">8</property>
                                     <child>
-                                      <object class="GtkCheckButton" id="EmitterCheckButton">
-                                        <property name="label" translatable="yes">Emitter</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="halign">start</property>
-                                        <property name="draw_indicator">True</property>
-                                        <signal name="toggled" handler="on_emitter_toggled" swapped="no"/>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                   </object>
                                   <packing>
@@ -4412,7 +4389,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4420,6 +4397,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <items>
+                                      <item translatable="yes">None</item>
                                       <item>PointEmitter</item>
                                       <item>ConeEmitter</item>
                                       <item translatable="yes">PolylineEmitter</item>
@@ -4431,7 +4409,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                               </object>
