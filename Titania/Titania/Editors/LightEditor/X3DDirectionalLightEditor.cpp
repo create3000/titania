@@ -50,8 +50,6 @@
 
 #include "X3DDirectionalLightEditor.h"
 
-#include "../../ComposedWidgets/NormalTool.h"
-
 #include <Titania/X3D/Components/Lighting/DirectionalLight.h>
 
 namespace titania {
@@ -65,7 +63,7 @@ X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 	                         getDirectionalLightDirectionZAdjustment (),
 	                         getDirectionalLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new NormalTool (this, getDirectionalLightNormalToolBox (), "direction"))
+	          directionTool (this, getDirectionalLightNormalToolBox (), "direction")
 {
 	direction .setNormalize (true);
 }
@@ -79,8 +77,8 @@ X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLight
 
 	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
 
-	direction .setNodes (directionalLights);
-	directionTool -> setNodes (directionalLights);
+	direction     .setNodes (directionalLights);
+	directionTool .setNodes (directionalLights);
 }
 
 void

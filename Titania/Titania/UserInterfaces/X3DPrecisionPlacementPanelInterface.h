@@ -125,6 +125,34 @@ public:
 	{ return m_BillboardAxisOfRotationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterAngleAdjustment () const
+	{ return m_ConeEmitterAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterDirectionXAdjustment () const
+	{ return m_ConeEmitterDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterDirectionYAdjustment () const
+	{ return m_ConeEmitterDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterDirectionZAdjustment () const
+	{ return m_ConeEmitterDirectionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterPositionXAdjustment () const
+	{ return m_ConeEmitterPositionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterPositionYAdjustment () const
+	{ return m_ConeEmitterPositionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getConeEmitterPositionZAdjustment () const
+	{ return m_ConeEmitterPositionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getEmitterMassAdjustment () const
 	{ return m_EmitterMassAdjustment; }
 
@@ -163,6 +191,18 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getEnvironmentalSensorSizeZAdjustment () const
 	{ return m_EnvironmentalSensorSizeZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getExplosionEmitterPositionXAdjustment () const
+	{ return m_ExplosionEmitterPositionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getExplosionEmitterPositionYAdjustment () const
+	{ return m_ExplosionEmitterPositionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getExplosionEmitterPositionZAdjustment () const
+	{ return m_ExplosionEmitterPositionZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoLocationGeoCoordsXAdjustment () const
@@ -373,6 +413,42 @@ public:
 	{ return m_ParticleSystemParticleSizeYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterDirectionXAdjustment () const
+	{ return m_PointEmitterDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterDirectionYAdjustment () const
+	{ return m_PointEmitterDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterDirectionZAdjustment () const
+	{ return m_PointEmitterDirectionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterPositionXAdjustment () const
+	{ return m_PointEmitterPositionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterPositionYAdjustment () const
+	{ return m_PointEmitterPositionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointEmitterPositionZAdjustment () const
+	{ return m_PointEmitterPositionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPolylineEmitterDirectionXAdjustment () const
+	{ return m_PolylineEmitterDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPolylineEmitterDirectionYAdjustment () const
+	{ return m_PolylineEmitterDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPolylineEmitterDirectionZAdjustment () const
+	{ return m_PolylineEmitterDirectionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getRangeColorAdjustment () const
 	{ return m_RangeColorAdjustment; }
 
@@ -463,6 +539,18 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getViewportClipBoundaryTopAdjustment () const
 	{ return m_ViewportClipBoundaryTopAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getVolumeEmitterDirectionXAdjustment () const
+	{ return m_VolumeEmitterDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getVolumeEmitterDirectionYAdjustment () const
+	{ return m_VolumeEmitterDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getVolumeEmitterDirectionZAdjustment () const
+	{ return m_VolumeEmitterDirectionZAdjustment; }
 
 	Gtk::Window &
 	getLODExtraWindow () const
@@ -1012,21 +1100,125 @@ public:
 	getPointEmitterBox () const
 	{ return *m_PointEmitterBox; }
 
+	Gtk::Box &
+	getPointEmitterPositionBox () const
+	{ return *m_PointEmitterPositionBox; }
+
+	Gtk::Box &
+	getPointEmitterNormalToolBox () const
+	{ return *m_PointEmitterNormalToolBox; }
+
+	Gtk::Box &
+	getPointEmitterDirectionBox () const
+	{ return *m_PointEmitterDirectionBox; }
+
+	Gtk::SpinButton &
+	getPointEmitterDirectionXSpinButton () const
+	{ return *m_PointEmitterDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getPointEmitterDirectionYSpinButton () const
+	{ return *m_PointEmitterDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getPointEmitterDirectionZSpinButton () const
+	{ return *m_PointEmitterDirectionZSpinButton; }
+
 	Gtk::Grid &
 	getConeEmitterBox () const
 	{ return *m_ConeEmitterBox; }
+
+	Gtk::Box &
+	getConeEmitterPositionBox () const
+	{ return *m_ConeEmitterPositionBox; }
+
+	Gtk::Box &
+	getConeEmitterNormalToolBox () const
+	{ return *m_ConeEmitterNormalToolBox; }
+
+	Gtk::Box &
+	getConeEmitterDirectionBox () const
+	{ return *m_ConeEmitterDirectionBox; }
+
+	Gtk::SpinButton &
+	getConeEmitterDirectionXSpinButton () const
+	{ return *m_ConeEmitterDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getConeEmitterDirectionYSpinButton () const
+	{ return *m_ConeEmitterDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getConeEmitterDirectionZSpinButton () const
+	{ return *m_ConeEmitterDirectionZSpinButton; }
+
+	Gtk::Box &
+	getConeEmitterAngleBox () const
+	{ return *m_ConeEmitterAngleBox; }
+
+	Gtk::SpinButton &
+	getConeEmitterAngleSpinButton () const
+	{ return *m_ConeEmitterAngleSpinButton; }
 
 	Gtk::Grid &
 	getPolylineEmitterBox () const
 	{ return *m_PolylineEmitterBox; }
 
+	Gtk::Box &
+	getPolylineEmitterNormalToolBox () const
+	{ return *m_PolylineEmitterNormalToolBox; }
+
+	Gtk::Box &
+	getPolylineEmitterDirectionBox () const
+	{ return *m_PolylineEmitterDirectionBox; }
+
+	Gtk::SpinButton &
+	getPolylineEmitterDirectionXSpinButton () const
+	{ return *m_PolylineEmitterDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getPolylineEmitterDirectionYSpinButton () const
+	{ return *m_PolylineEmitterDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getPolylineEmitterDirectionZSpinButton () const
+	{ return *m_PolylineEmitterDirectionZSpinButton; }
+
 	Gtk::Grid &
 	getVolumeEmitterBox () const
 	{ return *m_VolumeEmitterBox; }
 
+	Gtk::Box &
+	getVolumeEmitterNormalToolBox () const
+	{ return *m_VolumeEmitterNormalToolBox; }
+
+	Gtk::Box &
+	getVolumeEmitterDirectionBox () const
+	{ return *m_VolumeEmitterDirectionBox; }
+
+	Gtk::SpinButton &
+	getVolumeEmitterDirectionXSpinButton () const
+	{ return *m_VolumeEmitterDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getVolumeEmitterDirectionYSpinButton () const
+	{ return *m_VolumeEmitterDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getVolumeEmitterDirectionZSpinButton () const
+	{ return *m_VolumeEmitterDirectionZSpinButton; }
+
+	Gtk::CheckButton &
+	getVolumeEmitterInternalCheckButton () const
+	{ return *m_VolumeEmitterInternalCheckButton; }
+
 	Gtk::Grid &
 	getExplosionEmitterBox () const
 	{ return *m_ExplosionEmitterBox; }
+
+	Gtk::Box &
+	getExplosionEmitterPositionBox () const
+	{ return *m_ExplosionEmitterPositionBox; }
 
 	Gtk::Grid &
 	getEmitterBox () const
@@ -1331,6 +1523,13 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterDirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterPositionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmitterMassAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmitterSpeedAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmitterSurfaceAreaAdjustment;
@@ -1341,6 +1540,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ExplosionEmitterPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ExplosionEmitterPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ExplosionEmitterPositionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsZAdjustment;
@@ -1393,6 +1595,15 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleLifetimeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ParticleSystemParticleSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterDirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterPositionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterPositionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointEmitterPositionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PolylineEmitterDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PolylineEmitterDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PolylineEmitterDirectionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
@@ -1416,6 +1627,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryLeftAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryRightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryTopAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionZAdjustment;
 	Gtk::Window* m_LODExtraWindow;
 	Gtk::Grid* m_RangeColorGrid;
 	Gtk::ScrolledWindow* m_SkyColorsScrolledWindow;
@@ -1553,10 +1767,36 @@ private:
 	Gtk::ComboBoxText* m_EmitterTypeButton;
 	Gtk::Button* m_EmitterUnlinkButton;
 	Gtk::Grid* m_PointEmitterBox;
+	Gtk::Box* m_PointEmitterPositionBox;
+	Gtk::Box* m_PointEmitterNormalToolBox;
+	Gtk::Box* m_PointEmitterDirectionBox;
+	Gtk::SpinButton* m_PointEmitterDirectionXSpinButton;
+	Gtk::SpinButton* m_PointEmitterDirectionYSpinButton;
+	Gtk::SpinButton* m_PointEmitterDirectionZSpinButton;
 	Gtk::Grid* m_ConeEmitterBox;
+	Gtk::Box* m_ConeEmitterPositionBox;
+	Gtk::Box* m_ConeEmitterNormalToolBox;
+	Gtk::Box* m_ConeEmitterDirectionBox;
+	Gtk::SpinButton* m_ConeEmitterDirectionXSpinButton;
+	Gtk::SpinButton* m_ConeEmitterDirectionYSpinButton;
+	Gtk::SpinButton* m_ConeEmitterDirectionZSpinButton;
+	Gtk::Box* m_ConeEmitterAngleBox;
+	Gtk::SpinButton* m_ConeEmitterAngleSpinButton;
 	Gtk::Grid* m_PolylineEmitterBox;
+	Gtk::Box* m_PolylineEmitterNormalToolBox;
+	Gtk::Box* m_PolylineEmitterDirectionBox;
+	Gtk::SpinButton* m_PolylineEmitterDirectionXSpinButton;
+	Gtk::SpinButton* m_PolylineEmitterDirectionYSpinButton;
+	Gtk::SpinButton* m_PolylineEmitterDirectionZSpinButton;
 	Gtk::Grid* m_VolumeEmitterBox;
+	Gtk::Box* m_VolumeEmitterNormalToolBox;
+	Gtk::Box* m_VolumeEmitterDirectionBox;
+	Gtk::SpinButton* m_VolumeEmitterDirectionXSpinButton;
+	Gtk::SpinButton* m_VolumeEmitterDirectionYSpinButton;
+	Gtk::SpinButton* m_VolumeEmitterDirectionZSpinButton;
+	Gtk::CheckButton* m_VolumeEmitterInternalCheckButton;
 	Gtk::Grid* m_ExplosionEmitterBox;
+	Gtk::Box* m_ExplosionEmitterPositionBox;
 	Gtk::Grid* m_EmitterBox;
 	Gtk::SpinButton* m_EmitterSpeedSpinButton;
 	Gtk::SpinButton* m_EmitterVariationSpinButton;

@@ -57,6 +57,7 @@
 #include "ComposedWidgets/MFStringURLWidget.h"
 #include "ComposedWidgets/MFStringWidget.h"
 #include "ComposedWidgets/NameEntry.h"
+#include "ComposedWidgets/NormalTool.h"
 #include "ComposedWidgets/SFColorButton.h"
 #include "ComposedWidgets/SFColorRGBAButton.h"
 #include "ComposedWidgets/SFRotationAdjustment.h"

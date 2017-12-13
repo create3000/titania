@@ -48,57 +48,44 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
-#define __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
+#include "X3DPointEmitterEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DLightEditorInterface.h"
+#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
 
 namespace titania {
 namespace puck {
 
-class X3DDirectionalLightEditor :
-	virtual public X3DLightEditorInterface
+X3DPointEmitterEditor::X3DPointEmitterEditor () :
+	X3DPrecisionPlacementPanelInterface (),
+	                           position (this,
+	                                     getPointEmitterPositionXAdjustment (),
+	                                     getPointEmitterPositionYAdjustment (),
+	                                     getPointEmitterPositionZAdjustment (),
+	                                     getPointEmitterPositionBox (),
+	                                     "position"),
+	                          direction (this,
+	                                     getPointEmitterDirectionXAdjustment (),
+	                                     getPointEmitterDirectionYAdjustment (),
+	                                     getPointEmitterDirectionZAdjustment (),
+	                                     getPointEmitterDirectionBox (),
+	                                     "direction"),
+	                      directionTool (this, getPointEmitterNormalToolBox (), "direction")
+{ }
+
+void
+X3DPointEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
 {
-public:
+	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::PointEmitter });
 
-	///  @name Destruction
+	getPointEmitterBox () .set_visible (not nodes .empty ());
 
-	virtual
-	~X3DDirectionalLightEditor () override;
+	position      .setNodes (nodes);
+	direction     .setNodes (nodes);
+	directionTool .setNodes (nodes);
+}
 
-
-protected:
-
-	///  @name Construction
-
-	X3DDirectionalLightEditor ();
-	
-	virtual
-	void
-	initialize () override
-	{ }
-
-	void
-	setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
-
-
-private:
-
-	/// @name Event handlers
-	
-	virtual
-	void
-	on_new_directional_light_clicked () final override;
-
-	///  @name Members
-
-	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	NormalTool                         directionTool;	
-
-};
+X3DPointEmitterEditor::~X3DPointEmitterEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif

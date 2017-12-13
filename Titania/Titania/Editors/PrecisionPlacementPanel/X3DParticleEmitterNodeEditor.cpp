@@ -62,6 +62,11 @@ namespace puck {
 
 X3DParticleEmitterNodeEditor::X3DParticleEmitterNodeEditor () :
 	X3DPrecisionPlacementPanelInterface (),
+	              X3DPointEmitterEditor (),
+	               X3DConeEmitterEditor (),
+	           X3DPolylineEmitterEditor (),
+	             X3DVolumeEmitterEditor (),
+	          X3DExplosionEmitterEditor (),
 	                              speed (this,
 	                                     getEmitterSpeedAdjustment (),
 	                                     getEmitterSpeedSpinButton (),
@@ -178,6 +183,8 @@ X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 	
 		getEmitterUnlinkButton () .set_sensitive (getEmitterTypeButton () .get_active_row_number () > 0 and emitterNode -> getCloneCount () > 1);
 
+		// Widgets
+
 		set_widgets ();
 	}
 	catch (const X3D::X3DError & error)
@@ -233,6 +240,12 @@ X3DParticleEmitterNodeEditor::set_node ()
 void
 X3DParticleEmitterNodeEditor::set_widgets ()
 {
+	X3DPointEmitterEditor::set_particle_systems (parents);
+	X3DConeEmitterEditor::set_particle_systems (parents);
+	X3DPolylineEmitterEditor::set_particle_systems (parents);
+	X3DVolumeEmitterEditor::set_particle_systems (parents);
+	X3DExplosionEmitterEditor::set_particle_systems (parents);
+
 	const X3D::MFNode emitterNodes ({ emitterNode });
 
 	speed       .setNodes (emitterNodes);

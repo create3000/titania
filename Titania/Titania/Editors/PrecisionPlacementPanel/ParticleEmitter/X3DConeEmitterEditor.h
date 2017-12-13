@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,53 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
-#define __TITANIA_LIGHT_EDITOR_X3DDIRECTIONAL_LIGHT_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_EMITTER_X3DCONE_EMITTER_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_EMITTER_X3DCONE_EMITTER_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DLightEditorInterface.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DDirectionalLightEditor :
-	virtual public X3DLightEditorInterface
+class X3DConeEmitterEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DDirectionalLightEditor () override;
+	~X3DConeEmitterEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DDirectionalLightEditor ();
-	
+	X3DConeEmitterEditor ();
+
 	virtual
 	void
-	initialize () override
-	{ }
-
-	void
-	setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> &);
+	set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems);
 
 
 private:
 
-	/// @name Event handlers
-	
-	virtual
-	void
-	on_new_directional_light_clicked () final override;
-
 	///  @name Members
 
+	X3DFieldAdjustment3 <X3D::SFVec3f> position;
 	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	NormalTool                         directionTool;	
+	NormalTool                         directionTool;
+	X3DFieldAdjustment <X3D::SFFloat>  angle;
 
 };
 

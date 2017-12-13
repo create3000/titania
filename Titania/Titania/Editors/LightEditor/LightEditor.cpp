@@ -54,6 +54,8 @@
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
+#include <Titania/X3D/Components/Lighting/X3DLightNode.h>
+
 namespace titania {
 namespace puck {
 

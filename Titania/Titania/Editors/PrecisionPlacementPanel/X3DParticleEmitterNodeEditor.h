@@ -54,11 +54,22 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
+#include "ParticleEmitter/X3DPointEmitterEditor.h"
+#include "ParticleEmitter/X3DConeEmitterEditor.h"
+#include "ParticleEmitter/X3DPolylineEmitterEditor.h"
+#include "ParticleEmitter/X3DVolumeEmitterEditor.h"
+#include "ParticleEmitter/X3DExplosionEmitterEditor.h"
+
 namespace titania {
 namespace puck {
 
 class X3DParticleEmitterNodeEditor :
-	virtual public X3DPrecisionPlacementPanelInterface
+	virtual public X3DPrecisionPlacementPanelInterface,
+	public X3DPointEmitterEditor,
+	public X3DConeEmitterEditor,
+	public X3DPolylineEmitterEditor,
+	public X3DVolumeEmitterEditor,
+	public X3DExplosionEmitterEditor
 {
 public:
 

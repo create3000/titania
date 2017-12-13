@@ -50,8 +50,6 @@
 
 #include "X3DBillboardEditor.h"
 
-#include "../../ComposedWidgets/NormalTool.h"
-
 #include <Titania/X3D/Components/Navigation/Billboard.h>
 
 namespace titania {
@@ -65,7 +63,7 @@ X3DBillboardEditor::X3DBillboardEditor () :
 	                                     getBillboardAxisOfRotationZAdjustment (),
 	                                     getBillboardAxisOfRotationBox (),
 	                                     "axisOfRotation"),
-	                 axisOfRotationTool (new NormalTool (this, getBillboardAxisOfRotationToolBox (), "axisOfRotation")),
+	                 axisOfRotationTool (this, getBillboardAxisOfRotationToolBox (), "axisOfRotation"),
 	                          billboard (),
 	                           undoStep (),
 	                           changing (false)
@@ -94,9 +92,8 @@ X3DBillboardEditor::set_selection (const X3D::MFNode & selection)
 
 	getBillboardExpander () .set_visible (billboard);
 
-	axisOfRotation .setNodes (billboards);
-
-	axisOfRotationTool -> setNodes (billboards);
+	axisOfRotation     .setNodes (billboards);
+	axisOfRotationTool .setNodes (billboards);
 
 	// Connect.
 	

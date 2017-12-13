@@ -340,6 +340,11 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleEmitterNodeEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DColorNodeEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPointEmitterEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DConeEmitterEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPolylineEmitterEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DVolumeEmitterEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3083,6 +3088,11 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleEmitterNodeEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DColorNodeEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPointEmitterEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DConeEmitterEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPolylineEmitterEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DVolumeEmitterEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3238,6 +3248,7 @@
     <Folder Include="Titania\Widgets\RouteGraph\" />
     <Folder Include="share\titania\Library\Components\VolumeRendering\" />
     <Folder Include="share\gtksourceview-3.0\styles\" />
+    <Folder Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

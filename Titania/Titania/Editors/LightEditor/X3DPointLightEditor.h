@@ -54,8 +54,6 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DLightEditorInterface.h"
 
-#include <Titania/X3D/Components/Lighting/X3DLightNode.h>
-
 namespace titania {
 namespace puck {
 

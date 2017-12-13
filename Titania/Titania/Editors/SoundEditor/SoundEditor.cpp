@@ -51,7 +51,6 @@
 #include "SoundEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/NormalTool.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
@@ -79,7 +78,7 @@ SoundEditor::SoundEditor (X3DBrowserWindow* const browserWindow) :
 	                          getSoundDirectionZAdjustment (),
 	                          getSoundDirectionBox (),
 	                          "direction"),
-	           directionTool (new NormalTool (this, getSoundNormalToolBox (), "direction")),
+	           directionTool (this, getSoundNormalToolBox (), "direction"),
 	                 minBack (this, getSoundMinBackAdjustment (),  getSoundMinBackSpinButton (),  "minBack"),
 	                minFront (this, getSoundMinFrontAdjustment (), getSoundMinFrontSpinButton (), "minFront"),
 	                 maxBack (this, getSoundMaxBackAdjustment (),  getSoundMaxBackSpinButton (),  "maxBack"),
@@ -117,17 +116,17 @@ SoundEditor::set_selection (const X3D::MFNode & selection)
 
 	getSoundBox () .set_sensitive (soundNode);
 
-	nodeName   .setNode (soundNode);
-	intensity  .setNodes (nodes);
-	spatialize .setNodes (nodes);
-	location   .setNodes (nodes);
-	direction  .setNodes (nodes);
-	directionTool -> setNodes (nodes);
-	minBack    .setNodes (nodes);
-	minFront   .setNodes (nodes);
-	maxBack    .setNodes (nodes);
-	maxFront   .setNodes (nodes);
-	priority   .setNodes (nodes);
+	nodeName      .setNode (soundNode);
+	intensity     .setNodes (nodes);
+	spatialize    .setNodes (nodes);
+	location      .setNodes (nodes);
+	direction     .setNodes (nodes);
+	directionTool .setNodes (nodes);
+	minBack       .setNodes (nodes);
+	minFront      .setNodes (nodes);
+	maxBack       .setNodes (nodes);
+	maxFront      .setNodes (nodes);
+	priority      .setNodes (nodes);
 
 	getRemoveSoundButton () .set_sensitive (soundNode);
 }

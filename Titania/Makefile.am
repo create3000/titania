@@ -142,6 +142,11 @@ titania_SOURCES =  \
 	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DConeEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DExplosionEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPolylineEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DVolumeEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \

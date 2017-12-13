@@ -59,8 +59,6 @@
 namespace titania {
 namespace puck {
 
-class NormalTool;
-
 class X3DBackgroundEditor :
 	virtual public X3DBackgroundEditorInterface
 {

@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class NormalTool;
-
 class X3DBillboardEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
@@ -102,7 +100,7 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> axisOfRotation;
-	std::unique_ptr <NormalTool>       axisOfRotationTool;
+	NormalTool                         axisOfRotationTool;
 
 	X3D::X3DPtr <X3D::Billboard> billboard;
 	X3D::UndoStepPtr             undoStep;

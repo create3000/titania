@@ -50,8 +50,6 @@
 
 #include "X3DSpotLightEditor.h"
 
-#include "../../ComposedWidgets/NormalTool.h"
-
 #include <Titania/X3D/Components/Lighting/SpotLight.h>
 
 namespace titania {
@@ -79,15 +77,15 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 	                         getSpotLightDirectionZAdjustment (),
 	                         getSpotLightDirectionBox (),
 	                         "direction"),
-	          directionTool (new NormalTool (this, getSpotLightNormalToolBox (), "direction")),
+	          directionTool (this, getSpotLightNormalToolBox (), "direction"),
 	                 radius (this, getSpotLightRadiusAdjustment (), getSpotLightRadiusSpinButton (), "radius"),
 	              beamWidth (this, getSpotLightBeamWidthAdjustment (), getSpotLightBeamWidthSpinButton (), "beamWidth"),
 	            cutOffAngle (this, getSpotLightCutOffAngleAdjustment (), getSpotLightCutOffAngleSpinButton (), "cutOffAngle")
 {
 	direction .setNormalize (true);
 
-	getSpotLightBeamWidthAdjustment ()   -> set_upper (pi <double> / 2); // getCurrentContext () -> fromRadiant (pi <double>);
-	getSpotLightCutOffAngleAdjustment () -> set_upper (pi <double> / 2); // getCurrentContext () -> fromRadiant (pi <double>);
+	getSpotLightBeamWidthAdjustment ()   -> set_upper (pi <double> / 2);
+	getSpotLightCutOffAngleAdjustment () -> set_upper (pi <double> / 2);
 }
 
 void
@@ -99,14 +97,13 @@ X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightN
 
 	const auto spotLights = spotLight ? X3D::MFNode ({ spotLight }) : X3D::MFNode ();
 
-	attenuation .setNodes (spotLights);
-	location    .setNodes (spotLights);
-	direction   .setNodes (spotLights);
-	radius      .setNodes (spotLights);
-	beamWidth   .setNodes (spotLights);
-	cutOffAngle .setNodes (spotLights);
-
-	directionTool -> setNodes (spotLights);
+	attenuation   .setNodes (spotLights);
+	location      .setNodes (spotLights);
+	direction     .setNodes (spotLights);
+	directionTool .setNodes (spotLights);
+	radius        .setNodes (spotLights);
+	beamWidth     .setNodes (spotLights);
+	cutOffAngle   .setNodes (spotLights);
 }
 
 void

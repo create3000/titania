@@ -59,8 +59,6 @@
 namespace titania {
 namespace puck {
 
-class NormalTool;
-
 class SoundEditor :
 	virtual public X3DSoundEditorInterface,
 	public X3DSoundSourceNodeEditor
@@ -118,7 +116,7 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> spatialize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> location;
 	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	std::unique_ptr <NormalTool>       directionTool;	
+	NormalTool                         directionTool;	
 	X3DFieldAdjustment <X3D::SFFloat>  minBack;
 	X3DFieldAdjustment <X3D::SFFloat>  minFront;
 	X3DFieldAdjustment <X3D::SFFloat>  maxBack;
