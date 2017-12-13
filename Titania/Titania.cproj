@@ -339,6 +339,7 @@
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleEmitterNodeEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DColorNodeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3081,6 +3082,7 @@
     <None Include="share\titania\Library\Effects\Glass.x3dv" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleSystemEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DParticleEmitterNodeEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DColorNodeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

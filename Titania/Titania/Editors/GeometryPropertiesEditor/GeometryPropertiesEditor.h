@@ -69,12 +69,11 @@
 #include "NURBS/X3DNurbsPatchSurfaceEditor.h"
 #include "NURBS/X3DNurbsTrimmedSurfaceEditor.h"
 #include "Rendering/X3DIndexedLineSetEditor.h"
+#include "X3DColorNodeEditor.h"
 #include "X3DPrimitiveCountEditor.h"
 #include "X3DGeometryTool.h"
 
 #include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/MFColorButton.h"
-#include "../../ComposedWidgets/MFColorRGBAButton.h"
 
 namespace titania {
 namespace puck {
@@ -97,6 +96,7 @@ class GeometryPropertiesEditor :
 	public X3DNurbsPatchSurfaceEditor,
 	public X3DNurbsTrimmedSurfaceEditor,
 	public X3DIndexedLineSetEditor,
+	public X3DColorNodeEditor,
 	public X3DPrimitiveCountEditor,
 	public X3DGeometryTool
 {
@@ -167,20 +167,6 @@ private:
 
 	virtual
 	void
-	on_color_changed () final override;
-
-	virtual
-	void
-	on_color_unlink_clicked () final override;
-
-	void
-	set_color ();
-
-	void
-	set_color_buffer ();
-
-	virtual
-	void
 	store () final override;
 
 	///  @name Members
@@ -192,16 +178,11 @@ private:
 	X3DFieldAdjustment <X3D::SFDouble>  creaseAngleDouble;
 	X3DFieldToggleButton <X3D::SFBool>  colorPerVertex;
 	X3DFieldToggleButton <X3D::SFBool>  normalPerVertex;
-	MFColorButton                       color;
-	MFColorRGBAButton                   colorRGBA;
 
 	X3D::MFNode                          geometryNodes;
 	X3D::SFNode                          geometryNode;
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::MFNode                          colorNodes;
-	X3D::MFNode                          colorRGBANodes;
 	X3D::SFTime                          nodesBuffer;
-	X3D::SFTime                          colorBuffer;
 
 	bool changing;
 

@@ -445,13 +445,13 @@ MFColorRGBAButton::on_remove_color_clicked ()
 {
 	undoStep .reset ();
 
-	addUndoFunction <X3D::MFColor> (nodes, name, undoStep);
+	addUndoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			auto & field = node -> getField <X3D::MFColor> (name);
+			auto & field = node -> getField <X3D::MFColorRGBA> (name);
 
 			if (index >= 0 and index < int32_t (field .size ()))
 				field .erase (field .begin () + index);
@@ -460,7 +460,7 @@ MFColorRGBAButton::on_remove_color_clicked ()
 		{ }
 	}
 
-	addRedoFunction <X3D::MFColor> (nodes, name, undoStep);
+	addRedoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
 }
 
 bool
@@ -470,7 +470,7 @@ MFColorRGBAButton::on_colors_configure_event (GdkEventConfigure* const)
 
 	if (not node)
 	{
-		colorsDrawingArea .set_size_request (-1, -1);
+		colorsDrawingArea .set_size_request (-1, (colorsSize + colorsGap) - colorsGap + colorsBorder [2] + colorsBorder [3]);
 		return false;
 	}
 

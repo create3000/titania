@@ -1184,6 +1184,10 @@ public:
 	getColorExpander () const
 	{ return *m_ColorExpander; }
 
+	Gtk::Box &
+	getCreateColorBox () const
+	{ return *m_CreateColorBox; }
+
 	Gtk::ComboBoxText &
 	getColorTypeButton () const
 	{ return *m_ColorTypeButton; }
@@ -1416,7 +1420,7 @@ public:
 
 	virtual
 	void
-	on_color_changed () = 0;
+	on_color_type_changed () = 0;
 
 	virtual
 	void
@@ -1736,6 +1740,7 @@ private:
 	Gtk::Button* m_AddNormalsButton;
 	Gtk::Button* m_RemoveNormalsButton;
 	Gtk::Expander* m_ColorExpander;
+	Gtk::Box* m_CreateColorBox;
 	Gtk::ComboBoxText* m_ColorTypeButton;
 	Gtk::Button* m_ColorUnlinkButton;
 	Gtk::Grid* m_ColorGrid;

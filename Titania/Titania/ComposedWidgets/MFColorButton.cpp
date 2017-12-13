@@ -463,7 +463,7 @@ MFColorButton::on_colors_configure_event (GdkEventConfigure* const)
 
 	if (not node)
 	{
-		colorsDrawingArea .set_size_request (-1, -1);
+		colorsDrawingArea .set_size_request (-1, (colorsSize + colorsGap) - colorsGap + colorsBorder [2] + colorsBorder [3]);
 		return false;
 	}
 
@@ -496,7 +496,7 @@ MFColorButton::on_colors_key_press_event (GdkEventKey* event)
 
 		if (field .empty ())
 		{
-			setIndex (0);
+			setIndex (-1);
 			return true;
 		}
 

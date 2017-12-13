@@ -354,6 +354,7 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
 	m_builder -> get_widget ("ColorExpander", m_ColorExpander);
+	m_builder -> get_widget ("CreateColorBox", m_CreateColorBox);
 	m_builder -> get_widget ("ColorTypeButton", m_ColorTypeButton);
 	m_builder -> get_widget ("ColorUnlinkButton", m_ColorUnlinkButton);
 	m_builder -> get_widget ("ColorGrid", m_ColorGrid);
@@ -438,7 +439,7 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'ColorTypeButton'.
-	m_ColorTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_changed));
+	m_ColorTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_type_changed));
 
 	// Connect object Gtk::Button with id 'ColorUnlinkButton'.
 	m_ColorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_unlink_clicked));

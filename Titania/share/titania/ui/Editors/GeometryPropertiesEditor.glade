@@ -5492,10 +5492,10 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox">
+                                          <object class="GtkBox" id="CreateColorBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="spacing">1</property>
+                                            <property name="spacing">8</property>
                                             <child>
                                               <object class="GtkComboBoxText" id="ColorTypeButton">
                                                 <property name="visible">True</property>
@@ -5505,7 +5505,7 @@
                                                   <item>Color</item>
                                                   <item>ColorRGBA</item>
                                                 </items>
-                                                <signal name="changed" handler="on_color_changed" swapped="no"/>
+                                                <signal name="changed" handler="on_color_type_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
