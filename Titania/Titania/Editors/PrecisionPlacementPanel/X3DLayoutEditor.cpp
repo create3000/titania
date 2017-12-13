@@ -96,7 +96,37 @@ X3DLayoutEditor::initialize ()
 void
 X3DLayoutEditor::set_selection (const X3D::MFNode & selection)
 {
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("layout") .removeInterest (&X3DLayoutEditor::set_layout, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	parents = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::LayoutLayer, X3D::X3DConstants::LayoutGroup }, false);
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("layout") .addInterest (&X3DLayoutEditor::set_layout, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
 	set_layout ();
+}
+
+void
+X3DLayoutEditor::on_layout_unlink_clicked ()
+{
+	X3D::UndoStepPtr undoStep;
+
+	unlinkClone (parents, "layout", undoStep);
 }
 
 void
@@ -111,7 +141,6 @@ X3DLayoutEditor::on_layout_toggled ()
 	// Set field.
 
 	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
-	const auto newLayoutNode    = layoutNode ? layoutNode : executionContext -> createNode <X3D::Layout> ();
 
 	addUndoFunction <X3D::SFNode> (parents, "layout", undoStep);
 
@@ -121,8 +150,11 @@ X3DLayoutEditor::on_layout_toggled ()
 		{
 			auto & field = parent -> getField <X3D::SFNode> ("layout");
 
+			field .removeInterest (&X3DLayoutEditor::set_layout, this);
+			field .addInterest (&X3DLayoutEditor::connectLayout, this);
+
 			if (getLayoutCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (executionContext, parent, field, newLayoutNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, parent, field, layoutNode, undoStep);
 			else
 				X3D::X3DEditor::replaceNode (executionContext, parent, field, nullptr, undoStep);
 		}
@@ -131,6 +163,8 @@ X3DLayoutEditor::on_layout_toggled ()
 	}
 
 	addRedoFunction <X3D::SFNode> (parents, "layout", undoStep);
+
+	getLayoutUnlinkButton () .set_sensitive (getLayoutCheckButton () .get_active () and layoutNode -> getCloneCount () > 1);
 }
 
 void
@@ -142,57 +176,36 @@ X3DLayoutEditor::set_layout ()
 void
 X3DLayoutEditor::set_node ()
 {
-	changing = true;
-
 	undoStep .reset ();
-
-	// Remove selection
-
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("layout") .removeInterest (&X3DLayoutEditor::set_layout, this);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	parents .clear ();
 
 	// Find Layout in selection
 
-	const auto & selection    = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   pair         = getNode <X3D::Layout> (selection, "layout");
-	const bool   inconsistent = pair .second == -1;
+	const auto    executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	auto          tuple            = getSelection <X3D::Layout> (parents, "layout");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
-	layoutNode = selection .empty () ? nullptr : selection .back ();
+	layoutNode = std::move (std::get <0> (tuple));
 
-	if (pair .second not_eq -2)
-	{
-		parents    = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::LayoutLayer, X3D::X3DConstants::LayoutGroup });
-		layoutNode = pair .first;
-	}
+	changing = true;
 
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("layout") .addInterest (&X3DLayoutEditor::set_layout, this);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	getLayoutExpander ()     .set_visible (hasParent or layoutNode);
+	getCreateLayoutBox ()    .set_sensitive (hasParent);
+	getLayoutCheckButton ()  .set_sensitive (hasField);
+	getLayoutCheckButton ()  .set_active (active > 0);
+	getLayoutCheckButton ()  .set_inconsistent (active < 0);
+	getLayoutUnlinkButton () .set_sensitive (active > 0 and layoutNode -> getCloneCount () > 1);
+	getLayoutBox ()          .set_sensitive (active > 0);
 
-	getLayoutExpander ()    .set_visible (layoutNode or not parents .empty ());
-	getCreateLayoutBox ()   .set_visible (not parents .empty ());
-	getLayoutCheckButton () .set_active (layoutNode and not inconsistent);
-	getLayoutCheckButton () .set_inconsistent (inconsistent);
-	getLayoutBox ()         .set_sensitive (layoutNode and not inconsistent);
+	changing = false;
 
 	// Widgets
 
-	const auto layoutNodes = layoutNode ? X3D::MFNode ({ layoutNode }) : X3D::MFNode ();
+	if (not layoutNode)
+		layoutNode = executionContext -> createNode <X3D::Layout> ();
+
+	const X3D::MFNode layoutNodes ({ layoutNode });
 
 	alignX       .setNodes (layoutNodes);
 	alignY       .setNodes (layoutNodes);
@@ -210,9 +223,15 @@ X3DLayoutEditor::set_node ()
 	changing = false;
 }
 
-X3DLayoutEditor::~X3DLayoutEditor ()
+void
+X3DLayoutEditor::connectLayout (const X3D::SFNode & field)
 {
+	field .removeInterest (&X3DLayoutEditor::connectLayout, this);
+	field .addInterest (&X3DLayoutEditor::set_layout, this);
 }
+
+X3DLayoutEditor::~X3DLayoutEditor ()
+{ }
 
 } // puck
 } // titania

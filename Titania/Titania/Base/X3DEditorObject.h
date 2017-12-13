@@ -93,8 +93,7 @@ public:
 	template <class NodeType>
 	static
 	X3D::X3DPtrArray <NodeType>
-	getNodes (const X3D::MFNode & nodes, const std::set <X3D::X3DConstants::NodeType> & types)
-	{ return X3D::X3DEditor::getNodes <NodeType> (nodes, types); }
+	getNodes (const X3D::MFNode & nodes, const std::set <X3D::X3DConstants::NodeType> & types, const bool traverse = true);
 
 	///  @name Destruction
 
@@ -140,7 +139,7 @@ protected:
 
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>
-	getSelection (const std::set <X3D::X3DConstants::NodeType> &) const;
+	getSelection (const std::set <X3D::X3DConstants::NodeType> & types, const bool traverse = true);
 
 	template <class FieldType, class NodeType>
 	std::tuple <X3D::X3DPtr <FieldType>, int32_t, int32_t>
@@ -224,6 +223,7 @@ private:
 	///  @name Members
 
 	bool                        undo;
+	bool                        undoGroupChanged;
 	std::string                 undoGroup;
 	std::string                 redoGroup;
 	std::string                 lastUndoGroup;
@@ -234,9 +234,30 @@ private:
 
 template <class NodeType>
 X3D::X3DPtrArray <NodeType>
-X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const
+X3DEditorObject::getNodes (const X3D::MFNode & nodes, const std::set <X3D::X3DConstants::NodeType> & types, const bool traverse)
 {
-	return getNodes <NodeType> (getSelectedNodes (), types);
+	if (traverse)
+		return X3D::X3DEditor::getNodes <NodeType> (nodes, types);
+
+	X3D::X3DPtrArray <NodeType> found;
+
+	for (const auto & node : nodes)
+	{
+		if (not node)
+			continue;
+
+		if (node -> isType (types))
+			found .emplace_back (node);
+	}
+
+	return found;
+}
+
+template <class NodeType>
+X3D::X3DPtrArray <NodeType>
+X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types, const bool traverse)
+{
+	return getNodes <NodeType> (getSelectedNodes (), types, traverse);
 }
 
 /***
@@ -266,7 +287,7 @@ X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const 
 
 	auto pair = getNode <FieldType, NodeType> (nodes, fieldName);
 
-	return std::make_tuple (std::move (pair .first), pair .second, true);
+	return std::make_tuple (std::move (pair .first), pair .second, pair .second not_eq -2);
 }
 	
 /***
@@ -281,41 +302,34 @@ template <class FieldType, class NodeType>
 std::pair <X3D::X3DPtr <FieldType>, int32_t>
 X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
 {
-	const auto executionContext = this -> getSelectionContext (nodes, true);
+	X3D::X3DPtr <FieldType> found;
+	int32_t                 active = -2;
 
-	if (executionContext)
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
-		X3D::X3DPtr <FieldType> found;
-		int32_t                 active = -2;
-	
-		for (const auto & node : basic::make_reverse_range (nodes))
+		try
 		{
-			try
+			const auto & field = node -> template getField <X3D::SFNode> (fieldName);
+
+			if (active < 0)
 			{
-				const auto & field = node -> template getField <X3D::SFNode> (fieldName);
-	
-				if (active < 0)
-				{
-					found  = field;
-					active = bool (found);
-				}
-				else if (field not_eq found)
-				{
-					if (not found)
-						found = field;
-	
-					active = -1;
-					break;
-				}
+				found  = field;
+				active = bool (found);
 			}
-			catch (const X3D::X3DError &)
-			{ }
+			else if (field not_eq found)
+			{
+				if (not found)
+					found = field;
+
+				active = -1;
+				break;
+			}
 		}
-	
-		return std::make_pair (std::move (found), active);
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
-	return std::make_pair (nullptr, -2);
+	return std::make_pair (std::move (found), active);
 }
 
 /***
@@ -576,6 +590,8 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		return false;
 	}
 
+	undoGroupChanged = true;
+
 	// Redo field change
 
 	for (const auto & node : nodes)
@@ -676,6 +692,8 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 		return false;
 	}
+
+	undoGroupChanged = true;
 
 	// Redo field change
 

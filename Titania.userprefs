@@ -1,9 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.h" Line="89" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp" Line="119" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp" Line="237" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

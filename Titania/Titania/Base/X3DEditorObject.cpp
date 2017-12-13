@@ -60,6 +60,7 @@ namespace puck {
 X3DEditorObject::X3DEditorObject () :
 	X3DBaseInterface (),
 	            undo (true),
+	undoGroupChanged (false),
           undoGroup (),
           redoGroup (),
       lastUndoGroup (),
@@ -182,6 +183,8 @@ X3DEditorObject::resetUndoGroup (const std::string & name, X3D::UndoStepPtr & un
 {
 	lastUndoGroup .clear ();
 	undoStep      .reset ();
+
+	undoGroupChanged = false;
 }
 
 void
@@ -214,7 +217,8 @@ X3DEditorObject::endUndoGroup (const std::string & name, X3D::UndoStepPtr & undo
 		undoStep -> getRedoFunctions () .clear ();
 	}
 
-	lastUndoGroup = undoGroup;
+	undoGroupChanged = false;
+	lastUndoGroup    = undoGroup;
 
 	undoGroup .clear ();
 }
@@ -230,7 +234,7 @@ X3DEditorObject::endRedoGroup (const std::string & name, X3D::UndoStepPtr & undo
 {
 	redoGroup .clear ();
 
-	if (undoStep -> getRedoFunctions () .empty ())
+	if (undoStep -> getRedoFunctions () .empty () or not undoGroupChanged)
 	{
 		if (undoStep == getUndoStep ())
 			removeUndoStep ();

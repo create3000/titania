@@ -888,6 +888,10 @@ public:
 	getLayoutCheckButton () const
 	{ return *m_LayoutCheckButton; }
 
+	Gtk::Button &
+	getLayoutUnlinkButton () const
+	{ return *m_LayoutUnlinkButton; }
+
 	Gtk::Grid &
 	getLayoutBox () const
 	{ return *m_LayoutBox; }
@@ -995,6 +999,10 @@ public:
 	Gtk::ComboBoxText &
 	getEmitterTypeButton () const
 	{ return *m_EmitterTypeButton; }
+
+	Gtk::Button &
+	getEmitterUnlinkButton () const
+	{ return *m_EmitterUnlinkButton; }
 
 	Gtk::Grid &
 	getPointEmitterBox () const
@@ -1252,11 +1260,19 @@ public:
 
 	virtual
 	void
+	on_layout_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_viewport_toggled () = 0;
 
 	virtual
 	void
 	on_emitter_type_changed () = 0;
+
+	virtual
+	void
+	on_emitter_unlink_clicked () = 0;
 
 	virtual
 	bool
@@ -1498,6 +1514,7 @@ private:
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;
+	Gtk::Button* m_LayoutUnlinkButton;
 	Gtk::Grid* m_LayoutBox;
 	Gtk::Box* m_LayoutOffsetBox;
 	Gtk::SpinButton* m_LayoutOffsetXSpinButton;
@@ -1525,6 +1542,7 @@ private:
 	Gtk::Expander* m_EmitterExpander;
 	Gtk::Grid* m_CreateEmitterBox;
 	Gtk::ComboBoxText* m_EmitterTypeButton;
+	Gtk::Button* m_EmitterUnlinkButton;
 	Gtk::Grid* m_PointEmitterBox;
 	Gtk::Grid* m_ConeEmitterBox;
 	Gtk::Grid* m_PolylineEmitterBox;

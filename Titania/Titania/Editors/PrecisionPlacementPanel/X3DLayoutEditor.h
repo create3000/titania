@@ -89,6 +89,10 @@ private:
 
 	virtual
 	void
+	on_layout_unlink_clicked () final override;
+
+	virtual
+	void
 	on_layout_toggled () final override;
 
 	void
@@ -99,6 +103,9 @@ private:
 
 	void
 	set_widgets ();
+
+	void
+	connectLayout (const X3D::SFNode & field);
 
 	///  @name Members
 

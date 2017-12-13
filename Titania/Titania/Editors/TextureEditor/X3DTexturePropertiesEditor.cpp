@@ -200,7 +200,8 @@ X3DTexturePropertiesEditor::set_node ()
 
 	changing = false;
 
-	
+	// Widgets
+
 	const X3D::MFNode nodes = { textureProperties };
 
 	nodeName .setNode (nodes .back ());
