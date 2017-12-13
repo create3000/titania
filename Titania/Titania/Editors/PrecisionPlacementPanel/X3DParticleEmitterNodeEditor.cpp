@@ -160,6 +160,20 @@ X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 			}
 			else
 			{
+				try
+				{
+					newEmitterNode -> getField <X3D::SFVec3f> ("position") = emitterNode -> getField <X3D::SFVec3f> ("position");
+				}
+				catch (const X3D::X3DError & error)
+				{ }
+
+				try
+				{
+					newEmitterNode -> getField <X3D::SFVec3f> ("direction") = emitterNode -> getField <X3D::SFVec3f> ("direction");
+				}
+				catch (const X3D::X3DError & error)
+				{ }
+			
 				newEmitterNode -> speed ()       = emitterNode -> speed ();
 				newEmitterNode -> variation ()   = emitterNode -> variation ();
 				newEmitterNode -> mass ()        = emitterNode -> mass ();
