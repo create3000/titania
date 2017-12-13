@@ -147,12 +147,21 @@ X3DParticleEmitterNodeEditor::on_emitter_type_changed ()
 		}
 		else
 		{
-		   auto newEmitterNode = executionContext -> createNode (getEmitterTypeButton () .get_active_text ());
+		   X3D::X3DPtr <X3D::X3DParticleEmitterNode> newEmitterNode (executionContext -> createNode (getEmitterTypeButton () .get_active_text ()));
 	
 		   if (emitterNode and emitterNode -> getType () .back () == newEmitterNode -> getType () .back ())
+			{
 				newEmitterNode = emitterNode;
+			}
+			else
+			{
+				newEmitterNode -> speed ()       = emitterNode -> speed ();
+				newEmitterNode -> variation ()   = emitterNode -> variation ();
+				newEmitterNode -> mass ()        = emitterNode -> mass ();
+				newEmitterNode -> surfaceArea () = emitterNode -> surfaceArea ();
+			}
 
-			emitterNode = newEmitterNode;
+			emitterNode = std::move (newEmitterNode);
 
 			for (const auto & parent : parents)
 			{

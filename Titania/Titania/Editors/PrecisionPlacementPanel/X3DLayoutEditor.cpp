@@ -165,6 +165,8 @@ X3DLayoutEditor::on_layout_toggled ()
 	addRedoFunction <X3D::SFNode> (parents, "layout", undoStep);
 
 	getLayoutUnlinkButton () .set_sensitive (getLayoutCheckButton () .get_active () and layoutNode -> getCloneCount () > 1);
+
+	set_widgets ();
 }
 
 void
@@ -205,6 +207,12 @@ X3DLayoutEditor::set_node ()
 	if (not layoutNode)
 		layoutNode = executionContext -> createNode <X3D::Layout> ();
 
+	set_widgets ();
+}
+
+void
+X3DLayoutEditor::set_widgets ()
+{
 	const X3D::MFNode layoutNodes ({ layoutNode });
 
 	alignX       .setNodes (layoutNodes);
@@ -219,8 +227,6 @@ X3DLayoutEditor::set_node ()
 	sizeY        .setNodes (layoutNodes);
 	scaleModeX   .setNodes (layoutNodes);
 	scaleModeY   .setNodes (layoutNodes);
-
-	changing = false;
 }
 
 void

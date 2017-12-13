@@ -97,7 +97,37 @@ X3DViewportEditor::initialize ()
 void
 X3DViewportEditor::set_selection (const X3D::MFNode & selection)
 {
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("viewport") .removeInterest (&X3DViewportEditor::set_viewport, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	parents = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DLayerNode, X3D::X3DConstants::LayoutGroup }, false);
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("viewport") .addInterest (&X3DViewportEditor::set_viewport, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
 	set_viewport ();
+}
+
+void
+X3DViewportEditor::on_viewport_unlink_clicked ()
+{
+	X3D::UndoStepPtr undoStep;
+
+	unlinkClone (parents, "viewport", undoStep);
 }
 
 void
@@ -112,7 +142,6 @@ X3DViewportEditor::on_viewport_toggled ()
 	// Set field.
 
 	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
-	const auto newViewportNode  = viewportNode ? viewportNode : executionContext -> createNode <X3D::Viewport> ();
 
 	addUndoFunction <X3D::SFNode> (parents, "viewport", undoStep);
 
@@ -122,8 +151,11 @@ X3DViewportEditor::on_viewport_toggled ()
 		{
 			auto & field = parent -> getField <X3D::SFNode> ("viewport");
 
+			field .removeInterest (&X3DViewportEditor::set_viewport, this);
+			field .addInterest (&X3DViewportEditor::connectViewport, this);
+
 			if (getViewportCheckButton () .get_active ())
-				X3D::X3DEditor::replaceNode (executionContext, parent, field, newViewportNode, undoStep);
+				X3D::X3DEditor::replaceNode (executionContext, parent, field, viewportNode, undoStep);
 			else
 				X3D::X3DEditor::replaceNode (executionContext, parent, field, nullptr, undoStep);
 		}
@@ -132,6 +164,8 @@ X3DViewportEditor::on_viewport_toggled ()
 	}
 
 	addRedoFunction <X3D::SFNode> (parents, "viewport", undoStep);
+
+	set_widgets ();
 }
 
 void
@@ -143,55 +177,34 @@ X3DViewportEditor::set_viewport ()
 void
 X3DViewportEditor::set_node ()
 {
-	changing = true;
-
 	undoStep .reset ();
 
-	// Remove selection
+	// Find Viewport in selection
 
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("viewport") .removeInterest (&X3DViewportEditor::set_viewport, this);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	const auto    executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	auto          tuple            = getSelection <X3D::Viewport> (parents, "viewport");
+	const int32_t active           = std::get <1> (tuple);
+	const bool    hasParent        = std::get <2> (tuple);
+	const bool    hasField         = (active not_eq -2);
 
-	parents .clear ();
+	viewportNode = std::move (std::get <0> (tuple));
 
-	// Find Emitter in selection
+	changing = true;
 
-	const auto & selection    = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   pair         = getNode <X3D::Viewport> (selection, "viewport");
-	const bool   inconsistent = pair .second == -1;
+	getViewportExpander ()     .set_visible (hasParent or viewportNode);
+	getCreateViewportBox ()    .set_sensitive (hasParent);
+	getViewportCheckButton ()  .set_sensitive (hasField);
+	getViewportCheckButton ()  .set_active (active > 0);
+	getViewportCheckButton ()  .set_inconsistent (active < 0);
+	getViewportUnlinkButton () .set_sensitive (active > 0 and viewportNode -> getCloneCount () > 1);
+	getViewportBox ()          .set_sensitive (active > 0);
 
-	viewportNode = selection .empty () ? nullptr : selection .back ();
-
-	if (pair .second not_eq -2)
-	{
-		parents     = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DLayerNode, X3D::X3DConstants::LayoutGroup });
-		viewportNode = pair .first;
-	}
-
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("viewport") .addInterest (&X3DViewportEditor::set_viewport, this);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	getViewportExpander ()    .set_visible (viewportNode or not parents .empty ());
-	getCreateViewportBox ()   .set_visible (not parents .empty ());
-	getViewportCheckButton () .set_active (viewportNode and not inconsistent);
-	getViewportCheckButton () .set_inconsistent (inconsistent);
-	getViewportBox ()         .set_sensitive (viewportNode and not inconsistent);
+	changing = false;
 
 	// Widgets
+
+	if (not viewportNode)
+		viewportNode = executionContext -> createNode <X3D::Viewport> ();
 
 	if (viewportNode)
 	{
@@ -205,14 +218,25 @@ X3DViewportEditor::set_node ()
 		};
 	}
 
-	const auto viewportNodes = viewportNode ? X3D::MFNode ({ viewportNode }) : X3D::MFNode ();
+	set_widgets ();
+}
+
+void
+X3DViewportEditor::set_widgets ()
+{
+	const X3D::MFNode viewportNodes ({ viewportNode });
 
 	clipBoundary0 .setNodes (viewportNodes);
 	clipBoundary1 .setNodes (viewportNodes);
 	clipBoundary2 .setNodes (viewportNodes);
 	clipBoundary3 .setNodes (viewportNodes);
+}
 
-	changing = false;
+void
+X3DViewportEditor::connectViewport (const X3D::SFNode & field)
+{
+	field .removeInterest (&X3DViewportEditor::connectViewport, this);
+	field .addInterest (&X3DViewportEditor::set_viewport, this);
 }
 
 X3DViewportEditor::~X3DViewportEditor ()

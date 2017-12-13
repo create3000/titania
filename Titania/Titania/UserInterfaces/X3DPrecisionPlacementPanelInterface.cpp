@@ -299,6 +299,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ViewportExpander", m_ViewportExpander);
 	m_builder -> get_widget ("CreateViewportBox", m_CreateViewportBox);
 	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
+	m_builder -> get_widget ("ViewportUnlinkButton", m_ViewportUnlinkButton);
 	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
 	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
 	m_builder -> get_widget ("ViewportClipBoundaryTopSpinButton", m_ViewportClipBoundaryTopSpinButton);
@@ -396,6 +397,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::CheckButton with id 'ViewportCheckButton'.
 	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
+
+	// Connect object Gtk::Button with id 'ViewportUnlinkButton'.
+	m_ViewportUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_viewport_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'EmitterTypeButton'.
 	m_EmitterTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_type_changed));

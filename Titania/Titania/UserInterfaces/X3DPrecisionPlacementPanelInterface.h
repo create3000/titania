@@ -964,6 +964,10 @@ public:
 	getViewportCheckButton () const
 	{ return *m_ViewportCheckButton; }
 
+	Gtk::Button &
+	getViewportUnlinkButton () const
+	{ return *m_ViewportUnlinkButton; }
+
 	Gtk::Grid &
 	getViewportBox () const
 	{ return *m_ViewportBox; }
@@ -1268,6 +1272,10 @@ public:
 
 	virtual
 	void
+	on_viewport_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_emitter_type_changed () = 0;
 
 	virtual
@@ -1533,6 +1541,7 @@ private:
 	Gtk::Expander* m_ViewportExpander;
 	Gtk::Grid* m_CreateViewportBox;
 	Gtk::CheckButton* m_ViewportCheckButton;
+	Gtk::Button* m_ViewportUnlinkButton;
 	Gtk::Grid* m_ViewportBox;
 	Gtk::Grid* m_ViewportClipBoundaryBox;
 	Gtk::SpinButton* m_ViewportClipBoundaryTopSpinButton;

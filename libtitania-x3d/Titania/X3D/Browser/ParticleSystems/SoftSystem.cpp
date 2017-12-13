@@ -458,6 +458,8 @@ SoftSystem::set_emitter ()
 
 	if (not emitterNode)
 		emitterNode = particleSystem -> getBrowser () -> getDefaultEmitter ();
+
+	createParticles = particleSystem -> createParticles ();
 }
 
 void
