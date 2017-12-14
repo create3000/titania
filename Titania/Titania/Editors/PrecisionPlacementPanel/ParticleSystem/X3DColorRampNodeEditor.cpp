@@ -105,6 +105,37 @@ X3DColorRampNodeEditor::initialize ()
 { }
 
 void
+X3DColorRampNodeEditor::set_selection (const X3D::MFNode & selection)
+{
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("colorRamp") .removeInterest (&X3DColorRampNodeEditor::set_color, this);
+		}
+		catch (const X3D::X3DError & error)
+		{ }		
+	}
+
+	parents = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::ParticleSystem }, false);
+
+	gradient .setPositionNodes (parents);
+	colorKey .setNodes (parents);
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::SFNode> ("colorRamp") .addInterest (&X3DColorRampNodeEditor::set_color, this);
+		}
+		catch (const X3D::X3DError & error)
+		{ }		
+	}
+
+	set_color ();
+}
+
+void
 X3DColorRampNodeEditor::on_gradient_index_changed ()
 {
 	if (changing)
@@ -148,37 +179,6 @@ X3DColorRampNodeEditor::on_gradient_color_rgba_index_changed ()
 }
 
 void
-X3DColorRampNodeEditor::set_selection (const X3D::MFNode & selection)
-{
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("colorRamp") .removeInterest (&X3DColorRampNodeEditor::set_color, this);
-		}
-		catch (const X3D::X3DError & error)
-		{ }		
-	}
-
-	parents = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::ParticleSystem }, false);
-
-	gradient .setPositionNodes (parents);
-	colorKey .setNodes (parents);
-
-	for (const auto & parent : parents)
-	{
-		try
-		{
-			parent -> getField <X3D::SFNode> ("colorRamp") .addInterest (&X3DColorRampNodeEditor::set_color, this);
-		}
-		catch (const X3D::X3DError & error)
-		{ }		
-	}
-
-	set_color ();
-}
-
-void
 X3DColorRampNodeEditor::on_color_ramp_unlink_clicked ()
 {
 	X3D::UndoStepPtr undoStep;
@@ -191,8 +191,9 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 {
 	try
 	{
-		getColorRampGrid ()     .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
-		getColorRampRGBAGrid () .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
+		getColorRampGradientKeyBox () .set_visible (getColorRampTypeButton () .get_active_row_number () > 0);
+		getColorRampGrid ()           .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
+		getColorRampRGBAGrid ()       .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
 
 		if (changing)
 			return;

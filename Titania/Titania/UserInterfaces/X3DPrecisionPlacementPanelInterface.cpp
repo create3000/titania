@@ -375,6 +375,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("CreateColorRampBox", m_CreateColorRampBox);
 	m_builder -> get_widget ("ColorRampTypeButton", m_ColorRampTypeButton);
 	m_builder -> get_widget ("ColorRampUnlinkButton", m_ColorRampUnlinkButton);
+	m_builder -> get_widget ("ColorRampGradientKeyBox", m_ColorRampGradientKeyBox);
 	m_builder -> get_widget ("ColorRampGradientBox", m_ColorRampGradientBox);
 	m_builder -> get_widget ("ColorKeySpinButton", m_ColorKeySpinButton);
 	m_builder -> get_widget ("ColorRampGrid", m_ColorRampGrid);

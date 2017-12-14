@@ -1269,6 +1269,10 @@ public:
 	{ return *m_ColorRampUnlinkButton; }
 
 	Gtk::Box &
+	getColorRampGradientKeyBox () const
+	{ return *m_ColorRampGradientKeyBox; }
+
+	Gtk::Box &
 	getColorRampGradientBox () const
 	{ return *m_ColorRampGradientBox; }
 
@@ -1901,6 +1905,7 @@ private:
 	Gtk::Box* m_CreateColorRampBox;
 	Gtk::ComboBoxText* m_ColorRampTypeButton;
 	Gtk::Button* m_ColorRampUnlinkButton;
+	Gtk::Box* m_ColorRampGradientKeyBox;
 	Gtk::Box* m_ColorRampGradientBox;
 	Gtk::SpinButton* m_ColorKeySpinButton;
 	Gtk::Grid* m_ColorRampGrid;

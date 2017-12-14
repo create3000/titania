@@ -635,9 +635,21 @@ MFColorRGBAButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & contex
 			const int32_t row    = i / columns;
 			const double  x      = colorsBorder [0] + column * colorsSize + column * colorsGap;
 			const double  y      = colorsBorder [3] + row * colorsSize + row * colorsGap;
+			const double  w      = std::floor (colorsSize / 2);
+
+			draw_checker_board (context,
+			                    2, 2,
+			                    X3D::Color4f (0.6, 0.6, 0.6, 1),
+			                    X3D::Color4f (0.4, 0.4, 0.4, 1),
+			                    x, y,
+			                    colorsSize - w, colorsSize);
 
 			context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), color .getAlpha ());
-			context -> rectangle (x, y, colorsSize, colorsSize);
+			context -> rectangle (x, y, colorsSize - w, colorsSize);
+			context -> fill ();
+
+			context -> set_source_rgb (color .getRed (), color .getGreen (), color .getBlue ());
+			context -> rectangle (x + w, y, colorsSize - w, colorsSize);
 			context -> fill ();
 
 			if (i == getIndex ())

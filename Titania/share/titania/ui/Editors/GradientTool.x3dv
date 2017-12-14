@@ -9,7 +9,7 @@ META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/GradientTool.x3dv"
-META "modified" "Thu, 14 Dec 2017 04:22:52 GMT"
+META "modified" "Thu, 14 Dec 2017 09:04:40 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -92,15 +92,15 @@ PROTO Arrow [
                           filled FALSE
                           hatched FALSE
                         }
-                        lineProperties DEF _4 LineProperties {
-                          linewidthScaleFactor 2
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 1
                         }
                         material Material {
                           diffuseColor 0 0 0
-                          emissiveColor 0.702 0.702 0.702
+                          emissiveColor 1 1 1
                         }
                       }
-                      geometry DEF _5 TriangleSet2D {
+                      geometry DEF _4 TriangleSet2D {
                         vertices [
                           0 1,
                           -0.866025 -0.5,
@@ -111,12 +111,14 @@ PROTO Arrow [
                     Shape {
                       appearance Appearance {
                         fillProperties USE _3
-                        lineProperties USE _4
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 2
+                        }
                         material Material {
                           diffuseColor 0 0 0
                         }
                       }
-                      geometry USE _5
+                      geometry USE _4
                     }
                   ]
                 }
@@ -125,11 +127,11 @@ PROTO Arrow [
           }
         }
       }
-      DEF _6 TouchSensor {
+      DEF _5 TouchSensor {
         isActive IS isActive
         touchTime IS touchTime
       }
-      DEF _7 PlaneSensor {
+      DEF _6 PlaneSensor {
         enabled IS enabled
         offset IS offset
         maxPosition 1 0
@@ -138,30 +140,32 @@ PROTO Arrow [
     ]
   }
 
-  DEF _8 DoubleClick {
+  DEF _7 DoubleClick {
     doubleClickTime IS doubleClickTime
   }
 
-  DEF _9 BooleanToggle {
+  DEF _8 BooleanToggle {
     toggle IS active
   }
 
-  DEF _10 BooleanFilter { }
+  DEF _9 BooleanFilter { }
 
-  DEF _11 IntegerTrigger { }
+  DEF _10 IntegerTrigger {
+    integerKey 0
+  }
 
-  DEF _12 IntegerTrigger {
+  DEF _11 IntegerTrigger {
     integerKey 1
   }
 
-  ROUTE _7.translation_changed TO _1.set_translation
-  ROUTE _6.touchTime TO _8.set_time
-  ROUTE _9.toggle_changed TO _10.set_boolean
-  ROUTE _10.inputFalse TO _11.set_boolean
+  ROUTE _6.translation_changed TO _1.set_translation
+  ROUTE _5.touchTime TO _7.set_time
+  ROUTE _8.toggle_changed TO _9.set_boolean
+  ROUTE _9.inputFalse TO _10.set_boolean
+  ROUTE _10.triggerValue TO _2.set_whichChoice
+  ROUTE _9.inputTrue TO _11.set_boolean
   ROUTE _11.triggerValue TO _2.set_whichChoice
-  ROUTE _10.inputTrue TO _12.set_boolean
-  ROUTE _12.triggerValue TO _2.set_whichChoice
-  ROUTE _7.translation_changed TO _7.set_offset
+  ROUTE _6.translation_changed TO _6.set_offset
 }
 
 PROTO Gradient [
@@ -179,7 +183,7 @@ PROTO Gradient [
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _13 IndexedQuadSet {
+    geometry DEF _12 IndexedQuadSet {
       index [
         0,
         2,
@@ -212,7 +216,7 @@ PROTO Gradient [
   DEF GradientScript Script {
     inputOutput    MFFloat     position IS position
     inputOutput    MFColorRGBA color IS color
-    initializeOnly SFNode      geometry USE _13
+    initializeOnly SFNode      geometry USE _12
 
     url "ecmascript:
 
@@ -331,11 +335,11 @@ LayerSet {
       }
       viewport Viewport { }
       children [
-        DEF Gradient_14 Transform {
+        DEF Gradient_13 Transform {
           translation -0.5 0 0
           scale 1 0.5 1
           children [
-            DEF _15 Gradient {
+            DEF _14 Gradient {
               position [
                 0.147972,
                 0.850492
@@ -345,8 +349,8 @@ LayerSet {
                 0 0 0 0
               ]
             }
-            DEF _16 TouchSensor { }
-            DEF _17 DoubleClick { }
+            DEF _15 TouchSensor { }
+            DEF _16 DoubleClick { }
           ]
         }
         DEF GradientEditorScript Script {
@@ -375,15 +379,15 @@ LayerSet {
           initializeOnly SFInt32     whichChoice 0
           initializeOnly SFNode      arrows DEF Colors Group {
             children [
-              DEF _18 Arrow {
+              DEF _17 Arrow {
                 color 0.844259 0.651834 0.281599
               }
-              DEF _19 Arrow {
+              DEF _18 Arrow {
                 color 0.643032 0.378889 0.422449
               }
             ]
           }
-          initializeOnly SFNode      gradientTouch USE _16
+          initializeOnly SFNode      gradientTouch USE _15
 
           url "ecmascript:
 
@@ -727,13 +731,13 @@ function lowerBound (array, first, last, value, comp)
   ]
 }
 
-ROUTE _16.touchTime TO _17.set_time
-ROUTE GradientEditorScript.position_changed TO _15.set_position
-ROUTE GradientEditorScript.color_changed TO _15.set_color
+ROUTE _15.touchTime TO _16.set_time
+ROUTE GradientEditorScript.position_changed TO _14.set_position
+ROUTE GradientEditorScript.color_changed TO _14.set_color
+ROUTE _17.isActive TO GradientEditorScript.set_active
 ROUTE _18.isActive TO GradientEditorScript.set_active
-ROUTE _19.isActive TO GradientEditorScript.set_active
-ROUTE _17.doubleClickTime TO GradientEditorScript.set_addTime
-ROUTE _19.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _16.doubleClickTime TO GradientEditorScript.set_addTime
 ROUTE _18.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _17.doubleClickTime TO GradientEditorScript.set_removeTime
 
 EXPORT GradientEditorScript AS Tool
