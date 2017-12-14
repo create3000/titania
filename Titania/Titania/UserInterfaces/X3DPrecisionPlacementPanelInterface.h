@@ -1268,21 +1268,29 @@ public:
 	getColorRampUnlinkButton () const
 	{ return *m_ColorRampUnlinkButton; }
 
-	Gtk::Box &
+	Gtk::Grid &
 	getColorRampGradientKeyBox () const
 	{ return *m_ColorRampGradientKeyBox; }
-
-	Gtk::Box &
-	getColorRampGradientBox () const
-	{ return *m_ColorRampGradientBox; }
 
 	Gtk::SpinButton &
 	getColorKeySpinButton () const
 	{ return *m_ColorKeySpinButton; }
 
+	Gtk::Box &
+	getColorRampGradientBox () const
+	{ return *m_ColorRampGradientBox; }
+
 	Gtk::Grid &
 	getColorRampGrid () const
 	{ return *m_ColorRampGrid; }
+
+	Gtk::Box &
+	getColorRampBox () const
+	{ return *m_ColorRampBox; }
+
+	Gtk::Button &
+	getColorRampButton () const
+	{ return *m_ColorRampButton; }
 
 	Gtk::ScrolledWindow &
 	getColorRampScrolledWindow () const
@@ -1296,17 +1304,17 @@ public:
 	getRemoveColorRampButton () const
 	{ return *m_RemoveColorRampButton; }
 
-	Gtk::Box &
-	getColorRampBox () const
-	{ return *m_ColorRampBox; }
-
-	Gtk::Button &
-	getColorRampButton () const
-	{ return *m_ColorRampButton; }
-
 	Gtk::Grid &
 	getColorRampRGBAGrid () const
 	{ return *m_ColorRampRGBAGrid; }
+
+	Gtk::Box &
+	getColorRampRGBABox () const
+	{ return *m_ColorRampRGBABox; }
+
+	Gtk::Button &
+	getColorRampRGBAButton () const
+	{ return *m_ColorRampRGBAButton; }
 
 	Gtk::ScrolledWindow &
 	getColorRampRGBAScrolledWindow () const
@@ -1319,14 +1327,6 @@ public:
 	Gtk::Button &
 	getRemoveColorRampRGBAButton () const
 	{ return *m_RemoveColorRampRGBAButton; }
-
-	Gtk::Box &
-	getColorRampRGBABox () const
-	{ return *m_ColorRampRGBABox; }
-
-	Gtk::Button &
-	getColorRampRGBAButton () const
-	{ return *m_ColorRampRGBAButton; }
 
 	Gtk::Expander &
 	getGeometrySelectionExpander () const
@@ -1905,21 +1905,21 @@ private:
 	Gtk::Box* m_CreateColorRampBox;
 	Gtk::ComboBoxText* m_ColorRampTypeButton;
 	Gtk::Button* m_ColorRampUnlinkButton;
-	Gtk::Box* m_ColorRampGradientKeyBox;
-	Gtk::Box* m_ColorRampGradientBox;
+	Gtk::Grid* m_ColorRampGradientKeyBox;
 	Gtk::SpinButton* m_ColorKeySpinButton;
+	Gtk::Box* m_ColorRampGradientBox;
 	Gtk::Grid* m_ColorRampGrid;
+	Gtk::Box* m_ColorRampBox;
+	Gtk::Button* m_ColorRampButton;
 	Gtk::ScrolledWindow* m_ColorRampScrolledWindow;
 	Gtk::Button* m_AddColorRampButton;
 	Gtk::Button* m_RemoveColorRampButton;
-	Gtk::Box* m_ColorRampBox;
-	Gtk::Button* m_ColorRampButton;
 	Gtk::Grid* m_ColorRampRGBAGrid;
+	Gtk::Box* m_ColorRampRGBABox;
+	Gtk::Button* m_ColorRampRGBAButton;
 	Gtk::ScrolledWindow* m_ColorRampRGBAScrolledWindow;
 	Gtk::Button* m_AddColorRampRGBAButton;
 	Gtk::Button* m_RemoveColorRampRGBAButton;
-	Gtk::Box* m_ColorRampRGBABox;
-	Gtk::Button* m_ColorRampRGBAButton;
 	Gtk::Expander* m_GeometrySelectionExpander;
 	Gtk::Grid* m_GeometrySelectionBox;
 	Gtk::Box* m_GeometrySelectionTranslationBox;

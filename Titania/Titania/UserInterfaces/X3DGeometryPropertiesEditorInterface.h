@@ -1244,10 +1244,6 @@ public:
 	getColorRGBAButton () const
 	{ return *m_ColorRGBAButton; }
 
-	Gtk::Box &
-	getColorsBox () const
-	{ return *m_ColorsBox; }
-
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
 	{ return *m_PrimitiveCountEventBox; }
@@ -1755,7 +1751,6 @@ private:
 	Gtk::Button* m_RemoveColorRGBAButton;
 	Gtk::Box* m_ColorRGBABox;
 	Gtk::Button* m_ColorRGBAButton;
-	Gtk::Box* m_ColorsBox;
 	Gtk::EventBox* m_PrimitiveCountEventBox;
 	Gtk::Expander* m_PrimitiveCountExpander;
 	Gtk::Box* m_PrimitiveCountBox;

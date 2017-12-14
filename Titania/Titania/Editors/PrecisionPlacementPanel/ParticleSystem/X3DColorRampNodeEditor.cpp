@@ -191,17 +191,19 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 {
 	try
 	{
-		getColorRampGradientKeyBox () .set_visible (getColorRampTypeButton () .get_active_row_number () > 0);
-		getColorRampGrid ()           .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
-		getColorRampRGBAGrid ()       .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
+		getColorRampGradientKeyBox ()     .set_visible (getColorRampTypeButton () .get_active_row_number () > 0);
+		getColorRampScrolledWindow ()     .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
+		getColorRampRGBAScrolledWindow () .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
+		getColorRampGrid ()               .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
+		getColorRampRGBAGrid ()           .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
 
 		if (changing)
 			return;
 	
-		beginUndoGroup ("Color Ramp", undoStep);
+		beginUndoGroup ("colorRamp", undoStep);
 		addUndoFunction <X3D::MFFloat> (parents, "colorKey", undoStep);
 		addUndoFunction <X3D::SFNode> (parents, "colorRamp", undoStep);
-		endUndoGroup ("Color Ramp", undoStep);
+		endUndoGroup ("colorRamp", undoStep);
 
 		const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
 
@@ -265,10 +267,10 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 			}
 		}
 
-		beginRedoGroup ("Color Ramp", undoStep);
+		beginRedoGroup ("colorRamp", undoStep);
 		addRedoFunction <X3D::MFFloat> (parents, "colorKey", undoStep);
 		addRedoFunction <X3D::SFNode> (parents, "colorRamp", undoStep);
-		endRedoGroup ("Color Ramp", undoStep);
+		endRedoGroup ("colorRamp", undoStep);
 	
 		getColorRampUnlinkButton () .set_sensitive (getColorRampTypeButton () .get_active_row_number () > 0 and colorNode -> getCloneCount () > 1);
 
@@ -289,7 +291,7 @@ X3DColorRampNodeEditor::set_color ()
 void
 X3DColorRampNodeEditor::set_node ()
 {
-	resetUndoGroup ("Color Ramp", undoStep);
+	resetUndoGroup ("colorRamp", undoStep);
 
 	// Find Color in selection
 
@@ -312,8 +314,6 @@ X3DColorRampNodeEditor::set_node ()
 	getCreateColorRampBox ()    .set_sensitive (hasParent);
 	getColorRampTypeButton ()   .set_sensitive (hasField);
 	getColorRampUnlinkButton () .set_sensitive (active > 0 and colorNode -> getCloneCount () > 1);
-	getColorRampGrid ()         .set_visible (active > 0 and colorNode -> isType ({ X3D::X3DConstants::Color }));
-	getColorRampRGBAGrid ()     .set_visible (active > 0 and colorNode -> isType ({ X3D::X3DConstants::ColorRGBA }));
 
 	changing = false;
 

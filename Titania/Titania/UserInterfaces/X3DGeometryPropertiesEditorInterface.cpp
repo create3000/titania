@@ -369,7 +369,6 @@ X3DGeometryPropertiesEditorInterface::create ()
 	m_builder -> get_widget ("RemoveColorRGBAButton", m_RemoveColorRGBAButton);
 	m_builder -> get_widget ("ColorRGBABox", m_ColorRGBABox);
 	m_builder -> get_widget ("ColorRGBAButton", m_ColorRGBAButton);
-	m_builder -> get_widget ("ColorsBox", m_ColorsBox);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);
