@@ -198,7 +198,10 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 		if (changing)
 			return;
 	
+		beginUndoGroup ("Color Ramp", undoStep);
+		addUndoFunction <X3D::MFFloat> (parents, "colorKey", undoStep);
 		addUndoFunction <X3D::SFNode> (parents, "colorRamp", undoStep);
+		endUndoGroup ("Color Ramp", undoStep);
 
 		const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
 
@@ -210,6 +213,13 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 		{
 			for (const auto & parent : parents)
 			{
+				try
+				{
+					parent -> getField <X3D::MFFloat> ("colorKey") .clear ();
+				}
+				catch (const X3D::X3DError & error)
+				{ }		
+
 				try
 				{
 					auto & field = parent -> getField <X3D::SFNode> ("colorRamp");
@@ -255,7 +265,10 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 			}
 		}
 
+		beginRedoGroup ("Color Ramp", undoStep);
+		addRedoFunction <X3D::MFFloat> (parents, "colorKey", undoStep);
 		addRedoFunction <X3D::SFNode> (parents, "colorRamp", undoStep);
+		endRedoGroup ("Color Ramp", undoStep);
 	
 		getColorRampUnlinkButton () .set_sensitive (getColorRampTypeButton () .get_active_row_number () > 0 and colorNode -> getCloneCount () > 1);
 
@@ -276,7 +289,7 @@ X3DColorRampNodeEditor::set_color ()
 void
 X3DColorRampNodeEditor::set_node ()
 {
-	undoStep .reset ();
+	resetUndoGroup ("Color Ramp", undoStep);
 
 	// Find Color in selection
 
