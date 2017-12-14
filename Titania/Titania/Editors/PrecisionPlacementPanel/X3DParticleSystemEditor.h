@@ -53,12 +53,14 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "ParticleSystem/X3DColorRampNodeEditor.h"
 
 namespace titania {
 namespace puck {
 
 class X3DParticleSystemEditor :
-	virtual public X3DPrecisionPlacementPanelInterface
+	virtual public X3DPrecisionPlacementPanelInterface,
+	public X3DColorRampNodeEditor
 {
 public:
 

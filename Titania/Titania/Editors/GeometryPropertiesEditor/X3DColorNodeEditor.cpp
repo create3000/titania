@@ -50,9 +50,6 @@
 
 #include "X3DColorNodeEditor.h"
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/RotationTool.h"
-
 #include <Titania/X3D/Components/Rendering/Color.h>
 #include <Titania/X3D/Components/Rendering/ColorRGBA.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>

@@ -345,6 +345,8 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPolylineEmitterEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DVolumeEmitterEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DColorRampNodeEditor.cpp" />
+    <Compile Include="Titania\ComposedWidgets\GradientTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3093,6 +3095,8 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DPolylineEmitterEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DVolumeEmitterEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DColorRampNodeEditor.h" />
+    <None Include="Titania\ComposedWidgets\GradientTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3249,6 +3253,7 @@
     <Folder Include="share\titania\Library\Components\VolumeRendering\" />
     <Folder Include="share\gtksourceview-3.0\styles\" />
     <Folder Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\" />
+    <Folder Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

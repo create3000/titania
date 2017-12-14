@@ -69,6 +69,9 @@ public:
 	                const std::string &,
 	                const std::string &);
 
+	void
+	setNodes (const X3D::MFNode & value);
+
 	///  @name Destruction
 
 	virtual
@@ -90,8 +93,8 @@ private:
 	get_position (const X3D::MFFloat &) final override;
 
 	virtual
-	std::pair <X3D::MFFloat, X3D::MFColor>
-	get_tool_values (const X3D::MFFloat &, const X3D::MFColor &) final override;
+	std::pair <X3D::MFFloat, X3D::MFColorRGBA>
+	get_tool_values (const X3D::MFFloat &, const X3D::MFColorRGBA &) final override;
 
 };
 

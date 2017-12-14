@@ -78,9 +78,9 @@ X3DConeEmitterEditor::X3DConeEmitterEditor () :
 }
 
 void
-X3DConeEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
+X3DConeEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::ConeEmitter });
+	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::ConeEmitter }, false);
 
 	getConeEmitterBox () .set_visible (not nodes .empty ());
 

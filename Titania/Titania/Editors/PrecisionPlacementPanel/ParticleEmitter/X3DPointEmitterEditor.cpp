@@ -73,9 +73,9 @@ X3DPointEmitterEditor::X3DPointEmitterEditor () :
 { }
 
 void
-X3DPointEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
+X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::PointEmitter });
+	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
 
 	getPointEmitterBox () .set_visible (not nodes .empty ());
 

@@ -68,9 +68,9 @@ X3DVolumeEmitterEditor::X3DVolumeEmitterEditor () :
 { }
 
 void
-X3DVolumeEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
+X3DVolumeEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::VolumeEmitter });
+	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::VolumeEmitter }, false);
 
 	getVolumeEmitterBox () .set_visible (not nodes .empty ());
 

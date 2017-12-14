@@ -51,12 +51,9 @@
 #ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DCOLOR_NODE_EDITOR_H__
 #define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_X3DCOLOR_NODE_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 #include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/MFColorButton.h"
-#include "../../ComposedWidgets/MFColorRGBAButton.h"
 
 namespace titania {
 namespace puck {

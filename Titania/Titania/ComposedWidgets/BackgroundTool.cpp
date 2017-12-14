@@ -67,6 +67,13 @@ BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
 }
 
 void
+BackgroundTool::setNodes (const X3D::MFNode & value)
+{
+	X3DGradientTool::setPositionNodes (value);
+	X3DGradientTool::setColorNodes (value);
+}
+
+void
 BackgroundTool::realize ()
 {
 	try
@@ -120,8 +127,8 @@ BackgroundTool::get_position (const X3D::MFFloat & position)
 	return angle;
 }
 
-std::pair <X3D::MFFloat, X3D::MFColor>
-BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+std::pair <X3D::MFFloat, X3D::MFColorRGBA>
+BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColorRGBA & colorValue)
 {
 	X3D::MFFloat position;
 

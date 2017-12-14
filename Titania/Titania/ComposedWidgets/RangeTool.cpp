@@ -70,8 +70,10 @@ void
 RangeTool::setNodes (const X3D::MFNode & nodes)
 {
 	if (nodes .empty ())
-		X3DGradientTool::setNodes ({ });
-
+	{
+		X3DGradientTool::setPositionNodes ({ });
+		X3DGradientTool::setColorNodes ({ });
+	}
 	else
 	{
 		auxNode = new X3D::FieldSet (getMasterBrowser ());
@@ -97,7 +99,8 @@ RangeTool::setNodes (const X3D::MFNode & nodes)
 		}
 
 		auxNode -> setup ();
-		X3DGradientTool::setNodes ({ auxNode });
+		X3DGradientTool::setPositionNodes ({ auxNode });
+		X3DGradientTool::setColorNodes ({ auxNode });
 	}
 }
 
@@ -115,11 +118,11 @@ RangeTool::get_position (const X3D::MFFloat & position)
 	return range;
 }
 
-std::pair <X3D::MFFloat, X3D::MFColor>
-RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+std::pair <X3D::MFFloat, X3D::MFColorRGBA>
+RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColorRGBA & colorValue)
 {
-	X3D::MFFloat position;
-	X3D::MFColor color;
+	X3D::MFFloat     position;
+	X3D::MFColorRGBA color;
 
 	if (not positionValue .empty ())
 	{
@@ -132,7 +135,7 @@ RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFCol
 			const auto p = value / positionFactor;
 
 			position .emplace_back (p);
-			color    .emplace_back (1 - p, 1 - p, 1 - p);
+			color    .emplace_back (1 - p, 1 - p, 1 - p, 1);
 		}	
 	}
 

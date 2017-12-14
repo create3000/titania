@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,67 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_GRADIENT_TOOL_H__
+#define __TITANIA_COMPOSED_WIDGETS_GRADIENT_TOOL_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/RangeTool.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "../ComposedWidgets/X3DGradientTool.h"
 
 namespace titania {
 namespace puck {
 
-class X3DLODEditor :
-	virtual public X3DPrecisionPlacementPanelInterface
+class GradientTool :
+	public X3DGradientTool
 {
 public:
+
+	///  @name Construction
+
+	GradientTool (X3DBaseInterface* const editor,
+	              const std::string & description,
+	              Gtk::Box & box,
+	              const std::string & positionName,
+	              const std::string & colorName);
 
 	///  @name Destruction
 
 	virtual
-	~X3DLODEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DLODEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode & selection) override;
+	~GradientTool () final override;
 
 
 private:
 
-	///  @name Event handlers
-	
 	virtual
 	void
-	on_lod_move_center_button_clicked () final override;
-
-	void
-	on_range_index_changed ();
-
-	virtual
-	void
-	on_lod_keep_current_level_toggled () final override;
-
-	///  @name Members
-
-	NameEntry                          nodeName;
-	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
-	X3DFieldAdjustment3 <X3D::SFVec3f> center;
-	RangeTool                          range;
-	X3DFieldAdjustment <X3D::MFFloat>  singleRange;
-	X3DFieldAdjustment <X3D::SFInt32>  level_changed;
-	
-	X3D::X3DPtr <X3D::LOD> lod;
+	realize () final override;
 
 };
 

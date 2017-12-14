@@ -125,6 +125,18 @@ public:
 	{ return m_BillboardAxisOfRotationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorKeyAdjustment () const
+	{ return m_ColorKeyAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorRampAdjustment () const
+	{ return m_ColorRampAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorRampRGBAAdjustment () const
+	{ return m_ColorRampRGBAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getConeEmitterAngleAdjustment () const
 	{ return m_ConeEmitterAngleAdjustment; }
 
@@ -1241,6 +1253,78 @@ public:
 	{ return *m_EmitterSurfaceAreaSpinButton; }
 
 	Gtk::Expander &
+	getColorRampExpander () const
+	{ return *m_ColorRampExpander; }
+
+	Gtk::Box &
+	getCreateColorRampBox () const
+	{ return *m_CreateColorRampBox; }
+
+	Gtk::ComboBoxText &
+	getColorRampTypeButton () const
+	{ return *m_ColorRampTypeButton; }
+
+	Gtk::Button &
+	getColorRampUnlinkButton () const
+	{ return *m_ColorRampUnlinkButton; }
+
+	Gtk::Box &
+	getColorRampGradientBox () const
+	{ return *m_ColorRampGradientBox; }
+
+	Gtk::SpinButton &
+	getColorKeySpinButton () const
+	{ return *m_ColorKeySpinButton; }
+
+	Gtk::Grid &
+	getColorRampGrid () const
+	{ return *m_ColorRampGrid; }
+
+	Gtk::ScrolledWindow &
+	getColorRampScrolledWindow () const
+	{ return *m_ColorRampScrolledWindow; }
+
+	Gtk::Button &
+	getAddColorRampButton () const
+	{ return *m_AddColorRampButton; }
+
+	Gtk::Button &
+	getRemoveColorRampButton () const
+	{ return *m_RemoveColorRampButton; }
+
+	Gtk::Box &
+	getColorRampBox () const
+	{ return *m_ColorRampBox; }
+
+	Gtk::Button &
+	getColorRampButton () const
+	{ return *m_ColorRampButton; }
+
+	Gtk::Grid &
+	getColorRampRGBAGrid () const
+	{ return *m_ColorRampRGBAGrid; }
+
+	Gtk::ScrolledWindow &
+	getColorRampRGBAScrolledWindow () const
+	{ return *m_ColorRampRGBAScrolledWindow; }
+
+	Gtk::Button &
+	getAddColorRampRGBAButton () const
+	{ return *m_AddColorRampRGBAButton; }
+
+	Gtk::Button &
+	getRemoveColorRampRGBAButton () const
+	{ return *m_RemoveColorRampRGBAButton; }
+
+	Gtk::Box &
+	getColorRampRGBABox () const
+	{ return *m_ColorRampRGBABox; }
+
+	Gtk::Button &
+	getColorRampRGBAButton () const
+	{ return *m_ColorRampRGBAButton; }
+
+	Gtk::Expander &
 	getGeometrySelectionExpander () const
 	{ return *m_GeometrySelectionExpander; }
 
@@ -1475,6 +1559,14 @@ public:
 	on_emitter_unlink_clicked () = 0;
 
 	virtual
+	void
+	on_color_ramp_type_changed () = 0;
+
+	virtual
+	void
+	on_color_ramp_unlink_clicked () = 0;
+
+	virtual
 	bool
 	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) = 0;
 
@@ -1523,6 +1615,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorKeyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorRampAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorRampRGBAAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterDirectionXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeEmitterDirectionYAdjustment;
@@ -1802,6 +1897,24 @@ private:
 	Gtk::SpinButton* m_EmitterVariationSpinButton;
 	Gtk::SpinButton* m_EmitterMassSpinButton;
 	Gtk::SpinButton* m_EmitterSurfaceAreaSpinButton;
+	Gtk::Expander* m_ColorRampExpander;
+	Gtk::Box* m_CreateColorRampBox;
+	Gtk::ComboBoxText* m_ColorRampTypeButton;
+	Gtk::Button* m_ColorRampUnlinkButton;
+	Gtk::Box* m_ColorRampGradientBox;
+	Gtk::SpinButton* m_ColorKeySpinButton;
+	Gtk::Grid* m_ColorRampGrid;
+	Gtk::ScrolledWindow* m_ColorRampScrolledWindow;
+	Gtk::Button* m_AddColorRampButton;
+	Gtk::Button* m_RemoveColorRampButton;
+	Gtk::Box* m_ColorRampBox;
+	Gtk::Button* m_ColorRampButton;
+	Gtk::Grid* m_ColorRampRGBAGrid;
+	Gtk::ScrolledWindow* m_ColorRampRGBAScrolledWindow;
+	Gtk::Button* m_AddColorRampRGBAButton;
+	Gtk::Button* m_RemoveColorRampRGBAButton;
+	Gtk::Box* m_ColorRampRGBABox;
+	Gtk::Button* m_ColorRampRGBAButton;
 	Gtk::Expander* m_GeometrySelectionExpander;
 	Gtk::Grid* m_GeometrySelectionBox;
 	Gtk::Box* m_GeometrySelectionTranslationBox;

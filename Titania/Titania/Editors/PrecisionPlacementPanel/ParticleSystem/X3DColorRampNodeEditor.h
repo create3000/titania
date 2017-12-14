@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,17 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
-#define __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DCOLOR_RAMP_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DCOLOR_RAMP_NODE_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/RangeTool.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "../../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+
+#include "../../../ComposedWidgets.h"
 
 namespace titania {
 namespace puck {
 
-class X3DLODEditor :
+class X3DColorRampNodeEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
@@ -66,49 +66,67 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLODEditor () override;
+	~X3DColorRampNodeEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DLODEditor ();
+	X3DColorRampNodeEditor ();
 
 	virtual
 	void
 	initialize () override;
 
-	virtual
 	void
-	set_selection (const X3D::MFNode & selection) override;
+	set_selection (const X3D::MFNode & selection);
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
+
+	void
+	on_gradient_index_changed ();
 	
+	void
+	on_gradient_color_index_changed ();
+	
+	void
+	on_gradient_color_rgba_index_changed ();
+
 	virtual
 	void
-	on_lod_move_center_button_clicked () final override;
-
-	void
-	on_range_index_changed ();
+	on_color_ramp_unlink_clicked () final override;
 
 	virtual
 	void
-	on_lod_keep_current_level_toggled () final override;
+	on_color_ramp_type_changed () final override;
+
+	void
+	set_color ();
+
+	void
+	set_node ();
+
+	void
+	set_widgets ();
+
+	void
+	connectColor (const X3D::SFNode & field);
 
 	///  @name Members
+	GradientTool                      gradient;
+	X3DFieldAdjustment <X3D::MFFloat> colorKey;
+	MFColorButton                     color;
+	MFColorRGBAButton                 colorRGBA;
 
-	NameEntry                          nodeName;
-	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
-	X3DFieldAdjustment3 <X3D::SFVec3f> center;
-	RangeTool                          range;
-	X3DFieldAdjustment <X3D::MFFloat>  singleRange;
-	X3DFieldAdjustment <X3D::SFInt32>  level_changed;
-	
-	X3D::X3DPtr <X3D::LOD> lod;
+	X3D::MFNode                     parents;
+	X3D::SFTime                     colorBuffer;
+	X3D::X3DPtr <X3D::X3DColorNode> colorNode;
+	X3D::UndoStepPtr                undoStep;
+	bool                            changing;
 
 };
 

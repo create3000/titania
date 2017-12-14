@@ -66,9 +66,9 @@ X3DExplosionEmitterEditor::X3DExplosionEmitterEditor () :
 { }
 
 void
-X3DExplosionEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
+X3DExplosionEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::ExplosionEmitter });
+	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::ExplosionEmitter }, false);
 
 	getExplosionEmitterBox () .set_visible (not nodes .empty ());
 

@@ -67,9 +67,9 @@ X3DPolylineEmitterEditor::X3DPolylineEmitterEditor () :
 { }
 
 void
-X3DPolylineEmitterEditor::set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems)
+X3DPolylineEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (particleSystems, { X3D::X3DConstants::PolylineEmitter });
+	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PolylineEmitter }, false);
 
 	getPolylineEmitterBox () .set_visible (not nodes .empty ());
 

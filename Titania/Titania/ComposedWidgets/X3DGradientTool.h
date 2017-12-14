@@ -73,12 +73,20 @@ public:
 
 	///  @name Member access
 
+	void
+	setRGBA (const bool value)
+	{ rgba = value; }
+
+	bool
+	getRGBA () const
+	{ return rgba; }
+
 	const std::string &
 	getDescription () const
 	{ return description; }
 
 	void
-	setIndex (const int32_t);
+	setIndex (const int32_t value);
 
 	int32_t
 	getIndex () const
@@ -86,11 +94,19 @@ public:
 
 	virtual
 	void
-	setNodes (const X3D::MFNode &);
+	setPositionNodes (const X3D::MFNode & value);
 
 	const X3D::MFNode &
-	getNodes ()
-	{ return nodes; }
+	getPositionNodes ()
+	{ return positionNodes; }
+
+	virtual
+	void
+	setColorNodes (const X3D::MFNode & value);
+
+	const X3D::MFNode &
+	getColorNodes ()
+	{ return colorNodes; }
 
 	void
 	addClass (const std::string & name)
@@ -140,6 +156,11 @@ protected:
 	get_color (const X3D::MFColor & value)
 	{ return value; }
 
+	virtual
+	X3D::MFColorRGBA
+	get_color (const X3D::MFColorRGBA & value)
+	{ return value; }
+
 
 private:
 
@@ -169,7 +190,7 @@ private:
 	set_position (const X3D::MFFloat &);
 
 	void
-	set_color (const X3D::MFColor &);
+	set_color (const X3D::MFColorRGBA &);
 
 	void
 	set_value (const X3D::time_type &);
@@ -181,8 +202,8 @@ private:
 	set_buffer ();
 
 	virtual
-	std::pair <X3D::MFFloat, X3D::MFColor>
-	get_tool_values (const X3D::MFFloat &, const X3D::MFColor &);
+	std::pair <X3D::MFFloat, X3D::MFColorRGBA>
+	get_tool_values (const X3D::MFFloat &, const X3D::MFColorRGBA &);
 
 	void
 	connectPosition (const X3D::MFFloat &);
@@ -190,19 +211,24 @@ private:
 	void
 	connectColor (const X3D::MFColor &);
 
+	void
+	connectColorRGBA (const X3D::MFColorRGBA &);
+
 	///  @name Members
 
 	sigc::signal <void> index_changed;
 	Gtk::Box &          box;
 	X3D::BrowserPtr     browser;
-	X3D::MFNode         nodes;
+	X3D::MFNode         positionNodes;
+	X3D::MFNode         colorNodes;
 	const std::string   description;
 	const std::string   positionName;
 	const std::string   colorName;
 	X3D::UndoStepPtr    undoStep;
 	X3D::SFTime         value;
-	X3D::MFColor        buffer;
+	X3D::MFColorRGBA    buffer;
 	int32_t             index;
+	bool                rgba;
 
 };
 

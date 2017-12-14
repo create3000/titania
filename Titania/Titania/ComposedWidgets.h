@@ -51,6 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_H__
 #define __TITANIA_COMPOSED_WIDGETS_H__
 
+#include "ComposedWidgets/GradientTool.h"
 #include "ComposedWidgets/MFColorButton.h"
 #include "ComposedWidgets/MFColorRGBAButton.h"
 #include "ComposedWidgets/MFStringComboBoxText.h"

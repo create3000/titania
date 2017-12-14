@@ -76,7 +76,7 @@ protected:
 
 	virtual
 	void
-	set_particle_systems (const X3D::X3DPtrArray <X3D::ParticleSystem> & particleSystems);
+	set_widgets (const X3D::MFNode & emitterNodes);
 
 
 private:

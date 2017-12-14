@@ -65,18 +65,20 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 	    index_changed (),
 	              box (box),
 	          browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/GradientTool.x3dv") })),
-	            nodes (),
+	    positionNodes (),
+	       colorNodes (),
 	      description (description),
 	     positionName (positionName),
 	        colorName (colorName),
 	         undoStep (),
 	            value (),
 	           buffer (),
-	            index (-1)
+	            index (-1),
+	             rgba (false)
 {
 	// Buffer
 
-	addChildObjects (browser, nodes, value, buffer);
+	addChildObjects (browser, positionNodes, colorNodes, value, buffer);
 
 	value  .addInterest (&X3DGradientTool::set_value, this);
 	buffer .addInterest (&X3DGradientTool::set_buffer, this);
@@ -102,12 +104,12 @@ X3DGradientTool::set_initialized ()
 	{
 		const auto tool = getTool ();
 
-		tool -> getField <X3D::SFTime>  ("outputAddTime")     .addInterest (&X3DGradientTool::set_addTime, this);
-		tool -> getField <X3D::SFTime>  ("outputRemoveTime")  .addInterest (&X3DGradientTool::set_removeTime, this);
-		tool -> getField <X3D::SFBool>  ("isActive")          .addInterest (&X3DGradientTool::set_active, this);
-		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (&X3DGradientTool::set_position, this);
-		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (&X3DGradientTool::set_color, this);
-		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (&X3DGradientTool::set_whichChoice, this);
+		tool -> getField <X3D::SFTime>      ("outputAddTime")     .addInterest (&X3DGradientTool::set_addTime,     this);
+		tool -> getField <X3D::SFTime>      ("outputRemoveTime")  .addInterest (&X3DGradientTool::set_removeTime,  this);
+		tool -> getField <X3D::SFBool>      ("isActive")          .addInterest (&X3DGradientTool::set_active,      this);
+		tool -> getField <X3D::MFFloat>     ("outputPosition")    .addInterest (&X3DGradientTool::set_position,    this);
+		tool -> getField <X3D::MFColorRGBA> ("outputColor")       .addInterest (&X3DGradientTool::set_color,       this);
+		tool -> getField <X3D::SFInt32>     ("outputWhichChoice") .addInterest (&X3DGradientTool::set_whichChoice, this);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -136,45 +138,59 @@ X3DGradientTool::setIndex (const int32_t value)
 }
 
 void
-X3DGradientTool::setNodes (const X3D::MFNode & value)
+X3DGradientTool::setPositionNodes (const X3D::MFNode & value)
 {
-	for (const auto & node : nodes)
+	for (const auto & positionNode : positionNodes)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .removeInterest (&X3DGradientTool::set_field, this);
+			positionNode -> getField <X3D::MFFloat> (positionName) .removeInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	for (const auto & node : nodes)
+	positionNodes = value;
+
+	for (const auto & positionNode : positionNodes)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .removeInterest (&X3DGradientTool::set_field, this);
+			positionNode -> getField <X3D::MFFloat> (positionName) .addInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	nodes = value;
+	set_field ();
+}
 
-	for (const auto & node : nodes)
+void
+X3DGradientTool::setColorNodes (const X3D::MFNode & value)
+{
+	for (const auto & colorNode : colorNodes)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .addInterest (&X3DGradientTool::set_field, this);
+			if (rgba)
+				colorNode -> getField <X3D::MFColorRGBA> (colorName) .removeInterest (&X3DGradientTool::set_field, this);
+			else
+				colorNode -> getField <X3D::MFColor> (colorName) .removeInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
-	for (const auto & node : nodes)
+	colorNodes = value;
+
+	for (const auto & colorNode : colorNodes)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .addInterest (&X3DGradientTool::set_field, this);
+			if (rgba)
+				colorNode -> getField <X3D::MFColorRGBA> (colorName) .addInterest (&X3DGradientTool::set_field, this);
+			else
+				colorNode -> getField <X3D::MFColor> (colorName) .addInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -190,7 +206,7 @@ X3DGradientTool::set_position (const X3D::MFFloat &)
 }
 
 void
-X3DGradientTool::set_color (const X3D::MFColor &)
+X3DGradientTool::set_color (const X3D::MFColorRGBA &)
 {
 	value .addEvent ();
 }
@@ -198,14 +214,22 @@ X3DGradientTool::set_color (const X3D::MFColor &)
 void
 X3DGradientTool::set_value (const X3D::time_type &)
 {
-	if (nodes .empty ())
+	if (positionNodes .empty ())
+		return;
+
+	if (colorNodes .empty ())
 		return;
 
 	//__LOG__ << undoStep .get () << std::endl;
 
 	beginUndoGroup (description, undoStep);
-	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
-	addUndoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
+	addUndoFunction <X3D::MFFloat> (positionNodes, positionName, undoStep);
+
+	if (rgba)
+		addUndoFunction <X3D::MFColorRGBA> (colorNodes, colorName, undoStep);
+	else
+		addUndoFunction <X3D::MFColor> (colorNodes, colorName, undoStep);
+
 	endUndoGroup (description, undoStep);
 
 	try
@@ -215,11 +239,11 @@ X3DGradientTool::set_value (const X3D::time_type &)
 
 		//
 
-		for (const auto & node : nodes)
+		for (const auto & positionNode : positionNodes)
 		{
 			try
 			{
-				auto & field = node -> getField <X3D::MFFloat> (positionName);
+				auto & field = positionNode -> getField <X3D::MFFloat> (positionName);
 
 				field .removeInterest (&X3DGradientTool::set_field, this);
 				field .addInterest (&X3DGradientTool::connectPosition, this);
@@ -240,20 +264,37 @@ X3DGradientTool::set_value (const X3D::time_type &)
 	try
 	{
 		const auto   tool  = getTool ();
-		const auto & value = tool -> getField <X3D::MFColor> ("outputColor");
+		const auto & value = tool -> getField <X3D::MFColorRGBA> ("outputColor");
 
 		//
 
-		for (const auto & node : nodes)
+		for (const auto & colorNode : colorNodes)
 		{
 			try
 			{
-				auto & field = node -> getField <X3D::MFColor> (colorName);
+				if (rgba)
+				{
+					auto & field = colorNode -> getField <X3D::MFColorRGBA> (colorName);
+	
+					field .removeInterest (&X3DGradientTool::set_field, this);
+					field .addInterest (&X3DGradientTool::connectColorRGBA, this);
+	
+					field = get_color (value);
+				}
+				else
+				{
+					auto & field = colorNode -> getField <X3D::MFColor> (colorName);
+	
+					field .removeInterest (&X3DGradientTool::set_field, this);
+					field .addInterest (&X3DGradientTool::connectColor, this);
+	
+					X3D::MFColor color;
 
-				field .removeInterest (&X3DGradientTool::set_field, this);
-				field .addInterest (&X3DGradientTool::connectColor, this);
+					for (const auto & c : value)
+						color .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
 
-				field = get_color (value);
+					field = get_color (color);
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -265,8 +306,13 @@ X3DGradientTool::set_value (const X3D::time_type &)
 	}
 
 	beginRedoGroup (description, undoStep);
-	addRedoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
-	addRedoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
+	addRedoFunction <X3D::MFFloat> (positionNodes, positionName, undoStep)
+;
+	if (rgba)
+		addRedoFunction <X3D::MFColorRGBA> (colorNodes, colorName, undoStep);
+	else
+		addRedoFunction <X3D::MFColor> (colorNodes, colorName, undoStep);
+
 	endRedoGroup (description, undoStep);
 }
 
@@ -300,26 +346,58 @@ X3DGradientTool::set_editTime (const X3D::UndoStepPtr & undoStep)
 	{
 		const auto   tool           = getTool ();
 		const auto & outputPosition = tool -> getField <X3D::MFFloat> ("position");
-		const auto & outputColor    = tool -> getField <X3D::MFColor> ("color");
+		const auto & outputColor    = tool -> getField <X3D::MFColorRGBA> ("color");
 
 		//
 
-		for (const auto & node : nodes)
+		for (const auto & positionNode : positionNodes)
 		{
 			try
 			{
-				X3D::MFFloat & nodePosition = node -> getField <X3D::MFFloat> (positionName);
-				X3D::MFColor & nodeColor    = node -> getField <X3D::MFColor> (colorName);
+				X3D::MFFloat & nodePosition = positionNode -> getField <X3D::MFFloat> (positionName);
 
-				undoStep -> addObjects (node);
+				undoStep -> addObjects (positionNode);
 				undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (nodePosition), nodePosition);
-				undoStep -> addUndoFunction (&X3D::MFColor::setValue, std::ref (nodeColor),    nodeColor);
 
 				nodePosition = get_position (outputPosition);
-				nodeColor    = get_color (outputColor);
 
 				undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (nodePosition), nodePosition);
-				undoStep -> addRedoFunction (&X3D::MFColor::setValue, std::ref (nodeColor),    nodeColor);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+		}
+
+		for (const auto & colorNode : colorNodes)
+		{
+			try
+			{
+				if (rgba)
+				{
+					X3D::MFColorRGBA & nodeColor = colorNode -> getField <X3D::MFColorRGBA> (colorName);
+	
+					undoStep -> addObjects (colorNode);
+					undoStep -> addUndoFunction (&X3D::MFColorRGBA::setValue, std::ref (nodeColor), nodeColor);
+	
+					nodeColor = get_color (outputColor);
+	
+					undoStep -> addRedoFunction (&X3D::MFColorRGBA::setValue, std::ref (nodeColor), nodeColor);
+				}
+				else
+				{
+					X3D::MFColor & nodeColor = colorNode -> getField <X3D::MFColor> (colorName);
+	
+					undoStep -> addObjects (colorNode);
+					undoStep -> addUndoFunction (&X3D::MFColor::setValue, std::ref (nodeColor), nodeColor);
+		
+					X3D::MFColor color;
+
+					for (const auto & c : outputColor)
+						color .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
+
+					nodeColor = get_color (color);
+	
+					undoStep -> addRedoFunction (&X3D::MFColor::setValue, std::ref (nodeColor), nodeColor);
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -354,16 +432,15 @@ X3DGradientTool::set_buffer ()
 
 	// Position field
 
-	X3D::MFFloat position;
-	X3D::MFColor color;
+	X3D::MFFloat     position;
+	X3D::MFColor     color;
+	X3D::MFColorRGBA colorRGBA;
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	for (const auto & positionNode : basic::make_reverse_range (positionNodes))
 	{
 		try
 		{
-			const auto & field = node -> getField <X3D::MFFloat> (positionName);
-
-			position = field;
+			position = positionNode -> getField <X3D::MFFloat> (positionName);
 			break;
 		}
 		catch (const X3D::X3DError &)
@@ -372,13 +449,14 @@ X3DGradientTool::set_buffer ()
 
 	// Color field
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	for (const auto & colorNode : basic::make_reverse_range (colorNodes))
 	{
 		try
 		{
-			const auto & field = node -> getField <X3D::MFColor> (colorName);
-
-			color = field;
+			if (rgba)
+				colorRGBA = colorNode -> getField <X3D::MFColorRGBA> (colorName);
+			else
+				color = colorNode -> getField <X3D::MFColor> (colorName);
 			break;
 		}
 		catch (const X3D::X3DError &)
@@ -387,19 +465,25 @@ X3DGradientTool::set_buffer ()
 
 	try
 	{
-		const auto values = get_tool_values (position, color);
+		if (not rgba)
+		{
+			for (const auto & c : color)
+				colorRGBA .emplace_back (c .getRed (), c .getGreen (), c .getBlue (), 1);
+		}
 
-		getTool () -> setField <X3D::MFFloat> ("inputPosition", values .first);
-		getTool () -> setField <X3D::MFColor> ("inputColor",    values .second);
+		const auto values = get_tool_values (position, colorRGBA);
+
+		getTool () -> setField <X3D::MFFloat>     ("inputPosition", values .first);
+		getTool () -> setField <X3D::MFColorRGBA> ("inputColor",    values .second);
 	}
 	catch (const X3D::X3DError & error)
 	{ }
 
-	browser -> set_sensitive (not nodes .empty ());
+	browser -> set_sensitive (not positionNodes .empty () and not colorNodes .empty ());
 }
 
-std::pair <X3D::MFFloat, X3D::MFColor>
-X3DGradientTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+std::pair <X3D::MFFloat, X3D::MFColorRGBA>
+X3DGradientTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColorRGBA & colorValue)
 {
 	return std::make_pair (positionValue, colorValue);
 }
@@ -415,6 +499,13 @@ void
 X3DGradientTool::connectColor (const X3D::MFColor & field)
 {
 	field .removeInterest (&X3DGradientTool::connectColor, this);
+	field .addInterest (&X3DGradientTool::set_field, this);
+}
+
+void
+X3DGradientTool::connectColorRGBA (const X3D::MFColorRGBA & field)
+{
+	field .removeInterest (&X3DGradientTool::connectColorRGBA, this);
 	field .addInterest (&X3DGradientTool::set_field, this);
 }
 
