@@ -1117,8 +1117,8 @@ public:
 	{ return *m_PointEmitterPositionBox; }
 
 	Gtk::Box &
-	getPointEmitterNormalToolBox () const
-	{ return *m_PointEmitterNormalToolBox; }
+	getPointEmitterDirectionToolBox () const
+	{ return *m_PointEmitterDirectionToolBox; }
 
 	Gtk::Box &
 	getPointEmitterDirectionBox () const
@@ -1145,8 +1145,8 @@ public:
 	{ return *m_ConeEmitterPositionBox; }
 
 	Gtk::Box &
-	getConeEmitterNormalToolBox () const
-	{ return *m_ConeEmitterNormalToolBox; }
+	getConeEmitterDirectionToolBox () const
+	{ return *m_ConeEmitterDirectionToolBox; }
 
 	Gtk::Box &
 	getConeEmitterDirectionBox () const
@@ -1177,8 +1177,8 @@ public:
 	{ return *m_PolylineEmitterBox; }
 
 	Gtk::Box &
-	getPolylineEmitterNormalToolBox () const
-	{ return *m_PolylineEmitterNormalToolBox; }
+	getPolylineEmitterDirectionToolBox () const
+	{ return *m_PolylineEmitterDirectionToolBox; }
 
 	Gtk::Box &
 	getPolylineEmitterDirectionBox () const
@@ -1201,8 +1201,8 @@ public:
 	{ return *m_VolumeEmitterBox; }
 
 	Gtk::Box &
-	getVolumeEmitterNormalToolBox () const
-	{ return *m_VolumeEmitterNormalToolBox; }
+	getVolumeEmitterDirectionToolBox () const
+	{ return *m_VolumeEmitterDirectionToolBox; }
 
 	Gtk::Box &
 	getVolumeEmitterDirectionBox () const
@@ -1327,6 +1327,14 @@ public:
 	Gtk::Button &
 	getRemoveColorRampRGBAButton () const
 	{ return *m_RemoveColorRampRGBAButton; }
+
+	Gtk::Box &
+	getForcePhysicsModelBox () const
+	{ return *m_ForcePhysicsModelBox; }
+
+	Gtk::Box &
+	getWindPhysicsModelBox () const
+	{ return *m_WindPhysicsModelBox; }
 
 	Gtk::Expander &
 	getGeometrySelectionExpander () const
@@ -1867,14 +1875,14 @@ private:
 	Gtk::Button* m_EmitterUnlinkButton;
 	Gtk::Grid* m_PointEmitterBox;
 	Gtk::Box* m_PointEmitterPositionBox;
-	Gtk::Box* m_PointEmitterNormalToolBox;
+	Gtk::Box* m_PointEmitterDirectionToolBox;
 	Gtk::Box* m_PointEmitterDirectionBox;
 	Gtk::SpinButton* m_PointEmitterDirectionXSpinButton;
 	Gtk::SpinButton* m_PointEmitterDirectionYSpinButton;
 	Gtk::SpinButton* m_PointEmitterDirectionZSpinButton;
 	Gtk::Grid* m_ConeEmitterBox;
 	Gtk::Box* m_ConeEmitterPositionBox;
-	Gtk::Box* m_ConeEmitterNormalToolBox;
+	Gtk::Box* m_ConeEmitterDirectionToolBox;
 	Gtk::Box* m_ConeEmitterDirectionBox;
 	Gtk::SpinButton* m_ConeEmitterDirectionXSpinButton;
 	Gtk::SpinButton* m_ConeEmitterDirectionYSpinButton;
@@ -1882,13 +1890,13 @@ private:
 	Gtk::Box* m_ConeEmitterAngleBox;
 	Gtk::SpinButton* m_ConeEmitterAngleSpinButton;
 	Gtk::Grid* m_PolylineEmitterBox;
-	Gtk::Box* m_PolylineEmitterNormalToolBox;
+	Gtk::Box* m_PolylineEmitterDirectionToolBox;
 	Gtk::Box* m_PolylineEmitterDirectionBox;
 	Gtk::SpinButton* m_PolylineEmitterDirectionXSpinButton;
 	Gtk::SpinButton* m_PolylineEmitterDirectionYSpinButton;
 	Gtk::SpinButton* m_PolylineEmitterDirectionZSpinButton;
 	Gtk::Grid* m_VolumeEmitterBox;
-	Gtk::Box* m_VolumeEmitterNormalToolBox;
+	Gtk::Box* m_VolumeEmitterDirectionToolBox;
 	Gtk::Box* m_VolumeEmitterDirectionBox;
 	Gtk::SpinButton* m_VolumeEmitterDirectionXSpinButton;
 	Gtk::SpinButton* m_VolumeEmitterDirectionYSpinButton;
@@ -1920,6 +1928,8 @@ private:
 	Gtk::ScrolledWindow* m_ColorRampRGBAScrolledWindow;
 	Gtk::Button* m_AddColorRampRGBAButton;
 	Gtk::Button* m_RemoveColorRampRGBAButton;
+	Gtk::Box* m_ForcePhysicsModelBox;
+	Gtk::Box* m_WindPhysicsModelBox;
 	Gtk::Expander* m_GeometrySelectionExpander;
 	Gtk::Grid* m_GeometrySelectionBox;
 	Gtk::Box* m_GeometrySelectionTranslationBox;

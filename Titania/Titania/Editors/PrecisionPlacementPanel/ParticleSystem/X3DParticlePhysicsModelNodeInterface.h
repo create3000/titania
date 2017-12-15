@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,65 @@
  *
  ******************************************************************************/
 
-#include "X3DPointEmitterEditor.h"
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
 
-#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include "../../../Base/X3DBaseInterface.h"
+
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-X3DPointEmitterEditor::X3DPointEmitterEditor () :
-	X3DPrecisionPlacementPanelInterface (),
-	                           position (this,
-	                                     getPointEmitterPositionXAdjustment (),
-	                                     getPointEmitterPositionYAdjustment (),
-	                                     getPointEmitterPositionZAdjustment (),
-	                                     getPointEmitterPositionBox (),
-	                                     "position"),
-	                          direction (this,
-	                                     getPointEmitterDirectionXAdjustment (),
-	                                     getPointEmitterDirectionYAdjustment (),
-	                                     getPointEmitterDirectionZAdjustment (),
-	                                     getPointEmitterDirectionBox (),
-	                                     "direction"),
-	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
-{ }
-
-void
-X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
+class X3DParticlePhysicsModelNodeInterface :
+	virtual public X3DBaseInterface
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
+public:
 
-	getPointEmitterBox () .set_visible (not nodes .empty ());
+	///  @name Member access
 
-	position      .setNodes (nodes);
-	direction     .setNodes (nodes);
-	directionTool .setNodes (nodes);
-}
+	void
+	setIndependent (const bool value);
 
-X3DPointEmitterEditor::~X3DPointEmitterEditor ()
-{ }
+	bool
+	getIndependent () const
+	{ return independent; }
+
+	virtual
+	void
+	setNodes (const X3D::MFNode & value) = 0;
+
+	///  @name Destruction
+
+	virtual
+	~X3DParticlePhysicsModelNodeInterface () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DParticlePhysicsModelNodeInterface ();
+
+	virtual
+	void
+	initialize ()
+	{ }
+
+	///  @name Member access
+
+	virtual
+	Gtk::Box &
+	getButtonBox () = 0;
+
+
+private:
+
+	bool independent;
+
+};
 
 } // puck
 } // titania
+
+#endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,54 @@
  *
  ******************************************************************************/
 
-#include "X3DPointEmitterEditor.h"
-
-#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include "X3DForcePhysicsModelEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DPointEmitterEditor::X3DPointEmitterEditor () :
-	X3DPrecisionPlacementPanelInterface (),
-	                           position (this,
-	                                     getPointEmitterPositionXAdjustment (),
-	                                     getPointEmitterPositionYAdjustment (),
-	                                     getPointEmitterPositionZAdjustment (),
-	                                     getPointEmitterPositionBox (),
-	                                     "position"),
-	                          direction (this,
-	                                     getPointEmitterDirectionXAdjustment (),
-	                                     getPointEmitterDirectionYAdjustment (),
-	                                     getPointEmitterDirectionZAdjustment (),
-	                                     getPointEmitterDirectionBox (),
-	                                     "direction"),
-	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
-{ }
-
 void
-X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
+X3DForcePhysicsModelEditorInterface::create (const std::string & filename)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	getPointEmitterBox () .set_visible (not nodes .empty ());
-
-	position      .setNodes (nodes);
-	direction     .setNodes (nodes);
-	directionTool .setNodes (nodes);
+	create ();
 }
 
-X3DPointEmitterEditor::~X3DPointEmitterEditor ()
-{ }
+void
+X3DForcePhysicsModelEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DForcePhysicsModelEditorInterface::create ()
+{
+	// Get objects.
+	m_ForceXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ForceXAdjustment"));
+	m_ForceYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ForceYAdjustment"));
+	m_ForceZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ForceZAdjustment"));
+
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("Expander", m_Expander);
+	m_builder -> get_widget ("EnabledCheckButton", m_EnabledCheckButton);
+	m_builder -> get_widget ("ForceBox", m_ForceBox);
+	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
+}
+
+X3DForcePhysicsModelEditorInterface::~X3DForcePhysicsModelEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania

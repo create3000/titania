@@ -48,43 +48,25 @@
  *
  ******************************************************************************/
 
-#include "X3DPointEmitterEditor.h"
-
-#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include "X3DParticlePhysicsModelNodeInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DPointEmitterEditor::X3DPointEmitterEditor () :
-	X3DPrecisionPlacementPanelInterface (),
-	                           position (this,
-	                                     getPointEmitterPositionXAdjustment (),
-	                                     getPointEmitterPositionYAdjustment (),
-	                                     getPointEmitterPositionZAdjustment (),
-	                                     getPointEmitterPositionBox (),
-	                                     "position"),
-	                          direction (this,
-	                                     getPointEmitterDirectionXAdjustment (),
-	                                     getPointEmitterDirectionYAdjustment (),
-	                                     getPointEmitterDirectionZAdjustment (),
-	                                     getPointEmitterDirectionBox (),
-	                                     "direction"),
-	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
+X3DParticlePhysicsModelNodeInterface::X3DParticlePhysicsModelNodeInterface () :
+	X3DBaseInterface (),
+	     independent (true)
 { }
 
 void
-X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
+X3DParticlePhysicsModelNodeInterface::setIndependent (const bool value)
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
+	independent = value;
 
-	getPointEmitterBox () .set_visible (not nodes .empty ());
-
-	position      .setNodes (nodes);
-	direction     .setNodes (nodes);
-	directionTool .setNodes (nodes);
+	getButtonBox () .set_visible (not independent);
 }
 
-X3DPointEmitterEditor::~X3DPointEmitterEditor ()
+X3DParticlePhysicsModelNodeInterface::~X3DParticlePhysicsModelNodeInterface ()
 { }
 
 } // puck

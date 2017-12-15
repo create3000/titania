@@ -53,6 +53,7 @@
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
+#include <Titania/X3D/Components/EnvironmentalEffects/Fog.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/LocalFog.h>
 
 namespace titania {

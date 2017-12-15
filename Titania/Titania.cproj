@@ -347,6 +347,11 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DColorRampNodeEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\GradientTool.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DForcePhysicsModelEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\ForcePhysicsModelEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeInterface.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DWindPhysicsModelEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\WindPhysicsModelEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3097,6 +3102,13 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\X3DExplosionEmitterEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DColorRampNodeEditor.h" />
     <None Include="Titania\ComposedWidgets\GradientTool.h" />
+    <None Include="share\titania\ui\Editors\ForcePhysicsModelEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DForcePhysicsModelEditorInterface.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\ForcePhysicsModelEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeInterface.h" />
+    <None Include="share\titania\ui\Editors\WindPhysicsModelEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DWindPhysicsModelEditorInterface.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\WindPhysicsModelEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

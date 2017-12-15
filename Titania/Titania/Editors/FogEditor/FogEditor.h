@@ -56,8 +56,6 @@
 
 #include "../../Editors/BindableNodeList/FogList.h"
 
-#include <Titania/X3D/Components/EnvironmentalEffects/Fog.h>
-
 namespace titania {
 namespace puck {
 

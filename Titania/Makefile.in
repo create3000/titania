@@ -245,7 +245,10 @@ am_titania_OBJECTS =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPolylineEmitterEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DVolumeEmitterEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.$(OBJEXT) \
@@ -318,6 +321,7 @@ am_titania_OBJECTS =  \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFogEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFooterInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DForcePhysicsModelEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGeometryEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGridEditorInterface.$(OBJEXT) \
@@ -351,6 +355,7 @@ am_titania_OBJECTS =  \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DUndoHistoryEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.$(OBJEXT) \
 	Titania/Widgets/AnimationEditor/AnimationEditor.$(OBJEXT) \
 	Titania/Widgets/Console/Console.$(OBJEXT) \
 	Titania/Widgets/Footer/Footer.$(OBJEXT) \
@@ -771,7 +776,10 @@ titania_SOURCES = \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPolylineEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DVolumeEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \
@@ -844,6 +852,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFogEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
+	Titania/UserInterfaces/X3DForcePhysicsModelEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
@@ -877,6 +886,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
 	Titania/UserInterfaces/X3DUndoHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
+	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
@@ -1671,7 +1681,13 @@ Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp):
 Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)
 	@: > Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/PrecisionPlacementPanel
@@ -1960,6 +1976,9 @@ Titania/UserInterfaces/X3DFogEditorInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DFooterInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DForcePhysicsModelEditorInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DGeometryEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -2057,6 +2076,9 @@ Titania/UserInterfaces/X3DUndoHistoryEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DViewpointEditorInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/AnimationEditor/$(am__dirstamp):
@@ -2428,7 +2450,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/$(DEPDIR)/X3DPointEmitterEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/$(DEPDIR)/X3DPolylineEmitterEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/$(DEPDIR)/X3DVolumeEmitterEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/ForcePhysicsModelEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/WindPhysicsModelEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DColorRampNodeEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DMetaDataEditor.Po@am__quote@
@@ -2486,6 +2511,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFogEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DForcePhysicsModelEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryPropertiesEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGridEditorInterface.Po@am__quote@
@@ -2519,6 +2545,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DTextureMappingEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DUndoHistoryEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DViewpointEditorInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DWindPhysicsModelEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/AnimationEditor/$(DEPDIR)/AnimationEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Console/$(DEPDIR)/Console.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Footer/$(DEPDIR)/Footer.Po@am__quote@

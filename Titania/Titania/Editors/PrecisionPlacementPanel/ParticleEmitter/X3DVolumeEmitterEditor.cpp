@@ -64,7 +64,7 @@ X3DVolumeEmitterEditor::X3DVolumeEmitterEditor () :
 	                                     getVolumeEmitterDirectionZAdjustment (),
 	                                     getVolumeEmitterDirectionBox (),
 	                                     "direction"),
-	                      directionTool (this, getVolumeEmitterNormalToolBox (), "direction")
+	                      directionTool (this, getVolumeEmitterDirectionToolBox (), "direction")
 { }
 
 void

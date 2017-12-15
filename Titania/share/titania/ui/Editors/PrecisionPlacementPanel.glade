@@ -4756,7 +4756,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <child>
-                                              <object class="GtkBox" id="PointEmitterNormalToolBox">
+                                              <object class="GtkBox" id="PointEmitterDirectionToolBox">
                                                 <property name="width_request">96</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
@@ -4970,7 +4970,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <child>
-                                              <object class="GtkBox" id="ConeEmitterNormalToolBox">
+                                              <object class="GtkBox" id="ConeEmitterDirectionToolBox">
                                                 <property name="width_request">96</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
@@ -5137,7 +5137,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <child>
-                                              <object class="GtkBox" id="PolylineEmitterNormalToolBox">
+                                              <object class="GtkBox" id="PolylineEmitterDirectionToolBox">
                                                 <property name="width_request">96</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
@@ -5263,7 +5263,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <child>
-                                              <object class="GtkBox" id="VolumeEmitterNormalToolBox">
+                                              <object class="GtkBox" id="VolumeEmitterDirectionToolBox">
                                                 <property name="width_request">96</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
@@ -5889,7 +5889,7 @@
                                   <object class="GtkLabel" id="label134">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Color:</property>
+                                    <property name="label" translatable="yes">Color Ramp:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -6043,7 +6043,7 @@
                                   <object class="GtkLabel" id="label135">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Color:</property>
+                                    <property name="label" translatable="yes">Color Ramp:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -6160,6 +6160,36 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="ForcePhysicsModelBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="WindPhysicsModelBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
@@ -6672,7 +6702,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">6</property>
+                        <property name="position">8</property>
                       </packing>
                     </child>
                     <child>
@@ -7041,7 +7071,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">7</property>
+                        <property name="position">9</property>
                       </packing>
                     </child>
                   </object>

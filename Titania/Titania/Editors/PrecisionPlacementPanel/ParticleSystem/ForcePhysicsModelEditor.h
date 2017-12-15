@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,69 @@
  *
  ******************************************************************************/
 
-#include "X3DPointEmitterEditor.h"
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_FORCE_PHYSICS_MODEL_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_FORCE_PHYSICS_MODEL_EDITOR_H__
 
-#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include "../../../UserInterfaces/X3DForcePhysicsModelEditorInterface.h"
+
+#include "../../../ComposedWidgets.h"
+#include "X3DParticlePhysicsModelNodeInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DPointEmitterEditor::X3DPointEmitterEditor () :
-	X3DPrecisionPlacementPanelInterface (),
-	                           position (this,
-	                                     getPointEmitterPositionXAdjustment (),
-	                                     getPointEmitterPositionYAdjustment (),
-	                                     getPointEmitterPositionZAdjustment (),
-	                                     getPointEmitterPositionBox (),
-	                                     "position"),
-	                          direction (this,
-	                                     getPointEmitterDirectionXAdjustment (),
-	                                     getPointEmitterDirectionYAdjustment (),
-	                                     getPointEmitterDirectionZAdjustment (),
-	                                     getPointEmitterDirectionBox (),
-	                                     "direction"),
-	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
-{ }
-
-void
-X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
+class ForcePhysicsModelEditor :
+	virtual public X3DForcePhysicsModelEditorInterface,
+	public X3DParticlePhysicsModelNodeInterface
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
+public:
 
-	getPointEmitterBox () .set_visible (not nodes .empty ());
+	///  @name Construction
 
-	position      .setNodes (nodes);
-	direction     .setNodes (nodes);
-	directionTool .setNodes (nodes);
-}
+	ForcePhysicsModelEditor (X3DBrowserWindow* const browserWindow);
 
-X3DPointEmitterEditor::~X3DPointEmitterEditor ()
-{ }
+	virtual
+	void
+	setNodes (const X3D::MFNode & value) final override;
+
+	///  @name Destruction
+
+	virtual
+	~ForcePhysicsModelEditor () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) final override;
+
+	///  @name Member access
+
+	virtual
+	Gtk::Box &
+	getButtonBox () final override
+	{ return X3DForcePhysicsModelEditorInterface::getButtonBox (); }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Members
+
+	X3DFieldToggleButton <X3D::SFBool> enabled;
+	X3DFieldAdjustment3 <X3D::SFVec3f> force;
+
+};
 
 } // puck
 } // titania
+
+#endif

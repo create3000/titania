@@ -48,73 +48,122 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_FORCE_PHYSICS_MODEL_EDITOR_H__
+#define __TMP_GLAD2CPP_FORCE_PHYSICS_MODEL_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "ParticleSystem/X3DColorRampNodeEditor.h"
-#include "ParticleSystem/ForcePhysicsModelEditor.h"
-#include "ParticleSystem/WindPhysicsModelEditor.h"
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DParticleSystemEditor :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DColorRampNodeEditor
+/**
+ *  Gtk Interface for ForcePhysicsModelEditor.
+ */
+class X3DForcePhysicsModelEditorInterface :
+	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
+
+	X3DForcePhysicsModelEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DForcePhysicsModelEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DForcePhysicsModelEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filenames); }
+
+	///  @name Member access
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getForceXAdjustment () const
+	{ return m_ForceXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getForceYAdjustment () const
+	{ return m_ForceYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getForceZAdjustment () const
+	{ return m_ForceZAdjustment; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
+	Gtk::Expander &
+	getExpander () const
+	{ return *m_Expander; }
+
+	Gtk::CheckButton &
+	getEnabledCheckButton () const
+	{ return *m_EnabledCheckButton; }
+
+	Gtk::Box &
+	getForceBox () const
+	{ return *m_ForceBox; }
+
+	Gtk::Box &
+	getButtonBox () const
+	{ return *m_ButtonBox; }
+
+	///  @name Signal handlers
 
 	///  @name Destruction
 
 	virtual
-	~X3DParticleSystemEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DParticleSystemEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	configure () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode & selection) override;
-
-	virtual
-	void
-	store () override;
+	~X3DForcePhysicsModelEditorInterface () override;
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
 
-	virtual
 	void
-	on_particle_system_uniform_particle_size_toggled () final override;
+	create (const std::string &);
+
+	void
+	create (std::initializer_list <std::string>);
+
+	void
+	create ();
+
+	///  @name Static members
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> enabled;
-	SFStringComboBoxText               geometryType;
-	X3DFieldAdjustment <X3D::SFInt32>  maxParticles;
-	X3DFieldToggleButton <X3D::SFBool> createParticles;
-	X3DFieldAdjustment <X3D::SFFloat>  particleLifetime;
-	X3DFieldAdjustment <X3D::SFFloat>  lifetimeVariation;
-	X3DFieldAdjustment2 <X3D::SFVec2f> particleSize;
-
-	std::unique_ptr <ForcePhysicsModelEditor> force;
-	std::unique_ptr <WindPhysicsModelEditor>  wind;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_ForceXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ForceYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ForceZAdjustment;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::Expander* m_Expander;
+	Gtk::CheckButton* m_EnabledCheckButton;
+	Gtk::Box* m_ForceBox;
+	Gtk::Box* m_ButtonBox;
 
 };
 

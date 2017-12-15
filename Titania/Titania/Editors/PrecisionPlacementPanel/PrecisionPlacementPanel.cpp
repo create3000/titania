@@ -171,7 +171,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();
 
-	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
+	const auto boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
 
 	if (selection .empty ())
 		getHeaderBar () .set_subtitle ("");

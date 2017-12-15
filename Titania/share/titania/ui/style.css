@@ -29,7 +29,8 @@
 	font-style: italic;
 }
 
-expander > title > label {
+expander > title > label,
+.titania-expander-label {
 	margin: 8px 0px;
 	padding-top: 4px;
 	padding-bottom: 4px;

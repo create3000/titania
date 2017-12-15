@@ -71,7 +71,7 @@ X3DConeEmitterEditor::X3DConeEmitterEditor () :
 	                                     getConeEmitterDirectionZAdjustment (),
 	                                     getConeEmitterDirectionBox (),
 	                                     "direction"),
-	                      directionTool (this, getConeEmitterNormalToolBox (), "direction"),
+	                      directionTool (this, getConeEmitterDirectionToolBox (), "direction"),
 	                              angle (this, getConeEmitterAngleAdjustment (), getConeEmitterAngleSpinButton (), "angle")
 {
 	getConeEmitterAngleAdjustment () -> set_upper (pi <double>);

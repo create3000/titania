@@ -148,7 +148,10 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPolylineEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DVolumeEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \
@@ -221,6 +224,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFogEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
+	Titania/UserInterfaces/X3DForcePhysicsModelEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
@@ -254,6 +258,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
 	Titania/UserInterfaces/X3DUndoHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
+	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \

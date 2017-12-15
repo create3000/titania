@@ -63,7 +63,7 @@ X3DPolylineEmitterEditor::X3DPolylineEmitterEditor () :
 	                                     getPolylineEmitterDirectionZAdjustment (),
 	                                     getPolylineEmitterDirectionBox (),
 	                                     "direction"),
-	                      directionTool (this, getPolylineEmitterNormalToolBox (), "direction")
+	                      directionTool (this, getPolylineEmitterDirectionToolBox (), "direction")
 { }
 
 void

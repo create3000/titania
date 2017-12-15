@@ -48,44 +48,64 @@
  *
  ******************************************************************************/
 
-#include "X3DPointEmitterEditor.h"
+#include "ForcePhysicsModelEditor.h"
 
-#include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include "../../../Configuration/config.h"
+
+#include <Titania/X3D/Components/ParticleSystems/ForcePhysicsModel.h>
 
 namespace titania {
 namespace puck {
 
-X3DPointEmitterEditor::X3DPointEmitterEditor () :
-	X3DPrecisionPlacementPanelInterface (),
-	                           position (this,
-	                                     getPointEmitterPositionXAdjustment (),
-	                                     getPointEmitterPositionYAdjustment (),
-	                                     getPointEmitterPositionZAdjustment (),
-	                                     getPointEmitterPositionBox (),
-	                                     "position"),
-	                          direction (this,
-	                                     getPointEmitterDirectionXAdjustment (),
-	                                     getPointEmitterDirectionYAdjustment (),
-	                                     getPointEmitterDirectionZAdjustment (),
-	                                     getPointEmitterDirectionBox (),
-	                                     "direction"),
-	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
-{ }
-
-void
-X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
+ForcePhysicsModelEditor::ForcePhysicsModelEditor (X3DBrowserWindow* const browserWindow) :
+	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DForcePhysicsModelEditorInterface (get_ui ("Editors/ForcePhysicsModelEditor.glade")),
+	X3DParticlePhysicsModelNodeInterface (),
+	                             enabled (this, getEnabledCheckButton (), "enabled"),
+	                               force (this,
+	                                      getForceXAdjustment (),
+	                                      getForceYAdjustment (),
+	                                      getForceZAdjustment (),
+	                                      getForceBox (),
+	                                      "force")
 {
-	const auto nodes = getNodes <X3D::X3DBaseNode> (emitterNodes, { X3D::X3DConstants::PointEmitter }, false);
-
-	getPointEmitterBox () .set_visible (not nodes .empty ());
-
-	position      .setNodes (nodes);
-	direction     .setNodes (nodes);
-	directionTool .setNodes (nodes);
+	setup ();
 }
 
-X3DPointEmitterEditor::~X3DPointEmitterEditor ()
-{ }
+void
+ForcePhysicsModelEditor::initialize ()
+{
+	X3DForcePhysicsModelEditorInterface::initialize ();
+	X3DParticlePhysicsModelNodeInterface::initialize ();
+}
+
+void
+ForcePhysicsModelEditor::setNodes (const X3D::MFNode & value)
+{
+	getExpander () .set_visible (not value .empty ());
+
+	enabled .setNodes (value);
+	force   .setNodes (value);
+}
+
+void
+ForcePhysicsModelEditor::set_selection (const X3D::MFNode & selection)
+{
+	X3DForcePhysicsModelEditorInterface::set_selection (selection);
+
+	if (getIndependent ())
+	{
+		const auto forceNode  = X3D::X3DPtr <X3D::ForcePhysicsModel> (selection .empty () ? nullptr : selection .back ());
+		const auto forceNodes = forceNode ? X3D::MFNode ({ forceNode }) : X3D::MFNode ();
+
+		setNodes (forceNodes);
+	}
+}
+
+ForcePhysicsModelEditor::~ForcePhysicsModelEditor ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania

@@ -79,7 +79,16 @@ X3DParticleSystemEditor::X3DParticleSystemEditor () :
 	                                     getParticleSystemParticleSizeXAdjustment (),
 	                                     getParticleSystemParticleSizeYAdjustment (),
 	                                     getParticleSystemParticleSizeBox (),
-	                                     "particleSize")
+	                                     "particleSize"),
+	                              force (new ForcePhysicsModelEditor (getBrowserWindow ())),
+	                               wind (new WindPhysicsModelEditor (getBrowserWindow ()))
+{
+	force -> reparent (getForcePhysicsModelBox (), getWindow ());
+	wind  -> reparent (getWindPhysicsModelBox (),  getWindow ());
+}
+
+void
+X3DParticleSystemEditor::initialize ()
 { }
 
 void
