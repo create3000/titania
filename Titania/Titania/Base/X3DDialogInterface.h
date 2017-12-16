@@ -98,7 +98,7 @@ protected:
 
 	static
 	void
-	setupGridLabels (Gtk::Widget &);
+	setGridLabels (Gtk::Widget &);
 
 
 private:

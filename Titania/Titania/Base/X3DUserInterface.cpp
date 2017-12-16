@@ -289,7 +289,7 @@ X3DUserInterface::setTitleBar (Gtk::Window & window, Gtk::Widget & titlebar)
 }
 
 void
-X3DUserInterface::unparent (Gtk::Widget & widget)
+X3DUserInterface::unparent (Gtk::Widget & widget) const
 {
 	const auto container = widget .get_parent ();
 

@@ -151,6 +151,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \

@@ -97,11 +97,11 @@ sub getPrototype
 	chomp $handler;
 	
 	# Remember handler.
-	$self -> {prototypes} {"$class::$name"} = $handler;
+	$self -> {prototypes} {"$class\:\:$name"} = $handler;
 
 	# Append handler to DATA section.
 	open THIS, ">>", __FILE__;
-	say THIS "$class::$name";
+	say THIS "$class\:\:$name";
 	say THIS $handler;
 	close THIS;
 	
@@ -330,14 +330,14 @@ sub cpp_signal_handler
 
 	my $prototype = $self -> getPrototype ($attributes {name});
 	$prototype =~ s/on_($attributes{name})/$attributes{handler}/s;
-	$prototype =~ s/\s*virtual\s+(\w+)/\\t$1\\n\\t$self->{class_name}\::/s;
+	$prototype =~ s/\s*virtual\s+(\w+)/\\t$1\\n\\t$self->{class_name}\:\:/s;
 	$prototype =~ s/\(/ (/s;
 
 	my $function  = $self -> getPrototype ($attributes {name});
 	$function =~ s/^\s+//s;
 	$function =~ s/;//s;
 	$function =~ s/on_($attributes{name})/$attributes{handler}/s;
-	$function =~ s/virtual\s+(\w+)\s+/$1\n$self->{class_name}\::/s;
+	$function =~ s/virtual\s+(\w+)\s+/$1\n$self->{class_name}\:\:/s;
 	my $return_type = $1;
 
 	$function .= "\n{\n";
@@ -639,7 +639,7 @@ sub generate
 
 	# dispose
 	#say OUT "void";
-	#say OUT "$self->{class_name}\::dispose ()";
+	#say OUT "$self->{class_name}\:\:dispose ()";
 	#say OUT "{";
 	#say OUT "for (auto & connection : m_connections)";
 	#say OUT "   connection .disconnect ();";
@@ -648,7 +648,7 @@ sub generate
 	#say OUT "}";
 
 	# Destructor
-	say OUT "$self->{class_name}\::~$self->{class_name} ()";
+	say OUT "$self->{class_name}\:\:~$self->{class_name} ()";
 	say OUT "{";
 	say OUT "delete $_;" foreach keys %{$self -> {windows}};
 	say OUT "}";
@@ -1298,3 +1298,17 @@ activate
   virtual void on_activate();
 activate
   virtual void on_activate();
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+Image::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);

@@ -75,7 +75,7 @@ X3DDialogInterface::initialize ()
 	X3DUserInterface::initialize ();
 
 	restoreExpanders (getWidget ());
-	setupGridLabels (getWidget ());
+	setGridLabels (getWidget ());
 }
 
 void
@@ -114,7 +114,7 @@ X3DDialogInterface::on_expander_expanded (Gtk::Expander* const expander)
 }
 
 void
-X3DDialogInterface::setupGridLabels (Gtk::Widget & widget)
+X3DDialogInterface::setGridLabels (Gtk::Widget & widget)
 {
 	std::vector <Gtk::Label*> labels;
 

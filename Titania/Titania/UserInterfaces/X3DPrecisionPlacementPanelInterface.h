@@ -1328,6 +1328,18 @@ public:
 	getRemoveColorRampRGBAButton () const
 	{ return *m_RemoveColorRampRGBAButton; }
 
+	Gtk::Expander &
+	getPhysicsExpander () const
+	{ return *m_PhysicsExpander; }
+
+	Gtk::Grid &
+	getPhysicsGrid () const
+	{ return *m_PhysicsGrid; }
+
+	Gtk::Button &
+	getAddPhysicsButton () const
+	{ return *m_AddPhysicsButton; }
+
 	Gtk::Box &
 	getForcePhysicsModelBox () const
 	{ return *m_ForcePhysicsModelBox; }
@@ -1577,6 +1589,10 @@ public:
 	virtual
 	void
 	on_color_ramp_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_add_physics_clicked () = 0;
 
 	virtual
 	bool
@@ -1928,6 +1944,9 @@ private:
 	Gtk::ScrolledWindow* m_ColorRampRGBAScrolledWindow;
 	Gtk::Button* m_AddColorRampRGBAButton;
 	Gtk::Button* m_RemoveColorRampRGBAButton;
+	Gtk::Expander* m_PhysicsExpander;
+	Gtk::Grid* m_PhysicsGrid;
+	Gtk::Button* m_AddPhysicsButton;
 	Gtk::Box* m_ForcePhysicsModelBox;
 	Gtk::Box* m_WindPhysicsModelBox;
 	Gtk::Expander* m_GeometrySelectionExpander;

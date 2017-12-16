@@ -73,6 +73,18 @@ public:
 	void
 	setNodes (const X3D::MFNode & value) final override;
 
+	///  @name Member access
+
+	virtual
+	Gtk::Widget &
+	getWidget () final override
+	{ return X3DForcePhysicsModelEditorInterface::getWidget (); }
+
+	virtual
+	Gtk::Box &
+	getButtonBox () final override
+	{ return X3DForcePhysicsModelEditorInterface::getButtonBox (); }
+
 	///  @name Destruction
 
 	virtual
@@ -86,13 +98,6 @@ protected:
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
-
-	///  @name Member access
-
-	virtual
-	Gtk::Box &
-	getButtonBox () final override
-	{ return X3DForcePhysicsModelEditorInterface::getButtonBox (); }
 
 
 private:

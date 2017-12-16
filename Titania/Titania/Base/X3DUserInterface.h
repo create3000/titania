@@ -97,7 +97,7 @@ public:
 	setTitleBar (Gtk::Window & window, Gtk::Widget & titlebar);
 
 	void
-	unparent (Gtk::Widget & widget);
+	unparent (Gtk::Widget & widget) const;
 
 	void
 	reparent (Gtk::Box & box, Gtk::Window & window);

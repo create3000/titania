@@ -128,6 +128,18 @@ public:
 	getButtonBox () const
 	{ return *m_ButtonBox; }
 
+	Gtk::Button &
+	getUpButton () const
+	{ return *m_UpButton; }
+
+	Gtk::Button &
+	getDownButton () const
+	{ return *m_DownButton; }
+
+	Gtk::Button &
+	getRemoveButton () const
+	{ return *m_RemoveButton; }
+
 	///  @name Signal handlers
 
 	///  @name Destruction
@@ -164,6 +176,9 @@ private:
 	Gtk::CheckButton* m_EnabledCheckButton;
 	Gtk::Box* m_ForceBox;
 	Gtk::Box* m_ButtonBox;
+	Gtk::Button* m_UpButton;
+	Gtk::Button* m_DownButton;
+	Gtk::Button* m_RemoveButton;
 
 };
 

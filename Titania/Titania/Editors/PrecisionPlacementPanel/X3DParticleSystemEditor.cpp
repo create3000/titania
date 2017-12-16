@@ -60,6 +60,7 @@ namespace puck {
 X3DParticleSystemEditor::X3DParticleSystemEditor () :
 	X3DPrecisionPlacementPanelInterface (),
 	             X3DColorRampNodeEditor (),
+	  X3DParticlePhysicsModelNodeEditor (),
 	                            enabled (this, getParticleSystemEnabledCheckButton (), "enabled"),
 	                       geometryType (this, getParticleSystemGeometryTypeButton (), "geometryType"),
 	                       maxParticles (this,
@@ -101,6 +102,7 @@ void
 X3DParticleSystemEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DColorRampNodeEditor::set_selection (selection);
+	X3DParticlePhysicsModelNodeEditor::set_selection (selection);
 
 	const auto particleSystem  = X3D::X3DPtr <X3D::ParticleSystem> (selection .empty () ? nullptr : selection .back ());
 	const auto particleSystems = particleSystem ? X3D::MFNode ({ particleSystem }) : X3D::MFNode ();

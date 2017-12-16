@@ -390,6 +390,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ColorRampRGBAScrolledWindow", m_ColorRampRGBAScrolledWindow);
 	m_builder -> get_widget ("AddColorRampRGBAButton", m_AddColorRampRGBAButton);
 	m_builder -> get_widget ("RemoveColorRampRGBAButton", m_RemoveColorRampRGBAButton);
+	m_builder -> get_widget ("PhysicsExpander", m_PhysicsExpander);
+	m_builder -> get_widget ("PhysicsGrid", m_PhysicsGrid);
+	m_builder -> get_widget ("AddPhysicsButton", m_AddPhysicsButton);
 	m_builder -> get_widget ("ForcePhysicsModelBox", m_ForcePhysicsModelBox);
 	m_builder -> get_widget ("WindPhysicsModelBox", m_WindPhysicsModelBox);
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
@@ -484,6 +487,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'ColorRampUnlinkButton'.
 	m_ColorRampUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_unlink_clicked));
+	m_AddPhysicsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_add_physics_clicked));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

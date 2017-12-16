@@ -48,75 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DPARTICLE_SYSTEM_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "ParticleSystem/X3DColorRampNodeEditor.h"
-#include "ParticleSystem/X3DParticlePhysicsModelNodeEditor.h"
-#include "ParticleSystem/ForcePhysicsModelEditor.h"
-#include "ParticleSystem/WindPhysicsModelEditor.h"
+#include "../../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DParticleSystemEditor :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DColorRampNodeEditor,
-	public X3DParticlePhysicsModelNodeEditor
+class X3DParticlePhysicsModelNodeInterface;
+
+class X3DParticlePhysicsModelNodeEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DParticleSystemEditor () override;
+	~X3DParticlePhysicsModelNodeEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DParticleSystemEditor ();
+	X3DParticlePhysicsModelNodeEditor ();
 
 	virtual
 	void
 	initialize () override;
 
-	virtual
 	void
-	configure () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode & selection) override;
-
-	virtual
-	void
-	store () override;
+	set_selection (const X3D::MFNode & selection);
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
+
+	void
+	set_phyics ();
+
+	void
+	set_nodes ();
 
 	virtual
 	void
-	on_particle_system_uniform_particle_size_toggled () final override;
+	on_add_physics_clicked () final override;
+
+	std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>>
+	createEditors (const X3D::MFNode & physicsNodes) const;
+
+	std::shared_ptr <X3DParticlePhysicsModelNodeInterface>
+	createEditor (const X3D::SFNode & physicsNode) const;
+
+	void
+	connectPhysics (const X3D::MFNode & field);
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> enabled;
-	SFStringComboBoxText               geometryType;
-	X3DFieldAdjustment <X3D::SFInt32>  maxParticles;
-	X3DFieldToggleButton <X3D::SFBool> createParticles;
-	X3DFieldAdjustment <X3D::SFFloat>  particleLifetime;
-	X3DFieldAdjustment <X3D::SFFloat>  lifetimeVariation;
-	X3DFieldAdjustment2 <X3D::SFVec2f> particleSize;
+	X3D::MFNode parents;
+	X3D::SFTime phyicsBuffer;
+	X3D::MFNode physicsNodes;
 
-	std::unique_ptr <ForcePhysicsModelEditor> force;
-	std::unique_ptr <WindPhysicsModelEditor>  wind;
+	std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>> editors;
 
 };
 

@@ -100,6 +100,9 @@ X3DWindPhysicsModelEditorInterface::create ()
 	m_builder -> get_widget ("GustinessSpinButton", m_GustinessSpinButton);
 	m_builder -> get_widget ("TurbulenceSpinButton", m_TurbulenceSpinButton);
 	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
+	m_builder -> get_widget ("UpButton", m_UpButton);
+	m_builder -> get_widget ("DownButton", m_DownButton);
+	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 }
 
 X3DWindPhysicsModelEditorInterface::~X3DWindPhysicsModelEditorInterface ()

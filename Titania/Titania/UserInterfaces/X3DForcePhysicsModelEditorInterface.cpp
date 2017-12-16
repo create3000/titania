@@ -90,6 +90,9 @@ X3DForcePhysicsModelEditorInterface::create ()
 	m_builder -> get_widget ("EnabledCheckButton", m_EnabledCheckButton);
 	m_builder -> get_widget ("ForceBox", m_ForceBox);
 	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
+	m_builder -> get_widget ("UpButton", m_UpButton);
+	m_builder -> get_widget ("DownButton", m_DownButton);
+	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 }
 
 X3DForcePhysicsModelEditorInterface::~X3DForcePhysicsModelEditorInterface ()

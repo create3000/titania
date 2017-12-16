@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_INTERFACE_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PARTICLE_SYSTEM_X3DPARTICLE_PHYSICS_MODEL_NODE_INTERFACE_H__
 
 #include "../../../Base/X3DBaseInterface.h"
 
@@ -76,6 +76,14 @@ public:
 	void
 	setNodes (const X3D::MFNode & value) = 0;
 
+	virtual
+	Gtk::Widget &
+	getWidget () = 0;
+
+	virtual
+	Gtk::Box &
+	getButtonBox () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -92,12 +100,6 @@ protected:
 	void
 	initialize ()
 	{ }
-
-	///  @name Member access
-
-	virtual
-	Gtk::Box &
-	getButtonBox () = 0;
 
 
 private:

@@ -389,8 +389,6 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 NotebookPagePtr
 X3DBrowserWidget::append (const basic::uri & URL)
 {
-__LOG__ << URL << std::endl;
-
 	const auto page    = std::make_shared <NotebookPage> (getBrowserWindow (), URL);
 	const auto browser = page -> getMainBrowser ();
 

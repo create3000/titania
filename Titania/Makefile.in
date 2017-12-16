@@ -248,6 +248,7 @@ am_titania_OBJECTS =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.$(OBJEXT) \
@@ -779,6 +780,7 @@ titania_SOURCES = \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
@@ -1687,6 +1689,8 @@ Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.$(
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeEditor.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.$(OBJEXT): Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp):
@@ -2453,6 +2457,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/ForcePhysicsModelEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/WindPhysicsModelEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DColorRampNodeEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po@am__quote@
