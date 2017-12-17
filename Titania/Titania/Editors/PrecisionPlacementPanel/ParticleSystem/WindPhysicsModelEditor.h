@@ -85,6 +85,21 @@ public:
 	getButtonBox () final override
 	{ return X3DWindPhysicsModelEditorInterface::getButtonBox (); }
 
+	virtual
+	Gtk::Button &
+	getUpButton () final override
+	{ return X3DWindPhysicsModelEditorInterface::getUpButton (); }
+
+	virtual
+	Gtk::Button &
+	getDownButton () final override
+	{ return X3DWindPhysicsModelEditorInterface::getDownButton (); }
+
+	virtual
+	Gtk::Button &
+	getRemoveButton () final override
+	{ return X3DWindPhysicsModelEditorInterface::getRemoveButton (); }
+
 	///  @name Destruction
 
 	virtual

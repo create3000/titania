@@ -84,6 +84,18 @@ public:
 	Gtk::Box &
 	getButtonBox () = 0;
 
+	virtual
+	Gtk::Button &
+	getUpButton () = 0;
+
+	virtual
+	Gtk::Button &
+	getDownButton () = 0;
+
+	virtual
+	Gtk::Button &
+	getRemoveButton () = 0;
+
 	///  @name Destruction
 
 	virtual

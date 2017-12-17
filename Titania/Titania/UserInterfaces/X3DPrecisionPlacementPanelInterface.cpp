@@ -199,6 +199,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_VolumeEmitterDirectionZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VolumeEmitterDirectionZAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("NewPhysicsPopover", m_NewPhysicsPopover);
+	m_builder -> get_widget ("NewForcePhysicsModelButton", m_NewForcePhysicsModelButton);
+	m_builder -> get_widget ("NewWindPhysicsModelButton", m_NewWindPhysicsModelButton);
 	m_builder -> get_widget ("LODExtraWindow", m_LODExtraWindow);
 	m_builder -> get_widget ("RangeColorGrid", m_RangeColorGrid);
 	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
@@ -371,6 +374,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("EmitterVariationSpinButton", m_EmitterVariationSpinButton);
 	m_builder -> get_widget ("EmitterMassSpinButton", m_EmitterMassSpinButton);
 	m_builder -> get_widget ("EmitterSurfaceAreaSpinButton", m_EmitterSurfaceAreaSpinButton);
+	m_builder -> get_widget ("PhysicsExpander", m_PhysicsExpander);
+	m_builder -> get_widget ("PhysicsGrid", m_PhysicsGrid);
+	m_builder -> get_widget ("AddPhysicsButton", m_AddPhysicsButton);
 	m_builder -> get_widget ("ColorRampExpander", m_ColorRampExpander);
 	m_builder -> get_widget ("CreateColorRampBox", m_CreateColorRampBox);
 	m_builder -> get_widget ("ColorRampTypeButton", m_ColorRampTypeButton);
@@ -390,9 +396,6 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ColorRampRGBAScrolledWindow", m_ColorRampRGBAScrolledWindow);
 	m_builder -> get_widget ("AddColorRampRGBAButton", m_AddColorRampRGBAButton);
 	m_builder -> get_widget ("RemoveColorRampRGBAButton", m_RemoveColorRampRGBAButton);
-	m_builder -> get_widget ("PhysicsExpander", m_PhysicsExpander);
-	m_builder -> get_widget ("PhysicsGrid", m_PhysicsGrid);
-	m_builder -> get_widget ("AddPhysicsButton", m_AddPhysicsButton);
 	m_builder -> get_widget ("ForcePhysicsModelBox", m_ForcePhysicsModelBox);
 	m_builder -> get_widget ("WindPhysicsModelBox", m_WindPhysicsModelBox);
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
@@ -436,6 +439,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
+	m_NewForcePhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_force_physics_model_clicked));
+	m_NewWindPhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_wind_physics_model_clicked));
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_map));
@@ -481,13 +486,13 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'EmitterUnlinkButton'.
 	m_EmitterUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_unlink_clicked));
+	m_AddPhysicsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_add_physics_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'ColorRampTypeButton'.
 	m_ColorRampTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_type_changed));
 
 	// Connect object Gtk::Button with id 'ColorRampUnlinkButton'.
 	m_ColorRampUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_unlink_clicked));
-	m_AddPhysicsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_add_physics_clicked));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

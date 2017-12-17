@@ -53,7 +53,9 @@
 #include "ForcePhysicsModelEditor.h"
 #include "WindPhysicsModelEditor.h"
 
+#include <Titania/X3D/Components/ParticleSystems/ForcePhysicsModel.h>
 #include <Titania/X3D/Components/ParticleSystems/ParticleSystem.h>
+#include <Titania/X3D/Components/ParticleSystems/WindPhysicsModel.h>
 
 namespace titania {
 namespace puck {
@@ -62,10 +64,9 @@ X3DParticlePhysicsModelNodeEditor::X3DParticlePhysicsModelNodeEditor () :
 	X3DPrecisionPlacementPanelInterface (),
 	                            parents (),
 	                       phyicsBuffer (),
-	                       physicsNodes (),
 	                            editors ()
 {
-	addChildObjects (parents, phyicsBuffer, physicsNodes);
+	addChildObjects (parents, phyicsBuffer);
 
 	phyicsBuffer .addInterest (&X3DParticlePhysicsModelNodeEditor::set_nodes, this);
 }
@@ -81,7 +82,7 @@ X3DParticlePhysicsModelNodeEditor::set_selection (const X3D::MFNode & selection)
 	{
 		try
 		{
-			parent -> getField <X3D::MFNode> ("phyics") .removeInterest (&X3DParticlePhysicsModelNodeEditor::set_phyics, this);
+			parent -> getField <X3D::MFNode> ("physics") .removeInterest (&X3DParticlePhysicsModelNodeEditor::set_physics, this);
 		}
 		catch (const X3D::X3DError & error)
 		{ }		
@@ -93,17 +94,17 @@ X3DParticlePhysicsModelNodeEditor::set_selection (const X3D::MFNode & selection)
 	{
 		try
 		{
-			parent -> getField <X3D::MFNode> ("phyics") .addInterest (&X3DParticlePhysicsModelNodeEditor::set_phyics, this);
+			parent -> getField <X3D::MFNode> ("physics") .addInterest (&X3DParticlePhysicsModelNodeEditor::set_physics, this);
 		}
 		catch (const X3D::X3DError & error)
 		{ }		
 	}
 
-	set_phyics ();
+	set_physics ();
 }
 
 void
-X3DParticlePhysicsModelNodeEditor::set_phyics ()
+X3DParticlePhysicsModelNodeEditor::set_physics ()
 {
 	phyicsBuffer .addEvent ();
 }
@@ -120,10 +121,10 @@ X3DParticlePhysicsModelNodeEditor::set_nodes ()
 	const int32_t active    = std::get <1> (tuple);
 	const bool    hasParent = not parents .empty ();
 
-	physicsNodes = std::move (std::get <0> (tuple));
-	editors      = createEditors (physicsNodes);
+	editors = createEditors (std::get <0> (tuple));
 
 	getPhysicsExpander () .set_visible (hasParent);
+	getPhysicsGrid ()     .set_visible (active >= 0);
 
 	setGridLabels (getWidget ());
 }
@@ -131,15 +132,60 @@ X3DParticlePhysicsModelNodeEditor::set_nodes ()
 void
 X3DParticlePhysicsModelNodeEditor::on_add_physics_clicked ()
 {
-	__LOG__ << std::endl;
+	getNewPhysicsPopover () .popup ();
+}
+
+void
+X3DParticlePhysicsModelNodeEditor::on_new_force_physics_model_clicked ()
+{
+	getNewPhysicsPopover () .popdown ();
+
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create New Force Physics Model"));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	const auto node             = executionContext -> createNode <X3D::ForcePhysicsModel> ();
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			X3D::X3DEditor::pushBackIntoArray (parent, parent -> getField <X3D::MFNode> ("physics"), node, undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DParticlePhysicsModelNodeEditor::on_new_wind_physics_model_clicked ()
+{
+	getNewPhysicsPopover () .popdown ();
+
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create New Wind Physics Model"));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (parents, true));
+	const auto node             = executionContext -> createNode <X3D::WindPhysicsModel> ();
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			X3D::X3DEditor::pushBackIntoArray (parent, parent -> getField <X3D::MFNode> ("physics"), node, undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>>
-X3DParticlePhysicsModelNodeEditor::createEditors (const X3D::MFNode & physicsNodes) const
+X3DParticlePhysicsModelNodeEditor::createEditors (const X3D::MFNode & physicsNodes)
 {
 	std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>> editors;
 
-	int32_t top = 0;
+	size_t top   = 0;
+	size_t index = 0;
 
 	for (const auto & physicsNode : physicsNodes)
 	{
@@ -154,6 +200,28 @@ X3DParticlePhysicsModelNodeEditor::createEditors (const X3D::MFNode & physicsNod
 			editor -> setIndependent (false);
 			editor -> setNodes (X3D::MFNode ({ physicsNode }));
 
+			if (index not_eq 0)
+			{
+				editor -> getUpButton () .set_sensitive (true);
+				editor -> getUpButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DParticlePhysicsModelNodeEditor::on_up_physics_clicked), index));
+			}
+			else
+			{
+				editor -> getUpButton () .set_sensitive (false);
+			}
+
+			if (index not_eq (physicsNodes .size () - 1))
+			{
+				editor -> getDownButton () .set_sensitive (true);
+				editor -> getDownButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DParticlePhysicsModelNodeEditor::on_down_physics_clicked), index));
+			}
+			else
+			{
+				editor -> getDownButton () .set_sensitive (false);
+			}
+
+			editor -> getRemoveButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DParticlePhysicsModelNodeEditor::on_remove_physics_clicked), index));
+
 			unparent (editor -> getWidget ());
 			getPhysicsGrid () .attach (*label,                 0, top, 1, 1);
 			getPhysicsGrid () .attach (editor -> getWidget (), 1, top, 1, 1);
@@ -166,13 +234,69 @@ X3DParticlePhysicsModelNodeEditor::createEditors (const X3D::MFNode & physicsNod
 		{
 			editors .emplace_back (editor);
 		}
+
+		++ index;
 	}
 
 	return editors;
 }
 
+void
+X3DParticlePhysicsModelNodeEditor::on_up_physics_clicked (const size_t index)
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Particle Physics Up"));
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			X3D::X3DEditor::moveValueWithinArray (parent, parent -> getField <X3D::MFNode> ("physics"), index, index - 1, undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DParticlePhysicsModelNodeEditor::on_down_physics_clicked (const size_t index)
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Particle Physics Down"));
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			X3D::X3DEditor::moveValueWithinArray (parent, parent -> getField <X3D::MFNode> ("physics"), index, index + 1, undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DParticlePhysicsModelNodeEditor::on_remove_physics_clicked (const size_t index)
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Particle Physics"));
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			X3D::X3DEditor::eraseFromArray (parent, parent -> getField <X3D::MFNode> ("physics"), index, undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{ }
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
 std::shared_ptr <X3DParticlePhysicsModelNodeInterface>
-X3DParticlePhysicsModelNodeEditor::createEditor (const X3D::SFNode & physicsNode) const
+X3DParticlePhysicsModelNodeEditor::createEditor (const X3D::SFNode & physicsNode)
 {
 	if (physicsNode)
 	{
@@ -200,7 +324,7 @@ void
 X3DParticlePhysicsModelNodeEditor::connectPhysics (const X3D::MFNode & field)
 {
 	field .removeInterest (&X3DParticlePhysicsModelNodeEditor::connectPhysics, this);
-	field .addInterest (&X3DParticlePhysicsModelNodeEditor::set_phyics, this);
+	field .addInterest (&X3DParticlePhysicsModelNodeEditor::set_physics, this);
 }
 
 X3DParticlePhysicsModelNodeEditor::~X3DParticlePhysicsModelNodeEditor ()

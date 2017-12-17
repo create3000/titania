@@ -88,7 +88,7 @@ private:
 	///  @name Construction
 
 	void
-	set_phyics ();
+	set_physics ();
 
 	void
 	set_nodes ();
@@ -97,11 +97,28 @@ private:
 	void
 	on_add_physics_clicked () final override;
 
+	virtual
+	void
+	on_new_force_physics_model_clicked () final override;
+
+	virtual
+	void
+	on_new_wind_physics_model_clicked () final override;
+
+	void
+	on_up_physics_clicked (const size_t index);
+
+	void
+	on_down_physics_clicked (const size_t index);
+	
+	void
+	on_remove_physics_clicked (const size_t index);
+
 	std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>>
-	createEditors (const X3D::MFNode & physicsNodes) const;
+	createEditors (const X3D::MFNode & physicsNodes);
 
 	std::shared_ptr <X3DParticlePhysicsModelNodeInterface>
-	createEditor (const X3D::SFNode & physicsNode) const;
+	createEditor (const X3D::SFNode & physicsNode);
 
 	void
 	connectPhysics (const X3D::MFNode & field);
@@ -110,7 +127,6 @@ private:
 
 	X3D::MFNode parents;
 	X3D::SFTime phyicsBuffer;
-	X3D::MFNode physicsNodes;
 
 	std::vector <std::shared_ptr <X3DParticlePhysicsModelNodeInterface>> editors;
 

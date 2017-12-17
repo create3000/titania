@@ -1,83 +1,15 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V4.0.3
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V4.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/NormalTool.x3dv"
-META "modified" "Mon, 15 Feb 2016 12:22:16 GMT"
+META "modified" "Sat, 16 Dec 2017 09:59:54 GMT"
 
 WorldInfo {
-  metadata DEF Titania MetadataSet {
-    name "Titania"
-    reference "http://titania.create3000.de"
-    value [
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF Sphere Transform {
-            children Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.618 0.618 0.618
-                  specularColor 0.382 0.382 0.382
-                  shininess 0.62
-                  transparency 0.2
-                }
-              }
-              geometry Sphere { }
-            }
-          }
-        }
-      }
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              0.0724355831778646,
-              0.000138152165285751,
-              38.1965331843734
-            ]
-          }
-          DEF orientation MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              -0.00191338595778256,
-              0.999976871986456,
-              -0.00652644209041431,
-              0.00189643312556132
-            ]
-          }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              0,
-              0
-            ]
-          }
-        ]
-      }
-    ]
-  }
   title "NormalTool"
 }
 
@@ -132,7 +64,19 @@ DEF _2 Transform {
         }
       ]
     }
-    USE Sphere
+    DEF Sphere Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.618 0.618 0.618
+            specularColor 0.382 0.382 0.382
+            shininess 0.62
+            transparency 0.2
+          }
+        }
+        geometry Sphere { }
+      }
+    }
     DEF LocalLight DirectionalLight { }
   ]
 }
