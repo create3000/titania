@@ -109,17 +109,20 @@ X3DParticlePhysicsModelNodeEditor::on_physics_link_clicked ()
 	if (parents .empty ())
 		return;
 
-	const auto & field = parents .back () -> getField <X3D::MFNode> ("physics");
+	const auto   undoStep = std::make_shared <X3D::UndoStep> (_ ("Create Clones In »physics«"));
+	const auto & nodes    = parents .back () -> getField <X3D::MFNode> ("physics");
 
 	for (const auto & parent : parents)
 	{
 		try
 		{
-			parent -> getField <X3D::MFNode> ("physics") = field;
+			X3D::X3DEditor::replaceNodes (getCurrentContext (), parent, parent -> getField <X3D::MFNode> ("physics"), nodes, undoStep);
 		}
 		catch (const X3D::X3DError & error)
 		{ }		
 	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
