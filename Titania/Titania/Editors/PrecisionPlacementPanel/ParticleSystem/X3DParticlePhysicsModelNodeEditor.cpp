@@ -50,6 +50,7 @@
 
 #include "X3DParticlePhysicsModelNodeEditor.h"
 
+#include "DefaultPhysicsModelEditor.h"
 #include "ForcePhysicsModelEditor.h"
 #include "WindPhysicsModelEditor.h"
 
@@ -336,7 +337,7 @@ X3DParticlePhysicsModelNodeEditor::createEditor (const X3D::SFNode & physicsNode
 			}
 			default:
 			{
-				return nullptr;
+				return std::make_shared <DefaultPhysicsModelEditor> (getBrowserWindow ());
 			}
 		}
 	}

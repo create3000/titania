@@ -148,6 +148,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPolylineEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DVolumeEmitterEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/DefaultPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/ForcePhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/WindPhysicsModelEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DColorRampNodeEditor.cpp \
@@ -219,6 +220,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
+	Titania/UserInterfaces/X3DDefaultPhysicsModelEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \

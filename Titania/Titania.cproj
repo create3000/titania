@@ -353,6 +353,8 @@
     <Compile Include="Titania\UserInterfaces\X3DWindPhysicsModelEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\WindPhysicsModelEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DDefaultPhysicsModelEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\DefaultPhysicsModelEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3112,6 +3114,8 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeEditor.h" />
     <None Include="share\titania\ui\icons\UnlinkClone.svg" />
     <None Include="share\titania\ui\icons\LinkClone.svg" />
+    <None Include="Titania\UserInterfaces\X3DDefaultPhysicsModelEditorInterface.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\DefaultPhysicsModelEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
