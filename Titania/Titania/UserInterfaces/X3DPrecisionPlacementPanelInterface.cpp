@@ -372,9 +372,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("EmitterMassSpinButton", m_EmitterMassSpinButton);
 	m_builder -> get_widget ("EmitterSurfaceAreaSpinButton", m_EmitterSurfaceAreaSpinButton);
 	m_builder -> get_widget ("PhysicsExpander", m_PhysicsExpander);
-	m_builder -> get_widget ("PhysicsBox", m_PhysicsBox);
 	m_builder -> get_widget ("PhysicsGrid", m_PhysicsGrid);
-	m_builder -> get_widget ("AddPhysicsButton", m_AddPhysicsButton);
+	m_builder -> get_widget ("PhysicsAddButton", m_PhysicsAddButton);
+	m_builder -> get_widget ("PhysicsLinkButton", m_PhysicsLinkButton);
 	m_builder -> get_widget ("ColorRampExpander", m_ColorRampExpander);
 	m_builder -> get_widget ("CreateColorRampBox", m_CreateColorRampBox);
 	m_builder -> get_widget ("ColorRampTypeButton", m_ColorRampTypeButton);
@@ -486,7 +486,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'EmitterUnlinkButton'.
 	m_EmitterUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_emitter_unlink_clicked));
-	m_AddPhysicsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_add_physics_clicked));
+	m_PhysicsAddButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_add_physics_clicked));
+	m_PhysicsLinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_physics_link_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'ColorRampTypeButton'.
 	m_ColorRampTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_type_changed));

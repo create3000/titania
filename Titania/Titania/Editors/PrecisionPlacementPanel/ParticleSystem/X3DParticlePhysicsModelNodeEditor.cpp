@@ -104,6 +104,25 @@ X3DParticlePhysicsModelNodeEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
+X3DParticlePhysicsModelNodeEditor::on_physics_link_clicked ()
+{
+	if (parents .empty ())
+		return;
+
+	const auto & field = parents .back () -> getField <X3D::MFNode> ("physics");
+
+	for (const auto & parent : parents)
+	{
+		try
+		{
+			parent -> getField <X3D::MFNode> ("physics") = field;
+		}
+		catch (const X3D::X3DError & error)
+		{ }		
+	}
+}
+
+void
 X3DParticlePhysicsModelNodeEditor::set_physics ()
 {
 	phyicsBuffer .addEvent ();
@@ -123,8 +142,10 @@ X3DParticlePhysicsModelNodeEditor::set_nodes ()
 
 	editors = createEditors (std::get <0> (tuple));
 
-	getPhysicsExpander () .set_visible (hasParent);
-	getPhysicsBox ()      .set_visible (active >= 0);
+	getPhysicsExpander ()   .set_visible (hasParent);
+	getPhysicsGrid ()       .set_visible (active >= 0);
+	getPhysicsAddButton ()  .set_sensitive (active >= 0);
+	getPhysicsLinkButton () .set_sensitive (active == -1);
 
 	setGridLabels (getWidget ());
 }

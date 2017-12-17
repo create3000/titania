@@ -87,6 +87,10 @@ private:
 
 	///  @name Construction
 
+	virtual
+	void
+	on_physics_link_clicked () final override;
+
 	void
 	set_physics ();
 

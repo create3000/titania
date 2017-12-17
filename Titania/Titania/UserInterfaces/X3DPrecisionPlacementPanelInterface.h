@@ -1256,17 +1256,17 @@ public:
 	getPhysicsExpander () const
 	{ return *m_PhysicsExpander; }
 
-	Gtk::Box &
-	getPhysicsBox () const
-	{ return *m_PhysicsBox; }
-
 	Gtk::Grid &
 	getPhysicsGrid () const
 	{ return *m_PhysicsGrid; }
 
 	Gtk::Button &
-	getAddPhysicsButton () const
-	{ return *m_AddPhysicsButton; }
+	getPhysicsAddButton () const
+	{ return *m_PhysicsAddButton; }
+
+	Gtk::Button &
+	getPhysicsLinkButton () const
+	{ return *m_PhysicsLinkButton; }
 
 	Gtk::Expander &
 	getColorRampExpander () const
@@ -1605,6 +1605,10 @@ public:
 	virtual
 	void
 	on_add_physics_clicked () = 0;
+
+	virtual
+	void
+	on_physics_link_clicked () = 0;
 
 	virtual
 	void
@@ -1954,9 +1958,9 @@ private:
 	Gtk::SpinButton* m_EmitterMassSpinButton;
 	Gtk::SpinButton* m_EmitterSurfaceAreaSpinButton;
 	Gtk::Expander* m_PhysicsExpander;
-	Gtk::Box* m_PhysicsBox;
 	Gtk::Grid* m_PhysicsGrid;
-	Gtk::Button* m_AddPhysicsButton;
+	Gtk::Button* m_PhysicsAddButton;
+	Gtk::Button* m_PhysicsLinkButton;
 	Gtk::Expander* m_ColorRampExpander;
 	Gtk::Box* m_CreateColorRampBox;
 	Gtk::ComboBoxText* m_ColorRampTypeButton;
