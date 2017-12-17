@@ -124,7 +124,7 @@ X3DParticlePhysicsModelNodeEditor::set_nodes ()
 	editors = createEditors (std::get <0> (tuple));
 
 	getPhysicsExpander () .set_visible (hasParent);
-	getPhysicsGrid ()     .set_visible (active >= 0);
+	getPhysicsBox ()      .set_visible (active >= 0);
 
 	setGridLabels (getWidget ());
 }
@@ -268,7 +268,7 @@ X3DParticlePhysicsModelNodeEditor::on_down_physics_clicked (const size_t index)
 	{
 		try
 		{
-			X3D::X3DEditor::moveValueWithinArray (parent, parent -> getField <X3D::MFNode> ("physics"), index, index + 1, undoStep);
+			X3D::X3DEditor::moveValueWithinArray (parent, parent -> getField <X3D::MFNode> ("physics"), index, index + 2, undoStep);
 		}
 		catch (const X3D::X3DError & error)
 		{ }

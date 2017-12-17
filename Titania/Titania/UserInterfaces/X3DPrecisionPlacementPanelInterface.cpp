@@ -199,9 +199,6 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_VolumeEmitterDirectionZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VolumeEmitterDirectionZAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("NewPhysicsPopover", m_NewPhysicsPopover);
-	m_builder -> get_widget ("NewForcePhysicsModelButton", m_NewForcePhysicsModelButton);
-	m_builder -> get_widget ("NewWindPhysicsModelButton", m_NewWindPhysicsModelButton);
 	m_builder -> get_widget ("LODExtraWindow", m_LODExtraWindow);
 	m_builder -> get_widget ("RangeColorGrid", m_RangeColorGrid);
 	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
@@ -338,6 +335,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("CreateEmitterBox", m_CreateEmitterBox);
 	m_builder -> get_widget ("EmitterTypeButton", m_EmitterTypeButton);
 	m_builder -> get_widget ("EmitterUnlinkButton", m_EmitterUnlinkButton);
+	m_builder -> get_widget ("EmitterBox", m_EmitterBox);
 	m_builder -> get_widget ("PointEmitterBox", m_PointEmitterBox);
 	m_builder -> get_widget ("PointEmitterPositionBox", m_PointEmitterPositionBox);
 	m_builder -> get_widget ("PointEmitterDirectionToolBox", m_PointEmitterDirectionToolBox);
@@ -369,29 +367,30 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("VolumeEmitterInternalCheckButton", m_VolumeEmitterInternalCheckButton);
 	m_builder -> get_widget ("ExplosionEmitterBox", m_ExplosionEmitterBox);
 	m_builder -> get_widget ("ExplosionEmitterPositionBox", m_ExplosionEmitterPositionBox);
-	m_builder -> get_widget ("EmitterBox", m_EmitterBox);
 	m_builder -> get_widget ("EmitterSpeedSpinButton", m_EmitterSpeedSpinButton);
 	m_builder -> get_widget ("EmitterVariationSpinButton", m_EmitterVariationSpinButton);
 	m_builder -> get_widget ("EmitterMassSpinButton", m_EmitterMassSpinButton);
 	m_builder -> get_widget ("EmitterSurfaceAreaSpinButton", m_EmitterSurfaceAreaSpinButton);
 	m_builder -> get_widget ("PhysicsExpander", m_PhysicsExpander);
+	m_builder -> get_widget ("PhysicsBox", m_PhysicsBox);
 	m_builder -> get_widget ("PhysicsGrid", m_PhysicsGrid);
 	m_builder -> get_widget ("AddPhysicsButton", m_AddPhysicsButton);
 	m_builder -> get_widget ("ColorRampExpander", m_ColorRampExpander);
 	m_builder -> get_widget ("CreateColorRampBox", m_CreateColorRampBox);
 	m_builder -> get_widget ("ColorRampTypeButton", m_ColorRampTypeButton);
 	m_builder -> get_widget ("ColorRampUnlinkButton", m_ColorRampUnlinkButton);
+	m_builder -> get_widget ("ColorRampBox", m_ColorRampBox);
 	m_builder -> get_widget ("ColorRampGradientKeyBox", m_ColorRampGradientKeyBox);
 	m_builder -> get_widget ("ColorKeySpinButton", m_ColorKeySpinButton);
 	m_builder -> get_widget ("ColorRampGradientBox", m_ColorRampGradientBox);
 	m_builder -> get_widget ("ColorRampGrid", m_ColorRampGrid);
-	m_builder -> get_widget ("ColorRampBox", m_ColorRampBox);
+	m_builder -> get_widget ("ColorRampButtonBox", m_ColorRampButtonBox);
 	m_builder -> get_widget ("ColorRampButton", m_ColorRampButton);
 	m_builder -> get_widget ("ColorRampScrolledWindow", m_ColorRampScrolledWindow);
 	m_builder -> get_widget ("AddColorRampButton", m_AddColorRampButton);
 	m_builder -> get_widget ("RemoveColorRampButton", m_RemoveColorRampButton);
 	m_builder -> get_widget ("ColorRampRGBAGrid", m_ColorRampRGBAGrid);
-	m_builder -> get_widget ("ColorRampRGBABox", m_ColorRampRGBABox);
+	m_builder -> get_widget ("ColorRampRGBAButtonBox", m_ColorRampRGBAButtonBox);
 	m_builder -> get_widget ("ColorRampRGBAButton", m_ColorRampRGBAButton);
 	m_builder -> get_widget ("ColorRampRGBAScrolledWindow", m_ColorRampRGBAScrolledWindow);
 	m_builder -> get_widget ("AddColorRampRGBAButton", m_AddColorRampRGBAButton);
@@ -439,8 +438,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
-	m_NewForcePhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_force_physics_model_clicked));
-	m_NewWindPhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_wind_physics_model_clicked));
+	m_builder -> get_widget ("NewPhysicsPopover", m_NewPhysicsPopover);
+	m_builder -> get_widget ("NewForcePhysicsModelButton", m_NewForcePhysicsModelButton);
+	m_builder -> get_widget ("NewWindPhysicsModelButton", m_NewWindPhysicsModelButton);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_map));
@@ -516,6 +516,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
 	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));
+	m_NewForcePhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_force_physics_model_clicked));
+	m_NewWindPhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_wind_physics_model_clicked));
 }
 
 X3DPrecisionPlacementPanelInterface::~X3DPrecisionPlacementPanelInterface ()

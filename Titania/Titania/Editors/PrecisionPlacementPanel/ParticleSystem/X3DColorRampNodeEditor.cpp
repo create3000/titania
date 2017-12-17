@@ -67,7 +67,7 @@ X3DColorRampNodeEditor::X3DColorRampNodeEditor () :
 	                              color (this,
 	                                    getColorRampButton (),
 	                                    getColorRampAdjustment (),
-	                                    getColorRampBox (),
+	                                    getColorRampButtonBox (),
 	                                    getAddColorRampButton (),
 	                                    getRemoveColorRampButton (),
 	                                    getColorRampScrolledWindow (),
@@ -75,7 +75,7 @@ X3DColorRampNodeEditor::X3DColorRampNodeEditor () :
 	                         colorRGBA (this,
 	                                    getColorRampRGBAButton (),
 	                                    getColorRampRGBAAdjustment (),
-	                                    getColorRampRGBABox (),
+	                                    getColorRampRGBAButtonBox (),
 	                                    getAddColorRampRGBAButton (),
 	                                    getRemoveColorRampRGBAButton (),
 	                                    getColorRampRGBAScrolledWindow (),
@@ -311,9 +311,9 @@ X3DColorRampNodeEditor::set_node ()
 		getColorRampTypeButton () .set_active (-1);
 
 	getColorRampExpander ()     .set_visible (hasParent or colorNode);
-	getCreateColorRampBox ()    .set_sensitive (hasParent);
 	getColorRampTypeButton ()   .set_sensitive (hasField);
 	getColorRampUnlinkButton () .set_sensitive (active > 0 and colorNode -> getCloneCount () > 1);
+	getColorRampBox ()          .set_visible (active > 0);
 
 	changing = false;
 

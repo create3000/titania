@@ -564,18 +564,6 @@ public:
 	getVolumeEmitterDirectionZAdjustment () const
 	{ return m_VolumeEmitterDirectionZAdjustment; }
 
-	Gtk::Popover &
-	getNewPhysicsPopover () const
-	{ return *m_NewPhysicsPopover; }
-
-	Gtk::Button &
-	getNewForcePhysicsModelButton () const
-	{ return *m_NewForcePhysicsModelButton; }
-
-	Gtk::Button &
-	getNewWindPhysicsModelButton () const
-	{ return *m_NewWindPhysicsModelButton; }
-
 	Gtk::Window &
 	getLODExtraWindow () const
 	{ return *m_LODExtraWindow; }
@@ -1120,6 +1108,10 @@ public:
 	getEmitterUnlinkButton () const
 	{ return *m_EmitterUnlinkButton; }
 
+	Gtk::Box &
+	getEmitterBox () const
+	{ return *m_EmitterBox; }
+
 	Gtk::Grid &
 	getPointEmitterBox () const
 	{ return *m_PointEmitterBox; }
@@ -1244,10 +1236,6 @@ public:
 	getExplosionEmitterPositionBox () const
 	{ return *m_ExplosionEmitterPositionBox; }
 
-	Gtk::Grid &
-	getEmitterBox () const
-	{ return *m_EmitterBox; }
-
 	Gtk::SpinButton &
 	getEmitterSpeedSpinButton () const
 	{ return *m_EmitterSpeedSpinButton; }
@@ -1267,6 +1255,10 @@ public:
 	Gtk::Expander &
 	getPhysicsExpander () const
 	{ return *m_PhysicsExpander; }
+
+	Gtk::Box &
+	getPhysicsBox () const
+	{ return *m_PhysicsBox; }
 
 	Gtk::Grid &
 	getPhysicsGrid () const
@@ -1292,6 +1284,10 @@ public:
 	getColorRampUnlinkButton () const
 	{ return *m_ColorRampUnlinkButton; }
 
+	Gtk::Box &
+	getColorRampBox () const
+	{ return *m_ColorRampBox; }
+
 	Gtk::Grid &
 	getColorRampGradientKeyBox () const
 	{ return *m_ColorRampGradientKeyBox; }
@@ -1309,8 +1305,8 @@ public:
 	{ return *m_ColorRampGrid; }
 
 	Gtk::Box &
-	getColorRampBox () const
-	{ return *m_ColorRampBox; }
+	getColorRampButtonBox () const
+	{ return *m_ColorRampButtonBox; }
 
 	Gtk::Button &
 	getColorRampButton () const
@@ -1333,8 +1329,8 @@ public:
 	{ return *m_ColorRampRGBAGrid; }
 
 	Gtk::Box &
-	getColorRampRGBABox () const
-	{ return *m_ColorRampRGBABox; }
+	getColorRampRGBAButtonBox () const
+	{ return *m_ColorRampRGBAButtonBox; }
 
 	Gtk::Button &
 	getColorRampRGBAButton () const
@@ -1524,15 +1520,19 @@ public:
 	getBBoxCenterZSpinButton () const
 	{ return *m_BBoxCenterZSpinButton; }
 
+	Gtk::Popover &
+	getNewPhysicsPopover () const
+	{ return *m_NewPhysicsPopover; }
+
+	Gtk::Button &
+	getNewForcePhysicsModelButton () const
+	{ return *m_NewForcePhysicsModelButton; }
+
+	Gtk::Button &
+	getNewWindPhysicsModelButton () const
+	{ return *m_NewWindPhysicsModelButton; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_new_force_physics_model_clicked () = 0;
-
-	virtual
-	void
-	on_new_wind_physics_model_clicked () = 0;
 
 	virtual
 	void
@@ -1629,6 +1629,14 @@ public:
 	virtual
 	void
 	on_fill_bounding_box_fields_clicked () = 0;
+
+	virtual
+	void
+	on_new_force_physics_model_clicked () = 0;
+
+	virtual
+	void
+	on_new_wind_physics_model_clicked () = 0;
 
 	///  @name Destruction
 
@@ -1773,9 +1781,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_VolumeEmitterDirectionZAdjustment;
-	Gtk::Popover* m_NewPhysicsPopover;
-	Gtk::Button* m_NewForcePhysicsModelButton;
-	Gtk::Button* m_NewWindPhysicsModelButton;
 	Gtk::Window* m_LODExtraWindow;
 	Gtk::Grid* m_RangeColorGrid;
 	Gtk::ScrolledWindow* m_SkyColorsScrolledWindow;
@@ -1912,6 +1917,7 @@ private:
 	Gtk::Grid* m_CreateEmitterBox;
 	Gtk::ComboBoxText* m_EmitterTypeButton;
 	Gtk::Button* m_EmitterUnlinkButton;
+	Gtk::Box* m_EmitterBox;
 	Gtk::Grid* m_PointEmitterBox;
 	Gtk::Box* m_PointEmitterPositionBox;
 	Gtk::Box* m_PointEmitterDirectionToolBox;
@@ -1943,29 +1949,30 @@ private:
 	Gtk::CheckButton* m_VolumeEmitterInternalCheckButton;
 	Gtk::Grid* m_ExplosionEmitterBox;
 	Gtk::Box* m_ExplosionEmitterPositionBox;
-	Gtk::Grid* m_EmitterBox;
 	Gtk::SpinButton* m_EmitterSpeedSpinButton;
 	Gtk::SpinButton* m_EmitterVariationSpinButton;
 	Gtk::SpinButton* m_EmitterMassSpinButton;
 	Gtk::SpinButton* m_EmitterSurfaceAreaSpinButton;
 	Gtk::Expander* m_PhysicsExpander;
+	Gtk::Box* m_PhysicsBox;
 	Gtk::Grid* m_PhysicsGrid;
 	Gtk::Button* m_AddPhysicsButton;
 	Gtk::Expander* m_ColorRampExpander;
 	Gtk::Box* m_CreateColorRampBox;
 	Gtk::ComboBoxText* m_ColorRampTypeButton;
 	Gtk::Button* m_ColorRampUnlinkButton;
+	Gtk::Box* m_ColorRampBox;
 	Gtk::Grid* m_ColorRampGradientKeyBox;
 	Gtk::SpinButton* m_ColorKeySpinButton;
 	Gtk::Box* m_ColorRampGradientBox;
 	Gtk::Grid* m_ColorRampGrid;
-	Gtk::Box* m_ColorRampBox;
+	Gtk::Box* m_ColorRampButtonBox;
 	Gtk::Button* m_ColorRampButton;
 	Gtk::ScrolledWindow* m_ColorRampScrolledWindow;
 	Gtk::Button* m_AddColorRampButton;
 	Gtk::Button* m_RemoveColorRampButton;
 	Gtk::Grid* m_ColorRampRGBAGrid;
-	Gtk::Box* m_ColorRampRGBABox;
+	Gtk::Box* m_ColorRampRGBAButtonBox;
 	Gtk::Button* m_ColorRampRGBAButton;
 	Gtk::ScrolledWindow* m_ColorRampRGBAScrolledWindow;
 	Gtk::Button* m_AddColorRampRGBAButton;
@@ -2013,6 +2020,9 @@ private:
 	Gtk::SpinButton* m_BBoxCenterXSpinButton;
 	Gtk::SpinButton* m_BBoxCenterYSpinButton;
 	Gtk::SpinButton* m_BBoxCenterZSpinButton;
+	Gtk::Popover* m_NewPhysicsPopover;
+	Gtk::Button* m_NewForcePhysicsModelButton;
+	Gtk::Button* m_NewWindPhysicsModelButton;
 
 };
 

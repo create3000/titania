@@ -3843,7 +3843,7 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 	const auto fromIter = array .begin () + fromIndex;
 	const auto toIter   = array .begin () + toIndex;
 
-	array .emplace (toIter, std::move (*fromIter)); // XXX: array .emplace (toIter, std::move (*fromIter));
+	array .emplace (toIter, std::move (*fromIter));
 
 	// Erase
 

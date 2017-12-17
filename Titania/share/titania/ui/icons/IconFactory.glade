@@ -36,7 +36,8 @@
       <source stock-id="Checkerboard" filename="Checkerboard.svg"/>
       <source stock-id="ChipOfFace" filename="ChipOfFace.svg"/>
       <source stock-id="Clockwise" filename="Clockwise.svg"/>
-      <source stock-id="Clone" filename="Clone.svg"/>
+      <source stock-id="UnlinkClone" filename="UnlinkClone.svg"/>
+      <source stock-id="LinkClone" filename="LinkClone.svg"/>
       <source stock-id="Cobweb" filename="Cobweb.svg"/>
       <source stock-id="ColorAdjacentVertices" filename="ColorAdjacentVertices.svg"/>
       <source stock-id="ColorSingleFace" filename="ColorSingleFace.svg"/>

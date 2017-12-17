@@ -1807,7 +1807,6 @@
     <None Include="Titania\Widgets\Footer\Footer.h" />
     <None Include="Titania\Widgets\X3DNotebook\X3DNotebook.h" />
     <None Include="share\titania\ui\icons\Normal.svg" />
-    <None Include="share\titania\ui\icons\Clone.svg" />
     <None Include="share\titania\Library\Components\CADGeometry\CADAssembly.x3dv" />
     <None Include="share\titania\Library\Components\CADGeometry\CADFace.x3dv" />
     <None Include="share\titania\Library\Components\CADGeometry\CADLayer.x3dv" />
@@ -3111,6 +3110,8 @@
     <None Include="Titania\UserInterfaces\X3DWindPhysicsModelEditorInterface.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\WindPhysicsModelEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeEditor.h" />
+    <None Include="share\titania\ui\icons\UnlinkClone.svg" />
+    <None Include="share\titania\ui\icons\LinkClone.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
