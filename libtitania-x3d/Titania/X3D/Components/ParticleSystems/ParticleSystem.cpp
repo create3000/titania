@@ -517,6 +517,23 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+Box3d
+ParticleSystem::getBBox () const
+{
+	if (isSoftSystem ())
+		return softSystem -> getBBox ();
+
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		if (emitterNode)
+			return emitterNode -> getBBox ();
+
+		return Box3d ();
+	}
+
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
+}
+
 bool
 ParticleSystem::isTransparent () const
 {
@@ -551,21 +568,6 @@ ParticleSystem::getGeometryType () const
 
 	return shaderGeometryType;
 }
-
-Box3d
-ParticleSystem::getBBox () const
-{
-	if (bboxSize () == Vector3f (-1, -1, -1))
-	{
-		if (emitterNode)
-			return emitterNode -> getBBox ();
-
-		return Box3d ();
-	}
-
-	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
-}
-
 
 void
 ParticleSystem::set_live ()

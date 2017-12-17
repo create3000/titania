@@ -183,6 +183,20 @@ SoftSystem::initialize ()
 	set_texCoordRamp ();
 }
 
+Box3d
+SoftSystem::getBBox () const
+{
+	if (particleSystem -> bboxSize () == Vector3f (-1, -1, -1))
+	{
+		if (emitterNode)
+			return emitterNode -> getBBox ();
+
+		return Box3d ();
+	}
+
+	return Box3d (particleSystem -> bboxSize () .getValue (), particleSystem -> bboxCenter () .getValue ());
+}
+
 bool
 SoftSystem::isTransparent () const
 {

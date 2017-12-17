@@ -76,6 +76,9 @@ public:
 
 	///  @name Operations
 
+	Box3d
+	getBBox () const;
+
 	bool
 	isTransparent () const;
 
