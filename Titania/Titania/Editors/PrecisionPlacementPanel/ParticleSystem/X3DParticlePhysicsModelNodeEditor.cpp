@@ -342,7 +342,7 @@ X3DParticlePhysicsModelNodeEditor::createEditor (const X3D::SFNode & physicsNode
 		}
 	}
 
-	return nullptr;
+	return std::make_shared <DefaultPhysicsModelEditor> (getBrowserWindow ());
 }
 
 void
