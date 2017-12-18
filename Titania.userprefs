@@ -1,12 +1,17 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/ScriptEditor/X3DShaderEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/Shaders/PointSet.fs">
     <Files>
       <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DShaderEditor.h" Line="81" Column="1" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DShaderEditor.cpp" Line="178" Column="76" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DShaderEditor.cpp" Line="176" Column="51" />
       <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.h" Line="163" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="949" Column="32" />
+      <File FileName="Titania/Titania/Base/X3DBaseInterface.cpp" Line="434" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Wireframe.vs" Line="8" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Wireframe.fs" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/PointSet.fs" Line="64" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -191,7 +191,7 @@ X3DColorRampNodeEditor::on_color_ramp_type_changed ()
 {
 	try
 	{
-		getColorRampGradientKeyBox ()     .set_visible (getColorRampTypeButton () .get_active_row_number () > 0);
+		getColorRampBox ()                .set_visible (getColorRampTypeButton () .get_active_row_number () > 0);
 		getColorRampScrolledWindow ()     .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
 		getColorRampRGBAScrolledWindow () .set_visible (getColorRampTypeButton () .get_active_row_number () == 2);
 		getColorRampGrid ()               .set_visible (getColorRampTypeButton () .get_active_row_number () == 1);
@@ -313,7 +313,6 @@ X3DColorRampNodeEditor::set_node ()
 	getColorRampExpander ()     .set_visible (hasParent or colorNode);
 	getColorRampTypeButton ()   .set_sensitive (hasField);
 	getColorRampUnlinkButton () .set_sensitive (active > 0 and colorNode -> getCloneCount () > 1);
-	getColorRampBox ()          .set_visible (active > 0);
 
 	changing = false;
 
