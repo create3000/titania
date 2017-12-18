@@ -3116,6 +3116,7 @@
     <None Include="share\titania\ui\icons\LinkClone.svg" />
     <None Include="Titania\UserInterfaces\X3DDefaultPhysicsModelEditorInterface.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\DefaultPhysicsModelEditor.h" />
+    <None Include="share\titania\Library\Prototypes\Engines\Noise.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

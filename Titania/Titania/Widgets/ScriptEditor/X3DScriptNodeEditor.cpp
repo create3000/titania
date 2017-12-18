@@ -80,5 +80,23 @@ X3DScriptNodeEditor::set_node (const X3D::SFNode & value)
 	mustEvaluate .setNodes (nodes);
 }
 
+void
+X3DScriptNodeEditor::on_new_script_clicked ()
+{
+	static constexpr auto URL = "ecmascript:\n\nfunction initialize ()\n{\n\t\n}\n\nfunction set_field (value, time)\n{\n\t\n}\n\nfunction eventsProcessed ()\n{\n\t\n}\n";
+
+	getNewScriptPopover () .popdown ();
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
+	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewScript"), node, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	set_node (node);
+}
+
 } // puck
 } // titania

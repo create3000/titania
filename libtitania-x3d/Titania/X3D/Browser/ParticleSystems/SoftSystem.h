@@ -179,6 +179,7 @@ private:
 	ParticleSystem* const particleSystem;
 
 	GLenum                     primitiveMode;
+	GLuint                     idBufferId;
 	GLuint                     colorBufferId;
 	std::vector <GLuint>       texCoordBufferIds;
 	GLuint                     normalBufferId;

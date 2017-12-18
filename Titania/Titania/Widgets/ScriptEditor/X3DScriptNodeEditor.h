@@ -77,14 +77,19 @@ protected:
 	void
 	initialize () override;
 
+	virtual
 	void
 	set_node (const X3D::SFNode &);
+
+	virtual
+	void
+	on_new_script_clicked () final override;
 
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> directOutput;
 	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> mustEvaluate;
-	X3D::X3DPtr <X3D::Script> scriptNode;
+	X3D::X3DPtr <X3D::Script>                                 scriptNode;
 
 };
 

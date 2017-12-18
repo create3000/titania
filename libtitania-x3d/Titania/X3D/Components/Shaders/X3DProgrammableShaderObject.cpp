@@ -1183,6 +1183,31 @@ X3DProgrammableShaderObject::disableFloatAttrib (const std::string & name)
 }
 
 void
+X3DProgrammableShaderObject::enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (location, components, GL_INT, false, 0, (void*) 0);
+}
+
+void
+X3DProgrammableShaderObject::disableIntegerAttrib (const std::string & name)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location);
+}
+
+void
 X3DProgrammableShaderObject::enableMatrix3Attrib (const std::string & name, const GLuint buffer)
 {
 	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());

@@ -74,6 +74,7 @@ namespace X3D {
 SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	          particleSystem (particleSystem),
 	           primitiveMode (GL_POINTS),
+	              idBufferId (0),
 	           colorBufferId (0),
 	       texCoordBufferIds (1, 0),
 	          normalBufferId (0),
@@ -166,6 +167,7 @@ SoftSystem::initialize ()
 
 	boundedPhysicsModelNodes .addInterest (&SoftSystem::set_boundedPhysics, this);
 
+	glGenBuffers (1, &idBufferId);
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, texCoordBufferIds .data ());
 	glGenBuffers (1, &normalBufferId);
@@ -311,15 +313,19 @@ SoftSystem::set_geometryType ()
 
 	// Create buffers
 
+	std::vector <int32_t> idArray (maxParticles);
+
 	switch (geometryType)
 	{
 		case ParticleSystem::GeometryType::POINT:
 		{
+			idArray       .resize (maxParticles);
 			colorArray    .resize (maxParticles);
 			texCoordArray .resize (0);
 			normalArray   .resize (0);
 			vertexArray   .resize (maxParticles);
 
+			std::iota (idArray     .begin (), idArray     .end (), 0);
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (vertexArray .begin (), vertexArray .end (), Vector3d (0, 0, 0));
 
@@ -329,10 +335,14 @@ SoftSystem::set_geometryType ()
 		}
 		case ParticleSystem::GeometryType::LINE:
 		{
+			idArray       .resize (2 * maxParticles);
 			colorArray    .resize (2 * maxParticles);
 			texCoordArray .resize (0);
 			normalArray   .resize (0);
 			vertexArray   .resize (2 * maxParticles);
+
+			for (size_t i = 0, size = idArray .size (); i < size; ++ i)
+				idArray [i] = i / 2;
 
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (vertexArray .begin (), vertexArray .end (), Vector3d (0, 0, 0));
@@ -345,10 +355,14 @@ SoftSystem::set_geometryType ()
 		case ParticleSystem::GeometryType::QUAD:
 		case ParticleSystem::GeometryType::SPRITE:
 		{
+			idArray       .resize (6 * maxParticles);
 			colorArray    .resize (6 * maxParticles);
 			texCoordArray .resize (6 * maxParticles);
 			normalArray   .resize (6 * maxParticles);
 			vertexArray   .resize (6 * maxParticles);
+
+			for (size_t i = 0, size = idArray .size (); i < size; ++ i)
+				idArray [i] = i / 6;
 
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (normalArray .begin (), normalArray .end (), Vector3f (0, 0, 1));
@@ -387,6 +401,10 @@ SoftSystem::set_geometryType ()
 			break;
 		}
 	}
+
+	glBindBuffer (GL_ARRAY_BUFFER, idBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (int32_t) * idArray .size (), idArray .data (), GL_STATIC_DRAW);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
 	set_shader ();
 }
@@ -1040,6 +1058,8 @@ SoftSystem::draw (ShapeContainer* const context)
 
 			// Setup vertex attributes.
 
+			shaderNode -> enableIntegerAttrib ("x3d_ParticleId", idBufferId, 1);
+
 			if (colorMaterial)
 				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
 
@@ -1085,6 +1105,7 @@ SoftSystem::draw (ShapeContainer* const context)
 				glDrawArrays (primitiveMode, 0, numParticles * vertexCount);
 			}
 
+			shaderNode -> disableIntegerAttrib ("x3d_ParticleId");
 			shaderNode -> disableColorAttrib ();
 			shaderNode -> disableTexCoordAttrib ();
 			shaderNode -> disableNormalAttrib ();
@@ -1102,6 +1123,9 @@ SoftSystem::draw (ShapeContainer* const context)
 void
 SoftSystem::dispose ()
 {
+	if (idBufferId)
+		glDeleteBuffers (1, &idBufferId);
+
 	if (colorBufferId)
 		glDeleteBuffers (1, &colorBufferId);
 

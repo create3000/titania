@@ -50,7 +50,6 @@
 
 #include "ScriptEditor.h"
 
-#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Widgets/Console/Console.h"
@@ -334,89 +333,6 @@ void
 ScriptEditor::on_new_clicked ()
 {
 	getNewScriptPopover () .popup ();
-}
-
-void
-ScriptEditor::on_new_script_clicked ()
-{
-	static constexpr auto URL = "ecmascript:\n\nfunction initialize ()\n{\n\t\n}\n\nfunction set_field (value, time)\n{\n\t\n}\n\nfunction eventsProcessed ()\n{\n\t\n}\n";
-
-	getNewScriptPopover () .popdown ();
-
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
-	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewScript"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
-
-	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
-
-	set_node (node);
-}
-
-void
-ScriptEditor::on_new_composed_shader_clicked ()
-{
-	on_new_shader_clicked ("ComposedShader", find_data_file ("Library/Primitives/Shaders/ComposedShader.x3dv"));
-}
-
-void
-ScriptEditor::on_new_shader_part_clicked ()
-{
-	static constexpr auto URL = "data:text/plain,\n\nvoid\nmain ()\n{\n\t\n}\n";
-
-	getNewScriptPopover () .popdown ();
-
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
-	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
-
-	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
-
-	set_node (node);
-}
-
-void
-ScriptEditor::on_new_program_shader_clicked ()
-{
-	on_new_shader_clicked ("ProgramShader", find_data_file ("Library/Primitives/Shaders/ProgramShader.x3dv"));
-}
-
-void
-ScriptEditor::on_new_shader_program_clicked ()
-{
-	static constexpr auto URL = "data:text/plain,\n\nvoid\nmain ()\n{\n\t\n}\n";
-
-	getNewScriptPopover () .popdown ();
-
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
-	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
-
-	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
-
-	set_node (node);
-}
-
-void
-ScriptEditor::on_new_shader_clicked (const std::string & typeName, const std::string & URL)
-{
-	try
-	{
-		getNewScriptPopover () .popdown ();
-
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Create New %s", typeName .c_str ())));
-		const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
-
-		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	catch (...)
-	{ }
 }
 
 void

@@ -161,6 +161,16 @@ public:
 	void
 	disableFloatAttrib (const std::string & name) final override
 	{ X3DProgrammableShaderObject::disableFloatAttrib (name); }
+
+	virtual
+	void
+	enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components) final override
+	{ X3DProgrammableShaderObject::enableIntegerAttrib (name, buffer, components); }
+	
+	virtual
+	void
+	disableIntegerAttrib (const std::string & name) final override
+	{ X3DProgrammableShaderObject::disableIntegerAttrib (name); }
 	
 	virtual
 	void

@@ -50,6 +50,10 @@
 
 #include "X3DShaderEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
+#include <Titania/X3D/Components/Shaders/X3DShaderNode.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 
 namespace titania {
@@ -101,6 +105,93 @@ X3DShaderEditor::set_node (const X3D::SFNode & value)
 		else
 			getShaderTypeButton () .set_visible (false);
 	}
+}
+
+void
+X3DShaderEditor::on_new_composed_shader_clicked ()
+{
+	on_new_shader_clicked ("ComposedShader", find_data_file ("Library/Primitives/Shaders/ComposedShader.x3dv"));
+}
+
+void
+X3DShaderEditor::on_new_shader_part_clicked ()
+{
+	static constexpr auto URL = "data:text/plain,\n\nvoid\nmain ()\n{\n\t\n}\n";
+
+	getNewScriptPopover () .popdown ();
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
+	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	set_node (node);
+}
+
+void
+X3DShaderEditor::on_new_program_shader_clicked ()
+{
+	on_new_shader_clicked ("ProgramShader", find_data_file ("Library/Primitives/Shaders/ProgramShader.x3dv"));
+}
+
+void
+X3DShaderEditor::on_new_shader_program_clicked ()
+{
+	static constexpr auto URL = "data:text/plain,\n\nvoid\nmain ()\n{\n\t\n}\n";
+
+	getNewScriptPopover () .popdown ();
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
+	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+
+	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	set_node (node);
+}
+
+void
+X3DShaderEditor::on_new_shader_clicked (const std::string & typeName, const std::string & URL)
+{
+	try
+	{
+		getNewScriptPopover () .popdown ();
+
+		const auto appearanceNodes  = X3DEditorObject::getNodes <X3D::Appearance> (getBrowserWindow () -> getSelection () -> getNodes (), { X3D::X3DConstants::Appearance });
+		const auto executionContext = X3D::X3DExecutionContextPtr (getSelectionContext (appearanceNodes));
+
+		if (executionContext)
+		{
+			const auto undoStep    = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Create New %s", typeName .c_str ())));
+			const auto nodes       = getBrowserWindow () -> import ({ URL }, undoStep);
+			const auto shaderNodes = X3DEditorObject::getNodes <X3D::X3DShaderNode> (nodes, { X3D::X3DConstants::X3DShaderNode });
+
+			for (const auto & appearanceNode : appearanceNodes)
+			{
+				X3D::X3DEditor::replaceNodes (executionContext, appearanceNode, appearanceNode -> shaders (), shaderNodes, undoStep);
+			}
+
+			X3D::X3DEditor::removeNodesFromScene (getCurrentContext (), nodes, true, undoStep);
+
+			getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		else
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Create New %s", typeName .c_str ())));
+			const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
+
+			getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+	}
+	catch (...)
+	{ }
 }
 
 void

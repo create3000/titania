@@ -131,7 +131,15 @@ public:
 	virtual
 	void
 	disableFloatAttrib (const std::string &) = 0;
-	
+
+	virtual
+	void
+	enableIntegerAttrib (const std::string &, const GLuint, const size_t) = 0;
+
+	virtual
+	void
+	disableIntegerAttrib (const std::string &) = 0;
+
 	virtual
 	void
 	enableMatrix3Attrib (const std::string &, const GLuint) = 0;

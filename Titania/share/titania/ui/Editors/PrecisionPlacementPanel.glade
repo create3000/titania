@@ -3564,6 +3564,7 @@
                                         <items>
                                           <item>POINT</item>
                                           <item>LINE</item>
+                                          <item translatable="yes">TRIANGLE</item>
                                           <item>QUAD</item>
                                           <item>SPRITE</item>
                                           <item>GEOMETRY</item>
@@ -6345,6 +6346,8 @@
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
                         <property name="spacing">8</property>
+                        <signal name="map" handler="on_geometry_selection_map" swapped="no"/>
+                        <signal name="unmap" handler="on_geometry_selection_unmap" swapped="no"/>
                         <child>
                           <object class="GtkGrid" id="GeometrySelectionBox">
                             <property name="visible">True</property>

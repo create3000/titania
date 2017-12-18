@@ -95,6 +95,13 @@ public:
 	~ScriptEditor () final override;
 
 
+protected:
+
+	virtual
+	void
+	set_node (const X3D::SFNode &) final override;
+
+
 private:
 
 	///  @name Construction
@@ -122,9 +129,6 @@ private:
 	set_executionContext ();
 
 	void
-	set_node (const X3D::SFNode &);
-
-	void
 	set_live ();
 
 	bool
@@ -136,29 +140,6 @@ private:
 	virtual
 	void
 	on_new_clicked () final override;
-
-	virtual
-	void
-	on_new_script_clicked () final override;
-
-	virtual
-	void
-	on_new_composed_shader_clicked () final override;
-
-	virtual
-	void
-	on_new_shader_part_clicked () final override;
-
-	virtual
-	void
-	on_new_program_shader_clicked () final override;
-
-	virtual
-	void
-	on_new_shader_program_clicked () final override;
-
-	void
-	on_new_shader_clicked (const std::string & typeName, const std::string & URL);
 
 	virtual
 	void

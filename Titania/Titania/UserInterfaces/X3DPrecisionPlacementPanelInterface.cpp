@@ -495,6 +495,10 @@ X3DPrecisionPlacementPanelInterface::create ()
 	// Connect object Gtk::Button with id 'ColorRampUnlinkButton'.
 	m_ColorRampUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_unlink_clicked));
 
+	// Connect object Gtk::Expander with id 'GeometrySelectionExpander'.
+	m_GeometrySelectionExpander -> signal_map () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_map));
+	m_GeometrySelectionExpander -> signal_unmap () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_unmap));
+
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
 	m_GeometrySelectionTranslationYXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

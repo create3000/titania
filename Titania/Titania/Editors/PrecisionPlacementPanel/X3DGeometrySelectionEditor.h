@@ -125,6 +125,14 @@ private:
 	connectToolMatrix ();
 
 	virtual
+	void
+	on_geometry_selection_map () final override;
+
+	virtual
+	void
+	on_geometry_selection_unmap () final override;
+
+	virtual
 	bool
 	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) final override;
 

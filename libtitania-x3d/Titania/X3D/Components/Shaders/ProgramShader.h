@@ -138,6 +138,14 @@ public:
 	virtual
 	void
 	disableFloatAttrib (const std::string &) final override;
+
+	virtual
+	void
+	enableIntegerAttrib (const std::string &, const GLuint, const size_t) final override;
+	
+	virtual
+	void
+	disableIntegerAttrib (const std::string &) final override;
 	
 	virtual
 	void

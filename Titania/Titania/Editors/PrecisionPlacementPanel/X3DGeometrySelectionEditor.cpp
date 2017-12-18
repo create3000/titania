@@ -107,8 +107,6 @@ X3DGeometrySelectionEditor::configure ()
 {
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("geometrySelectionUniformScale"));
 
-	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DGeometrySelectionEditor::set_geometries, this);
-
 	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
 }
 
@@ -292,6 +290,18 @@ X3DGeometrySelectionEditor::connectToolMatrix ()
 	setMatrix ();
 }
 
+void
+X3DGeometrySelectionEditor::on_geometry_selection_map ()
+{
+	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DGeometrySelectionEditor::set_geometries, this);
+}
+
+void
+X3DGeometrySelectionEditor::on_geometry_selection_unmap ()
+{
+	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&X3DGeometrySelectionEditor::set_geometries, this);
+}
+
 bool
 X3DGeometrySelectionEditor::on_geometry_selection_focus_in_event (GdkEventFocus* focus_event)
 {
@@ -337,8 +347,6 @@ void
 X3DGeometrySelectionEditor::store ()
 {
 	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
-
-	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&X3DGeometrySelectionEditor::set_geometries, this);
 }
 
 X3DGeometrySelectionEditor::~X3DGeometrySelectionEditor ()

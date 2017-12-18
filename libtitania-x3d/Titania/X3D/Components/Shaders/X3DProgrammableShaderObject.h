@@ -316,6 +316,14 @@ public:
 	virtual
 	void
 	disableFloatAttrib (const std::string &);
+
+	virtual
+	void
+	enableIntegerAttrib (const std::string &, const GLuint, const size_t);
+	
+	virtual
+	void
+	disableIntegerAttrib (const std::string &);
 	
 	virtual
 	void

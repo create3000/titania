@@ -1312,3 +1312,7 @@ button_release_event
   virtual bool on_button_release_event(GdkEventButton* release_event);
 Image::button_release_event
   virtual bool on_button_release_event(GdkEventButton* release_event);
+Expander::map
+  virtual void on_map();
+Expander::unmap
+  virtual void on_unmap();

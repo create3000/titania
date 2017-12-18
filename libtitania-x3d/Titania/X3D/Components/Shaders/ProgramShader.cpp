@@ -262,6 +262,20 @@ ProgramShader::disableFloatAttrib (const std::string & name)
 }
 
 void
+ProgramShader::enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableIntegerAttrib (name, buffer, components);
+}
+
+void
+ProgramShader::disableIntegerAttrib (const std::string & name)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableIntegerAttrib (name);
+}
+
+void
 ProgramShader::enableMatrix3Attrib (const std::string & name, const GLuint buffer)
 {
 	for (const auto & programNode : programNodes)
