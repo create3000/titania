@@ -79,9 +79,7 @@ const std::map <std::string, GLenum> BlendMode::blendingTypes = {
    std::make_pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
    std::make_pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
    std::make_pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
-   std::make_pair ("ONE_MINUS_SRC_COLOR",      GL_ONE_MINUS_SRC_COLOR ),
    std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
-   std::make_pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA ),
 };
 
 BlendMode::Fields::Fields () :

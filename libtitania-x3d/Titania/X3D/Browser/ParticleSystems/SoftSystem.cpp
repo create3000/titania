@@ -645,7 +645,7 @@ SoftSystem::animateParticles ()
 
 	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
 
-	const time_type dt = 1 / particleSystem -> getBrowser () -> getCurrentFrameRate ();
+	const time_type dt = 1 / std::max (10.0, particleSystem -> getBrowser () -> getCurrentFrameRate ());
 
 	// var deltaTime is only for the emitter, this.deltaTime is for the forces.
 	time_type deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.

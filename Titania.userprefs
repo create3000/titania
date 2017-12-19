@@ -1,13 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp">
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DShaderEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp" Line="1107" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Matrix3.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/SoftParticle.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/X3DParticleEmitterNode.cpp" Line="224" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/X_ITE/TouchGroupTool.h" Line="75" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="198" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="70" Column="46" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp" Line="54" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.h" Line="54" Column="1" />
+      <File FileName="Titania/share/titania/ui/Editors/PrecisionPlacementPanel.glade" Line="3901" Column="86" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

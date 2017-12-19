@@ -1407,7 +1407,7 @@ ParticleSystem::animateParticles ()
 
 		constexpr float DELAY = 15; // Delay in frames when dt full applys.
 
-		const float dt        = 1 / getBrowser () -> getCurrentFrameRate ();
+		const float dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());;
 		auto &      deltaTime = transformShader -> getField <SFFloat> ("deltaTime");
 
 		deltaTime = ((DELAY - 1) * deltaTime + dt) / DELAY; // Moving average about DELAY frames.
