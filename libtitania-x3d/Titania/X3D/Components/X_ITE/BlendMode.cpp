@@ -192,17 +192,17 @@ BlendMode::set_destinationAlpha ()
 void
 BlendMode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	renderObject -> getBlend () .push (enabled ());
-
 	switch (type)
 	{
 		case TraverseType::DISPLAY:
 		{
+			renderObject -> getBlend () .push (enabled ());
 			renderObject -> getLocalObjects () .emplace_back (new BlendModeContainer (this));
 
 			X3DGroupingNode::traverse (type, renderObject);
 
 			renderObject -> getLocalObjects () .pop_back ();
+			renderObject -> getBlend () .pop ();
 			break;
 		}
 		default:
@@ -211,8 +211,6 @@ BlendMode::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 			break;
 		}
 	}
-
-	renderObject -> getBlend () .pop ();
 }
 
 } // X3D

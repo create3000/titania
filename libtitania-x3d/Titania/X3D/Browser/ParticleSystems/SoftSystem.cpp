@@ -673,7 +673,7 @@ SoftSystem::animateParticles ()
 		if (numParticles < maxParticles)
 		{
 			const time_type now          = SFTime::now ();
-			const int32_t   newParticles = std::max <int32_t> (0, std::ceil ((now - creationTime) * maxParticles / particleLifetime));
+			const int32_t   newParticles = std::max <int32_t> (0, std::floor ((now - creationTime) * maxParticles / particleLifetime));
 
 			if (newParticles)
 				creationTime = now;
