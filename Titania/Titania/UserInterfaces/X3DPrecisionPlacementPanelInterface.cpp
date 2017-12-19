@@ -308,8 +308,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("BlendModeSourceAlphaButton", m_BlendModeSourceAlphaButton);
 	m_builder -> get_widget ("BlendModeDestinationRGBButton", m_BlendModeDestinationRGBButton);
 	m_builder -> get_widget ("BlendModeDestinationAlphaButton", m_BlendModeDestinationAlphaButton);
-	m_builder -> get_widget ("BlendModeModeRGBButton", m_BlendModeModeRGBButton);
-	m_builder -> get_widget ("BlendModeModeAlphaButton", m_BlendModeModeAlphaButton);
+	m_builder -> get_widget ("BlendEquationRGBButton", m_BlendEquationRGBButton);
+	m_builder -> get_widget ("BlendEquationAlphaButton", m_BlendEquationAlphaButton);
 	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
 	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
 	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);

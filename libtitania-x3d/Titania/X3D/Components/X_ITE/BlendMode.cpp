@@ -62,7 +62,7 @@ const ComponentType BlendMode::component      = ComponentType::X_ITE;
 const std::string   BlendMode::typeName       = "BlendMode";
 const std::string   BlendMode::containerField = "children";
 
-const std::map <std::string, GLenum> BlendMode::blendingTypes = {
+const std::map <std::string, GLenum> BlendMode::blendingModes = {
    std::make_pair ("ZERO",                     GL_ZERO ),
    std::make_pair ("ONE",                      GL_ONE ),
    std::make_pair ("SRC_COLOR",                GL_SRC_COLOR ),
@@ -82,7 +82,7 @@ const std::map <std::string, GLenum> BlendMode::blendingTypes = {
    std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
 };
 
-const std::map <std::string, GLenum> BlendMode::blendingModes = {
+const std::map <std::string, GLenum> BlendMode::blendingEquations = {
    std::make_pair ("FUNC_ADD",              GL_FUNC_ADD ),
    std::make_pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
    std::make_pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
@@ -94,8 +94,8 @@ BlendMode::Fields::Fields () :
 	     sourceAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
 	  destinationRGB (new SFString ("ONE")),
 	destinationAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	         modeRGB (new SFString ("FUNC_ADD")),
-	       modeAlpha (new SFString ("FUNC_ADD"))
+	     equationRGB (new SFString ("FUNC_ADD")),
+	   equationAlpha (new SFString ("FUNC_ADD"))
 { }
 
 BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
@@ -105,8 +105,8 @@ BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 	     sourceAlphaType (GL_ONE_MINUS_SRC_ALPHA),
 	  destinationRGBType (GL_ONE),
 	destinationAlphaType (GL_ONE_MINUS_SRC_ALPHA),
-	         modeRGBType (GL_FUNC_ADD),
-	       modeAlphaType (GL_FUNC_ADD)
+	         equationRGBType (GL_FUNC_ADD),
+	       equationAlphaType (GL_FUNC_ADD)
 {
 	addType (X3DConstants::BlendMode);
 
@@ -117,8 +117,8 @@ BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "sourceAlpha",      sourceAlpha ());
 	addField (inputOutput,    "destinationRGB",   destinationRGB ());
 	addField (inputOutput,    "destinationAlpha", destinationAlpha ());
-	addField (inputOutput,    "modeRGB",          modeRGB ());
-	addField (inputOutput,    "modeAlpha",        modeAlpha ());
+	addField (inputOutput,    "equationRGB",          equationRGB ());
+	addField (inputOutput,    "equationAlpha",        equationAlpha ());
 
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
@@ -142,15 +142,15 @@ BlendMode::initialize ()
 	sourceAlpha ()      .addInterest (&BlendMode::set_sourceAlpha,      this);
 	destinationRGB ()   .addInterest (&BlendMode::set_destinationRGB,   this);
 	destinationAlpha () .addInterest (&BlendMode::set_destinationAlpha, this);
-	modeRGB ()          .addInterest (&BlendMode::set_modeRGB,          this);
-	modeAlpha ()        .addInterest (&BlendMode::set_modeAlpha,        this);
+	equationRGB ()      .addInterest (&BlendMode::set_equationRGB,      this);
+	equationAlpha ()    .addInterest (&BlendMode::set_equationAlpha,    this);
 
 	set_sourceRGB ();
 	set_sourceAlpha ();
 	set_destinationRGB ();
 	set_destinationAlpha ();
-	set_modeRGB ();
-	set_modeAlpha ();
+	set_equationRGB ();
+	set_equationAlpha ();
 }
 
 void
@@ -158,7 +158,7 @@ BlendMode::set_sourceRGB ()
 {
 	try
 	{
-		sourceRGBType = blendingTypes .at (sourceRGB ());
+		sourceRGBType = blendingModes .at (sourceRGB ());
 	}
 	catch (const X3DError &)
 	{
@@ -171,7 +171,7 @@ BlendMode::set_sourceAlpha ()
 {
 	try
 	{
-		sourceAlphaType = blendingTypes .at (sourceAlpha ());
+		sourceAlphaType = blendingModes .at (sourceAlpha ());
 	}
 	catch (const X3DError &)
 	{
@@ -184,7 +184,7 @@ BlendMode::set_destinationRGB ()
 {
 	try
 	{
-		destinationRGBType = blendingTypes .at (destinationRGB ());
+		destinationRGBType = blendingModes .at (destinationRGB ());
 	}
 	catch (const X3DError &)
 	{
@@ -197,7 +197,7 @@ BlendMode::set_destinationAlpha ()
 {
 	try
 	{
-		destinationAlphaType = blendingTypes .at (destinationAlpha ());
+		destinationAlphaType = blendingModes .at (destinationAlpha ());
 	}
 	catch (const X3DError &)
 	{
@@ -206,28 +206,28 @@ BlendMode::set_destinationAlpha ()
 }
 
 void
-BlendMode::set_modeRGB ()
+BlendMode::set_equationRGB ()
 {
 	try
 	{
-		modeRGBType = blendingModes .at (modeRGB ());
+		equationRGBType = blendingEquations .at (equationRGB ());
 	}
 	catch (const X3DError &)
 	{
-		modeRGBType = GL_FUNC_ADD;
+		equationRGBType = GL_FUNC_ADD;
 	}
 }
 
 void
-BlendMode::set_modeAlpha ()
+BlendMode::set_equationAlpha ()
 {
 	try
 	{
-		modeAlphaType = blendingModes .at (modeAlpha ());
+		equationAlphaType = blendingEquations .at (equationAlpha ());
 	}
 	catch (const X3DError &)
 	{
-		modeAlphaType = GL_FUNC_ADD;
+		equationAlphaType = GL_FUNC_ADD;
 	}
 }
 

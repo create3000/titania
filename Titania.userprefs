@@ -1,13 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/X_ITE/TouchGroupTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="66" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/X_ITE/TouchGroupTool.h" Line="10" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="232" Column="59" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="68" Column="63" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp" Line="67" Column="73" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.h" Line="1" Column="1" />
       <File FileName="Titania/share/titania/ui/Editors/PrecisionPlacementPanel.glade" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.h" Line="17" Column="81" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.cpp" Line="54" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
