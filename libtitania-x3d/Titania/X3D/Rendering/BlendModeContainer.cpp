@@ -64,7 +64,7 @@ void
 BlendModeContainer::enable ()
 {
 	glBlendFuncSeparate (node -> getSourceRGB (), node -> getSourceAlpha (), node -> getDestinationRGB (), node -> getDestinationAlpha ());
-	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+	glBlendEquationSeparate (node -> getModeRGB (), node -> getModeAlpha ());
 }
 
 void

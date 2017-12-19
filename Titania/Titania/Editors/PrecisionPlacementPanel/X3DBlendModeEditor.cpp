@@ -61,7 +61,9 @@ X3DBlendModeEditor::X3DBlendModeEditor () :
 	                          sourceRGB (this, getBlendModeSourceRGBButton (), "sourceRGB"),
 	                        sourceAlpha (this, getBlendModeSourceAlphaButton (), "sourceAlpha"),
 	                     destinationRGB (this, getBlendModeDestinationRGBButton (), "destinationRGB"),
-	                   destinationAlpha (this, getBlendModeDestinationAlphaButton (), "destinationAlpha")
+	                   destinationAlpha (this, getBlendModeDestinationAlphaButton (), "destinationAlpha"),
+	                            modeRGB (this, getBlendModeModeRGBButton (), "modeRGB"),
+	                          modeAlpha (this, getBlendModeModeAlphaButton (), "modeAlpha")
 { }
 
 void
@@ -83,6 +85,8 @@ X3DBlendModeEditor::set_selection (const X3D::MFNode & selection)
 	sourceAlpha      .setNodes (blendModeNodes);
 	destinationRGB   .setNodes (blendModeNodes);
 	destinationAlpha .setNodes (blendModeNodes);
+	modeRGB          .setNodes (blendModeNodes);
+	modeAlpha        .setNodes (blendModeNodes);
 }
 
 X3DBlendModeEditor::~X3DBlendModeEditor ()

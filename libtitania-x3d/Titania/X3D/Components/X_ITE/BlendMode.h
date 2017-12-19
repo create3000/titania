@@ -141,6 +141,26 @@ public:
 	destinationAlpha () const
 	{ return *fields .destinationAlpha; }
 
+	virtual
+	SFString &
+	modeRGB ()
+	{ return *fields .modeRGB; }
+
+	virtual
+	const SFString &
+	modeRGB () const
+	{ return *fields .modeRGB; }
+
+	virtual
+	SFString &
+	modeAlpha ()
+	{ return *fields .modeAlpha; }
+
+	virtual
+	const SFString &
+	modeAlpha () const
+	{ return *fields .modeAlpha; }
+
 	///  @name Member access
 
 	GLenum
@@ -158,6 +178,14 @@ public:
 	GLenum
 	getDestinationAlpha () const
 	{ return destinationAlphaType; }
+
+	GLenum
+	getModeRGB () const
+	{ return modeRGBType; }
+
+	GLenum
+	getModeAlpha () const
+	{ return modeAlphaType; }
 
 	///  @name Operations
 
@@ -189,6 +217,12 @@ private:
 	void
 	set_destinationAlpha ();
 
+	void
+	set_modeRGB ();
+
+	void
+	set_modeAlpha ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -196,6 +230,7 @@ private:
 	static const std::string   containerField;
 
 	static const std::map <std::string, GLenum> blendingTypes;
+	static const std::map <std::string, GLenum> blendingModes;
 
 	///  @name Members
 
@@ -208,6 +243,8 @@ private:
 		SFString* const sourceAlpha;
 		SFString* const destinationRGB;
 		SFString* const destinationAlpha;
+		SFString* const modeRGB;
+		SFString* const modeAlpha;
 	};
 
 	Fields fields;
@@ -216,6 +253,8 @@ private:
 	GLenum sourceAlphaType;
 	GLenum destinationRGBType;
 	GLenum destinationAlphaType;
+	GLenum modeRGBType;
+	GLenum modeAlphaType;
 
 };
 

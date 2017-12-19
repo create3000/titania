@@ -1000,6 +1000,14 @@ public:
 	getBlendModeDestinationAlphaButton () const
 	{ return *m_BlendModeDestinationAlphaButton; }
 
+	Gtk::ComboBoxText &
+	getBlendModeModeRGBButton () const
+	{ return *m_BlendModeModeRGBButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeModeAlphaButton () const
+	{ return *m_BlendModeModeAlphaButton; }
+
 	Gtk::Expander &
 	getLayoutExpander () const
 	{ return *m_LayoutExpander; }
@@ -1926,6 +1934,8 @@ private:
 	Gtk::ComboBoxText* m_BlendModeSourceAlphaButton;
 	Gtk::ComboBoxText* m_BlendModeDestinationRGBButton;
 	Gtk::ComboBoxText* m_BlendModeDestinationAlphaButton;
+	Gtk::ComboBoxText* m_BlendModeModeRGBButton;
+	Gtk::ComboBoxText* m_BlendModeModeAlphaButton;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;

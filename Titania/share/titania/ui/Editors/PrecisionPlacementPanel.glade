@@ -3837,7 +3837,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">end</property>
-                                        <property name="label" translatable="yes">Source RGB</property>
+                                        <property name="label" translatable="yes">Source RGB:</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -3849,7 +3849,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">end</property>
-                                        <property name="label" translatable="yes">Source Alpha</property>
+                                        <property name="label" translatable="yes">Source Alpha:</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -3861,7 +3861,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">end</property>
-                                        <property name="label" translatable="yes">Destination RGB</property>
+                                        <property name="label" translatable="yes">Destination RGB:</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -3873,7 +3873,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">end</property>
-                                        <property name="label" translatable="yes">Destination Alpha</property>
+                                        <property name="label" translatable="yes">Destination Alpha:</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -3999,6 +3999,62 @@
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">4</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label95">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
+                                        <property name="label" translatable="yes">Mode RGB:</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">5</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label96">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
+                                        <property name="label" translatable="yes">Mode Alpha:</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">6</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBoxText" id="BlendModeModeRGBButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <items>
+                                          <item translatable="yes">FUNC_ADD</item>
+                                          <item translatable="yes">FUNC_SUBTRACT</item>
+                                          <item translatable="yes">FUNC_REVERSE_SUBTRACT</item>
+                                        </items>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">5</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBoxText" id="BlendModeModeAlphaButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <items>
+                                          <item translatable="yes">FUNC_ADD</item>
+                                          <item translatable="yes">FUNC_SUBTRACT</item>
+                                          <item translatable="yes">FUNC_REVERSE_SUBTRACT</item>
+                                        </items>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">6</property>
                                       </packing>
                                     </child>
                                   </object>
