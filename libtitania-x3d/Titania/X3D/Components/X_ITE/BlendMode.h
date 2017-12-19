@@ -143,23 +143,23 @@ public:
 
 	virtual
 	SFString &
-	equationRGB ()
-	{ return *fields .equationRGB; }
+	modeRGB ()
+	{ return *fields .modeRGB; }
 
 	virtual
 	const SFString &
-	equationRGB () const
-	{ return *fields .equationRGB; }
+	modeRGB () const
+	{ return *fields .modeRGB; }
 
 	virtual
 	SFString &
-	equationAlpha ()
-	{ return *fields .equationAlpha; }
+	modeAlpha ()
+	{ return *fields .modeAlpha; }
 
 	virtual
 	const SFString &
-	equationAlpha () const
-	{ return *fields .equationAlpha; }
+	modeAlpha () const
+	{ return *fields .modeAlpha; }
 
 	///  @name Member access
 
@@ -180,12 +180,12 @@ public:
 	{ return destinationAlphaType; }
 
 	GLenum
-	getEquationRGB () const
-	{ return equationRGBType; }
+	getModeRGB () const
+	{ return modeRGBType; }
 
 	GLenum
-	getEquationAlpha () const
-	{ return equationAlphaType; }
+	getModeAlpha () const
+	{ return modeAlphaType; }
 
 	///  @name Operations
 
@@ -218,10 +218,10 @@ private:
 	set_destinationAlpha ();
 
 	void
-	set_equationRGB ();
+	set_modeRGB ();
 
 	void
-	set_equationAlpha ();
+	set_modeAlpha ();
 
 	///  @name Static members
 
@@ -229,8 +229,8 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
+	static const std::map <std::string, GLenum> blendingTypes;
 	static const std::map <std::string, GLenum> blendingModes;
-	static const std::map <std::string, GLenum> blendingEquations;
 
 	///  @name Members
 
@@ -243,8 +243,8 @@ private:
 		SFString* const sourceAlpha;
 		SFString* const destinationRGB;
 		SFString* const destinationAlpha;
-		SFString* const equationRGB;
-		SFString* const equationAlpha;
+		SFString* const modeRGB;
+		SFString* const modeAlpha;
 	};
 
 	Fields fields;
@@ -253,8 +253,8 @@ private:
 	GLenum sourceAlphaType;
 	GLenum destinationRGBType;
 	GLenum destinationAlphaType;
-	GLenum equationRGBType;
-	GLenum equationAlphaType;
+	GLenum modeRGBType;
+	GLenum modeAlphaType;
 
 };
 

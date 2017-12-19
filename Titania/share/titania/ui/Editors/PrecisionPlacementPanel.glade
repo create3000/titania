@@ -4026,7 +4026,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkComboBoxText" id="BlendEquationRGBButton">
+                                      <object class="GtkComboBoxText" id="BlendModeRGBButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">start</property>
@@ -4042,7 +4042,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkComboBoxText" id="BlendEquationAlphaButton">
+                                      <object class="GtkComboBoxText" id="BlendModeAlphaButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="halign">start</property>

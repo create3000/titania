@@ -92,8 +92,8 @@ private:
 	SFStringComboBoxText               sourceAlpha;
 	SFStringComboBoxText               destinationRGB;
 	SFStringComboBoxText               destinationAlpha;
-	SFStringComboBoxText               equationRGB;
-	SFStringComboBoxText               equationAlpha;
+	SFStringComboBoxText               modeRGB;
+	SFStringComboBoxText               modeAlpha;
 
 };
 
