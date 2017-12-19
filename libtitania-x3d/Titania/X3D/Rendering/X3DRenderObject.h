@@ -81,6 +81,9 @@ using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;
 
+using BlendStack       = std::stack <bool, std::vector <bool>>;
+using DepthOffsetStack = std::stack <double, std::vector <double>>;
+
 class X3DRenderObject :
 	virtual public X3DBaseNode
 {
@@ -120,6 +123,16 @@ public:
 	virtual
 	X3DFogObject*
 	getFog () const = 0;
+
+	///  @name Flags
+
+	BlendStack &
+	getBlend ()
+	{ return blend; }
+
+	DepthOffsetStack &
+	getDepthOffset ()
+	{ return depthOffset; }
 
 	///  @name Matrix stacks
 
@@ -299,6 +312,9 @@ private:
 	draw (const TraverseFunction & traverse);
 
 	///  @name Members
+
+	BlendStack       blend;
+	DepthOffsetStack depthOffset;
 
 	Matrix4dStack cameraSpaceMatrix;
 	Matrix4dStack invCameraSpaceMatrix;

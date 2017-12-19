@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,45 +48,130 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_X_ITE_POLYGON_OFFSET_H__
+#define __TITANIA_X3D_COMPONENTS_X_ITE_POLYGON_OFFSET_H__
 
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../Grouping/X3DGroupingNode.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
+
+class PolygonOffset :
+	virtual public X3DGroupingNode
+{
+public:
+
+	///  @name Construction
+
+	PolygonOffset (X3DExecutionContext* const executionContext);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	virtual
+	SFString &
+	type ()
+	{ return *fields .type; }
+
+	virtual
+	const SFString &
+	type () const
+	{ return *fields .type; }
+
+	virtual
+	SFFloat &
+	factor ()
+	{ return *fields .factor; }
+
+	virtual
+	const SFFloat &
+	factor () const
+	{ return *fields .factor; }
+
+	virtual
+	SFFloat &
+	units ()
+	{ return *fields .units; }
+
+	virtual
+	const SFFloat &
+	units () const
+	{ return *fields .units; }
+
+	///  @name Member access
+
+	GLenum
+	getType () const
+	{ return offsetType; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	set_type ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const type;
+		SFFloat* const factor;
+		SFFloat* const units;
+	};
+
+	Fields fields;
+
+	GLenum offsetType;
+
+};
+
+} // X3D
+} // titania
 
 #endif

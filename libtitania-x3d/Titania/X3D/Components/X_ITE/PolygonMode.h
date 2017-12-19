@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_OFFSET_GROUP_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_OFFSET_GROUP_H__
+#ifndef __TITANIA_X3D_COMPONENTS_X_ITE_POLYGON_MODE_H__
+#define __TITANIA_X3D_COMPONENTS_X_ITE_POLYGON_MODE_H__
 
 #include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-class PolygonOffset :
+class PolygonMode :
 	virtual public X3DGroupingNode
 {
 public:
 
 	///  @name Construction
 
-	PolygonOffset (X3DExecutionContext* const executionContext);
+	PolygonMode (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
@@ -101,31 +101,11 @@ public:
 	type () const
 	{ return *fields .type; }
 
-	virtual
-	SFFloat &
-	factor ()
-	{ return *fields .factor; }
-
-	virtual
-	const SFFloat &
-	factor () const
-	{ return *fields .factor; }
-
-	virtual
-	SFFloat &
-	units ()
-	{ return *fields .units; }
-
-	virtual
-	const SFFloat &
-	units () const
-	{ return *fields .units; }
-
 	///  @name Member access
 
 	GLenum
 	getType () const
-	{ return offsetType; }
+	{ return polygonModeType; }
 
 	///  @name Operations
 
@@ -161,13 +141,11 @@ private:
 		Fields ();
 
 		SFString* const type;
-		SFFloat* const factor;
-		SFFloat* const units;
 	};
 
 	Fields fields;
 
-	GLenum offsetType;
+	GLenum polygonModeType;
 
 };
 

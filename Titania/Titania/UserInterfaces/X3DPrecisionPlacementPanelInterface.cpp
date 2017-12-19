@@ -302,6 +302,12 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ParticleSystemParticleSizeBox", m_ParticleSystemParticleSizeBox);
 	m_builder -> get_widget ("ParticleSystemUniformParticleSizeButton", m_ParticleSystemUniformParticleSizeButton);
 	m_builder -> get_widget ("ParticleSystemUniformParticleSizeImage", m_ParticleSystemUniformParticleSizeImage);
+	m_builder -> get_widget ("BlendModeExpander", m_BlendModeExpander);
+	m_builder -> get_widget ("BlendModeEnabledCheckButton", m_BlendModeEnabledCheckButton);
+	m_builder -> get_widget ("BlendModeSourceRGBButton", m_BlendModeSourceRGBButton);
+	m_builder -> get_widget ("BlendModeSourceAlphaButton", m_BlendModeSourceAlphaButton);
+	m_builder -> get_widget ("BlendModeDestinationRGBButton", m_BlendModeDestinationRGBButton);
+	m_builder -> get_widget ("BlendModeDestinationAlphaButton", m_BlendModeDestinationAlphaButton);
 	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
 	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
 	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);

@@ -48,102 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_MATRIX3D_H__
-#define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_MATRIX3D_H__
+#ifndef __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
 
-#include "../Grouping/X3DTransformMatrix3DNode.h"
+#include "../Rendering/OpenGL.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
 
-class TransformMatrix3D :
-	virtual public X3DTransformMatrix3DNode
+class BlendMode;
+
+class BlendModeContainer :
+	public X3DCollectableObject
 {
 public:
 
-	///  @name Construction
-
-	TransformMatrix3D (X3DExecutionContext* const executionContext);
-
-	virtual
-	TransformMatrix3D*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFMatrix4d &
-	matrix ()
-	{ return *fields .matrix; }
-
-	virtual
-	const SFMatrix4d &
-	matrix () const
-	{ return *fields .matrix; }
-
-	///  @name Member access
+	BlendModeContainer (BlendMode* const node);
 
 	virtual
 	void
-	setMatrix (const Matrix4d & value) override;
-
-	virtual
-	Matrix4d
-	getCurrentMatrix () const;
-
-
-protected:
-
-	///  @name Construction
+	enable () final override;
 
 	virtual
 	void
-	initialize () override;
-
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
+	disable () final override;
 
 
 private:
 
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFMatrix4d* const matrix;
-	};
-
-	Fields fields;
+	BlendMode* const node;
 
 };
 

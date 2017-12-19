@@ -65,8 +65,6 @@ class MotionBlur;
 
 using ClipPlaneStack   = std::stack <GLenum, std::vector <GLenum>>;
 using AlphaChannelStack = std::stack <bool, std::vector <bool>>;
-using DepthTestStack   = std::stack <bool, std::vector <bool>>;
-using DepthOffsetStack = std::stack <double, std::vector <double>>;
 
 class X3DRenderingContext :
 	virtual public X3DBaseNode
@@ -85,14 +83,6 @@ public:
 	ClipPlaneStack &
 	getClipPlanes ()
 	{ return clipPlanes; }
-
-	DepthTestStack &
-	getDepthTest ()
-	{ return depthTest; }
-
-	DepthOffsetStack &
-	getDepthOffset ()
-	{ return depthOffset; }
 
 	AlphaChannelStack &
 	getAlphaChannel ()
@@ -139,8 +129,6 @@ private:
 	MFInt32             viewport;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
-	DepthTestStack      depthTest;
-	DepthOffsetStack    depthOffset;
 	AlphaChannelStack   alphaChannel;
 	X3DPtr <MotionBlur> motionBlur;
 

@@ -205,7 +205,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Grouping/StaticGroup.cpp \
 	Titania/X3D/Components/Grouping/Switch.cpp \
 	Titania/X3D/Components/Grouping/Transform.cpp \
-	Titania/X3D/Components/Grouping/TransformMatrix3D.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
@@ -301,7 +300,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/SphereSensor.cpp \
-	Titania/X3D/Components/PointingDeviceSensor/TouchGroup.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/TouchSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp \
@@ -310,7 +308,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/Color.cpp \
 	Titania/X3D/Components/Rendering/ColorRGBA.cpp \
 	Titania/X3D/Components/Rendering/Coordinate.cpp \
-	Titania/X3D/Components/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Components/Rendering/IndexedLineSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.cpp \
@@ -318,8 +315,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/LineSet.cpp \
 	Titania/X3D/Components/Rendering/Normal.cpp \
 	Titania/X3D/Components/Rendering/PointSet.cpp \
-	Titania/X3D/Components/Rendering/PolygonMode.cpp \
-	Titania/X3D/Components/Rendering/PolygonOffset.cpp \
 	Titania/X3D/Components/Rendering/TriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleStripSet.cpp \
@@ -417,6 +412,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/VolumeRendering/X3DComposableVolumeRenderStyleNode.cpp \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeDataNode.cpp \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeRenderStyleNode.cpp \
+	Titania/X3D/Components/X_ITE/BlendMode.cpp \
+	Titania/X3D/Components/X_ITE/DepthBuffer.cpp \
+	Titania/X3D/Components/X_ITE/PolygonMode.cpp \
+	Titania/X3D/Components/X_ITE/PolygonOffset.cpp \
+	Titania/X3D/Components/X_ITE/TouchGroup.cpp \
+	Titania/X3D/Components/X_ITE/TransformMatrix3D.cpp \
 	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \
@@ -604,6 +605,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
+	Titania/X3D/Rendering/BlendModeContainer.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/DependentRenderer.cpp \
@@ -689,7 +691,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
-	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
@@ -709,6 +710,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
+	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

@@ -81,6 +81,8 @@ static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderObject::X3DRenderObject () :
 	             X3DBaseNode (),
+	                   blend ({ false }),
+	             depthOffset ({ 0 }),
 	       cameraSpaceMatrix (),
 	    invCameraSpaceMatrix (),
 	        projectionMatrix (),
@@ -352,7 +354,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	const auto bbox   = shapeNode -> getBBox () * getModelViewMatrix () .get ();
 	const auto depth  = bbox .size   () .z () / 2;
 	const auto min    = bbox .center () .z () - depth;
-	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
+	const auto center = bbox .center () .z () + getDepthOffset () .top ();
 
 	if (min > 0)
 	   return false;
@@ -364,7 +366,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 
    ShapeContainer* context = nullptr;
 
-	if (shapeNode -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
+	if (shapeNode -> isTransparent () or getBlend () .top ())
 	{
 	   if (numTransparentShapes == transparentShapes .size ())
 	      transparentShapes .emplace_back (new ShapeContainer (this, true));

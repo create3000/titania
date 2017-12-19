@@ -131,8 +131,8 @@ DepthBuffer::set_depthFunction ()
 void
 DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	renderObject -> getBrowser () -> getDepthTest ()   .push (enabled ());
-	renderObject -> getBrowser () -> getDepthOffset () .push (depthOffset ());
+	renderObject -> getBlend ()       .push (not enabled ());
+	renderObject -> getDepthOffset () .push (depthOffset ());
 
 	switch (type)
 	{
@@ -152,8 +152,8 @@ DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		}
 	}
 
-	renderObject -> getBrowser () -> getDepthOffset () .pop ();
-	renderObject -> getBrowser () -> getDepthTest ()   .pop ();
+	renderObject -> getDepthOffset () .pop ();
+	renderObject -> getBlend ()       .pop ();
 }
 
 } // X3D

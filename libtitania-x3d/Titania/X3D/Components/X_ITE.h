@@ -48,45 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_X_ITE_H__
+#define __TITANIA_X3D_COMPONENTS_X_ITE_H__
 
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
-
-#include "Components/X_ITE.h"
+#include "X_ITE/BlendMode.h"
+#include "X_ITE/DepthBuffer.h"
+#include "X_ITE/PolygonMode.h"
+#include "X_ITE/PolygonOffset.h"
+#include "X_ITE/TouchGroup.h"
+#include "X_ITE/TransformMatrix3D.h"
 
 #endif

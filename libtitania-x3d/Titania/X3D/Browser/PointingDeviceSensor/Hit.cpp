@@ -64,7 +64,6 @@ Hit::Hit (const Vector2d & pointer,
           const X3DPtr <X3DShapeNode> & shape,
           const X3DPtr <X3DLayerNode> & layer,
           const size_t layerNumber,
-          const bool depthTest,
           const double depthOffset,
 	       MFNode && hierarchy) :
 	        pointer (pointer),

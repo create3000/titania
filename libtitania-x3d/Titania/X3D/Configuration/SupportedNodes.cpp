@@ -302,11 +302,12 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 
 	//  Non standard: Component »Titania«
 
-	addNode ("TransformMatrix3D",                new TransformMatrix3D                (executionContext));
-	addNode ("TouchGroup",                       new TouchGroup                       (executionContext));
+	addNode ("BlendMode",                        new BlendMode                        (executionContext));
+	addNode ("DepthBuffer",                      new DepthBuffer                      (executionContext));
 	addNode ("PolygonMode",                      new PolygonMode                      (executionContext));
 	addNode ("PolygonOffset",                    new PolygonOffset                    (executionContext));
-	addNode ("DepthBuffer",                      new DepthBuffer                      (executionContext));
+	addNode ("TouchGroup",                       new TouchGroup                       (executionContext));
+	addNode ("TransformMatrix3D",                new TransformMatrix3D                (executionContext));
 
 	//std::clog << "\tDone creating node index." << std::endl;
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,130 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_DEPTH_BUFFER_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_DEPTH_BUFFER_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBLEND_MODE_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBLEND_MODE_EDITOR_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class DepthBuffer :
-	virtual public X3DGroupingNode
+class X3DBlendModeEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
 
-	///  @name Construction
-
-	DepthBuffer (X3DExecutionContext* const executionContext);
+	///  @name Destruction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	virtual
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	virtual
-	SFString &
-	depthFunction ()
-	{ return *fields .depthFunction; }
-
-	virtual
-	const SFString &
-	depthFunction () const
-	{ return *fields .depthFunction; }
-
-	virtual
-	SFDouble &
-	depthOffset ()
-	{ return *fields .depthOffset; }
-
-	virtual
-	const SFDouble &
-	depthOffset () const
-	{ return *fields .depthOffset; }
-
-	///  @name Member access
-
-	GLenum
-	getDepthFunction () const
-	{ return depthFunctionType; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+	~X3DBlendModeEditor () override;
 
 
 protected:
+
+	///  @name Construction
+
+	X3DBlendModeEditor ();
 
 	virtual
 	void
 	initialize () override;
 
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) override;
+
 
 private:
 
-	///  @name Event handler
-
-	void
-	set_depthFunction ();
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const enabled;
-		SFString* const depthFunction;
-		SFDouble* const depthOffset;
-	};
-
-	Fields fields;
-
-	GLenum depthFunctionType;
+	X3DFieldToggleButton <X3D::SFBool> enabled;
+	SFStringComboBoxText               sourceRGB;
+	SFStringComboBoxText               sourceAlpha;
+	SFStringComboBoxText               destinationRGB;
+	SFStringComboBoxText               destinationAlpha;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

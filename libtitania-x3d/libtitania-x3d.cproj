@@ -632,8 +632,6 @@
     <None Include="Titania\X3D\Tools\Picking\PickableGroupTool.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.h" />
-    <None Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.h" />
-    <None Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\ConeOptions.h" />
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
@@ -736,7 +734,6 @@
     <None Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.h" />
-    <None Include="Titania\X3D\Components\Grouping\TransformMatrix3D.h" />
     <None Include="share\titania\tools\IndexedFaceSetTool.x3dv" />
     <None Include="share\titania\tools\NormalTool.x3dv" />
     <None Include="Titania\X3D\Tools\Rendering\NormalTool.h" />
@@ -755,7 +752,6 @@
     <None Include="share\titania\tools\library\QuadSphere.x3dv" />
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
-    <None Include="Titania\X3D\Components\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.h" />
@@ -913,7 +909,6 @@
     <None Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.h" />
     <None Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.h" />
     <None Include="Titania\X3D\Browser\Tools\ToolType.h" />
-    <None Include="Titania\X3D\Components\Rendering\PolygonOffset.h" />
     <None Include="Titania\X3D\Tools\Geometry2D\Arc2DTool.h" />
     <None Include="Titania\X3D\Tools\Geometry2D\Circle2DTool.h" />
     <None Include="Titania\X3D\Tools\Geometry2D\Polypoint2DTool.h" />
@@ -939,7 +934,6 @@
     <None Include="Titania\X3D\Bits\Traverse.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
-    <None Include="Titania\X3D\Components\Rendering\PolygonMode.h" />
     <None Include="Titania\X3D\RenderingSurface\RenderingContext.h" />
     <None Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.h" />
     <None Include="Titania\X3D\RenderingSurface\ContextLock.h" />
@@ -974,6 +968,15 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HierarchyGuard.h" />
     <None Include="Titania\X3D\Browser\ParticleSystems\SoftSystem.h" />
     <None Include="Titania\X3D\Browser\ParticleSystems\SoftParticle.h" />
+    <None Include="Titania\X3D\Components\X_ITE\BlendMode.h" />
+    <None Include="Titania\X3D\Components\X_ITE\DepthBuffer.h" />
+    <None Include="Titania\X3D\Components\X_ITE\PolygonMode.h" />
+    <None Include="Titania\X3D\Components\X_ITE\PolygonOffset.h" />
+    <None Include="Titania\X3D\Components\X_ITE.h" />
+    <None Include="Titania\X3D\Components\X_ITE\TouchGroup.h" />
+    <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
+    <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
+    <None Include="Titania\X3D\Rendering\BlendModeContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1394,8 +1397,6 @@
     <Compile Include="Titania\X3D\Tools\Picking\PickableGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
-    <Compile Include="Titania\X3D\Components\PointingDeviceSensor\TouchGroup.cpp" />
-    <Compile Include="Titania\X3D\Tools\PointingDeviceSensor\TouchGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
     <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
@@ -1470,7 +1471,6 @@
     <Compile Include="Titania\X3D\Browser\Tools\X3DToolContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\TransformToolOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.cpp" />
-    <Compile Include="Titania\X3D\Components\Grouping\TransformMatrix3D.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\NormalTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DNormalNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\CoordinateTool.cpp" />
@@ -1486,7 +1486,6 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
-    <Compile Include="Titania\X3D\Components\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetKnifeObject.cpp" />
@@ -1623,7 +1622,6 @@
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsCurveTool.cpp" />
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.cpp" />
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.cpp" />
-    <Compile Include="Titania\X3D\Components\Rendering\PolygonOffset.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry2D\Arc2DTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry2D\Circle2DTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry2D\Polypoint2DTool.cpp" />
@@ -1655,7 +1653,6 @@
     <Compile Include="Titania\X3D\InputOutput\FileLoader.cpp" />
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
-    <Compile Include="Titania\X3D\Components\Rendering\PolygonMode.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\RenderingContext.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\ContextLock.cpp" />
@@ -1681,6 +1678,14 @@
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.cpp" />
     <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\SoftSystem.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\BlendMode.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\DepthBuffer.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\PolygonMode.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\PolygonOffset.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\TouchGroup.cpp" />
+    <Compile Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.cpp" />
+    <Compile Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.cpp" />
+    <Compile Include="Titania\X3D\Rendering\BlendModeContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1740,7 +1745,6 @@
     <Folder Include="Titania\X3D\Tools\CADGeometry\" />
     <Folder Include="Titania\X3D\Tools\Layering\" />
     <Folder Include="Titania\X3D\Tools\Picking\" />
-    <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
     <Folder Include="Titania\X3D\Browser\Sound\" />
@@ -1782,6 +1786,8 @@
     <Folder Include="Titania\X3D\RenderingSurface\" />
     <Folder Include="Titania\X3D\Components\VolumeRendering\" />
     <Folder Include="Titania\X3D\Browser\EnvironmentalEffects\" />
+    <Folder Include="Titania\X3D\Components\X_ITE\" />
+    <Folder Include="Titania\X3D\Tools\X_ITE\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

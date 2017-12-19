@@ -977,6 +977,30 @@ public:
 	{ return *m_ParticleSystemUniformParticleSizeImage; }
 
 	Gtk::Expander &
+	getBlendModeExpander () const
+	{ return *m_BlendModeExpander; }
+
+	Gtk::CheckButton &
+	getBlendModeEnabledCheckButton () const
+	{ return *m_BlendModeEnabledCheckButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceRGBButton () const
+	{ return *m_BlendModeSourceRGBButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceAlphaButton () const
+	{ return *m_BlendModeSourceAlphaButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationRGBButton () const
+	{ return *m_BlendModeDestinationRGBButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationAlphaButton () const
+	{ return *m_BlendModeDestinationAlphaButton; }
+
+	Gtk::Expander &
 	getLayoutExpander () const
 	{ return *m_LayoutExpander; }
 
@@ -1896,6 +1920,12 @@ private:
 	Gtk::Box* m_ParticleSystemParticleSizeBox;
 	Gtk::ToggleButton* m_ParticleSystemUniformParticleSizeButton;
 	Gtk::Image* m_ParticleSystemUniformParticleSizeImage;
+	Gtk::Expander* m_BlendModeExpander;
+	Gtk::CheckButton* m_BlendModeEnabledCheckButton;
+	Gtk::ComboBoxText* m_BlendModeSourceRGBButton;
+	Gtk::ComboBoxText* m_BlendModeSourceAlphaButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationRGBButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationAlphaButton;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;

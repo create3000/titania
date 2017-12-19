@@ -1149,7 +1149,7 @@ SoftSystem::draw (ShapeContainer* const context)
 			// ***************************************************************************************************************************************
 
 			shaderNode -> enableIntegerAttrib ("x3d_ParticleId",          idBufferId,          1);
-			shaderNode -> enableFloatAttrib   ("x3d_ParticlePosition",    positionBufferId,    4);
+			shaderNode -> enableFloatAttrib   ("x3d_ParticlePosition",    positionBufferId,    3);
 			shaderNode -> enableFloatAttrib   ("x3d_ParticleElapsedTime", elapsedTimeBufferId, 1);
 			shaderNode -> enableIntegerAttrib ("x3d_ParticleLife",        lifeBufferId,        1);
 

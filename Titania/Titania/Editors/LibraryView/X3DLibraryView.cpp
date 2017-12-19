@@ -66,7 +66,7 @@ namespace Columns {
 static constexpr int ICON         = 0;
 static constexpr int NAME         = 1;
 static constexpr int TITANIA      = 2;
-static constexpr int COBWEB       = 3;
+static constexpr int X_ITE        = 3;
 static constexpr int EXPERIMENTAL = 4;
 
 };
@@ -179,7 +179,7 @@ X3DLibraryView::append (const std::string & path) const
 	static const std::string empty_string;
 	static const std::string experimental_icon ("Experimental");
 	static const std::string titania_icon ("Titania");
-	static const std::string cobweb_icon ("Cobweb");
+	static const std::string x_ite_icon ("X_ITE");
 
 	try
 	{
@@ -208,15 +208,15 @@ X3DLibraryView::append (const std::string & path) const
 					   continue;
 					#endif
 
-					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
-					const auto iter     = getTreeStore () -> append ();
+					const bool titania = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool x_ite   = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
+					const auto iter    = getTreeStore () -> append ();
 
 					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::COBWEB,       cobweb  ? cobweb_icon  : empty_string);
+					iter -> set_value (Columns::X_ITE,        x_ite ? x_ite_icon : empty_string);
 					continue;
 				}
 				default:
@@ -234,7 +234,7 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 	static const std::string empty_string;
 	static const std::string experimental_icon ("Experimental");
 	static const std::string titania_icon ("Titania");
-	static const std::string cobweb_icon ("Cobweb");
+	static const std::string x_ite_icon ("X_ITE");
 
 	try
 	{
@@ -261,15 +261,15 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 					   continue;
 					#endif
 
-					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
-					const auto iter     = getTreeStore () -> append (parent -> children ());
+					const bool titania = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool x_ite   = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
+					const auto iter    = getTreeStore () -> append (parent -> children ());
 
 					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::COBWEB,       cobweb  ? cobweb_icon  : empty_string);
+					iter -> set_value (Columns::X_ITE,        x_ite ? x_ite_icon  : empty_string);
 					continue;
 				}
 				default:

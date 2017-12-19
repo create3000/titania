@@ -72,6 +72,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	       X3DEnvironmentalSensorEditor (),
 	            X3DParticleSystemEditor (),
 	       X3DParticleEmitterNodeEditor (),
+	                 X3DBlendModeEditor (),
 	         X3DGeometrySelectionEditor (),
 	                           nodeName (this, getNameEntry (), getRenameButton ()),
 	                           bboxSize (this,
@@ -111,6 +112,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DEnvironmentalSensorEditor::initialize ();
 	X3DParticleSystemEditor::initialize ();
 	X3DParticleEmitterNodeEditor::initialize ();
+	X3DBlendModeEditor::initialize ();
 	X3DGeometrySelectionEditor::initialize ();
 }
 
@@ -167,6 +169,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DEnvironmentalSensorEditor::set_selection (selection);
 	X3DParticleSystemEditor::set_selection (selection);
 	X3DParticleEmitterNodeEditor::set_selection (selection);
+	X3DBlendModeEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();

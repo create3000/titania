@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,45 +48,106 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_X_ITE_TRANSFORM_MATRIX3D_H__
+#define __TITANIA_X3D_COMPONENTS_X_ITE_TRANSFORM_MATRIX3D_H__
 
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../Grouping/X3DTransformMatrix3DNode.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
+
+class TransformMatrix3D :
+	virtual public X3DTransformMatrix3DNode
+{
+public:
+
+	///  @name Construction
+
+	TransformMatrix3D (X3DExecutionContext* const executionContext);
+
+	virtual
+	TransformMatrix3D*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	virtual
+	SFMatrix4d &
+	matrix ()
+	{ return *fields .matrix; }
+
+	virtual
+	const SFMatrix4d &
+	matrix () const
+	{ return *fields .matrix; }
+
+	///  @name Member access
+
+	virtual
+	void
+	setMatrix (const Matrix4d & value) override;
+
+	virtual
+	Matrix4d
+	getCurrentMatrix () const;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
+
+
+private:
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFMatrix4d* const matrix;
+	};
+
+	Fields fields;
+
+};
+
+} // X3D
+} // titania
 
 #endif

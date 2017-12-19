@@ -481,6 +481,7 @@ enum NodeType : uint16_t
 
 	// Non standard
 
+	BlendMode,
 	Clipboard,
 	DepthBuffer,
 	FaceSelection,
@@ -754,7 +755,8 @@ enum class ComponentType : uint8_t
 	TIME,
 	VOLUME_RENDERING,
 
-	TITANIA
+	TITANIA,
+	X_ITE
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,76 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_TOOL_H__
-#define __TITANIA_X3D_TOOLS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_TOOL_H__
+#include "BlendModeContainer.h"
 
-#include "../Core/X3DSensorNodeTool.h"
-#include "../Grouping/X3DGroupingNodeTool.h"
-
-#include "../../Components/PointingDeviceSensor/TouchGroup.h"
+#include "../Components/X_ITE/BlendMode.h"
 
 namespace titania {
 namespace X3D {
 
-class TouchGroupTool :
-	virtual public TouchGroup,
-	public X3DGroupingNodeTool,
-	public X3DSensorNodeTool
+BlendModeContainer::BlendModeContainer (BlendMode* const node) :
+	X3DCollectableObject (),
+	                node (node)
+{ }
+
+void
+BlendModeContainer::enable ()
 {
-public:
+	glBlendFuncSeparate (node -> getSourceRGB (), node -> getSourceAlpha (), node -> getDestinationRGB (), node -> getDestinationAlpha ());
+	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+}
 
-	///  @name Construction
-
-	TouchGroupTool (X3DBaseNode* const node);
-
-	///  @name Member access
-
-	virtual
-	Box3d
-	getBBox () const final override
-	{ return X3DGroupingNodeTool::getBBox (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override
-	{ X3DGroupingNodeTool::dispose (); }
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override
-	{ return X3DGroupingNodeTool::initialize (); }
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	realize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_enabled (const bool);
-
-};
+void
+BlendModeContainer::disable ()
+{
+	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+}
 
 } // X3D
 } // titania
-
-#endif

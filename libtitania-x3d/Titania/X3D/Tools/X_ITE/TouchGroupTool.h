@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,45 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_TOOLS_X_ITE_TOUCH_GROUP_TOOL_H__
+#define __TITANIA_X3D_TOOLS_X_ITE_TOUCH_GROUP_TOOL_H__
 
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../Core/X3DSensorNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
 
-#include "Components/X_ITE.h"
+#include "../../Components/X_ITE/TouchGroup.h"
+
+namespace titania {
+namespace X3D {
+
+class TouchGroupTool :
+	virtual public TouchGroup,
+	public X3DGroupingNodeTool,
+	public X3DSensorNodeTool
+{
+public:
+
+	///  @name Construction
+
+	TouchGroupTool (X3DBaseNode* const node);
+
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DGroupingNodeTool::dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	realize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_enabled (const bool);
+
+};
+
+} // X3D
+} // titania
 
 #endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,108 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_MODE_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_MODE_H__
+#include "X3DBlendModeEditor.h"
 
-#include "../Grouping/X3DGroupingNode.h"
+#include <Titania/X3D/Components/X_ITE/BlendMode.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class PolygonMode :
-	virtual public X3DGroupingNode
+X3DBlendModeEditor::X3DBlendModeEditor () :
+	X3DPrecisionPlacementPanelInterface (),
+	                            enabled (this, getBlendModeEnabledCheckButton (),  "enabled"),
+	                          sourceRGB (this, getBlendModeSourceRGBButton (), "sourceRGB"),
+	                        sourceAlpha (this, getBlendModeSourceAlphaButton (), "sourceAlpha"),
+	                     destinationRGB (this, getBlendModeDestinationRGBButton (), "destinationRGB"),
+	                   destinationAlpha (this, getBlendModeDestinationAlphaButton (), "destinationAlpha")
+{ }
+
+void
+X3DBlendModeEditor::initialize ()
+{ }
+
+void
+X3DBlendModeEditor::set_selection (const X3D::MFNode & selection)
 {
-public:
+	// Get Collision
 
-	///  @name Construction
+	const auto blendModeNode  = X3D::X3DPtr <X3D::BlendMode> (selection .empty () ? nullptr : selection .back ());
+	const auto blendModeNodes = blendModeNode ? X3D::MFNode ({ blendModeNode }) : X3D::MFNode ();
 
-	PolygonMode (X3DExecutionContext* const executionContext);
+	getBlendModeExpander () .set_visible (blendModeNode);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	enabled          .setNodes (blendModeNodes);
+	sourceRGB        .setNodes (blendModeNodes);
+	sourceAlpha      .setNodes (blendModeNodes);
+	destinationRGB   .setNodes (blendModeNodes);
+	destinationAlpha .setNodes (blendModeNodes);
+}
 
-	///  @name Common members
+X3DBlendModeEditor::~X3DBlendModeEditor ()
+{ }
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFString &
-	type ()
-	{ return *fields .type; }
-
-	virtual
-	const SFString &
-	type () const
-	{ return *fields .type; }
-
-	///  @name Member access
-
-	GLenum
-	getType () const
-	{ return polygonModeType; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
-
-
-protected:
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Event handler
-
-	void
-	set_type ();
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFString* const type;
-	};
-
-	Fields fields;
-
-	GLenum polygonModeType;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

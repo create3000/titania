@@ -64,7 +64,7 @@ class DepthTestContainer :
 {
 public:
 
-	DepthTestContainer (DepthBuffer* const);
+	DepthTestContainer (DepthBuffer* const node);
 
 	virtual
 	void

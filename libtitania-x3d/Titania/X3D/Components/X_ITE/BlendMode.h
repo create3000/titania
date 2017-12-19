@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,24 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_H__
-#define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_H__
+#ifndef __TITANIA_X3D_COMPONENTS_X_ITE_BLEND_MODE_H__
+#define __TITANIA_X3D_COMPONENTS_X_ITE_BLEND_MODE_H__
 
 #include "../Grouping/X3DGroupingNode.h"
-#include "../Core/X3DSensorNode.h"
 
 namespace titania {
 namespace X3D {
 
-class TouchGroup :
-	public X3DGroupingNode,
-	public X3DSensorNode
+class BlendMode :
+	virtual public X3DGroupingNode
 {
 public:
 
 	///  @name Construction
 
-	TouchGroup (X3DExecutionContext* const executionContext);
+	BlendMode (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
@@ -91,18 +89,84 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	virtual
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	virtual
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	virtual
+	SFString &
+	sourceRGB ()
+	{ return *fields .sourceRGB; }
+
+	virtual
+	const SFString &
+	sourceRGB () const
+	{ return *fields .sourceRGB; }
+
+	virtual
+	SFString &
+	sourceAlpha ()
+	{ return *fields .sourceAlpha; }
+
+	virtual
+	const SFString &
+	sourceAlpha () const
+	{ return *fields .sourceAlpha; }
+
+	virtual
+	SFString &
+	destinationRGB ()
+	{ return *fields .destinationRGB; }
+
+	virtual
+	const SFString &
+	destinationRGB () const
+	{ return *fields .destinationRGB; }
+
+	virtual
+	SFString &
+	destinationAlpha ()
+	{ return *fields .destinationAlpha; }
+
+	virtual
+	const SFString &
+	destinationAlpha () const
+	{ return *fields .destinationAlpha; }
+
+	///  @name Member access
+
+	GLenum
+	getSourceRGB () const
+	{ return sourceRGBType; }
+
+	GLenum
+	getSourceAlpha () const
+	{ return sourceAlphaType; }
+
+	GLenum
+	getDestinationRGB () const
+	{ return destinationRGBType; }
+
+	GLenum
+	getDestinationAlpha () const
+	{ return destinationAlphaType; }
+
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
-	///  @name Destruction
-
 
 protected:
-
-	///  @name Construction
 
 	virtual
 	void
@@ -111,11 +175,47 @@ protected:
 
 private:
 
+	///  @name Event handler
+
+	void
+	set_sourceRGB ();
+
+	void
+	set_sourceAlpha ();
+
+	void
+	set_destinationRGB ();
+
+	void
+	set_destinationAlpha ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	static const std::map <std::string, GLenum> blendingTypes;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFString* const sourceRGB;
+		SFString* const sourceAlpha;
+		SFString* const destinationRGB;
+		SFString* const destinationAlpha;
+	};
+
+	Fields fields;
+
+	GLenum sourceRGBType;
+	GLenum sourceAlphaType;
+	GLenum destinationRGBType;
+	GLenum destinationAlphaType;
 
 };
 

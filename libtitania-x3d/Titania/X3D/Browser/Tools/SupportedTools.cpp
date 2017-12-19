@@ -113,8 +113,6 @@
 
 #include "../../Tools/Picking/PickableGroupTool.h"
 
-#include "../../Tools/PointingDeviceSensor/TouchGroupTool.h"
-
 #include "../../Tools/Rendering/IndexedLineSetTool.h"
 #include "../../Tools/Rendering/IndexedTriangleFanSetTool.h"
 #include "../../Tools/Rendering/IndexedTriangleSetTool.h"
@@ -130,6 +128,8 @@
 #include "../../Tools/Sound/SoundTool.h"
 
 #include "../../Tools/Text/TextTool.h"
+
+#include "../../Tools/X_ITE/TouchGroupTool.h"
 
 namespace titania {
 namespace X3D {

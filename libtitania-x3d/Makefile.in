@@ -332,7 +332,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Grouping/StaticGroup.lo \
 	Titania/X3D/Components/Grouping/Switch.lo \
 	Titania/X3D/Components/Grouping/Transform.lo \
-	Titania/X3D/Components/Grouping/TransformMatrix3D.lo \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.lo \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.lo \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.lo \
@@ -428,7 +427,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.lo \
 	Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.lo \
 	Titania/X3D/Components/PointingDeviceSensor/SphereSensor.lo \
-	Titania/X3D/Components/PointingDeviceSensor/TouchGroup.lo \
 	Titania/X3D/Components/PointingDeviceSensor/TouchSensor.lo \
 	Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.lo \
 	Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.lo \
@@ -437,7 +435,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Rendering/Color.lo \
 	Titania/X3D/Components/Rendering/ColorRGBA.lo \
 	Titania/X3D/Components/Rendering/Coordinate.lo \
-	Titania/X3D/Components/Rendering/DepthBuffer.lo \
 	Titania/X3D/Components/Rendering/IndexedLineSet.lo \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.lo \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.lo \
@@ -445,8 +442,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Rendering/LineSet.lo \
 	Titania/X3D/Components/Rendering/Normal.lo \
 	Titania/X3D/Components/Rendering/PointSet.lo \
-	Titania/X3D/Components/Rendering/PolygonMode.lo \
-	Titania/X3D/Components/Rendering/PolygonOffset.lo \
 	Titania/X3D/Components/Rendering/TriangleFanSet.lo \
 	Titania/X3D/Components/Rendering/TriangleSet.lo \
 	Titania/X3D/Components/Rendering/TriangleStripSet.lo \
@@ -544,6 +539,12 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/VolumeRendering/X3DComposableVolumeRenderStyleNode.lo \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeDataNode.lo \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeRenderStyleNode.lo \
+	Titania/X3D/Components/X_ITE/BlendMode.lo \
+	Titania/X3D/Components/X_ITE/DepthBuffer.lo \
+	Titania/X3D/Components/X_ITE/PolygonMode.lo \
+	Titania/X3D/Components/X_ITE/PolygonOffset.lo \
+	Titania/X3D/Components/X_ITE/TouchGroup.lo \
+	Titania/X3D/Components/X_ITE/TransformMatrix3D.lo \
 	Titania/X3D/Configuration/BaseNodeArray.lo \
 	Titania/X3D/Configuration/ComponentInfo.lo \
 	Titania/X3D/Configuration/ComponentInfoArray.lo \
@@ -721,6 +722,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Prototype/ProtoArray.lo \
 	Titania/X3D/Prototype/ProtoDeclaration.lo \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.lo \
+	Titania/X3D/Rendering/BlendModeContainer.lo \
 	Titania/X3D/Rendering/ClipPlaneContainer.lo \
 	Titania/X3D/Rendering/CollisionContainer.lo \
 	Titania/X3D/Rendering/DependentRenderer.lo \
@@ -804,7 +806,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.lo \
 	Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.lo \
 	Titania/X3D/Tools/Picking/PickableGroupTool.lo \
-	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.lo \
 	Titania/X3D/Tools/Rendering/CoordinateTool.lo \
 	Titania/X3D/Tools/Rendering/IndexedLineSetTool.lo \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.lo \
@@ -823,7 +824,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Rendering/X3DLineGeometryNodeTool.lo \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.lo \
 	Titania/X3D/Tools/Sound/SoundTool.lo \
-	Titania/X3D/Tools/Text/TextTool.lo Titania/X3D/Types/Image.lo
+	Titania/X3D/Tools/Text/TextTool.lo \
+	Titania/X3D/Tools/X_ITE/TouchGroupTool.lo \
+	Titania/X3D/Types/Image.lo
 libtitania_x3d_la_OBJECTS = $(am_libtitania_x3d_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -1283,7 +1286,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Grouping/StaticGroup.cpp \
 	Titania/X3D/Components/Grouping/Switch.cpp \
 	Titania/X3D/Components/Grouping/Transform.cpp \
-	Titania/X3D/Components/Grouping/TransformMatrix3D.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
@@ -1379,7 +1381,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/SphereSensor.cpp \
-	Titania/X3D/Components/PointingDeviceSensor/TouchGroup.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/TouchSensor.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.cpp \
 	Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp \
@@ -1388,7 +1389,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Rendering/Color.cpp \
 	Titania/X3D/Components/Rendering/ColorRGBA.cpp \
 	Titania/X3D/Components/Rendering/Coordinate.cpp \
-	Titania/X3D/Components/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Components/Rendering/IndexedLineSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.cpp \
@@ -1396,8 +1396,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Rendering/LineSet.cpp \
 	Titania/X3D/Components/Rendering/Normal.cpp \
 	Titania/X3D/Components/Rendering/PointSet.cpp \
-	Titania/X3D/Components/Rendering/PolygonMode.cpp \
-	Titania/X3D/Components/Rendering/PolygonOffset.cpp \
 	Titania/X3D/Components/Rendering/TriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleStripSet.cpp \
@@ -1495,6 +1493,12 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/VolumeRendering/X3DComposableVolumeRenderStyleNode.cpp \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeDataNode.cpp \
 	Titania/X3D/Components/VolumeRendering/X3DVolumeRenderStyleNode.cpp \
+	Titania/X3D/Components/X_ITE/BlendMode.cpp \
+	Titania/X3D/Components/X_ITE/DepthBuffer.cpp \
+	Titania/X3D/Components/X_ITE/PolygonMode.cpp \
+	Titania/X3D/Components/X_ITE/PolygonOffset.cpp \
+	Titania/X3D/Components/X_ITE/TouchGroup.cpp \
+	Titania/X3D/Components/X_ITE/TransformMatrix3D.cpp \
 	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \
@@ -1682,6 +1686,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
+	Titania/X3D/Rendering/BlendModeContainer.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/DependentRenderer.cpp \
@@ -1767,7 +1772,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
-	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
@@ -1787,6 +1791,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
+	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
@@ -2696,9 +2701,6 @@ Titania/X3D/Components/Grouping/Switch.lo:  \
 Titania/X3D/Components/Grouping/Transform.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Grouping/TransformMatrix3D.lo:  \
-	Titania/X3D/Components/Grouping/$(am__dirstamp) \
-	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Grouping/X3DBoundedObject.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
@@ -3056,9 +3058,6 @@ Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.lo:  \
 Titania/X3D/Components/PointingDeviceSensor/SphereSensor.lo:  \
 	Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/PointingDeviceSensor/TouchGroup.lo:  \
-	Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp) \
-	Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/PointingDeviceSensor/TouchSensor.lo:  \
 	Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
@@ -3089,9 +3088,6 @@ Titania/X3D/Components/Rendering/ColorRGBA.lo:  \
 Titania/X3D/Components/Rendering/Coordinate.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Rendering/DepthBuffer.lo:  \
-	Titania/X3D/Components/Rendering/$(am__dirstamp) \
-	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Rendering/IndexedLineSet.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -3111,12 +3107,6 @@ Titania/X3D/Components/Rendering/Normal.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Rendering/PointSet.lo:  \
-	Titania/X3D/Components/Rendering/$(am__dirstamp) \
-	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Rendering/PolygonMode.lo:  \
-	Titania/X3D/Components/Rendering/$(am__dirstamp) \
-	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Rendering/PolygonOffset.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Rendering/TriangleFanSet.lo:  \
@@ -3470,6 +3460,30 @@ Titania/X3D/Components/VolumeRendering/X3DVolumeDataNode.lo:  \
 Titania/X3D/Components/VolumeRendering/X3DVolumeRenderStyleNode.lo:  \
 	Titania/X3D/Components/VolumeRendering/$(am__dirstamp) \
 	Titania/X3D/Components/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Components/X_ITE
+	@: > Titania/X3D/Components/X_ITE/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Components/X_ITE/$(DEPDIR)
+	@: > Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/BlendMode.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/DepthBuffer.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/PolygonMode.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/PolygonOffset.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/TouchGroup.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/X_ITE/TransformMatrix3D.lo:  \
+	Titania/X3D/Components/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Configuration/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Configuration
 	@: > Titania/X3D/Configuration/$(am__dirstamp)
@@ -4136,6 +4150,9 @@ Titania/X3D/Rendering/$(am__dirstamp):
 Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Rendering/$(DEPDIR)
 	@: > Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Rendering/BlendModeContainer.lo:  \
+	Titania/X3D/Rendering/$(am__dirstamp) \
+	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Rendering/ClipPlaneContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -4519,15 +4536,6 @@ Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Picking/PickableGroupTool.lo:  \
 	Titania/X3D/Tools/Picking/$(am__dirstamp) \
 	Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Tools/PointingDeviceSensor/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/Tools/PointingDeviceSensor
-	@: > Titania/X3D/Tools/PointingDeviceSensor/$(am__dirstamp)
-Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)
-	@: > Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.lo:  \
-	Titania/X3D/Tools/PointingDeviceSensor/$(am__dirstamp) \
-	Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Rendering
 	@: > Titania/X3D/Tools/Rendering/$(am__dirstamp)
@@ -4603,6 +4611,15 @@ Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Text/TextTool.lo:  \
 	Titania/X3D/Tools/Text/$(am__dirstamp) \
 	Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/X_ITE/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/X_ITE
+	@: > Titania/X3D/Tools/X_ITE/$(am__dirstamp)
+Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/X_ITE/$(DEPDIR)
+	@: > Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/X_ITE/TouchGroupTool.lo:  \
+	Titania/X3D/Tools/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Types/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Types
 	@: > Titania/X3D/Types/$(am__dirstamp)
@@ -4743,6 +4760,8 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Components/Time/*.lo
 	-rm -f Titania/X3D/Components/VolumeRendering/*.$(OBJEXT)
 	-rm -f Titania/X3D/Components/VolumeRendering/*.lo
+	-rm -f Titania/X3D/Components/X_ITE/*.$(OBJEXT)
+	-rm -f Titania/X3D/Components/X_ITE/*.lo
 	-rm -f Titania/X3D/Configuration/*.$(OBJEXT)
 	-rm -f Titania/X3D/Configuration/*.lo
 	-rm -f Titania/X3D/Editing/*.$(OBJEXT)
@@ -4831,14 +4850,14 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Tools/Navigation/*.lo
 	-rm -f Titania/X3D/Tools/Picking/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Picking/*.lo
-	-rm -f Titania/X3D/Tools/PointingDeviceSensor/*.$(OBJEXT)
-	-rm -f Titania/X3D/Tools/PointingDeviceSensor/*.lo
 	-rm -f Titania/X3D/Tools/Rendering/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Rendering/*.lo
 	-rm -f Titania/X3D/Tools/Sound/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Sound/*.lo
 	-rm -f Titania/X3D/Tools/Text/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Text/*.lo
+	-rm -f Titania/X3D/Tools/X_ITE/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/X_ITE/*.lo
 	-rm -f Titania/X3D/Types/*.$(OBJEXT)
 	-rm -f Titania/X3D/Types/*.lo
 
@@ -5045,7 +5064,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/StaticGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/Switch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/Transform.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/TransformMatrix3D.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo@am__quote@
@@ -5141,7 +5159,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/CylinderSensor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/PlaneSensor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/SphereSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/TouchGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/TouchSensor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DDragSensorNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorNode.Plo@am__quote@
@@ -5150,7 +5167,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Coordinate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/DepthBuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedLineSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedTriangleFanSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedTriangleSet.Plo@am__quote@
@@ -5158,8 +5174,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/LineSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Normal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/PointSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/PolygonMode.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/PolygonOffset.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleFanSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleStripSet.Plo@am__quote@
@@ -5257,6 +5271,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/VolumeRendering/$(DEPDIR)/X3DComposableVolumeRenderStyleNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/VolumeRendering/$(DEPDIR)/X3DVolumeDataNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/VolumeRendering/$(DEPDIR)/X3DVolumeRenderStyleNode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/BlendMode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/DepthBuffer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/PolygonMode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/PolygonOffset.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/TouchGroup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/X_ITE/$(DEPDIR)/TransformMatrix3D.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/BaseNodeArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ComponentInfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ComponentInfoArray.Plo@am__quote@
@@ -5444,6 +5464,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoDeclaration.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/X3DProtoDeclarationNode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/BlendModeContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ClipPlaneContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/DependentRenderer.Plo@am__quote@
@@ -5529,7 +5550,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo@am__quote@
@@ -5549,6 +5569,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DNormalNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Sound/$(DEPDIR)/SoundTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Text/$(DEPDIR)/TextTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/X_ITE/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Types/$(DEPDIR)/Image.Plo@am__quote@
 
 .c.o:
@@ -5667,6 +5688,7 @@ clean-libtool:
 	-rm -rf Titania/X3D/Components/Texturing3D/.libs Titania/X3D/Components/Texturing3D/_libs
 	-rm -rf Titania/X3D/Components/Time/.libs Titania/X3D/Components/Time/_libs
 	-rm -rf Titania/X3D/Components/VolumeRendering/.libs Titania/X3D/Components/VolumeRendering/_libs
+	-rm -rf Titania/X3D/Components/X_ITE/.libs Titania/X3D/Components/X_ITE/_libs
 	-rm -rf Titania/X3D/Configuration/.libs Titania/X3D/Configuration/_libs
 	-rm -rf Titania/X3D/Editing/.libs Titania/X3D/Editing/_libs
 	-rm -rf Titania/X3D/Editing/Selection/.libs Titania/X3D/Editing/Selection/_libs
@@ -5711,10 +5733,10 @@ clean-libtool:
 	-rm -rf Titania/X3D/Tools/NURBS/.libs Titania/X3D/Tools/NURBS/_libs
 	-rm -rf Titania/X3D/Tools/Navigation/.libs Titania/X3D/Tools/Navigation/_libs
 	-rm -rf Titania/X3D/Tools/Picking/.libs Titania/X3D/Tools/Picking/_libs
-	-rm -rf Titania/X3D/Tools/PointingDeviceSensor/.libs Titania/X3D/Tools/PointingDeviceSensor/_libs
 	-rm -rf Titania/X3D/Tools/Rendering/.libs Titania/X3D/Tools/Rendering/_libs
 	-rm -rf Titania/X3D/Tools/Sound/.libs Titania/X3D/Tools/Sound/_libs
 	-rm -rf Titania/X3D/Tools/Text/.libs Titania/X3D/Tools/Text/_libs
+	-rm -rf Titania/X3D/Tools/X_ITE/.libs Titania/X3D/Tools/X_ITE/_libs
 	-rm -rf Titania/X3D/Types/.libs Titania/X3D/Types/_libs
 
 ID: $(am__tagged_files)
@@ -5958,6 +5980,8 @@ distclean-generic:
 	-rm -f Titania/X3D/Components/Time/$(am__dirstamp)
 	-rm -f Titania/X3D/Components/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Components/VolumeRendering/$(am__dirstamp)
+	-rm -f Titania/X3D/Components/X_ITE/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Components/X_ITE/$(am__dirstamp)
 	-rm -f Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Configuration/$(am__dirstamp)
 	-rm -f Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp)
@@ -6046,14 +6070,14 @@ distclean-generic:
 	-rm -f Titania/X3D/Tools/Navigation/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Picking/$(am__dirstamp)
-	-rm -f Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/X3D/Tools/PointingDeviceSensor/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Rendering/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Sound/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Sound/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Text/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/X_ITE/$(am__dirstamp)
 	-rm -f Titania/X3D/Types/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Types/$(am__dirstamp)
 
@@ -6066,7 +6090,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Bits/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Components/VolumeRendering/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/RenderingSurface/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/CADGeometry/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Tools/Geometry2D/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/NURBS/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Bits/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Components/VolumeRendering/$(DEPDIR) Titania/X3D/Components/X_ITE/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/RenderingSurface/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/CADGeometry/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Tools/Geometry2D/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/NURBS/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Tools/X_ITE/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -6113,7 +6137,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Bits/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Components/VolumeRendering/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/RenderingSurface/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/CADGeometry/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Tools/Geometry2D/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/NURBS/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Bits/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Components/VolumeRendering/$(DEPDIR) Titania/X3D/Components/X_ITE/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/RenderingSurface/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/CADGeometry/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Tools/Geometry2D/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/NURBS/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Tools/X_ITE/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

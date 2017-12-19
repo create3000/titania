@@ -50,7 +50,7 @@
 
 #include "DepthTestContainer.h"
 
-#include "../Components/Rendering/DepthBuffer.h"
+#include "../Components/X_ITE/DepthBuffer.h"
 
 namespace titania {
 namespace X3D {

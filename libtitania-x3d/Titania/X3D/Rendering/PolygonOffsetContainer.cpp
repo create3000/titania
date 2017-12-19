@@ -50,7 +50,7 @@
 
 #include "PolygonOffsetContainer.h"
 
-#include "../Components/Rendering/PolygonOffset.h"
+#include "../Components/X_ITE/PolygonOffset.h"
 
 namespace titania {
 namespace X3D {

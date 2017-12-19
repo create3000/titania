@@ -62,8 +62,6 @@ X3DRenderingContext::X3DRenderingContext () :
 	            viewport ({ 0, 0, 0, 0 }),
 	       maxClipPlanes (0),
 	          clipPlanes (),
-	           depthTest ({ true }),
-	         depthOffset ({ 0 }),
 	        alphaChannel ({ false }),
 	          motionBlur (new MotionBlur (getExecutionContext ()))
 {

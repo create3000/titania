@@ -156,6 +156,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DEnvironmentalSensorEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp \
