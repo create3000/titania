@@ -180,10 +180,16 @@ private:
 
 	GLenum                     primitiveMode;
 	GLuint                     idBufferId;
+	GLuint                     positionBufferId;
+	GLuint                     elapsedTimeBufferId;
+	GLuint                     lifeBufferId;
 	GLuint                     colorBufferId;
 	std::vector <GLuint>       texCoordBufferIds;
 	GLuint                     normalBufferId;
 	GLuint                     vertexBufferId;
+	std::vector <Vector3f>     positionArray;
+	std::vector <float>        elapsedTimeArray;
+	std::vector <int32_t>      lifeArray;
 	std::vector <Color4f>      colorArray;
 	std::vector <Vector4f>     texCoordArray;
 	std::vector <Vector3f>     normalArray;

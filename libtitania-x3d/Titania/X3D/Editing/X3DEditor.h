@@ -335,16 +335,20 @@ public:
 	template <class NodeType>
 	static
 	X3DPtrArray <NodeType>
-	getNodes (const MFNode &, const std::set <X3DConstants::NodeType> &);
+	getNodes (const MFNode & selection, const std::set <X3DConstants::NodeType> & types);
 
 	static
 	MFNode
-	getParentNodes (const SFNode &);
+	getParentNodes  (const SFNode & child);
 
 	static
 	X3DFieldDefinition*
-	getContainerField (const SFNode &, const SFNode &)
+	getContainerField (const SFNode & parent, const SFNode & child)
 	throw (Error <INVALID_NODE>);
+
+	static
+	void
+	setExecutionContext (const MFNode & nodes, const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
 	///  @name Modelview matrix handling
 

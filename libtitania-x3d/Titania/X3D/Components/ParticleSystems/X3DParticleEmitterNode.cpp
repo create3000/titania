@@ -218,6 +218,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 			if (createParticles)
 			{
+				++ particle .life;
 				particle .position = getRandomPosition ();
 				particle .velocity = getRandomVelocity ();
 			}

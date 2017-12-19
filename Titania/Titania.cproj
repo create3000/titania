@@ -3274,6 +3274,7 @@
     <Folder Include="share\gtksourceview-3.0\styles\" />
     <Folder Include="Titania\Editors\PrecisionPlacementPanel\ParticleEmitter\" />
     <Folder Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\" />
+    <Folder Include="share\titania\Library\Components\X_ITE\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

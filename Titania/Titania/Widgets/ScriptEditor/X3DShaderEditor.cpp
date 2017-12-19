@@ -176,6 +176,7 @@ X3DShaderEditor::on_new_shader_clicked (const std::string & typeName, const std:
 				X3D::X3DEditor::replaceNodes (executionContext, appearanceNode, appearanceNode -> shaders (), shaderNodes, undoStep);
 			}
 
+			X3D::X3DEditor::setExecutionContext (nodes, executionContext, undoStep);
 			X3D::X3DEditor::removeNodesFromScene (getCurrentContext (), nodes, true, undoStep);
 
 			getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);

@@ -3148,6 +3148,21 @@ throw (Error <INVALID_NODE>)
 	throw Error <INVALID_NODE> ("No appropriate container field found.");
 }
 
+void
+X3DEditor::setExecutionContext (const MFNode & nodes, const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
+{
+	traverse (const_cast <MFNode &> (nodes),
+   [&] (const SFNode & node)
+	{
+		undoStep -> addObjects (node);
+		undoStep -> addUndoFunction (&X3DBaseNode::setExecutionContext, node, node -> getExecutionContext ());
+		undoStep -> addRedoFunction (&X3DBaseNode::setExecutionContext, node, executionContext);
+
+		node -> setExecutionContext (executionContext);
+		return true;
+	});
+}
+
 /***
  *
  *

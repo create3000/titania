@@ -60,6 +60,7 @@ namespace X3D {
 struct SoftParticle
 {
 	SoftParticle () :
+		       life (1),
 		   lifetime (-1),
 		elapsedTime (0),
 		   position (),
@@ -68,6 +69,7 @@ struct SoftParticle
 		   distance (0)
 	{ }
 
+	int32_t   life;
 	time_type lifetime;
 	time_type elapsedTime;
 	Vector3f  position;

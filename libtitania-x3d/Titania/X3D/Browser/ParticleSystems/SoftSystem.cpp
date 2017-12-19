@@ -75,10 +75,16 @@ SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	          particleSystem (particleSystem),
 	           primitiveMode (GL_POINTS),
 	              idBufferId (0),
+	        positionBufferId (0),
+	     elapsedTimeBufferId (0),
+	            lifeBufferId (0),
 	           colorBufferId (0),
 	       texCoordBufferIds (1, 0),
 	          normalBufferId (0),
 	          vertexBufferId (0),
+	           positionArray (),
+	        elapsedTimeArray (),
+	               lifeArray (),
 	              colorArray (),
 	           texCoordArray (),
 	             normalArray (),
@@ -168,6 +174,9 @@ SoftSystem::initialize ()
 	boundedPhysicsModelNodes .addInterest (&SoftSystem::set_boundedPhysics, this);
 
 	glGenBuffers (1, &idBufferId);
+	glGenBuffers (1, &positionBufferId);
+	glGenBuffers (1, &elapsedTimeBufferId);
+	glGenBuffers (1, &lifeBufferId);
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, texCoordBufferIds .data ());
 	glGenBuffers (1, &normalBufferId);
@@ -319,13 +328,17 @@ SoftSystem::set_geometryType ()
 	{
 		case ParticleSystem::GeometryType::POINT:
 		{
-			idArray       .resize (maxParticles);
-			colorArray    .resize (maxParticles);
-			texCoordArray .resize (0);
-			normalArray   .resize (0);
-			vertexArray   .resize (maxParticles);
+			idArray          .resize (maxParticles);
+			positionArray    .resize (maxParticles);
+			elapsedTimeArray .resize (maxParticles);
+			lifeArray        .resize (maxParticles);
+			colorArray       .resize (maxParticles);
+			texCoordArray    .resize (0);
+			normalArray      .resize (0);
+			vertexArray      .resize (maxParticles);
 
 			std::iota (idArray     .begin (), idArray     .end (), 0);
+			std::fill (lifeArray   .begin (), lifeArray   .end (), 1);
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (vertexArray .begin (), vertexArray .end (), Vector3d (0, 0, 0));
 
@@ -335,15 +348,19 @@ SoftSystem::set_geometryType ()
 		}
 		case ParticleSystem::GeometryType::LINE:
 		{
-			idArray       .resize (2 * maxParticles);
-			colorArray    .resize (2 * maxParticles);
-			texCoordArray .resize (0);
-			normalArray   .resize (0);
-			vertexArray   .resize (2 * maxParticles);
+			idArray          .resize (2 * maxParticles);
+			positionArray    .resize (2 * maxParticles);
+			elapsedTimeArray .resize (2 * maxParticles);
+			lifeArray        .resize (2 * maxParticles);
+			colorArray       .resize (2 * maxParticles);
+			texCoordArray    .resize (0);
+			normalArray      .resize (0);
+			vertexArray      .resize (2 * maxParticles);
 
 			for (size_t i = 0, size = idArray .size (); i < size; ++ i)
 				idArray [i] = i / 2;
 
+			std::fill (lifeArray   .begin (), lifeArray   .end (), 1);
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (vertexArray .begin (), vertexArray .end (), Vector3d (0, 0, 0));
 
@@ -355,15 +372,19 @@ SoftSystem::set_geometryType ()
 		case ParticleSystem::GeometryType::QUAD:
 		case ParticleSystem::GeometryType::SPRITE:
 		{
-			idArray       .resize (6 * maxParticles);
-			colorArray    .resize (6 * maxParticles);
-			texCoordArray .resize (6 * maxParticles);
-			normalArray   .resize (6 * maxParticles);
-			vertexArray   .resize (6 * maxParticles);
+			idArray          .resize (6 * maxParticles);
+			positionArray    .resize (6 * maxParticles);
+			elapsedTimeArray .resize (6 * maxParticles);
+			lifeArray        .resize (6 * maxParticles);
+			colorArray       .resize (6 * maxParticles);
+			texCoordArray    .resize (6 * maxParticles);
+			normalArray      .resize (6 * maxParticles);
+			vertexArray      .resize (6 * maxParticles);
 
 			for (size_t i = 0, size = idArray .size (); i < size; ++ i)
 				idArray [i] = i / 6;
 
+			std::fill (lifeArray   .begin (), lifeArray   .end (), 1);
 			std::fill (colorArray  .begin (), colorArray  .end (), Color4f (1, 1, 1, 1));
 			std::fill (normalArray .begin (), normalArray .end (), Vector3f (0, 0, 1));
 			std::fill (vertexArray .begin (), vertexArray .end (), Vector3d (0, 0, 0));
@@ -453,7 +474,10 @@ SoftSystem::set_maxParticles ()
 	maxParticles = std::max <int32_t> (0, particleSystem -> maxParticles ());
 
 	for (size_t i = numParticles, size = std::min (particles .size (), maxParticles); i < size; ++ i)
+	{
+		particles [i] .life     = 1;
 		particles [i] .lifetime = -1;
+	}
 
 	particles .resize (maxParticles);
 
@@ -734,9 +758,20 @@ SoftSystem::updatePoint ()
 
 	for (const auto & particle : particles)
 	{
-		vertexArray [i ++] = particle .position;
+		positionArray [i]    = particle .position;
+		elapsedTimeArray [i] = particle .elapsedTime / particle .lifetime;
+		lifeArray [i]        = particle .life;
+		vertexArray [i]      = particle .position;
+
+		++ i;
 	}
 
+	glBindBuffer (GL_ARRAY_BUFFER, positionBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * positionArray .size (), positionArray .data (), GL_STATIC_DRAW);
+	glBindBuffer (GL_ARRAY_BUFFER, elapsedTimeBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (float) * elapsedTimeArray .size (), elapsedTimeArray .data (), GL_STATIC_DRAW);
+	glBindBuffer (GL_ARRAY_BUFFER, lifeBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (int32_t) * lifeArray .size (), lifeArray .data (), GL_STATIC_DRAW);
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * vertexArray .size (), vertexArray .data (), GL_STATIC_DRAW);
 
@@ -772,13 +807,30 @@ SoftSystem::updateLine ()
 
 	for (const auto & particle : particles)
 	{
-		const auto & position = particle .position;
-		const auto   size1_2  = normalize (particle .velocity) * sy1_2;
+		const auto & position    = particle .position;
+		const auto   elapsedTime = particle .elapsedTime / particle .lifetime;
+		const auto   life        = particle .life;
+		const auto   size1_2     = normalize (particle .velocity) * sy1_2;
 
-		vertexArray [i ++] = position - size1_2;
-		vertexArray [i ++] = position + size1_2;
+		positionArray [i + 0]    = position;
+		positionArray [i + 1]    = position;
+		elapsedTimeArray [i + 0] = elapsedTime;
+		elapsedTimeArray [i + 1] = elapsedTime;
+		lifeArray [i + 0]        = life;
+		lifeArray [i + 1]        = life;
+
+		vertexArray [i + 0] = position - size1_2;
+		vertexArray [i + 1] = position + size1_2;
+
+		i += 2;
 	}
 
+	glBindBuffer (GL_ARRAY_BUFFER, positionBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * positionArray .size (), positionArray .data (), GL_STATIC_DRAW);
+	glBindBuffer (GL_ARRAY_BUFFER, elapsedTimeBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (float) * elapsedTimeArray .size (), elapsedTimeArray .data (), GL_STATIC_DRAW);
+	glBindBuffer (GL_ARRAY_BUFFER, lifeBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (int32_t) * lifeArray .size (), lifeArray .data (), GL_STATIC_DRAW);
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * vertexArray .size (), vertexArray .data (), GL_STATIC_DRAW);
 
@@ -929,7 +981,9 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 
 				for (const auto & particle : particles)
 				{
-					const auto & position = particle .position;
+					const auto & position    = particle .position;
+					const auto   elapsedTime = particle .elapsedTime / particle .lifetime;
+					const auto   life        = particle .life;
 
 					const auto p1 = position + s1;
 					const auto p2 = position + s2;
@@ -942,16 +996,31 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					// |   /     |
 					// | /       |
 					// p1 ------ p2
+				
+					for (size_t n = 0; n < 6; ++ n)
+					{
+						positionArray [i + n]    = position;
+						elapsedTimeArray [i + n] = elapsedTime;
+						lifeArray [i + n]        = life;
+					}
 	
-					vertexArray [i ++] = p1; // p1
-					vertexArray [i ++] = p2; // p2
-					vertexArray [i ++] = p3; // p3
+					vertexArray [i + 0] = p1; // p1
+					vertexArray [i + 1] = p2; // p2
+					vertexArray [i + 2] = p3; // p3
 
-					vertexArray [i ++] = p1; // p1
-					vertexArray [i ++] = p3; // p3
-					vertexArray [i ++] = p4; // p4
+					vertexArray [i + 3] = p1; // p1
+					vertexArray [i + 4] = p3; // p3
+					vertexArray [i + 5] = p4; // p4
+
+					i += 6;
 				}
 
+				glBindBuffer (GL_ARRAY_BUFFER, positionBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * positionArray .size (), positionArray .data (), GL_STATIC_DRAW);
+				glBindBuffer (GL_ARRAY_BUFFER, elapsedTimeBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (float) * elapsedTimeArray .size (), elapsedTimeArray .data (), GL_STATIC_DRAW);
+				glBindBuffer (GL_ARRAY_BUFFER, lifeBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (int32_t) * lifeArray .size (), lifeArray .data (), GL_STATIC_DRAW);
 				glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 				glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * vertexArray .size (), vertexArray .data (), GL_STATIC_DRAW);
 			}
@@ -971,7 +1040,9 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 
 				for (const auto & particle : particles)
 				{
-					const auto & position = particle .position;
+					const auto & position    = particle .position;
+					const auto   elapsedTime = particle .elapsedTime / particle .lifetime;
+					const auto   life        = particle .life;
 
 					const auto p1 = position + s1;
 					const auto p2 = position + s2;
@@ -984,16 +1055,31 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					// |   /     |
 					// | /       |
 					// p1 ------ p2
-	
-					vertexArray [i ++] = p1; // p1
-					vertexArray [i ++] = p2; // p2
-					vertexArray [i ++] = p3; // p3
 
-					vertexArray [i ++] = p1; // p1
-					vertexArray [i ++] = p3; // p3
-					vertexArray [i ++] = p4; // p4
+					for (size_t n = 0; n < 6; ++ n)
+					{
+						positionArray [i + n]    = position;
+						elapsedTimeArray [i + n] = elapsedTime;
+						lifeArray [i + n]        = life;
+					}
+	
+					vertexArray [i + 0] = p1; // p1
+					vertexArray [i + 1] = p2; // p2
+					vertexArray [i + 2] = p3; // p3
+
+					vertexArray [i + 3] = p1; // p1
+					vertexArray [i + 4] = p3; // p3
+					vertexArray [i + 5] = p4; // p4
+
+					i += 6;;
 				}
 
+				glBindBuffer (GL_ARRAY_BUFFER, positionBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * positionArray .size (), positionArray .data (), GL_STATIC_DRAW);
+				glBindBuffer (GL_ARRAY_BUFFER, elapsedTimeBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (float) * elapsedTimeArray .size (), elapsedTimeArray .data (), GL_STATIC_DRAW);
+				glBindBuffer (GL_ARRAY_BUFFER, lifeBufferId);
+				glBufferData (GL_ARRAY_BUFFER, sizeof (int32_t) * lifeArray .size (), lifeArray .data (), GL_STATIC_DRAW);
 				glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 				glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * vertexArray .size (), vertexArray .data (), GL_STATIC_DRAW);
 			}
@@ -1058,7 +1144,14 @@ SoftSystem::draw (ShapeContainer* const context)
 
 			// Setup vertex attributes.
 
-			shaderNode -> enableIntegerAttrib ("x3d_ParticleId", idBufferId, 1);
+			// ***************************************************************************************************************************************
+			// For idBufferId, positionBufferId, elapsedTimeBufferId, lifeBufferId, colorBufferId, normalBufferId glVertexAttribDivisor could be used.
+			// ***************************************************************************************************************************************
+
+			shaderNode -> enableIntegerAttrib ("x3d_ParticleId",          idBufferId,          1);
+			shaderNode -> enableFloatAttrib   ("x3d_ParticlePosition",    positionBufferId,    4);
+			shaderNode -> enableFloatAttrib   ("x3d_ParticleElapsedTime", elapsedTimeBufferId, 1);
+			shaderNode -> enableIntegerAttrib ("x3d_ParticleLife",        lifeBufferId,        1);
 
 			if (colorMaterial)
 				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
@@ -1106,6 +1199,10 @@ SoftSystem::draw (ShapeContainer* const context)
 			}
 
 			shaderNode -> disableIntegerAttrib ("x3d_ParticleId");
+			shaderNode -> disableFloatAttrib   ("x3d_ParticlePosition");
+			shaderNode -> disableFloatAttrib   ("x3d_ParticleElapsedTime");
+			shaderNode -> disableIntegerAttrib ("x3d_ParticleLife");
+
 			shaderNode -> disableColorAttrib ();
 			shaderNode -> disableTexCoordAttrib ();
 			shaderNode -> disableNormalAttrib ();
@@ -1125,6 +1222,15 @@ SoftSystem::dispose ()
 {
 	if (idBufferId)
 		glDeleteBuffers (1, &idBufferId);
+
+	if (positionBufferId)
+		glDeleteBuffers (1, &positionBufferId);
+
+	if (elapsedTimeBufferId)
+		glDeleteBuffers (1, &elapsedTimeBufferId);
+
+	if (lifeBufferId)
+		glDeleteBuffers (1, &lifeBufferId);
 
 	if (colorBufferId)
 		glDeleteBuffers (1, &colorBufferId);
