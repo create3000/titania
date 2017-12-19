@@ -3119,8 +3119,10 @@
     <None Include="share\titania\Library\Components\CADGeometry\.X_ITE\QuadSet" />
     <None Include="share\titania\ui\icons\X_ITE.svg" />
     <None Include="share\titania\Library\Components\X_ITE\BlendMode.x3dv" />
-    <None Include="share\titania\Library\Components\X_ITE\.experimental\BlendMode" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DBlendModeEditor.h" />
+    <None Include="share\titania\Library\Components\X_ITE\.Titania\BlendMode" />
+    <None Include="share\titania\Library\Components\X_ITE\.X_ITE\BlendMode" />
+    <None Include="share\titania\Library\Components\X_ITE\.experimental\BlendMode" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

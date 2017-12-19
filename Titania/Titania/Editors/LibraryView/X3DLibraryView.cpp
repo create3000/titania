@@ -204,7 +204,7 @@ X3DLibraryView::append (const std::string & path) const
 					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
 
 					#ifndef TITANIA_FEATURE
-					if (experimental)
+					if (experimental and not (X_ITE or titania))
 					   continue;
 					#endif
 
@@ -257,7 +257,7 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
 
 					#ifndef TITANIA_DEBUG
-					if (experimental)
+					if (experimental and not (X_ITE or titania))
 					   continue;
 					#endif
 
