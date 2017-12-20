@@ -133,12 +133,12 @@ public:
 	void
 	updateTitle ();
 
-	void
-	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
-
 	const std::unique_ptr <BackgroundImage> &
 	getBackgroundImage () const
 	{ return backgroundImage; }
+
+	void
+	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
 
 	///  @name Destruction
 

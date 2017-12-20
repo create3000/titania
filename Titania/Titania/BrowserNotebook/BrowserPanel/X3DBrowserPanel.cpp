@@ -139,7 +139,8 @@ X3DBrowserPanel::X3DBrowserPanel () :
 	               layerNode (),
 	      navigationInfoNode (),
 	               viewpoint (),
-	           gridTransform ()
+	           gridTransform (),
+	             aspectFrame (nullptr)
 {
 	addChildObjects (browser,
 	                 layerNode,
@@ -249,6 +250,42 @@ X3DBrowserPanel::setType (const BrowserPanelType value)
 }
 
 void
+X3DBrowserPanel::setBrowserRatio (const bool set, const double ratio)
+{
+	if (type not_eq BrowserPanelType::MAIN_VIEW)
+		return;
+
+	if (set not_eq bool (aspectFrame))
+	{
+		if (aspectFrame)
+		{
+			aspectFrame -> remove ();
+			getBrowserBox () .remove (*aspectFrame);
+			getBrowserBox () .pack_start (*browser, true, true, 0);
+
+			aspectFrame = nullptr;
+		}
+		else
+		{
+			getBrowserBox () .remove (*browser);
+
+			aspectFrame = Gtk::manage (new Gtk::AspectFrame ());
+
+			aspectFrame -> set_shadow_type (Gtk::SHADOW_NONE);
+			aspectFrame -> unset_label ();
+			aspectFrame -> property_obey_child () = false;
+			aspectFrame -> add (*browser);
+			aspectFrame -> show ();
+
+			getBrowserBox () .pack_start (*aspectFrame, true, true, 0);
+		}
+	}
+
+	if (aspectFrame)
+		aspectFrame -> property_ratio () = ratio;
+}
+
+void
 X3DBrowserPanel::lookAtSelection ()
 {
 	browser -> lookAtSelection ();
@@ -326,6 +363,8 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	browser -> show ();
 
 	getBrowserBox () .pack_start (*browser, true, true, 0);
+
+	setBrowserRatio (getPage () -> getBrowserRatioSet (), getPage () -> getBrowserRatio ());
 }
 
 int32_t

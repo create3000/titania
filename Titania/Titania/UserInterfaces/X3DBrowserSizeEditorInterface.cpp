@@ -48,142 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-
-#include "X3DNotebookPage.h"
-
-#include "PanelType.h"
+#include "X3DBrowserSizeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
-
-class NotebookPage :
-	public X3DNotebookPage
+void
+X3DBrowserSizeEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Member types
+	create ();
+}
 
-	using PanelPtr   = std::shared_ptr <X3DPanelInterface>;
-	using PanelArray = std::vector <PanelPtr>;
+void
+X3DBrowserSizeEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
-	///  @name Construction
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+	create ();
+}
 
-	///  @name Member access
+void
+X3DBrowserSizeEditorInterface::create ()
+{
+	// Get objects.
+	m_RatioAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RatioAdjustment"));
 
-	const PanelPtr &
-	getActivePanel () const
-	{ return panels [activeView]; }
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("EnabledCheckButton", m_EnabledCheckButton);
+	m_builder -> get_widget ("RatioSpinButton", m_RatioSpinButton);
 
-	const PanelArray &
-	getPanels () const
-	{ return panels; }
+	// Connect object Gtk::Adjustment with id 'RatioAdjustment'.
+	m_RatioAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DBrowserSizeEditorInterface::on_ratio_changed));
 
-	void
-	setMultiView (const bool value);
+	// Connect object Gtk::CheckButton with id 'EnabledCheckButton'.
+	m_EnabledCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserSizeEditorInterface::on_enabled_toggled));
+}
 
-	const X3D::SFBool &
-	getMultiView () const
-	{ return multiView; }
-
-	void
-	setBrowserRatioSet (const bool value);
-
-	bool
-	getBrowserRatioSet () const;
-
-	void
-	setBrowserRatio (const double value);
-
-	double
-	getBrowserRatio () const;
-
-	///  @name Operations
-
-	void
-	lookAtSelection ();
-
-	void
-	lookAtAll ();
-
-	///  @name Destruction
-
-	virtual
-	~NotebookPage () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	///  @name Event handlers
-
-	void
-	set_scene ();
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_editing ();
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey* event);
-
-	void
-	setPanelType (const size_t id, const PanelType panelType);
-	
-	PanelType
-	getPanelType (const size_t id) const;
-
-	void
-	setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_focus (const size_t id);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	set_browser_ratio ();
-
-	///  @name Members
-
-	std::vector <Gtk::Widget*> boxes;
-	PanelArray                 panels;
-	size_t                     activeView;
-	X3D::SFBool                multiView;
-
-};
+X3DBrowserSizeEditorInterface::~X3DBrowserSizeEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

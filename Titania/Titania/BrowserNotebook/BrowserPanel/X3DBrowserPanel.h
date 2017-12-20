@@ -73,6 +73,9 @@ public:
 
 	///  @name Operations
 
+	void
+	setBrowserRatio (const bool set, const double ratio);
+
 	virtual
 	void
 	lookAtSelection () final override;
@@ -206,6 +209,8 @@ private:
 	X3D::X3DPtr <X3D::NavigationInfo>   navigationInfoNode;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
 	X3D::X3DPtr <X3D::Transform>        gridTransform;
+
+	Gtk::AspectFrame* aspectFrame;
 };
 
 } // puck

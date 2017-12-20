@@ -1809,8 +1809,7 @@ BrowserWindow::on_transform_to_zero_activated ()
 void
 BrowserWindow::on_browser_size_activate ()
 {
-	__LOG__ << std::endl;
-	//addDialog ("BrowserSizeEditor");
+	addDialog ("BrowserSizeEditor");
 }
 
 void

@@ -356,6 +356,8 @@
     <Compile Include="Titania\UserInterfaces\X3DDefaultPhysicsModelEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\DefaultPhysicsModelEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DBlendModeEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBrowserSizeEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3125,6 +3127,10 @@
     <None Include="share\titania\Library\Components\X_ITE\.experimental\BlendMode" />
     <None Include="share\titania\Library\Prototypes\Text\Number.x3dv" />
     <None Include="share\titania\ui\icons\BrowserSize.svg" />
+    <None Include="Titania\UserInterfaces\X3DBrowserSizeEditorInterface.h" />
+    <None Include="share\titania\ui\Editors\BrowserSizeEditor.glade" />
+    <None Include="share\titania\ui\Editors\DefaultPhysicsModelEditor.glade" />
+    <None Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3286,6 +3292,7 @@
     <Folder Include="share\titania\Library\Components\X_ITE\.X_ITE\" />
     <Folder Include="share\titania\Library\Components\ParticleSystems\.X_ITE\" />
     <Folder Include="share\titania\Library\Prototypes\Text\" />
+    <Folder Include="Titania\Editors\BrowserSizeEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

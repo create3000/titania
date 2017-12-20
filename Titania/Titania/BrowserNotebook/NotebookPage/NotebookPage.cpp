@@ -104,6 +104,8 @@ NotebookPage::set_scene ()
 
 		setActiveView (activeView);
 		setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+
+		set_browser_ratio ();
 	}
 }
 
@@ -224,7 +226,6 @@ NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewpo
 		}
 	}
 
-
 	panel -> getWidget () .reparent (box);
 
 	panel -> getPanelType () .addInterest (&NotebookPage::setPanel, this, id, std::ref (panel -> getPanelType ()), std::ref (box));
@@ -256,6 +257,72 @@ NotebookPage::setMultiView (const bool value)
 	for (size_t i = 0, size = boxes .size (); i < size; ++ i)
 	{
 		boxes [i] -> set_visible (multiView or i == getActiveView ());
+	}
+}
+
+void
+NotebookPage::setBrowserRatioSet (const bool value)
+{
+	try
+	{
+		if (value)
+			createWorldInfo (getScene ()) -> setMetaData <double> ("/Titania/Page/browserRatio", 1.0);
+		else
+			getWorldInfo (getScene ()) -> removeMetaData ("/Titania/Page/browserRatio");
+
+		setModified (true);
+
+		set_browser_ratio ();
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+bool
+NotebookPage::getBrowserRatioSet () const
+{
+	try
+	{
+		return getWorldInfo (getScene ()) -> getMetaData <double> ("/Titania/Page/browserRatio", -1) > 0;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		return false;
+	}
+}
+
+void
+NotebookPage::setBrowserRatio (const double value)
+{
+	createWorldInfo (getScene ()) -> setMetaData <double> ("/Titania/Page/browserRatio", value);
+
+	setModified (true);
+
+	set_browser_ratio ();
+}
+
+double
+NotebookPage::getBrowserRatio () const
+{
+	try
+	{
+		return getWorldInfo (getScene ()) -> getMetaData <double> ("/Titania/Page/browserRatio", 1);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		return 1;
+	}
+}
+
+void
+NotebookPage::set_browser_ratio ()
+{
+	for (const auto & panel : panels)
+	{
+		const auto browserPanel = std::dynamic_pointer_cast <X3DBrowserPanel> (panel);
+
+		if (browserPanel)
+			browserPanel -> setBrowserRatio (getBrowserRatioSet (), getBrowserRatio ());
 	}
 }
 

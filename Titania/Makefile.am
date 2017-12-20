@@ -95,6 +95,7 @@ titania_SOURCES =  \
 	Titania/Editors/BindableNodeList/FogList.cpp \
 	Titania/Editors/BindableNodeList/NavigationInfoList.cpp \
 	Titania/Editors/BindableNodeList/ViewpointList.cpp \
+	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
@@ -218,6 +219,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserPanelInterface.cpp \
+	Titania/UserInterfaces/X3DBrowserSizeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \

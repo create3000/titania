@@ -369,6 +369,18 @@
     <property name="stock">BackgroundImage</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image41">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BrowserSize</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image42">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BrowserSize</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1574,6 +1586,7 @@
             <child>
               <object class="GtkImageMenuItem" id="BrowserBrowserSizeMenuItem">
                 <property name="label" translatable="yes">Browser Size</property>
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="image">image42</property>
                 <property name="use_stock">False</property>
@@ -1700,18 +1713,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image41">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">BrowserSize</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image42">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">BrowserSize</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image5">
     <property name="visible">True</property>
@@ -3011,6 +3012,7 @@
                             <child>
                               <object class="GtkImageMenuItem" id="BrowserSizeMenuItem">
                                 <property name="label" translatable="yes">Browser Size</property>
+                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="image">image41</property>
                                 <property name="use_stock">False</property>

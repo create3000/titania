@@ -76,6 +76,7 @@
 #include "../Editors/BindableNodeList/FogList.h"
 #include "../Editors/BindableNodeList/NavigationInfoList.h"
 #include "../Editors/BindableNodeList/ViewpointList.h"
+#include "../Editors/BrowserSizeEditor/BrowserSizeEditor.h"
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
@@ -133,6 +134,7 @@ public:
 		         std::make_pair ("ScenePropertiesEditor",         constructDialog <ScenePropertiesEditor>),
 		         std::make_pair ("UndoHistoryEditor",             constructDialog <UndoHistoryEditor>),
 		         std::make_pair ("MotionBlurEditor",              constructDialog <MotionBlurEditor>),
+		         std::make_pair ("BrowserSizeEditor",             constructDialog <BrowserSizeEditor>),
 		         std::make_pair ("BackgroundImageEditor",         constructDialog <BackgroundImageEditor>),
 		         std::make_pair ("GridEditor",                    constructDialog <GridEditor>),
 		         std::make_pair ("NodeEditor",                    constructDialog <NodeEditor>),

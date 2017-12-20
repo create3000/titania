@@ -48,138 +48,110 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_SIZE_EDITOR_H__
+#define __TMP_GLAD2CPP_BROWSER_SIZE_EDITOR_H__
 
-#include "X3DNotebookPage.h"
-
-#include "PanelType.h"
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
-
-class NotebookPage :
-	public X3DNotebookPage
+/**
+ *  Gtk Interface for BrowserSizeEditor.
+ */
+class X3DBrowserSizeEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
-	///  @name Member types
-
-	using PanelPtr   = std::shared_ptr <X3DPanelInterface>;
-	using PanelArray = std::vector <PanelPtr>;
-
 	///  @name Construction
 
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
+	X3DBrowserSizeEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DBrowserSizeEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DBrowserSizeEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filenames); }
 
 	///  @name Member access
 
-	const PanelPtr &
-	getActivePanel () const
-	{ return panels [activeView]; }
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
 
-	const PanelArray &
-	getPanels () const
-	{ return panels; }
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getRatioAdjustment () const
+	{ return m_RatioAdjustment; }
 
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
+	Gtk::CheckButton &
+	getEnabledCheckButton () const
+	{ return *m_EnabledCheckButton; }
+
+	Gtk::SpinButton &
+	getRatioSpinButton () const
+	{ return *m_RatioSpinButton; }
+
+	///  @name Signal handlers
+
+	virtual
 	void
-	setMultiView (const bool value);
+	on_ratio_changed () = 0;
 
-	const X3D::SFBool &
-	getMultiView () const
-	{ return multiView; }
-
+	virtual
 	void
-	setBrowserRatioSet (const bool value);
-
-	bool
-	getBrowserRatioSet () const;
-
-	void
-	setBrowserRatio (const double value);
-
-	double
-	getBrowserRatio () const;
-
-	///  @name Operations
-
-	void
-	lookAtSelection ();
-
-	void
-	lookAtAll ();
+	on_enabled_toggled () = 0;
 
 	///  @name Destruction
 
 	virtual
-	~NotebookPage () final override;
+	~X3DBrowserSizeEditorInterface () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
 	void
-	initialize () final override;
-
-	virtual
-	void
-	loaded () final override;
-
-	///  @name Event handlers
+	create (const std::string &);
 
 	void
-	set_scene ();
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
+	create (std::initializer_list <std::string>);
 
 	void
-	set_editing ();
+	create ();
 
-	virtual
-	bool
-	on_key_release_event (GdkEventKey* event);
-
-	void
-	setPanelType (const size_t id, const PanelType panelType);
-	
-	PanelType
-	getPanelType (const size_t id) const;
-
-	void
-	setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_focus (const size_t id);
-
-	void
-	setActiveView (const size_t value);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	set_browser_ratio ();
+	///  @name Static members
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*> boxes;
-	PanelArray                 panels;
-	size_t                     activeView;
-	X3D::SFBool                multiView;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_RatioAdjustment;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::CheckButton* m_EnabledCheckButton;
+	Gtk::SpinButton* m_RatioSpinButton;
 
 };
 
