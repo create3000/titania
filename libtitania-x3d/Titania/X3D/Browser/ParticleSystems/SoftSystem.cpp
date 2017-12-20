@@ -103,7 +103,6 @@ SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	         createParticles (false),
 	        particleLifetime (0),
 	       lifetimeVariation (0),
-	      particleElasticity (1),
 	            maxParticles (0),
 	            numParticles (0),
 	            creationTime (0),
@@ -163,7 +162,6 @@ SoftSystem::initialize ()
 	particleSystem -> maxParticles ()       .addInterest (&SoftSystem::set_enabled,           this);
 	particleSystem -> particleLifetime ()   .addInterest (&SoftSystem::set_particleLifetime,  this);
 	particleSystem -> lifetimeVariation ()  .addInterest (&SoftSystem::set_lifetimeVariation, this);
-//	particleSystem -> particleElasticity () .addInterest (&SoftSystem::set_particleElasticity, this);
 	particleSystem -> emitter ()            .addInterest (&SoftSystem::set_emitter,           this);
 	particleSystem -> physics ()            .addInterest (&SoftSystem::set_physics,           this);
 	particleSystem -> colorKey ()           .addInterest (&SoftSystem::set_color,             this);
@@ -188,7 +186,6 @@ SoftSystem::initialize ()
 	set_createParticles ();
 	set_particleLifetime ();
 	set_lifetimeVariation ();
-	set_particleElasticity ();
 	set_physics ();
 	set_colorRamp ();
 	set_texCoordRamp ();
@@ -499,12 +496,6 @@ void
 SoftSystem::set_lifetimeVariation ()
 {
 	lifetimeVariation = particleSystem -> lifetimeVariation ();
-}
-
-void
-SoftSystem::set_particleElasticity ()
-{
-//	particleElasticity = particleSystem -> particleElasticity ();
 }
 
 void

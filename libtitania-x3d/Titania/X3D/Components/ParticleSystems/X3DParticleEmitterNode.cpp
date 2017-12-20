@@ -63,6 +63,7 @@ X3DParticleEmitterNode::Fields::Fields () :
 	  variation (new SFFloat (0.25)),
 	       mass (new SFFloat ()),
 	surfaceArea (new SFFloat ())
+//	elasticity (new SFFloat (1))
 { }
 
 X3DParticleEmitterNode::X3DParticleEmitterNode () :
@@ -70,6 +71,8 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 	 fields ()
 {
 	addType (X3DConstants::X3DParticleEmitterNode);
+
+//	addField (initalizeOnly,    "elasticity", elasticity ()); // Put in each emitter node
 
 	speed ()       .setUnit (UnitCategory::SPEED);
 	mass ()        .setUnit (UnitCategory::MASS);
@@ -192,7 +195,6 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 	const auto & createParticles    = softSystem -> createParticles;
 	const auto & particleLifetime   = softSystem -> particleLifetime;
 	const auto & lifetimeVariation  = softSystem -> lifetimeVariation;
-	const auto & particleElasticity = softSystem -> particleElasticity;
 	const auto & speeds             = softSystem -> speeds;            // speed of velocities
 	const auto & velocities         = softSystem -> velocities;        // resulting velocities from forces
 	const auto & turbulences        = softSystem -> turbulences;       // turbulences
@@ -245,7 +247,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 				position += velocity * float (deltaTime);
 	
-				bounce (boundedVolume, particleElasticity, fromPosition, position, velocity);
+				bounce (boundedVolume, fromPosition, position, velocity);
 			}
 			else
 			{
@@ -269,7 +271,6 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 void
 X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
-                                const float particleElasticity,
                                 const Vector3f & fromPosition,
                                 Vector3f & toPosition,
                                 Vector3f & velocity) const
@@ -317,7 +318,7 @@ X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVol
 				const auto dot2 = 2 * dot (intersectionNormal, velocity);
 
 				velocity -= intersectionNormal * dot2;
-//				velocity *= particleElasticity;
+//				velocity *= elasticity ();
 
 				const auto normal   = normalize (velocity);
 				const auto distance = abs (intersection - fromPosition);

@@ -105,6 +105,16 @@ public:
 	surfaceArea () const
 	{ return *fields .surfaceArea; }
 
+//	virtual
+//	SFFloat &
+//	elasticity ()
+//	{ return *fields .elasticity; }
+//
+//	virtual
+//	const SFFloat &
+//	elasticity () const
+//	{ return *fields .elasticity; }
+
 	///  @name Operations
 
 	virtual
@@ -193,7 +203,6 @@ private:
 
 	void
 	bounce (const std::unique_ptr <BVH <float>> & boundedVolume,
-	        const float particleElasticity,
 	        const Vector3f & fromPosition,
 	        Vector3f & toPosition,
 	        Vector3f & velocity) const;
@@ -214,6 +223,7 @@ private:
 		SFFloat* const variation;
 		SFFloat* const mass;
 		SFFloat* const surfaceArea;
+//		SFFloat* const elasticity;
 	};
 
 	Fields fields;

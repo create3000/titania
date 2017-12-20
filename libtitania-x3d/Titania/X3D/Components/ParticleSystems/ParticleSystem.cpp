@@ -267,7 +267,6 @@ ParticleSystem::Fields::Fields () :
 	  particleLifetime (new SFFloat (5)),
 	 lifetimeVariation (new SFFloat (0.25)),
 	      particleSize (new SFVec2f (0.02, 0.02)),
-//	particleElasticity (new SFFloat (1)),
 	          colorKey (new MFFloat ()),
 	       texCoordKey (new MFFloat ()),
 	          isActive (new SFBool ()),
@@ -332,7 +331,6 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "particleLifetime",   particleLifetime ());
 	addField (inputOutput,    "lifetimeVariation",  lifetimeVariation ());
 	addField (inputOutput,    "particleSize",       particleSize ());
-//	addField (inputOutput,    "particleElasticity", particleElasticity ());
 
 	addField (initializeOnly, "emitter",           emitter ());
 	addField (initializeOnly, "physics",           physics ());

@@ -129,9 +129,6 @@ private:
 	set_lifetimeVariation ();
 
 	void
-	set_particleElasticity ();
-
-	void
 	set_emitter ();
 
 	void
@@ -209,7 +206,6 @@ private:
 	bool                                      createParticles;
 	time_type                                 particleLifetime;
 	time_type                                 lifetimeVariation;
-	float                                     particleElasticity;
 	size_t                                    maxParticles;
 	size_t                                    numParticles;
 	time_type                                 creationTime;
