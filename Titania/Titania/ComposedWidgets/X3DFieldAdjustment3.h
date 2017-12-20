@@ -96,7 +96,11 @@ public:
 
 	void
 	setUniform (const bool value)
-	{ uniform = value; }
+	{
+		uniform = value;
+
+		undoStep .reset ();
+	}
 
 	bool
 	getUniform () const

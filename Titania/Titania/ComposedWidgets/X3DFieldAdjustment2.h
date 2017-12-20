@@ -95,7 +95,11 @@ public:
 
 	void
 	setUniform (const bool value)
-	{ uniform = value; }
+	{
+		uniform = value;
+
+		undoStep .reset ();
+	}
 
 	bool
 	getUniform () const
@@ -358,7 +362,7 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 	changing = true;
 
-	// Find last »creaseAngle« field.
+	// Find last ?creaseAngle? field.
 
 	bool hasField = false;
 
