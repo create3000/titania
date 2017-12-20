@@ -224,6 +224,11 @@ Selection::addNodes (const MFNode & value)
 			nodes .emplace_back (node);
 		}
 
+		if (nodes .empty ())
+			masterSelection = nullptr;
+		else
+			masterSelection = nodes .back ();
+
 		if (nodes .size () not_eq size)
 		{
 			if (selectGeometry)
@@ -232,6 +237,8 @@ Selection::addNodes (const MFNode & value)
 			for (const auto & node : selectGeometry ? geometryNodes : nodes)
 				node -> addTool ();
 		}
+
+		hierarchy .addEvent ();
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
 	{
@@ -261,6 +268,11 @@ Selection::removeNodes (const MFNode & value)
 			}
 		}
 
+		if (nodes .empty ())
+			masterSelection = nullptr;
+		else
+			masterSelection = nodes .back ();
+
 		if (not removedNodes .empty ())
 		{
 			if (clearHierarchy)
@@ -275,6 +287,8 @@ Selection::removeNodes (const MFNode & value)
 			for (const auto & node : removedNodes)
 				node -> removeTool ();
 		}
+
+		hierarchy .addEvent ();
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
 	{
@@ -355,6 +369,7 @@ Selection::setNodes (const MFNode & value)
 	addNodes (set_difference (value, nodes));
 
 	clearHierarchy = true;
+	hierarchy .addEvent ();
 }
 
 MFNode
