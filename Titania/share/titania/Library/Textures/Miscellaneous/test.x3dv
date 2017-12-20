@@ -13,10 +13,10 @@ DEF test Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Miscellaneous/test.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Miscellaneous/test.png",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/Miscellaneous/test.png",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/Miscellaneous/test.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/test.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/test.png",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/test.png",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/test.png"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -58,11 +58,12 @@ namespace puck {
 X3DBlendModeEditor::X3DBlendModeEditor () :
 	X3DPrecisionPlacementPanelInterface (),
 	                            enabled (this, getBlendModeEnabledCheckButton (),  "enabled"),
-	                          sourceRGB (this, getBlendModeSourceRGBButton (), "sourceRGB"),
+	                         blendColor (this, getBlendModeBlendColorButton (), getBlendModeBlendColorAdjustment (), getBlendModeBlendColorBox (), "blendColor"),
+	                        sourceColor (this, getBlendModeSourceColorButton (), "sourceColor"),
 	                        sourceAlpha (this, getBlendModeSourceAlphaButton (), "sourceAlpha"),
-	                     destinationRGB (this, getBlendModeDestinationRGBButton (), "destinationRGB"),
+	                   destinationColor (this, getBlendModeDestinationColorButton (), "destinationColor"),
 	                   destinationAlpha (this, getBlendModeDestinationAlphaButton (), "destinationAlpha"),
-	                            modeRGB (this, getBlendModeRGBButton (), "modeRGB"),
+	                          modeColor (this, getBlendModeColorButton (), "modeColor"),
 	                          modeAlpha (this, getBlendModeAlphaButton (), "modeAlpha")
 { }
 
@@ -81,11 +82,12 @@ X3DBlendModeEditor::set_selection (const X3D::MFNode & selection)
 	getBlendModeExpander () .set_visible (blendModeNode);
 
 	enabled          .setNodes (blendModeNodes);
-	sourceRGB        .setNodes (blendModeNodes);
+	blendColor       .setNodes (blendModeNodes);
+	sourceColor      .setNodes (blendModeNodes);
 	sourceAlpha      .setNodes (blendModeNodes);
-	destinationRGB   .setNodes (blendModeNodes);
+	destinationColor .setNodes (blendModeNodes);
 	destinationAlpha .setNodes (blendModeNodes);
-	modeRGB          .setNodes (blendModeNodes);
+	modeColor        .setNodes (blendModeNodes);
 	modeAlpha        .setNodes (blendModeNodes);
 }
 

@@ -88,11 +88,12 @@ private:
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> enabled;
-	SFStringComboBoxText               sourceRGB;
+	SFColorRGBAButton                  blendColor;
+	SFStringComboBoxText               sourceColor;
 	SFStringComboBoxText               sourceAlpha;
-	SFStringComboBoxText               destinationRGB;
+	SFStringComboBoxText               destinationColor;
 	SFStringComboBoxText               destinationAlpha;
-	SFStringComboBoxText               modeRGB;
+	SFStringComboBoxText               modeColor;
 	SFStringComboBoxText               modeAlpha;
 
 };

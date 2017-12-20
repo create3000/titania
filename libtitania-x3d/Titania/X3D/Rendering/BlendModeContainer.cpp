@@ -63,8 +63,11 @@ BlendModeContainer::BlendModeContainer (BlendMode* const node) :
 void
 BlendModeContainer::enable ()
 {
-	glBlendFuncSeparate (node -> getSourceRGB (), node -> getSourceAlpha (), node -> getDestinationRGB (), node -> getDestinationAlpha ());
-	glBlendEquationSeparate (node -> getModeRGB (), node -> getModeAlpha ());
+	const auto & color = node -> blendColor () .getValue ();
+
+	glBlendColor (color .r (), color .g (), color .b (), color .a ());
+	glBlendFuncSeparate (node -> getSourceColor (), node -> getSourceAlpha (), node -> getDestinationColor (), node -> getDestinationAlpha ());
+	glBlendEquationSeparate (node -> getModeColor (), node -> getModeAlpha ());
 }
 
 void

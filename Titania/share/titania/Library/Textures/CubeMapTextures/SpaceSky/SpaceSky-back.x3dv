@@ -13,10 +13,10 @@ DEF SpaceSky-back Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

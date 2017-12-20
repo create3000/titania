@@ -1085,6 +1085,17 @@ throw (std::domain_error)
 
 	setClipPlanes (browser, clipPlanes);
 
+	// Lights
+
+	const auto & localLights = context -> getLocalLights ();
+	const auto   numLights   = std::min (browser -> getMaxLights (), numGlobalLights + localLights .size ());
+
+	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
+		localLights [l] -> setShaderUniforms (renderObject, this, i);
+
+	if (numLights < browser -> getMaxLights ())
+		glUniform1i (x3d_LightType [numLights], 0);
+
 	// Fog
 
 	context -> getFog () -> setShaderUniforms (this, renderObject);
@@ -1098,17 +1109,6 @@ throw (std::domain_error)
 	if (materialNode)
 	{
 		glUniform1i (x3d_Lighting, true);
-
-		// Lights
-
-		const auto & localLights = context -> getLocalLights ();
-		const auto   numLights   = std::min (browser -> getMaxLights (), numGlobalLights + localLights .size ());
-
-		for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
-			localLights [l] -> setShaderUniforms (renderObject, this, i);
-
-		if (numLights < browser -> getMaxLights ())
-			glUniform1i (x3d_LightType [numLights], 0);
 		
 		// Material
 		

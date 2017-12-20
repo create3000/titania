@@ -13,10 +13,10 @@ DEF Sunset-front Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

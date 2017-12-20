@@ -45,10 +45,10 @@ DEF Snow Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Effects/snowflake1.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Effects/snowflake1.png",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/Effects/snowflake1.png",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/Effects/snowflake1.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Effects/snowflake1.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Effects/snowflake1.png",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/Effects/snowflake1.png",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/Effects/snowflake1.png"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -102,14 +102,24 @@ public:
 	{ return *fields .enabled; }
 
 	virtual
+	SFColorRGBA &
+	blendColor ()
+	{ return *fields .blendColor; }
+
+	virtual
+	const SFColorRGBA &
+	blendColor () const
+	{ return *fields .blendColor; }
+
+	virtual
 	SFString &
-	sourceRGB ()
-	{ return *fields .sourceRGB; }
+	sourceColor ()
+	{ return *fields .sourceColor; }
 
 	virtual
 	const SFString &
-	sourceRGB () const
-	{ return *fields .sourceRGB; }
+	sourceColor () const
+	{ return *fields .sourceColor; }
 
 	virtual
 	SFString &
@@ -123,13 +133,13 @@ public:
 
 	virtual
 	SFString &
-	destinationRGB ()
-	{ return *fields .destinationRGB; }
+	destinationColor ()
+	{ return *fields .destinationColor; }
 
 	virtual
 	const SFString &
-	destinationRGB () const
-	{ return *fields .destinationRGB; }
+	destinationColor () const
+	{ return *fields .destinationColor; }
 
 	virtual
 	SFString &
@@ -143,13 +153,13 @@ public:
 
 	virtual
 	SFString &
-	modeRGB ()
-	{ return *fields .modeRGB; }
+	modeColor ()
+	{ return *fields .modeColor; }
 
 	virtual
 	const SFString &
-	modeRGB () const
-	{ return *fields .modeRGB; }
+	modeColor () const
+	{ return *fields .modeColor; }
 
 	virtual
 	SFString &
@@ -164,24 +174,24 @@ public:
 	///  @name Member access
 
 	GLenum
-	getSourceRGB () const
-	{ return sourceRGBType; }
+	getSourceColor () const
+	{ return sourceColorType; }
 
 	GLenum
 	getSourceAlpha () const
 	{ return sourceAlphaType; }
 
 	GLenum
-	getDestinationRGB () const
-	{ return destinationRGBType; }
+	getDestinationColor () const
+	{ return destinationColorType; }
 
 	GLenum
 	getDestinationAlpha () const
 	{ return destinationAlphaType; }
 
 	GLenum
-	getModeRGB () const
-	{ return modeRGBType; }
+	getModeColor () const
+	{ return modeColorType; }
 
 	GLenum
 	getModeAlpha () const
@@ -206,19 +216,19 @@ private:
 	///  @name Event handler
 
 	void
-	set_sourceRGB ();
+	set_sourceColor ();
 
 	void
 	set_sourceAlpha ();
 
 	void
-	set_destinationRGB ();
+	set_destinationColor ();
 
 	void
 	set_destinationAlpha ();
 
 	void
-	set_modeRGB ();
+	set_modeColor ();
 
 	void
 	set_modeAlpha ();
@@ -229,8 +239,8 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static const std::map <std::string, GLenum> blendingTypes;
-	static const std::map <std::string, GLenum> blendingModes;
+	static const std::map <std::string, GLenum> blendTypes;
+	static const std::map <std::string, GLenum> blendModes;
 
 	///  @name Members
 
@@ -239,21 +249,22 @@ private:
 		Fields ();
 
 		SFBool* const enabled;
-		SFString* const sourceRGB;
+		SFColorRGBA* const blendColor;
+		SFString* const sourceColor;
 		SFString* const sourceAlpha;
-		SFString* const destinationRGB;
+		SFString* const destinationColor;
 		SFString* const destinationAlpha;
-		SFString* const modeRGB;
+		SFString* const modeColor;
 		SFString* const modeAlpha;
 	};
 
 	Fields fields;
 
-	GLenum sourceRGBType;
+	GLenum sourceColorType;
 	GLenum sourceAlphaType;
-	GLenum destinationRGBType;
+	GLenum destinationColorType;
 	GLenum destinationAlphaType;
-	GLenum modeRGBType;
+	GLenum modeColorType;
 	GLenum modeAlphaType;
 
 };

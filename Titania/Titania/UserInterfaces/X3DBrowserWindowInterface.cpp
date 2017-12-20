@@ -212,6 +212,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
 	m_builder -> get_widget ("BrowserTextureCoordinateEditorMenuItem", m_BrowserTextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
+	m_builder -> get_widget ("BrowserBrowserSizeMenuItem", m_BrowserBrowserSizeMenuItem);
 	m_builder -> get_widget ("BrowserBackgroundImageMenuItem", m_BrowserBackgroundImageMenuItem);
 	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
@@ -328,6 +329,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);
 	m_builder -> get_widget ("TextureCoordinateEditorMenuItem", m_TextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
+	m_builder -> get_widget ("BrowserSizeMenuItem", m_BrowserSizeMenuItem);
 	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
@@ -516,6 +518,7 @@ X3DBrowserWindowInterface::create ()
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
+	m_BrowserBrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BrowserBackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'BrowserGridLayoutToolMenuItem'.
@@ -624,6 +627,7 @@ X3DBrowserWindowInterface::create ()
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
+	m_BrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.

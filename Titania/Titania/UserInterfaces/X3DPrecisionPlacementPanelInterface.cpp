@@ -87,6 +87,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_BillboardAxisOfRotationXAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationXAdjustment"));
 	m_BillboardAxisOfRotationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationYAdjustment"));
 	m_BillboardAxisOfRotationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationZAdjustment"));
+	m_BlendModeBlendColorAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeBlendColorAdjustment"));
 	m_ColorKeyAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorKeyAdjustment"));
 	m_ColorRampAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorRampAdjustment"));
 	m_ColorRampRGBAAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorRampRGBAAdjustment"));
@@ -304,12 +305,15 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ParticleSystemUniformParticleSizeImage", m_ParticleSystemUniformParticleSizeImage);
 	m_builder -> get_widget ("BlendModeExpander", m_BlendModeExpander);
 	m_builder -> get_widget ("BlendModeEnabledCheckButton", m_BlendModeEnabledCheckButton);
-	m_builder -> get_widget ("BlendModeSourceRGBButton", m_BlendModeSourceRGBButton);
+	m_builder -> get_widget ("BlendModeSourceColorButton", m_BlendModeSourceColorButton);
 	m_builder -> get_widget ("BlendModeSourceAlphaButton", m_BlendModeSourceAlphaButton);
-	m_builder -> get_widget ("BlendModeDestinationRGBButton", m_BlendModeDestinationRGBButton);
+	m_builder -> get_widget ("BlendModeDestinationColorButton", m_BlendModeDestinationColorButton);
 	m_builder -> get_widget ("BlendModeDestinationAlphaButton", m_BlendModeDestinationAlphaButton);
-	m_builder -> get_widget ("BlendModeRGBButton", m_BlendModeRGBButton);
+	m_builder -> get_widget ("BlendModeColorButton", m_BlendModeColorButton);
 	m_builder -> get_widget ("BlendModeAlphaButton", m_BlendModeAlphaButton);
+	m_builder -> get_widget ("BlendModeBlendColorBox", m_BlendModeBlendColorBox);
+	m_builder -> get_widget ("BlendModeBlendColorButton", m_BlendModeBlendColorButton);
+	m_builder -> get_widget ("BlendModeBlendColorScale", m_BlendModeBlendColorScale);
 	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
 	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
 	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);

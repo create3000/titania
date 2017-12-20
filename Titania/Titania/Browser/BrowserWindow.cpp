@@ -1807,6 +1807,13 @@ BrowserWindow::on_transform_to_zero_activated ()
 // Layout
 
 void
+BrowserWindow::on_browser_size_activate ()
+{
+	__LOG__ << std::endl;
+	//addDialog ("BrowserSizeEditor");
+}
+
+void
 BrowserWindow::on_background_image_activate ()
 {
 	addDialog ("BackgroundImageEditor");

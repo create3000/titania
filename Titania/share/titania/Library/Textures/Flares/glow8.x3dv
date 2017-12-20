@@ -13,10 +13,10 @@ DEF glow8 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Flares/glow8.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Flares/glow8.png",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/Flares/glow8.png",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/Flares/glow8.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/glow8.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/glow8.png",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/glow8.png",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/glow8.png"
         ]
         repeatS FALSE
         repeatT FALSE

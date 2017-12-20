@@ -62,7 +62,7 @@ const ComponentType BlendMode::component      = ComponentType::X_ITE;
 const std::string   BlendMode::typeName       = "BlendMode";
 const std::string   BlendMode::containerField = "children";
 
-const std::map <std::string, GLenum> BlendMode::blendingTypes = {
+const std::map <std::string, GLenum> BlendMode::blendTypes = {
    std::make_pair ("ZERO",                     GL_ZERO ),
    std::make_pair ("ONE",                      GL_ONE ),
    std::make_pair ("SRC_COLOR",                GL_SRC_COLOR ),
@@ -82,7 +82,7 @@ const std::map <std::string, GLenum> BlendMode::blendingTypes = {
    std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
 };
 
-const std::map <std::string, GLenum> BlendMode::blendingModes = {
+const std::map <std::string, GLenum> BlendMode::blendModes = {
    std::make_pair ("FUNC_ADD",              GL_FUNC_ADD ),
    std::make_pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
    std::make_pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
@@ -90,22 +90,23 @@ const std::map <std::string, GLenum> BlendMode::blendingModes = {
 
 BlendMode::Fields::Fields () :
 	         enabled (new SFBool (true)),
-	       sourceRGB (new SFString ("SRC_ALPHA")),
+	      blendColor (new SFColorRGBA ()),
+	     sourceColor (new SFString ("SRC_ALPHA")),
 	     sourceAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	  destinationRGB (new SFString ("ONE")),
+	destinationColor (new SFString ("ONE")),
 	destinationAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	         modeRGB (new SFString ("FUNC_ADD")),
+	       modeColor (new SFString ("FUNC_ADD")),
 	       modeAlpha (new SFString ("FUNC_ADD"))
 { }
 
 BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DGroupingNode (),
-	       sourceRGBType (GL_SRC_ALPHA),
+	     sourceColorType (GL_SRC_ALPHA),
 	     sourceAlphaType (GL_ONE_MINUS_SRC_ALPHA),
-	  destinationRGBType (GL_ONE),
+	destinationColorType (GL_ONE),
 	destinationAlphaType (GL_ONE_MINUS_SRC_ALPHA),
-	         modeRGBType (GL_FUNC_ADD),
+	       modeColorType (GL_FUNC_ADD),
 	       modeAlphaType (GL_FUNC_ADD)
 {
 	addType (X3DConstants::BlendMode);
@@ -113,11 +114,12 @@ BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata",         metadata ());
 
 	addField (inputOutput,    "enabled",          enabled ());
-	addField (inputOutput,    "sourceRGB",        sourceRGB ());
+	addField (inputOutput,    "blendColor",       blendColor ());
+	addField (inputOutput,    "sourceColor",      sourceColor ());
 	addField (inputOutput,    "sourceAlpha",      sourceAlpha ());
-	addField (inputOutput,    "destinationRGB",   destinationRGB ());
+	addField (inputOutput,    "destinationColor", destinationColor ());
 	addField (inputOutput,    "destinationAlpha", destinationAlpha ());
-	addField (inputOutput,    "modeRGB",          modeRGB ());
+	addField (inputOutput,    "modeColor",        modeColor ());
 	addField (inputOutput,    "modeAlpha",        modeAlpha ());
 
 	addField (initializeOnly, "bboxSize",         bboxSize ());
@@ -138,31 +140,31 @@ BlendMode::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	sourceRGB ()        .addInterest (&BlendMode::set_sourceRGB,        this);
+	sourceColor ()      .addInterest (&BlendMode::set_sourceColor,      this);
 	sourceAlpha ()      .addInterest (&BlendMode::set_sourceAlpha,      this);
-	destinationRGB ()   .addInterest (&BlendMode::set_destinationRGB,   this);
+	destinationColor () .addInterest (&BlendMode::set_destinationColor, this);
 	destinationAlpha () .addInterest (&BlendMode::set_destinationAlpha, this);
-	modeRGB ()          .addInterest (&BlendMode::set_modeRGB,          this);
+	modeColor ()        .addInterest (&BlendMode::set_modeColor,        this);
 	modeAlpha ()        .addInterest (&BlendMode::set_modeAlpha,        this);
 
-	set_sourceRGB ();
+	set_sourceColor ();
 	set_sourceAlpha ();
-	set_destinationRGB ();
+	set_destinationColor ();
 	set_destinationAlpha ();
-	set_modeRGB ();
+	set_modeColor ();
 	set_modeAlpha ();
 }
 
 void
-BlendMode::set_sourceRGB ()
+BlendMode::set_sourceColor ()
 {
 	try
 	{
-		sourceRGBType = blendingTypes .at (sourceRGB ());
+		sourceColorType = blendTypes .at (sourceColor ());
 	}
 	catch (const X3DError &)
 	{
-		sourceRGBType = GL_SRC_ALPHA;
+		sourceColorType = GL_SRC_ALPHA;
 	}
 }
 
@@ -171,7 +173,7 @@ BlendMode::set_sourceAlpha ()
 {
 	try
 	{
-		sourceAlphaType = blendingTypes .at (sourceAlpha ());
+		sourceAlphaType = blendTypes .at (sourceAlpha ());
 	}
 	catch (const X3DError &)
 	{
@@ -180,15 +182,15 @@ BlendMode::set_sourceAlpha ()
 }
 
 void
-BlendMode::set_destinationRGB ()
+BlendMode::set_destinationColor ()
 {
 	try
 	{
-		destinationRGBType = blendingTypes .at (destinationRGB ());
+		destinationColorType = blendTypes .at (destinationColor ());
 	}
 	catch (const X3DError &)
 	{
-		destinationRGBType = GL_ONE;
+		destinationColorType = GL_ONE;
 	}
 }
 
@@ -197,7 +199,7 @@ BlendMode::set_destinationAlpha ()
 {
 	try
 	{
-		destinationAlphaType = blendingTypes .at (destinationAlpha ());
+		destinationAlphaType = blendTypes .at (destinationAlpha ());
 	}
 	catch (const X3DError &)
 	{
@@ -206,15 +208,15 @@ BlendMode::set_destinationAlpha ()
 }
 
 void
-BlendMode::set_modeRGB ()
+BlendMode::set_modeColor ()
 {
 	try
 	{
-		modeRGBType = blendingModes .at (modeRGB ());
+		modeColorType = blendModes .at (modeColor ());
 	}
 	catch (const X3DError &)
 	{
-		modeRGBType = GL_FUNC_ADD;
+		modeColorType = GL_FUNC_ADD;
 	}
 }
 
@@ -223,7 +225,7 @@ BlendMode::set_modeAlpha ()
 {
 	try
 	{
-		modeAlphaType = blendingModes .at (modeAlpha ());
+		modeAlphaType = blendModes .at (modeAlpha ());
 	}
 	catch (const X3DError &)
 	{

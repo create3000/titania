@@ -55,11 +55,6 @@ namespace puck {
 
 X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	X3DTextureEditorInterface (),
-	             textureNodes (),
-	  texturePropertiesBuffer (),
-	        textureProperties (),
-	                 undoStep (),
-	                 changing (false),
 	                 nodeName (this, getTexturePropertiesNameEntry (), getTexturePropertiesRenameButton ()),
 	              borderColor (this, getTexturePropertiesBorderColorButton (), getTexturePropertiesBorderColorAdjustment (), getTexturePropertiesBorderColorBox (), "borderColor"),
 	              borderWidth (this, getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
@@ -71,7 +66,12 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	            boundaryModeT (this, getTexturePropertiesBoundaryModeTComboBoxText (), "boundaryModeT"),
 	            boundaryModeR (this, getTexturePropertiesBoundaryModeRComboBoxText (), "boundaryModeR"),
 	       textureCompression (this, getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
-	          texturePriority (this, getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
+	          texturePriority (this, getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority"),
+	             textureNodes (),
+	  texturePropertiesBuffer (),
+	        textureProperties (),
+	                 undoStep (),
+	                 changing (false)
 {
 	addChildObjects (textureNodes, texturePropertiesBuffer, textureProperties);
 

@@ -105,12 +105,6 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DTextureNode> textureNodes;
-	X3D::SFTime                            texturePropertiesBuffer;
-	X3D::X3DPtr <X3D::TextureProperties>   textureProperties;
-	X3D::UndoStepPtr                       undoStep;
-	bool                                   changing;
-
 	NameEntry nodeName;
 
 	SFColorRGBAButton                  borderColor;
@@ -124,6 +118,12 @@ private:
 	SFStringComboBoxText               boundaryModeR;
 	SFStringComboBoxText               textureCompression;
 	X3DFieldAdjustment <X3D::SFFloat>  texturePriority;
+
+	X3D::X3DPtrArray <X3D::X3DTextureNode> textureNodes;
+	X3D::SFTime                            texturePropertiesBuffer;
+	X3D::X3DPtr <X3D::TextureProperties>   textureProperties;
+	X3D::UndoStepPtr                       undoStep;
+	bool                                   changing;
 
 };
 

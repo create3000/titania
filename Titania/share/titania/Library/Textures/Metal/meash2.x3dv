@@ -13,10 +13,10 @@ DEF meash2 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Metal/meash2.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Metal/meash2.jpg",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/Metal/meash2.jpg",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/Metal/meash2.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/meash2.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/meash2.jpg",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/Metal/meash2.jpg",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/Metal/meash2.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

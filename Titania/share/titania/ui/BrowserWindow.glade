@@ -1572,6 +1572,16 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+              <object class="GtkImageMenuItem" id="BrowserBrowserSizeMenuItem">
+                <property name="label" translatable="yes">Browser Size</property>
+                <property name="can_focus">False</property>
+                <property name="image">image42</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_browser_size_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserBackgroundImageMenuItem">
                 <property name="label" translatable="yes">Background _Image ...</property>
                 <property name="visible">True</property>
@@ -1690,6 +1700,18 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image41">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BrowserSize</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image42">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">BrowserSize</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image5">
     <property name="visible">True</property>
@@ -2986,6 +3008,16 @@
                           <object class="GtkMenu" id="menu10">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="BrowserSizeMenuItem">
+                                <property name="label" translatable="yes">Browser Size</property>
+                                <property name="can_focus">False</property>
+                                <property name="image">image41</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_browser_size_activate" swapped="no"/>
+                              </object>
+                            </child>
                             <child>
                               <object class="GtkImageMenuItem" id="BackgroundImageMenuItem">
                                 <property name="label" translatable="yes">Background _Image ...</property>

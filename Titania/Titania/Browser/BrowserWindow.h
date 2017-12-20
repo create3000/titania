@@ -563,6 +563,10 @@ private:
 
 	virtual
 	void
+	on_browser_size_activate () final override;
+
+	virtual
+	void
 	on_background_image_activate () final override;
 
 	///  @name Grid

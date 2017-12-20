@@ -13,10 +13,10 @@ DEF LostValley-bottom Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

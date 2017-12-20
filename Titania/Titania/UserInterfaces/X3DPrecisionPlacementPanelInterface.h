@@ -125,6 +125,10 @@ public:
 	{ return m_BillboardAxisOfRotationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBlendModeBlendColorAdjustment () const
+	{ return m_BlendModeBlendColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getColorKeyAdjustment () const
 	{ return m_ColorKeyAdjustment; }
 
@@ -985,28 +989,40 @@ public:
 	{ return *m_BlendModeEnabledCheckButton; }
 
 	Gtk::ComboBoxText &
-	getBlendModeSourceRGBButton () const
-	{ return *m_BlendModeSourceRGBButton; }
+	getBlendModeSourceColorButton () const
+	{ return *m_BlendModeSourceColorButton; }
 
 	Gtk::ComboBoxText &
 	getBlendModeSourceAlphaButton () const
 	{ return *m_BlendModeSourceAlphaButton; }
 
 	Gtk::ComboBoxText &
-	getBlendModeDestinationRGBButton () const
-	{ return *m_BlendModeDestinationRGBButton; }
+	getBlendModeDestinationColorButton () const
+	{ return *m_BlendModeDestinationColorButton; }
 
 	Gtk::ComboBoxText &
 	getBlendModeDestinationAlphaButton () const
 	{ return *m_BlendModeDestinationAlphaButton; }
 
 	Gtk::ComboBoxText &
-	getBlendModeRGBButton () const
-	{ return *m_BlendModeRGBButton; }
+	getBlendModeColorButton () const
+	{ return *m_BlendModeColorButton; }
 
 	Gtk::ComboBoxText &
 	getBlendModeAlphaButton () const
 	{ return *m_BlendModeAlphaButton; }
+
+	Gtk::Box &
+	getBlendModeBlendColorBox () const
+	{ return *m_BlendModeBlendColorBox; }
+
+	Gtk::Button &
+	getBlendModeBlendColorButton () const
+	{ return *m_BlendModeBlendColorButton; }
+
+	Gtk::Scale &
+	getBlendModeBlendColorScale () const
+	{ return *m_BlendModeBlendColorScale; }
 
 	Gtk::Expander &
 	getLayoutExpander () const
@@ -1715,6 +1731,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BlendModeBlendColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorKeyAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorRampAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorRampRGBAAdjustment;
@@ -1930,12 +1947,15 @@ private:
 	Gtk::Image* m_ParticleSystemUniformParticleSizeImage;
 	Gtk::Expander* m_BlendModeExpander;
 	Gtk::CheckButton* m_BlendModeEnabledCheckButton;
-	Gtk::ComboBoxText* m_BlendModeSourceRGBButton;
+	Gtk::ComboBoxText* m_BlendModeSourceColorButton;
 	Gtk::ComboBoxText* m_BlendModeSourceAlphaButton;
-	Gtk::ComboBoxText* m_BlendModeDestinationRGBButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationColorButton;
 	Gtk::ComboBoxText* m_BlendModeDestinationAlphaButton;
-	Gtk::ComboBoxText* m_BlendModeRGBButton;
+	Gtk::ComboBoxText* m_BlendModeColorButton;
 	Gtk::ComboBoxText* m_BlendModeAlphaButton;
+	Gtk::Box* m_BlendModeBlendColorBox;
+	Gtk::Button* m_BlendModeBlendColorButton;
+	Gtk::Scale* m_BlendModeBlendColorScale;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;

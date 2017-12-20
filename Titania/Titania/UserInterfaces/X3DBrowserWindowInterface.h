@@ -617,6 +617,10 @@ public:
 	{ return *m_BrowserLayoutMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getBrowserBrowserSizeMenuItem () const
+	{ return *m_BrowserBrowserSizeMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getBrowserBackgroundImageMenuItem () const
 	{ return *m_BrowserBackgroundImageMenuItem; }
 
@@ -1079,6 +1083,10 @@ public:
 	Gtk::MenuItem &
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getBrowserSizeMenuItem () const
+	{ return *m_BrowserSizeMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBackgroundImageMenuItem () const
@@ -1756,6 +1764,10 @@ public:
 
 	virtual
 	void
+	on_browser_size_activate () = 0;
+
+	virtual
+	void
 	on_background_image_activate () = 0;
 
 	virtual
@@ -2134,6 +2146,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserColorPerVertexMenuItem;
 	Gtk::ImageMenuItem* m_BrowserTextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_BrowserLayoutMenuItem;
+	Gtk::ImageMenuItem* m_BrowserBrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BrowserBackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
@@ -2250,6 +2263,7 @@ private:
 	Gtk::ImageMenuItem* m_ColorPerVertexEditorMenuItem;
 	Gtk::ImageMenuItem* m_TextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_LayoutMenuItem;
+	Gtk::ImageMenuItem* m_BrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;

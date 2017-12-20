@@ -13,10 +13,10 @@ DEF bluetile Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/blue.tile.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/blue.tile.png",
-          "http://rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/blue.tile.png",
-          "https://rawgit.com/create3000/Library/1.0.3/Textures/Surfaces/blue.tile.png"
+          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/blue.tile.png",
+          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/blue.tile.png",
+          "http://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/blue.tile.png",
+          "https://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/blue.tile.png"
         ]
         repeatS FALSE
         repeatT FALSE

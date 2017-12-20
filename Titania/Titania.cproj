@@ -3123,6 +3123,8 @@
     <None Include="share\titania\Library\Components\X_ITE\.Titania\BlendMode" />
     <None Include="share\titania\Library\Components\X_ITE\.X_ITE\BlendMode" />
     <None Include="share\titania\Library\Components\X_ITE\.experimental\BlendMode" />
+    <None Include="share\titania\Library\Prototypes\Text\Number.x3dv" />
+    <None Include="share\titania\ui\icons\BrowserSize.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3283,6 +3285,7 @@
     <Folder Include="share\titania\Library\Components\X_ITE\.Titania\" />
     <Folder Include="share\titania\Library\Components\X_ITE\.X_ITE\" />
     <Folder Include="share\titania\Library\Components\ParticleSystems\.X_ITE\" />
+    <Folder Include="share\titania\Library\Prototypes\Text\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
