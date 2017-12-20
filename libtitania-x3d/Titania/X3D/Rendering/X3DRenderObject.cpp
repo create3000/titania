@@ -81,7 +81,7 @@ static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderObject::X3DRenderObject () :
 	             X3DBaseNode (),
-	                   blend ({ false }),
+	                   blend (),
 	             depthOffset ({ 0 }),
 	       cameraSpaceMatrix (),
 	    invCameraSpaceMatrix (),
@@ -366,7 +366,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 
    ShapeContainer* context = nullptr;
 
-	if (shapeNode -> isTransparent () or getBlend () .top ())
+	if (getBlend () .empty () ? shapeNode -> isTransparent () : getBlend () .top ())
 	{
 	   if (numTransparentShapes == transparentShapes .size ())
 	      transparentShapes .emplace_back (new ShapeContainer (this, true));
