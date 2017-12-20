@@ -171,6 +171,25 @@ public:
 	modeAlpha () const
 	{ return *fields .modeAlpha; }
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class BlendModeContainer;
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
 	///  @name Member access
 
 	GLenum
@@ -196,19 +215,6 @@ public:
 	GLenum
 	getModeAlpha () const
 	{ return modeAlphaType; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
-
-
-protected:
-
-	virtual
-	void
-	initialize () override;
 
 
 private:

@@ -129,6 +129,7 @@
 
 #include "../../Tools/Text/TextTool.h"
 
+#include "../../Tools/X_ITE/BlendModeTool.h"
 #include "../../Tools/X_ITE/TouchGroupTool.h"
 
 namespace titania {
@@ -202,6 +203,7 @@ SupportedTools::SupportedTools () :
 	addTool ("VisibilitySensor",        [ ] (X3DBaseNode* const node) { return new VisibilitySensorTool        (node); });
 
 	// Titania
+	addTool ("BlendMode",               [ ] (X3DBaseNode* const node) { return new BlendModeTool               (node); });
 	addTool ("TouchGroup",              [ ] (X3DBaseNode* const node) { return new TouchGroupTool              (node); });
 }
 

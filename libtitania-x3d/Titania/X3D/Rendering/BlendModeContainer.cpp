@@ -57,13 +57,21 @@ namespace X3D {
 
 BlendModeContainer::BlendModeContainer (BlendMode* const node) :
 	X3DCollectableObject (),
-	                node (node)
+	                node (node),
+	               blend (false)
 { }
 
 void
 BlendModeContainer::enable ()
 {
 	const auto & color = node -> blendColor () .getValue ();
+
+	blend = glIsEnabled (GL_BLEND);
+
+	if (node -> enabled ())
+		glEnable (GL_BLEND);
+	else
+		glDisable (GL_BLEND);
 
 	glBlendColor (color .r (), color .g (), color .b (), color .a ());
 	glBlendFuncSeparate (node -> getSourceColor (), node -> getSourceAlpha (), node -> getDestinationColor (), node -> getDestinationAlpha ());
@@ -73,6 +81,11 @@ BlendModeContainer::enable ()
 void
 BlendModeContainer::disable ()
 {
+	if (blend)
+		glEnable (GL_BLEND);
+	else
+		glDisable (GL_BLEND);
+
 	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 }

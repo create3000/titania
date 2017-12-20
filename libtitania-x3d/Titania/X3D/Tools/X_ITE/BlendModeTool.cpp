@@ -48,55 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
-#define __TITANIA_X3D_TOOLS_TOOL_COLORS_H__
+#include "BlendModeTool.h"
 
-#include "../Types/Numbers.h"
+#include "../ToolColors.h"
+#include "../../Browser/Shape/Linetypes.h"
 
 namespace titania {
 namespace X3D {
 
-namespace ToolColors {
+BlendModeTool::BlendModeTool (X3DBaseNode* const node) :
+	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	          BlendMode (node -> getExecutionContext ()),
+	        X3DBaseTool (node),
+	X3DGroupingNodeTool (ToolColors::BLUE)
+{
+	addType (X3DConstants::BlendModeTool);
+}
 
-static constexpr Color3f GREEN  (0.35, 1, 0.7);   // Group
-static constexpr Color3f YELLOW (1, 1, 0.35);     // Switch
-static constexpr Color3f LILA   (0.7, 0.35, 1);   // Anchor
-static constexpr Color3f PINK   (1, 0.35, 0.7);   // Billboard
-static constexpr Color3f RED    (1, 0.35, 0.35);  // Collision
-static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
+void
+BlendModeTool::realize ()
+{
+	X3DGroupingNodeTool::realize ();
+	
+	getNode <BlendMode> () -> enabled () .addInterest (&BlendModeTool::set_enabled, this);
 
-static constexpr Color3f WHITE  (1, 1, 1);        // Inline
-static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.7, 0.85, 1);   // Normals, Edges, Other
-static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
+	set_enabled (getNode <BlendMode> () -> enabled ());
+}
 
-static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly
-static constexpr Color3f DARK_YELLOW (0.7, 0.7, 0.35);      // CADLayer
-static constexpr Color3f BROWN       (0.75, 0.525, 0.2625); // CADFace
-static constexpr Color3f DARK_CYAN   (0.35, 0.75, 0.75);    // GeoLOD
-static constexpr Color3f DARK_BLUE   (0.35, 0.35, 1);       // 
-
-static constexpr Color4f GREEN_RGBA  (0.35, 1, 0.7, 1);   // Group
-static constexpr Color4f YELLOW_RGBA (1, 1, 0.35, 1);     // Switch
-static constexpr Color4f LILA_RGBA   (0.7, 0.35, 1, 1);   // Anchor
-static constexpr Color4f PINK_RGBA   (1, 0.35, 0.7, 1);   // Billboard
-static constexpr Color4f RED_RGBA    (1, 0.35, 0.35, 1);  // Collision
-static constexpr Color4f CYAN_RGBA   (0.35, 1, 1, 1);     // LOD
-
-static constexpr Color4f WHITE_RGBA  (1, 1, 1, 1);        // Inline
-static constexpr Color4f ORANGE_RGBA (1, 0.7, 0.35, 1);   // Shape
-static constexpr Color4f BLUE_RGBA   (0.7, 0.85, 1, 1);   // Normals, Edges
-static constexpr Color4f LIME_RGBA   (0.35, 1, 0.35, 1);  // ScreenGroup
-
-static constexpr Color4f DARK_GREEN_RGBA  (0.175, 0.5, 0.35, 1);    // CADAssembly
-static constexpr Color4f DARK_YELLOW_RGBA (0.7, 0.7, 0.35, 1);      // CADLayer
-static constexpr Color4f BROWN_RGBA       (0.75, 0.525, 0.2625, 1); // CADFace
-static constexpr Color4f DARK_CYAN_RGBA   (0.35, 0.75, 0.75, 1);    // GeoLOD
-static constexpr Color4f DARK_BLUE_RGBA   (0.35, 0.35, 1, 1);       // Primitive Normals, Edges
-
+void
+BlendModeTool::set_enabled (const bool value)
+{
+	try
+	{
+		getToolNode () -> setField <SFInt32> ("linetype", int32_t (value ? LineType::SOLID : LineType::DOTTED));
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 } // X3D
 } // titania
-
-#endif

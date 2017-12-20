@@ -271,7 +271,6 @@ X3DBrowserPanel::setBrowserRatio (const bool set, const double ratio)
 
 			aspectFrame = Gtk::manage (new Gtk::AspectFrame ());
 
-			aspectFrame -> set_shadow_type (Gtk::SHADOW_NONE);
 			aspectFrame -> unset_label ();
 			aspectFrame -> property_obey_child () = false;
 			aspectFrame -> add (*browser);

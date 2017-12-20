@@ -571,6 +571,7 @@ enum NodeType : uint16_t
 	Arc2DTool,
 	ArcClose2DTool,
 	BillboardTool,
+	BlendModeTool,
 	BoxTool,
 	CADAssemblyTool,
 	CADFaceTool,

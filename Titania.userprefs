@@ -1,16 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="252" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="115" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp" Line="66" Column="58" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.h" Line="91" Column="42" />
-      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.cpp" Line="73" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserApplication.h" Line="108" Column="89" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="205" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="566" Column="26" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1815" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="186" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.h" Line="81" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/BlendModeContainer.cpp" Line="63" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

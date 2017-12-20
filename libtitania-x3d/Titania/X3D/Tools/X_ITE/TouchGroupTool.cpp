@@ -60,7 +60,7 @@ TouchGroupTool::TouchGroupTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	         TouchGroup (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
-	X3DGroupingNodeTool (ToolColors::RED),
+	X3DGroupingNodeTool (ToolColors::BLUE),
 	  X3DSensorNodeTool ()
 {
 	addType (X3DConstants::TouchGroupTool);

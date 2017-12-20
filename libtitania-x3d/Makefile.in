@@ -825,6 +825,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.lo \
 	Titania/X3D/Tools/Sound/SoundTool.lo \
 	Titania/X3D/Tools/Text/TextTool.lo \
+	Titania/X3D/Tools/X_ITE/BlendModeTool.lo \
 	Titania/X3D/Tools/X_ITE/TouchGroupTool.lo \
 	Titania/X3D/Types/Image.lo
 libtitania_x3d_la_OBJECTS = $(am_libtitania_x3d_la_OBJECTS)
@@ -1791,6 +1792,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
+	Titania/X3D/Tools/X_ITE/BlendModeTool.cpp \
 	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
@@ -4617,6 +4619,9 @@ Titania/X3D/Tools/X_ITE/$(am__dirstamp):
 Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/X_ITE/$(DEPDIR)
 	@: > Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/X_ITE/BlendModeTool.lo:  \
+	Titania/X3D/Tools/X_ITE/$(am__dirstamp) \
+	Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/X_ITE/TouchGroupTool.lo:  \
 	Titania/X3D/Tools/X_ITE/$(am__dirstamp) \
 	Titania/X3D/Tools/X_ITE/$(DEPDIR)/$(am__dirstamp)
@@ -5569,6 +5574,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DNormalNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Sound/$(DEPDIR)/SoundTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Text/$(DEPDIR)/TextTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/X_ITE/$(DEPDIR)/BlendModeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/X_ITE/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Types/$(DEPDIR)/Image.Plo@am__quote@
 

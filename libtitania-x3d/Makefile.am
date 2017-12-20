@@ -710,6 +710,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
+	Titania/X3D/Tools/X_ITE/BlendModeTool.cpp \
 	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 

@@ -78,6 +78,7 @@ public:
 private:
 
 	BlendMode* const node;
+	bool             blend;
 
 };
 
