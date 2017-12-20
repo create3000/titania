@@ -672,8 +672,7 @@ Selection::findNode (const SFNode & node) const
 		          node,
 		          TRAVERSE_ROOT_NODES |
 		          TRAVERSE_INLINE_NODES |
-		          TRAVERSE_TOOL_OBJECTS |
-		          TRAVERSE_META_DATA);
+		          TRAVERSE_TOOL_OBJECTS);
 }
 
 Hierarchies
@@ -683,8 +682,7 @@ Selection::findNode (const SFNode & parent, const SFNode & node) const
 		          node,
 		          TRAVERSE_ROOT_NODES |
 		          TRAVERSE_INLINE_NODES |
-		          TRAVERSE_TOOL_OBJECTS |
-		          TRAVERSE_META_DATA);
+		          TRAVERSE_TOOL_OBJECTS);
 }
 
 } // X3D
