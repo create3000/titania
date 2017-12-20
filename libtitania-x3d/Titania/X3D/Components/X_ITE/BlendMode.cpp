@@ -240,13 +240,25 @@ BlendMode::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 	{
 		case TraverseType::DISPLAY:
 		{
-			renderObject -> getBlend () .push (enabled ());
-			renderObject -> getLocalObjects () .emplace_back (new BlendModeContainer (this));
+			if (enabled ())
+			{
+				renderObject -> getBlend () .push (true);
+				renderObject -> getLocalObjects () .emplace_back (new BlendModeContainer (this));
+	
+				X3DGroupingNode::traverse (type, renderObject);
+	
+				renderObject -> getLocalObjects () .pop_back ();
+				renderObject -> getBlend () .pop ();
+			}
+			else
+			{
+				renderObject -> getBlend () .push (false);
+	
+				X3DGroupingNode::traverse (type, renderObject);
+	
+				renderObject -> getBlend () .pop ();
+			}
 
-			X3DGroupingNode::traverse (type, renderObject);
-
-			renderObject -> getLocalObjects () .pop_back ();
-			renderObject -> getBlend () .pop ();
 			break;
 		}
 		default:
