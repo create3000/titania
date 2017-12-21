@@ -536,6 +536,22 @@ public:
 	getBlendModeRenameButton () const
 	{ return *m_BlendModeRenameButton; }
 
+	Gtk::Label &
+	getBlendModeRedLabel () const
+	{ return *m_BlendModeRedLabel; }
+
+	Gtk::Label &
+	getBlendModeGreenLabel () const
+	{ return *m_BlendModeGreenLabel; }
+
+	Gtk::Label &
+	getBlendModeBlueLabel () const
+	{ return *m_BlendModeBlueLabel; }
+
+	Gtk::Label &
+	getBlendModeAlphaLabel () const
+	{ return *m_BlendModeAlphaLabel; }
+
 	Gtk::Box &
 	getUsedMaterialsBox () const
 	{ return *m_UsedMaterialsBox; }
@@ -870,6 +886,10 @@ private:
 	Gtk::Box* m_BlendModeNameBox;
 	Gtk::Entry* m_BlendModeNameEntry;
 	Gtk::Button* m_BlendModeRenameButton;
+	Gtk::Label* m_BlendModeRedLabel;
+	Gtk::Label* m_BlendModeGreenLabel;
+	Gtk::Label* m_BlendModeBlueLabel;
+	Gtk::Label* m_BlendModeAlphaLabel;
 	Gtk::Box* m_UsedMaterialsBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::ComboBoxText* m_PaletteFaceCombo;

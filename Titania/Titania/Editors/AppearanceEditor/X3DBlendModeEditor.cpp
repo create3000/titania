@@ -161,6 +161,9 @@ X3DBlendModeEditor::set_node ()
 	{
 		undoStep .reset ();
 
+		if (blendMode)
+			blendMode -> removeInterest (&X3DBlendModeEditor::set_equation, this);
+
 		auto          tuple     = getSelection <X3D::BlendMode> (appearances, "blendMode");
 		const int32_t active    = std::get <1> (tuple);
 		const bool    hasParent = std::get <2> (tuple);
@@ -174,6 +177,10 @@ X3DBlendModeEditor::set_node ()
 
 			blendMode = executionContext -> createNode <X3D::BlendMode> ();
 		}
+
+		blendMode -> addInterest (&X3DBlendModeEditor::set_equation, this);
+
+		set_equation ();
 
 		changing = true;
 
@@ -203,6 +210,98 @@ X3DBlendModeEditor::set_node ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+X3DBlendModeEditor::set_equation ()
+{
+	getBlendModeRedLabel ()   .set_text (getEquation (0, blendMode -> getSourceColorFactor (), blendMode -> getDestinationColorFactor (), blendMode -> getColorEquation ()));
+	getBlendModeGreenLabel () .set_text (getEquation (1, blendMode -> getSourceColorFactor (), blendMode -> getDestinationColorFactor (), blendMode -> getColorEquation ()));
+	getBlendModeBlueLabel ()  .set_text (getEquation (2, blendMode -> getSourceColorFactor (), blendMode -> getDestinationColorFactor (), blendMode -> getColorEquation ()));
+	getBlendModeAlphaLabel () .set_text (getEquation (3, blendMode -> getSourceAlphaFactor (), blendMode -> getDestinationAlphaFactor (), blendMode -> getAlphaEquation ()));
+}
+
+std::string
+X3DBlendModeEditor::getEquation (const size_t i, const GLenum sourceFactor, const GLenum destinationFactor, const GLenum equation) const
+{
+	static const std::vector <std::string> channels = { "R", "G", "B", "A" };
+
+	const auto & channel = channels [i];
+
+	switch (equation)
+	{
+		case GL_MIN:
+		{
+			return "min (s" + channel + ", d" + channel + ")" + " = r" + channel;
+		}
+		case GL_MAX:
+		{
+			return "max (s" + channel + ", d" + channel + ")" + " = r" + channel;
+		}
+		default:
+		{
+			const auto first  = "(s" + channel + " * " + getEquationFactor (i, channel, sourceFactor) + ")";
+			const auto second = "(d" + channel + " * " + getEquationFactor (i, channel, destinationFactor) + ")";
+
+			return getEquationMode (equation, first, second) + " = r" + channel;
+		}
+	}
+}
+
+std::string
+X3DBlendModeEditor::getEquationMode (const GLenum equation, const std::string & first, const std::string & second) const
+{
+	switch (equation)
+	{
+		case GL_FUNC_ADD:
+			return first + " + " + second;
+		case GL_FUNC_SUBTRACT:
+			return first + " - " + second;
+		case GL_FUNC_REVERSE_SUBTRACT:
+			return second + " - " + first;
+		default:
+			return "n/a";
+	}
+}
+
+std::string
+X3DBlendModeEditor::getEquationFactor (const size_t i, const std::string & channel, const GLenum factor) const
+{
+	switch (factor)
+	{
+	   case GL_ZERO:
+			return "0";
+	   case GL_ONE:
+			return "1";
+	   case GL_SRC_COLOR:
+			return "s" + channel;
+	   case GL_ONE_MINUS_SRC_COLOR:
+			return "(1 - s" + channel + ")";
+	   case GL_DST_COLOR:
+			return "d" + channel;
+	   case GL_ONE_MINUS_DST_COLOR:
+			return "(1 - d" + channel + ")";
+	   case GL_SRC_ALPHA:
+			return "sA";
+	   case GL_ONE_MINUS_SRC_ALPHA:
+			return "(1 - sA)";
+	   case GL_DST_ALPHA:
+			return "dA";
+	   case GL_ONE_MINUS_DST_ALPHA:
+			return "(1 - dA)";
+	   case GL_SRC_ALPHA_SATURATE:
+			return "min (sA, 1 - dA)";
+	   case GL_CONSTANT_COLOR:
+			return basic::to_string (blendMode -> blendColor () [i]);
+	   case GL_ONE_MINUS_CONSTANT_COLOR:
+			return "(1 - " + basic::to_string (blendMode -> blendColor () [i]) + ")";
+	   case GL_CONSTANT_ALPHA:
+			return basic::to_string (blendMode -> blendColor () [3]);
+	   case GL_ONE_MINUS_CONSTANT_ALPHA:
+			return "(1 - " + basic::to_string (blendMode -> blendColor () [3]) + ")";
+		default:
+			return "n/a";
+	}
 }
 
 void

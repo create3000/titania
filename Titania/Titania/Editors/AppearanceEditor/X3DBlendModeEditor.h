@@ -102,6 +102,18 @@ private:
 	set_node ();
 
 	void
+	set_equation ();
+
+	std::string
+	getEquation (const size_t i, const GLenum sourceFactor, const GLenum destinationFactor, const GLenum equation) const;
+
+	std::string
+	getEquationMode (const GLenum equation, const std::string & first, const std::string & second) const;
+
+	std::string
+	getEquationFactor (const size_t i, const std::string & c, const GLenum factor) const;
+
+	void
 	connectBlendMode (const X3D::SFNode &);
 
 	///  @name Members

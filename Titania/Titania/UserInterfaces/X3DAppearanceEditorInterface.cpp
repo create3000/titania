@@ -192,6 +192,10 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("BlendModeNameBox", m_BlendModeNameBox);
 	m_builder -> get_widget ("BlendModeNameEntry", m_BlendModeNameEntry);
 	m_builder -> get_widget ("BlendModeRenameButton", m_BlendModeRenameButton);
+	m_builder -> get_widget ("BlendModeRedLabel", m_BlendModeRedLabel);
+	m_builder -> get_widget ("BlendModeGreenLabel", m_BlendModeGreenLabel);
+	m_builder -> get_widget ("BlendModeBlueLabel", m_BlendModeBlueLabel);
+	m_builder -> get_widget ("BlendModeAlphaLabel", m_BlendModeAlphaLabel);
 	m_builder -> get_widget ("UsedMaterialsBox", m_UsedMaterialsBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PaletteFaceCombo", m_PaletteFaceCombo);

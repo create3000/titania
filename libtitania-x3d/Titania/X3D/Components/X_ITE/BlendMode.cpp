@@ -73,20 +73,22 @@ const std::map <std::string, GLenum> BlendMode::blendTypes = {
    std::make_pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA ),
    std::make_pair ("DST_ALPHA",                GL_DST_ALPHA ),
    std::make_pair ("ONE_MINUS_DST_ALPHA",      GL_ONE_MINUS_DST_ALPHA ),
+   std::make_pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
    std::make_pair ("CONSTANT_COLOR",           GL_CONSTANT_COLOR  ),
    std::make_pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR ),
    std::make_pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA ),
    std::make_pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
 	// OpenGL
-   std::make_pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
-   std::make_pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
-   std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
+   // std::make_pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
+   // std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
 };
 
 const std::map <std::string, GLenum> BlendMode::blendModes = {
    std::make_pair ("FUNC_ADD",              GL_FUNC_ADD ),
    std::make_pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
    std::make_pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
+   std::make_pair ("MIN",                   GL_MIN ),
+   std::make_pair ("MAX",                   GL_MAX ),
 };
 
 BlendMode::Fields::Fields () :

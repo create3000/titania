@@ -1,56 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="228" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="233" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DAppearanceChildNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.h" Line="111" Column="33" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp" Line="210" Column="2" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Browser" expanded="True">
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="Tools" expanded="True" />
-                  </Node>
-                  <Node name="Components" expanded="True">
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="Shape" expanded="True" />
-                    <Node name="X_ITE" expanded="True" />
-                  </Node>
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Tools" expanded="True">
-                    <Node name="X_ITE" expanded="True" />
-                  </Node>
-                  <Node name="Types" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="share" expanded="True">
-                <Node name="titania" expanded="True" />
-              </Node>
-              <Node name="Titania" expanded="True">
-                <Node name="Editors" expanded="True">
-                  <Node name="AppearanceEditor" expanded="True">
-                    <Node name="X3DBlendModeEditor.cpp" selected="True" />
-                  </Node>
-                  <Node name="PrecisionPlacementPanel" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

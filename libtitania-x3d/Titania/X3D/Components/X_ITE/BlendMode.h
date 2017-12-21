@@ -161,6 +161,32 @@ public:
 	alphaEquation () const
 	{ return *fields .alphaEquation; }
 
+	///  @name Member access
+
+	GLenum
+	getSourceColorFactor () const
+	{ return sourceColorFactorType; }
+
+	GLenum
+	getSourceAlphaFactor () const
+	{ return sourceAlphaFactorType; }
+
+	GLenum
+	getDestinationColorFactor () const
+	{ return destinationColorFactorType; }
+
+	GLenum
+	getDestinationAlphaFactor () const
+	{ return destinationAlphaFactorType; }
+
+	GLenum
+	getColorEquation () const
+	{ return colorEquationType; }
+
+	GLenum
+	getAlphaEquation () const
+	{ return alphaEquationType; }
+
 	///  @name Operations
 
 	virtual
