@@ -59,9 +59,10 @@ namespace X3D {
 
 const ComponentType BlendMode::component      = ComponentType::X_ITE;
 const std::string   BlendMode::typeName       = "BlendMode";
-const std::string   BlendMode::containerField = "children";
+const std::string   BlendMode::containerField = "blendMode";
 
 const std::map <std::string, GLenum> BlendMode::blendTypes = {
+	// WebGL
    std::make_pair ("ZERO",                     GL_ZERO ),
    std::make_pair ("ONE",                      GL_ONE ),
    std::make_pair ("SRC_COLOR",                GL_SRC_COLOR ),
@@ -76,6 +77,7 @@ const std::map <std::string, GLenum> BlendMode::blendTypes = {
    std::make_pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR ),
    std::make_pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA ),
    std::make_pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
+	// OpenGL
    std::make_pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
    std::make_pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
    std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
@@ -88,7 +90,7 @@ const std::map <std::string, GLenum> BlendMode::blendModes = {
 };
 
 BlendMode::Fields::Fields () :
-	                 color (new SFColorRGBA ()),
+	            blendColor (new SFColorRGBA ()),
 	     sourceColorFactor (new SFString ("SRC_ALPHA")),
 	     sourceAlphaFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
 	destinationColorFactor (new SFString ("ONE")),
@@ -111,7 +113,7 @@ BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",                metadata ());
 
-	addField (inputOutput,    "color",                   color ());
+	addField (inputOutput,    "blendColor",              blendColor ());
 	addField (inputOutput,    "sourceColorFactor",       sourceColorFactor ());
 	addField (inputOutput,    "sourceAlphaFactor",       sourceAlphaFactor ());
 	addField (inputOutput,    "destinationColorFactor" , destinationColorFactor ());
@@ -227,7 +229,7 @@ BlendMode::set_alphaEquation ()
 void
 BlendMode::enable ()
 {
-	const auto & c = color () .getValue ();
+	const auto & c = blendColor () .getValue ();
 
 	glBlendColor (c .r (), c .g (), c .b (), c .a ());
 	glBlendFuncSeparate (sourceColorFactorType, sourceAlphaFactorType, destinationColorFactorType, destinationAlphaFactorType);

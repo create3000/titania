@@ -117,8 +117,8 @@ public:
 	{ return m_BackTransparencyAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getBlendModeColorAdjustment () const
-	{ return m_BlendModeColorAdjustment; }
+	getBlendModeBlendColorAdjustment () const
+	{ return m_BlendModeBlendColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getDiffuseColorAdjustment () const
@@ -513,16 +513,16 @@ public:
 	{ return *m_BlendModeAlphaEquationButton; }
 
 	Gtk::Box &
-	getBlendModeColorBox () const
-	{ return *m_BlendModeColorBox; }
+	getBlendModeBlendColorBox () const
+	{ return *m_BlendModeBlendColorBox; }
 
 	Gtk::Button &
-	getBlendModeColorButton () const
-	{ return *m_BlendModeColorButton; }
+	getBlendModeBlendColorButton () const
+	{ return *m_BlendModeBlendColorButton; }
 
 	Gtk::Scale &
-	getBlendModeColorScale () const
-	{ return *m_BlendModeColorScale; }
+	getBlendModeBlendColorScale () const
+	{ return *m_BlendModeBlendColorScale; }
 
 	Gtk::Box &
 	getBlendModeNameBox () const
@@ -765,7 +765,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BackShininessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackSpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BlendModeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BlendModeBlendColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_DiffuseColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmissiveColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchColorAdjustment;
@@ -864,9 +864,9 @@ private:
 	Gtk::ComboBoxText* m_BlendModeDestinationAlphaFactorButton;
 	Gtk::ComboBoxText* m_BlendModeColorEquationButton;
 	Gtk::ComboBoxText* m_BlendModeAlphaEquationButton;
-	Gtk::Box* m_BlendModeColorBox;
-	Gtk::Button* m_BlendModeColorButton;
-	Gtk::Scale* m_BlendModeColorScale;
+	Gtk::Box* m_BlendModeBlendColorBox;
+	Gtk::Button* m_BlendModeBlendColorButton;
+	Gtk::Scale* m_BlendModeBlendColorScale;
 	Gtk::Box* m_BlendModeNameBox;
 	Gtk::Entry* m_BlendModeNameEntry;
 	Gtk::Button* m_BlendModeRenameButton;

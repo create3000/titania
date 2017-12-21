@@ -93,13 +93,13 @@ public:
 
 	virtual
 	SFColorRGBA &
-	color ()
-	{ return *fields .color; }
+	blendColor ()
+	{ return *fields .blendColor; }
 
 	virtual
 	const SFColorRGBA &
-	color () const
-	{ return *fields .color; }
+	blendColor () const
+	{ return *fields .blendColor; }
 
 	virtual
 	SFString &
@@ -225,7 +225,7 @@ private:
 	{
 		Fields ();
 
-		SFColorRGBA* const color;
+		SFColorRGBA* const blendColor;
 		SFString* const sourceColorFactor;
 		SFString* const sourceAlphaFactor;
 		SFString* const destinationColorFactor;

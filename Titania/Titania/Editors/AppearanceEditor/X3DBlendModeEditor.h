@@ -108,7 +108,7 @@ private:
 
 	NameEntry nodeName;
 
-	SFColorRGBAButton    color;
+	SFColorRGBAButton    blendColor;
 	SFStringComboBoxText sourceColorFactor;
 	SFStringComboBoxText sourceAlphaFactor;
 	SFStringComboBoxText destinationColorFactor;

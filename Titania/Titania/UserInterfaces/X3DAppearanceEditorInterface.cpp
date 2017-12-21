@@ -85,7 +85,7 @@ X3DAppearanceEditorInterface::create ()
 	m_BackShininessAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackShininessAdjustment"));
 	m_BackSpecularColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackSpecularColorAdjustment"));
 	m_BackTransparencyAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackTransparencyAdjustment"));
-	m_BlendModeColorAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeColorAdjustment"));
+	m_BlendModeBlendColorAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeBlendColorAdjustment"));
 	m_DiffuseColorAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DiffuseColorAdjustment"));
 	m_EmissiveColorAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmissiveColorAdjustment"));
 	m_FillPropertiesHatchColorAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchColorAdjustment"));
@@ -186,9 +186,9 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("BlendModeDestinationAlphaFactorButton", m_BlendModeDestinationAlphaFactorButton);
 	m_builder -> get_widget ("BlendModeColorEquationButton", m_BlendModeColorEquationButton);
 	m_builder -> get_widget ("BlendModeAlphaEquationButton", m_BlendModeAlphaEquationButton);
-	m_builder -> get_widget ("BlendModeColorBox", m_BlendModeColorBox);
-	m_builder -> get_widget ("BlendModeColorButton", m_BlendModeColorButton);
-	m_builder -> get_widget ("BlendModeColorScale", m_BlendModeColorScale);
+	m_builder -> get_widget ("BlendModeBlendColorBox", m_BlendModeBlendColorBox);
+	m_builder -> get_widget ("BlendModeBlendColorButton", m_BlendModeBlendColorButton);
+	m_builder -> get_widget ("BlendModeBlendColorScale", m_BlendModeBlendColorScale);
 	m_builder -> get_widget ("BlendModeNameBox", m_BlendModeNameBox);
 	m_builder -> get_widget ("BlendModeNameEntry", m_BlendModeNameEntry);
 	m_builder -> get_widget ("BlendModeRenameButton", m_BlendModeRenameButton);

@@ -59,7 +59,7 @@ namespace puck {
 X3DBlendModeEditor::X3DBlendModeEditor () :
 	X3DAppearanceEditorInterface (),
 	                    nodeName (this, getBlendModeNameEntry (), getBlendModeRenameButton ()),
-	                       color (this, getBlendModeColorButton (), getBlendModeColorAdjustment (), getBlendModeColorBox (), "color"),
+	                 blendColor (this, getBlendModeBlendColorButton (), getBlendModeBlendColorAdjustment (), getBlendModeBlendColorBox (), "blendColor"),
 	           sourceColorFactor (this, getBlendModeSourceColorFactorButton (), "sourceColorFactor"),
 	           sourceAlphaFactor (this, getBlendModeSourceAlphaFactorButton (), "sourceAlphaFactor"),
 	      destinationColorFactor (this, getBlendModeDestinationColorFactorButton (), "destinationColorFactor"),
@@ -193,7 +193,7 @@ X3DBlendModeEditor::set_node ()
 
 		nodeName .setNode (nodes .back ());
 
-		color                  .setNodes (nodes);
+		blendColor             .setNodes (nodes);
 		sourceColorFactor      .setNodes (nodes);
 		sourceAlphaFactor      .setNodes (nodes);
 		destinationColorFactor .setNodes (nodes);

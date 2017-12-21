@@ -37,7 +37,7 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
   </object>
-  <object class="GtkAdjustment" id="BlendModeColorAdjustment">
+  <object class="GtkAdjustment" id="BlendModeBlendColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -2235,7 +2235,7 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="halign">end</property>
-                                                    <property name="label" translatable="yes">Color :</property>
+                                                    <property name="label" translatable="yes">Blend Color :</property>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">0</property>
@@ -2243,14 +2243,14 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkBox" id="BlendModeColorBox">
+                                                  <object class="GtkBox" id="BlendModeBlendColorBox">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="hexpand">True</property>
                                                     <property name="spacing">8</property>
                                                     <property name="homogeneous">True</property>
                                                     <child>
-                                                      <object class="GtkButton" id="BlendModeColorButton">
+                                                      <object class="GtkButton" id="BlendModeBlendColorButton">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">True</property>
@@ -2263,10 +2263,10 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkScale" id="BlendModeColorScale">
+                                                      <object class="GtkScale" id="BlendModeBlendColorScale">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="adjustment">BlendModeColorAdjustment</property>
+                                                        <property name="adjustment">BlendModeBlendColorAdjustment</property>
                                                         <property name="round_digits">3</property>
                                                         <property name="digits">3</property>
                                                       </object>
