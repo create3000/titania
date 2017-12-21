@@ -2367,6 +2367,9 @@
                                                 <property name="can_focus">False</property>
                                                 <property name="halign">end</property>
                                                 <property name="label" translatable="yes">Red:</property>
+                                                <style>
+                                                  <class name="titania-red"/>
+                                                </style>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2379,6 +2382,9 @@
                                                 <property name="can_focus">False</property>
                                                 <property name="halign">end</property>
                                                 <property name="label" translatable="yes">Green:</property>
+                                                <style>
+                                                  <class name="titania-green"/>
+                                                </style>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2391,6 +2397,9 @@
                                                 <property name="can_focus">False</property>
                                                 <property name="halign">end</property>
                                                 <property name="label" translatable="yes">Blue:</property>
+                                                <style>
+                                                  <class name="titania-blue"/>
+                                                </style>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2420,6 +2429,9 @@
                                                     <property name="can_focus">False</property>
                                                     <property name="halign">end</property>
                                                     <property name="hexpand">True</property>
+                                                    <style>
+                                                      <class name="titania-red"/>
+                                                    </style>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2443,6 +2455,9 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="halign">end</property>
+                                                    <style>
+                                                      <class name="titania-green"/>
+                                                    </style>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2466,6 +2481,9 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="halign">end</property>
+                                                    <style>
+                                                      <class name="titania-blue"/>
+                                                    </style>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>

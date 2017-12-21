@@ -1,6 +1,19 @@
 /*
  * Titania Styles CSS
  */
+
+.titania-red {
+	color: #e06c75;
+}
+
+.titania-green {
+	color: #98c379;
+}
+
+.titania-blue {
+	color: #61afef;
+}
+
 .titania-console {
 	font-family: monospace;
 }
