@@ -240,8 +240,8 @@ X3DBlendModeEditor::getEquation (const size_t i, const GLenum sourceFactor, cons
 		}
 		default:
 		{
-			const auto first  = "(s" + channel + " * " + getEquationFactor (i, channel, sourceFactor) + ")";
-			const auto second = "(d" + channel + " * " + getEquationFactor (i, channel, destinationFactor) + ")";
+			const auto first  = "(s" + channel + " × " + getEquationFactor (i, channel, sourceFactor) + ")";
+			const auto second = "(d" + channel + " × " + getEquationFactor (i, channel, destinationFactor) + ")";
 
 			return getEquationMode (equation, first, second) + " = r" + channel;
 		}

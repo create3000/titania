@@ -2,11 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="228" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.h" Line="182" Column="8" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DAppearanceChildNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp" Line="1" Column="1" />
     </Files>
