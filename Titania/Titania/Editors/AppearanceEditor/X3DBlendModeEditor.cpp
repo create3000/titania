@@ -230,6 +230,18 @@ X3DBlendModeEditor::getEquation (const size_t i, const GLenum sourceFactor, cons
 
 	switch (equation)
 	{
+		case GL_FUNC_ADD:
+		{
+			return getEquationTerm (i, "s", channel, sourceFactor) + " + " + getEquationTerm (i, "d", channel, destinationFactor) + " = r" + channel;
+		}
+		case GL_FUNC_SUBTRACT:
+		{
+			return getEquationTerm (i, "s", channel, sourceFactor) + " - " + getEquationTerm (i, "d", channel, destinationFactor) + " = r" + channel;
+		}
+		case GL_FUNC_REVERSE_SUBTRACT:
+		{
+			return getEquationTerm (i, "d", channel, destinationFactor) + " - " + getEquationTerm (i, "s", channel, sourceFactor) + " = r" + channel;
+		}
 		case GL_MIN:
 		{
 			return "min (s" + channel + ", d" + channel + ")" + " = r" + channel;
@@ -240,28 +252,15 @@ X3DBlendModeEditor::getEquation (const size_t i, const GLenum sourceFactor, cons
 		}
 		default:
 		{
-			const auto first  = "(s" + channel + " × " + getEquationFactor (i, channel, sourceFactor) + ")";
-			const auto second = "(d" + channel + " × " + getEquationFactor (i, channel, destinationFactor) + ")";
-
-			return getEquationMode (equation, first, second) + " = r" + channel;
+			return "n/a";
 		}
 	}
 }
 
 std::string
-X3DBlendModeEditor::getEquationMode (const GLenum equation, const std::string & first, const std::string & second) const
+X3DBlendModeEditor::getEquationTerm (const size_t i, const std::string & side, const std::string & channel, const GLenum factor) const
 {
-	switch (equation)
-	{
-		case GL_FUNC_ADD:
-			return first + " + " + second;
-		case GL_FUNC_SUBTRACT:
-			return first + " - " + second;
-		case GL_FUNC_REVERSE_SUBTRACT:
-			return second + " - " + first;
-		default:
-			return "n/a";
-	}
+	return "(" + side + "" + channel + " × " + getEquationFactor (i, channel, factor) + ")";
 }
 
 std::string

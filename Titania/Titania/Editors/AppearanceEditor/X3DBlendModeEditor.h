@@ -108,7 +108,7 @@ private:
 	getEquation (const size_t i, const GLenum sourceFactor, const GLenum destinationFactor, const GLenum equation) const;
 
 	std::string
-	getEquationMode (const GLenum equation, const std::string & first, const std::string & second) const;
+	getEquationTerm (const size_t i, const std::string & side, const std::string & channel, const GLenum factor) const;
 
 	std::string
 	getEquationFactor (const size_t i, const std::string & c, const GLenum factor) const;
