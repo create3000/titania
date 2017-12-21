@@ -54,9 +54,6 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
-#include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/FillProperties.h>
-
 namespace titania {
 namespace puck {
 
@@ -113,10 +110,6 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::X3DPtr <X3D::FillProperties>  fillProperties;
-	X3D::SFTime                        fillPropertiesBuffer;
-
 	NameEntry nodeName;
 
 	X3DFieldToggleButton <X3D::SFBool> filled;
@@ -124,8 +117,11 @@ private:
 	X3DFieldAdjustment <X3D::SFInt32>  hatchStyle;
 	SFColorButton                      hatchColor;
 
-	X3D::UndoStepPtr undoStep;
-	bool             changing;
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::FillProperties>  fillProperties;
+	X3D::SFTime                        fillPropertiesBuffer;
+	X3D::UndoStepPtr                   undoStep;
+	bool                               changing;
 
 };
 

@@ -150,6 +150,14 @@ public:
 	shaders () const
 	{ return *fields .shaders; }
 
+	SFNode &
+	blendMode ()
+	{ return *fields .blendMode; }
+
+	const SFNode &
+	blendMode () const
+	{ return *fields .blendMode; }
+
 	///  @name Operations
 
 	virtual
@@ -188,6 +196,10 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
+	const X3DPtr <BlendMode> &
+	getBlendMode () const
+	{ return blendModeNode; }
+
 	///  @name Tests
 
 	virtual
@@ -196,7 +208,11 @@ public:
 
 	virtual
 	void
-	draw (X3DRenderObject* const renderObject) final override;
+	enable (X3DRenderObject* const renderObject) final override;
+
+	virtual
+	void
+	disable (X3DRenderObject* const renderObject) final override;
 
 
 private:
@@ -230,6 +246,9 @@ private:
 	void
 	set_shader ();
 
+	void
+	set_blendMode ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -248,6 +267,7 @@ private:
 		SFNode* const texture;
 		SFNode* const textureTransform;
 		MFNode* const shaders;
+		SFNode* const blendMode;
 	};
 
 	Fields fields;
@@ -259,6 +279,7 @@ private:
 	X3DPtr <X3DTextureTransformNode> textureTransformNode;
 	X3DPtrArray <X3DShaderNode>      shaderNodes;
 	X3DPtr <X3DShaderNode>           shaderNode;
+	X3DPtr <BlendMode>               blendModeNode;
 
 };
 

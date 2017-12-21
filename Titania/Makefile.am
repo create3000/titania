@@ -81,6 +81,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/MessageDialog/MessageDialog.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
@@ -157,7 +158,6 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/X3DParticlePhysicsModelNodeInterface.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
-	Titania/Editors/PrecisionPlacementPanel/X3DBlendModeEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DEnvironmentalSensorEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp \

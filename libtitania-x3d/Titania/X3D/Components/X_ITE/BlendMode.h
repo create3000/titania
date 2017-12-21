@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_X_ITE_BLEND_MODE_H__
 #define __TITANIA_X3D_COMPONENTS_X_ITE_BLEND_MODE_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../Shape/X3DAppearanceChildNode.h"
 
 namespace titania {
 namespace X3D {
 
 class BlendMode :
-	virtual public X3DGroupingNode
+	virtual public X3DAppearanceChildNode
 {
 public:
 
@@ -92,90 +92,87 @@ public:
 	///  @name Fields
 
 	virtual
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	virtual
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	virtual
 	SFColorRGBA &
-	blendColor ()
-	{ return *fields .blendColor; }
+	color ()
+	{ return *fields .color; }
 
 	virtual
 	const SFColorRGBA &
-	blendColor () const
-	{ return *fields .blendColor; }
+	color () const
+	{ return *fields .color; }
 
 	virtual
 	SFString &
-	sourceColor ()
-	{ return *fields .sourceColor; }
+	sourceColorFactor ()
+	{ return *fields .sourceColorFactor; }
 
 	virtual
 	const SFString &
-	sourceColor () const
-	{ return *fields .sourceColor; }
+	sourceColorFactor () const
+	{ return *fields .sourceColorFactor; }
 
 	virtual
 	SFString &
-	sourceAlpha ()
-	{ return *fields .sourceAlpha; }
+	sourceAlphaFactor ()
+	{ return *fields .sourceAlphaFactor; }
 
 	virtual
 	const SFString &
-	sourceAlpha () const
-	{ return *fields .sourceAlpha; }
+	sourceAlphaFactor () const
+	{ return *fields .sourceAlphaFactor; }
 
 	virtual
 	SFString &
-	destinationColor ()
-	{ return *fields .destinationColor; }
+	destinationColorFactor ()
+	{ return *fields .destinationColorFactor; }
 
 	virtual
 	const SFString &
-	destinationColor () const
-	{ return *fields .destinationColor; }
+	destinationColorFactor () const
+	{ return *fields .destinationColorFactor; }
 
 	virtual
 	SFString &
-	destinationAlpha ()
-	{ return *fields .destinationAlpha; }
+	destinationAlphaFactor ()
+	{ return *fields .destinationAlphaFactor; }
 
 	virtual
 	const SFString &
-	destinationAlpha () const
-	{ return *fields .destinationAlpha; }
+	destinationAlphaFactor () const
+	{ return *fields .destinationAlphaFactor; }
 
 	virtual
 	SFString &
-	modeColor ()
-	{ return *fields .modeColor; }
+	colorEquation ()
+	{ return *fields .colorEquation; }
 
 	virtual
 	const SFString &
-	modeColor () const
-	{ return *fields .modeColor; }
+	colorEquation () const
+	{ return *fields .colorEquation; }
 
 	virtual
 	SFString &
-	modeAlpha ()
-	{ return *fields .modeAlpha; }
+	alphaEquation ()
+	{ return *fields .alphaEquation; }
 
 	virtual
 	const SFString &
-	modeAlpha () const
-	{ return *fields .modeAlpha; }
+	alphaEquation () const
+	{ return *fields .alphaEquation; }
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+	draw (X3DRenderObject* const renderObject) final override
+	{ }
+
+	void
+	enable ();
+
+	void
+	disable ();
 
 
 protected:
@@ -190,54 +187,28 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
-
-	GLenum
-	getSourceColor () const
-	{ return sourceColorType; }
-
-	GLenum
-	getSourceAlpha () const
-	{ return sourceAlphaType; }
-
-	GLenum
-	getDestinationColor () const
-	{ return destinationColorType; }
-
-	GLenum
-	getDestinationAlpha () const
-	{ return destinationAlphaType; }
-
-	GLenum
-	getModeColor () const
-	{ return modeColorType; }
-
-	GLenum
-	getModeAlpha () const
-	{ return modeAlphaType; }
-
 
 private:
 
 	///  @name Event handler
 
 	void
-	set_sourceColor ();
+	set_sourceColorFactor ();
 
 	void
-	set_sourceAlpha ();
+	set_sourceAlphaFactor ();
 
 	void
-	set_destinationColor ();
+	set_destinationColorFactor ();
 
 	void
-	set_destinationAlpha ();
+	set_destinationAlphaFactor ();
 
 	void
-	set_modeColor ();
+	set_colorEquation ();
 
 	void
-	set_modeAlpha ();
+	set_alphaEquation ();
 
 	///  @name Static members
 
@@ -254,24 +225,23 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
-		SFColorRGBA* const blendColor;
-		SFString* const sourceColor;
-		SFString* const sourceAlpha;
-		SFString* const destinationColor;
-		SFString* const destinationAlpha;
-		SFString* const modeColor;
-		SFString* const modeAlpha;
+		SFColorRGBA* const color;
+		SFString* const sourceColorFactor;
+		SFString* const sourceAlphaFactor;
+		SFString* const destinationColorFactor;
+		SFString* const destinationAlphaFactor;
+		SFString* const colorEquation;
+		SFString* const alphaEquation;
 	};
 
 	Fields fields;
 
-	GLenum sourceColorType;
-	GLenum sourceAlphaType;
-	GLenum destinationColorType;
-	GLenum destinationAlphaType;
-	GLenum modeColorType;
-	GLenum modeAlphaType;
+	GLenum sourceColorFactorType;
+	GLenum sourceAlphaFactorType;
+	GLenum destinationColorFactorType;
+	GLenum destinationAlphaFactorType;
+	GLenum colorEquationType;
+	GLenum alphaEquationType;
 
 };
 

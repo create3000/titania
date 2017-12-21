@@ -355,9 +355,9 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\X3DParticlePhysicsModelNodeEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DDefaultPhysicsModelEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\ParticleSystem\DefaultPhysicsModelEditor.cpp" />
-    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DBlendModeEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBrowserSizeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.cpp" />
+    <Compile Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3121,7 +3121,6 @@
     <None Include="share\titania\Library\Components\CADGeometry\.X_ITE\QuadSet" />
     <None Include="share\titania\ui\icons\X_ITE.svg" />
     <None Include="share\titania\Library\Components\X_ITE\BlendMode.x3dv" />
-    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DBlendModeEditor.h" />
     <None Include="share\titania\Library\Components\X_ITE\.Titania\BlendMode" />
     <None Include="share\titania\Library\Components\X_ITE\.X_ITE\BlendMode" />
     <None Include="share\titania\Library\Components\X_ITE\.experimental\BlendMode" />
@@ -3131,6 +3130,7 @@
     <None Include="share\titania\ui\Editors\BrowserSizeEditor.glade" />
     <None Include="share\titania\ui\Editors\DefaultPhysicsModelEditor.glade" />
     <None Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.h" />
+    <None Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -65,6 +65,7 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor (),
+	          X3DBlendModeEditor (),
 	      X3DUsedMaterialsEditor (),
 	    X3DMaterialPaletteEditor (),
 	                  shapeNodes (),
@@ -88,6 +89,7 @@ AppearanceEditor::initialize ()
 	X3DMaterialEditor::initialize ();
 	X3DFillPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
+	X3DBlendModeEditor::initialize ();
 	X3DUsedMaterialsEditor::initialize ();
 	X3DMaterialPaletteEditor::initialize ();
 }
@@ -111,6 +113,7 @@ AppearanceEditor::set_selection (const X3D::MFNode & selection)
 	X3DMaterialEditor::set_selection            (selection);
 	X3DFillPropertiesEditor::set_selection      (selection);
 	X3DLinePropertiesEditor::set_selection      (selection);
+	X3DBlendModeEditor::set_selection           (selection);
 
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> appearance () .removeInterest (&AppearanceEditor::set_appearance, this);

@@ -976,8 +976,6 @@
     <None Include="Titania\X3D\Components\X_ITE\TouchGroup.h" />
     <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
     <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
-    <None Include="Titania\X3D\Rendering\BlendModeContainer.h" />
-    <None Include="Titania\X3D\Tools\X_ITE\BlendModeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1686,8 +1684,6 @@
     <Compile Include="Titania\X3D\Components\X_ITE\TouchGroup.cpp" />
     <Compile Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.cpp" />
     <Compile Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.cpp" />
-    <Compile Include="Titania\X3D\Rendering\BlendModeContainer.cpp" />
-    <Compile Include="Titania\X3D\Tools\X_ITE\BlendModeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

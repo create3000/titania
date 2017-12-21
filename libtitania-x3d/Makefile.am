@@ -605,7 +605,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
-	Titania/X3D/Rendering/BlendModeContainer.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/DependentRenderer.cpp \
@@ -710,7 +709,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
-	Titania/X3D/Tools/X_ITE/BlendModeTool.cpp \
 	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
 	Titania/X3D/Types/Image.cpp
 

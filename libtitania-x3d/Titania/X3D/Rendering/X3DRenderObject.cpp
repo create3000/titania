@@ -686,7 +686,7 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	{
 		// Reset to default OpenGL appearance
 
-		getBrowser () -> getDefaultAppearance () -> draw (this);
+		getBrowser () -> getDefaultAppearance () -> enable (this);
 	}
 
 	// Clear node arrays.

@@ -117,6 +117,10 @@ public:
 	{ return m_BackTransparencyAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBlendModeColorAdjustment () const
+	{ return m_BlendModeColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getDiffuseColorAdjustment () const
 	{ return m_DiffuseColorAdjustment; }
 
@@ -460,6 +464,78 @@ public:
 	getLinePropertiesRenameButton () const
 	{ return *m_LinePropertiesRenameButton; }
 
+	Gtk::Expander &
+	getBlendModeExpander () const
+	{ return *m_BlendModeExpander; }
+
+	Gtk::Box &
+	getBlendModeMainBox () const
+	{ return *m_BlendModeMainBox; }
+
+	Gtk::Box &
+	getSelectBlendModeBox () const
+	{ return *m_SelectBlendModeBox; }
+
+	Gtk::CheckButton &
+	getBlendModeCheckButton () const
+	{ return *m_BlendModeCheckButton; }
+
+	Gtk::Button &
+	getBlendModeUnlinkButton () const
+	{ return *m_BlendModeUnlinkButton; }
+
+	Gtk::Grid &
+	getBlendModeBox () const
+	{ return *m_BlendModeBox; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceColorFactorButton () const
+	{ return *m_BlendModeSourceColorFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceAlphaFactorButton () const
+	{ return *m_BlendModeSourceAlphaFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationColorFactorButton () const
+	{ return *m_BlendModeDestinationColorFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationAlphaFactorButton () const
+	{ return *m_BlendModeDestinationAlphaFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeColorEquationButton () const
+	{ return *m_BlendModeColorEquationButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeAlphaEquationButton () const
+	{ return *m_BlendModeAlphaEquationButton; }
+
+	Gtk::Box &
+	getBlendModeColorBox () const
+	{ return *m_BlendModeColorBox; }
+
+	Gtk::Button &
+	getBlendModeColorButton () const
+	{ return *m_BlendModeColorButton; }
+
+	Gtk::Scale &
+	getBlendModeColorScale () const
+	{ return *m_BlendModeColorScale; }
+
+	Gtk::Box &
+	getBlendModeNameBox () const
+	{ return *m_BlendModeNameBox; }
+
+	Gtk::Entry &
+	getBlendModeNameEntry () const
+	{ return *m_BlendModeNameEntry; }
+
+	Gtk::Button &
+	getBlendModeRenameButton () const
+	{ return *m_BlendModeRenameButton; }
+
 	Gtk::Box &
 	getUsedMaterialsBox () const
 	{ return *m_UsedMaterialsBox; }
@@ -588,6 +664,14 @@ public:
 
 	virtual
 	void
+	on_blendMode_toggled () = 0;
+
+	virtual
+	void
+	on_blendMode_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_palette_face_changed () = 0;
 
 	virtual
@@ -681,6 +765,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BackShininessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackSpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackTransparencyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BlendModeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_DiffuseColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EmissiveColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchColorAdjustment;
@@ -767,6 +852,24 @@ private:
 	Gtk::Box* m_LinePropertiesNameBox;
 	Gtk::Entry* m_LinePropertiesNameEntry;
 	Gtk::Button* m_LinePropertiesRenameButton;
+	Gtk::Expander* m_BlendModeExpander;
+	Gtk::Box* m_BlendModeMainBox;
+	Gtk::Box* m_SelectBlendModeBox;
+	Gtk::CheckButton* m_BlendModeCheckButton;
+	Gtk::Button* m_BlendModeUnlinkButton;
+	Gtk::Grid* m_BlendModeBox;
+	Gtk::ComboBoxText* m_BlendModeSourceColorFactorButton;
+	Gtk::ComboBoxText* m_BlendModeSourceAlphaFactorButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationColorFactorButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationAlphaFactorButton;
+	Gtk::ComboBoxText* m_BlendModeColorEquationButton;
+	Gtk::ComboBoxText* m_BlendModeAlphaEquationButton;
+	Gtk::Box* m_BlendModeColorBox;
+	Gtk::Button* m_BlendModeColorButton;
+	Gtk::Scale* m_BlendModeColorScale;
+	Gtk::Box* m_BlendModeNameBox;
+	Gtk::Entry* m_BlendModeNameEntry;
+	Gtk::Button* m_BlendModeRenameButton;
 	Gtk::Box* m_UsedMaterialsBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::ComboBoxText* m_PaletteFaceCombo;

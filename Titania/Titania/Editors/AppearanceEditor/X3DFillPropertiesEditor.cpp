@@ -50,14 +50,14 @@
 
 #include "X3DFillPropertiesEditor.h"
 
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/FillProperties.h>
+
 namespace titania {
 namespace puck {
 
 X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	X3DAppearanceEditorInterface (),
-	                 appearances (),
-	              fillProperties (),
-	        fillPropertiesBuffer (),
 	                    nodeName (this, getFillPropertiesNameEntry (), getFillPropertiesRenameButton ()),
 	                      filled (this, getFillPropertiesFilledCheckButton (), "filled"),
 	                     hatched (this, getFillPropertiesHatchedCheckButton (), "hatched"),
@@ -70,6 +70,9 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                              getFillPropertiesHatchColorAdjustment (),
 	                              getFillPropertiesHatchColorBox (),
 	                              "hatchColor"),
+	                 appearances (),
+	              fillProperties (),
+	        fillPropertiesBuffer (),
 	                    undoStep (),
 	                    changing (false)
 {
@@ -205,6 +208,8 @@ X3DFillPropertiesEditor::set_node ()
 		getFillPropertiesBox ()          .set_sensitive (active > 0);
 
 		changing = false;
+
+		// Widgets
 
 		const X3D::MFNode nodes = { fillProperties };
 

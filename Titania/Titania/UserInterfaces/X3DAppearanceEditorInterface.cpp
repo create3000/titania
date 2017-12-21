@@ -85,6 +85,7 @@ X3DAppearanceEditorInterface::create ()
 	m_BackShininessAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackShininessAdjustment"));
 	m_BackSpecularColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackSpecularColorAdjustment"));
 	m_BackTransparencyAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackTransparencyAdjustment"));
+	m_BlendModeColorAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeColorAdjustment"));
 	m_DiffuseColorAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DiffuseColorAdjustment"));
 	m_EmissiveColorAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmissiveColorAdjustment"));
 	m_FillPropertiesHatchColorAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchColorAdjustment"));
@@ -173,6 +174,24 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("LinePropertiesNameBox", m_LinePropertiesNameBox);
 	m_builder -> get_widget ("LinePropertiesNameEntry", m_LinePropertiesNameEntry);
 	m_builder -> get_widget ("LinePropertiesRenameButton", m_LinePropertiesRenameButton);
+	m_builder -> get_widget ("BlendModeExpander", m_BlendModeExpander);
+	m_builder -> get_widget ("BlendModeMainBox", m_BlendModeMainBox);
+	m_builder -> get_widget ("SelectBlendModeBox", m_SelectBlendModeBox);
+	m_builder -> get_widget ("BlendModeCheckButton", m_BlendModeCheckButton);
+	m_builder -> get_widget ("BlendModeUnlinkButton", m_BlendModeUnlinkButton);
+	m_builder -> get_widget ("BlendModeBox", m_BlendModeBox);
+	m_builder -> get_widget ("BlendModeSourceColorFactorButton", m_BlendModeSourceColorFactorButton);
+	m_builder -> get_widget ("BlendModeSourceAlphaFactorButton", m_BlendModeSourceAlphaFactorButton);
+	m_builder -> get_widget ("BlendModeDestinationColorFactorButton", m_BlendModeDestinationColorFactorButton);
+	m_builder -> get_widget ("BlendModeDestinationAlphaFactorButton", m_BlendModeDestinationAlphaFactorButton);
+	m_builder -> get_widget ("BlendModeColorEquationButton", m_BlendModeColorEquationButton);
+	m_builder -> get_widget ("BlendModeAlphaEquationButton", m_BlendModeAlphaEquationButton);
+	m_builder -> get_widget ("BlendModeColorBox", m_BlendModeColorBox);
+	m_builder -> get_widget ("BlendModeColorButton", m_BlendModeColorButton);
+	m_builder -> get_widget ("BlendModeColorScale", m_BlendModeColorScale);
+	m_builder -> get_widget ("BlendModeNameBox", m_BlendModeNameBox);
+	m_builder -> get_widget ("BlendModeNameEntry", m_BlendModeNameEntry);
+	m_builder -> get_widget ("BlendModeRenameButton", m_BlendModeRenameButton);
 	m_builder -> get_widget ("UsedMaterialsBox", m_UsedMaterialsBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PaletteFaceCombo", m_PaletteFaceCombo);
@@ -226,6 +245,12 @@ X3DAppearanceEditorInterface::create ()
 
 	// Connect object Gtk::Button with id 'LinePropertiesUnlinkButton'.
 	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
+
+	// Connect object Gtk::CheckButton with id 'BlendModeCheckButton'.
+	m_BlendModeCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_blendMode_toggled));
+
+	// Connect object Gtk::Button with id 'BlendModeUnlinkButton'.
+	m_BlendModeUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_blendMode_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteFaceCombo'.
 	m_PaletteFaceCombo -> signal_changed () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_face_changed));

@@ -83,7 +83,11 @@ public:
 
 	virtual
 	void
-	draw (X3DRenderObject* const renderObject) = 0;
+	enable (X3DRenderObject* const renderObject) = 0;
+
+	virtual
+	void
+	disable (X3DRenderObject* const renderObject) = 0;
 
 
 protected:

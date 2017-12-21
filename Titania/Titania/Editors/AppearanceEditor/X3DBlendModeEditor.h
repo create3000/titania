@@ -48,17 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBLEND_MODE_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DBLEND_MODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DBLEND_MODE_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DBLEND_MODE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 class X3DBlendModeEditor :
-	virtual public X3DPrecisionPlacementPanelInterface
+	virtual public X3DAppearanceEditorInterface
 {
 public:
 
@@ -84,17 +84,43 @@ protected:
 
 
 private:
+	
+	///  @name Event handlers
+
+	virtual
+	void
+	on_blendMode_unlink_clicked () final override;
+
+	virtual
+	void
+	on_blendMode_toggled () final override;
+
+	void
+	set_blendMode ();
+
+	void
+	set_node ();
+
+	void
+	connectBlendMode (const X3D::SFNode &);
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> enabled;
-	SFColorRGBAButton                  blendColor;
-	SFStringComboBoxText               sourceColor;
-	SFStringComboBoxText               sourceAlpha;
-	SFStringComboBoxText               destinationColor;
-	SFStringComboBoxText               destinationAlpha;
-	SFStringComboBoxText               modeColor;
-	SFStringComboBoxText               modeAlpha;
+	NameEntry nodeName;
+
+	SFColorRGBAButton    color;
+	SFStringComboBoxText sourceColorFactor;
+	SFStringComboBoxText sourceAlphaFactor;
+	SFStringComboBoxText destinationColorFactor;
+	SFStringComboBoxText destinationAlphaFactor;
+	SFStringComboBoxText colorEquation;
+	SFStringComboBoxText alphaEquation;
+
+	X3D::X3DPtrArray <X3D::Appearance> appearances;
+	X3D::X3DPtr <X3D::BlendMode>       blendMode;
+	X3D::SFTime                        blendModeBuffer;
+	X3D::UndoStepPtr                   undoStep;
+	bool                               changing;
 
 };
 

@@ -55,6 +55,7 @@
 #include "X3DMaterialEditor.h"
 #include "X3DFillPropertiesEditor.h"
 #include "X3DLinePropertiesEditor.h"
+#include "X3DBlendModeEditor.h"
 #include "X3DUsedMaterialsEditor.h"
 #include "X3DMaterialPaletteEditor.h"
 
@@ -66,6 +67,7 @@ class AppearanceEditor :
 	public X3DMaterialEditor,
 	public X3DFillPropertiesEditor,
 	public X3DLinePropertiesEditor,
+	public X3DBlendModeEditor,
 	public X3DUsedMaterialsEditor,
 	public X3DMaterialPaletteEditor
 {

@@ -66,7 +66,6 @@
 #include "X3DParticleEmitterNodeEditor.h"
 #include "X3DParticleSystemEditor.h"
 #include "X3DGeometrySelectionEditor.h"
-#include "X3DBlendModeEditor.h"
 
 namespace titania {
 namespace puck {
@@ -85,7 +84,6 @@ class PrecisionPlacementPanel :
 	public X3DEnvironmentalSensorEditor,
 	public X3DParticleSystemEditor,
 	public X3DParticleEmitterNodeEditor,
-	public X3DBlendModeEditor,
 	public X3DGeometrySelectionEditor
 {
 public:

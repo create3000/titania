@@ -352,6 +352,7 @@ class X3DViewportNode;
 
 // Non statndard
 
+class BlendMode;
 class Clipboard;
 class DepthBuffer;
 class FaceSelection;

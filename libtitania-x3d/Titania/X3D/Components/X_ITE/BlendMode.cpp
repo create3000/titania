@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/BlendModeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
@@ -89,44 +88,36 @@ const std::map <std::string, GLenum> BlendMode::blendModes = {
 };
 
 BlendMode::Fields::Fields () :
-	         enabled (new SFBool (true)),
-	      blendColor (new SFColorRGBA ()),
-	     sourceColor (new SFString ("SRC_ALPHA")),
-	     sourceAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	destinationColor (new SFString ("ONE")),
-	destinationAlpha (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	       modeColor (new SFString ("FUNC_ADD")),
-	       modeAlpha (new SFString ("FUNC_ADD"))
+	                 color (new SFColorRGBA ()),
+	     sourceColorFactor (new SFString ("SRC_ALPHA")),
+	     sourceAlphaFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
+	destinationColorFactor (new SFString ("ONE")),
+	destinationAlphaFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
+	         colorEquation (new SFString ("FUNC_ADD")),
+	         alphaEquation (new SFString ("FUNC_ADD"))
 { }
 
 BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     X3DGroupingNode (),
-	     sourceColorType (GL_SRC_ALPHA),
-	     sourceAlphaType (GL_ONE_MINUS_SRC_ALPHA),
-	destinationColorType (GL_ONE),
-	destinationAlphaType (GL_ONE_MINUS_SRC_ALPHA),
-	       modeColorType (GL_FUNC_ADD),
-	       modeAlphaType (GL_FUNC_ADD)
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DAppearanceChildNode (),
+	     sourceColorFactorType (GL_SRC_ALPHA),
+	     sourceAlphaFactorType (GL_ONE_MINUS_SRC_ALPHA),
+	destinationColorFactorType (GL_ONE),
+	destinationAlphaFactorType (GL_ONE_MINUS_SRC_ALPHA),
+	         colorEquationType (GL_FUNC_ADD),
+	         alphaEquationType (GL_FUNC_ADD)
 {
 	addType (X3DConstants::BlendMode);
 
-	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "metadata",                metadata ());
 
-	addField (inputOutput,    "enabled",          enabled ());
-	addField (inputOutput,    "blendColor",       blendColor ());
-	addField (inputOutput,    "sourceColor",      sourceColor ());
-	addField (inputOutput,    "sourceAlpha",      sourceAlpha ());
-	addField (inputOutput,    "destinationColor", destinationColor ());
-	addField (inputOutput,    "destinationAlpha", destinationAlpha ());
-	addField (inputOutput,    "modeColor",        modeColor ());
-	addField (inputOutput,    "modeAlpha",        modeAlpha ());
-
-	addField (initializeOnly, "bboxSize",         bboxSize ());
-	addField (initializeOnly, "bboxCenter",       bboxCenter ());
-	addField (inputOnly,      "addChildren",      addChildren ());
-	addField (inputOnly,      "removeChildren",   removeChildren ());
-	addField (inputOutput,    "children",         children ());
+	addField (inputOutput,    "color",                   color ());
+	addField (inputOutput,    "sourceColorFactor",       sourceColorFactor ());
+	addField (inputOutput,    "sourceAlphaFactor",       sourceAlphaFactor ());
+	addField (inputOutput,    "destinationColorFactor" , destinationColorFactor ());
+	addField (inputOutput,    "destinationAlphaFactor",  destinationAlphaFactor ());
+	addField (inputOutput,    "colorEquation",           colorEquation ());
+	addField (inputOutput,    "alphaEquation",           alphaEquation ());
 }
 
 X3DBaseNode*
@@ -138,136 +129,118 @@ BlendMode::create (X3DExecutionContext* const executionContext) const
 void
 BlendMode::initialize ()
 {
-	X3DGroupingNode::initialize ();
+	X3DAppearanceChildNode::initialize ();
 
-	sourceColor ()      .addInterest (&BlendMode::set_sourceColor,      this);
-	sourceAlpha ()      .addInterest (&BlendMode::set_sourceAlpha,      this);
-	destinationColor () .addInterest (&BlendMode::set_destinationColor, this);
-	destinationAlpha () .addInterest (&BlendMode::set_destinationAlpha, this);
-	modeColor ()        .addInterest (&BlendMode::set_modeColor,        this);
-	modeAlpha ()        .addInterest (&BlendMode::set_modeAlpha,        this);
+	sourceColorFactor ()      .addInterest (&BlendMode::set_sourceColorFactor,      this);
+	sourceAlphaFactor ()      .addInterest (&BlendMode::set_sourceAlphaFactor,      this);
+	destinationColorFactor () .addInterest (&BlendMode::set_destinationColorFactor, this);
+	destinationAlphaFactor () .addInterest (&BlendMode::set_destinationAlphaFactor, this);
+	colorEquation ()          .addInterest (&BlendMode::set_colorEquation,        this);
+	alphaEquation ()          .addInterest (&BlendMode::set_alphaEquation,        this);
 
-	set_sourceColor ();
-	set_sourceAlpha ();
-	set_destinationColor ();
-	set_destinationAlpha ();
-	set_modeColor ();
-	set_modeAlpha ();
+	set_sourceColorFactor ();
+	set_sourceAlphaFactor ();
+	set_destinationColorFactor ();
+	set_destinationAlphaFactor ();
+	set_colorEquation ();
+	set_alphaEquation ();
 }
 
 void
-BlendMode::set_sourceColor ()
+BlendMode::set_sourceColorFactor ()
 {
 	try
 	{
-		sourceColorType = blendTypes .at (sourceColor ());
+		sourceColorFactorType = blendTypes .at (sourceColorFactor ());
 	}
 	catch (const X3DError &)
 	{
-		sourceColorType = GL_SRC_ALPHA;
+		sourceColorFactorType = GL_SRC_ALPHA;
 	}
 }
 
 void
-BlendMode::set_sourceAlpha ()
+BlendMode::set_sourceAlphaFactor ()
 {
 	try
 	{
-		sourceAlphaType = blendTypes .at (sourceAlpha ());
+		sourceAlphaFactorType = blendTypes .at (sourceAlphaFactor ());
 	}
 	catch (const X3DError &)
 	{
-		sourceAlphaType = GL_ONE_MINUS_SRC_ALPHA;
+		sourceAlphaFactorType = GL_ONE_MINUS_SRC_ALPHA;
 	}
 }
 
 void
-BlendMode::set_destinationColor ()
+BlendMode::set_destinationColorFactor ()
 {
 	try
 	{
-		destinationColorType = blendTypes .at (destinationColor ());
+		destinationColorFactorType = blendTypes .at (destinationColorFactor ());
 	}
 	catch (const X3DError &)
 	{
-		destinationColorType = GL_ONE;
+		destinationColorFactorType = GL_ONE;
 	}
 }
 
 void
-BlendMode::set_destinationAlpha ()
+BlendMode::set_destinationAlphaFactor ()
 {
 	try
 	{
-		destinationAlphaType = blendTypes .at (destinationAlpha ());
+		destinationAlphaFactorType = blendTypes .at (destinationAlphaFactor ());
 	}
 	catch (const X3DError &)
 	{
-		destinationAlphaType = GL_ONE_MINUS_SRC_ALPHA;
+		destinationAlphaFactorType = GL_ONE_MINUS_SRC_ALPHA;
 	}
 }
 
 void
-BlendMode::set_modeColor ()
+BlendMode::set_colorEquation ()
 {
 	try
 	{
-		modeColorType = blendModes .at (modeColor ());
+		colorEquationType = blendModes .at (colorEquation ());
 	}
 	catch (const X3DError &)
 	{
-		modeColorType = GL_FUNC_ADD;
+		colorEquationType = GL_FUNC_ADD;
 	}
 }
 
 void
-BlendMode::set_modeAlpha ()
+BlendMode::set_alphaEquation ()
 {
 	try
 	{
-		modeAlphaType = blendModes .at (modeAlpha ());
+		alphaEquationType = blendModes .at (alphaEquation ());
 	}
 	catch (const X3DError &)
 	{
-		modeAlphaType = GL_FUNC_ADD;
+		alphaEquationType = GL_FUNC_ADD;
 	}
 }
 
 void
-BlendMode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+BlendMode::enable ()
 {
-	switch (type)
-	{
-		case TraverseType::DISPLAY:
-		{
-			if (enabled ())
-			{
-				renderObject -> getBlend () .push (true);
-				renderObject -> getLocalObjects () .emplace_back (new BlendModeContainer (this));
-	
-				X3DGroupingNode::traverse (type, renderObject);
-	
-				renderObject -> getLocalObjects () .pop_back ();
-				renderObject -> getBlend () .pop ();
-			}
-			else
-			{
-				renderObject -> getBlend () .push (false);
-	
-				X3DGroupingNode::traverse (type, renderObject);
-	
-				renderObject -> getBlend () .pop ();
-			}
+	const auto & c = color () .getValue ();
 
-			break;
-		}
-		default:
-		{
-			X3DGroupingNode::traverse (type, renderObject);
-			break;
-		}
-	}
+	glBlendColor (c .r (), c .g (), c .b (), c .a ());
+	glBlendFuncSeparate (sourceColorFactorType, sourceAlphaFactorType, destinationColorFactorType, destinationAlphaFactorType);
+	glBlendEquationSeparate (colorEquationType, alphaEquationType);
 }
+
+void
+BlendMode::disable ()
+{
+	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
 
 } // X3D
 } // titania

@@ -37,6 +37,11 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
   </object>
+  <object class="GtkAdjustment" id="BlendModeColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="DiffuseColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -1896,6 +1901,483 @@
                           <object class="GtkScrolledWindow">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkViewport">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="border_width">8</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkExpander" id="BlendModeExpander">
+                                        <property name="name">BlendModeExpander</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="expanded">True</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                          <object class="GtkBox" id="BlendModeMainBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">8</property>
+                                            <child>
+                                              <object class="GtkGrid" id="box2">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="row_spacing">8</property>
+                                                <property name="column_spacing">16</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="label7">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="SelectBlendModeBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="spacing">8</property>
+                                                    <child>
+                                                      <object class="GtkCheckButton" id="BlendModeCheckButton">
+                                                        <property name="label" translatable="yes">Blend Mode</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">False</property>
+                                                        <property name="xalign">0</property>
+                                                        <property name="draw_indicator">True</property>
+                                                        <signal name="toggled" handler="on_blendMode_toggled" swapped="no"/>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkButton" id="BlendModeUnlinkButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                                        <signal name="clicked" handler="on_blendMode_unlink_clicked" swapped="no"/>
+                                                        <child>
+                                                          <object class="GtkImage" id="image18">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="stock">UnlinkClone</property>
+                                                            <property name="pixel_size">12</property>
+                                                            <property name="icon_size">1</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkGrid" id="BlendModeBox">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="row_spacing">8</property>
+                                                <property name="column_spacing">16</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="label91">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Source Color Factor:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label92">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Source Alpha Factor:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">3</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label93">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Destination Color Factor:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">4</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label94">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Destination Alpha Factor:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">5</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeSourceColorFactorButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">ZERO</item>
+                                                      <item translatable="yes">ONE</item>
+                                                      <item translatable="yes">SRC_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_COLOR</item>
+                                                      <item translatable="yes">DST_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_COLOR</item>
+                                                      <item translatable="yes">SRC_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_ALPHA</item>
+                                                      <item translatable="yes">DST_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_ALPHA</item>
+                                                      <item translatable="yes">CONSTANT_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_COLOR</item>
+                                                      <item translatable="yes">CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">SRC_ALPHA_SATURATE</item>
+                                                      <item translatable="yes">SRC1_COLOR</item>
+                                                      <item translatable="yes">SRC1_ALPHA</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeSourceAlphaFactorButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">ZERO</item>
+                                                      <item translatable="yes">ONE</item>
+                                                      <item translatable="yes">SRC_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_COLOR</item>
+                                                      <item translatable="yes">DST_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_COLOR</item>
+                                                      <item translatable="yes">SRC_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_ALPHA</item>
+                                                      <item translatable="yes">DST_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_ALPHA</item>
+                                                      <item translatable="yes">CONSTANT_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_COLOR</item>
+                                                      <item translatable="yes">CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">SRC_ALPHA_SATURATE</item>
+                                                      <item translatable="yes">SRC1_COLOR</item>
+                                                      <item translatable="yes">SRC1_ALPHA</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">3</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeDestinationColorFactorButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">ZERO</item>
+                                                      <item translatable="yes">ONE</item>
+                                                      <item translatable="yes">SRC_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_COLOR</item>
+                                                      <item translatable="yes">DST_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_COLOR</item>
+                                                      <item translatable="yes">SRC_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_ALPHA</item>
+                                                      <item translatable="yes">DST_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_ALPHA</item>
+                                                      <item translatable="yes">CONSTANT_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_COLOR</item>
+                                                      <item translatable="yes">CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">SRC_ALPHA_SATURATE</item>
+                                                      <item translatable="yes">SRC1_COLOR</item>
+                                                      <item translatable="yes">SRC1_ALPHA</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">4</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeDestinationAlphaFactorButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">ZERO</item>
+                                                      <item translatable="yes">ONE</item>
+                                                      <item translatable="yes">SRC_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_COLOR</item>
+                                                      <item translatable="yes">DST_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_COLOR</item>
+                                                      <item translatable="yes">SRC_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_ALPHA</item>
+                                                      <item translatable="yes">DST_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_DST_ALPHA</item>
+                                                      <item translatable="yes">CONSTANT_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_COLOR</item>
+                                                      <item translatable="yes">CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">ONE_MINUS_CONSTANT_ALPHA</item>
+                                                      <item translatable="yes">SRC_ALPHA_SATURATE</item>
+                                                      <item translatable="yes">SRC1_COLOR</item>
+                                                      <item translatable="yes">ONE_MINUS_SRC_COLOR</item>
+                                                      <item translatable="yes">SRC1_ALPHA</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">5</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label95">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Color Equation:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">6</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label96">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Alpha Equation:</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">7</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeColorEquationButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">FUNC_ADD</item>
+                                                      <item translatable="yes">FUNC_SUBTRACT</item>
+                                                      <item translatable="yes">FUNC_REVERSE_SUBTRACT</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">6</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkComboBoxText" id="BlendModeAlphaEquationButton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <items>
+                                                      <item translatable="yes">FUNC_ADD</item>
+                                                      <item translatable="yes">FUNC_SUBTRACT</item>
+                                                      <item translatable="yes">FUNC_REVERSE_SUBTRACT</item>
+                                                    </items>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">7</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label97">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Color :</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="BlendModeColorBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="hexpand">True</property>
+                                                    <property name="spacing">8</property>
+                                                    <property name="homogeneous">True</property>
+                                                    <child>
+                                                      <object class="GtkButton" id="BlendModeColorButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                        <property name="hexpand">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkScale" id="BlendModeColorScale">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="adjustment">BlendModeColorAdjustment</property>
+                                                        <property name="round_digits">3</property>
+                                                        <property name="digits">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="BlendModeNameBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="hexpand">True</property>
+                                                    <property name="spacing">4</property>
+                                                    <child>
+                                                      <object class="GtkEntry" id="BlendModeNameEntry">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkButton" id="BlendModeRenameButton">
+                                                        <property name="label" translatable="yes">Rename</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label35">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">end</property>
+                                                    <property name="label" translatable="yes">Name :</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="label">
+                                          <object class="GtkLabel" id="label650">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">BlendMode</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Blend Mode</property>
+                          </object>
+                          <packing>
+                            <property name="menu_label">Blend Mode</property>
+                            <property name="position">3</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
                             <child>
                               <object class="GtkViewport">
                                 <property name="visible">True</property>
@@ -1917,7 +2399,7 @@
                           </object>
                           <packing>
                             <property name="menu_label">Used Materials</property>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1928,7 +2410,7 @@
                             <property name="label" translatable="yes">Used Materials</property>
                           </object>
                           <packing>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -2060,7 +2542,7 @@
                           </object>
                           <packing>
                             <property name="menu_label">Palette</property>
-                            <property name="position">4</property>
+                            <property name="position">5</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -2070,7 +2552,7 @@
                             <property name="label" translatable="yes">Palette</property>
                           </object>
                           <packing>
-                            <property name="position">4</property>
+                            <property name="position">5</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>

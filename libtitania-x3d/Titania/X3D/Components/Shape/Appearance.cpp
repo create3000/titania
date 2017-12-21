@@ -61,6 +61,7 @@
 #include "../Shape/X3DMaterialNode.h"
 #include "../Texturing/TextureTransform.h"
 #include "../Texturing/X3DTextureNode.h"
+#include "../X_ITE/BlendMode.h"
 
 namespace titania {
 namespace X3D {
@@ -75,7 +76,8 @@ Appearance::Fields::Fields () :
 	        material (new SFNode ()),
 	         texture (new SFNode ()),
 	textureTransform (new SFNode ()),
-	         shaders (new MFNode ())
+	         shaders (new MFNode ()),
+	       blendMode (new SFNode ())
 { }
 
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
@@ -88,7 +90,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         textureNode (),
 	textureTransformNode (),
 	         shaderNodes (),
-	          shaderNode ()
+	          shaderNode (),
+	       blendModeNode ()
 {
 	addType (X3DConstants::Appearance);
 
@@ -99,6 +102,7 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "texture",          texture ());
 	addField (inputOutput, "textureTransform", textureTransform ());
 	addField (inputOutput, "shaders",          shaders ());
+	addField (inputOutput, "blendMode",        blendMode ());
 
 	addChildObjects (fillPropertiesNode,
 	                 linePropertiesNode,
@@ -106,7 +110,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	                 textureNode,
 	                 textureTransformNode,
 	                 shaderNodes,
-	                 shaderNode);
+	                 shaderNode,
+	                 blendModeNode);
 }
 
 X3DBaseNode*
@@ -126,6 +131,7 @@ Appearance::initialize ()
 	texture ()          .addInterest (&Appearance::set_texture,          this);
 	textureTransform () .addInterest (&Appearance::set_textureTransform, this);
 	shaders ()          .addInterest (&Appearance::set_shaders,          this);
+	blendMode ()        .addInterest (&Appearance::set_blendMode,        this);
 
 	shaderNodes .addInterest (&Appearance::set_shader, this);
 
@@ -135,6 +141,7 @@ Appearance::initialize ()
 	set_texture ();
 	set_textureTransform ();
 	set_shaders ();
+	set_blendMode ();
 }
 
 void
@@ -159,6 +166,9 @@ Appearance::isTransparent () const
 		return true;
 
 	if (textureNode and textureNode -> isTransparent ())
+		return true;
+
+	if (blendModeNode)
 		return true;
 
 	return false;
@@ -254,6 +264,12 @@ Appearance::set_shader ()
 }
 
 void
+Appearance::set_blendMode ()
+{
+	blendModeNode .set (x3d_cast <BlendMode*> (blendMode ()));
+}
+
+void
 Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (textureNode)
@@ -264,7 +280,7 @@ Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObje
 }
 
 void
-Appearance::draw (X3DRenderObject* const renderObject)
+Appearance::enable (X3DRenderObject* const renderObject)
 {
 	const auto browser = renderObject -> getBrowser ();
 
@@ -309,6 +325,16 @@ Appearance::draw (X3DRenderObject* const renderObject)
 		browser -> setShader (shaderNode);
 	else
 		browser -> setShader (browser -> getDefaultShader ());
+
+	if (blendModeNode)
+		blendModeNode -> enable ();
+}
+
+void
+Appearance::disable (X3DRenderObject* const renderObject)
+{
+	if (blendModeNode)
+		blendModeNode -> disable ();
 }
 
 } // X3D
