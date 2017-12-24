@@ -201,16 +201,16 @@ X3DLibraryView::append (const std::string & path) const
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const bool titania      = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool x_ite        = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
 					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
 
 					#ifndef TITANIA_FEATURE
-					if (experimental and not (X_ITE or titania))
+					if (experimental and not (x_ite or titania))
 					   continue;
 					#endif
 
-					const bool titania = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool x_ite   = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
-					const auto iter    = getTreeStore () -> append ();
+					const auto iter = getTreeStore () -> append ();
 
 					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
@@ -254,16 +254,16 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const bool titania      = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool x_ite        = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
 					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
 
 					#ifndef TITANIA_DEBUG
-					if (experimental and not (X_ITE or titania))
+					if (experimental and not (x_ite or titania))
 					   continue;
 					#endif
 
-					const bool titania = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool x_ite   = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
-					const auto iter    = getTreeStore () -> append (parent -> children ());
+					const auto iter = getTreeStore () -> append (parent -> children ());
 
 					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
