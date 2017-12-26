@@ -358,6 +358,7 @@
     <Compile Include="Titania\UserInterfaces\X3DBrowserSizeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.cpp" />
     <Compile Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBackgroundSizeEditorInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3131,6 +3132,7 @@
     <None Include="share\titania\ui\Editors\DefaultPhysicsModelEditor.glade" />
     <None Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.h" />
     <None Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.h" />
+    <None Include="Titania\UserInterfaces\X3DBackgroundSizeEditorInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
