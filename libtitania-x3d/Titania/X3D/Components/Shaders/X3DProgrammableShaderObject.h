@@ -78,14 +78,14 @@ public:
 
 	virtual
 	void
-	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>) override;
 
 	virtual
 	void
-	removeUserDefinedField (const std::string &)
+	removeUserDefinedField (const std::string & name)
 	throw (Error <DISPOSED>) override;
 
 	///  @name Member access
@@ -293,7 +293,7 @@ public:
 	{ transformFeedbackVaryings = value; }
 
 	void
-	setTextureBuffer (const std::string &, GLuint);
+	setTextureBuffer (const std::string & name, GLuint textureId);
 
 	///  @name Pipeline
 
@@ -311,35 +311,35 @@ public:
 
 	virtual
 	void
-	enableFloatAttrib (const std::string &, const GLuint, const size_t);
+	enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components);
 	
 	virtual
 	void
-	disableFloatAttrib (const std::string &);
+	disableFloatAttrib (const std::string & name);
 
 	virtual
 	void
-	enableIntegerAttrib (const std::string &, const GLuint, const size_t);
+	enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components);
 	
 	virtual
 	void
-	disableIntegerAttrib (const std::string &);
+	disableIntegerAttrib (const std::string & name);
 	
 	virtual
 	void
-	enableMatrix3Attrib (const std::string &, const GLuint);
+	enableMatrix3Attrib (const std::string & name, const GLuint buffer);
 	
 	virtual
 	void
-	disableMatrix3Attrib (const std::string &);
+	disableMatrix3Attrib (const std::string & name);
 	
 	virtual
 	void
-	enableMatrix4Attrib (const std::string &, const GLuint);
+	enableMatrix4Attrib (const std::string & name, const GLuint buffer);
 	
 	virtual
 	void
-	disableMatrix4Attrib (const std::string &);
+	disableMatrix4Attrib (const std::string & name);
 
 	virtual
 	void
@@ -415,13 +415,18 @@ protected:
 
 private:
 
+	///  @name Operations
+	
+	GLint
+	getUniformLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
+
 	///  @name Event handlers
 	
 	void
-	set_shading (const ShadingType &);
+	set_shading (const ShadingType & shading);
 
 	void
-	set_field (X3DFieldDefinition* const);
+	set_field (X3DFieldDefinition* const field);
 
 	///  @name Members
 

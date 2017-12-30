@@ -209,13 +209,6 @@ ComposedShader::set_loaded ()
 			glGetProgramiv (programId, GL_LINK_STATUS, &valid);
 		}
 
-		// Print info log
-
-		Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, { });
-
-		if (bool (valid) != isValid ())
-			isValid () = valid;
-
 		if (valid)
 		{
 			// Initialize uniform variables
@@ -223,6 +216,12 @@ ComposedShader::set_loaded ()
 			getDefaultUniforms ();
 			addShaderFields ();
 		}
+
+		// Print info log
+
+		Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, { });
+
+		isValid () = valid;
 
 		// Detach shaders
 
@@ -239,8 +238,7 @@ ComposedShader::set_loaded ()
 	}
 	else
 	{
-		if (isValid ())
-			isValid () = false;
+		isValid () = false;
 	}
 }
 

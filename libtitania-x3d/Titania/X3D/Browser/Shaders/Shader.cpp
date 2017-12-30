@@ -50,6 +50,7 @@
 
 #include "Shader.h"
 
+#include "../../Browser/Networking/config.h"
 #include "../../InputOutput/FileLoader.h"
 
 #include <Titania/String/to_string.h>
@@ -220,40 +221,53 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 	const auto begin    = match .str (0);
 	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
 
-	std::string constants = "$1$2";
+	std::ostringstream constants;
+	std::ifstream types (get_data ("shaders/Shaders/Types.h"));
 
-	constants += "#define x3d_GeometryPoints  0\n";
-	constants += "#define x3d_GeometryLines   1\n";
-	constants += "#define x3d_Geometry2D      2\n";
-	constants += "#define x3d_Geometry3D      3\n";
+	constants .imbue (std::locale::classic ());
 
-	constants += "#define x3d_MaxClipPlanes  " + basic::to_string (browser -> getMaxClipPlanes (), std::locale::classic ()) + "\n";
-	constants += "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
+	constants << "$1$2";
 
-	constants += "#define x3d_NoneFog          0\n";
-	constants += "#define x3d_LinearFog        1\n";
-	constants += "#define x3d_ExponentialFog   2\n";
-	constants += "#define x3d_Exponential2Fog  3\n";
+	constants << "#define TITANIA\n";
 
-	constants += "#define x3d_MaxLights         " + basic::to_string (browser -> getMaxLights (), std::locale::classic ()) + "\n";
-	constants += "#define x3d_NoneLight         0\n";
-	constants += "#define x3d_DirectionalLight  1\n";
-	constants += "#define x3d_PointLight        2\n";
-	constants += "#define x3d_SpotLight         3\n";
+	constants << "#define x3d_GeometryPoints  0\n";
+	constants << "#define x3d_GeometryLines   1\n";
+	constants << "#define x3d_Geometry2D      2\n";
+	constants << "#define x3d_Geometry3D      3\n";
 
-	constants += "#define x3d_MaxTextures                " + basic::to_string (browser -> getMaxTextures (), std::locale::classic ()) + "\n";
-	constants += "#define x3d_NoneTexture                0\n";
-	constants += "#define x3d_TextureType2D              2\n";
-	constants += "#define x3d_TextureType3D              3\n";
-	constants += "#define x3d_TextureTypeCubeMapTexture  4\n";
+	constants << "#define x3d_MaxClipPlanes  " << browser -> getMaxClipPlanes () << "\n";
+	constants << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
 
-	constants += "#define X3D_SHADOWS\n";
-	constants += "#define x3d_MaxShadows     4\n";
-	constants += "#define x3d_ShadowSamples  8\n";
+	constants << "#define x3d_NoneFog          0\n";
+	constants << "#define x3d_LinearFog        1\n";
+	constants << "#define x3d_ExponentialFog   2\n";
+	constants << "#define x3d_Exponential2Fog  3\n";
 
-	constants += "#line " + basic::to_string (numLines, std::locale::classic ()) + "\n";
+	constants << "#define x3d_MaxLights         " << browser -> getMaxLights () << "\n";
+	constants << "#define x3d_NoneLight         0\n";
+	constants << "#define x3d_DirectionalLight  1\n";
+	constants << "#define x3d_PointLight        2\n";
+	constants << "#define x3d_SpotLight         3\n";
 
-	return std::regex_replace (source, version, constants);
+	constants << "#define x3d_MaxTextures                " << browser -> getMaxTextures () << "\n";
+	constants << "#define x3d_NoneTexture                0\n";
+	constants << "#define x3d_TextureType2D              2\n";
+	constants << "#define x3d_TextureType3D              3\n";
+	constants << "#define x3d_TextureTypeCubeMapTexture  4\n";
+
+	#ifdef TITANIA_DEBUG
+	constants << "#define X3D_SHADOWS\n";
+	#endif
+
+	constants << "#define x3d_MaxShadows     4\n";
+	constants << "#define x3d_ShadowSamples  8\n";
+
+	constants << types .rdbuf ();
+	constants << "\n";
+
+	constants << "#line " << numLines << "\n";
+
+	return std::regex_replace (source, version, constants .str ());
 }
 
 void

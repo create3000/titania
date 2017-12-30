@@ -240,10 +240,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackTransparency     = glGetUniformLocation (program, "x3d_BackTransparency");
 
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
-	x3d_Texture2D      = glGetUniformLocation (program, "x3d_Texture2D");
+	x3d_Texture2D      = getUniformLocation (program, "x3d_Texture2D", "x3d_Texture");
 	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
-
-	const auto x3d_Texture = glGetUniformLocation (program, "x3d_Texture"); // depreciated
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
@@ -260,14 +258,35 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto textureType    = std::vector <int32_t> ({ 0 });
 	static const auto texture2D      = std::vector <int32_t> ({ 2 });
 	static const auto cubeMapTexture = std::vector <int32_t> ({ 4 });
+	static const auto shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 5);
 
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
-	glUniform1iv (x3d_TextureType,          1, textureType    .data ());
-	glUniform1iv (x3d_Texture,              1, texture2D      .data ()); // depreciated
-	glUniform1iv (x3d_Texture2D,            1, texture2D      .data ()); // Set texture to active texture unit 2.
-	glUniform1iv (x3d_CubeMapTexture,       1, cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
+	glUniform1iv (x3d_TextureType,          textureType    .size (), textureType    .data ());
+	glUniform1iv (x3d_Texture2D,            texture2D      .size (), texture2D      .data ()); // Set texture to active texture unit 2.
+	glUniform1iv (x3d_CubeMapTexture,       cubeMapTexture .size (), cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
+	glUniform1iv (glGetUniformLocation (program, "x3d_ShadowMap"), shadowMap .size (), shadowMap .data ()); // Set cube map texture to active texture unit 5
 
 	glUseProgram (0);
+}
+
+GLint
+X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::string & name, const std::string & depreciated) const
+{
+	// Legacy function to get uniform location.
+
+	auto location = glGetUniformLocation (program, name .c_str ());
+
+	if (location not_eq -1)
+		return location;
+
+	// Look for depreciated location.
+
+	location = glGetUniformLocation (program, depreciated .c_str ());
+
+	if (location not_eq -1)
+		getBrowser () -> println ("Using uniform location name »", depreciated, "« is depreciated. See http://create3000.de/x_ite/custom-shaders/.");
+
+	return location;
 }
 
 /*

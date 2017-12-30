@@ -976,6 +976,9 @@
     <None Include="Titania\X3D\Components\X_ITE\TouchGroup.h" />
     <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
     <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
+    <None Include="share\titania\shaders\Shaders\Bits\Shadow.h" />
+    <None Include="share\titania\shaders\Shaders\Types.h" />
+    <None Include="share\titania\shaders\Shaders\Bits\Pack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

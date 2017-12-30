@@ -3,10 +3,8 @@
 precision mediump float;
 
 uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
-// 24
 
 varying vec3 v; // point on geometry
-// 3
 
 void
 clip ()
@@ -25,4 +23,6 @@ void
 main ()
 {
 	clip ();
+	
+	// Only the z-buffer value is interesting.
 }
