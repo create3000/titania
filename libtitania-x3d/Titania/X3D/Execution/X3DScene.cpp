@@ -102,14 +102,17 @@ X3DScene::X3DScene () :
 	           metadatas (),
 	      metaDataOutput (),
 	       exportedNodes (),
-	 exportedNodesOutput ()
+	 exportedNodesOutput (),
+	   fileChangedOutput (),
+	         fileMonitor ()
 {
 	addType (X3DConstants::X3DScene);
 
 	addChildObjects (getRootNodes (),
 	                 unitsOutput,
 	                 metaDataOutput,
-	                 exportedNodesOutput);
+	                 exportedNodesOutput,
+	                 fileChangedOutput);
 }
 
 void
@@ -137,6 +140,47 @@ throw (Error <DISPOSED>)
 	{ }
 
 	return getWorldURL () .basename ();
+}
+
+void
+X3DScene::setWorldURL (const basic::uri & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	worldURL = value;
+
+	monitorFile (worldURL);
+}
+
+void
+X3DScene::monitorFile (const basic::uri & URL)
+{
+	try
+	{
+		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+
+		if (not URL .is_local ())
+			return;
+
+		fileMonitor = Gio::File::create_for_path (URL .path ()) -> monitor_file ();
+
+		fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DScene::on_file_changed));
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DScene::on_file_changed (const Glib::RefPtr <Gio::File> & file,
+                           const Glib::RefPtr <Gio::File> & other_file,
+                           Gio::FileMonitorEvent event)
+{
+	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+		return;
+
+	fileChangedOutput = getCurrentTime ();
 }
 
 void

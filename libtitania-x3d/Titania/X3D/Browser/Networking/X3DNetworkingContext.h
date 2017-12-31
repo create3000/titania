@@ -101,12 +101,12 @@ public:
 	{ return notifyOnLoad; }
 
 	void
-	setWatchFileChanges (const bool value)
-	{ watchFileChanges = value; }
+	setMonitorFiles (const bool value)
+	{ monitorFiles = value; }
 
 	const SFBool &
-	getWatchFileChanges () const
-	{ return watchFileChanges; }
+	getMonitorFiles () const
+	{ return monitorFiles; }
 
 	///  @name Destruction
 
@@ -194,7 +194,7 @@ private:
 	SFInt32                                   loadCount;
 	SFBool                                    loadUrlObjects;
 	SFBool                                    notifyOnLoad;
-	SFBool                                    watchFileChanges;
+	SFBool                                    monitorFiles;
 
 };
 

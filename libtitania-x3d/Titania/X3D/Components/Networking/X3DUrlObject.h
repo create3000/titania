@@ -108,6 +108,11 @@ public:
 	checkLoadState () const
 	{ return loadState; }
 
+	virtual
+	const SFTime &
+	file_changed () const
+	{ return fileChangedOutput; }
+
 	///  @name Operations
 
 	virtual
@@ -128,27 +133,18 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 	///  @name Member access
 
 	void
-	setLoadState (const LoadState, const bool = true);
+	setLoadState (const LoadState value, const bool notify = true);
 
 	///  @name Operations
 
 	void
-	watchFile (const basic::uri & URL);
+	monitorFile (const basic::uri & URL);
 	
-	///  @name Event handlers
-
-	virtual
-	void
-	on_file_changed (const Glib::RefPtr <Gio::File> & file,
-	                 const Glib::RefPtr <Gio::File> & other_file,
-	                 Gio::FileMonitorEvent event);
-
 	///  @name Destruction
 
 	virtual
@@ -157,6 +153,18 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> & other_file,
+	                 Gio::FileMonitorEvent event);
+
+	void
+	set_file ();
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -168,6 +176,7 @@ private:
 	Fields fields;
 
 	SFEnum <LoadState> loadState;
+	SFTime             fileChangedOutput;
 
 	///  @name Members
 

@@ -164,7 +164,7 @@ AudioClip::on_audio_changed ()
 
 	setLoadState (COMPLETE_STATE);
 
-	watchFile (getStream () -> getUri ());
+	monitorFile (getStream () -> getUri ());
 }
 
 void

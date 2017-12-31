@@ -113,21 +113,10 @@ Inline::initialize ()
 
 	buffer .addInterest (&Inline::set_buffer, this);
 
-	if (X3D_PARALLEL)
-	{
-		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
-		if (load ())
-			buffer .addEvent ();
-	}
-	else
-	{
-		if (load ())
-			requestImmediateLoad ();
-
-		else
-			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
-	}
+	if (load ())
+		buffer .addEvent ();
 
 	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
 
@@ -200,36 +189,43 @@ throw (Error <NODE_NOT_AVAILABLE>,
 void
 Inline::requestImmediateLoad ()
 {
-	if (not getBrowser () -> getLoadUrlObjects ())
-		return;
-
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-		return;
-
-	if (future)
+	if (X3D_PARALLEL)
 	{
-		future -> wait ();
-		return;
+		requestAsyncLoad ();
 	}
-
-	setLoadState (IN_PROGRESS_STATE);
-
-	FileLoader loader (getExecutionContext ());
-
-	try
+	else
 	{
-		setLoadState (COMPLETE_STATE);
-		setScene (loader .createX3DFromURL (url ()));
-	}
-	catch (const X3DError & error)
-	{
-		setLoadState (FAILED_STATE);
-		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
-
-		for (const auto & string : loader .getUrlError ())
-			getBrowser () -> println (string .str ());
-
-		getBrowser () -> println (error .what ());
+		if (not getBrowser () -> getLoadUrlObjects ())
+			return;
+	
+		if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+			return;
+	
+		if (future)
+		{
+			future -> wait ();
+			return;
+		}
+	
+		setLoadState (IN_PROGRESS_STATE);
+	
+		FileLoader loader (getExecutionContext ());
+	
+		try
+		{
+			setLoadState (COMPLETE_STATE);
+			setScene (loader .createX3DFromURL (url ()));
+		}
+		catch (const X3DError & error)
+		{
+			setLoadState (FAILED_STATE);
+			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+	
+			for (const auto & string : loader .getUrlError ())
+				getBrowser () -> println (string .str ());
+	
+			getBrowser () -> println (error .what ());
+		}
 	}
 }
 
@@ -307,18 +303,7 @@ Inline::setScene (X3DScenePtr && value)
 
 	group -> children () = scene -> getRootNodes ();
 
-	watchFile (scene -> getWorldURL ());
-}
-
-void
-Inline::on_file_changed (const Glib::RefPtr <Gio::File> & file,
-                         const Glib::RefPtr <Gio::File> & other_file,
-                         Gio::FileMonitorEvent event)
-{
-	if (getBrowser () -> getExecutionContext () == scene)
-		return;
-
-	X3DUrlObject::on_file_changed (file, other_file, event);
+	monitorFile (scene -> getWorldURL ());
 }
 
 void
@@ -363,11 +348,7 @@ Inline::set_buffer ()
 
 	setLoadState (NOT_STARTED_STATE);
 
-	if (X3D_PARALLEL)
-		requestAsyncLoad ();
-
-	else
-		requestImmediateLoad ();
+	requestImmediateLoad ();
 }
 
 void

@@ -78,7 +78,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	         loadCount (),
 	    loadUrlObjects (true),
 	      notifyOnLoad (false),
-	  watchFileChanges (false)
+	      monitorFiles (false)
 {
 	addChildObjects (privateScene,
 	                 loadSensor,
@@ -86,7 +86,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	                 loadCount,
 	                 loadUrlObjects,
 	                 notifyOnLoad,
-	                 watchFileChanges);
+	                 monitorFiles);
 }
 
 void

@@ -117,6 +117,11 @@ public:
 	checkLoadState () const final override
 	{ return getNode <X3DUrlObject> () -> checkLoadState (); }
 
+	virtual
+	const SFTime &
+	file_changed () const final override
+	{ return getNode <X3DUrlObject> () -> file_changed (); }
+
 	///  @name Destruction
 
 	virtual

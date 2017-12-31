@@ -55,6 +55,8 @@
 #include "../Execution/X3DExecutionContext.h"
 #include "../Configuration/UnitArray.h"
 
+#include <giomm.h>
+
 #include <map>
 
 namespace titania {
@@ -83,8 +85,7 @@ public:
 	void
 	setWorldURL (const basic::uri & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ worldURL = value; }
+	       Error <DISPOSED>);
 
 	virtual
 	const basic::uri &
@@ -292,6 +293,13 @@ public:
 	exportedNodes_changed () const
 	{ return exportedNodesOutput; }
 
+	///  @name Monitor file changes
+
+	virtual
+	const SFTime &
+	file_changed () const
+	{ return fileChangedOutput; }
+
 	///  @name Import handling
 
 	virtual
@@ -368,6 +376,16 @@ protected:
 
 private:
 
+	///  @name Monitor file changes
+
+	void
+	monitorFile (const basic::uri & URL);
+
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> & other_file,
+	                 Gio::FileMonitorEvent event);
+
 	///  @name Operations
 
 	std::string
@@ -383,19 +401,21 @@ private:
 
 	///  @name Members
 
-	basic::uri               worldURL;
-	EncodingType             encoding;
-	SpecificationVersionType specificationVersion;
-	std::string              characterEncoding;
-	std::string              comment;
-	ProfileInfoPtr           profile;
-	ComponentInfoArray       components;
-	UnitArray                units;
-	SFTime                   unitsOutput;
-	MetaDataIndex            metadatas;
-	SFTime                   metaDataOutput;
-	ExportedNodeIndex        exportedNodes;
-	SFTime                   exportedNodesOutput;
+	basic::uri                      worldURL;
+	EncodingType                    encoding;
+	SpecificationVersionType        specificationVersion;
+	std::string                     characterEncoding;
+	std::string                     comment;
+	ProfileInfoPtr                  profile;
+	ComponentInfoArray              components;
+	UnitArray                       units;
+	SFTime                          unitsOutput;
+	MetaDataIndex                   metadatas;
+	SFTime                          metaDataOutput;
+	ExportedNodeIndex               exportedNodes;
+	SFTime                          exportedNodesOutput;
+	SFTime                          fileChangedOutput;
+	Glib::RefPtr <Gio::FileMonitor> fileMonitor;
 
 };
 

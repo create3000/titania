@@ -61,14 +61,15 @@ X3DUrlObject::Fields::Fields () :
 { }
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBaseNode (),
-	     fields (),
-	  loadState (NOT_STARTED_STATE),
-	fileMonitor ()
+	    X3DBaseNode (),
+	         fields (),
+	      loadState (NOT_STARTED_STATE),
+ fileChangedOutput (),
+	    fileMonitor ()
 {
 	addType (X3DConstants::X3DUrlObject);
 
-	addChildObjects (loadState);
+	addChildObjects (loadState, fileChangedOutput);
 }
 
 X3DUrlObject*
@@ -89,6 +90,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	transform (url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
+}
+
+void
+X3DUrlObject::initialize ()
+{
+	fileChangedOutput .addInterest (&X3DUrlObject::set_file, this);
 }
 
 void
@@ -129,16 +136,15 @@ X3DUrlObject::setLoadState (const LoadState value, const bool notify)
 }
 
 void
-X3DUrlObject::watchFile (const basic::uri & URL)
+X3DUrlObject::monitorFile (const basic::uri & URL)
 {
 	try
 	{
-		if (not getBrowser () -> getWatchFileChanges ())
-			return;
-	
+		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+
 		if (not URL .is_local ())
 			return;
-	
+
 		fileMonitor = Gio::File::create_for_path (URL .path ()) -> monitor_file ();
 	
 		fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DUrlObject::on_file_changed));
@@ -158,6 +164,15 @@ X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 		return;
 
 	if (checkLoadState () not_eq COMPLETE_STATE)
+		return;
+
+	fileChangedOutput = getCurrentTime ();
+}
+
+void
+X3DUrlObject::set_file ()
+{
+	if (not getBrowser () -> getMonitorFiles ())
 		return;
 
 	setLoadState (NOT_STARTED_STATE);
