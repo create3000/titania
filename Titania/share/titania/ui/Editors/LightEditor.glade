@@ -1545,7 +1545,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="halign">start</property>
-                                    <property name="label" translatable="yes">* experimental, requires X_ITE compatiblity</property>
+                                    <property name="label" translatable="yes">* experimental, requires X_ITE Compatiblity and Phong shading</property>
                                     <style>
                                       <class name="titania-small"/>
                                     </style>

@@ -147,7 +147,7 @@ throw (Error <INVALID_URL>,
 	if (std::regex_search (source .string, version))
 		source .string = addConstants (node -> getBrowser (), source .string);
 	else
-		source .string = addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source .string);
+		source .string = addConstants (node -> getBrowser (), "#version 100\n#line 1\n" + source .string);
 
 	return source;
 }
@@ -222,7 +222,7 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
 
 	std::ostringstream constants;
-	std::ifstream types (get_data ("shaders/Shaders/Types.h"));
+	std::ifstream types (basic::uri (get_data ("shaders/Shaders/Types.h")) .path ());
 
 	constants .imbue (std::locale::classic ());
 
@@ -265,7 +265,7 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 	constants << types .rdbuf ();
 	constants << "\n";
 
-	constants << "#line " << numLines << "\n";
+	constants << "#line " << numLines  << "\n";
 
 	return std::regex_replace (source, version, constants .str ());
 }

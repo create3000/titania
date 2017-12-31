@@ -1,5 +1,13 @@
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
+struct x3d_FogParameters {
+	mediump int   type;
+	mediump vec3  color;
+	mediump float visibilityRange;
+};
+
+//uniform x3d_FogParameters x3d_Fog;
+
 struct x3d_LightSourceParameters {
 	mediump int   type;
 	mediump vec3  color;
@@ -12,3 +20,18 @@ struct x3d_LightSourceParameters {
 	mediump float beamWidth;
 	mediump float cutOffAngle;
 };
+
+//uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+
+struct x3d_MaterialParameters  
+{   
+	mediump float ambientIntensity;
+	mediump vec3  diffuseColor;
+	mediump vec3  specularColor;
+	mediump vec3  emissiveColor;
+	mediump float shininess;
+	mediump float transparency;
+};
+
+//uniform x3d_MaterialParameters x3d_FrontMaterial;  
+//uniform x3d_MaterialParameters x3d_BackMaterial;        

@@ -192,9 +192,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	for (size_t i = 0, size = getBrowser () -> getMaxClipPlanes (); i < size; ++ i)
 		x3d_ClipPlane .emplace_back (glGetUniformLocation (program, ("x3d_ClipPlane[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
 
-	x3d_FogType            = glGetUniformLocation (program, "x3d_FogType");
-	x3d_FogColor           = glGetUniformLocation (program, "x3d_FogColor");
-	x3d_FogVisibilityRange = glGetUniformLocation (program, "x3d_FogVisibilityRange");
+	x3d_FogType            = getUniformLocation (program, "x3d_Fog.type",            "x3d_FogType");
+	x3d_FogColor           = getUniformLocation (program, "x3d_Fog.color",           "x3d_FogColor");
+	x3d_FogVisibilityRange = getUniformLocation (program, "x3d_Fog.visibilityRange", "x3d_FogVisibilityRange");
 
 	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");
 
@@ -205,16 +205,16 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	{
 		const auto is = basic::to_string (i, std::locale::classic ());
 
-		x3d_LightType             .emplace_back (glGetUniformLocation (program, ("x3d_LightType["             + is + "]") .c_str ()));
-		x3d_LightColor            .emplace_back (glGetUniformLocation (program, ("x3d_LightColor["            + is + "]") .c_str ()));
-		x3d_LightAmbientIntensity .emplace_back (glGetUniformLocation (program, ("x3d_LightAmbientIntensity[" + is + "]") .c_str ()));
-		x3d_LightIntensity        .emplace_back (glGetUniformLocation (program, ("x3d_LightIntensity["        + is + "]") .c_str ()));
-		x3d_LightAttenuation      .emplace_back (glGetUniformLocation (program, ("x3d_LightAttenuation["      + is + "]") .c_str ()));
-		x3d_LightLocation         .emplace_back (glGetUniformLocation (program, ("x3d_LightLocation["         + is + "]") .c_str ()));
-		x3d_LightDirection        .emplace_back (glGetUniformLocation (program, ("x3d_LightDirection["        + is + "]") .c_str ()));
-		x3d_LightBeamWidth        .emplace_back (glGetUniformLocation (program, ("x3d_LightBeamWidth["        + is + "]") .c_str ()));
-		x3d_LightCutOffAngle      .emplace_back (glGetUniformLocation (program, ("x3d_LightCutOffAngle["      + is + "]") .c_str ()));
-		x3d_LightRadius           .emplace_back (glGetUniformLocation (program, ("x3d_LightRadius["           + is + "]") .c_str ()));
+		x3d_LightType             .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].type",             "x3d_LightType[" + is + "]"));
+		x3d_LightColor            .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].color",            "x3d_LightColor[" + is + "]"));
+		x3d_LightAmbientIntensity .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].ambientIntensity", "x3d_LightAmbientIntensity[" + is + "]"));
+		x3d_LightIntensity        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].intensity",        "x3d_LightIntensity[" + is + "]"));
+		x3d_LightAttenuation      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].attenuation",      "x3d_LightAttenuation[" + is + "]"));
+		x3d_LightLocation         .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].location",         "x3d_LightLocation[" + is + "]"));
+		x3d_LightDirection        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].direction",        "x3d_LightDirection[" + is + "]"));
+		x3d_LightBeamWidth        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].beamWidth",        "x3d_LightBeamWidth[" + is + "]"));
+		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
+		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
 
 		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowColor["           + is + "]") .c_str ()));
 		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowIntensity["       + is + "]") .c_str ()));
@@ -225,19 +225,19 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	x3d_SeparateBackColor = glGetUniformLocation (program, "x3d_SeparateBackColor");
 
-	x3d_AmbientIntensity = glGetUniformLocation (program, "x3d_AmbientIntensity");
-	x3d_DiffuseColor     = glGetUniformLocation (program, "x3d_DiffuseColor");
-	x3d_SpecularColor    = glGetUniformLocation (program, "x3d_SpecularColor");
-	x3d_EmissiveColor    = glGetUniformLocation (program, "x3d_EmissiveColor");
-	x3d_Shininess        = glGetUniformLocation (program, "x3d_Shininess");
-	x3d_Transparency     = glGetUniformLocation (program, "x3d_Transparency");
+	x3d_AmbientIntensity = getUniformLocation (program, "x3d_FrontMaterial.ambientIntensity", "x3d_AmbientIntensity");
+	x3d_DiffuseColor     = getUniformLocation (program, "x3d_FrontMaterial.diffuseColor",     "x3d_DiffuseColor");
+	x3d_SpecularColor    = getUniformLocation (program, "x3d_FrontMaterial.specularColor",    "x3d_SpecularColor");
+	x3d_EmissiveColor    = getUniformLocation (program, "x3d_FrontMaterial.emissiveColor",    "x3d_EmissiveColor");
+	x3d_Shininess        = getUniformLocation (program, "x3d_FrontMaterial.shininess",        "x3d_Shininess");
+	x3d_Transparency     = getUniformLocation (program, "x3d_FrontMaterial.transparency",     "x3d_Transparency");
 
-	x3d_BackAmbientIntensity = glGetUniformLocation (program, "x3d_BackAmbientIntensity");
-	x3d_BackDiffuseColor     = glGetUniformLocation (program, "x3d_BackDiffuseColor");
-	x3d_BackSpecularColor    = glGetUniformLocation (program, "x3d_BackSpecularColor");
-	x3d_BackEmissiveColor    = glGetUniformLocation (program, "x3d_BackEmissiveColor");
-	x3d_BackShininess        = glGetUniformLocation (program, "x3d_BackShininess");
-	x3d_BackTransparency     = glGetUniformLocation (program, "x3d_BackTransparency");
+	x3d_BackAmbientIntensity = getUniformLocation (program, "x3d_BackMaterial.ambientIntensity", "x3d_BackAmbientIntensity");
+	x3d_BackDiffuseColor     = getUniformLocation (program, "x3d_BackMaterial.diffuseColor",     "x3d_BackDiffuseColor");
+	x3d_BackSpecularColor    = getUniformLocation (program, "x3d_BackMaterial.specularColor",    "x3d_BackSpecularColor");
+	x3d_BackEmissiveColor    = getUniformLocation (program, "x3d_BackMaterial.emissiveColor",    "x3d_BackEmissiveColor");
+	x3d_BackShininess        = getUniformLocation (program, "x3d_BackMaterial.shininess",        "x3d_BackShininess");
+	x3d_BackTransparency     = getUniformLocation (program, "x3d_BackMaterial.transparency",     "x3d_BackTransparency");
 
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
 	x3d_Texture2D      = getUniformLocation (program, "x3d_Texture2D", "x3d_Texture");

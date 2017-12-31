@@ -1,5 +1,6 @@
 /* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-*/
 
+uniform vec3      x3d_ShadowColor [x3d_MaxLights];
 uniform float     x3d_ShadowIntensity [x3d_MaxLights];
 uniform float     x3d_ShadowDiffusion [x3d_MaxLights];
 uniform mat4      x3d_ShadowMatrix [x3d_MaxLights];
@@ -11,7 +12,7 @@ uniform sampler2D x3d_ShadowMap [x3d_MaxLights];
 
 #ifdef X3D_SHADOWS
 
-Plane3 shadowPlane;
+Plane3 shadowPlane = Plane3 (vec3 (0.0), 0.0);
 
 float
 getShadowDepth (in int index, in vec2 shadowCoord)
