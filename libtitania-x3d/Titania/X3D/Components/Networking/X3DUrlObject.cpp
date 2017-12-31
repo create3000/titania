@@ -151,7 +151,7 @@ X3DUrlObject::watchFile (const basic::uri & URL)
 
 void
 X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
-                               const Glib::RefPtr <Gio::File> &,
+                               const Glib::RefPtr <Gio::File> & other_file,
                                Gio::FileMonitorEvent event)
 {
 	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)

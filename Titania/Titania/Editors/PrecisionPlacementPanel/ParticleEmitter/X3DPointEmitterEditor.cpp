@@ -70,7 +70,9 @@ X3DPointEmitterEditor::X3DPointEmitterEditor () :
 	                                     getPointEmitterDirectionBox (),
 	                                     "direction"),
 	                      directionTool (this, getPointEmitterDirectionToolBox (), "direction")
-{ }
+{
+	direction .setNormalize (true);
+}
 
 void
 X3DPointEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)

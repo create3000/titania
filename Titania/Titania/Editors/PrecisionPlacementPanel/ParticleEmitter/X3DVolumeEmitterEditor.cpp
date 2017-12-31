@@ -65,7 +65,9 @@ X3DVolumeEmitterEditor::X3DVolumeEmitterEditor () :
 	                                     getVolumeEmitterDirectionBox (),
 	                                     "direction"),
 	                      directionTool (this, getVolumeEmitterDirectionToolBox (), "direction")
-{ }
+{
+	direction .setNormalize (true);
+}
 
 void
 X3DVolumeEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)

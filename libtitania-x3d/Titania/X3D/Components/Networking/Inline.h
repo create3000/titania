@@ -200,22 +200,30 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> & other_file,
+	                 Gio::FileMonitorEvent event) final override;
+	
 
 private:
 
 	///  @name Event handlers
 
 	void
-	setSceneAsync (X3DScenePtr && scene);
-
-	void
-	setScene (X3DScenePtr && scene);
-
-	void
 	requestAsyncLoad ();
 
 	void
 	requestUnload ();
+
+	void
+	setSceneAsync (X3DScenePtr && scene);
+
+	void
+	setScene (X3DScenePtr && scene);
 
 	void
 	set_live ();

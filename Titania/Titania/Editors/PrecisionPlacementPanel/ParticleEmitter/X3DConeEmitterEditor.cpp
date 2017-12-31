@@ -75,6 +75,8 @@ X3DConeEmitterEditor::X3DConeEmitterEditor () :
 	                              angle (this, getConeEmitterAngleAdjustment (), getConeEmitterAngleSpinButton (), "angle")
 {
 	getConeEmitterAngleAdjustment () -> set_upper (pi <double>);
+
+	direction .setNormalize (true);
 }
 
 void

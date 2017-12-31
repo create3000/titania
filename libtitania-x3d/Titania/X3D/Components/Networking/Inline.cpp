@@ -198,52 +198,6 @@ throw (Error <NODE_NOT_AVAILABLE>,
 }
 
 void
-Inline::setSceneAsync (X3DScenePtr && value)
-{
-	if (value)
-	{
-		setLoadState (COMPLETE_STATE);
-		setScene (std::move (value));
-	}
-	else
-	{
-		setLoadState (FAILED_STATE);
-		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
-	}
-}
-
-void
-Inline::setScene (X3DScenePtr && value)
-{
-	if (scene)
-		scene -> getRootNodes () .removeInterest (group -> children ());
-
-	// First initialize,
-
-	if (checkLoadState () == COMPLETE_STATE)
-	{
-		value -> setExecutionContext (getExecutionContext ());
-		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
-		value -> setPrivate (getExecutionContext () -> getPrivate ());
-		value -> getRootNodes () .addInterest (group -> children ());
-
-		if (isInitialized ())
-			value -> setup ();
-
-		else
-			getExecutionContext () -> addUninitializedNode (value);
-	}
-
-	// then assign.
-
-	scene = std::move (value);
-
-	group -> children () = scene -> getRootNodes ();
-
-	watchFile (scene -> getWorldURL ());
-}
-
-void
 Inline::requestImmediateLoad ()
 {
 	if (not getBrowser () -> getLoadUrlObjects ())
@@ -308,6 +262,63 @@ Inline::requestUnload ()
 	setLoadState (NOT_STARTED_STATE);
 
 	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+}
+
+void
+Inline::setSceneAsync (X3DScenePtr && value)
+{
+	if (value)
+	{
+		setLoadState (COMPLETE_STATE);
+		setScene (std::move (value));
+	}
+	else
+	{
+		setLoadState (FAILED_STATE);
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+	}
+}
+
+void
+Inline::setScene (X3DScenePtr && value)
+{
+	if (scene)
+		scene -> getRootNodes () .removeInterest (group -> children ());
+
+	// First initialize,
+
+	if (checkLoadState () == COMPLETE_STATE)
+	{
+		value -> setExecutionContext (getExecutionContext ());
+		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
+		value -> setPrivate (getExecutionContext () -> getPrivate ());
+		value -> getRootNodes () .addInterest (group -> children ());
+
+		if (isInitialized ())
+			value -> setup ();
+
+		else
+			getExecutionContext () -> addUninitializedNode (value);
+	}
+
+	// then assign.
+
+	scene = std::move (value);
+
+	group -> children () = scene -> getRootNodes ();
+
+	watchFile (scene -> getWorldURL ());
+}
+
+void
+Inline::on_file_changed (const Glib::RefPtr <Gio::File> & file,
+                         const Glib::RefPtr <Gio::File> & other_file,
+                         Gio::FileMonitorEvent event)
+{
+	if (getBrowser () -> getExecutionContext () == scene)
+		return;
+
+	X3DUrlObject::on_file_changed (file, other_file, event);
 }
 
 void

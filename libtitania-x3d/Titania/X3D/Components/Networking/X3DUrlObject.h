@@ -140,6 +140,14 @@ protected:
 
 	void
 	watchFile (const basic::uri & URL);
+	
+	///  @name Event handlers
+
+	virtual
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> & other_file,
+	                 Gio::FileMonitorEvent event);
 
 	///  @name Destruction
 
@@ -149,15 +157,6 @@ protected:
 
 
 private:
-	
-	///  @name Operations
-
-	void
-	on_file_changed (const Glib::RefPtr <Gio::File> & file,
-	                 const Glib::RefPtr <Gio::File> &,
-	                 Gio::FileMonitorEvent event);
-
-	///  @name Fields
 
 	struct Fields
 	{

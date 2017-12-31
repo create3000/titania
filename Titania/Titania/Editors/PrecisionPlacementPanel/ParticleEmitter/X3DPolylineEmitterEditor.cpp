@@ -64,7 +64,9 @@ X3DPolylineEmitterEditor::X3DPolylineEmitterEditor () :
 	                                     getPolylineEmitterDirectionBox (),
 	                                     "direction"),
 	                      directionTool (this, getPolylineEmitterDirectionToolBox (), "direction")
-{ }
+{
+	direction .setNormalize (true);
+}
 
 void
 X3DPolylineEmitterEditor::set_widgets (const X3D::MFNode & emitterNodes)
