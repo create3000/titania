@@ -109,6 +109,9 @@ public:
 	bool
 	setUri (const basic::uri & uri);
 
+	basic::uri
+	getUri () const;
+
 	void
 	setVolume (double value);
 

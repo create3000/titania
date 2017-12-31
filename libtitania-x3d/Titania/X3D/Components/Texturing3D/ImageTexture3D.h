@@ -133,9 +133,8 @@ private:
 
 	///  @name Operations
 	
-	virtual
 	void
-	setTexture (const Texture3DPtr &) final override;
+	setTexture (const basic::uri URL, const Texture3DPtr & texture);
 
 	void
 	set_url ();

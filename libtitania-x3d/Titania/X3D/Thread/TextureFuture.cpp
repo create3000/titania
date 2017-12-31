@@ -206,7 +206,7 @@ TextureFuture::prepareEvents ()
 
 		getBrowser () -> prepareEvents () .removeInterest (&TextureFuture::prepareEvents, this);
 
-		callback (future .get ());
+		callback (loader .getWorldURL (), future .get ());
 
 		dispose ();
 	}
@@ -216,7 +216,7 @@ TextureFuture::prepareEvents ()
 	}
 	catch (const std::exception &)
 	{
-		callback (nullptr);
+		callback ("", nullptr);
 
 		dispose ();
 	}
@@ -231,7 +231,7 @@ TextureFuture::dispose ()
 
 	X3DFuture::dispose ();
 
-	callback = [ ] (const TexturePtr &) { };
+	callback = [ ] (const basic::uri &, const TexturePtr &) { };
 }
 
 TextureFuture::~TextureFuture ()

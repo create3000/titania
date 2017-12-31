@@ -79,7 +79,7 @@ AxonometricGridTool::AxonometricGridTool (X3DBrowserWindow* const browserWindow)
 void
 AxonometricGridTool::realize ()
 {
-	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AxonometricGridTool> ();
+	tool = getMasterBrowser () -> getExecutionContext () -> createNode <X3D::AxonometricGridTool> ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &

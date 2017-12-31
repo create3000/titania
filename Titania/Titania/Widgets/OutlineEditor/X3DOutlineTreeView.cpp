@@ -986,7 +986,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 						{
 							if (expandInlineNodes)
 							{
-								if (inlineNode -> getInternalScene () not_eq inlineNode -> getBrowser () -> getPrivateScene ())
+								if (inlineNode -> checkLoadState () == X3D::COMPLETE_STATE)
 								{
 									get_model () -> append (iter, OutlineIterType::X3DExecutionContext, inlineNode -> getInternalScene ());
 								}

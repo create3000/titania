@@ -107,7 +107,7 @@ X3DGridTool::set_browser ()
 	{
 		browser -> getActiveLayer () .addInterest (&X3DGridTool::set_activeLayer, this);
 
-		getTool () -> setExecutionContext (browser -> getPrivateScene ());
+		getTool () -> setExecutionContext (browser -> getExecutionContext ());
 
 		set_activeLayer ();
 	}

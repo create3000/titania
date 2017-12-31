@@ -23,7 +23,7 @@ DEF Shader Transform {
         language "GLSL"
         programs [
           DEF VertexShader ShaderProgram {
-            url "data:text/plain,
+            url "data:x-shader/x-vertex,
 
 precision mediump float;
 
@@ -46,7 +46,7 @@ main ()
           }
           DEF FragmentShader ShaderProgram {
             type "FRAGMENT"
-            url "data:text/plain,
+            url "data:x-shader/x-fragment,
 
 precision mediump float;
 

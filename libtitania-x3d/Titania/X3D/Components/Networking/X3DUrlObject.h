@@ -57,6 +57,8 @@
 
 #include <Titania/Basic/URI.h>
 
+#include <giomm.h>
+
 namespace titania {
 namespace X3D {
 
@@ -134,6 +136,11 @@ protected:
 	void
 	setLoadState (const LoadState, const bool = true);
 
+	///  @name Operations
+
+	void
+	watchFile (const basic::uri & URL);
+
 	///  @name Destruction
 
 	virtual
@@ -142,8 +149,15 @@ protected:
 
 
 private:
+	
+	///  @name Operations
 
-	///  @name Members
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> &,
+	                 Gio::FileMonitorEvent event);
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -155,6 +169,10 @@ private:
 	Fields fields;
 
 	SFEnum <LoadState> loadState;
+
+	///  @name Members
+
+	Glib::RefPtr <Gio::FileMonitor> fileMonitor;
 
 };
 

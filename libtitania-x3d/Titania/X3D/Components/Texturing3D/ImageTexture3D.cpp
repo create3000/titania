@@ -111,14 +111,19 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-ImageTexture3D::setTexture (const Texture3DPtr & texture)
+ImageTexture3D::setTexture (const basic::uri URL, const Texture3DPtr & texture)
 {
 	X3DTexture3DNode::setTexture (texture);
 
 	if (texture)
+	{
 		setLoadState (COMPLETE_STATE);
+		watchFile (URL);
+	}
 	else
+	{
 		setLoadState (FAILED_STATE);
+	}
 }
 
 void
@@ -144,7 +149,7 @@ ImageTexture3D::requestAsyncLoad ()
 	                                       url (),
 	                                       getBrowser () -> getMinTextureSize (),
 	                                       getBrowser () -> getMaxTextureSize (),
-	                                       std::bind (&ImageTexture3D::setTexture, this, _1)));
+	                                       std::bind (&ImageTexture3D::setTexture, this, _1, _2)));
 }
 
 void

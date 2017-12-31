@@ -77,14 +77,16 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	      loadingTotal (),
 	         loadCount (),
 	    loadUrlObjects (true),
-	      notifyOnLoad (false)
+	      notifyOnLoad (false),
+	  watchFileChanges (false)
 {
 	addChildObjects (privateScene,
 	                 loadSensor,
 	                 loadingTotal,
 	                 loadCount,
 	                 loadUrlObjects,
-	                 notifyOnLoad);
+	                 notifyOnLoad,
+	                 watchFileChanges);
 }
 
 void

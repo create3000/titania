@@ -78,7 +78,7 @@ GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 void
 GridTool::realize ()
 {
-	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ();
+	tool = getMasterBrowser () -> getExecutionContext () -> createNode <X3D::GridTool> ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &

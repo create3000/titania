@@ -181,6 +181,8 @@ MovieTexture::on_video_changed ()
 	components () = 3;
 
 	setLoadState (COMPLETE_STATE);
+
+	watchFile (getStream () -> getUri ());
 }
 
 void

@@ -63,7 +63,8 @@ X3DUrlObject::Fields::Fields () :
 X3DUrlObject::X3DUrlObject () :
 	X3DBaseNode (),
 	     fields (),
-	  loadState (NOT_STARTED_STATE)
+	  loadState (NOT_STARTED_STATE),
+	fileMonitor ()
 {
 	addType (X3DConstants::X3DUrlObject);
 
@@ -111,15 +112,57 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 void
 X3DUrlObject::setLoadState (const LoadState value, const bool notify)
 {
+	loadState = value;
+
 	if (notify)
 	{
 		getBrowser () -> removeLoadCount (this);
 
-		if (value == IN_PROGRESS_STATE)
+		if (loadState == IN_PROGRESS_STATE)
 			getBrowser () -> addLoadCount (this);
 	}
 
-	loadState = value;
+	// Reset fileMonitor.
+
+	if (loadState not_eq COMPLETE_STATE)
+		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+}
+
+void
+X3DUrlObject::watchFile (const basic::uri & URL)
+{
+	try
+	{
+		if (not getBrowser () -> getWatchFileChanges ())
+			return;
+	
+		if (not URL .is_local ())
+			return;
+	
+		fileMonitor = Gio::File::create_for_path (URL .path ()) -> monitor_file ();
+	
+		fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DUrlObject::on_file_changed));
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
+                               const Glib::RefPtr <Gio::File> &,
+                               Gio::FileMonitorEvent event)
+{
+	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+		return;
+
+	if (checkLoadState () not_eq COMPLETE_STATE)
+		return;
+
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
 }
 
 void

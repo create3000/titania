@@ -76,17 +76,6 @@ public:
 	getUserAgent () const
 	{ return userAgent; }
 
-	const X3DScenePtr &
-	getPrivateScene () const
-	{ return privateScene; }
-
-	const X3DPtr <LoadSensor> &
-	getLoadSensor () const
-	{ return loadSensor; }
-
-	const std::shared_ptr <std::mutex> &
-	getDownloadMutex ();
-
 	void
 	setLoadUrlObjects (const bool value)
 	{ loadUrlObjects = value; }
@@ -94,14 +83,6 @@ public:
 	const SFBool &
 	getLoadUrlObjects () const
 	{ return loadUrlObjects; }
-
-	void
-	setNotifyOnLoad (const bool value)
-	{ notifyOnLoad = value; }
-
-	const SFBool &
-	getNotifyOnLoad () const
-	{ return notifyOnLoad; }
 
 	const SFInt32 &
 	getLoadingTotal () const
@@ -112,13 +93,20 @@ public:
 	{ return loadCount; }
 
 	void
-	addLoadCount (const void* const);
+	setNotifyOnLoad (const bool value)
+	{ notifyOnLoad = value; }
+
+	const SFBool &
+	getNotifyOnLoad () const
+	{ return notifyOnLoad; }
 
 	void
-	removeLoadCount (const void* const);
+	setWatchFileChanges (const bool value)
+	{ watchFileChanges = value; }
 
-	void
-	resetLoadCount ();
+	const SFBool &
+	getWatchFileChanges () const
+	{ return watchFileChanges; }
 
 	///  @name Destruction
 
@@ -132,6 +120,23 @@ public:
 
 protected:
 
+	///  @name Fiends
+
+	friend class SceneFuture;
+	friend class TextureFuture;
+	friend class Texture3DFuture;
+
+	friend class ExternProtoDeclaration;
+	friend class GeoLOD;
+	friend class Inline;
+	friend class Notification;
+	friend class RenderingProperties;
+	friend class X3DEnvironmentalEffectsContext;
+	friend class X3DShadersContext;
+	friend class X3DToolObject;
+	friend class X3DUrlObject;
+	friend class X3DViewpointNode;
+
 	///  @name Construction
 
 	X3DNetworkingContext ();
@@ -139,6 +144,28 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	const X3DScenePtr &
+	getPrivateScene () const
+	{ return privateScene; }
+
+	const X3DPtr <LoadSensor> &
+	getLoadSensor () const
+	{ return loadSensor; }
+
+	const std::shared_ptr <std::mutex> &
+	getDownloadMutex ();
+
+	void
+	addLoadCount (const void* const);
+
+	void
+	removeLoadCount (const void* const);
+
+	void
+	resetLoadCount ();
 
 
 private:
@@ -167,6 +194,7 @@ private:
 	SFInt32                                   loadCount;
 	SFBool                                    loadUrlObjects;
 	SFBool                                    notifyOnLoad;
+	SFBool                                    watchFileChanges;
 
 };
 

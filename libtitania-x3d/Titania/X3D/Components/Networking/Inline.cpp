@@ -239,6 +239,8 @@ Inline::setScene (X3DScenePtr && value)
 	scene = std::move (value);
 
 	group -> children () = scene -> getRootNodes ();
+
+	watchFile (scene -> getWorldURL ());
 }
 
 void

@@ -67,7 +67,7 @@ class Texture3DFuture :
 {
 public:
 
-	using Callback = std::function <void (const Texture3DPtr &)>;
+	using Callback = std::function <void (const basic::uri URL, const Texture3DPtr & texture)>;
 
 	///  @name Construction
 

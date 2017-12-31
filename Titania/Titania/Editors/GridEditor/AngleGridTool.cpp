@@ -81,7 +81,7 @@ AngleGridTool::AngleGridTool (X3DBrowserWindow* const browserWindow) :
 void
 AngleGridTool::realize ()
 {
-	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::AngleGridTool> ();
+	tool = getMasterBrowser () -> getExecutionContext () -> createNode <X3D::AngleGridTool> ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &

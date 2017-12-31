@@ -290,6 +290,7 @@ X3DNotebookPage::set_splashScreen ()
 
 	mainBrowser -> set_opacity (1);
 	mainBrowser -> setNotifyOnLoad (true);
+	mainBrowser -> setWatchFileChanges (true);
 	mainBrowser -> loadURL ({ url .str () }, { });
 }
 

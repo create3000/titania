@@ -155,6 +155,12 @@ MediaStream::setUri (const basic::uri & uri)
 	return true;
 }
 
+basic::uri
+MediaStream::getUri () const
+{
+	return basic::uri (player -> property_uri () .get_value ());
+}
+
 void
 MediaStream::setVolume (double value)
 {

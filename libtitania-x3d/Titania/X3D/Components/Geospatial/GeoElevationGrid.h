@@ -341,7 +341,7 @@ private:
 	build () final override;
 
 	void
-	setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight);
+	setHeightMapTexture (const basic::uri & url, const TexturePtr & texture, const double minHeight, const double maxHeight);
 
 	void
 	setHeightMapImage (Magick::Image & image, const double minHeight, const double maxHeight);

@@ -155,9 +155,8 @@ private:
 
 	///  @name Operations
 	
-	virtual
 	void
-	setTexture (const TexturePtr & texture) final override;
+	setTexture (const basic::uri URL, const TexturePtr & texture);
 
 	void
 	set_url ();
