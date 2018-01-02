@@ -68,6 +68,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Numbers/Vector4.cpp \
 	Titania/Math/Utility/MatrixStack.cpp \
 	Titania/OS/file_exists.cpp \
+	Titania/OS/file_modification_time.cpp \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
 	Titania/OS/is_directory.cpp \

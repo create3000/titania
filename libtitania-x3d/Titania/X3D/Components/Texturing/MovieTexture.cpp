@@ -163,6 +163,7 @@ MovieTexture::load ()
 		clearTexture ();
 
 		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
 		return;
 	}
 
@@ -181,8 +182,7 @@ MovieTexture::on_video_changed ()
 	components () = 3;
 
 	setLoadState (COMPLETE_STATE);
-
-	monitorFile (getStream () -> getUri ());
+	setLoadedUrl (getStream () -> getUri ());
 }
 
 void

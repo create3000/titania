@@ -127,6 +127,10 @@ public:
 	getSaveConfirmed () const
 	{ return saveConfirmed; }
 
+	X3D::time_type
+	getSavedTime () const
+	{ return savedTime; }
+
 	bool
 	isSaved ();
 
@@ -169,10 +173,16 @@ protected:
 
 private:
 
-	///  @name Operations
+	///  @name Member access
 
 	std::string
 	getTitle () const;
+
+	void
+	setSavedTime (const X3D::time_type value)
+	{ savedTime = value; }
+
+	///  @name Operations
 
 	void
 	reset ();
@@ -201,6 +211,9 @@ private:
 	set_executionContext ();
 
 	void
+	set_file_changed (const X3D::time_type & modificationTime);
+
+	void
 	set_soundSources ();
 
 	void
@@ -222,6 +235,7 @@ private:
 	X3D::X3DPtr <X3D::WorldInfo> defaultWorldInfo;
 	bool                         modified;
 	bool                         saveConfirmed;
+	X3D::time_type               savedTime;
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 	

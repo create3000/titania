@@ -428,12 +428,6 @@ X3DBrowserWidget::load (const basic::uri & URL)
 }
 
 bool
-X3DBrowserWidget::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
-{
-	return save (getCurrentScene (), worldURL, outputStyle, copy);
-}
-
-bool
 X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	try

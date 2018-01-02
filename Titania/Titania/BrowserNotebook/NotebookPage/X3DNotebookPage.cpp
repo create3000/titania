@@ -53,11 +53,13 @@
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 #include "../../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../../Editors/BackgroundImageEditor/BackgroundImage.h"
 
 #include "../BrowserPanel/BrowserPanel.h"
 
+#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
@@ -76,6 +78,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	        defaultWorldInfo (mainBrowser -> createNode <X3D::WorldInfo> ()),
 	                modified (false),
 	           saveConfirmed (false),
+	               savedTime (-1),
 	            fileMonitors (),
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
@@ -145,10 +148,15 @@ X3DNotebookPage::setModified (const bool value)
 {
 	modified = value;
 
-	setSaveConfirmed (false);
-
-	if (not value)
+	if (value)
+	{
+		setSaveConfirmed (false);
+	}
+	else
+	{
+		setSavedTime (os::file_modification_time (getScene () -> getWorldURL () .path ()));
 		getUndoHistory () .setSaved ();
+	}
 
 	updateTitle ();
 }
@@ -226,8 +234,6 @@ X3DNotebookPage::updateTitle ()
 std::string
 X3DNotebookPage::getTitle () const
 {
-	const bool modified = getModified ();
-
 	auto title = mainBrowser -> getExecutionContext () -> getTitle ();
 
 	if (title .empty ())
@@ -236,7 +242,7 @@ X3DNotebookPage::getTitle () const
 	if (title .empty () or getScene () -> getWorldURL () .empty ())
 		title = _ ("New Scene");
 
-	if (modified)
+	if (getModified ())
 		title += "*";
 
 	return title;
@@ -259,8 +265,8 @@ X3DNotebookPage::reset ()
 
 	undoHistory .clear ();
 
-	modified      = false;
-	saveConfirmed = false;
+	setModified (false);
+	setSaveConfirmed (false);
 
 	for (const auto & fileMonitor : fileMonitors)
 	{
@@ -327,12 +333,17 @@ X3DNotebookPage::set_initialized ()
 		{
 			// Scene is now saved to file or changes are discarded.
 
-			reset ();
+			scene -> file_changed () .removeInterest (&X3DNotebookPage::set_file_changed, this);
 
 			scene = currentScene;
+
+			scene -> file_changed () .addInterest (&X3DNotebookPage::set_file_changed, this);
+
+			reset ();
 		}
 		else
 		{
+			// Restore old execution context.
 			mainBrowser -> replaceWorld (executionContext);
 			return;
 		}
@@ -380,6 +391,32 @@ void
 X3DNotebookPage::set_executionContext ()
 {
 	updateTitle ();
+}
+
+void
+X3DNotebookPage::set_file_changed (const X3D::time_type & modificationTime)
+{
+	if (modificationTime == getSavedTime ())
+		return;
+
+	if (getModified ())
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	
+		dialog -> setType (Gtk::MESSAGE_QUESTION);
+		dialog -> setMessage (_ ("File modified externally!"));
+		dialog -> setText (_ (basic::sprintf ("»%s« has been modified by another program. Reload?", getScene () -> getWorldURL () .basename () .c_str ())));
+		dialog -> getOkButton () .set_label ("gtk-refresh");
+	
+		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+			return;
+	}
+
+	// Reload
+
+	reset ();
+
+	mainBrowser -> loadURL ({ getScene () -> getWorldURL () .str () }, { });
 }
 
 void

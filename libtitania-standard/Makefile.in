@@ -184,12 +184,12 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Numbers/Vector3.lo \
 	Titania/Math/Numbers/Vector4.lo \
 	Titania/Math/Utility/MatrixStack.lo Titania/OS/file_exists.lo \
-	Titania/OS/file_size.lo Titania/OS/find_data_file.lo \
-	Titania/OS/is_directory.lo Titania/OS/is_file.lo \
-	Titania/OS/load_file.lo Titania/OS/mkdir.lo \
-	Titania/OS/mkstemps.lo Titania/OS/program_exists.lo \
-	Titania/OS/realpath.lo Titania/OS/rename.lo \
-	Titania/OS/system.lo Titania/OS/unlink.lo \
+	Titania/OS/file_modification_time.lo Titania/OS/file_size.lo \
+	Titania/OS/find_data_file.lo Titania/OS/is_directory.lo \
+	Titania/OS/is_file.lo Titania/OS/load_file.lo \
+	Titania/OS/mkdir.lo Titania/OS/mkstemps.lo \
+	Titania/OS/program_exists.lo Titania/OS/realpath.lo \
+	Titania/OS/rename.lo Titania/OS/system.lo Titania/OS/unlink.lo \
 	Titania/RegEx/regex_escape.lo Titania/String/dtoa.lo \
 	Titania/String/naturally_compare.lo Titania/String/sprintf.lo \
 	Titania/String/strfsize.lo Titania/String/trim.lo
@@ -497,6 +497,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Numbers/Vector4.cpp \
 	Titania/Math/Utility/MatrixStack.cpp \
 	Titania/OS/file_exists.cpp \
+	Titania/OS/file_modification_time.cpp \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
 	Titania/OS/is_directory.cpp \
@@ -849,6 +850,8 @@ Titania/OS/$(DEPDIR)/$(am__dirstamp):
 	@: > Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/file_exists.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
+Titania/OS/file_modification_time.lo: Titania/OS/$(am__dirstamp) \
+	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/file_size.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/find_data_file.lo: Titania/OS/$(am__dirstamp) \
@@ -1008,6 +1011,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_exists.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_modification_time.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_size.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_directory.Plo@am__quote@

@@ -114,7 +114,7 @@ Selection::set_initialized ()
 	if (selectGeometry)
 		getBrowser () -> getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
 
-	clearNodes ();
+	//clearNodes ();
 }
 
 void

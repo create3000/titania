@@ -122,11 +122,12 @@ ImageTexture::setTexture (const basic::uri URL, const TexturePtr & texture)
 	if (texture)
 	{
 		setLoadState (COMPLETE_STATE);
-		monitorFile (URL);
+		setLoadedUrl (URL);
 	}
 	else
 	{
 		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
 	}
 }
 

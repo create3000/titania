@@ -147,6 +147,7 @@ AudioClip::load ()
 		duration_changed () = -1;
 
 		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
 		return;
 	}
 
@@ -163,8 +164,7 @@ AudioClip::on_audio_changed ()
 		getStream () -> play ();
 
 	setLoadState (COMPLETE_STATE);
-
-	monitorFile (getStream () -> getUri ());
+	setLoadedUrl (getStream () -> getUri ());
 }
 
 void

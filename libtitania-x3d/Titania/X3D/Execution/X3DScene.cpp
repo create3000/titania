@@ -180,7 +180,7 @@ X3DScene::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
 		return;
 
-	fileChangedOutput = getCurrentTime ();
+	fileChangedOutput = os::file_modification_time (getWorldURL () .path ());
 }
 
 void

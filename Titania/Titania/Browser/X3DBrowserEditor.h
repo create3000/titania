@@ -98,7 +98,7 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy) override;
+	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy);
 
 	virtual
 	void
@@ -265,6 +265,7 @@ private:
 
 	///  @name Members
 
+	X3D::X3DScenePtr                   scene;
 	X3D::X3DExecutionContextPtr        executionContext;
 	X3D::SFBool                        editing;
 	X3D::ClipboardPtr                  clipboard;

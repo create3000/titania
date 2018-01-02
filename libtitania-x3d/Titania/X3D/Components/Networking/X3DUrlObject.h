@@ -108,6 +108,10 @@ public:
 	checkLoadState () const
 	{ return loadState; }
 
+	const basic::uri &
+	getLoadedUrl () const
+	{ return loadedUrl; }
+
 	virtual
 	const SFTime &
 	file_changed () const
@@ -140,10 +144,8 @@ protected:
 	void
 	setLoadState (const LoadState value, const bool notify = true);
 
-	///  @name Operations
-
 	void
-	monitorFile (const basic::uri & URL);
+	setLoadedUrl (const basic::uri & value);
 	
 	///  @name Destruction
 
@@ -155,6 +157,9 @@ protected:
 private:
 
 	///  @name Event handlers
+
+	void
+	monitorFile (const basic::uri & URL);
 
 	void
 	on_file_changed (const Glib::RefPtr <Gio::File> & file,
@@ -176,6 +181,7 @@ private:
 	Fields fields;
 
 	SFEnum <LoadState> loadState;
+	basic::uri         loadedUrl;
 	SFTime             fileChangedOutput;
 
 	///  @name Members

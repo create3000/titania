@@ -417,7 +417,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 	setMetaData ();
 
 	// Save world
-	const bool saved = X3DBrowserWidget::save (worldURL, outputStyle, copy);
+	const bool saved = X3DBrowserWidget::save (getCurrentScene (), worldURL, outputStyle, copy);
 
 	if (saved)
 	{

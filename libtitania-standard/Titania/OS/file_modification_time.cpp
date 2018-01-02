@@ -48,22 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#include "file_exists.h"
 
-#include "OS/file_exists.h"
-#include "OS/file_modification_time.h"
-#include "OS/file_size.h"
-#include "OS/find_data_file.h"
-#include "OS/is_directory.h"
-#include "OS/is_file.h"
-#include "OS/load_file.h"
-#include "OS/mkdir.h"
-#include "OS/mkstemps.h"
-#include "OS/program_exists.h"
-#include "OS/realpath.h"
-#include "OS/rename.h"
-#include "OS/system.h"
-#include "OS/unlink.h"
+#include <sys/stat.h>
 
-#endif
+namespace titania {
+namespace os {
+
+double
+file_modification_time (const std::string & pathname)
+{
+	struct stat sb;
+
+	if (stat (pathname .c_str (), &sb) == 0)
+		return double (sb .st_mtim .tv_sec) + double (sb .st_mtim .tv_nsec) * 10e-9;
+
+	return -1;
+}
+
+} // os
+} // titania

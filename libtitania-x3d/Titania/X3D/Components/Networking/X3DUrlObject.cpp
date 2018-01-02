@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace X3D {
 
@@ -64,6 +66,7 @@ X3DUrlObject::X3DUrlObject () :
 	    X3DBaseNode (),
 	         fields (),
 	      loadState (NOT_STARTED_STATE),
+	      loadedUrl (),
  fileChangedOutput (),
 	    fileMonitor ()
 {
@@ -136,13 +139,21 @@ X3DUrlObject::setLoadState (const LoadState value, const bool notify)
 }
 
 void
+X3DUrlObject::setLoadedUrl (const basic::uri & value)
+{
+	loadedUrl = value;
+
+	monitorFile (loadedUrl);
+}
+
+void
 X3DUrlObject::monitorFile (const basic::uri & URL)
 {
 	try
 	{
 		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
 
-		if (not URL .is_local ())
+		if (URL .empty () or not URL .is_local ())
 			return;
 
 		fileMonitor = Gio::File::create_for_path (URL .path ()) -> monitor_file ();
@@ -166,7 +177,7 @@ X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	if (checkLoadState () not_eq COMPLETE_STATE)
 		return;
 
-	fileChangedOutput = getCurrentTime ();
+	fileChangedOutput = os::file_modification_time (getLoadedUrl () .path ());
 }
 
 void

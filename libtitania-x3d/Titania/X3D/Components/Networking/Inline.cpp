@@ -266,11 +266,13 @@ Inline::setSceneAsync (X3DScenePtr && value)
 	if (value)
 	{
 		setLoadState (COMPLETE_STATE);
+		setLoadedUrl (value -> getWorldURL ());
 		setScene (std::move (value));
 	}
 	else
 	{
 		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
 		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 	}
 }
@@ -302,8 +304,6 @@ Inline::setScene (X3DScenePtr && value)
 	scene = std::move (value);
 
 	group -> children () = scene -> getRootNodes ();
-
-	monitorFile (scene -> getWorldURL ());
 }
 
 void

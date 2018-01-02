@@ -144,10 +144,6 @@ public:
 	NotebookPagePtr
 	append (const basic::uri & URL);
 
-	virtual
-	bool
-	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy);
-
 	bool
 	save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const std::string & outputStyle, const bool copy);
 

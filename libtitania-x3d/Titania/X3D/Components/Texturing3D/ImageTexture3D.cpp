@@ -118,11 +118,12 @@ ImageTexture3D::setTexture (const basic::uri URL, const Texture3DPtr & texture)
 	if (texture)
 	{
 		setLoadState (COMPLETE_STATE);
-		monitorFile (URL);
+		setLoadedUrl (URL);
 	}
 	else
 	{
 		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
 	}
 }
 

@@ -313,6 +313,7 @@ am_titania_OBJECTS =  \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBackgroundImageEditorInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DBackgroundSizeEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DBrowserPanelInterface.$(OBJEXT) \
@@ -850,6 +851,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBackgroundImageEditorInterface.cpp \
+	Titania/UserInterfaces/X3DBackgroundSizeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserPanelInterface.cpp \
@@ -1968,6 +1970,9 @@ Titania/UserInterfaces/X3DBackgroundEditorInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DBackgroundImageEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DBackgroundSizeEditorInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DBindableNodeEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -2538,6 +2543,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DAppearanceEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBackgroundEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBackgroundImageEditorInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBackgroundSizeEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBindableNodeEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBindableNodeListInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DBrowserPanelInterface.Po@am__quote@
