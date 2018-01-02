@@ -443,7 +443,7 @@ X3DNotebookPage::on_file_changed ()
 	
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (_ ("File modified externally!"));
-		dialog -> setText (_ (basic::sprintf ("»%s« has been modified by another program. Reload?", getScene () -> getWorldURL () .basename () .c_str ())));
+		dialog -> setText (_ (basic::sprintf ("»%s« has been modified by another program. Reload and discard changes?", getScene () -> getWorldURL () .basename () .c_str ())));
 		dialog -> getOkButton () .set_label ("gtk-refresh");
 	
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)

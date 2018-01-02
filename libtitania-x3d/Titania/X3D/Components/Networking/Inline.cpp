@@ -213,18 +213,22 @@ Inline::requestImmediateLoad ()
 	
 		try
 		{
+			auto scene = loader .createX3DFromURL (url ());
+
 			setLoadState (COMPLETE_STATE);
-			setScene (loader .createX3DFromURL (url ()));
+			setLoadedUrl (scene -> getWorldURL ());
+			setScene (std::move (scene));
 		}
 		catch (const X3DError & error)
 		{
-			setLoadState (FAILED_STATE);
-			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
+			getBrowser () -> println (error .what ());
 	
 			for (const auto & string : loader .getUrlError ())
 				getBrowser () -> println (string .str ());
-	
-			getBrowser () -> println (error .what ());
+
+			setLoadState (FAILED_STATE);
+			setLoadedUrl ("");
+			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 		}
 	}
 }
