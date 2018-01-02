@@ -213,6 +213,15 @@ private:
 	void
 	set_file_changed (const X3D::time_type & modificationTime);
 
+	bool
+	on_window_focus_in_event (GdkEventFocus* event);
+	
+	void
+	on_notebook_switch_page (Gtk::Widget*, guint pageNumber);
+	
+	void
+	on_file_changed ();
+
 	void
 	set_soundSources ();
 
@@ -236,6 +245,8 @@ private:
 	bool                         modified;
 	bool                         saveConfirmed;
 	X3D::time_type               savedTime;
+	sigc::connection             focusInConnection;
+	sigc::connection             switchPageConnection;
 
 	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
 	

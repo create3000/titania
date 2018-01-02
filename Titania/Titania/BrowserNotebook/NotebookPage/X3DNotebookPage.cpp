@@ -79,6 +79,8 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                modified (false),
 	           saveConfirmed (false),
 	               savedTime (-1),
+	       focusInConnection (),
+	    switchPageConnection (),
 	            fileMonitors (),
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
@@ -398,6 +400,42 @@ X3DNotebookPage::set_file_changed (const X3D::time_type & modificationTime)
 {
 	if (modificationTime == getSavedTime ())
 		return;
+
+	if (getBrowserWindow () -> getBrowserNotebook () .get_current_page () not_eq getPageNumber ())
+	{
+		switchPageConnection .disconnect ();
+		switchPageConnection = getBrowserWindow () -> getBrowserNotebook () .signal_switch_page () .connect (sigc::mem_fun (this, &X3DNotebookPage::on_notebook_switch_page));
+	}
+	else if (getModified () and not getBrowserWindow () -> getWindow () .has_focus ())
+	{
+		focusInConnection .disconnect ();
+		focusInConnection = getBrowserWindow () -> getWindow () .signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DNotebookPage::on_window_focus_in_event));
+	}
+	else
+	{
+		on_file_changed ();
+	}
+}
+
+bool
+X3DNotebookPage::on_window_focus_in_event (GdkEventFocus* event)
+{
+	on_file_changed ();
+	return false;
+}
+
+void
+X3DNotebookPage::on_notebook_switch_page (Gtk::Widget*, guint pageNumber)
+{
+	if (int32_t (pageNumber) == getPageNumber ())
+		on_file_changed ();
+}
+
+void
+X3DNotebookPage::on_file_changed ()
+{
+	focusInConnection    .disconnect ();
+	switchPageConnection .disconnect ();
 
 	if (getModified ())
 	{
