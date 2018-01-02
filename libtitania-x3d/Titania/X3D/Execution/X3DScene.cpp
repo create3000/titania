@@ -1351,6 +1351,8 @@ X3DScene::dispose ()
 	metadatas     .clear ();
 	exportedNodes .clear ();
 
+	fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
 

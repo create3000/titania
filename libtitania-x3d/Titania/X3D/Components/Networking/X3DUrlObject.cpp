@@ -195,6 +195,8 @@ void
 X3DUrlObject::dispose ()
 {
 	getBrowser () -> removeLoadCount (this);
+
+	fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
 }
 
 } // X3D
