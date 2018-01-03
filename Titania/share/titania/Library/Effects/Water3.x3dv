@@ -1,4 +1,4 @@
-#X3D V3.0 utf8 Titania V3.0.3
+#X3D V3.0 utf8 Titania V4.0.4
 
 PROFILE Full
 
@@ -7,10 +7,9 @@ UNIT angle degree 0.0174532925199432958
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.3, http://titania.create3000.de"
+META "generator" "Titania V4.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water3.x3dv"
-META "modified" "Fri, 28 Apr 2017 07:07:37 GMT"
-META "outputStyle" "Nicest"
+META "modified" "Wed, 03 Jan 2018 09:18:33 GMT"
 
 PROTO Water3 [
   inputOutput SFFloat amplitude 0.25
@@ -128,101 +127,27 @@ main ()
       DEF WaterFragment ShaderPart {
         type "FRAGMENT"
         url "data:text/plain;charset=utf-8,
-// -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
-//
-//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-// 
-//  Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
-// 
-//  All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
-// 
-//  The copyright notice above does not evidence any actual of intended
-//  publication of such source code, and is an unpublished work by create3000.
-//  This material contains CONFIDENTIAL INFORMATION that is the property of
-//  create3000.
-// 
-//  No permission is granted to copy, distribute, or create derivative works from
-//  the contents of this software, in whole or in part, without the prior written
-//  permission of create3000.
-// 
-//  NON-MILITARY USE ONLY
-// 
-//  All create3000 software are effectively free software with a non-military use
-//  restriction. It is free. Well commented source is provided. You may reuse the
-//  source in any way you please with the exception anything that uses it must be
-//  marked to indicate is contains 'non-military use only' components.
-// 
-//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-// 
-//  Copyright 2015, 2016 Holger Seelig <holger.seelig@yahoo.de>.
-// 
-//  This file is part of the Cobweb Project.
-// 
-//  Cobweb is free software: you can redistribute it and/or modify it under the
-//  terms of the GNU General Public License version 3 only, as published by the
-//  Free Software Foundation.
-// 
-//  Cobweb is distributed in the hope that it will be useful, but WITHOUT ANY
-//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-//  A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
-//  details (a copy is included in the LICENSE file that accompanied this code).
-// 
-//  You should have received a copy of the GNU General Public License version 3
-//  along with Cobweb.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
-//  copy of the GPLv3 License.
-// 
-//  For Silvio, Joy and Adi.
-
 
 precision mediump float;
 
 uniform int x3d_GeometryType;
-
 uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
-
-uniform int   x3d_FogType;
-uniform vec3  x3d_FogColor;
-uniform float x3d_FogVisibilityRange;
+uniform x3d_FogParameters x3d_Fog;
 
 uniform float x3d_LinewidthScaleFactor;
 uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, otherwise false
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 
-uniform int   x3d_LightType [x3d_MaxLights];
-uniform bool  x3d_LightOn [x3d_MaxLights];
-uniform vec3  x3d_LightColor [x3d_MaxLights];
-uniform float x3d_LightIntensity [x3d_MaxLights];
-uniform float x3d_LightAmbientIntensity [x3d_MaxLights];
-uniform vec3  x3d_LightAttenuation [x3d_MaxLights];
-uniform vec3  x3d_LightLocation [x3d_MaxLights];
-uniform vec3  x3d_LightDirection [x3d_MaxLights];
-uniform float x3d_LightRadius [x3d_MaxLights];
-uniform float x3d_LightBeamWidth [x3d_MaxLights];
-uniform float x3d_LightCutOffAngle [x3d_MaxLights];
-
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
 uniform bool x3d_SeparateBackColor;
+uniform x3d_MaterialParameters x3d_FrontMaterial;
+uniform x3d_MaterialParameters x3d_BackMaterial;
 
-uniform float x3d_AmbientIntensity;
-uniform vec3  x3d_DiffuseColor;
-uniform vec3  x3d_SpecularColor;
-uniform vec3  x3d_EmissiveColor;
-uniform float x3d_Shininess;
-uniform float x3d_Transparency;
-
-uniform float x3d_BackAmbientIntensity;
-uniform vec3  x3d_BackDiffuseColor;
-uniform vec3  x3d_BackSpecularColor;
-uniform vec3  x3d_BackEmissiveColor;
-uniform float x3d_BackShininess;
-uniform float x3d_BackTransparency;
-
-uniform int         x3d_TextureType [x3d_MaxTextures]; // true if a X3DTexture2DNode is attached, otherwise false
+uniform int         x3d_TextureType [x3d_MaxTextures];
 uniform sampler2D   x3d_Texture2D [x3d_MaxTextures];
 uniform samplerCube x3d_CubeMapTexture [x3d_MaxTextures];
 
 uniform mat3  x3d_NormalMatrix;
-
-#define WAVE_MAX 8
 
 uniform float set_time;
 uniform float amplitude;
@@ -366,12 +291,12 @@ getMaterialColor ()
 
 		bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
 
-		float ambientIntensity = frontColor ? x3d_AmbientIntensity : x3d_BackAmbientIntensity;
-		vec3  diffuseColor     = frontColor ? x3d_DiffuseColor     : x3d_BackDiffuseColor;
-		vec3  specularColor    = frontColor ? x3d_SpecularColor    : x3d_BackSpecularColor;
-		vec3  emissiveColor    = frontColor ? x3d_EmissiveColor    : x3d_BackEmissiveColor;
-		float shininess        = frontColor ? x3d_Shininess        : x3d_BackShininess;
-		float transparency     = frontColor ? x3d_Transparency     : x3d_BackTransparency;
+		float ambientIntensity = frontColor ? x3d_FrontMaterial .ambientIntensity : x3d_BackMaterial .ambientIntensity;
+		vec3  diffuseColor     = frontColor ? x3d_FrontMaterial .diffuseColor     : x3d_BackMaterial .diffuseColor;
+		vec3  specularColor    = frontColor ? x3d_FrontMaterial .specularColor    : x3d_BackMaterial .specularColor;
+		vec3  emissiveColor    = frontColor ? x3d_FrontMaterial .emissiveColor    : x3d_BackMaterial .emissiveColor;
+		float shininess        = frontColor ? x3d_FrontMaterial .shininess        : x3d_BackMaterial .shininess;
+		float transparency     = frontColor ? x3d_FrontMaterial .transparency     : x3d_BackMaterial .transparency;
 
 		float alpha = 1.0 - transparency;
 
@@ -399,25 +324,25 @@ getMaterialColor ()
 
 		for (int i = 0; i < x3d_MaxLights; ++ i)
 		{
-			int lightType = x3d_LightType [i];
+			x3d_LightSourceParameters light = x3d_LightSource [i];
 
-			if (lightType == x3d_NoneLight)
+			if (light .type == x3d_NoneLight)
 				break;
 
-			vec3  vL = x3d_LightLocation [i] - v;
+			vec3  vL = light .location - v;
 			float dL = length (vL);
-			bool  di = lightType == x3d_DirectionalLight;
+			bool  di = light .type == x3d_DirectionalLight;
 
-			if (di || dL <= x3d_LightRadius [i])
+			if (di || dL <= light .radius)
 			{
-				vec3 d = x3d_LightDirection [i];
-				vec3 c = x3d_LightAttenuation [i];
+				vec3 d = light .direction;
+				vec3 c = light .attenuation;
 				vec3 L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
 				vec3 H = normalize (L + V);             // Specular term
 
 				float lightAngle     = max (0.0, dot (N, L));
 				float specularFactor = pow (max (0.0, dot (H, N)), shininess * 4096.0) * 128.0;
-				vec3  ambientColor   = x3d_LightAmbientIntensity [i] * ambientTerm;
+				vec3  ambientColor   = light .ambientIntensity * ambientTerm;
 
 				vec3 waterColor = clamp ((specularFactor * lightAngle * (1.0 - fresnel)) * specularColor, 0.0, 1.0);
 
@@ -430,9 +355,9 @@ getMaterialColor ()
 				float height = (y + AMPLITUDE_MAX) / (AMPLITUDE_MAX * 2.0);
 
 				waterColor += diffuseColor * (1.0 - (1.0 - height) * contrast);
-				waterColor *= x3d_LightColor [i];
+				waterColor *= light .color;
 				waterColor += ambientColor;
- 				waterColor *= x3d_LightIntensity [i];
+ 				waterColor *= light .intensity;
  
   				finalColor += waterColor;
   			}
@@ -458,19 +383,19 @@ getMaterialColor ()
 vec3
 getFogColor (in vec3 color)
 {
-	if (x3d_FogType == x3d_NoneFog)
+	if (x3d_Fog .type == x3d_NoneFog)
 		return color;
 
 	float dV = length (v);
 
-	if (dV >= x3d_FogVisibilityRange)
-		return x3d_FogColor;
+	if (dV >= x3d_Fog .visibilityRange)
+		return x3d_Fog .color;
 
-	if (x3d_FogType == x3d_LinearFog)
-		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
+	if (x3d_Fog .type == x3d_LinearFog)
+		return mix (x3d_Fog .color, color, (x3d_Fog .visibilityRange - dV) / x3d_Fog .visibilityRange);
 
-	if (x3d_FogType == x3d_ExponentialFog)
-		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
+	if (x3d_Fog .type == x3d_ExponentialFog)
+		return mix (x3d_Fog .color, color, exp (-dV / (x3d_Fog .visibilityRange - dV)));
 
 	return color;
 }
@@ -512,20 +437,6 @@ main ()
 DEF Water3 Transform {
   children [
     DirectionalLight {
-      metadata DEF DirectionalLight MetadataSet {
-        name "DirectionalLight"
-        reference "http://titania.create3000.de"
-        value DEF location MetadataFloat {
-          name "location"
-          reference "http://titania.create3000.de"
-          value [
-            31.5049,
-            13.4016,
-            15.7048
-          ]
-        }
-      }
-      global FALSE
       color 0.7 0.8 0.9
       ambientIntensity 1
       direction 0.194835 -0.624691 0.756175
