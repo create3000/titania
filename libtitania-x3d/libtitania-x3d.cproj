@@ -796,9 +796,6 @@
     <None Include="share\titania\shaders\Shaders\Depth.vs" />
     <None Include="Titania\X3D\Rendering\TextureBuffer.h" />
     <None Include="Titania\X3D\Rendering\ViewVolumeStack.h" />
-    <None Include="share\titania\shaders\Shaders\Bits\Random.h" />
-    <None Include="share\titania\shaders\Shaders\Bits\Line3.h" />
-    <None Include="share\titania\shaders\Shaders\Bits\Plane3.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderObject.h" />
     <None Include="Titania\X3D\Rendering\X3DShapeContainer.h" />
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Bold.ttf" />
@@ -961,8 +958,6 @@
     <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.h" />
     <None Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.h" />
     <None Include="Titania\X3D\Components\VolumeRendering.h" />
-    <None Include="share\titania\shaders\Shaders\BackgroundSphereFragmentShader.fs" />
-    <None Include="share\titania\shaders\Shaders\BackgroundSphereVertexShader.vs" />
     <None Include="share\titania\shaders\Shaders\PointSet.fs" />
     <None Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\HierarchyGuard.h" />
@@ -976,9 +971,14 @@
     <None Include="Titania\X3D\Components\X_ITE\TouchGroup.h" />
     <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
     <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
-    <None Include="share\titania\shaders\Shaders\Bits\Shadow.h" />
     <None Include="share\titania\shaders\Shaders\Types.h" />
-    <None Include="share\titania\shaders\Shaders\Bits\Pack.h" />
+    <None Include="share\titania\shaders\Shaders\Inlcude\Random.h" />
+    <None Include="share\titania\shaders\Shaders\Inlcude\Line3.h" />
+    <None Include="share\titania\shaders\Shaders\Inlcude\Plane3.h" />
+    <None Include="share\titania\shaders\Shaders\Inlcude\Shadow.h" />
+    <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
+    <None Include="share\titania\shaders\Shaders\Background.fs" />
+    <None Include="share\titania\shaders\Shaders\Background.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1678,7 +1678,6 @@
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DComposableVolumeRenderStyleNode.cpp" />
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeDataNode.cpp" />
     <Compile Include="Titania\X3D\Components\VolumeRendering\X3DVolumeRenderStyleNode.cpp" />
-    <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.h.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\SoftSystem.cpp" />
     <Compile Include="Titania\X3D\Components\X_ITE\BlendMode.cpp" />
     <Compile Include="Titania\X3D\Components\X_ITE\DepthBuffer.cpp" />
@@ -1687,6 +1686,7 @@
     <Compile Include="Titania\X3D\Components\X_ITE\TouchGroup.cpp" />
     <Compile Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.cpp" />
     <Compile Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.cpp" />
+    <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1763,7 +1763,6 @@
     <Folder Include="share\mime\" />
     <Folder Include="share\mime\packages\" />
     <Folder Include="share\titania\icc\" />
-    <Folder Include="share\titania\shaders\Shaders\Bits\" />
     <Folder Include="share\fonts\" />
     <Folder Include="share\fonts\truetype\" />
     <Folder Include="share\fonts\truetype\titania-fonts\" />
@@ -1789,6 +1788,7 @@
     <Folder Include="Titania\X3D\Browser\EnvironmentalEffects\" />
     <Folder Include="Titania\X3D\Components\X_ITE\" />
     <Folder Include="Titania\X3D\Tools\X_ITE\" />
+    <Folder Include="share\titania\shaders\Shaders\Inlcude\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

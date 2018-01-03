@@ -122,6 +122,10 @@ private:
 	std::string
 	addConstants (X3DBrowser* const browser, const std::string & source);
 
+	static
+	void
+	depreciatedWarning (X3DBrowser* const browser, const std::string & source, const std::string & depreciated, const std::string & current);
+
 };
 
 } // X3D

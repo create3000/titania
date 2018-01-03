@@ -431,6 +431,7 @@ private:
 	///  @name Members
 
 	GLint               x3d_GeometryType;
+	GLint               x3d_NumClipPlanes;
 	std::vector <GLint> x3d_ClipPlane;
 
 	GLint x3d_FogType;
@@ -442,6 +443,7 @@ private:
 	GLint x3d_Lighting;
 	GLint x3d_ColorMaterial;
 
+	GLint               x3d_NumLights;
 	std::vector <GLint> x3d_LightType;
 	std::vector <GLint> x3d_LightColor;
 	std::vector <GLint> x3d_LightAmbientIntensity;
@@ -475,6 +477,7 @@ private:
 	GLint x3d_BackShininess;
 	GLint x3d_BackTransparency;
 
+	GLint x3d_NumTextures;
 	GLint x3d_TextureType;
 	GLint x3d_Texture2D;
 	GLint x3d_CubeMapTexture;

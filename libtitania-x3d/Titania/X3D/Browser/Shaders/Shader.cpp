@@ -230,27 +230,25 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 
 	constants << "#define TITANIA\n";
 
+	constants << "#define x3d_None 0\n";
+
 	constants << "#define x3d_GeometryPoints  0\n";
 	constants << "#define x3d_GeometryLines   1\n";
 	constants << "#define x3d_Geometry2D      2\n";
 	constants << "#define x3d_Geometry3D      3\n";
 
 	constants << "#define x3d_MaxClipPlanes  " << browser -> getMaxClipPlanes () << "\n";
-	constants << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
 
-	constants << "#define x3d_NoneFog          0\n";
 	constants << "#define x3d_LinearFog        1\n";
 	constants << "#define x3d_ExponentialFog   2\n";
 	constants << "#define x3d_Exponential2Fog  3\n";
 
 	constants << "#define x3d_MaxLights         " << browser -> getMaxLights () << "\n";
-	constants << "#define x3d_NoneLight         0\n";
 	constants << "#define x3d_DirectionalLight  1\n";
 	constants << "#define x3d_PointLight        2\n";
 	constants << "#define x3d_SpotLight         3\n";
 
 	constants << "#define x3d_MaxTextures                " << browser -> getMaxTextures () << "\n";
-	constants << "#define x3d_NoneTexture                0\n";
 	constants << "#define x3d_TextureType2D              2\n";
 	constants << "#define x3d_TextureType3D              3\n";
 	constants << "#define x3d_TextureTypeCubeMapTexture  4\n";
@@ -262,12 +260,37 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 	constants << "#define x3d_MaxShadows     4\n";
 	constants << "#define x3d_ShadowSamples  8\n";
 
+	// Legacy
+
+	constants << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
+	constants << "#define x3d_NoneFog        0\n";
+	constants << "#define x3d_NoneLight      0\n";
+	constants << "#define x3d_NoneTexture    0\n";
+
+	depreciatedWarning (browser, source, "x3d_NoneClipPlane", "x3d_NumClipPlanes");
+	depreciatedWarning (browser, source, "x3d_NoneFog",       "x3d_None");
+	depreciatedWarning (browser, source, "x3d_NoneLight",     "x3d_NumLights");
+	depreciatedWarning (browser, source, "x3d_NoneTexture",   "x3d_NumTextures");
+
+	// Types
+
 	constants << types .rdbuf ();
 	constants << "\n";
+
+	// Combine
 
 	constants << "#line " << numLines  << "\n";
 
 	return std::regex_replace (source, version, constants .str ());
+}
+
+void
+Shader::depreciatedWarning (X3DBrowser* const browser, const std::string & source, const std::string & depreciated, const std::string & current)
+{
+	if (source .find (depreciated) == std::string::npos)
+		return;
+
+	browser -> println ("Use of '" + depreciated + "' is depreciated, use '" + current + "' instead. See http://create3000.de/x_ite/custom-shaders/.");
 }
 
 void

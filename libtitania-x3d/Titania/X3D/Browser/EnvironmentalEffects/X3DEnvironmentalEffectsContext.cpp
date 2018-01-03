@@ -77,7 +77,7 @@ X3DEnvironmentalEffectsContext::initialize ()
 	}
 	else
 	{
-		backgroundSphereShader = getBrowser () -> createShader ("TitaniaBackgroundSphere", { get_shader ("Shaders/BackgroundSphereVertexShader.vs") .str () }, { get_shader ("Shaders/BackgroundSphereFragmentShader.fs") .str () });
+		backgroundSphereShader = getBrowser () -> createShader ("TitaniaBackgroundSphere", { get_shader ("Shaders/Background.vs") .str () }, { get_shader ("Shaders/Background.fs") .str () });
 	}
 }
 

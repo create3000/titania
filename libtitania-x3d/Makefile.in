@@ -161,7 +161,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Core/X3DCoreContext.lo \
 	Titania/X3D/Browser/Core/X3DOptionNode.lo \
 	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.lo \
-	Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.h.lo \
+	Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.lo \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.lo \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.lo \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.lo \
@@ -1114,7 +1114,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
 	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.cpp \
-	Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.h.cpp \
+	Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -1995,7 +1995,7 @@ Titania/X3D/Browser/EnvironmentalEffects/$(am__dirstamp):
 Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)
 	@: > Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.h.lo:  \
+Titania/X3D/Browser/EnvironmentalEffects/X3DEnvironmentalEffectsContext.lo:  \
 	Titania/X3D/Browser/EnvironmentalEffects/$(am__dirstamp) \
 	Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Geometry2D/$(am__dirstamp):
@@ -4893,7 +4893,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Core/$(DEPDIR)/X3DCoreContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Core/$(DEPDIR)/X3DOptionNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR)/X3DCubeMapTexturingContext.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)/X3DEnvironmentalEffectsContext.h.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/EnvironmentalEffects/$(DEPDIR)/X3DEnvironmentalEffectsContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry2D/$(DEPDIR)/Arc2DOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry2D/$(DEPDIR)/ArcClose2DOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry2D/$(DEPDIR)/Circle2DOptions.Plo@am__quote@

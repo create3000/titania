@@ -74,11 +74,10 @@ namespace X3D {
 
 static constexpr size_t MAX_TEX_COORD   = 4;
 
-static constexpr auto x3d_NoneClipPlane = Vector4f (88, 51, 68, 33); // X3D!
-
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
 	         x3d_GeometryType (-1),
+	        x3d_NumClipPlanes (-1),
 	            x3d_ClipPlane (),
 	              x3d_FogType (-1),
 	             x3d_FogColor (-1),
@@ -86,6 +85,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	 x3d_LinewidthScaleFactor (-1),
 	             x3d_Lighting (-1),
 	        x3d_ColorMaterial (-1),
+	            x3d_NumLights (-1),
 	            x3d_LightType (),
 	           x3d_LightColor (),
 	x3d_LightAmbientIntensity (),
@@ -114,6 +114,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	    x3d_BackEmissiveColor (-1),
 	        x3d_BackShininess (-1),
 	     x3d_BackTransparency (-1),
+	          x3d_NumTextures (-1),
 	          x3d_TextureType (-1),
 	            x3d_Texture2D (-1),
 	       x3d_CubeMapTexture (-1),
@@ -187,7 +188,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	// Get default uniforms.
 
-	x3d_GeometryType = glGetUniformLocation (program, "x3d_GeometryType");
+	x3d_GeometryType  = glGetUniformLocation (program, "x3d_GeometryType");
+	x3d_NumClipPlanes = glGetUniformLocation (program, "x3d_NumClipPlanes");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxClipPlanes (); i < size; ++ i)
 		x3d_ClipPlane .emplace_back (glGetUniformLocation (program, ("x3d_ClipPlane[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
@@ -200,6 +202,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	x3d_Lighting      = glGetUniformLocation (program, "x3d_Lighting");
 	x3d_ColorMaterial = glGetUniformLocation (program, "x3d_ColorMaterial");
+	x3d_NumLights     = glGetUniformLocation (program, "x3d_NumLights");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxLights (); i < size; ++ i)
 	{
@@ -216,11 +219,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
 		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
 
-		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowColor["           + is + "]") .c_str ()));
-		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowIntensity["       + is + "]") .c_str ()));
-		x3d_ShadowDiffusion       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowDiffusion["       + is + "]") .c_str ()));
-		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMatrix["          + is + "]") .c_str ()));
-		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap["             + is + "]") .c_str ()));
+		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowColor["     + is + "]") .c_str ()));
+		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowIntensity[" + is + "]") .c_str ()));
+		x3d_ShadowDiffusion       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowDiffusion[" + is + "]") .c_str ()));
+		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMatrix["    + is + "]") .c_str ()));
+		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap["       + is + "]") .c_str ()));
 	}
 
 	x3d_SeparateBackColor = glGetUniformLocation (program, "x3d_SeparateBackColor");
@@ -239,6 +242,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackShininess        = getUniformLocation (program, "x3d_BackMaterial.shininess",        "x3d_BackShininess");
 	x3d_BackTransparency     = getUniformLocation (program, "x3d_BackMaterial.transparency",     "x3d_BackTransparency");
 
+	x3d_NumTextures    = glGetUniformLocation (program, "x3d_NumTextures");
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
 	x3d_Texture2D      = getUniformLocation (program, "x3d_Texture2D", "x3d_Texture");
 	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
@@ -1112,6 +1116,10 @@ throw (std::domain_error)
 	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
 		localLights [l] -> setShaderUniforms (renderObject, this, i);
 
+	glUniform1i (x3d_NumLights, numLights);
+
+	// Legacy
+
 	if (numLights < browser -> getMaxLights ())
 		glUniform1i (x3d_LightType [numLights], 0);
 
@@ -1160,20 +1168,17 @@ throw (std::domain_error)
 void
 X3DProgrammableShaderObject::setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes)
 {
-	if (clipPlanes .empty ())
-	{
-		glUniform4fv (x3d_ClipPlane [0], 1, x3d_NoneClipPlane .data ());
-	}
-	else
-	{
-		const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
+	const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
 
-		for (size_t i = 0; i < numClipPlanes; ++ i)
-			clipPlanes [i] -> setShaderUniforms (this, i);
+	for (size_t i = 0; i < numClipPlanes; ++ i)
+		clipPlanes [i] -> setShaderUniforms (this, i);
 
-		if (numClipPlanes < browser -> getMaxClipPlanes ())
-			glUniform4fv (x3d_ClipPlane [numClipPlanes], 1, x3d_NoneClipPlane .data ());
-	}
+	glUniform1i (x3d_NumClipPlanes, numClipPlanes);
+
+	// Legacy
+
+	if (numClipPlanes < browser -> getMaxClipPlanes ())
+		glUniform4f (x3d_ClipPlane [numClipPlanes], 88, 51, 68, 33);
 }
 
 void

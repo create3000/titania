@@ -15,7 +15,7 @@ main ()
 {
 	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
 
-	v = vec3 (p);
+	v = p .xyz;
 
 	gl_Position = x3d_ProjectionMatrix * p;
 }

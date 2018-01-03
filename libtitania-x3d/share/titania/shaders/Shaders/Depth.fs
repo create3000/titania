@@ -3,16 +3,19 @@
 precision mediump float;
 precision mediump int;
 
+uniform int  x3d_NumClipPlanes;
 uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
 
 varying vec3 v; // point on geometry
+
+#pragma X3D include "Include/Pack.h"
 
 void
 clip ()
 {
 	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
 	{
-		if (x3d_ClipPlane [i] == x3d_NoneClipPlane)
+		if (i == x3d_NumClipPlanes)
 			break;
 
 		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
@@ -24,6 +27,6 @@ void
 main ()
 {
 	clip ();
-	
-	// Only the z-buffer value is interesting.
+
+	gl_FragColor = pack (gl_FragCoord .z);
 }
