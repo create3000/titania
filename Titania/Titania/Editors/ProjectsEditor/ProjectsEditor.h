@@ -75,6 +75,12 @@ public:
 
 private:
 
+	///  Member types
+
+	class FolderElement;
+
+	using FolderElementPtr = std::shared_ptr <FolderElement>;
+
 	///  @name Construction
 
 	virtual
@@ -91,15 +97,36 @@ private:
 	void
 	on_add_folder_clicked () final override;
 
+	void
+	on_file_changed (const Glib::RefPtr <Gio::File> & file,
+	                 const Glib::RefPtr <Gio::File> & other_file,
+	                 Gio::FileMonitorEvent event);
+
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	///  @name Operations
+
+	void
+	addRootFolder (const basic::uri & URL);
+
+	void
+	addFolder (Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory);
+
+	void
+	addChildren (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory);
 
 	///  @name Destruction
 
 	virtual
 	void
 	store () final override;
+
+	///  @name Members
+
+	std::set <basic::uri>                  folders;
+	std::map <std::string, FolderElementPtr> folderIndex;
 
 };
 
