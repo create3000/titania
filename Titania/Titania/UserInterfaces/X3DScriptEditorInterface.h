@@ -564,10 +564,6 @@ public:
 
 	virtual
 	void
-	on_search_size_allocate (Gtk::Allocation & allocation) = 0;
-
-	virtual
-	void
 	on_replace_toggled () = 0;
 
 	virtual

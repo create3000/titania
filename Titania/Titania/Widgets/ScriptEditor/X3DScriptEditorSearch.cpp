@@ -85,9 +85,9 @@ X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	searchContext  = gtk_source_search_context_new (getTextBuffer () -> gobj (), searchSettings);
 	searchMark     = getTextBuffer () -> get_insert ();
 
+	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_size_allocate));
 	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_press_event),   false);
 	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_release_event), false);
-	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_size_allocate));
 	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_button_press_event), false);
 
 	// Search & Replace
@@ -155,21 +155,11 @@ X3DScriptEditorSearch::configure ()
 }
 
 void
-X3DScriptEditorSearch::on_search_size_allocate (Gtk::Allocation &)
-{
-	on_size_allocate (getTextView () .get_allocation ());
-}
-
-void
 X3DScriptEditorSearch::on_size_allocate (const Gtk::Allocation & allocation)
 {
-	const auto    width  = allocation .get_width () * (2 - math::phi <double>);
-	const auto    box    = getSearchBox ()   .get_allocation () .get_width ();
-	const auto    entry  = getSearchEntry () .get_allocation () .get_width ();
-	const int32_t width_ = width * entry / box;
+	const auto width = allocation .get_width () * (2 - math::phi <double>);
 
-	getSearchEntry ()  .set_size_request (width_, -1);
-	getReplaceEntry () .set_size_request (width_, -1);
+	getSearchRevealer () .set_size_request (width, -1);
 }
 
 bool

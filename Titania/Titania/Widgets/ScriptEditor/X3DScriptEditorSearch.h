@@ -92,10 +92,6 @@ private:
 
 	///  @name Event handlers
 
-	virtual
-	void
-	on_search_size_allocate (Gtk::Allocation &) final override;
-
 	void
 	on_size_allocate (const Gtk::Allocation &);
 

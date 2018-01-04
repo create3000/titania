@@ -230,7 +230,6 @@ X3DScriptEditorInterface::create ()
 	m_SearchEntry -> signal_icon_release () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_menu_icon_released), false);
 	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_key_press_event), false);
 	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_key_release_event), false);
-	m_SearchEntry -> signal_size_allocate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_size_allocate));
 
 	// Connect object Gtk::ToggleButton with id 'ToggleReplaceButton'.
 	m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_replace_toggled));
