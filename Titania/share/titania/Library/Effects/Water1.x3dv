@@ -68,7 +68,7 @@ DEF Water1 Transform {
           language "GLSL"
           parts [
             ShaderPart {
-              url "data:text/plain,
+              url "data:x-shader/x-vertex,
 
 precision mediump float;
 precision mediump int;
@@ -124,7 +124,7 @@ main ()
             }
             DEF _1 ShaderPart {
               type "FRAGMENT"
-              url "data:text/plain,
+              url "data:x-shader/x-fragment,
 
 precision mediump float;
 precision mediump int;

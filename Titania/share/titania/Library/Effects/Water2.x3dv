@@ -135,7 +135,7 @@ DEF Water2 Transform {
           language "GLSL"
           parts [
             DEF WaterVertex ShaderPart {
-              url "data:text/plain,
+              url "data:x-shader/x-vertex,
 
 precision mediump float;
 
@@ -239,7 +239,7 @@ main ()
             }
             DEF WaterFragment ShaderPart {
               type "FRAGMENT"
-              url "data:text/plain,
+              url "data:x-shader/x-fragment,
 
 precision mediump float;
 

@@ -1,13 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/libtitania-x3d.cproj">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="275" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/libtitania-x3d.cproj" Line="971" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="717" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.h" Line="127" Column="139" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp" Line="265" Column="80" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="210" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

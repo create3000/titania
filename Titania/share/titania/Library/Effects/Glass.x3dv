@@ -23,7 +23,7 @@ PROTO FresnelShader [
     language "GLSL"
     parts [
       DEF VertexShader ShaderPart {
-        url "data:text/plain,
+        url "data:x-shader/x-vertex,
 
 precision mediump float;
 
@@ -73,33 +73,17 @@ main ()
       }
       DEF FragmentShader ShaderPart {
         type "FRAGMENT"
-        url "data:text/plain,
+        url "data:x-shader/x-fragment,
 
 precision mediump float;
 
-uniform bool  x3d_Lighting; // true if a X3DMaterialNode is attached, otherwise false
-
-uniform int   x3d_LightType [x3d_MaxLights];
-//uniform bool  x3d_LightOn [x3d_MaxLights];
-uniform vec3  x3d_LightColor [x3d_MaxLights];
-uniform float x3d_LightIntensity [x3d_MaxLights];
-//uniform float x3d_LightAmbientIntensity [x3d_MaxLights];
-uniform vec3  x3d_LightAttenuation [x3d_MaxLights];
-uniform vec3  x3d_LightLocation [x3d_MaxLights];
-uniform vec3  x3d_LightDirection [x3d_MaxLights];
-uniform float x3d_LightRadius [x3d_MaxLights];
-uniform float x3d_LightBeamWidth [x3d_MaxLights];
-uniform float x3d_LightCutOffAngle [x3d_MaxLights];
+uniform bool x3d_Lighting; // true if a X3DMaterialNode is attached, otherwise false
+uniform int x3d_NumLights;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
 
 uniform bool x3d_SeparateBackColor;
-
-uniform vec3  x3d_SpecularColor;
-uniform float x3d_Shininess;
-uniform float x3d_Transparency;
-
-uniform vec3  x3d_BackSpecularColor;
-uniform float x3d_BackShininess;
-uniform float x3d_BackTransparency;
+uniform x3d_MaterialParameters x3d_FrontMaterial;
+uniform x3d_MaterialParameters x3d_BackMaterial;
 
 uniform samplerCube cubMapTexture;
 
@@ -136,7 +120,7 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 }
 
 vec4
-getMaterialColor ()
+getMaterialColor (in x3d_MaterialParameters material)
 {
 	vec4 textureColor = getTextureColor ();
 	
@@ -148,11 +132,7 @@ getMaterialColor ()
 
 		// Calculate diffuseFactor & alpha
 
-		bool  frontColor    = gl_FrontFacing || ! x3d_SeparateBackColor;
-		vec3  specularColor = frontColor ? x3d_SpecularColor : x3d_BackSpecularColor;
-		float shininess     = frontColor ? x3d_Shininess     : x3d_BackShininess;
-		float transparency  = frontColor ? x3d_Transparency  : x3d_BackTransparency;
-		float alpha         = 1.0 - transparency;
+		float alpha = 1.0 - material .transparency;
 
 		alpha *= textureColor .a;
 
@@ -162,30 +142,30 @@ getMaterialColor ()
 
 		for (int i = 0; i < x3d_MaxLights; ++ i)
 		{
-			int lightType = x3d_LightType [i];
-
-			if (lightType == x3d_NoneLight)
+			if (i == x3d_NumLights)
 				break;
+			
+			x3d_LightSourceParameters light = x3d_LightSource [i];
 
-			vec3  vL = x3d_LightLocation [i] - v;
+			vec3  vL = light .location - v;
 			float dL = length (vL);
-			bool  di = lightType == x3d_DirectionalLight;
+			bool  di = light .type == x3d_DirectionalLight;
 
-			if (di || dL <= x3d_LightRadius [i])
+			if (di || dL <= light .radius)
 			{
-				vec3 d = x3d_LightDirection [i];
-				vec3 c = x3d_LightAttenuation [i];
+				vec3 d = light .direction;
+				vec3 c = light .attenuation;
 				vec3 L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
 				vec3 H = normalize (L + V);             // Specular term
 
 				float lightAngle            = dot (N, L);      // Angle between normal and light ray.
-				float specularFactor        = shininess > 0.0 ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
+				float specularFactor        = material .shininess > 0.0 ? pow (max (dot (N, H), 0.0), material .shininess * 128.0) : 1.0;
 				float attenuationFactor     = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-				float spotFactor            = lightType == x3d_SpotLight ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
+				float spotFactor            = light .type == x3d_SpotLight ? getSpotFactor (light .cutOffAngle, light .beamWidth, L, d) : 1.0;
 				float attenuationSpotFactor = attenuationFactor * spotFactor;
-				vec3  specularTerm          = specularColor * specularFactor;
+				vec3  specularTerm          = material .specularColor * specularFactor;
 
-				finalColor += attenuationSpotFactor * x3d_LightColor [i] * x3d_LightIntensity [i] * specularTerm;
+				finalColor += attenuationSpotFactor * light .color * light .intensity * specularTerm;
 			}
 		}
 
@@ -200,7 +180,9 @@ getMaterialColor ()
 void
 main ()
 {
-	gl_FragColor = getMaterialColor ();
+	bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
+
+	gl_FragColor = frontColor ? getMaterialColor (x3d_FrontMaterial) : getMaterialColor (x3d_BackMaterial);
 }
 "
       }
