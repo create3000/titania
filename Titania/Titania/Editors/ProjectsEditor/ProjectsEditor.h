@@ -48,54 +48,62 @@
  *
  ******************************************************************************/
 
-#include "X3DSidebarInterface.h"
+#ifndef __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
+#define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
+
+#include "../../UserInterfaces/X3DProjectsEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DSidebarInterface::create (const std::string & filename)
+class BrowserWindow;
+
+class ProjectsEditor :
+	virtual public X3DProjectsEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	create ();
-}
+	///  @name Construction
 
-void
-X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
-{
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
+	ProjectsEditor (X3DBrowserWindow* const browserWindow);
 
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
+	///  @name Destruction
 
-	create ();
-}
+	virtual
+	~ProjectsEditor () final override;
 
-void
-X3DSidebarInterface::create ()
-{
-	// Get objects.
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
-	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
-}
+private:
 
-X3DSidebarInterface::~X3DSidebarInterface ()
-{
-	delete m_Window;
-}
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	configure () final override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_add_folder_clicked () final override;
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () final override;
+
+};
 
 } // puck
 } // titania
+
+#endif

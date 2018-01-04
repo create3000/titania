@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#include "X3DSidebarInterface.h"
+#include "X3DProjectsEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 void
-X3DSidebarInterface::create (const std::string & filename)
+X3DProjectsEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -63,7 +63,7 @@ X3DSidebarInterface::create (const std::string & filename)
 }
 
 void
-X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
+X3DProjectsEditorInterface::create (std::initializer_list <std::string> filenames)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
@@ -75,24 +75,30 @@ X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
 }
 
 void
-X3DSidebarInterface::create ()
+X3DProjectsEditorInterface::create ()
 {
 	// Get objects.
+	m_TreeStore    = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_FileColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
+	m_IconRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_NameRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
-	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
+	m_builder -> get_widget ("AddFolderButton", m_AddFolderButton);
+	m_builder -> get_widget ("FilesBox", m_FilesBox);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_AddFolderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_folder_clicked));
+
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
 }
 
-X3DSidebarInterface::~X3DSidebarInterface ()
+X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()
 {
 	delete m_Window;
 }

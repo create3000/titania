@@ -67,8 +67,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	bool
-	run ();
+	run () final override;
 
 	///  @name Destruction
 

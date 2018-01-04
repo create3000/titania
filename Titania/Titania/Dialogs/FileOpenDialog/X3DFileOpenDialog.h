@@ -66,6 +66,12 @@ public:
 	basic::uri
 	getUrl () const;
 
+	///  @name Operations
+
+	virtual
+	bool
+	run ();
+
 	///  @name Destruction
 
 	virtual
@@ -80,12 +86,10 @@ protected:
 
 	///  @name Operations
 
-	bool
-	run ();
-
 	virtual
 	void
-	setFileFilter (const std::string & name) = 0;
+	setFileFilter (const std::string & name)
+	{ }
 
 };
 

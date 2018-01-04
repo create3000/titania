@@ -113,12 +113,6 @@ FileOpenDialog::loadURL ()
 	return true;
 }
 
-bool
-FileOpenDialog::run ()
-{
-	return X3DFileOpenDialog::run ();
-}
-
 void
 FileOpenDialog::setFileFilter (const std::string & name)
 {

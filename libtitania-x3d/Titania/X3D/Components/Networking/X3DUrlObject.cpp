@@ -135,7 +135,7 @@ X3DUrlObject::setLoadState (const LoadState value, const bool notify)
 	// Reset fileMonitor.
 
 	if (loadState not_eq COMPLETE_STATE)
-		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+		fileMonitor .reset ();
 }
 
 void
@@ -151,7 +151,7 @@ X3DUrlObject::monitorFile (const basic::uri & URL)
 {
 	try
 	{
-		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+		fileMonitor .reset ();
 
 		if (URL .empty () or not URL .is_local ())
 			return;
@@ -196,7 +196,7 @@ X3DUrlObject::dispose ()
 {
 	getBrowser () -> removeLoadCount (this);
 
-	fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+	fileMonitor .reset ();
 }
 
 } // X3D

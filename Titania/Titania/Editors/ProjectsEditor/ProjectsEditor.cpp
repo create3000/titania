@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,53 +48,60 @@
  *
  ******************************************************************************/
 
-#include "X3DSidebarInterface.h"
+#include "ProjectsEditor.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
+#include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DSidebarInterface::create (const std::string & filename)
+ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
+	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade"))
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
-
-	create ();
+	setup ();
 }
 
 void
-X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
+ProjectsEditor::initialize ()
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
-
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
-
-	create ();
+	X3DProjectsEditorInterface::initialize ();
 }
 
 void
-X3DSidebarInterface::create ()
+ProjectsEditor::configure ()
 {
-	// Get objects.
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
-	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
+	X3DProjectsEditorInterface::configure ();
 }
 
-X3DSidebarInterface::~X3DSidebarInterface ()
+void
+ProjectsEditor::on_add_folder_clicked ()
 {
-	delete m_Window;
+	const auto openDirectoryDialog = std::dynamic_pointer_cast <OpenDirectoryDialog> (createDialog ("OpenDirectoryDialog"));
+
+	if (not openDirectoryDialog -> run ())
+		return;
+
+	__LOG__ << openDirectoryDialog -> getUrl () << std::endl;
+}
+
+void
+ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*)
+{
+
+}
+
+void
+ProjectsEditor::store ()
+{
+	X3DProjectsEditorInterface::store ();
+}
+
+ProjectsEditor::~ProjectsEditor ()
+{
+	dispose ();
 }
 
 } // puck

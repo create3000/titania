@@ -65,11 +65,6 @@ public:
 
 	FileOpenFontDialog (X3DBrowserWindow* const browserWindow);
 
-	///  @name Operations
-
-	bool
-	run ();
-
 	///  @name Destruction
 
 	virtual

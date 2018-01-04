@@ -359,6 +359,9 @@
     <Compile Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.cpp" />
     <Compile Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBackgroundSizeEditorInterface.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DProjectsEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\ProjectsEditor\ProjectsEditor.cpp" />
+    <Compile Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3133,6 +3136,11 @@
     <None Include="Titania\Editors\BrowserSizeEditor\BrowserSizeEditor.h" />
     <None Include="Titania\Editors\AppearanceEditor\X3DBlendModeEditor.h" />
     <None Include="Titania\UserInterfaces\X3DBackgroundSizeEditorInterface.h" />
+    <None Include="share\titania\ui\icons\Faenza\16\folder-copy.png" />
+    <None Include="Titania\UserInterfaces\X3DProjectsEditorInterface.h" />
+    <None Include="Titania\Editors\ProjectsEditor\ProjectsEditor.h" />
+    <None Include="share\titania\ui\icons\Faenza\16\folder-new.png" />
+    <None Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3295,6 +3303,7 @@
     <Folder Include="share\titania\Library\Components\ParticleSystems\.X_ITE\" />
     <Folder Include="share\titania\Library\Prototypes\Text\" />
     <Folder Include="Titania\Editors\BrowserSizeEditor\" />
+    <Folder Include="Titania\Editors\ProjectsEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

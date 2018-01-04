@@ -68,6 +68,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/OpenDirectoryDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
@@ -170,6 +171,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
+	Titania/Editors/ProjectsEditor/ProjectsEditor.cpp \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp \
@@ -251,6 +253,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
 	Titania/UserInterfaces/X3DPrecisionPlacementPanelInterface.cpp \
+	Titania/UserInterfaces/X3DProjectsEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DRenderPanelInterface.cpp \
 	Titania/UserInterfaces/X3DRouteGraphInterface.cpp \

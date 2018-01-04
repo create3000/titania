@@ -70,9 +70,6 @@ public:
 	bool
 	loadURL ();
 
-	bool
-	run ();
-
 	///  @name Destruction
 
 	virtual

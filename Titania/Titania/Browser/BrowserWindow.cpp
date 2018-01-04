@@ -1262,6 +1262,7 @@ BrowserWindow::setEditing (const bool enabled)
 
 	getBrowserNotebook () .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
 
+	getSidebar () -> getProjectsEditorBox ()  .set_visible (enabled);
 	getSidebar () -> getLibraryViewBox ()     .set_visible (enabled);
 	getSidebar () -> getOutlineEditorBox ()   .set_visible (enabled);
 	getSidebar () -> getNodeEditorBox ()      .set_visible (enabled);

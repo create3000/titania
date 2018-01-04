@@ -48,54 +48,31 @@
  *
  ******************************************************************************/
 
-#include "X3DSidebarInterface.h"
+#ifndef __TITANIA_DIALOGS_FILE_OPEN_DIALOG_OPEN_DIRECTORY_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_OPEN_DIALOG_OPEN_DIRECTORY_DIALOG_H__
+
+#include "X3DFileOpenDialog.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DSidebarInterface::create (const std::string & filename)
+class OpenDirectoryDialog :
+	public X3DFileOpenDialog
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	create ();
-}
+	///  @name Construction
 
-void
-X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
-{
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
+	OpenDirectoryDialog (X3DBrowserWindow* const browserWindow);
 
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
+	///  @name Destruction
 
-	create ();
-}
+	virtual
+	~OpenDirectoryDialog () final override;
 
-void
-X3DSidebarInterface::create ()
-{
-	// Get objects.
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
-	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
-}
-
-X3DSidebarInterface::~X3DSidebarInterface ()
-{
-	delete m_Window;
-}
+};
 
 } // puck
 } // titania
+
+#endif

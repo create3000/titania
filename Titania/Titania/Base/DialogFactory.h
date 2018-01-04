@@ -58,6 +58,7 @@
 #include "../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
+#include "../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportProtoDialog.h"
@@ -80,6 +81,7 @@
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
+#include "../Editors/ProjectsEditor/ProjectsEditor.h"
 #include "../Editors/HistoryEditor/HistoryEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
@@ -119,6 +121,7 @@ public:
 	DialogFactory () :
 		dialogs ({
 		         std::make_pair ("FileOpenDialog",                constructDialog <FileOpenDialog>),
+		         std::make_pair ("OpenDirectoryDialog",           constructDialog <OpenDirectoryDialog>),
 		         std::make_pair ("FileOpenFontDialog",            constructDialog <FileOpenFontDialog>),
 		         std::make_pair ("OpenLocationDialog",            constructDialog <OpenLocationDialog>),
 		         std::make_pair ("FileImportDialog",              constructDialog <FileImportDialog>),
@@ -161,6 +164,7 @@ public:
 		         std::make_pair ("FogList",                       constructDialog <FogList>),
 		         std::make_pair ("NavigationInfoList",            constructDialog <NavigationInfoList>),
 		         std::make_pair ("ViewpointList",                 constructDialog <ViewpointList>),
+		         std::make_pair ("ProjectsEditor",                constructDialog <ProjectsEditor>),
 		         std::make_pair ("HistoryEditor",                 constructDialog <HistoryEditor>),
 		         std::make_pair ("LibraryView",                   constructDialog <LibraryView>),
 		         std::make_pair ("OutlineEditor",                 constructDialog <OutlineEditor>),

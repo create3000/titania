@@ -157,7 +157,7 @@ X3DScene::monitorFile (const basic::uri & URL)
 {
 	try
 	{
-		fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+		fileMonitor .reset ();
 
 		if (not URL .is_local ())
 			return;
@@ -1351,7 +1351,7 @@ X3DScene::dispose ()
 	metadatas     .clear ();
 	exportedNodes .clear ();
 
-	fileMonitor = Glib::RefPtr <Gio::FileMonitor> ();
+	fileMonitor .reset ();
 
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();

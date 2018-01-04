@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_SIDEBAR_H__
-#define __TMP_GLAD2CPP_SIDEBAR_H__
+#ifndef __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
+#define __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -59,27 +59,27 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for Sidebar.
+ *  Gtk Interface for ProjectsEditor.
  */
-class X3DSidebarInterface :
-	public X3DUserInterface
+class X3DProjectsEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DSidebarInterface () :
-		X3DUserInterface ()
+	X3DProjectsEditorInterface () :
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DSidebarInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+	X3DProjectsEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DSidebarInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+	X3DProjectsEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -87,6 +87,22 @@ public:
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
 	{ return m_builder; }
+
+	const Glib::RefPtr <Gtk::TreeStore> &
+	getTreeStore () const
+	{ return m_TreeStore; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFileColumn () const
+	{ return m_FileColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getIconRenderer () const
+	{ return m_IconRenderer; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getNameRenderer () const
+	{ return m_NameRenderer; }
 
 	Gtk::Window &
 	getWindow () const
@@ -96,44 +112,44 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::Box &
-	getViewpointListBox () const
-	{ return *m_ViewpointListBox; }
+	getButtonBox () const
+	{ return *m_ButtonBox; }
+
+	Gtk::Button &
+	getAddFolderButton () const
+	{ return *m_AddFolderButton; }
 
 	Gtk::Box &
-	getProjectsEditorBox () const
-	{ return *m_ProjectsEditorBox; }
+	getFilesBox () const
+	{ return *m_FilesBox; }
 
-	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
 
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
-
-	Gtk::Box &
-	getOutlineEditorBox () const
-	{ return *m_OutlineEditorBox; }
-
-	Gtk::Box &
-	getNodeEditorBox () const
-	{ return *m_NodeEditorBox; }
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
 
 	///  @name Signal handlers
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_add_folder_clicked () = 0;
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~X3DSidebarInterface () override;
+	~X3DProjectsEditorInterface () override;
 
 
 private:
@@ -154,15 +170,18 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
+	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ViewpointListBox;
-	Gtk::Box* m_ProjectsEditorBox;
-	Gtk::Box* m_HistoryEditorBox;
-	Gtk::Box* m_LibraryViewBox;
-	Gtk::Box* m_OutlineEditorBox;
-	Gtk::Box* m_NodeEditorBox;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::Box* m_ButtonBox;
+	Gtk::Button* m_AddFolderButton;
+	Gtk::Box* m_FilesBox;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::TreeView* m_TreeView;
 
 };
 

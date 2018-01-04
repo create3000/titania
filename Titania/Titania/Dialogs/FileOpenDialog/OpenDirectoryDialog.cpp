@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,53 +48,27 @@
  *
  ******************************************************************************/
 
-#include "X3DSidebarInterface.h"
+#include "OpenDirectoryDialog.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DSidebarInterface::create (const std::string & filename)
+OpenDirectoryDialog::OpenDirectoryDialog (X3DBrowserWindow* const browserWindow) :
+	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DFileOpenDialog ()
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+	setName ("OpenDirectoryDialog");
 
-	create ();
+	getWindow () .set_action (Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+
+	setup ();
 }
 
-void
-X3DSidebarInterface::create (std::initializer_list <std::string> filenames)
+OpenDirectoryDialog::~OpenDirectoryDialog ()
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
-
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
-
-	create ();
-}
-
-void
-X3DSidebarInterface::create ()
-{
-	// Get objects.
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
-	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
-}
-
-X3DSidebarInterface::~X3DSidebarInterface ()
-{
-	delete m_Window;
+	dispose ();
 }
 
 } // puck

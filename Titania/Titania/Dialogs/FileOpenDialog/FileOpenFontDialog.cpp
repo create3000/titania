@@ -70,12 +70,6 @@ FileOpenFontDialog::FileOpenFontDialog (X3DBrowserWindow* const browserWindow) :
 	setup ();
 }
 
-bool
-FileOpenFontDialog::run ()
-{
-	return X3DFileOpenDialog::run ();
-}
-
 void
 FileOpenFontDialog::setFileFilter (const std::string & name)
 {
