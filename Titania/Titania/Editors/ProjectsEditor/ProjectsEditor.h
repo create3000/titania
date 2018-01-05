@@ -112,7 +112,7 @@ private:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	///  @name Operations
 
@@ -133,6 +133,9 @@ private:
 
 	std::string
 	getUrl (const Gtk::TreeIter & iter);
+
+	void
+	launchUrl (const std::string & URL);
 
 	///  @name Destruction
 

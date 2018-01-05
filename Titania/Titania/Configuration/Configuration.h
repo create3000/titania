@@ -97,31 +97,9 @@ private:
 
 	///  @name Member types
 
+	class KeyFile;
+
 	using cstr_type = char*;
-
-	class KeyFile
-	{
-	public:
-
-		KeyFile (const std::string & basename);
-
-		Glib::KeyFile*
-		operator -> ()
-		{ return &keyfile; }
-
-		const Glib::KeyFile*
-		operator -> () const
-		{ return &keyfile; }
-
-		~KeyFile ();
-
-
-	private:
-
-	   const std::string filename;
-		Glib::KeyFile     keyfile;
-
-	};
 
 	///  @name Member access
 

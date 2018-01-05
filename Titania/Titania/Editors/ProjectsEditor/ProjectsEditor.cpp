@@ -147,70 +147,35 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
                                  const Glib::RefPtr <Gio::File> & other_file,
                                  Gio::FileMonitorEvent event)
 {
-	if (file)
-		__LOG__ << file -> get_uri () << std::endl;
-
-	if (other_file)
-		__LOG__ << other_file -> get_uri () << std::endl;
+	__LOG__ << file -> get_uri () << std::endl;
 
 	switch (event)
 	{
-		case Gio::FILE_MONITOR_EVENT_CHANGED:
-			__LOG__ << "FILE_MONITOR_EVENT_CHANGED" << std::endl;
-			break;
-		case Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-			__LOG__ << "FILE_MONITOR_EVENT_CHANGES_DONE_HINT" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_DELETED:
-			__LOG__ << "FILE_MONITOR_EVENT_DELETED" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_CREATED:
-			__LOG__ << "FILE_MONITOR_EVENT_CREATED" << std::endl;
-			break;
-		case Gio::FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
-			__LOG__ << "FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED" << std::endl;
-			break;
-		case Gio::FILE_MONITOR_EVENT_PRE_UNMOUNT:
-			__LOG__ << "FILE_MONITOR_EVENT_PRE_UNMOUNT" << std::endl;
-			break;
-		case Gio::FILE_MONITOR_EVENT_UNMOUNTED:
-			__LOG__ << "FILE_MONITOR_EVENT_UNMOUNTED" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_MOVED:
-			__LOG__ << "FILE_MONITOR_EVENT_MOVED" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_RENAMED:
-			__LOG__ << "FILE_MONITOR_EVENT_RENAMED" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_MOVED_IN:
-			__LOG__ << "FILE_MONITOR_EVENT_MOVED_IN" << std::endl;
-			break;
 		case Gio::FILE_MONITOR_EVENT_MOVED_OUT:
-			__LOG__ << "FILE_MONITOR_EVENT_MOVED_OUT" << std::endl;
+		{
+			// Update tree view
 			break;
+		}
+		case Gio::FILE_MONITOR_EVENT_CHANGED:
+		case Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+		case Gio::FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+		case Gio::FILE_MONITOR_EVENT_PRE_UNMOUNT:
+		case Gio::FILE_MONITOR_EVENT_UNMOUNTED:
+		{
+			break;
+		}
 	}
 }
 
 void
-ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*)
+ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-
-	switch (selectedRows .size ())
-	{
-		case 1:
-		{
-			const auto iter = getTreeStore () -> get_iter (selectedRows .front ());
-
-			getBrowserWindow () -> open (getUrl (iter));
-			break;
-		}
-		case 0:
-		default:
-		{
-			break;
-		}
-	}
+	launchUrl (getUrl (getTreeStore () -> get_iter (path)));
 }
 
 void
@@ -339,6 +304,28 @@ ProjectsEditor::getUrl (const Gtk::TreeIter & iter)
 	iter -> get_value (Columns::URL, URL);
 
 	return URL;
+}
+
+void
+ProjectsEditor::launchUrl (const std::string & URL)
+{
+	const auto file        = Gio::File::create_for_uri (URL);
+	const auto contentType = file -> query_info () -> get_content_type ();
+	const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
+
+	for (const auto & appInfo : appInfos)
+	{
+		if (appInfo -> get_executable () == "titania")
+		{
+			getBrowserWindow () -> open (URL);
+			return;
+		}
+	}
+
+	const auto appInfo = file -> query_default_handler ();
+
+	if (appInfo)
+		appInfo -> launch (file);
 }
 
 void

@@ -61,6 +61,7 @@ OpenDirectoryDialog::OpenDirectoryDialog (X3DBrowserWindow* const browserWindow)
 {
 	setName ("OpenDirectoryDialog");
 
+	getWindow () .set_title (_ ("Open Directory …"));
 	getWindow () .set_action (Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
 	setup ();

@@ -61,6 +61,30 @@ namespace puck {
 
 // KeyFile
 
+class Configuration::KeyFile
+{
+public:
+
+	KeyFile (const std::string & basename);
+
+	Glib::KeyFile*
+	operator -> ()
+	{ return &keyfile; }
+
+	const Glib::KeyFile*
+	operator -> () const
+	{ return &keyfile; }
+
+	~KeyFile ();
+
+
+private:
+
+   const std::string filename;
+	Glib::KeyFile     keyfile;
+
+};
+
 Configuration::KeyFile::KeyFile (const std::string & basename) :
 	filename (config_dir (basename)),
 	 keyfile ()
