@@ -131,13 +131,28 @@ private:
 	void
 	removeChild (const Gtk::TreeModel::iterator & iter);
 
+	Gtk::TreeIter
+	getIter (const std::string & URL) const;
+	
+	bool
+	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
+
 	std::string
-	getUrl (const Gtk::TreeIter & iter);
+	getUrl (const Gtk::TreeIter & iter) const;
 
 	void
 	launchUrl (const std::string & URL);
 
 	///  @name Destruction
+
+	void
+	restoreExpanded ();
+
+	void
+	saveExpanded ();
+
+	void
+	saveExpanded (const Gtk::TreeIter & iter, X3D::MFString & URLs);
 
 	virtual
 	void

@@ -97,6 +97,8 @@ ProjectsEditor::configure ()
 
 	for (const auto & folder : projects)
 		addRootFolder (folder .str ());
+
+	restoreExpanded ();
 }
 
 void
@@ -147,29 +149,54 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
                                  const Glib::RefPtr <Gio::File> & other_file,
                                  Gio::FileMonitorEvent event)
 {
-	__LOG__ << file -> get_uri () << std::endl;
-
-	switch (event)
+	try
 	{
-		case Gio::FILE_MONITOR_EVENT_DELETED:
-		case Gio::FILE_MONITOR_EVENT_CREATED:
-		case Gio::FILE_MONITOR_EVENT_MOVED:
-		case Gio::FILE_MONITOR_EVENT_RENAMED:
-		case Gio::FILE_MONITOR_EVENT_MOVED_IN:
-		case Gio::FILE_MONITOR_EVENT_MOVED_OUT:
+		switch (event)
 		{
-			// Update tree view
-			break;
+			case Gio::FILE_MONITOR_EVENT_DELETED:
+			case Gio::FILE_MONITOR_EVENT_CREATED:
+			case Gio::FILE_MONITOR_EVENT_MOVED:
+			case Gio::FILE_MONITOR_EVENT_RENAMED:
+			case Gio::FILE_MONITOR_EVENT_MOVED_IN:
+			case Gio::FILE_MONITOR_EVENT_MOVED_OUT:
+			{
+				// Update tree view
+				break;
+			}
+			case Gio::FILE_MONITOR_EVENT_CHANGED:
+			case Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+			case Gio::FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+			case Gio::FILE_MONITOR_EVENT_PRE_UNMOUNT:
+			case Gio::FILE_MONITOR_EVENT_UNMOUNTED:
+			{
+				// Do nothing.
+				return;
+			}
 		}
-		case Gio::FILE_MONITOR_EVENT_CHANGED:
-		case Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-		case Gio::FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
-		case Gio::FILE_MONITOR_EVENT_PRE_UNMOUNT:
-		case Gio::FILE_MONITOR_EVENT_UNMOUNTED:
-		{
-			break;
-		}
+	
+		const auto directory = file -> get_parent ();
+	
+		if (not directory)
+			return;
+	
+		const auto iter = getIter (directory -> get_uri ());
+	
+		if (not getTreeStore () -> iter_is_valid (iter))
+			return;
+
+		const auto newIter = getTreeStore () -> insert_after (iter);
+
+		saveExpanded ();
+		removeChild (iter);
+
+		if (not folders .emplace (directory -> get_uri (), std::make_shared <FolderElement> ()) .second)
+			return;
+
+		addFolder (newIter, directory);
+		restoreExpanded ();
 	}
+	catch (...)
+	{ }
 }
 
 void
@@ -296,8 +323,45 @@ ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
 		folders .erase (subfolder);
 }
 
+Gtk::TreeIter
+ProjectsEditor::getIter (const std::string & URL) const
+{
+	Gtk::TreeIter result;
+
+	for (const auto & childIter : getTreeStore () -> children ())
+	{
+		if (getIter (childIter, URL, result))
+			break;
+	}
+
+	return result;
+}
+
+bool
+ProjectsEditor::getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const
+{
+	const auto parentURL = getUrl (iter);
+
+	if (parentURL == URL)
+	{
+		result = iter;
+		return true;
+	}
+
+	if (URL .find (parentURL) not_eq 0)
+		return false;
+
+	for (const auto & childIter : iter -> children ())
+	{
+		if (getIter (childIter, URL, result))
+			return true;
+	}
+
+	return false;
+}
+
 std::string
-ProjectsEditor::getUrl (const Gtk::TreeIter & iter)
+ProjectsEditor::getUrl (const Gtk::TreeIter & iter) const
 {
 	std::string URL;
 
@@ -329,8 +393,47 @@ ProjectsEditor::launchUrl (const std::string & URL)
 }
 
 void
+ProjectsEditor::restoreExpanded ()
+{
+	const auto URLs = getConfig () -> getItem <X3D::MFString> ("expanded");
+
+	for (const auto & URL : URLs)
+	{
+		const auto iter = getIter (URL);
+
+		if (not getTreeStore () -> iter_is_valid (iter))
+			continue;
+
+		getTreeView () .expand_row (getTreeStore () -> get_path (iter), false);
+	}
+}
+
+void
+ProjectsEditor::saveExpanded ()
+{
+	X3D::MFString URLs;
+
+	for (const auto & child : getTreeStore () -> children ())
+		saveExpanded (child, URLs);
+
+	getConfig () -> setItem <X3D::MFString> ("expanded", URLs);
+}
+
+void
+ProjectsEditor::saveExpanded (const Gtk::TreeIter & iter, X3D::MFString & URLs)
+{
+	if (getTreeView () .row_expanded (getTreeStore () -> get_path (iter)))
+		URLs .emplace_back (getUrl (iter));
+
+	for (const auto & child : iter -> children ())
+		saveExpanded (child, URLs);
+}
+
+void
 ProjectsEditor::store ()
 {
+	saveExpanded ();
+
 	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (projects .begin (), projects .end ()));
 
 	X3DProjectsEditorInterface::store ();
