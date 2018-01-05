@@ -66,12 +66,16 @@ public:
 	///  @name Operations
 
 	static
+	std::string
+	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName);
+
+	static
 	std::vector <Glib::RefPtr <Gio::FileInfo>> 
-	getChildren (const Glib::RefPtr <Gio::File> &);
+	getChildren (const Glib::RefPtr <Gio::File> & directory);
 
 	static
 	bool
-	containsFiles (const Glib::RefPtr <Gio::File> &);
+	containsFiles (const Glib::RefPtr <Gio::File> & directory);
 
 	///  @name Destruction
 

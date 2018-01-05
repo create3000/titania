@@ -92,6 +92,10 @@ public:
 	getTreeStore () const
 	{ return m_TreeStore; }
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getTreeViewSelection () const
+	{ return m_TreeViewSelection; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFileColumn () const
 	{ return m_FileColumn; }
@@ -121,8 +125,12 @@ public:
 	{ return *m_ButtonBox; }
 
 	Gtk::Button &
-	getAddFolderButton () const
-	{ return *m_AddFolderButton; }
+	getAddProjectButton () const
+	{ return *m_AddProjectButton; }
+
+	Gtk::Button &
+	getRemoveProjectButton () const
+	{ return *m_RemoveProjectButton; }
 
 	Gtk::Box &
 	getFilesBox () const
@@ -140,11 +148,19 @@ public:
 
 	virtual
 	void
-	on_add_folder_clicked () = 0;
+	on_add_project_clicked () = 0;
+
+	virtual
+	void
+	on_remove_project_clicked () = 0;
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	void
+	on_selection_changed () = 0;
 
 	///  @name Destruction
 
@@ -171,6 +187,7 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
+	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
@@ -178,7 +195,8 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_ButtonBox;
-	Gtk::Button* m_AddFolderButton;
+	Gtk::Button* m_AddProjectButton;
+	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::TreeView* m_TreeView;

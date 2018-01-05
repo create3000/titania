@@ -78,24 +78,30 @@ void
 X3DProjectsEditorInterface::create ()
 {
 	// Get objects.
-	m_TreeStore    = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
-	m_FileColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
-	m_IconRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
-	m_NameRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
+	m_TreeStore         = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_TreeViewSelection = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
+	m_FileColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
+	m_IconRenderer      = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_NameRenderer      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
-	m_builder -> get_widget ("AddFolderButton", m_AddFolderButton);
+	m_builder -> get_widget ("AddProjectButton", m_AddProjectButton);
+	m_builder -> get_widget ("RemoveProjectButton", m_RemoveProjectButton);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_AddFolderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_folder_clicked));
+	m_AddProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_project_clicked));
+	m_RemoveProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_remove_project_clicked));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
+
+	// Connect object Gtk::TreeSelection with id 'TreeViewSelection'.
+	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_selection_changed));
 }
 
 X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()

@@ -121,6 +121,25 @@ X3DLibraryView::getFilename (Gtk::TreeModel::Path path) const
 	return getRoot () + '/' + filename .substr (0, filename .size () - 1);
 }
 
+std::string
+X3DLibraryView::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
+{
+	const auto icon = Glib::RefPtr <Gio::ThemedIcon>::cast_dynamic (fileInfo -> get_icon ());
+
+	if (not icon)
+		return defaultName;
+
+	const auto names = g_themed_icon_get_names (icon -> gobj ());
+
+	if (not names)
+		return defaultName;
+
+	if (not names [0])
+		return defaultName;
+
+	return names [0];
+}
+
 std::vector <Glib::RefPtr <Gio::FileInfo>>
 X3DLibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 {
@@ -192,7 +211,7 @@ X3DLibraryView::append (const std::string & path) const
 				case Gio::FILE_TYPE_DIRECTORY :
 				{
 					auto iter = getTreeStore () -> append ();
-					iter -> set_value (Columns::ICON, std::string ("gtk-directory"));
+					iter -> set_value (Columns::ICON, getIconName (fileInfo, "gtk-directory"));
 					iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 					append (iter, directory -> get_child (fileInfo -> get_name ()));
 					continue;
@@ -212,7 +231,7 @@ X3DLibraryView::append (const std::string & path) const
 
 					const auto iter = getTreeStore () -> append ();
 
-					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
+					iter -> set_value (Columns::ICON,         getIconName (fileInfo, "gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
@@ -245,7 +264,7 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 				case Gio::FILE_TYPE_DIRECTORY :
 					{
 						auto iter = getTreeStore () -> append (parent -> children ());
-						iter -> set_value (Columns::ICON, std::string ("gtk-directory"));
+						iter -> set_value (Columns::ICON, getIconName (fileInfo, "gtk-directory"));
 						iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 						append (iter, directory -> get_child (fileInfo -> get_name ()));
 						continue;
@@ -265,7 +284,7 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 
 					const auto iter = getTreeStore () -> append (parent -> children ());
 
-					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
+					iter -> set_value (Columns::ICON,         getIconName (fileInfo, "gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);

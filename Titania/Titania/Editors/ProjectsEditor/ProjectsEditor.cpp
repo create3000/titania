@@ -62,6 +62,7 @@ namespace Columns {
 
 static constexpr int ICON = 0;
 static constexpr int NAME = 1;
+static constexpr int URL  = 2;
 
 };
 
@@ -75,8 +76,8 @@ public:
 ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
-	                   folders (),
-	               folderIndex ()
+	                  projects (),
+	                   folders ()
 {
 	setup ();
 }
@@ -92,14 +93,14 @@ ProjectsEditor::configure ()
 {
 	X3DProjectsEditorInterface::configure ();
 
-	const auto folders = getConfig () -> getItem <X3D::MFString> ("folders");
+	const auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
-	for (const auto & folder : folders)
+	for (const auto & folder : projects)
 		addRootFolder (folder .str ());
 }
 
 void
-ProjectsEditor::on_add_folder_clicked ()
+ProjectsEditor::on_add_project_clicked ()
 {
 	const auto openDirectoryDialog = std::dynamic_pointer_cast <OpenDirectoryDialog> (createDialog ("OpenDirectoryDialog"));
 
@@ -109,6 +110,36 @@ ProjectsEditor::on_add_folder_clicked ()
 	// Create root folder.
 
 	addRootFolder (openDirectoryDialog -> getUrl ());
+}
+
+void
+ProjectsEditor::on_remove_project_clicked ()
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+
+	removeChild (iter);
+}
+
+void
+ProjectsEditor::on_selection_changed ()
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+
+	switch (selectedRows .size ())
+	{
+		case 1:
+		{
+			getRemoveProjectButton () .set_sensitive (selectedRows .front () .size () == 1);
+			break;
+		}
+		case 0:
+		default:
+		{
+			getRemoveProjectButton () .set_sensitive (false);
+			break;
+		}
+	}
 }
 
 void
@@ -163,7 +194,23 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 void
 ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*)
 {
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 
+	switch (selectedRows .size ())
+	{
+		case 1:
+		{
+			const auto iter = getTreeStore () -> get_iter (selectedRows .front ());
+
+			getBrowserWindow () -> open (getUrl (iter));
+			break;
+		}
+		case 0:
+		default:
+		{
+			break;
+		}
+	}
 }
 
 void
@@ -177,13 +224,13 @@ ProjectsEditor::addRootFolder (const basic::uri & URL)
 		if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 			return;
 
-		if (not folders .emplace (URL) .second)
+		if (not projects .emplace (URL) .second)
 			return;
 	
-		if (not folderIndex .emplace (directory -> get_uri (), std::make_shared <FolderElement> ()) .second)
+		if (not folders .emplace (directory -> get_uri (), std::make_shared <FolderElement> ()) .second)
 			return;
 
-		auto iter = getTreeStore () -> append ();
+		const auto iter = getTreeStore () -> append ();
 
 		addFolder (iter, directory);
 	}
@@ -192,22 +239,20 @@ ProjectsEditor::addRootFolder (const basic::uri & URL)
 }
 
 void
-ProjectsEditor::addFolder (Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory)
+ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & directory)
 {
-	const auto & fileElement = folderIndex [directory -> get_uri ()];
+	const auto & fileElement = folders [directory -> get_uri ()];
 
 	fileElement -> fileMonitor = directory -> monitor_directory (Gio::FILE_MONITOR_WATCH_MOVES);
 
 	fileElement -> fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &ProjectsEditor::on_file_changed));
 
-	iter -> set_value (Columns::ICON, std::string ("gtk-directory"));
-	iter -> set_value (Columns::NAME, directory -> get_basename ());
-
+	addChild (iter, directory, "gtk-directory");
 	addChildren (iter, directory);
 }
 
 void
-ProjectsEditor::addChildren (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory)
+ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & directory)
 {
 	try
 	{
@@ -218,23 +263,22 @@ ProjectsEditor::addChildren (Gtk::TreeModel::iterator & parent, const Glib::RefP
 				case Gio::FILE_TYPE_DIRECTORY:
 				{
 					const auto child = directory -> get_child (fileInfo -> get_name ());
-
-					if (not folderIndex .emplace (child -> get_uri (), std::make_shared <FolderElement> ()) .second)
+		
+					if (not folders .emplace (child -> get_uri (), std::make_shared <FolderElement> ()) .second)
 						continue;
 
-					auto iter = getTreeStore () -> append (parent -> children ());
-		
+					const auto iter = getTreeStore () -> append (parentIter -> children ());
+
 					addFolder (iter, child);
 					continue;
 				}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
-					const auto basename = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const auto iter     = getTreeStore () -> append (parent -> children ());
+					const auto child = directory -> get_child (fileInfo -> get_name ());
+					const auto iter  = getTreeStore () -> append (parentIter -> children ());
 
-					iter -> set_value (Columns::ICON, std::string ("gtk-file"));
-					iter -> set_value (Columns::NAME, fileInfo -> get_name ());
+					addChild (iter, child, "gtk-file");
 					continue;
 				}
 				default:
@@ -247,9 +291,60 @@ ProjectsEditor::addChildren (Gtk::TreeModel::iterator & parent, const Glib::RefP
 }
 
 void
+ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon)
+{
+	iter -> set_value (Columns::ICON, X3DLibraryView::getIconName (file -> query_info (), "gtk-file"));
+	iter -> set_value (Columns::NAME, file -> get_basename ());
+	iter -> set_value (Columns::URL,  file -> get_uri ());
+}
+
+void
+ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
+{
+	const auto URL = getUrl (iter);
+
+	getTreeStore () -> erase (iter);
+
+	// Remove project and subfolders if URL is a directory.
+
+	const auto child    = Gio::File::create_for_uri (URL);
+	const auto fileInfo = child -> query_info ();
+
+	if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
+		return;
+
+	// Remove project.
+
+	projects .erase (URL);
+
+	// Remove subfolders.
+
+	std::vector <std::string> subfolders;
+
+	for (const auto & pair : folders)
+	{
+		if (pair .first .find (URL) == 0)
+			subfolders .emplace_back (pair .first);
+	}
+
+	for (const auto & subfolder : subfolders)
+		folders .erase (subfolder);
+}
+
+std::string
+ProjectsEditor::getUrl (const Gtk::TreeIter & iter)
+{
+	std::string URL;
+
+	iter -> get_value (Columns::URL, URL);
+
+	return URL;
+}
+
+void
 ProjectsEditor::store ()
 {
-	getConfig () -> setItem <X3D::MFString> ("folders", X3D::MFString (folders .begin (), folders .end ()));
+	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (projects .begin (), projects .end ()));
 
 	X3DProjectsEditorInterface::store ();
 }

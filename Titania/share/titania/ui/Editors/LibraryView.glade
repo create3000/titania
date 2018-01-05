@@ -82,7 +82,7 @@
                             <child>
                               <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
                               <attributes>
-                                <attribute name="stock-id">0</attribute>
+                                <attribute name="icon-name">0</attribute>
                               </attributes>
                             </child>
                             <child>

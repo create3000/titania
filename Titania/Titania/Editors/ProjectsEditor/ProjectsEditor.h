@@ -95,7 +95,15 @@ private:
 
 	virtual
 	void
-	on_add_folder_clicked () final override;
+	on_add_project_clicked () final override;
+
+	virtual
+	void
+	on_remove_project_clicked () final override;
+
+	virtual
+	void
+	on_selection_changed () final override;
 
 	void
 	on_file_changed (const Glib::RefPtr <Gio::File> & file,
@@ -112,10 +120,19 @@ private:
 	addRootFolder (const basic::uri & URL);
 
 	void
-	addFolder (Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory);
+	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory);
 
 	void
-	addChildren (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory);
+	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory);
+
+	void
+	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
+
+	void
+	removeChild (const Gtk::TreeModel::iterator & iter);
+
+	std::string
+	getUrl (const Gtk::TreeIter & iter);
 
 	///  @name Destruction
 
@@ -125,8 +142,8 @@ private:
 
 	///  @name Members
 
-	std::set <basic::uri>                  folders;
-	std::map <std::string, FolderElementPtr> folderIndex;
+	std::set <basic::uri>                    projects;
+	std::map <std::string, FolderElementPtr> folders;
 
 };
 
