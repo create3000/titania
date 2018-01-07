@@ -96,6 +96,14 @@ private:
 
 	virtual
 	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
+	virtual
+	void
 	on_add_project_clicked () final override;
 
 	virtual
@@ -134,7 +142,16 @@ private:
 	                 const Glib::RefPtr <Gio::File> & other_file,
 	                 Gio::FileMonitorEvent event);
 
+	void
+	set_execution_context ();
+
 	///  @name Operations
+
+	bool
+	selectFile (const Glib::RefPtr <Gio::File> & file);
+
+	bool
+	expandTo (const Glib::RefPtr <Gio::File> & file);
 
 	void
 	addRootFolder (const std::string & path);
