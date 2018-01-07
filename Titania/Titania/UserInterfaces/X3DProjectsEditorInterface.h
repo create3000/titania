@@ -132,6 +132,10 @@ public:
 	getAddNewFolderMenuItem () const
 	{ return *m_AddNewFolderMenuItem; }
 
+	Gtk::SeparatorMenuItem &
+	getFileSeparatorMenuItem () const
+	{ return *m_FileSeparatorMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -167,6 +171,34 @@ public:
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
+
+	Gtk::Popover &
+	getCreateFolderPopover () const
+	{ return *m_CreateFolderPopover; }
+
+	Gtk::Entry &
+	getFolderNameEntry () const
+	{ return *m_FolderNameEntry; }
+
+	Gtk::Button &
+	getCreateDirectoryButton () const
+	{ return *m_CreateDirectoryButton; }
+
+	Gtk::Popover &
+	getRenamePopover () const
+	{ return *m_RenamePopover; }
+
+	Gtk::Label &
+	getFileNameLabel () const
+	{ return *m_FileNameLabel; }
+
+	Gtk::Entry &
+	getFileNameEntry () const
+	{ return *m_FileNameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
 
 	///  @name Signal handlers
 
@@ -210,6 +242,14 @@ public:
 	void
 	on_selection_changed () = 0;
 
+	virtual
+	bool
+	on_folder_name_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_create_folder_clicked () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -245,6 +285,7 @@ private:
 	Gtk::MenuItem* m_AddMenuItem;
 	Gtk::MenuItem* m_AddNewFileMenuItem;
 	Gtk::MenuItem* m_AddNewFolderMenuItem;
+	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -254,6 +295,13 @@ private:
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::TreeView* m_TreeView;
+	Gtk::Popover* m_CreateFolderPopover;
+	Gtk::Entry* m_FolderNameEntry;
+	Gtk::Button* m_CreateDirectoryButton;
+	Gtk::Popover* m_RenamePopover;
+	Gtk::Label* m_FileNameLabel;
+	Gtk::Entry* m_FileNameEntry;
+	Gtk::Button* m_RenameButton;
 
 };
 

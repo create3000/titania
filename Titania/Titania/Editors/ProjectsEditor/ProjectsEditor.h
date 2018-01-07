@@ -127,6 +127,14 @@ private:
 
 	virtual
 	void
+	on_create_folder_clicked () final override;
+
+	virtual
+	bool
+	on_folder_name_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	virtual
@@ -157,13 +165,13 @@ private:
 	addRootFolder (const std::string & path);
 
 	void
-	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory, const bool children);
+	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & folder, const bool children);
 
 	void
-	addFolder (const Glib::RefPtr <Gio::File> & directory);
+	addFolder (const Glib::RefPtr <Gio::File> & folder);
 
 	void
-	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory);
+	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & folder);
 
 	void
 	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);

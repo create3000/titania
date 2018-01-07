@@ -91,6 +91,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("AddMenuItem", m_AddMenuItem);
 	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
+	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -100,6 +101,13 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_builder -> get_widget ("CreateFolderPopover", m_CreateFolderPopover);
+	m_builder -> get_widget ("FolderNameEntry", m_FolderNameEntry);
+	m_builder -> get_widget ("CreateDirectoryButton", m_CreateDirectoryButton);
+	m_builder -> get_widget ("RenamePopover", m_RenamePopover);
+	m_builder -> get_widget ("FileNameLabel", m_FileNameLabel);
+	m_builder -> get_widget ("FileNameEntry", m_FileNameEntry);
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
 
 	// Connect object Gtk::MenuItem with id 'AddNewFileMenuItem'.
 	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
@@ -120,6 +128,12 @@ X3DProjectsEditorInterface::create ()
 
 	// Connect object Gtk::TreeSelection with id 'TreeViewSelection'.
 	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_selection_changed));
+
+	// Connect object Gtk::Entry with id 'FolderNameEntry'.
+	m_FolderNameEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_folder_name_key_press_event), false);
+
+	// Connect object Gtk::Button with id 'CreateDirectoryButton'.
+	m_CreateDirectoryButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_create_folder_clicked));
 }
 
 X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()
