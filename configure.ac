@@ -46,6 +46,8 @@ dnl ******* CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 
 CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -Wno-deprecated -DFIXED_PIPELINE"
 
+### add GTKMM_DISABLE_DEPRECATED
+
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
 fi

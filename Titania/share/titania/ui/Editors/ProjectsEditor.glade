@@ -2,7 +2,71 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkTreeStore" id="TreeStore">
+  <object class="GtkMenu" id="ContextMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="OpenWithMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Open With</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="OpenWithMenu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Titania</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="AddMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Add</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="AddNewFileMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">New File ...</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_add_new_file_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="AddNewFolderMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">New Folder ...</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_add_new_folder_activate" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkTreeStore" id="ProjectsStore">
     <columns>
       <!-- column-name Icon -->
       <column type="gchararray"/>
@@ -44,7 +108,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Add project.</property>
+                    <property name="tooltip_text" translatable="yes">Add project folder.</property>
                     <signal name="clicked" handler="on_add_project_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage">
@@ -67,7 +131,7 @@
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Remove project.</property>
+                    <property name="tooltip_text" translatable="yes">Remove project folder.</property>
                     <signal name="clicked" handler="on_remove_project_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage">
@@ -107,14 +171,15 @@
                 <property name="can_focus">False</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTreeView" id="TreeView">
+                  <object class="GtkTreeView" id="ProjectsView.FileView">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="model">TreeStore</property>
+                    <property name="can_focus">True</property>
+                    <property name="model">ProjectsStore</property>
                     <property name="headers_visible">False</property>
                     <property name="headers_clickable">False</property>
                     <property name="rules_hint">True</property>
                     <property name="search_column">1</property>
+                    <signal name="button-press-event" handler="on_button_press_event" after="yes" swapped="no"/>
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="TreeViewSelection">

@@ -51,6 +51,8 @@
 #ifndef __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 #define __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 
+#include "../DerivedWidgets/FileView.h"
+
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
@@ -89,8 +91,8 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::TreeStore> &
-	getTreeStore () const
-	{ return m_TreeStore; }
+	getProjectsStore () const
+	{ return m_ProjectsStore; }
 
 	const Glib::RefPtr <Gtk::TreeSelection> &
 	getTreeViewSelection () const
@@ -107,6 +109,30 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getNameRenderer () const
 	{ return m_NameRenderer; }
+
+	Gtk::Menu &
+	getContextMenu () const
+	{ return *m_ContextMenu; }
+
+	Gtk::MenuItem &
+	getOpenWithMenuItem () const
+	{ return *m_OpenWithMenuItem; }
+
+	Gtk::Menu &
+	getOpenWithMenu () const
+	{ return *m_OpenWithMenu; }
+
+	Gtk::MenuItem &
+	getAddMenuItem () const
+	{ return *m_AddMenuItem; }
+
+	Gtk::MenuItem &
+	getAddNewFileMenuItem () const
+	{ return *m_AddNewFileMenuItem; }
+
+	Gtk::MenuItem &
+	getAddNewFolderMenuItem () const
+	{ return *m_AddNewFolderMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -140,11 +166,19 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_TreeView; }
+	FileView &
+	getProjectsView () const
+	{ return *m_ProjectsView; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_add_new_file_activate () = 0;
+
+	virtual
+	void
+	on_add_new_folder_activate () = 0;
 
 	virtual
 	void
@@ -153,6 +187,10 @@ public:
 	virtual
 	void
 	on_remove_project_clicked () = 0;
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -186,11 +224,17 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
+	Glib::RefPtr <Gtk::TreeStore> m_ProjectsStore;
 	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
+	Gtk::Menu* m_ContextMenu;
+	Gtk::MenuItem* m_OpenWithMenuItem;
+	Gtk::Menu* m_OpenWithMenu;
+	Gtk::MenuItem* m_AddMenuItem;
+	Gtk::MenuItem* m_AddNewFileMenuItem;
+	Gtk::MenuItem* m_AddNewFolderMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -199,7 +243,7 @@ private:
 	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::TreeView* m_TreeView;
+	FileView* m_ProjectsView;
 
 };
 

@@ -25,6 +25,7 @@ my $class_prefix      = "";
 my $class_suffix      = "";
 my $empty_constructor = 0;
 my $pure_virtual      = 0;
+my $derived_directory = $ENV {HOME};
 my $output_directory  = $ENV {HOME};
 
 sub main
@@ -37,14 +38,16 @@ sub main
 	            "suffix=s"       => \$class_suffix,
 	            "empty"          => \$empty_constructor,
 	            "virtual"        => \$pure_virtual,
+	            "derived=s"      => \$derived_directory,
 	            "output=s"       => \$output_directory);
- 
+
 	my $glade2cpp = new Glade2Cpp ({ namespaces        => [ split /,/, join ',', @namespaces ],
                                     base_class        => $base_class,
                                     class_prefix      => $class_prefix,
                                     class_suffix      => $class_suffix,
                                     empty_constructor => $empty_constructor,
-	                                 pure_virtual      => $pure_virtual });
+	                                 pure_virtual      => $pure_virtual,
+	                                 derived_directory => $derived_directory });
 
 	$glade2cpp -> generate ($_, $output_directory) foreach @ARGV;
 

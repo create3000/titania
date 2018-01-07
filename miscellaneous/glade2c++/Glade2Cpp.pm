@@ -72,6 +72,7 @@ sub new
 		suffixes           => [ qw (.glade .ui .xml) ],
 		empty_constructor  => $options -> {empty_constructor},
 		pure_virtual       => exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
+		derived_directory  => exists $options -> {derived_directory} ? $options -> {derived_directory} : $ENV{HOME},
 		h_signal_handler   => { },
 		cpp_signal_handler => { },
 		class              => "",
@@ -127,6 +128,24 @@ sub isWidget
 
 #	return unless ucfirst $attributes {id} eq $attributes {id};
 
+sub h_derived
+{
+	my ($self, $expat, $name, %attributes) = @_;
+	my $file = $self -> {handle};
+	
+	return unless $attributes {id};
+	return if $name ne "object";
+	return if ucfirst $attributes {id} ne $attributes {id};
+	
+	$attributes {class} =~ s/Gtk/Gtk::/;
+	return if not isWidget ($attributes {class});
+	return unless $attributes {id} =~ s/^\w+\.//;
+
+	my $path = File::Spec -> abs2rel ("$self->{derived_directory}/$attributes{id}.h", $self -> {directory});
+
+	say $file "#include \"$path\"";
+}
+
 sub h_object_getters
 {
 	my ($self, $expat, $name, %attributes) = @_;
@@ -147,13 +166,14 @@ sub h_widget_getters
 {
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
-	
+
 	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
-
+	
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
+	$attributes {class} = $1 if $attributes {id} =~ s/\.(\w+)$//;
 
 	$self -> {windows} -> {"m_" . $attributes {id}} = 1
 		if isWindow ($attributes {class});
@@ -188,6 +208,7 @@ sub h_widgets
 	
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
+	$attributes {class} = $1 if $attributes {id} =~ s/\.(\w+)$//;
 
 	say $file "$attributes{class}* m_" . $attributes {id} . ";";
 }
@@ -261,7 +282,16 @@ sub cpp_get_widgets
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
 	
-	say $file "m_builder -> get_widget (\"$attributes{id}\", m_" . $attributes {id} . ");";
+	my $id = $attributes{id};
+
+	if ($attributes{id} =~ s/\.(\w+)$//)
+	{
+		say $file "m_builder -> get_widget_derived (\"$id\", m_" . $attributes {id} . ");";
+	}
+	else
+	{
+		say $file "m_builder -> get_widget (\"$id\", m_" . $attributes {id} . ");";
+	}
 }
 
 sub cpp_signals
@@ -271,6 +301,8 @@ sub cpp_signals
 	
 	if ($name eq "object")
 	{
+		$attributes {id} =~ s/\.(\w+)$// if $attributes {id};
+
 		$self -> {class} = $attributes {class};
 		$self -> {id}    = $attributes {id};
 
@@ -359,6 +391,7 @@ sub generate
 	my $basename = basename $filename;
 	my $name     = basename $filename, @{$self -> {suffixes}};
 
+	$self -> {directory}          = $directory;
 	$self -> {h_signal_handler}   = { };
 	$self -> {cpp_signal_handler} = { };
 	$self -> {class_name}         = "$self->{class_prefix}${name}$self->{class_suffix}";
@@ -390,6 +423,11 @@ sub generate
 	say OUT "";
 	say OUT "#ifndef " . uc "_$name\_$self->{class_name}\_H_";
 	say OUT "#define " . uc "_$name\_$self->{class_name}\_H_";
+
+	# Derived
+	say OUT "";
+	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_derived (@_) }});
+	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 
 	say OUT "";
 	say OUT "#include <gtkmm.h>";

@@ -57,6 +57,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow;
+class ScrollFreezer;
 
 class ProjectsEditor :
 	virtual public X3DProjectsEditorInterface
@@ -102,6 +103,25 @@ private:
 	on_remove_project_clicked () final override;
 
 	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) final override;
+
+	void
+	on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);
+
+	virtual
+	void
+	on_add_new_file_activate () final override;
+
+	virtual
+	void
+	on_add_new_folder_activate () final override;
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
+
+	virtual
 	void
 	on_selection_changed () final override;
 
@@ -110,10 +130,6 @@ private:
 	                 const Glib::RefPtr <Gio::File> & other_file,
 	                 Gio::FileMonitorEvent event);
 
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
-
 	///  @name Operations
 
 	void
@@ -121,6 +137,9 @@ private:
 
 	void
 	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory);
+
+	void
+	addFolder (const Glib::RefPtr <Gio::File> & directory);
 
 	void
 	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory);
@@ -152,7 +171,7 @@ private:
 	saveExpanded ();
 
 	void
-	saveExpanded (const Gtk::TreeIter & iter, X3D::MFString & URLs);
+	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & URLs);
 
 	virtual
 	void
@@ -162,6 +181,7 @@ private:
 
 	std::set <basic::uri>                    projects;
 	std::map <std::string, FolderElementPtr> folders;
+	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 
 };
 

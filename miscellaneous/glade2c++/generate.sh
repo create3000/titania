@@ -11,6 +11,7 @@ echo "\nUserInterfaces\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DUserInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -maxdepth 1 -name \*.glade;`
 
@@ -23,6 +24,7 @@ echo "\Applications\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DApplicationInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/ -maxdepth 1 -name \*.glade;`
 
@@ -35,6 +37,7 @@ echo "\nDialogs\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DDialogInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Dialogs/ -maxdepth 1 -name \*.glade;`
 
@@ -47,6 +50,7 @@ echo "\nEditors\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DEditorInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/ -maxdepth 1 -name \*.glade;`
 
@@ -59,6 +63,7 @@ echo "\Panels\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DPanelInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/ -maxdepth 1 -name \*.glade;`
 
@@ -71,6 +76,7 @@ echo "\nRevealer\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DRevealerInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Revealer/ -maxdepth 1 -name \*.glade;`
 
@@ -83,5 +89,6 @@ echo "\nWidgets\n";
 -p X3D \
 -s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DUserInterface.h \
+-d /home/holger/Projekte/Titania/Titania/Titania/DerivedWidgets \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Widgets/ -maxdepth 1 -name \*.glade;`
