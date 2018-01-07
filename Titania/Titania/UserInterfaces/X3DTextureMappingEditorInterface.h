@@ -268,11 +268,11 @@ public:
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey* event) = 0;
+	on_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void

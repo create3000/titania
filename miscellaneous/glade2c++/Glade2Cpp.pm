@@ -718,639 +718,195 @@ sub get_file
 
 1;
 __DATA__
-Box::map
-  virtual void on_map();
-ToggleToolButton::toggled
+ToggleAction::toggled
   virtual void on_toggled();
+ImageMenuItem::activate
+  virtual void on_activate();
+MenuItem::activate
+  virtual void on_activate();
+CheckMenuItem::toggled
+  virtual void on_toggled();
+ApplicationWindow::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+ApplicationWindow::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+ApplicationWindow::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);
+Box::style_updated
+  virtual void on_style_updated();
+MenuBar::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Box::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
 ToolButton::clicked
   virtual void on_clicked();
-TreeView::row_activated
-  virtual void on_row_activated(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+ToolButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Entry::icon_release
+  virtual void on_icon_release(Gtk::EntryIconPosition icon_position, const GdkEventButton* event);
+Entry::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+Notebook::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Notebook::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+Notebook::switch_page
+  virtual void on_switch_page(Gtk::Widget* page, guint page_number);
+RadioToolButton::toggled
+  virtual void on_toggled();
+ToggleToolButton::toggled
+  virtual void on_toggled();
+RadioButton::toggled
+  virtual void on_toggled();
+RadioButton::clicked
+  virtual void on_clicked();
+Button::clicked
+  virtual void on_clicked();
 Adjustment::value_changed
   virtual void on_value_changed();
-Box::unmap
-  virtual void on_unmap();
-ComboBoxText::changed
-  virtual void on_changed();
-TreeView::draw
-  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
-TreeSelection::changed
-  virtual void on_changed();
-CellRendererToggle::toggled
-  virtual void on_toggled(const Glib::ustring& path);
-DrawingArea::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-DrawingArea::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-DrawingArea::configure_event
-  virtual bool on_configure_event(GdkEventConfigure* event);
-DrawingArea::draw
-  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
-DrawingArea::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* event);
-DrawingArea::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* event);
-DrawingArea::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-DrawingArea::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-DrawingArea::motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* event);
-DrawingArea::scroll_event
-  virtual bool on_scroll_event(GdkEventScroll* event);
+Box::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+Box::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);
 Entry::changed
   virtual void on_changed();
+Entry::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+FileChooserDialog::response
+  virtual void on_response(int response_id);
+ComboBoxText::changed
+  virtual void on_changed();
+CheckButton::toggled
+  virtual void on_toggled();
+ToggleButton::toggled
+  virtual void on_toggled();
+ToggleButton::clicked
+  virtual void on_clicked();
+Box::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
 Entry::delete_text
   virtual void on_delete_text(int start_pos, int end_pos);
 Entry::insert_text
   virtual void on_insert_text(const Glib::ustring& text, int* position);
-SpinButton::value_changed
-  virtual void on_value_changed();
-MenuItem::activate
-  virtual void on_activate();
-ImageMenuItem::activate
-  virtual void on_activate();
-CheckMenuItem::toggled
-  virtual void on_toggled();
-Button::clicked
-  virtual void on_clicked();
-ScrolledWindow::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Dialog::delete_event
-  virtual bool on_delete_event(GdkEventAny* event);
-CheckButton::toggled
-  virtual void on_toggled();
-SearchEntry::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* event);
-SearchEntry::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* event);
-SearchEntry::icon_release
-  virtual void on_icon_release(Gtk::EntryIconPosition icon_position, const GdkEventButton* event);
-SearchEntry::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-SearchEntry::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-ToggleButton::toggled
-  virtual void on_toggled();
-ToggleAction::toggled
-  virtual void on_toggled();
-RadioAction::changed
-  virtual void on_changed(const Glib::RefPtr<Gtk::RadioAction>& current);
-RadioAction::activate
-  virtual void on_activate();
-ApplicationWindow::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* event);
-ApplicationWindow::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-ApplicationWindow::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-MenuBar::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Box::drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
-ToolButton::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Entry::icon_release
-  virtual void on_icon_release(Gtk::EntryIconPosition icon_position, const GdkEventButton* event);
-Entry::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-Notebook::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Notebook::drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
-Notebook::page_reordered
-  virtual void on_page_reordered(Gtk::Widget* page, guint page_num);
-Notebook::switch_page
-  virtual void on_switch_page(Gtk::Widget* page, guint page_num);
-RadioToolButton::toggled
-  virtual void on_toggled();
-MenuToolButton::clicked
-  virtual void on_clicked();
-EntryCompletion::match_selected
-  virtual bool on_match_selected(const Gtk::TreeModel::iterator& iter);
-SearchEntry::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-Box::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-Box::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-RadioToolButton::toggled
-  virtual void on_toggled();
-ToggleButton::toggled
-  virtual void on_toggled();
-RadioButton::toggled
-  virtual void on_toggled();
-EventBox::enter_notify_event
-  virtual bool on_enter_notify_event(GdkEventCrossing* event);
-RadioMenuItem::activate
-  virtual void on_activate();
-RadioButton::clicked
-  virtual void on_clicked();
-TextBuffer::changed
-  virtual void on_changed();
-TreeView::drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
-CellRendererText::edited
-  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
-RadioAction::toggled
-  virtual void on_toggled();
-RadioMenuItem::toggled
-  virtual void on_toggled();
-Box::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
+TreeView::row_activated
+  virtual void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+Box::map
+  virtual void on_map();
+Box::unmap
+  virtual void on_unmap();
+SearchEntry::search_changed
+  virtual void on_search_changed();
 TreeView::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-TreeView::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-Button::activate
-  virtual void on_activate();
-Box::style_updated
-  virtual void on_style_updated();
-Adjustment::changed
-  virtual void on_changed();
+  virtual bool on_button_press_event(GdkEventButton* button_event);
 TreeViewColumn::clicked
   virtual void on_clicked();
-Entry::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-Entry::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* event);
-Entry::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* event);
-SearchEntry::insert_text
-  virtual void on_insert_text(const Glib::ustring& text, int* position);
-SearchEntry::map
+RadioMenuItem::toggled
+  virtual void on_toggled();
+TreeView::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+TreeSelection::changed
+  virtual void on_changed();
+Expander::map
   virtual void on_map();
-SearchEntry::configure_event
-  virtual bool on_configure_event(GdkEventConfigure* event);
-SearchEntry::size_allocate
-  virtual void on_size_allocate(Gtk::Allocation& allocation);
-Window::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* event);
-Window::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-Window::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-ToggleButton::clicked
-  virtual void on_clicked();
-Notebook::map
-  virtual void on_map();
-ToggleButton::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Revealer::map
-  virtual void on_map();
-Revealer::unmap
+Expander::unmap
   virtual void on_unmap();
-Box::event
-  virtual bool on_event(GdkEvent* event);
-Window::map
-  virtual void on_map();
-RadioMenuItem::group_changed
-  virtual void on_group_changed();
-RadioButton::group_changed
-  virtual void on_group_changed();
-RadioButton::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Button::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Button::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-Button::motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* event);
-Label::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Label::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-Label::motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* event);
-EventBox::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-EventBox::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-EventBox::motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* event);
 SpinButton::focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-Switch::state_set
-  virtual bool on_state_set(bool state);
-Switch::activate
-  virtual void on_activate();
-TreeView::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* key_event);
+EventBox::enter_notify_event
+  virtual bool on_enter_notify_event(GdkEventCrossing* crossing_event);
+FileChooserButton::file_set
+  virtual void on_file_set();
+TreeView::test_expand_row
+  virtual bool on_test_expand_row(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);
+TreeView::drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
 TreeView::focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* focus_event);
 TreeView::focus_out_event
   virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
 TreeView::key_press_event
   virtual bool on_key_press_event(GdkEventKey* key_event);
-FileChooserButton::file_set
-  virtual void on_file_set();
-SearchEntry::search_changed
-  virtual void on_search_changed();
-RadioToolButton::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-TextBuffer::mark_set
-  virtual void on_mark_set(const Gtk::TextBuffer::iterator& location, const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark);
-MenuBar::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-FileChooserDialog::response
-  virtual void on_response(int response_id);
-Viewport::key_release_event
-  virtual bool on_key_release_event(GdkEventKey* key_event);
-Fixed::draw
-  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
-Fixed::drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
-Fixed::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
-Fixed::motion_notify_event
+CellRendererToggle::toggled
+  virtual void on_toggled(const Glib::ustring& path);
+CellRendererText::edited
+  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
+EntryCompletion::match_selected
+  virtual bool on_match_selected(const Gtk::TreeModel::iterator& iter);
+SearchEntry::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+SpinButton::value_changed
+  virtual void on_value_changed();
+Window::map
+  virtual void on_map();
+RadioMenuItem::toggled
+  virtual void on_toggled();
+Revealer::map
+  virtual void on_map();
+Revealer::unmap
+  virtual void on_unmap();
+Button::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Button::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+Button::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
-EventBox::drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+RadioButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+ToggleButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+RadioMenuItem::toggled
+  virtual void on_toggled();
+ScrolledWindow::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Dialog::delete_event
+  virtual bool on_delete_event(GdkEventAny* any_event);
+SpinButton::value_changed
+  virtual void on_value_changed();
+SearchEntry::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+SearchEntry::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+SearchEntry::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
+SearchEntry::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);
+SearchEntry::icon_release
+  virtual void on_icon_release(Gtk::EntryIconPosition icon_position, const GdkEventButton* event);
+SearchEntry::insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
 Viewport::button_press_event
-  virtual bool on_button_press_event(GdkEventButton* event);
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+Viewport::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
 Viewport::drag_data_received
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
 Viewport::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
-Viewport::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-Fixed::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* event);
-Fixed::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* key_event);
-Fixed::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-Fixed::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
-Viewport::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-Viewport::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
-Viewport::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* key_event);
-EventBox::focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-EventBox::focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
-EventBox::key_press_event
-  virtual bool on_key_press_event(GdkEventKey* key_event);
-toggled
-  virtual void on_toggled();
-activate
-  virtual void on_activate();
-focus_out_event
-  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* key_event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* key_event);
-style_updated
-  virtual void on_style_updated();
-button_press_event
-  virtual bool on_button_press_event(GdkEventButton* button_event);
-drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
-clicked
-  virtual void on_clicked();
-icon_release
-
-page_reordered
-
-switch_page
-  virtual void on_switch_page(Widget* page, guint page_number);
-value_changed
-  virtual void on_value_changed();
-changed
-  virtual void on_selection_changed();
-response
-  virtual void on_response(int response_id);
-delete_text
-  virtual void on_delete_text(int start_pos, int end_pos);
-insert_text
-  virtual void on_insert_text(const Glib::ustring& text, int* position);
-row_activated
-  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
-map
-  virtual void on_map();
-unmap
-  virtual void on_unmap();
-search_changed
-
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-enter_notify_event
-  virtual bool on_enter_notify_event(GdkEventCrossing* crossing_event);
-file_set
-  virtual void on_file_set();
-edited
-  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
-match_selected
-  virtual bool on_match_selected(const TreeModel::iterator& iter);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
-delete_event
-  virtual bool on_delete_event(GdkEventAny* any_event);
-focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-size_allocate
-  virtual void on_size_allocate(Allocation& allocation);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-motion_notify_event
-  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
-draw
+Fixed::draw
   virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
-mark_set
-  virtual void on_mark_set(const TextBuffer::iterator& location, const Glib::RefPtr<TextBuffer::Mark>& mark);
-page_reordered
-
-configure_event
-  virtual bool on_configure_event(GdkEventConfigure* configure_event);
-scroll_event
-  virtual bool on_scroll_event(GdkEventScroll* scroll_event);
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-map
-  virtual void on_map();
-unmap
-  virtual void on_unmap();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-focus_in_event
-  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-clicked
-  virtual void on_clicked();
-map
-  virtual void on_map();
-unmap
-  virtual void on_unmap();
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-row_activated
-  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-button_press_event
+TextBuffer::mark_set
+  virtual void on_mark_set(const Gtk::TextBuffer::iterator& location, const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark);
+Notebook::page_reordered
+  virtual void on_page_reordered(Gtk::Widget* page, guint page_num);
+TreeView::draw
+  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
+DrawingArea::button_press_event
   virtual bool on_button_press_event(GdkEventButton* button_event);
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-delete_text
-  virtual void on_delete_text(int start_pos, int end_pos);
-insert_text
-  virtual void on_insert_text(const Glib::ustring& text, int* position);
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-value_changed
-  virtual void on_value_changed();
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-toggled
-  virtual void on_toggled();
-changed
-  virtual void on_selection_changed();
-toggled
-  virtual void on_toggled();
-changed
-  virtual void on_selection_changed();
-toggled
-  virtual void on_toggled();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-enter_notify_event
-  virtual bool on_enter_notify_event(GdkEventCrossing* crossing_event);
-map
-  virtual void on_map();
-unmap
-  virtual void on_unmap();
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-value_changed
-  virtual void on_value_changed();
-file_set
-  virtual void on_file_set();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-drag_data_received
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
-focus_in_event
+DrawingArea::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+DrawingArea::configure_event
+  virtual bool on_configure_event(GdkEventConfigure* configure_event);
+DrawingArea::draw
+  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
+DrawingArea::focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* focus_event);
-focus_out_event
+DrawingArea::focus_out_event
   virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
-key_press_event
+DrawingArea::key_press_event
   virtual bool on_key_press_event(GdkEventKey* key_event);
-row_activated
-  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-toggled
-  virtual void on_toggled();
-edited
-  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);
-row_activated
-  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
-changed
-  virtual void on_selection_changed();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-delete_text
-  virtual void on_delete_text(int start_pos, int end_pos);
-insert_text
-  virtual void on_insert_text(const Glib::ustring& text, int* position);
-clicked
-  virtual void on_clicked();
-clicked
-  virtual void on_clicked();
-changed
-  virtual void on_selection_changed();
-delete_text
-  virtual void on_delete_text(int start_pos, int end_pos);
-insert_text
-  virtual void on_insert_text(const Glib::ustring& text, int* position);
-match_selected
-  virtual bool on_match_selected(const TreeModel::iterator& iter);
-map
-  virtual void on_map();
-unmap
-  virtual void on_unmap();
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* key_event);
-row_activated
-  virtual void on_row_activated(const TreeModel::Path& path, TreeViewColumn* column);
-clicked
-  virtual void on_clicked();
-activate
-  virtual void on_activate();
-activate
-  virtual void on_activate();
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-Image::button_release_event
-  virtual bool on_button_release_event(GdkEventButton* release_event);
-Expander::map
-  virtual void on_map();
-Expander::unmap
-  virtual void on_unmap();
+DrawingArea::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);
+DrawingArea::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+DrawingArea::scroll_event
+  virtual bool on_scroll_event(GdkEventScroll* scroll_event);

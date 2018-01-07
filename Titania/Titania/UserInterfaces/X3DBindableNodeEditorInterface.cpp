@@ -82,7 +82,6 @@ X3DBindableNodeEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Label", m_Label);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("BackgroundEditorBox", m_BackgroundEditorBox);
 	m_builder -> get_widget ("FogEditorBox", m_FogEditorBox);

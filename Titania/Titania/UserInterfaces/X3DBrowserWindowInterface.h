@@ -1796,15 +1796,15 @@ public:
 
 	virtual
 	bool
-	on_focus_out_event (GdkEventFocus* event) = 0;
+	on_focus_out_event (GdkEventFocus* gdk_event) = 0;
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey* event) = 0;
+	on_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
@@ -1812,7 +1812,7 @@ public:
 
 	virtual
 	bool
-	on_menubar_button_press_event (GdkEventButton* event) = 0;
+	on_menubar_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -1828,7 +1828,7 @@ public:
 
 	virtual
 	bool
-	on_previous_button_press_event (GdkEventButton* event) = 0;
+	on_previous_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -1836,7 +1836,7 @@ public:
 
 	virtual
 	bool
-	on_next_button_press_event (GdkEventButton* event) = 0;
+	on_next_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -1848,7 +1848,7 @@ public:
 
 	virtual
 	bool
-	on_location_key_press_event (GdkEventKey* event) = 0;
+	on_location_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
@@ -1912,7 +1912,7 @@ public:
 
 	virtual
 	bool
-	on_notebook_button_press_event (GdkEventButton* event) = 0;
+	on_notebook_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -1924,7 +1924,7 @@ public:
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
 
 	virtual
 	void

@@ -1180,7 +1180,7 @@ public:
 
 	virtual
 	bool
-	on_palette_button_press_event (GdkEventButton* event) = 0;
+	on_palette_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void

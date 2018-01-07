@@ -79,7 +79,7 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	                  projects (),
 	                   folders (),
-	             scrollFreezer (new ScrollFreezer (getProjectsView ()))
+	             scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	setup ();
 }
@@ -116,6 +116,15 @@ ProjectsEditor::on_add_project_clicked ()
 	addRootFolder (openDirectoryDialog -> getUrl ());
 }
 
+void
+ProjectsEditor::on_remove_project_clicked ()
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+
+	removeRootFolder (iter);
+}
+
 bool
 ProjectsEditor::on_button_press_event (GdkEventButton* event)
 {
@@ -124,12 +133,12 @@ ProjectsEditor::on_button_press_event (GdkEventButton* event)
 		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 
 		if (selectedRows .empty ())
-			return false;
-	
+			return true;
+
 		if (selectedRows .size () == 1)
 		{
 			const auto path = selectedRows .front ();
-			const auto file = Gio::File::create_for_uri (getUrl (getProjectsStore () -> get_iter (path)));
+			const auto file = Gio::File::create_for_uri (getUrl (getTreeStore () -> get_iter (path)));
 
 			// Clear »Open With ...« menu.
 
@@ -190,18 +199,9 @@ ProjectsEditor::on_add_new_folder_activate ()
 }
 
 void
-ProjectsEditor::on_remove_project_clicked ()
-{
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getProjectsStore () -> get_iter (selectedRows .front ());
-
-	removeChild (iter);
-}
-
-void
 ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
-	launchUrl (getUrl (getProjectsStore () -> get_iter (path)));
+	launchUrl (getUrl (getTreeStore () -> get_iter (path)));
 }
 
 void
@@ -223,6 +223,25 @@ ProjectsEditor::on_selection_changed ()
 			break;
 		}
 	}
+}
+
+bool
+ProjectsEditor::on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
+{
+	for (const auto & child : iter -> children ())
+	{
+		const auto file     = Gio::File::create_for_uri (getUrl (child));
+		const auto fileInfo = file -> query_info ();
+
+		if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+		{
+			if (child -> children () .empty ())
+				addChildren (child, file);
+		}
+	}
+
+	// Return false to allow expansion, true to reject.
+	return false;
 }
 
 void
@@ -262,14 +281,16 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	
 		const auto iter = getIter (directory -> get_uri ());
 	
-		if (not getProjectsStore () -> iter_is_valid (iter))
+		if (not getTreeStore () -> iter_is_valid (iter))
 			return;
 
-		const auto newIter = getProjectsStore () -> insert_after (iter);
-
 		saveExpanded ();
-		addFolder (newIter, directory);
-		removeChild (iter);
+
+		const auto newIter = getTreeStore () -> insert_after (iter);
+
+		removeFolder (iter);
+		addFolder (newIter, directory, true);
+
 		restoreExpanded ();
 	}
 	catch (...)
@@ -290,18 +311,22 @@ ProjectsEditor::addRootFolder (const basic::uri & URL)
 		if (not projects .emplace (URL) .second)
 			return;
 
-		addFolder (getProjectsStore () -> append (), directory);
+		const auto iter = getTreeStore () -> append ();
+
+		addFolder (iter, directory, true);
 	}
 	catch (...)
 	{ }
 }
 
 void
-ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & directory)
+ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & directory, const bool children)
 {
 	addFolder (directory);
 	addChild (iter, directory, "gtk-directory");
-	addChildren (iter, directory);
+
+	if (children)
+		addChildren (iter, directory);
 }
 
 void
@@ -328,16 +353,16 @@ ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 				case Gio::FILE_TYPE_DIRECTORY:
 				{
 					const auto child = directory -> get_child (fileInfo -> get_name ());
-					const auto iter  = getProjectsStore () -> append (parentIter -> children ());
+					const auto iter  = getTreeStore () -> append (parentIter -> children ());
 
-					addFolder (iter, child);
+					addFolder (iter, child, false);
 					continue;
 				}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto child = directory -> get_child (fileInfo -> get_name ());
-					const auto iter  = getProjectsStore () -> append (parentIter -> children ());
+					const auto iter  = getTreeStore () -> append (parentIter -> children ());
 
 					addChild (iter, child, "gtk-file");
 					continue;
@@ -360,11 +385,21 @@ ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::F
 }
 
 void
-ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
+ProjectsEditor::removeRootFolder (const Gtk::TreeIter & iter)
+{
+	// Remove project.
+
+	projects .erase (getUrl (iter));
+
+	removeFolder (iter);
+}
+
+void
+ProjectsEditor::removeFolder (const Gtk::TreeIter & iter)
 {
 	const auto URL = getUrl (iter);
 
-	getProjectsStore () -> erase (iter);
+	getTreeStore () -> erase (iter);
 
 	// Remove project and subfolders if URL is a directory.
 
@@ -373,10 +408,6 @@ ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
 
 	if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 		return;
-
-	// Remove project.
-
-	projects .erase (URL);
 
 	// Remove subfolders.
 
@@ -397,7 +428,7 @@ ProjectsEditor::getIter (const std::string & URL) const
 {
 	Gtk::TreeIter result;
 
-	for (const auto & childIter : getProjectsStore () -> children ())
+	for (const auto & childIter : getTreeStore () -> children ())
 	{
 		if (getIter (childIter, URL, result))
 			break;
@@ -470,10 +501,10 @@ ProjectsEditor::restoreExpanded ()
 	{
 		const auto iter = getIter (URL);
 
-		if (not getProjectsStore () -> iter_is_valid (iter))
+		if (not getTreeStore () -> iter_is_valid (iter))
 			continue;
 
-		getProjectsView () .expand_row (getProjectsStore () -> get_path (iter), false);
+		getTreeView () .expand_row (getTreeStore () -> get_path (iter), false);
 	}
 
 	scrollFreezer -> restore (getConfig () -> getItem <double> ("hadjustment"), getConfig () -> getItem <double> ("vadjustment"));
@@ -484,11 +515,11 @@ ProjectsEditor::saveExpanded ()
 {
 	X3D::MFString URLs;
 
-	getExpanded (getProjectsStore () -> children (), URLs);
+	getExpanded (getTreeStore () -> children (), URLs);
 
 	getConfig () -> setItem <X3D::MFString> ("expanded", URLs);
-	getConfig () -> setItem <double> ("hadjustment", getProjectsView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem <double> ("vadjustment", getProjectsView () .get_vadjustment () -> get_value ());
+	getConfig () -> setItem <double> ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem <double> ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 }
 
 void
@@ -496,7 +527,7 @@ ProjectsEditor::getExpanded (const Gtk::TreeModel::Children & children, X3D::MFS
 {
 	for (const auto & child : children)
 	{
-		if (getProjectsView () .row_expanded (getProjectsStore () -> get_path (child)))
+		if (getTreeView () .row_expanded (getTreeStore () -> get_path (child)))
 			URLs .emplace_back (getUrl (child));
 
 		getExpanded (child -> children (), URLs);

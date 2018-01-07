@@ -96,10 +96,6 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
-
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -124,7 +120,7 @@ public:
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
 
 	///  @name Destruction
 
@@ -152,7 +148,6 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_BackgroundEditorBox;
 	Gtk::Box* m_FogEditorBox;

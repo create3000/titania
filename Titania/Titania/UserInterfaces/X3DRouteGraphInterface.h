@@ -232,7 +232,7 @@ public:
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
 
 	///  @name Destruction
 

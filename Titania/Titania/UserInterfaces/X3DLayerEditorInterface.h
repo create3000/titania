@@ -232,11 +232,11 @@ public:
 
 	virtual
 	bool
-	on_layers_button_release_event (GdkEventButton* event) = 0;
+	on_layers_button_release_event (GdkEventButton* release_event) = 0;
 
 	virtual
 	void
-	on_layer_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void

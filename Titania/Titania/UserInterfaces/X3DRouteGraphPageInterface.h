@@ -144,11 +144,11 @@ public:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton* event) = 0;
+	on_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton* event) = 0;
+	on_button_release_event (GdkEventButton* release_event) = 0;
 
 	virtual
 	void
@@ -168,7 +168,7 @@ public:
 
 	virtual
 	bool
-	on_page_name_key_press_event (GdkEventKey* event) = 0;
+	on_page_name_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void

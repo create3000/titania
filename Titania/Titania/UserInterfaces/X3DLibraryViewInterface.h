@@ -228,11 +228,11 @@ public:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	bool
-	on_palette_button_press_event (GdkEventButton* event) = 0;
+	on_palette_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void

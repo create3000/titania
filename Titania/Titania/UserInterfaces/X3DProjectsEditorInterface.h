@@ -51,8 +51,6 @@
 #ifndef __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 #define __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 
-#include "../DerivedWidgets/FileView.h"
-
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
@@ -91,8 +89,8 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::TreeStore> &
-	getProjectsStore () const
-	{ return m_ProjectsStore; }
+	getTreeStore () const
+	{ return m_TreeStore; }
 
 	const Glib::RefPtr <Gtk::TreeSelection> &
 	getTreeViewSelection () const
@@ -166,9 +164,9 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	FileView &
-	getProjectsView () const
-	{ return *m_ProjectsView; }
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
 
 	///  @name Signal handlers
 
@@ -190,11 +188,15 @@ public:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton* event) = 0;
+	on_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
+
+	virtual
+	bool
+	on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
 
 	virtual
 	void
@@ -224,7 +226,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::TreeStore> m_ProjectsStore;
+	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
 	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
@@ -243,7 +245,7 @@ private:
 	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	FileView* m_ProjectsView;
+	Gtk::TreeView* m_TreeView;
 
 };
 

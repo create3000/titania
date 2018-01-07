@@ -66,7 +66,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkTreeStore" id="ProjectsStore">
+  <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Icon -->
       <column type="gchararray"/>
@@ -171,16 +171,17 @@
                 <property name="can_focus">False</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTreeView" id="ProjectsView.FileView">
+                  <object class="GtkTreeView" id="TreeView">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="model">ProjectsStore</property>
+                    <property name="model">TreeStore</property>
                     <property name="headers_visible">False</property>
                     <property name="headers_clickable">False</property>
                     <property name="rules_hint">True</property>
                     <property name="search_column">1</property>
                     <signal name="button-press-event" handler="on_button_press_event" after="yes" swapped="no"/>
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
+                    <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="TreeViewSelection">
                         <property name="mode">multiple</property>

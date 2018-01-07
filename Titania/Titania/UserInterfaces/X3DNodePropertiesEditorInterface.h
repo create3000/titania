@@ -532,7 +532,7 @@ public:
 
 	virtual
 	void
-	on_user_defined_field_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_user_defined_field_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void
@@ -560,7 +560,7 @@ public:
 
 	virtual
 	void
-	on_exported_node_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_exported_node_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void

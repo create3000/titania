@@ -362,8 +362,6 @@
     <Compile Include="Titania\UserInterfaces\X3DProjectsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ProjectsEditor\ProjectsEditor.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.cpp" />
-    <Compile Include="Titania\DerivedWidgets\FileView.cpp" />
-    <Compile Include="Titania\DerivedWidgets\FileStore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3144,8 +3142,6 @@
     <None Include="share\titania\ui\icons\Faenza\16\folder-new.png" />
     <None Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.h" />
     <None Include="share\titania\ui\Editors\ProjectsEditor.glade" />
-    <None Include="Titania\DerivedWidgets\FileView.h" />
-    <None Include="Titania\DerivedWidgets\FileStore.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3309,7 +3305,6 @@
     <Folder Include="share\titania\Library\Prototypes\Text\" />
     <Folder Include="Titania\Editors\BrowserSizeEditor\" />
     <Folder Include="Titania\Editors\ProjectsEditor\" />
-    <Folder Include="Titania\DerivedWidgets\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

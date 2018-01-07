@@ -1424,7 +1424,7 @@ public:
 
 	virtual
 	bool
-	on_crossing_notify_event (GdkEventCrossing* event) = 0;
+	on_crossing_notify_event (GdkEventCrossing* crossing_event) = 0;
 
 	virtual
 	void

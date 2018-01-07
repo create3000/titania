@@ -268,7 +268,7 @@ public:
 
 	virtual
 	bool
-	on_selection_type_button_press_event (GdkEventButton* event) = 0;
+	on_selection_type_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -284,7 +284,7 @@ public:
 
 	virtual
 	bool
-	on_transform_tool_button_press_event (GdkEventButton* event) = 0;
+	on_transform_tool_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -292,7 +292,7 @@ public:
 
 	virtual
 	bool
-	on_cut_polygons_button_press_event (GdkEventButton* event) = 0;
+	on_cut_polygons_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void

@@ -460,7 +460,7 @@ public:
 
 	virtual
 	bool
-	on_preferences_delete_event (GdkEventAny* event) = 0;
+	on_preferences_delete_event (GdkEventAny* any_event) = 0;
 
 	virtual
 	void
@@ -496,7 +496,7 @@ public:
 
 	virtual
 	void
-	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_color_theme_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void
@@ -532,19 +532,19 @@ public:
 
 	virtual
 	bool
-	on_entry_focus_in_event (GdkEventFocus* event) = 0;
+	on_entry_focus_in_event (GdkEventFocus* focus_event) = 0;
 
 	virtual
 	bool
-	on_entry_focus_out_event (GdkEventFocus* event) = 0;
+	on_entry_focus_out_event (GdkEventFocus* gdk_event) = 0;
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey* event) = 0;
+	on_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
@@ -572,7 +572,7 @@ public:
 
 	virtual
 	bool
-	on_go_to_line_key_press_event (GdkEventKey* event) = 0;
+	on_go_to_line_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void

@@ -360,7 +360,7 @@ public:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void
@@ -372,15 +372,15 @@ public:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton* event) = 0;
+	on_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton* event) = 0;
+	on_button_release_event (GdkEventButton* release_event) = 0;
 
 	virtual
 	bool
-	on_configure_event (GdkEventConfigure* event) = 0;
+	on_configure_event (GdkEventConfigure* configure_event) = 0;
 
 	virtual
 	bool
@@ -388,27 +388,27 @@ public:
 
 	virtual
 	bool
-	on_focus_in_event (GdkEventFocus* event) = 0;
+	on_focus_in_event (GdkEventFocus* focus_event) = 0;
 
 	virtual
 	bool
-	on_focus_out_event (GdkEventFocus* event) = 0;
+	on_focus_out_event (GdkEventFocus* gdk_event) = 0;
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey* event) = 0;
+	on_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
-	on_motion_notify_event (GdkEventMotion* event) = 0;
+	on_motion_notify_event (GdkEventMotion* motion_event) = 0;
 
 	virtual
 	bool
-	on_scroll_event (GdkEventScroll* event) = 0;
+	on_scroll_event (GdkEventScroll* scroll_event) = 0;
 
 	virtual
 	void

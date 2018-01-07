@@ -125,6 +125,10 @@ private:
 	void
 	on_selection_changed () final override;
 
+	virtual
+	bool
+	on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
+
 	void
 	on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	                 const Glib::RefPtr <Gio::File> & other_file,
@@ -136,7 +140,7 @@ private:
 	addRootFolder (const basic::uri & URL);
 
 	void
-	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory);
+	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory, const bool children);
 
 	void
 	addFolder (const Glib::RefPtr <Gio::File> & directory);
@@ -148,7 +152,10 @@ private:
 	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
 
 	void
-	removeChild (const Gtk::TreeModel::iterator & iter);
+	removeRootFolder (const Gtk::TreeModel::iterator & iter);
+
+	void
+	removeFolder (const Gtk::TreeModel::iterator & iter);
 
 	Gtk::TreeIter
 	getIter (const std::string & URL) const;

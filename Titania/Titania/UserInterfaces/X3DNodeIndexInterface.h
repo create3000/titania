@@ -172,11 +172,11 @@ public:
 
 	virtual
 	bool
-	on_search_entry_key_press_event (GdkEventKey* event) = 0;
+	on_search_entry_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	virtual
 	void
