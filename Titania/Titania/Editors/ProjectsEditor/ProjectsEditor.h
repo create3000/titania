@@ -137,7 +137,7 @@ private:
 	///  @name Operations
 
 	void
-	addRootFolder (const basic::uri & URL);
+	addRootFolder (const std::string & path);
 
 	void
 	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & directory, const bool children);
@@ -164,10 +164,10 @@ private:
 	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
 
 	std::string
-	getUrl (const Gtk::TreeIter & iter) const;
+	getPath (const Gtk::TreeIter & iter) const;
 
 	void
-	launchUrl (const std::string & URL);
+	launchFile (const std::string & path);
 
 	///  @name Destruction
 
@@ -178,7 +178,7 @@ private:
 	saveExpanded ();
 
 	void
-	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & URLs);
+	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
 
 	virtual
 	void
@@ -186,7 +186,7 @@ private:
 
 	///  @name Members
 
-	std::set <basic::uri>                    projects;
+	std::set <std::string>                   projects;
 	std::map <std::string, FolderElementPtr> folders;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 

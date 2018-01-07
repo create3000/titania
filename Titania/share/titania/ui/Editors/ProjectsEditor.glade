@@ -72,7 +72,7 @@
       <column type="gchararray"/>
       <!-- column-name Name -->
       <column type="gchararray"/>
-      <!-- column-name URL -->
+      <!-- column-name PATH -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -82,7 +82,7 @@
     <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
-        <property name="name">LibraryView</property>
+        <property name="name">ProjectsView</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
