@@ -135,6 +135,10 @@ private:
 
 	virtual
 	void
+	on_move_to_trash_activate () final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	virtual

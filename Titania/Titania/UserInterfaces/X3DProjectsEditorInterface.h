@@ -108,34 +108,6 @@ public:
 	getNameRenderer () const
 	{ return m_NameRenderer; }
 
-	Gtk::Menu &
-	getContextMenu () const
-	{ return *m_ContextMenu; }
-
-	Gtk::MenuItem &
-	getOpenWithMenuItem () const
-	{ return *m_OpenWithMenuItem; }
-
-	Gtk::Menu &
-	getOpenWithMenu () const
-	{ return *m_OpenWithMenu; }
-
-	Gtk::MenuItem &
-	getAddMenuItem () const
-	{ return *m_AddMenuItem; }
-
-	Gtk::MenuItem &
-	getAddNewFileMenuItem () const
-	{ return *m_AddNewFileMenuItem; }
-
-	Gtk::MenuItem &
-	getAddNewFolderMenuItem () const
-	{ return *m_AddNewFolderMenuItem; }
-
-	Gtk::SeparatorMenuItem &
-	getFileSeparatorMenuItem () const
-	{ return *m_FileSeparatorMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -200,15 +172,39 @@ public:
 	getRenameButton () const
 	{ return *m_RenameButton; }
 
+	Gtk::Menu &
+	getContextMenu () const
+	{ return *m_ContextMenu; }
+
+	Gtk::MenuItem &
+	getOpenWithMenuItem () const
+	{ return *m_OpenWithMenuItem; }
+
+	Gtk::Menu &
+	getOpenWithMenu () const
+	{ return *m_OpenWithMenu; }
+
+	Gtk::MenuItem &
+	getAddMenuItem () const
+	{ return *m_AddMenuItem; }
+
+	Gtk::MenuItem &
+	getAddNewFileMenuItem () const
+	{ return *m_AddNewFileMenuItem; }
+
+	Gtk::MenuItem &
+	getAddNewFolderMenuItem () const
+	{ return *m_AddNewFolderMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getFileSeparatorMenuItem () const
+	{ return *m_FileSeparatorMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getMoveToTrashMenuItem () const
+	{ return *m_MoveToTrashMenuItem; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_add_new_file_activate () = 0;
-
-	virtual
-	void
-	on_add_new_folder_activate () = 0;
 
 	virtual
 	void
@@ -250,6 +246,18 @@ public:
 	void
 	on_create_folder_clicked () = 0;
 
+	virtual
+	void
+	on_add_new_file_activate () = 0;
+
+	virtual
+	void
+	on_add_new_folder_activate () = 0;
+
+	virtual
+	void
+	on_move_to_trash_activate () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -279,13 +287,6 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
-	Gtk::Menu* m_ContextMenu;
-	Gtk::MenuItem* m_OpenWithMenuItem;
-	Gtk::Menu* m_OpenWithMenu;
-	Gtk::MenuItem* m_AddMenuItem;
-	Gtk::MenuItem* m_AddNewFileMenuItem;
-	Gtk::MenuItem* m_AddNewFolderMenuItem;
-	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -302,6 +303,14 @@ private:
 	Gtk::Label* m_FileNameLabel;
 	Gtk::Entry* m_FileNameEntry;
 	Gtk::Button* m_RenameButton;
+	Gtk::Menu* m_ContextMenu;
+	Gtk::MenuItem* m_OpenWithMenuItem;
+	Gtk::Menu* m_OpenWithMenu;
+	Gtk::MenuItem* m_AddMenuItem;
+	Gtk::MenuItem* m_AddNewFileMenuItem;
+	Gtk::MenuItem* m_AddNewFolderMenuItem;
+	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
+	Gtk::ImageMenuItem* m_MoveToTrashMenuItem;
 
 };
 

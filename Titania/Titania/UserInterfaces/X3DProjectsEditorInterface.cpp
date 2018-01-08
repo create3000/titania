@@ -85,13 +85,6 @@ X3DProjectsEditorInterface::create ()
 	m_NameRenderer      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
-	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
-	m_builder -> get_widget ("OpenWithMenuItem", m_OpenWithMenuItem);
-	m_builder -> get_widget ("OpenWithMenu", m_OpenWithMenu);
-	m_builder -> get_widget ("AddMenuItem", m_AddMenuItem);
-	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
-	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
-	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -108,10 +101,14 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("FileNameLabel", m_FileNameLabel);
 	m_builder -> get_widget ("FileNameEntry", m_FileNameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-
-	// Connect object Gtk::MenuItem with id 'AddNewFileMenuItem'.
-	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
-	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
+	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
+	m_builder -> get_widget ("OpenWithMenuItem", m_OpenWithMenuItem);
+	m_builder -> get_widget ("OpenWithMenu", m_OpenWithMenu);
+	m_builder -> get_widget ("AddMenuItem", m_AddMenuItem);
+	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
+	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
+	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
+	m_builder -> get_widget ("MoveToTrashMenuItem", m_MoveToTrashMenuItem);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_map));
@@ -134,6 +131,13 @@ X3DProjectsEditorInterface::create ()
 
 	// Connect object Gtk::Button with id 'CreateDirectoryButton'.
 	m_CreateDirectoryButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_create_folder_clicked));
+
+	// Connect object Gtk::MenuItem with id 'AddNewFileMenuItem'.
+	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
+	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'MoveToTrashMenuItem'.
+	m_MoveToTrashMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_move_to_trash_activate));
 }
 
 X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()

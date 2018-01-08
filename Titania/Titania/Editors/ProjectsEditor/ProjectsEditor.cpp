@@ -55,6 +55,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 namespace titania {
 namespace puck {
@@ -259,7 +260,8 @@ ProjectsEditor::on_create_folder_clicked ()
 
 	folder -> make_directory_with_parents ();
 
-	on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+	if (not basic::uri (folder -> get_uri ()) .is_local ())
+		on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 }
 
 bool
@@ -283,6 +285,41 @@ ProjectsEditor::on_folder_name_key_press_event (GdkEventKey* event)
 	}
 
 	return false;
+}
+
+void
+ProjectsEditor::on_move_to_trash_activate ()
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+	const auto file         = Gio::File::create_for_path (getPath (iter));
+
+	try
+	{
+		file -> trash ();
+	}
+	catch (const Gio::Error & error)
+	{
+		if (error .code () == Gio::Error::NOT_SUPPORTED)
+		{
+			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+			dialog -> setType (Gtk::MESSAGE_QUESTION);
+			dialog -> setMessage (_ ("Are you sure you want to permanently delete »«?"));
+			dialog -> setText (_ ("If you delete an item, it is permanently lost."));
+			dialog -> getOkButton () .set_label ("gtk-delete");
+
+			if (dialog -> run () == Gtk::RESPONSE_OK)
+			{
+				file -> remove ();
+
+				if (not basic::uri (file -> get_uri ()) .is_local ())
+					on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
+			}
+		}
+	}
+	catch (...)
+	{ }
 }
 
 void
@@ -315,7 +352,7 @@ ProjectsEditor::on_selection_changed ()
 bool
 ProjectsEditor::on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
 {
-	// Refresh ftp folders.
+	// Refresh children.
 
 	removeChildren (iter);
 	addChildren (iter, Gio::File::create_for_path (getPath (iter)));
@@ -331,8 +368,6 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 {
 	try
 	{
-		__LOG__ << std::endl;
-
 		switch (event)
 		{
 			case Gio::FILE_MONITOR_EVENT_DELETED:

@@ -2,70 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkMenu" id="ContextMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="OpenWithMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Open With</property>
-        <property name="use_underline">True</property>
-        <child type="submenu">
-          <object class="GtkMenu" id="OpenWithMenu">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Titania</property>
-                <property name="use_underline">True</property>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="AddMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Add</property>
-        <property name="use_underline">True</property>
-        <child type="submenu">
-          <object class="GtkMenu">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuItem" id="AddNewFileMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">New File ...</property>
-                <property name="use_underline">True</property>
-                <signal name="activate" handler="on_add_new_file_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="AddNewFolderMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">New Folder ...</property>
-                <property name="use_underline">True</property>
-                <signal name="activate" handler="on_add_new_folder_activate" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="FileSeparatorMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Icon -->
@@ -366,6 +302,87 @@
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
+  </object>
+  <object class="GtkMenu" id="ContextMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="OpenWithMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Open With</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="OpenWithMenu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Titania</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="AddMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Add</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="AddNewFileMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">New File ...</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_add_new_file_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="AddNewFolderMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">New Folder ...</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_add_new_folder_activate" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="FileSeparatorMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="MoveToTrashMenuItem">
+        <property name="label">Move To Trash</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image1</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_move_to_trash_activate" swapped="no"/>
+        <accelerator key="Delete" signal="activate"/>
       </object>
     </child>
   </object>
