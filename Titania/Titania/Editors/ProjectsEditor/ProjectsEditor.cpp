@@ -84,6 +84,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	                   folders (),
 	             scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
+	getTreeView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
+
 	setup ();
 }
 
@@ -144,44 +146,38 @@ ProjectsEditor::on_remove_project_clicked ()
 	removeRootFolder (iter);
 }
 
-bool
-ProjectsEditor::on_button_press_event (GdkEventButton* event)
+void
+ProjectsEditor::on_display_menu (GdkEventButton* event)
 {
-	if (event -> button == 3)
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+
+	if (selectedRows .empty ())
+		return;
+
+	if (selectedRows .size () == 1)
 	{
-		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+		const auto path     = selectedRows .front ();
+		const auto file     = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
+		const auto fileInfo = file -> query_info ();
 
-		if (selectedRows .empty ())
-			return true;
+		createOpenWithMenu (file);
 
-		if (selectedRows .size () == 1)
-		{
-			const auto path     = selectedRows .front ();
-			const auto file     = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
-			const auto fileInfo = file -> query_info ();
+		// Show hide menu items.
 
-			createOpenWithMenu (file);
-
-			// Show hide menu items.
-	
-			getAddMenuItem ()        .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
-			getRenameItemMenuItem () .set_visible (true);
-		}
-		else
-		{
-			getOpenWithMenuItem ()      .set_visible (false);
-			getAddMenuItem ()           .set_visible (false);
-			getFileSeparatorMenuItem () .set_visible (false);
-			getRenameItemMenuItem ()    .set_visible (false);
-		}
-
-		// Show context menu.
-	
-		getContextMenu () .popup (event -> button, event -> time);
-		return true;
+		getAddMenuItem ()        .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+		getRenameItemMenuItem () .set_visible (true);
+	}
+	else
+	{
+		getOpenWithMenuItem ()      .set_visible (false);
+		getAddMenuItem ()           .set_visible (false);
+		getFileSeparatorMenuItem () .set_visible (false);
+		getRenameItemMenuItem ()    .set_visible (false);
 	}
 
-	return false;
+	// Show context menu.
+
+	getContextMenu () .popup (event -> button, event -> time);
 }
 
 void

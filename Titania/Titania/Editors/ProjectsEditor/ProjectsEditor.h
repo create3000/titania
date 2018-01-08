@@ -110,9 +110,8 @@ private:
 	void
 	on_remove_project_clicked () final override;
 
-	virtual
-	bool
-	on_button_press_event (GdkEventButton* event) final override;
+	void
+	on_display_menu (GdkEventButton* event);
 
 	void
 	on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);

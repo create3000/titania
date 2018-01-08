@@ -51,6 +51,8 @@
 #ifndef __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 #define __TMP_GLAD2CPP_PROJECTS_EDITOR_H__
 
+#include "../DerivedWidgets/FileView.h"
+
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
@@ -140,7 +142,7 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	Gtk::TreeView &
+	FileView &
 	getTreeView () const
 	{ return *m_TreeView; }
 
@@ -243,10 +245,6 @@ public:
 	on_remove_project_clicked () = 0;
 
 	virtual
-	bool
-	on_button_press_event (GdkEventButton* button_event) = 0;
-
-	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
@@ -335,7 +333,7 @@ private:
 	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::TreeView* m_TreeView;
+	FileView* m_TreeView;
 	Gtk::Popover* m_CreateFilePopover;
 	Gtk::ComboBoxText* m_CreateFileTypeButton;
 	Gtk::Entry* m_CreateFileEntry;

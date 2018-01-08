@@ -93,7 +93,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("RemoveProjectButton", m_RemoveProjectButton);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_builder -> get_widget_derived ("TreeView.FileView", m_TreeView);
 	m_builder -> get_widget ("CreateFilePopover", m_CreateFilePopover);
 	m_builder -> get_widget ("CreateFileTypeButton", m_CreateFileTypeButton);
 	m_builder -> get_widget ("CreateFileEntry", m_CreateFileEntry);
@@ -124,7 +124,6 @@ X3DProjectsEditorInterface::create ()
 	m_RemoveProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_remove_project_clicked));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_button_press_event), false);
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
 	m_TreeView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_test_expand_row));
 

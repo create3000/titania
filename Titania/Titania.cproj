@@ -363,6 +363,7 @@
     <Compile Include="Titania\Editors\ProjectsEditor\ProjectsEditor.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.cpp" />
     <Compile Include="Titania\Bits\File.cpp" />
+    <Compile Include="Titania\DerivedWidgets\FileView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2211,8 +2212,6 @@
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\ImageCubeMapTexture" />
     <None Include="share\titania\Library\Components\Grouping\.Titania\TransformMatrix3D" />
     <None Include="share\titania\Library\Components\ParticleSystems\.Titania\BoundedPhysicsModel" />
-    <None Include="share\titania\Library\Components\Titania\.Titania\TouchGroup" />
-    <None Include="share\titania\Library\Components\Titania\TouchGroup.x3dv" />
     <None Include="Titania\UserInterfaces\X3DGeometryEditorInterface.h" />
     <None Include="share\titania\ui\icons\Brush.svg" />
     <None Include="share\titania\ui\icons\Lasso.svg" />
@@ -3144,6 +3143,7 @@
     <None Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.h" />
     <None Include="share\titania\ui\Editors\ProjectsEditor.glade" />
     <None Include="Titania\Bits\File.h" />
+    <None Include="Titania\DerivedWidgets\FileView.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3307,6 +3307,7 @@
     <Folder Include="share\titania\Library\Prototypes\Text\" />
     <Folder Include="Titania\Editors\BrowserSizeEditor\" />
     <Folder Include="Titania\Editors\ProjectsEditor\" />
+    <Folder Include="Titania\DerivedWidgets\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
