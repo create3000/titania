@@ -79,28 +79,47 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	configure () override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () override;
+
 
 private:
-
-	///  @name Operations
-
-	std::string
-	getRoot () const;
-
-	std::string
-	getFilename (Gtk::TreeModel::Path path) const;
-
-	void
-	append (const std::string &) const;
-
-	void
-	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
 
 	///  @name Event handlers
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
+
+	///  @name Operations
+
+	void
+	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
+	
+	void
+	addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder);
+	
+	void
+	addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder);
+	
+	void
+	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
+
+	Gtk::TreeIter
+	getIter (const std::string & URL) const;
+	
+	bool
+	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
+	
+	std::string
+	getPath (const Gtk::TreeIter & iter) const;
 
 	///  @name Expanded handling
 
@@ -111,7 +130,7 @@ private:
 	saveExpanded ();
 
 	void
-	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
+	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
 
 	// Members
 

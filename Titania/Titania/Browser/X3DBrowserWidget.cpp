@@ -598,9 +598,17 @@ X3DBrowserWidget::quit ()
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
-	// Check if current scene is an empty scene;
-	if (pages .empty () or pages [currentPage] -> getMasterSceneURL () .empty ())
+	try
+	{
+		// Check if current scene is an empty scene;
+		if (pages .at (currentPage) -> getMasterSceneURL () .empty ())
+			currentPage = 0;
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
 		currentPage = 0;
+	}
 
 	getConfig () -> setItem ("currentPage", currentPage);
 	getConfig () -> setItem ("worldURL",    basic::join (worldURLs, "\n"));

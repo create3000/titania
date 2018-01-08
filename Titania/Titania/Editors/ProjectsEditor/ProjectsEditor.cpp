@@ -57,6 +57,8 @@
 #include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -99,7 +101,7 @@ ProjectsEditor::configure ()
 	const auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
 	for (const auto & folder : projects)
-		addRootFolder (folder .str ());
+		addRootFolder (Gio::File::create_for_path (folder));
 
 	restoreExpanded ();
 
@@ -130,7 +132,7 @@ ProjectsEditor::on_add_project_clicked ()
 
 	// Create root folder.
 
-	addRootFolder (openDirectoryDialog -> getUrl () .path ());
+	addRootFolder (Gio::File::create_for_path (openDirectoryDialog -> getUrl () .path ()));
 }
 
 void
@@ -524,17 +526,16 @@ ProjectsEditor::expandTo (const Glib::RefPtr <Gio::File> & file)
 }
 
 void
-ProjectsEditor::addRootFolder (const std::string & path)
+ProjectsEditor::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 {
 	try
 	{
-		const auto folder   = Gio::File::create_for_path (path);
 		const auto fileInfo = folder -> query_info ();
 
 		if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 			return;
 
-		if (not projects .emplace (path) .second)
+		if (not projects .emplace (folder -> get_path ()) .second)
 			return;
 
 		addFolder (getTreeStore () -> append (), folder);
@@ -797,9 +798,11 @@ ProjectsEditor::launchFile (const std::string & path)
 }
 
 std::string
-ProjectsEditor::getFileName (const basic::uri & filename, const std::string & suffix) const
+ProjectsEditor::getFileName (const std::string & filename, const std::string & suffix) const
 {
-	return filename .basename (false) + suffix;
+	static const std::regex pattern (R"/(\.(?:x3d|x3dv|wrl|json|x3dz|x3dvz|wrz)$)/");
+
+	return std::regex_replace (filename, pattern, suffix);
 }
 
 std::string

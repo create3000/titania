@@ -77,6 +77,7 @@ void
 LibraryView::configure ()
 {
 	X3DLibraryViewInterface::configure ();
+	X3DLibraryView::configure ();
 
 	getNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
@@ -86,6 +87,7 @@ LibraryView::store ()
 {
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
+	X3DLibraryView::store ();
 	X3DLibraryViewInterface::store ();
 }
 

@@ -68,173 +68,38 @@ static constexpr int NAME         = 1;
 static constexpr int TITANIA      = 2;
 static constexpr int X_ITE        = 3;
 static constexpr int EXPERIMENTAL = 4;
+static constexpr int PATH         = 5;
 
 };
 
 X3DLibraryView::X3DLibraryView () :
 	X3DLibraryViewInterface (),
 	          scrollFreezer (new ScrollFreezer (getTreeView ()))
-{ }
+{
+   #ifndef TITANIA_DEBUG
+   getExperimantalColumn () -> set_visible (false);
+   #endif
+}
 
 void
 X3DLibraryView::initialize ()
+{ }
+
+void
+X3DLibraryView::configure ()
+{
+	setRootFolder (Gio::File::create_for_path (find_data_file ("Library")));
+
+	restoreExpanded ();
+}
+
+void
+X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
 	try
-	{
-	   #ifndef TITANIA_DEBUG
-	   getExperimantalColumn () -> set_visible (false);
-	   #endif
-
-		append (getRoot ());
-
-		restoreExpanded ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-std::string
-X3DLibraryView::getRoot () const
-{
-	return find_data_file ("Library");
-}
-
-std::string
-X3DLibraryView::getFilename (Gtk::TreeModel::Path path) const
-{
-	std::string filename;
-
-	while (path .size ())
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
-
-		std::string name;
-		iter -> get_value (Columns::NAME, name);
-
-		filename = name + '/' + filename;
-
-		path .up ();
-	}
-
-	return getRoot () + '/' + filename .substr (0, filename .size () - 1);
-}
-
-void
-X3DLibraryView::append (const std::string & path) const
-{
-	static const std::string empty_string;
-	static const std::string experimental_icon ("Experimental");
-	static const std::string titania_icon ("Titania");
-	static const std::string x_ite_icon ("X_ITE");
-
-	try
-	{
-		const Glib::RefPtr <Gio::File> directory = Gio::File::create_for_path (path);
-
-		for (const auto & fileInfo : File::getChildren (directory))
-		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_DIRECTORY :
-				{
-					auto iter = getTreeStore () -> append ();
-					iter -> set_value (Columns::ICON, File::getIconName (fileInfo, "gtk-directory"));
-					iter -> set_value (Columns::NAME, fileInfo -> get_name ());
-					append (iter, directory -> get_child (fileInfo -> get_name ()));
-					continue;
-				}
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
-					const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
-					const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
-
-					#ifndef TITANIA_FEATURE
-					if (experimental and not (x_ite or titania))
-					   continue;
-					#endif
-
-					const auto iter = getTreeStore () -> append ();
-
-					iter -> set_value (Columns::ICON,         File::getIconName (fileInfo, "gtk-file"));
-					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
-					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
-					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::X_ITE,        x_ite ? x_ite_icon : empty_string);
-					continue;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory) const
-{
-	static const std::string empty_string;
-	static const std::string experimental_icon ("Experimental");
-	static const std::string titania_icon ("Titania");
-	static const std::string x_ite_icon ("X_ITE");
-
-	try
-	{
-		for (const auto & fileInfo : File::getChildren (directory))
-		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_DIRECTORY :
-					{
-						auto iter = getTreeStore () -> append (parent -> children ());
-						iter -> set_value (Columns::ICON, File::getIconName (fileInfo, "gtk-directory"));
-						iter -> set_value (Columns::NAME, fileInfo -> get_name ());
-						append (iter, directory -> get_child (fileInfo -> get_name ()));
-						continue;
-					}
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
-					const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
-					const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
-
-					#ifndef TITANIA_DEBUG
-					if (experimental and not (x_ite or titania))
-					   continue;
-					#endif
-
-					const auto iter = getTreeStore () -> append (parent -> children ());
-
-					iter -> set_value (Columns::ICON,         File::getIconName (fileInfo, "gtk-file"));
-					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
-					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
-					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::X_ITE,        x_ite ? x_ite_icon  : empty_string);
-					continue;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
-{
-	try
-	{
-		const Glib::RefPtr <Gio::File> file = Gio::File::create_for_path (getFilename (path));
+		const auto file = Gio::File::create_for_path (getPath (iter));
 
 		switch (file -> query_info () -> get_file_type ())
 		{
@@ -257,15 +122,177 @@ X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVi
 }
 
 void
+X3DLibraryView::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		getTreeStore () -> clear ();
+
+		for (const auto & fileInfo : File::getChildren (folder))
+		{
+			switch (fileInfo -> get_file_type ())
+			{
+				case Gio::FILE_TYPE_DIRECTORY:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getTreeStore () -> append ();
+	
+					addFolder (iter, child);
+					continue;
+				}
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getTreeStore () -> append ();
+	
+					addChild (iter, child, "gtk-file");
+					continue;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DLibraryView::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder)
+{
+	addChild (iter, folder, "gtk-directory");
+	addChildren (iter, folder);
+}
+
+void
+X3DLibraryView::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		for (const auto & fileInfo : File::getChildren (folder))
+		{
+			switch (fileInfo -> get_file_type ())
+			{
+				case Gio::FILE_TYPE_DIRECTORY:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getTreeStore () -> append (parentIter -> children ());
+
+					addFolder (iter, child);
+					continue;
+				}
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getTreeStore () -> append (parentIter -> children ());
+
+					addChild (iter, child, "gtk-file");
+					continue;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DLibraryView::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon)
+{
+	const auto url = basic::uri (file -> get_uri ());
+
+	iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), "gtk-file"));
+	iter -> set_value (Columns::PATH, file -> get_path ());
+
+	if (url .is_local ())
+		iter -> set_value (Columns::NAME, file -> get_basename ());
+	else
+		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + url .authority () + ")");
+
+	const auto directory    = file -> get_parent ();
+	const auto basename     = basic::uri (file -> get_path ()) .basename (false);
+	const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
+	const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
+	const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
+
+	#ifndef TITANIA_FEATURE
+	if (experimental and not (x_ite or titania))
+	{
+		getTreeStore () -> erase (iter);
+	   return;
+	}
+	#endif
+
+	iter -> set_value (Columns::EXPERIMENTAL, std::string (experimental ? "Experimental" : ""));
+	iter -> set_value (Columns::TITANIA,      std::string (titania      ? "Titania"      : ""));
+	iter -> set_value (Columns::X_ITE,        std::string (x_ite        ? "X_ITE"        : ""));
+}
+
+Gtk::TreeIter
+X3DLibraryView::getIter (const std::string & path) const
+{
+	Gtk::TreeIter result;
+
+	for (const auto & childIter : getTreeStore () -> children ())
+	{
+		if (getIter (childIter, path, result))
+			break;
+	}
+
+	return result;
+}
+
+bool
+X3DLibraryView::getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const
+{
+	const auto parent = getPath (iter);
+
+	if (parent == path)
+	{
+		result = iter;
+		return true;
+	}
+
+	if (path .find (parent) not_eq 0)
+		return false;
+
+	for (const auto & childIter : iter -> children ())
+	{
+		if (getIter (childIter, path, result))
+			return true;
+	}
+
+	return false;
+}
+
+std::string
+X3DLibraryView::getPath (const Gtk::TreeIter & iter) const
+{
+	std::string path;
+
+	iter -> get_value (Columns::PATH, path);
+
+	return path;
+}
+
+void
 X3DLibraryView::restoreExpanded ()
 {
-	const auto expanded = getConfig () -> getItem <std::string> ("expanded");
-	auto       paths    = std::vector <std::string> ();
+	const auto folders = getConfig () -> getItem <X3D::MFString> ("expanded");
 
-	basic::split (std::back_inserter (paths), expanded, ";");
+	for (const auto & folder : folders)
+	{
+		const auto iter = getIter (folder);
 
-	for (const auto & path : paths)
-		getTreeView () .expand_row (Gtk::TreePath (path), false);
+		if (not getTreeStore () -> iter_is_valid (iter))
+			continue;
+
+		getTreeView () .expand_row (getTreeStore () -> get_path (iter), false);
+	}
 
 	scrollFreezer -> restore (getConfig () -> getItem <double> ("hadjustment"), getConfig () -> getItem <double> ("vadjustment"));
 }
@@ -273,38 +300,35 @@ X3DLibraryView::restoreExpanded ()
 void
 X3DLibraryView::saveExpanded ()
 {
-	std::deque <std::string> paths;
+	X3D::MFString folders;
 
-	getExpanded (getTreeStore () -> children (), paths);
+	getExpanded (getTreeStore () -> children (), folders);
 
-	const auto expanded = basic::join (paths, ";");
-
-	getConfig () -> setItem ("expanded", expanded);
-	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	getConfig () -> setItem <X3D::MFString> ("expanded", folders);
+	getConfig () -> setItem <double> ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem <double> ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 }
 
 void
-X3DLibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths) const
+X3DLibraryView::getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders)
 {
 	for (const auto & child : children)
 	{
-		const auto path     = getTreeStore () -> get_path (child);
-		const bool expanded = getTreeView () .row_expanded (path);
+		if (getTreeView () .row_expanded (getTreeStore () -> get_path (child)))
+			folders .emplace_back (getPath (child));
 
-		if (expanded)
-		{
-			paths .emplace_back (path .to_string ());
-			getExpanded (child -> children (), paths);
-		}
+		getExpanded (child -> children (), folders);
 	}
 }
 
-X3DLibraryView::~X3DLibraryView ()
+void
+X3DLibraryView::store ()
 {
-	if (isInitialized ())
-		saveExpanded ();
+	saveExpanded ();
 }
+
+X3DLibraryView::~X3DLibraryView ()
+{ }
 
 } // puck
 } // titania

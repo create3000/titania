@@ -14,6 +14,8 @@
       <column type="gchararray"/>
       <!-- column-name Experimental -->
       <column type="gchararray"/>
+      <!-- column-name Path -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">

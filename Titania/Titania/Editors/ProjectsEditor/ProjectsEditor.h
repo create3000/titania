@@ -180,7 +180,7 @@ private:
 	expandTo (const Glib::RefPtr <Gio::File> & file);
 
 	void
-	addRootFolder (const std::string & path);
+	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
 
 	void
 	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & folder);
@@ -222,7 +222,7 @@ private:
 	launchFile (const std::string & path);
 
 	std::string
-	getFileName (const basic::uri & filename, const std::string & suffix) const;
+	getFileName (const std::string & filename, const std::string & suffix) const;
 	
 	std::string
 	getSuffix (const int32_t type) const;
@@ -230,7 +230,7 @@ private:
 	Gdk::Rectangle
 	getRectangle (const Gtk::TreePath & path) const;
 
-	///  @name Destruction
+	///  @name Expanded handling
 
 	void
 	restoreExpanded ();
@@ -240,6 +240,8 @@ private:
 
 	void
 	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
+
+	///  @name Destruction
 
 	virtual
 	void
