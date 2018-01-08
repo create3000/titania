@@ -46,7 +46,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Add project folder.</property>
+                    <property name="tooltip_text" translatable="yes">Add project folder. This can be any folder.</property>
                     <signal name="clicked" handler="on_add_project_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage">
@@ -424,6 +424,12 @@
     <property name="stock">gtk-add</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkMenu" id="ContextMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -519,11 +525,5 @@
         <signal name="activate" handler="on_move_to_trash_activate" swapped="no"/>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
-    <property name="icon_size">1</property>
   </object>
 </interface>

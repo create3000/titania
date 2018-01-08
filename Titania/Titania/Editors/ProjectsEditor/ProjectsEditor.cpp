@@ -426,6 +426,9 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 {
 	try
 	{
+		if (projects .count (file -> get_path ()))
+			removeRootFolder (getIter (file -> get_path ()));
+
 		file -> trash ();
 	}
 	catch (const Glib::Error & error)
