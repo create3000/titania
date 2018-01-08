@@ -317,20 +317,8 @@ ProjectsEditor::on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreeP
 {
 	// Refresh ftp folders.
 
-	const auto folder = Gio::File::create_for_path (getPath (iter));
-
 	removeChildren (iter);
-	addChildren (iter, folder);
-
-	// Add subfolders.
-
-	for (const auto & child : iter -> children ())
-	{
-		const auto file = Gio::File::create_for_path (getPath (child));
-
-		if (File::hasChildren (file))
-			getTreeStore () -> append (child -> children ());
-	}
+	addChildren (iter, Gio::File::create_for_path (getPath (iter)));
 
 	// Return false to allow expansion, true to reject.
 	return false;
@@ -343,6 +331,8 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 {
 	try
 	{
+		__LOG__ << std::endl;
+
 		switch (event)
 		{
 			case Gio::FILE_MONITOR_EVENT_DELETED:
@@ -371,18 +361,17 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 
 		const auto folder = file -> get_parent ();
 		const auto iter   = getIter (folder -> get_path ());
-		const auto path   = getTreeStore () -> get_path (iter);
 	
 		if (not getTreeStore () -> iter_is_valid (iter))
 			return;
 
+		// Work with path as iter don't remain valid after append and erase.
+		const auto path = getTreeStore () -> get_path (iter);
+
 		saveExpanded ();
-
 		getTreeStore () -> insert_after (iter);
-
-		removeFolder (iter);
-		addFolder (getTreeStore () -> get_iter (path), folder, true);
-
+		removeChild (iter);
+		addFolder (getTreeStore () -> get_iter (path), folder);
 		restoreExpanded ();
 	}
 	catch (...)
@@ -411,7 +400,6 @@ ProjectsEditor::selectFile (const Glib::RefPtr <Gio::File> & file)
 	getTreeViewSelection () -> select (iter);
 
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
-
 	return true;
 }
 
@@ -449,21 +437,19 @@ ProjectsEditor::addRootFolder (const std::string & path)
 		if (not projects .emplace (path) .second)
 			return;
 
-		const auto iter = getTreeStore () -> append ();
-
-		addFolder (iter, folder, true);
+		addFolder (getTreeStore () -> append (), folder);
 	}
 	catch (...)
 	{ }
 }
 
 void
-ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder, const bool expander)
+ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder)
 {
 	addFolder (folder);
 	addChild (iter, folder, "gtk-directory");
 
-	if (expander and File::hasChildren (folder))
+	if (File::hasChildren (folder))
 		getTreeStore () -> append (iter -> children ());
 }
 
@@ -498,7 +484,7 @@ ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 					const auto child = folder -> get_child (fileInfo -> get_name ());
 					const auto iter  = getTreeStore () -> append (parentIter -> children ());
 
-					addFolder (iter, child, false);
+					addFolder (iter, child);
 					continue;
 				}
 				case Gio::FILE_TYPE_REGULAR:
@@ -540,15 +526,30 @@ ProjectsEditor::removeRootFolder (const Gtk::TreeIter & iter)
 
 	projects .erase (getPath (iter));
 
-	removeFolder (iter);
+	removeChild (iter);
 }
 
 void
-ProjectsEditor::removeFolder (const Gtk::TreeIter & iter)
+ProjectsEditor::removeChildren (const Gtk::TreeIter & iter)
+{
+	std::vector <Gtk::TreePath> children;
+
+	for (const auto & child : iter -> children ())
+		children .emplace_back (getTreeStore () -> get_path (child));
+
+	for (const auto & child : basic::make_reverse_range (children))
+		removeChild (getTreeStore () -> get_iter (child));
+}
+
+void
+ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
 {
 	const auto path = getPath (iter);
 
 	getTreeStore () -> erase (iter);
+
+	if (path .empty ())
+		return;
 
 	// Remove project and subfolders if path is a folder.
 
@@ -570,18 +571,6 @@ ProjectsEditor::removeFolder (const Gtk::TreeIter & iter)
 
 	for (const auto & subfolder : subfolders)
 		folders .erase (subfolder);
-}
-
-void
-ProjectsEditor::removeChildren (const Gtk::TreeIter & iter)
-{
-	std::vector <Gtk::TreePath> children;
-
-	for (const auto & child : iter -> children ())
-		children .emplace_back (getTreeStore () -> get_path (child));
-
-	for (const auto & child : basic::make_reverse_range (children))
-		removeFolder (getTreeStore () -> get_iter (child));
 }
 
 Gtk::TreeIter
