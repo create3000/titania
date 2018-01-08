@@ -46,7 +46,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Add project folder. This can be any folder.</property>
+                    <property name="tooltip_text" translatable="yes">Add a project folder. This can be any folder of your choice.</property>
                     <signal name="clicked" handler="on_add_project_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage">
@@ -69,7 +69,7 @@
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Remove project folder.</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected project folder.</property>
                     <signal name="clicked" handler="on_remove_project_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage">
