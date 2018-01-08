@@ -164,13 +164,15 @@ ProjectsEditor::on_button_press_event (GdkEventButton* event)
 
 			// Show hide menu items.
 	
-			getAddMenuItem () .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+			getAddMenuItem ()        .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+			getRenameItemMenuItem () .set_visible (true);
 		}
 		else
 		{
 			getOpenWithMenuItem ()      .set_visible (false);
 			getAddMenuItem ()           .set_visible (false);
 			getFileSeparatorMenuItem () .set_visible (false);
+			getRenameItemMenuItem ()    .set_visible (false);
 		}
 
 		// Show context menu.
@@ -376,8 +378,10 @@ ProjectsEditor::on_rename_item_clicked ()
 
 		item -> move (destination);
 
+		iter -> set_value (Columns::PATH, destination -> get_path ());
+
 		if (not basic::uri (item -> get_uri ()) .is_local ())
-			on_file_changed (item, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_RENAMED);
+			on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
 	}
 	catch (const Gio::Error & error)
 	{
@@ -395,7 +399,7 @@ ProjectsEditor::on_rename_item_key_press_event (GdkEventKey* event)
 		case GDK_KEY_Return:
 		case GDK_KEY_KP_Enter:
 		{
-			on_create_file_clicked ();
+			on_rename_item_clicked ();
 			return true;
 		}
 		case GDK_KEY_Escape:
@@ -549,13 +553,20 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 			return;
 
 		// Work with path as iter don't remain valid after append and erase.
-		const auto path = getTreeStore () -> get_path (iter);
+		const auto path     = getTreeStore () -> get_path (iter);
+		const auto selected = other_file and isSelected (other_file);
 
 		saveExpanded ();
 		getTreeStore () -> insert_after (iter);
 		removeChild (iter);
 		addFolder (getTreeStore () -> get_iter (path), folder);
 		restoreExpanded ();
+
+		if (selected)
+		{
+			unselectAll ();
+			selectFile (other_file);
+		}
 	}
 	catch (const Gio::Error & error)
 	{
@@ -569,25 +580,49 @@ void
 ProjectsEditor::set_execution_context ()
 {
 	if (getCurrentContext () -> getWorldURL () .is_local ())
-		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()));
+	{
+		unselectAll ();
+		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()), true);
+	}
+}
+
+void
+ProjectsEditor::unselectAll ()
+{
+	getTreeViewSelection () -> unselect_all ();
 }
 
 bool
-ProjectsEditor::selectFile (const Glib::RefPtr <Gio::File> & file)
+ProjectsEditor::selectFile (const Glib::RefPtr <Gio::File> & file, const bool scroll)
 {
 	using ScrollToRow = void (Gtk::TreeView::*) (const Gtk::TreePath &, float);
 
 	if (not expandTo (file))
 		return false;
 
-	const auto iter = getIter (getCurrentContext () -> getWorldURL () .path ());
+	const auto iter = getIter (file -> get_path ());
 	const auto path = getTreeStore () -> get_path (iter);
 
-	getTreeViewSelection () -> unselect_all ();
 	getTreeViewSelection () -> select (iter);
 
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
+	if (scroll)
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
+
 	return true;
+}
+
+bool
+ProjectsEditor::isSelected (const Glib::RefPtr <Gio::File> & file) const
+{
+	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
+	{
+		const auto iter = getTreeStore () -> get_iter (path);
+
+		if (getPath (iter) == file -> get_path ())
+			return true;
+	}
+
+	return false;
 }
 
 bool

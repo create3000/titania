@@ -369,7 +369,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="placeholder_text" translatable="yes">Item Name</property>
-                <signal name="key-press-event" handler="on_rename_item_key_press_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_rename_item_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>

@@ -185,8 +185,14 @@ private:
 
 	///  @name Operations
 
+	void
+	unselectAll ();
+
 	bool
-	selectFile (const Glib::RefPtr <Gio::File> & file);
+	selectFile (const Glib::RefPtr <Gio::File> & file, const bool scroll = false);
+
+	bool
+	isSelected (const Glib::RefPtr <Gio::File> & file) const;
 
 	bool
 	expandTo (const Glib::RefPtr <Gio::File> & file);

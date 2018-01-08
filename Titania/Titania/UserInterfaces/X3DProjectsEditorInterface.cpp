@@ -144,7 +144,7 @@ X3DProjectsEditorInterface::create ()
 	m_CreateDirectoryButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_create_folder_clicked));
 
 	// Connect object Gtk::Entry with id 'RenameItemEntry'.
-	m_RenameItemEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_key_press_event));
+	m_RenameItemEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_key_press_event), false);
 
 	// Connect object Gtk::Button with id 'RenameButton'.
 	m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_clicked));
