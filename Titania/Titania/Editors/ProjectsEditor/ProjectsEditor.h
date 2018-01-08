@@ -216,6 +216,9 @@ private:
 	createOpenWithMenu (const Glib::RefPtr <Gio::File> & file);
 
 	void
+	createOpenWithMenuItem (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);
+
+	void
 	launchFile (const std::string & path);
 
 	std::string

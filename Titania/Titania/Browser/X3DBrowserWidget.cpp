@@ -520,7 +520,14 @@ X3DBrowserWidget::reload ()
 void
 X3DBrowserWidget::on_tab_close_clicked (NotebookPage* const page)
 {
-	close (pages [page -> getPageNumber ()]);
+	try
+	{
+		close (pages .at (page -> getPageNumber ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -592,7 +599,7 @@ X3DBrowserWidget::quit ()
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
 	// Check if current scene is an empty scene;
-	if (pages [currentPage] -> getMasterSceneURL () .empty ())
+	if (pages .empty () or pages [currentPage] -> getMasterSceneURL () .empty ())
 		currentPage = 0;
 
 	getConfig () -> setItem ("currentPage", currentPage);
@@ -607,14 +614,21 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
-	recentView -> loadPreview (getCurrentBrowser ());
-
-	const auto page = pages [pageNumber];
-
-	setPage (page);
-
-	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
-	recentPages .emplace_back (page);
+	try
+	{
+		const auto page = pages .at (pageNumber);
+	
+		recentView -> loadPreview (getCurrentBrowser ());
+	
+		setPage (page);
+	
+		recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
+		recentPages .emplace_back (page);
+	}
+	catch (const std::out_of_range & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

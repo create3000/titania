@@ -731,30 +731,47 @@ ProjectsEditor::createOpenWithMenu (const Glib::RefPtr <Gio::File> & file)
 	// Populate »Open With ...« menu.
 
 	const auto contentType  = file -> query_info () -> get_content_type ();
+	const auto appInfo      = file -> query_default_handler ();
 	const auto appInfos     = Gio::AppInfo::get_all_for_type (contentType);
 	auto       appInfoIndex = std::map <std::string, Glib::RefPtr <Gio::AppInfo>> ();
+
+	// Create app info index.
 
 	for (const auto & appInfo : appInfos)
 		appInfoIndex .emplace (appInfo -> get_display_name (), appInfo);
 
+	appInfoIndex .erase (appInfo -> get_display_name ());
+
+	// Create menu items.
+
+	createOpenWithMenuItem (appInfo, file);
+
+	if (not appInfoIndex .empty ())
+		getOpenWithMenu () .append (*Gtk::manage (new Gtk::SeparatorMenuItem ()));
+
 	for (const auto & pair : appInfoIndex)
-	{
-		const auto appInfo  = pair .second;
-		const auto image    = Gtk::manage (new Gtk::Image ());
-		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
+		createOpenWithMenuItem (pair .second, file);
 
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_open_with_activate), appInfo, file));
-
-		image -> set (Glib::RefPtr <const Gio::Icon> (appInfo -> get_icon ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-		menuItem -> set_image (*image);
-		menuItem -> set_always_show_image (true);
-		menuItem -> set_label (appInfo -> get_display_name ());
-
-		getOpenWithMenu () .append (*menuItem);
-	}
+	// Show menu items.
 
 	getOpenWithMenu ()     .show_all ();
 	getOpenWithMenuItem () .set_visible (appInfos .size ());
+}
+
+void
+ProjectsEditor::createOpenWithMenuItem (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file)
+{
+	const auto image    = Gtk::manage (new Gtk::Image ());
+	const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
+
+	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_open_with_activate), appInfo, file));
+
+	image -> set (Glib::RefPtr <const Gio::Icon> (appInfo -> get_icon ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	menuItem -> set_image (*image);
+	menuItem -> set_always_show_image (true);
+	menuItem -> set_label (appInfo -> get_display_name ());
+
+	getOpenWithMenu () .append (*menuItem);
 }
 
 void
