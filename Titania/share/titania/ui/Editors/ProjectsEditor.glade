@@ -297,7 +297,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="placeholder_text" translatable="yes">Folder Name</property>
-                <signal name="key-press-event" handler="on_new_folder_name_key_press_event" after="yes" swapped="no"/>
+                <signal name="key-press-event" handler="on_create_folder_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -329,7 +329,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="RenamePopover">
+  <object class="GtkPopover" id="RenameItemPopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
     <property name="relative_to">ScrolledWindow</property>
@@ -343,11 +343,11 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
-          <object class="GtkLabel" id="label3">
+          <object class="GtkLabel" id="RenameItemLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes">File Name</property>
+            <property name="label" translatable="yes">Item Name</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -365,9 +365,11 @@
             <property name="hexpand">True</property>
             <property name="spacing">4</property>
             <child>
-              <object class="GtkEntry" id="ItemNameEntry">
+              <object class="GtkEntry" id="RenameItemEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">Item Name</property>
+                <signal name="key-press-event" handler="on_rename_item_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -381,6 +383,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_rename_item_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -495,6 +498,17 @@
       </object>
     </child>
     <child>
+      <object class="GtkImageMenuItem" id="RenameItemMenuItem">
+        <property name="label">Rename ...</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image6</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_rename_item_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="MoveToTrashMenuItem">
         <property name="label">Move To Trash</property>
         <property name="visible">True</property>
@@ -506,5 +520,11 @@
         <signal name="activate" handler="on_move_to_trash_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+    <property name="icon_size">1</property>
   </object>
 </interface>

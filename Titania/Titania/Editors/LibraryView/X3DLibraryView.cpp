@@ -88,9 +88,16 @@ X3DLibraryView::initialize ()
 void
 X3DLibraryView::configure ()
 {
-	setRootFolder (Gio::File::create_for_path (find_data_file ("Library")));
+	try
+	{
+		setRootFolder (Gio::File::create_for_path (find_data_file ("Library")));
 
-	restoreExpanded ();
+		restoreExpanded ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

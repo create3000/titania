@@ -143,6 +143,18 @@ private:
 
 	virtual
 	void
+	on_rename_item_activate () final override;
+
+	virtual
+	void
+	on_rename_item_clicked () final override;
+
+	virtual
+	bool
+	on_rename_item_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	void
 	on_move_to_trash_activate () final override;
 
 	void

@@ -207,7 +207,7 @@ ProjectsEditor::on_create_file_clicked ()
 		const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
 		const auto parent       = Gio::File::create_for_path (getPath (iter));
 		const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
-	
+
 		if (getCreateFileEntry () .get_text () .empty ())
 		{
 			getWidget () .error_bell ();
@@ -316,6 +316,91 @@ ProjectsEditor::on_create_folder_key_press_event (GdkEventKey* event)
 		case GDK_KEY_Escape:
 		{
 			getCreateFolderPopover () .popdown ();
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+ProjectsEditor::on_rename_item_activate ()
+{
+	const auto path      = getTreeViewSelection () -> get_selected_rows () .front ();
+	const auto iter      = getTreeStore () -> get_iter (path);
+	const auto file      = Gio::File::create_for_path (getPath (iter));
+	const auto fileInfo  = file -> query_info ();
+	const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+	const auto basename  = Glib::ustring (basic::uri (file -> get_basename ()) .basename (directory));
+
+	getRenameItemLabel () .set_text (directory ? _ ("Folder Name") : _ ("File Name"));
+	getRenameItemEntry () .set_placeholder_text (directory ? _ ("Folder Name") : _ ("File Name"));
+
+	getRenameItemEntry ()   .set_text (file -> get_basename ());
+	getRenameItemEntry ()   .select_region (0, basename .size ());
+	getRenameItemPopover () .set_pointing_to (getRectangle (path));
+	getRenameItemPopover () .popup ();
+
+	// Workaround, Gtk::Entry::select_region does not work.
+	gtk_editable_select_region (GTK_EDITABLE (getRenameItemEntry () .gobj ()), 0, basename .size ());
+}
+
+void
+ProjectsEditor::on_rename_item_clicked ()
+{
+	try
+	{
+		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+		const auto item         = Gio::File::create_for_path (getPath (iter));
+		const auto parent       = item -> get_parent ();
+		const auto destination  = parent -> get_child (getRenameItemEntry () .get_text ());
+
+		if (getRenameItemEntry () .get_text () .empty ())
+		{
+			getWidget () .error_bell ();
+			return;
+		}
+	
+		if (destination -> query_exists ())
+		{
+			getWidget () .error_bell ();
+			return;
+		}
+
+		// Create X3D file.
+
+		getRenameItemPopover () .popdown ();
+
+		item -> move (destination);
+
+		if (not basic::uri (item -> get_uri ()) .is_local ())
+			on_file_changed (item, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_RENAMED);
+	}
+	catch (const Gio::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (...)
+	{ }
+}
+
+bool
+ProjectsEditor::on_rename_item_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			on_create_file_clicked ();
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			getRenameItemPopover () .popdown ();
 			return true;
 		}
 		default:
@@ -802,7 +887,7 @@ ProjectsEditor::getFileName (const std::string & filename, const std::string & s
 {
 	static const std::regex pattern (R"/(\.(?:x3d|x3dv|wrl|json|x3dz|x3dvz|wrz)$)/");
 
-	return std::regex_replace (filename, pattern, suffix);
+	return std::regex_replace (filename, pattern, "") + suffix;
 }
 
 std::string

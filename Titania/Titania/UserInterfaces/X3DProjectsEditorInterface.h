@@ -108,22 +108,6 @@ public:
 	getNameRenderer () const
 	{ return m_NameRenderer; }
 
-	Gtk::Popover &
-	getCreateFilePopover () const
-	{ return *m_CreateFilePopover; }
-
-	Gtk::ComboBoxText &
-	getCreateFileTypeButton () const
-	{ return *m_CreateFileTypeButton; }
-
-	Gtk::Entry &
-	getCreateFileEntry () const
-	{ return *m_CreateFileEntry; }
-
-	Gtk::Button &
-	getCreateFileButton () const
-	{ return *m_CreateFileButton; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -161,6 +145,22 @@ public:
 	{ return *m_TreeView; }
 
 	Gtk::Popover &
+	getCreateFilePopover () const
+	{ return *m_CreateFilePopover; }
+
+	Gtk::ComboBoxText &
+	getCreateFileTypeButton () const
+	{ return *m_CreateFileTypeButton; }
+
+	Gtk::Entry &
+	getCreateFileEntry () const
+	{ return *m_CreateFileEntry; }
+
+	Gtk::Button &
+	getCreateFileButton () const
+	{ return *m_CreateFileButton; }
+
+	Gtk::Popover &
 	getCreateFolderPopover () const
 	{ return *m_CreateFolderPopover; }
 
@@ -173,12 +173,16 @@ public:
 	{ return *m_CreateDirectoryButton; }
 
 	Gtk::Popover &
-	getRenamePopover () const
-	{ return *m_RenamePopover; }
+	getRenameItemPopover () const
+	{ return *m_RenameItemPopover; }
+
+	Gtk::Label &
+	getRenameItemLabel () const
+	{ return *m_RenameItemLabel; }
 
 	Gtk::Entry &
-	getItemNameEntry () const
-	{ return *m_ItemNameEntry; }
+	getRenameItemEntry () const
+	{ return *m_RenameItemEntry; }
 
 	Gtk::Button &
 	getRenameButton () const
@@ -196,15 +200,15 @@ public:
 	getOpenWithMenu () const
 	{ return *m_OpenWithMenu; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getAddMenuItem () const
 	{ return *m_AddMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getAddNewFileMenuItem () const
 	{ return *m_AddNewFileMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getAddNewFolderMenuItem () const
 	{ return *m_AddNewFolderMenuItem; }
 
@@ -213,18 +217,14 @@ public:
 	{ return *m_FileSeparatorMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getRenameItemMenuItem () const
+	{ return *m_RenameItemMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getMoveToTrashMenuItem () const
 	{ return *m_MoveToTrashMenuItem; }
 
 	///  @name Signal handlers
-
-	virtual
-	bool
-	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_create_file_clicked () = 0;
 
 	virtual
 	void
@@ -260,11 +260,27 @@ public:
 
 	virtual
 	bool
+	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_create_file_clicked () = 0;
+
+	virtual
+	bool
 	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
 	on_create_folder_clicked () = 0;
+
+	virtual
+	bool
+	on_rename_item_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_rename_item_clicked () = 0;
 
 	virtual
 	void
@@ -273,6 +289,10 @@ public:
 	virtual
 	void
 	on_add_new_folder_activate () = 0;
+
+	virtual
+	void
+	on_rename_item_activate () = 0;
 
 	virtual
 	void
@@ -307,10 +327,6 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
-	Gtk::Popover* m_CreateFilePopover;
-	Gtk::ComboBoxText* m_CreateFileTypeButton;
-	Gtk::Entry* m_CreateFileEntry;
-	Gtk::Button* m_CreateFileButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -320,19 +336,25 @@ private:
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::TreeView* m_TreeView;
+	Gtk::Popover* m_CreateFilePopover;
+	Gtk::ComboBoxText* m_CreateFileTypeButton;
+	Gtk::Entry* m_CreateFileEntry;
+	Gtk::Button* m_CreateFileButton;
 	Gtk::Popover* m_CreateFolderPopover;
 	Gtk::Entry* m_CreateFolderEntry;
 	Gtk::Button* m_CreateDirectoryButton;
-	Gtk::Popover* m_RenamePopover;
-	Gtk::Entry* m_ItemNameEntry;
+	Gtk::Popover* m_RenameItemPopover;
+	Gtk::Label* m_RenameItemLabel;
+	Gtk::Entry* m_RenameItemEntry;
 	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_ContextMenu;
 	Gtk::MenuItem* m_OpenWithMenuItem;
 	Gtk::Menu* m_OpenWithMenu;
-	Gtk::MenuItem* m_AddMenuItem;
-	Gtk::MenuItem* m_AddNewFileMenuItem;
-	Gtk::MenuItem* m_AddNewFolderMenuItem;
+	Gtk::ImageMenuItem* m_AddMenuItem;
+	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
+	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
 	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
+	Gtk::ImageMenuItem* m_RenameItemMenuItem;
 	Gtk::ImageMenuItem* m_MoveToTrashMenuItem;
 
 };
