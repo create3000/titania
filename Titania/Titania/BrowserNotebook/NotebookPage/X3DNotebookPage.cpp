@@ -59,7 +59,6 @@
 
 #include "../BrowserPanel/BrowserPanel.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
@@ -156,7 +155,7 @@ X3DNotebookPage::setModified (const bool value)
 	}
 	else
 	{
-		setSavedTime (os::file_modification_time (getScene () -> getWorldURL () .path ()));
+		setSavedTime (getScene () -> getWorldURL ());
 		getUndoHistory () .setSaved ();
 	}
 
@@ -167,6 +166,22 @@ bool
 X3DNotebookPage::getModified () const
 {
 	return undoHistory .getModified () or modified;
+}
+
+void
+X3DNotebookPage::setSavedTime (const basic::uri & url)
+{
+	try
+	{
+		const auto file     = Gio::File::create_for_uri (getScene () -> getWorldURL ());
+		const auto fileInfo = file -> query_info ();
+	
+		savedTime = fileInfo -> modification_time () .as_double ();
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool

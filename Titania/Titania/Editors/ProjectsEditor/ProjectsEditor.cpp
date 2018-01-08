@@ -240,8 +240,6 @@ ProjectsEditor::on_create_file_clicked ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-	catch (...)
-	{ }
 }
 
 bool
@@ -384,12 +382,10 @@ ProjectsEditor::on_rename_item_clicked ()
 		if (not basic::uri (item -> get_uri ()) .is_local ())
 			on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
 	}
-	catch (const Gio::Error & error)
+	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-	catch (...)
-	{ }
 }
 
 bool
@@ -436,15 +432,13 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 	{
 		file -> trash ();
 	}
-	catch (const Gio::Error & error)
+	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
 
 		if (error .code () == Gio::Error::NOT_SUPPORTED)
 			on_remove_file_activate (file);
 	}
-	catch (...)
-	{ }
 }
 
 void
@@ -467,12 +461,10 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 		if (not basic::uri (file -> get_uri ()) .is_local ())
 			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
 	}
-	catch (const Gio::Error & error)
+	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-	catch (...)
-	{ }
 }
 
 void
@@ -569,12 +561,10 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 			selectFile (other_file);
 		}
 	}
-	catch (const Gio::Error & error)
+	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-	catch (...)
-	{ }
 }
 
 void
@@ -671,8 +661,10 @@ ProjectsEditor::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 
 		addFolder (getTreeStore () -> append (), folder);
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -698,8 +690,10 @@ ProjectsEditor::addFolder (const Glib::RefPtr <Gio::File> & folder)
 	
 		fileElement -> fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &ProjectsEditor::on_file_changed));
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -733,8 +727,10 @@ ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 			}
 		}
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

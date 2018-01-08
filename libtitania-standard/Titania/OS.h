@@ -52,7 +52,6 @@
 #define __TITANIA_OS_H__
 
 #include "OS/file_exists.h"
-#include "OS/file_modification_time.h"
 #include "OS/file_size.h"
 #include "OS/find_data_file.h"
 #include "OS/is_directory.h"

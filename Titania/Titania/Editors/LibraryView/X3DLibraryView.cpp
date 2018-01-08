@@ -124,8 +124,10 @@ X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVi
 				break;
 		}
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -161,8 +163,10 @@ X3DLibraryView::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
 			}
 		}
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -203,8 +207,10 @@ X3DLibraryView::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 			}
 		}
 	}
-	catch (...)
-	{ }
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

@@ -57,10 +57,7 @@
 #include "../Parser/Filter.h"
 #include "../Parser/Parser.h"
 
-#include <Titania/OS.h>
 #include <Titania/String/to_string.h>
-
-#include <glibmm.h>
 
 #include <random>
 
@@ -177,10 +174,19 @@ X3DScene::on_file_changed (const Glib::RefPtr <Gio::File> & file,
                            const Glib::RefPtr <Gio::File> & other_file,
                            Gio::FileMonitorEvent event)
 {
-	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-		return;
+	try
+	{
+		if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+			return;
 
-	fileChangedOutput = os::file_modification_time (getWorldURL () .path ());
+		const auto fileInfo = file -> query_info ();
+
+		fileChangedOutput = fileInfo -> modification_time () .as_double ();
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

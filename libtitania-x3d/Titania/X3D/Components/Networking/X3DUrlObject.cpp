@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace X3D {
 
@@ -171,13 +169,22 @@ X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
                                const Glib::RefPtr <Gio::File> & other_file,
                                Gio::FileMonitorEvent event)
 {
-	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-		return;
-
-	if (checkLoadState () not_eq COMPLETE_STATE)
-		return;
-
-	fileChangedOutput = os::file_modification_time (getLoadedUrl () .path ());
+	try
+	{
+		if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+			return;
+	
+		if (checkLoadState () not_eq COMPLETE_STATE)
+			return;
+	
+		const auto fileInfo = file -> query_info ();
+	
+		fileChangedOutput = fileInfo -> modification_time () .as_double ();
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

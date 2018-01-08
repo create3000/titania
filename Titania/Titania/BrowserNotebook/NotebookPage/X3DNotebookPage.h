@@ -179,8 +179,7 @@ private:
 	getTitle () const;
 
 	void
-	setSavedTime (const X3D::time_type value)
-	{ savedTime = value; }
+	setSavedTime (const basic::uri & url);
 
 	///  @name Operations
 

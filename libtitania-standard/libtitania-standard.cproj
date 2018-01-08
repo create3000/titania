@@ -571,7 +571,6 @@
     <None Include="Titania\Math\Utility\almost_less.h" />
     <None Include="Titania\Math\Primitives\TriangleSphere3.h" />
     <None Include="Titania\Math\Geometry\Triangle2.h" />
-    <None Include="Titania\OS\file_modification_time.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -655,7 +654,6 @@
     <Compile Include="Titania\Math\Algorithms\L-System.cpp" />
     <Compile Include="Titania\Math\Geometry\Triangle2.cpp" />
     <Compile Include="Titania\Math\Geometry\Triangle3.cpp" />
-    <Compile Include="Titania\OS\file_modification_time.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
