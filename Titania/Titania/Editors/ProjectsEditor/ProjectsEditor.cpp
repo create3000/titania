@@ -154,38 +154,12 @@ ProjectsEditor::on_button_press_event (GdkEventButton* event)
 
 		if (selectedRows .size () == 1)
 		{
-			const auto path = selectedRows .front ();
+			const auto path     = selectedRows .front ();
 			const auto file     = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
 			const auto fileInfo = file -> query_info ();
 
-			// Clear »Open With ...« menu.
+			createOpenWithMenu (file);
 
-			for (const auto & widget : getOpenWithMenu () .get_children ())
-				getOpenWithMenu () .remove (*widget);
-
-			// Populate »Open With ...« menu.
-	
-			const auto contentType = file -> query_info () -> get_content_type ();
-			const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
-
-			for (const auto & appInfo : appInfos)
-			{
-				const auto image    = Gtk::manage (new Gtk::Image ());
-				const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
-		
-				menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_open_with_activate), appInfo, file));
-		
-				image -> set (Glib::RefPtr <const Gio::Icon> (appInfo -> get_icon ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-				menuItem -> set_image (*image);
-				menuItem -> set_always_show_image (true);
-				menuItem -> set_label (appInfo -> get_display_name ());
-		
-				getOpenWithMenu () .append (*menuItem);
-			}
-
-			getOpenWithMenu ()     .show_all ();
-			getOpenWithMenuItem () .set_visible (appInfos .size ());
-	
 			// Show hide menu items.
 	
 			getAddMenuItem () .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
@@ -215,22 +189,84 @@ ProjectsEditor::on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appIn
 void
 ProjectsEditor::on_add_new_file_activate ()
 {
+	getCreateFileEntry ()      .set_text ("");
+	getCreateFileTypeButton () .set_active (getConfig () -> getItem <int32_t> ("fileType", 0));
+	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
+	getCreateFilePopover ()    .popup ();
+}
+
+void
+ProjectsEditor::on_create_file_clicked ()
+{
+	try
+	{
+		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+		const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
+		const auto parent       = Gio::File::create_for_path (getPath (iter));
+		const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
+	
+		if (getCreateFileEntry () .get_text () .empty ())
+		{
+			getWidget () .error_bell ();
+			return;
+		}
+	
+		if (file -> query_exists ())
+		{
+			getWidget () .error_bell ();
+			return;
+		}
+
+		getConfig () -> setItem <int32_t> ("fileType", getCreateFileTypeButton () .get_active_row_number ());
+
+		// Create X3D file.
+
+		getCreateFilePopover () .popdown ();
+	
+		const auto command = std::vector <std::string> ({ Glib::find_program_in_path ("titania"), get_page ("about/new.x3dv"), "-e", file -> get_path () });
+
+		Glib::spawn_sync (Glib::get_current_dir (), command);
+	
+		if (not basic::uri (file -> get_uri ()) .is_local ())
+			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (...)
+	{ }
+}
+
+bool
+ProjectsEditor::on_create_file_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			on_create_file_clicked ();
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			getCreateFilePopover () .popdown ();
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
 }
 
 void
 ProjectsEditor::on_add_new_folder_activate ()
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-
-	getFolderNameEntry () .set_text ("");
-
-	// Display popover.
-
-	Gdk::Rectangle rectangle;
-
-	getTreeView () .get_cell_area (selectedRows .front (), *getFileColumn () .operator -> (), rectangle);
-
-	getCreateFolderPopover () .set_pointing_to (rectangle);
+	getCreateFolderEntry ()   .set_text ("");
+	getCreateFolderPopover () .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
 	getCreateFolderPopover () .popup ();
 }
 
@@ -240,9 +276,9 @@ ProjectsEditor::on_create_folder_clicked ()
 	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
 	const auto parent       = Gio::File::create_for_path (getPath (iter));
-	const auto folder       = parent -> get_child (getFolderNameEntry () .get_text ());
+	const auto folder       = parent -> get_child (getCreateFolderEntry () .get_text ());
 
-	if (getFolderNameEntry () .get_text () .empty ())
+	if (getCreateFolderEntry () .get_text () .empty ())
 	{
 		getWidget () .error_bell ();
 		return;
@@ -265,7 +301,7 @@ ProjectsEditor::on_create_folder_clicked ()
 }
 
 bool
-ProjectsEditor::on_folder_name_key_press_event (GdkEventKey* event)
+ProjectsEditor::on_create_folder_key_press_event (GdkEventKey* event)
 {
 	switch (event -> keyval)
 	{
@@ -291,32 +327,57 @@ void
 ProjectsEditor::on_move_to_trash_activate ()
 {
 	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto file         = Gio::File::create_for_path (getPath (iter));
 
+	for (const auto & path : selectedRows)
+	{
+		const auto iter = getTreeStore () -> get_iter (path);
+		const auto file = Gio::File::create_for_path (getPath (iter));
+
+		on_move_to_trash_activate (file);
+	}
+}
+
+void
+ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file)
+{
 	try
 	{
 		file -> trash ();
 	}
 	catch (const Gio::Error & error)
 	{
+		__LOG__ << error .what () << std::endl;
+
 		if (error .code () == Gio::Error::NOT_SUPPORTED)
-		{
-			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			on_remove_file_activate (file);
+	}
+	catch (...)
+	{ }
+}
 
-			dialog -> setType (Gtk::MESSAGE_QUESTION);
-			dialog -> setMessage (_ ("Are you sure you want to permanently delete »«?"));
-			dialog -> setText (_ ("If you delete an item, it is permanently lost."));
-			dialog -> getOkButton () .set_label ("gtk-delete");
+void
+ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
+{
+	try
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 
-			if (dialog -> run () == Gtk::RESPONSE_OK)
-			{
-				file -> remove ();
+		dialog -> setType (Gtk::MESSAGE_QUESTION);
+		dialog -> setMessage (basic::sprintf (_ ("Are you sure you want to permanently delete »%s«?"), file -> get_basename () .c_str ()));
+		dialog -> setText (_ ("If you delete an item, it is permanently lost."));
+		dialog -> getOkButton () .set_label ("gtk-delete");
 
-				if (not basic::uri (file -> get_uri ()) .is_local ())
-					on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
-			}
-		}
+		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+			return;
+
+		file -> remove ();
+
+		if (not basic::uri (file -> get_uri ()) .is_local ())
+			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
+	}
+	catch (const Gio::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 	catch (...)
 	{ }
@@ -408,6 +469,10 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 		removeChild (iter);
 		addFolder (getTreeStore () -> get_iter (path), folder);
 		restoreExpanded ();
+	}
+	catch (const Gio::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 	catch (...)
 	{ }
@@ -656,6 +721,43 @@ ProjectsEditor::getPath (const Gtk::TreeIter & iter) const
 }
 
 void
+ProjectsEditor::createOpenWithMenu (const Glib::RefPtr <Gio::File> & file)
+{
+	// Clear »Open With ...« menu.
+
+	for (const auto & widget : getOpenWithMenu () .get_children ())
+		getOpenWithMenu () .remove (*widget);
+
+	// Populate »Open With ...« menu.
+
+	const auto contentType  = file -> query_info () -> get_content_type ();
+	const auto appInfos     = Gio::AppInfo::get_all_for_type (contentType);
+	auto       appInfoIndex = std::map <std::string, Glib::RefPtr <Gio::AppInfo>> ();
+
+	for (const auto & appInfo : appInfos)
+		appInfoIndex .emplace (appInfo -> get_display_name (), appInfo);
+
+	for (const auto & pair : appInfoIndex)
+	{
+		const auto appInfo  = pair .second;
+		const auto image    = Gtk::manage (new Gtk::Image ());
+		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_open_with_activate), appInfo, file));
+
+		image -> set (Glib::RefPtr <const Gio::Icon> (appInfo -> get_icon ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		menuItem -> set_image (*image);
+		menuItem -> set_always_show_image (true);
+		menuItem -> set_label (appInfo -> get_display_name ());
+
+		getOpenWithMenu () .append (*menuItem);
+	}
+
+	getOpenWithMenu ()     .show_all ();
+	getOpenWithMenuItem () .set_visible (appInfos .size ());
+}
+
+void
 ProjectsEditor::launchFile (const std::string & path)
 {
 	const auto file        = Gio::File::create_for_path (path);
@@ -675,6 +777,45 @@ ProjectsEditor::launchFile (const std::string & path)
 
 	if (appInfo)
 		appInfo -> launch (file);
+}
+
+std::string
+ProjectsEditor::getFileName (const basic::uri & filename, const std::string & suffix) const
+{
+	return filename .basename (false) + suffix;
+}
+
+std::string
+ProjectsEditor::getSuffix (const int32_t type) const
+{
+	switch (type)
+	{
+		default:
+		case 0:
+			return ".x3d";
+		case 1:
+			return ".x3dv";
+		case 2:
+			return ".wrl";
+		case 3:
+			return ".json";
+		case 4:
+			return ".x3dz";
+		case 5:
+			return ".x3dvz";
+		case 6:
+			return ".wrz";
+	}
+}
+
+Gdk::Rectangle
+ProjectsEditor::getRectangle (const Gtk::TreePath & path) const
+{
+	Gdk::Rectangle rectangle;
+
+	getTreeView () .get_cell_area (path, *getFileColumn () .operator -> (), rectangle);
+
+	return rectangle;
 }
 
 void

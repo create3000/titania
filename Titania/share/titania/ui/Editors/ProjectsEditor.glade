@@ -2,6 +2,98 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkPopover" id="CreateFilePopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">ScrolledWindow</property>
+    <property name="position">left</property>
+    <property name="constrain_to">none</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">0</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes">Create File</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="CreateFileTypeButton">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <items>
+              <item translatable="yes">X3D XML Encoding (*.x3d)</item>
+              <item translatable="yes">X3D Classic VRML Encoding (*.x3dv)</item>
+              <item translatable="yes">VRML97 Encoding (*.wrl)</item>
+              <item translatable="yes">X3D JSON Encoding (*.json)</item>
+              <item translatable="yes">Compressed X3D XML Encoding (*.x3dz)</item>
+              <item translatable="yes">Compressed X3D Classic VRML Encoding (*.x3dvz)</item>
+              <item translatable="yes">Compressed VRML97 Encoding (*.wrz)</item>
+            </items>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="spacing">4</property>
+            <child>
+              <object class="GtkEntry" id="CreateFileEntry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="placeholder_text" translatable="yes">File Name</property>
+                <signal name="key-press-event" handler="on_create_file_key_press_event" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="CreateFileButton">
+                <property name="label" translatable="yes">Create</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_create_file_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Icon -->
@@ -183,7 +275,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes">Folder Name</property>
+            <property name="label" translatable="yes">Create Folder</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -201,10 +293,11 @@
             <property name="hexpand">True</property>
             <property name="spacing">4</property>
             <child>
-              <object class="GtkEntry" id="FolderNameEntry">
+              <object class="GtkEntry" id="CreateFolderEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="key-press-event" handler="on_folder_name_key_press_event" after="yes" swapped="no"/>
+                <property name="placeholder_text" translatable="yes">Folder Name</property>
+                <signal name="key-press-event" handler="on_new_folder_name_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -250,7 +343,7 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
-          <object class="GtkLabel" id="FileNameLabel">
+          <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
@@ -272,7 +365,7 @@
             <property name="hexpand">True</property>
             <property name="spacing">4</property>
             <child>
-              <object class="GtkEntry" id="FileNameEntry">
+              <object class="GtkEntry" id="ItemNameEntry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </object>

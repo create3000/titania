@@ -123,6 +123,14 @@ private:
 
 	virtual
 	void
+	on_create_file_clicked () final override;
+
+	virtual
+	bool
+	on_create_file_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	void
 	on_add_new_folder_activate () final override;
 
 	virtual
@@ -131,11 +139,17 @@ private:
 
 	virtual
 	bool
-	on_folder_name_key_press_event (GdkEventKey* event) final override;
+	on_create_folder_key_press_event (GdkEventKey* event) final override;
 
 	virtual
 	void
 	on_move_to_trash_activate () final override;
+
+	void
+	on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file);
+
+	void
+	on_remove_file_activate (const Glib::RefPtr <Gio::File> & file);
 
 	virtual
 	void
@@ -199,7 +213,19 @@ private:
 	getPath (const Gtk::TreeIter & iter) const;
 
 	void
+	createOpenWithMenu (const Glib::RefPtr <Gio::File> & file);
+
+	void
 	launchFile (const std::string & path);
+
+	std::string
+	getFileName (const basic::uri & filename, const std::string & suffix) const;
+	
+	std::string
+	getSuffix (const int32_t type) const;
+
+	Gdk::Rectangle
+	getRectangle (const Gtk::TreePath & path) const;
 
 	///  @name Destruction
 

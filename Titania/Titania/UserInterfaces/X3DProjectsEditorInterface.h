@@ -108,6 +108,22 @@ public:
 	getNameRenderer () const
 	{ return m_NameRenderer; }
 
+	Gtk::Popover &
+	getCreateFilePopover () const
+	{ return *m_CreateFilePopover; }
+
+	Gtk::ComboBoxText &
+	getCreateFileTypeButton () const
+	{ return *m_CreateFileTypeButton; }
+
+	Gtk::Entry &
+	getCreateFileEntry () const
+	{ return *m_CreateFileEntry; }
+
+	Gtk::Button &
+	getCreateFileButton () const
+	{ return *m_CreateFileButton; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -149,8 +165,8 @@ public:
 	{ return *m_CreateFolderPopover; }
 
 	Gtk::Entry &
-	getFolderNameEntry () const
-	{ return *m_FolderNameEntry; }
+	getCreateFolderEntry () const
+	{ return *m_CreateFolderEntry; }
 
 	Gtk::Button &
 	getCreateDirectoryButton () const
@@ -160,13 +176,9 @@ public:
 	getRenamePopover () const
 	{ return *m_RenamePopover; }
 
-	Gtk::Label &
-	getFileNameLabel () const
-	{ return *m_FileNameLabel; }
-
 	Gtk::Entry &
-	getFileNameEntry () const
-	{ return *m_FileNameEntry; }
+	getItemNameEntry () const
+	{ return *m_ItemNameEntry; }
 
 	Gtk::Button &
 	getRenameButton () const
@@ -207,6 +219,14 @@ public:
 	///  @name Signal handlers
 
 	virtual
+	bool
+	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_create_file_clicked () = 0;
+
+	virtual
 	void
 	on_map () = 0;
 
@@ -240,7 +260,7 @@ public:
 
 	virtual
 	bool
-	on_folder_name_key_press_event (GdkEventKey* key_event) = 0;
+	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
@@ -287,6 +307,10 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
+	Gtk::Popover* m_CreateFilePopover;
+	Gtk::ComboBoxText* m_CreateFileTypeButton;
+	Gtk::Entry* m_CreateFileEntry;
+	Gtk::Button* m_CreateFileButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -297,11 +321,10 @@ private:
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::TreeView* m_TreeView;
 	Gtk::Popover* m_CreateFolderPopover;
-	Gtk::Entry* m_FolderNameEntry;
+	Gtk::Entry* m_CreateFolderEntry;
 	Gtk::Button* m_CreateDirectoryButton;
 	Gtk::Popover* m_RenamePopover;
-	Gtk::Label* m_FileNameLabel;
-	Gtk::Entry* m_FileNameEntry;
+	Gtk::Entry* m_ItemNameEntry;
 	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_ContextMenu;
 	Gtk::MenuItem* m_OpenWithMenuItem;
