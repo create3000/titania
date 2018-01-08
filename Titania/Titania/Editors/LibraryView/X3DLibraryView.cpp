@@ -51,12 +51,12 @@
 #include "X3DLibraryView.h"
 
 #include "../../Base/ScrollFreezer.h"
+#include "../../Bits/File.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/String.h>
-#include <Titania/OS/file_exists.h>
 
 namespace titania {
 namespace puck {
@@ -121,77 +121,6 @@ X3DLibraryView::getFilename (Gtk::TreeModel::Path path) const
 	return getRoot () + '/' + filename .substr (0, filename .size () - 1);
 }
 
-std::string
-X3DLibraryView::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
-{
-	const auto icon = Glib::RefPtr <Gio::ThemedIcon>::cast_dynamic (fileInfo -> get_icon ());
-
-	if (not icon)
-		return defaultName;
-
-	const auto names = g_themed_icon_get_names (icon -> gobj ());
-
-	if (not names)
-		return defaultName;
-
-	if (not names [0])
-		return defaultName;
-
-	return names [0];
-}
-
-std::vector <Glib::RefPtr <Gio::FileInfo>>
-X3DLibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
-{
-	std::vector <Glib::RefPtr <Gio::FileInfo>> fileInfos;
-
-	try
-	{
-		const Glib::RefPtr <Gio::FileEnumerator> enumerator = directory -> enumerate_children ();
-		Glib::RefPtr <Gio::FileInfo>             fileInfo   = enumerator -> next_file ();
-
-		while (fileInfo)
-		{
-			if (not fileInfo -> is_hidden ())
-				fileInfos .emplace_back (fileInfo);
-
-			fileInfo = enumerator -> next_file ();
-		}
-	}
-	catch (...)
-	{ }
-
-	std::sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
-	           {
-	              return basic::naturally_compare (lhs -> get_name (), rhs -> get_name ());
-				  });
-
-	std::stable_sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
-	                  {
-	                     return (lhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY) > (rhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
-							});
-
-	return fileInfos;
-}
-
-bool
-X3DLibraryView::containsFiles (const Glib::RefPtr <Gio::File> & directory)
-{
-	for (const auto & fileInfo : X3DLibraryView::getChildren (directory))
-	{
-		switch (fileInfo -> get_file_type ())
-		{
-			case Gio::FILE_TYPE_REGULAR       :
-			case Gio::FILE_TYPE_SYMBOLIC_LINK :
-				return true;
-			default:
-				continue;
-		}
-	}
-
-	return false;
-}
-
 void
 X3DLibraryView::append (const std::string & path) const
 {
@@ -204,14 +133,14 @@ X3DLibraryView::append (const std::string & path) const
 	{
 		const Glib::RefPtr <Gio::File> directory = Gio::File::create_for_path (path);
 
-		for (const auto & fileInfo : getChildren (directory))
+		for (const auto & fileInfo : File::getChildren (directory))
 		{
 			switch (fileInfo -> get_file_type ())
 			{
 				case Gio::FILE_TYPE_DIRECTORY :
 				{
 					auto iter = getTreeStore () -> append ();
-					iter -> set_value (Columns::ICON, getIconName (fileInfo, "gtk-directory"));
+					iter -> set_value (Columns::ICON, File::getIconName (fileInfo, "gtk-directory"));
 					iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 					append (iter, directory -> get_child (fileInfo -> get_name ()));
 					continue;
@@ -220,9 +149,9 @@ X3DLibraryView::append (const std::string & path) const
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania      = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool x_ite        = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
-					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
+					const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
+					const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
+					const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
 
 					#ifndef TITANIA_FEATURE
 					if (experimental and not (x_ite or titania))
@@ -231,7 +160,7 @@ X3DLibraryView::append (const std::string & path) const
 
 					const auto iter = getTreeStore () -> append ();
 
-					iter -> set_value (Columns::ICON,         getIconName (fileInfo, "gtk-file"));
+					iter -> set_value (Columns::ICON,         File::getIconName (fileInfo, "gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
@@ -257,14 +186,14 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 
 	try
 	{
-		for (const auto & fileInfo : getChildren (directory))
+		for (const auto & fileInfo : File::getChildren (directory))
 		{
 			switch (fileInfo -> get_file_type ())
 			{
 				case Gio::FILE_TYPE_DIRECTORY :
 					{
 						auto iter = getTreeStore () -> append (parent -> children ());
-						iter -> set_value (Columns::ICON, getIconName (fileInfo, "gtk-directory"));
+						iter -> set_value (Columns::ICON, File::getIconName (fileInfo, "gtk-directory"));
 						iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 						append (iter, directory -> get_child (fileInfo -> get_name ()));
 						continue;
@@ -273,9 +202,9 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania      = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
-					const bool x_ite        = os::file_exists (directory -> get_path () + "/.X_ITE/" + basename);
-					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
+					const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
+					const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
+					const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
 
 					#ifndef TITANIA_DEBUG
 					if (experimental and not (x_ite or titania))
@@ -284,7 +213,7 @@ X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <G
 
 					const auto iter = getTreeStore () -> append (parent -> children ());
 
-					iter -> set_value (Columns::ICON,         getIconName (fileInfo, "gtk-file"));
+					iter -> set_value (Columns::ICON,         File::getIconName (fileInfo, "gtk-file"));
 					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
 					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
 					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);

@@ -48,78 +48,90 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
-#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
+#include "File.h"
 
-#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
 
-class ScrollFreezer;
-
-class X3DLibraryView :
-	virtual public X3DLibraryViewInterface
+std::string
+File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
 {
-public:
+	const auto icon = Glib::RefPtr <Gio::ThemedIcon>::cast_dynamic (fileInfo -> get_icon ());
 
-	///  @name Destruction
+	if (not icon)
+		return defaultName;
 
-	virtual
-	~X3DLibraryView () override;
+	const auto names = g_themed_icon_get_names (icon -> gobj ());
 
+	if (not names)
+		return defaultName;
 
-protected:
+	if (not names [0])
+		return defaultName;
 
-	///  @name Construction
+	return names [0];
+}
 
-	X3DLibraryView ();
+std::vector <Glib::RefPtr <Gio::FileInfo>>
+File::getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden)
+{
+	try
+	{
+		auto       fileInfos  = std::vector <Glib::RefPtr <Gio::FileInfo>> ();
+		const auto enumerator = directory -> enumerate_children ();
+		auto       fileInfo   = enumerator -> next_file ();
 
-	virtual
-	void
-	initialize () override;
+		while (fileInfo)
+		{
+			if (hidden or not fileInfo -> is_hidden ())
+				fileInfos .emplace_back (fileInfo);
 
+			fileInfo = enumerator -> next_file ();
+		}
+	
+		std::sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
+		           {
+		              return basic::naturally_compare (lhs -> get_name (), rhs -> get_name ());
+					  });
+	
+		std::stable_sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
+		                  {
+		                     return (lhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY) > (rhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+								});
+	
+		return fileInfos;
+	}
+	catch (...)
+	{
+		return { };
+	}
+}
 
-private:
+bool
+File::hasChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden)
+{
+	try
+	{
+		const auto enumerator = directory -> enumerate_children ();
+		auto       fileInfo   = enumerator -> next_file ();
 
-	///  @name Operations
+		while (fileInfo)
+		{
+			if (hidden or not fileInfo -> is_hidden ())
+				return true;
 
-	std::string
-	getRoot () const;
-
-	std::string
-	getFilename (Gtk::TreeModel::Path path) const;
-
-	void
-	append (const std::string &) const;
-
-	void
-	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
-
-	// Members
-
-	std::unique_ptr <ScrollFreezer> scrollFreezer;
-
-};
+			fileInfo = enumerator -> next_file ();
+		}
+	
+		return false;
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
 
 } // puck
 } // titania
-
-#endif

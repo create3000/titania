@@ -51,11 +51,11 @@
 #ifndef __TITANIA_EDITORS_PALETTE_EDITOR_X3DPALETTE_EDITOR_H__
 #define __TITANIA_EDITORS_PALETTE_EDITOR_X3DPALETTE_EDITOR_H__
 
+#include "../../Bits/File.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
-#include "../../Editors/LibraryView/X3DLibraryView.h"
 
 #include <Titania/X3D.h>
 #include <Titania/X3D/Components/Geometry3D/Box.h>
@@ -68,7 +68,7 @@
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Parser/Filter.h>
 
-#include <Titania/String/to_string.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -406,14 +406,14 @@ X3DPaletteEditor <Type>::addLibrary (const basic::uri & libraryPath, const bool 
 	{
 		const auto folder = Gio::File::create_for_path (libraryPath);
 
-		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
+		for (const auto & fileInfo : File::getChildren (folder))
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 			{
 				const auto child = folder -> get_child (fileInfo -> get_name ());
 				const auto URL   = child -> get_uri ();
 
-				if (not includeEmptyFolders and not X3DLibraryView::containsFiles (child))
+				if (not includeEmptyFolders and not File::hasChildren (child))
 					continue;
 
 				folders .emplace_back (URL);
@@ -445,7 +445,7 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 
 		const auto folder = Gio::File::create_for_uri (folders .at (paletteIndex));
 
-		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
+		for (const auto & fileInfo : File::getChildren (folder))
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
 				addObject (files .size (), Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
@@ -699,7 +699,7 @@ X3DPaletteEditor <Type>::on_remove_palette_activate ()
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
 
-		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
+		for (const auto & fileInfo : File::getChildren (folder))
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
 				folder -> get_child (fileInfo -> get_name ()) -> remove ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,74 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
-#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
+#ifndef __TITANIA_BITS_CAIRO_H__
+#define __TITANIA_BITS_CAIRO_H__
 
-#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include <giomm.h>
 
 namespace titania {
 namespace puck {
 
-class ScrollFreezer;
-
-class X3DLibraryView :
-	virtual public X3DLibraryViewInterface
+class File
 {
 public:
 
-	///  @name Destruction
-
-	virtual
-	~X3DLibraryView () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DLibraryView ();
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
 	///  @name Operations
 
+	static
 	std::string
-	getRoot () const;
+	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName);
 
-	std::string
-	getFilename (Gtk::TreeModel::Path path) const;
+	static
+	std::vector <Glib::RefPtr <Gio::FileInfo>> 
+	getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden = false);
 
-	void
-	append (const std::string &) const;
-
-	void
-	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
-
-	// Members
-
-	std::unique_ptr <ScrollFreezer> scrollFreezer;
+	static
+	bool
+	hasChildren (const Glib::RefPtr <Gio::File> & director, const bool hidden = false);
 
 };
 

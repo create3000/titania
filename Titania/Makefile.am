@@ -16,6 +16,7 @@ titania_SOURCES =  \
 	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Bits/Cairo.cpp \
+	Titania/Bits/File.cpp \
 	Titania/Bits/String.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \

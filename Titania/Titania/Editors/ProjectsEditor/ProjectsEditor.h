@@ -165,7 +165,7 @@ private:
 	addRootFolder (const std::string & path);
 
 	void
-	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & folder, const bool children);
+	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & folder, const bool expander);
 
 	void
 	addFolder (const Glib::RefPtr <Gio::File> & folder);
@@ -181,6 +181,9 @@ private:
 
 	void
 	removeFolder (const Gtk::TreeModel::iterator & iter);
+
+	void
+	removeChildren (const Gtk::TreeIter & iter);
 
 	Gtk::TreeIter
 	getIter (const std::string & URL) const;

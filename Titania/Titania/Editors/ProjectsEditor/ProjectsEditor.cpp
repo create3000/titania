@@ -51,10 +51,10 @@
 #include "ProjectsEditor.h"
 
 #include "../../Base/ScrollFreezer.h"
+#include "../../Bits/File.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
-#include "../../Editors/LibraryView/X3DLibraryView.h"
 
 namespace titania {
 namespace puck {
@@ -319,31 +319,17 @@ ProjectsEditor::on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreeP
 
 	const auto folder = Gio::File::create_for_path (getPath (iter));
 
-	if (not basic::uri (folder -> get_uri ()) .is_local ())
-	{
-		std::vector <Gtk::TreePath> children;
-
-		for (const auto & child : iter -> children ())
-			children .emplace_back (getTreeStore () -> get_path (child));
-
-		for (const auto & child : basic::make_reverse_range (children))
-			removeFolder (getTreeStore () -> get_iter (child));
-
-		addChildren (iter, folder);
-	}
+	removeChildren (iter);
+	addChildren (iter, folder);
 
 	// Add subfolders.
 
 	for (const auto & child : iter -> children ())
 	{
-		const auto file     = Gio::File::create_for_path (getPath (child));
-		const auto fileInfo = file -> query_info ();
+		const auto file = Gio::File::create_for_path (getPath (child));
 
-		if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-		{
-			if (child -> children () .empty ())
-				addChildren (child, file);
-		}
+		if (File::hasChildren (file))
+			getTreeStore () -> append (child -> children ());
 	}
 
 	// Return false to allow expansion, true to reject.
@@ -472,13 +458,13 @@ ProjectsEditor::addRootFolder (const std::string & path)
 }
 
 void
-ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder, const bool children)
+ProjectsEditor::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder, const bool expander)
 {
 	addFolder (folder);
 	addChild (iter, folder, "gtk-directory");
 
-	if (children)
-		addChildren (iter, folder);
+	if (expander and File::hasChildren (folder))
+		getTreeStore () -> append (iter -> children ());
 }
 
 void
@@ -503,7 +489,7 @@ ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 {
 	try
 	{
-		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
+		for (const auto & fileInfo : File::getChildren (folder))
 		{
 			switch (fileInfo -> get_file_type ())
 			{
@@ -538,7 +524,7 @@ ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::F
 {
 	const auto url = basic::uri (file -> get_uri ());
 
-	iter -> set_value (Columns::ICON, X3DLibraryView::getIconName (file -> query_info (), "gtk-file"));
+	iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), "gtk-file"));
 	iter -> set_value (Columns::PATH, file -> get_path ());
 
 	if (url .is_local () or not projects .count (file -> get_path ()))
@@ -584,6 +570,18 @@ ProjectsEditor::removeFolder (const Gtk::TreeIter & iter)
 
 	for (const auto & subfolder : subfolders)
 		folders .erase (subfolder);
+}
+
+void
+ProjectsEditor::removeChildren (const Gtk::TreeIter & iter)
+{
+	std::vector <Gtk::TreePath> children;
+
+	for (const auto & child : iter -> children ())
+		children .emplace_back (getTreeStore () -> get_path (child));
+
+	for (const auto & child : basic::make_reverse_range (children))
+		removeFolder (getTreeStore () -> get_iter (child));
 }
 
 Gtk::TreeIter
