@@ -193,10 +193,11 @@ ProjectsEditor::on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appIn
 void
 ProjectsEditor::on_add_new_file_activate ()
 {
-	getCreateFileEntry ()      .set_text ("");
 	getCreateFileTypeButton () .set_active (getConfig () -> getItem <int32_t> ("fileType", 0));
+	getCreateFileEntry ()      .set_text ("");
 	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
 	getCreateFilePopover ()    .popup ();
+	getCreateFileEntry ()      .grab_focus ();
 }
 
 void
@@ -461,7 +462,7 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
 
-		file -> remove ();
+		removeFile (file);
 
 		if (not basic::uri (file -> get_uri ()) .is_local ())
 			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
@@ -587,6 +588,15 @@ ProjectsEditor::set_execution_context ()
 }
 
 void
+ProjectsEditor::removeFile (const Glib::RefPtr <Gio::File> & file)
+{
+	for (const auto & fileInfo : File::getChildren (file, true))
+		removeFile (file -> get_child (fileInfo -> get_name ()));
+
+	file -> remove ();
+}
+
+void
 ProjectsEditor::unselectAll ()
 {
 	getTreeViewSelection () -> unselect_all ();
@@ -604,6 +614,7 @@ ProjectsEditor::selectFile (const Glib::RefPtr <Gio::File> & file, const bool sc
 	const auto path = getTreeStore () -> get_path (iter);
 
 	getTreeViewSelection () -> select (iter);
+	getTreeView () .set_cursor (path);
 
 	if (scroll)
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));

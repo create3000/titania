@@ -186,6 +186,9 @@ private:
 	///  @name Operations
 
 	void
+	removeFile (const Glib::RefPtr <Gio::File> & file);
+
+	void
 	unselectAll ();
 
 	bool
