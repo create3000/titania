@@ -207,8 +207,8 @@ public:
 	{ return *m_OpenWithMenu; }
 
 	Gtk::ImageMenuItem &
-	getAddMenuItem () const
-	{ return *m_AddMenuItem; }
+	getAddItemMenuItem () const
+	{ return *m_AddItemMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getAddNewFileMenuItem () const
@@ -397,7 +397,7 @@ private:
 	Gtk::Menu* m_ContextMenu;
 	Gtk::MenuItem* m_OpenWithMenuItem;
 	Gtk::Menu* m_OpenWithMenu;
-	Gtk::ImageMenuItem* m_AddMenuItem;
+	Gtk::ImageMenuItem* m_AddItemMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
 	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;

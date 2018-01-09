@@ -188,13 +188,13 @@ ProjectsEditor::on_display_menu (GdkEventButton* event)
 
 		// Show hide menu items.
 
-		getAddMenuItem ()        .set_visible (directory);
+		getAddItemMenuItem ()    .set_visible (directory);
 		getRenameItemMenuItem () .set_visible (true);
 	}
 	else
 	{
 		getOpenWithMenuItem ()      .set_visible (false);
-		getAddMenuItem ()           .set_visible (false);
+		getAddItemMenuItem ()       .set_visible (false);
 		getFileSeparatorMenuItem () .set_visible (false);
 		getRenameItemMenuItem ()    .set_visible (false);
 	}
@@ -622,8 +622,17 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 		
 				dialog -> setType (Gtk::MESSAGE_QUESTION);
-				dialog -> setMessage (basic::sprintf (_ ("The file »%s« already exits! Override?"), destination -> get_basename () .c_str ()));
-				dialog -> setText (_ (""));
+
+				if (directory)
+				{
+					dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
+					dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+				}
+				else
+				{
+					dialog -> setMessage (basic::sprintf (_ ("Replace file »%s«?"), destination -> get_basename () .c_str ()));
+					dialog -> setText (basic::sprintf (_ ("Another file with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+				}
 
 				if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 					continue;
@@ -639,7 +648,13 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 			if (File::isSubfolder (source, destination))
 			{
-				// Destination is within source.
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("You cannot copy a folder into itself!"));
+				dialog -> setText (_ ("The destination folder is inside the source folder."));
+				dialog -> run ();
+
 				continue;
 			}
 
@@ -770,7 +785,11 @@ ProjectsEditor::on_selection_changed ()
 	try
 	{
 		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	
+
+		getCutItemMenuItem ()     .set_sensitive (selectedRows .size ());
+		getCopyItemMenuItem ()    .set_sensitive (selectedRows .size ());
+		getMoveToTrashMenuItem () .set_sensitive (selectedRows .size ());
+
 		switch (selectedRows .size ())
 		{
 			case 1:
@@ -781,8 +800,11 @@ ProjectsEditor::on_selection_changed ()
 				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	
 				getTreeView () .set_button3_select (true);
-	
+
 				getRemoveProjectButton ()     .set_sensitive (selectedRows .front () .size () == 1);
+				getOpenWithMenuItem ()        .set_sensitive (true);
+				getAddItemMenuItem ()         .set_sensitive (directory);
+				getRenameItemMenuItem ()      .set_sensitive (true);
 				getPasteIntoFolderMenuItem () .set_sensitive (directory and clipboard .size ());
 				break;
 			}
@@ -792,6 +814,9 @@ ProjectsEditor::on_selection_changed ()
 				getTreeView () .set_button3_select (selectedRows .empty ());
 	
 				getRemoveProjectButton ()     .set_sensitive (false);
+				getOpenWithMenuItem ()        .set_sensitive (false);
+				getAddItemMenuItem ()         .set_sensitive (false);
+				getRenameItemMenuItem ()      .set_sensitive (false);
 				getPasteIntoFolderMenuItem () .set_sensitive (false);
 				break;
 			}

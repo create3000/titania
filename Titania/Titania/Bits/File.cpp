@@ -138,7 +138,7 @@ File::copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <G
 {
 	destination -> make_directory_with_parents ();
 	
-	for (const auto fileInfo : getChildren (source))
+	for (const auto fileInfo : getChildren (source, true))
 	{
 		const auto sourceChild      = source -> get_child (fileInfo -> get_name ());
 		const auto destinationChild = destination -> get_child (fileInfo -> get_name ());

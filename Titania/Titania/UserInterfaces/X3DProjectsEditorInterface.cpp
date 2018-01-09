@@ -109,7 +109,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
 	m_builder -> get_widget ("OpenWithMenuItem", m_OpenWithMenuItem);
 	m_builder -> get_widget ("OpenWithMenu", m_OpenWithMenu);
-	m_builder -> get_widget ("AddMenuItem", m_AddMenuItem);
+	m_builder -> get_widget ("AddItemMenuItem", m_AddItemMenuItem);
 	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
 	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
