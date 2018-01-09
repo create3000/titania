@@ -64,9 +64,10 @@ namespace puck {
 
 namespace Columns {
 
-static constexpr int ICON = 0;
-static constexpr int NAME = 1;
-static constexpr int PATH  = 2;
+static constexpr int ICON      = 0;
+static constexpr int NAME      = 1;
+static constexpr int PATH      = 2;
+static constexpr int SENSITIVE = 3;
 
 };
 
@@ -82,7 +83,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	                  projects (),
 	                   folders (),
-	             scrollFreezer (new ScrollFreezer (getTreeView ()))
+	             scrollFreezer (new ScrollFreezer (getTreeView ())),
+	                  changing (false)
 {
 	getTreeView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
 
@@ -189,11 +191,33 @@ ProjectsEditor::on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appIn
 void
 ProjectsEditor::on_add_new_file_activate ()
 {
+	changing = true;
+
 	getCreateFileTypeButton () .set_active (getConfig () -> getItem <int32_t> ("fileType", 0));
 	getCreateFileEntry ()      .set_text ("");
+	getCreateFileButton ()     .set_sensitive (false);
 	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
 	getCreateFilePopover ()    .popup ();
 	getCreateFileEntry ()      .grab_focus ();
+
+	changing = false;
+}
+
+void
+ProjectsEditor::on_create_file_changed ()
+{
+	try
+	{
+		if (changing)
+			return;
+
+		getCreateFileButton () .set_sensitive (bool (getNewFile ()));
+	}
+	catch (...)
+	{
+		getWidget () .error_bell ();
+		getCreateFileButton () .set_sensitive (false);
+	}
 }
 
 void
@@ -201,23 +225,7 @@ ProjectsEditor::on_create_file_clicked ()
 {
 	try
 	{
-		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
-		const auto parent       = Gio::File::create_for_path (getPath (iter));
-		const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
-
-		if (getCreateFileEntry () .get_text () .empty ())
-		{
-			getWidget () .error_bell ();
-			return;
-		}
-	
-		if (file -> query_exists ())
-		{
-			getWidget () .error_bell ();
-			return;
-		}
+		const auto file = getNewFile ();
 
 		getConfig () -> setItem <int32_t> ("fileType", getCreateFileTypeButton () .get_active_row_number ());
 
@@ -235,6 +243,10 @@ ProjectsEditor::on_create_file_clicked ()
 	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::invalid_argument & error)
+	{
+		getWidget () .error_bell ();
 	}
 }
 
@@ -261,42 +273,78 @@ ProjectsEditor::on_create_file_key_press_event (GdkEventKey* event)
 	return false;
 }
 
+Glib::RefPtr <Gio::File>
+ProjectsEditor::getNewFile () const
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+	const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
+	const auto parent       = Gio::File::create_for_path (getPath (iter));
+	const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
+
+	if (getCreateFileEntry () .get_text () .empty ())
+		throw std::invalid_argument ("getNewFile");
+
+	if (file -> query_exists ())
+		throw std::invalid_argument ("getNewFile");
+
+	return file;
+}
+
 void
 ProjectsEditor::on_add_new_folder_activate ()
 {
+	changing = true;
+
 	getCreateFolderEntry ()   .set_text ("");
+	getCreateFolderButton ()  .set_sensitive (false);
 	getCreateFolderPopover () .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
 	getCreateFolderPopover () .popup ();
+
+	changing = false;
+}
+
+void
+ProjectsEditor::on_create_folder_changed ()
+{
+	try
+	{
+		if (changing)
+			return;
+
+		getCreateFolderButton () .set_sensitive (bool (getNewFolder ()));
+	}
+	catch (...)
+	{
+		getWidget () .error_bell ();
+		getCreateFolderButton () .set_sensitive (false);
+	}
 }
 
 void
 ProjectsEditor::on_create_folder_clicked ()
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto parent       = Gio::File::create_for_path (getPath (iter));
-	const auto folder       = parent -> get_child (getCreateFolderEntry () .get_text ());
-
-	if (getCreateFolderEntry () .get_text () .empty ())
+	try
+	{
+		const auto folder = getNewFolder ();
+	
+		// Create folder.
+	
+		getCreateFolderPopover () .popdown ();
+	
+		folder -> make_directory_with_parents ();
+	
+		if (not basic::uri (folder -> get_uri ()) .is_local ())
+			on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::invalid_argument & error)
 	{
 		getWidget () .error_bell ();
-		return;
 	}
-
-	if (folder -> query_exists ())
-	{
-		getWidget () .error_bell ();
-		return;
-	}
-
-	// Create folder.
-
-	getCreateFolderPopover () .popdown ();
-
-	folder -> make_directory_with_parents ();
-
-	if (not basic::uri (folder -> get_uri ()) .is_local ())
-		on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 }
 
 bool
@@ -322,9 +370,28 @@ ProjectsEditor::on_create_folder_key_press_event (GdkEventKey* event)
 	return false;
 }
 
+Glib::RefPtr <Gio::File>
+ProjectsEditor::getNewFolder () const
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+	const auto parent       = Gio::File::create_for_path (getPath (iter));
+	const auto folder       = parent -> get_child (getCreateFolderEntry () .get_text ());
+
+	if (getCreateFolderEntry () .get_text () .empty ())
+		throw std::invalid_argument ("getNewFolder");
+
+	if (folder -> query_exists ())
+		throw std::invalid_argument ("getNewFolder");
+
+	return folder;
+}
+
 void
 ProjectsEditor::on_rename_item_activate ()
 {
+	changing = true;
+
 	const auto path      = getTreeViewSelection () -> get_selected_rows () .front ();
 	const auto iter      = getTreeStore () -> get_iter (path);
 	const auto file      = Gio::File::create_for_path (getPath (iter));
@@ -337,11 +404,33 @@ ProjectsEditor::on_rename_item_activate ()
 
 	getRenameItemEntry ()   .set_text (file -> get_basename ());
 	getRenameItemEntry ()   .select_region (0, basename .size ());
+	getRenameItemButton ()  .set_sensitive (false);
 	getRenameItemPopover () .set_pointing_to (getRectangle (path));
 	getRenameItemPopover () .popup ();
 
 	// Workaround, Gtk::Entry::select_region does not work.
 	gtk_editable_select_region (GTK_EDITABLE (getRenameItemEntry () .gobj ()), 0, basename .size ());
+
+	changing = false;
+}
+
+void
+ProjectsEditor::on_rename_item_changed ()
+{
+	try
+	{
+		if (changing)
+			return;
+
+		getRenameItem ();
+
+		getRenameItemButton () .set_sensitive (true);
+	}
+	catch (...)
+	{
+		getWidget () .error_bell ();
+		getRenameItemButton () .set_sensitive (false);
+	}
 }
 
 void
@@ -349,23 +438,10 @@ ProjectsEditor::on_rename_item_clicked ()
 {
 	try
 	{
-		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto item         = Gio::File::create_for_path (getPath (iter));
-		const auto parent       = item -> get_parent ();
-		const auto destination  = parent -> get_child (getRenameItemEntry () .get_text ());
-
-		if (getRenameItemEntry () .get_text () .empty ())
-		{
-			getWidget () .error_bell ();
-			return;
-		}
-	
-		if (destination -> query_exists ())
-		{
-			getWidget () .error_bell ();
-			return;
-		}
+		const auto tuple       = getRenameItem ();
+		const auto iter        = std::get <0> (tuple);
+		const auto item        = std::get <1> (tuple);
+		const auto destination = std::get <2> (tuple);
 
 		// Create X3D file.
 
@@ -381,6 +457,10 @@ ProjectsEditor::on_rename_item_clicked ()
 	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+	catch (const std::invalid_argument & error)
+	{
+		getWidget () .error_bell ();
 	}
 }
 
@@ -405,6 +485,24 @@ ProjectsEditor::on_rename_item_key_press_event (GdkEventKey* event)
 	}
 
 	return false;
+}
+
+std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
+ProjectsEditor::getRenameItem () const
+{
+	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+	const auto item         = Gio::File::create_for_path (getPath (iter));
+	const auto parent       = item -> get_parent ();
+	const auto destination  = parent -> get_child (getRenameItemEntry () .get_text ());
+
+	if (getRenameItemEntry () .get_text () .empty ())
+		throw std::invalid_argument ("getRenameItem");
+
+	if (destination -> query_exists ())
+		throw std::invalid_argument ("getRenameItem");
+
+	return std::make_tuple (iter, item, destination);
 }
 
 void
@@ -737,8 +835,9 @@ ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::F
 {
 	const auto url = basic::uri (file -> get_uri ());
 
-	iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), "gtk-file"));
-	iter -> set_value (Columns::PATH, file -> get_path ());
+	iter -> set_value (Columns::ICON,      File::getIconName (file -> query_info (), "gtk-file"));
+	iter -> set_value (Columns::PATH,      file -> get_path ());
+	iter -> set_value (Columns::SENSITIVE, true);
 
 	if (url .is_local () or not projects .count (file -> get_path ()))
 		iter -> set_value (Columns::NAME, file -> get_basename ());

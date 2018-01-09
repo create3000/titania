@@ -8,8 +8,10 @@
       <column type="gchararray"/>
       <!-- column-name Name -->
       <column type="gchararray"/>
-      <!-- column-name PATH -->
+      <!-- column-name Path -->
       <column type="gchararray"/>
+      <!-- column-name Sensitive -->
+      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -134,12 +136,14 @@
                         <child>
                           <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
                           <attributes>
+                            <attribute name="sensitive">3</attribute>
                             <attribute name="icon-name">0</attribute>
                           </attributes>
                         </child>
                         <child>
                           <object class="GtkCellRendererText" id="NameRenderer"/>
                           <attributes>
+                            <attribute name="sensitive">3</attribute>
                             <attribute name="text">1</attribute>
                           </attributes>
                         </child>
@@ -224,6 +228,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="placeholder_text" translatable="yes">File Name</property>
+                <signal name="changed" handler="on_create_file_changed" swapped="no"/>
                 <signal name="key-press-event" handler="on_create_file_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
@@ -236,6 +241,7 @@
               <object class="GtkButton" id="CreateFileButton">
                 <property name="label" translatable="yes">Create</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_create_file_clicked" swapped="no"/>
@@ -296,6 +302,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="placeholder_text" translatable="yes">Folder Name</property>
+                <signal name="changed" handler="on_create_folder_changed" swapped="no"/>
                 <signal name="key-press-event" handler="on_create_folder_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
@@ -305,9 +312,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="CreateDirectoryButton">
+              <object class="GtkButton" id="CreateFolderButton">
                 <property name="label" translatable="yes">Create</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_create_folder_clicked" swapped="no"/>
@@ -368,6 +376,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="placeholder_text" translatable="yes">Item Name</property>
+                <signal name="changed" handler="on_rename_item_changed" swapped="no"/>
                 <signal name="key-press-event" handler="on_rename_item_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
@@ -377,9 +386,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="RenameButton">
+              <object class="GtkButton" id="RenameItemButton">
                 <property name="label" translatable="yes">Rename</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_rename_item_clicked" swapped="no"/>

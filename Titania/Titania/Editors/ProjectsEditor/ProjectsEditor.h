@@ -102,6 +102,8 @@ private:
 	void
 	on_unmap () final override;
 
+	///  @name Project folders handling
+
 	virtual
 	void
 	on_add_project_clicked () final override;
@@ -110,15 +112,23 @@ private:
 	void
 	on_remove_project_clicked () final override;
 
+	///  @name Menu handling
+
 	void
 	on_display_menu (GdkEventButton* event);
 
 	void
 	on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);
 
+	///  @name Add file handling
+
 	virtual
 	void
 	on_add_new_file_activate () final override;
+
+	virtual
+	void
+	on_create_file_changed () final override;
 
 	virtual
 	void
@@ -128,9 +138,18 @@ private:
 	bool
 	on_create_file_key_press_event (GdkEventKey* event) final override;
 
+	Glib::RefPtr <Gio::File>
+	getNewFile () const;
+
+	///  @name Add folder handling
+
 	virtual
 	void
 	on_add_new_folder_activate () final override;
+
+	virtual
+	void
+	on_create_folder_changed () final override;
 
 	virtual
 	void
@@ -140,9 +159,18 @@ private:
 	bool
 	on_create_folder_key_press_event (GdkEventKey* event) final override;
 
+	Glib::RefPtr <Gio::File>
+	getNewFolder () const;
+
+	///  @name Rename item handling
+
 	virtual
 	void
 	on_rename_item_activate () final override;
+
+	virtual
+	void
+	on_rename_item_changed () final override;
 
 	virtual
 	void
@@ -151,6 +179,11 @@ private:
 	virtual
 	bool
 	on_rename_item_key_press_event (GdkEventKey* event) final override;
+
+	std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
+	getRenameItem () const;
+
+	///  @name Move to trash handling
 
 	virtual
 	void
@@ -161,6 +194,8 @@ private:
 
 	void
 	on_remove_file_activate (const Glib::RefPtr <Gio::File> & file);
+
+	///  @name Selection handling
 
 	virtual
 	void
@@ -187,6 +222,8 @@ private:
 	void
 	removeFile (const Glib::RefPtr <Gio::File> & file);
 
+	///  @name Selection handling
+
 	void
 	unselectAll ();
 
@@ -198,6 +235,8 @@ private:
 
 	bool
 	expandTo (const Glib::RefPtr <Gio::File> & file);
+
+	///  @name Folder handling handling
 
 	void
 	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
@@ -231,6 +270,8 @@ private:
 
 	std::string
 	getPath (const Gtk::TreeIter & iter) const;
+
+	///  @name Misc operations
 
 	void
 	createOpenWithMenu (const Glib::RefPtr <Gio::File> & file);
@@ -272,6 +313,7 @@ private:
 	std::set <std::string>                   projects;
 	std::map <std::string, FolderElementPtr> folders;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
+	bool                                     changing;
 
 };
 

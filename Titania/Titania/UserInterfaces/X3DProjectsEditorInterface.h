@@ -171,8 +171,8 @@ public:
 	{ return *m_CreateFolderEntry; }
 
 	Gtk::Button &
-	getCreateDirectoryButton () const
-	{ return *m_CreateDirectoryButton; }
+	getCreateFolderButton () const
+	{ return *m_CreateFolderButton; }
 
 	Gtk::Popover &
 	getRenameItemPopover () const
@@ -187,8 +187,8 @@ public:
 	{ return *m_RenameItemEntry; }
 
 	Gtk::Button &
-	getRenameButton () const
-	{ return *m_RenameButton; }
+	getRenameItemButton () const
+	{ return *m_RenameItemButton; }
 
 	Gtk::Menu &
 	getContextMenu () const
@@ -257,6 +257,10 @@ public:
 	on_selection_changed () = 0;
 
 	virtual
+	void
+	on_create_file_changed () = 0;
+
+	virtual
 	bool
 	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
 
@@ -265,12 +269,20 @@ public:
 	on_create_file_clicked () = 0;
 
 	virtual
+	void
+	on_create_folder_changed () = 0;
+
+	virtual
 	bool
 	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	void
 	on_create_folder_clicked () = 0;
+
+	virtual
+	void
+	on_rename_item_changed () = 0;
 
 	virtual
 	bool
@@ -340,11 +352,11 @@ private:
 	Gtk::Button* m_CreateFileButton;
 	Gtk::Popover* m_CreateFolderPopover;
 	Gtk::Entry* m_CreateFolderEntry;
-	Gtk::Button* m_CreateDirectoryButton;
+	Gtk::Button* m_CreateFolderButton;
 	Gtk::Popover* m_RenameItemPopover;
 	Gtk::Label* m_RenameItemLabel;
 	Gtk::Entry* m_RenameItemEntry;
-	Gtk::Button* m_RenameButton;
+	Gtk::Button* m_RenameItemButton;
 	Gtk::Menu* m_ContextMenu;
 	Gtk::MenuItem* m_OpenWithMenuItem;
 	Gtk::Menu* m_OpenWithMenu;

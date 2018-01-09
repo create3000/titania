@@ -92,13 +92,13 @@ protected:
 
 private:
 
-	///  @name Event handlers
+	///  @name Selection handling
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
-	///  @name Operations
+	///  @name Folder handling handling
 
 	void
 	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
