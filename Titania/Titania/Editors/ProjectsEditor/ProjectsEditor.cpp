@@ -423,19 +423,20 @@ ProjectsEditor::on_rename_item_activate ()
 	const auto file      = Gio::File::create_for_path (getPath (iter));
 	const auto fileInfo  = file -> query_info ();
 	const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
-	const auto basename  = Glib::ustring (basic::uri (file -> get_basename ()) .basename (directory));
+	const auto basename  = basic::uri (file -> get_basename ());
+	const auto name      = Glib::ustring (directory ? basename .basename () : basename .name ());
 
 	getRenameItemLabel () .set_text (directory ? _ ("Folder Name") : _ ("File Name"));
 	getRenameItemEntry () .set_placeholder_text (directory ? _ ("Folder Name") : _ ("File Name"));
 
 	getRenameItemEntry ()   .set_text (file -> get_basename ());
-	getRenameItemEntry ()   .select_region (0, basename .size ());
+	getRenameItemEntry ()   .select_region (0, name .size ());
 	getRenameItemButton ()  .set_sensitive (false);
 	getRenameItemPopover () .set_pointing_to (getRectangle (path));
 	getRenameItemPopover () .popup ();
 
 	// Workaround, Gtk::Entry::select_region does not work.
-	gtk_editable_select_region (GTK_EDITABLE (getRenameItemEntry () .gobj ()), 0, basename .size ());
+	gtk_editable_select_region (GTK_EDITABLE (getRenameItemEntry () .gobj ()), 0, name .size ());
 
 	changing = false;
 }
@@ -726,7 +727,7 @@ ProjectsEditor::getPasteDestination (const bool copy, const Glib::RefPtr <Gio::F
 	if (copy and source -> get_parent () -> get_uri () == folder -> get_uri ())
 	{
 		auto    basename = basic::uri (source -> get_basename ());
-		auto    name     = std::regex_replace (basename .basename (false), pattern, "");
+		auto    name     = std::regex_replace (basename .name (), pattern, "");
 		auto    suffix   = basename .suffix ();
 		int32_t copy     = 0;
 		auto    child    = Glib::RefPtr <Gio::File> ();

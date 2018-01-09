@@ -227,7 +227,7 @@ X3DLibraryView::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::F
 		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + url .authority () + ")");
 
 	const auto directory    = file -> get_parent ();
-	const auto basename     = basic::uri (file -> get_path ()) .basename (false);
+	const auto basename     = basic::uri (file -> get_path ()) .name ();
 	const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
 	const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
 	const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();

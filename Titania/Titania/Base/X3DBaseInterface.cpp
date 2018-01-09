@@ -243,8 +243,8 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
-		worldInfo = scene -> createNode <X3D::WorldInfo> ();
-		worldInfo -> title () = scene-> getWorldURL () .basename (false);
+		worldInfo             = scene -> createNode <X3D::WorldInfo> ();
+		worldInfo -> title () = scene-> getWorldURL () .name ();
 
 		scene -> getRootNodes () .emplace_front (worldInfo);
 	}

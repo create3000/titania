@@ -345,17 +345,17 @@ public:
 	basic_uri
 	filename (const bool = false) const;
 
-	///  Returns the full basename of this URI with or without suffix. The default is with suffix.
+	///  Returns the full basename of this URI with suffix.
 	string_type
-	basename (const bool = true) const;
+	basename () const;
 
-	///  Returns the basename of this URI stript of @a suffix.
+	///  Returns the basename of this URI without suffix.
 	string_type
-	basename (const string_type & suffix) const;
+	name () const;
 
 	///  Returns the basename of this URI stript of @a list of suffixes.
 	string_type
-	basename (std::initializer_list <string_type> list) const;
+	name (std::initializer_list <string_type> list) const;
 
 	///  Adds @a value to basename.
 	void
@@ -770,35 +770,24 @@ basic_uri <StringT>::filename (const bool q) const
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename (const bool suf) const
+basic_uri <StringT>::basename () const
 {
-	if (suf)
-	{
-		if (path () .length ())
-			return path () .substr (path (). rfind (Signs::Slash) + 1);
+	if (path () .length ())
+		return path () .substr (path (). rfind (Signs::Slash) + 1);
 
-		return string_type ();
-	}
-
-	return basename (suffix ());
+	return string_type ();
 }
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename (const string_type & suffix) const
+basic_uri <StringT>::name () const
 {
-	if (path () .length () and is_file () and path () .substr (path () .size () - suffix .length (), suffix .length ()) == suffix)
-	{
-		string_type basename = this -> basename ();
-		return basename .substr (0, basename .size () - suffix .length ());
-	}
-
-	return basename ();
+	return name ({ suffix () });
 }
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename (std::initializer_list <string_type> suffixes) const
+basic_uri <StringT>::name (std::initializer_list <string_type> suffixes) const
 {
 	for (const auto & suffix : suffixes)
 	{

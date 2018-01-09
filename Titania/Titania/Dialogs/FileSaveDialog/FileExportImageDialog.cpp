@@ -205,7 +205,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 		getWindow () .set_current_folder (Glib::get_home_dir ());
 
 	if (basename .empty ())
-		getWindow () .set_current_name (worldURL .basename (false) + ".png");
+		getWindow () .set_current_name (worldURL .name () + ".png");
 	else
 		getWindow () .set_current_name (basename);
 

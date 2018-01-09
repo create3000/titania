@@ -98,9 +98,9 @@ X3DBaseFileSaveDialog::getUrl () const
 void
 X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
 {
-	basic::uri name (getWindow () .get_current_name ());
+	const basic::uri basename (getWindow () .get_current_name ());
 
-	getWindow () .set_current_name (name .basename (false) + suffix);
+	getWindow () .set_current_name (basename .name () + suffix);
 }
 
 void

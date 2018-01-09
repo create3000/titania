@@ -704,7 +704,7 @@ X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, con
 	{
 		const basic::uri URL = value .str ();
 
-		if (URL .basename (false) == URL)
+		if (URL .name () == URL)
 			continue;
 
 		if (URL .is_relative () and not URL .filename (true) .empty ())

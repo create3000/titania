@@ -153,7 +153,7 @@ RenderPanel::getPropertiesDialogResponse ()
 	const auto & browser      = getPage () -> getMainBrowser ();
 	const auto   antialiasing = browser -> getMaxSamples ();
 
-	filename  = browser -> getWorldURL () .parent () + browser -> getWorldURL () .basename (false) + ".mp4";
+	filename  = browser -> getWorldURL () .parent () + browser -> getWorldURL () .name () + ".mp4";
 	filename  = getFilename (getId (), filename);
 	viewpoint = getViewpoint (getId (), viewpoint);
 
