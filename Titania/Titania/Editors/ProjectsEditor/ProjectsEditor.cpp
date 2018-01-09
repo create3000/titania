@@ -259,8 +259,10 @@ ProjectsEditor::on_create_file_clicked ()
 
 		Glib::spawn_sync (Glib::get_current_dir (), command);
 	
-		if (not basic::uri (file -> get_uri ()) .is_local ())
-			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+		on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+
+		unselectAll ();
+		selectFile (file);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -356,8 +358,10 @@ ProjectsEditor::on_create_folder_clicked ()
 	
 		folder -> make_directory_with_parents ();
 	
-		if (not basic::uri (folder -> get_uri ()) .is_local ())
-			on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+		on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+
+		unselectAll ();
+		selectFile (folder);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -473,8 +477,10 @@ ProjectsEditor::on_rename_item_clicked ()
 
 		iter -> set_value (Columns::PATH, destination -> get_path ());
 
-		if (not basic::uri (item -> get_uri ()) .is_local ())
-			on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
+		on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
+
+		unselectAll ();
+		selectFile (destination);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -599,6 +605,8 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 		return;
 
+	auto selection = std::vector <Glib::RefPtr <Gio::File>> ();
+
 	bool copy = false;
 
 	for (const auto & path : clipboard)
@@ -669,8 +677,7 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 				File::copyFile (source, destination, flags);
 
-				if (not destinationUri .is_local ())
-					on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+				on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 			}
 			else
 			{
@@ -689,9 +696,10 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 					File::removeFile (source);
 				}
 
-				if (not (sourceUri .is_local () and destinationUri .is_local ()))
-					on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
 			}
+
+			selection .emplace_back (destination);
 		}
 		catch (const Glib::Error & error)
 		{
@@ -701,6 +709,13 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 	if (not copy)
 		clearClipboard ();
+
+	// Select destinations.
+
+	unselectAll ();
+
+	for (const auto & file : selection)
+		selectFile (file);
 }
 
 Glib::RefPtr <Gio::File>
@@ -763,9 +778,10 @@ ProjectsEditor::on_move_to_trash_activate ()
 		const auto iter = getTreeStore () -> get_iter (path);
 		const auto file = Gio::File::create_for_path (getPath (iter));
 
-		if (not basic::uri (file -> get_uri ()) .is_local ())
-			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
+		on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
 	}
+
+	unselectAll ();
 }
 
 void
@@ -918,8 +934,6 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 			}
 		}
 
-		const auto otherSelected = other_file and isSelected (other_file);
-
 		saveExpanded ();
 
 		if (file)
@@ -929,12 +943,6 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 			on_file_changed_update_tree_view (other_file);
 
 		restoreExpanded ();
-
-		if (otherSelected)
-		{
-			unselectAll ();
-			selectFile (other_file);
-		}
 	}
 	catch (const Glib::Error & error)
 	{
@@ -990,7 +998,6 @@ ProjectsEditor::selectFile (const Glib::RefPtr <Gio::File> & file, const bool sc
 	const auto path = getTreeStore () -> get_path (iter);
 
 	getTreeViewSelection () -> select (iter);
-	getTreeView () .set_cursor (path);
 
 	if (scroll)
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
