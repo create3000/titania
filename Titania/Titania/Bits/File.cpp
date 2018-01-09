@@ -171,5 +171,22 @@ File::removeFile (const Glib::RefPtr <Gio::File> & file)
 	file -> remove ();
 }
 
+bool
+File::isSubfolder (const Glib::RefPtr <Gio::File> & folder, Glib::RefPtr <Gio::File> subfolder)
+{
+	if (subfolder -> get_uri () == folder -> get_uri ())
+		return true;
+
+	while (subfolder -> has_parent ())
+	{
+		subfolder = subfolder -> get_parent ();
+
+		if (subfolder -> get_uri () == folder -> get_uri ())
+			return true;
+	}
+
+	return false;
+}
+
 } // puck
 } // titania

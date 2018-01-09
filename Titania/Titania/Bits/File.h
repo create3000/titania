@@ -67,6 +67,10 @@ public:
 	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName);
 
 	static
+	bool
+	isSubfolder (const Glib::RefPtr <Gio::File> & folder, Glib::RefPtr <Gio::File> subfolder);
+
+	static
 	std::vector <Glib::RefPtr <Gio::FileInfo>> 
 	getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden = false);
 

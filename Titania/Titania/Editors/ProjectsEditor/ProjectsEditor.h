@@ -206,7 +206,7 @@ private:
 	on_paste_into_folder_activate () final override;
 
 	void
-	clearClipboard (const bool clear = true);
+	clearClipboard ();
 	
 	void
 	cutItems (const std::vector <Gtk::TreePath> & rows);

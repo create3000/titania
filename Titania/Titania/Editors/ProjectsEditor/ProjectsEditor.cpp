@@ -530,26 +530,23 @@ ProjectsEditor::getRenameItem () const
 void
 ProjectsEditor::on_cut_item_activate ()
 {
-__LOG__ << std::endl;
 	cutItems (getTreeViewSelection () -> get_selected_rows ());
 }
 
 void
 ProjectsEditor::on_copy_item_activate ()
 {
-__LOG__ << std::endl;
 	copyItems (getTreeViewSelection () -> get_selected_rows ());
 }
 
 void
 ProjectsEditor::on_paste_into_folder_activate ()
 {
-__LOG__ << std::endl;
 	pasteIntoFolder (getTreeViewSelection () -> get_selected_rows () .front ());
 }
 
 void
-ProjectsEditor::clearClipboard (const bool clear)
+ProjectsEditor::clearClipboard ()
 {
 	for (const auto & path : clipboard)
 	{
@@ -561,8 +558,7 @@ ProjectsEditor::clearClipboard (const bool clear)
 		iter -> set_value (Columns::SENSITIVE, true);
 	}
 
-	if (clear)
-		clipboard .clear ();
+	clipboard .clear ();
 }
 
 void
@@ -603,6 +599,8 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 		return;
 
+	bool copy = false;
+
 	for (const auto & path : clipboard)
 	{
 		try
@@ -611,21 +609,35 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 	
 			if (not getTreeStore () -> iter_is_valid (iter))
 				continue;
-	
-			const auto file        = Gio::File::create_for_path (path);
-			const auto fileInfo    = file -> query_info ();
-			const auto destination = getPasteDestination (folder, file -> get_basename ());
-			bool       copy        = false;
-	
+
 			iter -> get_value (Columns::SENSITIVE, copy);
 	
-			if (not copy)
+			const auto source      = Gio::File::create_for_path (path);
+			const auto sourceInfo  = source -> query_info ();
+			const auto directory   = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+			const auto destination = copy ? getPasteDestination (folder, source -> get_basename ()) : folder -> get_child (source -> get_basename ());
+
+			if (destination -> query_exists ())
 			{
-				if (file -> get_parent () == destination -> get_parent ())
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		
+				dialog -> setType (Gtk::MESSAGE_QUESTION);
+				dialog -> setMessage (basic::sprintf (_ ("The file »%s« already exits! Override?"), destination -> get_basename () .c_str ()));
+				dialog -> setText (_ (""));
+
+				if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 					continue;
+
+				File::removeFile (destination);
 			}
 
-			if (destination -> get_path () .find (file -> get_path ()) == 0)
+			if (not copy)
+			{
+				if (source -> get_parent () -> get_uri () == destination -> get_parent () -> get_uri ())
+					return;
+			}
+
+			if (File::isSubfolder (source, destination))
 			{
 				// Destination is within source.
 				continue;
@@ -633,15 +645,15 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 			if (copy)
 			{
-				if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-				{
-					File::copyFolder (file, destination);
-				}
+				if (directory)
+					File::copyFolder (source, destination);
 				else
-					file -> copy (destination);
+					source -> copy (destination);
 			}
 			else
-				file -> move (destination);
+			{
+				source -> move (destination, Gio::FILE_COPY_OVERWRITE);
+			}
 		}
 		catch (const Glib::Error & error)
 		{
@@ -649,7 +661,8 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 		}
 	}
 
-	clearClipboard (false);
+	if (not copy)
+		clearClipboard ();
 }
 
 Glib::RefPtr <Gio::File>
@@ -1081,7 +1094,7 @@ ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
 
 	for (const auto & pair : folders)
 	{
-		if (pair .first .find (path) == 0)
+		if (File::isSubfolder (Gio::File::create_for_path (path), Gio::File::create_for_path (pair .first)))
 			subfolders .emplace_back (pair .first);
 	}
 
