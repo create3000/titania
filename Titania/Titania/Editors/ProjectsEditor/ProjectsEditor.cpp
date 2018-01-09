@@ -765,7 +765,18 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 	try
 	{
 		if (projects .count (file -> get_path ()))
+		{
+			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	
+			dialog -> setType (Gtk::MESSAGE_QUESTION);
+			dialog -> setMessage ("You are about to remove a project folder to trash!");
+			dialog -> setText (basic::sprintf (_ ("Do you realy want to move project »%s« to trash?"), file -> get_basename () .c_str ()));
+
+			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+				return;
+
 			removeRootFolder (getIter (file -> get_path ()));
+		}
 
 		file -> trash ();
 	}
