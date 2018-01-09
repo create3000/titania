@@ -90,6 +90,10 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getAccelGroup () const
+	{ return m_AccelGroup; }
+
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
 	{ return m_TreeStore; }
@@ -223,6 +227,18 @@ public:
 	{ return *m_RenameItemMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getCutItemMenuItem () const
+	{ return *m_CutItemMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCopyItemMenuItem () const
+	{ return *m_CopyItemMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getPasteIntoFolderMenuItem () const
+	{ return *m_PasteIntoFolderMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getMoveToTrashMenuItem () const
 	{ return *m_MoveToTrashMenuItem; }
 
@@ -243,6 +259,14 @@ public:
 	virtual
 	void
 	on_remove_project_clicked () = 0;
+
+	virtual
+	bool
+	on_focus_in_event (GdkEventFocus* focus_event) = 0;
+
+	virtual
+	bool
+	on_focus_out_event (GdkEventFocus* gdk_event) = 0;
 
 	virtual
 	void
@@ -306,6 +330,18 @@ public:
 
 	virtual
 	void
+	on_cut_item_activate () = 0;
+
+	virtual
+	void
+	on_copy_item_activate () = 0;
+
+	virtual
+	void
+	on_paste_into_folder_activate () = 0;
+
+	virtual
+	void
 	on_move_to_trash_activate () = 0;
 
 	///  @name Destruction
@@ -332,6 +368,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
 	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
@@ -365,6 +402,9 @@ private:
 	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
 	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
 	Gtk::ImageMenuItem* m_RenameItemMenuItem;
+	Gtk::ImageMenuItem* m_CutItemMenuItem;
+	Gtk::ImageMenuItem* m_CopyItemMenuItem;
+	Gtk::ImageMenuItem* m_PasteIntoFolderMenuItem;
 	Gtk::ImageMenuItem* m_MoveToTrashMenuItem;
 
 };

@@ -83,10 +83,15 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	                  projects (),
 	                   folders (),
+	                 clipboard (),
 	             scrollFreezer (new ScrollFreezer (getTreeView ())),
 	                  changing (false)
 {
 	getTreeView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
+
+	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getPasteIntoFolderMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_V, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	setup ();
 }
@@ -126,6 +131,22 @@ ProjectsEditor::on_unmap ()
 	getCurrentContext () .removeInterest (&ProjectsEditor::set_execution_context, this);
 }
 
+bool
+ProjectsEditor::on_focus_in_event (GdkEventFocus* focus_event)
+{
+	getBrowserWindow () -> setAccelerators (false);
+	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
+	return false;
+}
+
+bool
+ProjectsEditor::on_focus_out_event (GdkEventFocus* focus_event)
+{
+	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
+	getBrowserWindow () -> setAccelerators (true);
+	return false;
+}
+
 void
 ProjectsEditor::on_add_project_clicked ()
 {
@@ -158,15 +179,16 @@ ProjectsEditor::on_display_menu (GdkEventButton* event)
 
 	if (selectedRows .size () == 1)
 	{
-		const auto path     = selectedRows .front ();
-		const auto file     = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
-		const auto fileInfo = file -> query_info ();
+		const auto path      = selectedRows .front ();
+		const auto file      = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
+		const auto fileInfo  = file -> query_info ();
+		const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 
 		createOpenWithMenu (file);
 
 		// Show hide menu items.
 
-		getAddMenuItem ()        .set_visible (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+		getAddMenuItem ()        .set_visible (directory);
 		getRenameItemMenuItem () .set_visible (true);
 	}
 	else
@@ -506,11 +528,170 @@ ProjectsEditor::getRenameItem () const
 }
 
 void
+ProjectsEditor::on_cut_item_activate ()
+{
+__LOG__ << std::endl;
+	cutItems (getTreeViewSelection () -> get_selected_rows ());
+}
+
+void
+ProjectsEditor::on_copy_item_activate ()
+{
+__LOG__ << std::endl;
+	copyItems (getTreeViewSelection () -> get_selected_rows ());
+}
+
+void
+ProjectsEditor::on_paste_into_folder_activate ()
+{
+__LOG__ << std::endl;
+	pasteIntoFolder (getTreeViewSelection () -> get_selected_rows () .front ());
+}
+
+void
+ProjectsEditor::clearClipboard (const bool clear)
+{
+	for (const auto & path : clipboard)
+	{
+		const auto & iter = getIter (path);
+
+		if (not getTreeStore () -> iter_is_valid (iter))
+			continue;
+
+		iter -> set_value (Columns::SENSITIVE, true);
+	}
+
+	if (clear)
+		clipboard .clear ();
+}
+
+void
+ProjectsEditor::cutItems (const std::vector <Gtk::TreePath> & rows)
+{
+	clearClipboard ();
+
+	for (const auto & path : rows)
+	{
+		const auto iter = getTreeStore () -> get_iter (path);
+
+		iter -> set_value (Columns::SENSITIVE, false);
+
+		clipboard .emplace_back (getPath (iter));
+	}
+}
+
+void
+ProjectsEditor::copyItems (const std::vector <Gtk::TreePath> & rows)
+{
+	clearClipboard ();
+
+	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
+	{
+		const auto iter = getTreeStore () -> get_iter (path);
+
+		clipboard .emplace_back (getPath (iter));
+	}
+}
+
+void
+ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
+{
+	const auto iter       = getTreeStore () -> get_iter (row);
+	const auto folder     = Gio::File::create_for_path (getPath (iter));
+	const auto folderInfo = folder -> query_info ();
+
+	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
+		return;
+
+	for (const auto & path : clipboard)
+	{
+		try
+		{
+			const auto iter = getIter (path);
+	
+			if (not getTreeStore () -> iter_is_valid (iter))
+				continue;
+	
+			const auto file        = Gio::File::create_for_path (path);
+			const auto fileInfo    = file -> query_info ();
+			const auto destination = getPasteDestination (folder, file -> get_basename ());
+			bool       copy        = false;
+	
+			iter -> get_value (Columns::SENSITIVE, copy);
+	
+			if (not copy)
+			{
+				if (file -> get_parent () == destination -> get_parent ())
+					continue;
+			}
+
+			if (destination -> get_path () .find (file -> get_path ()) == 0)
+			{
+				// Destination is within source.
+				continue;
+			}
+
+			if (copy)
+			{
+				if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+				{
+					File::copyFolder (file, destination);
+				}
+				else
+					file -> copy (destination);
+			}
+			else
+				file -> move (destination);
+		}
+		catch (const Glib::Error & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	clearClipboard (false);
+}
+
+Glib::RefPtr <Gio::File>
+ProjectsEditor::getPasteDestination (const Glib::RefPtr <Gio::File> & folder, const basic::uri & basename) const
+{
+	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
+
+	auto    name   = std::regex_replace (basename .basename (false), pattern, "");
+	auto    suffix = basename .suffix ();
+	int32_t copy   = 0;
+	auto    child  = Glib::RefPtr <Gio::File> ();
+
+	do
+	{
+		child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
+		copy += 1;
+	}
+	while (child -> query_exists ());
+
+	return child;
+}
+
+std::string
+ProjectsEditor::getPasteCopyString (const int32_t count) const
+{
+	switch (count)
+	{
+		case 0:
+			return "";
+		case 1:
+			return _ (" (copy)");
+		case 2:
+			return _ (" (another copy)");
+		default:
+			return basic::sprintf (_(" (%d. copy)"), count);
+	}
+}
+
+void
 ProjectsEditor::on_move_to_trash_activate ()
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-
-	for (const auto & path : selectedRows)
+	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
 		const auto file = Gio::File::create_for_path (getPath (iter));
@@ -553,7 +734,7 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
 
-		removeFile (file);
+		File::removeFile (file);
 
 		if (not basic::uri (file -> get_uri ()) .is_local ())
 			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
@@ -573,21 +754,39 @@ ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVi
 void
 ProjectsEditor::on_selection_changed ()
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-
-	switch (selectedRows .size ())
+	try
 	{
-		case 1:
+		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	
+		switch (selectedRows .size ())
 		{
-			getRemoveProjectButton () .set_sensitive (selectedRows .front () .size () == 1);
-			break;
+			case 1:
+			{
+				const auto iter      = getTreeStore () -> get_iter (selectedRows .front ());
+				const auto file      = Gio::File::create_for_path (getPath (iter));
+				const auto fileInfo  = file -> query_info ();
+				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+	
+				getTreeView () .set_button3_select (true);
+	
+				getRemoveProjectButton ()     .set_sensitive (selectedRows .front () .size () == 1);
+				getPasteIntoFolderMenuItem () .set_sensitive (directory and clipboard .size ());
+				break;
+			}
+			case 0:
+			default:
+			{
+				getTreeView () .set_button3_select (selectedRows .empty ());
+	
+				getRemoveProjectButton ()     .set_sensitive (false);
+				getPasteIntoFolderMenuItem () .set_sensitive (false);
+				break;
+			}
 		}
-		case 0:
-		default:
-		{
-			getRemoveProjectButton () .set_sensitive (false);
-			break;
-		}
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -672,15 +871,6 @@ ProjectsEditor::set_execution_context ()
 		unselectAll ();
 		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()), true);
 	}
-}
-
-void
-ProjectsEditor::removeFile (const Glib::RefPtr <Gio::File> & file)
-{
-	for (const auto & fileInfo : File::getChildren (file, true))
-		removeFile (file -> get_child (fileInfo -> get_name ()));
-
-	file -> remove ();
 }
 
 void

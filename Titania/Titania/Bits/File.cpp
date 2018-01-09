@@ -133,5 +133,43 @@ File::hasChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden
 	}
 }
 
+void
+File::copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination)
+{
+	destination -> make_directory_with_parents ();
+	
+	for (const auto fileInfo : getChildren (source))
+	{
+		const auto sourceChild      = source -> get_child (fileInfo -> get_name ());
+		const auto destinationChild = destination -> get_child (fileInfo -> get_name ());
+
+		switch (fileInfo -> get_file_type ())
+		{
+			case Gio::FILE_TYPE_DIRECTORY:
+			{
+				copyFolder (sourceChild, destinationChild);
+				continue;
+			}
+			case Gio::FILE_TYPE_REGULAR:
+			case Gio::FILE_TYPE_SYMBOLIC_LINK:
+			{
+				sourceChild -> copy (destinationChild);
+				continue;
+			}
+			default:
+				continue;
+		}
+	}
+}
+
+void
+File::removeFile (const Glib::RefPtr <Gio::File> & file)
+{
+	for (const auto & fileInfo : File::getChildren (file, true))
+		removeFile (file -> get_child (fileInfo -> get_name ()));
+
+	file -> remove ();
+}
+
 } // puck
 } // titania

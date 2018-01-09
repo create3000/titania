@@ -102,6 +102,14 @@ private:
 	void
 	on_unmap () final override;
 
+	virtual
+	bool
+	on_focus_in_event (GdkEventFocus* focus_event);
+
+	virtual
+	bool
+	on_focus_out_event (GdkEventFocus* gdk_event);
+
 	///  @name Project folders handling
 
 	virtual
@@ -183,6 +191,38 @@ private:
 	std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
 	getRenameItem () const;
 
+	///  @name Clipboard handling
+
+	virtual
+	void
+	on_cut_item_activate () final override;
+
+	virtual
+	void
+	on_copy_item_activate () final override;
+
+	virtual
+	void
+	on_paste_into_folder_activate () final override;
+
+	void
+	clearClipboard (const bool clear = true);
+	
+	void
+	cutItems (const std::vector <Gtk::TreePath> & rows);
+	
+	void
+	copyItems (const std::vector <Gtk::TreePath> & rows);
+
+	void
+	pasteIntoFolder (const Gtk::TreePath & row);
+
+	Glib::RefPtr <Gio::File>
+	getPasteDestination (const Glib::RefPtr <Gio::File> & folder, const basic::uri & basename) const;
+
+	std::string
+	getPasteCopyString (const int32_t count) const;
+
 	///  @name Move to trash handling
 
 	virtual
@@ -216,11 +256,6 @@ private:
 
 	void
 	set_execution_context ();
-
-	///  @name Operations
-
-	void
-	removeFile (const Glib::RefPtr <Gio::File> & file);
 
 	///  @name Selection handling
 
@@ -263,10 +298,10 @@ private:
 	removeChild (const Gtk::TreeModel::iterator & iter);
 
 	Gtk::TreeIter
-	getIter (const std::string & URL) const;
+	getIter (const std::string & path) const;
 	
 	bool
-	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
+	getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const;
 
 	std::string
 	getPath (const Gtk::TreeIter & iter) const;
@@ -312,6 +347,7 @@ private:
 
 	std::set <std::string>                   projects;
 	std::map <std::string, FolderElementPtr> folders;
+	std::vector <std::string>                clipboard;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 	bool                                     changing;
 

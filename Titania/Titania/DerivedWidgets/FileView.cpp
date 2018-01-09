@@ -50,23 +50,27 @@
 
 #include "FileView.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace puck {
 
 FileView::FileView (GtkTreeView* cobject, const Glib::RefPtr <Gtk::Builder> & builder) :
 	      Gtk::TreeView (cobject),
+	     button3_select (true),
 	display_menu_signal ()
 { }
 
 bool
 FileView::on_button_press_event (GdkEventButton* event)
 {
-	const auto result = Gtk::TreeView::on_button_press_event (event);
+	if (button3_select or event -> button not_eq 3)
+		Gtk::TreeView::on_button_press_event (event);
 
 	if (event -> button == 3)
 		display_menu_signal .emit (event);
 
-	return result;
+	return true;
 }
 
 FileView::~FileView ()

@@ -74,6 +74,14 @@ public:
 	bool
 	hasChildren (const Glib::RefPtr <Gio::File> & director, const bool hidden = false);
 
+	static
+	void
+	copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination);
+
+	static
+	void
+	removeFile (const Glib::RefPtr <Gio::File> & file);
+
 };
 
 } // puck

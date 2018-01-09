@@ -65,6 +65,16 @@ public:
 
 	FileView (GtkTreeView* cobject, const Glib::RefPtr <Gtk::Builder> & builder);
 
+	///  @name Member access
+
+	void
+	set_button3_select (const bool value)
+	{ button3_select = value; }
+
+	bool
+	get_button3_select () const
+	{ return button3_select; }
+
 	///  @name Signals
 
 	sigc::signal <void, GdkEventButton*> &
@@ -90,6 +100,7 @@ private:
 
 	///  @name Members
 
+	bool                                 button3_select;
 	sigc::signal <void, GdkEventButton*> display_menu_signal;
 
 };

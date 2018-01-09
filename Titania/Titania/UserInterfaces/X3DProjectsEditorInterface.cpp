@@ -78,6 +78,7 @@ void
 X3DProjectsEditorInterface::create ()
 {
 	// Get objects.
+	m_AccelGroup        = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_TreeStore         = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
 	m_TreeViewSelection = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
 	m_FileColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
@@ -113,6 +114,9 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
 	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
 	m_builder -> get_widget ("RenameItemMenuItem", m_RenameItemMenuItem);
+	m_builder -> get_widget ("CutItemMenuItem", m_CutItemMenuItem);
+	m_builder -> get_widget ("CopyItemMenuItem", m_CopyItemMenuItem);
+	m_builder -> get_widget ("PasteIntoFolderMenuItem", m_PasteIntoFolderMenuItem);
 	m_builder -> get_widget ("MoveToTrashMenuItem", m_MoveToTrashMenuItem);
 
 	// Connect object Gtk::Box with id 'Widget'.
@@ -124,6 +128,8 @@ X3DProjectsEditorInterface::create ()
 	m_RemoveProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_remove_project_clicked));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_in_event));
+	m_TreeView -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_out_event));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
 	m_TreeView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_test_expand_row));
 
@@ -155,6 +161,9 @@ X3DProjectsEditorInterface::create ()
 	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
 	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
 	m_RenameItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_activate));
+	m_CutItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_cut_item_activate));
+	m_CopyItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_copy_item_activate));
+	m_PasteIntoFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_paste_into_folder_activate));
 	m_MoveToTrashMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_move_to_trash_activate));
 }
 

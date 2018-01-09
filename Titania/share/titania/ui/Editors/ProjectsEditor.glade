@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAccelGroup" id="AccelGroup"/>
   <object class="GtkTreeStore" id="TreeStore">
     <columns>
       <!-- column-name Icon -->
@@ -119,6 +120,8 @@
                     <property name="headers_clickable">False</property>
                     <property name="rules_hint">True</property>
                     <property name="search_column">1</property>
+                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
@@ -521,6 +524,55 @@
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_rename_item_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="CutItemMenuItem">
+        <property name="label">gtk-cut</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_cut_item_activate" swapped="no"/>
+        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="CopyItemMenuItem">
+        <property name="label">gtk-copy</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_copy_item_activate" swapped="no"/>
+        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="PasteIntoFolderMenuItem">
+        <property name="label">gtk-paste</property>
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_paste_into_folder_activate" swapped="no"/>
+        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
     </child>
     <child>
