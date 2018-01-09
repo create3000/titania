@@ -68,7 +68,7 @@ public:
 
 	static
 	bool
-	isSubfolder (const Glib::RefPtr <Gio::File> & folder, Glib::RefPtr <Gio::File> subfolder);
+	isSubfolder (Glib::RefPtr <Gio::File> subfolder, const Glib::RefPtr <Gio::File> & folder);
 
 	static
 	std::vector <Glib::RefPtr <Gio::FileInfo>> 

@@ -1,11 +1,8 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/ProjectsEditor/ProjectsEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="722" Column="35" />
-      <File FileName="Titania/Titania/Editors/ProjectsEditor/ProjectsEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ProjectsEditor/ProjectsEditor.cpp" Line="748" Column="3" />
-      <File FileName="Titania/run.pl" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

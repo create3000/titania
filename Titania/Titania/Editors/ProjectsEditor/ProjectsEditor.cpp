@@ -648,7 +648,7 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 					return;
 			}
 
-			if (File::isSubfolder (source, destination))
+			if (File::isSubfolder (destination, source))
 			{
 				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
 		
@@ -757,6 +757,15 @@ ProjectsEditor::on_move_to_trash_activate ()
 
 		on_move_to_trash_activate (file);
 	}
+
+	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
+	{
+		const auto iter = getTreeStore () -> get_iter (path);
+		const auto file = Gio::File::create_for_path (getPath (iter));
+
+		if (not basic::uri (file -> get_uri ()) .is_local ())
+			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
+	}
 }
 
 void
@@ -805,9 +814,6 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 			return;
 
 		File::removeFile (file);
-
-		if (not basic::uri (file -> get_uri ()) .is_local ())
-			on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -1174,7 +1180,7 @@ ProjectsEditor::removeChild (const Gtk::TreeIter & iter)
 
 	for (const auto & pair : folders)
 	{
-		if (File::isSubfolder (Gio::File::create_for_path (path), Gio::File::create_for_path (pair .first)))
+		if (File::isSubfolder (Gio::File::create_for_path (pair .first), Gio::File::create_for_path (path)))
 			subfolders .emplace_back (pair .first);
 	}
 

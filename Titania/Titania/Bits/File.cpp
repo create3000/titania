@@ -110,6 +110,30 @@ File::getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden
 }
 
 bool
+File::isSubfolder (Glib::RefPtr <Gio::File> subfolder, const Glib::RefPtr <Gio::File> & folder)
+{
+	const auto folderUri = folder -> get_uri ();
+
+	if (subfolder -> get_uri () == folderUri)
+		return true;
+
+	while (subfolder -> has_parent ())
+	{
+		subfolder = subfolder -> get_parent ();
+
+		const auto subfolderUri = subfolder -> get_uri ();
+
+		if (subfolderUri .size () < folderUri .size ())
+			return false;
+
+		if (subfolderUri == folderUri)
+			return true;
+	}
+
+	return false;
+}
+
+bool
 File::hasChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden)
 {
 	try
@@ -180,23 +204,6 @@ File::removeFile (const Glib::RefPtr <Gio::File> & file)
 		removeFile (file -> get_child (fileInfo -> get_name ()));
 
 	file -> remove ();
-}
-
-bool
-File::isSubfolder (const Glib::RefPtr <Gio::File> & folder, Glib::RefPtr <Gio::File> subfolder)
-{
-	if (subfolder -> get_uri () == folder -> get_uri ())
-		return true;
-
-	while (subfolder -> has_parent ())
-	{
-		subfolder = subfolder -> get_parent ();
-
-		if (subfolder -> get_uri () == folder -> get_uri ())
-			return true;
-	}
-
-	return false;
 }
 
 } // puck
