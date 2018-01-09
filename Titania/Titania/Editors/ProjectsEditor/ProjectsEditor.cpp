@@ -612,10 +612,12 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 			iter -> get_value (Columns::SENSITIVE, copy);
 	
-			const auto source      = Gio::File::create_for_path (path);
-			const auto sourceInfo  = source -> query_info ();
-			const auto directory   = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
-			const auto destination = copy ? getPasteDestination (folder, source -> get_basename ()) : folder -> get_child (source -> get_basename ());
+			const auto source         = Gio::File::create_for_path (path);
+			const auto sourceInfo     = source -> query_info ();
+			const auto directory      = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+			const auto destination    = getPasteDestination (copy, source, folder);
+			const auto sourceUri      = basic::uri (source -> get_uri ());
+			const auto destinationUri = basic::uri (destination -> get_uri ());
 
 			if (destination -> query_exists ())
 			{
@@ -660,14 +662,25 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 			if (copy)
 			{
-				if (directory)
-					File::copyFolder (source, destination);
-				else
-					source -> copy (destination);
+				File::copyFile (source, destination);
+
+				if (not destinationUri .is_local ())
+					on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 			}
 			else
 			{
-				source -> move (destination, Gio::FILE_COPY_OVERWRITE);
+				try
+				{
+					source -> move (destination, Gio::FILE_COPY_OVERWRITE);
+				}
+				catch (const Gio::Error & error)
+				{
+					File::copyFile (source, destination);
+					File::removeFile (source);
+				}
+
+				if (not (sourceUri .is_local () and destinationUri .is_local ()))
+					on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
 			}
 		}
 		catch (const Glib::Error & error)
@@ -681,23 +694,31 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 }
 
 Glib::RefPtr <Gio::File>
-ProjectsEditor::getPasteDestination (const Glib::RefPtr <Gio::File> & folder, const basic::uri & basename) const
+ProjectsEditor::getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
 {
 	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
 
-	auto    name   = std::regex_replace (basename .basename (false), pattern, "");
-	auto    suffix = basename .suffix ();
-	int32_t copy   = 0;
-	auto    child  = Glib::RefPtr <Gio::File> ();
-
-	do
+	if (copy and source -> get_parent () -> get_uri () == folder -> get_uri ())
 	{
-		child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
-		copy += 1;
+		auto    basename = basic::uri (source -> get_basename ());
+		auto    name     = std::regex_replace (basename .basename (false), pattern, "");
+		auto    suffix   = basename .suffix ();
+		int32_t copy     = 0;
+		auto    child    = Glib::RefPtr <Gio::File> ();
+	
+		do
+		{
+			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
+			copy += 1;
+		}
+		while (child -> query_exists ());
+	
+		return child;
 	}
-	while (child -> query_exists ());
-
-	return child;
+	else
+	{
+		return folder -> get_child (source -> get_basename ());
+	}
 }
 
 std::string
@@ -870,26 +891,19 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 			}
 		}
 
-		if (not file -> has_parent ())
-			return;
-
-		const auto folder = file -> get_parent ();
-		const auto iter   = getIter (folder -> get_path ());
-	
-		if (not getTreeStore () -> iter_is_valid (iter))
-			return;
-
-		// Work with path as iter don't remain valid after append and erase.
-		const auto path     = getTreeStore () -> get_path (iter);
-		const auto selected = other_file and isSelected (other_file);
+		const auto otherSelected = other_file and isSelected (other_file);
 
 		saveExpanded ();
-		getTreeStore () -> insert_after (iter);
-		removeChild (iter);
-		addFolder (getTreeStore () -> get_iter (path), folder);
+
+		if (file)
+			on_update_file (file);
+
+		if (other_file)
+			on_update_file (other_file);
+
 		restoreExpanded ();
 
-		if (selected)
+		if (otherSelected)
 		{
 			unselectAll ();
 			selectFile (other_file);
@@ -899,6 +913,26 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+ProjectsEditor::on_update_file (const Glib::RefPtr <Gio::File> & file)
+{
+	if (not file -> has_parent ())
+		return;
+
+	const auto folder = file -> get_parent ();
+	const auto iter   = getIter (folder -> get_path ());
+
+	if (not getTreeStore () -> iter_is_valid (iter))
+		return;
+
+	// Work with path as iter don't remain valid after append and erase.
+	const auto path = getTreeStore () -> get_path (iter);
+
+	getTreeStore () -> insert_after (iter);
+	removeChild (iter);
+	addFolder (getTreeStore () -> get_iter (path), folder);
 }
 
 void

@@ -218,7 +218,7 @@ private:
 	pasteIntoFolder (const Gtk::TreePath & row);
 
 	Glib::RefPtr <Gio::File>
-	getPasteDestination (const Glib::RefPtr <Gio::File> & folder, const basic::uri & basename) const;
+	getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
 
 	std::string
 	getPasteCopyString (const int32_t count) const;
@@ -253,6 +253,9 @@ private:
 	on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	                 const Glib::RefPtr <Gio::File> & other_file,
 	                 Gio::FileMonitorEvent event);
+
+	void
+	on_update_file (const Glib::RefPtr <Gio::File> & file);
 
 	void
 	set_execution_context ();
