@@ -255,7 +255,7 @@ private:
 	                 Gio::FileMonitorEvent event);
 
 	void
-	on_update_file (const Glib::RefPtr <Gio::File> & file);
+	on_file_changed_update_tree_view (const Glib::RefPtr <Gio::File> & file);
 
 	void
 	set_execution_context ();

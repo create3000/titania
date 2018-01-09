@@ -80,7 +80,7 @@ public:
 
 	static
 	void
-	copyFile (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination);
+	copyFile (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags);
 
 	static
 	void
@@ -90,7 +90,7 @@ private:
 
 	static
 	void
-	copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination);
+	copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags);
 
 };
 

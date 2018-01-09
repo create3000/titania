@@ -134,18 +134,18 @@ File::hasChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden
 }
 
 void
-File::copyFile (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination)
+File::copyFile (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags)
 {
 	const auto sourceInfo = source -> query_info ();
 
 	if (sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-		copyFolder (source, destination);
+		copyFolder (source, destination, flags);
 	else
-		source -> copy (destination, Gio::FILE_COPY_OVERWRITE);
+		source -> copy (destination, flags);
 }
 
 void
-File::copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination)
+File::copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags)
 {
 	destination -> make_directory_with_parents ();
 	
@@ -158,13 +158,13 @@ File::copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <G
 		{
 			case Gio::FILE_TYPE_DIRECTORY:
 			{
-				copyFolder (sourceChild, destinationChild);
+				copyFolder (sourceChild, destinationChild, flags);
 				continue;
 			}
 			case Gio::FILE_TYPE_REGULAR:
 			case Gio::FILE_TYPE_SYMBOLIC_LINK:
 			{
-				sourceChild -> copy (destinationChild, Gio::FILE_COPY_OVERWRITE);
+				sourceChild -> copy (destinationChild, flags);
 				continue;
 			}
 			default:

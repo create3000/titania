@@ -662,7 +662,12 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 			if (copy)
 			{
-				File::copyFile (source, destination);
+				auto flags = Gio::FILE_COPY_OVERWRITE;
+
+				if (sourceUri .is_local () and destinationUri .is_local ())
+					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+				File::copyFile (source, destination, flags);
 
 				if (not destinationUri .is_local ())
 					on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
@@ -671,11 +676,16 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 			{
 				try
 				{
-					source -> move (destination, Gio::FILE_COPY_OVERWRITE);
+					source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
 				}
 				catch (const Gio::Error & error)
 				{
-					File::copyFile (source, destination);
+					auto flags = Gio::FILE_COPY_OVERWRITE;
+
+					if (sourceUri .is_local () and destinationUri .is_local ())
+						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+					File::copyFile (source, destination, flags);
 					File::removeFile (source);
 				}
 
@@ -896,10 +906,10 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 		saveExpanded ();
 
 		if (file)
-			on_update_file (file);
+			on_file_changed_update_tree_view (file);
 
 		if (other_file)
-			on_update_file (other_file);
+			on_file_changed_update_tree_view (other_file);
 
 		restoreExpanded ();
 
@@ -916,7 +926,7 @@ ProjectsEditor::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 }
 
 void
-ProjectsEditor::on_update_file (const Glib::RefPtr <Gio::File> & file)
+ProjectsEditor::on_file_changed_update_tree_view (const Glib::RefPtr <Gio::File> & file)
 {
 	if (not file -> has_parent ())
 		return;
