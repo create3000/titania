@@ -207,6 +207,10 @@ public:
 	{ return *m_OpenWithMenu; }
 
 	Gtk::ImageMenuItem &
+	getImportMenuItem () const
+	{ return *m_ImportMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getAddItemMenuItem () const
 	{ return *m_AddItemMenuItem; }
 
@@ -318,6 +322,10 @@ public:
 
 	virtual
 	void
+	on_import_activate () = 0;
+
+	virtual
+	void
 	on_add_new_file_activate () = 0;
 
 	virtual
@@ -397,6 +405,7 @@ private:
 	Gtk::Menu* m_ContextMenu;
 	Gtk::MenuItem* m_OpenWithMenuItem;
 	Gtk::Menu* m_OpenWithMenu;
+	Gtk::ImageMenuItem* m_ImportMenuItem;
 	Gtk::ImageMenuItem* m_AddItemMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;

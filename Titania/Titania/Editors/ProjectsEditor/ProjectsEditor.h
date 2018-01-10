@@ -132,6 +132,10 @@ private:
 
 	virtual
 	void
+	on_import_activate () final override;
+
+	virtual
+	void
 	on_add_new_file_activate () final override;
 
 	virtual
@@ -319,6 +323,9 @@ private:
 
 	void
 	launchFile (const std::string & path);
+
+	bool
+	canOpenFile (const Glib::RefPtr <Gio::File> & file);
 
 	std::string
 	getFileName (const std::string & filename, const std::string & suffix) const;

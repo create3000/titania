@@ -469,6 +469,17 @@
       </object>
     </child>
     <child>
+      <object class="GtkImageMenuItem" id="ImportMenuItem">
+        <property name="label">Import</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image7</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_import_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="AddItemMenuItem">
         <property name="label" translatable="yes">Add</property>
         <property name="visible">True</property>
@@ -587,5 +598,11 @@
         <signal name="activate" handler="on_move_to_trash_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-import</property>
+    <property name="icon_size">1</property>
   </object>
 </interface>

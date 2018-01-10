@@ -52,6 +52,7 @@
 
 #include "../../Base/ScrollFreezer.h"
 #include "../../Bits/File.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
@@ -188,11 +189,13 @@ ProjectsEditor::on_display_menu (GdkEventButton* event)
 
 		// Show hide menu items.
 
+		getImportMenuItem ()     .set_visible (canOpenFile (file));
 		getAddItemMenuItem ()    .set_visible (directory);
 		getRenameItemMenuItem () .set_visible (true);
 	}
 	else
 	{
+		getImportMenuItem ()        .set_visible (false);
 		getOpenWithMenuItem ()      .set_visible (false);
 		getAddItemMenuItem ()       .set_visible (false);
 		getFileSeparatorMenuItem () .set_visible (false);
@@ -208,6 +211,26 @@ void
 ProjectsEditor::on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file)
 {
 	appInfo -> launch (file);
+}
+
+void
+ProjectsEditor::on_import_activate ()
+{
+	try
+	{
+		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
+		const auto file         = Gio::File::create_for_path (getPath (iter));
+		const auto undoStep     = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Import »%s« From Project"), file -> get_basename () .c_str ()));
+		const auto nodes        = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
+
+		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -868,6 +891,7 @@ ProjectsEditor::on_selection_changed ()
 
 				getRemoveProjectButton ()     .set_sensitive (selectedRows .front () .size () == 1);
 				getOpenWithMenuItem ()        .set_sensitive (true);
+				getImportMenuItem ()          .set_sensitive (true);
 				getAddItemMenuItem ()         .set_sensitive (directory);
 				getRenameItemMenuItem ()      .set_sensitive (true);
 				getPasteIntoFolderMenuItem () .set_sensitive (directory and clipboard .size ());
@@ -880,6 +904,7 @@ ProjectsEditor::on_selection_changed ()
 	
 				getRemoveProjectButton ()     .set_sensitive (false);
 				getOpenWithMenuItem ()        .set_sensitive (false);
+				getImportMenuItem ()          .set_sensitive (false);
 				getAddItemMenuItem ()         .set_sensitive (false);
 				getRenameItemMenuItem ()      .set_sensitive (false);
 				getPasteIntoFolderMenuItem () .set_sensitive (false);
@@ -1319,23 +1344,34 @@ ProjectsEditor::createOpenWithMenuItem (const Glib::RefPtr <Gio::AppInfo> & appI
 void
 ProjectsEditor::launchFile (const std::string & path)
 {
-	const auto file        = Gio::File::create_for_path (path);
+	const auto file = Gio::File::create_for_path (path);
+
+	if (canOpenFile (file))
+	{
+		getBrowserWindow () -> open ("file://" + path);
+	}
+	else
+	{
+		const auto appInfo = file -> query_default_handler ();
+	
+		if (appInfo)
+			appInfo -> launch (file);
+	}
+}
+
+bool
+ProjectsEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
+{
 	const auto contentType = file -> query_info () -> get_content_type ();
 	const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
 
 	for (const auto & appInfo : appInfos)
 	{
 		if (appInfo -> get_executable () == "titania")
-		{
-			getBrowserWindow () -> open ("file://" + path);
-			return;
-		}
+			return true;
 	}
 
-	const auto appInfo = file -> query_default_handler ();
-
-	if (appInfo)
-		appInfo -> launch (file);
+	return false;
 }
 
 std::string

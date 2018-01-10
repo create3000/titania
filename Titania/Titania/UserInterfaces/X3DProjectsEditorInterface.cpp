@@ -109,6 +109,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
 	m_builder -> get_widget ("OpenWithMenuItem", m_OpenWithMenuItem);
 	m_builder -> get_widget ("OpenWithMenu", m_OpenWithMenu);
+	m_builder -> get_widget ("ImportMenuItem", m_ImportMenuItem);
 	m_builder -> get_widget ("AddItemMenuItem", m_AddItemMenuItem);
 	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
@@ -157,7 +158,8 @@ X3DProjectsEditorInterface::create ()
 	// Connect object Gtk::Button with id 'RenameItemButton'.
 	m_RenameItemButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_clicked));
 
-	// Connect object Gtk::ImageMenuItem with id 'AddNewFileMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'ImportMenuItem'.
+	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_import_activate));
 	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
 	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
 	m_RenameItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_activate));
