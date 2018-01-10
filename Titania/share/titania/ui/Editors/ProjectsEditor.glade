@@ -443,15 +443,30 @@
     <property name="stock">gtk-edit</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-import</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-open</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkMenu" id="ContextMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="OpenWithMenuItem">
+      <object class="GtkImageMenuItem" id="OpenWithMenuItem">
+        <property name="label" translatable="yes">Open With</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Open With</property>
         <property name="use_underline">True</property>
+        <property name="image">image8</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="OpenWithMenu">
             <property name="visible">True</property>
@@ -598,11 +613,5 @@
         <signal name="activate" handler="on_move_to_trash_activate" swapped="no"/>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">document-import</property>
-    <property name="icon_size">1</property>
   </object>
 </interface>
