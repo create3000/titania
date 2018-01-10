@@ -1045,15 +1045,29 @@ ProjectsEditor::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 {
 	try
 	{
-		const auto fileInfo = folder -> query_info ();
-
-		if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
-			return;
-
 		if (not projects .emplace (folder -> get_path ()) .second)
 			return;
 
-		addFolder (getTreeStore () -> append (), folder);
+		const auto iter = getTreeStore () -> append ();
+
+		if (folder -> query_exists () and folder -> query_info () -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+		{
+			addFolder (iter, folder);
+		}
+		else
+		{
+			const auto uri = basic::uri (folder -> get_uri ());
+
+			iter -> set_value (Columns::ICON, std::string ("bookmark-missing"));
+		
+			if (uri .is_local ())
+				iter -> set_value (Columns::NAME, folder -> get_basename ());
+			else
+				iter -> set_value (Columns::NAME, folder -> get_basename () + " (" + uri .authority () + ")");
+
+			iter -> set_value (Columns::PATH,      folder -> get_path ());
+			iter -> set_value (Columns::SENSITIVE, true);
+		}
 	}
 	catch (const Glib::Error & error)
 	{
@@ -1130,16 +1144,21 @@ ProjectsEditor::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPt
 void
 ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon)
 {
-	const auto url = basic::uri (file -> get_uri ());
+	const auto fileInfo = file -> query_info ();
+	const auto uri      = basic::uri (file -> get_uri ());
 
-	iter -> set_value (Columns::ICON,      File::getIconName (file -> query_info (), "gtk-file"));
-	iter -> set_value (Columns::PATH,      file -> get_path ());
-	iter -> set_value (Columns::SENSITIVE, true);
+	if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY and not uri .is_local ())
+		iter -> set_value (Columns::ICON, std::string ("folder-remote"));
+	else
+		iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), defaultIcon));
 
-	if (url .is_local () or not projects .count (file -> get_path ()))
+	if (uri .is_local () or not projects .count (file -> get_path ()))
 		iter -> set_value (Columns::NAME, file -> get_basename ());
 	else
-		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + url .authority () + ")");
+		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + uri .authority () + ")");
+
+	iter -> set_value (Columns::PATH,      file -> get_path ());
+	iter -> set_value (Columns::SENSITIVE, true);
 }
 
 void

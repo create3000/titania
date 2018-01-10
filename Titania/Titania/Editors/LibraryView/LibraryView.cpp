@@ -225,7 +225,7 @@ LibraryView::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File
 {
 	const auto url = basic::uri (file -> get_uri ());
 
-	iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), "gtk-file"));
+	iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), defaultIcon));
 	iter -> set_value (Columns::PATH, file -> get_path ());
 
 	if (url .is_local ())
