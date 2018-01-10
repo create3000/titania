@@ -93,61 +93,17 @@ X3DLibraryViewInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
-	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
-	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
-	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
-	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
-	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
-	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
-	m_builder -> get_widget ("EditPaletteDialog", m_EditPaletteDialog);
-	m_builder -> get_widget ("EditPaletteCancelButton", m_EditPaletteCancelButton);
-	m_builder -> get_widget ("EditPaletteOkButton", m_EditPaletteOkButton);
-	m_builder -> get_widget ("PaletteNameEntry", m_PaletteNameEntry);
-	m_builder -> get_widget ("PaletteMenu", m_PaletteMenu);
-	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
-	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
-	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
-	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
-	m_builder -> get_widget ("UpdateObjectInPaletteMenuItem", m_UpdateObjectInPaletteMenuItem);
-	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_activated));
-
-	// Connect object Gtk::Box with id 'PalettePreviewBox'.
-	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_button_press_event));
-
-	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
-	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_changed));
-
-	// Connect object Gtk::Button with id 'PalettePreviousButton'.
-	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_previous_clicked));
-	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_next_clicked));
-	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_edit_palette_cancel_clicked));
-	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_edit_palette_ok_clicked));
-
-	// Connect object Gtk::Entry with id 'PaletteNameEntry'.
-	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_name_changed));
-	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_name_delete_text), false);
-	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_palette_name_insert_text), false);
-
-	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
-	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_add_palette_activate));
-	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_remove_palette_activate));
-	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_edit_palette_activate));
-	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_add_object_to_palette_activate));
-	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_update_object_in_palette_activate));
-	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_remove_object_from_palette_activate));
 }
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()
 {
 	delete m_Window;
-	delete m_EditPaletteDialog;
 }
 
 } // puck

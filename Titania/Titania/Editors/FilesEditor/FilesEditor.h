@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,54 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
-#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_FILES_EDITOR_FILES_EDITOR_H__
+#define __TITANIA_EDITORS_FILES_EDITOR_FILES_EDITOR_H__
 
-#include "../../UserInterfaces/X3DLibraryViewInterface.h"
-#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
+#include "../../UserInterfaces/X3DFilesEditorInterface.h"
+#include "../../Widgets/X3DNotebook/X3DNotebook.h"
 
 namespace titania {
 namespace puck {
 
-class X3DModelsPaletteEditor :
-	public X3DPaletteEditor <X3DLibraryViewInterface>
+class FilesEditor :
+	virtual public X3DFilesEditorInterface,
+	public X3DNotebook <X3DFilesEditorInterface>
 {
 public:
+
+	///  @name Construction
+
+	FilesEditor (X3DBrowserWindow* const browserWindow);
+
+	///  @name Member access
+
+	virtual
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return getCurrentPage <X3DEditorInterface> () -> getHeaderBar (); }
+
+	///  @name Event handlers
+
+	virtual
+	void
+	   on_switch_page (Gtk::Widget*, guint) final override;
 
 	///  @name Destruction
 
 	virtual
-	~X3DModelsPaletteEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DModelsPaletteEditor ();
+	~FilesEditor () final override;
 
 
 private:
 
-	///  @name Operations
-
-	virtual
-	X3D::SFNode
-	getObject (const basic::uri & URL) final override;
+	///  @name Construction
 
 	virtual
 	void
-	setTouchTime (const basic::uri & URL) final override;
+	initialize () final override;
 
 	virtual
-	bool
-	createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position) final override;
-	
 	void
-	set_loadState (X3D::Inline* const, X3D::Transform* const);
-
-	void
-	set_bbox (X3D::Inline* const, X3D::Transform* const);
+	on_map_window () final override;
 
 };
 

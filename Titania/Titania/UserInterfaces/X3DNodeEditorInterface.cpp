@@ -96,6 +96,7 @@ X3DNodeEditorInterface::create ()
 	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
 	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
 	m_builder -> get_widget ("SculpToolEditorBox", m_SculpToolEditorBox);
+	m_builder -> get_widget ("ModelsPaletteBox", m_ModelsPaletteBox);
 
 	// Connect object Gtk::Window with id 'Window'.
 	m_Window -> signal_map () .connect (sigc::mem_fun (this, &X3DNodeEditorInterface::on_map_window));

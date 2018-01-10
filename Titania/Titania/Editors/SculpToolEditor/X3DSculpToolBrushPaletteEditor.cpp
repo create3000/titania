@@ -67,6 +67,18 @@ X3DSculpToolBrushPaletteEditor::X3DSculpToolBrushPaletteEditor () :
 	addChildObjects (future);
 }
 
+void
+X3DSculpToolBrushPaletteEditor::initialize ()
+{
+	X3DPaletteEditor <X3DSculpToolEditorInterface>::initialize ();
+}
+
+void
+X3DSculpToolBrushPaletteEditor::configure ()
+{
+	X3DPaletteEditor <X3DSculpToolEditorInterface>::configure ();
+}
+
 X3D::SFNode
 X3DSculpToolBrushPaletteEditor::getObject (const basic::uri & URL)
 {
@@ -206,6 +218,12 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene, con
 
 		return false;
 	}
+}
+
+void
+X3DSculpToolBrushPaletteEditor::store ()
+{
+	X3DPaletteEditor <X3DSculpToolEditorInterface>::store ();
 }
 
 X3DSculpToolBrushPaletteEditor::~X3DSculpToolBrushPaletteEditor ()

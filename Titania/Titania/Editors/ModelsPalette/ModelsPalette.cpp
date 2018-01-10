@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DModelsPaletteEditor.h"
+#include "ModelsPalette.h"
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/MagicImport.h"
@@ -60,19 +60,37 @@
 namespace titania {
 namespace puck {
 
-X3DModelsPaletteEditor::X3DModelsPaletteEditor () :
-	X3DPaletteEditor <X3DLibraryViewInterface> ("Models")
-{ }
+ModelsPalette::ModelsPalette (X3DBrowserWindow* const browserWindow) :
+	                            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                   X3DModelsPaletteInterface (get_ui ("Editors/ModelsPalette.glade")),
+	X3DPaletteEditor <X3DModelsPaletteInterface> ("Models")
+{
+	setup ();
+}
+
+void
+ModelsPalette::initialize ()
+{
+	X3DModelsPaletteInterface::initialize ();
+	X3DPaletteEditor <X3DModelsPaletteInterface>::initialize ();
+}
+
+void
+ModelsPalette::configure ()
+{
+	X3DModelsPaletteInterface::initialize ();
+	X3DPaletteEditor <X3DModelsPaletteInterface>::configure ();
+}
 
 X3D::SFNode
-X3DModelsPaletteEditor::getObject (const basic::uri & URL)
+ModelsPalette::getObject (const basic::uri & URL)
 {
 	try
 	{
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 	
-		inlineNode -> checkLoadState () .addInterest (&X3DModelsPaletteEditor::set_loadState, this, inlineNode .getValue (), transform .getValue ());
+		inlineNode -> checkLoadState () .addInterest (&ModelsPalette::set_loadState, this, inlineNode .getValue (), transform .getValue ());
 
 		inlineNode -> url ()     = { URL .str () };
 		transform -> children () = { inlineNode };
@@ -86,7 +104,7 @@ X3DModelsPaletteEditor::getObject (const basic::uri & URL)
 }
 
 void
-X3DModelsPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
+ModelsPalette::set_loadState (X3D::Inline* const inlineNode,
                                        X3D::Transform* const transform)
 {
 	switch (inlineNode -> checkLoadState ())
@@ -95,7 +113,7 @@ X3DModelsPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
 		{	
 			// Observe bbox changes of internal scene.
 
-			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (&X3DModelsPaletteEditor::set_bbox, this, inlineNode, transform);
+			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (&ModelsPalette::set_bbox, this, inlineNode, transform);
 
 			set_bbox (inlineNode, transform);
 
@@ -107,7 +125,7 @@ X3DModelsPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
 }
 
 void
-X3DModelsPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
+ModelsPalette::set_bbox (X3D::Inline* const inlineNode,
                                   X3D::Transform* const transform)
 {
 	// Center and scale Inline depending on bbox in palette.
@@ -122,7 +140,7 @@ X3DModelsPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
 }
 
 void
-X3DModelsPaletteEditor::setTouchTime (const basic::uri & URL)
+ModelsPalette::setTouchTime (const basic::uri & URL)
 {
 	try
 	{
@@ -137,7 +155,7 @@ X3DModelsPaletteEditor::setTouchTime (const basic::uri & URL)
 }
 
 bool
-X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position)
+ModelsPalette::createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position)
 {
 	using namespace std::placeholders;
 
@@ -182,8 +200,17 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::
 	return true;
 }
 
-X3DModelsPaletteEditor::~X3DModelsPaletteEditor ()
-{ }
+void
+ModelsPalette::store ()
+{
+	X3DPaletteEditor <X3DModelsPaletteInterface>::store ();
+	X3DModelsPaletteInterface::store ();
+}
+
+ModelsPalette::~ModelsPalette ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania

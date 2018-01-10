@@ -100,6 +100,11 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	configure () override
+	{ }
+
 	void
 	setBoxTransparency (const float value)
 	{ boxTransparency = value; }
@@ -130,6 +135,13 @@ protected:
 	const X3D::BrowserPtr &
 	getPreview () const
 	{ return preview; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () override
+	{ }
 
 
 private:

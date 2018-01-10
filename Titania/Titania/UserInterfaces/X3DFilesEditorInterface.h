@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_LIBRARY_VIEW_H__
-#define __TMP_GLAD2CPP_LIBRARY_VIEW_H__
+#ifndef __TMP_GLAD2CPP_FILES_EDITOR_H__
+#define __TMP_GLAD2CPP_FILES_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -59,26 +59,26 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for LibraryView.
+ *  Gtk Interface for FilesEditor.
  */
-class X3DLibraryViewInterface :
+class X3DFilesEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DLibraryViewInterface () :
+	X3DFilesEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DLibraryViewInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DFilesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DLibraryViewInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+	X3DFilesEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
@@ -88,46 +88,6 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
-	const Glib::RefPtr <Gtk::TreeStore> &
-	getTreeStore () const
-	{ return m_TreeStore; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFileColumn () const
-	{ return m_FileColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getIconRenderer () const
-	{ return m_IconRenderer; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getNameRenderer () const
-	{ return m_NameRenderer; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getExperimantalColumn () const
-	{ return m_ExperimantalColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getExperimantalRenderer () const
-	{ return m_ExperimantalRenderer; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getTitaniaColumn () const
-	{ return m_TitaniaColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getTitaniaRenderer () const
-	{ return m_TitaniaRenderer; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getCobwebColumn () const
-	{ return m_CobwebColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getCobwebRenderer () const
-	{ return m_CobwebRenderer; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -136,32 +96,40 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::HeaderBar &
-	getHeaderBar () const
-	{ return *m_HeaderBar; }
+	Gtk::Label &
+	getLabel () const
+	{ return *m_Label; }
+
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
 
 	Gtk::Box &
-	getFilesBox () const
-	{ return *m_FilesBox; }
+	getProjectsEditorBox () const
+	{ return *m_ProjectsEditorBox; }
 
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const
-	{ return *m_ScrolledWindow; }
+	Gtk::Box &
+	getHistoryEditorBox () const
+	{ return *m_HistoryEditorBox; }
 
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_TreeView; }
+	Gtk::Box &
+	getLibraryViewBox () const
+	{ return *m_LibraryViewBox; }
 
 	///  @name Signal handlers
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
+	on_map_window () = 0;
+
+	virtual
+	void
+	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~X3DLibraryViewInterface () override;
+	~X3DFilesEditorInterface () override;
 
 
 private:
@@ -182,22 +150,13 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
-	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_ExperimantalColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ExperimantalRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_TitaniaColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_CobwebColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::HeaderBar* m_HeaderBar;
-	Gtk::Box* m_FilesBox;
-	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::TreeView* m_TreeView;
+	Gtk::Label* m_Label;
+	Gtk::Notebook* m_Notebook;
+	Gtk::Box* m_ProjectsEditorBox;
+	Gtk::Box* m_HistoryEditorBox;
+	Gtk::Box* m_LibraryViewBox;
 
 };
 

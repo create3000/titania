@@ -94,6 +94,7 @@ SculpToolEditor::configure ()
 {
 	X3DSculpToolEditorInterface::configure ();
 	X3DSculpToolBrushEditor::configure ();
+	X3DSculpToolBrushPaletteEditor::configure ();
 
 	if (getConfig () -> hasItem ("paned"))
 		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));
@@ -269,6 +270,7 @@ SculpToolEditor::store ()
 
 	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&SculpToolEditor::set_geometries, this);
 
+	X3DSculpToolBrushPaletteEditor::store ();
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();
 }

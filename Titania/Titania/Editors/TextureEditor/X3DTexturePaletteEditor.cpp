@@ -67,6 +67,18 @@ X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
 	setBoxTransparency (1);
 }
 
+void
+X3DTexturePaletteEditor::initialize ()
+{
+	X3DPaletteEditor <X3DTextureEditorInterface>::initialize ();
+}
+
+void
+X3DTexturePaletteEditor::configure ()
+{
+	X3DPaletteEditor <X3DTextureEditorInterface>::configure ();
+}
+
 X3D::SFNode
 X3DTexturePaletteEditor::getObject (const basic::uri & URL)
 {
@@ -147,6 +159,12 @@ X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std:
 	{
 		return false;
 	}
+}
+
+void
+X3DTexturePaletteEditor::store ()
+{
+	X3DPaletteEditor <X3DTextureEditorInterface>::store ();
 }
 
 X3DTexturePaletteEditor::~X3DTexturePaletteEditor ()

@@ -236,9 +236,6 @@
     <Compile Include="Titania\Editors\SculpToolEditor\SculpToolEditor.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.cpp" />
-    <Compile Include="Titania\Editors\LibraryView\LibraryView.cpp" />
-    <Compile Include="Titania\Editors\LibraryView\X3DLibraryView.cpp" />
-    <Compile Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DMessageDialogInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.cpp" />
@@ -364,6 +361,11 @@
     <Compile Include="Titania\Dialogs\FileOpenDialog\OpenDirectoryDialog.cpp" />
     <Compile Include="Titania\Bits\File.cpp" />
     <Compile Include="Titania\DerivedWidgets\FileView.cpp" />
+    <Compile Include="Titania\Editors\FilesEditor\FilesEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DFilesEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\LibraryView\LibraryView.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DModelsPaletteInterface.cpp" />
+    <Compile Include="Titania\Editors\ModelsPalette\ModelsPalette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2261,9 +2263,6 @@
     <None Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.h" />
     <None Include="Titania\Editors\PaletteEditor\X3DPaletteEditor.h" />
-    <None Include="Titania\Editors\LibraryView\LibraryView.h" />
-    <None Include="Titania\Editors\LibraryView\X3DLibraryView.h" />
-    <None Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.h" />
     <None Include="share\titania\ui\Editors\LibraryView.glade" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Arc2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\ArcClose2D.x3dv" />
@@ -3144,6 +3143,13 @@
     <None Include="share\titania\ui\Editors\ProjectsEditor.glade" />
     <None Include="Titania\Bits\File.h" />
     <None Include="Titania\DerivedWidgets\FileView.h" />
+    <None Include="Titania\Editors\FilesEditor\FilesEditor.h" />
+    <None Include="share\titania\ui\Editors\FilesEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DFilesEditorInterface.h" />
+    <None Include="Titania\Editors\LibraryView\LibraryView.h" />
+    <None Include="share\titania\ui\Editors\ModelsPalette.glade" />
+    <None Include="Titania\UserInterfaces\X3DModelsPaletteInterface.h" />
+    <None Include="Titania\Editors\ModelsPalette\ModelsPalette.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3308,6 +3314,8 @@
     <Folder Include="Titania\Editors\BrowserSizeEditor\" />
     <Folder Include="Titania\Editors\ProjectsEditor\" />
     <Folder Include="Titania\DerivedWidgets\" />
+    <Folder Include="Titania\Editors\FilesEditor\" />
+    <Folder Include="Titania\Editors\ModelsPalette\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

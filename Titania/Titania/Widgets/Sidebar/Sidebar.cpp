@@ -69,7 +69,7 @@ Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
 	X3DNotebook <X3DSidebarInterface> ()
 {
 	addPage ("ViewpointList",  getViewpointListBox ());
-	addPage ("ProjectsEditor", getProjectsEditorBox ());
+	addPage ("FilesEditor",    getProjectsEditorBox ());
 	addPage ("HistoryEditor",  getHistoryEditorBox ());
 	addPage ("LibraryView",    getLibraryViewBox   ());
 	addPage ("OutlineEditor",  getOutlineEditorBox ());

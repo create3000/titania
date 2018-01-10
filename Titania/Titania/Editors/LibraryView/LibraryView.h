@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIBRARY_LIBRARY_VIEW_H__
-#define __TITANIA_LIBRARY_LIBRARY_VIEW_H__
+#ifndef __TITANIA_EDITORS_LIBRARY_VIEW_LIBRARY_VIEW_H__
+#define __TITANIA_EDITORS_LIBRARY_VIEW_LIBRARY_VIEW_H__
 
 #include "../../UserInterfaces/X3DLibraryViewInterface.h"
-#include "X3DLibraryView.h"
-#include "X3DModelsPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+class ScrollFreezer;
 
 class LibraryView :
-	virtual public X3DLibraryViewInterface,
-	public X3DLibraryView,
-	public X3DModelsPaletteEditor
+	virtual public X3DLibraryViewInterface
 {
 public:
 
@@ -74,10 +70,10 @@ public:
 	///  @name Destruction
 
 	virtual
-	~LibraryView () final override;
+	~LibraryView () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
@@ -89,9 +85,58 @@ private:
 	void
 	configure () final override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	store () final override;
+
+
+private:
+
+	///  @name Selection handling
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
+
+	///  @name Folder handling handling
+
+	void
+	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
+
+	Gtk::TreeIter
+	getIter (const std::string & URL) const;
+
+	bool
+	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
+
+	std::string
+	getPath (const Gtk::TreeIter & iter) const;
+
+	///  @name Expanded handling
+
+	void
+	restoreExpanded ();
+
+	void
+	saveExpanded ();
+
+	void
+	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
+
+	// Members
+
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 

@@ -87,6 +87,7 @@ TextureEditor::configure ()
 	X3DTextureEditorInterface::configure ();
 	X3DTextureNodeEditor::configure ();
 	X3DTextureTransformNodeEditor::configure ();
+	X3DTexturePaletteEditor::configure ();
 
 	getTextureChildNotebook () .set_current_page (getConfig () -> getItem <int32_t> ("currentPage"));
 }
@@ -105,6 +106,7 @@ TextureEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getTextureChildNotebook () .get_current_page ());
 
+	X3DTexturePaletteEditor::store ();
 	X3DTextureTransformNodeEditor::store ();
 	X3DTextureNodeEditor::store ();
 	X3DTextureEditorInterface::store ();

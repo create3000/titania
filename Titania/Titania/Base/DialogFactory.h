@@ -78,15 +78,16 @@
 #include "../Editors/BindableNodeList/NavigationInfoList.h"
 #include "../Editors/BindableNodeList/ViewpointList.h"
 #include "../Editors/BrowserSizeEditor/BrowserSizeEditor.h"
+#include "../Editors/FilesEditor/FilesEditor.h"
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
-#include "../Editors/ProjectsEditor/ProjectsEditor.h"
 #include "../Editors/HistoryEditor/HistoryEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/LibraryView/LibraryView.h"
 #include "../Editors/LightEditor/LightEditor.h"
+#include "../Editors/ModelsPalette/ModelsPalette.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
@@ -94,6 +95,7 @@
 #include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
+#include "../Editors/ProjectsEditor/ProjectsEditor.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 #include "../Editors/SculpToolEditor/SculpToolEditor.h"
@@ -158,12 +160,15 @@ public:
 		         std::make_pair ("SoundEditor",                   constructDialog <SoundEditor>),
 		         std::make_pair ("InlineEditor",                  constructDialog <InlineEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",       constructDialog <PrecisionPlacementPanel>),
+		         std::make_pair ("SculpToolEditor",               constructDialog <SculpToolEditor>),
+		         std::make_pair ("ModelsPalette",                 constructDialog <ModelsPalette>),
 		         std::make_pair ("PrototypeEditor",               constructDialog <PrototypeEditor>),
 		         std::make_pair ("NodeIndex",                     constructDialog <NodeIndex>),
 		         std::make_pair ("BackgroundList",                constructDialog <BackgroundList>),
 		         std::make_pair ("FogList",                       constructDialog <FogList>),
 		         std::make_pair ("NavigationInfoList",            constructDialog <NavigationInfoList>),
 		         std::make_pair ("ViewpointList",                 constructDialog <ViewpointList>),
+		         std::make_pair ("FilesEditor",                   constructDialog <FilesEditor>),
 		         std::make_pair ("ProjectsEditor",                constructDialog <ProjectsEditor>),
 		         std::make_pair ("HistoryEditor",                 constructDialog <HistoryEditor>),
 		         std::make_pair ("LibraryView",                   constructDialog <LibraryView>),
@@ -172,7 +177,6 @@ public:
 		         std::make_pair ("ScriptEditor",                  constructDialog <ScriptEditor>),
 		         std::make_pair ("RouteGraph",                    constructDialog <RouteGraph>),
 		         std::make_pair ("AnimationEditor",               constructDialog <AnimationEditor>),
-		         std::make_pair ("SculpToolEditor",               constructDialog <SculpToolEditor>),
 				         })
 	{ }
 

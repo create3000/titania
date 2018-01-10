@@ -57,7 +57,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Projects</property>
+                <property name="tooltip_text" translatable="yes">Projects &amp; Files</property>
                 <property name="stock">Projects</property>
                 <property name="icon_size">1</property>
               </object>

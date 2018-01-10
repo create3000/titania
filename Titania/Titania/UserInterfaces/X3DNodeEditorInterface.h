@@ -152,6 +152,10 @@ public:
 	getSculpToolEditorBox () const
 	{ return *m_SculpToolEditorBox; }
 
+	Gtk::Box &
+	getModelsPaletteBox () const
+	{ return *m_ModelsPaletteBox; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -202,6 +206,7 @@ private:
 	Gtk::Box* m_InlineEditorBox;
 	Gtk::Box* m_PrecisionPlacementPanelBox;
 	Gtk::Box* m_SculpToolEditorBox;
+	Gtk::Box* m_ModelsPaletteBox;
 
 };
 

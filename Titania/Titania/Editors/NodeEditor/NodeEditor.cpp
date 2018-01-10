@@ -89,6 +89,7 @@ NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
 	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
 
 	addPage ("SculpToolEditor",          getSculpToolEditorBox          ());
+	addPage ("ModelsPalette",            getModelsPaletteBox            ());
 
 	setup ();
 }

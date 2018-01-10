@@ -73,8 +73,16 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 }
 
 void
+X3DMaterialPaletteEditor::initialize ()
+{
+	X3DPaletteEditor <X3DAppearanceEditorInterface>::initialize ();
+}
+
+void
 X3DMaterialPaletteEditor::configure ()
 {
+	X3DPaletteEditor <X3DAppearanceEditorInterface>::configure ();
+
 	getPaletteFaceCombo () .set_active (getConfig () -> getItem <int32_t> ("paletteFace"));
 }
 
@@ -219,6 +227,8 @@ void
 X3DMaterialPaletteEditor::store ()
 {
 	getConfig () -> setItem ("paletteFace", getPaletteFaceCombo () .get_active_row_number ());
+
+	X3DPaletteEditor <X3DAppearanceEditorInterface>::store ();
 }
 
 X3DMaterialPaletteEditor::~X3DMaterialPaletteEditor ()

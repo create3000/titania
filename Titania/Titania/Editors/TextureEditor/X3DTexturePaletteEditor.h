@@ -74,6 +74,18 @@ protected:
 
 	X3DTexturePaletteEditor ();
 
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	configure () override;
+
+	virtual
+	void
+	store () override;
+
 	///  @name Member access
 
 	virtual

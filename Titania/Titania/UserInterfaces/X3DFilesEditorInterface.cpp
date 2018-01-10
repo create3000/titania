@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,81 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
-
-#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
-#include "../PaletteEditor/X3DPaletteEditor.h"
-
-#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+#include "X3DFilesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DMaterialPaletteEditor :
-	public X3DPaletteEditor <X3DAppearanceEditorInterface>
+void
+X3DFilesEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Destruction
+	create ();
+}
 
-	virtual
-	~X3DMaterialPaletteEditor () override;
+void
+X3DFilesEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-protected:
+	create ();
+}
 
-	///  @name Construction
+void
+X3DFilesEditorInterface::create ()
+{
+	// Get objects.
 
-	X3DMaterialPaletteEditor ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Label", m_Label);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
+	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
+	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 
-	virtual
-	void
-	initialize () override;
+	// Connect object Gtk::Window with id 'Window'.
+	m_Window -> signal_map () .connect (sigc::mem_fun (this, &X3DFilesEditorInterface::on_map_window));
 
-	virtual
-	void
-	configure () override;
+	// Connect object Gtk::Notebook with id 'Notebook'.
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DFilesEditorInterface::on_switch_page));
+}
 
-	virtual
-	void
-	store () override;
-
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DMaterialNode> &
-	getMaterial () const = 0;
-
-
-private:
-
-	///  @name Operations
-
-	virtual
-	X3D::SFNode
-	getObject (const basic::uri & URL) final override;
-
-	virtual
-	void
-	setTouchTime (const basic::uri & URL) final override;
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position) final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_palette_face_changed () final override;
-
-	///  @name Members
-
-	bool frontMaterial;
-};
+X3DFilesEditorInterface::~X3DFilesEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

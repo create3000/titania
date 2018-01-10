@@ -48,97 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
-#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
+#include "FilesEditor.h"
 
-#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include "../../Browser/BrowserSelection.h"
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
+
+#include "../../Editors/ProjectsEditor/ProjectsEditor.h"
 
 namespace titania {
 namespace puck {
 
-class ScrollFreezer;
-
-class X3DLibraryView :
-	virtual public X3DLibraryViewInterface
+FilesEditor::FilesEditor (X3DBrowserWindow* const browserWindow) :
+	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DFilesEditorInterface (get_ui ("Editors/FilesEditor.glade")),
+	X3DNotebook <X3DFilesEditorInterface> ()
 {
-public:
+	addPage ("ProjectsEditor", getProjectsEditorBox ());
+	addPage ("HistoryEditor",  getHistoryEditorBox  ());
+	addPage ("LibraryView",    getLibraryViewBox    ());
 
-	///  @name Destruction
+	setup ();
+}
 
-	virtual
-	~X3DLibraryView () override;
+void
+FilesEditor::initialize ()
+{
+	X3DFilesEditorInterface::initialize ();
+	X3DNotebook <X3DFilesEditorInterface>::initialize ();
+}
 
+void
+FilesEditor::on_map_window ()
+{
+	//getNotebook () .set_tab_pos (Gtk::POS_LEFT);
+}
 
-protected:
+void
+FilesEditor::on_switch_page (Gtk::Widget* widget, guint pageNumber)
+{
+	X3DNotebook <X3DFilesEditorInterface>::on_switch_page (widget, pageNumber);
 
-	///  @name Construction
+	if (getWindow () .get_visible ())
+		setTitleBar (getHeaderBar ());
+}
 
-	X3DLibraryView ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	configure () override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () override;
-
-
-private:
-
-	///  @name Selection handling
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
-
-	///  @name Folder handling handling
-
-	void
-	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
-	
-	void
-	addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder);
-	
-	void
-	addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder);
-	
-	void
-	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
-
-	Gtk::TreeIter
-	getIter (const std::string & URL) const;
-	
-	bool
-	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
-	
-	std::string
-	getPath (const Gtk::TreeIter & iter) const;
-
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
-
-	// Members
-
-	std::unique_ptr <ScrollFreezer> scrollFreezer;
-
-};
+FilesEditor::~FilesEditor ()
+{
+	X3DNotebook <X3DFilesEditorInterface>::dispose ();
+	X3DFilesEditorInterface::dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

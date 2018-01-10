@@ -48,51 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
+#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
+#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
 
-#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
-#include "../PaletteEditor/X3DPaletteEditor.h"
-
-#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+#include "../../UserInterfaces/X3DModelsPaletteInterface.h"
+#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
-class X3DMaterialPaletteEditor :
-	public X3DPaletteEditor <X3DAppearanceEditorInterface>
+class ModelsPalette :
+	virtual public X3DModelsPaletteInterface,
+	public X3DPaletteEditor <X3DModelsPaletteInterface>
 {
 public:
+
+	///  @name Construction
+
+	ModelsPalette (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~X3DMaterialPaletteEditor () override;
+	~ModelsPalette () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DMaterialPaletteEditor ();
+	virtual
+	void
+	initialize () final override;
 
 	virtual
 	void
-	initialize () override;
+	configure () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
-	configure () override;
-
-	virtual
-	void
-	store () override;
-
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DMaterialNode> &
-	getMaterial () const = 0;
+	store () final override;
 
 
 private:
@@ -110,16 +107,13 @@ private:
 	virtual
 	bool
 	createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position) final override;
-
-	///  @name Event handlers
-
-	virtual
+	
 	void
-	on_palette_face_changed () final override;
+	set_loadState (X3D::Inline* const, X3D::Transform* const);
 
-	///  @name Members
+	void
+	set_bbox (X3D::Inline* const, X3D::Transform* const);
 
-	bool frontMaterial;
 };
 
 } // puck

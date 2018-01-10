@@ -19,9 +19,8 @@
         <child>
           <object class="GtkLabel" id="Label">
             <property name="can_focus">False</property>
-            <property name="ypad">2</property>
-            <property name="label" translatable="yes">Notebook</property>
-            <property name="xalign">0</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes">Node Editor</property>
             <style>
               <class name="titania-small"/>
             </style>
@@ -342,6 +341,32 @@
               </object>
               <packing>
                 <property name="position">11</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="ModelsPaletteBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">12</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkImage" id="image10">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Models Palette</property>
+                <property name="stock">Models</property>
+                <property name="icon_size">1</property>
+              </object>
+              <packing>
+                <property name="position">12</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
