@@ -243,8 +243,8 @@
                                           <object class="GtkLabel" id="label3">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Height:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -255,8 +255,8 @@
                                           <object class="GtkLabel" id="label2">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Warp:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -267,8 +267,8 @@
                                           <object class="GtkLabel" id="label5">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Sharpness:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -279,8 +279,8 @@
                                           <object class="GtkLabel" id="label6">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Hardness:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -333,8 +333,8 @@
                                           <object class="GtkLabel" id="label7">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Radius:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -345,8 +345,8 @@
                                           <object class="GtkLabel" id="label1">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Type:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -373,8 +373,8 @@
                                           <object class="GtkLabel" id="label8">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
                                             <property name="label" translatable="yes">Spacing:</property>
-                                            <property name="xalign">0</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -872,6 +872,21 @@
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="ShowDefaultPalettesMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Show Default Palettes</property>
+        <property name="active">True</property>
+        <signal name="toggled" handler="on_show_default_palettes_toggled" swapped="no"/>
       </object>
     </child>
   </object>

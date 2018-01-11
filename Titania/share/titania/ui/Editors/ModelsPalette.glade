@@ -345,5 +345,20 @@
         <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="ShowDefaultPalettesMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Show Default Palettes</property>
+        <property name="active">True</property>
+        <signal name="toggled" handler="on_show_default_palettes_toggled" swapped="no"/>
+      </object>
+    </child>
   </object>
 </interface>

@@ -337,6 +337,7 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
 	m_builder -> get_widget ("UpdateObjectInPaletteMenuItem", m_UpdateObjectInPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
+	m_builder -> get_widget ("ShowDefaultPalettesMenuItem", m_ShowDefaultPalettesMenuItem);
 
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
 	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_changed));
@@ -395,6 +396,9 @@ X3DTextureEditorInterface::create ()
 	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_add_object_to_palette_activate));
 	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_update_object_in_palette_activate));
 	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_remove_object_from_palette_activate));
+
+	// Connect object Gtk::CheckMenuItem with id 'ShowDefaultPalettesMenuItem'.
+	m_ShowDefaultPalettesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_show_default_palettes_toggled));
 }
 
 X3DTextureEditorInterface::~X3DTextureEditorInterface ()

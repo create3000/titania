@@ -628,6 +628,10 @@ public:
 	getRemoveObjectFromPaletteMenuItem () const
 	{ return *m_RemoveObjectFromPaletteMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getShowDefaultPalettesMenuItem () const
+	{ return *m_ShowDefaultPalettesMenuItem; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -749,6 +753,10 @@ public:
 	virtual
 	void
 	on_remove_object_from_palette_activate () = 0;
+
+	virtual
+	void
+	on_show_default_palettes_toggled () = 0;
 
 	///  @name Destruction
 
@@ -909,6 +917,7 @@ private:
 	Gtk::ImageMenuItem* m_AddObjectToPaletteMenuItem;
 	Gtk::ImageMenuItem* m_UpdateObjectInPaletteMenuItem;
 	Gtk::ImageMenuItem* m_RemoveObjectFromPaletteMenuItem;
+	Gtk::CheckMenuItem* m_ShowDefaultPalettesMenuItem;
 
 };
 

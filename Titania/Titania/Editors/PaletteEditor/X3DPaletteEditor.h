@@ -102,8 +102,7 @@ protected:
 
 	virtual
 	void
-	configure () override
-	{ }
+	configure () override;
 
 	void
 	setBoxTransparency (const float value)
@@ -140,8 +139,7 @@ protected:
 
 	virtual
 	void
-	store () override
-	{ }
+	store () override;
 
 
 private:
@@ -261,6 +259,10 @@ private:
 	void
 	on_remove_object_from_palette_activate () final override;
 
+	virtual
+	void
+	on_show_default_palettes_toggled () final override;
+
 	///  @name Members
 
 	X3D::BrowserPtr              preview;
@@ -277,6 +279,7 @@ private:
 	size_t                       overIndex;
 	size_t                       selectedIndex;
 	size_t                       dragIndex;
+	bool                         changing;
 
 };
 
@@ -296,7 +299,8 @@ X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	              over (false),
 	         overIndex (-1),
 	     selectedIndex (-1),
-	         dragIndex (-1)
+	         dragIndex (-1),
+	          changing (true)
 {
 	this -> addChildObjects (preview, group, selectionSwitch, selectionRectangle, box);
 }
@@ -328,6 +332,17 @@ X3DPaletteEditor <Type>::initialize ()
 //	preview -> signal_drag_begin ()         .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_begin));
 //	preview -> signal_drag_data_get ()      .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_data_get));
 //	preview -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_data_received));
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::configure ()
+{
+	changing = true;
+
+	this -> getShowDefaultPalettesMenuItem () .set_active (this -> getConfig () -> template getItem <bool> ("showDefaultPalettes", true));
+
+	changing = false;
 }
 
 template <class Type>
@@ -401,7 +416,8 @@ X3DPaletteEditor <Type>::refreshPalette ()
 
 	this -> getPaletteComboBoxText () .remove_all ();
 
-	addLibrary (find_data_file ("Library/" + libraryFolder), false);
+	if (this -> getShowDefaultPalettesMenuItem () .get_active ())
+		addLibrary (find_data_file ("Library/" + libraryFolder), false);
 
 	numDefaultPalettes = folders .size ();
 
@@ -909,6 +925,26 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_show_default_palettes_toggled ()
+{
+	if (changing)
+		return;
+
+	refreshPalette ();
+
+	this -> getPaletteComboBoxText () .set_active (-1);
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::store ()
+{
+	this -> getConfig () -> template setItem <bool> ("showDefaultPalettes", this -> getShowDefaultPalettesMenuItem () .get_active ());
 }
 
 template <class Type>
