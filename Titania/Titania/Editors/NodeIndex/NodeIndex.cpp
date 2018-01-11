@@ -130,10 +130,6 @@ NodeIndex::initialize ()
 		nodeTypes .emplace (node -> getTypeName (), node -> getType () .back ());
 	}
 
-	const auto cellrenderer = Gtk::manage (new Gtk::CellRendererText ());
-	getSearchEntryCompletion () -> pack_start (*cellrenderer, false);
-	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
-
 	getSearchEntry () .grab_focus ();
 }
 

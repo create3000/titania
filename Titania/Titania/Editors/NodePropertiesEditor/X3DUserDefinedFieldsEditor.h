@@ -84,8 +84,7 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 	virtual
 	void

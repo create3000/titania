@@ -94,24 +94,29 @@ X3DEditorObject::set_browser (const X3D::BrowserPtr & value)
 void
 X3DEditorObject::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
 {
-	const std::string text = entry .get_text () .insert (position, insert);
+	auto text = entry .get_text ();
+
+	text .insert (std::min <int> (position, text .size ()), insert);
 
 	if (text .length () and not validateId (text))
 	{
 		entry .signal_insert_text () .emission_stop ();
-		entry .get_display () -> beep ();
+		entry .error_bell ();
 	}
 }
 
 void
 X3DEditorObject::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
 {
-	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+	auto text = entry .get_text ();
+
+	text .erase (std::min <int> (start_pos, text .size ()),
+	             std::min <int> (end_pos - start_pos, text .size ()));
 
 	if (text .length () and not validateId (text))
 	{
 		entry .signal_delete_text () .emission_stop ();
-		entry .get_display () -> beep ();
+		entry .error_bell ();
 	}
 }
 
@@ -126,7 +131,9 @@ X3DEditorObject::validateId (const std::string & text) const
 void
 X3DEditorObject::validateFolderOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
 {
-	const std::string text = entry .get_text () .insert (position, insert);
+	auto text = entry .get_text ();
+
+	text .insert (std::min <int> (position, text .size ()), insert);
 
 	if (not validateFolder (text))
 		entry .signal_insert_text () .emission_stop ();
@@ -135,7 +142,10 @@ X3DEditorObject::validateFolderOnInsert (Gtk::Entry & entry, const Glib::ustring
 void
 X3DEditorObject::validateFolderOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
 {
-	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+	auto text = entry .get_text ();
+
+	text .erase (std::min <int> (start_pos, text .size ()),
+	             std::min <int> (end_pos - start_pos, text .size ()));
 
 	if (not validateFolder (text))
 		entry .signal_delete_text () .emission_stop ();

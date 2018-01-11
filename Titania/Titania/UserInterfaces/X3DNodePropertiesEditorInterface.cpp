@@ -79,6 +79,8 @@ X3DNodePropertiesEditorInterface::create ()
 {
 	// Get objects.
 	m_ExportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ExportedNodesListStore"));
+	m_FieldNameListStore                        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FieldNameListStore"));
+	m_FieldNameCompletion                       = Glib::RefPtr <Gtk::EntryCompletion>::cast_dynamic (m_builder -> get_object ("FieldNameCompletion"));
 	m_ImportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ImportedNodesListStore"));
 	m_UserDefinedFieldsTreeSelection            = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("UserDefinedFieldsTreeSelection"));
 	m_CellRendererType                          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererType"));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.20"/>
   <object class="GtkMenu" id="AccessTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -39,6 +39,24 @@
       <!-- column-name exportedName -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkListStore" id="FieldNameListStore">
+    <columns>
+      <!-- column-name FieldName -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="FieldNameCompletion">
+    <property name="model">FieldNameListStore</property>
+    <property name="minimum_key_length">4</property>
+    <property name="text_column">0</property>
+    <property name="inline_completion">True</property>
+    <child>
+      <object class="GtkCellRendererText" id="cellrenderertext2"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
   </object>
   <object class="GtkMenu" id="FieldTypeMenu">
     <property name="visible">True</property>
@@ -433,8 +451,8 @@
                                   <object class="GtkLabel" id="TypeNameLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
                                     <property name="label" translatable="yes">Type Name:</property>
-                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -445,8 +463,8 @@
                                   <object class="GtkLabel" id="NameLabel">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
                                     <property name="label" translatable="yes">Name:</property>
-                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -537,8 +555,8 @@
                                   <object class="GtkLabel" id="label5">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
                                     <property name="label" translatable="yes">Component:</property>
-                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -549,8 +567,8 @@
                                   <object class="GtkLabel" id="label6">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
                                     <property name="label" translatable="yes">Container Field:</property>
-                                    <property name="xalign">0</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -1381,6 +1399,7 @@
                 <property name="can_focus">True</property>
                 <property name="activates_default">True</property>
                 <property name="placeholder_text" translatable="yes">fieldName</property>
+                <property name="completion">FieldNameCompletion</property>
                 <signal name="changed" handler="on_field_name_changed" swapped="no"/>
                 <signal name="delete-text" handler="on_field_name_delete_text" after="yes" swapped="no"/>
                 <signal name="insert-text" handler="on_field_name_insert_text" after="yes" swapped="no"/>

@@ -93,6 +93,14 @@ public:
 	{ return m_ExportedNodesListStore; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
+	getFieldNameListStore () const
+	{ return m_FieldNameListStore; }
+
+	const Glib::RefPtr <Gtk::EntryCompletion> &
+	getFieldNameCompletion () const
+	{ return m_FieldNameCompletion; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
 	getImportedNodesListStore () const
 	{ return m_ImportedNodesListStore; }
 
@@ -639,6 +647,8 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ListStore> m_ExportedNodesListStore;
+	Glib::RefPtr <Gtk::ListStore> m_FieldNameListStore;
+	Glib::RefPtr <Gtk::EntryCompletion> m_FieldNameCompletion;
 	Glib::RefPtr <Gtk::ListStore> m_ImportedNodesListStore;
 	Glib::RefPtr <Gtk::TreeSelection> m_UserDefinedFieldsTreeSelection;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererType;

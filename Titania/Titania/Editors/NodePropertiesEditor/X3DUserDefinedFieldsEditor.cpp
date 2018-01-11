@@ -123,6 +123,43 @@ X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
 }
 
 void
+X3DUserDefinedFieldsEditor::initialize ()
+{
+	// Initialize FieldNameCompletion:
+
+	std::set <std::string> fieldNames;
+
+	for (const auto & pair : getCurrentBrowser () -> getSupportedNodes ())
+	{
+		const auto node = pair .second;
+
+		for (const auto field : node -> getFieldDefinitions ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case X3D::initializeOnly:
+				case X3D::inputOnly:
+				case X3D::outputOnly:
+				{
+					fieldNames .emplace (field -> getName ());
+					break;
+				}
+				case X3D::inputOutput:
+				{
+					fieldNames .emplace (field -> getName ());
+					fieldNames .emplace ("set_" + field -> getName ());
+					fieldNames .emplace (field -> getName () + "_changed");
+					break;
+				}
+			}
+		}
+	}
+
+	for (const auto & fieldName : fieldNames)
+		getFieldNameListStore () -> append () -> set_value (0, fieldName);
+}
+
+void
 X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 {
 	if (node and node -> canUserDefinedFields ())

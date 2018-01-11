@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.20"/>
   <object class="GtkListStore" id="ListStore">
     <columns>
       <!-- column-name Image -->
@@ -34,6 +34,12 @@
     <property name="text_column">0</property>
     <property name="inline_completion">True</property>
     <signal name="match-selected" handler="on_search_entry_match_selected" after="yes" swapped="no"/>
+    <child>
+      <object class="GtkCellRendererText" id="cellrenderertext3"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
