@@ -70,6 +70,12 @@ public:
 
 	GoldenGate () = delete;
 
+	///  @name Member access
+
+	static
+	std::vector <std::string>
+	getContentTypes ();
+
 	///  @name Operations
 
 	static
@@ -94,7 +100,7 @@ private:
 
 	static
 	std::map <std::string, GoldenGate::GoldenFunction>
-	getContentTypes ();
+	getContentTypeFunctions ();
 
 	static
 	std::map <std::string, GoldenGate::GoldenFunction>

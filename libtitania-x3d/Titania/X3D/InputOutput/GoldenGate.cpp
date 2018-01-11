@@ -98,7 +98,7 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 {
 	try
 	{
-		static const auto contentTypes = getContentTypes ();
+		static const auto contentTypes = getContentTypeFunctions ();
 		static const auto suffixes     = getSuffixes ();
 
 		try
@@ -149,8 +149,23 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 	}
 }
 
-std::map <std::string, GoldenGate::GoldenFunction>
+std::vector <std::string>
 GoldenGate::getContentTypes ()
+{
+	std::vector <std::string> contentTypes;
+
+	for (const auto & pair : getContentTypeFunctions ())
+		contentTypes .emplace_back (pair .first);
+
+	contentTypes .emplace_back ("image/*");
+	contentTypes .emplace_back ("audio/*");
+	contentTypes .emplace_back ("video/*");
+
+	return contentTypes;
+}
+
+std::map <std::string, GoldenGate::GoldenFunction>
+GoldenGate::getContentTypeFunctions ()
 {
 	std::map <std::string, GoldenFunction> contentTypes;
 
@@ -173,7 +188,6 @@ GoldenGate::getContentTypes ()
 	}
 
 	contentTypes .emplace ("image/svg+xml", &GoldenParser::parse <SVG::Parser>);
-	contentTypes .emplace ("text/plain",    &text);
 
 	return contentTypes;
 }

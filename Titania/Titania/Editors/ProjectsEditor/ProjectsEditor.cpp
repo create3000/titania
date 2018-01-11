@@ -58,6 +58,7 @@
 #include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
+#include <Titania/X3D/InputOutput/GoldenGate.h>
 #include <regex>
 
 namespace titania {
@@ -1368,6 +1369,12 @@ ProjectsEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
 	for (const auto & appInfo : appInfos)
 	{
 		if (appInfo -> get_executable () == "titania")
+			return true;
+	}
+
+	for (const auto & goldenType : X3D::GoldenGate::getContentTypes ())
+	{
+		if (Gio::content_type_is_a (contentType, goldenType))
 			return true;
 	}
 
