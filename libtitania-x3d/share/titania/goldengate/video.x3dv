@@ -1,6 +1,8 @@
-#X3D V3.0 utf8 Titania
+#X3D V3.3 utf8 Titania
 
 META "titania magic" "Texture"
+META "titania-add-metadata" "true"
+META "titania-output-style" "Nicest"
 
 DEF __NAME__ Transform {
   children [
