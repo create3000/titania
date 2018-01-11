@@ -198,7 +198,7 @@ public:
 	getContextMenu () const
 	{ return *m_ContextMenu; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getOpenWithMenuItem () const
 	{ return *m_OpenWithMenuItem; }
 
@@ -403,7 +403,7 @@ private:
 	Gtk::Entry* m_RenameItemEntry;
 	Gtk::Button* m_RenameItemButton;
 	Gtk::Menu* m_ContextMenu;
-	Gtk::MenuItem* m_OpenWithMenuItem;
+	Gtk::ImageMenuItem* m_OpenWithMenuItem;
 	Gtk::Menu* m_OpenWithMenu;
 	Gtk::ImageMenuItem* m_ImportMenuItem;
 	Gtk::ImageMenuItem* m_AddItemMenuItem;

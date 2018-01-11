@@ -3150,7 +3150,6 @@
     <None Include="share\titania\ui\Editors\ModelsPalette.glade" />
     <None Include="Titania\UserInterfaces\X3DModelsPaletteInterface.h" />
     <None Include="Titania\Editors\ModelsPalette\ModelsPalette.h" />
-    <None Include="Titania\Editors\ProjectsEditor\X3DFileBrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
