@@ -55,8 +55,9 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
+#include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
+#include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 
 #include <Titania/X3D/InputOutput/GoldenGate.h>
 #include <regex>
@@ -94,6 +95,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getPasteIntoFolderMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_V, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+
+	setTitleBar (getAddFilesDialog (), getAddFilesHeaderBar ());
 
 	setup ();
 }
@@ -152,7 +155,7 @@ ProjectsEditor::on_focus_out_event (GdkEventFocus* focus_event)
 void
 ProjectsEditor::on_add_project_clicked ()
 {
-	const auto openDirectoryDialog = std::dynamic_pointer_cast <OpenDirectoryDialog> (createDialog ("OpenDirectoryDialog"));
+	const auto openDirectoryDialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
 
 	if (not openDirectoryDialog -> run ())
 		return;
@@ -435,6 +438,82 @@ ProjectsEditor::getNewFolder () const
 		throw std::invalid_argument ("getNewFolder");
 
 	return folder;
+}
+
+void
+ProjectsEditor::on_add_existing_folder_activate ()
+{
+	const auto dialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
+
+	if (not dialog -> run ())
+		return;
+
+	const auto response = getAddFilesDialog () .run ();
+
+	getAddFilesDialog () .hide ();
+
+	if (response not_eq Gtk::RESPONSE_OK)
+		return;
+
+	const auto selectedRows   = getTreeViewSelection () -> get_selected_rows ();
+	const auto iter           = getTreeStore () -> get_iter (selectedRows .front ());
+	const auto folder         = Gio::File::create_for_path (getPath (iter));
+	const auto source         = dialog -> getWindow () .get_file ();
+	const auto destination    = folder -> get_child (source -> get_basename ());
+	const auto sourceUri      = basic::uri (source -> get_uri ());
+	const auto destinationUri = basic::uri (destination -> get_uri ());
+
+	if (destination -> query_exists ())
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+		dialog -> setType (Gtk::MESSAGE_QUESTION);
+		dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
+		dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+
+		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+			return;
+
+		File::removeFile (destination);
+	}
+
+	if (getCopyFilesButton () .get_active ())
+	{
+		auto flags = Gio::FILE_COPY_OVERWRITE;
+	
+		if (sourceUri .is_local () and destinationUri .is_local ())
+			flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+		File::copyFile (source, destination, flags);
+
+		on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+	}
+	else if (getMoveFilesButton () .get_active ())
+	{
+		try
+		{
+			source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
+		}
+		catch (const Gio::Error & error)
+		{
+			auto flags = Gio::FILE_COPY_OVERWRITE;
+
+			if (sourceUri .is_local () and destinationUri .is_local ())
+				flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+			File::copyFile (source, destination, flags);
+			File::removeFile (source);
+		}
+
+		on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+	}
+	else if (getLinkFilesButton () .get_active ())
+	{
+
+	}
+
+	unselectAll ();
+	selectFile (destination);
 }
 
 void

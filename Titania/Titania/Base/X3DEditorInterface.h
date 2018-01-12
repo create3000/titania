@@ -63,6 +63,8 @@ class X3DEditorInterface :
 {
 public:
 
+	using X3DDialogInterface::setTitleBar;
+
 	///  @name Construction
 
 	virtual

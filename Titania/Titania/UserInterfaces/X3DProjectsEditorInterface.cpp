@@ -86,6 +86,13 @@ X3DProjectsEditorInterface::create ()
 	m_NameRenderer      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
+	m_builder -> get_widget ("AddFilesDialog", m_AddFilesDialog);
+	m_builder -> get_widget ("CancelButton", m_CancelButton);
+	m_builder -> get_widget ("OkButton", m_OkButton);
+	m_builder -> get_widget ("AddFilesHeaderBar", m_AddFilesHeaderBar);
+	m_builder -> get_widget ("CopyFilesButton", m_CopyFilesButton);
+	m_builder -> get_widget ("MoveFilesButton", m_MoveFilesButton);
+	m_builder -> get_widget ("LinkFilesButton", m_LinkFilesButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -113,6 +120,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("AddItemMenuItem", m_AddItemMenuItem);
 	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
+	m_builder -> get_widget ("AddExistingFolderMenuItem", m_AddExistingFolderMenuItem);
 	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
 	m_builder -> get_widget ("RenameItemMenuItem", m_RenameItemMenuItem);
 	m_builder -> get_widget ("CutItemMenuItem", m_CutItemMenuItem);
@@ -162,6 +170,11 @@ X3DProjectsEditorInterface::create ()
 	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_import_activate));
 	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
 	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
+
+	// Connect object Gtk::MenuItem with id 'AddExistingFolderMenuItem'.
+	m_AddExistingFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_existing_folder_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'RenameItemMenuItem'.
 	m_RenameItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_rename_item_activate));
 	m_CutItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_cut_item_activate));
 	m_CopyItemMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_copy_item_activate));
@@ -171,6 +184,7 @@ X3DProjectsEditorInterface::create ()
 
 X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()
 {
+	delete m_AddFilesDialog;
 	delete m_Window;
 }
 

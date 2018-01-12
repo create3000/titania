@@ -174,6 +174,10 @@ private:
 	Glib::RefPtr <Gio::File>
 	getNewFolder () const;
 
+	virtual
+	void
+	on_add_existing_folder_activate () final override;
+
 	///  @name Rename item handling
 
 	virtual

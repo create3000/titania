@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,31 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_OPEN_DIALOG_OPEN_DIRECTORY_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_OPEN_DIALOG_OPEN_DIRECTORY_DIALOG_H__
+#include "OpenFolderDialog.h"
 
-#include "X3DFileOpenDialog.h"
+#include "../../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class OpenDirectoryDialog :
-	public X3DFileOpenDialog
+OpenFolderDialog::OpenFolderDialog (X3DBrowserWindow* const browserWindow) :
+	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DFileOpenDialog ()
 {
-public:
+	setName ("OpenFolderDialog");
 
-	///  @name Construction
+	getWindow () .set_title (_ ("Open Directory …"));
+	getWindow () .set_action (Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
-	OpenDirectoryDialog (X3DBrowserWindow* const browserWindow);
+	setup ();
+}
 
-	///  @name Destruction
-
-	virtual
-	~OpenDirectoryDialog () final override;
-
-};
+OpenFolderDialog::~OpenFolderDialog ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

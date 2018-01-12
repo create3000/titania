@@ -58,7 +58,7 @@
 #include "../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
-#include "../Dialogs/FileOpenDialog/OpenDirectoryDialog.h"
+#include "../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportProtoDialog.h"
@@ -123,7 +123,7 @@ public:
 	DialogFactory () :
 		dialogs ({
 		         std::make_pair ("FileOpenDialog",                constructDialog <FileOpenDialog>),
-		         std::make_pair ("OpenDirectoryDialog",           constructDialog <OpenDirectoryDialog>),
+		         std::make_pair ("OpenFolderDialog",              constructDialog <OpenFolderDialog>),
 		         std::make_pair ("FileOpenFontDialog",            constructDialog <FileOpenFontDialog>),
 		         std::make_pair ("OpenLocationDialog",            constructDialog <OpenLocationDialog>),
 		         std::make_pair ("FileImportDialog",              constructDialog <FileImportDialog>),

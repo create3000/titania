@@ -114,6 +114,34 @@ public:
 	getNameRenderer () const
 	{ return m_NameRenderer; }
 
+	Gtk::Dialog &
+	getAddFilesDialog () const
+	{ return *m_AddFilesDialog; }
+
+	Gtk::Button &
+	getCancelButton () const
+	{ return *m_CancelButton; }
+
+	Gtk::Button &
+	getOkButton () const
+	{ return *m_OkButton; }
+
+	Gtk::HeaderBar &
+	getAddFilesHeaderBar () const
+	{ return *m_AddFilesHeaderBar; }
+
+	Gtk::RadioButton &
+	getCopyFilesButton () const
+	{ return *m_CopyFilesButton; }
+
+	Gtk::RadioButton &
+	getMoveFilesButton () const
+	{ return *m_MoveFilesButton; }
+
+	Gtk::RadioButton &
+	getLinkFilesButton () const
+	{ return *m_LinkFilesButton; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -221,6 +249,10 @@ public:
 	Gtk::ImageMenuItem &
 	getAddNewFolderMenuItem () const
 	{ return *m_AddNewFolderMenuItem; }
+
+	Gtk::MenuItem &
+	getAddExistingFolderMenuItem () const
+	{ return *m_AddExistingFolderMenuItem; }
 
 	Gtk::SeparatorMenuItem &
 	getFileSeparatorMenuItem () const
@@ -334,6 +366,10 @@ public:
 
 	virtual
 	void
+	on_add_existing_folder_activate () = 0;
+
+	virtual
+	void
 	on_rename_item_activate () = 0;
 
 	virtual
@@ -382,6 +418,13 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
+	Gtk::Dialog* m_AddFilesDialog;
+	Gtk::Button* m_CancelButton;
+	Gtk::Button* m_OkButton;
+	Gtk::HeaderBar* m_AddFilesHeaderBar;
+	Gtk::RadioButton* m_CopyFilesButton;
+	Gtk::RadioButton* m_MoveFilesButton;
+	Gtk::RadioButton* m_LinkFilesButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -409,6 +452,7 @@ private:
 	Gtk::ImageMenuItem* m_AddItemMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
+	Gtk::MenuItem* m_AddExistingFolderMenuItem;
 	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
 	Gtk::ImageMenuItem* m_RenameItemMenuItem;
 	Gtk::ImageMenuItem* m_CutItemMenuItem;
