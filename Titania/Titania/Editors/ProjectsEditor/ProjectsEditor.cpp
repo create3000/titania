@@ -443,77 +443,84 @@ ProjectsEditor::getNewFolder () const
 void
 ProjectsEditor::on_add_existing_folder_activate ()
 {
-	const auto dialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
-
-	if (not dialog -> run ())
-		return;
-
-	const auto response = getAddFilesDialog () .run ();
-
-	getAddFilesDialog () .hide ();
-
-	if (response not_eq Gtk::RESPONSE_OK)
-		return;
-
-	const auto selectedRows   = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter           = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto folder         = Gio::File::create_for_path (getPath (iter));
-	const auto source         = dialog -> getWindow () .get_file ();
-	const auto destination    = folder -> get_child (source -> get_basename ());
-	const auto sourceUri      = basic::uri (source -> get_uri ());
-	const auto destinationUri = basic::uri (destination -> get_uri ());
-
-	if (destination -> query_exists ())
+	try
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-
-		dialog -> setType (Gtk::MESSAGE_QUESTION);
-		dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
-		dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-
-		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
-			return;
-
-		File::removeFile (destination);
-	}
-
-	if (getCopyFilesButton () .get_active ())
-	{
-		auto flags = Gio::FILE_COPY_OVERWRITE;
+		const auto dialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
 	
-		if (sourceUri .is_local () and destinationUri .is_local ())
-			flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
-		File::copyFile (source, destination, flags);
-
-		on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
-	}
-	else if (getMoveFilesButton () .get_active ())
-	{
-		try
+		if (not dialog -> run ())
+			return;
+	
+		const auto response = getAddFilesDialog () .run ();
+	
+		getAddFilesDialog () .hide ();
+	
+		if (response not_eq Gtk::RESPONSE_OK)
+			return;
+	
+		const auto selectedRows   = getTreeViewSelection () -> get_selected_rows ();
+		const auto iter           = getTreeStore () -> get_iter (selectedRows .front ());
+		const auto folder         = Gio::File::create_for_path (getPath (iter));
+		const auto source         = dialog -> getWindow () .get_file ();
+		const auto destination    = folder -> get_child (source -> get_basename ());
+		const auto sourceUri      = basic::uri (source -> get_uri ());
+		const auto destinationUri = basic::uri (destination -> get_uri ());
+	
+		if (destination -> query_exists ())
 		{
-			source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
+			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	
+			dialog -> setType (Gtk::MESSAGE_QUESTION);
+			dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
+			dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+	
+			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+				return;
+	
+			File::removeFile (destination);
 		}
-		catch (const Gio::Error & error)
+	
+		if (getCopyFilesButton () .get_active ())
 		{
 			auto flags = Gio::FILE_COPY_OVERWRITE;
-
+		
 			if (sourceUri .is_local () and destinationUri .is_local ())
 				flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
+	
 			File::copyFile (source, destination, flags);
-			File::removeFile (source);
+	
+			on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+		}
+		else if (getMoveFilesButton () .get_active ())
+		{
+			try
+			{
+				source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
+			}
+			catch (const Gio::Error & error)
+			{
+				auto flags = Gio::FILE_COPY_OVERWRITE;
+	
+				if (sourceUri .is_local () and destinationUri .is_local ())
+					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+	
+				File::copyFile (source, destination, flags);
+				File::removeFile (source);
+			}
+	
+			on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+		}
+		else if (getLinkFilesButton () .get_active ())
+		{
+			destination -> make_symbolic_link (source -> get_path ());
 		}
 
-		on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+		unselectAll ();
+		selectFile (destination);
 	}
-	else if (getLinkFilesButton () .get_active ())
+	catch (const Gio::Error & error)
 	{
-
+		__LOG__ << error .what () << std::endl;
 	}
-
-	unselectAll ();
-	selectFile (destination);
 }
 
 void

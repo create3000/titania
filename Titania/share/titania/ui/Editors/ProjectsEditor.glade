@@ -87,7 +87,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">The selected files from  can be copied, or moved to the selected folder. Please make a choice.</property>
+                <property name="label" translatable="yes">The selected files from  can be copied, moved, or linked to the selected folder. Please make a choice.</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -129,6 +129,7 @@
             <child>
               <object class="GtkRadioButton" id="LinkFilesButton">
                 <property name="label" translatable="yes">Link files to folder</property>
+                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="active">True</property>
