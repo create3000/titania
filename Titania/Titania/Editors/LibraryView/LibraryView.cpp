@@ -100,7 +100,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 	try
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
-		const auto file = Gio::File::create_for_path (getPath (iter));
+		const auto file = getFile (iter);
 
 		switch (file -> query_info () -> get_file_type ())
 		{

@@ -168,7 +168,7 @@ ProjectsEditor::on_display_menu (GdkEventButton* event)
 	if (selectedRows .size () == 1)
 	{
 		const auto path      = selectedRows .front ();
-		const auto file      = Gio::File::create_for_path (getPath (getTreeStore () -> get_iter (path)));
+		const auto file      = getFile (getTreeStore () -> get_iter (path));
 		const auto fileInfo  = file -> query_info ();
 		const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 
@@ -207,7 +207,7 @@ ProjectsEditor::on_import_activate ()
 	{
 		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto file         = Gio::File::create_for_path (getPath (iter));
+		const auto file         = getFile (iter);
 		const auto undoStep     = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Import »%s« From Project"), file -> get_basename () .c_str ()));
 		const auto nodes        = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
 
@@ -313,7 +313,7 @@ ProjectsEditor::getNewFile () const
 	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
 	const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
-	const auto parent       = Gio::File::create_for_path (getPath (iter));
+	const auto parent       = getFile (iter);
 	const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
 
 	if (getCreateFileEntry () .get_text () .empty ())
@@ -411,7 +411,7 @@ ProjectsEditor::getNewFolder () const
 {
 	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto parent       = Gio::File::create_for_path (getPath (iter));
+	const auto parent       = getFile (iter);
 	const auto folder       = parent -> get_child (getCreateFolderEntry () .get_text ());
 
 	if (getCreateFolderEntry () .get_text () .empty ())
@@ -442,7 +442,7 @@ ProjectsEditor::on_add_existing_folder_activate ()
 	
 		const auto selectedRows   = getTreeViewSelection () -> get_selected_rows ();
 		const auto iter           = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto folder         = Gio::File::create_for_path (getPath (iter));
+		const auto folder         = getFile (iter);
 		const auto source         = dialog -> getWindow () .get_file ();
 		const auto destination    = folder -> get_child (source -> get_basename ());
 		const auto sourceUri      = basic::uri (source -> get_uri ());
@@ -513,7 +513,7 @@ ProjectsEditor::on_rename_item_activate ()
 
 	const auto path      = getTreeViewSelection () -> get_selected_rows () .front ();
 	const auto iter      = getTreeStore () -> get_iter (path);
-	const auto file      = Gio::File::create_for_path (getPath (iter));
+	const auto file      = getFile (iter);
 	const auto fileInfo  = file -> query_info ();
 	const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	const auto basename  = basic::uri (file -> get_basename ());
@@ -569,7 +569,7 @@ ProjectsEditor::on_rename_item_clicked ()
 
 		item -> move (destination);
 
-		setPath (iter, destination -> get_path ());
+		setFile (iter, destination);
 
 		on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
 
@@ -614,7 +614,7 @@ ProjectsEditor::getRenameItem () const
 {
 	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
 	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto item         = Gio::File::create_for_path (getPath (iter));
+	const auto item         = getFile (iter);
 	const auto parent       = item -> get_parent ();
 	const auto destination  = parent -> get_child (getRenameItemEntry () .get_text ());
 
@@ -672,7 +672,7 @@ ProjectsEditor::cutItems (const std::vector <Gtk::TreePath> & rows)
 
 		iter -> set_value (Columns::SENSITIVE, false);
 
-		clipboard .emplace_back (getPath (iter));
+		clipboard .emplace_back (getFile (iter) -> get_path ());
 	}
 }
 
@@ -685,7 +685,7 @@ ProjectsEditor::copyItems (const std::vector <Gtk::TreePath> & rows)
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
 
-		clipboard .emplace_back (getPath (iter));
+		clipboard .emplace_back (getFile (iter) -> get_path ());
 	}
 }
 
@@ -693,7 +693,7 @@ void
 ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 {
 	const auto iter       = getTreeStore () -> get_iter (row);
-	const auto folder     = Gio::File::create_for_path (getPath (iter));
+	const auto folder     = getFile (iter);
 	const auto folderInfo = folder -> query_info ();
 
 	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
@@ -862,7 +862,7 @@ ProjectsEditor::on_move_to_trash_activate ()
 	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
-		const auto file = Gio::File::create_for_path (getPath (iter));
+		const auto file = getFile (iter);
 
 		on_move_to_trash_activate (file);
 	}
@@ -870,7 +870,7 @@ ProjectsEditor::on_move_to_trash_activate ()
 	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
-		const auto file = Gio::File::create_for_path (getPath (iter));
+		const auto file = getFile (iter);
 
 		on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
 	}
@@ -934,7 +934,7 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 void
 ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
-	launchFile (getPath (getTreeStore () -> get_iter (path)));
+	launchFile (getFile (getTreeStore () -> get_iter (path)));
 }
 
 void
@@ -953,7 +953,7 @@ ProjectsEditor::on_selection_changed ()
 			case 1:
 			{
 				const auto iter      = getTreeStore () -> get_iter (selectedRows .front ());
-				const auto file      = Gio::File::create_for_path (getPath (iter));
+				const auto file      = getFile (iter);
 				const auto fileInfo  = file -> query_info ();
 				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	
@@ -1061,13 +1061,11 @@ ProjectsEditor::createOpenWithMenuItem (const Glib::RefPtr <Gio::AppInfo> & appI
 }
 
 void
-ProjectsEditor::launchFile (const std::string & path)
+ProjectsEditor::launchFile (const Glib::RefPtr <Gio::File> & file)
 {
-	const auto file = Gio::File::create_for_path (path);
-
 	if (canOpenFile (file))
 	{
-		getBrowserWindow () -> open ("file://" + path);
+		getBrowserWindow () -> open ("file://" + file -> get_path ());
 	}
 	else
 	{
