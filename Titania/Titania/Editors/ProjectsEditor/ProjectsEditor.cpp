@@ -648,9 +648,9 @@ ProjectsEditor::on_paste_into_folder_activate ()
 void
 ProjectsEditor::clearClipboard ()
 {
-	for (const auto & path : clipboard)
+	for (const auto & file : clipboard)
 	{
-		const auto & iter = getIter (path);
+		const auto & iter = getIter (file);
 
 		if (not getTreeStore () -> iter_is_valid (iter))
 			continue;
@@ -672,7 +672,7 @@ ProjectsEditor::cutItems (const std::vector <Gtk::TreePath> & rows)
 
 		iter -> set_value (Columns::SENSITIVE, false);
 
-		clipboard .emplace_back (getFile (iter) -> get_path ());
+		clipboard .emplace_back (getFile (iter));
 	}
 }
 
@@ -685,7 +685,7 @@ ProjectsEditor::copyItems (const std::vector <Gtk::TreePath> & rows)
 	{
 		const auto iter = getTreeStore () -> get_iter (path);
 
-		clipboard .emplace_back (getFile (iter) -> get_path ());
+		clipboard .emplace_back (getFile (iter));
 	}
 }
 
@@ -703,18 +703,17 @@ ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
 
 	bool copy = false;
 
-	for (const auto & path : clipboard)
+	for (const auto & source : clipboard)
 	{
 		try
 		{
-			const auto iter = getIter (path);
+			const auto iter = getIter (source);
 	
 			if (not getTreeStore () -> iter_is_valid (iter))
 				continue;
 
 			iter -> get_value (Columns::SENSITIVE, copy);
 	
-			const auto source         = Gio::File::create_for_path (path);
 			const auto sourceInfo     = source -> query_info ();
 			const auto directory      = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 			const auto destination    = getPasteDestination (copy, source, folder);
@@ -894,7 +893,7 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 				return;
 
-			removeRootFolder (getIter (file -> get_path ()));
+			removeRootFolder (getIter (file));
 		}
 
 		file -> trash ();

@@ -299,8 +299,8 @@ private:
 
 	///  @name Members
 
-	std::vector <std::string> clipboard;
-	bool                      changing;
+	std::vector <Glib::RefPtr <Gio::File>> clipboard;
+	bool                                   changing;
 
 };
 
