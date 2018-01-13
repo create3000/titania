@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_LIBRARY_VIEW_LIBRARY_VIEW_H__
 
 #include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include "../../Editors/ProjectsEditor/X3DFileBrowser.h"
 
 namespace titania {
 namespace puck {
@@ -59,7 +60,8 @@ namespace puck {
 class ScrollFreezer;
 
 class LibraryView :
-	virtual public X3DLibraryViewInterface
+	virtual public X3DLibraryViewInterface,
+	public X3DFileBrowser <X3DLibraryViewInterface>
 {
 public:
 
@@ -85,6 +87,10 @@ protected:
 	void
 	configure () final override;
 
+	virtual
+	void
+	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -94,49 +100,23 @@ protected:
 
 private:
 
+	///  Member types
+
+	class Columns
+	{
+	public:
+	
+	static constexpr int TITANIA      = 3;
+	static constexpr int X_ITE        = 4;
+	static constexpr int EXPERIMENTAL = 5;
+	
+	};
+
 	///  @name Selection handling
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
-
-	///  @name Folder handling handling
-
-	void
-	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
-
-	Gtk::TreeIter
-	getIter (const std::string & URL) const;
-
-	bool
-	getIter (const Gtk::TreeIter & iter, const std::string & URL, Gtk::TreeIter & result) const;
-
-	std::string
-	getPath (const Gtk::TreeIter & iter) const;
-
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
-
-	// Members
-
-	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 

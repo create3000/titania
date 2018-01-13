@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
 
 #include "../../UserInterfaces/X3DProjectsEditorInterface.h"
+#include "../../Editors/ProjectsEditor/X3DFileBrowser.h"
 
 namespace titania {
 namespace puck {
@@ -60,7 +61,8 @@ class BrowserWindow;
 class ScrollFreezer;
 
 class ProjectsEditor :
-	virtual public X3DProjectsEditorInterface
+	virtual public X3DProjectsEditorInterface,
+	public X3DFileBrowser <X3DProjectsEditorInterface>
 {
 public:
 
@@ -78,9 +80,13 @@ private:
 
 	///  Member types
 
-	class FolderElement;
-
-	using FolderElementPtr = std::shared_ptr <FolderElement>;
+	class Columns
+	{
+	public:
+	
+	static constexpr int SENSITIVE = 3;
+	
+	};
 
 	///  @name Construction
 
@@ -253,69 +259,14 @@ private:
 	void
 	on_selection_changed () final override;
 
-	virtual
-	bool
-	on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
-
-	void
-	on_file_changed (const Glib::RefPtr <Gio::File> & file,
-	                 const Glib::RefPtr <Gio::File> & other_file,
-	                 Gio::FileMonitorEvent event);
-
-	void
-	on_file_changed_update_tree_view (const Glib::RefPtr <Gio::File> & file);
-
 	void
 	set_execution_context ();
 
-	///  @name Selection handling
-
-	void
-	unselectAll ();
-
-	bool
-	selectFile (const Glib::RefPtr <Gio::File> & file, const bool scroll = false);
-
-	bool
-	isSelected (const Glib::RefPtr <Gio::File> & file) const;
-
-	bool
-	expandTo (const Glib::RefPtr <Gio::File> & file);
-
 	///  @name Folder handling handling
 
+	virtual
 	void
-	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addFolder (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
-
-	void
-	removeRootFolder (const Gtk::TreeModel::iterator & iter);
-
-	void
-	removeChildren (const Gtk::TreeIter & iter);
-
-	void
-	removeChild (const Gtk::TreeModel::iterator & iter);
-
-	Gtk::TreeIter
-	getIter (const std::string & path) const;
-	
-	bool
-	getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const;
-
-	std::string
-	getPath (const Gtk::TreeIter & iter) const;
+	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file) final override;
 
 	///  @name Misc operations
 
@@ -340,17 +291,6 @@ private:
 	Gdk::Rectangle
 	getRectangle (const Gtk::TreePath & path) const;
 
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children & children, X3D::MFString & folders);
-
 	///  @name Destruction
 
 	virtual
@@ -359,11 +299,8 @@ private:
 
 	///  @name Members
 
-	std::set <std::string>                   projects;
-	std::map <std::string, FolderElementPtr> folders;
-	std::vector <std::string>                clipboard;
-	std::unique_ptr <ScrollFreezer>          scrollFreezer;
-	bool                                     changing;
+	std::vector <std::string> clipboard;
+	bool                      changing;
 
 };
 

@@ -79,6 +79,7 @@ X3DLibraryViewInterface::create ()
 {
 	// Get objects.
 	m_TreeStore            = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_TreeViewSelection    = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
 	m_FileColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
 	m_IconRenderer         = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
 	m_NameRenderer         = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
@@ -86,8 +87,8 @@ X3DLibraryViewInterface::create ()
 	m_ExperimantalRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ExperimantalRenderer"));
 	m_TitaniaColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TitaniaColumn"));
 	m_TitaniaRenderer      = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("TitaniaRenderer"));
-	m_CobwebColumn         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("CobwebColumn"));
-	m_CobwebRenderer       = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CobwebRenderer"));
+	m_X_ITEColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("X_ITEColumn"));
+	m_X_ITERenderer        = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("X_ITERenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -99,6 +100,7 @@ X3DLibraryViewInterface::create ()
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_activated));
+	m_TreeView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_test_expand_row));
 }
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()
