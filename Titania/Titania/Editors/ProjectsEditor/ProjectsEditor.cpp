@@ -68,7 +68,6 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	                           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	                 X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	X3DFileBrowser <X3DProjectsEditorInterface> (),
-	                                  clipboard (),
 	                                   changing (false)
 {
 	getTreeView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
@@ -151,24 +150,21 @@ ProjectsEditor::on_add_project_clicked ()
 void
 ProjectsEditor::on_remove_project_clicked ()
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-
-	removeRootFolder (iter);
+	for (const auto & folder : getSelectedFiles ())
+		removeRootFolder (folder);
 }
 
 void
 ProjectsEditor::on_display_menu (GdkEventButton* event)
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+	const auto selectedFiles = getSelectedFiles ();
 
-	if (selectedRows .empty ())
+	if (selectedFiles .empty ())
 		return;
 
-	if (selectedRows .size () == 1)
+	if (selectedFiles .size () == 1)
 	{
-		const auto path      = selectedRows .front ();
-		const auto file      = getFile (getTreeStore () -> get_iter (path));
+		const auto file      = selectedFiles .front ();
 		const auto fileInfo  = file -> query_info ();
 		const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 
@@ -205,11 +201,9 @@ ProjectsEditor::on_import_activate ()
 {
 	try
 	{
-		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-		const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto file         = getFile (iter);
-		const auto undoStep     = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Import »%s« From Project"), file -> get_basename () .c_str ()));
-		const auto nodes        = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
+		const auto file     = getSelectedFiles () .front ();
+		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Import »%s« From Project"), file -> get_basename () .c_str ()));
+		const auto nodes    = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
 
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -228,7 +222,7 @@ ProjectsEditor::on_add_new_file_activate ()
 	getCreateFileTypeButton () .set_active (getConfig () -> getItem <int32_t> ("fileType", 0));
 	getCreateFileEntry ()      .set_text ("");
 	getCreateFileButton ()     .set_sensitive (false);
-	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
+	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
 	getCreateFilePopover ()    .popup ();
 	getCreateFileEntry ()      .grab_focus ();
 
@@ -310,11 +304,9 @@ ProjectsEditor::on_create_file_key_press_event (GdkEventKey* event)
 Glib::RefPtr <Gio::File>
 ProjectsEditor::getNewFile () const
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto suffix       = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
-	const auto parent       = getFile (iter);
-	const auto file         = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
+	const auto suffix = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
+	const auto parent = getSelectedFiles () .front ();
+	const auto file   = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
 
 	if (getCreateFileEntry () .get_text () .empty ())
 		throw std::invalid_argument ("getNewFile");
@@ -332,7 +324,7 @@ ProjectsEditor::on_add_new_folder_activate ()
 
 	getCreateFolderEntry ()   .set_text ("");
 	getCreateFolderButton ()  .set_sensitive (false);
-	getCreateFolderPopover () .set_pointing_to (getRectangle (getTreeViewSelection () -> get_selected_rows () .front ()));
+	getCreateFolderPopover () .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
 	getCreateFolderPopover () .popup ();
 
 	changing = false;
@@ -409,10 +401,8 @@ ProjectsEditor::on_create_folder_key_press_event (GdkEventKey* event)
 Glib::RefPtr <Gio::File>
 ProjectsEditor::getNewFolder () const
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto parent       = getFile (iter);
-	const auto folder       = parent -> get_child (getCreateFolderEntry () .get_text ());
+	const auto parent = getSelectedFiles () .front ();
+	const auto folder = parent -> get_child (getCreateFolderEntry () .get_text ());
 
 	if (getCreateFolderEntry () .get_text () .empty ())
 		throw std::invalid_argument ("getNewFolder");
@@ -433,6 +423,15 @@ ProjectsEditor::on_add_existing_folder_activate ()
 		if (not dialog -> run ())
 			return;
 	
+		const auto source = dialog -> getWindow () .get_file ();
+		const auto folder = getSelectedFiles () .front ();
+
+		if (source -> get_parent () -> get_path () == folder -> get_path ())
+			return;
+
+		getCopyFolderLabel () .set_markup (basic::sprintf (_ ("The folder <b>»%s«</b> is outside the target folder. What would you like to do?"), folder -> get_path () .c_str ()));
+		getCopyFilesButton () .set_active ();
+
 		const auto response = getAddFilesDialog () .run ();
 	
 		getAddFilesDialog () .hide ();
@@ -440,10 +439,6 @@ ProjectsEditor::on_add_existing_folder_activate ()
 		if (response not_eq Gtk::RESPONSE_OK)
 			return;
 	
-		const auto selectedRows   = getTreeViewSelection () -> get_selected_rows ();
-		const auto iter           = getTreeStore () -> get_iter (selectedRows .front ());
-		const auto folder         = getFile (iter);
-		const auto source         = dialog -> getWindow () .get_file ();
 		const auto destination    = folder -> get_child (source -> get_basename ());
 		const auto sourceUri      = basic::uri (source -> get_uri ());
 		const auto destinationUri = basic::uri (destination -> get_uri ());
@@ -479,7 +474,7 @@ ProjectsEditor::on_add_existing_folder_activate ()
 			{
 				source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
 			}
-			catch (const Gio::Error & error)
+			catch (const Glib::Error & error)
 			{
 				auto flags = Gio::FILE_COPY_OVERWRITE;
 	
@@ -500,7 +495,7 @@ ProjectsEditor::on_add_existing_folder_activate ()
 		unselectAll ();
 		selectFile (destination);
 	}
-	catch (const Gio::Error & error)
+	catch (const Glib::Error & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
@@ -511,9 +506,7 @@ ProjectsEditor::on_rename_item_activate ()
 {
 	changing = true;
 
-	const auto path      = getTreeViewSelection () -> get_selected_rows () .front ();
-	const auto iter      = getTreeStore () -> get_iter (path);
-	const auto file      = getFile (iter);
+	const auto file      = getSelectedFiles () .front ();
 	const auto fileInfo  = file -> query_info ();
 	const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	const auto basename  = basic::uri (file -> get_basename ());
@@ -525,7 +518,7 @@ ProjectsEditor::on_rename_item_activate ()
 	getRenameItemEntry ()   .set_text (file -> get_basename ());
 	getRenameItemEntry ()   .select_region (0, name .size ());
 	getRenameItemButton ()  .set_sensitive (false);
-	getRenameItemPopover () .set_pointing_to (getRectangle (path));
+	getRenameItemPopover () .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
 	getRenameItemPopover () .popup ();
 
 	// Workaround, Gtk::Entry::select_region does not work.
@@ -612,11 +605,9 @@ ProjectsEditor::on_rename_item_key_press_event (GdkEventKey* event)
 std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
 ProjectsEditor::getRenameItem () const
 {
-	const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
-	const auto iter         = getTreeStore () -> get_iter (selectedRows .front ());
-	const auto item         = getFile (iter);
-	const auto parent       = item -> get_parent ();
-	const auto destination  = parent -> get_child (getRenameItemEntry () .get_text ());
+	const auto file        = getSelectedFiles () .front ();
+	const auto parent      = file -> get_parent ();
+	const auto destination = parent -> get_child (getRenameItemEntry () .get_text ());
 
 	if (getRenameItemEntry () .get_text () .empty ())
 		throw std::invalid_argument ("getRenameItem");
@@ -624,255 +615,35 @@ ProjectsEditor::getRenameItem () const
 	if (destination -> query_exists ())
 		throw std::invalid_argument ("getRenameItem");
 
-	return std::make_tuple (iter, item, destination);
+	return std::make_tuple (getIter (file), file, destination);
 }
 
 void
 ProjectsEditor::on_cut_item_activate ()
 {
-	cutItems (getTreeViewSelection () -> get_selected_rows ());
+	cutItems (getSelectedFiles ());
 }
 
 void
 ProjectsEditor::on_copy_item_activate ()
 {
-	copyItems (getTreeViewSelection () -> get_selected_rows ());
+	copyItems (getSelectedFiles ());
 }
 
 void
 ProjectsEditor::on_paste_into_folder_activate ()
 {
-	pasteIntoFolder (getTreeViewSelection () -> get_selected_rows () .front ());
-}
-
-void
-ProjectsEditor::clearClipboard ()
-{
-	for (const auto & file : clipboard)
-	{
-		const auto & iter = getIter (file);
-
-		if (not getTreeStore () -> iter_is_valid (iter))
-			continue;
-
-		iter -> set_value (Columns::SENSITIVE, true);
-	}
-
-	clipboard .clear ();
-}
-
-void
-ProjectsEditor::cutItems (const std::vector <Gtk::TreePath> & rows)
-{
-	clearClipboard ();
-
-	for (const auto & path : rows)
-	{
-		const auto iter = getTreeStore () -> get_iter (path);
-
-		iter -> set_value (Columns::SENSITIVE, false);
-
-		clipboard .emplace_back (getFile (iter));
-	}
-}
-
-void
-ProjectsEditor::copyItems (const std::vector <Gtk::TreePath> & rows)
-{
-	clearClipboard ();
-
-	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
-	{
-		const auto iter = getTreeStore () -> get_iter (path);
-
-		clipboard .emplace_back (getFile (iter));
-	}
-}
-
-void
-ProjectsEditor::pasteIntoFolder (const Gtk::TreePath & row)
-{
-	const auto iter       = getTreeStore () -> get_iter (row);
-	const auto folder     = getFile (iter);
-	const auto folderInfo = folder -> query_info ();
-
-	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
-		return;
-
-	auto selection = std::vector <Glib::RefPtr <Gio::File>> ();
-
-	bool copy = false;
-
-	for (const auto & source : clipboard)
-	{
-		try
-		{
-			const auto iter = getIter (source);
-	
-			if (not getTreeStore () -> iter_is_valid (iter))
-				continue;
-
-			iter -> get_value (Columns::SENSITIVE, copy);
-	
-			const auto sourceInfo     = source -> query_info ();
-			const auto directory      = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
-			const auto destination    = getPasteDestination (copy, source, folder);
-			const auto sourceUri      = basic::uri (source -> get_uri ());
-			const auto destinationUri = basic::uri (destination -> get_uri ());
-
-			if (destination -> query_exists ())
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-		
-				dialog -> setType (Gtk::MESSAGE_QUESTION);
-
-				if (directory)
-				{
-					dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
-					dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-				}
-				else
-				{
-					dialog -> setMessage (basic::sprintf (_ ("Replace file »%s«?"), destination -> get_basename () .c_str ()));
-					dialog -> setText (basic::sprintf (_ ("Another file with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-				}
-
-				if (dialog -> run () not_eq Gtk::RESPONSE_OK)
-					continue;
-
-				File::removeFile (destination);
-			}
-
-			if (not copy)
-			{
-				if (source -> get_parent () -> get_uri () == destination -> get_parent () -> get_uri ())
-					return;
-			}
-
-			if (File::isSubfolder (destination, source))
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-		
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("You cannot copy a folder into itself!"));
-				dialog -> setText (_ ("The destination folder is inside the source folder."));
-				dialog -> run ();
-
-				continue;
-			}
-
-			if (copy)
-			{
-				auto flags = Gio::FILE_COPY_OVERWRITE;
-
-				if (sourceUri .is_local () and destinationUri .is_local ())
-					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
-				File::copyFile (source, destination, flags);
-
-				on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
-			}
-			else
-			{
-				try
-				{
-					source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
-				}
-				catch (const Gio::Error & error)
-				{
-					auto flags = Gio::FILE_COPY_OVERWRITE;
-
-					if (sourceUri .is_local () and destinationUri .is_local ())
-						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
-					File::copyFile (source, destination, flags);
-					File::removeFile (source);
-				}
-
-				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
-			}
-
-			selection .emplace_back (destination);
-		}
-		catch (const Glib::Error & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-	}
-
-	if (not copy)
-		clearClipboard ();
-
-	// Select destinations.
-
-	unselectAll ();
-
-	for (const auto & file : selection)
-		selectFile (file);
-}
-
-Glib::RefPtr <Gio::File>
-ProjectsEditor::getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
-{
-	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
-
-	if (copy and source -> get_parent () -> get_uri () == folder -> get_uri ())
-	{
-		auto    basename = basic::uri (source -> get_basename ());
-		auto    name     = std::regex_replace (basename .name (), pattern, "");
-		auto    suffix   = basename .suffix ();
-		int32_t copy     = 0;
-		auto    child    = Glib::RefPtr <Gio::File> ();
-	
-		do
-		{
-			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
-			copy += 1;
-		}
-		while (child -> query_exists ());
-	
-		return child;
-	}
-	else
-	{
-		return folder -> get_child (source -> get_basename ());
-	}
-}
-
-std::string
-ProjectsEditor::getPasteCopyString (const int32_t count) const
-{
-	switch (count)
-	{
-		case 0:
-			return "";
-		case 1:
-			return _ (" (copy)");
-		case 2:
-			return _ (" (another copy)");
-		default:
-			return basic::sprintf (_(" (%d. copy)"), count);
-	}
+	pasteIntoFolder (getSelectedFiles () .front ());
 }
 
 void
 ProjectsEditor::on_move_to_trash_activate ()
 {
-	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
-	{
-		const auto iter = getTreeStore () -> get_iter (path);
-		const auto file = getFile (iter);
-
+	for (const auto & file : getSelectedFiles ())
 		on_move_to_trash_activate (file);
-	}
 
-	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
-	{
-		const auto iter = getTreeStore () -> get_iter (path);
-		const auto file = getFile (iter);
-
+	for (const auto & file : getSelectedFiles ())
 		on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_DELETED);
-	}
 
 	unselectAll ();
 }
@@ -893,7 +664,7 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 				return;
 
-			removeRootFolder (getIter (file));
+			removeRootFolder (file);
 		}
 
 		file -> trash ();
@@ -941,35 +712,34 @@ ProjectsEditor::on_selection_changed ()
 {
 	try
 	{
-		const auto selectedRows = getTreeViewSelection () -> get_selected_rows ();
+		const auto selectedFiles = getSelectedFiles ();
 
-		getCutItemMenuItem ()     .set_sensitive (selectedRows .size ());
-		getCopyItemMenuItem ()    .set_sensitive (selectedRows .size ());
-		getMoveToTrashMenuItem () .set_sensitive (selectedRows .size ());
+		getCutItemMenuItem ()     .set_sensitive (selectedFiles .size ());
+		getCopyItemMenuItem ()    .set_sensitive (selectedFiles .size ());
+		getMoveToTrashMenuItem () .set_sensitive (selectedFiles .size ());
 
-		switch (selectedRows .size ())
+		switch (selectedFiles .size ())
 		{
 			case 1:
 			{
-				const auto iter      = getTreeStore () -> get_iter (selectedRows .front ());
-				const auto file      = getFile (iter);
+				const auto file      = selectedFiles .front ();
 				const auto fileInfo  = file -> query_info ();
 				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	
 				getTreeView () .set_button3_select (true);
 
-				getRemoveProjectButton ()     .set_sensitive (selectedRows .front () .size () == 1);
+				getRemoveProjectButton ()     .set_sensitive (getRootFolders () .count (file -> get_path ()));
 				getOpenWithMenuItem ()        .set_sensitive (true);
 				getImportMenuItem ()          .set_sensitive (true);
 				getAddItemMenuItem ()         .set_sensitive (directory);
 				getRenameItemMenuItem ()      .set_sensitive (true);
-				getPasteIntoFolderMenuItem () .set_sensitive (directory and clipboard .size ());
+				getPasteIntoFolderMenuItem () .set_sensitive (directory and getClipboard () .size ());
 				break;
 			}
 			case 0:
 			default:
 			{
-				getTreeView () .set_button3_select (selectedRows .empty ());
+				getTreeView () .set_button3_select (selectedFiles .empty ());
 	
 				getRemoveProjectButton ()     .set_sensitive (false);
 				getOpenWithMenuItem ()        .set_sensitive (false);
@@ -995,14 +765,6 @@ ProjectsEditor::set_execution_context ()
 		unselectAll ();
 		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()), true);
 	}
-}
-
-void
-ProjectsEditor::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
-{
-	X3DFileBrowser <X3DProjectsEditorInterface>::addChild (iter, file);
-
-	iter -> set_value (Columns::SENSITIVE, true);
 }
 
 void

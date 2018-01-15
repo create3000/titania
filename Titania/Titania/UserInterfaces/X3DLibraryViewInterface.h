@@ -93,8 +93,8 @@ public:
 	{ return m_TreeStore; }
 
 	const Glib::RefPtr <Gtk::TreeSelection> &
-	getTreeViewSelection () const
-	{ return m_TreeViewSelection; }
+	getTreeSelection () const
+	{ return m_TreeSelection; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFileColumn () const
@@ -191,7 +191,7 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
-	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
+	Glib::RefPtr <Gtk::TreeSelection> m_TreeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;

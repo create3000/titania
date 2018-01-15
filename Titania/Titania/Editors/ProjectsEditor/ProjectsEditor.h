@@ -78,16 +78,6 @@ public:
 
 private:
 
-	///  Member types
-
-	class Columns
-	{
-	public:
-	
-	static constexpr int SENSITIVE = 3;
-	
-	};
-
 	///  @name Construction
 
 	virtual
@@ -219,24 +209,6 @@ private:
 	void
 	on_paste_into_folder_activate () final override;
 
-	void
-	clearClipboard ();
-	
-	void
-	cutItems (const std::vector <Gtk::TreePath> & rows);
-	
-	void
-	copyItems (const std::vector <Gtk::TreePath> & rows);
-
-	void
-	pasteIntoFolder (const Gtk::TreePath & row);
-
-	Glib::RefPtr <Gio::File>
-	getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
-
-	std::string
-	getPasteCopyString (const int32_t count) const;
-
 	///  @name Move to trash handling
 
 	virtual
@@ -261,12 +233,6 @@ private:
 
 	void
 	set_execution_context ();
-
-	///  @name Folder handling handling
-
-	virtual
-	void
-	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file) final override;
 
 	///  @name Misc operations
 
@@ -299,8 +265,7 @@ private:
 
 	///  @name Members
 
-	std::vector <Glib::RefPtr <Gio::File>> clipboard;
-	bool                                   changing;
+	bool changing;
 
 };
 

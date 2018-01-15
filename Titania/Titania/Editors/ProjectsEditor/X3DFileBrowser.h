@@ -53,6 +53,9 @@
 
 #include "../../Base/ScrollFreezer.h"
 #include "../../Bits/File.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
+
+#include <regex>
 
 namespace titania {
 namespace puck {
@@ -65,8 +68,9 @@ public:
 
 	using Type::getTreeStore;
 	using Type::getTreeView;
-	using Type::getTreeViewSelection;
+	using Type::getTreeSelection;
 	using Type::getConfig;
+	using Type::createDialog;
 
 	///  @name Destruction
 
@@ -88,25 +92,42 @@ protected:
 	void
 	configure () override;
 
+	///  @name Clipboard handling
+
+	void
+	clearClipboard ();
+	
+	void
+	cutItems (const std::vector <Glib::RefPtr <Gio::File>> & file);
+	
+	void
+	copyItems (const std::vector <Glib::RefPtr <Gio::File>> & file);
+
+	void
+	pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	const std::vector <Glib::RefPtr <Gio::File>> &
+	getClipboard () const
+	{ return clipboard; }
+
 	///  @name Selection handling
 
 	void
 	unselectAll ();
 
 	bool
-	selectFile (const Glib::RefPtr <Gio::File> & file, const bool scroll = false);
+	isSelected (const Glib::RefPtr <Gio::File> & file) const;
 
 	bool
-	isSelected (const Glib::RefPtr <Gio::File> & file) const;
+	selectFile (const Glib::RefPtr <Gio::File> & file, const bool scroll = false);
+
+	std::vector <Glib::RefPtr <Gio::File>>
+	getSelectedFiles () const;
 
 	bool
 	expandTo (const Glib::RefPtr <Gio::File> & file);
 
 	///  @name Folder handling
-
-	const std::set <std::string> &
-	getRootFolders () const
-	{ return rootFolders; }
 
 	void
 	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
@@ -115,7 +136,11 @@ protected:
 	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
 
 	void
-	removeRootFolder (const Gtk::TreeModel::iterator & iter);
+	removeRootFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	const std::set <std::string> &
+	getRootFolders () const
+	{ return rootFolders; }
 
 	virtual
 	void
@@ -169,9 +194,10 @@ private:
 	{
 	public:
 	
-		static constexpr int ICON = 0;
-		static constexpr int NAME = 1;
-		static constexpr int PATH = 2;
+		static constexpr int ICON      = 0;
+		static constexpr int NAME      = 1;
+		static constexpr int PATH      = 2;
+		static constexpr int SENSITIVE = 3;
 	
 	};
 
@@ -218,6 +244,7 @@ private:
 
 	std::set <std::string>                   rootFolders;
 	std::map <std::string, FolderElementPtr> folders;
+	std::vector <Glib::RefPtr <Gio::File>>   clipboard;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 
 };
@@ -235,6 +262,7 @@ X3DFileBrowser <Type>::X3DFileBrowser () :
 	         Type (),
 	  rootFolders (),
 	      folders (),
+	    clipboard (),
 	scrollFreezer (new ScrollFreezer (getTreeView ()))
 { }
 
@@ -331,9 +359,230 @@ X3DFileBrowser <Type>::on_file_changed_update_tree_view (const Glib::RefPtr <Gio
 
 template <class Type>
 void
+X3DFileBrowser <Type>::clearClipboard ()
+{
+	for (const auto & file : clipboard)
+	{
+		const auto & iter = getIter (file);
+
+		if (not getTreeStore () -> iter_is_valid (iter))
+			continue;
+
+		iter -> set_value (Columns::SENSITIVE, true);
+	}
+
+	clipboard .clear ();
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::cutItems (const std::vector <Glib::RefPtr <Gio::File>> & files)
+{
+	clearClipboard ();
+
+	for (const auto & file : files)
+	{
+		getIter (file) -> set_value (Columns::SENSITIVE, false);
+
+		clipboard .emplace_back (file);
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::copyItems (const std::vector <Glib::RefPtr <Gio::File>> & files)
+{
+	clearClipboard ();
+
+	for (const auto & file : files)
+		clipboard .emplace_back (file);
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	const auto folderInfo = folder -> query_info ();
+
+	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
+		return;
+
+	auto selection = std::vector <Glib::RefPtr <Gio::File>> ();
+
+	bool copy = false;
+
+	for (const auto & source : clipboard)
+	{
+		try
+		{
+			const auto iter = getIter (source);
+	
+			if (not getTreeStore () -> iter_is_valid (iter))
+				continue;
+
+			iter -> get_value (Columns::SENSITIVE, copy);
+	
+			const auto sourceInfo     = source -> query_info ();
+			const auto directory      = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+			const auto destination    = getPasteDestination (copy, source, folder);
+			const auto sourceUri      = basic::uri (source -> get_uri ());
+			const auto destinationUri = basic::uri (destination -> get_uri ());
+
+			if (destination -> query_exists ())
+			{
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		
+				dialog -> setType (Gtk::MESSAGE_QUESTION);
+
+				if (directory)
+				{
+					dialog -> setMessage (basic::sprintf (_ ("Replace directory ?%s??"), destination -> get_basename () .c_str ()));
+					dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in ?%s?. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+				}
+				else
+				{
+					dialog -> setMessage (basic::sprintf (_ ("Replace file ?%s??"), destination -> get_basename () .c_str ()));
+					dialog -> setText (basic::sprintf (_ ("Another file with the same name already exists in ?%s?. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+				}
+
+				if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+					continue;
+
+				File::removeFile (destination);
+			}
+
+			if (not copy)
+			{
+				if (source -> get_parent () -> get_uri () == destination -> get_parent () -> get_uri ())
+					return;
+			}
+
+			if (File::isSubfolder (destination, source))
+			{
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("You cannot copy a folder into itself!"));
+				dialog -> setText (_ ("The destination folder is inside the source folder."));
+				dialog -> run ();
+
+				continue;
+			}
+
+			if (copy)
+			{
+				auto flags = Gio::FILE_COPY_OVERWRITE;
+
+				if (sourceUri .is_local () and destinationUri .is_local ())
+					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+				File::copyFile (source, destination, flags);
+
+				on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+			}
+			else
+			{
+				try
+				{
+					source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
+				}
+				catch (const Gio::Error & error)
+				{
+					auto flags = Gio::FILE_COPY_OVERWRITE;
+
+					if (sourceUri .is_local () and destinationUri .is_local ())
+						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+					File::copyFile (source, destination, flags);
+					File::removeFile (source);
+				}
+
+				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+			}
+
+			selection .emplace_back (destination);
+		}
+		catch (const Glib::Error & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	if (not copy)
+		clearClipboard ();
+
+	// Select destinations.
+
+	unselectAll ();
+
+	for (const auto & file : selection)
+		selectFile (file);
+}
+
+template <class Type>
+Glib::RefPtr <Gio::File>
+X3DFileBrowser <Type>::getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
+{
+	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
+
+	if (copy and source -> get_parent () -> get_uri () == folder -> get_uri ())
+	{
+		auto    basename = basic::uri (source -> get_basename ());
+		auto    name     = std::regex_replace (basename .name (), pattern, "");
+		auto    suffix   = basename .suffix ();
+		int32_t copy     = 0;
+		auto    child    = Glib::RefPtr <Gio::File> ();
+	
+		do
+		{
+			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
+			copy += 1;
+		}
+		while (child -> query_exists ());
+	
+		return child;
+	}
+	else
+	{
+		return folder -> get_child (source -> get_basename ());
+	}
+}
+
+template <class Type>
+std::string
+X3DFileBrowser <Type>::getPasteCopyString (const int32_t count) const
+{
+	switch (count)
+	{
+		case 0:
+			return "";
+		case 1:
+			return _ (" (copy)");
+		case 2:
+			return _ (" (another copy)");
+		default:
+			return basic::sprintf (_(" (%d. copy)"), count);
+	}
+}
+
+template <class Type>
+void
 X3DFileBrowser <Type>::unselectAll ()
 {
-	getTreeViewSelection () -> unselect_all ();
+	getTreeSelection () -> unselect_all ();
+}
+
+template <class Type>
+bool
+X3DFileBrowser <Type>::isSelected (const Glib::RefPtr <Gio::File> & file) const
+{
+	for (const auto & selectedFile : getSelectedFiles ())
+	{
+		if (selectedFile -> get_path () == file -> get_path ())
+			return true;
+	}
+
+	return false;
 }
 
 template <class Type>
@@ -348,7 +597,7 @@ X3DFileBrowser <Type>::selectFile (const Glib::RefPtr <Gio::File> & file, const 
 	const auto iter = getIter (file);
 	const auto path = getTreeStore () -> get_path (iter);
 
-	getTreeViewSelection () -> select (iter);
+	getTreeSelection () -> select (iter);
 
 	if (scroll)
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
@@ -357,18 +606,15 @@ X3DFileBrowser <Type>::selectFile (const Glib::RefPtr <Gio::File> & file, const 
 }
 
 template <class Type>
-bool
-X3DFileBrowser <Type>::isSelected (const Glib::RefPtr <Gio::File> & file) const
+std::vector <Glib::RefPtr <Gio::File>>
+X3DFileBrowser <Type>::getSelectedFiles () const
 {
-	for (const auto & path : getTreeViewSelection () -> get_selected_rows ())
-	{
-		const auto iter = getTreeStore () -> get_iter (path);
+	std::vector <Glib::RefPtr <Gio::File>> selectedFiles;
 
-		if (getFile (iter) -> get_path () == file -> get_path ())
-			return true;
-	}
+	for (const auto & path : getTreeSelection () -> get_selected_rows ())
+		selectedFiles .emplace_back (getFile (getTreeStore () -> get_iter (path)));
 
-	return false;
+	return selectedFiles;
 }
 
 template <class Type>
@@ -559,20 +805,18 @@ X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr 
 	else
 		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + uri .authority () + ")");
 
-	iter -> set_value (Columns::PATH, file -> get_path ());
+	iter -> set_value (Columns::PATH,      file -> get_path ());
+	iter -> set_value (Columns::SENSITIVE, true);
 
 	addChild (iter, file);
 }
 
 template <class Type>
 void
-X3DFileBrowser <Type>::removeRootFolder (const Gtk::TreeIter & iter)
+X3DFileBrowser <Type>::removeRootFolder (const Glib::RefPtr <Gio::File> & folder)
 {
-	// Remove project.
-
-	rootFolders .erase (getFile (iter) -> get_path ());
-
-	removeChild (iter);
+	if (rootFolders .erase (folder -> get_path ()))
+		removeChild (getIter (folder));
 }
 
 template <class Type>

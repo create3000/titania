@@ -106,9 +106,9 @@ private:
 	{
 	public:
 	
-	static constexpr int TITANIA      = 3;
-	static constexpr int X_ITE        = 4;
-	static constexpr int EXPERIMENTAL = 5;
+	static constexpr int TITANIA      = 4;
+	static constexpr int X_ITE        = 5;
+	static constexpr int EXPERIMENTAL = 6;
 	
 	};
 

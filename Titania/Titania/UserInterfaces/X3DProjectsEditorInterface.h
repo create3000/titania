@@ -99,8 +99,8 @@ public:
 	{ return m_TreeStore; }
 
 	const Glib::RefPtr <Gtk::TreeSelection> &
-	getTreeViewSelection () const
-	{ return m_TreeViewSelection; }
+	getTreeSelection () const
+	{ return m_TreeSelection; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFileColumn () const
@@ -129,6 +129,10 @@ public:
 	Gtk::HeaderBar &
 	getAddFilesHeaderBar () const
 	{ return *m_AddFilesHeaderBar; }
+
+	Gtk::Label &
+	getCopyFolderLabel () const
+	{ return *m_CopyFolderLabel; }
 
 	Gtk::RadioButton &
 	getCopyFilesButton () const
@@ -414,7 +418,7 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
-	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
+	Glib::RefPtr <Gtk::TreeSelection> m_TreeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
@@ -422,6 +426,7 @@ private:
 	Gtk::Button* m_CancelButton;
 	Gtk::Button* m_OkButton;
 	Gtk::HeaderBar* m_AddFilesHeaderBar;
+	Gtk::Label* m_CopyFolderLabel;
 	Gtk::RadioButton* m_CopyFilesButton;
 	Gtk::RadioButton* m_MoveFilesButton;
 	Gtk::RadioButton* m_LinkFilesButton;

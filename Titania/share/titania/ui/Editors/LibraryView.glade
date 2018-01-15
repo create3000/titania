@@ -10,6 +10,8 @@
       <column type="gchararray"/>
       <!-- column-name Path -->
       <column type="gchararray"/>
+      <!-- column-name Sensitive -->
+      <column type="gboolean"/>
       <!-- column-name Titania -->
       <column type="gchararray"/>
       <!-- column-name X_ITE -->
@@ -69,7 +71,7 @@
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="TreeViewSelection"/>
+                      <object class="GtkTreeSelection" id="TreeSelection"/>
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="FileColumn">
@@ -98,7 +100,7 @@
                         <child>
                           <object class="GtkCellRendererPixbuf" id="ExperimantalRenderer"/>
                           <attributes>
-                            <attribute name="stock-id">5</attribute>
+                            <attribute name="stock-id">6</attribute>
                           </attributes>
                         </child>
                       </object>
@@ -110,7 +112,7 @@
                         <child>
                           <object class="GtkCellRendererPixbuf" id="TitaniaRenderer"/>
                           <attributes>
-                            <attribute name="stock-id">3</attribute>
+                            <attribute name="stock-id">4</attribute>
                           </attributes>
                         </child>
                       </object>
@@ -122,7 +124,7 @@
                         <child>
                           <object class="GtkCellRendererPixbuf" id="X_ITERenderer"/>
                           <attributes>
-                            <attribute name="stock-id">4</attribute>
+                            <attribute name="stock-id">5</attribute>
                           </attributes>
                         </child>
                       </object>

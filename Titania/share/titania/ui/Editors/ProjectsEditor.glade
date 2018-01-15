@@ -5,7 +5,9 @@
   <object class="GtkAccelGroup" id="AccelGroup"/>
   <object class="GtkDialog" id="AddFilesDialog">
     <property name="can_focus">False</property>
-    <property name="border_width">5</property>
+    <property name="border_width">16</property>
+    <property name="default_width">550</property>
+    <property name="default_height">100</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox">
@@ -62,12 +64,12 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
-            <property name="spacing">8</property>
+            <property name="spacing">16</property>
             <child>
               <object class="GtkHeaderBar" id="AddFilesHeaderBar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="title">Add Files &amp; Folders</property>
+                <property name="title">Add Existing Folder</property>
                 <property name="show_close_button">True</property>
                 <child>
                   <object class="GtkImage" id="image9">
@@ -84,10 +86,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="CopyFolderLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">The selected files from  can be copied, moved, or linked to the selected folder. Please make a choice.</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">The folder&lt;b&gt; »%s«&lt;/b&gt; is outside the target folder. What would you like to do?</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -97,12 +102,21 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="CopyFilesButton">
-                <property name="label" translatable="yes">Copy files to folder</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin_left">8</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Copy&lt;/b&gt; the folder to the target folder</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -112,13 +126,22 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="MoveFilesButton">
-                <property name="label" translatable="yes">Move files to folder</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">CopyFilesButton</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin_left">8</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Move&lt;/b&gt; the folder to the target folder</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -128,13 +151,22 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="LinkFilesButton">
-                <property name="label" translatable="yes">Link files to folder</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">CopyFilesButton</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin_left">8</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Create a link&lt;/b&gt; to the folder</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -278,7 +310,7 @@
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="TreeViewSelection">
+                      <object class="GtkTreeSelection" id="TreeSelection">
                         <property name="mode">multiple</property>
                         <signal name="changed" handler="on_selection_changed" swapped="no"/>
                       </object>
