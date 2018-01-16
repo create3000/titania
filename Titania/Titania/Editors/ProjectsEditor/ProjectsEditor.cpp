@@ -426,7 +426,7 @@ ProjectsEditor::on_add_existing_folder_activate ()
 		const auto source = dialog -> getWindow () .get_file ();
 		const auto folder = getSelectedFiles () .front ();
 
-		if (source -> get_parent () -> get_path () == folder -> get_path ())
+		if (source -> has_parent () and source -> get_parent () -> get_path () == folder -> get_path ())
 			return;
 
 		getCopyFolderLabel () .set_markup (basic::sprintf (_ ("The folder <b>»%s«</b> is outside the target folder. What would you like to do?"), folder -> get_path () .c_str ()));
@@ -439,58 +439,17 @@ ProjectsEditor::on_add_existing_folder_activate ()
 		if (response not_eq Gtk::RESPONSE_OK)
 			return;
 	
-		const auto destination    = folder -> get_child (source -> get_basename ());
-		const auto sourceUri      = basic::uri (source -> get_uri ());
-		const auto destinationUri = basic::uri (destination -> get_uri ());
-	
-		if (destination -> query_exists ())
-		{
-			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-	
-			dialog -> setType (Gtk::MESSAGE_QUESTION);
-			dialog -> setMessage (basic::sprintf (_ ("Replace directory »%s«?"), destination -> get_basename () .c_str ()));
-			dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-	
-			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
-				return;
-	
-			File::removeFile (destination);
-		}
-	
+		const auto destination = folder -> get_child (source -> get_basename ());
+		auto       action      = TransferAction::COPY;
+
 		if (getCopyFilesButton () .get_active ())
-		{
-			auto flags = Gio::FILE_COPY_OVERWRITE;
-		
-			if (sourceUri .is_local () and destinationUri .is_local ())
-				flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-	
-			File::copyFile (source, destination, flags);
-	
-			on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
-		}
+			action = TransferAction::COPY;
 		else if (getMoveFilesButton () .get_active ())
-		{
-			try
-			{
-				source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
-			}
-			catch (const Glib::Error & error)
-			{
-				auto flags = Gio::FILE_COPY_OVERWRITE;
-	
-				if (sourceUri .is_local () and destinationUri .is_local ())
-					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-	
-				File::copyFile (source, destination, flags);
-				File::removeFile (source);
-			}
-	
-			on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
-		}
+			action = TransferAction::MOVE;
 		else if (getLinkFilesButton () .get_active ())
-		{
-			destination -> make_symbolic_link (source -> get_path ());
-		}
+			action = TransferAction::LINK;
+
+		transferFile (action, source, destination);
 
 		unselectAll ();
 		selectFile (destination);

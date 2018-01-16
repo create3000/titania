@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -80,6 +80,15 @@ public:
 
 protected:
 
+	///  @name Member types
+
+	enum class TransferAction
+	{
+		COPY,
+		MOVE,
+		LINK
+	};
+
 	///  @name Construction
 
 	X3DFileBrowser ();
@@ -91,6 +100,11 @@ protected:
 	virtual
 	void
 	configure () override;
+
+	///  @name File operations
+
+	void
+	transferFile (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination);
 
 	///  @name Clipboard handling
 
@@ -207,7 +221,7 @@ private:
 	///  @name Clipboard handling
 
 	Glib::RefPtr <Gio::File>
-	getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
+	getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
 
 	std::string
 	getPasteCopyString (const int32_t count) const;
@@ -245,6 +259,7 @@ private:
 	std::set <std::string>                   rootFolders;
 	std::map <std::string, FolderElementPtr> folders;
 	std::vector <Glib::RefPtr <Gio::File>>   clipboard;
+	TransferAction                           clipboardAction;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 
 };
@@ -259,11 +274,12 @@ public:
 
 template <class Type>
 X3DFileBrowser <Type>::X3DFileBrowser () :
-	         Type (),
-	  rootFolders (),
-	      folders (),
-	    clipboard (),
-	scrollFreezer (new ScrollFreezer (getTreeView ()))
+	           Type (),
+	    rootFolders (),
+	        folders (),
+	      clipboard (),
+	clipboardAction (TransferAction::COPY),
+	  scrollFreezer (new ScrollFreezer (getTreeView ()))
 { }
 
 template <class Type>
@@ -359,6 +375,112 @@ X3DFileBrowser <Type>::on_file_changed_update_tree_view (const Glib::RefPtr <Gio
 
 template <class Type>
 void
+X3DFileBrowser <Type>::transferFile (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination)
+{
+	try
+	{
+		const auto sourceInfo      = source -> query_info ();
+		const auto sourceDirectory = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
+		const auto sourceUri       = basic::uri (source -> get_uri ());
+		const auto destinationUri  = basic::uri (destination -> get_uri ());
+
+		if (action == TransferAction::MOVE)
+		{
+			if (source -> get_path () == destination -> get_path ())
+				return;
+		}
+
+		if (not destination -> has_parent ())
+			return;
+
+		if (destination -> query_exists ())
+		{
+			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			const auto folder = destination -> get_parent ();
+
+			dialog -> setType (Gtk::MESSAGE_QUESTION);
+
+			if (sourceDirectory)
+			{
+				dialog -> setMessage (basic::sprintf (_ ("Replace directory «%s¢?"), destination -> get_basename () .c_str ()));
+				dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in ?%s?. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+			}
+			else
+			{
+				dialog -> setMessage (basic::sprintf (_ ("Replace file »%s«?"), destination -> get_basename () .c_str ()));
+				dialog -> setText (basic::sprintf (_ ("Another file with the same name already exists in »%s«. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
+			}
+
+			if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+				return;
+
+			File::removeFile (destination);
+		}
+
+		if (sourceDirectory)
+		{
+			if (File::isSubfolder (destination, source))
+			{
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("You cannot copy or move a folder into itself!"));
+				dialog -> setText (_ ("The destination folder is inside the source folder."));
+				dialog -> run ();
+
+				return;
+			}
+		}
+
+		switch (action)
+		{
+			case TransferAction::COPY:
+			{
+				auto flags = Gio::FILE_COPY_OVERWRITE;
+
+				if (sourceUri .is_local () and destinationUri .is_local ())
+					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+				File::copyFile (source, destination, flags);
+
+				on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
+				break;
+			}
+			case TransferAction::MOVE:
+			{
+				try
+				{
+					source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
+				}
+				catch (const Gio::Error & error)
+				{
+					auto flags = Gio::FILE_COPY_OVERWRITE;
+
+					if (sourceUri .is_local () and destinationUri .is_local ())
+						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
+
+					File::copyFile (source, destination, flags);
+					File::removeFile (source);
+				}
+
+				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
+				break;
+			}
+			case TransferAction::LINK:
+			{
+				destination -> make_symbolic_link (source -> get_path ());
+				break;
+			}
+		}
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+template <class Type>
+void
 X3DFileBrowser <Type>::clearClipboard ()
 {
 	for (const auto & file : clipboard)
@@ -386,6 +508,8 @@ X3DFileBrowser <Type>::cutItems (const std::vector <Glib::RefPtr <Gio::File>> & 
 
 		clipboard .emplace_back (file);
 	}
+
+	clipboardAction = TransferAction::MOVE;
 }
 
 template <class Type>
@@ -396,6 +520,8 @@ X3DFileBrowser <Type>::copyItems (const std::vector <Glib::RefPtr <Gio::File>> &
 
 	for (const auto & file : files)
 		clipboard .emplace_back (file);
+
+	clipboardAction = TransferAction::COPY;
 }
 
 template <class Type>
@@ -407,98 +533,15 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
 		return;
 
-	auto selection = std::vector <Glib::RefPtr <Gio::File>> ();
-
-	bool copy = false;
+	auto selection = std::vector <Glib::RefPtr <Gio::File> > ();
 
 	for (const auto & source : clipboard)
 	{
 		try
 		{
-			const auto iter = getIter (source);
-	
-			if (not getTreeStore () -> iter_is_valid (iter))
-				continue;
+			const auto destination = getPasteDestination (clipboardAction, source, folder);
 
-			iter -> get_value (Columns::SENSITIVE, copy);
-	
-			const auto sourceInfo     = source -> query_info ();
-			const auto directory      = sourceInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
-			const auto destination    = getPasteDestination (copy, source, folder);
-			const auto sourceUri      = basic::uri (source -> get_uri ());
-			const auto destinationUri = basic::uri (destination -> get_uri ());
-
-			if (destination -> query_exists ())
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-		
-				dialog -> setType (Gtk::MESSAGE_QUESTION);
-
-				if (directory)
-				{
-					dialog -> setMessage (basic::sprintf (_ ("Replace directory ?%s??"), destination -> get_basename () .c_str ()));
-					dialog -> setText (basic::sprintf (_ ("A directory with the same name already exists in ?%s?. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-				}
-				else
-				{
-					dialog -> setMessage (basic::sprintf (_ ("Replace file ?%s??"), destination -> get_basename () .c_str ()));
-					dialog -> setText (basic::sprintf (_ ("Another file with the same name already exists in ?%s?. Replacing it will overwrite its content."), folder -> get_basename () .c_str ()));
-				}
-
-				if (dialog -> run () not_eq Gtk::RESPONSE_OK)
-					continue;
-
-				File::removeFile (destination);
-			}
-
-			if (not copy)
-			{
-				if (source -> get_parent () -> get_uri () == destination -> get_parent () -> get_uri ())
-					return;
-			}
-
-			if (File::isSubfolder (destination, source))
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
-		
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("You cannot copy a folder into itself!"));
-				dialog -> setText (_ ("The destination folder is inside the source folder."));
-				dialog -> run ();
-
-				continue;
-			}
-
-			if (copy)
-			{
-				auto flags = Gio::FILE_COPY_OVERWRITE;
-
-				if (sourceUri .is_local () and destinationUri .is_local ())
-					flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
-				File::copyFile (source, destination, flags);
-
-				on_file_changed (destination, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
-			}
-			else
-			{
-				try
-				{
-					source -> move (destination, Gio::FILE_COPY_OVERWRITE | Gio::FILE_COPY_NOFOLLOW_SYMLINKS);
-				}
-				catch (const Gio::Error & error)
-				{
-					auto flags = Gio::FILE_COPY_OVERWRITE;
-
-					if (sourceUri .is_local () and destinationUri .is_local ())
-						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
-
-					File::copyFile (source, destination, flags);
-					File::removeFile (source);
-				}
-
-				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
-			}
+			transferFile (clipboardAction, source, destination);
 
 			selection .emplace_back (destination);
 		}
@@ -508,7 +551,7 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 		}
 	}
 
-	if (not copy)
+	if (clipboardAction == TransferAction::MOVE)
 		clearClipboard ();
 
 	// Select destinations.
@@ -521,11 +564,11 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 
 template <class Type>
 Glib::RefPtr <Gio::File>
-X3DFileBrowser <Type>::getPasteDestination (const bool copy, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
+X3DFileBrowser <Type>::getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
 {
 	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
 
-	if (copy and source -> get_parent () -> get_uri () == folder -> get_uri ())
+	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
 	{
 		auto    basename = basic::uri (source -> get_basename ());
 		auto    name     = std::regex_replace (basename .name (), pattern, "");
