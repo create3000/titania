@@ -99,7 +99,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 {
 	try
 	{
-		const auto iter = getTreeStore () -> get_iter (path);
+		const auto iter = getFileStore () -> get_iter (path);
 		const auto file = getFile (iter);
 
 		switch (file -> query_info () -> get_file_type ())
@@ -139,7 +139,7 @@ LibraryView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & 
 		#ifndef TITANIA_FEATURE
 		if (experimental and not (x_ite or titania))
 		{
-			getTreeStore () -> erase (child);
+			getFileStore () -> erase (child);
 		   return;
 		}
 		#endif

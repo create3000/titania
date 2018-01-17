@@ -66,9 +66,9 @@ class X3DFileBrowser :
 {
 public:
 
-	using Type::getTreeStore;
+	using Type::getFileStore;
 	using Type::getFileView;
-	using Type::getTreeSelection;
+	using Type::getFileSelection;
 	using Type::getConfig;
 	using Type::createDialog;
 
@@ -357,15 +357,15 @@ X3DFileBrowser <Type>::on_file_changed_update_tree_view (const Glib::RefPtr <Gio
 	const auto folder = file -> get_parent ();
 	const auto iter   = getIter (folder);
 
-	if (not getTreeStore () -> iter_is_valid (iter))
+	if (not getFileStore () -> iter_is_valid (iter))
 		return;
 
 	// Work with path as iter don't remain valid after append and erase.
-	const auto path = getTreeStore () -> get_path (iter);
+	const auto path = getFileStore () -> get_path (iter);
 
-	getTreeStore () -> insert_after (iter);
+	getFileStore () -> insert_after (iter);
 	removeChild (iter);
-	addFolder (getTreeStore () -> get_iter (path), folder);
+	addFolder (getFileStore () -> get_iter (path), folder);
 }
 
 template <class Type>
@@ -482,7 +482,7 @@ X3DFileBrowser <Type>::clearClipboard ()
 	{
 		const auto & iter = getIter (file);
 
-		if (not getTreeStore () -> iter_is_valid (iter))
+		if (not getFileStore () -> iter_is_valid (iter))
 			continue;
 
 		iter -> set_value (Columns::SENSITIVE, true);
@@ -607,7 +607,7 @@ template <class Type>
 void
 X3DFileBrowser <Type>::unselectAll ()
 {
-	getTreeSelection () -> unselect_all ();
+	getFileSelection () -> unselect_all ();
 }
 
 template <class Type>
@@ -633,9 +633,9 @@ X3DFileBrowser <Type>::selectFile (const Glib::RefPtr <Gio::File> & file, const 
 		return false;
 
 	const auto iter = getIter (file);
-	const auto path = getTreeStore () -> get_path (iter);
+	const auto path = getFileStore () -> get_path (iter);
 
-	getTreeSelection () -> select (iter);
+	getFileSelection () -> select (iter);
 
 	if (scroll)
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getFileView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
@@ -649,8 +649,8 @@ X3DFileBrowser <Type>::getSelectedFiles () const
 {
 	std::vector <Glib::RefPtr <Gio::File>> selectedFiles;
 
-	for (const auto & path : getTreeSelection () -> get_selected_rows ())
-		selectedFiles .emplace_back (getFile (getTreeStore () -> get_iter (path)));
+	for (const auto & path : getFileSelection () -> get_selected_rows ())
+		selectedFiles .emplace_back (getFile (getFileStore () -> get_iter (path)));
 
 	return selectedFiles;
 }
@@ -669,7 +669,7 @@ X3DFileBrowser <Type>::expandTo (const Glib::RefPtr <Gio::File> & file)
 
 	if (expandTo (folder))
 	{
-		getFileView () .expand_row (getTreeStore () -> get_path (getIter (folder)), false);
+		getFileView () .expand_row (getFileStore () -> get_path (getIter (folder)), false);
 		return true;
 	}
 
@@ -682,7 +682,7 @@ X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
 {
 	try
 	{
-		getTreeStore () -> clear ();
+		getFileStore () -> clear ();
 		rootFolders .clear ();
 		folders .clear ();
 
@@ -695,7 +695,7 @@ X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
 				case Gio::FILE_TYPE_DIRECTORY:
 				{
 					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getTreeStore () -> append ();
+					const auto iter  = getFileStore () -> append ();
 	
 					addFolder (iter, child);
 					continue;
@@ -704,7 +704,7 @@ X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getTreeStore () -> append ();
+					const auto iter  = getFileStore () -> append ();
 	
 					addChild (iter, child, "gtk-file");
 					continue;
@@ -729,7 +729,7 @@ X3DFileBrowser <Type>::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 		if (not rootFolders .emplace (folder -> get_path ()) .second)
 			return;
 
-		const auto iter = getTreeStore () -> append ();
+		const auto iter = getFileStore () -> append ();
 
 		if (folder -> query_exists () and folder -> query_info () -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 		{
@@ -763,7 +763,7 @@ X3DFileBrowser <Type>::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr
 	addChild (iter, folder, "gtk-directory");
 
 	if (File::hasChildren (folder))
-		getTreeStore () -> append (iter -> children ());
+		getFileStore () -> append (iter -> children ());
 }
 
 template <class Type>
@@ -799,7 +799,7 @@ X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib
 				case Gio::FILE_TYPE_DIRECTORY:
 				{
 					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getTreeStore () -> append (parentIter -> children ());
+					const auto iter  = getFileStore () -> append (parentIter -> children ());
 
 					addFolder (iter, child);
 					continue;
@@ -808,7 +808,7 @@ X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getTreeStore () -> append (parentIter -> children ());
+					const auto iter  = getFileStore () -> append (parentIter -> children ());
 
 					addChild (iter, child, "gtk-file");
 					continue;
@@ -860,10 +860,10 @@ X3DFileBrowser <Type>::removeChildren (const Gtk::TreeIter & iter)
 	std::vector <Gtk::TreePath> children;
 
 	for (const auto & child : iter -> children ())
-		children .emplace_back (getTreeStore () -> get_path (child));
+		children .emplace_back (getFileStore () -> get_path (child));
 
 	for (const auto & child : basic::make_reverse_range (children))
-		removeChild (getTreeStore () -> get_iter (child));
+		removeChild (getFileStore () -> get_iter (child));
 }
 
 template <class Type>
@@ -872,7 +872,7 @@ X3DFileBrowser <Type>::removeChild (const Gtk::TreeIter & iter)
 {
 	const auto child = getFile (iter);
 
-	getTreeStore () -> erase (iter);
+	getFileStore () -> erase (iter);
 
 	if (child -> get_path () .empty ())
 		return;
@@ -904,7 +904,7 @@ X3DFileBrowser <Type>::getIter (const Glib::RefPtr <Gio::File> & file) const
 {
 	Gtk::TreeIter result;
 
-	for (const auto & childIter : getTreeStore () -> children ())
+	for (const auto & childIter : getFileStore () -> children ())
 	{
 		if (getIter (childIter, file -> get_path (), result))
 			break;
@@ -965,10 +965,10 @@ X3DFileBrowser <Type>::restoreExpanded ()
 	{
 		const auto iter = getIter (Gio::File::create_for_path (folder));
 
-		if (not getTreeStore () -> iter_is_valid (iter))
+		if (not getFileStore () -> iter_is_valid (iter))
 			continue;
 
-		getFileView () .expand_row (getTreeStore () -> get_path (iter), false);
+		getFileView () .expand_row (getFileStore () -> get_path (iter), false);
 	}
 
 	scrollFreezer -> restore (getConfig () -> template getItem <double> ("hadjustment"),
@@ -981,7 +981,7 @@ X3DFileBrowser <Type>::saveExpanded ()
 {
 	X3D::MFString folders;
 
-	getExpanded (getTreeStore () -> children (), folders);
+	getExpanded (getFileStore () -> children (), folders);
 
 	getConfig () -> template setItem <X3D::MFString> ("expanded", folders);
 	getConfig () -> template setItem <double> ("hadjustment", getFileView () .get_hadjustment () -> get_value ());
@@ -994,7 +994,7 @@ X3DFileBrowser <Type>::getExpanded (const Gtk::TreeModel::Children & children, X
 {
 	for (const auto & child : children)
 	{
-		if (getFileView () .row_expanded (getTreeStore () -> get_path (child)))
+		if (getFileView () .row_expanded (getFileStore () -> get_path (child)))
 			folders .emplace_back (getFile (child) -> get_path ());
 
 		getExpanded (child -> children (), folders);

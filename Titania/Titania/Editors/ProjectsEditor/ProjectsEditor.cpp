@@ -222,7 +222,7 @@ ProjectsEditor::on_add_new_file_activate ()
 	getCreateFileTypeButton () .set_active (getConfig () -> getItem <int32_t> ("fileType", 0));
 	getCreateFileEntry ()      .set_text ("");
 	getCreateFileButton ()     .set_sensitive (false);
-	getCreateFilePopover ()    .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
+	getCreateFilePopover ()    .set_pointing_to (getRectangle (getFileSelection () -> get_selected_rows () .front ()));
 	getCreateFilePopover ()    .popup ();
 	getCreateFileEntry ()      .grab_focus ();
 
@@ -324,7 +324,7 @@ ProjectsEditor::on_add_new_folder_activate ()
 
 	getCreateFolderEntry ()   .set_text ("");
 	getCreateFolderButton ()  .set_sensitive (false);
-	getCreateFolderPopover () .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
+	getCreateFolderPopover () .set_pointing_to (getRectangle (getFileSelection () -> get_selected_rows () .front ()));
 	getCreateFolderPopover () .popup ();
 
 	changing = false;
@@ -477,7 +477,7 @@ ProjectsEditor::on_rename_item_activate ()
 	getRenameItemEntry ()   .set_text (file -> get_basename ());
 	getRenameItemEntry ()   .select_region (0, name .size ());
 	getRenameItemButton ()  .set_sensitive (false);
-	getRenameItemPopover () .set_pointing_to (getRectangle (getTreeSelection () -> get_selected_rows () .front ()));
+	getRenameItemPopover () .set_pointing_to (getRectangle (getFileSelection () -> get_selected_rows () .front ()));
 	getRenameItemPopover () .popup ();
 
 	// Workaround, Gtk::Entry::select_region does not work.
@@ -663,7 +663,7 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 void
 ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
-	launchFile (getFile (getTreeStore () -> get_iter (path)));
+	launchFile (getFile (getFileStore () -> get_iter (path)));
 }
 
 void

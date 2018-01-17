@@ -188,7 +188,7 @@
       <action-widget response="-5">OkButton</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkTreeStore" id="TreeStore">
+  <object class="GtkTreeStore" id="FileStore">
     <columns>
       <!-- column-name Icon -->
       <column type="gchararray"/>
@@ -300,7 +300,7 @@
                   <object class="GtkTreeView" id="FileView.FileView">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="model">TreeStore</property>
+                    <property name="model">FileStore</property>
                     <property name="headers_visible">False</property>
                     <property name="headers_clickable">False</property>
                     <property name="rules_hint">True</property>
@@ -310,7 +310,7 @@
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="TreeSelection">
+                      <object class="GtkTreeSelection" id="FileSelection">
                         <property name="mode">multiple</property>
                         <signal name="changed" handler="on_selection_changed" swapped="no"/>
                       </object>

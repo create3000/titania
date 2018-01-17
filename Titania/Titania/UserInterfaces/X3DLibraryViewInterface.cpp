@@ -78,8 +78,8 @@ void
 X3DLibraryViewInterface::create ()
 {
 	// Get objects.
-	m_TreeStore            = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
-	m_TreeSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeSelection"));
+	m_FileStore            = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("FileStore"));
+	m_FileSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FileSelection"));
 	m_FileColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));
 	m_IconRenderer         = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
 	m_NameRenderer         = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
