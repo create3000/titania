@@ -125,27 +125,29 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 }
 
 void
-LibraryView::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
+LibraryView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
 {
-	X3DFileBrowser <X3DLibraryViewInterface>::addChild (iter, file);
-
-	const auto directory    = file -> get_parent ();
-	const auto basename     = basic::uri (file -> get_path ()) .name ();
-	const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
-	const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
-	const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
-
-	#ifndef TITANIA_FEATURE
-	if (experimental and not (x_ite or titania))
+	for (const auto & child : iter -> children ())
 	{
-		getTreeStore () -> erase (iter);
-	   return;
-	}
-	#endif
+		const auto file         = getFile (child);
+		const auto directory    = file -> get_parent ();
+		const auto basename     = basic::uri (file -> get_path ()) .name ();
+		const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
+		const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
+		const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
+	
+		#ifndef TITANIA_FEATURE
+		if (experimental and not (x_ite or titania))
+		{
+			getTreeStore () -> erase (child);
+		   return;
+		}
+		#endif
 
-	iter -> set_value (Columns::EXPERIMENTAL, std::string (experimental ? "Experimental" : ""));
-	iter -> set_value (Columns::TITANIA,      std::string (titania      ? "Titania"      : ""));
-	iter -> set_value (Columns::X_ITE,        std::string (x_ite        ? "X_ITE"        : ""));
+		child -> set_value (Columns::EXPERIMENTAL, std::string (experimental ? "Experimental" : ""));
+		child -> set_value (Columns::TITANIA,      std::string (titania      ? "Titania"      : ""));
+		child -> set_value (Columns::X_ITE,        std::string (x_ite        ? "X_ITE"        : ""));
+	}
 }
 
 void

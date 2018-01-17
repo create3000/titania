@@ -102,7 +102,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("RemoveProjectButton", m_RemoveProjectButton);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget_derived ("TreeView.FileView", m_TreeView);
+	m_builder -> get_widget_derived ("FileView.FileView", m_FileView);
 	m_builder -> get_widget ("CreateFilePopover", m_CreateFilePopover);
 	m_builder -> get_widget ("CreateFileTypeButton", m_CreateFileTypeButton);
 	m_builder -> get_widget ("CreateFileEntry", m_CreateFileEntry);
@@ -137,11 +137,11 @@ X3DProjectsEditorInterface::create ()
 	m_AddProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_project_clicked));
 	m_RemoveProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_remove_project_clicked));
 
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_in_event));
-	m_TreeView -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_out_event));
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
-	m_TreeView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_test_expand_row));
+	// Connect object Gtk::TreeView with id 'FileView'.
+	m_FileView -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_in_event));
+	m_FileView -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_out_event));
+	m_FileView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));
+	m_FileView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_test_expand_row));
 
 	// Connect object Gtk::TreeSelection with id 'TreeSelection'.
 	m_TreeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_selection_changed));

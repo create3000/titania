@@ -70,7 +70,7 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	X3DFileBrowser <X3DProjectsEditorInterface> (),
 	                                   changing (false)
 {
-	getTreeView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
+	getFileView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
 
 	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -685,7 +685,7 @@ ProjectsEditor::on_selection_changed ()
 				const auto fileInfo  = file -> query_info ();
 				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	
-				getTreeView () .set_button3_select (true);
+				getFileView () .set_button3_select (true);
 
 				getRemoveProjectButton ()     .set_sensitive (getRootFolders () .count (file -> get_path ()));
 				getOpenWithMenuItem ()        .set_sensitive (true);
@@ -698,7 +698,7 @@ ProjectsEditor::on_selection_changed ()
 			case 0:
 			default:
 			{
-				getTreeView () .set_button3_select (selectedFiles .empty ());
+				getFileView () .set_button3_select (selectedFiles .empty ());
 	
 				getRemoveProjectButton ()     .set_sensitive (false);
 				getOpenWithMenuItem ()        .set_sensitive (false);
@@ -853,7 +853,7 @@ ProjectsEditor::getRectangle (const Gtk::TreePath & path) const
 {
 	Gdk::Rectangle rectangle;
 
-	getTreeView () .get_cell_area (path, *getFileColumn () .operator -> (), rectangle);
+	getFileView () .get_cell_area (path, *getFileColumn () .operator -> (), rectangle);
 
 	return rectangle;
 }

@@ -51,6 +51,8 @@
 #ifndef __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 #define __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 
+#include "../DerivedWidgets/FileView.h"
+
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
@@ -152,15 +154,19 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_TreeView; }
+	FileView &
+	getFileView () const
+	{ return *m_FileView; }
 
 	///  @name Signal handlers
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
+
+	virtual
+	void
+	on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
 
 	virtual
 	bool
@@ -206,7 +212,7 @@ private:
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::TreeView* m_TreeView;
+	FileView* m_FileView;
 
 };
 

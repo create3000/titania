@@ -67,7 +67,7 @@ class X3DFileBrowser :
 public:
 
 	using Type::getTreeStore;
-	using Type::getTreeView;
+	using Type::getFileView;
 	using Type::getTreeSelection;
 	using Type::getConfig;
 	using Type::createDialog;
@@ -155,11 +155,6 @@ protected:
 	const std::set <std::string> &
 	getRootFolders () const
 	{ return rootFolders; }
-
-	virtual
-	void
-	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
-	{ }
 
 	Gtk::TreeIter
 	getIter (const Glib::RefPtr <Gio::File> & file) const;
@@ -279,7 +274,7 @@ X3DFileBrowser <Type>::X3DFileBrowser () :
 	        folders (),
 	      clipboard (),
 	clipboardAction (TransferAction::COPY),
-	  scrollFreezer (new ScrollFreezer (getTreeView ()))
+	  scrollFreezer (new ScrollFreezer (getFileView ()))
 { }
 
 template <class Type>
@@ -643,7 +638,7 @@ X3DFileBrowser <Type>::selectFile (const Glib::RefPtr <Gio::File> & file, const 
 	getTreeSelection () -> select (iter);
 
 	if (scroll)
-		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getTreeView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getFileView (), (ScrollToRow) &Gtk::TreeView::scroll_to_row), path, 2 - math::phi <double>));
 
 	return true;
 }
@@ -674,7 +669,7 @@ X3DFileBrowser <Type>::expandTo (const Glib::RefPtr <Gio::File> & file)
 
 	if (expandTo (folder))
 	{
-		getTreeView () .expand_row (getTreeStore () -> get_path (getIter (folder)), false);
+		getFileView () .expand_row (getTreeStore () -> get_path (getIter (folder)), false);
 		return true;
 	}
 
@@ -752,8 +747,6 @@ X3DFileBrowser <Type>::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 				iter -> set_value (Columns::NAME, folder -> get_basename () + " (" + uri .authority () + ")");
 
 			iter -> set_value (Columns::PATH, folder -> get_path ());
-
-			addChild (iter, folder);
 		}
 	}
 	catch (const Glib::Error & error)
@@ -850,8 +843,6 @@ X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr 
 
 	iter -> set_value (Columns::PATH,      file -> get_path ());
 	iter -> set_value (Columns::SENSITIVE, true);
-
-	addChild (iter, file);
 }
 
 template <class Type>
@@ -977,7 +968,7 @@ X3DFileBrowser <Type>::restoreExpanded ()
 		if (not getTreeStore () -> iter_is_valid (iter))
 			continue;
 
-		getTreeView () .expand_row (getTreeStore () -> get_path (iter), false);
+		getFileView () .expand_row (getTreeStore () -> get_path (iter), false);
 	}
 
 	scrollFreezer -> restore (getConfig () -> template getItem <double> ("hadjustment"),
@@ -993,8 +984,8 @@ X3DFileBrowser <Type>::saveExpanded ()
 	getExpanded (getTreeStore () -> children (), folders);
 
 	getConfig () -> template setItem <X3D::MFString> ("expanded", folders);
-	getConfig () -> template setItem <double> ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> template setItem <double> ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	getConfig () -> template setItem <double> ("hadjustment", getFileView () .get_hadjustment () -> get_value ());
+	getConfig () -> template setItem <double> ("vadjustment", getFileView () .get_vadjustment () -> get_value ());
 }
 
 template <class Type>
@@ -1003,7 +994,7 @@ X3DFileBrowser <Type>::getExpanded (const Gtk::TreeModel::Children & children, X
 {
 	for (const auto & child : children)
 	{
-		if (getTreeView () .row_expanded (getTreeStore () -> get_path (child)))
+		if (getFileView () .row_expanded (getTreeStore () -> get_path (child)))
 			folders .emplace_back (getFile (child) -> get_path ());
 
 		getExpanded (child -> children (), folders);

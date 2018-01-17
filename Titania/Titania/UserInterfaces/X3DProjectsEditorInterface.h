@@ -179,8 +179,8 @@ public:
 	{ return *m_ScrolledWindow; }
 
 	FileView &
-	getTreeView () const
-	{ return *m_TreeView; }
+	getFileView () const
+	{ return *m_FileView; }
 
 	Gtk::Popover &
 	getCreateFilePopover () const
@@ -438,7 +438,7 @@ private:
 	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	FileView* m_TreeView;
+	FileView* m_FileView;
 	Gtk::Popover* m_CreateFilePopover;
 	Gtk::ComboBoxText* m_CreateFileTypeButton;
 	Gtk::Entry* m_CreateFileEntry;

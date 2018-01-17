@@ -96,11 +96,12 @@ X3DLibraryViewInterface::create ()
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_builder -> get_widget_derived ("FileView.FileView", m_FileView);
 
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_activated));
-	m_TreeView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_test_expand_row));
+	// Connect object Gtk::TreeView with id 'FileView'.
+	m_FileView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_activated));
+	m_FileView -> signal_row_expanded () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_expanded));
+	m_FileView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_test_expand_row));
 }
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()

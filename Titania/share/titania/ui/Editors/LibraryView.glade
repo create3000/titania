@@ -60,7 +60,7 @@
                 <property name="can_focus">False</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTreeView" id="TreeView">
+                  <object class="GtkTreeView" id="FileView.FileView">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="model">TreeStore</property>
@@ -69,6 +69,7 @@
                     <property name="rules_hint">True</property>
                     <property name="search_column">1</property>
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
+                    <signal name="row-expanded" handler="on_row_expanded" swapped="no"/>
                     <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="TreeSelection"/>

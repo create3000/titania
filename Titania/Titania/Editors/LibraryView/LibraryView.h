@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class ScrollFreezer;
-
 class LibraryView :
 	virtual public X3DLibraryViewInterface,
 	public X3DFileBrowser <X3DLibraryViewInterface>
@@ -89,7 +87,7 @@ protected:
 
 	virtual
 	void
-	addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file) final override;
+	on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
 
 	///  @name Destruction
 

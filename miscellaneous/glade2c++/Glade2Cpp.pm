@@ -910,3 +910,5 @@ DrawingArea::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
 DrawingArea::scroll_event
   virtual bool on_scroll_event(GdkEventScroll* scroll_event);
+TreeView::row_expanded
+  virtual void on_row_expanded(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);
