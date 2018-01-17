@@ -87,13 +87,21 @@ X3DProjectsEditorInterface::create ()
 
 	// Get widgets.
 	m_builder -> get_widget ("AddFilesDialog", m_AddFilesDialog);
-	m_builder -> get_widget ("CancelButton", m_CancelButton);
-	m_builder -> get_widget ("OkButton", m_OkButton);
+	m_builder -> get_widget ("CancelButton1", m_CancelButton1);
+	m_builder -> get_widget ("OkButton1", m_OkButton1);
 	m_builder -> get_widget ("AddFilesHeaderBar", m_AddFilesHeaderBar);
-	m_builder -> get_widget ("CopyFolderLabel", m_CopyFolderLabel);
+	m_builder -> get_widget ("CopyFilesLabel", m_CopyFilesLabel);
 	m_builder -> get_widget ("CopyFilesButton", m_CopyFilesButton);
 	m_builder -> get_widget ("MoveFilesButton", m_MoveFilesButton);
 	m_builder -> get_widget ("LinkFilesButton", m_LinkFilesButton);
+	m_builder -> get_widget ("AddFolderDialog", m_AddFolderDialog);
+	m_builder -> get_widget ("CancelButton", m_CancelButton);
+	m_builder -> get_widget ("OkButton", m_OkButton);
+	m_builder -> get_widget ("AddFolderHeaderBar", m_AddFolderHeaderBar);
+	m_builder -> get_widget ("CopyFolderLabel", m_CopyFolderLabel);
+	m_builder -> get_widget ("CopyFolderButton", m_CopyFolderButton);
+	m_builder -> get_widget ("MoveFolderButton", m_MoveFolderButton);
+	m_builder -> get_widget ("LinkFolderButton", m_LinkFolderButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -120,6 +128,7 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("ImportMenuItem", m_ImportMenuItem);
 	m_builder -> get_widget ("AddItemMenuItem", m_AddItemMenuItem);
 	m_builder -> get_widget ("AddNewFileMenuItem", m_AddNewFileMenuItem);
+	m_builder -> get_widget ("AddFilesMenuItem", m_AddFilesMenuItem);
 	m_builder -> get_widget ("AddNewFolderMenuItem", m_AddNewFolderMenuItem);
 	m_builder -> get_widget ("AddExistingFolderMenuItem", m_AddExistingFolderMenuItem);
 	m_builder -> get_widget ("FileSeparatorMenuItem", m_FileSeparatorMenuItem);
@@ -170,6 +179,11 @@ X3DProjectsEditorInterface::create ()
 	// Connect object Gtk::ImageMenuItem with id 'ImportMenuItem'.
 	m_ImportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_import_activate));
 	m_AddNewFileMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_file_activate));
+
+	// Connect object Gtk::MenuItem with id 'AddFilesMenuItem'.
+	m_AddFilesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_files_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'AddNewFolderMenuItem'.
 	m_AddNewFolderMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_new_folder_activate));
 
 	// Connect object Gtk::MenuItem with id 'AddExistingFolderMenuItem'.
@@ -186,6 +200,7 @@ X3DProjectsEditorInterface::create ()
 X3DProjectsEditorInterface::~X3DProjectsEditorInterface ()
 {
 	delete m_AddFilesDialog;
+	delete m_AddFolderDialog;
 	delete m_Window;
 }
 

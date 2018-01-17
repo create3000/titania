@@ -149,6 +149,10 @@ private:
 	Glib::RefPtr <Gio::File>
 	getNewFile () const;
 
+	virtual
+	void
+	on_add_files_activate () final override;
+
 	///  @name Add folder handling
 
 	virtual

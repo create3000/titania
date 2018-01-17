@@ -54,6 +54,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 #include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
@@ -76,7 +77,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getPasteIntoFolderMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_V, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
-	setTitleBar (getAddFilesDialog (), getAddFilesHeaderBar ());
+	setTitleBar (getAddFilesDialog (),  getAddFilesHeaderBar ());
+	setTitleBar (getAddFolderDialog (), getAddFolderHeaderBar ());
 
 	setup ();
 }
@@ -315,6 +317,62 @@ ProjectsEditor::getNewFile () const
 		throw std::invalid_argument ("getNewFile");
 
 	return file;
+}
+
+void
+ProjectsEditor::on_add_files_activate ()
+{
+	try
+	{
+		const auto dialog = std::dynamic_pointer_cast <FileOpenDialog> (createDialog ("FileOpenDialog"));
+
+		dialog -> getWindow () .set_select_multiple (true);
+
+		if (not dialog -> run ())
+			return;
+
+		const auto folder = getSelectedFiles () .front ();
+
+		if (dialog -> getWindow () .get_current_folder () == folder -> get_path ())
+			return;
+
+		getCopyFilesButton () .set_active ();
+
+		const auto response = getAddFilesDialog () .run ();
+
+		getAddFilesDialog () .hide ();
+
+		if (response not_eq Gtk::RESPONSE_OK)
+			return;
+	
+		std::vector <Glib::RefPtr <Gio::File>> selection;
+
+		for (const auto & source : dialog -> getWindow () .get_files ())
+		{
+			const auto destination = folder -> get_child (source -> get_basename ());
+			auto       action      = TransferAction::COPY;
+
+			if (getCopyFilesButton () .get_active ())
+				action = TransferAction::COPY;
+			else if (getMoveFilesButton () .get_active ())
+				action = TransferAction::MOVE;
+			else if (getLinkFilesButton () .get_active ())
+				action = TransferAction::LINK;
+
+			transferFile (action, source, destination);
+
+			selection .emplace_back (destination);
+		}
+
+		unselectAll ();
+
+		for (const auto & file : selection)
+			selectFile (file);
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

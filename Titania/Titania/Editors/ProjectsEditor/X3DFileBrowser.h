@@ -168,6 +168,7 @@ protected:
 	bool
 	on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path) override;
 
+	virtual
 	void
 	on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	                 const Glib::RefPtr <Gio::File> & other_file,

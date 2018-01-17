@@ -119,20 +119,20 @@ public:
 	{ return *m_AddFilesDialog; }
 
 	Gtk::Button &
-	getCancelButton () const
-	{ return *m_CancelButton; }
+	getCancelButton1 () const
+	{ return *m_CancelButton1; }
 
 	Gtk::Button &
-	getOkButton () const
-	{ return *m_OkButton; }
+	getOkButton1 () const
+	{ return *m_OkButton1; }
 
 	Gtk::HeaderBar &
 	getAddFilesHeaderBar () const
 	{ return *m_AddFilesHeaderBar; }
 
 	Gtk::Label &
-	getCopyFolderLabel () const
-	{ return *m_CopyFolderLabel; }
+	getCopyFilesLabel () const
+	{ return *m_CopyFilesLabel; }
 
 	Gtk::RadioButton &
 	getCopyFilesButton () const
@@ -145,6 +145,38 @@ public:
 	Gtk::RadioButton &
 	getLinkFilesButton () const
 	{ return *m_LinkFilesButton; }
+
+	Gtk::Dialog &
+	getAddFolderDialog () const
+	{ return *m_AddFolderDialog; }
+
+	Gtk::Button &
+	getCancelButton () const
+	{ return *m_CancelButton; }
+
+	Gtk::Button &
+	getOkButton () const
+	{ return *m_OkButton; }
+
+	Gtk::HeaderBar &
+	getAddFolderHeaderBar () const
+	{ return *m_AddFolderHeaderBar; }
+
+	Gtk::Label &
+	getCopyFolderLabel () const
+	{ return *m_CopyFolderLabel; }
+
+	Gtk::RadioButton &
+	getCopyFolderButton () const
+	{ return *m_CopyFolderButton; }
+
+	Gtk::RadioButton &
+	getMoveFolderButton () const
+	{ return *m_MoveFolderButton; }
+
+	Gtk::RadioButton &
+	getLinkFolderButton () const
+	{ return *m_LinkFolderButton; }
 
 	Gtk::Window &
 	getWindow () const
@@ -249,6 +281,10 @@ public:
 	Gtk::ImageMenuItem &
 	getAddNewFileMenuItem () const
 	{ return *m_AddNewFileMenuItem; }
+
+	Gtk::MenuItem &
+	getAddFilesMenuItem () const
+	{ return *m_AddFilesMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getAddNewFolderMenuItem () const
@@ -366,6 +402,10 @@ public:
 
 	virtual
 	void
+	on_add_files_activate () = 0;
+
+	virtual
+	void
 	on_add_new_folder_activate () = 0;
 
 	virtual
@@ -423,13 +463,21 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
 	Gtk::Dialog* m_AddFilesDialog;
-	Gtk::Button* m_CancelButton;
-	Gtk::Button* m_OkButton;
+	Gtk::Button* m_CancelButton1;
+	Gtk::Button* m_OkButton1;
 	Gtk::HeaderBar* m_AddFilesHeaderBar;
-	Gtk::Label* m_CopyFolderLabel;
+	Gtk::Label* m_CopyFilesLabel;
 	Gtk::RadioButton* m_CopyFilesButton;
 	Gtk::RadioButton* m_MoveFilesButton;
 	Gtk::RadioButton* m_LinkFilesButton;
+	Gtk::Dialog* m_AddFolderDialog;
+	Gtk::Button* m_CancelButton;
+	Gtk::Button* m_OkButton;
+	Gtk::HeaderBar* m_AddFolderHeaderBar;
+	Gtk::Label* m_CopyFolderLabel;
+	Gtk::RadioButton* m_CopyFolderButton;
+	Gtk::RadioButton* m_MoveFolderButton;
+	Gtk::RadioButton* m_LinkFolderButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -456,6 +504,7 @@ private:
 	Gtk::ImageMenuItem* m_ImportMenuItem;
 	Gtk::ImageMenuItem* m_AddItemMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
+	Gtk::MenuItem* m_AddFilesMenuItem;
 	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
 	Gtk::MenuItem* m_AddExistingFolderMenuItem;
 	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;

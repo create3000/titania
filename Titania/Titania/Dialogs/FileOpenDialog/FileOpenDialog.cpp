@@ -57,6 +57,7 @@
 namespace titania {
 namespace puck {
 
+static constexpr auto ALL_FILTER       = "All Files";
 static constexpr auto X3D_FILTER       = "All X3D Files";
 static constexpr auto IMAGES_FILTER    = "All Images";
 static constexpr auto AUDIO_FILTER     = "All Audio";
@@ -81,6 +82,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 {
 	setName ("FileOpenDialog");
 
+	getFileFilterAll   () -> set_name (_ (ALL_FILTER));
 	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
 	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
 	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
@@ -138,9 +140,15 @@ FileOpenDialog::setFileFilter (const std::string & name)
 
 	getWindow () .add_filter (getFileFilterSVG ());
 
+	// Add all files filter as last choice.
+	getWindow () .add_filter (getFileFilterAll ());
+
 	// Media filter
 
-	if (name == _(X3D_FILTER))
+	if (name == _(ALL_FILTER))
+		getWindow () .set_filter (getFileFilterAll ());
+
+	else if (name == _(X3D_FILTER))
 		getWindow () .set_filter (getFileFilterX3D ());
 
 	else if (name == _(IMAGES_FILTER))
