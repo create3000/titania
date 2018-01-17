@@ -192,8 +192,8 @@ private:
 	bool
 	on_rename_item_key_press_event (GdkEventKey* event) final override;
 
-	std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
-	getRenameItem () const;
+	Glib::RefPtr <Gio::File>
+	getRenameDestination () const;
 
 	///  @name Clipboard handling
 

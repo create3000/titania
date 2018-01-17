@@ -494,9 +494,7 @@ ProjectsEditor::on_rename_item_changed ()
 		if (changing)
 			return;
 
-		getRenameItem ();
-
-		getRenameItemButton () .set_sensitive (true);
+		getRenameItemButton () .set_sensitive (bool (getRenameDestination ()));
 	}
 	catch (...)
 	{
@@ -510,20 +508,16 @@ ProjectsEditor::on_rename_item_clicked ()
 {
 	try
 	{
-		const auto tuple       = getRenameItem ();
-		const auto iter        = std::get <0> (tuple);
-		const auto item        = std::get <1> (tuple);
-		const auto destination = std::get <2> (tuple);
+		const auto source      = getSelectedFiles () .front ();
+		const auto destination = getRenameDestination ();
 
 		// Create X3D file.
 
 		getRenameItemPopover () .popdown ();
 
-		item -> move (destination);
+		source -> move (destination);
 
-		setFile (iter, destination);
-
-		on_file_changed (item, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
+		on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_RENAMED);
 
 		unselectAll ();
 		selectFile (destination);
@@ -561,8 +555,8 @@ ProjectsEditor::on_rename_item_key_press_event (GdkEventKey* event)
 	return false;
 }
 
-std::tuple <Gtk::TreeIter, Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::File>>
-ProjectsEditor::getRenameItem () const
+Glib::RefPtr <Gio::File>
+ProjectsEditor::getRenameDestination () const
 {
 	const auto file        = getSelectedFiles () .front ();
 	const auto parent      = file -> get_parent ();
@@ -574,7 +568,7 @@ ProjectsEditor::getRenameItem () const
 	if (destination -> query_exists ())
 		throw std::invalid_argument ("getRenameItem");
 
-	return std::make_tuple (getIter (file), file, destination);
+	return destination;
 }
 
 void

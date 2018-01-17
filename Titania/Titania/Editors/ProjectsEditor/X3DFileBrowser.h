@@ -159,9 +159,6 @@ protected:
 	Gtk::TreeIter
 	getIter (const Glib::RefPtr <Gio::File> & file) const;
 
-	void
-	setFile (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file);
-
 	Glib::RefPtr <Gio::File>
 	getFile (const Gtk::TreeIter & iter) const;
 
@@ -935,13 +932,6 @@ X3DFileBrowser <Type>::getIter (const Gtk::TreeIter & iter, const std::string & 
 	}
 
 	return false;
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::setFile (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
-{
-	iter -> set_value (Columns::PATH, file -> get_path ());
 }
 
 template <class Type>
