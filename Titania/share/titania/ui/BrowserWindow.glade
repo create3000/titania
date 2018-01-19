@@ -1658,6 +1658,33 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="BrowserExternalToolsMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">External _Tools</property>
+        <child type="submenu">
+          <object class="GtkMenu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="BrowserManageExternalToolsMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Manage External Tools ...</property>
+                <signal name="activate" handler="on_manage_external_tools_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem46">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="BrowserScenesMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -3084,6 +3111,35 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="ExternalToolsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">External _Tools</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkMenuItem" id="ManageExternalToolsMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Manage External Tools ...</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_manage_external_tools_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem45">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="ScenesMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -3479,7 +3535,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="tooltip_text" translatable="yes">Texture Mapping Editor</property>
-                                <property name="label" translatable="yes">Texture Coordinate Editor</property>
+                                <property name="label" translatable="yes">Texture Mapping Editor</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">TextureCoordinate</property>
                                 <signal name="clicked" handler="on_texture_mapping_editor_clicked" swapped="no"/>

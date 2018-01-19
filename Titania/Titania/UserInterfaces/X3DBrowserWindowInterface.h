@@ -641,6 +641,14 @@ public:
 	{ return *m_BrowserGridPropertiesMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserExternalToolsMenuItem () const
+	{ return *m_BrowserExternalToolsMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserManageExternalToolsMenuItem () const
+	{ return *m_BrowserManageExternalToolsMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserScenesMenuItem () const
 	{ return *m_BrowserScenesMenuItem; }
 
@@ -1107,6 +1115,14 @@ public:
 	Gtk::ImageMenuItem &
 	getGridPropertiesMenuItem () const
 	{ return *m_GridPropertiesMenuItem; }
+
+	Gtk::MenuItem &
+	getExternalToolsMenuItem () const
+	{ return *m_ExternalToolsMenuItem; }
+
+	Gtk::MenuItem &
+	getManageExternalToolsMenuItem () const
+	{ return *m_ManageExternalToolsMenuItem; }
 
 	Gtk::MenuItem &
 	getScenesMenuItem () const
@@ -1788,6 +1804,10 @@ public:
 
 	virtual
 	void
+	on_manage_external_tools_activate () = 0;
+
+	virtual
+	void
 	on_browser_scenes_activated () = 0;
 
 	virtual
@@ -2152,6 +2172,8 @@ private:
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
+	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
+	Gtk::MenuItem* m_BrowserManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
@@ -2269,6 +2291,8 @@ private:
 	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
+	Gtk::MenuItem* m_ExternalToolsMenuItem;
+	Gtk::MenuItem* m_ManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_ScenesMenuItem;
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;

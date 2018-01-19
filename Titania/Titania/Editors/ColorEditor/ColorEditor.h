@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_APPLICATIONS_COLOR_EDITOR_COLOR_EDITOR_H__
-#define __TITANIA_APPLICATIONS_COLOR_EDITOR_COLOR_EDITOR_H__
+#ifndef __TITANIA_EDITORS_COLOR_EDITOR_COLOR_EDITOR_H__
+#define __TITANIA_EDITORS_COLOR_EDITOR_COLOR_EDITOR_H__
 
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
 #include "../../UserInterfaces/X3DColorEditorInterface.h"

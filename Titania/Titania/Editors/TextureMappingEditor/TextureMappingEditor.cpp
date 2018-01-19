@@ -92,9 +92,9 @@ infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float
 
 TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DTextureMappingEditorInterface (get_ui ("Applications/TextureMappingEditor.glade")),
-	                            left (X3D::createBrowser (getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorLeftPreview.x3dv") })),
-	                           right (X3D::createBrowser (getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorRightPreview.x3dv") })),
+	X3DTextureMappingEditorInterface (get_ui ("Editors/TextureMappingEditor.glade")),
+	                            left (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorLeftPreview.x3dv") })),
+	                           right (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorRightPreview.x3dv") })),
 	                           shape (),
 	                      appearance (),
 	                        material (),
@@ -106,6 +106,7 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                 previewGeometry (),
 	                        texCoord (),
 	                     initialized (0),
+	                           focus (BrowserType::LEFT),
 	                           stage (0),
 	                            tool (ToolType::MOVE),
 	                  rightSelection (new X3D::FaceSelection (getBrowserWindow () -> getMasterBrowser ())),
@@ -144,6 +145,9 @@ void
 TextureMappingEditor::initialize ()
 {
 	X3DTextureMappingEditorInterface::initialize ();
+
+	left  -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &TextureMappingEditor::on_focus_in_event));
+	right -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &TextureMappingEditor::on_focus_in_event));
 
 	left  -> initialized () .addInterest (&TextureMappingEditor::set_left_initialized, this);
 	right -> initialized () .addInterest (&TextureMappingEditor::set_right_initialized, this);
@@ -260,6 +264,30 @@ TextureMappingEditor::set_selection (const X3D::MFNode & selection)
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+// Focus handling
+
+bool
+TextureMappingEditor::on_focus_in_event (GdkEventFocus* event)
+{
+	if (left -> has_focus ())
+	{
+		focus = BrowserType::LEFT;
+
+		getLeftBox ()  .get_style_context () -> add_class ("titania-widget-box-selected");
+		getRightBox () .get_style_context () -> remove_class ("titania-widget-box-selected");
+	}
+
+	if (right -> has_focus ())
+	{
+		focus = BrowserType::RIGHT;
+
+		getRightBox () .get_style_context () -> add_class ("titania-widget-box-selected");
+		getLeftBox ()  .get_style_context () -> remove_class ("titania-widget-box-selected");
+	}
+
+	return false;
 }
 
 // Keyboard
@@ -798,49 +826,58 @@ TextureMappingEditor::getBBox (const size_t i1, const size_t i2) const
 void
 TextureMappingEditor::on_select_all_activate ()
 {
-	if (left -> has_focus ())
+	switch (focus)
 	{
-		try
+		case BrowserType::LEFT:
 		{
-			const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
-
-			for (const auto & index : selectedGeometry -> coordIndex ())
+			try
 			{
-				if (index >= 0)
-					selectedPoints .emplace (index);
+				const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
+	
+				for (const auto & index : selectedGeometry -> coordIndex ())
+				{
+					if (index >= 0)
+						selectedPoints .emplace (index);
+				}
+	
+				set_selectedPoints ();
 			}
+			catch (const X3D::X3DError & error)
+			{ }
 
-			set_selectedPoints ();
+			break;
 		}
-		catch (const X3D::X3DError & error)
-		{ }
-	}
-
-	else if (right -> has_focus ())
-	{
-		const auto faces = rightSelection -> getFaces ();
-
-		selectedFaces .insert (faces .begin (), faces .end ());
-
-		set_selected_faces ();
+		case BrowserType::RIGHT:
+		{
+			const auto faces = rightSelection -> getFaces ();
+	
+			selectedFaces .insert (faces .begin (), faces .end ());
+	
+			set_selected_faces ();
+			break;
+		}
 	}
 }
 
 void
 TextureMappingEditor::on_deselect_all_activate ()
 {
-	if (left -> has_focus ())
+	switch (focus)
 	{
-		selectedPoints .clear ();
-
-		set_selectedPoints ();
-	}
-
-	else if (right -> has_focus ())
-	{
-		selectedFaces .clear ();
-
-		set_selected_faces ();
+		case BrowserType::LEFT:
+		{
+			selectedPoints .clear ();
+	
+			set_selectedPoints ();
+			break;
+		}
+		case BrowserType::RIGHT:
+		{
+			selectedFaces .clear ();
+	
+			set_selected_faces ();
+			break;
+		}
 	}
 }
 

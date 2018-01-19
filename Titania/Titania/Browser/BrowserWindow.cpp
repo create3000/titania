@@ -1922,6 +1922,14 @@ BrowserWindow::on_grid_properties_activated ()
 	addDialog ("GridEditor");
 }
 
+// Extenal Tools menu
+
+void
+BrowserWindow::on_manage_external_tools_activate ()
+{
+	addDialog ("ExternalToolsEditor");
+}
+
 // Scenes menu
 
 void

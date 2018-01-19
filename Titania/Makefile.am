@@ -5,9 +5,6 @@ bin_PROGRAMS =  \
 	titania
 
 titania_SOURCES =  \
-	Titania/Applications/ColorEditor/ColorEditor.cpp \
-	Titania/Applications/TextureMappingEditor/TextureMappingEditor.cpp \
-	Titania/Base/X3DApplicationInterface.cpp \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorInterface.cpp \
@@ -100,6 +97,7 @@ titania_SOURCES =  \
 	Titania/Editors/BindableNodeList/NavigationInfoList.cpp \
 	Titania/Editors/BindableNodeList/ViewpointList.cpp \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
+	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FilesEditor/FilesEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
@@ -209,6 +207,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DTextureTransformMatrix3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Editors/TextureEditor/X3DUsedTexturesEditor.cpp \
+	Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp \
 	Titania/Editors/UndoHistoryEditor/UndoHistoryEditor.cpp \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \

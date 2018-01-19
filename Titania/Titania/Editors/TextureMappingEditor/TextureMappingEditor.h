@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_APPLICATIONS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
-#define __TITANIA_APPLICATIONS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureMappingEditorInterface.h"
 
@@ -91,6 +91,12 @@ private:
 
 	///  @name Member types
 
+	enum class BrowserType
+	{
+		LEFT,
+		RIGHT
+	};
+
 	enum class ToolType
 	{
 		MOVE,
@@ -120,6 +126,11 @@ private:
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
+
+	///  @name Focus handling
+
+	bool
+	on_focus_in_event (GdkEventFocus* event);
 
 	///  @name Keyboard
 
@@ -450,35 +461,36 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr left;
-	X3D::BrowserPtr right;
-	X3D::X3DPtr <X3D::X3DShapeNode> shape;
-	X3D::X3DPtr <X3D::Appearance> appearance;
-	X3D::SFNode material;
-	X3D::SFNode texture;
-	X3D::SFNode textureTransform;
-	X3D::X3DPtr <X3D::IndexedFaceSet> geometry;
-	X3D::X3DPtr <X3D::MultiTextureCoordinate> multiTexCoord;
-	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet> previewGeometry;
-	X3D::X3DPtr <X3D::TextureCoordinate> texCoord;
-	int initialized;
-	size_t stage;
-	ToolType tool;
-	X3D::X3DPtr <X3D::FaceSelection> rightSelection;
-	bool rightPaintSelecion;
-	std::set <size_t> selectedFaces;
-	int32_t activePoint;               // texCoord index of red point
-	int32_t masterPoint;               // texCoord index of red point
-	std::set <int32_t> selectedPoints; // texCoord indices of blue points
-	X3D::Vector2d startHitPoint;
-	X3D::Vector2f pointOffset;
-	X3D::Vector2f startPosition;
-	std::vector <std::pair <int32_t, X3D::Vector2f>>  startPositions;
-	X3D::Vector2f startDistance;
-	X3D::Keys keys;
-	X3D::UndoHistory undoHistory;
-	X3D::UndoStepPtr undoStep;
+	X3D::BrowserPtr                                  left;
+	X3D::BrowserPtr                                  right;
+	X3D::X3DPtr <X3D::X3DShapeNode>                  shape;
+	X3D::X3DPtr <X3D::Appearance>                    appearance;
+	X3D::SFNode                                      material;
+	X3D::SFNode                                      texture;
+	X3D::SFNode                                      textureTransform;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                geometry;
+	X3D::X3DPtr <X3D::MultiTextureCoordinate>        multiTexCoord;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>             coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                previewGeometry;
+	X3D::X3DPtr <X3D::TextureCoordinate>             texCoord;
+	int                                              initialized;
+	BrowserType                                      focus;
+	size_t                                           stage;
+	ToolType                                         tool;
+	X3D::X3DPtr <X3D::FaceSelection>                 rightSelection;
+	bool                                             rightPaintSelecion;
+	std::set <size_t>                                selectedFaces;
+	int32_t                                          activePoint;               // texCoord index of red point
+	int32_t                                          masterPoint;               // texCoord index of red point
+	std::set <int32_t>                               selectedPoints; // texCoord indices of blue points
+	X3D::Vector2d                                    startHitPoint;
+	X3D::Vector2f                                    pointOffset;
+	X3D::Vector2f                                    startPosition;
+	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
+	X3D::Vector2f                                    startDistance;
+	X3D::Keys                                        keys;
+	X3D::UndoHistory                                 undoHistory;
+	X3D::UndoStepPtr                                 undoStep;
 
 };
 

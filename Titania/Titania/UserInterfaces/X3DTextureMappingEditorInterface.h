@@ -51,7 +51,7 @@
 #ifndef __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
 #define __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
 
-#include "../Base/X3DApplicationInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -62,24 +62,24 @@ namespace puck {
  *  Gtk Interface for TextureMappingEditor.
  */
 class X3DTextureMappingEditorInterface :
-	public X3DApplicationInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DTextureMappingEditorInterface () :
-		X3DApplicationInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DTextureMappingEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DApplicationInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DTextureMappingEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DApplicationInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -99,6 +99,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::ImageMenuItem &
 	getUndoMenuItem () const
@@ -437,6 +441,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TextureStageAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::ImageMenuItem* m_UndoMenuItem;
 	Gtk::ImageMenuItem* m_RedoMenuItem;
 	Gtk::MenuItem* m_SelectionMenuItem;

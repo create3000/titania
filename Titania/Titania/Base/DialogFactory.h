@@ -51,9 +51,6 @@
 #ifndef __TITANIA_BASE_DIALOG_FACTORY_H__
 #define __TITANIA_BASE_DIALOG_FACTORY_H__
 
-#include "../Applications/ColorEditor/ColorEditor.h"
-#include "../Applications/TextureMappingEditor/TextureMappingEditor.h"
-
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
@@ -74,6 +71,7 @@
 #include "../Editors/BackgroundImageEditor/BackgroundImageEditor.h"
 #include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
 #include "../Editors/BindableNodeList/BackgroundList.h"
+#include "../Editors/ColorEditor/ColorEditor.h"
 #include "../Editors/BindableNodeList/FogList.h"
 #include "../Editors/BindableNodeList/NavigationInfoList.h"
 #include "../Editors/BindableNodeList/ViewpointList.h"
@@ -101,6 +99,7 @@
 #include "../Editors/SculpToolEditor/SculpToolEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
+#include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/SoundEditor/SoundEditor.h"
 #include "../Editors/UndoHistoryEditor/UndoHistoryEditor.h"
@@ -122,61 +121,61 @@ public:
 
 	DialogFactory () :
 		dialogs ({
-		         std::make_pair ("FileOpenDialog",                constructDialog <FileOpenDialog>),
-		         std::make_pair ("OpenFolderDialog",              constructDialog <OpenFolderDialog>),
-		         std::make_pair ("FileOpenFontDialog",            constructDialog <FileOpenFontDialog>),
-		         std::make_pair ("OpenLocationDialog",            constructDialog <OpenLocationDialog>),
-		         std::make_pair ("FileImportDialog",              constructDialog <FileImportDialog>),
-		         std::make_pair ("FileImportAsExternProtoDialog", constructDialog <FileImportAsExternProtoDialog>),
-		         std::make_pair ("FileSaveDialog",                constructDialog <FileSaveDialog>),
-		         std::make_pair ("FileSaveACopyDialog",           constructDialog <FileSaveACopyDialog>),
-		         std::make_pair ("FileSaveWarningDialog",         constructDialog <FileSaveWarningDialog>),
+		         std::make_pair ("AnimationEditor",               constructDialog <AnimationEditor>),
+		         std::make_pair ("AppearanceEditor",              constructDialog <AppearanceEditor>),
+		         std::make_pair ("BackgroundEditor",              constructDialog <BackgroundEditor>),
+		         std::make_pair ("BackgroundImageEditor",         constructDialog <BackgroundImageEditor>),
+		         std::make_pair ("BackgroundList",                constructDialog <BackgroundList>),
+		         std::make_pair ("BindableNodeEditor",            constructDialog <BindableNodeEditor>),
+		         std::make_pair ("BrowserSizeEditor",             constructDialog <BrowserSizeEditor>),
+		         std::make_pair ("ColorEditor",                   constructDialog <ColorEditor>),
+		         std::make_pair ("Console",                       constructDialog <Console>),
 		         std::make_pair ("FileExportDialog",              constructDialog <FileExportDialog>),
 		         std::make_pair ("FileExportImageDialog",         constructDialog <FileExportImageDialog>),
 		         std::make_pair ("FileExportProtoDialog",         constructDialog <FileExportProtoDialog>),
+		         std::make_pair ("FileImportAsExternProtoDialog", constructDialog <FileImportAsExternProtoDialog>),
+		         std::make_pair ("FileImportDialog",              constructDialog <FileImportDialog>),
+		         std::make_pair ("FileOpenDialog",                constructDialog <FileOpenDialog>),
+		         std::make_pair ("FileOpenFontDialog",            constructDialog <FileOpenFontDialog>),
+		         std::make_pair ("FileSaveACopyDialog",           constructDialog <FileSaveACopyDialog>),
+		         std::make_pair ("FileSaveDialog",                constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveVideoDialog",           constructDialog <FileSaveVideoDialog>),
-		         std::make_pair ("MessageDialog",                 constructDialog <MessageDialog>),
-		         std::make_pair ("ScenePropertiesEditor",         constructDialog <ScenePropertiesEditor>),
-		         std::make_pair ("UndoHistoryEditor",             constructDialog <UndoHistoryEditor>),
-		         std::make_pair ("MotionBlurEditor",              constructDialog <MotionBlurEditor>),
-		         std::make_pair ("BrowserSizeEditor",             constructDialog <BrowserSizeEditor>),
-		         std::make_pair ("BackgroundImageEditor",         constructDialog <BackgroundImageEditor>),
-		         std::make_pair ("GridEditor",                    constructDialog <GridEditor>),
-		         std::make_pair ("NodeEditor",                    constructDialog <NodeEditor>),
-		         std::make_pair ("NodePropertiesEditor",          constructDialog <NodePropertiesEditor>),
-		         std::make_pair ("AppearanceEditor",              constructDialog <AppearanceEditor>),
-		         std::make_pair ("TextureEditor",                 constructDialog <TextureEditor>),
-		         std::make_pair ("TextEditor",                    constructDialog <TextEditor>),
-		         std::make_pair ("GeometryPropertiesEditor",      constructDialog <GeometryPropertiesEditor>),
-		         std::make_pair ("ColorEditor",                   constructDialog <ColorEditor>),
-		         std::make_pair ("TextureMappingEditor",          constructDialog <TextureMappingEditor>),
-		         std::make_pair ("LayerEditor",                   constructDialog <LayerEditor>),
-		         std::make_pair ("BindableNodeEditor",            constructDialog <BindableNodeEditor>),
-		         std::make_pair ("BackgroundEditor",              constructDialog <BackgroundEditor>),
-		         std::make_pair ("FogEditor",                     constructDialog <FogEditor>),
-		         std::make_pair ("NavigationInfoEditor",          constructDialog <NavigationInfoEditor>),
-		         std::make_pair ("ViewpointEditor",               constructDialog <ViewpointEditor>),
-		         std::make_pair ("LightEditor",                   constructDialog <LightEditor>),
-		         std::make_pair ("SoundEditor",                   constructDialog <SoundEditor>),
-		         std::make_pair ("InlineEditor",                  constructDialog <InlineEditor>),
-		         std::make_pair ("PrecisionPlacementPanel",       constructDialog <PrecisionPlacementPanel>),
-		         std::make_pair ("SculpToolEditor",               constructDialog <SculpToolEditor>),
-		         std::make_pair ("ModelsPalette",                 constructDialog <ModelsPalette>),
-		         std::make_pair ("PrototypeEditor",               constructDialog <PrototypeEditor>),
-		         std::make_pair ("NodeIndex",                     constructDialog <NodeIndex>),
-		         std::make_pair ("BackgroundList",                constructDialog <BackgroundList>),
-		         std::make_pair ("FogList",                       constructDialog <FogList>),
-		         std::make_pair ("NavigationInfoList",            constructDialog <NavigationInfoList>),
-		         std::make_pair ("ViewpointList",                 constructDialog <ViewpointList>),
+		         std::make_pair ("FileSaveWarningDialog",         constructDialog <FileSaveWarningDialog>),
 		         std::make_pair ("FilesEditor",                   constructDialog <FilesEditor>),
-		         std::make_pair ("ProjectsEditor",                constructDialog <ProjectsEditor>),
+		         std::make_pair ("FogEditor",                     constructDialog <FogEditor>),
+		         std::make_pair ("FogList",                       constructDialog <FogList>),
+		         std::make_pair ("GeometryPropertiesEditor",      constructDialog <GeometryPropertiesEditor>),
+		         std::make_pair ("GridEditor",                    constructDialog <GridEditor>),
 		         std::make_pair ("HistoryEditor",                 constructDialog <HistoryEditor>),
+		         std::make_pair ("InlineEditor",                  constructDialog <InlineEditor>),
+		         std::make_pair ("LayerEditor",                   constructDialog <LayerEditor>),
 		         std::make_pair ("LibraryView",                   constructDialog <LibraryView>),
+		         std::make_pair ("LightEditor",                   constructDialog <LightEditor>),
+		         std::make_pair ("MessageDialog",                 constructDialog <MessageDialog>),
+		         std::make_pair ("ModelsPalette",                 constructDialog <ModelsPalette>),
+		         std::make_pair ("MotionBlurEditor",              constructDialog <MotionBlurEditor>),
+		         std::make_pair ("NavigationInfoEditor",          constructDialog <NavigationInfoEditor>),
+		         std::make_pair ("NavigationInfoList",            constructDialog <NavigationInfoList>),
+		         std::make_pair ("NodeEditor",                    constructDialog <NodeEditor>),
+		         std::make_pair ("NodeIndex",                     constructDialog <NodeIndex>),
+		         std::make_pair ("NodePropertiesEditor",          constructDialog <NodePropertiesEditor>),
+		         std::make_pair ("OpenFolderDialog",              constructDialog <OpenFolderDialog>),
+		         std::make_pair ("OpenLocationDialog",            constructDialog <OpenLocationDialog>),
 		         std::make_pair ("OutlineEditor",                 constructDialog <OutlineEditor>),
-		         std::make_pair ("Console",                       constructDialog <Console>),
-		         std::make_pair ("ScriptEditor",                  constructDialog <ScriptEditor>),
+		         std::make_pair ("PrecisionPlacementPanel",       constructDialog <PrecisionPlacementPanel>),
+		         std::make_pair ("ProjectsEditor",                constructDialog <ProjectsEditor>),
+		         std::make_pair ("PrototypeEditor",               constructDialog <PrototypeEditor>),
 		         std::make_pair ("RouteGraph",                    constructDialog <RouteGraph>),
-		         std::make_pair ("AnimationEditor",               constructDialog <AnimationEditor>),
+		         std::make_pair ("ScenePropertiesEditor",         constructDialog <ScenePropertiesEditor>),
+		         std::make_pair ("ScriptEditor",                  constructDialog <ScriptEditor>),
+		         std::make_pair ("SculpToolEditor",               constructDialog <SculpToolEditor>),
+		         std::make_pair ("SoundEditor",                   constructDialog <SoundEditor>),
+		         std::make_pair ("TextEditor",                    constructDialog <TextEditor>),
+		         std::make_pair ("TextureEditor",                 constructDialog <TextureEditor>),
+		         std::make_pair ("TextureMappingEditor",          constructDialog <TextureMappingEditor>),
+		         std::make_pair ("UndoHistoryEditor",             constructDialog <UndoHistoryEditor>),
+		         std::make_pair ("ViewpointEditor",               constructDialog <ViewpointEditor>),
+		         std::make_pair ("ViewpointList",                 constructDialog <ViewpointList>),
 				         })
 	{ }
 

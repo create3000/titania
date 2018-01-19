@@ -596,6 +596,12 @@ private:
 	void
 	on_grid_properties_activated () final override;
 
+	///  @name Extenal Tools menu
+
+	virtual
+	void
+	on_manage_external_tools_activate () final override;
+
 	///  @name Scenes menu
 
 	virtual

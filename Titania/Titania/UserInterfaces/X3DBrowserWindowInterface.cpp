@@ -218,6 +218,8 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAxonometricGridLayoutToolMenuItem", m_BrowserAxonometricGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
+	m_builder -> get_widget ("BrowserExternalToolsMenuItem", m_BrowserExternalToolsMenuItem);
+	m_builder -> get_widget ("BrowserManageExternalToolsMenuItem", m_BrowserManageExternalToolsMenuItem);
 	m_builder -> get_widget ("BrowserScenesMenuItem", m_BrowserScenesMenuItem);
 	m_builder -> get_widget ("BrowserScenesMenu", m_BrowserScenesMenu);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
@@ -335,6 +337,8 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
 	m_builder -> get_widget ("AxonometricGridLayoutToolMenuItem", m_AxonometricGridLayoutToolMenuItem);
 	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
+	m_builder -> get_widget ("ExternalToolsMenuItem", m_ExternalToolsMenuItem);
+	m_builder -> get_widget ("ManageExternalToolsMenuItem", m_ManageExternalToolsMenuItem);
 	m_builder -> get_widget ("ScenesMenuItem", m_ScenesMenuItem);
 	m_builder -> get_widget ("ScenesMenu", m_ScenesMenu);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
@@ -529,7 +533,8 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ImageMenuItem with id 'BrowserGridPropertiesMenuItem'.
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
-	// Connect object Gtk::MenuItem with id 'BrowserScenesMenuItem'.
+	// Connect object Gtk::MenuItem with id 'BrowserManageExternalToolsMenuItem'.
+	m_BrowserManageExternalToolsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_manage_external_tools_activate));
 	m_BrowserScenesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_scenes_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserInfoMenuItem'.
@@ -638,7 +643,8 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
-	// Connect object Gtk::MenuItem with id 'ScenesMenuItem'.
+	// Connect object Gtk::MenuItem with id 'ManageExternalToolsMenuItem'.
+	m_ManageExternalToolsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_manage_external_tools_activate));
 	m_ScenesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_scenes_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.

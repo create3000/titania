@@ -74,8 +74,8 @@ namespace puck {
 
 ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DColorEditorInterface (get_ui ("Applications/ColorEditor.glade")),
-	                preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Applications/ColorEditorPreview.x3dv") })),
+	X3DColorEditorInterface (get_ui ("Editors/ColorEditor.glade")),
+	                preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/ColorEditorPreview.x3dv") })),
 	            colorButton (this,
 	                         getColorButton (),
 	                         getColorAdjustment (),
