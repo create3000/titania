@@ -134,6 +134,14 @@ public:
 	getX_ITERenderer () const
 	{ return m_X_ITERenderer; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getFoldersListStore () const
+	{ return m_FoldersListStore; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getFoldersSelection () const
+	{ return m_FoldersSelection; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -145,6 +153,14 @@ public:
 	Gtk::HeaderBar &
 	getHeaderBar () const
 	{ return *m_HeaderBar; }
+
+	Gtk::Button &
+	getFolderButton () const
+	{ return *m_FolderButton; }
+
+	Gtk::Label &
+	getFolderLabel () const
+	{ return *m_FolderLabel; }
 
 	Gtk::Box &
 	getFilesBox () const
@@ -158,7 +174,19 @@ public:
 	getFileView () const
 	{ return *m_FileView; }
 
+	Gtk::Popover &
+	getFoldersPopover () const
+	{ return *m_FoldersPopover; }
+
+	Gtk::TreeView &
+	getFoldersTreeView () const
+	{ return *m_FoldersTreeView; }
+
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_folder_clicked () = 0;
 
 	virtual
 	void
@@ -171,6 +199,10 @@ public:
 	virtual
 	bool
 	on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
+
+	virtual
+	void
+	on_folder_selection_changed () = 0;
 
 	///  @name Destruction
 
@@ -207,12 +239,18 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_X_ITEColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_X_ITERenderer;
+	Glib::RefPtr <Gtk::ListStore> m_FoldersListStore;
+	Glib::RefPtr <Gtk::TreeSelection> m_FoldersSelection;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::Button* m_FolderButton;
+	Gtk::Label* m_FolderLabel;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	FileView* m_FileView;
+	Gtk::Popover* m_FoldersPopover;
+	Gtk::TreeView* m_FoldersTreeView;
 
 };
 

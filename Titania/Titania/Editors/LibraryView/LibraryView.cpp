@@ -84,14 +84,40 @@ LibraryView::configure ()
 		X3DLibraryViewInterface::configure ();
 		X3DFileBrowser <X3DLibraryViewInterface>::configure ();
 
-		setRootFolder (Gio::File::create_for_path (find_data_file ("Library")));
+		const auto folder = getConfig () -> getItem <std::string> ("folder", "1");
+		const auto path   = Gtk::TreePath (folder);
 
-		restoreExpanded ();
+		getFoldersSelection () -> select (path);
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+LibraryView::on_folder_clicked ()
+{
+	__LOG__ << std::endl;
+
+	getFoldersPopover () .popup ();
+}
+
+void
+LibraryView::on_folder_selection_changed ()
+{
+	getFoldersPopover () .popdown ();
+
+	const auto iter = getFoldersSelection () -> get_selected ();
+	auto       name = std::string ();
+
+	iter -> get_value (0, name);
+
+	saveExpanded (getFolderLabel () .get_text ());
+	getFolderLabel () .set_text (name);
+
+	setRootFolder (Gio::File::create_for_path (find_data_file ("Library/" + name)));
+	restoreExpanded (name);
 }
 
 void
@@ -153,7 +179,11 @@ LibraryView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & 
 void
 LibraryView::store ()
 {
-	saveExpanded ();
+	const auto folder = getFoldersListStore () -> get_path (getFoldersSelection () -> get_selected ());
+
+	getConfig () -> setItem <std::string> ("folder", folder .to_string ());
+
+	saveExpanded (getFolderLabel () .get_text ());
 
 	X3DFileBrowser <X3DLibraryViewInterface>::store ();
 	X3DLibraryViewInterface::store ();

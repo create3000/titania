@@ -89,19 +89,29 @@ X3DLibraryViewInterface::create ()
 	m_TitaniaRenderer      = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("TitaniaRenderer"));
 	m_X_ITEColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("X_ITEColumn"));
 	m_X_ITERenderer        = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("X_ITERenderer"));
+	m_FoldersListStore     = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FoldersListStore"));
+	m_FoldersSelection     = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FoldersSelection"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("FolderButton", m_FolderButton);
+	m_builder -> get_widget ("FolderLabel", m_FolderLabel);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget_derived ("FileView.FileView", m_FileView);
+	m_builder -> get_widget ("FoldersPopover", m_FoldersPopover);
+	m_builder -> get_widget ("FoldersTreeView", m_FoldersTreeView);
+	m_FolderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_folder_clicked));
 
 	// Connect object Gtk::TreeView with id 'FileView'.
 	m_FileView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_activated));
 	m_FileView -> signal_row_expanded () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_row_expanded));
 	m_FileView -> signal_test_expand_row () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_test_expand_row));
+
+	// Connect object Gtk::TreeSelection with id 'FoldersSelection'.
+	m_FoldersSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_folder_selection_changed));
 }
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()

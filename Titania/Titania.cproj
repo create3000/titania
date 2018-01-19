@@ -391,7 +391,6 @@
     <None Include="share\titania\Library\Backgrounds\Summer.x3dv" />
     <None Include="share\titania\Library\Backgrounds\Sunny.x3dv" />
     <None Include="share\titania\Library\Backgrounds\BlueGreen.x3dv" />
-    <None Include="share\titania\Library\TitaniaLogo.x3d" />
     <None Include="share\titania\Library\Materials\Artdeco\Artdeco1.x3dv" />
     <None Include="share\titania\Library\Materials\Artdeco\Artdeco10.x3dv" />
     <None Include="share\titania\Library\Materials\Artdeco\Artdeco11.x3dv" />
@@ -3151,6 +3150,7 @@
     <None Include="Titania\Editors\ModelsPalette\ModelsPalette.h" />
     <None Include="Titania\Dialogs\FileOpenDialog\OpenFolderDialog.h" />
     <None Include="Titania\Editors\ProjectsEditor\X3DFileBrowser.h" />
+    <None Include="share\titania\Library\Components\TitaniaLogo.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

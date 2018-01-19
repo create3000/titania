@@ -626,12 +626,12 @@ X3DBrowserWidget::on_switch_page (Gtk::Widget*, guint pageNumber)
 	{
 		const auto page = pages .at (pageNumber);
 	
+		recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
+		recentPages .emplace_back (page);
+	
 		recentView -> loadPreview (getCurrentBrowser ());
 	
 		setPage (page);
-	
-		recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
-		recentPages .emplace_back (page);
 	}
 	catch (const std::out_of_range & error)
 	{

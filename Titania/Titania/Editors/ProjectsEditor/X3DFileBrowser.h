@@ -177,10 +177,10 @@ protected:
 	///  @name Expanded handling
 
 	void
-	restoreExpanded ();
+	restoreExpanded (std::string id = "");
 
 	void
-	saveExpanded ();
+	saveExpanded (std::string id = "");
 
 	///  @name Destruction
 
@@ -737,12 +737,16 @@ X3DFileBrowser <Type>::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
 		{
 			const auto uri = basic::uri (folder -> get_uri ());
 
-			iter -> set_value (Columns::ICON, std::string ("bookmark-missing"));
-		
 			if (uri .is_local ())
+			{
+				iter -> set_value (Columns::ICON, std::string ("folder-symbolic"));
 				iter -> set_value (Columns::NAME, folder -> get_basename ());
+			}
 			else
+			{
+				iter -> set_value (Columns::ICON, std::string ("folder-remote-symbolic"));
 				iter -> set_value (Columns::NAME, folder -> get_basename () + " (" + uri .authority () + ")");
+			}
 
 			iter -> set_value (Columns::PATH, folder -> get_path ());
 		}
@@ -948,9 +952,12 @@ X3DFileBrowser <Type>::getFile (const Gtk::TreeIter & iter) const
 
 template <class Type>
 void
-X3DFileBrowser <Type>::restoreExpanded ()
+X3DFileBrowser <Type>::restoreExpanded (std::string id)
 {
-	const auto folders = getConfig () -> template getItem <X3D::MFString> ("expanded");
+	if (not id .empty ())
+		id = '.' + id;
+
+	const auto folders = getConfig () -> template getItem <X3D::MFString> ("expanded" + id);
 
 	for (const auto & folder : folders)
 	{
@@ -968,13 +975,16 @@ X3DFileBrowser <Type>::restoreExpanded ()
 
 template <class Type>
 void
-X3DFileBrowser <Type>::saveExpanded ()
+X3DFileBrowser <Type>::saveExpanded (std::string id)
 {
+	if (not id .empty ())
+		id = '.' + id;
+
 	X3D::MFString folders;
 
 	getExpanded (getFileStore () -> children (), folders);
 
-	getConfig () -> template setItem <X3D::MFString> ("expanded", folders);
+	getConfig () -> template setItem <X3D::MFString> ("expanded" + id, folders);
 	getConfig () -> template setItem <double> ("hadjustment", getFileView () .get_hadjustment () -> get_value ());
 	getConfig () -> template setItem <double> ("vadjustment", getFileView () .get_vadjustment () -> get_value ());
 }

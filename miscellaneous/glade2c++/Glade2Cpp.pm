@@ -912,3 +912,21 @@ DrawingArea::scroll_event
   virtual bool on_scroll_event(GdkEventScroll* scroll_event);
 TreeView::row_expanded
   virtual void on_row_expanded(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);
+ComboBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+ComboBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+ComboBox::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+ComboBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+ComboBox::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+ComboBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+ComboBox::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* button_event);
+ComboBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* release_event);
+ComboBox::changed
+   virtual void on_changed();

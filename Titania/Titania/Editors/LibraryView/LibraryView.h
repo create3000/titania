@@ -110,7 +110,15 @@ private:
 	
 	};
 
-	///  @name Selection handling
+	///  @name Event handlers
+
+	virtual
+	void
+	on_folder_clicked () final override;
+
+	virtual
+	void
+	on_folder_selection_changed () final override;
 
 	virtual
 	void
