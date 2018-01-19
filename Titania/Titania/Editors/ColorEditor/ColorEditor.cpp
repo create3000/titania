@@ -734,7 +734,8 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 {
 	if (appearance)
 	{
-		appearance -> texture ()          .removeInterest (&ColorEditor::set_texture, this);
+		appearance -> material ()         .removeInterest (&ColorEditor::set_material,         this);
+		appearance -> texture ()          .removeInterest (&ColorEditor::set_texture,          this);
 		appearance -> textureTransform () .removeInterest (&ColorEditor::set_textureTransform, this);
 		setTexture (false);
 	}
@@ -743,7 +744,8 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 
 	if (appearance)
 	{
-		appearance -> texture ()          .addInterest (&ColorEditor::set_texture, this);
+		appearance -> material ()         .addInterest (&ColorEditor::set_material,         this);
+		appearance -> texture ()          .addInterest (&ColorEditor::set_texture,          this);
 		appearance -> textureTransform () .addInterest (&ColorEditor::set_textureTransform, this);
 
 		set_material (appearance -> material ());
@@ -753,6 +755,7 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 	}
 	else
 	{
+		set_material (nullptr);
 		set_texture (nullptr);
 		set_textureTransform (nullptr);
 	}
@@ -777,7 +780,7 @@ ColorEditor::set_texture (const X3D::SFNode & value)
 	if (texture)
 		texture -> addInterest (&X3D::Browser::addEvent, *preview);
 
-	preview -> addEvent ();
+	setTexture (getTextureButton () .get_active ());
 }
 
 void
@@ -791,7 +794,7 @@ ColorEditor::set_textureTransform (const X3D::SFNode & value)
 	if (textureTransform)
 		textureTransform -> addInterest (&X3D::Browser::addEvent, *preview);
 
-	preview -> addEvent ();
+	setTexture (getTextureButton () .get_active ());
 }
 
 void

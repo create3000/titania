@@ -213,7 +213,6 @@
     <Compile Include="Titania\UserInterfaces\X3DNodeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DSidebarInterface.cpp" />
-    <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFooterInterface.cpp" />
     <Compile Include="Titania\Widgets\Footer\Footer.cpp" />
     <Compile Include="Titania\Base\X3DEditorInterface.cpp" />
@@ -365,6 +364,7 @@
     <Compile Include="Titania\Dialogs\FileOpenDialog\OpenFolderDialog.cpp" />
     <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
     <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
+    <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1812,7 +1812,6 @@
     <None Include="Titania\UserInterfaces\X3DNodeEditorInterface.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.h" />
     <None Include="Titania\UserInterfaces\X3DSidebarInterface.h" />
-    <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
     <None Include="Titania\UserInterfaces\X3DFooterInterface.h" />
     <None Include="Titania\Widgets\Footer\Footer.h" />
     <None Include="Titania\Widgets\X3DNotebook\X3DNotebook.h" />
@@ -3149,6 +3148,7 @@
     <None Include="share\titania\ui\Editors\ColorEditor.glade" />
     <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
     <None Include="Titania\Editors\ColorEditor\ColorEditor.h" />
+    <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3222,7 +3222,6 @@
     <Folder Include="share\titania\Library\Backgrounds\" />
     <Folder Include="Titania\Editors\BackgroundEditor\" />
     <Folder Include="share\titania\Library\Backgrounds\Texture\" />
-    <Folder Include="Titania\Widgets\Sidebar\" />
     <Folder Include="Titania\Widgets\Footer\" />
     <Folder Include="Titania\Widgets\X3DNotebook\" />
     <Folder Include="share\titania\Library\Components\" />
@@ -3313,6 +3312,7 @@
     <Folder Include="Titania\Editors\ModelsPalette\" />
     <Folder Include="Titania\Editors\TextureMappingEditor\" />
     <Folder Include="Titania\Editors\ColorEditor\" />
+    <Folder Include="Titania\Widgets\Sidebar\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
