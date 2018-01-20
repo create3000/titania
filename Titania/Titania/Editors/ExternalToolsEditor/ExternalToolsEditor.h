@@ -75,6 +75,10 @@ public:
 
 private:
 
+	///  @name Member types
+
+	class Columns;
+
 	///  @name Construction
 
 	virtual
@@ -84,6 +88,54 @@ private:
 	virtual
 	void
 	configure () final override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_add_tool_clicked () final override;
+
+	virtual
+	void
+	on_remove_tool_clicked () final override;
+
+	virtual
+	void
+	on_tree_selection_changed () final override;
+
+	void
+	on_text_changed ();
+
+	///  @name Operations
+
+	Glib::RefPtr <Gio::File>
+	getToolFolder () const;
+
+	std::string
+	getNewId () const;
+
+	void
+	restoreTree ();
+
+	void
+	saveTree ();
+
+	void
+	setText (const std::string & id, const std::string & text);
+
+	std::string
+	getText (const std::string & id) const;
+
+	std::string
+	getContentType (const std::string & data) const;
+
+	void
+	setLanguage (const std::string & text) const;
+	
+	std::string
+	getId (const Gtk::TreeIter & iter) const;
+
+	///  @name Destruction
 
 	virtual
 	void

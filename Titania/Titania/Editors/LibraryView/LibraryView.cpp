@@ -57,6 +57,16 @@
 namespace titania {
 namespace puck {
 
+class LibraryView::Columns
+{
+public:
+
+static constexpr int TITANIA      = 4;
+static constexpr int X_ITE        = 5;
+static constexpr int EXPERIMENTAL = 6;
+
+};
+
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 	                        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	                 X3DLibraryViewInterface (get_ui ("Editors/LibraryView.glade")),

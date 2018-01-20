@@ -53,15 +53,25 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/OS.h>
+
 namespace titania {
 namespace puck {
+
+class ExternalToolsEditor::Columns {
+public:
+
+	static constexpr size_t ID   = 0;
+	static constexpr size_t NAME = 1;
+
+};
 
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :
 	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade"))
 {
-	__LOG__ << getSourceView () .has_focus () << std::endl;
-	__LOG__ << getSourceView () .get_source_buffer () -> get_highlight_matching_brackets () << std::endl;
+	getSourceView () .get_source_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_text_changed));
+	getSourceView () .get_source_buffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("x_ite"));
 
 	setup ();
 }
@@ -76,6 +86,161 @@ void
 ExternalToolsEditor::configure ()
 {
 	X3DExternalToolsEditorInterface::configure ();
+
+	restoreTree ();
+}
+
+void
+ExternalToolsEditor::on_add_tool_clicked ()
+{
+	try
+	{
+		const auto id   = getNewId ();
+		const auto iter = getTreeStore () -> append ();
+	
+		iter -> set_value (Columns::ID,   id);
+		iter -> set_value (Columns::NAME, _ ("New Tool"));
+	
+		saveTree ();
+		setText (id, "#!/bin/sh\n");
+	
+		getTreeSelection () -> select (iter);
+	}
+	catch (const Glib::Error & error)
+	{ }
+}
+
+void
+ExternalToolsEditor::on_remove_tool_clicked ()
+{
+}
+
+void
+ExternalToolsEditor::on_tree_selection_changed ()
+{
+	try
+	{
+		if (getTreeSelection () -> get_selected_rows () .empty ())
+		{
+			getToolBox () .set_sensitive (false);
+			getSourceView () .get_source_buffer () -> set_text ("");
+		}
+		else
+		{
+			const auto iter = getTreeSelection () -> get_selected ();
+			const auto id   = getId (iter);
+			const auto text = getText (id);
+		
+			getToolBox () .set_sensitive (true);
+			getSourceView () .get_source_buffer () -> set_text (text);
+		
+			setLanguage (text);
+		}
+	}
+	catch (const Glib::Error & error)
+	{ }
+}
+
+void
+ExternalToolsEditor::on_text_changed ()
+{
+	try
+	{
+		const auto iter = getTreeSelection () -> get_selected ();
+		const auto id   = getId (iter);
+		const auto text = getSourceView () .get_source_buffer () -> get_text ();
+	
+		setText (id, text);
+		//setLanguage (text);
+	}
+	catch (const Glib::Error & error)
+	{ }
+}
+
+Glib::RefPtr <Gio::File>
+ExternalToolsEditor::getToolFolder () const
+{
+	const auto folder = Gio::File::create_for_path (config_dir ("Tools"));
+
+	if (not folder -> query_exists ())
+		folder -> make_directory_with_parents ();
+
+	return folder;
+}
+
+std::string
+ExternalToolsEditor::getNewId () const
+{
+	const auto  folder   = getToolFolder ();
+	std::string filename = folder -> get_path () + "/XXXXXX.txt";
+	auto        ofstream = os::mkstemps (filename, 4);
+	const auto  id       = filename .substr (filename .size () - 10, 6);
+
+	return id;
+}
+
+void
+ExternalToolsEditor::restoreTree ()
+{
+
+}
+
+void
+ExternalToolsEditor::saveTree ()
+{
+
+}
+
+void
+ExternalToolsEditor::setText (const std::string & id, const std::string & text)
+{
+	const auto folder   = getToolFolder ();
+	const auto file     = folder -> get_child (id + ".txt");
+	auto       ofstream = std::ofstream (file -> get_path ());
+
+	ofstream << text;
+}
+
+std::string
+ExternalToolsEditor::getText (const std::string & id) const
+{
+	const auto folder = getToolFolder ();
+	const auto file   = folder -> get_child (id + ".txt");
+
+	return os::load_file (file -> get_path ());
+}
+
+std::string
+ExternalToolsEditor::getContentType (const std::string & data) const
+{
+	bool        result_uncertain;
+	std::string contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), result_uncertain);
+
+	return contentType;
+}
+
+void
+ExternalToolsEditor::setLanguage (const std::string & text) const
+{
+	try
+	{
+		const auto contextType = getContentType (text);
+		const auto language    = Gsv::LanguageManager::get_default () -> guess_language ("", contextType);
+
+		getSourceView () .get_source_buffer () -> set_language (language);
+	}
+	catch (const Glib::Error & error)
+	{ }
+}
+
+std::string
+ExternalToolsEditor::getId (const Gtk::TreeIter & iter) const
+{
+	auto id = std::string ();
+
+	iter -> get_value (Columns::ID, id);
+
+	return id;
 }
 
 void

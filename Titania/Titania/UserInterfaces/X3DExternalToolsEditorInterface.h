@@ -91,6 +91,22 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::TreeStore> &
+	getTreeStore () const
+	{ return m_TreeStore; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getTreeSelection () const
+	{ return m_TreeSelection; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getNameColumn () const
+	{ return m_NameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getNameRenderer () const
+	{ return m_NameRenderer; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -103,11 +119,39 @@ public:
 	getHeaderBar () const
 	{ return *m_HeaderBar; }
 
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
+
+	Gtk::Button &
+	getAddToolButton () const
+	{ return *m_AddToolButton; }
+
+	Gtk::Button &
+	getRemoveToolButton () const
+	{ return *m_RemoveToolButton; }
+
+	Gtk::Box &
+	getToolBox () const
+	{ return *m_ToolBox; }
+
 	Gsv::View &
 	getSourceView () const
 	{ return *m_SourceView; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_tree_selection_changed () = 0;
+
+	virtual
+	void
+	on_add_tool_clicked () = 0;
+
+	virtual
+	void
+	on_remove_tool_clicked () = 0;
 
 	///  @name Destruction
 
@@ -133,9 +177,17 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::TreeStore> m_TreeStore;
+	Glib::RefPtr <Gtk::TreeSelection> m_TreeSelection;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::TreeView* m_TreeView;
+	Gtk::Button* m_AddToolButton;
+	Gtk::Button* m_RemoveToolButton;
+	Gtk::Box* m_ToolBox;
 	Gsv::View* m_SourceView;
 
 };

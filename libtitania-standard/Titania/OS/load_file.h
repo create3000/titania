@@ -57,7 +57,7 @@ namespace titania {
 namespace os {
 
 std::string
-load_file (const std::string &);
+load_file (const std::string & filename);
 
 } // os
 } // titania

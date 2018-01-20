@@ -78,12 +78,27 @@ void
 X3DExternalToolsEditorInterface::create ()
 {
 	// Get objects.
+	m_TreeStore     = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_TreeSelection = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeSelection"));
+	m_NameColumn    = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_NameRenderer  = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_builder -> get_widget ("AddToolButton", m_AddToolButton);
+	m_builder -> get_widget ("RemoveToolButton", m_RemoveToolButton);
+	m_builder -> get_widget ("ToolBox", m_ToolBox);
 	m_builder -> get_widget ("SourceView", m_SourceView);
+
+	// Connect object Gtk::TreeSelection with id 'TreeSelection'.
+	m_TreeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_tree_selection_changed));
+
+	// Connect object Gtk::Button with id 'AddToolButton'.
+	m_AddToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_add_tool_clicked));
+	m_RemoveToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_remove_tool_clicked));
 }
 
 X3DExternalToolsEditorInterface::~X3DExternalToolsEditorInterface ()

@@ -100,15 +100,7 @@ private:
 
 	///  Member types
 
-	class Columns
-	{
-	public:
-	
-	static constexpr int TITANIA      = 4;
-	static constexpr int X_ITE        = 5;
-	static constexpr int EXPERIMENTAL = 6;
-	
-	};
+	class Columns;
 
 	///  @name Event handlers
 
