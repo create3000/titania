@@ -58,7 +58,12 @@ $objects {$_} = true foreach qw(
 	Gtk::CellRendererPixbuf
 	Gtk::TextBuffer
 	Gtk::EntryCompletion
+	Gsv::Buffer
 );
+
+my $plugins = {
+	"GtkSourceView" => { path => "gtksourceviewmm.h", class => "Gsv::View" },
+};
 
 sub new
 {
@@ -126,7 +131,17 @@ sub isWidget
 	return not isObject @_;
 }
 
-#	return unless ucfirst $attributes {id} eq $attributes {id};
+sub getClass
+{
+	my $class  = shift;
+	my $plugin = $plugins -> {$class};
+
+	return $plugin -> {class} if $plugin;
+
+	$class =~ s/Gtk/Gtk::/;
+	
+	return $class;
+}
 
 sub h_derived
 {
@@ -137,13 +152,28 @@ sub h_derived
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	
-	$attributes {class} =~ s/Gtk/Gtk::/;
+	$attributes {class} = getClass ($attributes {class});
 	return if not isWidget ($attributes {class});
 	return unless $attributes {id} =~ s/^\w+\.//;
 
 	my $path = File::Spec -> abs2rel ("$self->{derived_directory}/$attributes{id}.h", $self -> {directory});
 
-	say $file "#include \"$path\"";
+	$self -> {derived_h} -> {$path} = 1;
+}
+
+sub h_plugin
+{
+	my ($self, $expat, $name, %attributes) = @_;
+	my $file = $self -> {handle};
+	
+	return unless $attributes {id};
+	return if $name ne "object";
+	return if ucfirst $attributes {id} ne $attributes {id};
+	
+	my $plugin = $plugins -> {$attributes {class}};
+	return unless $plugin;
+
+	$self -> {plugin_h} -> {$plugin -> {path}} = 1;
 }
 
 sub h_object_getters
@@ -155,7 +185,7 @@ sub h_object_getters
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 
-	$attributes {class} =~ s/Gtk/Gtk::/;
+	$attributes {class} = getClass ($attributes {class});
 	return if not isObject ($attributes {class});
 
 	say $file "const Glib::RefPtr <$attributes{class}> &";
@@ -171,7 +201,7 @@ sub h_widget_getters
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	
-	$attributes {class} =~ s/Gtk/Gtk::/;
+	$attributes {class} = getClass ($attributes {class});
 	return if not isWidget ($attributes {class});
 	$attributes {class} = $1 if $attributes {id} =~ s/\.(\w+)$//;
 
@@ -191,7 +221,7 @@ sub h_objects
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 
-	$attributes {class} =~ s/Gtk/Gtk::/;
+	$attributes {class} = getClass ($attributes {class});
 	return if not isObject ($attributes {class});
 
 	say $file "Glib::RefPtr <$attributes{class}> m_" . $attributes {id} . ";";
@@ -206,7 +236,7 @@ sub h_widgets
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	
-	$attributes {class} =~ s/Gtk/Gtk::/;
+	$attributes {class} = getClass ($attributes {class});
 	return if not isWidget ($attributes {class});
 	$attributes {class} = $1 if $attributes {id} =~ s/\.(\w+)$//;
 
@@ -396,6 +426,9 @@ sub generate
 	$self -> {cpp_signal_handler} = { };
 	$self -> {class_name}         = "$self->{class_prefix}${name}$self->{class_suffix}";
 	$self -> {windows}            = { }; 
+	$self -> {derived_h}          = { };
+	$self -> {plugin_h}           = { };
+
 
 	tie %{ $self -> {h_signal_handler} },   'Tie::IxHash';
 	tie %{ $self -> {cpp_signal_handler} }, 'Tie::IxHash';
@@ -412,7 +445,18 @@ sub generate
 	my $base_class_name = $self -> {base_class} ? basename $self -> {base_class}, ".h" : "";
 	my $base_path       = File::Spec -> abs2rel ($self -> {base_class}, dirname $h_out) ;
 
+
+
 	my $input = get_file ($filename);
+
+	# Derived
+	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_derived (@_) }});
+	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
+
+	# Plugin
+	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_plugin (@_) }});
+	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
+
 
 
 	# Header file
@@ -424,22 +468,27 @@ sub generate
 	say OUT "#ifndef " . uc "_$name\_$self->{class_name}\_H_";
 	say OUT "#define " . uc "_$name\_$self->{class_name}\_H_";
 
-	# Derived
 	say OUT "";
-	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_derived (@_) }});
-	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
+	say OUT "#include \"$base_path\"" if $base_class_name;
 
 	say OUT "";
 	say OUT "#include <gtkmm.h>";
 	say OUT "#include <string>";
-	say OUT "#include \"$base_path\"" if $base_class_name;
+
 	say OUT "";
+	say OUT "#include <$_>"
+		foreach (keys %{ $self -> {plugin_h} });
+
+	say OUT "";
+	say OUT "#include \"$_\""
+		foreach (keys %{ $self -> {derived_h} });
 	
 	# Namespace
-	say OUT "namespace $_ {" foreach @{$self -> {namespaces}};
 	say OUT "";
+	say OUT "namespace $_ {" foreach @{$self -> {namespaces}};
 
 	# Class
+	say OUT "";
 	say OUT "/**";
 	say OUT " *  Gtk Interface for $name.";
 	say OUT "*/";

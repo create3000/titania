@@ -48,38 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_FILES_EDITOR_H__
-#define __TMP_GLAD2CPP_FILES_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_EXTERNAL_TOOLS_EDITOR_H__
+#define __TMP_GLAD2CPP_EXTERNAL_TOOLS_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 
 #include <gtkmm.h>
 #include <string>
 
+#include <gtksourceviewmm.h>
+
 namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for FilesEditor.
+ *  Gtk Interface for ExternalToolsEditor.
  */
-class X3DFilesEditorInterface :
+class X3DExternalToolsEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DFilesEditorInterface () :
+	X3DExternalToolsEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DFilesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DExternalToolsEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DFilesEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+	X3DExternalToolsEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
@@ -97,40 +99,20 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
-
-	Gtk::Box &
-	getProjectsEditorBox () const
-	{ return *m_ProjectsEditorBox; }
-
-	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
+	Gsv::View &
+	getSourceView () const
+	{ return *m_SourceView; }
 
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_map_window () = 0;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~X3DFilesEditorInterface () override;
+	~X3DExternalToolsEditorInterface () override;
 
 
 private:
@@ -153,11 +135,8 @@ private:
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ProjectsEditorBox;
-	Gtk::Box* m_HistoryEditorBox;
-	Gtk::Box* m_LibraryViewBox;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gsv::View* m_SourceView;
 
 };
 

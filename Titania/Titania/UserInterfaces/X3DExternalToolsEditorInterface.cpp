@@ -48,120 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_FILES_EDITOR_H__
-#define __TMP_GLAD2CPP_FILES_EDITOR_H__
-
-#include "../Base/X3DEditorInterface.h"
-
-#include <gtkmm.h>
-#include <string>
+#include "X3DExternalToolsEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-/**
- *  Gtk Interface for FilesEditor.
- */
-class X3DFilesEditorInterface :
-	public X3DEditorInterface
+void
+X3DExternalToolsEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
-
-	X3DFilesEditorInterface () :
-		X3DEditorInterface ()
-	{ }
-
-	template <class ... Arguments>
-	X3DFilesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
-	{ create (filename); }
-
-	template <class ... Arguments>
-	X3DFilesEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
-	{ create (filenames); }
-
-	///  @name Member access
-
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const
-	{ return m_builder; }
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
-
-	Gtk::Box &
-	getProjectsEditorBox () const
-	{ return *m_ProjectsEditorBox; }
-
-	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
-
-	///  @name Signal handlers
-
-	virtual
-	void
-	on_map_window () = 0;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
-
-	///  @name Destruction
-
-	virtual
-	~X3DFilesEditorInterface () override;
-
-
-private:
-
-	///  @name Construction
-
-	void
-	create (const std::string &);
-
-	void
-	create (std::initializer_list <std::string>);
-
-	void
 	create ();
+}
 
-	///  @name Static members
+void
+X3DExternalToolsEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
-	///  @name Members
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ProjectsEditorBox;
-	Gtk::Box* m_HistoryEditorBox;
-	Gtk::Box* m_LibraryViewBox;
+	create ();
+}
 
-};
+void
+X3DExternalToolsEditorInterface::create ()
+{
+	// Get objects.
+
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("SourceView", m_SourceView);
+}
+
+X3DExternalToolsEditorInterface::~X3DExternalToolsEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

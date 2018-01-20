@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,120 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_FILES_EDITOR_H__
-#define __TMP_GLAD2CPP_FILES_EDITOR_H__
+#include "ExternalToolsEditor.h"
 
-#include "../Base/X3DEditorInterface.h"
-
-#include <gtkmm.h>
-#include <string>
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-/**
- *  Gtk Interface for FilesEditor.
- */
-class X3DFilesEditorInterface :
-	public X3DEditorInterface
+ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :
+	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade"))
 {
-public:
+	__LOG__ << getSourceView () .has_focus () << std::endl;
+	__LOG__ << getSourceView () .get_source_buffer () -> get_highlight_matching_brackets () << std::endl;
 
-	///  @name Construction
+	setup ();
+}
 
-	X3DFilesEditorInterface () :
-		X3DEditorInterface ()
-	{ }
+void
+ExternalToolsEditor::initialize ()
+{
+	X3DExternalToolsEditorInterface::initialize ();
+}
 
-	template <class ... Arguments>
-	X3DFilesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
-	{ create (filename); }
+void
+ExternalToolsEditor::configure ()
+{
+	X3DExternalToolsEditorInterface::configure ();
+}
 
-	template <class ... Arguments>
-	X3DFilesEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
-	{ create (filenames); }
+void
+ExternalToolsEditor::store ()
+{
+	X3DExternalToolsEditorInterface::store ();
+}
 
-	///  @name Member access
-
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const
-	{ return m_builder; }
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
-
-	Gtk::Box &
-	getProjectsEditorBox () const
-	{ return *m_ProjectsEditorBox; }
-
-	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
-
-	///  @name Signal handlers
-
-	virtual
-	void
-	on_map_window () = 0;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget* page, guint page_number) = 0;
-
-	///  @name Destruction
-
-	virtual
-	~X3DFilesEditorInterface () override;
-
-
-private:
-
-	///  @name Construction
-
-	void
-	create (const std::string &);
-
-	void
-	create (std::initializer_list <std::string>);
-
-	void
-	create ();
-
-	///  @name Static members
-
-	///  @name Members
-
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ProjectsEditorBox;
-	Gtk::Box* m_HistoryEditorBox;
-	Gtk::Box* m_LibraryViewBox;
-
-};
+ExternalToolsEditor::~ExternalToolsEditor ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

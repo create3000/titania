@@ -76,6 +76,7 @@
 #include "../Editors/BindableNodeList/NavigationInfoList.h"
 #include "../Editors/BindableNodeList/ViewpointList.h"
 #include "../Editors/BrowserSizeEditor/BrowserSizeEditor.h"
+#include "../Editors/ExternalToolsEditor/ExternalToolsEditor.h"
 #include "../Editors/FilesEditor/FilesEditor.h"
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
@@ -130,6 +131,7 @@ public:
 		         std::make_pair ("BrowserSizeEditor",             constructDialog <BrowserSizeEditor>),
 		         std::make_pair ("ColorEditor",                   constructDialog <ColorEditor>),
 		         std::make_pair ("Console",                       constructDialog <Console>),
+		         std::make_pair ("ExternalToolsEditor",           constructDialog <ExternalToolsEditor>),
 		         std::make_pair ("FileExportDialog",              constructDialog <FileExportDialog>),
 		         std::make_pair ("FileExportImageDialog",         constructDialog <FileExportImageDialog>),
 		         std::make_pair ("FileExportProtoDialog",         constructDialog <FileExportProtoDialog>),

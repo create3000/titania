@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_BROWSER_WINDOW_H__
 
 #include "../Base/X3DUserInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

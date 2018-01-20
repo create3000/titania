@@ -365,6 +365,8 @@
     <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
     <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
     <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3149,6 +3151,9 @@
     <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
     <None Include="Titania\Editors\ColorEditor\ColorEditor.h" />
     <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
+    <None Include="share\titania\ui\Editors\ExternalToolsEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.h" />
+    <None Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3313,6 +3318,7 @@
     <Folder Include="Titania\Editors\TextureMappingEditor\" />
     <Folder Include="Titania\Editors\ColorEditor\" />
     <Folder Include="Titania\Widgets\Sidebar\" />
+    <Folder Include="Titania\Editors\ExternalToolsEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

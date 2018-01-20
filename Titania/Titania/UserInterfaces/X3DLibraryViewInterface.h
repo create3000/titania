@@ -51,11 +51,12 @@
 #ifndef __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 #define __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 
-#include "../DerivedWidgets/FileView.h"
-
 #include "../Base/X3DEditorInterface.h"
+
 #include <gtkmm.h>
 #include <string>
+
+#include "../DerivedWidgets/FileView.h"
 
 namespace titania {
 namespace puck {

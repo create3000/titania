@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_NOTEBOOK_PAGE_H__
 
 #include "../Base/X3DUserInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

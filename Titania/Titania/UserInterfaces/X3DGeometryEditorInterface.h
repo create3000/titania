@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
 
 #include "../Base/X3DRevealerInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

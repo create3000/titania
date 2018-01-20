@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_FILE_IMPORT_DIALOG_H__
 
 #include "../Base/X3DDialogInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

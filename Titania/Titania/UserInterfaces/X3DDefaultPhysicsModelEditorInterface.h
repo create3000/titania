@@ -52,6 +52,7 @@
 #define __TMP_GLAD2CPP_DEFAULT_PHYSICS_MODEL_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
+
 #include <gtkmm.h>
 #include <string>
 

@@ -1233,6 +1233,7 @@ BrowserWindow::setEditing (const bool enabled)
 	getSelectionMenuItem ()              .set_visible (enabled);
 	getGeometryMenuItem ()               .set_visible (enabled);
 	getLayoutMenuItem ()                 .set_visible (enabled);
+	getExternalToolsMenuItem ()          .set_visible (enabled);
 
 	getBrowserOpenRecentMenuItem ()             .set_visible (enabled);
 	getBrowserImportMenuItem ()                 .set_visible (enabled);
@@ -1245,6 +1246,8 @@ BrowserWindow::setEditing (const bool enabled)
 	getBrowserSelectionMenuItem ()              .set_visible (enabled);
 	getBrowserGeometryMenuItem ()               .set_visible (enabled);
 	getBrowserLayoutMenuItem ()                 .set_visible (enabled);
+	getBrowserExternalToolsMenuItem ()          .set_visible (enabled);
+
 
 	getLocationBar ()    .set_visible (not enabled);
 	getEditToolBarBox () .set_visible (enabled);
