@@ -53,6 +53,7 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -89,35 +90,6 @@ X3DExternalToolsEditor::createTool ()
 	const auto  id       = filename .substr (filename .size () - 10, 6);
 
 	return id;
-}
-
-void
-X3DExternalToolsEditor::restoreTree ()
-{
-
-}
-
-void
-X3DExternalToolsEditor::saveTree ()
-{
-	std::vector <std::vector <std::string>> tree;
-
-	saveTree (getTreeStore () -> children (), tree);
-}
-
-void
-X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, std::vector <std::vector <std::string>> & tree) const
-{
-	for (const auto & child : children)
-	{
-		std::vector <std::string> array;
-
-		array .emplace_back (getTreeStore () -> get_path (child) .to_string ());
-		array .emplace_back (getId (child));
-		array .emplace_back (getName (child));
-
-		saveTree (child -> children (), tree);
-	}
 }
 
 std::string
@@ -192,6 +164,105 @@ X3DExternalToolsEditor::setLanguage (const std::string & text) const
 	}
 	catch (const Glib::Error & error)
 	{ }
+}
+
+void
+X3DExternalToolsEditor::restoreTree ()
+{
+	const auto string  = getConfig () -> getItem <std::string> ("tree");
+	auto       strings = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (strings), string, "\n");
+
+	std::vector <Gtk::TreePath> expand;
+
+	for (const auto & value : strings)
+	{
+		try
+		{
+			auto array = std::vector <std::string> ();
+	
+			basic::split (std::back_inserter (array), value, "\t");
+	
+			auto         path     = Gtk::TreePath (array .at (0));
+			const auto   expanded = array .at (1) == "true";
+			const auto & id       = array .at (2);
+			const auto & name     = array .at (3);
+
+			if (expanded)
+				expand .emplace_back (path);
+
+			auto iter = Gtk::TreeIter ();
+
+			switch (path .size ())
+			{
+				case 0:
+				{
+					continue;
+				}
+				case 1:
+				{
+					iter = getTreeStore () -> append ();
+					break;
+				}
+				default:
+				{
+					if (not path .up ())
+						continue;
+
+					const auto parent = getTreeStore () -> get_iter (path);
+
+					iter = getTreeStore () -> append (parent -> children ());
+					break;
+				}
+			}
+
+			setId   (iter, id);
+			setName (iter, name);
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	for (const auto & path : expand)
+		getTreeView () .expand_row (path, false);
+}
+
+void
+X3DExternalToolsEditor::saveTree ()
+{
+	std::vector <std::vector <std::string>> tree;
+	std::vector <std::string>               strings;
+	std::string                             string;
+
+	saveTree (getTreeStore () -> children (), tree);
+
+	for (const auto & array : tree)
+		strings .emplace_back (basic::join (array, "\t"));
+
+	string = basic::join (strings, "\n");
+
+	getConfig () -> setItem <std::string> ("tree", string);
+}
+
+void
+X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, std::vector <std::vector <std::string>> & tree) const
+{
+	for (const auto & child : children)
+	{
+		const auto path = getTreeStore () -> get_path (child);
+
+		std::vector <std::string> array;
+
+		array .emplace_back (path .to_string ());
+		array .emplace_back (getTreeView () .row_expanded (path) ? "true" : "false");
+		array .emplace_back (getId (child));
+		array .emplace_back (getName (child));
+
+		tree .emplace_back (std::move (array));
+
+		saveTree (child -> children (), tree);
+	}
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

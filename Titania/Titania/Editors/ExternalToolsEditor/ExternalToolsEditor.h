@@ -75,10 +75,6 @@ public:
 
 private:
 
-	///  @name Member types
-
-	class Columns;
-
 	///  @name Construction
 
 	virtual
@@ -102,6 +98,9 @@ private:
 	virtual
 	void
 	on_tree_selection_changed () final override;
+
+	void
+	on_name_edited (const Glib::ustring & path, const Glib::ustring & new_text);
 
 	void
 	on_text_changed ();

@@ -114,17 +114,17 @@ protected:
 	void
 	setName (const Gtk::TreeIter & iter, const std::string & value) const;
 
-	void
-	restoreTree ();
-
-	void
-	saveTree ();
-
 	std::string
 	getContentType (const std::string & data) const;
 
 	void
 	setLanguage (const std::string & text) const;
+
+	void
+	restoreTree ();
+
+	void
+	saveTree ();
 
 	///  @name Destruction
 

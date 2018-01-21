@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 
@@ -65,6 +63,9 @@ ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow)
 {
 	getSourceView () .get_source_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_text_changed));
 	getSourceView () .get_source_buffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("x_ite"));
+
+	getNameRenderer () -> signal_edited () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_name_edited));
+	getNameRenderer () -> property_editable () = true;
 
 	setup ();
 }
@@ -96,9 +97,8 @@ ExternalToolsEditor::on_add_tool_clicked ()
 		setId   (iter, id);
 		setName (iter, _ ("New Tool"));
 		setText (id, "#!/bin/sh\n");
-
 		saveTree ();
-	
+
 		getTreeSelection () -> select (iter);
 	}
 	catch (const Glib::Error & error)
@@ -134,6 +134,18 @@ ExternalToolsEditor::on_tree_selection_changed ()
 	}
 	catch (const Glib::Error & error)
 	{ }
+}
+
+void
+ExternalToolsEditor::on_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
+{
+	if (new_text .empty ())
+		return;
+
+	const auto iter = getTreeStore () -> get_iter (path);
+
+	setName (iter, new_text);
+	saveTree ();
 }
 
 void
