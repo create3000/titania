@@ -195,6 +195,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.$(OBJEXT) \
 	Titania/Editors/ColorEditor/ColorEditor.$(OBJEXT) \
 	Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.$(OBJEXT) \
+	Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.$(OBJEXT) \
 	Titania/Editors/FilesEditor/FilesEditor.$(OBJEXT) \
 	Titania/Editors/FogEditor/FogEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.$(OBJEXT) \
@@ -741,6 +742,7 @@ titania_SOURCES = \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.cpp \
+	Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.cpp \
 	Titania/Editors/FilesEditor/FilesEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
@@ -1473,6 +1475,9 @@ Titania/Editors/ExternalToolsEditor/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/ExternalToolsEditor/$(DEPDIR)
 	@: > Titania/Editors/ExternalToolsEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.$(OBJEXT):  \
+	Titania/Editors/ExternalToolsEditor/$(am__dirstamp) \
+	Titania/Editors/ExternalToolsEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.$(OBJEXT):  \
 	Titania/Editors/ExternalToolsEditor/$(am__dirstamp) \
 	Titania/Editors/ExternalToolsEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/FilesEditor/$(am__dirstamp):
@@ -2500,6 +2505,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BrowserSizeEditor/$(DEPDIR)/BrowserSizeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ColorEditor/$(DEPDIR)/ColorEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ExternalToolsEditor/$(DEPDIR)/ExternalToolsEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ExternalToolsEditor/$(DEPDIR)/X3DExternalToolsEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/FilesEditor/$(DEPDIR)/FilesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/FogEditor/$(DEPDIR)/FogEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/GeometryPropertiesEditor.Po@am__quote@

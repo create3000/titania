@@ -58,17 +58,10 @@
 namespace titania {
 namespace puck {
 
-class ExternalToolsEditor::Columns {
-public:
-
-	static constexpr size_t ID   = 0;
-	static constexpr size_t NAME = 1;
-
-};
-
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :
 	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade"))
+	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade")),
+	         X3DExternalToolsEditor ()
 {
 	getSourceView () .get_source_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_text_changed));
 	getSourceView () .get_source_buffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("x_ite"));
@@ -80,12 +73,14 @@ void
 ExternalToolsEditor::initialize ()
 {
 	X3DExternalToolsEditorInterface::initialize ();
+	X3DExternalToolsEditor::initialize ();
 }
 
 void
 ExternalToolsEditor::configure ()
 {
 	X3DExternalToolsEditorInterface::configure ();
+	X3DExternalToolsEditor::configure ();
 
 	restoreTree ();
 }
@@ -95,14 +90,14 @@ ExternalToolsEditor::on_add_tool_clicked ()
 {
 	try
 	{
-		const auto id   = getNewId ();
+		const auto id   = createTool ();
 		const auto iter = getTreeStore () -> append ();
 	
-		iter -> set_value (Columns::ID,   id);
-		iter -> set_value (Columns::NAME, _ ("New Tool"));
-	
-		saveTree ();
+		setId   (iter, id);
+		setName (iter, _ ("New Tool"));
 		setText (id, "#!/bin/sh\n");
+
+		saveTree ();
 	
 		getTreeSelection () -> select (iter);
 	}
@@ -157,95 +152,10 @@ ExternalToolsEditor::on_text_changed ()
 	{ }
 }
 
-Glib::RefPtr <Gio::File>
-ExternalToolsEditor::getToolFolder () const
-{
-	const auto folder = Gio::File::create_for_path (config_dir ("Tools"));
-
-	if (not folder -> query_exists ())
-		folder -> make_directory_with_parents ();
-
-	return folder;
-}
-
-std::string
-ExternalToolsEditor::getNewId () const
-{
-	const auto  folder   = getToolFolder ();
-	std::string filename = folder -> get_path () + "/XXXXXX.txt";
-	auto        ofstream = os::mkstemps (filename, 4);
-	const auto  id       = filename .substr (filename .size () - 10, 6);
-
-	return id;
-}
-
-void
-ExternalToolsEditor::restoreTree ()
-{
-
-}
-
-void
-ExternalToolsEditor::saveTree ()
-{
-
-}
-
-void
-ExternalToolsEditor::setText (const std::string & id, const std::string & text)
-{
-	const auto folder   = getToolFolder ();
-	const auto file     = folder -> get_child (id + ".txt");
-	auto       ofstream = std::ofstream (file -> get_path ());
-
-	ofstream << text;
-}
-
-std::string
-ExternalToolsEditor::getText (const std::string & id) const
-{
-	const auto folder = getToolFolder ();
-	const auto file   = folder -> get_child (id + ".txt");
-
-	return os::load_file (file -> get_path ());
-}
-
-std::string
-ExternalToolsEditor::getContentType (const std::string & data) const
-{
-	bool        result_uncertain;
-	std::string contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), result_uncertain);
-
-	return contentType;
-}
-
-void
-ExternalToolsEditor::setLanguage (const std::string & text) const
-{
-	try
-	{
-		const auto contextType = getContentType (text);
-		const auto language    = Gsv::LanguageManager::get_default () -> guess_language ("", contextType);
-
-		getSourceView () .get_source_buffer () -> set_language (language);
-	}
-	catch (const Glib::Error & error)
-	{ }
-}
-
-std::string
-ExternalToolsEditor::getId (const Gtk::TreeIter & iter) const
-{
-	auto id = std::string ();
-
-	iter -> get_value (Columns::ID, id);
-
-	return id;
-}
-
 void
 ExternalToolsEditor::store ()
 {
+	X3DExternalToolsEditor::store ();
 	X3DExternalToolsEditorInterface::store ();
 }
 

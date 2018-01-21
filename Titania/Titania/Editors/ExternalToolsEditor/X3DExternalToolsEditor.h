@@ -48,29 +48,90 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOLS_EDITOR_H__
-#define __TITANIA_EDITORS_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOLS_EDITOR_H__
+#ifndef __TITANIA_EDITORS_X3D_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOLS_EDITOR_H__
+#define __TITANIA_EDITORS_X3D_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOLS_EDITOR_H__
 
 #include "../../UserInterfaces/X3DExternalToolsEditorInterface.h"
-#include "X3DExternalToolsEditor.h"
 
 namespace titania {
 namespace puck {
 
-class ExternalToolsEditor :
-	virtual public X3DExternalToolsEditorInterface,
-	public X3DExternalToolsEditor
+class X3DExternalToolsEditor :
+	virtual public X3DExternalToolsEditorInterface
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
-	ExternalToolsEditor (X3DBrowserWindow* const browserWindow);
+	static
+	void
+	setText (const std::string & id, const std::string & text);
+
+	static
+	std::string
+	getText (const std::string & id);
 
 	///  @name Destruction
 
 	virtual
-	~ExternalToolsEditor () final override;
+	~X3DExternalToolsEditor () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DExternalToolsEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	virtual
+	void
+	configure () override
+	{ }
+
+	///  @name Member access
+
+	static
+	Glib::RefPtr <Gio::File>
+	getToolFolder ();
+
+	std::string
+	createTool ();
+
+	std::string
+	getId (const Gtk::TreeIter & iter) const;
+
+	void
+	setId (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getName (const Gtk::TreeIter & iter) const;
+
+	void
+	setName (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	void
+	restoreTree ();
+
+	void
+	saveTree ();
+
+	std::string
+	getContentType (const std::string & data) const;
+
+	void
+	setLanguage (const std::string & text) const;
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () override
+	{ }
 
 
 private:
@@ -79,40 +140,10 @@ private:
 
 	class Columns;
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	configure () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_add_tool_clicked () final override;
-
-	virtual
-	void
-	on_remove_tool_clicked () final override;
-
-	virtual
-	void
-	on_tree_selection_changed () final override;
+	///  @name Member access
 
 	void
-	on_text_changed ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () final override;
-
-	///  @name Members
+	saveTree (const Gtk::TreeNodeChildren & children, std::vector <std::vector <std::string>> & tree) const;
 
 };
 

@@ -99,6 +99,7 @@ titania_SOURCES =  \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.cpp \
+	Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.cpp \
 	Titania/Editors/FilesEditor/FilesEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
