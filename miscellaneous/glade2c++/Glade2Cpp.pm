@@ -62,7 +62,7 @@ $objects {$_} = true foreach qw(
 );
 
 my $plugins = {
-	"GtkSourceView" => { path => "gtksourceviewmm.h", class => "Gsv::View" },
+	"GtkSourceView" => { path => "gtksourceviewmm.h", class => "Gsv::View", init => "Gsv::init ();" },
 };
 
 sub new
@@ -173,7 +173,7 @@ sub h_plugin
 	my $plugin = $plugins -> {$attributes {class}};
 	return unless $plugin;
 
-	$self -> {plugin_h} -> {$plugin -> {path}} = 1;
+	$self -> {plugin_h} -> {$plugin -> {path}} = $plugin;
 }
 
 sub h_object_getters
@@ -477,11 +477,11 @@ sub generate
 
 	say OUT "";
 	say OUT "#include <$_>"
-		foreach (keys %{ $self -> {plugin_h} });
+		foreach (sort keys %{ $self -> {plugin_h} });
 
 	say OUT "";
 	say OUT "#include \"$_\""
-		foreach (keys %{ $self -> {derived_h} });
+		foreach (sort keys %{ $self -> {derived_h} });
 	
 	# Namespace
 	say OUT "";
@@ -672,6 +672,12 @@ sub generate
 	say OUT "void";
 	say OUT "$self->{class_name}\::create (const std::string & filename)";
 	say OUT "{";
+	foreach (sort keys %{ $self -> {plugin_h} })
+	{
+		say OUT $self -> {plugin_h} -> {$_} -> {init}
+			if $self -> {plugin_h} -> {$_} -> {init};
+	}
+	say OUT "" if keys %{ $self -> {plugin_h} };
 	say OUT "// Create Builder.";
 	say OUT "m_builder = Gtk::Builder::create_from_file (filename);";
 	say OUT "";
@@ -683,6 +689,12 @@ sub generate
 	say OUT "void";
 	say OUT "$self->{class_name}\::create (std::initializer_list <std::string> filenames)";
 	say OUT "{";
+	foreach (sort keys %{ $self -> {plugin_h} })
+	{
+		say OUT $self -> {plugin_h} -> {$_} -> {init}
+			if $self -> {plugin_h} -> {$_} -> {init};
+	}
+	say OUT "" if keys %{ $self -> {plugin_h} };
 	say OUT "// Create Builder.";
 	say OUT "m_builder = Gtk::Builder::create ();";
 	say OUT "";

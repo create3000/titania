@@ -103,6 +103,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_focus (const bool focus);
+
+	void
 	set_editing ();
 
 	void

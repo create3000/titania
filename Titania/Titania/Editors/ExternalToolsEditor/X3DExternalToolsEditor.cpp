@@ -55,14 +55,22 @@
 #include <Titania/OS.h>
 #include <Titania/String.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
 class X3DExternalToolsEditor::Columns {
 public:
 
-	static constexpr size_t ID   = 0;
-	static constexpr size_t NAME = 1;
+	static constexpr size_t ID            = 0;
+	static constexpr size_t NAME          = 1;
+	static constexpr size_t MASK          = 2;
+	static constexpr size_t KEY           = 3;
+	static constexpr size_t SAVE          = 4;
+	static constexpr size_t INPUT         = 5;
+	static constexpr size_t OUTPUT        = 6;
+	static constexpr size_t APPLICABILITY = 7;
 
 };
 
@@ -92,6 +100,12 @@ X3DExternalToolsEditor::createTool ()
 	return id;
 }
 
+void
+X3DExternalToolsEditor::setId (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::ID, value);
+}
+
 std::string
 X3DExternalToolsEditor::getId (const Gtk::TreeIter & iter) const
 {
@@ -103,9 +117,9 @@ X3DExternalToolsEditor::getId (const Gtk::TreeIter & iter) const
 }
 
 void
-X3DExternalToolsEditor::setId (const Gtk::TreeIter & iter, const std::string & value) const
+X3DExternalToolsEditor::setName (const Gtk::TreeIter & iter, const std::string & value) const
 {
-	iter -> set_value (Columns::ID, value);
+	iter -> set_value (Columns::NAME, value);
 }
 
 std::string
@@ -116,12 +130,6 @@ X3DExternalToolsEditor::getName (const Gtk::TreeIter & iter) const
 	iter -> get_value (Columns::NAME, value);
 
 	return value;
-}
-
-void
-X3DExternalToolsEditor::setName (const Gtk::TreeIter & iter, const std::string & value) const
-{
-	iter -> set_value (Columns::NAME, value);
 }
 
 void
@@ -143,6 +151,70 @@ X3DExternalToolsEditor::getText (const std::string & id)
 	return os::load_file (file -> get_path ());
 }
 
+void
+X3DExternalToolsEditor::setSaveType (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::SAVE, value);
+}
+
+std::string
+X3DExternalToolsEditor::getSaveType (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::SAVE, value);
+
+	return value;
+}
+
+void
+X3DExternalToolsEditor::setInputType (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::INPUT, value);
+}
+
+std::string
+X3DExternalToolsEditor::getInputType (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::INPUT, value);
+
+	return value;
+}
+
+void
+X3DExternalToolsEditor::setOutputType (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::OUTPUT, value);
+}
+
+std::string
+X3DExternalToolsEditor::getOutputType (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::OUTPUT, value);
+
+	return value;
+}
+
+void
+X3DExternalToolsEditor::setApplicabilityType (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::APPLICABILITY, value);
+}
+
+std::string
+X3DExternalToolsEditor::getApplicabilityType (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::APPLICABILITY, value);
+
+	return value;
+}
+
 std::string
 X3DExternalToolsEditor::getContentType (const std::string & data) const
 {
@@ -153,7 +225,7 @@ X3DExternalToolsEditor::getContentType (const std::string & data) const
 }
 
 void
-X3DExternalToolsEditor::setLanguage (const std::string & text) const
+X3DExternalToolsEditor::setLanguage (const std::string & text)
 {
 	try
 	{
@@ -169,99 +241,113 @@ X3DExternalToolsEditor::setLanguage (const std::string & text) const
 void
 X3DExternalToolsEditor::restoreTree ()
 {
-	const auto string  = getConfig () -> getItem <std::string> ("tree");
-	auto       strings = std::vector <std::string> ();
+	const auto browser   = X3D::createBrowser ();
+	const auto scene     = browser -> createX3DFromString (os::load_file (config_dir ("tools.x3d")));
+	const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+	auto       expandeds = std::vector <Gtk::TreePath> ();
 
-	basic::split (std::back_inserter (strings), string, "\n");
+	restoreTree (worldInfo, "/Tools/Tree/children", expandeds);
 
-	std::vector <Gtk::TreePath> expand;
-
-	for (const auto & value : strings)
-	{
-		try
-		{
-			auto array = std::vector <std::string> ();
-	
-			basic::split (std::back_inserter (array), value, "\t");
-	
-			auto         path     = Gtk::TreePath (array .at (0));
-			const auto   expanded = array .at (1) == "true";
-			const auto & id       = array .at (2);
-			const auto & name     = array .at (3);
-
-			if (expanded)
-				expand .emplace_back (path);
-
-			auto iter = Gtk::TreeIter ();
-
-			switch (path .size ())
-			{
-				case 0:
-				{
-					continue;
-				}
-				case 1:
-				{
-					iter = getTreeStore () -> append ();
-					break;
-				}
-				default:
-				{
-					if (not path .up ())
-						continue;
-
-					const auto parent = getTreeStore () -> get_iter (path);
-
-					iter = getTreeStore () -> append (parent -> children ());
-					break;
-				}
-			}
-
-			setId   (iter, id);
-			setName (iter, name);
-		}
-		catch (const std::out_of_range & error)
-		{ }
-	}
-
-	for (const auto & path : expand)
+	for (const auto & path : expandeds)
 		getTreeView () .expand_row (path, false);
+}
+
+void
+X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo, const std::string & key, std::vector <Gtk::TreePath> & expandeds)
+{
+	const auto children = worldInfo -> getMetaData <X3D::MFNode> (key);
+
+	for (size_t i = 0, size = children .size (); i < size; ++ i)
+	{
+		const auto k                 = key + "/" + basic::to_string (i, std::locale::classic ());
+		auto       path              = Gtk::TreePath (worldInfo -> getMetaData <std::string> (k + "/path"));
+		const auto expanded          = worldInfo -> getMetaData <bool> (k + "/expanded");
+		const auto id                = worldInfo -> getMetaData <std::string> (k + "/id");
+		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto saveType          = worldInfo -> getMetaData <std::string> (k + "/saveType");
+		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
+		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
+		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
+
+		if (expanded)
+			expandeds .emplace_back (path);
+
+		auto iter = Gtk::TreeIter ();
+
+		switch (path .size ())
+		{
+			case 0:
+			{
+				continue;
+			}
+			case 1:
+			{
+				iter = getTreeStore () -> append ();
+				break;
+			}
+			default:
+			{
+				if (not path .up ())
+					continue;
+
+				const auto parent = getTreeStore () -> get_iter (path);
+
+				if (not getTreeStore () -> iter_is_valid (parent))
+					continue;
+
+				iter = getTreeStore () -> append (parent -> children ());
+				break;
+			}
+		}
+
+		setId                (iter, id);
+		setName              (iter, name);
+		setSaveType          (iter, saveType);
+		setInputType         (iter, inputType);
+		setOutputType        (iter, outputType);
+		setApplicabilityType (iter, applicabilityType);
+
+		restoreTree (worldInfo, k + "/children", expandeds);
+	}
 }
 
 void
 X3DExternalToolsEditor::saveTree ()
 {
-	std::vector <std::vector <std::string>> tree;
-	std::vector <std::string>               strings;
-	std::string                             string;
+	const auto browser   = X3D::createBrowser ();
+	const auto scene     = browser -> getExecutionContext ();
+	const auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
+	
+	scene -> addNamedNode ("Configuration", worldInfo);
+	scene -> getRootNodes () .emplace_back (worldInfo);
 
-	saveTree (getTreeStore () -> children (), tree);
+	saveTree (getTreeStore () -> children (), worldInfo);
 
-	for (const auto & array : tree)
-		strings .emplace_back (basic::join (array, "\t"));
+	std::ofstream ofstream (config_dir ("tools.x3d"));
 
-	string = basic::join (strings, "\n");
-
-	getConfig () -> setItem <std::string> ("tree", string);
+	browser -> getExecutionContext () -> toXMLStream (ofstream);
 }
 
 void
-X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, std::vector <std::vector <std::string>> & tree) const
+X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const X3D::X3DPtr <X3D::WorldInfo> & worldInfo) const
 {
+	static const std::regex colon (R"/(:)/");
+
 	for (const auto & child : children)
 	{
 		const auto path = getTreeStore () -> get_path (child);
+		const auto key  = "/Tools/Tree/children/" + std::regex_replace (path .to_string () .raw (), colon, "/children/");
 
-		std::vector <std::string> array;
+		worldInfo -> setMetaData <std::string> (key + "/path",              path .to_string ());
+		worldInfo -> setMetaData <bool>        (key + "/expanded",          getTreeView () .row_expanded (path));
+		worldInfo -> setMetaData <std::string> (key + "/id",                getId (child));
+		worldInfo -> setMetaData <std::string> (key + "/name",              getName (child));
+		worldInfo -> setMetaData <std::string> (key + "/saveType",          getSaveType (child));
+		worldInfo -> setMetaData <std::string> (key + "/inputType",         getInputType (child));
+		worldInfo -> setMetaData <std::string> (key + "/outputType",        getOutputType (child));
+		worldInfo -> setMetaData <std::string> (key + "/applicabilityType", getApplicabilityType (child));
 
-		array .emplace_back (path .to_string ());
-		array .emplace_back (getTreeView () .row_expanded (path) ? "true" : "false");
-		array .emplace_back (getId (child));
-		array .emplace_back (getName (child));
-
-		tree .emplace_back (std::move (array));
-
-		saveTree (child -> children (), tree);
+		saveTree (child -> children (), worldInfo);
 	}
 }
 

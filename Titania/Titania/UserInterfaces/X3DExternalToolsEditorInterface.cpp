@@ -56,6 +56,8 @@ namespace puck {
 void
 X3DExternalToolsEditorInterface::create (const std::string & filename)
 {
+	Gsv::init ();
+
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
@@ -65,6 +67,8 @@ X3DExternalToolsEditorInterface::create (const std::string & filename)
 void
 X3DExternalToolsEditorInterface::create (std::initializer_list <std::string> filenames)
 {
+	Gsv::init ();
+
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
 
@@ -92,6 +96,11 @@ X3DExternalToolsEditorInterface::create ()
 	m_builder -> get_widget ("RemoveToolButton", m_RemoveToolButton);
 	m_builder -> get_widget ("ToolBox", m_ToolBox);
 	m_builder -> get_widget ("SourceView", m_SourceView);
+	m_builder -> get_widget ("ShortcutKeyEntry", m_ShortcutKeyEntry);
+	m_builder -> get_widget ("SaveTypeButton", m_SaveTypeButton);
+	m_builder -> get_widget ("InputTypeButton", m_InputTypeButton);
+	m_builder -> get_widget ("OutputTypeButton", m_OutputTypeButton);
+	m_builder -> get_widget ("ApplicabilityTypeButton", m_ApplicabilityTypeButton);
 
 	// Connect object Gtk::TreeSelection with id 'TreeSelection'.
 	m_TreeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_tree_selection_changed));
@@ -99,6 +108,12 @@ X3DExternalToolsEditorInterface::create ()
 	// Connect object Gtk::Button with id 'AddToolButton'.
 	m_AddToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_add_tool_clicked));
 	m_RemoveToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_remove_tool_clicked));
+
+	// Connect object Gtk::ComboBoxText with id 'SaveTypeButton'.
+	m_SaveTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_save_type_changed));
+	m_InputTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_input_type_changed));
+	m_OutputTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_output_type_changed));
+	m_ApplicabilityTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_applicability_type_changed));
 }
 
 X3DExternalToolsEditorInterface::~X3DExternalToolsEditorInterface ()

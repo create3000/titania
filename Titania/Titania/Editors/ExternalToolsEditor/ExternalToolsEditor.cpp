@@ -53,13 +53,47 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/Utility/Map.h>
+
 namespace titania {
 namespace puck {
+
+const std::map <std::string, int32_t> ExternalToolsEditor::saveTypes = {
+	std::make_pair ("NOTHING",       0),
+	std::make_pair ("CURRENT_SCENE", 1),
+	std::make_pair ("ALL_SCENES",    2),
+};
+
+const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
+	std::make_pair ("NOTHING",          0),
+	std::make_pair ("CURRENT_SCENE",    1),
+	std::make_pair ("MASTER_SELECTION", 2),
+};
+
+const std::map <std::string, int32_t> ExternalToolsEditor::outputTypes = {
+	std::make_pair ("NOTHING",                  0),
+	std::make_pair ("DISPLAY_IN_CONSOLE",       1),
+	std::make_pair ("CREATE_NEW_SCENE",         2),
+	std::make_pair ("APPEND_TO_CURRENT_SCENE",  3),
+	std::make_pair ("REPLACE_CURRENT_SCENE",    4),
+	std::make_pair ("APPEND_TO_CURRENT_LAYER",  5),
+	std::make_pair ("REPLACE_MASTER_SELECTION", 6),
+};
+
+const std::map <std::string, int32_t> ExternalToolsEditor::applicabilityTypes = {
+	std::make_pair ("ALWAYS_AVAILABLE",                0),
+	std::make_pair ("ALL_SCENES",                      1),
+	std::make_pair ("ALL_SCENES_EXCEPT_UNTITLED_ONES", 2),
+	std::make_pair ("LOCAL_FILES_ONLY",                3),
+	std::make_pair ("REMOTE_FILES_ONLY",               4),
+	std::make_pair ("UNTITLED_SCENS_ONLY",             5),
+};
 
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :
 	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade")),
-	         X3DExternalToolsEditor ()
+	         X3DExternalToolsEditor (),
+	                       changing ()
 {
 	getSourceView () .get_source_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_text_changed));
 	getSourceView () .get_source_buffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme ("x_ite"));
@@ -115,6 +149,8 @@ ExternalToolsEditor::on_tree_selection_changed ()
 {
 	try
 	{
+		changing = true;
+
 		if (getTreeSelection () -> get_selected_rows () .empty ())
 		{
 			getToolBox () .set_sensitive (false);
@@ -122,15 +158,26 @@ ExternalToolsEditor::on_tree_selection_changed ()
 		}
 		else
 		{
-			const auto iter = getTreeSelection () -> get_selected ();
-			const auto id   = getId (iter);
-			const auto text = getText (id);
+			const auto iter              = getTreeSelection () -> get_selected ();
+			const auto id                = getId (iter);
+			const auto text              = getText (id);
+			const auto saveType          = getSaveType (iter);
+			const auto inputType         = getInputType (iter);
+			const auto outputType        = getOutputType (iter);
+			const auto applicabilityType = getApplicabilityType (iter);
 		
 			getToolBox () .set_sensitive (true);
 			getSourceView () .get_source_buffer () -> set_text (text);
-		
+
+			try { getSaveTypeButton          () .set_active (saveTypes          .at (saveType));          } catch (...) { getSaveTypeButton          () .set_active (0); };
+			try { getInputTypeButton         () .set_active (inputTypes         .at (inputType));         } catch (...) { getInputTypeButton         () .set_active (0); };
+			try { getOutputTypeButton        () .set_active (outputTypes        .at (outputType));        } catch (...) { getOutputTypeButton        () .set_active (0); };
+			try { getApplicabilityTypeButton () .set_active (applicabilityTypes .at (applicabilityType)); } catch (...) { getApplicabilityTypeButton () .set_active (0); };
+
 			setLanguage (text);
 		}
+
+		changing = false;
 	}
 	catch (const Glib::Error & error)
 	{ }
@@ -139,7 +186,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 void
 ExternalToolsEditor::on_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
-	if (new_text .empty ())
+	if (changing)
 		return;
 
 	const auto iter = getTreeStore () -> get_iter (path);
@@ -153,6 +200,9 @@ ExternalToolsEditor::on_text_changed ()
 {
 	try
 	{
+		if (changing)
+			return;
+
 		const auto iter = getTreeSelection () -> get_selected ();
 		const auto id   = getId (iter);
 		const auto text = getSourceView () .get_source_buffer () -> get_text ();
@@ -162,6 +212,94 @@ ExternalToolsEditor::on_text_changed ()
 	}
 	catch (const Glib::Error & error)
 	{ }
+}
+
+void
+ExternalToolsEditor::on_save_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	try
+	{
+		static const auto saveTypes = basic::reverse (this -> saveTypes);
+
+		setSaveType (iter, saveTypes .at (getSaveTypeButton () .get_active_row_number ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		setSaveType (iter, "NOTHING");
+	}
+
+	saveTree ();
+}
+
+void
+ExternalToolsEditor::on_input_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	try
+	{
+		static const auto inputTypes = basic::reverse (this -> inputTypes);
+
+		setInputType (iter, inputTypes .at (getInputTypeButton () .get_active_row_number ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		setInputType (iter, "NOTHING");
+	}
+
+	saveTree ();
+}
+
+void
+ExternalToolsEditor::on_output_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	try
+	{
+		static const auto outputTypes = basic::reverse (this -> outputTypes);
+
+		setOutputType (iter, outputTypes .at (getOutputTypeButton () .get_active_row_number ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		setOutputType (iter, "NOTHING");
+	}
+
+	saveTree ();
+}
+
+void
+ExternalToolsEditor::on_applicability_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	try
+	{
+		static const auto applicabilityTypes = basic::reverse (this -> applicabilityTypes);
+
+		setApplicabilityType (iter, applicabilityTypes .at (getApplicabilityTypeButton () .get_active_row_number ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		setApplicabilityType (iter, "ALWAYS_AVAILABLE");
+	}
+
+	saveTree ();
 }
 
 void

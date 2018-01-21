@@ -80,7 +80,6 @@ public:
 		void
 		>::type
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
-	throw (Error <DISPOSED>)
 	{
 		auto names = std::vector <std::string> ();
 	
@@ -103,7 +102,6 @@ public:
 		void
 		>::type
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
-	throw (Error <DISPOSED>)
 	{
 		static constexpr auto s = std::tuple_size <typename Type::value_type::internal_type>::value;
 
@@ -135,7 +133,6 @@ public:
 		Type
 		>::type
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
-	throw (Error <DISPOSED>)
 	{
 		try
 		{
@@ -170,7 +167,6 @@ public:
 		Type
 		>::type
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
-	throw (Error <DISPOSED>)
 	{
 		try
 		{
@@ -211,7 +207,6 @@ public:
 		Type
 		>::type
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
-	throw (Error <DISPOSED>)
 	{
 		try
 		{

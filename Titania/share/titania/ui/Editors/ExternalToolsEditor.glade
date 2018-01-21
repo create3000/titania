@@ -9,6 +9,18 @@
       <column type="gchararray"/>
       <!-- column-name Name -->
       <column type="gchararray"/>
+      <!-- column-name Mask -->
+      <column type="gchararray"/>
+      <!-- column-name Key -->
+      <column type="gchararray"/>
+      <!-- column-name Save -->
+      <column type="gchararray"/>
+      <!-- column-name Input -->
+      <column type="gchararray"/>
+      <!-- column-name Output -->
+      <column type="gchararray"/>
+      <!-- column-name Applicability -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -267,7 +279,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry">
+                      <object class="GtkEntry" id="ShortcutKeyEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </object>
@@ -277,7 +289,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText">
+                      <object class="GtkComboBoxText" id="SaveTypeButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -287,6 +299,7 @@
                           <item translatable="yes">Current Scene</item>
                           <item translatable="yes">All Scenes</item>
                         </items>
+                        <signal name="changed" handler="on_save_type_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -294,7 +307,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText">
+                      <object class="GtkComboBoxText" id="InputTypeButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -304,6 +317,7 @@
                           <item translatable="yes">Current Scene</item>
                           <item translatable="yes">Master Selection</item>
                         </items>
+                        <signal name="changed" handler="on_input_type_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -311,7 +325,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText">
+                      <object class="GtkComboBoxText" id="OutputTypeButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -325,6 +339,7 @@
                           <item translatable="yes">Append To Current Layer</item>
                           <item translatable="yes">Replace Master Selection</item>
                         </items>
+                        <signal name="changed" handler="on_output_type_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -332,7 +347,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText">
+                      <object class="GtkComboBoxText" id="ApplicabilityTypeButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -345,6 +360,7 @@
                           <item translatable="yes">Remote Files Only</item>
                           <item translatable="yes">Untitled Scens Only</item>
                         </items>
+                        <signal name="changed" handler="on_applicability_type_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

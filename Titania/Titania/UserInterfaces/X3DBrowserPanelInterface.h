@@ -89,6 +89,10 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getAccelGroup () const
+	{ return m_AccelGroup; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -427,6 +431,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::MenuBar* m_MenuBar;

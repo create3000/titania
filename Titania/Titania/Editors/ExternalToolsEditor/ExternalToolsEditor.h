@@ -105,13 +105,38 @@ private:
 	void
 	on_text_changed ();
 
+	virtual
+	void
+	on_save_type_changed () final override;
+
+	virtual
+	void
+	on_input_type_changed () final override;
+
+	virtual
+	void
+	on_output_type_changed () final override;
+
+	virtual
+	void
+	on_applicability_type_changed () final override;
+
 	///  @name Destruction
 
 	virtual
 	void
 	store () final override;
 
+	///  @name Static members
+
+	static const std::map <std::string, int32_t> saveTypes;
+	static const std::map <std::string, int32_t> inputTypes;
+	static const std::map <std::string, int32_t> outputTypes;
+	static const std::map <std::string, int32_t> applicabilityTypes;
+
 	///  @name Members
+
+	bool changing;
 
 };
 

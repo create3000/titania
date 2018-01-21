@@ -559,7 +559,7 @@ template <class Type>
 Glib::RefPtr <Gio::File>
 X3DFileBrowser <Type>::getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
 {
-	static const std::regex pattern (_ ("\\s*\\((?:copy|another copy|\\d+\\.\\s+copy)\\)\\s*$"));
+	static const std::regex pattern (_ (R"(\s*\((?:copy|another copy|\d+\.\s+copy)\)\s*$)"));
 
 	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
 	{

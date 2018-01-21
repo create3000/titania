@@ -139,6 +139,26 @@ public:
 	getSourceView () const
 	{ return *m_SourceView; }
 
+	Gtk::Entry &
+	getShortcutKeyEntry () const
+	{ return *m_ShortcutKeyEntry; }
+
+	Gtk::ComboBoxText &
+	getSaveTypeButton () const
+	{ return *m_SaveTypeButton; }
+
+	Gtk::ComboBoxText &
+	getInputTypeButton () const
+	{ return *m_InputTypeButton; }
+
+	Gtk::ComboBoxText &
+	getOutputTypeButton () const
+	{ return *m_OutputTypeButton; }
+
+	Gtk::ComboBoxText &
+	getApplicabilityTypeButton () const
+	{ return *m_ApplicabilityTypeButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -152,6 +172,22 @@ public:
 	virtual
 	void
 	on_remove_tool_clicked () = 0;
+
+	virtual
+	void
+	on_save_type_changed () = 0;
+
+	virtual
+	void
+	on_input_type_changed () = 0;
+
+	virtual
+	void
+	on_output_type_changed () = 0;
+
+	virtual
+	void
+	on_applicability_type_changed () = 0;
 
 	///  @name Destruction
 
@@ -189,6 +225,11 @@ private:
 	Gtk::Button* m_RemoveToolButton;
 	Gtk::Box* m_ToolBox;
 	Gsv::View* m_SourceView;
+	Gtk::Entry* m_ShortcutKeyEntry;
+	Gtk::ComboBoxText* m_SaveTypeButton;
+	Gtk::ComboBoxText* m_InputTypeButton;
+	Gtk::ComboBoxText* m_OutputTypeButton;
+	Gtk::ComboBoxText* m_ApplicabilityTypeButton;
 
 };
 

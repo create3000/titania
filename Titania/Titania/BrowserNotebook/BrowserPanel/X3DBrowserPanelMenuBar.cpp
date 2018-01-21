@@ -72,12 +72,20 @@ X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 	 viewpointObserver (),
 	          changing (false)
 {
+	getPhongMenuItem ()     .add_accelerator ("activate", getAccelGroup (), GDK_KEY_5, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getGouraudMenuItem ()   .add_accelerator ("activate", getAccelGroup (), GDK_KEY_4, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getFlatMenuItem ()      .add_accelerator ("activate", getAccelGroup (), GDK_KEY_3, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getWireframeMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_2, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+	getPointsetMenuItem ()  .add_accelerator ("activate", getAccelGroup (), GDK_KEY_1, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+
 	addChildObjects (browser);
 }
 
 void
 X3DBrowserPanelMenuBar::initialize ()
 {
+	hasFocus () .addInterest (&X3DBrowserPanelMenuBar::set_focus, this);
+
 	getPage () -> getMainBrowser () -> signal_hierarchy_changed () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_hierarchy_changed));
 
 	getPage () -> getMainBrowser () -> getExecutionContext () .addInterest (&X3DBrowserPanelMenuBar::set_scene, this);
@@ -134,6 +142,15 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 		getBackgroundsMenuItem ()                  .set_visible (false);
 		getFogsMenuItem ()                         .set_visible (false);
 	}
+}
+
+void
+X3DBrowserPanelMenuBar::set_focus (const bool focus)
+{
+	if (focus)
+		getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
+	else
+		getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 }
 
 void

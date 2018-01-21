@@ -78,6 +78,7 @@ void
 X3DBrowserPanelInterface::create ()
 {
 	// Get objects.
+	m_AccelGroup = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);

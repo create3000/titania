@@ -53,6 +53,11 @@
 
 #include "../../UserInterfaces/X3DExternalToolsEditorInterface.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcpp"
+#include <gtksourceviewmm.h>
+#pragma GCC diagnostic pop
+
 namespace titania {
 namespace puck {
 
@@ -102,23 +107,47 @@ protected:
 	std::string
 	createTool ();
 
-	std::string
-	getId (const Gtk::TreeIter & iter) const;
-
 	void
 	setId (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string
-	getName (const Gtk::TreeIter & iter) const;
+	getId (const Gtk::TreeIter & iter) const;
 
 	void
 	setName (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string
+	getName (const Gtk::TreeIter & iter) const;
+
+	void
+	setSaveType (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getSaveType (const Gtk::TreeIter & iter) const;
+
+	void
+	setInputType (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getInputType (const Gtk::TreeIter & iter) const;
+
+	void
+	setOutputType (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getOutputType (const Gtk::TreeIter & iter) const;
+
+	void
+	setApplicabilityType (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getApplicabilityType (const Gtk::TreeIter & iter) const;
+
+	std::string
 	getContentType (const std::string & data) const;
 
 	void
-	setLanguage (const std::string & text) const;
+	setLanguage (const std::string & text);
 
 	void
 	restoreTree ();
@@ -143,7 +172,10 @@ private:
 	///  @name Member access
 
 	void
-	saveTree (const Gtk::TreeNodeChildren & children, std::vector <std::vector <std::string>> & tree) const;
+	restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo, const std::string & key, std::vector <Gtk::TreePath> & expandeds);
+
+	void
+	saveTree (const Gtk::TreeNodeChildren & children, const X3D::X3DPtr <X3D::WorldInfo> & worldInfo) const;
 
 };
 
