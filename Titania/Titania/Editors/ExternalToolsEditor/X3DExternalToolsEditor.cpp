@@ -248,14 +248,17 @@ X3DExternalToolsEditor::restoreTree ()
 	const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 	auto       expandeds = std::vector <Gtk::TreePath> ();
 
-	restoreTree (worldInfo, "/Tools/Tree/children", expandeds);
+	restoreTree (worldInfo, "/Tools/Tree/children", Gtk::TreeIter (), expandeds);
 
 	for (const auto & path : expandeds)
 		getTreeView () .expand_row (path, false);
 }
 
 void
-X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo, const std::string & key, std::vector <Gtk::TreePath> & expandeds)
+X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
+                                     const std::string & key,
+                                     const Gtk::TreeIter & parent,
+                                     std::vector <Gtk::TreePath> & expandeds)
 {
 	const auto children = worldInfo -> getMetaData <X3D::MFNode> (key);
 
@@ -270,37 +273,10 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
+		const auto iter              = getTreeStore () -> iter_is_valid (parent) ? getTreeStore () -> append (parent -> children ()) : getTreeStore () -> append ();
 
 		if (expanded)
 			expandeds .emplace_back (path);
-
-		auto iter = Gtk::TreeIter ();
-
-		switch (path .size ())
-		{
-			case 0:
-			{
-				continue;
-			}
-			case 1:
-			{
-				iter = getTreeStore () -> append ();
-				break;
-			}
-			default:
-			{
-				if (not path .up ())
-					continue;
-
-				const auto parent = getTreeStore () -> get_iter (path);
-
-				if (not getTreeStore () -> iter_is_valid (parent))
-					continue;
-
-				iter = getTreeStore () -> append (parent -> children ());
-				break;
-			}
-		}
 
 		setId                (iter, id);
 		setName              (iter, name);
@@ -309,7 +285,7 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		setOutputType        (iter, outputType);
 		setApplicabilityType (iter, applicabilityType);
 
-		restoreTree (worldInfo, k + "/children", expandeds);
+		restoreTree (worldInfo, k + "/children", iter, expandeds);
 	}
 }
 
@@ -418,6 +394,12 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 		if (worldUrl .empty ())
 		{
 			if (applicabilityType == "ALL_SCENES_EXCEPT_UNTITLED_ONES")
+				continue;
+
+			if (applicabilityType == "LOCAL_FILES_ONLY")
+				continue;
+
+			if (applicabilityType == "REMOTE_FILES_ONLY")
 				continue;
 		}
 		else

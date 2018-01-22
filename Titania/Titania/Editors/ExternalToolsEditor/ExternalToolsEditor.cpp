@@ -173,7 +173,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			try { getOutputTypeButton        () .set_active (outputTypes        .at (outputType));        } catch (...) { getOutputTypeButton        () .set_active (0); };
 			try { getApplicabilityTypeButton () .set_active (applicabilityTypes .at (applicabilityType)); } catch (...) { getApplicabilityTypeButton () .set_active (0); };
 
-			setLanguage (text);
+			Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ExternalToolsEditor::setLanguage), text));
 		}
 
 		changing = false;
@@ -207,7 +207,8 @@ ExternalToolsEditor::on_text_changed ()
 		const auto text = getSourceView () .get_source_buffer () -> get_text ();
 	
 		setText (id, text);
-		//setLanguage (text);
+
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ExternalToolsEditor::setLanguage), text));
 	}
 	catch (const Glib::Error & error)
 	{ }

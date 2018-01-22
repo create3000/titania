@@ -175,7 +175,10 @@ private:
 	///  @name Member access
 
 	void
-	restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo, const std::string & key, std::vector <Gtk::TreePath> & expandeds);
+	restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
+	             const std::string & key,
+	             const Gtk::TreeIter & parent,
+	             std::vector <Gtk::TreePath> & expandeds);
 
 	void
 	saveTree (const Gtk::TreeNodeChildren & children, const X3D::X3DPtr <X3D::WorldInfo> & worldInfo) const;
