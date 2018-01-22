@@ -70,7 +70,6 @@ extern "C" {
 
 }
 
-#include <Titania/OS/unlink.h>
 #include <Titania/String/tolower.h>
 
 namespace titania {
@@ -111,23 +110,30 @@ Parser::parseIntoScene ()
 void
 Parser::statements (const std::string & filename)
 {
-	// Parse 3ds file
-
-	file = lib3ds_file_open (filename .c_str ());
-
-	if (not file)
-		throw Error <INVALID_X3D> ("Couldn't read temp file for 3ds stream.");
-
-	lib3ds_file_eval (file, 0); // set current frame to 0
-
-	materials ();
-	meshes ();
-
-	lib3ds_file_free (file);
-
-	// Unlink temp file
-
-	os::unlink (filename);
+	try
+	{
+		// Parse 3ds file
+	
+		file = lib3ds_file_open (filename .c_str ());
+	
+		if (not file)
+			throw Error <INVALID_X3D> ("Couldn't read temp file for 3ds stream.");
+	
+		lib3ds_file_eval (file, 0); // set current frame to 0
+	
+		materials ();
+		meshes ();
+	
+		lib3ds_file_free (file);
+	
+		// Unlink temp file
+	
+		Gio::File::create_for_path (filename) -> remove ();
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

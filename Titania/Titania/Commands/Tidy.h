@@ -53,7 +53,6 @@
 
 #include <Titania/X3D.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
-#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {

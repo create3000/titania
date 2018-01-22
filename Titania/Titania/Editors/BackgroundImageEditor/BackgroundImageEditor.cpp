@@ -58,8 +58,6 @@
 
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 

@@ -52,8 +52,9 @@
 
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
+
+#include <giomm.h>
 
 namespace titania {
 namespace puck {
@@ -61,7 +62,10 @@ namespace puck {
 OutlineEditorDatabase::OutlineEditorDatabase () :
 	database ()
 {
-	os::system ("mkdir", "-p", config_dir ());
+	const auto configdir = Gio::File::create_for_path (config_dir ());
+
+	if (not configdir -> query_exists ())
+		configdir -> make_directory_with_parents (); 
 
 	database .open (config_dir ("outline-editor.db"));
 

@@ -63,7 +63,6 @@
 #include <Titania/X3D/Execution/NamedNode.h>
 #include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 
 namespace titania {

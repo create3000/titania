@@ -64,7 +64,6 @@
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/Stream/GZStream.h>
 #include <fstream>

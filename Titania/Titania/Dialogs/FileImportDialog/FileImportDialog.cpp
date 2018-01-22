@@ -56,7 +56,6 @@
 
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
-#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {

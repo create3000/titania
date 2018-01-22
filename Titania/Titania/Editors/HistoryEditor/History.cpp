@@ -52,9 +52,9 @@
 
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 
+#include <giomm.h>
 #include <iostream>
 
 namespace titania {
@@ -69,9 +69,11 @@ History::History () :
 	try
 	{
 		const bool have_history = Glib::file_test (filename, Glib::FILE_TEST_EXISTS);
-	
-		os::system ("mkdir", "-p", config_dir ());
-	
+		const auto configdir    = Gio::File::create_for_path (config_dir ());
+
+		if (not configdir -> query_exists ())
+			configdir -> make_directory_with_parents (); 
+
 		database .open (filename);
 	
 		database .query ("CREATE TABLE IF NOT EXISTS History ("

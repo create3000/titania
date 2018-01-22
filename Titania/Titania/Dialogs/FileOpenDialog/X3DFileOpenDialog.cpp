@@ -52,8 +52,6 @@
 
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 

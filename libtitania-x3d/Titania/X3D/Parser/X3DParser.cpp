@@ -53,9 +53,10 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include <Titania/OS/mkstemps.h>
-
 #include <regex>
+
+#include <glibmm.h>
+#include <unistd.h>
 
 namespace titania {
 namespace X3D {
@@ -72,7 +73,10 @@ throw (Error <INVALID_X3D>)
 	// Create temp file
 
 	std::string filename = "/tmp/titania-XXXXXX" + suffix;
-	auto        ofstream = os::mkstemps (filename, suffix .size ());
+
+	::close (Glib::mkstemp (filename));
+
+	std::ofstream ofstream (filename);
 
 	if (not ofstream)
 		throw Error <INVALID_X3D> ("Couldn't create temp file.");

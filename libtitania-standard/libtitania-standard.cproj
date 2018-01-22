@@ -50,7 +50,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="ChangeLog" />
-    <None Include="Titania\OS.h" />
     <None Include="Titania\Basic\BindStack.h" />
     <None Include="Titania\Basic\URI.h" />
     <None Include="Titania\Chrono\Now.h" />
@@ -120,12 +119,8 @@
     <None Include="Titania\Math\Utility\MatrixStack.h" />
     <None Include="Titania\Math\Geometry\Camera.h" />
     <None Include="Titania\Geospatial\Interpolation.h" />
-    <None Include="Titania\OS\file_size.h" />
     <None Include="Titania\OS\find_data_file.h" />
-    <None Include="Titania\OS\mkdir.h" />
-    <None Include="Titania\OS\system.h" />
     <None Include="Titania\InputOutput\InverseString.h" />
-    <None Include="Titania\OS\realpath.h" />
     <None Include="Titania\Utility\Map.h" />
     <None Include="Titania\InputOutput\SingleLineComment.h" />
     <None Include="Titania\InputOutput\MultiLineComment.h" />
@@ -514,10 +509,6 @@
     <None Include="Titania\Math\Algorithms\Bezier.h" />
     <None Include="Titania\InputOutput\InverseCharacter.h" />
     <None Include="Titania\String\tolower.h" />
-    <None Include="Titania\OS\mkstemps.h" />
-    <None Include="Titania\OS\unlink.h" />
-    <None Include="Titania\OS\program_exists.h" />
-    <None Include="Titania\OS\rename.h" />
     <None Include="Titania\String\toupper.h" />
     <None Include="Titania\External\ApproxMVBB\AABB.hpp" />
     <None Include="Titania\External\ApproxMVBB\AngleFunctions.hpp" />
@@ -606,12 +597,8 @@
     <Compile Include="Titania\Geospatial\UniversalTransverseMercator.cpp" />
     <Compile Include="Titania\Geospatial\BasicConverter.cpp" />
     <Compile Include="Titania\Math\Utility\MatrixStack.cpp" />
-    <Compile Include="Titania\OS\file_size.cpp" />
     <Compile Include="Titania\OS\find_data_file.cpp" />
-    <Compile Include="Titania\OS\mkdir.cpp" />
-    <Compile Include="Titania\OS\system.cpp" />
     <Compile Include="Titania\InputOutput\InverseString.cpp" />
-    <Compile Include="Titania\OS\realpath.cpp" />
     <Compile Include="Titania\InputOutput\SingleLineComment.cpp" />
     <Compile Include="Titania\InputOutput\MultiLineComment.cpp" />
     <Compile Include="Titania\InputOutput\InverseSequence.cpp" />
@@ -624,10 +611,6 @@
     <Compile Include="Titania\RegEx\regex_escape.cpp" />
     <Compile Include="Titania\Math\Mesh\Combine.cpp" />
     <Compile Include="Titania\InputOutput\InverseCharacter.cpp" />
-    <Compile Include="Titania\OS\mkstemps.cpp" />
-    <Compile Include="Titania\OS\unlink.cpp" />
-    <Compile Include="Titania\OS\program_exists.cpp" />
-    <Compile Include="Titania\OS\rename.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\AABB.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\ConvexHull2D.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\MinAreaRectangle.cpp" />

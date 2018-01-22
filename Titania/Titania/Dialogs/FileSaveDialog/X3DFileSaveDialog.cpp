@@ -52,8 +52,6 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-
-#include <Titania/OS.h>
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Editing/X3DEditor.h>

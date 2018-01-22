@@ -56,7 +56,6 @@
 #include "../Shaders/X3DShaderNode.h"
 #include "../Text/Text.h"
 
-#include <Titania/OS.h>
 #include <Titania/Backtrace.h>
 
 namespace titania {
@@ -634,7 +633,8 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 		{
 			const auto  suffix       = uri .suffix ();
 			std::string tempFilename = "/tmp/titania-XXXXXX" + suffix;
-			const auto tempStream    = os::mkstemps (tempFilename, suffix .size ());
+
+			::close (Glib::mkstemp (tempFilename));
 
 			const_cast <X3DFontStyleNode*> (this) -> tempfile = Gio::File::create_for_path (tempFilename);
 

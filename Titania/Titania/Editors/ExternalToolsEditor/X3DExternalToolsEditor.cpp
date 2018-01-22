@@ -55,7 +55,6 @@
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 
 #include <regex>
@@ -100,8 +99,10 @@ X3DExternalToolsEditor::createTool ()
 	const auto  folder   = getToolsFolder ();
 	const auto  file     = folder -> get_child ("XXXXXX.txt");
 	std::string filename = file -> get_path ();
-	auto        ofstream = os::mkstemps (filename, 4);
-	const auto  id       = filename .substr (filename .size () - 10, 6);
+
+	::close (Glib::mkstemp (filename));
+
+	const auto id = filename .substr (filename .size () - 10, 6);
 
 	file -> set_attribute_string ("access::can-execute", "true", Gio::FILE_QUERY_INFO_NONE);
 

@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
-#include <Titania/OS.h>
-
 #include <regex>
 
 namespace titania {
@@ -108,7 +106,7 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 void
 FileExportImageDialog::setFileFilter (const std::string & name)
 {
-	if (os::program_exists ("gimp"))
+	if (Glib::find_program_in_path ("gimp") .size ())
 		getWindow () .add_filter (getFileFilterImageXCF ());
 
 	getWindow () .add_filter (getFileFilterImageJPEG ());
@@ -224,28 +222,31 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 	{
 		auto url = getUrl ();
 
-		if (url .suffix () == ".xcf" and os::program_exists ("gimp"))
+		const auto gimp = Glib::find_program_in_path ("gimp");
+
+		if (url .suffix () == ".xcf" and not gimp .empty ())
 		{
 			std::string pngFilename = "/tmp/titania-XXXXXX.png";
-			auto ofstream           = os::mkstemps (pngFilename, 4);
 
-			if (ofstream)
-			{
-				static const std::regex quotes (R"/(")/");
+			::close (Glib::mkstemp (pngFilename));
 
-				const auto path = url = std::regex_replace (url .path (), quotes, "\\\"");
+			const auto quotes = std::regex  (R"/(")/");
+			const auto path   = url = std::regex_replace (url .path (), quotes, "\\\"");
 
-				image .write (pngFilename);
+			image .write (pngFilename);
 
-				os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
-				            "(drawable (car (gimp-image-get-active-layer image))))"
-				            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + path + "\" \"" + path + "\")"
-				            "(gimp-image-delete image)"
-				            "(gimp-quit 0))");
+			const auto gimp_command_line = std::vector <std::string> ({
+				gimp, "-i", "-b",
+				"(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
+				"(drawable (car (gimp-image-get-active-layer image))))"
+				"(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + path + "\" \"" + path + "\")"
+				"(gimp-image-delete image)"
+				"(gimp-quit 0))"
+			});
 
-			}
+			Glib::spawn_sync (Glib::get_home_dir (), gimp_command_line);
 
-			os::unlink (pngFilename);
+			Gio::File::create_for_path (pngFilename) -> remove ();
 		}
 		else
 			image .write (url .path ());
@@ -259,6 +260,16 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not save image!"));
 		dialog -> setText (_ ("Tip: check file and folder permissions."));
+		dialog -> run ();
+		return false;
+	}
+	catch (const Glib::Error & error)
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Could not generate image!"));
+		dialog -> setText (error .what ());
 		dialog -> run ();
 		return false;
 	}

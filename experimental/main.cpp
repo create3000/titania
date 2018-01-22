@@ -80,7 +80,6 @@
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/Math/Numbers/Hash.h>
 #include <Titania/Math/Utility/almost_equal.h>
-#include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
 #include <Titania/Utility/Pass.h>
@@ -273,10 +272,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	basic::uri url = "/home/foo.v";
-
-	__LOG__ << url .suffix () << std::endl;
-	__LOG__ << url .parent () << std::endl;
+	std::string fn = "/tmp/test.XXXXXX.txt";
+	const auto  fh = Glib::mkstemp (fn);
+	
+	close (fh);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

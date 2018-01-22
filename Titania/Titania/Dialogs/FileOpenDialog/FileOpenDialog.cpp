@@ -52,8 +52,6 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-#include <Titania/OS.h>
-
 namespace titania {
 namespace puck {
 
@@ -135,7 +133,7 @@ FileOpenDialog::setFileFilter (const std::string & name)
 	getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
 	getWindow () .add_filter (getFileFilterWavefrontOBJ ());
 
-	if (os::program_exists ("inkscape"))
+	if (Glib::find_program_in_path ("inkscape") .size ())
 		getWindow () .add_filter (getFileFilterPDF ());
 
 	getWindow () .add_filter (getFileFilterSVG ());

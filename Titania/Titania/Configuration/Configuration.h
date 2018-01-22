@@ -103,6 +103,9 @@ private:
 
 	///  @name Member access
 
+	KeyFile &
+	getKeyfile () const;
+
 	void
 	setBoolean (const std::string & key, const bool value);
 
@@ -126,10 +129,6 @@ private:
 
 	Glib::ustring
 	getString (const std::string & key) const;
-
-	///  @name Static members
-
-	static KeyFile keyfile;
 
 	///  @name Members
 

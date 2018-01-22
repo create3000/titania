@@ -52,10 +52,10 @@
 
 #include "config.h"
 
-#include <Titania/OS.h>
 #include <Titania/LOG.h>
 #include <Titania/String.h>
 
+#include <giomm.h>
 #include <glibmm/fileutils.h>
 
 namespace titania {
@@ -91,10 +91,10 @@ Configuration::KeyFile::KeyFile (const std::string & basename) :
 	filename (config_dir (basename)),
 	 keyfile ()
 {
-	if (Glib::file_test (config_dir ("configuration/"), Glib::FILE_TEST_EXISTS))
-		os::system ("rm",    "-r", config_dir ("configuration/")); // XXX
+	const auto configdir = Gio::File::create_for_path (config_dir ());
 
-	os::system ("mkdir", "-p", config_dir ());
+	if (not configdir -> query_exists ())
+		configdir -> make_directory_with_parents (); 
 
 	if (Glib::file_test (filename, Glib::FILE_TEST_EXISTS))
 		keyfile .load_from_file (filename, Glib::KEY_FILE_KEEP_COMMENTS);
@@ -107,47 +107,53 @@ Configuration::KeyFile::~KeyFile ()
 
 // Configuration
 
-Configuration::KeyFile Configuration::keyfile ("configuration.ini");
-
 Configuration::Configuration (const std::string & group) :
 	group (group)
 { }
 
+Configuration::KeyFile &
+Configuration::getKeyfile () const
+{
+	static KeyFile keyfile ("configuration.ini");
+
+	return keyfile;
+}
+
 bool
 Configuration::hasItem (const std::string & key) const
 {
-	return keyfile -> has_group (group) and keyfile -> has_key (group, key);
+	return getKeyfile () -> has_group (group) and getKeyfile () -> has_key (group, key);
 }
 
 void
 Configuration::setBoolean (const std::string & key, const bool value)
 {
-	keyfile -> set_boolean (group, key, value);
+	getKeyfile () -> set_boolean (group, key, value);
 }
 
 void
 Configuration::setInteger (const std::string & key, const int value)
 {
-	 keyfile -> set_integer (group, key, value);
+	 getKeyfile () -> set_integer (group, key, value);
 }
 
 void
 Configuration::setDouble (const std::string & key, const double value)
 {
-	 keyfile -> set_double (group, key, value);
+	 getKeyfile () -> set_double (group, key, value);
 }
 
 void
 Configuration::setString (const std::string & key, const Glib::ustring & value)
 {
-	 keyfile -> set_string (group, key, value);
+	 getKeyfile () -> set_string (group, key, value);
 }
 
 bool
 Configuration::getBoolean (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile -> get_boolean (group, key);
+		return getKeyfile () -> get_boolean (group, key);
 		
 	return false;
 }
@@ -156,7 +162,7 @@ int
 Configuration::getInteger (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile -> get_integer (group, key);
+		return getKeyfile () -> get_integer (group, key);
 
 	return 0;
 }
@@ -165,7 +171,7 @@ double
 Configuration::getDouble (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile -> get_double (group, key);
+		return getKeyfile () -> get_double (group, key);
 
 	return 0;
 }
@@ -174,7 +180,7 @@ Glib::ustring
 Configuration::getString (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile -> get_string (group, key);
+		return getKeyfile () -> get_string (group, key);
 		
 	return "";
 }
@@ -183,7 +189,7 @@ void
 Configuration::removeItem (const std::string & key) const
 {
 	if (hasItem (key))
-		keyfile -> remove_key (group, key);
+		getKeyfile () -> remove_key (group, key);
 }
 
 Configuration::~Configuration ()

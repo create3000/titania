@@ -52,10 +52,6 @@
 
 #include "../SVG/Parser.h"
 
-#include <Titania/OS/mkstemps.h>
-#include <Titania/OS/system.h>
-#include <Titania/OS/unlink.h>
-
 #include <fstream>
 
 namespace titania {
@@ -72,24 +68,37 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 void
 Parser::parseIntoScene ()
 {
-	const auto  pdfFilename = save (istream, ".pdf");
-	std::string svgFilename = "/tmp/titania-XXXXXX.svg";
-
-	auto ofstream = os::mkstemps (svgFilename, 4);
-
-	if (ofstream)
+	try
 	{
-		if (os::system ("inkscape", pdfFilename, "--export-plain-svg=" + svgFilename) == 0)
+		const auto  pdfFilename = save (istream, ".pdf");
+		std::string svgFilename = "/tmp/titania-XXXXXX.svg";
+	
+		::close (Glib::mkstemp (svgFilename));
+
+		const auto inkscape = Glib::find_program_in_path ("inkscape");
+
+		const auto inkscape_command_line = std::vector <std::string> ({
+			inkscape, pdfFilename, "--export-plain-svg=" + svgFilename
+		});
+
+		int exit_status = 0;
+
+		Glib::spawn_sync (Glib::get_home_dir (), inkscape_command_line, Glib::SPAWN_DEFAULT, Glib::SlotSpawnChildSetup (), nullptr, nullptr, &exit_status);
+
+		if (exit_status == 0)
 		{
 			std::ifstream ifstream (svgFilename);
 	
 			SVG::Parser (scene, uri, ifstream) .parseIntoScene ();
 		}
 
-		os::unlink (svgFilename);
+		Gio::File::create_for_path (svgFilename) -> remove ();
+		Gio::File::create_for_path (pdfFilename) -> remove ();
 	}
-
-	os::unlink (pdfFilename);
+	catch (const Glib::Error & error)
+	{
+		throw X3D::Error <X3D::NOT_SUPPORTED> (error .what ());
+	}
 }
 
 Parser::~Parser ()

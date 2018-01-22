@@ -88,7 +88,6 @@
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
-#include <Titania/OS.h>
 #include <Titania/String.h>
 
 namespace titania {

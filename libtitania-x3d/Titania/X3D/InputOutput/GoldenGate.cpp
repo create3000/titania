@@ -62,8 +62,8 @@
 #include "../Parser/VRML1/Parser.h"
 #include "../Parser/Wavefront/Parser.h"
 
-#include <Titania/OS.h>
 #include <Titania/Physics/Constants.h>
+#include <Titania/OS/find_data_file.h>
 #include <Titania/String/to_string.h>
 
 #include <Magick++.h>
@@ -180,7 +180,7 @@ GoldenGate::getContentTypeFunctions ()
 	contentTypes .emplace ("application/x-3ds",                &GoldenParser::parse <Autodesk::Parser>);
 	contentTypes .emplace ("image/x-3ds",                      &GoldenParser::parse <Autodesk::Parser>);
 
-	if (os::program_exists ("inkscape"))
+	if (Glib::find_program_in_path ("inkscape") .size ())
 	{
 		contentTypes .emplace ("application/pdf",                  &GoldenParser::parse <PDF::Parser>);
 		contentTypes .emplace ("application/x-pdf",                &GoldenParser::parse <PDF::Parser>);
@@ -224,7 +224,7 @@ GoldenGate::getSuffixes ()
 	// Wavefront OBJ
 	suffixes .emplace (".obj", &GoldenParser::parse <Wavefront::Parser>);
 
-	if (os::program_exists ("inkscape"))
+	if (Glib::find_program_in_path ("inkscape") .size ())
 	{
 		// PDF
 		suffixes .emplace (".pdf", &GoldenParser::parse <PDF::Parser>);

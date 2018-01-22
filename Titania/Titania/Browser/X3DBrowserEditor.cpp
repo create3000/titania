@@ -76,7 +76,6 @@
 #include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
-#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/Utility/Map.h>
 
@@ -720,16 +719,19 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 {
 	const auto  cdata    = node -> getSourceText ();
 	std::string filename = "/tmp/titania-XXXXXX.js";
-	auto        ostream  = os::mkstemps (filename, 3);
 
-	if (not cdata or not ostream)
+	::close (Glib::mkstemp (filename));
+
+	std::ofstream ofstream (filename);	
+
+	if (not cdata or not ofstream)
 		return;
 
 	// Output file.
 
 	for (const auto & string : *cdata)
 	{
-		ostream
+		ofstream
 			<< "<![CDATA["
 			<< X3D::EscapeSourceText (string)
 			<< "]]>" << std::endl
@@ -741,7 +743,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 
 	const auto name = std::regex_replace (node -> getName (), CommentEnd, "");
 
-	ostream
+	ofstream
 		<< "/**" << std::endl
 		<< " * " << node -> getTypeName () << " " << name << std::endl
 		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields. Each SFString value is enclosed inside a CDATA") << std::endl
@@ -764,7 +766,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 	{
 		getCurrentBrowser () -> println ("Trying to start gnome-text-editor ...");
 
-		Gio::AppInfo::create_from_commandline (os::realpath ("/usr/bin/gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
+		Gio::AppInfo::create_from_commandline (Glib::find_program_in_path ("gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
 	catch (...)
 	{ }

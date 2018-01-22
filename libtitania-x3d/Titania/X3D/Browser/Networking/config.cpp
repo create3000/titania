@@ -50,7 +50,7 @@
 
 #include "config.h"
 
-#include <Titania/OS.h>
+#include <Titania/OS/find_data_file.h>
 
 namespace titania {
 namespace X3D {

@@ -50,8 +50,7 @@
 
 #include "config.h"
 
-#include <Titania/OS.h>
-
+#include <Titania/OS/find_data_file.h>
 #include <glibmm.h>
 
 namespace titania {

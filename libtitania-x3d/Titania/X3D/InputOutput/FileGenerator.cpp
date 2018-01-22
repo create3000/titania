@@ -50,7 +50,6 @@
 
 #include "FileGenerator.h"
 
-#include <Titania/OS.h>
 #include <Titania/Stream/GZStream.h>
 
 #include <glibmm.h>

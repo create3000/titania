@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/OS.h>
-
 #include <regex>
 
 namespace titania {
