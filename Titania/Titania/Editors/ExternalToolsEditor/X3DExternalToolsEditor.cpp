@@ -50,6 +50,8 @@
 
 #include "X3DExternalToolsEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
@@ -133,7 +135,7 @@ X3DExternalToolsEditor::getName (const Gtk::TreeIter & iter) const
 }
 
 void
-X3DExternalToolsEditor::setText (const std::string & id, const std::string & text)
+X3DExternalToolsEditor::setText (const std::string & id, const std::string & text) const
 {
 	const auto folder   = getToolFolder ();
 	const auto file     = folder -> get_child (id + ".txt");
@@ -349,6 +351,111 @@ X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const 
 
 		saveTree (child -> children (), worldInfo);
 	}
+}
+
+void
+X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow, Gtk::MenuItem & menuItem)
+{
+	const auto menu = menuItem .get_submenu ();
+
+	for (const auto widget : menu -> get_children ())
+	{
+		if (widget -> get_name () not_eq "X3DExternalToolsEditor")
+			continue;
+
+		menu -> remove (*widget);
+	}
+
+	const auto browser   = X3D::createBrowser ();
+	const auto scene     = browser -> createX3DFromString (os::load_file (config_dir ("tools.x3d")));
+	const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+
+	createMenu (browserWindow, worldInfo, "/Tools/Tree/children", &menuItem, menu);
+
+	menuItem .show_all ();
+}
+
+void
+X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
+                                    const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
+                                    const std::string & key,
+                                    Gtk::MenuItem* const menuItem,
+	                                 Gtk::Menu* menu)
+{
+	const auto children = worldInfo -> getMetaData <X3D::MFNode> (key);
+
+	if (children .empty ())
+		return;
+
+	if (not menu)
+	{
+		menu = Gtk::manage (new Gtk::Menu ());
+		menuItem -> set_submenu (*menu);
+	}
+
+	const auto & worldUrl       = browserWindow -> getCurrentPage () -> getWorldURL ();
+	const auto & selection      = browserWindow -> getSelection () -> getNodes ();
+	const auto   separatorRegex = std::regex  (R"(^-*$)");
+	auto         separatorMatch = std::smatch ();
+
+	for (size_t i = 0, size = children .size (); i < size; ++ i)
+	{
+		const auto k                 = key + "/" + basic::to_string (i, std::locale::classic ());
+		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
+		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
+		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
+
+		if (selection .empty ())
+		{
+			if (inputType == "MASTER_SELECTION")
+				continue;
+
+			if (outputType == "REPLACE_MASTER_SELECTION")
+				continue;
+		}
+
+		if (worldUrl .empty ())
+		{
+			if (applicabilityType == "ALL_SCENES_EXCEPT_UNTITLED_ONES")
+				continue;
+		}
+		else
+		{
+			if (applicabilityType == "UNTITLED_SCENS_ONLY")
+				continue;
+		}
+
+		if (worldUrl .is_local ())
+		{
+			if (applicabilityType == "REMOTE_FILES_ONLY")
+				continue;
+		}
+		else
+		{
+			if (applicabilityType == "LOCAL_FILES_ONLY")
+				continue;
+		}
+
+		const auto separator = std::regex_match (name, separatorMatch, separatorRegex);
+		const auto menuItem  = Gtk::manage (separator ? new Gtk::SeparatorMenuItem () : new Gtk::MenuItem (name));
+
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::launchTool), browserWindow, k));
+		menuItem -> set_name ("X3DExternalToolsEditor");
+
+		menu -> append (*menuItem);
+
+		if (separator)
+			continue;
+
+		createMenu (browserWindow, worldInfo, k + "/children", menuItem, nullptr);
+	}
+}
+
+void
+X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const std::string & key)
+{
+	__LOG__ << key << std::endl;
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

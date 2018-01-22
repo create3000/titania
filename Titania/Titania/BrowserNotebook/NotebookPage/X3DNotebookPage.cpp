@@ -234,7 +234,7 @@ X3DNotebookPage::updateTitle ()
 	getBrowserWindow () -> getBrowserNotebook () .set_menu_label_text (getWidget (), title);
 
 	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-	getTabLabel () .set_text (getMasterSceneURL () .basename ());
+	getTabLabel () .set_text (title);
 	getTabLabel () .set_tooltip_text (getMasterSceneURL () .str ());
 
 	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
@@ -392,6 +392,8 @@ X3DNotebookPage::set_scene ()
 
 	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
 	{
+		url = "";
+
 		getScene () -> setWorldURL ("");
 		getScene () -> setEncoding (X3D::EncodingType::XML);
 		getScene () -> setSpecificationVersion (X3D::LATEST_VERSION);

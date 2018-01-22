@@ -1805,6 +1805,10 @@ public:
 
 	virtual
 	void
+	on_browser_external_tools_activate () = 0;
+
+	virtual
+	void
 	on_manage_external_tools_activate () = 0;
 
 	virtual
@@ -1834,6 +1838,10 @@ public:
 	virtual
 	bool
 	on_menubar_button_press_event (GdkEventButton* button_event) = 0;
+
+	virtual
+	void
+	on_external_tools_activate () = 0;
 
 	virtual
 	void

@@ -82,11 +82,10 @@ const std::map <std::string, int32_t> ExternalToolsEditor::outputTypes = {
 
 const std::map <std::string, int32_t> ExternalToolsEditor::applicabilityTypes = {
 	std::make_pair ("ALWAYS_AVAILABLE",                0),
-	std::make_pair ("ALL_SCENES",                      1),
-	std::make_pair ("ALL_SCENES_EXCEPT_UNTITLED_ONES", 2),
-	std::make_pair ("LOCAL_FILES_ONLY",                3),
-	std::make_pair ("REMOTE_FILES_ONLY",               4),
-	std::make_pair ("UNTITLED_SCENS_ONLY",             5),
+	std::make_pair ("ALL_SCENES_EXCEPT_UNTITLED_ONES", 1),
+	std::make_pair ("LOCAL_FILES_ONLY",                2),
+	std::make_pair ("REMOTE_FILES_ONLY",               3),
+	std::make_pair ("UNTITLED_SCENS_ONLY",             4),
 };
 
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :

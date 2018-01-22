@@ -70,11 +70,7 @@ public:
 
 	static
 	void
-	setText (const std::string & id, const std::string & text);
-
-	static
-	std::string
-	getText (const std::string & id);
+	createMenu (X3DBrowserWindow* const browserWindow, Gtk::MenuItem & menuItem);
 
 	///  @name Destruction
 
@@ -118,6 +114,13 @@ protected:
 
 	std::string
 	getName (const Gtk::TreeIter & iter) const;
+
+	void
+	setText (const std::string & id, const std::string & text) const;
+
+	static
+	std::string
+	getText (const std::string & id);
 
 	void
 	setSaveType (const Gtk::TreeIter & iter, const std::string & value) const;
@@ -176,6 +179,18 @@ private:
 
 	void
 	saveTree (const Gtk::TreeNodeChildren & children, const X3D::X3DPtr <X3D::WorldInfo> & worldInfo) const;
+
+	static
+	void
+	createMenu (X3DBrowserWindow* const browserWindow,
+	            const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
+	            const std::string & key,
+	            Gtk::MenuItem* const menuItem,
+	            Gtk::Menu* menu);
+
+	static
+	void
+	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
 
 };
 

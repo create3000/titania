@@ -354,7 +354,6 @@
                         <property name="active">0</property>
                         <items>
                           <item translatable="yes">Always Available</item>
-                          <item translatable="yes">All Scenes</item>
                           <item translatable="yes">All Scenes Except Untitled Ones</item>
                           <item translatable="yes">Local Files Only</item>
                           <item translatable="yes">Remote Files Only</item>

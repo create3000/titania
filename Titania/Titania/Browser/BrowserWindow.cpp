@@ -58,6 +58,7 @@
 #include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
+#include "../Editors/ExternalToolsEditor/ExternalToolsEditor.h"
 #include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
@@ -1926,6 +1927,18 @@ BrowserWindow::on_grid_properties_activated ()
 }
 
 // Extenal Tools menu
+
+void
+BrowserWindow::on_external_tools_activate ()
+{
+	ExternalToolsEditor::createMenu (this, getExternalToolsMenuItem ());
+}
+
+void
+BrowserWindow::on_browser_external_tools_activate ()
+{
+	ExternalToolsEditor::createMenu (this, getBrowserExternalToolsMenuItem ());
+}
 
 void
 BrowserWindow::on_manage_external_tools_activate ()
