@@ -135,7 +135,9 @@ ExternalToolsEditor::on_add_tool_clicked ()
 		getTreeSelection () -> select (iter);
 	}
 	catch (const Glib::Error & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -179,7 +181,9 @@ ExternalToolsEditor::on_tree_selection_changed ()
 		changing = false;
 	}
 	catch (const Glib::Error & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -211,7 +215,9 @@ ExternalToolsEditor::on_text_changed ()
 		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ExternalToolsEditor::setLanguage), text));
 	}
 	catch (const Glib::Error & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

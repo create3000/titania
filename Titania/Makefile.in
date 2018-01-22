@@ -110,7 +110,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Base/X3DRevealerInterface.$(OBJEXT) \
 	Titania/Base/X3DUserInterface.$(OBJEXT) \
 	Titania/Bits/Cairo.$(OBJEXT) Titania/Bits/File.$(OBJEXT) \
-	Titania/Bits/String.$(OBJEXT) \
+	Titania/Bits/Pipe.$(OBJEXT) Titania/Bits/String.$(OBJEXT) \
 	Titania/Browser/BrowserHistory.$(OBJEXT) \
 	Titania/Browser/BrowserSelection.$(OBJEXT) \
 	Titania/Browser/BrowserWindow.$(OBJEXT) \
@@ -127,7 +127,6 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.$(OBJEXT) \
-	Titania/BrowserNotebook/RenderPanel/Pipe.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.$(OBJEXT) \
@@ -657,6 +656,7 @@ titania_SOURCES = \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Bits/Cairo.cpp \
 	Titania/Bits/File.cpp \
+	Titania/Bits/Pipe.cpp \
 	Titania/Bits/String.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
@@ -674,7 +674,6 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
-	Titania/BrowserNotebook/RenderPanel/Pipe.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderThread.cpp \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
@@ -1092,6 +1091,8 @@ Titania/Bits/Cairo.$(OBJEXT): Titania/Bits/$(am__dirstamp) \
 	Titania/Bits/$(DEPDIR)/$(am__dirstamp)
 Titania/Bits/File.$(OBJEXT): Titania/Bits/$(am__dirstamp) \
 	Titania/Bits/$(DEPDIR)/$(am__dirstamp)
+Titania/Bits/Pipe.$(OBJEXT): Titania/Bits/$(am__dirstamp) \
+	Titania/Bits/$(DEPDIR)/$(am__dirstamp)
 Titania/Bits/String.$(OBJEXT): Titania/Bits/$(am__dirstamp) \
 	Titania/Bits/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/$(am__dirstamp):
@@ -1171,9 +1172,6 @@ Titania/BrowserNotebook/RenderPanel/$(am__dirstamp):
 Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/RenderPanel/$(DEPDIR)
 	@: > Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
-Titania/BrowserNotebook/RenderPanel/Pipe.$(OBJEXT):  \
-	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
-	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT):  \
 	Titania/BrowserNotebook/RenderPanel/$(am__dirstamp) \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/$(am__dirstamp)
@@ -2420,6 +2418,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DUserInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/Cairo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/File.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/Pipe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/String.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserHistory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserSelection.Po@am__quote@
@@ -2437,7 +2436,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/Pipe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderThread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po@am__quote@

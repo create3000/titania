@@ -70,7 +70,6 @@ extern "C" {
 
 }
 
-#include <Titania/OS/file_exists.h>
 #include <Titania/OS/unlink.h>
 #include <Titania/String/tolower.h>
 
@@ -214,7 +213,7 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 
 	auto URL = uri .transform (basename);
 
-	if (not os::file_exists (URL .path ()))
+	if (not Glib::file_test (URL .path (), Glib::FILE_TEST_EXISTS))
 	{
 		URL = uri .transform (basic::tolower (basename, std::locale::classic ()));
 		

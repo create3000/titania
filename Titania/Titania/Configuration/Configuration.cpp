@@ -56,6 +56,8 @@
 #include <Titania/LOG.h>
 #include <Titania/String.h>
 
+#include <glibmm/fileutils.h>
+
 namespace titania {
 namespace puck {
 
@@ -89,12 +91,12 @@ Configuration::KeyFile::KeyFile (const std::string & basename) :
 	filename (config_dir (basename)),
 	 keyfile ()
 {
-	if (os::file_exists (config_dir ("configuration/")))
+	if (Glib::file_test (config_dir ("configuration/"), Glib::FILE_TEST_EXISTS))
 		os::system ("rm",    "-r", config_dir ("configuration/")); // XXX
 
 	os::system ("mkdir", "-p", config_dir ());
 
-	if (os::file_exists (filename))
+	if (Glib::file_test (filename, Glib::FILE_TEST_EXISTS))
 		keyfile .load_from_file (filename, Glib::KEY_FILE_KEEP_COMMENTS);
 }
 

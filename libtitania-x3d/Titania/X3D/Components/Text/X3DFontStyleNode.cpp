@@ -640,7 +640,7 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 
 			file -> copy (tempfile, Gio::FILE_COPY_OVERWRITE);
 	
-			if (os::file_exists (uri .path ()))
+			if (Glib::file_test (uri .path (), Glib::FILE_TEST_EXISTS))
 			{
 				isExactMatch = true;
 	

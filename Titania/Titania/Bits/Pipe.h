@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,25 +48,92 @@
  *
  ******************************************************************************/
 
-#include "load_file.h"
+#ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
+#define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 
-#include <fstream>
-#include <sstream>
+#include <functional>
+#include <stdexcept>
+#include <string>
+#include <vector>
+#include <mutex>
 
 namespace titania {
-namespace os {
+namespace puck {
 
-std::string
-load_file (const std::string & filename)
+using PipeCallback = std::function <void (const std::string &)>;
+
+class Pipe
 {
-	std::ifstream ifstream (filename);
+public:
 
-	std::ostringstream osstream;
+	///  @name Construction
 
-	osstream << ifstream .rdbuf ();
+	explicit
+	Pipe (const PipeCallback & stdout_callback = PipeCallback (),
+	      const PipeCallback & stderr_callback = PipeCallback ());
 
-	return osstream .str ();
-}
+	///  @name Member access
 
-} // os
+	bool
+	is_open () const
+	{ return m_is_open; }
+
+	int32_t
+	pid () const
+	{ return m_pid; }
+
+	///  @name Operations
+
+	void
+	open (const std::vector <std::string> & command);
+
+	void
+	open (const std::string & workingDirectory,
+	      const std::vector <std::string> & command,
+	      const std::vector <std::string> & environment);
+
+	void
+	write (const char* data, const size_t length);
+
+	bool
+	close ();
+
+	///  @name Destruction
+
+	virtual
+	~Pipe ();
+
+
+private:
+
+	///  @name Operations
+
+	int32_t
+	poll (const int32_t fd, const int32_t timeout, const short events);
+
+	void
+	read (const int32_t timeout);
+
+	///  @name Static members
+
+	static constexpr size_t buffer_size = 1024;
+
+	///  @name Members
+
+	const PipeCallback m_stdout_callback;
+	const PipeCallback m_stderr_callback;
+
+	pid_t   m_pid;
+	int32_t m_stdin;
+	int32_t m_stdout;
+	int32_t m_stderr;
+	bool    m_is_open;
+
+	std::vector <char> m_buffer;
+
+};
+
+} // puck
 } // titania
+
+#endif

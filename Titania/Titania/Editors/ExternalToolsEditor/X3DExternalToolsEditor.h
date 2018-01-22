@@ -61,6 +61,8 @@
 namespace titania {
 namespace puck {
 
+class Pipe;
+
 class X3DExternalToolsEditor :
 	virtual public X3DExternalToolsEditorInterface
 {
@@ -98,7 +100,7 @@ protected:
 
 	static
 	Glib::RefPtr <Gio::File>
-	getToolFolder ();
+	getToolsFolder ();
 
 	std::string
 	createTool ();
@@ -194,6 +196,14 @@ private:
 	static
 	void
 	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
+
+	static
+	void
+	on_console (X3DBrowserWindow* const browserWindow, const std::string & string);
+
+	///  @name Static member
+
+	static std::unique_ptr <Pipe> pipe;
 
 };
 

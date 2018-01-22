@@ -68,7 +68,7 @@ History::History () :
 {
 	try
 	{
-		const bool have_history = os::file_exists (filename);
+		const bool have_history = Glib::file_test (filename, Glib::FILE_TEST_EXISTS);
 	
 		os::system ("mkdir", "-p", config_dir ());
 	
@@ -471,7 +471,7 @@ History::~History ()
 		{
 			const auto worldURL = basic::uri (item .at ("worldURL"));
 	
-			if (worldURL .is_local () and not os::file_exists (worldURL .path ()))
+			if (worldURL .is_local () and not Glib::file_test (worldURL .path (), Glib::FILE_TEST_EXISTS))
 			{
 				removeItem (item .at ("id"));
 			}

@@ -56,8 +56,6 @@
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Fields/Hash.h>
 
-#include <Titania/OS/file_exists.h>
-
 namespace titania {
 namespace puck {
 
@@ -441,7 +439,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 	{
 		const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
 
-		if (os::file_exists (heightMap .path ()))
+		if (Glib::file_test (heightMap .path (), Glib::FILE_TEST_EXISTS))
 		{
 			exists = true;
 

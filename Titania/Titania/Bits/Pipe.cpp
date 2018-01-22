@@ -79,7 +79,14 @@ Pipe::Pipe (const PipeCallback & stdout_callback, const PipeCallback & stderr_ca
 
 void
 Pipe::open (const std::vector <std::string> & command)
-throw (std::runtime_error)
+{
+	open (Glib::get_home_dir (), command, { });
+}
+
+void
+Pipe::open (const std::string & workingDirectory,
+            const std::vector <std::string> & command,
+            const std::vector <std::string> & environment)
 {
 	try
 	{
@@ -90,9 +97,9 @@ throw (std::runtime_error)
 
 		// FD_CLOEXEC   This flag specifies that the file descriptor should be closed when an exec function is invoked.
 
-		Glib::spawn_async_with_pipes (Glib::get_home_dir (),
+		Glib::spawn_async_with_pipes (workingDirectory,
 		                              command,
-		                              std::vector <std::string> (),
+		                              environment,
 		                              Glib::SPAWN_SEARCH_PATH | Glib::SPAWN_SEARCH_PATH_FROM_ENVP | Glib::SPAWN_CLOEXEC_PIPES | Glib::SPAWN_DO_NOT_REAP_CHILD,
 		                              Glib::SlotSpawnChildSetup (),
 		                              &m_pid,
@@ -106,7 +113,7 @@ throw (std::runtime_error)
 	}
 	catch (const Glib::SpawnError & error)
 	{
-		throw std::runtime_error ("Couldn't execute command '" + basic::join (command, " ") + "'.");
+		throw std::runtime_error (error .what ());
 	}
 }
 
@@ -159,7 +166,6 @@ Pipe::read (const int32_t timeout)
 
 void
 Pipe::write (const char* data, const size_t length)
-throw (std::runtime_error)
 {
 	if (not m_is_open)
 		throw std::runtime_error ("Write to closed pipe.");

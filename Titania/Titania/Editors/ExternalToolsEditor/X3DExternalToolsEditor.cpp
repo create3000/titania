@@ -50,6 +50,7 @@
 
 #include "X3DExternalToolsEditor.h"
 
+#include "../../Bits/Pipe.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
@@ -61,6 +62,8 @@
 
 namespace titania {
 namespace puck {
+
+std::unique_ptr <Pipe> X3DExternalToolsEditor::pipe;
 
 class X3DExternalToolsEditor::Columns {
 public:
@@ -81,7 +84,7 @@ X3DExternalToolsEditor::X3DExternalToolsEditor () :
 { }
 
 Glib::RefPtr <Gio::File>
-X3DExternalToolsEditor::getToolFolder ()
+X3DExternalToolsEditor::getToolsFolder ()
 {
 	const auto folder = Gio::File::create_for_path (config_dir ("Tools"));
 
@@ -94,10 +97,13 @@ X3DExternalToolsEditor::getToolFolder ()
 std::string
 X3DExternalToolsEditor::createTool ()
 {
-	const auto  folder   = getToolFolder ();
-	std::string filename = folder -> get_path () + "/XXXXXX.txt";
+	const auto  folder   = getToolsFolder ();
+	const auto  file     = folder -> get_child ("XXXXXX.txt");
+	std::string filename = file -> get_path ();
 	auto        ofstream = os::mkstemps (filename, 4);
 	const auto  id       = filename .substr (filename .size () - 10, 6);
+
+	file -> set_attribute_string ("access::can-execute", "true", Gio::FILE_QUERY_INFO_NONE);
 
 	return id;
 }
@@ -137,7 +143,7 @@ X3DExternalToolsEditor::getName (const Gtk::TreeIter & iter) const
 void
 X3DExternalToolsEditor::setText (const std::string & id, const std::string & text) const
 {
-	const auto folder   = getToolFolder ();
+	const auto folder   = getToolsFolder ();
 	const auto file     = folder -> get_child (id + ".txt");
 	auto       ofstream = std::ofstream (file -> get_path ());
 
@@ -147,10 +153,10 @@ X3DExternalToolsEditor::setText (const std::string & id, const std::string & tex
 std::string
 X3DExternalToolsEditor::getText (const std::string & id)
 {
-	const auto folder = getToolFolder ();
+	const auto folder = getToolsFolder ();
 	const auto file   = folder -> get_child (id + ".txt");
 
-	return os::load_file (file -> get_path ());
+	return Glib::file_get_contents (file -> get_path ());
 }
 
 void
@@ -237,21 +243,30 @@ X3DExternalToolsEditor::setLanguage (const std::string & text)
 		getSourceView () .get_source_buffer () -> set_language (language);
 	}
 	catch (const Glib::Error & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 X3DExternalToolsEditor::restoreTree ()
 {
-	const auto browser   = X3D::createBrowser ();
-	const auto scene     = browser -> createX3DFromString (os::load_file (config_dir ("tools.x3d")));
-	const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
-	auto       expandeds = std::vector <Gtk::TreePath> ();
-
-	restoreTree (worldInfo, "/Tools/Tree/children", Gtk::TreeIter (), expandeds);
-
-	for (const auto & path : expandeds)
-		getTreeView () .expand_row (path, false);
+	try
+	{
+		const auto browser   = X3D::createBrowser ();
+		const auto scene     = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
+		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+		auto       expandeds = std::vector <Gtk::TreePath> ();
+	
+		restoreTree (worldInfo, "/Tools/Tree/children", Gtk::TreeIter (), expandeds);
+	
+		for (const auto & path : expandeds)
+			getTreeView () .expand_row (path, false);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -274,6 +289,9 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
 		const auto iter              = getTreeStore () -> iter_is_valid (parent) ? getTreeStore () -> append (parent -> children ()) : getTreeStore () -> append ();
+
+		if (id .empty ())
+			continue;
 
 		if (expanded)
 			expandeds .emplace_back (path);
@@ -332,23 +350,30 @@ X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const 
 void
 X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow, Gtk::MenuItem & menuItem)
 {
-	const auto menu = menuItem .get_submenu ();
-
-	for (const auto widget : menu -> get_children ())
+	try
 	{
-		if (widget -> get_name () not_eq "X3DExternalToolsEditor")
-			continue;
-
-		menu -> remove (*widget);
+		const auto menu = menuItem .get_submenu ();
+	
+		for (const auto widget : menu -> get_children ())
+		{
+			if (widget -> get_name () not_eq "X3DExternalToolsEditor")
+				continue;
+	
+			menu -> remove (*widget);
+		}
+	
+		const auto browser   = X3D::createBrowser ();
+		const auto scene     = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
+		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+	
+		createMenu (browserWindow, worldInfo, "/Tools/Tree/children", &menuItem, menu);
+	
+		menuItem .show_all ();
 	}
-
-	const auto browser   = X3D::createBrowser ();
-	const auto scene     = browser -> createX3DFromString (os::load_file (config_dir ("tools.x3d")));
-	const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
-
-	createMenu (browserWindow, worldInfo, "/Tools/Tree/children", &menuItem, menu);
-
-	menuItem .show_all ();
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -377,10 +402,14 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 	for (size_t i = 0, size = children .size (); i < size; ++ i)
 	{
 		const auto k                 = key + "/" + basic::to_string (i, std::locale::classic ());
+		const auto id                = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
 		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
+
+		if (id .empty ())
+			continue;
 
 		if (selection .empty ())
 		{
@@ -406,17 +435,17 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 		{
 			if (applicabilityType == "UNTITLED_SCENS_ONLY")
 				continue;
-		}
 
-		if (worldUrl .is_local ())
-		{
-			if (applicabilityType == "REMOTE_FILES_ONLY")
-				continue;
-		}
-		else
-		{
-			if (applicabilityType == "LOCAL_FILES_ONLY")
-				continue;
+			if (worldUrl .is_local ())
+			{
+				if (applicabilityType == "REMOTE_FILES_ONLY")
+					continue;
+			}
+			else
+			{
+				if (applicabilityType == "LOCAL_FILES_ONLY")
+					continue;
+			}
 		}
 
 		const auto separator = std::regex_match (name, separatorMatch, separatorRegex);
@@ -435,9 +464,50 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 }
 
 void
-X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const std::string & key)
+X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const std::string & k)
 {
-	__LOG__ << key << std::endl;
+	try
+	{
+		using namespace std::placeholders;
+
+		pipe .reset ();
+	
+		const auto browser    = X3D::createBrowser ();
+		const auto scene      = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
+		const auto worldInfo  = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+		const auto id         = worldInfo -> getMetaData <std::string> (k + "/id");
+		const auto name       = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto inputType  = worldInfo -> getMetaData <std::string> (k + "/inputType");
+		const auto outputType = worldInfo -> getMetaData <std::string> (k + "/outputType");
+		const auto folder     = getToolsFolder ();
+		const auto file       = folder -> get_child (id + ".txt");
+		const auto command    = std::vector <std::string> ({ file -> get_path () });
+		const auto console    = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, _1);
+
+		try
+		{
+			pipe = std::make_unique <Pipe> (console, console);
+		
+			pipe -> open (Glib::get_home_dir (), command, { });
+		}
+		catch (const std::exception & error)
+		{
+			browserWindow -> println ("Couldn't execute »" + name + "«");
+			browserWindow -> println (error .what ());
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const std::string & string)
+{
+	std::clog << string << std::endl;
+
+	browserWindow -> print (string);
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

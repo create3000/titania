@@ -318,7 +318,6 @@
     <Compile Include="Titania\Editors\BindableNodeList\FogList.cpp" />
     <Compile Include="Titania\Editors\BindableNodeList\NavigationInfoList.cpp" />
     <Compile Include="Titania\Editors\BindableNodeList\ViewpointList.cpp" />
-    <Compile Include="Titania\BrowserNotebook\RenderPanel\Pipe.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DRouteGraphInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DRouteGraphPageInterface.cpp" />
     <Compile Include="Titania\Widgets\RouteGraph\RouteGraph.cpp" />
@@ -368,6 +367,7 @@
     <Compile Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.cpp" />
     <Compile Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.cpp" />
+    <Compile Include="Titania\Bits\Pipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2869,7 +2869,6 @@
     <None Include="Titania\Editors\BindableNodeList\NavigationInfoList.h" />
     <None Include="Titania\Editors\BindableNodeList\ViewpointList.h" />
     <None Include="Titania\Editors\BindableNodeList\X3DBindableNodeList.h" />
-    <None Include="Titania\BrowserNotebook\RenderPanel\Pipe.h" />
     <None Include="share\titania\ui\icons\Faenza\16\media-playlist-repeat.png" />
     <None Include="share\titania\ui\icons\Faenza\16\insert-link.png" />
     <None Include="share\titania\ui\icons\Primitives\SphereNode.svg" />
@@ -3156,6 +3155,7 @@
     <None Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.h" />
     <None Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.h" />
     <None Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.h" />
+    <None Include="Titania\Bits\Pipe.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
 #define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_VIDEO_ENCODER_H__
 
-#include "Pipe.h"
+#include "../../Bits/Pipe.h"
 
 #include <Titania/Basic/URI.h>
 

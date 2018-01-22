@@ -138,7 +138,7 @@ X3DBrowserWidget::initialize ()
 		{
 			const auto uri = basic::uri (file);
 
-			if (uri .is_local () and not os::file_exists (uri .path ()))
+			if (uri .is_local () and not Glib::file_test (uri .path (), Glib::FILE_TEST_EXISTS))
 				continue;
 
 			filtered .emplace_back (file);
