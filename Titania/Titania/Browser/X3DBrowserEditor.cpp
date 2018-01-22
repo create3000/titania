@@ -403,7 +403,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		}
 		catch (const X3D::X3DError & error)
 		{
-			__LOG__ << error .what () << std::endl;
+			getBrowserWindow () -> print (error .what ());
 		}
 	}
 

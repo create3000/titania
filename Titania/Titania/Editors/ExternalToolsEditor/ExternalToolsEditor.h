@@ -115,6 +115,10 @@ private:
 
 	virtual
 	void
+	on_input_format_changed () final override;
+
+	virtual
+	void
 	on_output_type_changed () final override;
 
 	virtual
@@ -131,6 +135,7 @@ private:
 
 	static const std::map <std::string, int32_t> saveTypes;
 	static const std::map <std::string, int32_t> inputTypes;
+	static const std::map <std::string, int32_t> inputFormats;
 	static const std::map <std::string, int32_t> outputTypes;
 	static const std::map <std::string, int32_t> applicabilityTypes;
 

@@ -240,21 +240,18 @@ FractalNoise (int index, Vector2d vertex)
    }
 }
 
-double
-H (double f, size_t N)
+void
+f ()
 {
-	double h = 0;
-	double m = 1;
-
-	for (size_t i = 0; i < N; ++ i)
-	{
-		h += m;
-		m *= f;
-	}
-
-	return h;
+	__LOG__ << 123 << std::endl;
 }
 
+template<typename T, typename... U>
+size_t getAddress(std::function<T(U...)> f) {
+    typedef T(fnType)(U...);
+    fnType ** fnPointer = f.template target<fnType*>();
+    return (size_t) *fnPointer;
+}
 int
 main (int argc, char** argv)
 {
@@ -272,10 +269,11 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::string fn = "/tmp/test.XXXXXX.txt";
-	const auto  fh = Glib::mkstemp (fn);
-	
-	close (fh);
+	std::function <void ()> f1 = std::bind (&f, 123);
+	std::function <void ()> f2 = std::bind (&f, 123);
+
+	__LOG__ << getAddress (f1) << std::endl;
+	__LOG__ << getAddress (f2) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

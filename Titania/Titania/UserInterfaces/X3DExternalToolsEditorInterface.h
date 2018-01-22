@@ -159,6 +159,10 @@ public:
 	getApplicabilityTypeButton () const
 	{ return *m_ApplicabilityTypeButton; }
 
+	Gtk::ComboBoxText &
+	getInputFormatButton () const
+	{ return *m_InputFormatButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -188,6 +192,10 @@ public:
 	virtual
 	void
 	on_applicability_type_changed () = 0;
+
+	virtual
+	void
+	on_input_format_changed () = 0;
 
 	///  @name Destruction
 
@@ -230,6 +238,7 @@ private:
 	Gtk::ComboBoxText* m_InputTypeButton;
 	Gtk::ComboBoxText* m_OutputTypeButton;
 	Gtk::ComboBoxText* m_ApplicabilityTypeButton;
+	Gtk::ComboBoxText* m_InputFormatButton;
 
 };
 

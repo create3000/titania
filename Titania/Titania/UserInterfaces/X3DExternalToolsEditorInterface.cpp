@@ -101,6 +101,7 @@ X3DExternalToolsEditorInterface::create ()
 	m_builder -> get_widget ("InputTypeButton", m_InputTypeButton);
 	m_builder -> get_widget ("OutputTypeButton", m_OutputTypeButton);
 	m_builder -> get_widget ("ApplicabilityTypeButton", m_ApplicabilityTypeButton);
+	m_builder -> get_widget ("InputFormatButton", m_InputFormatButton);
 
 	// Connect object Gtk::TreeSelection with id 'TreeSelection'.
 	m_TreeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_tree_selection_changed));
@@ -114,6 +115,7 @@ X3DExternalToolsEditorInterface::create ()
 	m_InputTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_input_type_changed));
 	m_OutputTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_output_type_changed));
 	m_ApplicabilityTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_applicability_type_changed));
+	m_InputFormatButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_input_format_changed));
 }
 
 X3DExternalToolsEditorInterface::~X3DExternalToolsEditorInterface ()

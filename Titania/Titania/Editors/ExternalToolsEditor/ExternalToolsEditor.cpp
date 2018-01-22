@@ -70,6 +70,12 @@ const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
 	std::make_pair ("MASTER_SELECTION", 2),
 };
 
+const std::map <std::string, int32_t> ExternalToolsEditor::inputFormats = {
+	std::make_pair ("X3D",  0),
+	std::make_pair ("VRML", 1),
+	std::make_pair ("JSON", 2),
+};
+
 const std::map <std::string, int32_t> ExternalToolsEditor::outputTypes = {
 	std::make_pair ("NOTHING",                  0),
 	std::make_pair ("DISPLAY_IN_CONSOLE",       1),
@@ -172,6 +178,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			const auto text              = getText (id);
 			const auto saveType          = getSaveType (iter);
 			const auto inputType         = getInputType (iter);
+			const auto inputFormat       = getInputFormat (iter);
 			const auto outputType        = getOutputType (iter);
 			const auto applicabilityType = getApplicabilityType (iter);
 		
@@ -181,6 +188,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 
 			try { getSaveTypeButton          () .set_active (saveTypes          .at (saveType));          } catch (...) { getSaveTypeButton          () .set_active (0); };
 			try { getInputTypeButton         () .set_active (inputTypes         .at (inputType));         } catch (...) { getInputTypeButton         () .set_active (0); };
+			try { getInputFormatButton       () .set_active (inputFormats       .at (inputFormat));       } catch (...) { getInputFormatButton       () .set_active (0); };
 			try { getOutputTypeButton        () .set_active (outputTypes        .at (outputType));        } catch (...) { getOutputTypeButton        () .set_active (0); };
 			try { getApplicabilityTypeButton () .set_active (applicabilityTypes .at (applicabilityType)); } catch (...) { getApplicabilityTypeButton () .set_active (0); };
 
@@ -268,6 +276,28 @@ ExternalToolsEditor::on_input_type_changed ()
 	catch (const std::out_of_range & error)
 	{
 		setInputType (iter, "NOTHING");
+	}
+
+	saveTree ();
+}
+
+void
+ExternalToolsEditor::on_input_format_changed ()
+{
+	if (changing)
+		return;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	try
+	{
+		static const auto inputFormats = basic::reverse (this -> inputFormats);
+
+		setInputFormat (iter, inputFormats .at (getInputFormatButton () .get_active_row_number ()));
+	}
+	catch (const std::out_of_range & error)
+	{
+		setInputFormat (iter, "X3D");
 	}
 
 	saveTree ();

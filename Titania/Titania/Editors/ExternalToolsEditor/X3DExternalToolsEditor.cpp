@@ -62,8 +62,6 @@
 namespace titania {
 namespace puck {
 
-std::string X3DExternalToolsEditor::stdout;
-
 class X3DExternalToolsEditor::Columns {
 public:
 
@@ -71,12 +69,15 @@ public:
 	static constexpr size_t NAME          = 1;
 	static constexpr size_t MASK          = 2;
 	static constexpr size_t KEY           = 3;
-	static constexpr size_t SAVE          = 4;
-	static constexpr size_t INPUT         = 5;
-	static constexpr size_t OUTPUT        = 6;
+	static constexpr size_t SAVE_TYPE     = 4;
+	static constexpr size_t INPUT_TYPE    = 5;
+	static constexpr size_t OUTPUT_TYPE   = 6;
 	static constexpr size_t APPLICABILITY = 7;
+	static constexpr size_t INPUT_FORMAT  = 8;
 
 };
+
+std::string X3DExternalToolsEditor::stdout;
 
 X3DExternalToolsEditor::X3DExternalToolsEditor () :
 	X3DExternalToolsEditorInterface ()
@@ -185,7 +186,7 @@ X3DExternalToolsEditor::getText (const std::string & id)
 void
 X3DExternalToolsEditor::setSaveType (const Gtk::TreeIter & iter, const std::string & value) const
 {
-	iter -> set_value (Columns::SAVE, value);
+	iter -> set_value (Columns::SAVE_TYPE, value);
 }
 
 std::string
@@ -193,7 +194,7 @@ X3DExternalToolsEditor::getSaveType (const Gtk::TreeIter & iter) const
 {
 	auto value = std::string ();
 
-	iter -> get_value (Columns::SAVE, value);
+	iter -> get_value (Columns::SAVE_TYPE, value);
 
 	return value;
 }
@@ -201,7 +202,7 @@ X3DExternalToolsEditor::getSaveType (const Gtk::TreeIter & iter) const
 void
 X3DExternalToolsEditor::setInputType (const Gtk::TreeIter & iter, const std::string & value) const
 {
-	iter -> set_value (Columns::INPUT, value);
+	iter -> set_value (Columns::INPUT_TYPE, value);
 }
 
 std::string
@@ -209,7 +210,23 @@ X3DExternalToolsEditor::getInputType (const Gtk::TreeIter & iter) const
 {
 	auto value = std::string ();
 
-	iter -> get_value (Columns::INPUT, value);
+	iter -> get_value (Columns::INPUT_TYPE, value);
+
+	return value;
+}
+
+void
+X3DExternalToolsEditor::setInputFormat (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::INPUT_FORMAT, value);
+}
+
+std::string
+X3DExternalToolsEditor::getInputFormat (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::INPUT_FORMAT, value);
 
 	return value;
 }
@@ -217,7 +234,7 @@ X3DExternalToolsEditor::getInputType (const Gtk::TreeIter & iter) const
 void
 X3DExternalToolsEditor::setOutputType (const Gtk::TreeIter & iter, const std::string & value) const
 {
-	iter -> set_value (Columns::OUTPUT, value);
+	iter -> set_value (Columns::OUTPUT_TYPE, value);
 }
 
 std::string
@@ -225,7 +242,7 @@ X3DExternalToolsEditor::getOutputType (const Gtk::TreeIter & iter) const
 {
 	auto value = std::string ();
 
-	iter -> get_value (Columns::OUTPUT, value);
+	iter -> get_value (Columns::OUTPUT_TYPE, value);
 
 	return value;
 }
@@ -309,6 +326,7 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
 		const auto saveType          = worldInfo -> getMetaData <std::string> (k + "/saveType");
 		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
+		const auto inputFormat       = worldInfo -> getMetaData <std::string> (k + "/inputFormat");
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
 		const auto iter              = getTreeStore () -> iter_is_valid (parent) ? getTreeStore () -> append (parent -> children ()) : getTreeStore () -> append ();
@@ -323,6 +341,7 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		setName              (iter, name);
 		setSaveType          (iter, saveType);
 		setInputType         (iter, inputType);
+		setInputFormat       (iter, inputFormat);
 		setOutputType        (iter, outputType);
 		setApplicabilityType (iter, applicabilityType);
 
@@ -363,6 +382,7 @@ X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const 
 		worldInfo -> setMetaData <std::string> (key + "/name",              getName (child));
 		worldInfo -> setMetaData <std::string> (key + "/saveType",          getSaveType (child));
 		worldInfo -> setMetaData <std::string> (key + "/inputType",         getInputType (child));
+		worldInfo -> setMetaData <std::string> (key + "/inputFormat",       getInputFormat (child));
 		worldInfo -> setMetaData <std::string> (key + "/outputType",        getOutputType (child));
 		worldInfo -> setMetaData <std::string> (key + "/applicabilityType", getApplicabilityType (child));
 
@@ -494,18 +514,19 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		using namespace std::placeholders;
 
 	
-		const auto browser    = X3D::createBrowser ();
-		const auto scene      = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
-		const auto worldInfo  = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
-		const auto id         = worldInfo -> getMetaData <std::string> (k + "/id");
-		const auto name       = worldInfo -> getMetaData <std::string> (k + "/name");
-		const auto inputType  = worldInfo -> getMetaData <std::string> (k + "/inputType");
-		const auto outputType = worldInfo -> getMetaData <std::string> (k + "/outputType");
-		const auto folder     = getToolsFolder ();
-		const auto file       = folder -> get_child (id + ".txt");
-		const auto command    = std::vector <std::string> ({ file -> get_path () });
-		const auto console    = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, outputType not_eq "DISPLAY_IN_CONSOLE",  _1);
-		const auto stderr     = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, false, _1);
+		const auto browser     = X3D::createBrowser ();
+		const auto scene       = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
+		const auto worldInfo   = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
+		const auto id          = worldInfo -> getMetaData <std::string> (k + "/id");
+		const auto name        = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto inputType   = worldInfo -> getMetaData <std::string> (k + "/inputType");
+		const auto inputFormat = worldInfo -> getMetaData <std::string> (k + "/inputFormat");
+		const auto outputType  = worldInfo -> getMetaData <std::string> (k + "/outputType");
+		const auto folder      = getToolsFolder ();
+		const auto file        = folder -> get_child (id + ".txt");
+		const auto command     = std::vector <std::string> ({ file -> get_path () });
+		const auto console     = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, getConsoleAction (outputType),  _1);
+		const auto stderr      = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, ConsoleAction::PRINT, _1);
 
 		try
 		{
@@ -515,14 +536,29 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 
 			if (inputType == "CURRENT_SCENE")
 			{
-				const auto input = browserWindow -> getCurrentScene () -> toXMLString ();
+				std::string input;
+
+				if (inputFormat == "VRML")
+					input = browserWindow -> getCurrentScene () -> toString ();
+				else if (inputFormat == "JSON")
+					input = browserWindow -> getCurrentScene () -> toJSONString ();
+				else
+					input = browserWindow -> getCurrentScene () -> toXMLString ();
 
 				pipe .write (input .data (), input .size ());
 			}
 			else if (inputType == "MASTER_SELECTION")
 			{
 				const auto & selection = browserWindow -> getSelection () -> getNodes ();
-				const auto   input     = selection .back () -> toXMLString ();
+
+				std::string input;
+
+				if (inputFormat == "VRML")
+					input = selection .back () -> toString ();
+				else if (inputFormat == "JSON")
+					input = selection .back () -> toJSONString ();
+				else
+					input = selection .back () -> toXMLString ();
 
 				pipe .write (input .data (), input .size ());
 			}
@@ -539,25 +575,31 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		}
 		else if (outputType == "REPLACE_CURRENT_SCENE")
 		{
-
+			browserWindow -> load ("data:" + getContentType (stdout) + "," + stdout);
 		}
 		else if (outputType == "APPEND_TO_CURRENT_SCENE")
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Scene", name .c_str ())));
 			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
 
-			X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, undoStep);
+			if (not nodes .empty ())
+			{
+				X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, undoStep);
 
-			browserWindow -> getSelection () -> setNodes (nodes, undoStep);
-			browserWindow -> addUndoStep (undoStep);
+				browserWindow -> getSelection () -> setNodes (nodes, undoStep);
+				browserWindow -> addUndoStep (undoStep);
+			}
 		}
 		else if (outputType == "APPEND_TO_CURRENT_LAYER")
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Layer", name .c_str ())));
 			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
 
-			browserWindow -> getSelection () -> setNodes (nodes, undoStep);
-			browserWindow -> addUndoStep (undoStep);
+			if (not nodes .empty ())
+			{
+				browserWindow -> getSelection () -> setNodes (nodes, undoStep);
+				browserWindow -> addUndoStep (undoStep);
+			}
 		}
 		else if (outputType == "REPLACE_MASTER_SELECTION")
 		{
@@ -573,12 +615,31 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 }
 
 void
-X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const bool catchStdout, const std::string & string)
+X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string)
 {
-	if (catchStdout)
-		stdout .append (string);
-	else
-		browserWindow -> print (string);
+	switch (action)
+	{
+		case ConsoleAction::NOTHING:
+			return;
+		case ConsoleAction::STDOUT:
+			stdout .append (string);
+			return;
+		case ConsoleAction::PRINT:
+			browserWindow -> print (string);
+			return;
+	}
+}
+
+X3DExternalToolsEditor::ConsoleAction
+X3DExternalToolsEditor::getConsoleAction (const std::string & outputType)
+{
+	 if (outputType == "DISPLAY_IN_CONSOLE")
+		return ConsoleAction::PRINT;
+
+	 if (outputType == "NOTHING")
+		return ConsoleAction::NOTHING;
+
+	return ConsoleAction::STDOUT;
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

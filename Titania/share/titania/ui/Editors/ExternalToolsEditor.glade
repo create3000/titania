@@ -21,6 +21,8 @@
       <column type="gchararray"/>
       <!-- column-name Applicability -->
       <column type="gchararray"/>
+      <!-- column-name InputFormat -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -286,6 +288,7 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
+                        <property name="width">3</property>
                       </packing>
                     </child>
                     <child>
@@ -304,6 +307,7 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">1</property>
+                        <property name="width">3</property>
                       </packing>
                     </child>
                     <child>
@@ -344,6 +348,7 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">3</property>
+                        <property name="width">3</property>
                       </packing>
                     </child>
                     <child>
@@ -364,6 +369,37 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">4</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Format:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="InputFormatButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="active">0</property>
+                        <items>
+                          <item translatable="yes">X3D</item>
+                          <item translatable="yes">Classic VRML</item>
+                          <item translatable="yes">JSON</item>
+                        </items>
+                        <signal name="changed" handler="on_input_format_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="top_attach">2</property>
                       </packing>
                     </child>
                   </object>

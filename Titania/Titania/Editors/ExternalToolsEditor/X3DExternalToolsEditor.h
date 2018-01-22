@@ -140,6 +140,12 @@ protected:
 	getInputType (const Gtk::TreeIter & iter) const;
 
 	void
+	setInputFormat (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getInputFormat (const Gtk::TreeIter & iter) const;
+
+	void
 	setOutputType (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string
@@ -176,6 +182,12 @@ private:
 
 	///  @name Member types
 
+	enum class ConsoleAction {
+		NOTHING,
+		STDOUT,
+		PRINT
+	};
+
 	class Columns;
 
 	///  @name Member access
@@ -203,7 +215,11 @@ private:
 
 	static
 	void
-	on_console (X3DBrowserWindow* const browserWindow, const bool catchStdout, const std::string & string);
+	on_console (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string);
+
+	static
+	ConsoleAction
+	getConsoleAction (const std::string & outputType);
 
 	///  @name Static members
 
