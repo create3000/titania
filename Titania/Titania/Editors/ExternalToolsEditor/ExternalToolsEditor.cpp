@@ -143,6 +143,13 @@ ExternalToolsEditor::on_add_tool_clicked ()
 void
 ExternalToolsEditor::on_remove_tool_clicked ()
 {
+	const auto iter = getTreeSelection () -> get_selected ();
+
+	removeTool (iter);
+
+	getTreeStore () -> erase (iter);
+
+	saveTree ();
 }
 
 void
@@ -154,6 +161,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 
 		if (getTreeSelection () -> get_selected_rows () .empty ())
 		{
+			getRemoveToolButton () .set_sensitive (false);
 			getToolBox () .set_sensitive (false);
 			getSourceView () .get_source_buffer () -> set_text ("");
 		}
@@ -167,6 +175,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			const auto outputType        = getOutputType (iter);
 			const auto applicabilityType = getApplicabilityType (iter);
 		
+			getRemoveToolButton () .set_sensitive (true);
 			getToolBox () .set_sensitive (true);
 			getSourceView () .get_source_buffer () -> set_text (text);
 

@@ -62,8 +62,6 @@
 namespace titania {
 namespace puck {
 
-std::unique_ptr <Pipe> X3DExternalToolsEditor::pipe;
-
 class X3DExternalToolsEditor::Columns {
 public:
 
@@ -97,16 +95,38 @@ std::string
 X3DExternalToolsEditor::createTool ()
 {
 	const auto  folder   = getToolsFolder ();
-	const auto  file     = folder -> get_child ("XXXXXX.txt");
-	std::string filename = file -> get_path ();
+	const auto  templ    = folder -> get_child ("XXXXXX.txt");
+	std::string filename = templ -> get_path ();
 
 	::close (Glib::mkstemp (filename));
 
-	const auto id = filename .substr (filename .size () - 10, 6);
+	const auto id   = filename .substr (filename .size () - 10, 6);
+	const auto file = Gio::File::create_for_path (filename);
 
-	file -> set_attribute_string ("access::can-execute", "true", Gio::FILE_QUERY_INFO_NONE);
+	//file -> set_attribute_uint32 (G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE, true, Gio::FILE_QUERY_INFO_NOFOLLOW_SYMLINKS);
+	::chmod (filename .c_str (), 0711);
 
 	return id;
+}
+
+void
+X3DExternalToolsEditor::removeTool (const Gtk::TreeIter & iter)
+{
+	const auto id     = getId (iter);
+	const auto folder = getToolsFolder ();
+	const auto file   = folder -> get_child (id + ".txt");
+	
+	try
+	{
+		file -> remove ();
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	for (const auto & child : iter -> children ())
+		removeTool (child);
 }
 
 void
@@ -144,11 +164,10 @@ X3DExternalToolsEditor::getName (const Gtk::TreeIter & iter) const
 void
 X3DExternalToolsEditor::setText (const std::string & id, const std::string & text) const
 {
-	const auto folder   = getToolsFolder ();
-	const auto file     = folder -> get_child (id + ".txt");
-	auto       ofstream = std::ofstream (file -> get_path ());
+	const auto folder = getToolsFolder ();
+	const auto file   = folder -> get_child (id + ".txt");
 
-	ofstream << text;
+	Glib::file_set_contents (file -> get_path (), text);
 }
 
 std::string
@@ -471,7 +490,6 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 	{
 		using namespace std::placeholders;
 
-		pipe .reset ();
 	
 		const auto browser    = X3D::createBrowser ();
 		const auto scene      = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
@@ -487,9 +505,23 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 
 		try
 		{
-			pipe = std::make_unique <Pipe> (console, console);
-		
-			pipe -> open (Glib::get_home_dir (), command, { });
+			Pipe pipe (console, console);
+
+			pipe .open (Glib::get_home_dir (), command, { });
+
+			if (inputType == "CURRENT_SCENE")
+			{
+				const auto input = browserWindow -> getCurrentScene () -> toXMLString ();
+
+				pipe .write (input .data (), input .size ());
+			}
+			else if (inputType == "MASTER_SELECTION")
+			{
+				const auto & selection = browserWindow -> getSelection () -> getNodes ();
+				const auto   input     = selection .back () -> toXMLString ();
+
+				pipe .write (input .data (), input .size ());
+			}
 		}
 		catch (const std::exception & error)
 		{
@@ -506,8 +538,6 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 void
 X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const std::string & string)
 {
-	std::clog << string << std::endl;
-
 	browserWindow -> print (string);
 }
 

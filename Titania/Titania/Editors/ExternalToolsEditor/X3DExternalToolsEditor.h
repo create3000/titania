@@ -106,6 +106,9 @@ protected:
 	createTool ();
 
 	void
+	removeTool (const Gtk::TreeIter & iter);
+
+	void
 	setId (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string
@@ -200,10 +203,6 @@ private:
 	static
 	void
 	on_console (X3DBrowserWindow* const browserWindow, const std::string & string);
-
-	///  @name Static member
-
-	static std::unique_ptr <Pipe> pipe;
 
 };
 
