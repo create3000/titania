@@ -69,8 +69,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Utility/MatrixStack.cpp \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
-	Titania/OS/is_directory.cpp \
-	Titania/OS/is_file.cpp \
 	Titania/OS/mkdir.cpp \
 	Titania/OS/mkstemps.cpp \
 	Titania/OS/program_exists.cpp \
@@ -82,7 +80,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \
 	Titania/String/sprintf.cpp \
-	Titania/String/strfsize.cpp \
 	Titania/String/trim.cpp
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 

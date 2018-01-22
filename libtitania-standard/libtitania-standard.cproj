@@ -77,7 +77,6 @@
     <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
     <None Include="Makefile.am" />
     <None Include="Titania\Algorithm\Remove.h" />
-    <None Include="Titania\String\strfsize.h" />
     <None Include="Titania\Utility\Value.h" />
     <None Include="Titania\Utility\MemberValue.h" />
     <None Include="Titania\Utility\Pass.h" />
@@ -123,8 +122,6 @@
     <None Include="Titania\Geospatial\Interpolation.h" />
     <None Include="Titania\OS\file_size.h" />
     <None Include="Titania\OS\find_data_file.h" />
-    <None Include="Titania\OS\is_directory.h" />
-    <None Include="Titania\OS\is_file.h" />
     <None Include="Titania\OS\mkdir.h" />
     <None Include="Titania\OS\system.h" />
     <None Include="Titania\InputOutput\InverseString.h" />
@@ -590,7 +587,6 @@
     <Compile Include="Titania\Chrono\CountingClock.cpp" />
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\Path.cpp" />
-    <Compile Include="Titania\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
     <Compile Include="Titania\Math\Image.cpp" />
@@ -612,8 +608,6 @@
     <Compile Include="Titania\Math\Utility\MatrixStack.cpp" />
     <Compile Include="Titania\OS\file_size.cpp" />
     <Compile Include="Titania\OS\find_data_file.cpp" />
-    <Compile Include="Titania\OS\is_directory.cpp" />
-    <Compile Include="Titania\OS\is_file.cpp" />
     <Compile Include="Titania\OS\mkdir.cpp" />
     <Compile Include="Titania\OS\system.cpp" />
     <Compile Include="Titania\InputOutput\InverseString.cpp" />

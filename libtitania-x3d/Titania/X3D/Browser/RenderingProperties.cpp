@@ -322,9 +322,9 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), MaxLights () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %zd"), getBrowser () -> getMaxClipPlanes ()));
 		string .emplace_back (basic::sprintf (_ ("Color depth:               %d bits"), ColorDepth () .getValue ()));
-		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), strfsize (getBrowser () -> getTextureMemory ()) .c_str ()));
-		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
-		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), Glib::format_size (getBrowser () -> getTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), Glib::format_size (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), Glib::format_size (getBrowser () -> getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (SFTime::now () - initialized) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));
@@ -357,7 +357,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl
 		<< "\t\tAntialiased: " << Antialiased () .getValue () << std::endl
 		<< "\t\tColor depth: " << ColorDepth () << " bits" << std::endl
-		<< "\t\tTexture memory: " << (TextureMemory () > 0 ? strfsize (TextureMemory ()) : "n/a");
+		<< "\t\tTexture memory: " << (TextureMemory () > 0 ? Glib::format_size (TextureMemory ()) : "n/a");
 }
 
 void

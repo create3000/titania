@@ -52,7 +52,6 @@
 #include "String/naturally_compare.h"
 #include "String/split.h"
 #include "String/sprintf.h"
-#include "String/strfsize.h"
 #include "String/to_string.h"
 #include "String/toupper.h"
 #include "String/tolower.h"

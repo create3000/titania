@@ -53,8 +53,6 @@
 
 #include "OS/file_size.h"
 #include "OS/find_data_file.h"
-#include "OS/is_directory.h"
-#include "OS/is_file.h"
 #include "OS/mkdir.h"
 #include "OS/mkstemps.h"
 #include "OS/program_exists.h"

@@ -52,7 +52,6 @@
 
 #include "Base64.h"
 
-#include <Titania/OS/is_file.h>
 #include <Titania/String/to_string.h>
 
 #include <giomm.h>
@@ -195,7 +194,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 	{
 		file_istream .reset (new std::ifstream ());
 
-		if (os::is_file (url () .path ()))
+		if (Glib::file_test (url () .path (), Glib::FILE_TEST_IS_REGULAR | Glib::FILE_TEST_IS_SYMLINK))
 		{
 			file_istream -> open (url () .path ());
 

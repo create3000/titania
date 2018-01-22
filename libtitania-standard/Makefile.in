@@ -184,14 +184,13 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Numbers/Vector3.lo \
 	Titania/Math/Numbers/Vector4.lo \
 	Titania/Math/Utility/MatrixStack.lo Titania/OS/file_size.lo \
-	Titania/OS/find_data_file.lo Titania/OS/is_directory.lo \
-	Titania/OS/is_file.lo Titania/OS/mkdir.lo \
+	Titania/OS/find_data_file.lo Titania/OS/mkdir.lo \
 	Titania/OS/mkstemps.lo Titania/OS/program_exists.lo \
 	Titania/OS/realpath.lo Titania/OS/rename.lo \
 	Titania/OS/system.lo Titania/OS/unlink.lo \
 	Titania/RegEx/regex_escape.lo Titania/String/dtoa.lo \
 	Titania/String/naturally_compare.lo Titania/String/sprintf.lo \
-	Titania/String/strfsize.lo Titania/String/trim.lo
+	Titania/String/trim.lo
 libtitania_standard_la_OBJECTS = $(am_libtitania_standard_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -497,8 +496,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Utility/MatrixStack.cpp \
 	Titania/OS/file_size.cpp \
 	Titania/OS/find_data_file.cpp \
-	Titania/OS/is_directory.cpp \
-	Titania/OS/is_file.cpp \
 	Titania/OS/mkdir.cpp \
 	Titania/OS/mkstemps.cpp \
 	Titania/OS/program_exists.cpp \
@@ -510,7 +507,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \
 	Titania/String/sprintf.cpp \
-	Titania/String/strfsize.cpp \
 	Titania/String/trim.cpp
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
@@ -848,10 +844,6 @@ Titania/OS/file_size.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/find_data_file.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/is_directory.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/is_file.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/mkdir.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/mkstemps.lo: Titania/OS/$(am__dirstamp) \
@@ -885,8 +877,6 @@ Titania/String/dtoa.lo: Titania/String/$(am__dirstamp) \
 Titania/String/naturally_compare.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
 Titania/String/sprintf.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/strfsize.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
 Titania/String/trim.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
@@ -1002,8 +992,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/file_size.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_directory.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/is_file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/mkdir.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/mkstemps.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/program_exists.Plo@am__quote@
@@ -1015,7 +1003,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/dtoa.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/naturally_compare.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/sprintf.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/strfsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/trim.Plo@am__quote@
 
 .cpp.o:
