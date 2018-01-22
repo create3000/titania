@@ -62,6 +62,8 @@
 namespace titania {
 namespace puck {
 
+std::string X3DExternalToolsEditor::stdout;
+
 class X3DExternalToolsEditor::Columns {
 public:
 
@@ -103,8 +105,8 @@ X3DExternalToolsEditor::createTool ()
 	const auto id   = filename .substr (filename .size () - 10, 6);
 	const auto file = Gio::File::create_for_path (filename);
 
-	//file -> set_attribute_uint32 (G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE, true, Gio::FILE_QUERY_INFO_NOFOLLOW_SYMLINKS);
-	::chmod (filename .c_str (), 0711);
+	::chmod (file -> get_path () .c_str (), 0711);
+	//fs::permissions (file -> get_path (), fs::perms::owner_excec, fs::perm_options::add); // C++17
 
 	return id;
 }
@@ -164,10 +166,11 @@ X3DExternalToolsEditor::getName (const Gtk::TreeIter & iter) const
 void
 X3DExternalToolsEditor::setText (const std::string & id, const std::string & text) const
 {
-	const auto folder = getToolsFolder ();
-	const auto file   = folder -> get_child (id + ".txt");
+	const auto folder   = getToolsFolder ();
+	const auto file     = folder -> get_child (id + ".txt");
+	auto       ofstream = std::ofstream (file -> get_path ());
 
-	Glib::file_set_contents (file -> get_path (), text);
+	ofstream << text;
 }
 
 std::string
@@ -244,7 +247,7 @@ X3DExternalToolsEditor::getApplicabilityType (const Gtk::TreeIter & iter) const
 }
 
 std::string
-X3DExternalToolsEditor::getContentType (const std::string & data) const
+X3DExternalToolsEditor::getContentType (const std::string & data)
 {
 	bool        result_uncertain;
 	std::string contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), result_uncertain);
@@ -501,11 +504,12 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto folder     = getToolsFolder ();
 		const auto file       = folder -> get_child (id + ".txt");
 		const auto command    = std::vector <std::string> ({ file -> get_path () });
-		const auto console    = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, _1);
+		const auto console    = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, outputType not_eq "DISPLAY_IN_CONSOLE",  _1);
+		const auto stderr     = std::bind (&X3DExternalToolsEditor::on_console, browserWindow, false, _1);
 
 		try
 		{
-			Pipe pipe (console, console);
+			Pipe pipe (console, stderr);
 
 			pipe .open (Glib::get_home_dir (), command, { });
 
@@ -528,6 +532,29 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 			browserWindow -> println ("Couldn't execute »" + name + "«");
 			browserWindow -> println (error .what ());
 		}
+
+		if (outputType == "CREATE_NEW_SCENE")
+		{
+			browserWindow -> open ("data:" + getContentType (stdout) + "," + stdout);
+		}
+		else if (outputType == "APPEND_TO_CURRENT_SCENE")
+		{
+
+		}
+		else if (outputType == "REPLACE_CURRENT_SCENE")
+		{
+
+		}
+		else if (outputType == "APPEND_TO_CURRENT_LAYER")
+		{
+
+		}
+		else if (outputType == "REPLACE_MASTER_SELECTION")
+		{
+
+		}
+
+		stdout .clear ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -536,9 +563,12 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 }
 
 void
-X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const std::string & string)
+X3DExternalToolsEditor::on_console (X3DBrowserWindow* const browserWindow, const bool catchStdout, const std::string & string)
 {
-	browserWindow -> print (string);
+	if (catchStdout)
+		stdout .append (string);
+	else
+		browserWindow -> print (string);
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

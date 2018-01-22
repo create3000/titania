@@ -151,8 +151,9 @@ protected:
 	std::string
 	getApplicabilityType (const Gtk::TreeIter & iter) const;
 
+	static
 	std::string
-	getContentType (const std::string & data) const;
+	getContentType (const std::string & data);
 
 	void
 	setLanguage (const std::string & text);
@@ -202,7 +203,11 @@ private:
 
 	static
 	void
-	on_console (X3DBrowserWindow* const browserWindow, const std::string & string);
+	on_console (X3DBrowserWindow* const browserWindow, const bool catchStdout, const std::string & string);
+
+	///  @name Static members
+
+	static std::string stdout;
 
 };
 
