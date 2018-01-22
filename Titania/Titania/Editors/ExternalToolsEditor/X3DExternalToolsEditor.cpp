@@ -537,17 +537,27 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		{
 			browserWindow -> open ("data:" + getContentType (stdout) + "," + stdout);
 		}
-		else if (outputType == "APPEND_TO_CURRENT_SCENE")
-		{
-
-		}
 		else if (outputType == "REPLACE_CURRENT_SCENE")
 		{
 
 		}
+		else if (outputType == "APPEND_TO_CURRENT_SCENE")
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Scene", name .c_str ())));
+			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
+
+			X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, undoStep);
+
+			browserWindow -> getSelection () -> setNodes (nodes, undoStep);
+			browserWindow -> addUndoStep (undoStep);
+		}
 		else if (outputType == "APPEND_TO_CURRENT_LAYER")
 		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Layer", name .c_str ())));
+			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
 
+			browserWindow -> getSelection () -> setNodes (nodes, undoStep);
+			browserWindow -> addUndoStep (undoStep);
 		}
 		else if (outputType == "REPLACE_MASTER_SELECTION")
 		{

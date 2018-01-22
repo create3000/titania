@@ -74,8 +74,8 @@ const std::map <std::string, int32_t> ExternalToolsEditor::outputTypes = {
 	std::make_pair ("NOTHING",                  0),
 	std::make_pair ("DISPLAY_IN_CONSOLE",       1),
 	std::make_pair ("CREATE_NEW_SCENE",         2),
-	std::make_pair ("APPEND_TO_CURRENT_SCENE",  3),
-	std::make_pair ("REPLACE_CURRENT_SCENE",    4),
+	std::make_pair ("REPLACE_CURRENT_SCENE",    3),
+	std::make_pair ("APPEND_TO_CURRENT_SCENE",  4),
 	std::make_pair ("APPEND_TO_CURRENT_LAYER",  5),
 	std::make_pair ("REPLACE_MASTER_SELECTION", 6),
 };

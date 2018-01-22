@@ -334,8 +334,8 @@
                           <item translatable="yes">Nothing</item>
                           <item translatable="yes">Display In Console</item>
                           <item translatable="yes">Create New Scene</item>
-                          <item translatable="yes">Append To Current Scene</item>
                           <item translatable="yes">Replace Current Scene</item>
+                          <item translatable="yes">Append To Current Scene</item>
                           <item translatable="yes">Append To Current Layer</item>
                           <item translatable="yes">Replace Master Selection</item>
                         </items>
