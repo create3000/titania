@@ -215,7 +215,11 @@ private:
 
 	static
 	void
-	on_console (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string);
+	on_stdout (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string);
+
+	static
+	void
+	on_stderr (X3DBrowserWindow* const browserWindow, const std::string & string);
 
 	static
 	ConsoleAction

@@ -341,7 +341,7 @@
                           <item translatable="yes">Replace Current Scene</item>
                           <item translatable="yes">Append To Current Scene</item>
                           <item translatable="yes">Append To Current Layer</item>
-                          <item translatable="yes">Replace Master Selection</item>
+                          <item translatable="yes">Replace Selection</item>
                         </items>
                         <signal name="changed" handler="on_output_type_changed" swapped="no"/>
                       </object>

@@ -93,7 +93,7 @@ Pipe::open (const std::string & workingDirectory,
 		__LOG__ << basic::join (command, " ") << std::endl;
 
 		if (m_is_open)
-			close ();
+			close ();			
 
 		// FD_CLOEXEC   This flag specifies that the file descriptor should be closed when an exec function is invoked.
 
@@ -169,27 +169,40 @@ Pipe::write (const char* data, const size_t length)
 {
 	if (not m_is_open)
 		throw std::runtime_error ("Write to closed pipe.");
-
+		
 	read (0);
 
-	if (poll (m_stdin, 5, POLLOUT) >= 0)
-	{
-		const int32_t bytes        = length;
-		const int32_t bytesWritten = ::write (m_stdin, data, bytes);
-	
-		if (bytesWritten not_eq bytes)
-		{
-			if (bytesWritten < 0)
-				throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
-			else
-				throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
-		}
-	}
-	else
+	int32_t status = 0;
+
+	::waitpid (m_pid, &status, WNOHANG);
+
+	if (status or ::kill (m_pid, 0))
 	{
 		close ();
 
 		throw std::runtime_error ("Broken pipe: write to pipe with no readers.");
+	}
+	else
+	{
+		if (poll (m_stdin, 5, POLLOUT) >= 0)
+		{
+			const int32_t bytes        = length;
+			const int32_t bytesWritten = ::write (m_stdin, data, bytes);
+		
+			if (bytesWritten not_eq bytes)
+			{
+				if (bytesWritten < 0)
+					throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
+				else
+					throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+			}
+		}
+		else
+		{
+			close ();
+	
+			throw std::runtime_error ("Broken pipe: write to pipe with no readers.");
+		}
 	}
 }
 
