@@ -172,37 +172,24 @@ Pipe::write (const char* data, const size_t length)
 		
 	read (0);
 
-	int32_t status = 0;
-
-	::waitpid (m_pid, &status, WNOHANG);
-
-	if (status or ::kill (m_pid, 0))
+	if (running () and poll (m_stdin, 5, POLLOUT) >= 0)
+	{
+		const int32_t bytes        = length;
+		const int32_t bytesWritten = ::write (m_stdin, data, bytes);
+	
+		if (bytesWritten not_eq bytes)
+		{
+			if (bytesWritten < 0)
+				throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
+			else
+				throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
+		}
+	}
+	else
 	{
 		close ();
 
 		throw std::runtime_error ("Broken pipe: write to pipe with no readers.");
-	}
-	else
-	{
-		if (poll (m_stdin, 5, POLLOUT) >= 0)
-		{
-			const int32_t bytes        = length;
-			const int32_t bytesWritten = ::write (m_stdin, data, bytes);
-		
-			if (bytesWritten not_eq bytes)
-			{
-				if (bytesWritten < 0)
-					throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
-				else
-					throw std::runtime_error ("Write to pipe failed: " + std::to_string (bytes) + " bytes received, " + std::to_string (bytesWritten) + " bytes witen.");
-			}
-		}
-		else
-		{
-			close ();
-	
-			throw std::runtime_error ("Broken pipe: write to pipe with no readers.");
-		}
 	}
 }
 
@@ -216,7 +203,11 @@ Pipe::close ()
 
 	::close (m_stdin);
 
-	read (50);
+	do
+	{
+		read (50);
+	}
+	while (running ());
 
 	::close (m_stdout);
 	::close (m_stderr);
@@ -228,6 +219,19 @@ Pipe::close ()
 	Glib::spawn_close_pid (m_pid);
 
 	if (status)
+		return false;
+
+	return true;
+}
+
+bool
+Pipe::running () const
+{
+	int32_t status = 0;
+
+	::waitpid (m_pid, &status, WNOHANG);
+
+	if (status or ::kill (m_pid, 0))
 		return false;
 
 	return true;

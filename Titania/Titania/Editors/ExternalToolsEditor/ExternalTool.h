@@ -55,6 +55,7 @@
 
 #include <giomm.h>
 #include <thread>
+#include <mutex>
 
 namespace titania {
 namespace puck {
@@ -76,8 +77,23 @@ public:
 	              const std::string & outputType,
 	              const Glib::RefPtr <Gio::File> & file);
 
+	///  @name Operations
+
 	void
 	start ();
+
+	void
+	stop ();
+
+	///  @name Signals
+
+	Glib::Dispatcher &
+	signal_done ()
+	{ return doneDispatcher; }
+
+	const Glib::Dispatcher &
+	signal_done () const
+	{ return doneDispatcher; }
 
 	///  @name Destruction
 
@@ -89,20 +105,36 @@ private:
 
 	///  @name Member types
 
-	enum class ConsoleAction {
-		NOTHING,
-		STDOUT,
-		PRINT
-	};
+	void
+	run (const std::string & workingDirectory,
+	     const std::string & command,
+	     const std::vector <std::string> & environment,
+	     const std::string & input,
+	     const bool stdout);
 
 	void
-	on_stdout (const ConsoleAction action, const std::string & string);
+	on_nothing_async (const std::string & string);
 
 	void
-	on_stderr (const std::string & string);
+	on_stdout_async (const std::string & string);
 
-	ConsoleAction
-	getConsoleAction (const std::string & outputType) const;
+	void
+	on_stderr_async (const std::string & string);
+
+	void
+	on_stdout ();
+	
+	void
+	on_stderr ();
+
+	void
+	on_done ();
+
+	std::string
+	getInput () const;
+
+	void
+	processOutput (const std::string & stdout);
 
 	///  @name Static members
 
@@ -116,7 +148,15 @@ private:
 	const std::string              outputType;
 	const Glib::RefPtr <Gio::File> file;
 
-	std::string stdout;
+	std::thread              thread;
+	std::mutex               mutex;
+	std::string              stdout;
+	std::string              stderr;
+	std::deque <std::string> queue;
+
+	Glib::Dispatcher stdoutDispatcher;
+	Glib::Dispatcher stderrDispatcher;
+	Glib::Dispatcher doneDispatcher;
 
 };
 

@@ -166,7 +166,7 @@ RenderThread::set_loadCount ()
 		// Start thread or timeout version depending on grafix card driver.
 
 		if (std::regex_search (browser -> getVendor (), threadSaveDriver))
-			thread = std::make_unique <std::thread> (std::bind (&RenderThread::run, this));
+			thread = std::make_unique <std::thread> (&RenderThread::run, this);
 
 		else
 			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_LOW);

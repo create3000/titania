@@ -78,6 +78,8 @@ public:
 
 };
 
+std::set <std::unique_ptr <ExternalTool>> X3DExternalToolsEditor::externalTools;
+
 X3DExternalToolsEditor::X3DExternalToolsEditor () :
 	X3DExternalToolsEditorInterface ()
 { }
@@ -512,15 +514,17 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto folder         = getToolsFolder ();
 		const auto file           = folder -> get_child (id + ".txt");
 
-		const auto externalTool = std::make_unique <ExternalTool> (browserWindow,
-		                                                           id,
-		                                                           name,
-		                                                           inputType,
-		                                                           inputEncoding,
-		                                                           outputType,
-		                                                           file);
+		auto externalTool = std::make_unique <ExternalTool> (browserWindow,
+		                                                     id,
+		                                                     name,
+		                                                     inputType,
+		                                                     inputEncoding,
+		                                                     outputType,
+		                                                     file);
 
 		externalTool -> start ();
+
+		externalTools .emplace (std::move (externalTool));
 	}
 	catch (const std::exception & error)
 	{

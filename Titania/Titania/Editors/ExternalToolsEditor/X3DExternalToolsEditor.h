@@ -61,6 +61,7 @@
 namespace titania {
 namespace puck {
 
+class ExternalTool;
 class Pipe;
 
 class X3DExternalToolsEditor :
@@ -202,6 +203,10 @@ private:
 	static
 	void
 	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
+
+	///  @name Static member
+
+	static std::set <std::unique_ptr <ExternalTool>> externalTools;
 
 };
 

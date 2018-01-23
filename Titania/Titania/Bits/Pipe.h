@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 #define __TITANIA_BROWSER_NOTEBOOK_RENDER_PANEL_PIPE_H__
 
+#include <atomic>
 #include <functional>
 #include <stdexcept>
 #include <string>
@@ -98,6 +99,9 @@ public:
 	bool
 	close ();
 
+	bool
+	running () const;
+
 	///  @name Destruction
 
 	virtual
@@ -123,11 +127,11 @@ private:
 	const PipeCallback m_stdout_callback;
 	const PipeCallback m_stderr_callback;
 
-	pid_t   m_pid;
-	int32_t m_stdin;
-	int32_t m_stdout;
-	int32_t m_stderr;
-	bool    m_is_open;
+	pid_t              m_pid;
+	int32_t            m_stdin;
+	int32_t            m_stdout;
+	int32_t            m_stderr;
+	std::atomic <bool> m_is_open;
 
 	std::vector <char> m_buffer;
 

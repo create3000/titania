@@ -76,79 +76,198 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 	              inputEncoding (inputEncoding),
 	                 outputType (outputType),
 	                       file (file),
-	                     stdout ()
-{ }
+	                     thread (),
+	                      mutex (),
+	                     stdout (),
+	                     stderr (),
+	                      queue (),
+	           stdoutDispatcher (),
+	           stderrDispatcher (),
+	             doneDispatcher ()
+{
+	stdoutDispatcher .connect (sigc::mem_fun (this, &ExternalTool::on_stdout));
+	stderrDispatcher .connect (sigc::mem_fun (this, &ExternalTool::on_stderr));
+	doneDispatcher   .connect (sigc::mem_fun (this, &ExternalTool::on_done));
+}
 
 void
 ExternalTool::start ()
 {
+	std::vector <std::string> environment;
+
+	for (const auto & key : Glib::listenv ())
+		environment .emplace_back (key + "=" + Glib::getenv (key));
+
+	environment .emplace_back ("TITANIA_CURRENT_SCENE=" + browserWindow -> getCurrentContext () -> getWorldURL ());
+
+	thread = std::thread (&ExternalTool::run, this, Glib::get_home_dir (), file -> get_path (), environment, getInput (), outputType not_eq "NOTHING");
+}
+
+void
+ExternalTool::run (const std::string & workingDirectory,
+                   const std::string & command,
+                   const std::vector <std::string> & environment,
+                   const std::string & input,
+                   const bool processOutput)
+{
 	try
 	{
 		using namespace std::placeholders;
-
-		const auto stdoutCallback = std::bind (&ExternalTool::on_stdout, this, getConsoleAction (outputType), _1);
-		const auto stderrCallback = std::bind (&ExternalTool::on_stderr, this, _1);
-		const auto command        = std::vector <std::string> ({ file -> get_path () });
-
-		Pipe pipe (stdoutCallback, stderrCallback);
-
-		pipe .open (Glib::get_home_dir (), command, { });
-
+	
+		const auto nothingCallback = std::bind (&ExternalTool::on_nothing_async, this, _1);
+		const auto stdoutCallback  = std::bind (&ExternalTool::on_stdout_async,  this, _1);
+		const auto stderrCallback  = std::bind (&ExternalTool::on_stderr_async,  this, _1);
+	
 		// Process input.
 
-		if (inputType == "CURRENT_SCENE")
-		{
-			const auto & scene = browserWindow -> getCurrentScene ();
+		Pipe pipe (processOutput ? stdoutCallback : nothingCallback, stderrCallback);
 
-			// Write scene to stdin of tool.
-
-			std::string input;
-
-			if (inputEncoding == "VRML")
-				input = scene -> toString ();
-			else if (inputEncoding == "JSON")
-				input = scene -> toJSONString ();
-			else
-				input = scene -> toXMLString ();
-
-			pipe .write (input .data (), input .size ());
-		}
-		else if (inputType == "SELECTION")
-		{
-			const auto & selection        = browserWindow -> getSelection () -> getNodes ();
-			const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-	
-			// Export nodes to stream
-
-			std::ostringstream osstream;
-
-			X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
-
-			basic::ifilestream stream (osstream .str ());
-		
-			const auto scene = browserWindow -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
-		
-			scene -> addMetaData ("titania-add-metadata", "true");
-
-			// Write scene to stdin of tool.
-
-			std::string input;
-
-			if (inputEncoding == "VRML")
-				input = scene -> toString ();
-			else if (inputEncoding == "JSON")
-				input = scene -> toJSONString ();
-			else
-				input = scene -> toXMLString ();
-
-			pipe .write (input .data (), input .size ());
-		}
-
+		pipe .open (workingDirectory, { command }, environment);
+		pipe .write (input .data (), input .size ());
 		pipe .close ();
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 
+	doneDispatcher .emit ();
+}
+
+void
+ExternalTool::on_nothing_async (const std::string & string)
+{ }
+
+void
+ExternalTool::on_stdout_async (const std::string & string)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	auto first = 0;
+	auto last  = string .find ('\0', first);
+
+	while (last not_eq std::string::npos)
+	{
+		queue .emplace_back (stdout + string .substr (first, last - first));
+
+		stdout .clear ();
+
+		first = last + 1;
+		last  = string .find ('\0', first);
+	}
+
+	stdout .append (string .substr (first));
+
+	stdoutDispatcher .emit ();
+}
+
+void
+ExternalTool::on_stderr_async (const std::string & string)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	stderr .append (string);
+
+	stderrDispatcher .emit ();
+}
+
+void
+ExternalTool::on_stdout ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	while (queue .size ())
+	{
+		processOutput (queue .front ());
+		queue .pop_front ();
+	}
+
+	if (outputType == "DISPLAY_IN_CONSOLE")
+	{
+		browserWindow -> print (stdout);
+		stdout .clear ();
+	}
+}
+
+void
+ExternalTool::on_stderr ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	browserWindow -> print (stderr);
+}
+
+void
+ExternalTool::on_done ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	processOutput (stdout);
+}
+
+std::string
+ExternalTool::getInput () const
+{
+	if (inputType == "CURRENT_SCENE")
+	{
+		const auto & scene = browserWindow -> getCurrentScene ();
+
+		// Write scene to stdin of tool.
+
+		if (inputEncoding == "VRML")
+			return scene -> toString ();
+		else if (inputEncoding == "JSON")
+			return scene -> toJSONString ();
+		else
+			return scene -> toXMLString ();
+	}
+	else if (inputType == "SELECTION")
+	{
+		const auto & selection        = browserWindow -> getSelection () -> getNodes ();
+		const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
+
+		// Export nodes to stream
+
+		std::ostringstream osstream;
+
+		X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
+
+		basic::ifilestream stream (osstream .str ());
+	
+		const auto scene = browserWindow -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
+	
+		scene -> addMetaData ("titania-add-metadata", "true");
+
+		// Write scene to stdin of tool.
+
+		if (inputEncoding == "VRML")
+			return scene -> toString ();
+		else if (inputEncoding == "JSON")
+			return scene -> toJSONString ();
+		else
+			return scene -> toXMLString ();
+	}
+
+	return "";
+}
+
+void
+ExternalTool::processOutput (const std::string & stdout)
+{
+	try
+	{
 		// Process output.
 
-		if (outputType == "CREATE_NEW_SCENE")
+		if (stdout .empty ())
+			return;
+
+		if (outputType == "NOTHING")
+			;
+		else if (outputType == "DISPLAY_IN_CONSOLE")
+		{
+			browserWindow -> print (stdout);
+		}
+		else if (outputType == "CREATE_NEW_SCENE")
 		{
 			browserWindow -> open ("data:" + File::getContentType (stdout) .first + "," + stdout);
 		}
@@ -202,47 +321,23 @@ ExternalTool::start ()
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> println ("Couldn't execute tool.");
+		browserWindow -> println ("Couldn't process output of tool »" + name + "«.");
 		browserWindow -> println (error .what ());
 	}
 }
 
 void
-ExternalTool::on_stdout (const ConsoleAction action, const std::string & string)
+ExternalTool::stop ()
 {
-	switch (action)
-	{
-		case ConsoleAction::NOTHING:
-			return;
-		case ConsoleAction::STDOUT:
-			stdout .append (string);
-			return;
-		case ConsoleAction::PRINT:
-			browserWindow -> print (string);
-			return;
-	}
-}
+	stop ();
 
-void
-ExternalTool::on_stderr (const std::string & string)
-{
-	browserWindow -> print (string);
-}
-
-ExternalTool::ConsoleAction
-ExternalTool::getConsoleAction (const std::string & outputType) const
-{
-	 if (outputType == "DISPLAY_IN_CONSOLE")
-		return ConsoleAction::PRINT;
-
-	 if (outputType == "NOTHING")
-		return ConsoleAction::NOTHING;
-
-	return ConsoleAction::STDOUT;
+	if (thread .joinable ())
+		thread .join ();
 }
 
 ExternalTool::~ExternalTool ()
 {
+	stop ();
 }
 
 } // puck
