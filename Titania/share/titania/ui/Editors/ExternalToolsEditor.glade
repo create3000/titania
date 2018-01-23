@@ -319,7 +319,7 @@
                         <items>
                           <item translatable="yes">Nothing</item>
                           <item translatable="yes">Current Scene</item>
-                          <item translatable="yes">Master Selection</item>
+                          <item translatable="yes">Selection</item>
                         </items>
                         <signal name="changed" handler="on_input_type_changed" swapped="no"/>
                       </object>

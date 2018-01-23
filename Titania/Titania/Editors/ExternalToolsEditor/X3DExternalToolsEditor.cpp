@@ -456,7 +456,7 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 
 		if (selection .empty ())
 		{
-			if (inputType == "MASTER_SELECTION")
+			if (inputType == "SELECTION")
 				continue;
 
 			if (outputType == "REPLACE_SELECTION")
@@ -531,6 +531,8 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 
 		pipe .open (Glib::get_home_dir (), command, { });
 
+		// Process input.
+
 		if (inputType == "CURRENT_SCENE")
 		{
 			const auto & scene = browserWindow -> getCurrentScene ();
@@ -548,7 +550,7 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 
 			pipe .write (input .data (), input .size ());
 		}
-		else if (inputType == "MASTER_SELECTION")
+		else if (inputType == "SELECTION")
 		{
 			const auto & selection        = browserWindow -> getSelection () -> getNodes ();
 			const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
@@ -557,7 +559,7 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 
 			std::ostringstream osstream;
 
-			X3D::X3DEditor::exportNodes (osstream, executionContext, { selection .back () }, false);
+			X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
 
 			basic::ifilestream stream (osstream .str ());
 		
