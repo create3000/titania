@@ -75,7 +75,7 @@ public:
 	              const std::string & inputType,
 	              const std::string & inputEncoding,
 	              const std::string & outputType,
-	              const Glib::RefPtr <Gio::File> & file);
+	              const Glib::RefPtr <Gio::File> & command);
 
 	///  @name Operations
 
@@ -113,9 +113,6 @@ private:
 	     const bool stdout);
 
 	void
-	on_nothing_async (const std::string & string);
-
-	void
 	on_stdout_async (const std::string & string);
 
 	void
@@ -146,7 +143,7 @@ private:
 	const std::string              inputType;
 	const std::string              inputEncoding;
 	const std::string              outputType;
-	const Glib::RefPtr <Gio::File> file;
+	const Glib::RefPtr <Gio::File> command;
 
 	std::thread              thread;
 	std::mutex               mutex;

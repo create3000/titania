@@ -67,7 +67,7 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
                             const std::string & inputType,
                             const std::string & inputEncoding,
                             const std::string & outputType,
-                            const Glib::RefPtr <Gio::File> & file) :
+                            const Glib::RefPtr <Gio::File> & command) :
 	X3D::X3DInterruptibleThread (),
 	              browserWindow (browserWindow),
 	                         id (id),
@@ -75,7 +75,7 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 	                  inputType (inputType),
 	              inputEncoding (inputEncoding),
 	                 outputType (outputType),
-	                       file (file),
+	                    command (command),
 	                     thread (),
 	                      mutex (),
 	                     stdout (),
@@ -93,14 +93,29 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 void
 ExternalTool::start ()
 {
+	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
+
+	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
+	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
+	const auto folder   = file -> get_parent ();
+
 	std::vector <std::string> environment;
 
 	for (const auto & key : Glib::listenv ())
 		environment .emplace_back (key + "=" + Glib::getenv (key));
 
-	environment .emplace_back ("TITANIA_CURRENT_SCENE=" + browserWindow -> getCurrentContext () -> getWorldURL ());
+	environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
+	environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
 
-	thread = std::thread (&ExternalTool::run, this, Glib::get_home_dir (), file -> get_path (), environment, getInput (), outputType not_eq "NOTHING");
+	for (const auto & projectPath : projects)
+	{
+		const auto project = Gio::File::create_for_path (projectPath);
+
+		if (File::isSubfolder (folder, project))
+			environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+	}
+
+	thread = std::thread (&ExternalTool::run, this, Glib::get_home_dir (), command -> get_path (), environment, getInput (), outputType not_eq "NOTHING");
 }
 
 void
@@ -113,14 +128,13 @@ ExternalTool::run (const std::string & workingDirectory,
 	try
 	{
 		using namespace std::placeholders;
-	
-		const auto nothingCallback = std::bind (&ExternalTool::on_nothing_async, this, _1);
-		const auto stdoutCallback  = std::bind (&ExternalTool::on_stdout_async,  this, _1);
-		const auto stderrCallback  = std::bind (&ExternalTool::on_stderr_async,  this, _1);
-	
+
+		const auto stdoutCallback = std::bind (&ExternalTool::on_stdout_async, this, _1);
+		const auto stderrCallback = std::bind (&ExternalTool::on_stderr_async, this, _1);
+
 		// Process input.
 
-		Pipe pipe (processOutput ? stdoutCallback : nothingCallback, stderrCallback);
+		Pipe pipe (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
 
 		pipe .open (workingDirectory, { command }, environment);
 		pipe .write (input .data (), input .size ());
@@ -133,10 +147,6 @@ ExternalTool::run (const std::string & workingDirectory,
 
 	doneDispatcher .emit ();
 }
-
-void
-ExternalTool::on_nothing_async (const std::string & string)
-{ }
 
 void
 ExternalTool::on_stdout_async (const std::string & string)
@@ -203,6 +213,8 @@ ExternalTool::on_done ()
 	std::lock_guard <std::mutex> lock (mutex);
 
 	processOutput (stdout);
+
+	browserWindow -> println ("Tool »" + name + "« finished successfully.");
 }
 
 std::string
@@ -301,21 +313,30 @@ ExternalTool::processOutput (const std::string & stdout)
 		}
 		else if (outputType == "REPLACE_SELECTION")
 		{
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", name .c_str ())));
-			const auto & selection        = browserWindow -> getSelection () -> getNodes ();
-			const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-			const auto   scene            = browserWindow -> getCurrentBrowser () -> createX3DFromString (stdout);
-			const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+			const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", name .c_str ())));
+			const auto & selection = browserWindow -> getSelection () -> getNodes ();
 
-			if (not nodes .empty ())
+			if (not selection .empty ())
 			{
-				X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
- 
-				if (nodes .size () > 1)
-					X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
-
-				browserWindow -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
-				browserWindow -> addUndoStep (undoStep);
+				const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
+				const auto   scene            = browserWindow -> getCurrentBrowser () -> createX3DFromString (stdout);
+				const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+	
+				if (not nodes .empty ())
+				{
+					X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
+	 
+					if (nodes .size () > 1)
+						X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
+	
+					browserWindow -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
+					browserWindow -> addUndoStep (undoStep);
+				}
+			}
+			else
+			{
+				// Display message.
+				browserWindow -> println ("No selection found to process output of tool »" + name + "«.");
 			}
 		}
 	}
@@ -337,6 +358,9 @@ ExternalTool::stop ()
 
 ExternalTool::~ExternalTool ()
 {
+	//if (pipe)
+	//	pipe -> kill ();
+
 	stop ();
 }
 
