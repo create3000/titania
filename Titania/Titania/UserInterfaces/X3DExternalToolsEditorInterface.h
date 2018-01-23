@@ -160,8 +160,8 @@ public:
 	{ return *m_ApplicabilityTypeButton; }
 
 	Gtk::ComboBoxText &
-	getInputFormatButton () const
-	{ return *m_InputFormatButton; }
+	getInputEncodingButton () const
+	{ return *m_InputEncodingButton; }
 
 	///  @name Signal handlers
 
@@ -238,7 +238,7 @@ private:
 	Gtk::ComboBoxText* m_InputTypeButton;
 	Gtk::ComboBoxText* m_OutputTypeButton;
 	Gtk::ComboBoxText* m_ApplicabilityTypeButton;
-	Gtk::ComboBoxText* m_InputFormatButton;
+	Gtk::ComboBoxText* m_InputEncodingButton;
 
 };
 

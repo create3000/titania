@@ -200,22 +200,24 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
 	const auto executionContext = X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ());
 	const auto scene            = inlineNode -> getInternalScene ();
-	const auto group            = X3D::SFNode (executionContext -> createNode <X3D::Group> ());
+	const auto groupNode        = executionContext -> createNode <X3D::Group> ();
 	const auto name             = X3D::GetNameFromURI (scene -> getWorldURL ());
 	const auto importedRoutes   = X3D::X3DEditor::getImportedRoutes (executionContext, scene);
 
-	const X3D::X3DPtr <X3D::Group> groupNode (group);
+	X3D::X3DEditor::updateNamedNode (executionContext, name, groupNode, undoStep);
+	X3D::X3DEditor::replaceNodes (executionContext, inlineNode, groupNode, undoStep);
 
-	X3D::X3DEditor::updateNamedNode (executionContext, name, group, undoStep);
-	X3D::X3DEditor::replaceNodes (executionContext, inlineNode, group, undoStep);
-	X3D::X3DEditor::importScene (executionContext, group, groupNode -> children (), scene, undoStep);
+	const auto importedNodes = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+
+	for (const auto & node : importedNodes)
+		X3D::X3DEditor::pushBackIntoArray (groupNode, groupNode -> children (), node, undoStep);
 
 	for (const auto & route : importedRoutes)
 		X3D::X3DEditor::addRoute (executionContext, std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
 
-	getBrowserWindow () -> getSelection () -> setNodes ({ group }, undoStep);
+	getBrowserWindow () -> getSelection () -> setNodes ({ groupNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
-	getBrowserWindow () -> expandNodes ({ group });
+	getBrowserWindow () -> expandNodes ({ groupNode });
 }
 
 void

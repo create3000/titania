@@ -202,17 +202,10 @@ X3DEditor::transform (const basic::uri & oldWorldURL, const basic::uri & newWorl
  */
 
 MFNode
-X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep)
+X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	try
 	{
-		const size_t size = field .size ();
-
-		using resize = void (MFNode::*) (const MFNode::size_type);
-
-		undoStep -> addObjects (parent);
-		undoStep -> addUndoFunction ((resize) & MFNode::resize, std::ref (field), size);
-
 		// Restore WorldInfo
 
 		const auto worldInfo         = executionContext -> getWorldInfo ();
@@ -321,12 +314,6 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 
 		undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 		undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
-
-		// Append imported nodes to field.
-
-		using append = X3DArrayField <SFNode> &(MFNode::*) (const X3DArrayField <SFNode>&);
-		undoStep -> addRedoFunction ((append) &MFNode::append, std::ref (field), importedNodes);
-		field .append (importedNodes);
 
 		// Remove imported WorldInfo and restore old one.
 
@@ -1499,9 +1486,11 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 
 	basic::ifilestream ifstream (sstream .str ());
 
-	const auto scene = browser -> createX3DFromStream (internalScene -> getWorldURL (), ifstream);
+	const auto scene         = browser -> createX3DFromStream (internalScene -> getWorldURL (), ifstream);
+	const auto importedNodes = importScene (executionContext, scene, undoStep);
 
-	importScene (executionContext, executionContext, executionContext -> getRootNodes (), scene, undoStep);
+	for (const auto & node : importedNodes)
+		pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
 
 	// Update instances
 

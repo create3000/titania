@@ -377,7 +377,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
-                        <property name="label" translatable="yes">Format:</property>
+                        <property name="label" translatable="yes">Encoding:</property>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>
@@ -385,7 +385,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="InputFormatButton">
+                      <object class="GtkComboBoxText" id="InputEncodingButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>

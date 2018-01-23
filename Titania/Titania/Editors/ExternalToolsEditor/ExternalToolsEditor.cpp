@@ -70,7 +70,7 @@ const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
 	std::make_pair ("SELECTION",     2),
 };
 
-const std::map <std::string, int32_t> ExternalToolsEditor::inputFormats = {
+const std::map <std::string, int32_t> ExternalToolsEditor::inputEncodings = {
 	std::make_pair ("X3D",  0),
 	std::make_pair ("VRML", 1),
 	std::make_pair ("JSON", 2),
@@ -178,7 +178,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			const auto text              = getText (id);
 			const auto saveType          = getSaveType (iter);
 			const auto inputType         = getInputType (iter);
-			const auto inputFormat       = getInputFormat (iter);
+			const auto inputEncoding     = getInputEncoding (iter);
 			const auto outputType        = getOutputType (iter);
 			const auto applicabilityType = getApplicabilityType (iter);
 		
@@ -188,7 +188,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 
 			try { getSaveTypeButton          () .set_active (saveTypes          .at (saveType));          } catch (...) { getSaveTypeButton          () .set_active (0); };
 			try { getInputTypeButton         () .set_active (inputTypes         .at (inputType));         } catch (...) { getInputTypeButton         () .set_active (0); };
-			try { getInputFormatButton       () .set_active (inputFormats       .at (inputFormat));       } catch (...) { getInputFormatButton       () .set_active (0); };
+			try { getInputEncodingButton     () .set_active (inputEncodings     .at (inputEncoding));     } catch (...) { getInputEncodingButton     () .set_active (0); };
 			try { getOutputTypeButton        () .set_active (outputTypes        .at (outputType));        } catch (...) { getOutputTypeButton        () .set_active (0); };
 			try { getApplicabilityTypeButton () .set_active (applicabilityTypes .at (applicabilityType)); } catch (...) { getApplicabilityTypeButton () .set_active (0); };
 
@@ -262,6 +262,8 @@ ExternalToolsEditor::on_save_type_changed ()
 void
 ExternalToolsEditor::on_input_type_changed ()
 {
+	getInputEncodingButton () .set_sensitive (getInputTypeButton () .get_active_row_number () not_eq 0);
+
 	if (changing)
 		return;
 
@@ -291,13 +293,13 @@ ExternalToolsEditor::on_input_format_changed ()
 
 	try
 	{
-		static const auto inputFormats = basic::reverse (this -> inputFormats);
+		static const auto inputEncodings = basic::reverse (this -> inputEncodings);
 
-		setInputFormat (iter, inputFormats .at (getInputFormatButton () .get_active_row_number ()));
+		setInputEncoding (iter, inputEncodings .at (getInputEncodingButton () .get_active_row_number ()));
 	}
 	catch (const std::out_of_range & error)
 	{
-		setInputFormat (iter, "X3D");
+		setInputEncoding (iter, "X3D");
 	}
 
 	saveTree ();

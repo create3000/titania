@@ -140,10 +140,10 @@ protected:
 	getInputType (const Gtk::TreeIter & iter) const;
 
 	void
-	setInputFormat (const Gtk::TreeIter & iter, const std::string & value) const;
+	setInputEncoding (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string
-	getInputFormat (const Gtk::TreeIter & iter) const;
+	getInputEncoding (const Gtk::TreeIter & iter) const;
 
 	void
 	setOutputType (const Gtk::TreeIter & iter, const std::string & value) const;

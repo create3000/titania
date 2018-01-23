@@ -87,7 +87,7 @@ public:
 
 	static
 	MFNode
-	importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep);
+	importScene (const X3DExecutionContextPtr & executionContext, const X3DScenePtr & scene, const UndoStepPtr & undoStep);
 
 	static
 	std::string
