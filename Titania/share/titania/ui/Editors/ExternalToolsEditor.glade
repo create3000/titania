@@ -21,7 +21,7 @@
       <column type="gchararray"/>
       <!-- column-name Applicability -->
       <column type="gchararray"/>
-      <!-- column-name InputFormat -->
+      <!-- column-name InputEncoding -->
       <column type="gchararray"/>
     </columns>
   </object>

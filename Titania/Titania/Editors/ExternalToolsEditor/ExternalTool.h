@@ -48,53 +48,75 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BITS_CAIRO_H__
-#define __TITANIA_BITS_CAIRO_H__
+#ifndef __TITANIA_EDITORS_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOL_H__
+#define __TITANIA_EDITORS_EXTERNAL_TOOLS_EDITOR_EXTERNAL_TOOL_H__
+
+#include <Titania/X3D/Thread/X3DInterruptibleThread.h>
 
 #include <giomm.h>
+#include <thread>
 
 namespace titania {
 namespace puck {
 
-class File
+class X3DBrowserWindow;
+
+class ExternalTool :
+	public X3D::X3DInterruptibleThread
 {
 public:
 
-	///  @name Operations
+	///  @name Construction
 
-	static
-	std::pair <std::string, bool>
-	getContentType (const std::string & data);
+	ExternalTool (X3DBrowserWindow* const browserWindow,
+	              const std::string & id,
+	              const std::string & name,
+	              const std::string & inputType,
+	              const std::string & inputEncoding,
+	              const std::string & outputType,
+	              const Glib::RefPtr <Gio::File> & file);
 
-	static
-	std::string
-	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName);
-
-	static
-	bool
-	isSubfolder (Glib::RefPtr <Gio::File> subfolder, const Glib::RefPtr <Gio::File> & folder);
-
-	static
-	std::vector <Glib::RefPtr <Gio::FileInfo>> 
-	getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden = false);
-
-	static
-	bool
-	hasChildren (const Glib::RefPtr <Gio::File> & director, const bool hidden = false);
-
-	static
 	void
-	copyFile (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags);
+	start ();
 
-	static
-	void
-	removeFile (const Glib::RefPtr <Gio::File> & file);
+	///  @name Destruction
+
+	virtual
+	~ExternalTool () final override;
+
 
 private:
 
-	static
+	///  @name Member types
+
+	enum class ConsoleAction {
+		NOTHING,
+		STDOUT,
+		PRINT
+	};
+
 	void
-	copyFolder (const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination, const Gio::FileCopyFlags flags);
+	on_stdout (const ConsoleAction action, const std::string & string);
+
+	void
+	on_stderr (const std::string & string);
+
+	ConsoleAction
+	getConsoleAction (const std::string & outputType) const;
+
+	///  @name Static members
+
+	///  @name Members
+
+	X3DBrowserWindow* const        browserWindow;
+	const std::string              id;
+	const std::string              name;
+	const std::string              inputType;
+	const std::string              inputEncoding;
+	const std::string              outputType;
+	const Glib::RefPtr <Gio::File> file;
+
+	std::string stdout;
 
 };
 

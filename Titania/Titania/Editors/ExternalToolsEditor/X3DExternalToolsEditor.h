@@ -157,10 +157,6 @@ protected:
 	std::string
 	getApplicabilityType (const Gtk::TreeIter & iter) const;
 
-	static
-	std::string
-	getContentType (const std::string & data);
-
 	void
 	setLanguage (const std::string & text);
 
@@ -181,12 +177,6 @@ protected:
 private:
 
 	///  @name Member types
-
-	enum class ConsoleAction {
-		NOTHING,
-		STDOUT,
-		PRINT
-	};
 
 	class Columns;
 
@@ -212,22 +202,6 @@ private:
 	static
 	void
 	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
-
-	static
-	void
-	on_stdout (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string);
-
-	static
-	void
-	on_stderr (X3DBrowserWindow* const browserWindow, const std::string & string);
-
-	static
-	ConsoleAction
-	getConsoleAction (const std::string & outputType);
-
-	///  @name Static members
-
-	static std::string stdout;
 
 };
 

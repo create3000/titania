@@ -55,6 +55,16 @@
 namespace titania {
 namespace puck {
 
+std::pair <std::string, bool>
+File::getContentType (const std::string & data)
+{
+	bool resultUncertain = false;
+
+	const auto contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), resultUncertain);
+
+	return std::make_pair (contentType, resultUncertain);
+}
+
 std::string
 File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
 {

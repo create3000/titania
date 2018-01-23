@@ -98,6 +98,7 @@ titania_SOURCES =  \
 	Titania/Editors/BindableNodeList/ViewpointList.cpp \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
+	Titania/Editors/ExternalToolsEditor/ExternalTool.cpp \
 	Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.cpp \
 	Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.cpp \
 	Titania/Editors/FilesEditor/FilesEditor.cpp \

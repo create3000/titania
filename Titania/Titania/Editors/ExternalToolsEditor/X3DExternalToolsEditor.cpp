@@ -50,10 +50,11 @@
 
 #include "X3DExternalToolsEditor.h"
 
-#include "../../Bits/Pipe.h"
+#include "../../Bits/File.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
+#include "../../Editors/ExternalToolsEditor/ExternalTool.h"
 
 #include <Titania/String.h>
 
@@ -76,8 +77,6 @@ public:
 	static constexpr size_t INPUT_ENCODING = 8;
 
 };
-
-std::string X3DExternalToolsEditor::stdout = "";
 
 X3DExternalToolsEditor::X3DExternalToolsEditor () :
 	X3DExternalToolsEditorInterface ()
@@ -263,21 +262,12 @@ X3DExternalToolsEditor::getApplicabilityType (const Gtk::TreeIter & iter) const
 	return value;
 }
 
-std::string
-X3DExternalToolsEditor::getContentType (const std::string & data)
-{
-	bool        result_uncertain;
-	std::string contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), result_uncertain);
-
-	return contentType;
-}
-
 void
 X3DExternalToolsEditor::setLanguage (const std::string & text)
 {
 	try
 	{
-		const auto contextType = getContentType (text);
+		const auto contextType = File::getContentType (text) .first;
 		const auto language    = Gsv::LanguageManager::get_default () -> guess_language ("", contextType);
 
 		getSourceView () .get_source_buffer () -> set_language (language);
@@ -511,173 +501,32 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 {
 	try
 	{
-		using namespace std::placeholders;
-
 		const auto browser        = X3D::createBrowser ();
 		const auto scene          = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
 		const auto worldInfo      = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 		const auto id             = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name           = worldInfo -> getMetaData <std::string> (k + "/name");
 		const auto inputType      = worldInfo -> getMetaData <std::string> (k + "/inputType");
-		const auto inputEncoding    = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
+		const auto inputEncoding  = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
 		const auto outputType     = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto folder         = getToolsFolder ();
 		const auto file           = folder -> get_child (id + ".txt");
-		const auto command        = std::vector <std::string> ({ file -> get_path () });
-		const auto stdoutCallback = std::bind (&X3DExternalToolsEditor::on_stdout, browserWindow, getConsoleAction (outputType),  _1);
-		const auto stderrCallback = std::bind (&X3DExternalToolsEditor::on_stderr, browserWindow, _1);
 
-		Pipe pipe (stdoutCallback, stderrCallback);
+		const auto externalTool = std::make_unique <ExternalTool> (browserWindow,
+		                                                           id,
+		                                                           name,
+		                                                           inputType,
+		                                                           inputEncoding,
+		                                                           outputType,
+		                                                           file);
 
-		pipe .open (Glib::get_home_dir (), command, { });
-
-		// Process input.
-
-		if (inputType == "CURRENT_SCENE")
-		{
-			const auto & scene = browserWindow -> getCurrentScene ();
-
-			// Write scene to stdin of tool.
-
-			std::string input;
-
-			if (inputEncoding == "VRML")
-				input = scene -> toString ();
-			else if (inputEncoding == "JSON")
-				input = scene -> toJSONString ();
-			else
-				input = scene -> toXMLString ();
-
-			pipe .write (input .data (), input .size ());
-		}
-		else if (inputType == "SELECTION")
-		{
-			const auto & selection        = browserWindow -> getSelection () -> getNodes ();
-			const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-	
-			// Export nodes to stream
-
-			std::ostringstream osstream;
-
-			X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
-
-			basic::ifilestream stream (osstream .str ());
-		
-			const auto scene = browserWindow -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
-		
-			scene -> addMetaData ("titania-add-metadata", "true");
-
-			// Write scene to stdin of tool.
-
-			std::string input;
-
-			if (inputEncoding == "VRML")
-				input = scene -> toString ();
-			else if (inputEncoding == "JSON")
-				input = scene -> toJSONString ();
-			else
-				input = scene -> toXMLString ();
-
-			pipe .write (input .data (), input .size ());
-		}
-
-		pipe .close ();
-
-		// Process output.
-
-		if (outputType == "CREATE_NEW_SCENE")
-		{
-			browserWindow -> open ("data:" + getContentType (stdout) + "," + stdout);
-		}
-		else if (outputType == "REPLACE_CURRENT_SCENE")
-		{
-			browserWindow -> load ("data:" + getContentType (stdout) + "," + stdout);
-		}
-		else if (outputType == "APPEND_TO_CURRENT_SCENE")
-		{
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Scene", name .c_str ())));
-			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
-
-			if (not nodes .empty ())
-			{
-				X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, undoStep);
-
-				browserWindow -> getSelection () -> setNodes (nodes, undoStep);
-				browserWindow -> addUndoStep (undoStep);
-			}
-		}
-		else if (outputType == "APPEND_TO_CURRENT_LAYER")
-		{
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Layer", name .c_str ())));
-			const auto nodes    = browserWindow -> import ({ "data:" + getContentType (stdout) + "," + stdout }, undoStep);
-
-			if (not nodes .empty ())
-			{
-				browserWindow -> getSelection () -> setNodes (nodes, undoStep);
-				browserWindow -> addUndoStep (undoStep);
-			}
-		}
-		else if (outputType == "REPLACE_SELECTION")
-		{
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", name .c_str ())));
-			const auto & selection        = browserWindow -> getSelection () -> getNodes ();
-			const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-			const auto   scene            = browserWindow -> getCurrentBrowser () -> createX3DFromString (stdout);
-			const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
-
-			if (not nodes .empty ())
-			{
-				X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
- 
-				if (nodes .size () > 1)
-					X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
-
-				browserWindow -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
-				browserWindow -> addUndoStep (undoStep);
-			}
-		}
+		externalTool -> start ();
 	}
 	catch (const std::exception & error)
 	{
 		browserWindow -> println ("Couldn't execute tool.");
 		browserWindow -> println (error .what ());
 	}
-
-	stdout .clear ();
-}
-
-void
-X3DExternalToolsEditor::on_stdout (X3DBrowserWindow* const browserWindow, const ConsoleAction action, const std::string & string)
-{
-	switch (action)
-	{
-		case ConsoleAction::NOTHING:
-			return;
-		case ConsoleAction::STDOUT:
-			stdout .append (string);
-			return;
-		case ConsoleAction::PRINT:
-			browserWindow -> print (string);
-			return;
-	}
-}
-
-void
-X3DExternalToolsEditor::on_stderr (X3DBrowserWindow* const browserWindow, const std::string & string)
-{
-	browserWindow -> print (string);
-}
-
-X3DExternalToolsEditor::ConsoleAction
-X3DExternalToolsEditor::getConsoleAction (const std::string & outputType)
-{
-	 if (outputType == "DISPLAY_IN_CONSOLE")
-		return ConsoleAction::PRINT;
-
-	 if (outputType == "NOTHING")
-		return ConsoleAction::NOTHING;
-
-	return ConsoleAction::STDOUT;
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

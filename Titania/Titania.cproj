@@ -368,6 +368,7 @@
     <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.cpp" />
     <Compile Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.cpp" />
     <Compile Include="Titania\Bits\Pipe.cpp" />
+    <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3156,6 +3157,7 @@
     <None Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.h" />
     <None Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.h" />
     <None Include="Titania\Bits\Pipe.h" />
+    <None Include="Titania\Editors\ExternalToolsEditor\ExternalTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
