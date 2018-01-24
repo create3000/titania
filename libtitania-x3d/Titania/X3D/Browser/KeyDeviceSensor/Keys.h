@@ -77,6 +77,12 @@ public:
 	bool
 	alt () const;
 
+	bool
+	super_l () const;
+
+	bool
+	super_r () const;
+
 	void
 	clear ();
 
@@ -93,10 +99,8 @@ private:
 	int32_t m_shift;
 	int32_t m_control;
 	bool   m_alt;
-
-	int32_t m_saved_shift;
-	int32_t m_saved_control;
-	bool    m_saved_alt;
+	bool   m_super_l;
+	bool   m_super_r;
 
 };
 

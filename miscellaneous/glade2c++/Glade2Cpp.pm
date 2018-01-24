@@ -991,3 +991,5 @@ ComboBox::button_release_event
   virtual bool on_button_release_event(GdkEventButton* release_event);
 ComboBox::changed
    virtual void on_changed();
+Entry::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);

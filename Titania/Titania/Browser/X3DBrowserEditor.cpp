@@ -445,19 +445,16 @@ X3DBrowserEditor::quit ()
 
 	const auto pages = getRecentPages ();
 
-	if (not pages .empty ())
+	for (const auto & page : pages)
 	{
-		for (const auto & page : pages)
-		{
-			if (page -> isSaved ())
-				continue;
+		if (page -> isSaved ())
+			continue;
 
-			for (const auto & page : getPages ())
-				page -> setSaveConfirmed (false);
+		for (const auto & page : getPages ())
+			page -> setSaveConfirmed (false);
 
-			// Cancel quit.
-			return true;
-		}
+		// Cancel quit.
+		return true;
 	}
 
 	return X3DBrowserWidget::quit ();

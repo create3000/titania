@@ -54,6 +54,8 @@
 #include "../../UserInterfaces/X3DExternalToolsEditorInterface.h"
 #include "X3DExternalToolsEditor.h"
 
+#include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
+
 namespace titania {
 namespace puck {
 
@@ -114,6 +116,14 @@ private:
 	on_text_changed ();
 
 	virtual
+	bool
+	on_shortcut_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	bool
+	on_shortcut_key_release_event (GdkEventKey* event) final override;
+
+	virtual
 	void
 	on_save_type_changed () final override;
 
@@ -149,7 +159,8 @@ private:
 
 	///  @name Members
 
-	bool changing;
+	X3D::Keys keys;
+	bool      changing;
 
 };
 

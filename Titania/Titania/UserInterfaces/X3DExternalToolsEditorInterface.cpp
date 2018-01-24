@@ -113,6 +113,10 @@ X3DExternalToolsEditorInterface::create ()
 	m_AddToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_add_tool_clicked));
 	m_RemoveToolButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_remove_tool_clicked));
 
+	// Connect object Gtk::Entry with id 'ShortcutKeyEntry'.
+	m_ShortcutKeyEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_shortcut_key_press_event), false);
+	m_ShortcutKeyEntry -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_shortcut_key_release_event));
+
 	// Connect object Gtk::ComboBoxText with id 'SaveTypeButton'.
 	m_SaveTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_save_type_changed));
 	m_InputTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_input_type_changed));

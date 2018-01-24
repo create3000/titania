@@ -154,6 +154,7 @@ ExternalTool::on_stdout_async (const std::string & string)
 
 	std::lock_guard <std::mutex> lock (mutex);
 
+	// Queue begin
 	auto first = 0;
 	auto last  = string .find ('\0', first);
 
@@ -166,6 +167,7 @@ ExternalTool::on_stdout_async (const std::string & string)
 		first = last + 1;
 		last  = string .find ('\0', first);
 	}
+	// Queue end
 
 	stdout .append (string .substr (first));
 
@@ -189,11 +191,13 @@ ExternalTool::on_stdout ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
+	// Queue begin
 	while (queue .size ())
 	{
 		processOutput (queue .front ());
 		queue .pop_front ();
 	}
+	// Queue end
 
 	if (outputType == "DISPLAY_IN_CONSOLE")
 	{
@@ -234,17 +238,21 @@ ExternalTool::getEnvironment () const
 
 	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
 	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
-	const auto folder   = file -> get_parent ();
 
-	environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
-	environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
-
-	for (const auto & projectPath : projects)
+	if (file -> has_parent ())
 	{
-		const auto project = Gio::File::create_for_path (projectPath);
-
-		if (File::isSubfolder (folder, project))
-			environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+		const auto folder = file -> get_parent ();
+	
+		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
+		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
+	
+		for (const auto & projectPath : projects)
+		{
+			const auto project = Gio::File::create_for_path (projectPath);
+	
+			if (File::isSubfolder (folder, project))
+				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+		}
 	}
 
 	return environment;

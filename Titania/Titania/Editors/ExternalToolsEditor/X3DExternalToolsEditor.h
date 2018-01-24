@@ -211,6 +211,10 @@ private:
 	void
 	removeTool (ExternalTool* const externalTool, const std::string & name);
 
+	static
+	void
+	saveScenes (X3DBrowserWindow* const browserWindow, const std::string & saveType);
+
 	///  @name Static member
 
 	static std::map <ExternalTool*, std::unique_ptr <ExternalTool>> externalTools;

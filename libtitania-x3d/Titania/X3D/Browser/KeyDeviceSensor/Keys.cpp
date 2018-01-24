@@ -54,12 +54,11 @@ namespace titania {
 namespace X3D {
 
 Keys::Keys () :
-	        m_shift (0),
-	      m_control (0),
-	          m_alt (false),
-	  m_saved_shift (0),
-	m_saved_control (0),
-	    m_saved_alt (false)
+	  m_shift (0),
+	m_control (0),
+	    m_alt (false),
+	m_super_l (false),
+	m_super_r (false)
 { }
 
 void
@@ -82,6 +81,12 @@ Keys::press (GdkEventKey* const event)
 		case GDK_KEY_Meta_L:
 		case GDK_KEY_Alt_L:
 			m_alt = true;
+			break;
+		case GDK_KEY_Super_L:
+			m_super_l = true;
+			break;
+		case GDK_KEY_Super_R:
+			m_super_r = true;
 			break;
 		default:
 			break;
@@ -109,6 +114,12 @@ Keys::release (GdkEventKey* const event)
 		case GDK_KEY_Alt_L:
 			m_alt = false;
 			break;
+		case GDK_KEY_Super_L:
+			m_super_l = false;
+			break;
+		case GDK_KEY_Super_R:
+			m_super_r = false;
+			break;
 		default:
 			break;
 	}
@@ -132,12 +143,26 @@ Keys::alt () const
 	return m_alt;
 }
 
+bool
+Keys::super_l () const
+{
+	return m_super_l;
+}
+
+bool
+Keys::super_r () const
+{
+	return m_super_r;
+}
+
 void
 Keys::clear ()
 {
 	m_shift   = 0;
 	m_control = 0;
-	m_alt     = 0;
+	m_alt     = false;
+	m_super_l = false;
+	m_super_r = false;
 }
 
 } // X3D

@@ -98,6 +98,7 @@ ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow)
 	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade")),
 	         X3DExternalToolsEditor (),
+	                           keys (),
 	                       changing ()
 {
 	getSourceView () .get_source_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_text_changed));
@@ -320,6 +321,45 @@ ExternalToolsEditor::on_text_changed ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+bool
+ExternalToolsEditor::on_shortcut_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	std::string modifiers;
+	std::string character;
+
+	if (keys .shift ())
+		modifiers += "Shift+";
+
+	if (keys .control ())
+		modifiers += "Ctrl+";
+
+	if (keys .alt ())
+		modifiers += "Alt+";
+
+	const auto key = gdk_keyval_to_unicode (event -> keyval);
+
+	if (key)
+		character = Glib::ustring (1, gdk_keyval_to_unicode (event -> keyval));
+
+	if (modifiers .empty ())
+		return true;
+
+	if (character .empty ())
+		return true;
+
+	getShortcutKeyEntry () .set_text (modifiers + character);
+	return true;
+}
+
+bool
+ExternalToolsEditor::on_shortcut_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	return true;
 }
 
 void

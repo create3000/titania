@@ -182,6 +182,14 @@ public:
 	on_remove_tool_clicked () = 0;
 
 	virtual
+	bool
+	on_shortcut_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	bool
+	on_shortcut_key_release_event (GdkEventKey* key_event) = 0;
+
+	virtual
 	void
 	on_save_type_changed () = 0;
 

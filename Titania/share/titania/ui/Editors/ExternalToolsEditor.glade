@@ -224,7 +224,6 @@
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">Shortcut Key:</property>
@@ -284,8 +283,9 @@
                     </child>
                     <child>
                       <object class="GtkEntry" id="ShortcutKeyEntry">
-                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="key-press-event" handler="on_shortcut_key_press_event" after="yes" swapped="no"/>
+                        <signal name="key-release-event" handler="on_shortcut_key_release_event" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -310,24 +310,6 @@
                         <property name="left_attach">1</property>
                         <property name="top_attach">1</property>
                         <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="InputTypeButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">Nothing</item>
-                          <item translatable="yes">Current Scene</item>
-                          <item translatable="yes">Selection</item>
-                        </items>
-                        <signal name="changed" handler="on_input_type_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">2</property>
                       </packing>
                     </child>
                     <child>
@@ -375,18 +357,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Encoding:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkComboBoxText" id="InputEncodingButton">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
@@ -402,6 +372,36 @@
                       </object>
                       <packing>
                         <property name="left_attach">3</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Encoding:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="InputTypeButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="active">0</property>
+                        <items>
+                          <item translatable="yes">Nothing</item>
+                          <item translatable="yes">Current Scene</item>
+                          <item translatable="yes">Selection</item>
+                        </items>
+                        <signal name="changed" handler="on_input_type_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">2</property>
                       </packing>
                     </child>

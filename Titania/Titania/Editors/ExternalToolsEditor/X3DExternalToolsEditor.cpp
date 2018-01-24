@@ -527,11 +527,14 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto worldInfo      = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 		const auto id             = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name           = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto saveType       = worldInfo -> getMetaData <std::string> (k + "/saveType");
 		const auto inputType      = worldInfo -> getMetaData <std::string> (k + "/inputType");
 		const auto inputEncoding  = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
 		const auto outputType     = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto folder         = getToolsFolder ();
 		const auto command        = folder -> get_child (id + ".txt");
+
+		saveScenes (browserWindow, saveType);
 
 		auto externalTool = std::make_unique <ExternalTool> (browserWindow,
 		                                                     id,
@@ -557,6 +560,34 @@ void
 X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool, const std::string & name)
 {
 	externalTools .erase (externalTool);
+}
+
+void
+X3DExternalToolsEditor::saveScenes (X3DBrowserWindow* const browserWindow, const std::string & saveType)
+{
+	if (saveType == "NOTHING")
+		;
+	else if (saveType == "CURRENT_SCENE")
+	{
+		if (browserWindow -> getCurrentPage () -> getModified ())
+			browserWindow -> on_save_activated ();		
+	}
+	else if (saveType == "ALL_SCENES")
+	{
+		const auto currentPage = browserWindow -> getCurrentPage () -> getPageNumber ();
+		const auto pages       = browserWindow -> getPages ();
+
+		for (const auto & page : pages)
+		{
+			if (not page -> getModified ())
+				continue;
+
+			browserWindow -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
+			browserWindow -> on_save_activated ();
+		}
+
+		browserWindow -> getBrowserNotebook () .set_current_page (currentPage);
+	}
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()
