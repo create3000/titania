@@ -78,7 +78,6 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 	                    command (command),
 	                     thread (),
 	                      mutex (),
-	                       pipe (),
 	                     stdout (),
 	                     stderr (),
 	                      queue (),
@@ -112,30 +111,33 @@ ExternalTool::run (const std::string & workingDirectory,
                    const std::string & input,
                    const bool processOutput)
 {
+	using namespace std::placeholders;
+
+	const auto stdoutCallback = std::bind (&ExternalTool::on_stdout_async, this, _1);
+	const auto stderrCallback = std::bind (&ExternalTool::on_stderr_async, this, _1);
+
+	// Process input.
+
+	Pipe pipe (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
+
+	pipe .open (workingDirectory, { command }, environment);
+	pipe .write (input .data (), input .size ());
+	pipe .close (Pipe::STDIN);
+
 	try
 	{
-		using namespace std::placeholders;
-
-		const auto stdoutCallback = std::bind (&ExternalTool::on_stdout_async, this, _1);
-		const auto stderrCallback = std::bind (&ExternalTool::on_stderr_async, this, _1);
-
-		// Process input.
-
-		pipe = std::make_unique <Pipe> (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
-
-		pipe -> open (workingDirectory, { command }, environment);
-		pipe -> write (input .data (), input .size ());
-		pipe -> close (Pipe::STDIN);
-
 		do
 		{
-			pipe -> read (50);
+			checkForInterrupt ();
+			pipe .read (1000);
 		}
-		while (pipe -> isRunning ());
+		while (pipe .isRunning ());
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
+
+		pipe .kill ();
 	}
 
 	doneDispatcher .emit ();
@@ -376,12 +378,6 @@ void
 ExternalTool::stop ()
 {
 	X3D::X3DInterruptibleThread::stop ();
-
-	if (pipe)
-	{
-		pipe -> kill (SIGKILL);
-		pipe -> close ();
-	}
 
 	if (thread .joinable ())
 		thread .join ();

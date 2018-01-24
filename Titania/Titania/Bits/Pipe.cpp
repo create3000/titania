@@ -74,7 +74,26 @@ Pipe::Pipe (const PipeCallback & stdout_callback, const PipeCallback & stderr_ca
 	         m_stderr (0),
 	        m_is_open (false),
 	         m_buffer (buffer_size) 
-{ }
+{
+	static const bool e = ignoreSigpipe ();
+
+	if (e)
+		__LOG__ << e << std::endl;
+}
+
+bool
+Pipe::ignoreSigpipe ()
+{
+	// Ignore SIGPIPE.
+
+	struct sigaction act;
+	memset (&act, 0, sizeof (act));
+	
+	act .sa_handler = SIG_IGN;
+	act .sa_flags   = SA_RESTART;
+
+	return sigaction (SIGPIPE, &act, NULL);
+}
 
 std::vector <std::string> 
 Pipe::getEnvironment ()

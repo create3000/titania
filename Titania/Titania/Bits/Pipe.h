@@ -119,7 +119,7 @@ public:
 	write (const char* data, const size_t length);
 
 	int32_t
-	kill (const int32_t signal) const;
+	kill (const int32_t signal = SIGKILL) const;
 	
 	int32_t
 	waitpid (const int32_t options) const;
@@ -139,6 +139,10 @@ private:
 
 	int32_t
 	poll (const int32_t fd, const int32_t timeout, const short events);
+
+	static
+	bool
+	ignoreSigpipe ();
 
 	///  @name Static members
 
