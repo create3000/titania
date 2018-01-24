@@ -167,14 +167,12 @@ VideoEncoder::on_stderr (const std::string & string)
 
 void
 VideoEncoder::open ()
-throw (std::runtime_error)
 {
 	pipe .open (command);
 }
 
 void
 VideoEncoder::write (Magick::Image & image)
-throw (std::runtime_error)
 {
 	Magick::Blob blob;
 
@@ -182,6 +180,12 @@ throw (std::runtime_error)
 	image .write (&blob);
 
 	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
+}
+
+void
+VideoEncoder::kill (const int32_t signal)
+{
+	pipe .kill (signal);
 }
 
 bool
@@ -192,6 +196,7 @@ VideoEncoder::close ()
 
 VideoEncoder::~VideoEncoder ()
 {
+	kill ();
 	close ();
 }
 

@@ -103,6 +103,9 @@ X3DExternalToolsEditorInterface::create ()
 	m_builder -> get_widget ("ApplicabilityTypeButton", m_ApplicabilityTypeButton);
 	m_builder -> get_widget ("InputEncodingButton", m_InputEncodingButton);
 
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_drag_data_received));
+
 	// Connect object Gtk::TreeSelection with id 'TreeSelection'.
 	m_TreeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DExternalToolsEditorInterface::on_tree_selection_changed));
 

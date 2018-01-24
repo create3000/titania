@@ -116,13 +116,13 @@ X3DExternalToolsEditor::createTool ()
 void
 X3DExternalToolsEditor::removeTool (const Gtk::TreeIter & iter)
 {
-	const auto id     = getId (iter);
-	const auto folder = getToolsFolder ();
-	const auto file   = folder -> get_child (id + ".txt");
+	const auto id      = getId (iter);
+	const auto folder  = getToolsFolder ();
+	const auto command = folder -> get_child (id + ".txt");
 	
 	try
 	{
-		file -> remove ();
+		command -> remove ();
 	}
 	catch (const Glib::Error & error)
 	{
@@ -169,8 +169,8 @@ void
 X3DExternalToolsEditor::setText (const std::string & id, const std::string & text) const
 {
 	const auto folder   = getToolsFolder ();
-	const auto file     = folder -> get_child (id + ".txt");
-	auto       ofstream = std::ofstream (file -> get_path ());
+	const auto command  = folder -> get_child (id + ".txt");
+	auto       ofstream = std::ofstream (command -> get_path ());
 
 	ofstream << text;
 }
@@ -178,10 +178,10 @@ X3DExternalToolsEditor::setText (const std::string & id, const std::string & tex
 std::string
 X3DExternalToolsEditor::getText (const std::string & id)
 {
-	const auto folder = getToolsFolder ();
-	const auto file   = folder -> get_child (id + ".txt");
+	const auto folder  = getToolsFolder ();
+	const auto command = folder -> get_child (id + ".txt");
 
-	return Glib::file_get_contents (file -> get_path ());
+	return Glib::file_get_contents (command -> get_path ());
 }
 
 void
@@ -262,6 +262,25 @@ X3DExternalToolsEditor::getApplicabilityType (const Gtk::TreeIter & iter) const
 	iter -> get_value (Columns::APPLICABILITY, value);
 
 	return value;
+}
+
+void
+X3DExternalToolsEditor::assignIter (const Gtk::TreeIter & iter, const Gtk::TreeIter & other)
+{
+	setId                (iter, getId                (other));
+	setName              (iter, getName              (other));
+	setSaveType          (iter, getSaveType          (other));
+	setInputType         (iter, getInputType         (other));
+	setInputEncoding     (iter, getInputEncoding     (other));
+	setOutputType        (iter, getOutputType        (other));
+	setApplicabilityType (iter, getApplicabilityType (other));
+
+	for (const auto & otherChild : other -> children ())
+	{
+		const auto child = getTreeStore () -> append (iter -> children ());
+
+		assignIter (child, otherChild);
+	}
 }
 
 void
@@ -512,7 +531,7 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto inputEncoding  = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
 		const auto outputType     = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto folder         = getToolsFolder ();
-		const auto file           = folder -> get_child (id + ".txt");
+		const auto command        = folder -> get_child (id + ".txt");
 
 		auto externalTool = std::make_unique <ExternalTool> (browserWindow,
 		                                                     id,
@@ -520,9 +539,9 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		                                                     inputType,
 		                                                     inputEncoding,
 		                                                     outputType,
-		                                                     file);
+		                                                     command);
 
-		externalTool -> signal_done () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::removeTool), externalTool .get ()));
+		externalTool -> signal_done () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::removeTool), externalTool .get (), name));
 		externalTool -> start ();
 
 		externalTools .emplace (externalTool .get (), std::move (externalTool));
@@ -535,8 +554,10 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 }
 
 void
-X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool)
+X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool, const std::string & name)
 {
+	__LOG__ << name << std::endl;
+
 	externalTools .erase (externalTool);
 }
 

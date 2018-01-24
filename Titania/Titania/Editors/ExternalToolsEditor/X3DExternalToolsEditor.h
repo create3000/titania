@@ -159,6 +159,9 @@ protected:
 	getApplicabilityType (const Gtk::TreeIter & iter) const;
 
 	void
+	assignIter (const Gtk::TreeIter & iter, const Gtk::TreeIter & other);
+
+	void
 	setLanguage (const std::string & text);
 
 	void
@@ -206,7 +209,7 @@ private:
 
 	static
 	void
-	removeTool (ExternalTool* const externalTool);
+	removeTool (ExternalTool* const externalTool, const std::string & name);
 
 	///  @name Static member
 

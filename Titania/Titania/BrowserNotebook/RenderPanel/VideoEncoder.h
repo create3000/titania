@@ -88,12 +88,13 @@ public:
 	///  @name Operations
 
 	void
-	open ()
-	throw (std::runtime_error);
+	open ();
 
 	void
-	write (Magick::Image & image)
-	throw (std::runtime_error);
+	write (Magick::Image & image);
+
+	void
+	kill (const int32_t signal = SIGKILL);
 
 	bool
 	close ();

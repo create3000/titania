@@ -120,16 +120,16 @@ ExternalTool::run (const std::string & workingDirectory,
 
 	Pipe pipe (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
 
-	pipe .open (workingDirectory, { command }, environment);
-	pipe .write (input .data (), input .size ());
-	pipe .close (Pipe::STDIN);
-
 	try
 	{
+		pipe .open (workingDirectory, { command }, environment);
+		pipe .write (input .data (), input .size ());
+		pipe .close (Pipe::STDIN);
+
 		do
 		{
 			checkForInterrupt ();
-			pipe .read (1000);
+			pipe .read (100);
 		}
 		while (pipe .isRunning ());
 	}
@@ -193,7 +193,7 @@ ExternalTool::on_stdout ()
 
 	if (outputType == "DISPLAY_IN_CONSOLE")
 	{
-		browserWindow -> print (stdout);
+		processOutput (stdout);
 		stdout .clear ();
 	}
 }
@@ -215,7 +215,9 @@ ExternalTool::on_done ()
 
 	processOutput (stdout);
 
-	browserWindow -> println ("Tool »" + name + "« finished successfully.");
+	stdout .clear ();
+
+	browserWindow -> println ("Tool »" + name + "« finished.");
 }
 
 std::vector <std::string> 

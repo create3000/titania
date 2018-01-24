@@ -167,6 +167,10 @@ public:
 
 	virtual
 	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
 	on_tree_selection_changed () = 0;
 
 	virtual

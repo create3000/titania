@@ -106,6 +106,9 @@ ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow)
 	getNameRenderer () -> signal_edited () .connect (sigc::mem_fun (this, &ExternalToolsEditor::on_name_edited));
 	getNameRenderer () -> property_editable () = true;
 
+	getTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+	getTreeView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_COPY);
+
 	setup ();
 }
 
@@ -201,6 +204,84 @@ ExternalToolsEditor::on_tree_selection_changed ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+ExternalToolsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                            int x, int y,
+                                            const Gtk::SelectionData & selection_data,
+                                            guint info,
+                                            guint time)
+{
+	const auto selected = getTreeSelection () -> get_selected ();
+
+	// Update list store.
+
+	Gtk::TreeModel::Path      destinationPath;
+	Gtk::TreeViewDropPosition position;
+
+	if (getTreeView () .get_dest_row_at_pos (x, y, destinationPath, position))
+	{
+		auto destination = getTreeStore () -> get_iter (destinationPath);
+		auto child       = Gtk::TreeIter ();
+
+		// Create new iter at end of level.
+
+		switch (position)
+		{
+			case Gtk::TREE_VIEW_DROP_BEFORE:
+			case Gtk::TREE_VIEW_DROP_AFTER:
+			{
+				if (getTreeStore () -> iter_depth (destination))
+					child = getTreeStore () -> append (destination -> parent () -> children ());
+				else
+					child = getTreeStore () -> append ();
+				break;
+			}
+			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+			{
+				child = getTreeStore () -> append (destination -> children ());
+				break;
+			}
+		}
+
+		// Assign selected iter to newly created iter.
+
+		assignIter (child, selected);
+
+		// Move newly created iter to desired position.
+
+		switch (position)
+		{
+			case Gtk::TREE_VIEW_DROP_BEFORE:
+				getTreeStore () -> move (child, destination);
+				break;
+			case Gtk::TREE_VIEW_DROP_AFTER:
+				getTreeStore () -> move (child, ++ destination);
+				break;
+			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
+			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
+				getTreeView () .expand_row (destinationPath, false);
+				break;
+		}
+
+		getTreeStore () -> erase (selected);
+		getTreeSelection () -> select (child);
+	}
+	else
+	{
+		const auto child = getTreeStore () -> append ();
+
+		assignIter (child, selected);
+	
+		getTreeStore () -> erase (selected);
+		getTreeSelection () -> select (child);
+	}
+
+	saveTree ();
+
+	context -> drag_finish (true, false, time);
 }
 
 void
