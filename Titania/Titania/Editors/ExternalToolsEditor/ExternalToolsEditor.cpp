@@ -65,10 +65,9 @@ const std::map <std::string, int32_t> ExternalToolsEditor::saveTypes = {
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
-	std::make_pair ("NOTHING",          0),
-	std::make_pair ("CURRENT_SCENE",    1),
-	std::make_pair ("SELECTION",        2),
-	std::make_pair ("SELECTION_CHANGE", 3),
+	std::make_pair ("NOTHING",       0),
+	std::make_pair ("CURRENT_SCENE", 1),
+	std::make_pair ("SELECTION",     2),
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::inputEncodings = {
