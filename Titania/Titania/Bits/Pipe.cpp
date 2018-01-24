@@ -149,8 +149,6 @@ Pipe::open (const std::string & workingDirectory,
 		                              &m_stderr);
 	
 		m_is_open = true;
-	
-		read (5);
 	}
 	catch (const Glib::SpawnError & error)
 	{
@@ -210,8 +208,6 @@ Pipe::write (const char* data, const size_t length)
 {
 	if (not m_is_open)
 		throw std::runtime_error ("Write to closed pipe.");
-		
-	read (0);
 
 	if (isRunning () and poll (m_stdin, 5, POLLOUT) >= 0)
 	{

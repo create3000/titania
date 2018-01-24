@@ -93,9 +93,6 @@ public:
 	void
 	write (Magick::Image & image);
 
-	void
-	kill (const int32_t signal = SIGKILL);
-
 	bool
 	close ();
 
@@ -125,6 +122,9 @@ private:
 	
 	void
 	on_stderr (const std::string & string);
+
+	void
+	kill ();
 
 	///  @name Members
 

@@ -169,6 +169,7 @@ void
 VideoEncoder::open ()
 {
 	pipe .open (command);
+	pipe .read (50);
 }
 
 void
@@ -179,13 +180,14 @@ VideoEncoder::write (Magick::Image & image)
 	image .magick ("PNG");
 	image .write (&blob);
 
+	pipe .read (50);
 	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
 }
 
 void
-VideoEncoder::kill (const int32_t signal)
+VideoEncoder::kill ()
 {
-	pipe .kill (signal);
+	pipe .kill ();
 }
 
 bool

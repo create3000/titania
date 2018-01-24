@@ -64,7 +64,9 @@ class Pipe;
 class X3DBrowserWindow;
 
 class ExternalTool :
-	public X3D::X3DInterruptibleThread
+	public X3D::X3DInterruptibleThread,
+	public X3D::X3DInput,
+	public sigc::trackable
 {
 public:
 

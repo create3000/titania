@@ -69,6 +69,8 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
                             const std::string & outputType,
                             const Glib::RefPtr <Gio::File> & command) :
 	X3D::X3DInterruptibleThread (),
+	             X3D::X3DInput  (),
+	            sigc::trackable (),
 	              browserWindow (browserWindow),
 	                         id (id),
 	                       name (name),
@@ -124,6 +126,7 @@ ExternalTool::run (const std::string & workingDirectory,
 	try
 	{
 		pipe .open (workingDirectory, { command }, environment);
+		pipe .read (100);
 		pipe .write (input .data (), input .size ());
 		pipe .close (Pipe::STDIN);
 

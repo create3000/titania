@@ -120,8 +120,6 @@ RenderThread::stop ()
 {
 	X3D::X3DInterruptibleThread::stop ();
 
-	videoEncoder -> kill ();
-
 	if (thread and thread -> joinable ())
 		thread -> join ();
 
