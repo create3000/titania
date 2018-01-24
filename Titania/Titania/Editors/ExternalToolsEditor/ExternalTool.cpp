@@ -93,7 +93,8 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 void
 ExternalTool::start ()
 {
-	browserWindow -> println ("Run tool »" + name + "«.");
+	if (outputType == "DISPLAY_IN_CONSOLE")
+		browserWindow -> println ("Run tool »" + name + "«.");
 
 	thread = std::thread (&ExternalTool::run,
 	                      this,
@@ -217,7 +218,8 @@ ExternalTool::on_done ()
 
 	stdout .clear ();
 
-	browserWindow -> println ("Tool »" + name + "« finished.");
+	if (outputType == "DISPLAY_IN_CONSOLE")
+		browserWindow -> println ("Tool »" + name + "« finished.");
 }
 
 std::vector <std::string> 

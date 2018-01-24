@@ -556,8 +556,6 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 void
 X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool, const std::string & name)
 {
-	__LOG__ << name << std::endl;
-
 	externalTools .erase (externalTool);
 }
 
