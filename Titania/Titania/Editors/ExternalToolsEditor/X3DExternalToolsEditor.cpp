@@ -78,7 +78,7 @@ public:
 
 };
 
-std::set <std::unique_ptr <ExternalTool>> X3DExternalToolsEditor::externalTools;
+std::map <ExternalTool*, std::unique_ptr <ExternalTool>> X3DExternalToolsEditor::externalTools;
 
 X3DExternalToolsEditor::X3DExternalToolsEditor () :
 	X3DExternalToolsEditorInterface ()
@@ -522,15 +522,22 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		                                                     outputType,
 		                                                     file);
 
+		externalTool -> signal_done () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::removeTool), externalTool .get ()));
 		externalTool -> start ();
 
-		externalTools .emplace (std::move (externalTool));
+		externalTools .emplace (externalTool .get (), std::move (externalTool));
 	}
 	catch (const std::exception & error)
 	{
 		browserWindow -> println ("Couldn't execute tool.");
 		browserWindow -> println (error .what ());
 	}
+}
+
+void
+X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool)
+{
+	externalTools .erase (externalTool);
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

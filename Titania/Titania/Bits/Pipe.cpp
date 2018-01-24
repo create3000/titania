@@ -57,7 +57,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <poll.h>
 #include <vector>
 
@@ -77,10 +76,33 @@ Pipe::Pipe (const PipeCallback & stdout_callback, const PipeCallback & stderr_ca
 	         m_buffer (buffer_size) 
 { }
 
+std::vector <std::string> 
+Pipe::getEnvironment ()
+{
+	std::vector <std::string> environment;
+
+	for (const auto & key : Glib::listenv ())
+		environment .emplace_back (key + "=" + Glib::getenv (key));
+
+	return environment;
+}
+
+bool
+Pipe::isRunning () const
+{
+	if (waitpid (WNOHANG))
+		return false;
+
+	if (kill (0))
+		return false;
+
+	return true;
+}
+
 void
 Pipe::open (const std::vector <std::string> & command)
 {
-	open (Glib::get_home_dir (), command, { });
+	open (Glib::get_home_dir (), command, getEnvironment ());
 }
 
 void
@@ -172,11 +194,11 @@ Pipe::write (const char* data, const size_t length)
 		
 	read (0);
 
-	if (running () and poll (m_stdin, 5, POLLOUT) >= 0)
+	if (isRunning () and poll (m_stdin, 5, POLLOUT) >= 0)
 	{
 		const int32_t bytes        = length;
 		const int32_t bytesWritten = ::write (m_stdin, data, bytes);
-	
+
 		if (bytesWritten not_eq bytes)
 		{
 			if (bytesWritten < 0)
@@ -193,48 +215,72 @@ Pipe::write (const char* data, const size_t length)
 	}
 }
 
-bool
-Pipe::close ()
+int32_t
+Pipe::kill (const int32_t signal) const
 {
-	if (not m_is_open)
-		return false;
+	return ::kill (m_pid, signal);
+}
 
-	m_is_open = false;
-
-	::close (m_stdin);
-
-	do
-	{
-		read (50);
-	}
-	while (running ());
-
-	::close (m_stdout);
-	::close (m_stderr);
-
+int32_t
+Pipe::waitpid (const int32_t options) const
+{
 	int32_t status = 0;
 
-	::waitpid (m_pid, &status, 0);
+	::waitpid (m_pid, &status, options);
 
-	Glib::spawn_close_pid (m_pid);
-
-	if (status)
-		return false;
-
-	return true;
+	return status;
 }
 
 bool
-Pipe::running () const
+Pipe::close (const StreamType stream)
 {
-	int32_t status = 0;
+	switch (stream)
+	{
+		case STDIN:
+		{
+			::close (m_stdin);
+			return false;
+		}
+		case STDOUT:
+		{
+			::close (m_stdout);
+			return false;
+		}
+		case STDERR:
+		{
+			::close (m_stdout);
+			return false;
+		}
+		case DEFAULT:
+		{
+			if (not m_is_open)
+				return false;
+		
+			m_is_open = false;
+		
+			::close (m_stdin);
+		
+			do
+			{
+				read (50);
+			}
+			while (isRunning ());
+		
+			::close (m_stdout);
+			::close (m_stderr);
 
-	::waitpid (m_pid, &status, WNOHANG);
+			const auto status = waitpid (0);
+		
+			Glib::spawn_close_pid (m_pid);
 
-	if (status or ::kill (m_pid, 0))
-		return false;
+			if (status)
+				return false;
 
-	return true;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 Pipe::~Pipe ()

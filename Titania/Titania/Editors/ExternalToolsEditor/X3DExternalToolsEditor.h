@@ -204,9 +204,13 @@ private:
 	void
 	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
 
+	static
+	void
+	removeTool (ExternalTool* const externalTool);
+
 	///  @name Static member
 
-	static std::set <std::unique_ptr <ExternalTool>> externalTools;
+	static std::map <ExternalTool*, std::unique_ptr <ExternalTool>> externalTools;
 
 };
 

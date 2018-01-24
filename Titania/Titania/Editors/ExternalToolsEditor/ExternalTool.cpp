@@ -78,6 +78,7 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 	                    command (command),
 	                     thread (),
 	                      mutex (),
+	                       pipe (),
 	                     stdout (),
 	                     stderr (),
 	                      queue (),
@@ -93,29 +94,15 @@ ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
 void
 ExternalTool::start ()
 {
-	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
+	browserWindow -> println ("Run tool »" + name + "«.");
 
-	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
-	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
-	const auto folder   = file -> get_parent ();
-
-	std::vector <std::string> environment;
-
-	for (const auto & key : Glib::listenv ())
-		environment .emplace_back (key + "=" + Glib::getenv (key));
-
-	environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
-	environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
-
-	for (const auto & projectPath : projects)
-	{
-		const auto project = Gio::File::create_for_path (projectPath);
-
-		if (File::isSubfolder (folder, project))
-			environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
-	}
-
-	thread = std::thread (&ExternalTool::run, this, Glib::get_home_dir (), command -> get_path (), environment, getInput (), outputType not_eq "NOTHING");
+	thread = std::thread (&ExternalTool::run,
+	                      this,
+	                      Glib::get_home_dir (),
+	                      command -> get_path (),
+	                      getEnvironment (),
+	                      getInput (),
+	                      outputType not_eq "NOTHING");
 }
 
 void
@@ -134,11 +121,17 @@ ExternalTool::run (const std::string & workingDirectory,
 
 		// Process input.
 
-		Pipe pipe (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
+		pipe = std::make_unique <Pipe> (processOutput ? stdoutCallback : PipeCallback (), stderrCallback);
 
-		pipe .open (workingDirectory, { command }, environment);
-		pipe .write (input .data (), input .size ());
-		pipe .close ();
+		pipe -> open (workingDirectory, { command }, environment);
+		pipe -> write (input .data (), input .size ());
+		pipe -> close (Pipe::STDIN);
+
+		do
+		{
+			pipe -> read (50);
+		}
+		while (pipe -> isRunning ());
 	}
 	catch (const std::exception & error)
 	{
@@ -151,6 +144,8 @@ ExternalTool::run (const std::string & workingDirectory,
 void
 ExternalTool::on_stdout_async (const std::string & string)
 {
+	checkForInterrupt ();
+
 	std::lock_guard <std::mutex> lock (mutex);
 
 	auto first = 0;
@@ -174,6 +169,8 @@ ExternalTool::on_stdout_async (const std::string & string)
 void
 ExternalTool::on_stderr_async (const std::string & string)
 {
+	checkForInterrupt ();
+
 	std::lock_guard <std::mutex> lock (mutex);
 
 	stderr .append (string);
@@ -205,6 +202,8 @@ ExternalTool::on_stderr ()
 	std::lock_guard <std::mutex> lock (mutex);
 
 	browserWindow -> print (stderr);
+
+	stderr .clear ();
 }
 
 void
@@ -215,6 +214,31 @@ ExternalTool::on_done ()
 	processOutput (stdout);
 
 	browserWindow -> println ("Tool »" + name + "« finished successfully.");
+}
+
+std::vector <std::string> 
+ExternalTool::getEnvironment () const
+{
+	std::vector <std::string> environment = Pipe::getEnvironment ();
+
+	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
+
+	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
+	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
+	const auto folder   = file -> get_parent ();
+
+	environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
+	environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
+
+	for (const auto & projectPath : projects)
+	{
+		const auto project = Gio::File::create_for_path (projectPath);
+
+		if (File::isSubfolder (folder, project))
+			environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+	}
+
+	return environment;
 }
 
 std::string
@@ -344,13 +368,20 @@ ExternalTool::processOutput (const std::string & stdout)
 	{
 		browserWindow -> println ("Couldn't process output of tool »" + name + "«.");
 		browserWindow -> println (error .what ());
+		browserWindow -> println ("Output >>" + stdout + "<<");
 	}
 }
 
 void
 ExternalTool::stop ()
 {
-	stop ();
+	X3D::X3DInterruptibleThread::stop ();
+
+	if (pipe)
+	{
+		pipe -> kill (SIGKILL);
+		pipe -> close ();
+	}
 
 	if (thread .joinable ())
 		thread .join ();
@@ -358,9 +389,6 @@ ExternalTool::stop ()
 
 ExternalTool::~ExternalTool ()
 {
-	//if (pipe)
-	//	pipe -> kill ();
-
 	stop ();
 }
 

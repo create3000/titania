@@ -60,6 +60,7 @@
 namespace titania {
 namespace puck {
 
+class Pipe;
 class X3DBrowserWindow;
 
 class ExternalTool :
@@ -127,6 +128,9 @@ private:
 	void
 	on_done ();
 
+	std::vector <std::string> 
+	getEnvironment () const;
+
 	std::string
 	getInput () const;
 
@@ -147,6 +151,7 @@ private:
 
 	std::thread              thread;
 	std::mutex               mutex;
+	std::unique_ptr <Pipe>   pipe;
 	std::string              stdout;
 	std::string              stderr;
 	std::deque <std::string> queue;

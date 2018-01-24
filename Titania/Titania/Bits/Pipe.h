@@ -58,6 +58,8 @@
 #include <vector>
 #include <mutex>
 
+#include <sys/wait.h>
+
 namespace titania {
 namespace puck {
 
@@ -67,6 +69,16 @@ class Pipe
 {
 public:
 
+	///  @name Member types
+
+	enum StreamType
+	{
+		DEFAULT,
+		STDIN,
+		STDOUT,
+		STDERR	
+	};
+
 	///  @name Construction
 
 	explicit
@@ -75,12 +87,19 @@ public:
 
 	///  @name Member access
 
+	static
+	std::vector <std::string> 
+	getEnvironment ();
+
 	bool
-	is_open () const
+	isRunning () const;
+
+	bool
+	isOpen () const
 	{ return m_is_open; }
 
 	int32_t
-	pid () const
+	getPid () const
 	{ return m_pid; }
 
 	///  @name Operations
@@ -94,13 +113,19 @@ public:
 	      const std::vector <std::string> & environment);
 
 	void
+	read (const int32_t timeout);
+
+	void
 	write (const char* data, const size_t length);
 
-	bool
-	close ();
+	int32_t
+	kill (const int32_t signal) const;
+	
+	int32_t
+	waitpid (const int32_t options) const;
 
 	bool
-	running () const;
+	close (const StreamType stream = StreamType::DEFAULT);
 
 	///  @name Destruction
 
@@ -114,9 +139,6 @@ private:
 
 	int32_t
 	poll (const int32_t fd, const int32_t timeout, const short events);
-
-	void
-	read (const int32_t timeout);
 
 	///  @name Static members
 
