@@ -168,6 +168,8 @@ ExternalToolsEditor::on_tree_selection_changed ()
 	{
 		changing = true;
 
+		getSourceView () .get_source_buffer () -> begin_not_undoable_action ();
+
 		if (getTreeSelection () -> get_selected_rows () .empty ())
 		{
 			getRemoveToolButton () .set_sensitive (false);
@@ -197,6 +199,8 @@ ExternalToolsEditor::on_tree_selection_changed ()
 
 			Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ExternalToolsEditor::setLanguage), text));
 		}
+
+		getSourceView () .get_source_buffer () -> end_not_undoable_action ();
 
 		changing = false;
 	}
