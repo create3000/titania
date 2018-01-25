@@ -995,3 +995,5 @@ Entry::key_release_event
   virtual bool on_key_release_event(GdkEventKey* key_event);
 TreeView::row_collapsed
   virtual void on_row_collapsed(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);
+TreeView::drag_data_get
+  virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time);

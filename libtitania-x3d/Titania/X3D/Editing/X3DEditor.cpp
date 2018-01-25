@@ -579,6 +579,29 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
  *
  */
 
+bool
+X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent)
+{
+	const auto traversed = traverse (parent, [&] (SFNode & node)
+	{
+		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
+
+		if (instance)
+		{
+			if (instance -> getProtoDeclarationNode () == child)
+				return false;
+		}
+
+		return true;
+	},
+	TRAVERSE_PROTO_DECLARATIONS |
+	TRAVERSE_PROTO_DECLARATION_BODY |
+	TRAVERSE_ROOT_NODES |
+	TRAVERSE_PROTOTYPE_INSTANCES);
+
+	return not traversed;
+}
+
 void
 X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
 {
@@ -966,7 +989,7 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 	}
 
 	// Remove rest, these are only nodes that are not in the scene graph anymore.
-	removeNodesFromExecutionContext (executionContext, children, undoStep, false);
+	removeNodesFromExecutionContext (executionContext, children, false, undoStep);
 
 	// Prototype support
 
@@ -976,8 +999,8 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 void
 X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & executionContext,
                                             const std::set <SFNode> & nodes,
-                                            const UndoStepPtr & undoStep,
-                                            const bool doRemoveFromSceneGraph)
+                                            const bool removeFromSceneGraph,
+                                            const UndoStepPtr & undoStep)
 {
 	// Remove node from scene graph
 
@@ -1007,7 +1030,7 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 
 	// If it is previously known that the node isn't in the scene graph anymore, it must not removed.
 
-	if (doRemoveFromSceneGraph)
+	if (removeFromSceneGraph)
 		removeNodesFromSceneGraph (executionContext, nodes, undoStep);
 
 	for (const auto & inlineNode : inlineNodes)

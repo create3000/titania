@@ -69,7 +69,7 @@ class X3DExternalToolsEditor :
 {
 public:
 
-	///  @name Member access
+	///  @name Operations
 
 	static
 	void

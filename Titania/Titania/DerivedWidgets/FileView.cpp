@@ -57,20 +57,87 @@ namespace puck {
 
 FileView::FileView (GtkTreeView* cobject, const Glib::RefPtr <Gtk::Builder> & builder) :
 	      Gtk::TreeView (cobject),
-	     button3_select (true),
+	               keys (),
 	display_menu_signal ()
 { }
 
 bool
+FileView::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+	return true;
+}
+
+bool
+FileView::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+	return true;
+}
+
+bool
 FileView::on_button_press_event (GdkEventButton* event)
 {
-	if (button3_select or event -> button not_eq 3)
-		Gtk::TreeView::on_button_press_event (event);
+	const auto selected_rows = get_selection () -> get_selected_rows ();
+	auto       path          = Gtk::TreePath ();
 
-	if (event -> button == 3)
-		display_menu_signal .emit (event);
+	get_path_at_pos (event -> x, event -> y, path);
 
-	return true;
+	const auto path_is_selected = get_selection () -> is_selected (path);
+
+	switch (event -> button)
+	{
+		case 1:
+		{
+			Gtk::TreeView::on_button_press_event (event);
+
+			if (path_is_selected)
+			{
+				get_selection () -> unselect_all ();
+
+				for (const auto path : selected_rows)
+					get_selection () -> select (path);
+			}
+
+			return false;
+		}
+		case 3:
+		{
+			if ((selected_rows .size () < 2 or not path_is_selected))
+				Gtk::TreeView::on_button_press_event (event);
+
+			display_menu_signal .emit (event);
+			return false;
+		}
+		default:
+		{
+			Gtk::TreeView::on_button_press_event (event);
+			return false;
+		}
+	}
+
+	return false;
+}
+
+bool
+FileView::on_button_release_event (GdkEventButton* event)
+{
+	Gtk::TreeView::on_button_release_event (event);
+
+	if (event -> button == 1)
+	{
+		if (not (keys .shift () or keys .control ()))
+		{
+			auto path = Gtk::TreePath ();
+		
+			get_path_at_pos (event -> x, event -> y, path);
+	
+			get_selection () -> unselect_all ();
+			get_selection () -> select (path);
+		}
+	}
+
+	return false;
 }
 
 FileView::~FileView ()

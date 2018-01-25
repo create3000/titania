@@ -338,6 +338,14 @@ public:
 	on_remove_project_clicked () = 0;
 
 	virtual
+	void
+	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
 	bool
 	on_focus_in_event (GdkEventFocus* focus_event) = 0;
 

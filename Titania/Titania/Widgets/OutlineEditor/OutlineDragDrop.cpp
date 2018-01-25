@@ -73,9 +73,6 @@ namespace puck {
  * Enable drag & drop for a row in the model.
  */
 
-const std::string OutlineDragDrop::dragExternProtoIdType = "TITANIA_EXTERN_PROTO_ID";
-const std::string OutlineDragDrop::dragNodeIdType        = "TITANIA_NODE_ID";
-
 OutlineDragDrop::OutlineDragDrop (OutlineEditor* const outlineEditor, OutlineTreeViewEditor* const treeView) :
 	outlineEditor (outlineEditor),
 	     treeView (treeView),
@@ -89,12 +86,12 @@ OutlineDragDrop::OutlineDragDrop (OutlineEditor* const outlineEditor, OutlineTre
 	// Drag & Drop
 	treeView -> set_reorderable (true);
 
-	treeView -> enable_model_drag_source ({ Gtk::TargetEntry (dragExternProtoIdType, Gtk::TARGET_SAME_WIDGET),
-	                                        Gtk::TargetEntry (dragNodeIdType, Gtk::TARGET_SAME_APP) },
+	treeView -> enable_model_drag_source ({ Gtk::TargetEntry ("TITANIA_EXTERN_PROTO_ID", Gtk::TARGET_SAME_WIDGET),
+	                                        Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_APP) },
 	                                        Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
 
-	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry (dragExternProtoIdType, Gtk::TARGET_SAME_WIDGET),
-	                                      Gtk::TargetEntry (dragNodeIdType, Gtk::TARGET_SAME_WIDGET) },
+	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry ("TITANIA_EXTERN_PROTO_ID", Gtk::TARGET_SAME_WIDGET),
+	                                      Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_WIDGET) },
 	                                      Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
 
 	treeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_button_press_event), false);
@@ -189,7 +186,7 @@ OutlineDragDrop::get_proto_first_limit (Gtk::TreePath path,
 	{
 		path .prev ();
 
-		if (is_proto_in_proto (*iter, prototype))
+		if (X3D::X3DEditor::isProtoUsedInProto (*iter, prototype))
 		{
 			path .next ();
 			break;
@@ -217,7 +214,7 @@ OutlineDragDrop::get_proto_second_limit (Gtk::TreePath path,
 	{
 		path .next ();
 
-		if (is_proto_in_proto (prototype, *iter))
+		if (X3D::X3DEditor::isProtoUsedInProto (prototype, *iter))
 		{
 			path .prev ();
 			break;
@@ -229,30 +226,6 @@ OutlineDragDrop::get_proto_second_limit (Gtk::TreePath path,
 	return path;
 }
 
-bool
-OutlineDragDrop::is_proto_in_proto (X3D::ProtoDeclaration* const source,
-                                    X3D::ProtoDeclaration* const destination) const
-{
-	const auto traversed = X3D::traverse (destination, [&] (X3D::SFNode & node)
-	{
-		const auto instance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
-
-		if (instance)
-		{
-			if (instance -> getProtoDeclarationNode () == source)
-				return false;
-		}
-
-		return true;
-	},
-	X3D::TRAVERSE_PROTO_DECLARATIONS |
-	X3D::TRAVERSE_PROTO_DECLARATION_BODY |
-	X3D::TRAVERSE_ROOT_NODES |
-	X3D::TRAVERSE_PROTOTYPE_INSTANCES);
-
-	return not traversed;
-}
-
 void
 OutlineDragDrop::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context,
                                    Gtk::SelectionData & selection_data,
@@ -262,7 +235,7 @@ OutlineDragDrop::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & conte
 	switch (sourceType)
 	{
 		case OutlineIterType::X3DBaseNode:
-			selection_data .set (dragNodeIdType, basic::to_string (nodeId, std::locale::classic ()));
+			selection_data .set ("TITANIA_NODE_ID", basic::to_string (nodeId, std::locale::classic ()));
 			break;
 		case OutlineIterType::NULL_:
 		case OutlineIterType::ProtoDeclaration:

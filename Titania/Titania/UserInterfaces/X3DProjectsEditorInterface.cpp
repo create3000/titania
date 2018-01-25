@@ -147,6 +147,8 @@ X3DProjectsEditorInterface::create ()
 	m_RemoveProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_remove_project_clicked));
 
 	// Connect object Gtk::TreeView with id 'FileView'.
+	m_FileView -> signal_drag_data_get () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_drag_data_get));
+	m_FileView -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_drag_data_received));
 	m_FileView -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_in_event));
 	m_FileView -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_focus_out_event));
 	m_FileView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_row_activated));

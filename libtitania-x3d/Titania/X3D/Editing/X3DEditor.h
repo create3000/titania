@@ -115,60 +115,64 @@ public:
 	///  @name Prototype handling
 
 	static
+	bool
+	isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent);
+
+	static
 	void
 	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string &, const UndoStepPtr & undoStep);
+	addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep);
 
 	///  @name Replace operations
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode &, SFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & sfnode, const SFNode & newValue, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const MFNode &, const UndoStepPtr & undoStep);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const MFNode & newValue, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr & undoStep);
+	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const SFNode & newValue, const UndoStepPtr & undoStep);
 
 	///  @name Remove operations
 
 	static
 	void
-	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode &, SFNode &, const UndoStepPtr & undoStep);
+	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const size_t, const UndoStepPtr & undoStep);
+	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneIfNotExistsInSceneGraph (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
+	removeNodesFromSceneIfNotExistsInSceneGraph (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode &, const bool, const UndoStepPtr & undoStep);
+	removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool removeFromSceneGraph, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr & undoStep);
+	removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneGraph (const MFNode &, const std::set <SFNode> &, const UndoStepPtr & undoStep);
+	removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep);
 
 	static
 	void
@@ -463,11 +467,11 @@ private:
 
 	static
 	void
-	removeNode (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	removeNode (const SFNode & parent, MFNode & mfnode, const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromExecutionContext (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr &, const bool);
+	removeNodesFromExecutionContext (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const bool removeFromSceneGraph, const UndoStepPtr & undoStep);
 
 	static
 	void

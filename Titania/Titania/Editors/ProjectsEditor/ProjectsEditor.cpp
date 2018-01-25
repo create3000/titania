@@ -73,6 +73,9 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 {
 	getFileView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
 
+	getFileView () .enable_model_drag_source ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_APP) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
+	getFileView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+
 	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getPasteIntoFolderMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_V, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -719,6 +722,64 @@ ProjectsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVi
 }
 
 void
+ProjectsEditor::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context,
+                                  Gtk::SelectionData & selection_data,
+                                  guint info,
+                                  guint time)
+{
+	std::vector <Glib::ustring> uris;
+
+	for (const auto & file : getSelectedFiles ())
+		uris .emplace_back ("file://" + file -> get_path ());
+
+	selection_data .set_uris (uris);
+}
+
+void
+ProjectsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                       int x, int y,
+                                       const Gtk::SelectionData & selection_data,
+                                       guint info,
+                                       guint time)
+{
+	// Update list store.
+
+	Gtk::TreePath             destinationPath;
+	Gtk::TreeViewDropPosition position;
+
+	if (getFileView () .get_dest_row_at_pos (x, y, destinationPath, position))
+	{
+		const auto destination = getFile (getFileStore () -> get_iter (destinationPath));
+
+		std::vector <Glib::RefPtr <Gio::File>> files;
+
+		if (selection_data .get_data_type () == "text/uri-list")
+		{
+			const auto strings = selection_data .get_uris ();
+
+			for (const auto & string : strings)
+				files .emplace_back (Gio::File::create_for_uri (string));
+
+		}
+
+		if (not files .empty ())
+		{
+			const auto folder = File::getFolder (destination);
+
+			if (folder)
+			{
+				transferFiles (TransferAction::MOVE, folder, files);
+
+				context -> drag_finish (true, false, time);
+				return;
+			}
+		}
+	}
+
+	context -> drag_finish (false, false, time);
+}
+
+void
 ProjectsEditor::on_selection_changed ()
 {
 	try
@@ -736,8 +797,6 @@ ProjectsEditor::on_selection_changed ()
 				const auto file      = selectedFiles .front ();
 				const auto fileInfo  = file -> query_info ();
 				const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
-	
-				getFileView () .set_button3_select (true);
 
 				getRemoveProjectButton ()     .set_sensitive (getRootFolders () .count (file -> get_path ()));
 				getOpenWithMenuItem ()        .set_sensitive (true);
@@ -750,8 +809,6 @@ ProjectsEditor::on_selection_changed ()
 			case 0:
 			default:
 			{
-				getFileView () .set_button3_select (selectedFiles .empty ());
-	
 				getRemoveProjectButton ()     .set_sensitive (false);
 				getOpenWithMenuItem ()        .set_sensitive (false);
 				getImportMenuItem ()          .set_sensitive (false);

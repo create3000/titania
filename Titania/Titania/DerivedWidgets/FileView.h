@@ -53,6 +53,8 @@
 
 #include <gtkmm.h>
 
+#include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
+
 namespace titania {
 namespace puck {
 
@@ -64,16 +66,6 @@ public:
 	///  @name Construction
 
 	FileView (GtkTreeView* cobject, const Glib::RefPtr <Gtk::Builder> & builder);
-
-	///  @name Member access
-
-	void
-	set_button3_select (const bool value)
-	{ button3_select = value; }
-
-	bool
-	get_button3_select () const
-	{ return button3_select; }
 
 	///  @name Signals
 
@@ -93,14 +85,26 @@ protected:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton* event) final override;
+	on_key_press_event (GdkEventKey* event) override;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) override;
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) override;
 
 
 private:
 
 	///  @name Members
 
-	bool                                 button3_select;
+	X3D::Keys                            keys;
 	sigc::signal <void, GdkEventButton*> display_menu_signal;
 
 };

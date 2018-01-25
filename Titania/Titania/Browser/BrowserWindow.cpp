@@ -639,8 +639,12 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
                                       const guint time,
                                       const bool do_open)
 {
+	__LOG__ << selection_data .get_data_type () << std::endl;
+
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
+		__LOG__ << selection_data .get_data_type () << std::endl;
+
 		std::vector <basic::uri> uris;
 
 		if (selection_data .get_data_type () == "text/uri-list")

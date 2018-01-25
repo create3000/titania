@@ -124,6 +124,11 @@ protected:
 	getClipboard () const
 	{ return clipboard; }
 
+	void
+	transferFiles (const TransferAction action,
+	               const Glib::RefPtr <Gio::File> & folder,
+	               const std::vector <Glib::RefPtr <Gio::File>> & files);
+	
 	///  @name Selection handling
 
 	void
@@ -521,6 +526,18 @@ template <class Type>
 void
 X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 {
+	transferFiles (clipboardAction, folder, clipboard);
+
+	if (clipboardAction == TransferAction::MOVE)
+		clearClipboard ();
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::transferFiles (const TransferAction action,
+                                      const Glib::RefPtr <Gio::File> & folder,
+                                      const std::vector <Glib::RefPtr <Gio::File>> & files)
+{
 	const auto folderInfo = folder -> query_info ();
 
 	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
@@ -528,13 +545,13 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 
 	auto selection = std::vector <Glib::RefPtr <Gio::File> > ();
 
-	for (const auto & source : clipboard)
+	for (const auto & source : files)
 	{
 		try
 		{
-			const auto destination = getPasteDestination (clipboardAction, source, folder);
+			const auto destination = getPasteDestination (action, source, folder);
 
-			transferFile (clipboardAction, source, destination);
+			transferFile (action, source, destination);
 
 			selection .emplace_back (destination);
 		}
@@ -543,9 +560,6 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 			__LOG__ << error .what () << std::endl;
 		}
 	}
-
-	if (clipboardAction == TransferAction::MOVE)
-		clearClipboard ();
 
 	// Select destinations.
 

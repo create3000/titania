@@ -95,10 +95,6 @@ private:
 	                         X3D::ProtoDeclaration* const prototype,
                             const std::vector <X3D::ProtoDeclarationPtr> & prototypes) const;
 
-	bool
-	is_proto_in_proto (X3D::ProtoDeclaration* const source,
-                      X3D::ProtoDeclaration* const destination) const;
-
 	void
 	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time);
 
@@ -156,11 +152,6 @@ private:
 
 	std::string
 	get_node_action_string (Gdk::DragAction, const X3D::SFNode & node) const;
-
-	///  @name Static members
-
-	static const std::string dragExternProtoIdType;
-	static const std::string dragNodeIdType;
 
 	///  @name Members
 

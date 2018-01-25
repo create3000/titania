@@ -84,6 +84,17 @@ File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::str
 	return names [0];
 }
 
+Glib::RefPtr <Gio::File>
+File::getFolder (const Glib::RefPtr <Gio::File> & file)
+{
+	const auto fileInfo = file -> query_info ();
+	
+	if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+		return file;
+
+	return file -> get_parent ();
+}
+
 std::vector <Glib::RefPtr <Gio::FileInfo>>
 File::getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden)
 {

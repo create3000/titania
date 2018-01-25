@@ -75,6 +75,10 @@ public:
 	isSubfolder (Glib::RefPtr <Gio::File> subfolder, const Glib::RefPtr <Gio::File> & folder);
 
 	static
+	Glib::RefPtr <Gio::File>
+	getFolder (const Glib::RefPtr <Gio::File> & file);
+
+	static
 	std::vector <Glib::RefPtr <Gio::FileInfo>> 
 	getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden = false);
 
