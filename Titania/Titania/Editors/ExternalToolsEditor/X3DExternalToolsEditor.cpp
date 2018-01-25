@@ -528,7 +528,7 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 		const auto separator = std::regex_match (name, separatorMatch, separatorRegex);
 		const auto menuItem  = Gtk::manage (separator ? new Gtk::SeparatorMenuItem () : new Gtk::MenuItem (name));
 
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::launchTool), browserWindow, k));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::on_tool_activate), browserWindow, k));
 		menuItem -> set_name ("X3DExternalToolsEditor");
 
 		menu -> append (*menuItem);
@@ -541,7 +541,7 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 }
 
 void
-X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const std::string & k)
+X3DExternalToolsEditor::on_tool_activate (X3DBrowserWindow* const browserWindow, const std::string & k)
 {
 	try
 	{
@@ -557,13 +557,13 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto folder         = getToolsFolder ();
 		const auto command        = folder -> get_child (id + ".txt");
 
-		addTool (browserWindow,
-		         name,
-		         saveType,
-		         inputType,
-		         inputEncoding,
-		         outputType,
-		         command -> get_path ());
+		launchTool (browserWindow,
+		            name,
+		            saveType,
+		            inputType,
+		            inputEncoding,
+		            outputType,
+		            command -> get_path ());
 	}
 	catch (const std::exception & error)
 	{
@@ -573,13 +573,13 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 }
 
 void
-X3DExternalToolsEditor::addTool (X3DBrowserWindow* const browserWindow,
-                                 const std::string & name,
-                                 const std::string & saveType,
-                                 const std::string & inputType,
-                                 const std::string & inputEncoding,
-                                 const std::string & outputType,
-                                 const std::string & command)
+X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow,
+                                    const std::string & name,
+                                    const std::string & saveType,
+                                    const std::string & inputType,
+                                    const std::string & inputEncoding,
+                                    const std::string & outputType,
+                                    const std::string & command)
 {
 	auto externalTool = std::make_unique <ExternalTool> (browserWindow,
 	                                                     name,

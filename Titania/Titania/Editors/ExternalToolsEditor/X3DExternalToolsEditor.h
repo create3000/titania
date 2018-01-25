@@ -77,13 +77,13 @@ public:
 
 	static
 	void
-	addTool (X3DBrowserWindow* const browserWindow,
-	         const std::string & name,
-	         const std::string & saveType,
-	         const std::string & inputType,
-	         const std::string & inputEncoding,
-	         const std::string & outputType,
-	         const std::string & command);
+	launchTool (X3DBrowserWindow* const browserWindow,
+	            const std::string & name,
+	            const std::string & saveType,
+	            const std::string & inputType,
+	            const std::string & inputEncoding,
+	            const std::string & outputType,
+	            const std::string & command);
 
 	///  @name Destruction
 
@@ -220,7 +220,7 @@ private:
 
 	static
 	void
-	launchTool (X3DBrowserWindow* const browserWindow, const std::string & key);
+	on_tool_activate (X3DBrowserWindow* const browserWindow, const std::string & key);
 
 	static
 	void
