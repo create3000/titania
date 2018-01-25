@@ -75,6 +75,16 @@ public:
 	void
 	createMenu (X3DBrowserWindow* const browserWindow, Gtk::MenuItem & menuItem);
 
+	static
+	void
+	addTool (X3DBrowserWindow* const browserWindow,
+	         const std::string & name,
+	         const std::string & saveType,
+	         const std::string & inputType,
+	         const std::string & inputEncoding,
+	         const std::string & outputType,
+	         const std::string & command);
+
 	///  @name Destruction
 
 	virtual
@@ -215,10 +225,6 @@ private:
 	static
 	void
 	removeTool (ExternalTool* const externalTool, const std::string & name);
-
-	static
-	void
-	saveScenes (X3DBrowserWindow* const browserWindow, const std::string & saveType);
 
 	///  @name Static member
 

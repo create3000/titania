@@ -54,6 +54,7 @@
 #include "../../Bits/Pipe.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/String.h>
@@ -62,18 +63,18 @@ namespace titania {
 namespace puck {
 
 ExternalTool::ExternalTool (X3DBrowserWindow* const browserWindow,
-                            const std::string & id,
                             const std::string & name,
+                            const std::string & saveType,
                             const std::string & inputType,
                             const std::string & inputEncoding,
                             const std::string & outputType,
-                            const Glib::RefPtr <Gio::File> & command) :
+                            const std::string & command) :
 	X3D::X3DInterruptibleThread (),
 	             X3D::X3DInput  (),
 	            sigc::trackable (),
 	              browserWindow (browserWindow),
-	                         id (id),
 	                       name (name),
+	                   saveType (saveType),
 	                  inputType (inputType),
 	              inputEncoding (inputEncoding),
 	                 outputType (outputType),
@@ -98,10 +99,12 @@ ExternalTool::start ()
 	if (outputType == "DISPLAY_IN_CONSOLE")
 		browserWindow -> println ("Run tool »" + name + "«.");
 
+	saveScenes ();
+
 	thread = std::thread (&ExternalTool::run,
 	                      this,
 	                      Glib::get_home_dir (),
-	                      command -> get_path (),
+	                      command,
 	                      getEnvironment (),
 	                      getInput (),
 	                      outputType not_eq "NOTHING");
@@ -229,33 +232,32 @@ ExternalTool::on_done ()
 		browserWindow -> println ("Tool »" + name + "« finished.");
 }
 
-std::vector <std::string> 
-ExternalTool::getEnvironment () const
+void
+ExternalTool::saveScenes ()
 {
-	std::vector <std::string> environment = Pipe::getEnvironment ();
-
-	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
-
-	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
-	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
-
-	if (file -> has_parent ())
+	if (saveType == "NOTHING")
+		;
+	else if (saveType == "CURRENT_SCENE")
 	{
-		const auto folder = file -> get_parent ();
-	
-		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
-		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
-	
-		for (const auto & projectPath : projects)
-		{
-			const auto project = Gio::File::create_for_path (projectPath);
-	
-			if (File::isSubfolder (folder, project))
-				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
-		}
+		if (browserWindow -> getCurrentPage () -> getModified ())
+			browserWindow -> on_save_activated ();		
 	}
+	else if (saveType == "ALL_SCENES")
+	{
+		const auto currentPage = browserWindow -> getCurrentPage () -> getPageNumber ();
+		const auto pages       = browserWindow -> getPages ();
 
-	return environment;
+		for (const auto & page : pages)
+		{
+			if (not page -> getModified ())
+				continue;
+
+			browserWindow -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
+			browserWindow -> on_save_activated ();
+		}
+
+		browserWindow -> getBrowserNotebook () .set_current_page (currentPage);
+	}
 }
 
 std::string
@@ -302,6 +304,35 @@ ExternalTool::getInput () const
 	}
 
 	return "";
+}
+
+std::vector <std::string> 
+ExternalTool::getEnvironment () const
+{
+	std::vector <std::string> environment = Pipe::getEnvironment ();
+
+	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
+
+	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
+	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
+
+	if (file -> has_parent ())
+	{
+		const auto folder = file -> get_parent ();
+	
+		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
+		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
+	
+		for (const auto & projectPath : projects)
+		{
+			const auto project = Gio::File::create_for_path (projectPath);
+	
+			if (File::isSubfolder (folder, project))
+				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+		}
+	}
+
+	return environment;
 }
 
 void

@@ -557,20 +557,13 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 		const auto folder         = getToolsFolder ();
 		const auto command        = folder -> get_child (id + ".txt");
 
-		saveScenes (browserWindow, saveType);
-
-		auto externalTool = std::make_unique <ExternalTool> (browserWindow,
-		                                                     id,
-		                                                     name,
-		                                                     inputType,
-		                                                     inputEncoding,
-		                                                     outputType,
-		                                                     command);
-
-		externalTool -> signal_done () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::removeTool), externalTool .get (), name));
-		externalTool -> start ();
-
-		externalTools .emplace (externalTool .get (), std::move (externalTool));
+		addTool (browserWindow,
+		         name,
+		         saveType,
+		         inputType,
+		         inputEncoding,
+		         outputType,
+		         command -> get_path ());
 	}
 	catch (const std::exception & error)
 	{
@@ -580,37 +573,32 @@ X3DExternalToolsEditor::launchTool (X3DBrowserWindow* const browserWindow, const
 }
 
 void
-X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool, const std::string & name)
+X3DExternalToolsEditor::addTool (X3DBrowserWindow* const browserWindow,
+                                 const std::string & name,
+                                 const std::string & saveType,
+                                 const std::string & inputType,
+                                 const std::string & inputEncoding,
+                                 const std::string & outputType,
+                                 const std::string & command)
 {
-	externalTools .erase (externalTool);
+	auto externalTool = std::make_unique <ExternalTool> (browserWindow,
+	                                                     name,
+	                                                     saveType,
+	                                                     inputType,
+	                                                     inputEncoding,
+	                                                     outputType,
+	                                                     command);
+
+	externalTool -> signal_done () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::removeTool), externalTool .get (), name));
+	externalTool -> start ();
+
+	externalTools .emplace (externalTool .get (), std::move (externalTool));
 }
 
 void
-X3DExternalToolsEditor::saveScenes (X3DBrowserWindow* const browserWindow, const std::string & saveType)
+X3DExternalToolsEditor::removeTool (ExternalTool* const externalTool, const std::string & name)
 {
-	if (saveType == "NOTHING")
-		;
-	else if (saveType == "CURRENT_SCENE")
-	{
-		if (browserWindow -> getCurrentPage () -> getModified ())
-			browserWindow -> on_save_activated ();		
-	}
-	else if (saveType == "ALL_SCENES")
-	{
-		const auto currentPage = browserWindow -> getCurrentPage () -> getPageNumber ();
-		const auto pages       = browserWindow -> getPages ();
-
-		for (const auto & page : pages)
-		{
-			if (not page -> getModified ())
-				continue;
-
-			browserWindow -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
-			browserWindow -> on_save_activated ();
-		}
-
-		browserWindow -> getBrowserNotebook () .set_current_page (currentPage);
-	}
+	externalTools .erase (externalTool);
 }
 
 X3DExternalToolsEditor::~X3DExternalToolsEditor ()

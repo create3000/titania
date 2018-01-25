@@ -73,12 +73,12 @@ public:
 	///  @name Construction
 
 	ExternalTool (X3DBrowserWindow* const browserWindow,
-	              const std::string & id,
 	              const std::string & name,
+	              const std::string & saveType,
 	              const std::string & inputType,
 	              const std::string & inputEncoding,
 	              const std::string & outputType,
-	              const Glib::RefPtr <Gio::File> & command);
+	              const std::string & command);
 
 	///  @name Operations
 
@@ -130,6 +130,9 @@ private:
 	void
 	on_done ();
 
+	void
+	saveScenes ();
+
 	std::vector <std::string> 
 	getEnvironment () const;
 
@@ -143,13 +146,13 @@ private:
 
 	///  @name Members
 
-	X3DBrowserWindow* const        browserWindow;
-	const std::string              id;
-	const std::string              name;
-	const std::string              inputType;
-	const std::string              inputEncoding;
-	const std::string              outputType;
-	const Glib::RefPtr <Gio::File> command;
+	X3DBrowserWindow* const browserWindow;
+	const std::string       name;
+	const std::string       saveType;
+	const std::string       inputType;
+	const std::string       inputEncoding;
+	const std::string       outputType;
+	const std::string       command;
 
 	std::thread              thread;
 	std::mutex               mutex;
