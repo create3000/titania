@@ -621,8 +621,9 @@ BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 {
 
 	if (getBrowserAction () -> get_active ())
+	{
 		on_drag_data_received (context, selection_data, time, true);
-
+	}
 	else
 	{
 		if (y < getCurrentBrowser () -> get_height ())
@@ -639,12 +640,8 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
                                       const guint time,
                                       const bool do_open)
 {
-	__LOG__ << selection_data .get_data_type () << std::endl;
-
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
-		__LOG__ << selection_data .get_data_type () << std::endl;
-
 		std::vector <basic::uri> uris;
 
 		if (selection_data .get_data_type () == "text/uri-list")
@@ -652,8 +649,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			const auto strings = selection_data .get_uris ();
 
 			for (const auto & string : strings)
-				uris .emplace_back (Glib::uri_unescape_string (string));         // ???
-
+				uris .emplace_back (Glib::uri_unescape_string (string));
 		}
 
 		if (selection_data .get_data_type () == "STRING")
@@ -664,7 +660,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 
 			for (const auto & string : strings)
 			{
-			   const auto file = Gio::File::create_for_uri (Glib::uri_unescape_string (string));
+				const auto file = Gio::File::create_for_uri (Glib::uri_unescape_string (string));
 
 				uris .emplace_back ("file://" + file -> get_path ());
 			}
@@ -674,7 +670,8 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 		{
 			if (do_open)
 			{
-				open (uris [0]);
+				for (const auto & uri : uris)
+					open (uri);
 			}
 			else
 			{

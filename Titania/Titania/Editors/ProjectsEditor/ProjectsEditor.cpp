@@ -60,6 +60,7 @@
 #include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 
 #include <Titania/X3D/InputOutput/GoldenGate.h>
+#include <Titania/String.h>
 #include <regex>
 
 namespace titania {
@@ -73,8 +74,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 {
 	getFileView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
 
-	getFileView () .enable_model_drag_source ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_APP) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	getFileView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+	getFileView () .enable_model_drag_source ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_APP) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
+	getFileView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_WIDGET), Gtk::TargetEntry ("STRING", Gtk::TARGET_OTHER_APP) }, Gdk::ACTION_MOVE);
 
 	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -730,7 +731,7 @@ ProjectsEditor::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & contex
 	std::vector <Glib::ustring> uris;
 
 	for (const auto & file : getSelectedFiles ())
-		uris .emplace_back ("file://" + file -> get_path ());
+		uris .emplace_back (file -> get_uri ());
 
 	selection_data .set_uris (uris);
 }
@@ -759,7 +760,16 @@ ProjectsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 
 			for (const auto & string : strings)
 				files .emplace_back (Gio::File::create_for_uri (string));
+		}
 
+		if (selection_data .get_data_type () == "STRING")
+		{
+			auto strings = std::vector <std::string> ();
+
+			basic::split (std::back_inserter (strings), basic::trim (selection_data .get_data_as_string ()), "\r\n");
+
+			for (const auto & string : strings)
+				files .emplace_back (Gio::File::create_for_uri (Glib::uri_unescape_string (string)));
 		}
 
 		if (not files .empty ())
@@ -768,7 +778,7 @@ ProjectsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 
 			if (folder)
 			{
-				transferFiles (TransferAction::MOVE, folder, files);
+				transferFiles (TransferAction::MOVE, files, folder);
 
 				context -> drag_finish (true, false, time);
 				return;

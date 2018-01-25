@@ -64,6 +64,8 @@ FileView::FileView (GtkTreeView* cobject, const Glib::RefPtr <Gtk::Builder> & bu
 bool
 FileView::on_key_press_event (GdkEventKey* event)
 {
+	Gtk::TreeView::on_key_press_event (event);
+
 	keys .press (event);
 	return true;
 }
@@ -71,6 +73,8 @@ FileView::on_key_press_event (GdkEventKey* event)
 bool
 FileView::on_key_release_event (GdkEventKey* event)
 {
+	Gtk::TreeView::on_key_release_event (event);
+
 	keys .release (event);
 	return true;
 }
@@ -91,7 +95,7 @@ FileView::on_button_press_event (GdkEventButton* event)
 		{
 			Gtk::TreeView::on_button_press_event (event);
 
-			if (path_is_selected)
+			if (path_is_selected and not (keys .shift () or keys .control ()))
 			{
 				get_selection () -> unselect_all ();
 

@@ -104,7 +104,14 @@ protected:
 	///  @name File operations
 
 	void
-	transferFile (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination);
+	transferFiles (const TransferAction action,
+	               const std::vector <Glib::RefPtr <Gio::File>> & files,
+	               const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	transferFile (const TransferAction action,
+	              const Glib::RefPtr <Gio::File> & source,
+	              const Glib::RefPtr <Gio::File> & destination);
 
 	///  @name Clipboard handling
 
@@ -123,11 +130,6 @@ protected:
 	const std::vector <Glib::RefPtr <Gio::File>> &
 	getClipboard () const
 	{ return clipboard; }
-
-	void
-	transferFiles (const TransferAction action,
-	               const Glib::RefPtr <Gio::File> & folder,
-	               const std::vector <Glib::RefPtr <Gio::File>> & files);
 	
 	///  @name Selection handling
 
@@ -373,7 +375,75 @@ X3DFileBrowser <Type>::on_file_changed_update_tree_view (const Glib::RefPtr <Gio
 
 template <class Type>
 void
-X3DFileBrowser <Type>::transferFile (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & destination)
+X3DFileBrowser <Type>::transferFiles (const TransferAction action,
+                                      const std::vector <Glib::RefPtr <Gio::File>> & files,
+                                      const Glib::RefPtr <Gio::File> & folder)
+{
+	const auto folderInfo = folder -> query_info ();
+
+	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
+		return;
+
+	auto selection = std::vector <Glib::RefPtr <Gio::File> > ();
+
+	for (const auto & source : files)
+	{
+		try
+		{
+			const auto destination = getPasteDestination (action, source, folder);
+
+			transferFile (action, source, destination);
+
+			selection .emplace_back (destination);
+		}
+		catch (const Glib::Error & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	// Select destinations.
+
+	unselectAll ();
+
+	for (const auto & file : selection)
+		selectFile (file);
+}
+
+template <class Type>
+Glib::RefPtr <Gio::File>
+X3DFileBrowser <Type>::getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
+{
+	static const std::regex pattern (_ (R"(\s*\((?:copy|another copy|\d+\.\s+copy)\)\s*$)"));
+
+	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
+	{
+		auto    basename = basic::uri (source -> get_basename ());
+		auto    name     = std::regex_replace (basename .name (), pattern, "");
+		auto    suffix   = basename .suffix ();
+		int32_t copy     = 0;
+		auto    child    = Glib::RefPtr <Gio::File> ();
+	
+		do
+		{
+			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
+			copy += 1;
+		}
+		while (child -> query_exists ());
+	
+		return child;
+	}
+	else
+	{
+		return folder -> get_child (source -> get_basename ());
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::transferFile (const TransferAction action,
+                                     const Glib::RefPtr <Gio::File> & source,
+                                     const Glib::RefPtr <Gio::File> & destination)
 {
 	try
 	{
@@ -526,76 +596,10 @@ template <class Type>
 void
 X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 {
-	transferFiles (clipboardAction, folder, clipboard);
+	transferFiles (clipboardAction, clipboard, folder);
 
 	if (clipboardAction == TransferAction::MOVE)
 		clearClipboard ();
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::transferFiles (const TransferAction action,
-                                      const Glib::RefPtr <Gio::File> & folder,
-                                      const std::vector <Glib::RefPtr <Gio::File>> & files)
-{
-	const auto folderInfo = folder -> query_info ();
-
-	if (folderInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
-		return;
-
-	auto selection = std::vector <Glib::RefPtr <Gio::File> > ();
-
-	for (const auto & source : files)
-	{
-		try
-		{
-			const auto destination = getPasteDestination (action, source, folder);
-
-			transferFile (action, source, destination);
-
-			selection .emplace_back (destination);
-		}
-		catch (const Glib::Error & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-	}
-
-	// Select destinations.
-
-	unselectAll ();
-
-	for (const auto & file : selection)
-		selectFile (file);
-}
-
-template <class Type>
-Glib::RefPtr <Gio::File>
-X3DFileBrowser <Type>::getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
-{
-	static const std::regex pattern (_ (R"(\s*\((?:copy|another copy|\d+\.\s+copy)\)\s*$)"));
-
-	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
-	{
-		auto    basename = basic::uri (source -> get_basename ());
-		auto    name     = std::regex_replace (basename .name (), pattern, "");
-		auto    suffix   = basename .suffix ();
-		int32_t copy     = 0;
-		auto    child    = Glib::RefPtr <Gio::File> ();
-	
-		do
-		{
-			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
-			copy += 1;
-		}
-		while (child -> query_exists ());
-	
-		return child;
-	}
-	else
-	{
-		return folder -> get_child (source -> get_basename ());
-	}
 }
 
 template <class Type>
