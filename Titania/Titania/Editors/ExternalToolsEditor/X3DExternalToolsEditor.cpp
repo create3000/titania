@@ -75,6 +75,7 @@ public:
 	static constexpr size_t OUTPUT_TYPE    = 6;
 	static constexpr size_t APPLICABILITY  = 7;
 	static constexpr size_t INPUT_ENCODING = 8;
+	static constexpr size_t EXPANDED       = 9;
 
 };
 
@@ -265,8 +266,26 @@ X3DExternalToolsEditor::getApplicabilityType (const Gtk::TreeIter & iter) const
 }
 
 void
+X3DExternalToolsEditor::setExpanded (const Gtk::TreeIter & iter, const bool value) const
+{
+	iter -> set_value (Columns::EXPANDED, value);
+}
+
+bool
+X3DExternalToolsEditor::getExpanded (const Gtk::TreeIter & iter) const
+{
+	bool value = false;
+
+	iter -> get_value (Columns::EXPANDED, value);
+
+	return value;
+}
+
+void
 X3DExternalToolsEditor::assignIter (const Gtk::TreeIter & iter, const Gtk::TreeIter & other)
 {
+	// Assign values.
+
 	setId                (iter, getId                (other));
 	setName              (iter, getName              (other));
 	setSaveType          (iter, getSaveType          (other));
@@ -274,6 +293,9 @@ X3DExternalToolsEditor::assignIter (const Gtk::TreeIter & iter, const Gtk::TreeI
 	setInputEncoding     (iter, getInputEncoding     (other));
 	setOutputType        (iter, getOutputType        (other));
 	setApplicabilityType (iter, getApplicabilityType (other));
+	setExpanded          (iter, getExpanded          (other));
+
+	// Add children.
 
 	for (const auto & otherChild : other -> children ())
 	{
@@ -307,12 +329,16 @@ X3DExternalToolsEditor::restoreTree ()
 		const auto browser   = X3D::createBrowser ();
 		const auto scene     = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
 		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
-		auto       expandeds = std::vector <Gtk::TreePath> ();
 	
-		restoreTree (worldInfo, "/Tools/Tree/children", Gtk::TreeIter (), expandeds);
+		restoreTree (worldInfo, "/Tools/Tree/children", Gtk::TreeIter ());
 	
-		for (const auto & path : expandeds)
-			getTreeView () .expand_row (path, false);
+		for (const auto & child : getTreeStore () -> children ())
+		{
+			const auto expanded = getExpanded (child);
+
+			if (expanded)
+				getTreeView () .expand_row (getTreeStore () -> get_path (child), false);
+		}
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -323,8 +349,7 @@ X3DExternalToolsEditor::restoreTree ()
 void
 X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
                                      const std::string & key,
-                                     const Gtk::TreeIter & parent,
-                                     std::vector <Gtk::TreePath> & expandeds)
+                                     const Gtk::TreeIter & parent)
 {
 	const auto children = worldInfo -> getMetaData <X3D::MFNode> (key);
 
@@ -332,7 +357,6 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 	{
 		const auto k                 = key + "/" + basic::to_string (i, std::locale::classic ());
 		auto       path              = Gtk::TreePath (worldInfo -> getMetaData <std::string> (k + "/path"));
-		const auto expanded          = worldInfo -> getMetaData <bool> (k + "/expanded");
 		const auto id                = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
 		const auto saveType          = worldInfo -> getMetaData <std::string> (k + "/saveType");
@@ -340,13 +364,11 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		const auto inputEncoding     = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
+		const auto expanded          = worldInfo -> getMetaData <bool>        (k + "/expanded");
 		const auto iter              = getTreeStore () -> iter_is_valid (parent) ? getTreeStore () -> append (parent -> children ()) : getTreeStore () -> append ();
 
 		if (id .empty ())
 			continue;
-
-		if (expanded)
-			expandeds .emplace_back (path);
 
 		setId                (iter, id);
 		setName              (iter, name);
@@ -355,8 +377,9 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		setInputEncoding     (iter, inputEncoding);
 		setOutputType        (iter, outputType);
 		setApplicabilityType (iter, applicabilityType);
+		setExpanded          (iter, expanded);
 
-		restoreTree (worldInfo, k + "/children", iter, expandeds);
+		restoreTree (worldInfo, k + "/children", iter);
 	}
 }
 
@@ -388,14 +411,14 @@ X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const 
 		const auto key  = "/Tools/Tree/children/" + std::regex_replace (path .to_string () .raw (), colon, "/children/");
 
 		worldInfo -> setMetaData <std::string> (key + "/path",              path .to_string ());
-		worldInfo -> setMetaData <bool>        (key + "/expanded",          getTreeView () .row_expanded (path));
 		worldInfo -> setMetaData <std::string> (key + "/id",                getId (child));
 		worldInfo -> setMetaData <std::string> (key + "/name",              getName (child));
 		worldInfo -> setMetaData <std::string> (key + "/saveType",          getSaveType (child));
 		worldInfo -> setMetaData <std::string> (key + "/inputType",         getInputType (child));
-		worldInfo -> setMetaData <std::string> (key + "/inputEncoding",       getInputEncoding (child));
+		worldInfo -> setMetaData <std::string> (key + "/inputEncoding",     getInputEncoding (child));
 		worldInfo -> setMetaData <std::string> (key + "/outputType",        getOutputType (child));
 		worldInfo -> setMetaData <std::string> (key + "/applicabilityType", getApplicabilityType (child));
+		worldInfo -> setMetaData <bool>        (key + "/expanded",          getExpanded (child));
 
 		saveTree (child -> children (), worldInfo);
 	}

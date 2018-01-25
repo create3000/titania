@@ -50,7 +50,6 @@
 
 #include "BrowserSelection.h"
 
-#include "../Browser/UserData.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 

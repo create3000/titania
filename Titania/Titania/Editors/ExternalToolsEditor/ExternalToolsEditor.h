@@ -99,6 +99,14 @@ private:
 
 	virtual
 	void
+	on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
+
+	virtual
+	void
+	on_row_collapsed (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
+
+	virtual
+	void
 	on_tree_selection_changed () final override;
 
 	virtual

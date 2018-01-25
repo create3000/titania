@@ -993,3 +993,5 @@ ComboBox::changed
    virtual void on_changed();
 Entry::key_release_event
   virtual bool on_key_release_event(GdkEventKey* key_event);
+TreeView::row_collapsed
+  virtual void on_row_collapsed(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);

@@ -23,6 +23,8 @@
       <column type="gchararray"/>
       <!-- column-name InputEncoding -->
       <column type="gchararray"/>
+      <!-- column-name Expanded -->
+      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -85,6 +87,8 @@
                         <property name="model">TreeStore</property>
                         <property name="headers_visible">False</property>
                         <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
+                        <signal name="row-collapsed" handler="on_row_collapsed" swapped="no"/>
+                        <signal name="row-expanded" handler="on_row_expanded" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="TreeSelection">
                             <signal name="changed" handler="on_tree_selection_changed" swapped="no"/>

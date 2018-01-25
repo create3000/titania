@@ -163,6 +163,29 @@ ExternalToolsEditor::on_remove_tool_clicked ()
 }
 
 void
+ExternalToolsEditor::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
+{
+	setExpanded (iter, true);
+
+	// Auto expand children.
+
+	for (const auto & child : iter -> children ())
+	{
+		if (getExpanded (child))
+			getTreeView () .expand_row (getTreeStore () -> get_path (child), false);
+	}
+
+	saveTree ();
+}
+
+void
+ExternalToolsEditor::on_row_collapsed (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
+{
+	setExpanded (iter, false);
+	saveTree ();
+}
+
+void
 ExternalToolsEditor::on_tree_selection_changed ()
 {
 	try
@@ -219,6 +242,7 @@ ExternalToolsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext
                                             guint time)
 {
 	const auto selected = getTreeSelection () -> get_selected ();
+	const auto expanded = getTreeView () .row_expanded (getTreeStore () -> get_path (selected));
 
 	// Update list store.
 
@@ -272,6 +296,10 @@ ExternalToolsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext
 		}
 
 		getTreeStore () -> erase (selected);
+
+		if (expanded)
+			getTreeView () .expand_row (getTreeStore () -> get_path (child), false);
+
 		getTreeSelection () -> select (child);
 	}
 	else
@@ -279,8 +307,12 @@ ExternalToolsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext
 		const auto child = getTreeStore () -> append ();
 
 		assignIter (child, selected);
-	
+
 		getTreeStore () -> erase (selected);
+
+		if (expanded)
+			getTreeView () .expand_row (getTreeStore () -> get_path (child), false);
+	
 		getTreeSelection () -> select (child);
 	}
 

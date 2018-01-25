@@ -148,10 +148,6 @@ public:
 	{ return *m_SaveTypeButton; }
 
 	Gtk::ComboBoxText &
-	getInputTypeButton () const
-	{ return *m_InputTypeButton; }
-
-	Gtk::ComboBoxText &
 	getOutputTypeButton () const
 	{ return *m_OutputTypeButton; }
 
@@ -163,11 +159,23 @@ public:
 	getInputEncodingButton () const
 	{ return *m_InputEncodingButton; }
 
+	Gtk::ComboBoxText &
+	getInputTypeButton () const
+	{ return *m_InputTypeButton; }
+
 	///  @name Signal handlers
 
 	virtual
 	void
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
+	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
+
+	virtual
+	void
+	on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
 
 	virtual
 	void
@@ -195,10 +203,6 @@ public:
 
 	virtual
 	void
-	on_input_type_changed () = 0;
-
-	virtual
-	void
 	on_output_type_changed () = 0;
 
 	virtual
@@ -208,6 +212,10 @@ public:
 	virtual
 	void
 	on_input_format_changed () = 0;
+
+	virtual
+	void
+	on_input_type_changed () = 0;
 
 	///  @name Destruction
 
@@ -247,10 +255,10 @@ private:
 	Gsv::View* m_SourceView;
 	Gtk::Entry* m_ShortcutKeyEntry;
 	Gtk::ComboBoxText* m_SaveTypeButton;
-	Gtk::ComboBoxText* m_InputTypeButton;
 	Gtk::ComboBoxText* m_OutputTypeButton;
 	Gtk::ComboBoxText* m_ApplicabilityTypeButton;
 	Gtk::ComboBoxText* m_InputEncodingButton;
+	Gtk::ComboBoxText* m_InputTypeButton;
 
 };
 

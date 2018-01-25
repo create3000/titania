@@ -159,6 +159,12 @@ protected:
 	getApplicabilityType (const Gtk::TreeIter & iter) const;
 
 	void
+	setExpanded (const Gtk::TreeIter & iter, const bool value) const;
+	
+	bool
+	getExpanded (const Gtk::TreeIter & iter) const;
+
+	void
 	assignIter (const Gtk::TreeIter & iter, const Gtk::TreeIter & other);
 
 	void
@@ -189,8 +195,7 @@ private:
 	void
 	restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldInfo,
 	             const std::string & key,
-	             const Gtk::TreeIter & parent,
-	             std::vector <Gtk::TreePath> & expandeds);
+	             const Gtk::TreeIter & parent);
 
 	void
 	saveTree (const Gtk::TreeNodeChildren & children, const X3D::X3DPtr <X3D::WorldInfo> & worldInfo) const;
