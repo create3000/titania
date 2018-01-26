@@ -56,6 +56,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
+#include "../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Browser/BrowserOptions.h>
@@ -396,7 +397,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		}
 		catch (const X3D::X3DError & error)
 		{
-			getBrowserWindow () -> print (error .what ());
+			getBrowserWindow () -> getConsole () -> error (error .what ());
 		}
 	}
 
@@ -755,7 +756,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 
 	try
 	{
-		getCurrentBrowser () -> println ("Trying to start gnome-text-editor ...");
+		getBrowserWindow () -> getConsole () -> log ("Trying to start gnome-text-editor ...\n");
 
 		Gio::AppInfo::create_from_commandline (Glib::find_program_in_path ("gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
@@ -826,7 +827,7 @@ X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
 		addUndoStep (undoStep);
 	}
 
-	getCurrentBrowser () -> println (X3D::SFTime (X3D::SFTime::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+	getBrowserWindow () -> getConsole () -> log (basic::sprintf (_ ("%s : Script »%s« saved.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getName () .c_str ()));
 }
 
 void

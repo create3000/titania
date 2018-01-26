@@ -119,6 +119,9 @@ public:
 	getAxonometricGridTool () const
 	{ return axonometricGridTool; }
 
+	std::shared_ptr <Console>
+	getConsole () const;
+
 	/// @name File oerations
 
 	virtual
@@ -129,14 +132,6 @@ public:
 
 	void
 	expandNodes (const X3D::MFNode &);
-
-	///  @name Console
-
-	void
-	print (const std::string & string);
-
-	void
-	println (const std::string & string);
 
 	///  @name Destruction
 

@@ -107,12 +107,6 @@ X3DBrowserWindow::setEditing (const bool value)
 	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getItem <bool> ("geometryEditor"));
 }
 
-const std::shared_ptr <OutlineTreeViewEditor> &
-X3DBrowserWindow::getOutlineTreeView () const
-{
-	return sidebar -> getPage <OutlineEditor> ("OutlineEditor") -> getTreeView ();
-}
-
 // Menu
 
 void
@@ -132,6 +126,20 @@ X3DBrowserWindow::setAccelerators (const bool value)
 				menu -> set_sensitive (accelerators);
 		}
 	}
+}
+
+const std::shared_ptr <OutlineTreeViewEditor> &
+X3DBrowserWindow::getOutlineTreeView () const
+{
+	return sidebar -> getPage <OutlineEditor> ("OutlineEditor") -> getTreeView ();
+}
+
+std::shared_ptr <Console>
+X3DBrowserWindow::getConsole () const
+{
+__LOG__ << footer -> getPage <Console> ("Console") .get () << std::endl;
+
+	return footer -> getPage <Console> ("Console");
 }
 
 bool
@@ -185,28 +193,6 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	using ScrollToRow = void (OutlineTreeViewEditor::*) (const Gtk::TreePath &, float);
 
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getOutlineTreeView () .get (), (ScrollToRow) &OutlineTreeViewEditor::scroll_to_row), paths .front (), 2 - math::phi <double>));
-}
-
-void
-X3DBrowserWindow::print (const std::string & string)
-{
-	try
-	{
-		if (not footer)
-			return;
-	
-		footer -> getPage <Console> ("Console") -> print (string);
-	}
-	catch (const std::exception & error)
-	{ }
-
-	std::cout << string << std::endl;
-}
-
-void
-X3DBrowserWindow::println (const std::string & string)
-{
-	print (string + "\n");
 }
 
 void

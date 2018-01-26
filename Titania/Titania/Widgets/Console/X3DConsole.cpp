@@ -56,29 +56,93 @@ namespace titania {
 namespace puck {
 
 X3DConsole::X3DConsole () :
-	X3DConsoleInterface ()
+	X3DConsoleInterface (),
+	        scrollToEnd (true)
 { }
 
 void
 X3DConsole::initialize ()
 {
-	const auto redTag   = getTextBuffer () -> create_tag ("red");
-	const auto greenTag = getTextBuffer () -> create_tag ("green");
+	const auto redTag    = getTextBuffer () -> create_tag ("red");
+	const auto yellowTag = getTextBuffer () -> create_tag ("yellow");
+	const auto blueTag   = getTextBuffer () -> create_tag ("blue");
+	const auto greenTag  = getTextBuffer () -> create_tag ("green");
 
-	redTag   -> property_foreground_set () = true;
-	redTag   -> property_foreground_gdk () = getColor (0xff, 0, 0);
-	greenTag -> property_foreground_set () = true;
-	greenTag -> property_foreground_gdk () = getColor (0, 0xff, 0);
+	redTag    -> property_foreground_set () = true;
+	redTag    -> property_foreground_gdk () = getColor ("#e06c75");
+	yellowTag -> property_foreground_set () = true;
+	yellowTag -> property_foreground_gdk () = getColor ("#e5c07b");
+	blueTag   -> property_foreground_set () = true;
+	blueTag   -> property_foreground_gdk () = getColor ("#61afef");
+	greenTag  -> property_foreground_set () = true;
+	greenTag  -> property_foreground_gdk () = getColor ("#98c379");
+}
+
+void
+X3DConsole::on_scoll_to_end ()
+{
+	auto iter = getTextBuffer () -> end ();
+	auto mark = getTextBuffer () -> get_mark ("scroll");
+
+	iter .set_line_offset (0);
+	getTextBuffer () -> move_mark (mark, iter);
+	getTextView () .scroll_to (mark);
+}
+
+void
+X3DConsole::print (const Glib::ustring & string)
+{
+	append (string, { });
+}
+
+void
+X3DConsole::log (const Glib::ustring & string)
+{
+	append (string, { "blue" });
+}
+
+void
+X3DConsole::warn (const Glib::ustring & string)
+{
+	append (string, { "yellow" });
+}
+
+void
+X3DConsole::error (const Glib::ustring & string)
+{
+	append (string, { "red" });
+}
+
+void
+X3DConsole::append (const Glib::ustring & string, const std::vector <Glib::ustring> & tags)
+{
+	// Insert.
+
+	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
+
+	// Erase.
+
+	static constexpr int32_t CONSOLE_LIMIT = 20'000'000; // 2 MB
+
+	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
+	{
+		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
+
+		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
+	}
+
+	// Update TextView and scoll to end.
+
+	if (scrollToEnd)
+		Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Console::on_scoll_to_end));
 }
 
 Gdk::Color
-X3DConsole::getColor (const uint8_t r, const uint8_t g, const uint8_t b) const
+X3DConsole::getColor (const std::string & value) const
 {
 	auto color = Gdk::Color ();
 
-	color .set_red   (r);
-	color .set_green (g);
-	color .set_blue  (b);
+	color .set (value);
 
 	return color;
 }

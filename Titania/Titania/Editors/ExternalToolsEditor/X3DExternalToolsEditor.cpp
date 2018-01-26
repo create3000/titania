@@ -55,6 +55,7 @@
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/ExternalToolsEditor/ExternalTool.h"
+#include "../../Widgets/Console/Console.h"
 
 #include <Titania/String.h>
 
@@ -567,8 +568,8 @@ X3DExternalToolsEditor::on_tool_activate (X3DBrowserWindow* const browserWindow,
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> println ("Couldn't execute tool.");
-		browserWindow -> println (error .what ());
+		browserWindow -> getConsole () -> error ("Couldn't execute tool.\n");
+		browserWindow -> getConsole () -> error (error .what ());
 	}
 }
 

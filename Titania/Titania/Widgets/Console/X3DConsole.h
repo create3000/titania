@@ -61,6 +61,20 @@ class X3DConsole :
 {
 public:
 
+	///  @name Operations
+
+	void
+	print (const Glib::ustring & string);
+
+	void
+	log (const Glib::ustring & string);
+
+	void
+	warn (const Glib::ustring & string);
+
+	void
+	error (const Glib::ustring & string);
+
 	///  @name Destruction
 	
 	virtual
@@ -77,13 +91,35 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	void
+	setScrollToEnd (const bool value)
+	{ scrollToEnd = value; }
+
+	bool
+	getScrollToEnd () const
+	{ return scrollToEnd; }
+
 
 private:
 
+	///  @name Event handlers
+
+	void
+	on_scoll_to_end ();
+
 	///  @name Operations
 
+	void
+	append (const Glib::ustring & string, const std::vector <Glib::ustring> & tags);
+
 	Gdk::Color
-	getColor (const uint8_t r, const uint8_t g, const uint8_t b) const;
+	getColor (const std::string & value) const;
+
+	///  @name Members
+
+	bool scrollToEnd;
 
 };
 

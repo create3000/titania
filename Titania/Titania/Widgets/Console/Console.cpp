@@ -67,8 +67,7 @@ Console::Console (X3DBrowserWindow* const browserWindow) :
 	X3DConsoleInterface (get_ui ("Widgets/Console.glade")),
 	         X3DConsole (),
 	            markSet (0),
-	           scrolled (0),
-	        scrollToEnd (true)
+	           scrolled (0)
 {
 	getTextView () .get_vadjustment () -> signal_value_changed () .connect (sigc::mem_fun (this, &Console::on_vadjustment_value_changed));
 
@@ -84,12 +83,6 @@ Console::initialize ()
 	X3DConsole::initialize ();
 
 	set_enabled ();
-}
-
-void
-Console::print (const std::string & string)
-{
-	set_string (X3D::MFString ({ string }));
 }
 
 void
@@ -116,37 +109,8 @@ Console::set_enabled ()
 void
 Console::set_string (const X3D::MFString & value)
 {
-	// Insert.
-
 	for (const auto & string : value)
-		getTextBuffer () -> insert (getTextBuffer () -> end (), string .getValue ());
-
-	// Erase.
-
-	static constexpr int CONSOLE_LIMIT = 1 << 20; // 2 MB
-
-	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
-	{
-		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
-
-		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
-	}
-
-	// Update TextView and scoll to end.
-
-	if (scrollToEnd)
-		Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Console::on_scoll_to_end));
-}
-
-void
-Console::on_scoll_to_end ()
-{
-	auto iter = getTextBuffer () -> end ();
-	auto mark = getTextBuffer () -> get_mark ("scroll");
-
-	iter .set_line_offset (0);
-	getTextBuffer () -> move_mark (mark, iter);
-	getTextView () .scroll_to (mark);
+		print (string);
 }
 
 void
@@ -154,8 +118,9 @@ Console::on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::Re
 {
 	if (mark == getTextBuffer () -> get_insert ())
 	{
-		markSet     = INSERT_MARK_COUNT;
-		scrollToEnd = false;
+		markSet = INSERT_MARK_COUNT;
+
+		setScrollToEnd (false);
 	}
 }
 
@@ -182,12 +147,13 @@ Console::on_vadjustment_value_changed ()
 
 		if (lastLines <= LAST_LINES_COUNT)
 		{
-			scrollToEnd = true;
+			setScrollToEnd (true);
 		}
 		else if (lastLines > SCROLL_LINES_COUNT)
 		{
-			scrolled    = SCROLL_COUNT;
-			scrollToEnd = false;
+			scrolled = SCROLL_COUNT;
+
+			setScrollToEnd (false);
 		}
 	}
 }

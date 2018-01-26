@@ -55,6 +55,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
+#include "../../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/String.h>
@@ -97,7 +98,7 @@ void
 ExternalTool::start ()
 {
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> println ("Run tool »" + name + "«.");
+		browserWindow -> getConsole () -> log ("Running tool »" + name + "«.\n");
 
 	saveScenes ();
 
@@ -214,7 +215,7 @@ ExternalTool::on_stderr ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	browserWindow -> print (stderr);
+	browserWindow -> getConsole () -> error (stderr);
 
 	stderr .clear ();
 }
@@ -229,7 +230,7 @@ ExternalTool::on_done ()
 	stdout .clear ();
 
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> println ("Tool »" + name + "« finished.");
+		browserWindow -> getConsole () -> log ("Tool »" + name + "« finished.\n");
 }
 
 void
@@ -349,7 +350,7 @@ ExternalTool::processOutput (const std::string & stdout)
 			;
 		else if (outputType == "DISPLAY_IN_CONSOLE")
 		{
-			browserWindow -> print (stdout);
+			browserWindow -> getConsole () -> print (stdout);
 		}
 		else if (outputType == "CREATE_NEW_SCENE")
 		{
@@ -408,15 +409,15 @@ ExternalTool::processOutput (const std::string & stdout)
 			else
 			{
 				// Display message.
-				browserWindow -> println ("No selection found to process output of tool »" + name + "«.");
+				browserWindow -> getConsole () -> error ("No selection found to process output of tool »" + name + "«.\n");
 			}
 		}
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> println ("Couldn't process output of tool »" + name + "«.");
-		browserWindow -> println (error .what ());
-		browserWindow -> println ("Output >>" + stdout + "<<");
+		browserWindow -> getConsole () -> error ("Couldn't process output of tool »" + name + "«.\n");
+		browserWindow -> getConsole () -> error (error .what ());
+		browserWindow -> getConsole () -> error ("\nOutput >>" + stdout + "<<\n");
 	}
 }
 

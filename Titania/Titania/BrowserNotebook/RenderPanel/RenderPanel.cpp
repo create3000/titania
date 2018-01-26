@@ -58,6 +58,7 @@
 #include "../../Configuration/config.h"
 #include "../../ComposedWidgets/TexturePreview.h"
 #include "../../Dialogs/FileSaveDialog/FileSaveVideoDialog.h"
+#include "../../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 #include <Titania/X3D/Components/Texturing/MovieTexture.h>
@@ -255,9 +256,9 @@ RenderPanel::setRendering (const bool value)
 		if (renderThread)
 		{
 			if (renderThread -> stop ())
-				getBrowserWindow () -> println ("*** Finished encoding '" + filename + "'.");
+				getBrowserWindow () -> getConsole () -> log ("*** Finished encoding '" + filename + "'.\n");
 			else
-				getBrowserWindow () -> println ("*** Failed encoding '" + filename + "'.");
+				getBrowserWindow () -> getConsole () -> error ("*** Failed encoding '" + filename + "'.\n");
 		}
 
 		renderThread .reset ();
@@ -448,13 +449,13 @@ RenderPanel::set_duration (const size_t value)
 void
 RenderPanel::on_stdout ()
 {
-	getBrowserWindow () -> print (renderThread -> getStdout ());
+	getBrowserWindow () -> getConsole () -> log (renderThread -> getStdout ());
 }
 
 void
 RenderPanel::on_stderr ()
 {
-	getBrowserWindow () -> print (renderThread -> getStderr ());
+	getBrowserWindow () -> getConsole () -> error (renderThread -> getStderr ());
 }
 
 void

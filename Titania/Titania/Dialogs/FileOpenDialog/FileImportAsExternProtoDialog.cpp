@@ -51,6 +51,7 @@
 #include "FileImportAsExternProtoDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -124,7 +125,7 @@ FileImportAsExternProtoDialog::run ()
 	}
 	catch (const X3D::X3DError & error)
 	{
-		getCurrentBrowser () -> print (error .what ());
+		getBrowserWindow () -> getConsole () -> error (error .what ());
 
 		return false;
 	}

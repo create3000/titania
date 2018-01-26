@@ -69,11 +69,6 @@ public:
 	
 	Console (X3DBrowserWindow* const browserWindow);
 
-	///  @name Operations
-
-	void
-	print (const std::string & string);
-
 	///  @name Destruction
 	
 	virtual
@@ -102,9 +97,6 @@ private:
 	void
 	set_string (const X3D::MFString & value);
 
-	void
-	on_scoll_to_end ();
-
 	virtual
 	void
 	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
@@ -116,7 +108,6 @@ private:
 
 	int32_t markSet;
 	int32_t scrolled;
-	bool    scrollToEnd;
 
 };
 
