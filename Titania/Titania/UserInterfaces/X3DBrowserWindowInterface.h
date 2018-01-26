@@ -645,7 +645,7 @@ public:
 	getBrowserExternalToolsMenuItem () const
 	{ return *m_BrowserExternalToolsMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getBrowserManageExternalToolsMenuItem () const
 	{ return *m_BrowserManageExternalToolsMenuItem; }
 
@@ -1121,7 +1121,7 @@ public:
 	getExternalToolsMenuItem () const
 	{ return *m_ExternalToolsMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getManageExternalToolsMenuItem () const
 	{ return *m_ManageExternalToolsMenuItem; }
 
@@ -2182,7 +2182,7 @@ private:
 	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
 	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
-	Gtk::MenuItem* m_BrowserManageExternalToolsMenuItem;
+	Gtk::ImageMenuItem* m_BrowserManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
@@ -2301,7 +2301,7 @@ private:
 	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
 	Gtk::MenuItem* m_ExternalToolsMenuItem;
-	Gtk::MenuItem* m_ManageExternalToolsMenuItem;
+	Gtk::ImageMenuItem* m_ManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_ScenesMenuItem;
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;

@@ -70,21 +70,21 @@ sub new
 	my ($class, $options) = @_;
 
 	my $self = {
-		namespaces         => exists $options -> {namespaces}   ? $options -> {namespaces}   : [ ],
-		base_class         => exists $options -> {base_class}   ? $options -> {base_class}   : "",
-		class_prefix       => exists $options -> {class_prefix} ? $options -> {class_prefix} : "",
-		class_suffix       => exists $options -> {class_suffix} ? $options -> {class_suffix} : "",
-		suffixes           => [ qw (.glade .ui .xml) ],
-		empty_constructor  => $options -> {empty_constructor},
-		pure_virtual       => exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
-		derived_directory  => exists $options -> {derived_directory} ? $options -> {derived_directory} : $ENV{HOME},
-		h_signal_handler   => { },
-		cpp_signal_handler => { },
-		class              => "",
-		object             => "",
-		id                 => "",
-		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
-		windows            => { },
+		namespaces          => exists $options -> {namespaces}   ? $options -> {namespaces}   : [ ],
+		base_class          => exists $options -> {base_class}   ? $options -> {base_class}   : "",
+		class_prefix        => exists $options -> {class_prefix} ? $options -> {class_prefix} : "",
+		class_suffix        => exists $options -> {class_suffix} ? $options -> {class_suffix} : "",
+		suffixes            => [ qw (.glade .ui .xml) ],
+		empty_constructor   => $options -> {empty_constructor},
+		pure_virtual        => exists $options -> {pure_virtual} ? $options -> {pure_virtual} : true,
+		derived_directories => exists $options -> {derived_directories} ? $options -> {derived_directories} : [ ],
+		h_signal_handler    => { },
+		cpp_signal_handler  => { },
+		class               => "",
+		object              => "",
+		id                  => "",
+		prototypes          => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
+		windows             => { },
 	};
 
 	bless $self, $class;
@@ -156,7 +156,20 @@ sub h_derived
 	return if not isWidget ($attributes {class});
 	return unless $attributes {id} =~ s/^\w+\.//;
 
-	my $path = File::Spec -> abs2rel ("$self->{derived_directory}/$attributes{id}.h", $self -> {directory});
+	my $path;
+
+	for (@{ $self -> {derived_directories} })
+	{
+		my $abs_path = "$_/$attributes{id}.h";
+
+		next unless -f $abs_path;
+
+		$path = File::Spec -> abs2rel ($abs_path, $self -> {directory});
+		last;
+	}
+
+	die "Couldn't find derived widget '$attributes{id}' in path."
+		unless ($path);
 
 	$self -> {derived_h} -> {$path} = 1;
 }
@@ -472,16 +485,16 @@ sub generate
 	say OUT "#include \"$base_path\"" if $base_class_name;
 
 	say OUT "";
+	say OUT "#include \"$_\""
+		foreach (sort keys %{ $self -> {derived_h} });
+
+	say OUT "";
 	say OUT "#include <gtkmm.h>";
 	say OUT "#include <string>";
 
 	say OUT "";
 	say OUT "#include <$_>"
 		foreach (sort keys %{ $self -> {plugin_h} });
-
-	say OUT "";
-	say OUT "#include \"$_\""
-		foreach (sort keys %{ $self -> {derived_h} });
 	
 	# Namespace
 	say OUT "";

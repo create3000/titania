@@ -62,7 +62,6 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/X3DMFStringWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
-	Titania/DerivedWidgets/FileView.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
@@ -174,6 +173,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
+	Titania/Editors/ProjectsEditor/FileView.cpp \
 	Titania/Editors/ProjectsEditor/ProjectsEditor.cpp \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \

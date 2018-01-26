@@ -53,10 +53,10 @@
 
 #include "../Base/X3DEditorInterface.h"
 
+#include "../Editors/ProjectsEditor/FileView.h"
+
 #include <gtkmm.h>
 #include <string>
-
-#include "../DerivedWidgets/FileView.h"
 
 namespace titania {
 namespace puck {

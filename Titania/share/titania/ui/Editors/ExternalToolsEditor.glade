@@ -51,7 +51,7 @@
               <object class="GtkImage" id="image9">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">ExternalTools</property>
+                <property name="stock">Addon</property>
               </object>
             </child>
           </object>

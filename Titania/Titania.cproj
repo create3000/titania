@@ -354,7 +354,6 @@
     <Compile Include="Titania\UserInterfaces\X3DProjectsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ProjectsEditor\ProjectsEditor.cpp" />
     <Compile Include="Titania\Bits\File.cpp" />
-    <Compile Include="Titania\DerivedWidgets\FileView.cpp" />
     <Compile Include="Titania\Editors\FilesEditor\FilesEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFilesEditorInterface.cpp" />
     <Compile Include="Titania\Editors\LibraryView\LibraryView.cpp" />
@@ -369,6 +368,7 @@
     <Compile Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.cpp" />
     <Compile Include="Titania\Bits\Pipe.cpp" />
     <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalTool.cpp" />
+    <Compile Include="Titania\Editors\ProjectsEditor\FileView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3133,7 +3133,6 @@
     <None Include="share\titania\ui\icons\Faenza\16\folder-new.png" />
     <None Include="share\titania\ui\Editors\ProjectsEditor.glade" />
     <None Include="Titania\Bits\File.h" />
-    <None Include="Titania\DerivedWidgets\FileView.h" />
     <None Include="Titania\Editors\FilesEditor\FilesEditor.h" />
     <None Include="share\titania\ui\Editors\FilesEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DFilesEditorInterface.h" />
@@ -3158,6 +3157,8 @@
     <None Include="Titania\Editors\ExternalToolsEditor\X3DExternalToolsEditor.h" />
     <None Include="Titania\Bits\Pipe.h" />
     <None Include="Titania\Editors\ExternalToolsEditor\ExternalTool.h" />
+    <None Include="share\titania\ui\icons\Addon.svg" />
+    <None Include="Titania\Editors\ProjectsEditor\FileView.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3316,7 +3317,6 @@
     <Folder Include="share\titania\Library\Prototypes\Text\" />
     <Folder Include="Titania\Editors\BrowserSizeEditor\" />
     <Folder Include="Titania\Editors\ProjectsEditor\" />
-    <Folder Include="Titania\DerivedWidgets\" />
     <Folder Include="Titania\Editors\FilesEditor\" />
     <Folder Include="Titania\Editors\ModelsPalette\" />
     <Folder Include="Titania\Editors\TextureMappingEditor\" />

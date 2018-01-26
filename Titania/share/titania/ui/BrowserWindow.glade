@@ -159,6 +159,18 @@
   <object class="GtkToggleAction" id="X_ITECompatibilityAction">
     <signal name="toggled" handler="on_cobweb_compatibility_toggled" swapped="no"/>
   </object>
+  <object class="GtkImage" id="image55">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Addon</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image56">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Addon</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1665,10 +1677,13 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="BrowserManageExternalToolsMenuItem">
+              <object class="GtkImageMenuItem" id="BrowserManageExternalToolsMenuItem">
+                <property name="label">Manage External Tools ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Manage External Tools ...</property>
+                <property name="image">image55</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_manage_external_tools_activate" swapped="no"/>
               </object>
             </child>
@@ -3117,11 +3132,14 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkMenuItem" id="ManageExternalToolsMenuItem">
+                              <object class="GtkImageMenuItem" id="ManageExternalToolsMenuItem">
+                                <property name="label">Manage External Tools ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Manage External Tools ...</property>
                                 <property name="use_underline">True</property>
+                                <property name="image">image56</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_manage_external_tools_activate" swapped="no"/>
                               </object>
                             </child>
