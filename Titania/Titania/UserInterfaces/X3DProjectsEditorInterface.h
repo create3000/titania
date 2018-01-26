@@ -179,6 +179,26 @@ public:
 	getLinkFolderButton () const
 	{ return *m_LinkFolderButton; }
 
+	Gtk::Menu &
+	getDragActionMenu () const
+	{ return *m_DragActionMenu; }
+
+	Gtk::MenuItem &
+	getDragMoveMenuItem () const
+	{ return *m_DragMoveMenuItem; }
+
+	Gtk::MenuItem &
+	getDragCopyMenuItem () const
+	{ return *m_DragCopyMenuItem; }
+
+	Gtk::MenuItem &
+	getDragLinkMenuItem () const
+	{ return *m_DragLinkMenuItem; }
+
+	Gtk::MenuItem &
+	getDragCancelMenuItem () const
+	{ return *m_DragCancelMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -487,6 +507,11 @@ private:
 	Gtk::RadioButton* m_CopyFolderButton;
 	Gtk::RadioButton* m_MoveFolderButton;
 	Gtk::RadioButton* m_LinkFolderButton;
+	Gtk::Menu* m_DragActionMenu;
+	Gtk::MenuItem* m_DragMoveMenuItem;
+	Gtk::MenuItem* m_DragCopyMenuItem;
+	Gtk::MenuItem* m_DragLinkMenuItem;
+	Gtk::MenuItem* m_DragCancelMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;

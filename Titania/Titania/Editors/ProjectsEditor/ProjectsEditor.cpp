@@ -70,12 +70,15 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	                           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	                 X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	X3DFileBrowser <X3DProjectsEditorInterface> (),
+	                         dragMoveConnection (),
+	                         dragCopyConnection (),
+	                         dragLinkConnection (),
 	                                   changing (false)
 {
 	getFileView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectsEditor::on_display_menu));
 
-	getFileView () .enable_model_drag_source ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_APP) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
-	getFileView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_WIDGET), Gtk::TargetEntry ("STRING", Gtk::TARGET_OTHER_APP) }, Gdk::ACTION_MOVE);
+	getFileView () .enable_model_drag_source ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_APP) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
+	getFileView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("text/uri-list", Gtk::TARGET_SAME_WIDGET), Gtk::TargetEntry ("STRING", Gtk::TARGET_OTHER_APP) },  Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
 
 	getCutItemMenuItem ()         .add_accelerator ("activate", getAccelGroup (), GDK_KEY_X, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getCopyItemMenuItem ()        .add_accelerator ("activate", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
@@ -774,11 +777,22 @@ ProjectsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 
 		if (not files .empty ())
 		{
-			const auto folder = File::getFolder (destination);
+			const auto folder = File::getContainingFolder (destination);
 
 			if (folder)
 			{
-				transferFiles (TransferAction::MOVE, files, folder);
+				if (context -> get_selected_action () == Gdk::ACTION_ASK)
+				{
+					dragMoveConnection = getDragMoveMenuItem () .signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_drag_action_activate), TransferAction::MOVE, files, folder));
+					dragCopyConnection = getDragCopyMenuItem () .signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_drag_action_activate), TransferAction::COPY, files, folder));
+					dragLinkConnection = getDragLinkMenuItem () .signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::on_drag_action_activate), TransferAction::LINK, files, folder));
+
+					getDragActionMenu () .popup (x, y);
+				}
+				else
+				{
+					transferFiles (getTransferAction (context -> get_selected_action ()), files, folder);
+				}
 
 				context -> drag_finish (true, false, time);
 				return;
@@ -787,6 +801,38 @@ ProjectsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 	}
 
 	context -> drag_finish (false, false, time);
+}
+
+void
+ProjectsEditor::on_drag_action_activate (const TransferAction action,
+                                         const std::vector <Glib::RefPtr <Gio::File>> & files,
+                                         const Glib::RefPtr <Gio::File> & folder)
+{
+	dragMoveConnection .disconnect ();
+	dragCopyConnection .disconnect ();
+	dragLinkConnection .disconnect ();
+
+	transferFiles (action, files, folder);
+ }
+
+ProjectsEditor::TransferAction
+ProjectsEditor::getTransferAction (const Gdk::DragAction action)
+{
+	switch (action)
+	{
+		case Gdk::ACTION_DEFAULT:
+		case Gdk::ACTION_MOVE:
+			return TransferAction::MOVE;
+		case Gdk::ACTION_COPY:
+			return TransferAction::COPY;
+		case Gdk::ACTION_LINK:
+			return TransferAction::LINK;
+		case Gdk::ACTION_ASK:
+		case Gdk::ACTION_PRIVATE:
+			return TransferAction::COPY;
+	}
+
+	return TransferAction::COPY;
 }
 
 void

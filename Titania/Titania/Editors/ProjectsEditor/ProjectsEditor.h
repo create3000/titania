@@ -246,6 +246,14 @@ private:
 	                       guint info,
 	                       guint time) final override;
 
+	void
+	on_drag_action_activate (const TransferAction action,
+	                         const std::vector <Glib::RefPtr <Gio::File>> & files,
+	                         const Glib::RefPtr <Gio::File> & folder);
+
+	TransferAction
+	getTransferAction (const Gdk::DragAction action);
+
 	virtual
 	void
 	on_selection_changed () final override;
@@ -283,6 +291,10 @@ private:
 	store () final override;
 
 	///  @name Members
+
+	sigc::connection dragMoveConnection;
+	sigc::connection dragCopyConnection;
+	sigc::connection dragLinkConnection;
 
 	bool changing;
 

@@ -76,7 +76,7 @@ public:
 
 	static
 	Glib::RefPtr <Gio::File>
-	getFolder (const Glib::RefPtr <Gio::File> & file);
+	getContainingFolder (const Glib::RefPtr <Gio::File> & file);
 
 	static
 	std::vector <Glib::RefPtr <Gio::FileInfo>> 

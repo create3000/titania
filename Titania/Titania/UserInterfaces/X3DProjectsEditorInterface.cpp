@@ -102,6 +102,11 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("CopyFolderButton", m_CopyFolderButton);
 	m_builder -> get_widget ("MoveFolderButton", m_MoveFolderButton);
 	m_builder -> get_widget ("LinkFolderButton", m_LinkFolderButton);
+	m_builder -> get_widget ("DragActionMenu", m_DragActionMenu);
+	m_builder -> get_widget ("DragMoveMenuItem", m_DragMoveMenuItem);
+	m_builder -> get_widget ("DragCopyMenuItem", m_DragCopyMenuItem);
+	m_builder -> get_widget ("DragLinkMenuItem", m_DragLinkMenuItem);
+	m_builder -> get_widget ("DragCancelMenuItem", m_DragCancelMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);

@@ -85,7 +85,7 @@ File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::str
 }
 
 Glib::RefPtr <Gio::File>
-File::getFolder (const Glib::RefPtr <Gio::File> & file)
+File::getContainingFolder (const Glib::RefPtr <Gio::File> & file)
 {
 	const auto fileInfo = file -> query_info ();
 	
