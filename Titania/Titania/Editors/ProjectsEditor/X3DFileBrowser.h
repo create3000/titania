@@ -221,10 +221,10 @@ private:
 	///  @name Clipboard handling
 
 	Glib::RefPtr <Gio::File>
-	getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
+	getTransferDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
 
 	std::string
-	getPasteCopyString (const int32_t count) const;
+	getTransferCopyString (const int32_t count) const;
 
 	///  @name Folder handling
 
@@ -390,7 +390,7 @@ X3DFileBrowser <Type>::transferFiles (const TransferAction action,
 	{
 		try
 		{
-			const auto destination = getPasteDestination (action, source, folder);
+			const auto destination = getTransferDestination (action, source, folder);
 
 			transferFile (action, source, destination);
 
@@ -408,35 +408,6 @@ X3DFileBrowser <Type>::transferFiles (const TransferAction action,
 
 	for (const auto & file : selection)
 		selectFile (file);
-}
-
-template <class Type>
-Glib::RefPtr <Gio::File>
-X3DFileBrowser <Type>::getPasteDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
-{
-	static const std::regex pattern (_ (R"(\s*\((?:copy|another copy|\d+\.\s+copy)\)\s*$)"));
-
-	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
-	{
-		auto    basename = basic::uri (source -> get_basename ());
-		auto    name     = std::regex_replace (basename .name (), pattern, "");
-		auto    suffix   = basename .suffix ();
-		int32_t copy     = 0;
-		auto    child    = Glib::RefPtr <Gio::File> ();
-	
-		do
-		{
-			child = folder -> get_child (name + getPasteCopyString (copy) + suffix);
-			copy += 1;
-		}
-		while (child -> query_exists ());
-	
-		return child;
-	}
-	else
-	{
-		return folder -> get_child (source -> get_basename ());
-	}
 }
 
 template <class Type>
@@ -548,6 +519,52 @@ X3DFileBrowser <Type>::transferFile (const TransferAction action,
 }
 
 template <class Type>
+Glib::RefPtr <Gio::File>
+X3DFileBrowser <Type>::getTransferDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const
+{
+	static const std::regex pattern (_ (R"(\s*\((?:copy|another copy|\d+\.\s+copy)\)\s*$)"));
+
+	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
+	{
+		auto    basename = basic::uri (source -> get_basename ());
+		auto    name     = std::regex_replace (basename .name (), pattern, "");
+		auto    suffix   = basename .suffix ();
+		int32_t copy     = 0;
+		auto    child    = Glib::RefPtr <Gio::File> ();
+	
+		do
+		{
+			child = folder -> get_child (name + getTransferCopyString (copy) + suffix);
+			copy += 1;
+		}
+		while (child -> query_exists ());
+	
+		return child;
+	}
+	else
+	{
+		return folder -> get_child (source -> get_basename ());
+	}
+}
+
+template <class Type>
+std::string
+X3DFileBrowser <Type>::getTransferCopyString (const int32_t count) const
+{
+	switch (count)
+	{
+		case 0:
+			return "";
+		case 1:
+			return _ (" (copy)");
+		case 2:
+			return _ (" (another copy)");
+		default:
+			return basic::sprintf (_(" (%d. copy)"), count);
+	}
+}
+
+template <class Type>
 void
 X3DFileBrowser <Type>::clearClipboard ()
 {
@@ -600,23 +617,6 @@ X3DFileBrowser <Type>::pasteIntoFolder (const Glib::RefPtr <Gio::File> & folder)
 
 	if (clipboardAction == TransferAction::MOVE)
 		clearClipboard ();
-}
-
-template <class Type>
-std::string
-X3DFileBrowser <Type>::getPasteCopyString (const int32_t count) const
-{
-	switch (count)
-	{
-		case 0:
-			return "";
-		case 1:
-			return _ (" (copy)");
-		case 2:
-			return _ (" (another copy)");
-		default:
-			return basic::sprintf (_(" (%d. copy)"), count);
-	}
 }
 
 template <class Type>
