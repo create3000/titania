@@ -54,8 +54,6 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/Footer/Footer.h"
 
-#include <Titania/String.h>
-
 namespace titania {
 namespace puck {
 
@@ -103,31 +101,27 @@ void
 Console::set_enabled ()
 {
 	if (getSuspendButton () .get_active ())
-		getCurrentBrowser () -> getConsole () -> getString () .removeInterest (&Console::set_string, this);	
+		getCurrentBrowser () -> getConsole () -> getMessages () .removeInterest (&Console::set_messages, this);	
 	else
-		getCurrentBrowser () -> getConsole () -> getString () .addInterest (&Console::set_string, this);	
+		getCurrentBrowser () -> getConsole () -> getMessages () .addInterest (&Console::set_messages, this);	
 }
 
 void
-Console::set_string (const X3D::MFString & value)
+Console::set_messages (const X3D::MFString & messages)
 {
-	const auto string = basic::join (value, "");
-	auto       array  = std::vector <Glib::ustring> ();
-
-	basic::split (std::back_inserter (array), string, "\n");
-
-	for (const auto & line : array)
+	for (size_t i = 0; i < messages .size (); i += 2)
 	{
-		if (line .find ("Error:") == 0)
-			error (line);
-		else if (line .find ("Warn:") == 0)
-			warn (line);
-		else if (line .find ("Log:") == 0)
-			log (line);
-		else
-			print (line);
+		if (messages [i] == "error")
+			error (messages [i + 1] .str ());
 
-		print ("\n");
+		else if (messages [i] == "warn")
+			warn (messages [i + 1] .str ());
+
+		else if (messages [i] == "log")
+			log (messages [i + 1] .str ());
+
+		else
+			print (messages [i + 1] .str ());
 	}
 }
 

@@ -322,10 +322,10 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 						}
 						catch (const X3D::X3DError & error)
 						{
+							script -> getBrowser () -> getConsole () -> error (error .what (), "\n");
+
 							field -> set (X3D::MFNode ());
 							field -> addEvent ();
-
-							script -> getBrowser () -> print (error .what ());
 						}
 
 						JS_SET_RVAL (cx, vp, JSVAL_VOID);
@@ -672,7 +672,7 @@ Browser::createVrmlFromString (JSContext* cx, uint32_t argc, jsval* vp)
 		}
 		catch (const X3DError & error)
 		{
-			script -> getBrowser () -> print (error .what ());
+			script -> getBrowser () -> getConsole () -> error (error .what (), "\n");
 
 			return X3DField::create <MFNode> (cx, new X3D::MFNode (), &JS_RVAL (cx, vp));
 		}

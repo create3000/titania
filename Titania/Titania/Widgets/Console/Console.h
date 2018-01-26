@@ -95,7 +95,7 @@ private:
 	set_enabled ();
 
 	void
-	set_string (const X3D::MFString & value);
+	set_messages (const X3D::MFString & value);
 
 	virtual
 	void

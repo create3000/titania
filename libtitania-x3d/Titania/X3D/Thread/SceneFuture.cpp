@@ -171,7 +171,7 @@ SceneFuture::loadAsync (const MFString & url)
 
 		checkForInterrupt ();
 
-		getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
+		getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
 
 		checkForInterrupt ();
 
@@ -185,7 +185,7 @@ SceneFuture::loadAsync (const MFString & url)
 	{
 		checkForInterrupt ();
 
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 
 		throw;
 	}

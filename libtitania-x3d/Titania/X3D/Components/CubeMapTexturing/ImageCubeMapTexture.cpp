@@ -168,7 +168,7 @@ ImageCubeMapTexture::set_loadState ()
 
 			if (width != height)
 			{
-				getBrowser () -> println ("Error: ImageCubeMapTexture: width and height must be equal, and all images must be of the same size!");
+				getBrowser () -> getConsole () -> error ("Error: ImageCubeMapTexture: width and height must be equal, and all images must be of the same size!\n");
 
 				for (size_t i = 0; i < 6; ++ i)
 					setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);

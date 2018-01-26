@@ -204,7 +204,7 @@ Script::requestImmediateLoad ()
 			}
 			catch (const std::exception & error)
 			{
-				getBrowser () -> println ("Warning: ", error .what ());
+				getBrowser () -> getConsole () -> warn ("Warning: ", error .what (), "\n");
 			}
 		}
 	}

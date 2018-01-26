@@ -278,7 +278,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 			return;
 		}
 
-		getBrowser () -> println ("Error: ComposedCubeMapTexture: width and height must be equal, and all images must be of the same size!");
+		getBrowser () -> getConsole () -> error ("Error: ComposedCubeMapTexture: width and height must be equal, and all images must be of the same size!\n");
 	}
 
 	width      = 0;

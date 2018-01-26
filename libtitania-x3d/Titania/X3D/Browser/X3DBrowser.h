@@ -273,13 +273,14 @@ public:
 	template <typename ... Args>
 	void
 	print (Args && ... args)
-	throw (Error <DISPOSED>);
+	throw (Error <DISPOSED>)
+	{ getConsole () -> print (std::forward <Args> (args) ...); }
 
 	template <typename ... Args>
 	void
 	println (Args && ... args)
 	throw (Error <DISPOSED>)
-	{ print (args ..., '\n'); }
+	{ getConsole () -> print (std::forward <Args> (args) ..., '\n'); }
 
 	///  @name Error handling
 
@@ -325,14 +326,6 @@ private:
 
 	void
 	bindViewpoint (X3DViewpointNode* const);
-
-	template <typename First, typename ... Args>
-	void
-	print (std::ostringstream & stream, First && first, Args && ... args);
-
-	void
-	print (std::ostringstream &)
-	{ }
 
 	///  @name Event handlers
 
@@ -383,31 +376,6 @@ private:
 	X3DPtr <SceneFuture> future;
 
 };
-
-template <typename ... Args>
-inline
-void
-X3DBrowser::print (Args && ... args)
-throw (Error <DISPOSED>)
-{
-	std::ostringstream ostream;
-
-	ostream .imbue (std::locale::classic ());
-
-	print (ostream, std::forward <Args> (args) ...);
-
-	getConsole () -> addString (ostream .str ());
-}
-
-template <typename First, typename ... Args>
-inline
-void
-X3DBrowser::print (std::ostringstream & ostream, First && first, Args && ... args)
-{
-	ostream << first;
-
-	print (ostream, std::forward <Args> (args) ...);
-}
 
 } // X3D
 } // titania

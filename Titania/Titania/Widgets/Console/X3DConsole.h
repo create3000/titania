@@ -69,17 +69,25 @@ public:
 
 	///  @name Operations
 
+	template <typename ... Args>
 	void
-	print (const Glib::ustring & string);
+	print (Args && ... args)
+	{ append ({ }, std::forward <Args> (args) ...); }
 
+	template <typename ... Args>
 	void
-	log (const Glib::ustring & string);
+	log (Args && ... args)
+	{ append ({ "blue" }, std::forward <Args> (args) ...); }
 
+	template <typename ... Args>
 	void
-	warn (const Glib::ustring & string);
+	warn (Args && ... args)
+	{ append ({ "yellow" }, std::forward <Args> (args) ...); }
 
+	template <typename ... Args>
 	void
-	error (const Glib::ustring & string);
+	error (Args && ... args)
+	{ append ({ "red" }, std::forward <Args> (args) ...); }
 
 	///  @name Destruction
 	
@@ -113,8 +121,20 @@ private:
 
 	///  @name Operations
 
+	template <typename ... Args>
 	void
-	append (const Glib::ustring & string, const std::vector <Glib::ustring> & tags);
+	append (const std::vector <Glib::ustring> & tags, Args && ... args);
+
+	template <typename First, typename ... Args>
+	void
+	append (std::ostringstream & osstream, First && first, Args && ... args);
+
+	void
+	append (std::ostringstream & osstream)
+	{ }
+
+	void
+	push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string);
 
 	Gdk::Color
 	getColor (const std::string & value) const;
@@ -124,6 +144,29 @@ private:
 	bool scrollToEnd;
 
 };
+
+template <typename ... Args>
+inline
+void
+X3DConsole::append (const std::vector <Glib::ustring> & tags, Args && ... args)
+{
+	std::ostringstream osstream;
+
+	osstream .imbue (std::locale::classic ());
+
+	append (osstream, std::forward <Args> (args) ...);
+	push (tags, Glib::ustring (osstream .str ()));
+}
+
+template <typename First, typename ... Args>
+inline
+void
+X3DConsole::append (std::ostringstream & osstream, First && first, Args && ... args)
+{
+	osstream << first;
+
+	append (osstream, std::forward <Args> (args) ...);
+}
 
 } // puck
 } // titania

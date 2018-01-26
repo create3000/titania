@@ -409,15 +409,13 @@ ExternalTool::processOutput (const std::string & stdout)
 			else
 			{
 				// Display message.
-				browserWindow -> getConsole () -> error ("No selection found to process output of tool »" + name + "«.\n");
+				browserWindow -> getConsole () -> warn ("No selection found to process output of tool »" + name + "«.\n");
 			}
 		}
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> getConsole () -> error ("Couldn't process output of tool »" + name + "«.\n");
-		browserWindow -> getConsole () -> error (error .what ());
-		browserWindow -> getConsole () -> error ("\nOutput >>" + stdout + "<<\n");
+		browserWindow -> getConsole () -> error ("Couldn't process output of tool »", name, "«.\n", error .what (), "\nOutput >>", stdout, "<<\n");
 	}
 }
 

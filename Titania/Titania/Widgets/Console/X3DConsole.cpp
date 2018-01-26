@@ -90,33 +90,9 @@ X3DConsole::on_scoll_to_end ()
 }
 
 void
-X3DConsole::print (const Glib::ustring & string)
+X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string)
 {
-	append (string, { });
-}
-
-void
-X3DConsole::log (const Glib::ustring & string)
-{
-	append (string, { "blue" });
-}
-
-void
-X3DConsole::warn (const Glib::ustring & string)
-{
-	append (string, { "yellow" });
-}
-
-void
-X3DConsole::error (const Glib::ustring & string)
-{
-	append (string, { "red" });
-}
-
-void
-X3DConsole::append (const Glib::ustring & string, const std::vector <Glib::ustring> & tags)
-{
-	// Insert.
+	// Append.
 
 	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
 
@@ -124,7 +100,7 @@ X3DConsole::append (const Glib::ustring & string, const std::vector <Glib::ustri
 
 	// Erase.
 
-	static constexpr int32_t CONSOLE_LIMIT = 20'000'000; // 2 MB
+	static constexpr int32_t CONSOLE_LIMIT = 20'000'000; // 20 MB
 
 	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
 	{

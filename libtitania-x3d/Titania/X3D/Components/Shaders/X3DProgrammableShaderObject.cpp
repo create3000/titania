@@ -288,7 +288,7 @@ X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::stri
 	location = glGetUniformLocation (program, depreciated .c_str ());
 
 	if (location not_eq -1)
-		getBrowser () -> println ("Using uniform location name »", depreciated, "« is depreciated. See http://create3000.de/x_ite/custom-shaders/.");
+		getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated. See http://create3000.de/x_ite/custom-shaders/.\n");
 
 	return location;
 }
@@ -453,7 +453,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			{
 				if (getBrowser () -> getCombinedTextureUnits () .empty ())
 				{
-					getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
+					getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.\n");
 					break;
 				}
 				else
@@ -725,7 +725,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				if (getBrowser () -> getCombinedTextureUnits () .empty ())
 				{
-					getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
+					getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
 					break;
 				}
 				else
@@ -918,7 +918,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 		{
 			if (getBrowser () -> getCombinedTextureUnits () .empty ())
 			{
-				getBrowser () -> println ("Warning: Not enough combined texture units for uniform variable '", name, "' available.");
+				getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", name, "' available.");
 				return;
 			}
 			else

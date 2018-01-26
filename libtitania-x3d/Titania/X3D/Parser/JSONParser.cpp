@@ -160,7 +160,7 @@ JSONParser::x3dObject (json_object* const jobj)
 		}
 		catch (const X3D::X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> error (error .what (), "\n");
 		}
 	}
 
@@ -268,15 +268,15 @@ JSONParser::componentObject (json_object* const jobj)
 			}
 			catch (const X3D::X3DError & error)
 			{
-				getBrowser () -> println (error .what ());
+				getBrowser () -> getConsole () -> warn (error .what (), "\n");
 				return;
 			}
 		}
 		else
-			getBrowser () -> println ("Expected a component support level.");
+			getBrowser () -> getConsole () -> warn ("Expected a component support level.\n");
 	}
 	else
-		getBrowser () -> println ("Expected a component name.");
+		getBrowser () -> getConsole () -> warn ("Expected a component name.\n");
 }
 
 void
@@ -322,18 +322,18 @@ JSONParser::unitObject (json_object* const jobj)
 				}
 				catch (const X3DError & error)
 				{
-					getBrowser () -> println (error .what ());
+					getBrowser () -> getConsole () -> error (error .what (), "\n");
 					return;
 				}
 			}
 			else
-				getBrowser () -> println ("Expected unit conversion factor.");
+				getBrowser () -> getConsole () -> warn ("Expected unit conversion factor.\n");
 		}
 		else
-			getBrowser () -> println ("Expected unit name identificator.");
+			getBrowser () -> getConsole () -> warn ("Expected unit name identificator.\n");
 	}
 	else
-		getBrowser () -> println ("Expected category name identificator after UNIT statement.");
+		getBrowser () -> getConsole () -> warn ("Expected category name identificator after UNIT statement.\n");
 }
 
 void
@@ -372,10 +372,10 @@ JSONParser::metaObject (json_object* const jobj)
 			return;
 		}
 		else
-			getBrowser () -> println ("Expected metadata value.");
+			getBrowser () -> getConsole () -> warn ("Expected metadata value.\n");
 	}
 	else
-		getBrowser () -> println ("Expected metadata key.");
+		getBrowser () -> getConsole () -> warn ("Expected metadata key.\n");
 }
 
 void
@@ -548,7 +548,7 @@ JSONParser::routeObject (json_object* const jobj)
 					}
 					catch (const X3DError & error)
 					{
-						getBrowser () -> println (error .what ());
+						getBrowser () -> getConsole () -> error (error .what (), "\n");
 					}
 				}
 			}
@@ -579,7 +579,7 @@ JSONParser::importObject (json_object* const jobj)
 			}
 			catch (const X3DError & error)
 			{
-				getBrowser () -> println (error .what ());
+				getBrowser () -> getConsole () -> error (error .what (), "\n");
 			}
 		}
 	}
@@ -610,7 +610,7 @@ JSONParser::exportObject (json_object* const jobj)
 		}
 		catch (const X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> error (error .what (), "\n");
 		}
 	}
 }
@@ -634,7 +634,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 		return;
 	}
 
@@ -656,7 +656,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 			}
 			else
 			{
-				getBrowser () -> println ("Couldn't create proto instance, no name given.");
+				getBrowser () -> getConsole () -> warn ("Couldn't create proto instance, no name given.\n");
 				return;
 			}
 		}
@@ -665,7 +665,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 		return;
 	}
 
@@ -798,7 +798,7 @@ JSONParser::fieldValueObject (json_object* const jobj, const SFNode & node)
 		}
 		catch (const X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> error (error .what (), "\n");
 		}
 	}
 }
@@ -881,7 +881,7 @@ JSONParser::fieldObject (json_object* const jobj, X3DBaseNode* const baseNode)
 				}
 				catch (const X3DError & error)
 				{
-					getBrowser () -> println (error .what ());
+					getBrowser () -> getConsole () -> error (error .what (), "\n");
 				}
 			}
 		}
@@ -980,14 +980,14 @@ JSONParser::connectObject (json_object* const jobj, const SFNode & node)
 						nodeField -> addReference (protoField);
 					}
 					else
-						getBrowser () -> println ("Field '" + nodeField -> getName () + "' and '" + protoField -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
+						getBrowser () -> getConsole () -> warn ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " are incompatible as an IS mapping.\n");
 				}
 				else
-					getBrowser () -> println ("Field '" + nodeField -> getName () + "' and '" + protoField -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
+					getBrowser () -> getConsole () -> warn ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " have different types.\n");
 			}
 			catch (const X3DError & error)
 			{
-				getBrowser () -> println (error .what ());
+				getBrowser () -> getConsole () -> error (error .what (), "\n");
 			}
 		}
 	}

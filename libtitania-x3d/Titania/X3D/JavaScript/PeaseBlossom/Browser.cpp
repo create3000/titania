@@ -431,7 +431,7 @@ Browser::createVrmlFromString (const pb::ptr <pb::pbExecutionContext> & ec, cons
 	}
 	catch (const X3DError & error)
 	{
-		getContext (ec) -> getBrowser () -> print (error .what ());
+		getContext (ec) -> getBrowser () -> getConsole () -> error (error .what (), "\n");
 
 		return X3DField::create <MFNode> (ec, new X3D::MFNode ());
 	}

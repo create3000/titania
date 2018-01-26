@@ -290,7 +290,7 @@ Shader::depreciatedWarning (X3DBrowser* const browser, const std::string & sourc
 	if (source .find (depreciated) == std::string::npos)
 		return;
 
-	browser -> println ("Use of '" + depreciated + "' is depreciated, use '" + current + "' instead. See http://create3000.de/x_ite/custom-shaders/.");
+	browser -> getConsole () -> warn ("Use of '", depreciated, "' is depreciated, use '", current, "' instead. See http://create3000.de/x_ite/custom-shaders/.\n");
 }
 
 void
@@ -331,11 +331,11 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 		catch (const std::out_of_range &)
 		{ }
 
-		browser -> print (std::string (80, '#'), '\n',
-		                  "Error: ", typeName, name .empty () ? "" : " '" + name + "'" ," InfoLog (", type, "):\n",
-		                  "in file '", filename, "'\n",
-		                  infoLog,
-		                  std::string (80, '#'), '\n');
+		browser -> getConsole () -> error (std::string (80, '#'), "\n",
+		                                   typeName, (name .empty () ? "" : " '" + name + "'"), " InfoLog (", type, "):", "\n",
+		                                   "in file '", filename, "'\n",
+		                                   infoLog,
+		                                   std::string (80, '#'), "\n");
 	}
 }
 
@@ -376,11 +376,11 @@ Shader::printProgramInfoLog (X3DBrowser* const browser,
 		catch (const std::out_of_range &)
 		{ }
 
-		browser -> print (std::string (80, '#'), '\n',
-		                  "Error: ", typeName, name .empty () ? "" : " '" + name + "'" , " Info Log:\n",
-		                  "in file '", filename, "'\n",
-		                  infoLog,
-		                  std::string (80, '#'), '\n');
+		browser -> getConsole () -> error (std::string (80, '#'), "\n",
+		                                   typeName, (name .empty () ? "" : " '" + name + "'"), " Info Log:\n",
+		                                   "in file '", filename, "'\n",
+		                                   infoLog,
+		                                   std::string (80, '#'),"\n");
 	}
 }
 

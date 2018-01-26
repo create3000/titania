@@ -221,10 +221,10 @@ Inline::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> error (error .what (), "\n");
 	
 			for (const auto & string : loader .getUrlError ())
-				getBrowser () -> println (string .str ());
+				getBrowser () -> getConsole () -> error (string .str (), "\n");
 
 			setLoadState (FAILED_STATE);
 			setLoadedUrl ("");

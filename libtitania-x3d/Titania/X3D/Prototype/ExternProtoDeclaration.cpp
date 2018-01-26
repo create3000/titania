@@ -210,14 +210,14 @@ ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 						if (protoField -> getType () == fieldDefinition -> getType ())
 							fieldDefinition -> set (*protoField);
 						else
-							getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
+							getBrowser () -> getConsole () -> error ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.\n");
 					}
 					else
-						getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
+						getBrowser () -> getConsole () -> error ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different access types.\n");
 				}
 				catch (const Error <INVALID_NAME> &)
 				{
-					getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", protoDeclaration -> getName (), "'.");
+					getBrowser () -> getConsole () -> error ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", protoDeclaration -> getName (), "'.\n");
 				}
 			}
 		}
@@ -276,7 +276,7 @@ ExternProtoDeclaration::requestImmediateLoad ()
 		}
 		catch (const X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> error (error .what (), "\n");
 	
 			setLoadState (FAILED_STATE);
 			setLoadedUrl ("");
@@ -357,7 +357,7 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 	{
 		setLoadState (FAILED_STATE);
 
-	   getBrowser () -> println (error .what ());
+	   getBrowser () -> getConsole () -> error (error .what (), "\n");
 
 		scene = getBrowser () -> getPrivateScene ();
 

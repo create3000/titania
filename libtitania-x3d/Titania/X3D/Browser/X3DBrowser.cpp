@@ -159,32 +159,33 @@ X3DBrowser::set_loaded (const bool loaded)
 
 	// Print welcome message.
 
-	print (std::boolalpha,
-	       '\n',
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-
-	       "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
-	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
-
-	       renderingProperties, '\n',
-
-			 "\t\tMax vertex uniform vectors: ", getMaxVertexUniformVectors (), "\n",
-			 "\t\tMax fragment uniform vectors: ", getMaxFragmentUniformVectors (), "\n",
-			 "\t\tMax vertex attribs: ", getMaxVertexAttributes (), "\n",
-
-	       getJavaScriptEngine (), '\n',
-
-	       #ifdef TITANIA_DEBUG
-	       "\tId: ", this, '\n',
-	       #endif
-
-	       std::string (80, '*'), '\n',
-	       std::string (80, '*'), '\n',
-	       '\n');
+	getConsole () -> log (std::boolalpha,
+	                      '\n',
+	                      std::string (80, '*'), '\n',
+	                      std::string (80, '*'), '\n',
+			                
+	                      "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
+	                      "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
+			                
+	                      renderingProperties, '\n',
+			                
+			                "\t\tMax vertex uniform vectors: ", getMaxVertexUniformVectors (), "\n",
+			                "\t\tMax fragment uniform vectors: ", getMaxFragmentUniformVectors (), "\n",
+			                "\t\tMax vertex attribs: ", getMaxVertexAttributes (), "\n",
+			                
+	                      getJavaScriptEngine (), '\n',
+			                
+	                      #ifdef TITANIA_DEBUG
+	                      "\tId: ", this, '\n',
+	                      #endif
+			                
+	                      std::string (80, '*'), '\n',
+	                      std::string (80, '*'), '\n',
+	                      '\n',
+	                      '\n');
 
 	if (not loaded)
-		println ("*** Info: Cobweb compatibility mode not fully possible!");
+		getConsole () -> warn ("*** Warning: Cobweb compatibility mode not fully possible!");
 }
 
 void
@@ -385,7 +386,7 @@ throw (Error <INVALID_SCENE>,
 
 		executionContext = value ? value : createScene (false);
 
-		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
+		getConsole () -> log ("\n*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n\n");
 		isLive () .addInterest (executionContext -> isLive ());
 		executionContext -> isLive () = isLive ();
 		executionContext -> setup ();

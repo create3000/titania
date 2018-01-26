@@ -178,7 +178,7 @@ ImportedNode::resolveRoute (UnresolvedRoute & route)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 	}
 }
 

@@ -323,7 +323,7 @@ LSystem::build ()
 	}
 	catch (const std::exception & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 	}
 }
 

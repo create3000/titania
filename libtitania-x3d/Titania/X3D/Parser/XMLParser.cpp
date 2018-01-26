@@ -207,7 +207,7 @@ XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 		}
 		catch (const X3D::X3DError & error)
 		{
-			getBrowser () -> println (error .what ());
+			getBrowser () -> getConsole () -> warn (error .what (), "\n");
 		}
 	}
 
@@ -298,15 +298,15 @@ XMLParser::componentElement (xmlpp::Element* const xmlElement)
 			}
 			catch (const X3D::X3DError & error)
 			{
-				getBrowser () -> println (error .what ());
+				getBrowser () -> getConsole () -> warn (error .what (), "\n");
 				return;
 			}
 		}
 		else
-			getBrowser () -> println ("Expected a component support level.");
+			getBrowser () -> getConsole () -> warn ("Expected a component support level.\n");
 	}
 	else
-		getBrowser () -> println ("Expected a component name.");
+		getBrowser () -> getConsole () -> warn ("Expected a component name.\n");
 }
 
 void
@@ -331,18 +331,18 @@ XMLParser::unitElement (xmlpp::Element* const xmlElement)
 				}
 				catch (const X3DError & error)
 				{
-					getBrowser () -> println (error .what ());
+					getBrowser () -> getConsole () -> error (error .what (), "\n");
 					return;
 				}
 			}
 			else
-				getBrowser () -> println ("Expected unit conversion factor.");
+				getBrowser () -> getConsole () -> warn ("Expected unit conversion factor.\n");
 		}
 		else
-			getBrowser () -> println ("Expected unit name identificator.");
+			getBrowser () -> getConsole () -> warn ("Expected unit name identificator.\n");
 	}
 	else
-		getBrowser () -> println ("Expected category name identificator after UNIT statement.");
+		getBrowser () -> getConsole () -> warn ("Expected category name identificator after UNIT statement.\n");
 }
 
 void
@@ -360,10 +360,10 @@ XMLParser::metaElement (xmlpp::Element* const xmlElement)
 			return;
 		}
 		else
-			getBrowser () -> println ("Expected metadata value.");
+			getBrowser () -> getConsole () -> warn ("Expected metadata value.\n");
 	}
 	else
-		getBrowser () -> println ("Expected metadata key.");
+		getBrowser () -> getConsole () -> warn ("Expected metadata key.\n");
 }
 
 //                   .;;;.   .;;;.
@@ -463,10 +463,10 @@ XMLParser::externProtoDeclareElement (xmlpp::Element* const xmlElement)
 			getExecutionContext () -> updateExternProtoDeclaration (nameCharacters, externproto);
 		}
 		else
-			getBrowser () -> println ("XML Parser Error: Bad ExternProtoDeclare statement: Expected url attribute.");
+			getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad ExternProtoDeclare statement: Expected url attribute.\n");
 	}
 	else
-		getBrowser () -> println ("XML Parser Error: Bad ExternProtoDeclare statement: Expected name attribute.");
+		getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad ExternProtoDeclare statement: Expected name attribute.\n");
 }
 
 void
@@ -521,7 +521,7 @@ XMLParser::protoDeclareElement (xmlpp::Element* const xmlElement)
 		getExecutionContext () -> updateProtoDeclaration (nameCharacters, proto);
 	}
 	else
-		getBrowser () -> println ("XML Parser Error: Bad ProtoDeclare statement, expected name attribute.");
+		getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad ProtoDeclare statement, expected name attribute.\n");
 }
 
 void
@@ -616,7 +616,7 @@ XMLParser::fieldElement (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: Couldn't add user-defined field. ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error: Couldn't add user-defined field.\n", error .what (), "\n");
 	}
 }
 
@@ -674,21 +674,21 @@ XMLParser::connectElement (xmlpp::Element* const xmlElement)
 						if (protoField -> isReference (nodeField -> getAccessType ()))
 							nodeField -> addReference (protoField);
 						else
-							getBrowser () -> println ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " are incompatible as an IS mapping.");
+							getBrowser () -> getConsole () -> warn ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " are incompatible as an IS mapping.\n");
 					}
 					else
-						getBrowser () -> println ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " have different types.");
+						getBrowser () -> getConsole () -> warn ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " have different types.\n");
 				}
 				else
-					getBrowser () -> println ("XML Parser Error: Bad connect statement: Expected protoField attribute.");
+					getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad connect statement: Expected protoField attribute.\n");
 			}
 			else
-				getBrowser () -> println ("XML Parser Error: Bad connect statement: Expected nodeField attribute.");
+				getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad connect statement: Expected nodeField attribute.\n");
 		}
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: Couldn't create IS reference: ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error: Couldn't create IS reference:\n", error .what (), "\n");
 	}
 }
 
@@ -725,7 +725,7 @@ XMLParser::protoInstanceElement (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error:\n", error .what (), "\n");
 	}
 }
 
@@ -765,7 +765,7 @@ XMLParser::fieldValueElement (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: Couldn't assign field value: ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error: Couldn't assign field value:\n", error .what (), "\n");
 	}
 }
 
@@ -799,7 +799,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println (error .what ());
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 	}
 }
 
@@ -837,20 +837,20 @@ XMLParser::routeElement (xmlpp::Element* const xmlElement)
 						}
 					}
 					else
-						getBrowser () -> println ("Bad ROUTE statement: Expected toField attribute.");
+						getBrowser () -> getConsole () -> warn ("Bad ROUTE statement: Expected toField attribute.\n");
 				}
 				else
-					getBrowser () -> println ("Bad ROUTE statement: Expected toNode attribute.");
+					getBrowser () -> getConsole () -> warn ("Bad ROUTE statement: Expected toNode attribute.\n");
 			}
 			else
-				getBrowser () -> println ("Bad ROUTE statement: Expected fromField attribute.");
+				getBrowser () -> getConsole () -> warn ("Bad ROUTE statement: Expected fromField attribute.\n");
 		}
 		else
-			getBrowser () -> println ("Bad ROUTE statement: Expected fromNode attribute.");
+			getBrowser () -> getConsole () -> warn ("Bad ROUTE statement: Expected fromNode attribute.\n");
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error:\n", error .what (), "\n");
 	}
 }
 
@@ -879,14 +879,14 @@ XMLParser::importElement (xmlpp::Element* const xmlElement)
 				getExecutionContext () -> updateImportedNode (inlineNode, exportedDEFCharacters, ASCharacters);
 			}
 			else
-				getBrowser () -> println ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.");
+				getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.\n");
 		}
 		else
-			getBrowser () -> println ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.");
+			getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.\n");
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: ",+ error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error:\n", error .what (), "\n");
 	}
 }
 
@@ -914,11 +914,11 @@ XMLParser::exportElement (xmlpp::Element* const xmlElement)
 			scene -> updateExportedNode (ASCharacters, localNode);
 		}
 		else
-			getBrowser () -> println ("XML Parser Error: Bad EXPORT statement, expected localDEF attribute.");
+			getBrowser () -> getConsole () -> warn ("XML Parser Error: Bad EXPORT statement, expected localDEF attribute.\n");
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("XML Parser Error: ", error .what ());
+		getBrowser () -> getConsole () -> error ("XML Parser Error:\n", error .what (), "\n");
 	}
 }
 
@@ -1022,7 +1022,7 @@ XMLParser::useAttribute (xmlpp::Element* const xmlElement)
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("Invalid USE name: ", error .what ());
+		getBrowser () -> getConsole () -> error ("Invalid USE name:\n", error .what (), "\n");
 	}
 
 	return false;
@@ -1053,7 +1053,7 @@ XMLParser::defAttribute (xmlpp::Element* const xmlElement, X3DBaseNode* const ba
 	}
 	catch (const X3DError & error)
 	{
-		getBrowser () -> println ("Invalid DEF name: ", error .what ());
+		getBrowser () -> getConsole () -> error ("Invalid DEF name:\n", error .what (), "\n");
 	}
 }
 

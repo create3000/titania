@@ -249,7 +249,7 @@ throw (Error <INVALID_X3D>)
 	if (getBrowser () -> isStrict ())
 		throw Error <INVALID_X3D> (string);
 
-	getBrowser () -> println (string);
+	getBrowser () -> getConsole () -> error (string);
 }
 
 
@@ -381,7 +381,7 @@ Parser::profileStatement ()
 				if (getBrowser () -> isStrict ())
 					throw;
 
-				getBrowser () -> println (error .what ());
+				getBrowser () -> getConsole () -> warn (error .what (), "\n");
 				return;
 			}
 		}
@@ -498,7 +498,7 @@ Parser::unitStatement ()
 					}
 					catch (const X3DError & error)
 					{
-					   getBrowser () -> println (error .what ());
+						getBrowser () -> getConsole () -> warn (error .what (), "\n");
 						return true;
 					}
 				}

@@ -61,14 +61,14 @@ const std::string   Console::typeName       = "Console";
 const std::string   Console::containerField = "console";
 
 Console::Console (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        string (),
-	string_changed (),
-	         mutex ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        messages (),
+	messages_changed (),
+	           mutex ()
 {
 	addType (X3DConstants::Console);
 
-	addChildObjects (string_changed);
+	addChildObjects (messages_changed);
 }
 
 X3DBaseNode*
@@ -85,17 +85,13 @@ Console::initialize ()
 	getBrowser () -> prepareEvents () .addInterest (&Console::prepareEvents, this);
 }
 
-/// Adds a string to the console.  This function is thread save.
 void
-Console::addString (const std::string & value)
+Console::push (const std::string & tag, const std::string & string)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	string .emplace_back (value);
-
-	#ifdef TITANIA_DEBUG
-	std::clog << value << std::flush;
-	#endif
+	messages .emplace_back (tag);
+	messages .emplace_back (string);
 }
 
 void
@@ -103,12 +99,11 @@ Console::prepareEvents ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	if (string .empty ())
+	if (messages .empty ())
 	   return;
-	
-	string_changed .assign (string .begin (), string .end ());
 
-	string .clear ();
+	messages_changed .assign (messages .begin (), messages .end ());
+	messages .clear ();
 }
 
 } // X3D
