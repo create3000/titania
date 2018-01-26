@@ -373,6 +373,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.$(OBJEXT) \
 	Titania/Widgets/AnimationEditor/AnimationEditor.$(OBJEXT) \
 	Titania/Widgets/Console/Console.$(OBJEXT) \
+	Titania/Widgets/Console/X3DConsole.$(OBJEXT) \
 	Titania/Widgets/Footer/Footer.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.$(OBJEXT) \
@@ -921,6 +922,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
+	Titania/Widgets/Console/X3DConsole.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
@@ -2208,6 +2210,9 @@ Titania/Widgets/Console/$(DEPDIR)/$(am__dirstamp):
 Titania/Widgets/Console/Console.$(OBJEXT):  \
 	Titania/Widgets/Console/$(am__dirstamp) \
 	Titania/Widgets/Console/$(DEPDIR)/$(am__dirstamp)
+Titania/Widgets/Console/X3DConsole.$(OBJEXT):  \
+	Titania/Widgets/Console/$(am__dirstamp) \
+	Titania/Widgets/Console/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/Footer/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Widgets/Footer
 	@: > Titania/Widgets/Footer/$(am__dirstamp)
@@ -2679,6 +2684,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DWindPhysicsModelEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/AnimationEditor/$(DEPDIR)/AnimationEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Console/$(DEPDIR)/Console.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Console/$(DEPDIR)/X3DConsole.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Footer/$(DEPDIR)/Footer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineDragDrop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineEditor.Po@am__quote@
