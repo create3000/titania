@@ -278,6 +278,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DWindPhysicsModelEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
+	Titania/Widgets/Console/X3DConsole.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \

@@ -65,6 +65,7 @@ static constexpr int32_t LAST_LINES_COUNT   = 2;
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DConsoleInterface (get_ui ("Widgets/Console.glade")),
+	         X3DConsole (),
 	            markSet (0),
 	           scrolled (0),
 	        scrollToEnd (true)
@@ -80,6 +81,7 @@ void
 Console::initialize ()
 {
 	X3DConsoleInterface::initialize ();
+	X3DConsole::initialize ();
 
 	set_enabled ();
 }
@@ -130,21 +132,21 @@ Console::set_string (const X3D::MFString & value)
 		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
 	}
 
-//		// Update TextView and thus we can scoll to iter.
-//		while (Gtk::Main::events_pending ())
-//			Gtk::Main::iteration ();
-
 	// Update TextView and scoll to end.
 
 	if (scrollToEnd)
-	{
-		auto iter = getTextBuffer () -> end ();
-		auto mark = getTextBuffer () -> get_mark ("scroll");
+		Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Console::on_scoll_to_end));
+}
 
-		iter .set_line_offset (0);
-		getTextBuffer () -> move_mark (mark, iter);
-		getTextView () .scroll_to (mark);
-	}
+void
+Console::on_scoll_to_end ()
+{
+	auto iter = getTextBuffer () -> end ();
+	auto mark = getTextBuffer () -> get_mark ("scroll");
+
+	iter .set_line_offset (0);
+	getTextBuffer () -> move_mark (mark, iter);
+	getTextView () .scroll_to (mark);
 }
 
 void

@@ -48,79 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
+#include "Console.h"
 
-#include "../../UserInterfaces/X3DConsoleInterface.h"
-#include "X3DConsole.h"
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+X3DConsole::X3DConsole () :
+	X3DConsoleInterface ()
+{ }
 
-class Console :
-	virtual public X3DConsoleInterface,
-	public X3DConsole
+void
+X3DConsole::initialize ()
 {
-public:
+	const auto redTag   = getTextBuffer () -> create_tag ("red");
+	const auto greenTag = getTextBuffer () -> create_tag ("green");
 
-	///  @name Construction
-	
-	Console (X3DBrowserWindow* const browserWindow);
+	redTag   -> property_foreground_set () = true;
+	redTag   -> property_foreground_gdk () = getColor (0xff, 0, 0);
+	greenTag -> property_foreground_set () = true;
+	greenTag -> property_foreground_gdk () = getColor (0, 0xff, 0);
+}
 
-	///  @name Operations
+Gdk::Color
+X3DConsole::getColor (const uint8_t r, const uint8_t g, const uint8_t b) const
+{
+	auto color = Gdk::Color ();
 
-	void
-	print (const std::string & string);
+	color .set_red   (r);
+	color .set_green (g);
+	color .set_blue  (b);
 
-	///  @name Destruction
-	
-	virtual
-	~Console () final override;
+	return color;
+}
 
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_suspend_button_toggled () final override;
-
-	virtual
-	void
-	on_clear_button_clicked () final override;
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
-	void
-	on_scoll_to_end ();
-
-	virtual
-	void
-	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
-
-	void
-	on_vadjustment_value_changed ();
-
-	///  @name Event handlers
-
-	int32_t markSet;
-	int32_t scrolled;
-	bool    scrollToEnd;
-
-};
+X3DConsole::~X3DConsole ()
+{ }
 
 } // puck
 } // titania
-
-#endif

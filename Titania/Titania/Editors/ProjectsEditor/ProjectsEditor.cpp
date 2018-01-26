@@ -128,7 +128,7 @@ ProjectsEditor::on_unmap ()
 }
 
 bool
-ProjectsEditor::on_focus_in_event (GdkEventFocus* focus_event)
+ProjectsEditor::on_focus_in_event (GdkEventFocus* event)
 {
 	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
@@ -136,7 +136,7 @@ ProjectsEditor::on_focus_in_event (GdkEventFocus* focus_event)
 }
 
 bool
-ProjectsEditor::on_focus_out_event (GdkEventFocus* focus_event)
+ProjectsEditor::on_focus_out_event (GdkEventFocus* event)
 {
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> setAccelerators (true);

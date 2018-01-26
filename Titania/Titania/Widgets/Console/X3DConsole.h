@@ -48,75 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
+#ifndef __TITANIA_CONSOLE_X3D_CONSOLE_H__
+#define __TITANIA_CONSOLE_X3D_CONSOLE_H__
 
 #include "../../UserInterfaces/X3DConsoleInterface.h"
-#include "X3DConsole.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class Console :
-	virtual public X3DConsoleInterface,
-	public X3DConsole
+class X3DConsole :
+	virtual public X3DConsoleInterface
 {
 public:
-
-	///  @name Construction
-	
-	Console (X3DBrowserWindow* const browserWindow);
-
-	///  @name Operations
-
-	void
-	print (const std::string & string);
 
 	///  @name Destruction
 	
 	virtual
-	~Console () final override;
+	~X3DConsole () override;
+
+
+protected:
+
+	///  @name Construction
+	
+	X3DConsole ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Operations
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_suspend_button_toggled () final override;
-
-	virtual
-	void
-	on_clear_button_clicked () final override;
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
-	void
-	on_scoll_to_end ();
-
-	virtual
-	void
-	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
-
-	void
-	on_vadjustment_value_changed ();
-
-	///  @name Event handlers
-
-	int32_t markSet;
-	int32_t scrolled;
-	bool    scrollToEnd;
+	Gdk::Color
+	getColor (const uint8_t r, const uint8_t g, const uint8_t b) const;
 
 };
 

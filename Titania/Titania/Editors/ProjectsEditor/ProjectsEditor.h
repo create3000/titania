@@ -100,11 +100,11 @@ private:
 
 	virtual
 	bool
-	on_focus_in_event (GdkEventFocus* focus_event);
+	on_focus_in_event (GdkEventFocus* event) final override;
 
 	virtual
 	bool
-	on_focus_out_event (GdkEventFocus* gdk_event);
+	on_focus_out_event (GdkEventFocus* event) final override;
 
 	///  @name Project folders handling
 
@@ -296,7 +296,8 @@ private:
 	sigc::connection dragCopyConnection;
 	sigc::connection dragLinkConnection;
 
-	bool changing;
+	int32_t button;
+	bool    changing;
 
 };
 
