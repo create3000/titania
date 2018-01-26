@@ -332,7 +332,7 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 		{ }
 
 		browser -> print (std::string (80, '#'), '\n',
-		                  typeName, name .empty () ? "" : " '" + name + "'" ," InfoLog (", type, "):\n",
+		                  "Error: ", typeName, name .empty () ? "" : " '" + name + "'" ," InfoLog (", type, "):\n",
 		                  "in file '", filename, "'\n",
 		                  infoLog,
 		                  std::string (80, '#'), '\n');
@@ -377,7 +377,7 @@ Shader::printProgramInfoLog (X3DBrowser* const browser,
 		{ }
 
 		browser -> print (std::string (80, '#'), '\n',
-		                  typeName, name .empty () ? "" : " '" + name + "'" , " Info Log:\n",
+		                  "Error: ", typeName, name .empty () ? "" : " '" + name + "'" , " Info Log:\n",
 		                  "in file '", filename, "'\n",
 		                  infoLog,
 		                  std::string (80, '#'), '\n');

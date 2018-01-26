@@ -54,6 +54,8 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/Footer/Footer.h"
 
+#include <Titania/String.h>
+
 namespace titania {
 namespace puck {
 
@@ -109,8 +111,24 @@ Console::set_enabled ()
 void
 Console::set_string (const X3D::MFString & value)
 {
-	for (const auto & string : value)
-		print (string);
+	const auto string = basic::join (value, "");
+	auto       array  = std::vector <Glib::ustring> ();
+
+	basic::split (std::back_inserter (array), string, "\n");
+
+	for (const auto & line : array)
+	{
+		if (line .find ("Error:") == 0)
+			error (line);
+		else if (line .find ("Warn:") == 0)
+			warn (line);
+		else if (line .find ("Log:") == 0)
+			log (line);
+		else
+			print (line);
+
+		print ("\n");
+	}
 }
 
 void
