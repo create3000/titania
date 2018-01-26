@@ -138,7 +138,7 @@ LightEditor::on_remove_light_clicked ()
 void
 LightEditor::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	const auto nodeIndex = getBrowserWindow () -> addDialog <NodeIndex> ("NodeIndex");
 	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DLightNode });
 }
 

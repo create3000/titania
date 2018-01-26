@@ -191,7 +191,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 void
 PrecisionPlacementPanel::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	const auto nodeIndex = getBrowserWindow () -> addDialog <NodeIndex> ("NodeIndex");
 
 	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DBoundedObject, X3D::X3DConstants::X3DLayerNode });
 }

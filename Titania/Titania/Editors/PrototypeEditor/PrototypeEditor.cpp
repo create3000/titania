@@ -376,7 +376,7 @@ PrototypeEditor::on_create_externproto_clicked ()
 void
 PrototypeEditor::on_import_extern_proto_clicked ()
 {
-	const auto dialog = std::dynamic_pointer_cast <FileImportAsExternProtoDialog> (addDialog ("FileImportAsExternProtoDialog"));
+	const auto dialog = addDialog <FileImportAsExternProtoDialog> ("FileImportAsExternProtoDialog");
 
 	dialog -> run ();
 }
@@ -385,7 +385,7 @@ void
 PrototypeEditor::on_convert_prototype_clicked ()
 {
 	const auto proto    = X3D::ProtoDeclarationPtr (protoNode);
-	const auto dialog   = std::dynamic_pointer_cast <FileExportProtoDialog> (addDialog ("FileExportProtoDialog"));
+	const auto dialog   = addDialog <FileExportProtoDialog> ("FileExportProtoDialog");
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Convert Prototype »%s« To Extern Proto"), proto -> getName () .c_str ()));
 
 	if (dialog -> run (proto, undoStep))

@@ -23,7 +23,7 @@ titania_SOURCES =  \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
-	Titania/Browser/X3DBrowserWidget.cpp \
+	Titania/Browser/X3DBrowserNotebook.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/BrowserNotebook/BrowserPanel/BrowserPanel.cpp \
 	Titania/BrowserNotebook/BrowserPanel/ViewpointObserver.cpp \

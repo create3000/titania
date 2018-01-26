@@ -105,7 +105,9 @@ void
 RecentView::open ()
 {
 	if (getBrowserWindow () -> getEditing ())
-		getBrowserWindow () -> X3DBrowserWidget::open (getURL ());
+	{
+		getBrowserWindow () -> X3DBrowserNotebook::open (getURL ());
+	}
 	else
 	{
 		getBrowserWindow () -> append (getURL ());
@@ -249,7 +251,7 @@ RecentView::set_url (const X3D::SFString & url)
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentPage);
+		recentBrowser -> finished () .addInterest (&X3DBrowserNotebook::close, getBrowserWindow (), recentPage);
 		recentBrowser -> addEvent ();
 	}
 	catch (const std::out_of_range &)

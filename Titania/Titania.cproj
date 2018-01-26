@@ -76,7 +76,6 @@
     <Compile Include="Titania\UserInterfaces\X3DConsoleInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DMotionBlurEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DOutlineEditorInterface.cpp" />
-    <Compile Include="Titania\Browser\X3DBrowserWidget.cpp" />
     <Compile Include="Titania\Browser\X3DBrowserEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLibraryViewInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodePropertiesEditorInterface.cpp" />
@@ -370,6 +369,7 @@
     <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalTool.cpp" />
     <Compile Include="Titania\Editors\ProjectsEditor\FileView.cpp" />
     <Compile Include="Titania\Widgets\Console\X3DConsole.cpp" />
+    <Compile Include="Titania\Browser\X3DBrowserNotebook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -385,7 +385,6 @@
     <None Include="Titania\UserInterfaces\X3DMotionBlurEditorInterface.h" />
     <None Include="Titania\UserInterfaces\X3DOutlineEditorInterface.h" />
     <None Include="config\history.db" />
-    <None Include="Titania\Browser\X3DBrowserWidget.h" />
     <None Include="Titania\Browser\X3DBrowserEditor.h" />
     <None Include="share\titania\ui\icons\FlyViewer.svg" />
     <None Include="share\titania\ui\icons\WalkViewer.svg" />
@@ -3161,6 +3160,7 @@
     <None Include="share\titania\ui\icons\Addon.svg" />
     <None Include="Titania\Editors\ProjectsEditor\FileView.h" />
     <None Include="Titania\Widgets\Console\X3DConsole.h" />
+    <None Include="Titania\Browser\X3DBrowserNotebook.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

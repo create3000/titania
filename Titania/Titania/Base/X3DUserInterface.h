@@ -117,7 +117,15 @@ public:
 	std::shared_ptr <X3DUserInterface>
 	addDialog (const std::string & name, const bool present = true);
 
+	template <class Type>
+	std::shared_ptr <Type>
+	addDialog (const std::string & name, const bool present = true);
+
 	std::shared_ptr <X3DUserInterface>
+	createDialog (const std::string & name) const;
+
+	template <class Type>
+	std::shared_ptr <Type>
 	createDialog (const std::string & name) const;
 
 	///  @name Configuration handling
@@ -161,11 +169,11 @@ protected:
 	set_selection (const X3D::MFNode & selection)
 	{ }
 
+	/// @name Member access
+
 	bool
 	isInitialized () const
 	{ return initialized; }
-
-	/// @name Member access
 	
 	bool
 	isMaximized () const
@@ -175,6 +183,8 @@ protected:
 	isFullscreen () const
 	{ return getConfig () -> getItem <bool> ("fullscreen"); }
 
+	/// @name Event handlers
+
 	virtual
 	void
 	on_maximized (const bool value);
@@ -182,6 +192,8 @@ protected:
 	virtual
 	void
 	on_fullscreen (const bool value);
+
+	/// @name Destruction
 
 	virtual
 	void
@@ -267,6 +279,20 @@ private:
 	bool                            initialized;
 
 };
+
+template <class Type>
+std::shared_ptr <Type>
+X3DUserInterface::addDialog (const std::string & name, const bool present)
+{
+	return std::dynamic_pointer_cast <Type> (addDialog (name, present));
+}
+
+template <class Type>
+std::shared_ptr <Type>
+X3DUserInterface::createDialog (const std::string & name) const
+{
+	return std::dynamic_pointer_cast <Type> (createDialog (name));
+}
 
 template <class Type>
 std::vector <Type*>

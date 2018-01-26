@@ -2507,7 +2507,7 @@ AnimationEditor::showArraySizeErrorDialog () const
 {
 	// Show error dialog.
 
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 
 	dialog -> setType (Gtk::MESSAGE_ERROR);
 	dialog -> setMessage (_ ("Key size has changed!"));

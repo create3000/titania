@@ -153,7 +153,7 @@ SoundEditor::on_remove_sound_clicked ()
 void
 SoundEditor::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	const auto nodeIndex = getBrowserWindow () -> addDialog <NodeIndex> ("NodeIndex");
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Sound });
 }
 

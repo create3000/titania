@@ -396,7 +396,9 @@ throw (Error <INVALID_SCENE>,
 		getWorld () -> setup ();
 	}
 	else
+	{
 		executionContext = value;
+	}
 
 	if (initialized ())
 		initialized () = true;

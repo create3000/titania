@@ -759,7 +759,7 @@ RouteGraphPage::on_export_page_activate ()
 
 		// Save magick image
 
-		const auto dialog = std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false));
+		const auto dialog = addDialog <FileExportImageDialog> ("FileExportImageDialog", false);
 
 		image .quality (100);
 

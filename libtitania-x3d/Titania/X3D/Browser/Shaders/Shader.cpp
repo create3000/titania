@@ -331,11 +331,13 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 		catch (const std::out_of_range &)
 		{ }
 
-		browser -> getConsole () -> error (std::string (80, '#'), "\n",
+		browser -> getConsole () -> error ("\n",
+		                                   std::string (80, '#'), "\n",
 		                                   typeName, (name .empty () ? "" : " '" + name + "'"), " InfoLog (", type, "):", "\n",
 		                                   "in file '", filename, "'\n",
 		                                   infoLog,
-		                                   std::string (80, '#'), "\n");
+		                                   std::string (80, '#'), "\n",
+		                                   "\n");
 	}
 }
 
@@ -376,11 +378,13 @@ Shader::printProgramInfoLog (X3DBrowser* const browser,
 		catch (const std::out_of_range &)
 		{ }
 
-		browser -> getConsole () -> error (std::string (80, '#'), "\n",
+		browser -> getConsole () -> error ("\n",
+		                                   std::string (80, '#'), "\n",
 		                                   typeName, (name .empty () ? "" : " '" + name + "'"), " Info Log:\n",
 		                                   "in file '", filename, "'\n",
 		                                   infoLog,
-		                                   std::string (80, '#'),"\n");
+		                                   std::string (80, '#'),"\n",
+		                                   "\n");
 	}
 }
 

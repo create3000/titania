@@ -199,7 +199,7 @@ X3DNotebookPage::isSaved ()
 
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (pageNumber);
 
-		const auto responseId = std::dynamic_pointer_cast <FileSaveWarningDialog> (createDialog ("FileSaveWarningDialog")) -> run ();
+		const auto responseId = createDialog <FileSaveWarningDialog> ("FileSaveWarningDialog") -> run ();
 
 		switch (responseId)
 		{
@@ -456,7 +456,7 @@ X3DNotebookPage::on_file_changed ()
 
 	if (getModified ())
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 	
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (_ ("File modified externally!"));

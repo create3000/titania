@@ -136,7 +136,7 @@ RenderPanel::getViewpointList () const
 {
 	if (not viewpointList)
 	{
-		const_cast <RenderPanel*> (this) -> viewpointList = std::dynamic_pointer_cast <ViewpointList> (createDialog ("ViewpointList"));
+		const_cast <RenderPanel*> (this) -> viewpointList = createDialog <ViewpointList> ("ViewpointList");
 
 		viewpointList -> getWindow () .set_modal (true);
 		viewpointList -> getLabel ()  .set_visible (false);
@@ -274,7 +274,7 @@ RenderPanel::getRendering () const
 void
 RenderPanel::on_properties_file_chooser_button_clicked ()
 {
-	const auto dialog = std::dynamic_pointer_cast <FileSaveVideoDialog> (createDialog ("FileSaveVideoDialog"));
+	const auto dialog = createDialog <FileSaveVideoDialog> ("FileSaveVideoDialog");
 
 	dialog -> setUrl (filename);
 

@@ -581,7 +581,7 @@ BrowserWindow::on_new_activated ()
 void
 BrowserWindow::on_open_activated ()
 {
-	std::dynamic_pointer_cast <FileOpenDialog> (addDialog ("FileOpenDialog", false)) -> loadURL ();
+	addDialog <FileOpenDialog> ("FileOpenDialog", false) -> loadURL ();
 }
 
 void
@@ -593,7 +593,7 @@ BrowserWindow::on_open_recent_activated ()
 void
 BrowserWindow::on_open_location_activated ()
 {
-	std::dynamic_pointer_cast <OpenLocationDialog> (addDialog ("OpenLocationDialog", false)) -> run ();
+	addDialog <OpenLocationDialog> ("OpenLocationDialog", false) -> run ();
 }
 
 void
@@ -609,7 +609,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import_activated ()
 {
-	std::dynamic_pointer_cast <FileImportDialog> (addDialog ("FileImportDialog", false)) -> run ();
+	addDialog <FileImportDialog> ("FileImportDialog", false) -> run ();
 }
 
 void
@@ -708,19 +708,19 @@ BrowserWindow::on_save_activated ()
 void
 BrowserWindow::on_save_as_activated ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> save (false);
+	addDialog <FileSaveDialog> ("FileSaveDialog", false) -> save (false);
 }
 
 void
 BrowserWindow::on_save_a_copy_activated ()
 {
-	std::dynamic_pointer_cast <FileSaveACopyDialog> (addDialog ("FileSaveACopyDialog", false)) -> save (true);
+	addDialog <FileSaveACopyDialog> ("FileSaveACopyDialog", false) -> save (true);
 }
 
 void
 BrowserWindow::on_export_activated ()
 {
-	std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false)) -> run ();
+	addDialog <FileExportImageDialog> ("FileExportImageDialog", false) -> run ();
 }
 
 void
@@ -1785,7 +1785,7 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 	{
 	   __LOG__ << error .what () << std::endl;
 
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't apply Boolean operation to geometries!"));
@@ -2009,7 +2009,7 @@ BrowserWindow::on_cobweb_compatibility_toggled ()
 void
 BrowserWindow::on_info_activated ()
 {
-	X3DBrowserWidget::open (get_page ("about/info.x3dv"));
+	X3DBrowserNotebook::open (get_page ("about/info.x3dv"));
 }
 
 /// Toolbar
@@ -2123,7 +2123,7 @@ BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, 
 void
 BrowserWindow::on_node_index_clicked ()
 {
-	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
+	getBrowserWindow () -> addDialog <NodeIndex> ("NodeIndex") -> setNamedNodes ();
 }
 
 void
@@ -2835,7 +2835,7 @@ BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const 
 	if (not clones)
 		return false;
 
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("This operation is not clone save!"));

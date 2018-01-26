@@ -147,7 +147,7 @@ InlineEditor::on_remove_inline_clicked ()
 void
 InlineEditor::on_index_clicked ()
 {
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+	const auto nodeIndex = getBrowserWindow () -> addDialog <NodeIndex> ("NodeIndex");
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Inline });
 }
 
@@ -163,7 +163,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 	const auto executionContext = X3D::X3DExecutionContextPtr (masterSelection -> getExecutionContext ());
 	const auto nodes            = X3D::MFNode ({ masterSelection });
 
-	const auto fileExportDialog = std::dynamic_pointer_cast <FileExportDialog> (addDialog ("FileExportDialog", false));
+	const auto fileExportDialog = addDialog <FileExportDialog> ("FileExportDialog", false);
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
 	const auto exported         = fileExportDialog -> run (nodes, undoStep);
 

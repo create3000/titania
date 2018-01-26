@@ -67,7 +67,7 @@ class UserData;
 using NotebookPagePtr      = std::shared_ptr <NotebookPage>;
 using NotebookPagePtrArray = std::vector <NotebookPagePtr>;
 
-class X3DBrowserWidget :
+class X3DBrowserNotebook :
 	virtual public X3DBrowserWindowInterface
 {
 public:
@@ -174,14 +174,14 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DBrowserWidget ();
+	~X3DBrowserNotebook ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DBrowserWidget (const X3D::BrowserPtr &);
+	X3DBrowserNotebook (const X3D::BrowserPtr &);
 
 	virtual
 	void

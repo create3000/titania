@@ -146,7 +146,7 @@ ProjectsEditor::on_focus_out_event (GdkEventFocus* event)
 void
 ProjectsEditor::on_add_project_clicked ()
 {
-	const auto openDirectoryDialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
+	const auto openDirectoryDialog = createDialog <OpenFolderDialog> ("OpenFolderDialog");
 
 	if (not openDirectoryDialog -> run ())
 		return;
@@ -331,7 +331,7 @@ ProjectsEditor::on_add_files_activate ()
 {
 	try
 	{
-		const auto dialog = std::dynamic_pointer_cast <FileOpenDialog> (createDialog ("FileOpenDialog"));
+		const auto dialog = createDialog <FileOpenDialog> ("FileOpenDialog");
 
 		dialog -> getWindow () .set_select_multiple (true);
 
@@ -483,7 +483,7 @@ ProjectsEditor::on_add_existing_folder_activate ()
 {
 	try
 	{
-		const auto dialog = std::dynamic_pointer_cast <OpenFolderDialog> (createDialog ("OpenFolderDialog"));
+		const auto dialog = createDialog <OpenFolderDialog> ("OpenFolderDialog");
 	
 		if (not dialog -> run ())
 			return;
@@ -673,7 +673,7 @@ ProjectsEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file
 	{
 		if (getRootFolders () .count (file -> get_path ()))
 		{
-			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 	
 			dialog -> setType (Gtk::MESSAGE_QUESTION);
 			dialog -> setMessage ("You are about to remove a project folder to trash!");
@@ -701,7 +701,7 @@ ProjectsEditor::on_remove_file_activate (const Glib::RefPtr <Gio::File> & file)
 {
 	try
 	{
-		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (basic::sprintf (_ ("Are you sure you want to permanently delete »%s«?"), file -> get_basename () .c_str ()));

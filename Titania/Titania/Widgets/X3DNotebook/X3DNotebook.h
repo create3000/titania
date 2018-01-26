@@ -71,6 +71,14 @@ class X3DNotebook :
 {
 public:
 
+	using Interface::getName;
+	using Interface::getBrowserWindow;
+	using Interface::getCurrentBrowser;
+	using Interface::createDialog;
+	using Interface::getConfig;
+	using Interface::getWindow;
+	using Interface::getNotebook;
+
 	///  @name Construction
 
 	X3DNotebook ();
@@ -174,10 +182,10 @@ X3DNotebook <Interface>::on_idle ()
 {
 	try
 	{
-		const auto currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
+		const auto currentPage = getConfig () -> template getItem <int32_t> ("currentPage");
 		const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
 
-		this -> getNotebook () .set_current_page (currentPage);
+		getNotebook () .set_current_page (currentPage);
 	}
 	catch (const std::out_of_range & error)
 	{ }
@@ -190,10 +198,10 @@ X3DNotebook <Interface>::setPageDependent (const bool value)
 	pageDependent = value;
 
 	if (pageDependent)
-		this -> getCurrentBrowser () .addInterest (&X3DNotebook::set_browser, this);
+		getCurrentBrowser () .addInterest (&X3DNotebook::set_browser, this);
 
 	else
-		this -> getCurrentBrowser () .removeInterest (&X3DNotebook::set_browser, this);
+		getCurrentBrowser () .removeInterest (&X3DNotebook::set_browser, this);
 }
 
 template <class Interface>
@@ -211,15 +219,15 @@ std::shared_ptr <Type>
 X3DNotebook <Interface>::getPage (const std::string & name) const
 {
 	if (pageDependent)
-		return this -> getDependentPage <Type> (name);
+		return getDependentPage <Type> (name);
 
 	auto & page = const_cast <X3DNotebook*> (this) -> pages .at (name);
 
 	if (not page)
 	{
-		page = this -> createDialog (name);
-		page -> setName (this -> getName () + "." + page -> getName ());
-		page -> reparent (*boxes .at (name), this -> getWindow ());
+		page = createDialog (name);
+		page -> setName (getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), getWindow ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);
@@ -230,14 +238,14 @@ template <class Type>
 std::shared_ptr <Type>
 X3DNotebook <Interface>::getDependentPage (const std::string & name) const
 {
-	const bool exists = this -> getBrowserWindow () -> getCurrentPage () -> hasDialog (name);
+	const bool exists = getBrowserWindow () -> getCurrentPage () -> hasDialog (name);
 
-	auto page = this -> getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
+	auto page = getBrowserWindow () -> getCurrentPage () -> addDialog (name, false);
 
 	if (not exists)
 	{
-		page -> setName (this -> getName () + "." + page -> getName ());
-		page -> reparent (*boxes .at (name), this -> getWindow ());
+		page -> setName (getName () + "." + page -> getName ());
+		page -> reparent (*boxes .at (name), getWindow ());
 	}
 
 	return std::dynamic_pointer_cast <Type> (page);
@@ -250,7 +258,7 @@ X3DNotebook <Interface>::getCurrentPage () const
 {
 	try
 	{
-		const size_t currentPage = this -> getConfig () -> template getItem <int32_t> ("currentPage");
+		const size_t currentPage = getConfig () -> template getItem <int32_t> ("currentPage");
 
 		return getPage <Type> (userInterfaces .at (currentPage));
 	}
@@ -264,7 +272,7 @@ template <class Interface>
 void
 X3DNotebook <Interface>::set_browser ()
 {
-	on_switch_page (nullptr, this -> getConfig () -> template getItem <int32_t> ("currentPage"));
+	on_switch_page (nullptr, getConfig () -> template getItem <int32_t> ("currentPage"));
 }
 
 template <class Interface>
@@ -283,10 +291,10 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 		page -> getWidget () .set_visible (true);
 
 		if (pageDependent)
-			page -> reparent (*boxes .at (name), this -> getWindow ());
+			page -> reparent (*boxes .at (name), getWindow ());
 	}
 
-	this -> getConfig () -> template setItem <int32_t> ("currentPage", int (pageNumber));
+	getConfig () -> template setItem <int32_t> ("currentPage", int (pageNumber));
 }
 
 template <class Interface>

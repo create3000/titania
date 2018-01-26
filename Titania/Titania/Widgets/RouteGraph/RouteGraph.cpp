@@ -262,7 +262,7 @@ RouteGraph::on_deselect_all_activate ()
 void
 RouteGraph::on_close_page_activate ()
 {
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+	const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("Do you realy want to close logic »" + getCurrentPage () -> getPageName () + "«?"));

@@ -90,14 +90,14 @@ namespace puck {
 static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
-	 X3DBrowserWidget (defaultBrowser),
-	 executionContext (defaultBrowser -> getExecutionContext ()),
-	          editing (false),
-	        clipboard (defaultBrowser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
-	        selection (new BrowserSelection (getBrowserWindow ())),
-	    nudgeUndoStep (),
-	         undoTime (0),
-	             tool (NONE_TOOL)
+	X3DBrowserNotebook (defaultBrowser),
+	  executionContext (defaultBrowser -> getExecutionContext ()),
+	           editing (false),
+	         clipboard (defaultBrowser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
+	         selection (new BrowserSelection (getBrowserWindow ())),
+	     nudgeUndoStep (),
+	          undoTime (0),
+	              tool (NONE_TOOL)
 {
 	addChildObjects (executionContext,
 	                 editing,
@@ -109,7 +109,7 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
 void
 X3DBrowserEditor::initialize ()
 {
-	X3DBrowserWidget::initialize ();
+	X3DBrowserNotebook::initialize ();
 
 	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
 
@@ -144,7 +144,7 @@ X3DBrowserEditor::configure ()
 		getFollowPrimarySelectionAction () -> set_active (true);
 
 	// This must be done after.
-	X3DBrowserWidget::configure ();
+	X3DBrowserNotebook::configure ();
 }
 
 void
@@ -158,7 +158,7 @@ X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 		getCurrentPage () -> getUndoHistory () .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
 	}
 
-	X3DBrowserWidget::setPage (value);
+	X3DBrowserNotebook::setPage (value);
 
 	if (getCurrentPage ())
 	{
@@ -173,7 +173,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
 	const auto & browserOptions = getCurrentBrowser () -> getBrowserOptions ();
 
-	X3DBrowserWidget::setCurrentContext (value);
+	X3DBrowserNotebook::setCurrentContext (value);
 
 	if (getEditing ())
 		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
@@ -221,7 +221,7 @@ X3DBrowserEditor::set_executionContext ()
 void
 X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3DBrowserWidget::set_selection (selection);
+	X3DBrowserNotebook::set_selection (selection);
 
 	for (const auto & node : getSelection () -> getSelectGeometry () ? getSelection () -> getGeometries () : selection)
 	{
@@ -358,7 +358,7 @@ void
 X3DBrowserEditor::load (const basic::uri & URL)
 {
 	if (getCurrentPage () -> isSaved ())
-		X3DBrowserWidget::load (URL);
+		X3DBrowserNotebook::load (URL);
 }
 
 X3D::MFNode
@@ -410,7 +410,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 	setMetaData ();
 
 	// Save world
-	const bool saved = X3DBrowserWidget::save (getCurrentScene (), worldURL, outputStyle, copy);
+	const bool saved = X3DBrowserNotebook::save (getCurrentScene (), worldURL, outputStyle, copy);
 
 	if (saved)
 	{
@@ -427,7 +427,7 @@ void
 X3DBrowserEditor::reload ()
 {
 	if (getCurrentPage () -> isSaved ())
-		X3DBrowserWidget::reload ();
+		X3DBrowserNotebook::reload ();
 }
 
 void
@@ -436,7 +436,7 @@ X3DBrowserEditor::close (const NotebookPagePtr page)
 	getWidget () .grab_focus ();
 
 	if (page -> isSaved ())
-		X3DBrowserWidget::close (page);
+		X3DBrowserNotebook::close (page);
 }
 
 bool
@@ -458,7 +458,7 @@ X3DBrowserEditor::quit ()
 		return true;
 	}
 
-	return X3DBrowserWidget::quit ();
+	return X3DBrowserNotebook::quit ();
 }
 
 void
@@ -500,7 +500,7 @@ X3DBrowserEditor::redo ()
 void
 X3DBrowserEditor::set_undoHistory ()
 {
-	const auto & undoHistory = getCurrentPage () -> getUndoHistory () ;
+	const auto & undoHistory = getCurrentPage () -> getUndoHistory ();
 
 	if (undoHistory .hasUndo ())
 	{
@@ -836,7 +836,7 @@ X3DBrowserEditor::dispose ()
 	selection     .reset ();
 	nudgeUndoStep .reset ();
 
-	X3DBrowserWidget::dispose ();
+	X3DBrowserNotebook::dispose ();
 }
 
 X3DBrowserEditor::~X3DBrowserEditor ()

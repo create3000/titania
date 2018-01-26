@@ -434,7 +434,7 @@ X3DFileBrowser <Type>::transferFile (const TransferAction action,
 
 		if (destination -> query_exists ())
 		{
-			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+			const auto dialog = this -> template createDialog <MessageDialog> ("MessageDialog");
 			const auto folder = destination -> get_parent ();
 
 			dialog -> setType (Gtk::MESSAGE_QUESTION);
@@ -460,7 +460,7 @@ X3DFileBrowser <Type>::transferFile (const TransferAction action,
 		{
 			if (File::isSubfolder (destination, source))
 			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (createDialog ("MessageDialog"));
+				const auto dialog = this -> template createDialog <MessageDialog> ("MessageDialog");
 
 				dialog -> setType (Gtk::MESSAGE_ERROR);
 				dialog -> setMessage (_ ("You cannot copy or move a folder into itself!"));
