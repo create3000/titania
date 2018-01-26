@@ -73,14 +73,14 @@ Console::Console (X3DBrowserWindow* const browserWindow) :
 
 	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
 
-	setup ();
+	X3DConsoleInterface::setup ();
+	X3DConsole::setup ();
 }
 
 void
 Console::initialize ()
 {
 	X3DConsoleInterface::initialize ();
-	X3DConsole::initialize ();
 
 	set_enabled ();
 }

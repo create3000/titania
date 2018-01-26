@@ -61,6 +61,12 @@ class X3DConsole :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	void
+	setup () override;
+
 	///  @name Operations
 
 	void
@@ -86,10 +92,6 @@ protected:
 	///  @name Construction
 	
 	X3DConsole ();
-
-	virtual
-	void
-	initialize () override;
 
 	///  @name Member access
 

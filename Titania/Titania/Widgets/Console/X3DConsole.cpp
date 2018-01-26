@@ -61,7 +61,7 @@ X3DConsole::X3DConsole () :
 { }
 
 void
-X3DConsole::initialize ()
+X3DConsole::setup ()
 {
 	const auto redTag    = getTextBuffer () -> create_tag ("red");
 	const auto yellowTag = getTextBuffer () -> create_tag ("yellow");
@@ -119,6 +119,8 @@ X3DConsole::append (const Glib::ustring & string, const std::vector <Glib::ustri
 	// Insert.
 
 	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
+
+	std::clog << string << std::flush;
 
 	// Erase.
 

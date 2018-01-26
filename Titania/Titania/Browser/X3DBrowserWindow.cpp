@@ -137,8 +137,6 @@ X3DBrowserWindow::getOutlineTreeView () const
 std::shared_ptr <Console>
 X3DBrowserWindow::getConsole () const
 {
-__LOG__ << footer -> getPage <Console> ("Console") .get () << std::endl;
-
 	return footer -> getPage <Console> ("Console");
 }
 
