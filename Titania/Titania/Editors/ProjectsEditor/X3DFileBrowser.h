@@ -499,7 +499,7 @@ X3DFileBrowser <Type>::transferFile (const TransferAction action,
 						flags |= Gio::FILE_COPY_NOFOLLOW_SYMLINKS;
 
 					File::copyFile (source, destination, flags);
-					File::removeFile (source);
+					//File::removeFile (source);
 				}
 
 				on_file_changed (source, destination, Gio::FILE_MONITOR_EVENT_MOVED);
