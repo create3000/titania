@@ -92,6 +92,8 @@ Console::push (const std::string & tag, const std::string & string)
 
 	messages .emplace_back (tag);
 	messages .emplace_back (string);
+
+	getBrowser () -> queue_render ();
 }
 
 void
