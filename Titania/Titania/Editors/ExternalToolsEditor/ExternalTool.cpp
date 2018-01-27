@@ -321,15 +321,15 @@ ExternalTool::getEnvironment () const
 	{
 		const auto folder = file -> get_parent ();
 	
-		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_uri ());
-		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_uri ());
+		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_path ());
+		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_path ());
 	
 		for (const auto & projectPath : projects)
 		{
 			const auto project = Gio::File::create_for_path (projectPath);
 	
 			if (File::isSubfolder (folder, project))
-				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_uri ());
+				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_path ());
 		}
 	}
 
