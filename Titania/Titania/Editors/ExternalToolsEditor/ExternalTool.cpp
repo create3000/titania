@@ -284,7 +284,7 @@ ExternalTool::getEnvironment () const
 {
 	std::vector <std::string> environment = Pipe::getEnvironment ();
 
-	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsView");
+	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsEditor");
 
 	const auto projects = projectsEditor .getItem <X3D::MFString> ("projects");
 	const auto file     = Gio::File::create_for_uri (browserWindow -> getCurrentContext () -> getWorldURL ());
