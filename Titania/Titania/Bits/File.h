@@ -51,6 +51,8 @@
 #ifndef __TITANIA_BITS_CAIRO_H__
 #define __TITANIA_BITS_CAIRO_H__
 
+#include <Titania/Basic/URI.h>
+
 #include <giomm.h>
 
 namespace titania {
@@ -61,6 +63,10 @@ class File
 public:
 
 	///  @name Operations
+
+	static
+	basic::uri
+	getUri (const Glib::RefPtr <Gio::File> & file);
 
 	static
 	std::pair <std::string, bool>

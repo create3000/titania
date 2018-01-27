@@ -74,6 +74,12 @@ public:
 
 private:
 
+	///  @name Member access
+
+	const std::unique_ptr <BrowserWindow> &
+	getBrowserWindow () const
+	{ return browserWindow; }
+
 	///  @name Operations
 
 	void
@@ -93,9 +99,33 @@ private:
 	void
 	on_window_removed (Gtk::Window* window) final override;
 
+	///  @name DBus handling
+
+	void
+	dbus ();
+
+	void
+	on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & connection,
+	                const Glib::ustring & sender,
+	                const Glib::ustring & object_path,
+	                const Glib::ustring & interface_name,
+	                const Glib::ustring & method_name,
+	                const Glib::VariantContainerBase & parameters,
+	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
+
+	std::string
+	getSelection () const;
+
+	///  @name Static members
+
+	static const Glib::ustring introspectionXML;
+
 	///  @name Members
 
-	std::unique_ptr <BrowserWindow> browserWindow;
+	std::unique_ptr <BrowserWindow>    browserWindow;
+	Glib::RefPtr <Gio::DBus::NodeInfo> introspectionData;
+	const Gio::DBus::InterfaceVTable   interfaceVTable;
+	guint                              registeredId;
 
 };
 

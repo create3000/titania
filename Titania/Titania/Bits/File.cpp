@@ -55,6 +55,15 @@
 namespace titania {
 namespace puck {
 
+basic::uri
+File::getUri (const Glib::RefPtr <Gio::File> & file)
+{
+	if (file -> get_path () .empty ())
+		return file -> get_uri ();
+
+	return "file://" + file -> get_path ();
+}
+
 std::pair <std::string, bool>
 File::getContentType (const std::string & data)
 {
