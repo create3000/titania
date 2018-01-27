@@ -98,7 +98,7 @@ void
 ExternalTool::start ()
 {
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> getConsole () -> log ("Running tool »" + name + "«.\n");
+		browserWindow -> getConsole () -> log ("\nRunning tool »" + name + "«.\n");
 
 	saveScenes ();
 
@@ -321,15 +321,20 @@ ExternalTool::getEnvironment () const
 	{
 		const auto folder = file -> get_parent ();
 	
-		environment .emplace_back ("TITANIA_CURRENT_FOLDER=" + folder -> get_path ());
-		environment .emplace_back ("TITANIA_CURRENT_FILE="   + file -> get_path ());
-	
+		environment .emplace_back ("TITANIA_CURRENT_FOLDER="     + folder -> get_path ());
+		environment .emplace_back ("TITANIA_CURRENT_FOLDER_URI=" + folder -> get_uri ());
+		environment .emplace_back ("TITANIA_CURRENT_FILE="       + file   -> get_path ());
+		environment .emplace_back ("TITANIA_CURRENT_FILE_URI="   + file   -> get_uri ());
+
 		for (const auto & projectPath : projects)
 		{
 			const auto project = Gio::File::create_for_path (projectPath);
 	
 			if (File::isSubfolder (folder, project))
-				environment .emplace_back ("TITANIA_CURRENT_PROJECT=" + project -> get_path ());
+			{
+				environment .emplace_back ("TITANIA_CURRENT_PROJECT="     + project -> get_path ());
+				environment .emplace_back ("TITANIA_CURRENT_PROJECT_URI=" + project -> get_uri ());
+			}
 		}
 	}
 
