@@ -445,8 +445,6 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow, Gtk::
 		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 	
 		createMenu (browserWindow, worldInfo, "/Tools/Tree/children", &menuItem, menu);
-	
-		menuItem .show_all ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -470,12 +468,14 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 	{
 		menu = Gtk::manage (new Gtk::Menu ());
 		menuItem -> set_submenu (*menu);
+		menu -> show ();
 	}
 
 	const auto & worldUrl       = browserWindow -> getCurrentPage () -> getWorldURL ();
 	const auto & selection      = browserWindow -> getSelection () -> getNodes ();
 	const auto   separatorRegex = std::regex  (R"(^-*$)");
 	auto         separatorMatch = std::smatch ();
+	size_t       numChildren    = 0;
 
 	for (size_t i = 0, size = children .size (); i < size; ++ i)
 	{
@@ -531,14 +531,20 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 
 		menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::on_tool_activate), browserWindow, k));
 		menuItem -> set_name ("X3DExternalToolsEditor");
+		menuItem -> show ();
 
 		menu -> append (*menuItem);
+
+		++ numChildren;
 
 		if (separator)
 			continue;
 
 		createMenu (browserWindow, worldInfo, k + "/children", menuItem, nullptr);
 	}
+
+	if (numChildren == 0)
+		menuItem -> hide ();
 }
 
 void
