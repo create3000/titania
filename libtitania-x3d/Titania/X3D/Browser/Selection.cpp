@@ -153,12 +153,12 @@ Selection::setSelectGeometry (const bool value)
 	{
 		static const std::set <NodeType> geometryTypes = { X3DConstants::X3DGeometryNode };
 
-		ContextLock lock (getBrowser ());
-
 		if (value == selectGeometry)
 			return;
-	
+
 		selectGeometry = value;
+	
+		ContextLock lock (getBrowser ());
 
 		if (selectGeometry)
 		{

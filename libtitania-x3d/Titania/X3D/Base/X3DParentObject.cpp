@@ -178,13 +178,6 @@ X3DParentObject::addEventObject (X3DChildObject* const object)
 void
 X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & event)
 {
-//try
-//{
-// 	__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
-//}
-//catch (...)
-//{ }
-
 	browser -> addEvent ();
 
 	// Register for processEvent

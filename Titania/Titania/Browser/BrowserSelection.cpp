@@ -131,10 +131,9 @@ BrowserSelection::set_browser ()
 		selection -> getSelectLowest ()   .addInterest (selectLowest);
 		selection -> getSelectGeometry () .addInterest (selectGeometry);
 
-		selection -> getTouchTime ()  .addInterest (touchTime);
-		selection -> getNodes ()      .addInterest (nodes);
-		selection -> getGeometries () .addInterest (geometryNodes);
-		selection -> getHierarchy ()  .addInterest (hierarchy);
+		// Do not connect nodes, otherwise double events will be occure because of tool handling.
+		selection -> getTouchTime () .addInterest (touchTime);
+		selection -> getHierarchy () .addInterest (hierarchy);
 
 		nodes         = selection -> getNodes ();
 		geometryNodes = selection -> getGeometries ();
@@ -152,10 +151,6 @@ BrowserSelection::set_execution_context ()
 		const auto current        = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 		// Set selection.
-
-		// Note: setNodes triggers a set_nodes event, which we do not need if scene changes.
-		nodes .removeInterest (&BrowserSelection::set_nodes, this);
-		nodes .addInterest (&BrowserSelection::connectNodes, this);
 
 		setNodes (current);
 		setSelectGeometry (selectGeometry);
@@ -188,30 +183,36 @@ BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 void
 BrowserSelection::setEnabled (const bool value)
 {
-	enabled = value;
 	browser -> setSelectable (value);
+	enabled .set (value);
 }
 
 void
 BrowserSelection::setSelectMultiple (const bool value)
 {
-	selectMultiple = value;
 	browser -> getSelection () -> setSelectMultiple (value);
+	selectMultiple .set (value);
 }
 
 void
 BrowserSelection::setSelectLowest (const bool value)
 {
-	selectLowest = value;
 	browser -> getSelection () -> setSelectLowest (value);
+	selectLowest .set (value);
 }
 
 void
 BrowserSelection::setSelectGeometry (const bool value)
 {
-	selectGeometry = value;
-	browser -> getSelection () -> setSelectGeometry (value);
-	createWorldInfo (getCurrentScene ()) -> setMetaData ("/Titania/Selection/selectGeometry", selectGeometry);
+	const auto & selection = browser -> getSelection ();
+
+	createWorldInfo (getCurrentScene ()) -> setMetaData ("/Titania/Selection/selectGeometry", value);
+
+	selection -> setSelectGeometry (value);
+	selectGeometry .set (value);
+
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 bool
@@ -228,8 +229,8 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 	selection -> setSelectGeometry (false);
 	selection -> addNodes (filterSelection (value));
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -240,8 +241,8 @@ BrowserSelection::removeNodes (const X3D::MFNode & value)
 	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -252,8 +253,8 @@ BrowserSelection::clearNodes ()
 	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -264,8 +265,8 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 	selection -> setSelectGeometry (false);
 	selection -> setNodes (filterSelection (value));
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 X3D::MFNode
@@ -298,8 +299,8 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	selection -> setSelectGeometry (false);
 	selection -> addNodes (filtered);
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -315,8 +316,8 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -332,8 +333,8 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void
@@ -350,8 +351,8 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	selection -> setSelectGeometry (false);
 	selection -> setNodes (filtered);
 
-	// We must immediately call set_nodes to to remove from meta data to lower clone count.
-	set_nodes (selection -> getNodes ());
+	nodes         = selection -> getNodes ();
+	geometryNodes = selection -> getGeometries ();
 }
 
 void

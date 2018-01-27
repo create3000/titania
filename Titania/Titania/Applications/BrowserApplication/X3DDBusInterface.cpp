@@ -90,10 +90,7 @@ X3DDBusInterface::realize ()
 		introspectionData = Gio::DBus::NodeInfo::create_for_xml (introspectionXML);
       registeredId      = get_dbus_connection () -> register_object ("/de/create3000/titania", introspectionData -> lookup_interface (), interfaceVTable);
 
-		__LOG__ << get_id () << std::endl;
-		__LOG__ << get_dbus_object_path () << std::endl;
-		__LOG__ << is_registered () << std::endl;
-		__LOG__ << registeredId << std::endl;
+		getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DDBusInterface::set_selection, this);
 	}
 	catch (const Glib::Error & error)
 	{
@@ -110,15 +107,13 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
                                   const Glib::VariantContainerBase & parameters,
                                   const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation)
 {
-	__LOG__ << method_name << std::endl;
-
 	try
 	{
 		using namespace std::placeholders;
 
-		using Callback = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
+		using Method = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
 
-		static const std::map <std::string, Callback> functions = {
+		static const std::map <std::string, Method> functions = {
 			std::make_pair ("GetSelection", std::bind (&X3DDBusInterface::getSelection, this, _1, _2)),
 		};
 
@@ -131,6 +126,14 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 
 		invocation -> return_error (error);
 	}
+}
+
+void
+X3DDBusInterface::set_selection ()
+{
+	__LOG__ << std::endl;
+
+	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "SelectionChanged");
 }
 
 void

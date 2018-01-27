@@ -58,6 +58,7 @@ namespace puck {
 
 X3DBrowserApplication::X3DBrowserApplication () :  
 	 Gtk::Application (),
+	    X3D::X3DInput (),
 	    browserWindow ()
 { }
 

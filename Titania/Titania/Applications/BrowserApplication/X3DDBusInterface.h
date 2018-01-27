@@ -92,6 +92,9 @@ private:
 	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
 
 	void
+	set_selection ();
+
+	void
 	getSelection (const Glib::VariantContainerBase & parameters,
 	              const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const;
 
