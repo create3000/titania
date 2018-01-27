@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,58 +48,98 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_APPLICATION_H__
-#define __TITANIA_BROWSER_BROWSER_APPLICATION_H__
+#include "BrowserApplication.h"
 
-#include <gtkmm.h>
+#include "../Browser/BrowserWindow.h"
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class BrowserApplication :
-	public Gtk::Application
+BrowserApplication::BrowserApplication (int & argc, char** & argv) :
+	Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
+	   browserWindow ()
 {
-public:
+	Glib::set_application_name ("Titania");
+}
 
-	///  @name Construction
+int
+BrowserApplication::main (int argc, char** argv)
+{
+	#ifdef TITANIA_DEBUG
+	std::clog
+		<< std::boolalpha
+		<< "Titania started ..." << std::endl
+		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
+		<< std::endl;
+	#endif
 
-	BrowserApplication (int & argc, char** & argv);
+	{ BrowserApplication (argc, argv) .run (); }
 
-	static
-	int
-	main (int argc, char** argv);
+	#ifdef TITANIA_DEBUG
+	std::clog
+		<< std::endl
+		<< "Titania finished." << std::endl;
+	#endif
 
+	return 0;
+}
 
-private:
+///  @name Operations
 
-	///  @name Operations
+void
+BrowserApplication::realize ()
+{
+	if (browserWindow)
+		return;
 
-	void
+	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
+
+	add_window (browserWindow -> getWindow ());
+
+	browserWindow -> present ();
+}
+
+///  @name Event handlers
+
+void
+BrowserApplication::on_activate ()
+{
+	if (browserWindow)
+	{
+		browserWindow -> blank ();
+		browserWindow -> present ();
+	}
+	else
+	{
+		realize ();
+	}
+}
+
+void
+BrowserApplication::on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint)
+{
 	realize ();
 
-	///  @name Event handlers
+	for (const auto & file : files)
+	{
+		if (file -> get_path () .empty ())
+			browserWindow -> open (file -> get_uri ());
+		else
+			browserWindow -> open ("file://" + file -> get_path ());
+	}
 
-	virtual
-	void
-	on_activate () final override;
+	browserWindow -> present ();
 
-	virtual
-	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override;
+	//Call the base class's implementation:
+	Gtk::Application::on_open (files, hint);
+}
 
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final override;
-
-	///  @name Members
-
-	std::unique_ptr <BrowserWindow> browserWindow;
-
-};
+void
+BrowserApplication::on_window_removed (Gtk::Window* window)
+{
+	quit ();
+}
 
 } // puck
 } // titania
-
-#endif

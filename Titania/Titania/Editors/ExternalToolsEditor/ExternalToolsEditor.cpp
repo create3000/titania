@@ -58,6 +58,11 @@
 namespace titania {
 namespace puck {
 
+// Implement icon for menu items, related functions:
+// const auto iconTheme = Gtk::IconTheme::get_default ();
+// const auto contexts  = iconTheme -> list_contexts ();
+// const auto iconNames = iconTheme -> list_icons (contexts [i]);
+
 const std::map <std::string, int32_t> ExternalToolsEditor::saveTypes = {
 	std::make_pair ("NOTHING",       0),
 	std::make_pair ("CURRENT_SCENE", 1),

@@ -53,6 +53,7 @@
 
 #include "../Base/X3DBaseInterface.h"
 #include "../Configuration/Configuration.h"
+
 #include <gtkmm.h>
 #include <string>
 

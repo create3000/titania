@@ -111,6 +111,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Base/X3DUserInterface.$(OBJEXT) \
 	Titania/Bits/Cairo.$(OBJEXT) Titania/Bits/File.$(OBJEXT) \
 	Titania/Bits/Pipe.$(OBJEXT) Titania/Bits/String.$(OBJEXT) \
+	Titania/Browser/BrowserApplication.$(OBJEXT) \
 	Titania/Browser/BrowserHistory.$(OBJEXT) \
 	Titania/Browser/BrowserSelection.$(OBJEXT) \
 	Titania/Browser/BrowserWindow.$(OBJEXT) \
@@ -660,6 +661,7 @@ titania_SOURCES = \
 	Titania/Bits/File.cpp \
 	Titania/Bits/Pipe.cpp \
 	Titania/Bits/String.cpp \
+	Titania/Browser/BrowserApplication.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -1105,6 +1107,9 @@ Titania/Browser/$(am__dirstamp):
 Titania/Browser/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Browser/$(DEPDIR)
 	@: > Titania/Browser/$(DEPDIR)/$(am__dirstamp)
+Titania/Browser/BrowserApplication.$(OBJEXT):  \
+	Titania/Browser/$(am__dirstamp) \
+	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/BrowserHistory.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
@@ -2423,6 +2428,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/File.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/Pipe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Bits/$(DEPDIR)/String.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserApplication.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserHistory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserWindow.Po@am__quote@
