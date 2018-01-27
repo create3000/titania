@@ -76,7 +76,7 @@ const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::inputEncodings = {
-	std::make_pair ("X3D",  0),
+	std::make_pair ("XML",  0),
 	std::make_pair ("VRML", 1),
 	std::make_pair ("JSON", 2),
 };
@@ -461,7 +461,7 @@ ExternalToolsEditor::on_input_format_changed ()
 	}
 	catch (const std::out_of_range & error)
 	{
-		setInputEncoding (iter, "X3D");
+		setInputEncoding (iter, "XML");
 	}
 
 	saveTree ();

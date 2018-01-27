@@ -266,42 +266,14 @@ ExternalTool::getInput () const
 {
 	if (inputType == "CURRENT_SCENE")
 	{
-		const auto & scene = browserWindow -> getCurrentScene ();
-
-		// Write scene to stdin of tool.
-
-		if (inputEncoding == "VRML")
-			return scene -> toString ();
-		else if (inputEncoding == "JSON")
-			return scene -> toJSONString ();
-		else
-			return scene -> toXMLString ();
+		return X3D::X3DEditor::exportScene ( browserWindow -> getCurrentScene (), inputEncoding);
 	}
 	else if (inputType == "SELECTION")
 	{
 		const auto & selection        = browserWindow -> getSelection () -> getNodes ();
-		const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
+		const auto & executionContext = browserWindow -> getCurrentContext ();
 
-		// Export nodes to stream
-
-		std::ostringstream osstream;
-
-		X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
-
-		basic::ifilestream stream (osstream .str ());
-	
-		const auto scene = browserWindow -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
-	
-		scene -> addMetaData ("titania-add-metadata", "true");
-
-		// Write scene to stdin of tool.
-
-		if (inputEncoding == "VRML")
-			return scene -> toString ();
-		else if (inputEncoding == "JSON")
-			return scene -> toJSONString ();
-		else
-			return scene -> toXMLString ();
+		return X3D::X3DEditor::exportNodes (executionContext, selection, inputEncoding, false);
 	}
 
 	return "";

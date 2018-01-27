@@ -106,11 +106,11 @@ public:
 
 	static
 	std::string
-	exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier);
+	exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const std::string & encoding, const bool identifier);
 
 	static
-	void
-	exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier);
+	std::string
+	exportScene (const X3D::X3DScenePtr & scene, const std::string & encoding);
 
 	///  @name Prototype handling
 

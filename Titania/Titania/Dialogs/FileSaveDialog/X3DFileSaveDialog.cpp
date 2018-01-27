@@ -258,11 +258,9 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 	               X3D::TRAVERSE_PROTO_DECLARATION_BODY |
 	               X3D::TRAVERSE_ROOT_NODES);
 
-	// Export nodes to stream
+	// Export nodes to string
 
-	std::ostringstream osstream;
-
-	X3D::X3DEditor::exportNodes (osstream, getCurrentContext (), nodes, false);
+	const auto string = X3D::X3DEditor::exportNodes (getCurrentContext (), nodes, "XML", false);
 
 	// Undo url change in protos
 
@@ -270,9 +268,11 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 
 	// Save scene
 
-	basic::ifilestream stream (osstream .str ());
+	const auto browser = X3D::createBrowser ();
 
-	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
+	browser -> setLoadUrlObjects (false);
+
+	const auto scene = browser -> createX3DFromString (string);
 
 	scene -> addMetaData ("titania-add-metadata", "true");
 

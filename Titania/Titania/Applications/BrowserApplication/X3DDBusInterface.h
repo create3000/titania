@@ -91,8 +91,9 @@ private:
 	                const Glib::VariantContainerBase & parameters,
 	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
 
-	std::string
-	getSelection (const std::string & encoding) const;
+	void
+	getSelection (const Glib::VariantContainerBase & parameters,
+	              const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const;
 
 	///  @name Static members
 

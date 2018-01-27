@@ -103,7 +103,7 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
 	                 editing,
 	                 clipboard);
 
-	clipboard -> target () = "model/x3d+vrml";
+	clipboard -> target () = "model/x3d+xml";
 }
 
 void
@@ -582,8 +582,6 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & exec
 
 	X3D::X3DEditor::removeNodesFromScene (executionContext, nodes, removeFromSceneGraph, undoStep);
 }
-
-// Undo functions
 
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool)

@@ -185,9 +185,7 @@ ModelsPalette::createScene (const X3D::X3DScenePtr & scene, const std::string & 
 
 	// Export nodes to stream
 
-	std::stringstream sstream;
-
-	X3D::X3DEditor::exportNodes (sstream, getCurrentContext (), selection, false);
+	std::stringstream sstream (X3D::X3DEditor::exportNodes (getCurrentContext (), selection, "VRML", false));
 
 	// Undo url change in protos and selection
 

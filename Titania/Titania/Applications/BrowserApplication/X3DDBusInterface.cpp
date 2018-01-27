@@ -112,43 +112,42 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 {
 	__LOG__ << method_name << std::endl;
 
-	if (method_name == "GetSelection")
+	try
 	{
-		Glib::Variant <Glib::ustring> encoding;
+		using namespace std::placeholders;
 
-		parameters .get_child (encoding, 0);
+		using Callback = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
 
-		const auto x3dSyntaxVar = Glib::Variant <Glib::ustring>::create (getSelection (encoding .get ()));
-		const auto response     = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
-		
-		invocation -> return_value (response);
+		static const std::map <std::string, Callback> functions = {
+			std::make_pair ("GetSelection", std::bind (&X3DDBusInterface::getSelection, this, _1, _2)),
+		};
+
+		functions .at (method_name) (parameters, invocation);
+	}
+	catch (const std::out_of_range &)
+	{
+		// Non-existent method on the interface.
+		Gio::DBus::Error error (Gio::DBus::Error::UNKNOWN_METHOD, "Method does not exist.");
+
+		invocation -> return_error (error);
 	}
 }
 
-std::string
-X3DDBusInterface::getSelection (const std::string & encoding) const
+void
+X3DDBusInterface::getSelection (const Glib::VariantContainerBase & parameters,
+                                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const
 {
+	Glib::Variant <Glib::ustring> encoding;
+
+	parameters .get_child (encoding, 0);
+
+	const auto & executionContext = getBrowserWindow () -> getCurrentContext ();
 	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-
-	// Export nodes to stream
-
-	std::ostringstream osstream;
-
-	X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
-
-	basic::ifilestream stream (osstream .str ());
-
-	const auto scene = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
-
-	scene -> addMetaData ("titania-add-metadata", "true");
-
-	if (encoding == "VRML")
-		return scene -> toString ();
-	else if (encoding == "JSON")
-		return scene -> toJSONString ();
-
-	return scene -> toXMLString ();
+	const auto   x3dSyntax        = X3D::X3DEditor::exportNodes (executionContext, selection, encoding .get (), false);
+	const auto   x3dSyntaxVar     = Glib::Variant <Glib::ustring>::create (x3dSyntax);
+	const auto   response         = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
+	
+	invocation -> return_value (response);
 }
 
 X3DDBusInterface::~X3DDBusInterface ()

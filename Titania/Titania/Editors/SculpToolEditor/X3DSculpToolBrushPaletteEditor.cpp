@@ -198,9 +198,7 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene, con
 
 		// Export brush to stream
 
-		std::stringstream sstream;
-	
-		X3D::X3DEditor::exportNodes (sstream, X3D::X3DExecutionContextPtr (brush [0] -> getExecutionContext ()), brush, true);
+		std::stringstream sstream (X3D::X3DEditor::exportNodes (X3D::X3DExecutionContextPtr (brush [0] -> getExecutionContext ()), brush, "VRML", true));
 	
 		// Parse exported nodes into scene.
 	

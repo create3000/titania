@@ -52,6 +52,7 @@
 
 #include "X3DEditor.h"
 
+#include "../../X3D.h"
 #include "../Bits/Traverse.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Browser/X3DBrowser.h"
@@ -345,7 +346,7 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 
 	// Set clipboard text
 
-	const auto string = exportNodes (executionContext, nodes, true);
+	const auto string = exportNodes (executionContext, nodes, "XML", true);
 
 	// Remove nodes
 
@@ -365,7 +366,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 
 	// Set clipboard text
 
-	const auto string = exportNodes (executionContext, nodes, true);
+	const auto string = exportNodes (executionContext, nodes, "XML", true);
 
 	// Undo detach from group
 
@@ -377,7 +378,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 MFNode
 X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3DExecutionContextPtr & destContext, const MFNode & nodes, const UndoStepPtr &)
 {
-	basic::ifilestream text (exportNodes (sourceContext, nodes, true));
+	basic::ifilestream text (exportNodes (sourceContext, nodes, "XML", true));
 
 	const auto scene         = destContext -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
 	const auto importedNodes = destContext -> import (scene);
@@ -386,18 +387,17 @@ X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3
 }
 
 std::string
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier)
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const std::string & encoding, const bool identifier)
 {
+	const auto browser = createBrowser ();
+
+	browser -> setLoadUrlObjects (false);
+
+	if (nodes .empty ())
+		return exportScene (browser -> createScene (), encoding);
+
 	std::ostringstream osstream;
 
-	exportNodes (osstream, executionContext, nodes, identifier);
-
-	return osstream .str ();
-}
-
-void
-X3DEditor::exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier)
-{
 	// Find proto declarations
 
 	const auto protoNodes = getUsedPrototypes (executionContext, nodes);
@@ -405,45 +405,65 @@ X3DEditor::exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & e
 
 	// Generate text
 
-	ostream .imbue (std::locale::classic ());
+	osstream .imbue (std::locale::classic ());
 
-	ostream
+	osstream
 		<< "#" << LATEST_VERSION << " utf8 " << executionContext -> getBrowser () -> getName ()
 		<< std::endl
 		<< std::endl;
 
 	if (identifier)
 	{
-		ostream
+		osstream
 			<< "META \"titania-identifier\" " << SFString (executionContext -> getWorldURL () .str ())
 			<< std::endl
 			<< std::endl;
 	}
 
-	Generator::CompactStyle (ostream);
-	Generator::EnterScope (ostream);
-	Generator::Units (ostream, false);
+	Generator::CompactStyle (osstream);
+	Generator::EnterScope (osstream);
+	Generator::Units (osstream, false);
 
 	if (not protoNodes .empty ())
 	{
 		for (const auto & protoNode : protoNodes)
-			ostream << protoNode << std::endl;
+			osstream << protoNode << std::endl;
 
-		ostream << std::endl;
+		osstream << std::endl;
 	}
 
 	for (const auto & node : nodes)
-		ostream << node << std::endl;
+		osstream << node << std::endl;
 
 	if (not routes .empty ())
 	{
-		ostream << std::endl;
+		osstream << std::endl;
 
 		for (const auto & route : routes)
-			ostream << *route << std::endl;
+			osstream << *route << std::endl;
 	}
 
-	Generator::LeaveScope (ostream);
+	Generator::LeaveScope (osstream);
+
+	// Convert to encoding.
+
+	basic::ifilestream stream (osstream .str ());
+
+	const auto scene = browser -> createX3DFromStream (executionContext -> getWorldURL (), stream);
+
+	return exportScene (scene, encoding);
+}
+
+std::string
+X3DEditor::exportScene (const X3D::X3DScenePtr & scene, const std::string & encoding)
+{
+	if (encoding == "VRML")
+		return scene -> toString ();
+
+	else if (encoding == "JSON")
+		return scene -> toJSONString ();
+
+	return scene -> toXMLString ();
 }
 
 std::vector <X3DProtoDeclarationNodePtr>
@@ -1503,11 +1523,7 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 
 	// Import proto and all what is needed.
 
-	std::stringstream sstream;
-
-	exportNodes (sstream, internalScene, { prototype }, false);
-
-	basic::ifilestream ifstream (sstream .str ());
+	basic::ifilestream ifstream (exportNodes (internalScene, { prototype }, "XML", false));
 
 	const auto scene         = browser -> createX3DFromStream (internalScene -> getWorldURL (), ifstream);
 	const auto importedNodes = importScene (executionContext, scene, undoStep);
