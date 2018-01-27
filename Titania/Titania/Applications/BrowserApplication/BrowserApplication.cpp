@@ -51,35 +51,16 @@
 #include "BrowserApplication.h"
 
 #include "../../Bits/File.h"
-#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
-
-#include <Titania/X3D/Editing/X3DEditor.h>
 
 namespace titania {
 namespace puck {
 
-const Glib::ustring BrowserApplication::introspectionXML =
-"<node>"
-"  <interface name='de.create3000.titania'>"
-"    <method name='GetSelection'>"
-"      <arg type='s' name='encoding' direction='in'/>"
-"      <arg type='s' name='x3dSyntax' direction='out'/>"
-"    </method>"
-"    <method name='ReplaceSelection'>"
-"      <arg type='s' name='x3dSyntax' direction='in'/>"
-"    </method>"
-"    <signal name='SelectionChanged'></signal>"
-"  </interface>"
-"</node>";
-
 BrowserApplication::BrowserApplication (int & argc, char** & argv) :
-	 Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
-	    browserWindow (),
-	introspectionData (),
-	  interfaceVTable (sigc::mem_fun (this, &BrowserApplication::on_method_call)),
-	     registeredId (0)
+	     Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
+	X3DBrowserApplication (),
+	     X3DDBusInterface ()
 {
 	Glib::set_application_name ("Titania");
 }
@@ -106,44 +87,16 @@ BrowserApplication::main (int argc, char** argv)
 	return 0;
 }
 
-///  @name Operations
-
 void
 BrowserApplication::realize ()
 {
-	if (browserWindow)
-		return;
-
-	dbus ();
-
-	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
-
-	add_window (browserWindow -> getWindow ());
-
-	browserWindow -> present ();
-}
-
-///  @name Event handlers
-
-void
-BrowserApplication::on_activate ()
-{
-	if (getBrowserWindow ())
-	{
-		getBrowserWindow () -> blank ();
-		getBrowserWindow () -> present ();
-	}
-	else
-	{
-		realize ();
-	}
+	X3DBrowserApplication::realize ();
+	X3DDBusInterface::realize ();
 }
 
 void
 BrowserApplication::on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint)
 {
-	realize ();
-
 	for (const auto & file : files)
 		getBrowserWindow () -> open (File::getUri (file));
 
@@ -159,83 +112,8 @@ BrowserApplication::on_window_removed (Gtk::Window* window)
 	quit ();
 }
 
-/***********************************************************************************************************************
- *
- *  DBus handling
- *
- ***********************************************************************************************************************/
-
-void
-BrowserApplication::dbus ()
-{
-	try
-	{
-		if (not get_dbus_connection ())
-			return;
-
-		introspectionData = Gio::DBus::NodeInfo::create_for_xml (introspectionXML);
-      registeredId      = get_dbus_connection () -> register_object ("/de/create3000/titania", introspectionData -> lookup_interface (), interfaceVTable);
-
-		__LOG__ << get_id () << std::endl;
-		__LOG__ << get_dbus_object_path () << std::endl;
-		__LOG__ << is_registered () << std::endl;
-		__LOG__ << registeredId << std::endl;
-	}
-	catch (const Glib::Error & error)
-	{
-		std::cerr << "Titania: Registration of DBus object failed: " << error .what () << "." << std::endl;
-	}
-}
-
-void
-BrowserApplication::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & connection,
-                                    const Glib::ustring & sender,
-                                    const Glib::ustring & object_path,
-                                    const Glib::ustring & interface_name,
-                                    const Glib::ustring & method_name,
-                                    const Glib::VariantContainerBase & parameters,
-                                    const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation)
-{
-	__LOG__ << method_name << std::endl;
-
-	if (method_name == "GetSelection")
-	{
-		Glib::Variant <Glib::ustring> encoding;
-
-		parameters .get_child (encoding, 0);
-
-		const auto x3dSyntaxVar = Glib::Variant <Glib::ustring>::create (getSelection (encoding .get ()));
-		const auto response     = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
-		
-		invocation -> return_value (response);
-	}
-}
-
-std::string
-BrowserApplication::getSelection (const std::string & encoding) const
-{
-	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
-	const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-
-	// Export nodes to stream
-
-	std::ostringstream osstream;
-
-	X3D::X3DEditor::exportNodes (osstream, executionContext, selection, false);
-
-	basic::ifilestream stream (osstream .str ());
-
-	const auto scene = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
-
-	scene -> addMetaData ("titania-add-metadata", "true");
-
-	if (encoding == "VRML")
-		return scene -> toString ();
-	else if (encoding == "JSON")
-		return scene -> toJSONString ();
-
-	return scene -> toXMLString ();
-}
+BrowserApplication::~BrowserApplication ()
+{ }
 
 } // puck
 } // titania

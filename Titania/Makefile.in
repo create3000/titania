@@ -103,6 +103,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.$(OBJEXT) \
+	Titania/Applications/BrowserApplication/X3DBrowserApplication.$(OBJEXT) \
+	Titania/Applications/BrowserApplication/X3DDBusInterface.$(OBJEXT) \
 	Titania/Applications/main/main.$(OBJEXT) \
 	Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Base/X3DDialogInterface.$(OBJEXT) \
@@ -651,6 +653,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 titania_SOURCES = \
 	Titania/Applications/BrowserApplication/BrowserApplication.cpp \
+	Titania/Applications/BrowserApplication/X3DBrowserApplication.cpp \
+	Titania/Applications/BrowserApplication/X3DDBusInterface.cpp \
 	Titania/Applications/main/main.cpp \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
@@ -1070,6 +1074,12 @@ Titania/Applications/BrowserApplication/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Applications/BrowserApplication/$(DEPDIR)
 	@: > Titania/Applications/BrowserApplication/$(DEPDIR)/$(am__dirstamp)
 Titania/Applications/BrowserApplication/BrowserApplication.$(OBJEXT):  \
+	Titania/Applications/BrowserApplication/$(am__dirstamp) \
+	Titania/Applications/BrowserApplication/$(DEPDIR)/$(am__dirstamp)
+Titania/Applications/BrowserApplication/X3DBrowserApplication.$(OBJEXT):  \
+	Titania/Applications/BrowserApplication/$(am__dirstamp) \
+	Titania/Applications/BrowserApplication/$(DEPDIR)/$(am__dirstamp)
+Titania/Applications/BrowserApplication/X3DDBusInterface.$(OBJEXT):  \
 	Titania/Applications/BrowserApplication/$(am__dirstamp) \
 	Titania/Applications/BrowserApplication/$(DEPDIR)/$(am__dirstamp)
 Titania/Applications/main/$(am__dirstamp):
@@ -2425,6 +2435,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserApplication.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Applications/BrowserApplication/$(DEPDIR)/X3DBrowserApplication.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Applications/BrowserApplication/$(DEPDIR)/X3DDBusInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Applications/main/$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DBaseInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DDialogInterface.Po@am__quote@

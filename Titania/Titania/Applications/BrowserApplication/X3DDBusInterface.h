@@ -48,52 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_APPLICATIONS_BROWSER_APPLICATION_BROWSER_APPLICATION_H__
-#define __TITANIA_APPLICATIONS_BROWSER_APPLICATION_BROWSER_APPLICATION_H__
+#ifndef __TITANIA_APPLICATIONS_BROWSER_APPLICATION_DBUS_INTERFACE_H__
+#define __TITANIA_APPLICATIONS_BROWSER_APPLICATION_DBUS_INTERFACE_H__
 
 #include "X3DBrowserApplication.h"
-#include "X3DDBusInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserApplication :
-	virtual public X3DBrowserApplication,
-	public X3DDBusInterface
+class X3DDBusInterface :
+	virtual public X3DBrowserApplication
 {
 public:
-
-	///  @name Construction
-
-	BrowserApplication (int & argc, char** & argv);
-
-	static
-	int
-	main (int argc, char** argv);
 
 	///  @name Destruction
 
 	virtual
-	~BrowserApplication () override;
+	~X3DDBusInterface () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DDBusInterface ();
+
+	virtual
+	void
+	realize () override;
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	realize () final override;
-
 	///  @name Event handlers
 
-	virtual
 	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override;
+	on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & connection,
+	                const Glib::ustring & sender,
+	                const Glib::ustring & object_path,
+	                const Glib::ustring & interface_name,
+	                const Glib::ustring & method_name,
+	                const Glib::VariantContainerBase & parameters,
+	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
 
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final override;
+	std::string
+	getSelection (const std::string & encoding) const;
+
+	///  @name Static members
+
+	static const Glib::ustring introspectionXML;
+
+	///  @name Members
+
+	Glib::RefPtr <Gio::DBus::NodeInfo> introspectionData;
+	const Gio::DBus::InterfaceVTable   interfaceVTable;
+	guint                              registeredId;
 
 };
 

@@ -6,6 +6,8 @@ bin_PROGRAMS =  \
 
 titania_SOURCES =  \
 	Titania/Applications/BrowserApplication/BrowserApplication.cpp \
+	Titania/Applications/BrowserApplication/X3DBrowserApplication.cpp \
+	Titania/Applications/BrowserApplication/X3DDBusInterface.cpp \
 	Titania/Applications/main/main.cpp \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \

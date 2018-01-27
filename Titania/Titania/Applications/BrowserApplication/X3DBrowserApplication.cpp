@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,56 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_APPLICATIONS_BROWSER_APPLICATION_BROWSER_APPLICATION_H__
-#define __TITANIA_APPLICATIONS_BROWSER_APPLICATION_BROWSER_APPLICATION_H__
+#include "BrowserApplication.h"
 
-#include "X3DBrowserApplication.h"
-#include "X3DDBusInterface.h"
+#include "../../Browser/BrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserApplication :
-	virtual public X3DBrowserApplication,
-	public X3DDBusInterface
+X3DBrowserApplication::X3DBrowserApplication () :  
+	 Gtk::Application (),
+	    browserWindow ()
+{ }
+
+const std::shared_ptr <BrowserWindow> &
+X3DBrowserApplication::getBrowserWindow () const
 {
-public:
+	const_cast <X3DBrowserApplication*> (this) -> realize ();
 
-	///  @name Construction
+	return browserWindow;
+}
 
-	BrowserApplication (int & argc, char** & argv);
+void
+X3DBrowserApplication::realize ()
+{
+	if (browserWindow)
+		return;
 
-	static
-	int
-	main (int argc, char** argv);
+	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
 
-	///  @name Destruction
+	add_window (browserWindow -> getWindow ());
 
-	virtual
-	~BrowserApplication () override;
+	browserWindow -> present ();
+}
 
+void
+X3DBrowserApplication::on_activate ()
+{
+	if (browserWindow)
+	{
+		browserWindow -> blank ();
+		browserWindow -> present ();
+	}
+	else
+	{
+		realize ();
+	}
+}
 
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	realize () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override;
-
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final override;
-
-};
+X3DBrowserApplication::~X3DBrowserApplication ()
+{ }
 
 } // puck
 } // titania
-
-#endif
