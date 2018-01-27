@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#include "Commands/CommandOptions.h"
-#include "Commands/ExportImage.h"
-#include "Commands/Info.h"
-#include "Commands/Tidy.h"
-#include "Browser/BrowserApplication.h"
+#include "../../Applications/BrowserApplication/BrowserApplication.h"
+#include "../../Applications/ExportImage/ExportImage.h"
+#include "../../Applications/Info/Info.h"
+#include "../../Applications/main/CommandOptions.h"
+#include "../../Applications/Tidy/Tidy.h"
 
 int
 main (int argc, char** argv)

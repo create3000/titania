@@ -29,7 +29,7 @@
 #ifndef __TITANIA_COMMANDS_INFO_H__
 #define __TITANIA_COMMANDS_INFO_H__
 
-#include "CommandOptions.h"
+#include "../../Applications/main/CommandOptions.h"
 
 #include <Titania/X3D.h>
 

@@ -68,7 +68,6 @@
     <WarningLevel>All</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Titania\main.cpp" />
     <Compile Include="Titania\Configuration\config.cpp" />
     <Compile Include="Titania\Configuration\Configuration.cpp" />
     <Compile Include="Titania\Base\X3DBaseInterface.cpp" />
@@ -370,7 +369,8 @@
     <Compile Include="Titania\Editors\ProjectsEditor\FileView.cpp" />
     <Compile Include="Titania\Widgets\Console\X3DConsole.cpp" />
     <Compile Include="Titania\Browser\X3DBrowserNotebook.cpp" />
-    <Compile Include="Titania\Browser\BrowserApplication.cpp" />
+    <Compile Include="Titania\Applications\main\main.cpp" />
+    <Compile Include="Titania\Applications\BrowserApplication\BrowserApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2307,7 +2307,6 @@
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.h" />
     <None Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.h" />
-    <None Include="Titania\Browser\BrowserApplication.h" />
     <None Include="share\man\man1\titania.1" />
     <None Include="Titania\ComposedWidgets.h" />
     <None Include="share\titania\ui\icons\Node\ExternProto.96.svg" />
@@ -2793,9 +2792,6 @@
     <None Include="Titania\Editors\HistoryEditor\History.h" />
     <None Include="Titania\Editors\HistoryEditor\HistoryEditor.h" />
     <None Include="Titania\UserInterfaces\X3DHistoryEditorInterface.h" />
-    <None Include="Titania\Commands\Info.h" />
-    <None Include="Titania\Commands\Tidy.h" />
-    <None Include="Titania\Commands\CommandOptions.h" />
     <None Include="share\titania\ui\Widgets\AnimationEditor.glade" />
     <None Include="share\titania\ui\Widgets\ScriptEditor.glade" />
     <None Include="Titania\Widgets\AnimationEditor\AnimationEditor.h" />
@@ -2833,7 +2829,6 @@
     <None Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.h" />
     <None Include="Titania\Editors\NodeIndex\NodeIndex.h" />
     <None Include="share\titania\ui\Editors\NodeIndex.glade" />
-    <None Include="Titania\Commands\ExportImage.h" />
     <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.h" />
@@ -3162,6 +3157,11 @@
     <None Include="Titania\Editors\ProjectsEditor\FileView.h" />
     <None Include="Titania\Widgets\Console\X3DConsole.h" />
     <None Include="Titania\Browser\X3DBrowserNotebook.h" />
+    <None Include="Titania\Applications\ExportImage\ExportImage.h" />
+    <None Include="Titania\Applications\main\CommandOptions.h" />
+    <None Include="Titania\Applications\Info\Info.h" />
+    <None Include="Titania\Applications\Tidy\Tidy.h" />
+    <None Include="Titania\Applications\BrowserApplication\BrowserApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3285,7 +3285,6 @@
     <Folder Include="Titania\Editors\UndoHistoryEditor\" />
     <Folder Include="share\titania\ui\Widgets\" />
     <Folder Include="Titania\Editors\HistoryEditor\" />
-    <Folder Include="Titania\Commands\" />
     <Folder Include="Titania\Widgets\AnimationEditor\" />
     <Folder Include="Titania\Widgets\ScriptEditor\" />
     <Folder Include="Titania\Revealer\" />
@@ -3326,6 +3325,12 @@
     <Folder Include="Titania\Editors\ColorEditor\" />
     <Folder Include="Titania\Widgets\Sidebar\" />
     <Folder Include="Titania\Editors\ExternalToolsEditor\" />
+    <Folder Include="Titania\Applications\" />
+    <Folder Include="Titania\Applications\main\" />
+    <Folder Include="Titania\Applications\ExportImage\" />
+    <Folder Include="Titania\Applications\Info\" />
+    <Folder Include="Titania\Applications\Tidy\" />
+    <Folder Include="Titania\Applications\BrowserApplication\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

@@ -48,53 +48,104 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMMANDS_TIDY_H__
-#define __TITANIA_COMMANDS_TIDY_H__
+#ifndef __TITANIA_COMMANDS_EXPORT_IMAGE_H__
+#define __TITANIA_COMMANDS_EXPORT_IMAGE_H__
+
+#include "../../Applications/main/CommandOptions.h"
 
 #include <Titania/X3D.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 
+#include <gtkmm/main.h>
+
 namespace titania {
 namespace puck {
 
-///  It never hurts to be tidy.
-class Tidy
+class ExportImage :
+	public X3D::X3DInput
 {
 public:
 
-	static
+	void
+	set_initialized (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
+	{
+		std::clog << "*** Loading " << browser -> getLoadCount () << " files." << std::endl;
+
+		// Constrain options.
+
+		size_t width        = options .width;
+		size_t height       = options .height;
+		size_t antialiasing = options .antialiasing;
+
+		if (width > browser -> getMaxRenderBufferSize ())
+		{
+			width = browser -> getMaxRenderBufferSize ();
+
+			std::clog << "*** Image width to high, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+		}
+
+		if (height > browser -> getMaxRenderBufferSize ())
+		{
+			height = browser -> getMaxRenderBufferSize ();
+
+			std::clog << "*** Image height to high, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+		}
+
+		if (antialiasing > browser -> getMaxSamples ())
+		{
+			antialiasing = browser -> getMaxSamples ();
+
+			std::clog << "*** Antialiasing samples to high, using max antialiasing of " << browser -> getMaxSamples () << " samples." << std::endl;
+		}
+
+		try
+		{
+			// Make snapshot and save image.
+	
+			auto image = browser -> getSnapshot (width,
+			                                     height,
+			                                     options .alphaChannel,
+			                                     antialiasing);
+	
+			image .quality (100);
+			image .write (outputFilename .path ());
+		}
+		catch (const std::exception & error)
+		{
+			std::clog << "*** Couldn't save image!" << std::endl;
+			std::clog << error .what () << std::endl;
+		}
+
+		Gtk::Main::quit ();
+	}
+
 	int
 	main (const CommandOptions & options)
 	{
-		if (options .filenames .empty ())
+      Gtk::Main kit (0, nullptr);
+
+ 		if (options .filenames .empty ())
 			throw std::runtime_error ("Expected a filename.");
 
 		basic::uri inputFilename (options .filenames .front ());
-		basic::uri outputFilename (options .exportFilename);
+		basic::uri outputFilename (options .imageFilename);
 
 		if (inputFilename .is_relative ())
 			inputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (inputFilename);
 
-		const auto browser = X3D::getBrowser ();
-		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
+		if (outputFilename .is_relative ())
+			outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
 
-		if (outputFilename == "-" or outputFilename == outputFilename .suffix ())
-		{
-			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
+		const auto browser = X3D::createBrowser ({ inputFilename .str () });
+		//browser -> set_size_request (options .width, options. height);
+		browser -> setFixedPipeline (options .fixedPipeline);
+		browser -> setup ();
 
-			X3D::FileGenerator::write (std::cout, scene, suffix, options .exportStyle, not options .exportRemoveMetadata);
-		}
-		else
-		{
-			if (outputFilename .is_relative ())
-				outputFilename = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (outputFilename);
+		browser -> initialized () .addInterest (&ExportImage::set_initialized, this, browser .getValue (), std::ref (options), outputFilename);
 
-			X3D::FileGenerator::write (scene, outputFilename, options .exportStyle, not options .exportRemoveMetadata);
-		}
-
+		kit .run ();
 		return 0;
 	}
-
 };
 
 } // puck

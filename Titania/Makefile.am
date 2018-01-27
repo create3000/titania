@@ -5,6 +5,8 @@ bin_PROGRAMS =  \
 	titania
 
 titania_SOURCES =  \
+	Titania/Applications/BrowserApplication/BrowserApplication.cpp \
+	Titania/Applications/main/main.cpp \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorInterface.cpp \
@@ -16,7 +18,6 @@ titania_SOURCES =  \
 	Titania/Bits/File.cpp \
 	Titania/Bits/Pipe.cpp \
 	Titania/Bits/String.cpp \
-	Titania/Browser/BrowserApplication.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
@@ -217,7 +218,6 @@ titania_SOURCES =  \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
-	Titania/main.cpp \
 	Titania/Revealer/GeometryEditor/GeometryEditor.cpp \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \

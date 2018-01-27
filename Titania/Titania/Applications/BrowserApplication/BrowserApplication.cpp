@@ -50,10 +50,10 @@
 
 #include "BrowserApplication.h"
 
-#include "../Bits/File.h"
-#include "../Browser/BrowserSelection.h"
-#include "../Browser/BrowserWindow.h"
-#include "../Configuration/config.h"
+#include "../../Bits/File.h"
+#include "../../Browser/BrowserSelection.h"
+#include "../../Browser/BrowserWindow.h"
+#include "../../Configuration/config.h"
 
 #include <Titania/X3D/Editing/X3DEditor.h>
 
@@ -64,6 +64,7 @@ const Glib::ustring BrowserApplication::introspectionXML =
 "<node>"
 "  <interface name='de.create3000.titania'>"
 "    <method name='GetSelection'>"
+"      <arg type='s' name='encoding' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='out'/>"
 "    </method>"
 "    <method name='ReplaceSelection'>"
@@ -199,7 +200,11 @@ BrowserApplication::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> &
 
 	if (method_name == "GetSelection")
 	{
-		const auto x3dSyntaxVar = Glib::Variant <Glib::ustring>::create (getSelection ());
+		Glib::Variant <Glib::ustring> encoding;
+
+		parameters .get_child (encoding, 0);
+
+		const auto x3dSyntaxVar = Glib::Variant <Glib::ustring>::create (getSelection (encoding .get ()));
 		const auto response     = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
 		
 		invocation -> return_value (response);
@@ -207,7 +212,7 @@ BrowserApplication::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> &
 }
 
 std::string
-BrowserApplication::getSelection () const
+BrowserApplication::getSelection (const std::string & encoding) const
 {
 	const auto & selection        = getBrowserWindow () -> getSelection () -> getNodes ();
 	const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
@@ -223,6 +228,11 @@ BrowserApplication::getSelection () const
 	const auto scene = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromStream (executionContext -> getWorldURL (), stream);
 
 	scene -> addMetaData ("titania-add-metadata", "true");
+
+	if (encoding == "VRML")
+		return scene -> toString ();
+	else if (encoding == "JSON")
+		return scene -> toJSONString ();
 
 	return scene -> toXMLString ();
 }

@@ -114,7 +114,7 @@ private:
 	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
 
 	std::string
-	getSelection () const;
+	getSelection (const std::string & encoding) const;
 
 	///  @name Static members
 
