@@ -180,37 +180,24 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">2</property>
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
                     <child>
-                      <object class="GtkScrolledWindow">
+                      <object class="GtkSourceView" id="SourceView">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkSourceView" id="SourceView">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="left_margin">2</property>
-                            <property name="right_margin">2</property>
-                            <property name="monospace">True</property>
-                            <property name="show_line_numbers">True</property>
-                            <property name="show_line_marks">True</property>
-                            <property name="tab_width">3</property>
-                            <property name="auto_indent">True</property>
-                            <property name="show_right_margin">True</property>
-                          </object>
-                        </child>
+                        <property name="left_margin">2</property>
+                        <property name="right_margin">2</property>
+                        <property name="monospace">True</property>
+                        <property name="show_line_numbers">True</property>
+                        <property name="show_line_marks">True</property>
+                        <property name="tab_width">3</property>
+                        <property name="auto_indent">True</property>
+                        <property name="show_right_margin">True</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -220,195 +207,214 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkExpander" id="OptionsExpander">
+                    <property name="name">OptionsExpander</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">8</property>
-                    <property name="row_spacing">8</property>
-                    <property name="column_spacing">16</property>
+                    <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
+                    <property name="spacing">8</property>
                     <child>
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="border_width">8</property>
+                        <property name="row_spacing">8</property>
+                        <property name="column_spacing">16</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Shortcut Key:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Save:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Input:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Output:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Applicability:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="ShortcutKeyEntry">
+                            <property name="can_focus">True</property>
+                            <signal name="key-press-event" handler="on_shortcut_key_press_event" after="yes" swapped="no"/>
+                            <signal name="key-release-event" handler="on_shortcut_key_release_event" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="SaveTypeButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="active">0</property>
+                            <items>
+                              <item translatable="yes">Nothing</item>
+                              <item translatable="yes">Current Scene</item>
+                              <item translatable="yes">All Scenes</item>
+                            </items>
+                            <signal name="changed" handler="on_save_type_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="OutputTypeButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="active">0</property>
+                            <items>
+                              <item translatable="yes">Nothing</item>
+                              <item translatable="yes">Display In Console</item>
+                              <item translatable="yes">Create New Scene</item>
+                              <item translatable="yes">Replace Current Scene</item>
+                              <item translatable="yes">Append To Current Scene</item>
+                              <item translatable="yes">Append To Current Layer</item>
+                              <item translatable="yes">Replace Selection</item>
+                            </items>
+                            <signal name="changed" handler="on_output_type_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">3</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="ApplicabilityTypeButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="active">0</property>
+                            <items>
+                              <item translatable="yes">Always Available</item>
+                              <item translatable="yes">All Scenes Except Untitled Ones</item>
+                              <item translatable="yes">Local Files Only</item>
+                              <item translatable="yes">Remote Files Only</item>
+                              <item translatable="yes">Untitled Scens Only</item>
+                            </items>
+                            <signal name="changed" handler="on_applicability_type_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="InputEncodingButton">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="active">0</property>
+                            <items>
+                              <item translatable="yes">X3D</item>
+                              <item translatable="yes">Classic VRML</item>
+                              <item translatable="yes">JSON</item>
+                            </items>
+                            <signal name="changed" handler="on_input_format_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">end</property>
+                            <property name="label" translatable="yes">Encoding:</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="InputTypeButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="active">0</property>
+                            <items>
+                              <item translatable="yes">Nothing</item>
+                              <item translatable="yes">Current Scene</item>
+                              <item translatable="yes">Selection</item>
+                            </items>
+                            <signal name="changed" handler="on_input_type_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
                       <object class="GtkLabel">
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Shortcut Key:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Save:</property>
+                        <property name="label" translatable="yes">Options</property>
                       </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                      </packing>
                     </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Input:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Output:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Applicability:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="ShortcutKeyEntry">
-                        <property name="can_focus">True</property>
-                        <signal name="key-press-event" handler="on_shortcut_key_press_event" after="yes" swapped="no"/>
-                        <signal name="key-release-event" handler="on_shortcut_key_release_event" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="SaveTypeButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">Nothing</item>
-                          <item translatable="yes">Current Scene</item>
-                          <item translatable="yes">All Scenes</item>
-                        </items>
-                        <signal name="changed" handler="on_save_type_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="OutputTypeButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">Nothing</item>
-                          <item translatable="yes">Display In Console</item>
-                          <item translatable="yes">Create New Scene</item>
-                          <item translatable="yes">Replace Current Scene</item>
-                          <item translatable="yes">Append To Current Scene</item>
-                          <item translatable="yes">Append To Current Layer</item>
-                          <item translatable="yes">Replace Selection</item>
-                        </items>
-                        <signal name="changed" handler="on_output_type_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="ApplicabilityTypeButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">Always Available</item>
-                          <item translatable="yes">All Scenes Except Untitled Ones</item>
-                          <item translatable="yes">Local Files Only</item>
-                          <item translatable="yes">Remote Files Only</item>
-                          <item translatable="yes">Untitled Scens Only</item>
-                        </items>
-                        <signal name="changed" handler="on_applicability_type_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">4</property>
-                        <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="InputEncodingButton">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">X3D</item>
-                          <item translatable="yes">Classic VRML</item>
-                          <item translatable="yes">JSON</item>
-                        </items>
-                        <signal name="changed" handler="on_input_format_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">end</property>
-                        <property name="label" translatable="yes">Encoding:</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="InputTypeButton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item translatable="yes">Nothing</item>
-                          <item translatable="yes">Current Scene</item>
-                          <item translatable="yes">Selection</item>
-                        </items>
-                        <signal name="changed" handler="on_input_type_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">2</property>
-                      </packing>
-                    </child>
+                    <style>
+                      <class name="titania-expander-first-child"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>

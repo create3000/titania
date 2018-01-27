@@ -139,6 +139,10 @@ public:
 	getSourceView () const
 	{ return *m_SourceView; }
 
+	Gtk::Expander &
+	getOptionsExpander () const
+	{ return *m_OptionsExpander; }
+
 	Gtk::Entry &
 	getShortcutKeyEntry () const
 	{ return *m_ShortcutKeyEntry; }
@@ -253,6 +257,7 @@ private:
 	Gtk::Button* m_RemoveToolButton;
 	Gtk::Box* m_ToolBox;
 	Gsv::View* m_SourceView;
+	Gtk::Expander* m_OptionsExpander;
 	Gtk::Entry* m_ShortcutKeyEntry;
 	Gtk::ComboBoxText* m_SaveTypeButton;
 	Gtk::ComboBoxText* m_OutputTypeButton;

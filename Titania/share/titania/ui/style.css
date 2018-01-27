@@ -42,13 +42,16 @@
 	font-style: italic;
 }
 
-expander > title > label,
-.titania-expander-label {
+expander > title > label {
 	margin: 8px 0px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	font-weight: bold;
 	font-size: 114%;
+}
+
+expander.titania-expander-first-child > title > label {
+	padding-top: 0px;
 }
 
 /* Page */

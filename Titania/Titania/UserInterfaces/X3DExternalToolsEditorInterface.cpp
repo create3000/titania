@@ -96,6 +96,7 @@ X3DExternalToolsEditorInterface::create ()
 	m_builder -> get_widget ("RemoveToolButton", m_RemoveToolButton);
 	m_builder -> get_widget ("ToolBox", m_ToolBox);
 	m_builder -> get_widget ("SourceView", m_SourceView);
+	m_builder -> get_widget ("OptionsExpander", m_OptionsExpander);
 	m_builder -> get_widget ("ShortcutKeyEntry", m_ShortcutKeyEntry);
 	m_builder -> get_widget ("SaveTypeButton", m_SaveTypeButton);
 	m_builder -> get_widget ("OutputTypeButton", m_OutputTypeButton);
