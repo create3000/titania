@@ -106,7 +106,7 @@ File::getChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden
 
 		while (fileInfo)
 		{
-			if (hidden or not fileInfo -> is_hidden ())
+			if (hidden or not (fileInfo -> is_hidden () or fileInfo -> is_backup ()))
 				fileInfos .emplace_back (fileInfo);
 
 			fileInfo = enumerator -> next_file ();
@@ -164,7 +164,7 @@ File::hasChildren (const Glib::RefPtr <Gio::File> & directory, const bool hidden
 
 		while (fileInfo)
 		{
-			if (hidden or not fileInfo -> is_hidden ())
+			if (hidden or not (fileInfo -> is_hidden () or fileInfo -> is_backup ()))
 				return true;
 
 			fileInfo = enumerator -> next_file ();

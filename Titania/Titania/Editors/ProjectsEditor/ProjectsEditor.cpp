@@ -154,6 +154,8 @@ ProjectsEditor::on_add_project_clicked ()
 	// Create root folder.
 
 	addRootFolder (Gio::File::create_for_path (openDirectoryDialog -> getUrl () .path ()));
+
+	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (getRootFolders () .begin (), getRootFolders () .end ()));
 }
 
 void
@@ -894,39 +896,46 @@ ProjectsEditor::set_execution_context ()
 void
 ProjectsEditor::createOpenWithMenu (const Glib::RefPtr <Gio::File> & file)
 {
-	// Clear »Open With ...« menu.
-
-	for (const auto & widget : getOpenWithMenu () .get_children ())
-		getOpenWithMenu () .remove (*widget);
-
-	// Populate »Open With ...« menu.
-
-	const auto contentType  = file -> query_info () -> get_content_type ();
-	const auto appInfo      = file -> query_default_handler ();
-	const auto appInfos     = Gio::AppInfo::get_all_for_type (contentType);
-	auto       appInfoIndex = std::map <std::string, Glib::RefPtr <Gio::AppInfo>> ();
-
-	// Create app info index.
-
-	for (const auto & appInfo : appInfos)
-		appInfoIndex .emplace (appInfo -> get_display_name (), appInfo);
-
-	appInfoIndex .erase (appInfo -> get_display_name ());
-
-	// Create menu items.
-
-	createOpenWithMenuItem (appInfo, file);
-
-	if (not appInfoIndex .empty ())
-		getOpenWithMenu () .append (*Gtk::manage (new Gtk::SeparatorMenuItem ()));
-
-	for (const auto & pair : appInfoIndex)
-		createOpenWithMenuItem (pair .second, file);
-
-	// Show menu items.
-
-	getOpenWithMenu ()     .show_all ();
-	getOpenWithMenuItem () .set_visible (appInfos .size ());
+	try
+	{
+		// Clear »Open With ...« menu.
+	
+		for (const auto & widget : getOpenWithMenu () .get_children ())
+			getOpenWithMenu () .remove (*widget);
+	
+		// Populate »Open With ...« menu.
+	
+		const auto contentType  = file -> query_info () -> get_content_type ();
+		const auto appInfo      = file -> query_default_handler ();
+		const auto appInfos     = Gio::AppInfo::get_all_for_type (contentType);
+		auto       appInfoIndex = std::map <std::string, Glib::RefPtr <Gio::AppInfo>> ();
+	
+		// Create app info index.
+	
+		for (const auto & appInfo : appInfos)
+			appInfoIndex .emplace (appInfo -> get_display_name (), appInfo);
+	
+		appInfoIndex .erase (appInfo -> get_display_name ());
+	
+		// Create menu items.
+	
+		createOpenWithMenuItem (appInfo, file);
+	
+		if (not appInfoIndex .empty ())
+			getOpenWithMenu () .append (*Gtk::manage (new Gtk::SeparatorMenuItem ()));
+	
+		for (const auto & pair : appInfoIndex)
+			createOpenWithMenuItem (pair .second, file);
+	
+		// Show menu items.
+	
+		getOpenWithMenu ()     .show_all ();
+		getOpenWithMenuItem () .set_visible (appInfos .size ());
+	}
+	catch (const Glib::Error & error)
+	{
+		getOpenWithMenuItem () .set_visible (false);
+	}
 }
 
 void
@@ -964,22 +973,29 @@ ProjectsEditor::launchFile (const Glib::RefPtr <Gio::File> & file)
 bool
 ProjectsEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
 {
-	const auto contentType = file -> query_info () -> get_content_type ();
-	const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
-
-	for (const auto & appInfo : appInfos)
+	try
 	{
-		if (appInfo -> get_executable () == "titania")
-			return true;
+		const auto contentType = file -> query_info () -> get_content_type ();
+		const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
+	
+		for (const auto & appInfo : appInfos)
+		{
+			if (appInfo -> get_executable () == "titania")
+				return true;
+		}
+	
+		for (const auto & goldenType : X3D::GoldenGate::getContentTypes ())
+		{
+			if (Gio::content_type_is_a (contentType, goldenType))
+				return true;
+		}
+	
+		return false;
 	}
-
-	for (const auto & goldenType : X3D::GoldenGate::getContentTypes ())
+	catch (const Glib::Error & error)
 	{
-		if (Gio::content_type_is_a (contentType, goldenType))
-			return true;
+		return false;
 	}
-
-	return false;
 }
 
 std::string
@@ -1027,8 +1043,6 @@ void
 ProjectsEditor::store ()
 {
 	saveExpanded ();
-
-	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (getRootFolders () .begin (), getRootFolders () .end ()));
 
 	X3DFileBrowser <X3DProjectsEditorInterface>::store ();
 	X3DProjectsEditorInterface::store ();
