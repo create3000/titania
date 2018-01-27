@@ -91,6 +91,9 @@ public:
 	std::vector <Type*>
 	getWidgets (Gtk::Widget & parent);
 
+	void
+	setTransparent (const bool value);
+
 	///  @name Operations
 
 	void

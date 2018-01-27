@@ -100,7 +100,7 @@ RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, RouteGrap
 	getScrolledWindow () .get_hscrollbar () -> set_visible (false);
 	getScrolledWindow () .get_vscrollbar () -> set_visible (false);
 
-	getViewport () .drag_dest_set ({ Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_APP) }, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getViewport () .drag_dest_set ({ Gtk::TargetEntry ("titania/node-id", Gtk::TARGET_SAME_APP) }, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	setup ();
 }
@@ -848,7 +848,7 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
-		if (selection_data .get_data_type () == "TITANIA_NODE_ID")
+		if (selection_data .get_data_type () == "titania/node-id")
 		{
 			try
 			{

@@ -210,9 +210,6 @@ protected:
 	bool
 	getShowTabs () const;
 
-	void
-	setTransparent (const bool value);
-
 
 private:
 

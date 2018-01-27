@@ -1199,7 +1199,6 @@ BrowserWindow::on_browser_toggled ()
 
 		setEditing (false);
 		isLive (true);
-		setViewer (getCurrentBrowser () -> getViewerType ());
 
 		getSelection () -> setNodes ({ });
 
@@ -2257,7 +2256,7 @@ BrowserWindow::on_hand_button_toggled ()
 
 		getSelection () -> setEnabled (false);
 
-		setViewer (viewer);
+		getCurrentBrowser () -> setViewerType (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
@@ -2274,7 +2273,7 @@ BrowserWindow::on_arrow_button_toggled ()
 
 		getSelection () -> setEnabled (true);
 
-		setViewer (viewer);
+		getCurrentBrowser () -> setViewerType (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
@@ -2758,7 +2757,7 @@ BrowserWindow::on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType)
 	else
 		getArrowButton () .set_active (true);
 
-	setViewer (viewerType);
+	getCurrentBrowser () -> setViewerType (viewerType);
 }
 
 void
@@ -2811,12 +2810,12 @@ BrowserWindow::on_look_at_toggled ()
 	if (getLookAtButton () .get_active ())
 	{
 		if (getCurrentBrowser () -> getCurrentViewer () not_eq X3D::X3DConstants::LookAtViewer)
-			setViewer (X3D::X3DConstants::LookAtViewer);
+			getCurrentBrowser () -> setViewerType (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
 		if (getCurrentBrowser () -> getCurrentViewer () not_eq viewer)
-			setViewer (viewer);
+			getCurrentBrowser () -> setViewerType (viewer);
 	}
 }
 

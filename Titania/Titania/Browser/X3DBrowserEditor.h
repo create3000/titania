@@ -216,9 +216,6 @@ protected:
 	void
 	setPage (const NotebookPagePtr & value) override;
 
-	void
-	setViewer (const X3D::X3DConstants::NodeType viewerType);
-
 	/// @name Undo
 
 	void
@@ -236,14 +233,6 @@ private:
 
 	void
 	set_executionContext ();
-
-	///  @name File handling
-
-	void
-	setMetaData ();
-
-	void
-	getMetaData ();
 
 	///  @name Undo handling
 

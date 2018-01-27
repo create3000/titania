@@ -86,12 +86,12 @@ OutlineDragDrop::OutlineDragDrop (OutlineEditor* const outlineEditor, OutlineTre
 	// Drag & Drop
 	treeView -> set_reorderable (true);
 
-	treeView -> enable_model_drag_source ({ Gtk::TargetEntry ("TITANIA_EXTERN_PROTO_ID", Gtk::TARGET_SAME_WIDGET),
-	                                        Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_APP) },
+	treeView -> enable_model_drag_source ({ Gtk::TargetEntry ("titania/externproto-id", Gtk::TARGET_SAME_WIDGET),
+	                                        Gtk::TargetEntry ("titania/node-id", Gtk::TARGET_SAME_APP) },
 	                                        Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
 
-	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry ("TITANIA_EXTERN_PROTO_ID", Gtk::TARGET_SAME_WIDGET),
-	                                      Gtk::TargetEntry ("TITANIA_NODE_ID", Gtk::TARGET_SAME_WIDGET) },
+	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry ("titania/externproto-id", Gtk::TARGET_SAME_WIDGET),
+	                                      Gtk::TargetEntry ("titania/node-id", Gtk::TARGET_SAME_WIDGET) },
 	                                      Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK | Gdk::ACTION_ASK);
 
 	treeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_button_press_event), false);
@@ -235,7 +235,7 @@ OutlineDragDrop::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & conte
 	switch (sourceType)
 	{
 		case OutlineIterType::X3DBaseNode:
-			selection_data .set ("TITANIA_NODE_ID", basic::to_string (nodeId, std::locale::classic ()));
+			selection_data .set ("titania/node-id", basic::to_string (nodeId, std::locale::classic ()));
 			break;
 		case OutlineIterType::NULL_:
 		case OutlineIterType::ProtoDeclaration:

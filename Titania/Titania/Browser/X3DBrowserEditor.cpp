@@ -151,12 +151,7 @@ void
 X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 {
 	if (getCurrentPage ())
-	{
-		if (getEditing () and getCurrentBrowser () -> isInitialized ())
-			setMetaData ();
-	
 		getCurrentPage () -> getUndoHistory () .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
-	}
 
 	X3DBrowserNotebook::setPage (value);
 
@@ -184,11 +179,6 @@ X3DBrowserEditor::set_executionContext ()
 {
 	if (not getEditing ())
 		return;
-
-	// Restore Viewpoint, and NavigationInfo from meta data.
-
-	if (not getHandButton () .get_active ())
-		getMetaData ();
 
 	// Restore context or save context path in History.
 
@@ -303,43 +293,6 @@ X3DBrowserEditor::setEditing (const bool value)
 	getConfig () -> setItem ("environment", value ? 1 : 0);
 }
 
-void
-X3DBrowserEditor::setMetaData ()
-{
-	const auto   worldInfo = createWorldInfo (getCurrentScene ());
-	const auto & world     = getCurrentWorld ();
-	const auto & layerSet  = world -> getLayerSet ();
-
-	if (layerSet not_eq world -> getDefaultLayerSet ())
-		worldInfo -> setMetaData ("/Titania/LayerSet/activeLayer", layerSet -> privateActiveLayer ());
-	else
-		worldInfo -> removeMetaData ("/Titania/LayerSet/activeLayer");
-}
-
-void
-X3DBrowserEditor::getMetaData ()
-{
-	try
-	{
-		const auto   worldInfo = getWorldInfo (getCurrentScene ());
-		const auto & world     = getCurrentWorld ();
-		const auto & layerSet  = world -> getLayerSet ();
-
-		//
-
-		if (layerSet not_eq world -> getDefaultLayerSet ())
-			layerSet -> privateActiveLayer () = worldInfo -> getMetaData <int32_t> ("/Titania/LayerSet/activeLayer", -1);
-	}
-	catch (const std::exception & error)
-	{ }
-}
-
-void
-X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
-{
-	getCurrentBrowser () -> setViewerType (viewer);
-}
-
 // File operations
 
 void
@@ -407,8 +360,6 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 bool
 X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
-	setMetaData ();
-
 	// Save world
 	const bool saved = X3DBrowserNotebook::save (getCurrentScene (), worldURL, outputStyle, copy);
 
