@@ -2499,8 +2499,134 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
  *
  */
 
+MFNode
+X3DEditor::assignNode (const X3DExecutionContextPtr & executionContext,
+                       const SFNode & other,
+                       const MFNode & nodes,
+                       const UndoStepPtr & undoStep)
+{
+	auto selection = MFNode ();
+	auto added     = false;
+
+	for (const auto & node : nodes)
+	{
+		if (assignNode (node, other, undoStep))
+		{
+			selection .emplace_back (node);
+			continue;
+		}
+
+		if (not added)
+		{
+			added = true;
+			selection .emplace_back (other);
+		}
+
+		// Replace node by other.
+		createClone (executionContext, other, { node }, undoStep);
+	}
+
+	return selection;
+}
+
+bool
+X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStepPtr & undoStep)
+{
+	// Compare types with tool support.
+
+	if (node -> isType ({ other -> getType () .back () }) or other -> isType ({ node -> getType () .back () }))
+	{
+		for (const auto lhs : node -> getFieldDefinitions ())
+		{
+			try
+			{
+				const auto rhs = other -> getField (lhs -> getName ());
+
+				if (lhs -> equals (*rhs))
+					continue;
+
+				if (lhs -> getAccessType () & initializeOnly)
+				{
+					switch (lhs -> getType ())
+					{
+						case X3DConstants::SFNode:
+						{
+							auto lhsSFNode = static_cast <SFNode*> (lhs);
+							auto rhsSFNode = static_cast <SFNode*> (rhs);
+			
+							if (assignNode (*lhsSFNode, *rhsSFNode, undoStep))
+								continue;
+	
+							setValue (node, *lhs, *rhs, undoStep);
+							continue;
+						}
+						case X3DConstants::MFNode:
+						{
+							auto lhsMFNode = static_cast <MFNode*> (lhs);
+							auto rhsMFNode = static_cast <MFNode*> (rhs);
+	
+							if (lhsMFNode -> size () == rhsMFNode -> size ())
+							{
+								size_t m    = 0;
+								size_t size = lhsMFNode -> size ();
+	
+								// Collect next undo steps
+								std::vector <UndoStepPtr> undoSteps;
+	
+								for (; m < size; ++ m)
+								{
+									const auto undoStep = std::make_shared <UndoStep> ();
+	
+									undoSteps .emplace_back (undoStep);
+	
+									if (assignNode ((*lhsMFNode) [m], (*rhsMFNode) [m], undoStep))
+										continue;
+	
+									break;
+								}
+	
+								if (m == size)
+								{
+									// If arrays are equal in size and types add undo step.
+	
+									for (const auto & u : undoSteps)
+									{
+										undoStep -> addUndoFunction (&UndoStep::undo, u);
+										undoStep -> addRedoFunction (&UndoStep::redo, u);
+									}
+	
+									continue;
+								}
+							}
+	
+							// Unless arrays are equal in size and types assign rhs to lhs.
+
+							setValue (node, *lhs, *rhs, undoStep);
+							continue;
+						}
+						default:
+						{
+							setValue (node, *lhs, *rhs, undoStep);
+							continue;
+						}
+					}
+				}
+			}
+			catch (const X3DError & error)
+			{ }
+		}
+	
+		return true;
+	}
+
+	return false;
+}
+
 void
-X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const SFNode & clone, const MFNode & nodes, const UndoStepPtr & undoStep)
+X3DEditor::createClone (const X3DExecutionContextPtr & executionContext,
+                        const SFNode & clone,
+                        const MFNode & nodes,
+                        const UndoStepPtr & undoStep)
 {
 	for (const auto & node : nodes)
 	{
@@ -2547,7 +2673,9 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const S
 }
 
 MFNode
-X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const MFNode & clones, const UndoStepPtr & undoStep)
+X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext,
+                        const MFNode & clones,
+                        const UndoStepPtr & undoStep)
 {
 	MFNode nodes;
 

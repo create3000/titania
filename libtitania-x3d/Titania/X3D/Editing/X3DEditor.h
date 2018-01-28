@@ -303,36 +303,63 @@ public:
 	///  @name Grouping operations
 
 	static
+	MFNode
+	assignNode (const X3DExecutionContextPtr & executionContext,
+	            const SFNode & other,
+	            const MFNode & nodes,
+	            const UndoStepPtr & undoStep);
+
+	static
 	void
-	createClone (const X3DExecutionContextPtr & executionContext, const SFNode &, const MFNode &, const UndoStepPtr & undoStep);
+	createClone (const X3DExecutionContextPtr & executionContext,
+	             const SFNode & clone,
+	             const MFNode & nodes,
+	             const UndoStepPtr & undoStep);
 
 	static
 	MFNode
-	unlinkClone (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
+	unlinkClone (const X3DExecutionContextPtr & executionContext,
+	             const MFNode & clones,
+	             const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	groupNodes (const X3DExecutionContextPtr & executionContext, const std::string &, const MFNode &, const UndoStepPtr & undoStep);
+	groupNodes (const X3DExecutionContextPtr & executionContext,
+	            const std::string & typeName,
+	            const MFNode & nodes,
+	            const UndoStepPtr & undoStep);
 
 	static
 	MFNode
-	ungroupNodes (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
+	ungroupNodes (const X3DExecutionContextPtr & executionContext,
+	              const MFNode & groups,
+	              const UndoStepPtr & undoStep);
 
 	static
 	bool
-	addToGroup (const X3DExecutionContextPtr & executionContext, const SFNode &, const MFNode &, const UndoStepPtr & undoStep);
+	addToGroup (const X3DExecutionContextPtr & executionContext,
+	            const SFNode & group,
+	            const MFNode & children,
+	            const UndoStepPtr & undoStep);
 
 	static
 	void
-	detachFromGroup (const X3DExecutionContextPtr & executionContext, const MFNode &, const bool, const UndoStepPtr & undoStep);
+	detachFromGroup (const X3DExecutionContextPtr & executionContext,
+	                 const MFNode & children_,
+	                 const bool detachToLayer0,
+	                 const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	createParentGroup (const X3DExecutionContextPtr & executionContext, const std::string &, const std::string &, const MFNode &, const UndoStepPtr & undoStep);
+	createParentGroup (const X3DExecutionContextPtr & executionContext,
+	                   const std::string & typeName,
+	                   const std::string & fieldName,
+	                   const MFNode & children,
+	                   const UndoStepPtr & undoStep);
 
 	static
 	void
-	addNodesToActiveLayer (const WorldPtr &, const MFNode &, const UndoStepPtr & undoStep);
+	addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep);
 
 	///  @name Node handling
 
@@ -537,16 +564,31 @@ private:
 	///  @name Grouping operations
 
 	static
-	void
-	unlinkClone (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, MFNode &, bool &, const UndoStepPtr & undoStep);
+	bool
+	assignNode (const SFNode & node, const SFNode & other, const UndoStepPtr & undoStep);
 
 	static
 	void
-	createParentGroup (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	unlinkClone (const X3DExecutionContextPtr & executionContext,
+                const SFNode & parent,
+                MFNode & mfnode,
+                const SFNode & clone,
+                MFNode & nodes,
+                bool & first,
+                const UndoStepPtr & undoStep);
 
 	static
 	void
-	addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> &, const SFNode &, const UndoStepPtr & undoStep);
+	createParentGroup (const X3DExecutionContextPtr & executionContext,
+	                   const SFNode & group,
+	                   MFNode & children,
+	                   const SFNode & child,
+	                   const SFNode & parent,
+	                   const UndoStepPtr & undoStep);
+
+	static
+	void
+	addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> & layers, const SFNode & node, const UndoStepPtr & undoStep);
 
 
 	///  @name transformToZero

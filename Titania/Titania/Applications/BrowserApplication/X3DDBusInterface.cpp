@@ -70,6 +70,7 @@ const Glib::ustring X3DDBusInterface::introspectionXML =
 "    <method name='ReplaceSelection'>"
 "      <arg type='s' name='pluginName' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='in'/>"
+"      <arg type='b' name='assign' direction='in'/>"
 "    </method>"
 "    <signal name='SelectionChanged'></signal>"
 "  </interface>"
@@ -161,28 +162,50 @@ X3DDBusInterface::replaceSelection (const Glib::VariantContainerBase & parameter
 {
 	Glib::Variant <Glib::ustring> pluginName;
 	Glib::Variant <Glib::ustring> x3dSyntax;
+	Glib::Variant <bool>          assign;
 
 	parameters .get_child (pluginName, 0);
 	parameters .get_child (x3dSyntax,  1);
+	parameters .get_child (assign,     2);
 
-	const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", pluginName .get () .c_str ())));
 	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	if (not selection .empty ())
 	{
-		const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-		const auto   scene            = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromString (x3dSyntax .get ());
-		const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+		const auto executionContext = X3D::X3DExecutionContextPtr (getBrowserWindow () -> getSelectionContext (selection));
 
-		if (not nodes .empty ())
+		if (executionContext)
 		{
-			X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ((assign .get () ? _ ("Assign Output From Tool »%s« To Selection") : _ ("Replace Selection By Output From Tool »%s«")), pluginName .get () .c_str ())));
+			const auto scene    = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromString (x3dSyntax .get ());
+			auto       nodes    = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
 
-			if (nodes .size () > 1)
-				X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
+			if (not nodes .empty ())
+			{
+				// Replace or assign nodes.
 
-			getBrowserWindow () -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
+				auto newSelection = X3D::MFNode ({ nodes .front () });
+				auto unused       = X3D::MFNode ();
+
+				if (assign .get ())
+					newSelection = X3D::X3DEditor::assignNode (executionContext, nodes .front (), selection, undoStep);
+				else
+					X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
+
+				// Remove unused nodes.
+
+				std::sort (nodes .begin (), nodes .end ());
+				std::sort (newSelection .begin (), newSelection .end ());
+
+				std::set_difference (nodes .begin (), nodes .end (), newSelection .begin (), newSelection .end (), std::back_inserter (unused));
+
+				X3D::X3DEditor::removeNodesFromScene (executionContext, unused, false, undoStep);
+
+				// Make new selection and add undo step.
+
+				getBrowserWindow () -> getSelection () -> setNodes (newSelection, undoStep);
+				getBrowserWindow () -> addUndoStep (undoStep);
+			}
 		}
 	}
 	else
@@ -190,6 +213,8 @@ X3DDBusInterface::replaceSelection (const Glib::VariantContainerBase & parameter
 		// Display message.
 		getBrowserWindow () -> getConsole () -> warn ("No selection found to process output of tool »", pluginName .get (), "«.\n");
 	}
+
+	invocation -> return_value (Glib::VariantContainerBase ());
 }
 
 X3DDBusInterface::~X3DDBusInterface ()
