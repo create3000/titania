@@ -1010,3 +1010,5 @@ TreeView::row_collapsed
   virtual void on_row_collapsed(const Gtk::TreeModel::iterator& iter, const Gtk::TreeModel::Path& path);
 TreeView::drag_data_get
   virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time);
+ScrolledWindow::size_allocate
+  virtual void on_size_allocate(Gtk::Allocation& allocation);

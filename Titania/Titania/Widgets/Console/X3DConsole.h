@@ -101,23 +101,8 @@ protected:
 	
 	X3DConsole ();
 
-	///  @name Member access
-
-	void
-	setScrollToEnd (const bool value)
-	{ scrollToEnd = value; }
-
-	bool
-	getScrollToEnd () const
-	{ return scrollToEnd; }
-
 
 private:
-
-	///  @name Event handlers
-
-	void
-	on_scoll_to_end ();
 
 	///  @name Operations
 
@@ -138,6 +123,18 @@ private:
 
 	Gdk::Color
 	getColor (const std::string & value) const;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_size_allocate (Gtk::Allocation & allocation) final override;
+
+	void
+	on_scroll_to_end ();
+
+	void
+	on_vadjustment_value_changed ();
 
 	///  @name Members
 

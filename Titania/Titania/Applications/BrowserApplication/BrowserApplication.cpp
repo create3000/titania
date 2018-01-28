@@ -90,6 +90,9 @@ BrowserApplication::main (int argc, char** argv)
 void
 BrowserApplication::realize ()
 {
+	if (getRealized ())
+		return;
+
 	X3DBrowserApplication::realize ();
 	X3DDBusInterface::realize ();
 }

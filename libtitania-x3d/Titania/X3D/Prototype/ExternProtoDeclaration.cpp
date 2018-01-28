@@ -245,43 +245,39 @@ throw (Error <DISPOSED>)
 void
 ExternProtoDeclaration::requestImmediateLoad ()
 {
-//	if (X3D_PARALLEL)
-//	{
-//		requestAsyncLoad ();
-//	}
-//	else
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	if (future)
 	{
-		if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-			return;
-	
-		if (future)
-		{
-			future -> wait ();
-			return;
-		}
-	
-		setLoadState (IN_PROGRESS_STATE);
-	
-		FileLoader loader (getExecutionContext ());
-	
-		try
-		{
-			auto scene = getBrowser () -> createScene (false);
-	
-			loader .parseIntoScene (scene, url ());
-	
-			setLoadState (COMPLETE_STATE);
-			setLoadedUrl (scene -> getWorldURL ());
-			setScene (std::move (scene));
-		}
-		catch (const X3DError & error)
-		{
-			getBrowser () -> getConsole () -> error (error .what (), "\n");
-	
-			setLoadState (FAILED_STATE);
-			setLoadedUrl ("");
-			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
-		}
+		future -> wait ();
+		return;
+	}
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	FileLoader loader (getExecutionContext ());
+
+	try
+	{
+		auto scene = getBrowser () -> createScene (false);
+
+		loader .parseIntoScene (scene, url ());
+
+		setLoadState (COMPLETE_STATE);
+		setLoadedUrl (scene -> getWorldURL ());
+		setScene (std::move (scene));
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
+
+		setLoadState (FAILED_STATE);
+		setLoadedUrl ("");
+		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 	}
 }
 
@@ -289,6 +285,9 @@ void
 ExternProtoDeclaration::requestAsyncLoad ()
 {
 	using namespace std::placeholders;
+
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;

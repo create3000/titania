@@ -97,18 +97,6 @@ private:
 	void
 	set_messages (const X3D::MFString & value);
 
-	virtual
-	void
-	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
-
-	void
-	on_vadjustment_value_changed ();
-
-	///  @name Event handlers
-
-	int32_t markSet;
-	int32_t scrolled;
-
 };
 
 } // puck

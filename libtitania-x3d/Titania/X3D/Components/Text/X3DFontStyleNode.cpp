@@ -596,12 +596,15 @@ X3DFontStyleNode::createFont () const
 {
 	bool isExactMatch = false;
 
-	for (const auto & familyName : family ())
+	if (getBrowser () -> getLoadUrlObjects ())
 	{
-		const Font font = createFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
-
-		if (isExactMatch)
-			return font;
+		for (const auto & familyName : family ())
+		{
+			const Font font = createFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
+	
+			if (isExactMatch)
+				return font;
+		}
 	}
 
 	return createFont ("SERIF", isExactMatch);

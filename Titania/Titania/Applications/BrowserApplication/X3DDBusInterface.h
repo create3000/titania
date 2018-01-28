@@ -83,6 +83,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_selection ();
+
+	void
 	on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & connection,
 	                const Glib::ustring & sender,
 	                const Glib::ustring & object_path,
@@ -90,9 +93,6 @@ private:
 	                const Glib::ustring & method_name,
 	                const Glib::VariantContainerBase & parameters,
 	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
-
-	void
-	set_selection ();
 
 	void
 	getSelection (const Glib::VariantContainerBase & parameters,

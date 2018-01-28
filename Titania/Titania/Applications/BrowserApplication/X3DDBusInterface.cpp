@@ -104,8 +104,6 @@ X3DDBusInterface::realize ()
 void
 X3DDBusInterface::set_selection ()
 {
-	__LOG__ << std::endl;
-
 	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "SelectionChanged");
 }
 

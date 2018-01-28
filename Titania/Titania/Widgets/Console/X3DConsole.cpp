@@ -55,10 +55,18 @@
 namespace titania {
 namespace puck {
 
+static constexpr int32_t CONSOLE_LIMIT      = 10'000'000; // 10 MB
+static constexpr int32_t INSERT_MARK_COUNT  = 2;
+static constexpr int32_t SCROLL_COUNT       = 1;
+static constexpr int32_t SCROLL_LINES_COUNT = 42;
+static constexpr int32_t LAST_LINES_COUNT   = 2;
+
 X3DConsole::X3DConsole () :
 	X3DConsoleInterface (),
 	        scrollToEnd (true)
-{ }
+{
+	getTextView () .get_vadjustment () -> signal_value_changed () .connect (sigc::mem_fun (this, &Console::on_vadjustment_value_changed));
+}
 
 void
 X3DConsole::setup ()
@@ -79,17 +87,6 @@ X3DConsole::setup ()
 }
 
 void
-X3DConsole::on_scoll_to_end ()
-{
-	auto iter = getTextBuffer () -> end ();
-	auto mark = getTextBuffer () -> get_mark ("scroll");
-
-	iter .set_line_offset (0);
-	getTextBuffer () -> move_mark (mark, iter);
-	getTextView () .scroll_to (mark);
-}
-
-void
 X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string)
 {
 	// Append.
@@ -100,8 +97,6 @@ X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring 
 
 	// Erase.
 
-	static constexpr int32_t CONSOLE_LIMIT = 20'000'000; // 20 MB
-
 	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
 	{
 		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
@@ -109,10 +104,7 @@ X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring 
 		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
 	}
 
-	// Update TextView and scoll to end.
-
-	if (scrollToEnd)
-		Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Console::on_scoll_to_end));
+	on_scroll_to_end ();
 }
 
 Gdk::Color
@@ -123,6 +115,46 @@ X3DConsole::getColor (const std::string & value) const
 	color .set (value);
 
 	return color;
+}
+
+void
+X3DConsole::on_size_allocate (Gtk::Allocation & allocation)
+{
+	on_scroll_to_end ();
+}
+
+void
+X3DConsole::on_scroll_to_end ()
+{
+	if (not scrollToEnd)
+		return;
+
+	const auto upper = getScrolledWindow () .get_vadjustment () -> get_upper ();
+
+	getScrolledWindow () .get_vadjustment () -> set_value (upper);
+}
+
+void
+X3DConsole::on_vadjustment_value_changed ()
+{
+	int           buffer_x = 0;
+	int           buffer_y = 0;
+	int           line_top = 0;
+	Gtk::TextIter lineY;
+
+	getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_WIDGET, 0, getTextView () .get_height (), buffer_x, buffer_y); 
+	getTextView () .get_line_at_y (lineY, buffer_y, line_top);
+
+	const auto lastLines = getTextBuffer () -> get_line_count () - lineY .get_line ();
+
+	if (lastLines <= LAST_LINES_COUNT)
+	{
+		scrollToEnd = true;
+	}
+	else if (lastLines > SCROLL_LINES_COUNT)
+	{
+		scrollToEnd = false;
+	}
 }
 
 X3DConsole::~X3DConsole ()

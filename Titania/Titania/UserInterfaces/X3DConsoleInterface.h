@@ -102,8 +102,8 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::ScrolledWindow &
-	getConsole () const
-	{ return *m_Console; }
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
 
 	Gtk::TextView &
 	getTextView () const
@@ -121,7 +121,7 @@ public:
 
 	virtual
 	void
-	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) = 0;
+	on_size_allocate (Gtk::Allocation & allocation) = 0;
 
 	virtual
 	void
@@ -158,7 +158,7 @@ private:
 	Glib::RefPtr <Gtk::TextBuffer> m_TextBuffer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::ScrolledWindow* m_Console;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::TextView* m_TextView;
 	Gtk::ToggleToolButton* m_SuspendButton;
 	Gtk::ToolButton* m_ClearButton;

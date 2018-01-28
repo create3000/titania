@@ -83,13 +83,13 @@ X3DConsoleInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Console", m_Console);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TextView", m_TextView);
 	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
 	m_builder -> get_widget ("ClearButton", m_ClearButton);
 
-	// Connect object Gtk::TextBuffer with id 'TextBuffer'.
-	m_TextBuffer -> signal_mark_set () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_mark_set));
+	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
+	m_ScrolledWindow -> signal_size_allocate () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_size_allocate));
 
 	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
 	m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_suspend_button_toggled));

@@ -57,22 +57,11 @@
 namespace titania {
 namespace puck {
 
-static constexpr int32_t INSERT_MARK_COUNT  = 2;
-static constexpr int32_t SCROLL_COUNT       = 2;
-static constexpr int32_t SCROLL_LINES_COUNT = 42;
-static constexpr int32_t LAST_LINES_COUNT   = 2;
-
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DConsoleInterface (get_ui ("Widgets/Console.glade")),
-	         X3DConsole (),
-	            markSet (0),
-	           scrolled (0)
+	         X3DConsole ()
 {
-	getTextView () .get_vadjustment () -> signal_value_changed () .connect (sigc::mem_fun (this, &Console::on_vadjustment_value_changed));
-
-	getTextBuffer () -> create_mark ("scroll", getTextBuffer () -> end (), true);
-
 	X3DConsoleInterface::setup ();
 	X3DConsole::setup ();
 }
@@ -122,51 +111,6 @@ Console::set_messages (const X3D::MFString & messages)
 
 		else
 			print (messages [i + 1] .str ());
-	}
-}
-
-void
-Console::on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark)
-{
-	if (mark == getTextBuffer () -> get_insert ())
-	{
-		markSet = INSERT_MARK_COUNT;
-
-		setScrollToEnd (false);
-	}
-}
-
-void
-Console::on_vadjustment_value_changed ()
-{
-	int           buffer_x = 0;
-	int           buffer_y = 0;
-	int           line_top = 0;
-	Gtk::TextIter lineY;
-
-	getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_WIDGET, 0, getTextView () .get_height (), buffer_x, buffer_y); 
-	getTextView () .get_line_at_y (lineY, buffer_y, line_top);
-
-	if (markSet)
-		-- markSet;
-
-	if (scrolled)
-		-- scrolled;
-
-	if (not scrolled and not markSet)
-	{
-		const auto lastLines = getTextBuffer () -> get_line_count () - lineY .get_line ();
-
-		if (lastLines <= LAST_LINES_COUNT)
-		{
-			setScrollToEnd (true);
-		}
-		else if (lastLines > SCROLL_LINES_COUNT)
-		{
-			scrolled = SCROLL_COUNT;
-
-			setScrollToEnd (false);
-		}
 	}
 }
 
