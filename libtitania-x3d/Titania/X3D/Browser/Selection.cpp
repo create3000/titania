@@ -307,6 +307,9 @@ Selection::clearNodes ()
 void
 Selection::setNodes (const MFNode & value)
 {
+	if (value == nodes)
+		return;
+
 	// Set master selection and find hierarchy if not available.
 
 	clearHierarchy = false;

@@ -211,8 +211,7 @@ BrowserSelection::setSelectGeometry (const bool value)
 	selection -> setSelectGeometry (value);
 	selectGeometry .set (value);
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 bool
@@ -229,50 +228,46 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 	selection -> setSelectGeometry (false);
 	selection -> addNodes (filterSelection (value));
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::removeNodes (const X3D::MFNode & value)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::clearNodes ()
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::setNodes (const X3D::MFNode & value)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	selection -> setSelectGeometry (false);
 	selection -> setNodes (filterSelection (value));
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 X3D::MFNode
 BrowserSelection::getParents () const
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	return selection -> getParents ();
 }
@@ -280,7 +275,7 @@ BrowserSelection::getParents () const
 X3D::MFNode
 BrowserSelection::getChildren () const
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	return selection -> getChildren ();
 }
@@ -288,7 +283,7 @@ BrowserSelection::getChildren () const
 void
 BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 	const auto   filtered  = filterSelection (value);
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
@@ -299,14 +294,13 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	selection -> setSelectGeometry (false);
 	selection -> addNodes (filtered);
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes,    selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
@@ -316,14 +310,13 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
@@ -333,14 +326,13 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 	const auto   filtered  = filterSelection (value);
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
@@ -351,14 +343,13 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	selection -> setSelectGeometry (false);
 	selection -> setNodes (filtered);
 
-	nodes         = selection -> getNodes ();
-	geometryNodes = selection -> getGeometries ();
+	assignNodes ();
 }
 
 void
 BrowserSelection::undoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 }
@@ -366,7 +357,7 @@ BrowserSelection::undoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 void
 BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = browser-> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 }
@@ -386,6 +377,18 @@ BrowserSelection::filterSelection (X3D::MFNode value)
 	{
 		return value;
 	}
+}
+
+void
+BrowserSelection::assignNodes ()
+{
+	const auto & selection = browser -> getSelection ();
+
+	if (selection -> getNodes () not_eq nodes)
+		nodes = selection -> getNodes ();
+
+	if (selection -> getGeometries () not_eq geometryNodes)
+		geometryNodes = selection -> getGeometries ();
 }
 
 BrowserSelection::~BrowserSelection ()

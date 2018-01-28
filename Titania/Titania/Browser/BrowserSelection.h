@@ -177,6 +177,9 @@ private:
 	X3D::MFNode
 	filterSelection (X3D::MFNode value);
 
+	void
+	assignNodes ();
+
 	///  @name Members
 
 	X3D::SFBool enabled;
