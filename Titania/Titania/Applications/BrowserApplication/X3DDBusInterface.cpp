@@ -52,8 +52,10 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/BrowserWindow.h"
+#include "../../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Editing/X3DEditor.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {
@@ -66,6 +68,7 @@ const Glib::ustring X3DDBusInterface::introspectionXML =
 "      <arg type='s' name='x3dSyntax' direction='out'/>"
 "    </method>"
 "    <method name='ReplaceSelection'>"
+"      <arg type='s' name='pluginName' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='in'/>"
 "    </method>"
 "    <signal name='SelectionChanged'></signal>"
@@ -99,6 +102,14 @@ X3DDBusInterface::realize ()
 }
 
 void
+X3DDBusInterface::set_selection ()
+{
+	__LOG__ << std::endl;
+
+	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "SelectionChanged");
+}
+
+void
 X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & connection,
                                   const Glib::ustring & sender,
                                   const Glib::ustring & object_path,
@@ -114,7 +125,8 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 		using Method = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
 
 		static const std::map <std::string, Method> functions = {
-			std::make_pair ("GetSelection", std::bind (&X3DDBusInterface::getSelection, this, _1, _2)),
+			std::make_pair ("GetSelection",     std::bind (&X3DDBusInterface::getSelection,     this, _1, _2)),
+			std::make_pair ("ReplaceSelection", std::bind (&X3DDBusInterface::replaceSelection, this, _1, _2)),
 		};
 
 		functions .at (method_name) (parameters, invocation);
@@ -126,14 +138,6 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 
 		invocation -> return_error (error);
 	}
-}
-
-void
-X3DDBusInterface::set_selection ()
-{
-	__LOG__ << std::endl;
-
-	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "SelectionChanged");
 }
 
 void
@@ -151,6 +155,43 @@ X3DDBusInterface::getSelection (const Glib::VariantContainerBase & parameters,
 	const auto   response         = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
 	
 	invocation -> return_value (response);
+}
+
+void
+X3DDBusInterface::replaceSelection (const Glib::VariantContainerBase & parameters,
+                                    const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const
+{
+	Glib::Variant <Glib::ustring> pluginName;
+	Glib::Variant <Glib::ustring> x3dSyntax;
+
+	parameters .get_child (pluginName, 0);
+	parameters .get_child (x3dSyntax,  1);
+
+	const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", pluginName .get () .c_str ())));
+	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
+
+	if (not selection .empty ())
+	{
+		const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
+		const auto   scene            = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromString (x3dSyntax .get ());
+		const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+
+		if (not nodes .empty ())
+		{
+			X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
+
+			if (nodes .size () > 1)
+				X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
+
+			getBrowserWindow () -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+	}
+	else
+	{
+		// Display message.
+		getBrowserWindow () -> getConsole () -> warn ("No selection found to process output of tool »", pluginName .get (), "«.\n");
+	}
 }
 
 X3DDBusInterface::~X3DDBusInterface ()

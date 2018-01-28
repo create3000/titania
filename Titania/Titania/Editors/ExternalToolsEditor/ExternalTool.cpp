@@ -98,7 +98,7 @@ void
 ExternalTool::start ()
 {
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> getConsole () -> log ("\nRunning tool »" + name + "«.\n");
+		browserWindow -> getConsole () -> log ("\nRunning tool »", name, "«.\n");
 
 	saveScenes ();
 
@@ -230,7 +230,7 @@ ExternalTool::on_done ()
 	stdout .clear ();
 
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> getConsole () -> log ("Tool »" + name + "« finished.\n");
+		browserWindow -> getConsole () -> log ("Tool »", name, "« finished.\n");
 }
 
 void
@@ -386,7 +386,7 @@ ExternalTool::processOutput (const std::string & stdout)
 			else
 			{
 				// Display message.
-				browserWindow -> getConsole () -> warn ("No selection found to process output of tool »" + name + "«.\n");
+				browserWindow -> getConsole () -> warn ("No selection found to process output of tool »", name, "«.\n");
 			}
 		}
 	}
