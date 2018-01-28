@@ -134,12 +134,6 @@ X3DBrowserWindow::getOutlineTreeView () const
 	return sidebar -> getPage <OutlineEditor> ("OutlineEditor") -> getTreeView ();
 }
 
-std::shared_ptr <Console>
-X3DBrowserWindow::getConsole () const
-{
-	return footer -> getPage <Console> ("Console");
-}
-
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {

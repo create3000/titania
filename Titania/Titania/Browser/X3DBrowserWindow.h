@@ -119,9 +119,6 @@ public:
 	getAxonometricGridTool () const
 	{ return axonometricGridTool; }
 
-	std::shared_ptr <Console>
-	getConsole () const;
-
 	/// @name File oerations
 
 	virtual

@@ -345,17 +345,20 @@ X3DBaseNode::assign (const X3DBaseNode* const node, const bool compare)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>)
 {
-	for (size_t i = 0, size = fieldDefinitions .size (); i < size; ++ i)
+	for (const auto lhs : fieldDefinitions)
 	{
-		auto & lhs = *fieldDefinitions [i];
-
-		if (lhs .getAccessType () & initializeOnly)
+		try
 		{
-			auto & rhs = *node -> getFieldDefinitions () [i];
-
-			if (not compare or not lhs .equals (rhs))
-				lhs = rhs;
+			if (lhs -> getAccessType () & initializeOnly)
+			{
+				const auto rhs = node -> getField (lhs -> getName ());
+	
+				if (not compare or not lhs -> equals (*rhs))
+					*lhs = *rhs;
+			}
 		}
+		catch (const X3DError & error)
+		{ }
 	}
 }
 

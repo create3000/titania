@@ -67,6 +67,18 @@ public:
 	void
 	setup () override;
 
+	///  @name Destruction
+	
+	virtual
+	~X3DConsole () override;
+
+
+protected:
+
+	///  @name Construction
+	
+	X3DConsole ();
+
 	///  @name Operations
 
 	template <typename ... Args>
@@ -88,18 +100,6 @@ public:
 	void
 	error (Args && ... args)
 	{ append ({ "red" }, std::forward <Args> (args) ...); }
-
-	///  @name Destruction
-	
-	virtual
-	~X3DConsole () override;
-
-
-protected:
-
-	///  @name Construction
-	
-	X3DConsole ();
 
 
 private:

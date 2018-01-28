@@ -256,9 +256,9 @@ RenderPanel::setRendering (const bool value)
 		if (renderThread)
 		{
 			if (renderThread -> stop ())
-				getBrowserWindow () -> getConsole () -> log ("*** Finished encoding '" + filename + "'.\n");
+				getCurrentBrowser () -> getConsole () -> log ("*** Finished encoding '" + filename + "'.\n");
 			else
-				getBrowserWindow () -> getConsole () -> error ("*** Failed encoding '" + filename + "'.\n");
+				getCurrentBrowser () -> getConsole () -> error ("*** Failed encoding '" + filename + "'.\n");
 		}
 
 		renderThread .reset ();
@@ -449,13 +449,13 @@ RenderPanel::set_duration (const size_t value)
 void
 RenderPanel::on_stdout ()
 {
-	getBrowserWindow () -> getConsole () -> log (renderThread -> getStdout ());
+	getCurrentBrowser () -> getConsole () -> log (renderThread -> getStdout ());
 }
 
 void
 RenderPanel::on_stderr ()
 {
-	getBrowserWindow () -> getConsole () -> error (renderThread -> getStderr ());
+	getCurrentBrowser () -> getConsole () -> error (renderThread -> getStderr ());
 }
 
 void

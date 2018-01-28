@@ -350,7 +350,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		}
 		catch (const X3D::X3DError & error)
 		{
-			getBrowserWindow () -> getConsole () -> error (error .what ());
+			getCurrentBrowser () -> getConsole () -> error (error .what ());
 		}
 	}
 
@@ -705,7 +705,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 
 	try
 	{
-		getBrowserWindow () -> getConsole () -> log ("Trying to start gnome-text-editor ...\n");
+		getCurrentBrowser () -> getConsole () -> log ("Trying to start gnome-text-editor ...\n");
 
 		Gio::AppInfo::create_from_commandline (Glib::find_program_in_path ("gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
 	}
@@ -776,7 +776,7 @@ X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
 		addUndoStep (undoStep);
 	}
 
-	getBrowserWindow () -> getConsole () -> log (basic::sprintf (_ ("%s : Script »%s« saved.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getName () .c_str ()));
+	getCurrentBrowser () -> getConsole () -> log (basic::sprintf (_ ("%s : Script »%s« saved.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getName () .c_str ()));
 }
 
 void

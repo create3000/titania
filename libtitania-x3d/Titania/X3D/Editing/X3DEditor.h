@@ -110,7 +110,7 @@ public:
 
 	static
 	std::string
-	exportScene (const X3D::X3DScenePtr & scene, const std::string & encoding);
+	exportScene (const X3DScenePtr & scene, const std::string & encoding);
 
 	///  @name Prototype handling
 
@@ -301,6 +301,14 @@ public:
 	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr & undoStep);
 
 	///  @name Grouping operations
+
+	static
+	MFNode
+	replaceNodes (const X3DExecutionContextPtr & executionContext,
+                 const std::string & x3dSyntax,
+                 const MFNode & nodes,
+                 const bool assign,
+                 const UndoStepPtr & undoStep);
 
 	static
 	MFNode

@@ -125,7 +125,7 @@ FileImportAsExternProtoDialog::run ()
 	}
 	catch (const X3D::X3DError & error)
 	{
-		getBrowserWindow () -> getConsole () -> error (error .what ());
+		getCurrentBrowser () -> getConsole () -> error (error .what ());
 
 		return false;
 	}

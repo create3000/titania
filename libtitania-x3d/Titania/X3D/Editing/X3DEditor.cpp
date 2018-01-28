@@ -455,7 +455,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const M
 }
 
 std::string
-X3DEditor::exportScene (const X3D::X3DScenePtr & scene, const std::string & encoding)
+X3DEditor::exportScene (const X3DScenePtr & scene, const std::string & encoding)
 {
 	if (encoding == "VRML")
 		return scene -> toString ();
@@ -2500,6 +2500,44 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
  */
 
 MFNode
+X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext,
+                         const std::string & x3dSyntax,
+                         const MFNode & nodes,
+                         const bool assign,
+                         const UndoStepPtr & undoStep)
+{
+	if (nodes .empty ())
+		return MFNode ();
+
+	const auto scene         = executionContext -> getBrowser () -> createX3DFromString (x3dSyntax);
+	auto       importedNodes = importScene (executionContext, scene, undoStep);
+
+	if (importedNodes .empty ())
+		return MFNode ();
+
+	// Replace or assign importedNodes.
+
+	auto selection = MFNode ({ importedNodes .front () });
+	auto unused    = MFNode ();
+
+	if (assign)
+		selection = assignNode (executionContext, importedNodes .front (), nodes, undoStep);
+	else
+		createClone (executionContext, importedNodes .front (), nodes, undoStep);
+
+	// Remove unused nodes.
+
+	std::sort (importedNodes .begin (), importedNodes .end ());
+	std::sort (selection .begin (), selection .end ());
+
+	std::set_difference (importedNodes .begin (), importedNodes .end (), selection .begin (), selection .end (), std::back_inserter (unused));
+
+	removeNodesFromScene (executionContext, unused, false, undoStep);
+
+	return selection;
+}
+
+MFNode
 X3DEditor::assignNode (const X3DExecutionContextPtr & executionContext,
                        const SFNode & other,
                        const MFNode & nodes,
@@ -2540,19 +2578,19 @@ X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStep
 		{
 			try
 			{
-				const auto rhs = other -> getField (lhs -> getName ());
-
-				if (lhs -> equals (*rhs))
-					continue;
-
 				if (lhs -> getAccessType () & initializeOnly)
 				{
+					const auto rhs = other -> getField (lhs -> getName ());
+
+					if (lhs -> equals (*rhs))
+						continue;
+
 					switch (lhs -> getType ())
 					{
 						case X3DConstants::SFNode:
 						{
-							auto lhsSFNode = static_cast <SFNode*> (lhs);
-							auto rhsSFNode = static_cast <SFNode*> (rhs);
+							const auto lhsSFNode = static_cast <SFNode*> (lhs);
+							const auto rhsSFNode = static_cast <SFNode*> (rhs);
 			
 							if (assignNode (*lhsSFNode, *rhsSFNode, undoStep))
 								continue;
@@ -2562,37 +2600,37 @@ X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStep
 						}
 						case X3DConstants::MFNode:
 						{
-							auto lhsMFNode = static_cast <MFNode*> (lhs);
-							auto rhsMFNode = static_cast <MFNode*> (rhs);
+							const auto lhsMFNode = static_cast <MFNode*> (lhs);
+							const auto rhsMFNode = static_cast <MFNode*> (rhs);
 	
 							if (lhsMFNode -> size () == rhsMFNode -> size ())
 							{
 								size_t m    = 0;
 								size_t size = lhsMFNode -> size ();
-	
+
 								// Collect next undo steps
-								std::vector <UndoStepPtr> undoSteps;
-	
+								std::vector <UndoStepPtr> childUndoSteps;
+
 								for (; m < size; ++ m)
 								{
-									const auto undoStep = std::make_shared <UndoStep> ();
-	
-									undoSteps .emplace_back (undoStep);
-	
-									if (assignNode ((*lhsMFNode) [m], (*rhsMFNode) [m], undoStep))
+									const auto childUndoStep = std::make_shared <UndoStep> ();
+
+									childUndoSteps .emplace_back (childUndoStep);
+
+									if (assignNode ((*lhsMFNode) [m], (*rhsMFNode) [m], childUndoStep))
 										continue;
 	
 									break;
 								}
-	
+
 								if (m == size)
 								{
 									// If arrays are equal in size and types add undo step.
-	
-									for (const auto & u : undoSteps)
+
+									for (const auto & childUndoStep : childUndoSteps)
 									{
-										undoStep -> addUndoFunction (&UndoStep::undo, u);
-										undoStep -> addRedoFunction (&UndoStep::redo, u);
+										undoStep -> addUndoFunction (&UndoStep::undo, childUndoStep);
+										undoStep -> addRedoFunction (&UndoStep::redo, childUndoStep);
 									}
 	
 									continue;

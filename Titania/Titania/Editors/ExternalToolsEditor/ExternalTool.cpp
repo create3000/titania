@@ -98,7 +98,7 @@ void
 ExternalTool::start ()
 {
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> getConsole () -> log ("\nRunning tool »", name, "«.\n");
+		browserWindow -> getCurrentBrowser () -> getConsole () -> log ("\nRunning tool »", name, "«.\n");
 
 	saveScenes ();
 
@@ -215,7 +215,7 @@ ExternalTool::on_stderr ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	browserWindow -> getConsole () -> error (stderr);
+	browserWindow -> getCurrentBrowser () -> getConsole () -> error (stderr);
 
 	stderr .clear ();
 }
@@ -230,7 +230,7 @@ ExternalTool::on_done ()
 	stdout .clear ();
 
 	if (outputType == "DISPLAY_IN_CONSOLE")
-		browserWindow -> getConsole () -> log ("Tool »", name, "« finished.\n");
+		browserWindow -> getCurrentBrowser () -> getConsole () -> log ("Tool »", name, "« finished.\n");
 }
 
 void
@@ -327,7 +327,7 @@ ExternalTool::processOutput (const std::string & stdout)
 			;
 		else if (outputType == "DISPLAY_IN_CONSOLE")
 		{
-			browserWindow -> getConsole () -> print (stdout);
+			browserWindow -> getCurrentBrowser () -> getConsole () -> print (stdout);
 		}
 		else if (outputType == "CREATE_NEW_SCENE")
 		{
@@ -363,36 +363,34 @@ ExternalTool::processOutput (const std::string & stdout)
 		}
 		else if (outputType == "REPLACE_SELECTION")
 		{
-			const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Replace Selection By Output From Tool »%s«", name .c_str ())));
 			const auto & selection = browserWindow -> getSelection () -> getNodes ();
 
 			if (not selection .empty ())
 			{
-				const auto   executionContext = X3D::X3DExecutionContextPtr (selection .back () -> getExecutionContext ());
-				const auto   scene            = browserWindow -> getCurrentBrowser () -> createX3DFromString (stdout);
-				const auto   nodes            = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
-	
-				if (not nodes .empty ())
+				const auto executionContext = X3D::X3DExecutionContextPtr (browserWindow -> getSelectionContext (selection));
+		
+				if (executionContext)
 				{
-					X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
-	 
-					if (nodes .size () > 1)
-						X3D::X3DEditor::removeNodesFromScene (executionContext, X3D::MFNode (nodes .begin () + 1, nodes .end ()), false, undoStep);
-	
-					browserWindow -> getSelection () -> setNodes ({ nodes .front () }, undoStep);
+					const auto undoStep     = std::make_shared <X3D::UndoStep> (_ (basic::sprintf (_ ("Assign Output From Tool »%s« To Selection"), name .c_str ())));
+					const auto newSelection = X3D::X3DEditor::replaceNodes (executionContext, stdout, selection, true, undoStep);
+
+					browserWindow -> getSelection () -> setNodes (newSelection, undoStep);
 					browserWindow -> addUndoStep (undoStep);
+				}
+				else
+				{
+					browserWindow -> getCurrentBrowser () -> getConsole () -> warn ("Can't assing output of tool »", name, "« to nodes of multiple contexts.\n");
 				}
 			}
 			else
 			{
-				// Display message.
-				browserWindow -> getConsole () -> warn ("No selection found to process output of tool »", name, "«.\n");
+				browserWindow -> getCurrentBrowser () -> getConsole () -> warn ("No selection found to process output of tool »", name, "«.\n");
 			}
 		}
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> getConsole () -> error ("Couldn't process output of tool »", name, "«.\n", error .what (), "\nOutput >>", stdout, "<<\n");
+		browserWindow -> getCurrentBrowser () -> getConsole () -> error ("Couldn't process output of tool »", name, "«.\n", error .what (), "\nOutput >>", stdout, "<<\n");
 	}
 }
 

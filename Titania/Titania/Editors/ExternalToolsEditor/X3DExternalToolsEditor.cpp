@@ -574,7 +574,7 @@ X3DExternalToolsEditor::on_tool_activate (X3DBrowserWindow* const browserWindow,
 	}
 	catch (const std::exception & error)
 	{
-		browserWindow -> getConsole () -> error ("Couldn't execute tool.\n", error .what (), "\n");
+		browserWindow -> getCurrentBrowser () -> getConsole () -> error ("Couldn't execute tool.\n", error .what (), "\n");
 	}
 }
 

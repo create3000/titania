@@ -176,42 +176,24 @@ X3DDBusInterface::replaceSelection (const Glib::VariantContainerBase & parameter
 
 		if (executionContext)
 		{
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ((assign .get () ? _ ("Assign Output From Tool »%s« To Selection") : _ ("Replace Selection By Output From Tool »%s«")), pluginName .get () .c_str ())));
-			const auto scene    = getBrowserWindow () -> getCurrentBrowser () -> createX3DFromString (x3dSyntax .get ());
-			auto       nodes    = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
+			const auto undoStep = assign .get ()
+			                      ? std::make_shared <X3D::UndoStep> (_ (basic::sprintf (_ ("Assign Output From Tool »%s« To Selection"),  pluginName .get () .c_str ())))
+			                      : std::make_shared <X3D::UndoStep> (_ (basic::sprintf (_ ("Replace Selection By Output From Tool »%s«"), pluginName .get () .c_str ())));
 
-			if (not nodes .empty ())
-			{
-				// Replace or assign nodes.
+			const auto newSelection = X3D::X3DEditor::replaceNodes (executionContext, x3dSyntax .get (), selection, assign .get (), undoStep);
 
-				auto newSelection = X3D::MFNode ({ nodes .front () });
-				auto unused       = X3D::MFNode ();
-
-				if (assign .get ())
-					newSelection = X3D::X3DEditor::assignNode (executionContext, nodes .front (), selection, undoStep);
-				else
-					X3D::X3DEditor::createClone (executionContext, nodes .front (), selection, undoStep);
-
-				// Remove unused nodes.
-
-				std::sort (nodes .begin (), nodes .end ());
-				std::sort (newSelection .begin (), newSelection .end ());
-
-				std::set_difference (nodes .begin (), nodes .end (), newSelection .begin (), newSelection .end (), std::back_inserter (unused));
-
-				X3D::X3DEditor::removeNodesFromScene (executionContext, unused, false, undoStep);
-
-				// Make new selection and add undo step.
-
-				getBrowserWindow () -> getSelection () -> setNodes (newSelection, undoStep);
-				getBrowserWindow () -> addUndoStep (undoStep);
-			}
+			getBrowserWindow () -> getSelection () -> setNodes (newSelection, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		else
+		{
+			getBrowserWindow () -> getCurrentBrowser () -> getConsole () -> warn ("Can't assing output of tool »", pluginName .get (), "« to nodes of multiple contexts.\n");
 		}
 	}
 	else
 	{
 		// Display message.
-		getBrowserWindow () -> getConsole () -> warn ("No selection found to process output of tool »", pluginName .get (), "«.\n");
+		getBrowserWindow () -> getCurrentBrowser () -> getConsole () -> warn ("No selection found to process output of tool »", pluginName .get (), "«.\n");
 	}
 
 	invocation -> return_value (Glib::VariantContainerBase ());
