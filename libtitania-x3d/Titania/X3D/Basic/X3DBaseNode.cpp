@@ -349,13 +349,13 @@ throw (Error <INVALID_NODE>,
 	{
 		try
 		{
-			if (lhs -> getAccessType () & initializeOnly)
-			{
-				const auto rhs = node -> getField (lhs -> getName ());
-	
-				if (not compare or not lhs -> equals (*rhs))
-					*lhs = *rhs;
-			}
+			if (not lhs -> isInitializable ())
+				continue;
+
+			const auto rhs = node -> getField (lhs -> getName ());
+
+			if (not compare or not lhs -> equals (*rhs))
+				*lhs = *rhs;
 		}
 		catch (const X3DError & error)
 		{ }

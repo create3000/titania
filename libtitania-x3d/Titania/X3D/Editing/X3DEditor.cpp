@@ -2578,75 +2578,75 @@ X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStep
 		{
 			try
 			{
-				if (lhs -> getAccessType () & initializeOnly)
+				if (not lhs -> isInitializable ())
+					continue;
+
+				const auto rhs = other -> getField (lhs -> getName ());
+
+				if (lhs -> equals (*rhs))
+					continue;
+
+				switch (lhs -> getType ())
 				{
-					const auto rhs = other -> getField (lhs -> getName ());
-
-					if (lhs -> equals (*rhs))
-						continue;
-
-					switch (lhs -> getType ())
+					case X3DConstants::SFNode:
 					{
-						case X3DConstants::SFNode:
-						{
-							const auto lhsSFNode = static_cast <SFNode*> (lhs);
-							const auto rhsSFNode = static_cast <SFNode*> (rhs);
-			
-							if (assignNode (*lhsSFNode, *rhsSFNode, undoStep))
-								continue;
-	
-							setValue (node, *lhs, *rhs, undoStep);
+						const auto lhsSFNode = static_cast <SFNode*> (lhs);
+						const auto rhsSFNode = static_cast <SFNode*> (rhs);
+		
+						if (assignNode (*lhsSFNode, *rhsSFNode, undoStep))
 							continue;
-						}
-						case X3DConstants::MFNode:
+
+						setValue (node, *lhs, *rhs, undoStep);
+						continue;
+					}
+					case X3DConstants::MFNode:
+					{
+						const auto lhsMFNode = static_cast <MFNode*> (lhs);
+						const auto rhsMFNode = static_cast <MFNode*> (rhs);
+
+						if (lhsMFNode -> size () == rhsMFNode -> size ())
 						{
-							const auto lhsMFNode = static_cast <MFNode*> (lhs);
-							const auto rhsMFNode = static_cast <MFNode*> (rhs);
-	
-							if (lhsMFNode -> size () == rhsMFNode -> size ())
+							size_t m    = 0;
+							size_t size = lhsMFNode -> size ();
+
+							// Collect next undo steps
+							std::vector <UndoStepPtr> childUndoSteps;
+
+							for (; m < size; ++ m)
 							{
-								size_t m    = 0;
-								size_t size = lhsMFNode -> size ();
+								const auto childUndoStep = std::make_shared <UndoStep> ();
 
-								// Collect next undo steps
-								std::vector <UndoStepPtr> childUndoSteps;
+								childUndoSteps .emplace_back (childUndoStep);
 
-								for (; m < size; ++ m)
-								{
-									const auto childUndoStep = std::make_shared <UndoStep> ();
-
-									childUndoSteps .emplace_back (childUndoStep);
-
-									if (assignNode ((*lhsMFNode) [m], (*rhsMFNode) [m], childUndoStep))
-										continue;
-	
-									break;
-								}
-
-								if (m == size)
-								{
-									// If arrays are equal in size and types add undo step.
-
-									for (const auto & childUndoStep : childUndoSteps)
-									{
-										undoStep -> addUndoFunction (&UndoStep::undo, childUndoStep);
-										undoStep -> addRedoFunction (&UndoStep::redo, childUndoStep);
-									}
-	
+								if (assignNode ((*lhsMFNode) [m], (*rhsMFNode) [m], childUndoStep))
 									continue;
-								}
-							}
-	
-							// Unless arrays are equal in size and types assign rhs to lhs.
 
-							setValue (node, *lhs, *rhs, undoStep);
-							continue;
+								break;
+							}
+
+							if (m == size)
+							{
+								// If arrays are equal in size and types add undo step.
+
+								for (const auto & childUndoStep : childUndoSteps)
+								{
+									undoStep -> addUndoFunction (&UndoStep::undo, childUndoStep);
+									undoStep -> addRedoFunction (&UndoStep::redo, childUndoStep);
+								}
+
+								continue;
+							}
 						}
-						default:
-						{
-							setValue (node, *lhs, *rhs, undoStep);
-							continue;
-						}
+
+						// Unless arrays are equal in size and types assign rhs to lhs.
+
+						setValue (node, *lhs, *rhs, undoStep);
+						continue;
+					}
+					default:
+					{
+						setValue (node, *lhs, *rhs, undoStep);
+						continue;
 					}
 				}
 			}
