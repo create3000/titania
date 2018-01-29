@@ -174,49 +174,12 @@ X3DBaseInterface::getAddStandardMetadata (const X3D::X3DScenePtr & scene)
 	}
 }
 
-void
-X3DBaseInterface::setAddMetadata (const X3D::X3DScenePtr & scene, const bool value)
-{
-	if (value)
-		scene -> setMetaData ("titania-add-metadata", "true");
-	else
-		scene -> removeMetaData ("titania-add-metadata");
-}
-
-bool
-X3DBaseInterface::getAddMetadata (const X3D::X3DScenePtr & scene)
-{
-	try
-	{
-		// Remove old metadata key.
-		setAddMetadata (scene, scene -> getMetaData ("titania-add-world-info") == "true");
-		scene -> removeMetaData ("titania-add-world-info");
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	try
-	{
-		const auto add = basic::tolower (scene -> getMetaData ("titania-add-metadata"), std::locale::classic ());
-
-		return add == "true";
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{
-		return false;
-	}
-}
-
-
 ///  Return the WorldInfo node from the current scene. The node is created if needed.
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::createWorldInfo (const X3D::X3DScenePtr & scene)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	if (getAddMetadata (scene))
-		return getWorldInfo (scene, true);
-
-	return getBrowserWindow () -> getCurrentPage () -> getDefaultWorldInfo ();
+	return getWorldInfo (scene, true);
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
@@ -224,10 +187,7 @@ X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene) const
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	if (const_cast <X3DBaseInterface*> (this) -> getAddMetadata (scene))
-		return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
-
-	return getBrowserWindow () -> getCurrentPage () -> getDefaultWorldInfo ();
+	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
 }
 
 ///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it

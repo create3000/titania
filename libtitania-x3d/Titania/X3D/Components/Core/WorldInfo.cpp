@@ -90,10 +90,10 @@ WorldInfo::initialize ()
 	X3DInfoNode::initialize ();
 
 	if (not getPrivate ())
-		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
-
-//	if (not title () .empty ())
-//		getBrowser () -> getNotification () -> string () = title ();
+	{
+		if (not getExecutionContext () -> getWorldInfo ())
+			getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
+	}
 }
 
 void

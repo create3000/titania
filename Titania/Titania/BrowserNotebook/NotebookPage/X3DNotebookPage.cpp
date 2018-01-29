@@ -74,7 +74,6 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                     url (startUrl),
 	          browserHistory (mainBrowser),
 	             undoHistory (),
-	        defaultWorldInfo (mainBrowser -> createNode <X3D::WorldInfo> ()),
 	                modified (false),
 	           saveConfirmed (false),
 	               savedTime (-1),
@@ -84,7 +83,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
 {
-	addChildObjects (mainBrowser, masterScene, scene, executionContext, defaultWorldInfo);
+	addChildObjects (mainBrowser, masterScene, scene, executionContext);
 
 	mainBrowser -> isStrict (false);
 
@@ -390,7 +389,7 @@ X3DNotebookPage::set_scene ()
 {
 	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
 
-	if (getMasterSceneURL () == get_page ("about/new.x3dv"))
+	if (getScene () -> getWorldURL () == get_page ("about/new.x3dv"))
 	{
 		url = "";
 
@@ -403,6 +402,14 @@ X3DNotebookPage::set_scene ()
 		getScene () -> removeMetaData ("generator");
 		getScene () -> removeMetaData ("identifier");
 		getScene () -> removeMetaData ("modified");
+	}
+
+	if (url .scheme () == "data" and
+	    getScene () -> getWorldURL () == get_page ("about/splash.x3dv"))
+	{
+		url = "";
+
+		getScene () -> setWorldURL ("");
 	}
 }
 

@@ -126,10 +126,10 @@ NotebookPage::on_unmap ()
 void
 NotebookPage::set_editing ()
 {
-	if (getMultiView () and not getBrowserWindow () -> getEditing ())
+	if (not getBrowserWindow () -> getEditing ())
 	{
 		setActiveView (1);
-		setMultiView (not getMultiView ());
+		setMultiView (false);
 	}
 }
 

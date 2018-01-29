@@ -76,8 +76,8 @@ namespace puck {
 
 X3DBrowserNotebook::X3DBrowserNotebook (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface (),
-	                    pages (),
 	                     page (),
+	                    pages (),
 	              recentPages (),
 	            masterBrowser (defaultBrowser),
 	                  browser (X3D::createBrowser (defaultBrowser)),
@@ -443,7 +443,7 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 		setOutputStyle (scene, outputStyle);
 		X3D::X3DEditor::setWorldURL (scene, worldURL, undoStep);
 
-		X3D::FileGenerator::write (scene, worldURL, outputStyle, getAddMetadata (scene));
+		X3D::FileGenerator::write (scene, worldURL, outputStyle, true);
 
 		if (copy)
 			undoStep -> undo ();

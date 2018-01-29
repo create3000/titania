@@ -126,9 +126,9 @@ X3DBrowserEditor::configure ()
 	if (not getConfig () -> hasItem ("environment"))
 		getConfig () -> setItem ("environment", 1);
 
-	if (getConfig () -> getItem <int32_t> ("environment") == 1)
-		getEditorAction () -> set_active (true);
-	else
+	//if (getConfig () -> getItem <int32_t> ("environment") == 1)
+	//	getEditorAction () -> set_active (true);
+	//else
 		getBrowserAction () -> set_active (true);
 
 	// SelectLowest

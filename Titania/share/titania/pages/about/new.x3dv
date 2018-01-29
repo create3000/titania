@@ -8,7 +8,6 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V4.0.0, http://titania.create3000.de"
 META "identifier" ""
 META "modified" "Sun, 12 Nov 2017 22:36:28 GMT"
-META "titania-add-metadata" "true"
 META "titania-output-style" "Nicest"
 
 WorldInfo {

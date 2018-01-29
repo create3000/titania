@@ -65,7 +65,7 @@ class RecentView;
 class UserData;
 
 using NotebookPagePtr      = std::shared_ptr <NotebookPage>;
-using NotebookPagePtrArray = std::vector <NotebookPagePtr>;
+using NotebookPagePtrArray = std::deque <NotebookPagePtr>;
 
 class X3DBrowserNotebook :
 	virtual public X3DBrowserWindowInterface
@@ -245,8 +245,8 @@ private:
 
 	///  @name Members
 
-	NotebookPagePtrArray            pages;
 	NotebookPagePtr                 page;
+	NotebookPagePtrArray            pages;
 	NotebookPagePtrArray            recentPages;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;

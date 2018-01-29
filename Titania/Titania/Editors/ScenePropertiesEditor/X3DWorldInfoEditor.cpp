@@ -61,9 +61,7 @@ X3DWorldInfoEditor::X3DWorldInfoEditor () :
 		                          info (this, getWorldInfoInfoTextView (),  "info"),
 	                            scene (getCurrentScene ()),
 	                         changing (false)
-{
-	getAddMetadataButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DWorldInfoEditor::on_add_metadata_activate));
-}
+{ }
 
 void
 X3DWorldInfoEditor::initialize ()
@@ -84,20 +82,6 @@ X3DWorldInfoEditor::on_unmap ()
 }
 
 void
-X3DWorldInfoEditor::on_add_metadata_activate ()
-{
-	if (changing)
-		return;
-
-	setAddMetadata (scene, getAddMetadataButton () .get_active ());
-
-	if (getAddMetadataButton () .get_active ())
-		createWorldInfo (scene);
-
-	set_node ();
-}
-
-void
 X3DWorldInfoEditor::set_current_scene ()
 {
 	changing = true;
@@ -109,8 +93,6 @@ X3DWorldInfoEditor::set_current_scene ()
 	scene -> sceneGraph_changed () .addInterest (&X3DWorldInfoEditor::set_node, this);
 
 	set_node ();
-
-	getAddMetadataButton () .set_active (getAddMetadata (scene));
 
 	changing = false;
 }

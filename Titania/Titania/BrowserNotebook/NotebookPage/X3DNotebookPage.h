@@ -109,10 +109,6 @@ public:
 	getUndoHistory () const
 	{ return undoHistory; }
 
-	const X3D::X3DPtr <X3D::WorldInfo> &
-	getDefaultWorldInfo () const
-	{ return defaultWorldInfo; }
-
 	void
 	setModified (const bool value);
 
@@ -240,7 +236,6 @@ private:
 	basic::uri                   url; // Start URL
 	BrowserHistory               browserHistory;
 	X3D::UndoHistory             undoHistory;
-	X3D::X3DPtr <X3D::WorldInfo> defaultWorldInfo;
 	bool                         modified;
 	bool                         saveConfirmed;
 	X3D::time_type               savedTime;

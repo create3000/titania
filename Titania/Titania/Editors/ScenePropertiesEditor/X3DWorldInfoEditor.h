@@ -104,9 +104,6 @@ private:
 	on_unmap () final override;
 
 	void
-	on_add_metadata_activate ();
-
-	void
 	set_current_scene ();
 
 	void

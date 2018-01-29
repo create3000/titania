@@ -134,12 +134,6 @@ public:
 	bool
 	getAddStandardMetadata (const X3D::X3DScenePtr & scene);
 
-	void
-	setAddMetadata (const X3D::X3DScenePtr & scene, const bool value);
-
-	bool
-	getAddMetadata (const X3D::X3DScenePtr & scene);
-
 	X3D::X3DPtr <X3D::WorldInfo>
 	createWorldInfo (const X3D::X3DScenePtr & scene)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);

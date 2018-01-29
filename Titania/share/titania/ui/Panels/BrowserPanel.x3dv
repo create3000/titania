@@ -8,7 +8,6 @@ META "creator" "Holger Seelig"
 META "generator" "Titania V3.1.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
 META "modified" "Thu, 05 Oct 2017 04:40:44 GMT"
-META "titania-add-metadata" "true"
 
 EXTERNPROTO Grid [
   inputOutput    SFVec3f    translation
