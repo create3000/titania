@@ -83,6 +83,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_current_scene ();
+
+	void
 	set_selection ();
 
 	void
@@ -93,6 +96,10 @@ private:
 	                const Glib::ustring & method_name,
 	                const Glib::VariantContainerBase & parameters,
 	                const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation);
+
+	void
+	getCurrentScene (const Glib::VariantContainerBase & parameters,
+	                 const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const;
 
 	void
 	getSelection (const Glib::VariantContainerBase & parameters,

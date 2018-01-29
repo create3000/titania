@@ -63,6 +63,10 @@ namespace puck {
 const Glib::ustring X3DDBusInterface::introspectionXML =
 "<node>"
 "  <interface name='de.create3000.titania'>"
+"    <method name='GetCurrentScene'>"
+"      <arg type='s' name='encoding' direction='in'/>"
+"      <arg type='s' name='x3dSyntax' direction='out'/>"
+"    </method>"
 "    <method name='GetSelection'>"
 "      <arg type='s' name='encoding' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='out'/>"
@@ -72,6 +76,7 @@ const Glib::ustring X3DDBusInterface::introspectionXML =
 "      <arg type='s' name='x3dSyntax' direction='in'/>"
 "      <arg type='b' name='assign' direction='in'/>"
 "    </method>"
+"    <signal name='CurrentSceneChanged'></signal>"
 "    <signal name='SelectionChanged'></signal>"
 "  </interface>"
 "</node>";
@@ -94,12 +99,19 @@ X3DDBusInterface::realize ()
 		introspectionData = Gio::DBus::NodeInfo::create_for_xml (introspectionXML);
       registeredId      = get_dbus_connection () -> register_object ("/de/create3000/titania", introspectionData -> lookup_interface (), interfaceVTable);
 
-		getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DDBusInterface::set_selection, this);
+		getBrowserWindow () -> getCurrentScene ()             .addInterest (&X3DDBusInterface::set_current_scene, this);
+		getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DDBusInterface::set_selection,     this);
 	}
 	catch (const Glib::Error & error)
 	{
 		std::cerr << "Titania: Registration of DBus object failed: " << error .what () << "." << std::endl;
 	}
+}
+
+void
+X3DDBusInterface::set_current_scene ()
+{
+	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "CurrentSceneChanged");
 }
 
 void
@@ -124,6 +136,7 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 		using Method = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
 
 		static const std::map <std::string, Method> functions = {
+			std::make_pair ("GetCurrentScene",  std::bind (&X3DDBusInterface::getCurrentScene,  this, _1, _2)),
 			std::make_pair ("GetSelection",     std::bind (&X3DDBusInterface::getSelection,     this, _1, _2)),
 			std::make_pair ("ReplaceSelection", std::bind (&X3DDBusInterface::replaceSelection, this, _1, _2)),
 		};
@@ -137,6 +150,22 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 
 		invocation -> return_error (error);
 	}
+}
+
+void
+X3DDBusInterface::getCurrentScene (const Glib::VariantContainerBase & parameters,
+                                   const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const
+{
+	Glib::Variant <Glib::ustring> encoding;
+
+	parameters .get_child (encoding, 0);
+
+	const auto & currentScene = getBrowserWindow () -> getCurrentScene ();
+	const auto   x3dSyntax    = X3D::X3DEditor::exportScene (currentScene, encoding .get ());
+	const auto   x3dSyntaxVar = Glib::Variant <Glib::ustring>::create (x3dSyntax);
+	const auto   response     = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
+
+	invocation -> return_value (response);
 }
 
 void
