@@ -148,15 +148,12 @@ X3DBrowserNotebook::initialize ()
 
 	const auto empty     = pages .empty ();
 	auto       worldURLs = std::vector <std::string> ();
-	auto       histories = std::vector <std::string> ();
 	auto       recent    = std::vector <std::string> ();
 
 	basic::split (std::back_inserter (worldURLs), getConfig () -> getItem <std::string> ("worldURL"), "\n");
-	basic::split (std::back_inserter (histories), getConfig () -> getItem <std::string> ("history"),  "\n");
 	basic::split (std::back_inserter (recent),    getConfig () -> getItem <std::string> ("recent"),   "\n");
 
 	worldURLs = files_exists (worldURLs);
-	histories = files_exists (histories);
 	recent    = files_exists (recent);
 
 	if (worldURLs .empty () and empty)
@@ -168,9 +165,6 @@ X3DBrowserNotebook::initialize ()
 			continue;
 
 		const auto page = append (worldURLs [i]);
-
-		if (i < histories .size ())
-			page -> getBrowserHistory () .fromString (histories [i]);
 	}
 
 	if (empty)
@@ -572,7 +566,6 @@ X3DBrowserNotebook::quit ()
 	recentView -> loadPreview (getCurrentBrowser ());
 
 	std::deque <std::string> worldURLs;
-	std::deque <std::string> browserHistories;
 	std::deque <std::string> recent;
 
 	for (const auto & page : recentPages)
@@ -589,8 +582,6 @@ X3DBrowserNotebook::quit ()
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
-
-		browserHistories .emplace_back (page -> getBrowserHistory () .toString ());
 
 		page -> shutdown ();
 	}
@@ -611,7 +602,6 @@ X3DBrowserNotebook::quit ()
 
 	getConfig () -> setItem ("currentPage", currentPage);
 	getConfig () -> setItem ("worldURL",    basic::join (worldURLs, "\n"));
-	getConfig () -> setItem ("history",     basic::join (browserHistories, "\n"));
 	getConfig () -> setItem ("recent",      basic::join (recent, "\n"));
 
 	X3DBrowserWindowInterface::quit ();

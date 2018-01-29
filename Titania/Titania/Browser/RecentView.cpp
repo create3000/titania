@@ -104,15 +104,7 @@ RecentView::getTitle (const X3D::String & string, const size_t max) const
 void
 RecentView::open ()
 {
-	if (getBrowserWindow () -> getEditing ())
-	{
-		getBrowserWindow () -> X3DBrowserNotebook::open (getURL ());
-	}
-	else
-	{
-		getBrowserWindow () -> append (getURL ());
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getPages () .size () - 1);
-	}
+	getBrowserWindow () -> X3DBrowserNotebook::open (getURL ());
 }
 
 void

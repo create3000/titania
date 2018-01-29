@@ -81,15 +81,16 @@ X3DPanelInterface::initialize ()
 {
 	X3DUserInterface::initialize ();
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DPanelInterface::set_editing, this);
 	hasFocus () .addInterest (&X3DPanelInterface::set_focus, this);
+
+	getWidget () .get_style_context () -> add_class ("titania-widget-box");
 
 	getPanelsMenuItem () .set_submenu (panelMenu -> getWidget ());
 
 	for (const auto widget : getWidgets <Gtk::Widget> (getWidget ()))
 		addFocusWidget (widget);
 
-	set_editing ();
+	set_focus ();
 }
 
 const X3D::SFEnum <PanelType> &
@@ -124,21 +125,9 @@ X3DPanelInterface::removeFocusWidget (Gtk::Widget* const widget)
 }
 
 void
-X3DPanelInterface::set_editing ()
-{
-	if (getBrowserWindow () -> getEditing ())
-		getWidget () .get_style_context () -> add_class ("titania-widget-box");
-
-	else
-		getWidget () .get_style_context () -> remove_class ("titania-widget-box");
-
-	set_focus ();
-}
-
-void
 X3DPanelInterface::set_focus ()
 {
-	if (hasFocus () and getBrowserWindow () -> getEditing ())
+	if (hasFocus ())
 	{
 		const auto widgets     = getWidgets <Gtk::Widget> (getWidget ());
 		const auto anyHasFocus = std::any_of (widgets .begin (),

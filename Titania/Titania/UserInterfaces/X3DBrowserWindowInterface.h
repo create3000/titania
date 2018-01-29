@@ -90,14 +90,6 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getBrowserAction () const
-	{ return m_BrowserAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getEditorAction () const
-	{ return m_EditorAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFlatAction () const
 	{ return m_FlatAction; }
 
@@ -204,14 +196,6 @@ public:
 	Gtk::Image &
 	getOpenLocationImage1 () const
 	{ return *m_OpenLocationImage1; }
-
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_WorkspacesImage; }
-
-	Gtk::Image &
-	getWorkspacesImage1 () const
-	{ return *m_WorkspacesImage1; }
 
 	Gtk::Menu &
 	getBrowserMenu () const
@@ -444,18 +428,6 @@ public:
 	Gtk::CheckMenuItem &
 	getBrowserTabsMenuItem () const
 	{ return *m_BrowserTabsMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getBrowserEnvironmentMenuItem () const
-	{ return *m_BrowserEnvironmentMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserEditorMenuItem () const
-	{ return *m_BrowserEditorMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserBrowserMenuItem () const
-	{ return *m_BrowserBrowserMenuItem; }
 
 	Gtk::SeparatorMenuItem &
 	getBrowserBrowserOptionsSeparator () const
@@ -921,18 +893,6 @@ public:
 	getTabsMenuItem () const
 	{ return *m_TabsMenuItem; }
 
-	Gtk::ImageMenuItem &
-	getEnvironmentMenuItem () const
-	{ return *m_EnvironmentMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getEditorMenuItem () const
-	{ return *m_EditorMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserMenuItem () const
-	{ return *m_BrowserMenuItem; }
-
 	Gtk::SeparatorMenuItem &
 	getBrowserOptionsSeparator () const
 	{ return *m_BrowserOptionsSeparator; }
@@ -1148,46 +1108,6 @@ public:
 	Gtk::Box &
 	getToolbar () const
 	{ return *m_Toolbar; }
-
-	Gtk::Box &
-	getLocationBar () const
-	{ return *m_LocationBar; }
-
-	Gtk::Toolbar &
-	getLocationBar1 () const
-	{ return *m_LocationBar1; }
-
-	Gtk::ToolButton &
-	getAddTabButton () const
-	{ return *m_AddTabButton; }
-
-	Gtk::ToolButton &
-	getHomeButton () const
-	{ return *m_HomeButton; }
-
-	Gtk::ToolButton &
-	getPreviousButton () const
-	{ return *m_PreviousButton; }
-
-	Gtk::ToolButton &
-	getNextButton () const
-	{ return *m_NextButton; }
-
-	Gtk::Entry &
-	getLocationEntry () const
-	{ return *m_LocationEntry; }
-
-	Gtk::Toolbar &
-	getLocationBar2 () const
-	{ return *m_LocationBar2; }
-
-	Gtk::ToolButton &
-	getReloadButton () const
-	{ return *m_ReloadButton; }
-
-	Gtk::Box &
-	getEditToolBarBox () const
-	{ return *m_EditToolBarBox; }
 
 	Gtk::Toolbar &
 	getEditToolBar () const
@@ -1426,14 +1346,6 @@ public:
 	{ return *m_OtherViewerButton; }
 
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_browser_toggled () = 0;
-
-	virtual
-	void
-	on_editor_toggled () = 0;
 
 	virtual
 	void
@@ -1853,34 +1765,6 @@ public:
 
 	virtual
 	void
-	on_home () = 0;
-
-	virtual
-	bool
-	on_previous_button_press_event (GdkEventButton* button_event) = 0;
-
-	virtual
-	void
-	on_previous_page () = 0;
-
-	virtual
-	bool
-	on_next_button_press_event (GdkEventButton* button_event) = 0;
-
-	virtual
-	void
-	on_next_page () = 0;
-
-	virtual
-	void
-	on_location_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_location_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
 	on_node_index_clicked () = 0;
 
 	virtual
@@ -2043,8 +1927,6 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
@@ -2072,8 +1954,6 @@ private:
 	Gtk::Menu* m_HistoryMenu;
 	Gtk::Image* m_OpenLocationImage;
 	Gtk::Image* m_OpenLocationImage1;
-	Gtk::Image* m_WorkspacesImage;
-	Gtk::Image* m_WorkspacesImage1;
 	Gtk::Menu* m_BrowserMenu;
 	Gtk::MenuItem* m_BrowserFileMenuItem;
 	Gtk::ImageMenuItem* m_BrowserNewMenuItem;
@@ -2132,9 +2012,6 @@ private:
 	Gtk::CheckMenuItem* m_BrowserSidebarMenuItem;
 	Gtk::CheckMenuItem* m_BrowserFooterMenuItem;
 	Gtk::CheckMenuItem* m_BrowserTabsMenuItem;
-	Gtk::ImageMenuItem* m_BrowserEnvironmentMenuItem;
-	Gtk::CheckMenuItem* m_BrowserEditorMenuItem;
-	Gtk::CheckMenuItem* m_BrowserBrowserMenuItem;
 	Gtk::SeparatorMenuItem* m_BrowserBrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_BrowserMotionBlurMenuItem;
 	Gtk::ImageMenuItem* m_BrowserShadingMenuItem;
@@ -2251,9 +2128,6 @@ private:
 	Gtk::CheckMenuItem* m_SidebarMenuItem;
 	Gtk::CheckMenuItem* m_FooterMenuItem;
 	Gtk::CheckMenuItem* m_TabsMenuItem;
-	Gtk::ImageMenuItem* m_EnvironmentMenuItem;
-	Gtk::CheckMenuItem* m_EditorMenuItem;
-	Gtk::CheckMenuItem* m_BrowserMenuItem;
 	Gtk::SeparatorMenuItem* m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_MotionBlurMenuItem;
 	Gtk::ImageMenuItem* m_ShadingMenuItem;
@@ -2308,16 +2182,6 @@ private:
 	Gtk::CheckMenuItem* m_X_ITECompatibilityMenuItem;
 	Gtk::ImageMenuItem* m_InfoMenuItem;
 	Gtk::Box* m_Toolbar;
-	Gtk::Box* m_LocationBar;
-	Gtk::Toolbar* m_LocationBar1;
-	Gtk::ToolButton* m_AddTabButton;
-	Gtk::ToolButton* m_HomeButton;
-	Gtk::ToolButton* m_PreviousButton;
-	Gtk::ToolButton* m_NextButton;
-	Gtk::Entry* m_LocationEntry;
-	Gtk::Toolbar* m_LocationBar2;
-	Gtk::ToolButton* m_ReloadButton;
-	Gtk::Box* m_EditToolBarBox;
 	Gtk::Toolbar* m_EditToolBar;
 	Gtk::ToolButton* m_NewButton;
 	Gtk::ToolButton* m_OpenButton;

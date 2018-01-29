@@ -78,8 +78,6 @@ void
 X3DBrowserWindowInterface::create ()
 {
 	// Get objects.
-	m_BrowserAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
-	m_EditorAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
 	m_FlatAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
@@ -109,8 +107,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("OpenLocationImage1", m_OpenLocationImage1);
-	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
-	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("BrowserMenu", m_BrowserMenu);
 	m_builder -> get_widget ("BrowserFileMenuItem", m_BrowserFileMenuItem);
 	m_builder -> get_widget ("BrowserNewMenuItem", m_BrowserNewMenuItem);
@@ -169,9 +165,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserSidebarMenuItem", m_BrowserSidebarMenuItem);
 	m_builder -> get_widget ("BrowserFooterMenuItem", m_BrowserFooterMenuItem);
 	m_builder -> get_widget ("BrowserTabsMenuItem", m_BrowserTabsMenuItem);
-	m_builder -> get_widget ("BrowserEnvironmentMenuItem", m_BrowserEnvironmentMenuItem);
-	m_builder -> get_widget ("BrowserEditorMenuItem", m_BrowserEditorMenuItem);
-	m_builder -> get_widget ("BrowserBrowserMenuItem", m_BrowserBrowserMenuItem);
 	m_builder -> get_widget ("BrowserBrowserOptionsSeparator", m_BrowserBrowserOptionsSeparator);
 	m_builder -> get_widget ("BrowserMotionBlurMenuItem", m_BrowserMotionBlurMenuItem);
 	m_builder -> get_widget ("BrowserShadingMenuItem", m_BrowserShadingMenuItem);
@@ -288,9 +281,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("SidebarMenuItem", m_SidebarMenuItem);
 	m_builder -> get_widget ("FooterMenuItem", m_FooterMenuItem);
 	m_builder -> get_widget ("TabsMenuItem", m_TabsMenuItem);
-	m_builder -> get_widget ("EnvironmentMenuItem", m_EnvironmentMenuItem);
-	m_builder -> get_widget ("EditorMenuItem", m_EditorMenuItem);
-	m_builder -> get_widget ("BrowserMenuItem", m_BrowserMenuItem);
 	m_builder -> get_widget ("BrowserOptionsSeparator", m_BrowserOptionsSeparator);
 	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
 	m_builder -> get_widget ("ShadingMenuItem", m_ShadingMenuItem);
@@ -345,16 +335,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("X_ITECompatibilityMenuItem", m_X_ITECompatibilityMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
-	m_builder -> get_widget ("LocationBar", m_LocationBar);
-	m_builder -> get_widget ("LocationBar1", m_LocationBar1);
-	m_builder -> get_widget ("AddTabButton", m_AddTabButton);
-	m_builder -> get_widget ("HomeButton", m_HomeButton);
-	m_builder -> get_widget ("PreviousButton", m_PreviousButton);
-	m_builder -> get_widget ("NextButton", m_NextButton);
-	m_builder -> get_widget ("LocationEntry", m_LocationEntry);
-	m_builder -> get_widget ("LocationBar2", m_LocationBar2);
-	m_builder -> get_widget ("ReloadButton", m_ReloadButton);
-	m_builder -> get_widget ("EditToolBarBox", m_EditToolBarBox);
 	m_builder -> get_widget ("EditToolBar", m_EditToolBar);
 	m_builder -> get_widget ("NewButton", m_NewButton);
 	m_builder -> get_widget ("OpenButton", m_OpenButton);
@@ -415,9 +395,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("NoneViewerButton", m_NoneViewerButton);
 	m_builder -> get_widget ("OtherViewerButton", m_OtherViewerButton);
 
-	// Connect object Gtk::ToggleAction with id 'BrowserAction'.
-	m_BrowserAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_toggled));
-	m_EditorAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_editor_toggled));
+	// Connect object Gtk::ToggleAction with id 'FlatAction'.
 	m_FlatAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_flat_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
@@ -663,23 +641,7 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::Box with id 'Toolbar'.
 	m_Toolbar -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
 
-	// Connect object Gtk::Toolbar with id 'LocationBar1'.
-	m_LocationBar1 -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_drag_data_received));
-
-	// Connect object Gtk::ToolButton with id 'AddTabButton'.
-	m_AddTabButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_new_activated));
-	m_HomeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_home));
-	m_PreviousButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_previous_button_press_event), false);
-	m_PreviousButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_previous_page));
-	m_NextButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_next_button_press_event), false);
-	m_NextButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_next_page));
-
-	// Connect object Gtk::Entry with id 'LocationEntry'.
-	m_LocationEntry -> signal_icon_release () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_location_icon_released));
-	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_location_key_press_event), false);
-
-	// Connect object Gtk::ToolButton with id 'ReloadButton'.
-	m_ReloadButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
+	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_new_activated));
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_open_activated));
 	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_import_activated));

@@ -83,10 +83,7 @@ X3DSidebarInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
 	m_builder -> get_widget ("ProjectsEditorBox", m_ProjectsEditorBox);
-	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
 	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));

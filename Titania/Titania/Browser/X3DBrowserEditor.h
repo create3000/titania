@@ -76,14 +76,6 @@ public:
 	void
 	setCurrentContext (const X3D::X3DExecutionContextPtr &) final override;
 
-	const X3D::SFBool &
-	getEditing () const
-	{ return editing; }
-
-	virtual
-	void
-	setEditing (const bool value);
-
 	/// @name Operations
 
 	void

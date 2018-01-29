@@ -98,7 +98,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface ({ get_ui ("icons/IconFactory.glade"), get_ui ("BrowserWindow.glade") }),
 	         X3DBrowserWindow (defaultBrowser),
 	              cssProvider (Gtk::CssProvider::create ()),
-	       environmentActions (),
 	           shadingActions (),
 	  primitiveQualityActions (),
 	    textureQualityActions (),
@@ -106,11 +105,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	                   viewer (X3D::X3DConstants::NoneViewer),
 	                 changing (false)
 {
-	environmentActions = {
-		getEditorAction (),
-		getBrowserAction ()
-	};
-
 	shadingActions = {
 		getPhongAction (),
 		getGouraudAction (),
@@ -180,7 +174,7 @@ BrowserWindow::initialize ()
 		Gtk::TargetEntry ("text/uri-list")
 	};
 
-	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getToolbar ()     .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Browser events
@@ -229,8 +223,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
-	
-		getCurrentPage () -> getBrowserHistory () .removeInterest (&BrowserWindow::set_browserHistory, this);
 	}
 
 	// Set page.
@@ -250,8 +242,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
-		
-		getCurrentPage () -> getBrowserHistory () .addInterest (&BrowserWindow::set_browserHistory, this);
 	
 		// Initialize
 
@@ -262,8 +252,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 		set_straighten_horizon ();
-	
-		set_browserHistory ();
 	
 		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
@@ -312,22 +300,6 @@ BrowserWindow::set_executionContext ()
 	getSaveButton ()            .set_sensitive (inScene);
 	getImportButton ()          .set_sensitive (inScene);
 	getPrototypeEditorButton () .set_sensitive (inScene);
-
-	changing = true;
-
-	getLocationEntry () .set_text (getCurrentContext () -> getWorldURL () .str ());
-	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getCurrentContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
-
-	changing = false;
-}
-
-void
-BrowserWindow::set_browserHistory ()
-{
-	const auto & browserHistory = getCurrentPage () -> getBrowserHistory ();
-
-	getPreviousButton () .set_sensitive (browserHistory .hasPreviousPage ());
-	getNextButton ()     .set_sensitive (browserHistory .hasNextPage ());
 }
 
 // Selection
@@ -619,19 +591,11 @@ BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragConte
                                               guint info,
                                               guint time)
 {
+	if (y < getCurrentBrowser () -> get_height ())
+		on_drag_data_received (context, selection_data, time, false);
 
-	if (getBrowserAction () -> get_active ())
-	{
-		on_drag_data_received (context, selection_data, time, true);
-	}
 	else
-	{
-		if (y < getCurrentBrowser () -> get_height ())
-			on_drag_data_received (context, selection_data, time, false);
-
-		else
-			on_drag_data_received (context, selection_data, time, true);
-	}
+		on_drag_data_received (context, selection_data, time, true);
 }
 
 void
@@ -1188,108 +1152,6 @@ BrowserWindow::on_tabs_toggled ()
 		getConfig () -> setItem <bool> ("tabs", getTabsAction () -> get_active ());
 
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
-}
-
-void
-BrowserWindow::on_browser_toggled ()
-{
-	if (getBrowserAction () -> get_active ())
-	{
-		toggleActions (getBrowserAction (), environmentActions);
-
-		setEditing (false);
-		isLive (true);
-
-		getSelection () -> setNodes ({ });
-
-		on_show_all_objects_activated ();
-	}
-}
-
-void
-BrowserWindow::on_editor_toggled ()
-{
-	if (getEditorAction () -> get_active ())
-	{
-		toggleActions (getEditorAction (), environmentActions);
-
-		setEditing (true);
-	}
-}
-
-void
-BrowserWindow::setEditing (const bool enabled)
-{
-	X3DBrowserWindow::setEditing (enabled);
-
-	getOpenRecentMenuItem ()             .set_visible (enabled);
-	getImportMenuItem ()                 .set_visible (enabled);
-	getSaveMenuItem ()                   .set_visible (enabled);
-	getRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
-	getEditMenuItem ()                   .set_visible (enabled);
-	getBrowserOptionsSeparator ()        .set_visible (enabled);
-	//getMotionBlurMenuItem ()             .set_visible (enabled);
-	//getShadingMenuItem ()                .set_visible (enabled);
-	getSelectionMenuItem ()              .set_visible (enabled);
-	getGeometryMenuItem ()               .set_visible (enabled);
-	getLayoutMenuItem ()                 .set_visible (enabled);
-	getExternalToolsMenuItem ()          .set_visible (enabled);
-
-	getBrowserOpenRecentMenuItem ()             .set_visible (enabled);
-	getBrowserImportMenuItem ()                 .set_visible (enabled);
-	getBrowserSaveMenuItem ()                   .set_visible (enabled);
-	getBrowserRemoveUnusedPrototypesMenuItem () .set_visible (enabled);
-	getBrowserEditMenuItem ()                   .set_visible (enabled);
-	getBrowserBrowserOptionsSeparator ()        .set_visible (enabled);
-	//getBrowserMotionBlurMenuItem ()             .set_visible (enabled);
-	//getBrowserShadingMenuItem ()                .set_visible (enabled);
-	getBrowserSelectionMenuItem ()              .set_visible (enabled);
-	getBrowserGeometryMenuItem ()               .set_visible (enabled);
-	getBrowserLayoutMenuItem ()                 .set_visible (enabled);
-	getBrowserExternalToolsMenuItem ()          .set_visible (enabled);
-
-
-	getLocationBar ()    .set_visible (not enabled);
-	getEditToolBarBox () .set_visible (enabled);
-
-	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
-
-	getHandButton ()            .set_visible (enabled);
-	getArrowButton ()           .set_visible (enabled);
-	getPlayPauseButton ()       .set_visible (enabled);
-	getSelectSeparator ()       .set_visible (enabled);
-	getSelectParentButton ()    .set_visible (enabled);
-	getSelectChildButton ()     .set_visible (enabled);
-	getViewerSeparator ()       .set_visible (enabled);
-	getLookAtSelectionButton () .set_visible (enabled);
-
-	getBrowserNotebook () .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
-
-	getSidebar () -> getProjectsEditorBox ()  .set_visible (enabled);
-	getSidebar () -> getHistoryEditorBox ()   .set_visible (not enabled);
-	getSidebar () -> getLibraryViewBox ()     .set_visible (false);
-	getSidebar () -> getOutlineEditorBox ()   .set_visible (enabled);
-	getSidebar () -> getNodeEditorBox ()      .set_visible (enabled);
-	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
-	getFooter ()  -> getRouteGraphBox ()      .set_visible (enabled);
-	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
-
-	if (enabled)
-	{
-		if (getConfig () -> getItem <bool> ("hand"))
-			getHandButton () .set_active (true);
-
-		else
-			getArrowButton () .set_active (true);
-	}
-	else
-	{
-		getHandButton () .set_active (true);
-
-		getSelection () -> setNodes ({ });
-	}
-
-	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 }
 
 void
@@ -2011,114 +1873,6 @@ BrowserWindow::on_info_activated ()
 	X3DBrowserNotebook::open (get_page ("about/info.x3dv"));
 }
 
-/// Toolbar
-
-void
-BrowserWindow::on_home ()
-{
-	load (get_page ("about/home.x3dv"));
-}
-
-void
-BrowserWindow::on_previous_page ()
-{
-	getCurrentPage () -> getBrowserHistory () .previousPage ();
-}
-
-void
-BrowserWindow::on_next_page ()
-{
-	getCurrentPage () -> getBrowserHistory () .nextPage ();
-}
-
-bool
-BrowserWindow::on_previous_button_press_event (GdkEventButton* event)
-{
-	if (event -> button not_eq 3)
-		return false;
-
-	auto & browserHistory = getCurrentPage () -> getBrowserHistory ();
-
-	if (browserHistory .isEmpty ())
-		return false;
-
-	for (const auto & widget : getHistoryMenu () .get_children ())
-		getHistoryMenu () .remove (*widget);
-
-	const auto index   = browserHistory .getIndex ();
-	const auto current = browserHistory .getList () .begin () + index;
-	auto       first   = browserHistory .getList () .begin () + std::max (index - 5, 0);
-	const auto last    = browserHistory .getList () .begin () + std::min (index + 6, (int) browserHistory .getSize ());
-
-	for (; first not_eq last; ++ first)
-	{
-		Gtk::MenuItem* menuItem = nullptr;
-		const auto &   text     = first -> first;
-
-		if (first == current)
-		{
-			const auto label         = Gtk::manage (new Gtk::Label ());
-			const auto checkMenuItem = Gtk::manage (new Gtk::CheckMenuItem ());
-
-			label -> set_markup ("<b>" + Glib::Markup::escape_text (text) + "</b>");
-			label -> set_alignment (0, 0.5);
-			checkMenuItem -> add (*label);
-			checkMenuItem -> set_draw_as_radio (true);
-			checkMenuItem -> set_active (true);
-
-			menuItem = checkMenuItem;
-		}
-		else
-		{
-			const auto image         = Gtk::manage (new Gtk::Image (Gtk::StockID (first -> second .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
-			const auto imageMenuItem = Gtk::manage (new Gtk::ImageMenuItem (text));
-
-			imageMenuItem -> set_image (*image);
-			imageMenuItem -> set_always_show_image (true);
-
-			menuItem = imageMenuItem;
-		}
-
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (browserHistory, &BrowserHistory::setIndex), first - browserHistory .getList () .begin ()));
-		getHistoryMenu () .prepend (*menuItem);
-	}
-
-	getHistoryMenu () .show_all ();
-	getHistoryMenu () .popup (event -> button, event -> time);
-	return true;
-}
-
-bool
-BrowserWindow::on_next_button_press_event (GdkEventButton* event)
-{
-	return on_previous_button_press_event (event);
-}
-
-bool
-BrowserWindow::on_location_key_press_event (GdkEventKey* event)
-{
-	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
-	{
-		load (Glib::uri_unescape_string (getLocationEntry () .get_text ()));
-		return true;
-	}
-
-	return false;
-}
-
-void
-BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event)
-{
-	switch (icon_position)
-	{
-		case Gtk::ENTRY_ICON_PRIMARY:
-			break;
-		case Gtk::ENTRY_ICON_SECONDARY:
-			on_open_activated ();
-			break;
-	}
-}
-
 void
 BrowserWindow::on_node_index_clicked ()
 {
@@ -2239,7 +1993,7 @@ BrowserWindow::on_primitive_clicked (const std::string & description, const std:
 void
 BrowserWindow::set_dashboard (const bool value)
 {
-	getDashboard () .set_visible (getEditorAction () -> get_active () or value);
+	getDashboard () .set_visible (value);
 
 	if (getHandButton () .get_active ())
 		on_hand_button_toggled ();
@@ -2653,7 +2407,7 @@ BrowserWindow::set_viewer ()
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> & availableViewers)
 {
-	const bool editor    = getEditing () and getArrowButton () .get_active ();
+	const bool editor    = getArrowButton () .get_active ();
 	const bool dashboard = getCurrentBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;

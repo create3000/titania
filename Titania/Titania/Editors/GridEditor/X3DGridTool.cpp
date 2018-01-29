@@ -85,14 +85,13 @@ X3DGridTool::setup ()
 	X3DBaseInterface::setup ();
 	X3DEditorObject::setup ();
 
-	getBrowserWindow () -> getEditing () .addInterest (&X3DGridTool::set_browser, this);
 	getCurrentScene () .addInterest (&X3DGridTool::set_scene, this);
 }
 
 void
 X3DGridTool::set_browser ()
 {
-	const auto   visible = getVisible () and getBrowserWindow () -> getEditing ();
+	const auto   visible = getVisible ();
 	const auto & value   = visible ? getCurrentBrowser () : getMasterBrowser ();
 
 	if (not visible and not browser)

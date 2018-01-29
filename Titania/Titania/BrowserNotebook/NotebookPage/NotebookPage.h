@@ -135,17 +135,6 @@ private:
 	set_scene ();
 
 	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_editing ();
-
-	virtual
 	bool
 	on_key_release_event (GdkEventKey* event);
 

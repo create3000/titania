@@ -19,28 +19,6 @@
             <property name="group_name">SideBar</property>
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <child>
-              <object class="GtkBox" id="ViewpointListBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-            <child type="tab">
-              <object class="GtkImage" id="image1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Viewpoint List</property>
-                <property name="stock">Viewpoint</property>
-                <property name="icon_size">1</property>
-              </object>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkBox" id="ProjectsEditorBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -49,9 +27,6 @@
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child type="tab">
               <object class="GtkImage">
@@ -62,59 +37,6 @@
                 <property name="icon_size">1</property>
               </object>
               <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="HistoryEditorBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkImage" id="image12">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">History</property>
-                <property name="stock">History</property>
-                <property name="icon_size">1</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="LibraryViewBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkImage" id="image5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Library</property>
-                <property name="stock">Library</property>
-                <property name="icon_size">1</property>
-              </object>
-              <packing>
-                <property name="position">3</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -128,7 +50,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child type="tab">
@@ -140,7 +62,7 @@
                 <property name="icon_size">1</property>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -154,7 +76,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">5</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
@@ -166,7 +88,7 @@
                 <property name="icon_size">1</property>
               </object>
               <packing>
-                <property name="position">5</property>
+                <property name="position">2</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

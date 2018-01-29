@@ -126,11 +126,6 @@ X3DBrowserEditor::configure ()
 	if (not getConfig () -> hasItem ("environment"))
 		getConfig () -> setItem ("environment", 1);
 
-	//if (getConfig () -> getItem <int32_t> ("environment") == 1)
-	//	getEditorAction () -> set_active (true);
-	//else
-		getBrowserAction () -> set_active (true);
-
 	// SelectLowest
 	if (getConfig () -> hasItem ("selectLowest"))
 		getSelectLowestAction () -> set_active (getConfig () -> getItem <bool> ("selectLowest"));
@@ -170,16 +165,12 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 
 	X3DBrowserNotebook::setCurrentContext (value);
 
-	if (getEditing ())
-		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
+	getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
 }
 
 void
 X3DBrowserEditor::set_executionContext ()
 {
-	if (not getEditing ())
-		return;
-
 	// Restore context or save context path in History.
 
 	const auto masterScene = getCurrentContext () -> getMasterScene ();
@@ -286,25 +277,13 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 	}
 }
 
-void
-X3DBrowserEditor::setEditing (const bool value)
-{
-	editing = value;
-	getConfig () -> setItem ("environment", value ? 1 : 0);
-}
-
 // File operations
 
 void
 X3DBrowserEditor::blank ()
 {
-	if (getEditing ())
-	{
-		append (get_page ("about/new.x3dv"));
-		getBrowserNotebook () .set_current_page (getPages () .size () - 1);
-	}
-	else
-		openRecent ();
+	append (get_page ("about/new.x3dv"));
+	getBrowserNotebook () .set_current_page (getPages () .size () - 1);
 }
 
 void

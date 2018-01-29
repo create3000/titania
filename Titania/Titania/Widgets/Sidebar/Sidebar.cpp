@@ -68,12 +68,9 @@ Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
 	              X3DSidebarInterface (get_ui ("Widgets/Sidebar.glade")),
 	X3DNotebook <X3DSidebarInterface> ()
 {
-	addPage ("ViewpointList",  getViewpointListBox ());
-	addPage ("FilesEditor",    getProjectsEditorBox ());
-	addPage ("HistoryEditor",  getHistoryEditorBox ());
-	addPage ("LibraryView",    getLibraryViewBox   ());
-	addPage ("OutlineEditor",  getOutlineEditorBox ());
-	addPage ("NodeEditor",     getNodeEditorBox    ());
+	addPage ("FilesEditor",   getProjectsEditorBox ());
+	addPage ("OutlineEditor", getOutlineEditorBox  ());
+	addPage ("NodeEditor",    getNodeEditorBox     ());
 
 	setup ();
 }

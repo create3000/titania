@@ -69,10 +69,6 @@ public:
 
 	BrowserWindow (const X3D::BrowserPtr & masterBrowser);
 
-	virtual
-	void
-	setEditing (const bool value) final override;
-
 	/// @name Destruction
 
 	virtual
@@ -106,9 +102,6 @@ private:
 
 	void
 	set_executionContext ();
-
-	void
-	set_browserHistory ();
 
 	///  @name Selection handling
 
@@ -381,14 +374,6 @@ private:
 
 	virtual
 	void
-	on_editor_toggled () final override;
-
-	virtual
-	void
-	on_browser_toggled () final override;
-
-	virtual
-	void
 	on_motion_blur_activated () final override;
 
 	/// @name Shading
@@ -633,36 +618,6 @@ private:
 	void
 	on_info_activated () final override;
 
-	/// Toolbar
-
-	virtual
-	void
-	on_home () final override;
-
-	virtual
-	void
-	on_previous_page () final override;
-
-	virtual
-	void
-	on_next_page () final override;
-
-	virtual
-	bool
-	on_previous_button_press_event (GdkEventButton*) final override;
-
-	virtual
-	bool
-	on_next_button_press_event (GdkEventButton*) final override;
-
-	virtual
-	bool
-	on_location_key_press_event (GdkEventKey*) final override;
-
-	virtual
-	void
-	on_location_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
-
 	///  @name Editors
 
 	virtual
@@ -836,7 +791,6 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
-	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> shadingActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;

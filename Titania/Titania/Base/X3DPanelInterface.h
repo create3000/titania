@@ -139,9 +139,6 @@ private:
 	/// @name Event handlers
 
 	void
-	set_editing ();
-
-	void
 	set_focus ();
 
 	bool

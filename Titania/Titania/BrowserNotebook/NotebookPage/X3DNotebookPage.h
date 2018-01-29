@@ -52,7 +52,6 @@
 #define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DNOTEBOOK_PAGE_H__
 
 #include "../../UserInterfaces/X3DNotebookPageInterface.h"
-#include "../../Browser/BrowserHistory.h"
 
 #include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
@@ -92,14 +91,6 @@ public:
 
 	const basic::uri &
 	getWorldURL () const;
-
-	BrowserHistory &
-	getBrowserHistory ()
-	{ return browserHistory; }
-
-	const BrowserHistory &
-	getBrowserHistory () const
-	{ return browserHistory; }
 
 	X3D::UndoHistory &
 	getUndoHistory ()
@@ -197,9 +188,6 @@ private:
 	set_initialized ();
 
 	void
-	set_loadCount ();
-
-	void
 	set_scene ();
 
 	void
@@ -234,7 +222,6 @@ private:
 	X3D::X3DScenePtr             scene;
 	X3D::X3DExecutionContextPtr  executionContext;
 	basic::uri                   url; // Start URL
-	BrowserHistory               browserHistory;
 	X3D::UndoHistory             undoHistory;
 	bool                         modified;
 	bool                         saveConfirmed;

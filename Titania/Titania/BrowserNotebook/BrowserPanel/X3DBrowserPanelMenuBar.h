@@ -87,16 +87,6 @@ protected:
 	void
 	setLocalBrowser (const X3D::BrowserPtr & value);
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_map () override;
-
-	virtual
-	void
-	on_unmap () override;
-
 
 private:
 
@@ -104,9 +94,6 @@ private:
 
 	void
 	set_focus (const bool focus);
-
-	void
-	set_editing ();
 
 	void
 	set_scene ();

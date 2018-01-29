@@ -102,20 +102,8 @@ public:
 	{ return *m_Notebook; }
 
 	Gtk::Box &
-	getViewpointListBox () const
-	{ return *m_ViewpointListBox; }
-
-	Gtk::Box &
 	getProjectsEditorBox () const
 	{ return *m_ProjectsEditorBox; }
-
-	Gtk::Box &
-	getHistoryEditorBox () const
-	{ return *m_HistoryEditorBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
 
 	Gtk::Box &
 	getOutlineEditorBox () const
@@ -158,10 +146,7 @@ private:
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ViewpointListBox;
 	Gtk::Box* m_ProjectsEditorBox;
-	Gtk::Box* m_HistoryEditorBox;
-	Gtk::Box* m_LibraryViewBox;
 	Gtk::Box* m_OutlineEditorBox;
 	Gtk::Box* m_NodeEditorBox;
 

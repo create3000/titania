@@ -94,43 +94,16 @@ NotebookPage::loaded ()
 void
 NotebookPage::set_scene ()
 {
-	if (getBrowserWindow () -> getEditing ())
-	{
-		const auto worldInfo  = createWorldInfo (getScene ());
-		const auto activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
+	const auto worldInfo  = createWorldInfo (getScene ());
+	const auto activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
 
-		for (int32_t i = 0, size = panels .size (); i < size; ++ i)
-			panels [i] -> setFocus (i == activeView);
+	for (int32_t i = 0, size = panels .size (); i < size; ++ i)
+		panels [i] -> setFocus (i == activeView);
 
-		setActiveView (activeView);
-		setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+	setActiveView (activeView);
+	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
 
-		set_browser_ratio ();
-	}
-}
-
-void
-NotebookPage::on_map ()
-{
-	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
-
-	set_editing ();
-}
-
-void
-NotebookPage::on_unmap ()
-{
-	getBrowserWindow () -> getEditing () .addInterest (&NotebookPage::set_editing, this);
-}
-
-void
-NotebookPage::set_editing ()
-{
-	if (not getBrowserWindow () -> getEditing ())
-	{
-		setActiveView (1);
-		setMultiView (false);
-	}
+	set_browser_ratio ();
 }
 
 bool
@@ -140,12 +113,8 @@ NotebookPage::on_key_release_event (GdkEventKey* event)
 	{
 		case GDK_KEY_space:
 		{
-			if (not getBrowserWindow () -> getEditing ())
-				return false;
-
 			setMultiView (not getMultiView ());
 			setModified (true);
-
 			return true;
 		}
 		default:

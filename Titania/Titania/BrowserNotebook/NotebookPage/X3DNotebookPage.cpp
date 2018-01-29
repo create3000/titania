@@ -72,7 +72,6 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                   scene (mainBrowser -> getExecutionContext ()),
 	        executionContext (mainBrowser -> getExecutionContext ()),
 	                     url (startUrl),
-	          browserHistory (mainBrowser),
 	             undoHistory (),
 	                modified (false),
 	           saveConfirmed (false),
@@ -307,8 +306,6 @@ X3DNotebookPage::set_splashScreen ()
 	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,          this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,     this);
-	mainBrowser -> getLoadingTotal () .addInterest (&X3DNotebookPage::set_loadCount,       this);
-	mainBrowser -> getLoadCount ()    .addInterest (&X3DNotebookPage::set_loadCount,       this);
 
 	mainBrowser -> set_opacity (1);
 	mainBrowser -> setNotifyOnLoad (true);
@@ -374,14 +371,6 @@ X3DNotebookPage::set_initialized ()
 
 	if (currentContext not_eq executionContext)
 		executionContext = currentContext;
-}
-
-void
-X3DNotebookPage::set_loadCount ()
-{
-	const auto fraction = double (mainBrowser -> getLoadingTotal () - mainBrowser -> getLoadCount ()) / double (mainBrowser -> getLoadingTotal ());
-
-	getBrowserWindow () -> getLocationEntry () .set_progress_fraction (fraction);
 }
 
 void

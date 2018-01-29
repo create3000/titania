@@ -72,10 +72,6 @@ public:
 
 	using X3DBrowserEditor::save;
 
-	virtual
-	void
-	setEditing (const bool) override;
-
 	/// @name Key device handling
 
 	X3D::Keys &
@@ -149,6 +145,10 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	virtual
+	void
+	configure () override;
 
 	/// @name Member access
 

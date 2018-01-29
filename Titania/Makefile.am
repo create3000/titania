@@ -20,7 +20,6 @@ titania_SOURCES =  \
 	Titania/Bits/File.cpp \
 	Titania/Bits/Pipe.cpp \
 	Titania/Bits/String.cpp \
-	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
 	Titania/Browser/IconFactory.cpp \

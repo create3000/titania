@@ -154,23 +154,6 @@ X3DBrowserPanelMenuBar::set_focus (const bool focus)
 }
 
 void
-X3DBrowserPanelMenuBar::set_editing ()
-{
-	getMenuBar () .set_visible (getBrowserWindow () -> getEditing ());
-
-	if (not getBrowserWindow () -> getEditing ())
-	{
-		if (not getBackgroundsMenuItem () .get_active ())
-			getBackgroundsMenuItem () .set_active (true);
-	
-		if (not getFogsMenuItem () .get_active ())
-			getFogsMenuItem () .set_active (true);
-	
-		on_hide_all_object_icons_activated ();
-	}
-}
-
-void
 X3DBrowserPanelMenuBar::set_scene ()
 {
 	// View Menu
@@ -190,20 +173,6 @@ X3DBrowserPanelMenuBar::on_main_browser_hierarchy_changed (Gtk::Widget* previous
 
 	getMainViewMenuItem ()          .set_sensitive (not visible);
 	getMainViewSeparatorMenuItem () .set_sensitive (not visible);
-}
-
-void
-X3DBrowserPanelMenuBar::on_map ()
-{
-	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
-
-	set_editing ();
-}
-
-void
-X3DBrowserPanelMenuBar::on_unmap ()
-{
-	getBrowserWindow () -> getEditing () .addInterest (&X3DBrowserPanelMenuBar::set_editing, this);
 }
 
 /*

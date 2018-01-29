@@ -98,8 +98,6 @@ X3DNotebookPageInterface::create ()
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
-	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_unmap));
 }
 
 X3DNotebookPageInterface::~X3DNotebookPageInterface ()
