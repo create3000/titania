@@ -229,10 +229,6 @@ public:
 	getWorldInfoInfoTextView () const
 	{ return *m_WorldInfoInfoTextView; }
 
-	Gtk::Switch &
-	getAddMetadataButton () const
-	{ return *m_AddMetadataButton; }
-
 	Gtk::Dialog &
 	getMetaDataDialog () const
 	{ return *m_MetaDataDialog; }
@@ -414,7 +410,6 @@ private:
 	Gtk::Expander* m_WorldInfoExpander;
 	Gtk::TextView* m_WorldInfoTitleTextView;
 	Gtk::TextView* m_WorldInfoInfoTextView;
-	Gtk::Switch* m_AddMetadataButton;
 	Gtk::Dialog* m_MetaDataDialog;
 	Gtk::Button* m_MetaDataCancelButton;
 	Gtk::Button* m_MetaDataOkButton;
