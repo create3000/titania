@@ -50,6 +50,7 @@
 
 #include "BrowserApplication.h"
 
+#include "../../Bits/File.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/BrowserWindow.h"
 #include "../../Widgets/Console/Console.h"
@@ -75,6 +76,9 @@ const Glib::ustring X3DDBusInterface::introspectionXML =
 "      <arg type='s' name='pluginName' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='in'/>"
 "      <arg type='b' name='assign' direction='in'/>"
+"    </method>"
+"    <method name='Open'>"
+"      <arg type='s' name='x3dSyntax' direction='in'/>"
 "    </method>"
 "    <signal name='CurrentSceneChanged'></signal>"
 "    <signal name='SelectionChanged'></signal>"
@@ -139,6 +143,7 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 			std::make_pair ("GetCurrentScene",  std::bind (&X3DDBusInterface::getCurrentScene,  this, _1, _2)),
 			std::make_pair ("GetSelection",     std::bind (&X3DDBusInterface::getSelection,     this, _1, _2)),
 			std::make_pair ("ReplaceSelection", std::bind (&X3DDBusInterface::replaceSelection, this, _1, _2)),
+			std::make_pair ("Open",             std::bind (&X3DDBusInterface::open,             this, _1, _2)),
 		};
 
 		functions .at (method_name) (parameters, invocation);
@@ -224,6 +229,19 @@ X3DDBusInterface::replaceSelection (const Glib::VariantContainerBase & parameter
 		// Display message.
 		getBrowserWindow () -> getCurrentBrowser () -> getConsole () -> warn ("No selection found to process output of tool »", pluginName .get (), "«.\n");
 	}
+
+	invocation -> return_value (Glib::VariantContainerBase ());
+}
+
+void
+X3DDBusInterface::open (const Glib::VariantContainerBase & parameters,
+                        const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const
+{
+	Glib::Variant <Glib::ustring> x3dSyntax;
+
+	parameters .get_child (x3dSyntax, 0);
+
+	getBrowserWindow () -> open ("data:" + File::getContentType (x3dSyntax .get ()) .first + "," + x3dSyntax .get () .raw ());
 
 	invocation -> return_value (Glib::VariantContainerBase ());
 }

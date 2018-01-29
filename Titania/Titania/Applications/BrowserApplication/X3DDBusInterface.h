@@ -109,6 +109,10 @@ private:
 	replaceSelection (const Glib::VariantContainerBase & parameters,
 	                  const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const;
 
+	void
+	open (const Glib::VariantContainerBase & parameters,
+         const Glib::RefPtr <Gio::DBus::MethodInvocation> & invocation) const;
+
 	///  @name Static members
 
 	static const Glib::ustring introspectionXML;
