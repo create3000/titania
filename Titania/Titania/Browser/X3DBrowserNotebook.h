@@ -130,7 +130,6 @@ public:
 
 	///  @name Operations
 
-	virtual
 	void
 	open (const basic::uri & uri);
 

@@ -1870,7 +1870,7 @@ BrowserWindow::on_cobweb_compatibility_toggled ()
 void
 BrowserWindow::on_info_activated ()
 {
-	X3DBrowserNotebook::open (get_page ("about/info.x3dv"));
+	open (get_page ("about/info.x3dv"));
 }
 
 void

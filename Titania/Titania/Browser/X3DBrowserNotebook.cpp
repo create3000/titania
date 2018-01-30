@@ -375,6 +375,7 @@ X3DBrowserNotebook::open (const basic::uri & URL_)
 	catch (const std::out_of_range &)
 	{
 		append (URL);
+
 		getBrowserNotebook () .set_current_page (pages .size () - 1);
 	}
 }
