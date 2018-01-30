@@ -111,9 +111,10 @@ BrowserSelection::set_browser ()
 		selection -> getSelectGeometry () .removeInterest (selectGeometry);
 
 		selection -> getTouchTime ()  .removeInterest (touchTime);
-		selection -> getGeometries () .removeInterest (geometryNodes);
-		selection -> getNodes ()      .removeInterest (nodes);
 		selection -> getHierarchy ()  .removeInterest (hierarchy);
+
+		selection -> getNodes ()      .removeInterest (&BrowserSelection::set_selection, this);
+		selection -> getGeometries () .removeInterest (&BrowserSelection::set_selection, this);
 	}
 
 	browser = getCurrentBrowser ();
@@ -121,19 +122,21 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		browser -> setSelectable       (enabled);
-		selection -> setSelectMultiple (selectMultiple);
-		selection -> setSelectLowest   (selectLowest);
-		selection -> setSelectGeometry (selectGeometry);
-
 		browser -> getSelectable ()       .addInterest (enabled);
 		selection -> getSelectMultiple () .addInterest (selectMultiple);
 		selection -> getSelectLowest ()   .addInterest (selectLowest);
 		selection -> getSelectGeometry () .addInterest (selectGeometry);
 
-		// Do not connect nodes, otherwise double events will be occure because of tool handling.
 		selection -> getTouchTime () .addInterest (touchTime);
 		selection -> getHierarchy () .addInterest (hierarchy);
+
+		selection -> getNodes ()      .addInterest (&BrowserSelection::set_selection, this);
+		selection -> getGeometries () .addInterest (&BrowserSelection::set_selection, this);
+
+		browser -> setSelectable       (enabled);
+		selection -> setSelectMultiple (selectMultiple);
+		selection -> setSelectLowest   (selectLowest);
+		selection -> setSelectGeometry (selectGeometry);
 
 		nodes         = selection -> getNodes ();
 		geometryNodes = selection -> getGeometries ();
@@ -177,6 +180,12 @@ BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
 
 	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+void
+BrowserSelection::set_selection ()
+{
+	assignNodes ();
 }
 
 void

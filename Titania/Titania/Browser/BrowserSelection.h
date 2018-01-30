@@ -174,6 +174,9 @@ private:
 	void
 	set_nodes (const X3D::MFNode & nodes);
 
+	void
+	set_selection ();
+
 	X3D::MFNode
 	filterSelection (X3D::MFNode value);
 
