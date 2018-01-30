@@ -95,15 +95,6 @@ X3DShadersContext::initialize ()
 {
 	if (getBrowser () -> getLoadUrlObjects ())
 	{
-//		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
-//		// Remove if can handle nouveau.
-//		static const std::regex fixedPipelineDrivers (R"/(gallium)/", std::regex_constants::icase);
-//
-//		fixedPipelineDriver = std::regex_search (getBrowser () -> getRenderer (), fixedPipelineDrivers);
-//		#endif
-
-		// shadingLanguageVersionStream
-
 		std::istringstream shadingLanguageVersionStream ((const char*) glGetString (GL_SHADING_LANGUAGE_VERSION));
 
 		shadingLanguageVersionStream .imbue (std::locale::classic ());
