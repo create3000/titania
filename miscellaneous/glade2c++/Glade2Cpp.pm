@@ -1012,3 +1012,5 @@ TreeView::drag_data_get
   virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time);
 ScrolledWindow::size_allocate
   virtual void on_size_allocate(Gtk::Allocation& allocation);
+TextView::size_allocate
+  virtual void on_size_allocate(Gtk::Allocation& allocation);

@@ -16,7 +16,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
-            <signal name="size-allocate" handler="on_size_allocate" swapped="no"/>
             <child>
               <object class="GtkTextView" id="TextView">
                 <property name="visible">True</property>
@@ -24,6 +23,7 @@
                 <property name="editable">False</property>
                 <property name="buffer">TextBuffer</property>
                 <property name="monospace">True</property>
+                <signal name="size-allocate" handler="on_size_allocate" swapped="no"/>
                 <style>
                   <class name="titania-console"/>
                 </style>
