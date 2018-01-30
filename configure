@@ -832,7 +832,6 @@ enable_maintainer_mode
 enable_dependency_tracking
 enable_debug
 enable_feature
-enable_fixed_pipeline_drivers
 enable_nls
 enable_shared
 enable_static
@@ -1514,9 +1513,6 @@ Optional Features:
                           speeds up one-time build
   --enable-debug          Use 'DEBUG' Configuration [default=NO]
   --enable-feature        Enable experimental features [default=NO]
-  --enable-fixed-pipeline-drivers
-                          Enable Nouveau for 'Cobweb Compatibility Mode'
-                          [default=NO]
   --disable-nls           do not use Native Language Support
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -3879,18 +3875,10 @@ else
 fi
 
 
-# Check whether --enable-fixed-pipeline-drivers was given.
-if test "${enable_fixed_pipeline_drivers+set}" = set; then :
-  enableval=$enable_fixed_pipeline_drivers; enable_fixed_pipeline_drivers=yes
-else
-  enable_fixed_pipeline_drivers=no
-fi
 
 
 
-
-
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -Wno-deprecated -DFIXED_PIPELINE"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -Wno-deprecated"
 
 ### add GTKMM_DISABLE_DEPRECATED
 
@@ -3900,10 +3888,6 @@ fi
 
 if test "x$enable_feature" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_FEATURE"
-fi
-
-if test ! "x$enable_fixed_pipeline_drivers" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DTITANIA_FIXED_PIPELINE_DRIVERS"
 fi
 
 LDFLAGS="-rdynamic"
