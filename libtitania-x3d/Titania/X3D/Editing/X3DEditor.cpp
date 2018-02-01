@@ -590,155 +590,37 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 }
 
 /***
- *
- *
- *
- * Prototype handling
- *
- *
- *
+ *  Creates node @a typeName and adds node to current layer.
  */
-
-bool
-X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent)
+X3D::SFNode
+X3DEditor::createNode (const WorldPtr & world,
+                       const X3DExecutionContextPtr & executionContext,
+                       const std::string & typeName,
+                       const X3D::UndoStepPtr & undoStep)
 {
-	const auto traversed = traverse (parent, [&] (SFNode & node)
-	{
-		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
+	const auto node = executionContext -> createNode (typeName);
 
-		if (instance)
-		{
-			if (instance -> getProtoDeclarationNode () == child)
-				return false;
-		}
-
-		return true;
-	},
-	TRAVERSE_PROTO_DECLARATIONS |
-	TRAVERSE_PROTO_DECLARATION_BODY |
-	TRAVERSE_ROOT_NODES |
-	TRAVERSE_PROTOTYPE_INSTANCES);
-
-	return not traversed;
-}
-
-void
-X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
-{
-	undoStep -> addObjects (executionContext);
-
-	// Get ExternProtos and Prototypes
-
-	std::map <ExternProtoDeclarationPtr, size_t> externProtos;
-
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProtos .emplace (externProto, externProtos .size ());
-
-	std::map <ProtoDeclarationPtr, size_t> prototypes;
-
-	for (const auto & prototype : executionContext -> getProtoDeclarations ())
-		prototypes .emplace (prototype, prototypes .size ());
-
-	// Find proto declaration not used in prototypes or scene.
-
-	removeUsedPrototypes (executionContext, externProtos, prototypes);
-
-	// Remove ExternProtos.
-
-	const auto externProtoIndex = basic::reverse (externProtos);
-
-	for (const auto & pair : basic::make_reverse_range (externProtoIndex))
-	{
-		const auto & externProto = pair .second;
-
-		undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
-		undoStep -> addRedoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
-
-		executionContext -> removeExternProtoDeclaration (externProto -> getName ());
-	}
-
-	// Remove Prototypes.
-
-	const auto prototypeIndex = basic::reverse (prototypes);
-
-	for (const auto & pair : basic::make_reverse_range (prototypeIndex))
-	{
-		const auto & prototype = pair .second;
-
-		undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
-		undoStep -> addRedoFunction (&X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
-
-		executionContext -> removeProtoDeclaration (prototype -> getName ());
-	}
-
-	// Prototype support
-
+	addNodesToActiveLayer (world, { node }, undoStep);
 	requestUpdateInstances (executionContext, undoStep);
+
+	return node;
 }
 
-void
-X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
-                                 std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
-                                 std::map <ProtoDeclarationPtr, size_t> & prototypes)
-{
-	traverse (executionContext -> getRootNodes (), [&] (SFNode & node)
-	{
-		for (const auto & type: basic::make_reverse_range (node -> getType ()))
-		{
-			switch (type)
-			{
-				case X3DConstants::X3DPrototypeInstance:
-				{
-					const X3DPrototypeInstancePtr instance (node);
-					
-					switch (instance -> getProtoDeclarationNode () -> getType () .back ())
-					{
-						case  X3DConstants::ExternProtoDeclaration:
-						{
-							const ExternProtoDeclarationPtr externProto (instance -> getProtoDeclarationNode ());
-							
-							externProtos .erase (externProto);
-							break;
-						}
-						case  X3DConstants::ProtoDeclaration:
-						{
-							const ProtoDeclarationPtr prototype (instance -> getProtoDeclarationNode ());
-							
-							prototypes .erase (prototype);
-							
-							// This is not neccessary:
-							// removeUsedPrototypes (prototype, externProtos, prototypes);
-							break;
-						}
-						default:
-							break;
-					}
-					
-					break;
-				}
-				default:
-					break;
-			}
-		}
-		
-		return true;
-	},
-	TRAVERSE_PROTOTYPE_INSTANCES |
-	TRAVERSE_META_DATA);
-}
-
+/***
+ *  Creates node @a typeName and adds node to current layer.
+ */
 SFNode
-X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep)
+X3DEditor::createProto (const WorldPtr & world,
+                        const X3DExecutionContextPtr & executionContext,
+                        const std::string & typeName,
+                        const UndoStepPtr & undoStep)
 {
-	const SFNode instance (executionContext -> createProto (name));
+	const auto node = executionContext -> createProto (typeName);
 
-	pushBackIntoArray (executionContext, executionContext -> getRootNodes (), instance, undoStep);
-
-	// Prototype support
-
+	addNodesToActiveLayer (world, { node }, undoStep);
 	requestUpdateInstances (executionContext, undoStep);
 
-	return instance;
+	return node;
 }
 
 /***
@@ -1853,6 +1735,134 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
  *
  *
  */
+
+bool
+X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent)
+{
+	const auto traversed = traverse (parent, [&] (SFNode & node)
+	{
+		const auto instance = dynamic_cast <X3DPrototypeInstance*> (node .getValue ());
+
+		if (instance)
+		{
+			if (instance -> getProtoDeclarationNode () == child)
+				return false;
+		}
+
+		return true;
+	},
+	TRAVERSE_PROTO_DECLARATIONS |
+	TRAVERSE_PROTO_DECLARATION_BODY |
+	TRAVERSE_ROOT_NODES |
+	TRAVERSE_PROTOTYPE_INSTANCES);
+
+	return not traversed;
+}
+
+void
+X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (executionContext);
+
+	// Get ExternProtos and Prototypes
+
+	std::map <ExternProtoDeclarationPtr, size_t> externProtos;
+
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		externProtos .emplace (externProto, externProtos .size ());
+
+	std::map <ProtoDeclarationPtr, size_t> prototypes;
+
+	for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		prototypes .emplace (prototype, prototypes .size ());
+
+	// Find proto declaration not used in prototypes or scene.
+
+	removeUsedPrototypes (executionContext, externProtos, prototypes);
+
+	// Remove ExternProtos.
+
+	const auto externProtoIndex = basic::reverse (externProtos);
+
+	for (const auto & pair : basic::make_reverse_range (externProtoIndex))
+	{
+		const auto & externProto = pair .second;
+
+		undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+		undoStep -> addRedoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+
+		executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+	}
+
+	// Remove Prototypes.
+
+	const auto prototypeIndex = basic::reverse (prototypes);
+
+	for (const auto & pair : basic::make_reverse_range (prototypeIndex))
+	{
+		const auto & prototype = pair .second;
+
+		undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
+		undoStep -> addRedoFunction (&X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
+
+		executionContext -> removeProtoDeclaration (prototype -> getName ());
+	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
+}
+
+void
+X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
+                                 std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
+                                 std::map <ProtoDeclarationPtr, size_t> & prototypes)
+{
+	traverse (executionContext -> getRootNodes (), [&] (SFNode & node)
+	{
+		for (const auto & type: basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::X3DPrototypeInstance:
+				{
+					const X3DPrototypeInstancePtr instance (node);
+					
+					switch (instance -> getProtoDeclarationNode () -> getType () .back ())
+					{
+						case  X3DConstants::ExternProtoDeclaration:
+						{
+							const ExternProtoDeclarationPtr externProto (instance -> getProtoDeclarationNode ());
+							
+							externProtos .erase (externProto);
+							break;
+						}
+						case  X3DConstants::ProtoDeclaration:
+						{
+							const ProtoDeclarationPtr prototype (instance -> getProtoDeclarationNode ());
+							
+							prototypes .erase (prototype);
+							
+							// This is not neccessary:
+							// removeUsedPrototypes (prototype, externProtos, prototypes);
+							break;
+						}
+						default:
+							break;
+					}
+					
+					break;
+				}
+				default:
+					break;
+			}
+		}
+		
+		return true;
+	},
+	TRAVERSE_PROTOTYPE_INSTANCES |
+	TRAVERSE_META_DATA);
+}
 
 void
 X3DEditor::requestUpdateInstances (const X3DExecutionContextPtr & ex, const UndoStepPtr & undoStep)

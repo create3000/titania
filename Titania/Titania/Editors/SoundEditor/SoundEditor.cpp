@@ -135,7 +135,9 @@ void
 SoundEditor::on_new_sound_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Sound"));
-	getBrowserWindow () -> createNode ("Sound", undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Sound", undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

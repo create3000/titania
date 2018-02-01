@@ -284,8 +284,11 @@ BackgroundEditor::on_new_background_clicked ()
 	getNewBackgroundPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Background"));
-	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("Background", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::X3DBackgroundNode> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Background", undoStep));
+
 	node -> set_bind () = true;
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	backgroundList -> setSelection (node, true);
@@ -297,8 +300,11 @@ BackgroundEditor::on_new_texture_background_clicked ()
 	getNewBackgroundPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New TextureBackground"));
-	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("TextureBackground", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::X3DBackgroundNode> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "TextureBackground", undoStep));
+
 	node -> set_bind () = true;
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	backgroundList -> setSelection (node, true);

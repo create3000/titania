@@ -121,8 +121,11 @@ void
 FogEditor::on_new_fog_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Fog"));
-	const X3D::X3DPtr <X3D::Fog> node (getBrowserWindow () -> createNode ("Fog", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::Fog> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Fog", undoStep));
+
 	node -> set_bind () = true;
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	fogList -> setSelection (node, true);

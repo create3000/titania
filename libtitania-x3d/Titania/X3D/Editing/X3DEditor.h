@@ -112,20 +112,6 @@ public:
 	std::string
 	exportScene (const X3DScenePtr & scene, const std::string & encoding);
 
-	///  @name Prototype handling
-
-	static
-	bool
-	isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent);
-
-	static
-	void
-	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
-
-	static
-	SFNode
-	addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep);
-
 	///  @name Replace operations
 
 	static
@@ -253,6 +239,14 @@ public:
 	///  @name Prototype operations
 
 	static
+	bool
+	isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent);
+
+	static
+	void
+	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
+
+	static
 	void
 	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
@@ -301,6 +295,20 @@ public:
 	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr & undoStep);
 
 	///  @name Grouping operations
+
+	static
+	SFNode
+	createNode (const WorldPtr & world,
+	            const X3DExecutionContextPtr & executionContext,
+	            const std::string & typeName,
+	            const UndoStepPtr & undoStep);
+
+	static
+	SFNode
+	createProto (const WorldPtr & world,
+	             const X3DExecutionContextPtr & executionContext,
+	             const std::string & typeName,
+	             const UndoStepPtr & undoStep);
 
 	static
 	MFNode

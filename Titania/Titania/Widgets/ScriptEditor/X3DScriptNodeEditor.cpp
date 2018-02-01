@@ -50,6 +50,8 @@
 
 #include "X3DScriptNodeEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
 namespace titania {
 namespace puck {
 
@@ -88,12 +90,14 @@ X3DScriptNodeEditor::on_new_script_clicked ()
 	getNewScriptPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
-	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewScript"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Script", undoStep);
 
 	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewScript"), node, undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
 }

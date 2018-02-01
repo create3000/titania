@@ -411,7 +411,7 @@ void
 PrototypeEditor::on_create_instance_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), protoNode -> getName () .c_str ()));
-	const auto instance = X3D::X3DEditor::addPrototypeInstance (getCurrentContext (), protoNode -> getName () .c_str (), undoStep);
+	const auto instance = X3D::X3DEditor::createProto (getCurrentWorld (), getCurrentContext (), protoNode -> getName () .c_str (), undoStep);
 
 	getBrowserWindow () -> getSelection () -> setNodes ({ instance }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

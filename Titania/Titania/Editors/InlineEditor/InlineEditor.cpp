@@ -130,7 +130,9 @@ void
 InlineEditor::on_new_inline_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Inline"));
-	getBrowserWindow () -> createNode ("Inline", undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Inline", undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

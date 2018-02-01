@@ -50,6 +50,7 @@
 
 #include "X3DGeoViewpointEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/MFStringGeoSystem.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
@@ -156,7 +157,8 @@ X3DGeoViewpointEditor::on_new_geo_viewpoint_clicked ()
 	getNewViewpointPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New GeoViewpoint"));
-	const X3D::X3DPtr <X3D::GeoViewpoint> node (getBrowserWindow () -> createNode ("GeoViewpoint", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::GeoViewpoint> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "GeoViewpoint", undoStep));
+
 	node -> set_bind () = true;
 
 	try
@@ -186,6 +188,7 @@ X3DGeoViewpointEditor::on_new_geo_viewpoint_clicked ()
 	catch (const X3D::X3DError &)
 	{ }	
 
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);

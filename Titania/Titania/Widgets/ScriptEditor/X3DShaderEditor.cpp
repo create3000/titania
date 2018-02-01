@@ -121,12 +121,14 @@ X3DShaderEditor::on_new_shader_part_clicked ()
 	getNewScriptPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
-	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "ShaderPart", undoStep);
 
 	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
 }
@@ -145,12 +147,14 @@ X3DShaderEditor::on_new_shader_program_clicked ()
 	getNewScriptPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
-	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
-
-	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
-	getBrowserWindow () -> addUndoStep (undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "ShaderProgram", undoStep);
 
 	node -> setField <X3D::MFString> ("url", X3D::MFString ({ URL }));
+
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), getCurrentContext () -> getUniqueName ("NewShader"), node, undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
 }

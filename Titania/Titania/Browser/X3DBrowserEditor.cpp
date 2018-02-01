@@ -535,32 +535,16 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 	}
 }
 
-/***
- *  Create node and add node to current layer root nodes.
- */
-X3D::SFNode
-X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
-{
-	const auto node = getCurrentContext () -> createNode (typeName);
-
-	X3D::X3DEditor::addNodesToActiveLayer (getCurrentWorld (), { node }, undoStep);
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
-
-	getSelection () -> setNodes ({ node }, undoStep);
-
-	return node;
-}
-
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool)
 {
-	static const std::vector <const char*> undoText = {
-		"Nudge Left",
-		"Nudge Right",
-		"Nudge Up",
-		"Nudge Down",
-		"Nudge Front",
-		"Nudge Back"
+	static const std::vector <std::string> undoText = {
+		_ ("Nudge Left"),
+		_ ("Nudge Right"),
+		_ ("Nudge Up"),
+		_ ("Nudge Down"),
+		_ ("Nudge Front"),
+		_ ("Nudge Back"),
 	};
 
 	for (const auto & node : basic::make_reverse_range (getSelection () -> getNodes ()))
@@ -570,7 +554,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 		if (first)
 		{
 			if (currentTool not_eq tool or X3D::SFTime::now () - undoTime > UNDO_TIME or nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
-				nudgeUndoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
+				nudgeUndoStep = std::make_shared <X3D::UndoStep> (undoText [currentTool - NUDGE_LEFT]);
 
 			tool     = currentTool;
 			undoTime = X3D::SFTime::now ();

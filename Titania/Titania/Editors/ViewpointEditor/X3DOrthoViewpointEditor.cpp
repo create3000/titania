@@ -50,6 +50,7 @@
 
 #include "X3DOrthoViewpointEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
@@ -128,7 +129,8 @@ X3DOrthoViewpointEditor::on_new_ortho_viewpoint_clicked ()
 	getNewViewpointPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New OrthoViewpoint"));
-	const X3D::X3DPtr <X3D::OrthoViewpoint> node (getBrowserWindow () -> createNode ("OrthoViewpoint", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::OrthoViewpoint> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "OrthoViewpoint", undoStep));
+
 	node -> set_bind () = true;
 
 	try
@@ -152,6 +154,7 @@ X3DOrthoViewpointEditor::on_new_ortho_viewpoint_clicked ()
 	catch (const X3D::X3DError &)
 	{ }	
 
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);

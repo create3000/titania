@@ -50,6 +50,7 @@
 
 #include "X3DViewpointEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
@@ -114,7 +115,8 @@ X3DViewpointEditor::on_new_viewpoint_clicked ()
 	getNewViewpointPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Viewpoint"));
-	const X3D::X3DPtr <X3D::Viewpoint> node (getBrowserWindow () -> createNode ("Viewpoint", undoStep));
+	const auto node     = X3D::X3DPtr <X3D::Viewpoint> (X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "Viewpoint", undoStep));
+
 	node -> set_bind () = true;
 
 	try
@@ -138,6 +140,7 @@ X3DViewpointEditor::on_new_viewpoint_clicked ()
 	catch (const X3D::X3DError &)
 	{ }	
 
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);

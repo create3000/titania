@@ -50,6 +50,8 @@
 
 #include "X3DSpotLightEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
 #include <Titania/X3D/Components/Lighting/SpotLight.h>
 
 namespace titania {
@@ -91,11 +93,10 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 void
 X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	const X3D::X3DPtr <X3D::SpotLight> spotLight (lightNode);
+	const auto spotLight  = X3D::X3DPtr <X3D::SpotLight> (lightNode);
+	const auto spotLights = spotLight ? X3D::MFNode ({ spotLight }) : X3D::MFNode ();
 
 	getSpotLightExpander () .set_visible (spotLight);
-
-	const auto spotLights = spotLight ? X3D::MFNode ({ spotLight }) : X3D::MFNode ();
 
 	attenuation   .setNodes (spotLights);
 	location      .setNodes (spotLights);
@@ -112,7 +113,9 @@ X3DSpotLightEditor::on_new_spot_light_clicked ()
 	getNewLightPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New SpotLight"));
-	getBrowserWindow () -> createNode ("SpotLight", undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "SpotLight", undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

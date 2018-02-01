@@ -50,6 +50,8 @@
 
 #include "X3DPointLightEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
 #include <Titania/X3D/Components/Lighting/PointLight.h>
 
 namespace titania {
@@ -75,11 +77,10 @@ X3DPointLightEditor::X3DPointLightEditor () :
 void
 X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	const X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
+	const auto pointLight  = X3D::X3DPtr <X3D::PointLight> (lightNode);
+	const auto pointLights = pointLight ? X3D::MFNode ({ pointLight }) : X3D::MFNode ();
 
 	getPointLightExpander () .set_visible (pointLight);
-
-	const auto pointLights = pointLight ? X3D::MFNode ({ pointLight }) : X3D::MFNode ();
 
 	attenuation .setNodes (pointLights);
 	location    .setNodes (pointLights);
@@ -92,7 +93,9 @@ X3DPointLightEditor::on_new_point_light_clicked ()
 	getNewLightPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New PointLight"));
-	getBrowserWindow () -> createNode ("PointLight", undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "PointLight", undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

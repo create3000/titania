@@ -50,6 +50,8 @@
 
 #include "X3DDirectionalLightEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
 #include <Titania/X3D/Components/Lighting/DirectionalLight.h>
 
 namespace titania {
@@ -71,11 +73,10 @@ X3DDirectionalLightEditor::X3DDirectionalLightEditor () :
 void
 X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightNode)
 {
-	const X3D::X3DPtr <X3D::DirectionalLight> directionalLight (lightNode);
+	const auto directionalLight  = X3D::X3DPtr <X3D::DirectionalLight> (lightNode);
+	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
 
 	getDirectionalLightExpander () .set_visible (directionalLight);
-
-	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
 
 	direction     .setNodes (directionalLights);
 	directionTool .setNodes (directionalLights);
@@ -87,7 +88,9 @@ X3DDirectionalLightEditor::on_new_directional_light_clicked ()
 	getNewLightPopover () .popdown ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New DirectionalLight"));
-	getBrowserWindow () -> createNode ("DirectionalLight", undoStep);
+	const auto node     = X3D::X3DEditor::createNode (getCurrentWorld (), getCurrentContext (), "DirectionalLight", undoStep);
+
+	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

@@ -145,11 +145,6 @@ public:
 	void
 	pasteNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
-	/// @name Edit operations
-
-	X3D::SFNode
-	createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep);
-
 	///  @name Destruction
 
 	virtual

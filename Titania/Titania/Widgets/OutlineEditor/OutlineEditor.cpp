@@ -613,9 +613,9 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 		{
 			const auto & node     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), node -> getName () .c_str ()));
-			const auto   instance = X3D::X3DEditor::addPrototypeInstance (treeView -> get_execution_context (), node -> getName (), undoStep);
+			const auto   instance = X3D::X3DEditor::createProto (getCurrentWorld (), treeView -> get_execution_context (), node -> getName (), undoStep);
 
-			//getBrowserWindow () -> getSelection () -> setNodes ({ instance }, undoStep);
+			getBrowserWindow () -> getSelection () -> setNodes ({ instance }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 			break;
 		}
