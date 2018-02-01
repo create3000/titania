@@ -93,11 +93,11 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserNotebook (defaultBrowser),
 	  executionContext (defaultBrowser -> getExecutionContext ()),
 	           editing (false),
-	         clipboard (defaultBrowser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	         selection (new BrowserSelection (getBrowserWindow ())),
+	         clipboard (defaultBrowser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	     nudgeUndoStep (),
 	          undoTime (0),
-	              tool (NONE_TOOL)
+	              tool (NUDGE_NONE)
 {
 	addChildObjects (executionContext,
 	                 editing,
@@ -551,17 +551,6 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 	return node;
 }
 
-/***
- *  Completely removes @a nodes from @a executionContext.
- */
-void
-X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const bool removeFromSceneGraph, const X3D::UndoStepPtr & undoStep) const
-{
-	getSelection () -> removeNodes (nodes, undoStep);
-
-	X3D::X3DEditor::removeNodesFromScene (executionContext, nodes, removeFromSceneGraph, undoStep);
-}
-
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool)
 {
@@ -630,132 +619,6 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 			break;
 		}
 	}
-}
-
-// Misc
-
-void
-X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
-{
-	const auto  cdata    = node -> getSourceText ();
-	std::string filename = "/tmp/titania-XXXXXX.js";
-
-	::close (Glib::mkstemp (filename));
-
-	std::ofstream ofstream (filename);	
-
-	if (not cdata or not ofstream)
-		return;
-
-	// Output file.
-
-	for (const auto & string : *cdata)
-	{
-		ofstream
-			<< "<![CDATA["
-			<< X3D::EscapeSourceText (string)
-			<< "]]>" << std::endl
-			<< std::endl
-			<< std::endl;
-	}
-
-	static const std::regex CommentEnd (R"/((\*/))/");
-
-	const auto name = std::regex_replace (node -> getName (), CommentEnd, "");
-
-	ofstream
-		<< "/**" << std::endl
-		<< " * " << node -> getTypeName () << " " << name << std::endl
-		<< " * " << _ ("This file is automaticaly generated to edit CDATA fields. Each SFString value is enclosed inside a CDATA") << std::endl
-		<< " * " << _ ("section.  A CDATA section starts with \"<![CDATA[\" and ends with \"]]>\".") << std::endl
-		<< " * " << std::endl
-		<< " * " << _ ("If this is a Script node, a inline script must be enclosed in \"<![CDATA[ecmascript: your program here ]]>\".") << std::endl
-		<< " * " << _ ("If this is a shader, it must be enclosed in \"<![CDATA[data:text/plain, your shader here ]]>\".  Just save") << std::endl
-		<< " * " << _ ("this file to apply changes.") << std::endl
-		<< " **/" << std::endl;
-
-	// Launch Gnome TextEditor.
-
-	Glib::RefPtr <Gio::File>        file        = Gio::File::create_for_path (filename);
-	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
-
-	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserEditor::on_source_code_changed), node));
-	getCurrentPage () -> addFileMonitor (file, fileMonitor);
-
-	try
-	{
-		getCurrentBrowser () -> getConsole () -> log ("Trying to start gnome-text-editor ...\n");
-
-		Gio::AppInfo::create_from_commandline (Glib::find_program_in_path ("gnome-text-editor"), "", Gio::APP_INFO_CREATE_NONE) -> launch (file);
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
-                                          const Glib::RefPtr <Gio::File> &,
-                                          Gio::FileMonitorEvent event,
-                                          const X3D::SFNode & node)
-{
-	io::multi_line_comment comment ("/*", "*/");
-	io::sequence           whitespaces ("\r\n \t,");
-	io::inverse_string     cdata_start ("<![CDATA[");
-	io::inverse_string     contents ("]]>");
-
-	if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-		return;
-
-	// Parse file.
-
-	X3D::MFString string;
-	std::string   ws;
-
-	std::ifstream istream (file -> get_path ());
-
-	// Parse CDATA sections.
-
-	while (istream)
-	{
-		whitespaces (istream, ws);
-		comment (istream, ws);
-
-		if (cdata_start (istream, ws))
-		{
-			std::string value;
-
-			contents (istream, value);
-
-			string .emplace_back (std::move (value));
-		}
-		else
-			break;
-	}
-
-	// Set value.
-
-	X3D::MFString* const cdata = node -> getSourceText ();
-
-	if (string not_eq *cdata)
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), cdata -> getName () .c_str ()));
-
-		undoStep -> addObjects (node);
-
-		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
-		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, string);
-		cdata -> setValue (string);
-
-		// Prototype support
-
-		X3D::X3DEditor::requestUpdateInstances (node, undoStep);
-
-		// Add undo step
-
-		addUndoStep (undoStep);
-	}
-
-	getCurrentBrowser () -> getConsole () -> log (basic::sprintf (_ ("%s : Script »%s« saved.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getName () .c_str ()));
 }
 
 void

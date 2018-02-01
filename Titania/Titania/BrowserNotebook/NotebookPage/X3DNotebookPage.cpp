@@ -78,7 +78,6 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	               savedTime (-1),
 	       focusInConnection (),
 	    switchPageConnection (),
-	            fileMonitors (),
 	         backgroundImage (new BackgroundImage (this)),
 	                changing (false)
 {
@@ -264,12 +263,6 @@ X3DNotebookPage::getTitle () const
 }
 
 void
-X3DNotebookPage::addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor)
-{
-	fileMonitors .emplace_back (file, fileMonitor);
-}
-
-void
 X3DNotebookPage::loaded ()
 { }
 
@@ -282,14 +275,6 @@ X3DNotebookPage::reset ()
 
 	setModified (false);
 	setSaveConfirmed (false);
-
-	for (const auto & fileMonitor : fileMonitors)
-	{
-		fileMonitor .second -> cancel ();
-		fileMonitor .first -> remove ();
-	}
-
-	fileMonitors .clear ();
 }
 
 void

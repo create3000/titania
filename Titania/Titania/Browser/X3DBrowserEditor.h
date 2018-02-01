@@ -124,6 +124,12 @@ public:
 	void
 	redo ();
 
+	/// @name Selection handling
+
+	const std::unique_ptr <BrowserSelection> &
+	getSelection () const
+	{ return selection; }
+
 	/// @name Clipboard handling
 
 	const X3D::ClipboardPtr &
@@ -144,23 +150,6 @@ public:
 	X3D::SFNode
 	createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep);
 
-	void
-	removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext,
-	                      const X3D::MFNode & nodes,
-	                      const bool,
-	                      const X3D::UndoStepPtr & undoStep) const;
-	
-	/// @name CDATA field operations
-
-	void
-	editSourceCode (const X3D::SFNode &);
-
-	/// @name Selection operations
-
-	const std::unique_ptr <BrowserSelection> &
-	getSelection () const
-	{ return selection; }
-
 	///  @name Destruction
 
 	virtual
@@ -168,7 +157,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DBrowserEditor ();
+	~X3DBrowserEditor () override;
 
 
 protected:
@@ -179,7 +168,7 @@ protected:
 
 	enum ToolType
 	{
-		NONE_TOOL,
+		NUDGE_NONE,
 		NUDGE_LEFT,
 		NUDGE_RIGHT,
 		NUDGE_UP,
@@ -236,21 +225,13 @@ private:
 	void
 	set_clipboard (const X3D::SFString & string);
 
-	///  @name Source code handling
-
-	void
-	on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
-	                        const Glib::RefPtr <Gio::File> &,
-	                        Gio::FileMonitorEvent event,
-	                        const X3D::SFNode & node);
-
 	///  @name Members
 
 	X3D::X3DScenePtr                   scene;
 	X3D::X3DExecutionContextPtr        executionContext;
 	X3D::SFBool                        editing;
-	X3D::ClipboardPtr                  clipboard;
 	std::unique_ptr <BrowserSelection> selection;
+	X3D::ClipboardPtr                  clipboard;
 	X3D::UndoStepPtr                   nudgeUndoStep;
 	double                             undoTime;
 	ToolType                           tool;

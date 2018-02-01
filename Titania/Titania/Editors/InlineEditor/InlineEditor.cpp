@@ -140,7 +140,9 @@ InlineEditor::on_remove_inline_clicked ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Inline"));
 	const auto executionContext = X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (executionContext, { inlineNode }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { inlineNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ inlineNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

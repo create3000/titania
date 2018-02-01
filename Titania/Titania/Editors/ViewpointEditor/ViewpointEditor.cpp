@@ -50,6 +50,7 @@
 
 #include "ViewpointEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -147,9 +148,12 @@ ViewpointEditor::on_remove_viewpoint_clicked ()
 	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), viewpointNode-> getTypeName () .c_str ()));
+	const auto executionContext = X3D::X3DExecutionContextPtr (viewpointNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { viewpointNode }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { viewpointNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ viewpointNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_viewpoint (nullptr);

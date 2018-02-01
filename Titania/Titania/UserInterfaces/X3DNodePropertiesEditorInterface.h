@@ -430,18 +430,6 @@ public:
 	{ return *m_RemoveUserDefinedFieldButton; }
 
 	Gtk::Box &
-	getCDATAFieldBox () const
-	{ return *m_CDATAFieldBox; }
-
-	Gtk::Expander &
-	getCDATAFieldExpander () const
-	{ return *m_CDATAFieldExpander; }
-
-	Gtk::Button &
-	getEditCDataButton () const
-	{ return *m_EditCDataButton; }
-
-	Gtk::Box &
 	getImportedNodesBox () const
 	{ return *m_ImportedNodesBox; }
 
@@ -554,10 +542,6 @@ public:
 	virtual
 	void
 	on_remove_user_defined_field_clicked () = 0;
-
-	virtual
-	void
-	on_edit_cdata_clicked () = 0;
 
 	virtual
 	void
@@ -732,9 +716,6 @@ private:
 	Gtk::ButtonBox* m_UserDefinedFieldsActionBox;
 	Gtk::Button* m_AddUserDefinedFieldButton;
 	Gtk::Button* m_RemoveUserDefinedFieldButton;
-	Gtk::Box* m_CDATAFieldBox;
-	Gtk::Expander* m_CDATAFieldExpander;
-	Gtk::Button* m_EditCDataButton;
 	Gtk::Box* m_ImportedNodesBox;
 	Gtk::Expander* m_ImportedNodesExpander;
 	Gtk::TreeView* m_ImportedNodesTreeView;

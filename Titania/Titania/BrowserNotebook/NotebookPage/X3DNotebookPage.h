@@ -128,9 +128,6 @@ public:
 	getBackgroundImage () const
 	{ return backgroundImage; }
 
-	void
-	addFileMonitor (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::FileMonitor> & fileMonitor);
-
 	///  @name Destruction
 
 	virtual
@@ -217,20 +214,17 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr              mainBrowser;
-	X3D::X3DScenePtr             masterScene;
-	X3D::X3DScenePtr             scene;
-	X3D::X3DExecutionContextPtr  executionContext;
-	basic::uri                   url; // Start URL
-	X3D::UndoHistory             undoHistory;
-	bool                         modified;
-	bool                         saveConfirmed;
-	X3D::time_type               savedTime;
-	sigc::connection             focusInConnection;
-	sigc::connection             switchPageConnection;
-
-	std::vector <std::pair <Glib::RefPtr <Gio::File>, Glib::RefPtr <Gio::FileMonitor>>>   fileMonitors;
-	
+	X3D::BrowserPtr                   mainBrowser;
+	X3D::X3DScenePtr                  masterScene;
+	X3D::X3DScenePtr                  scene;
+	X3D::X3DExecutionContextPtr       executionContext;
+	basic::uri                        url; // Start URL
+	X3D::UndoHistory                  undoHistory;
+	bool                              modified;
+	bool                              saveConfirmed;
+	X3D::time_type                    savedTime;
+	sigc::connection                  focusInConnection;
+	sigc::connection                  switchPageConnection;
 	std::unique_ptr <BackgroundImage> backgroundImage;
 	bool                              changing;
 

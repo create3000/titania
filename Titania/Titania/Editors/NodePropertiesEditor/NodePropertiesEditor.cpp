@@ -106,8 +106,6 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		getTypeNameEntry ()       .set_text (node -> getTypeName ());
 		getComponentEntry ()      .set_text (node -> getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ());
 		getContainerFieldEntry () .set_text (node -> getContainerField ());
-
-		getCDATAFieldBox () .set_visible (node -> getSourceText ());
 	}
 	else
 	{
@@ -115,8 +113,6 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		getTypeNameEntry ()       .set_text ("");
 		getComponentEntry ()      .set_text ("");
 		getContainerFieldEntry () .set_text ("");
-
-		getCDATAFieldBox () .set_visible (false);
 	}
 
 	nodeName .setNode (node);
@@ -130,12 +126,6 @@ void
 NodePropertiesEditor::set_name ()
 {
 	getHeaderBar () .set_subtitle (node -> getTypeName () + " »" + node -> getName () + "«");
-}
-
-void
-NodePropertiesEditor::on_edit_cdata_clicked ()
-{
-	getBrowserWindow () -> editSourceCode (node);
 }
 
 void

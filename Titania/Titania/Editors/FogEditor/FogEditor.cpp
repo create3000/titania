@@ -50,6 +50,7 @@
 
 #include "FogEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
@@ -130,9 +131,13 @@ FogEditor::on_new_fog_clicked ()
 void
 FogEditor::on_remove_fog_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Fog"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Fog"));
+	const auto & fogNode          = nodeName .getNode ();
+	const auto   executionContext = X3D::X3DExecutionContextPtr (fogNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { fogNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ fogNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_fog (nullptr);

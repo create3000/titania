@@ -88,18 +88,16 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event hanlders
+
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
 
-	///  @name CDATA field
-
 	void
 	set_name ();
 
-	virtual
-	void
-	on_edit_cdata_clicked () final override;
+	///  @name Destruction
 
 	virtual
 	void

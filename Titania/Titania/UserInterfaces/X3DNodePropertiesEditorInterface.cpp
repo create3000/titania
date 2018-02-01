@@ -165,9 +165,6 @@ X3DNodePropertiesEditorInterface::create ()
 	m_builder -> get_widget ("UserDefinedFieldsActionBox", m_UserDefinedFieldsActionBox);
 	m_builder -> get_widget ("AddUserDefinedFieldButton", m_AddUserDefinedFieldButton);
 	m_builder -> get_widget ("RemoveUserDefinedFieldButton", m_RemoveUserDefinedFieldButton);
-	m_builder -> get_widget ("CDATAFieldBox", m_CDATAFieldBox);
-	m_builder -> get_widget ("CDATAFieldExpander", m_CDATAFieldExpander);
-	m_builder -> get_widget ("EditCDataButton", m_EditCDataButton);
 	m_builder -> get_widget ("ImportedNodesBox", m_ImportedNodesBox);
 	m_builder -> get_widget ("ImportedNodesExpander", m_ImportedNodesExpander);
 	m_builder -> get_widget ("ImportedNodesTreeView", m_ImportedNodesTreeView);
@@ -202,7 +199,6 @@ X3DNodePropertiesEditorInterface::create ()
 	// Connect object Gtk::Button with id 'AddUserDefinedFieldButton'.
 	m_AddUserDefinedFieldButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_add_user_defined_field_clicked));
 	m_RemoveUserDefinedFieldButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_remove_user_defined_field_clicked));
-	m_EditCDataButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_edit_cdata_clicked));
 
 	// Connect object Gtk::CellRendererToggle with id 'ImportedNodesImportedCellRendererToggle'.
 	m_ImportedNodesImportedCellRendererToggle -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_imported_toggled));

@@ -369,7 +369,7 @@ AnimationEditor::on_new ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
 	const auto groups           = getSelection <X3D::X3DNode> ({ X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
 	const auto group            = groups .back ();
-	const auto executionContext = X3D::X3DExecutionContextPtr (group -> getExecutionContext ());
+	const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 	const auto name             = executionContext -> getUniqueName (getNewNameEntry () .get_text ());
 	const auto animation        = executionContext -> createNode <X3D::Group> ();
 	const auto timeSensor       = executionContext -> createNode <X3D::TimeSensor> ();
@@ -391,7 +391,11 @@ AnimationEditor::on_new ()
 	// Undo/Redo
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
-	getBrowserWindow () -> removeNodesFromScene (executionContext, { animation }, true, undoRemoveNode);
+
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { animation }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ animation }, undoStep);
+
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
@@ -662,9 +666,12 @@ AnimationEditor::on_remove_member ()
 		   // Remove Animation
 
 			const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
-			const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+			const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 
-			getBrowserWindow () -> removeNodesFromScene (executionContext, { animation }, true, undoStep);
+			X3D::X3DEditor::removeNodesFromScene (executionContext, { animation }, true, undoStep);
+		
+			getBrowserWindow () -> getSelection () -> removeNodes ({ animation }, undoStep);
+
 			addUndoStep (undoStep);
 			break;
 		}
@@ -691,7 +698,7 @@ AnimationEditor::on_remove_member ()
 					if (iter == interpolatorIndex .end ())
 						continue;
 
-					const auto   executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+					const auto   executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 					const auto & interpolator     = iter -> second;
 
 					interpolatorsToRemove .emplace (interpolator);
@@ -715,9 +722,12 @@ AnimationEditor::on_remove_member ()
 				
 				if (not interpolators .empty ())
 				{
-					const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+					const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
+					const auto interpolators    = X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ());
 
-					getBrowserWindow () -> removeNodesFromScene (executionContext, X3D::MFNode (interpolatorsToRemove .begin (), interpolatorsToRemove .end ()), true, undoStep);
+					X3D::X3DEditor::removeNodesFromScene (executionContext, interpolators, true, undoStep);
+				
+					getBrowserWindow () -> getSelection () -> removeNodes (interpolators, undoStep);
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
@@ -740,7 +750,7 @@ AnimationEditor::on_remove_member ()
 			try
 			{
 				const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
-				const auto   executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+				const auto   executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 				const auto   parent           = selected -> parent ();
 				const auto & node             = nodes .at ((*parent) [columns .id]);
 				const auto   field            = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
@@ -769,9 +779,11 @@ AnimationEditor::on_remove_member ()
 						
 				if (not isConnectedToOtherMembers)
 				{
-					const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+					const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 
-					getBrowserWindow () -> removeNodesFromScene (executionContext, { interpolator }, true, undoStep);
+					X3D::X3DEditor::removeNodesFromScene (executionContext, { interpolator }, true, undoStep);
+				
+					getBrowserWindow () -> getSelection () -> removeNodes ({ interpolator }, undoStep);
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
@@ -1276,7 +1288,7 @@ AnimationEditor::on_time ()
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Edit Keyframe Animation Properties"));
-	const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+	const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 	const auto name             = getNewNameEntry () .get_text ();
 	const bool durationChanged  = getDuration () not_eq getDurationAdjustment () -> get_value ();
 
@@ -1949,7 +1961,7 @@ void
 AnimationEditor::removeKeyframes ()
 {
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Keyframes"));
-	const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+	const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 
 	std::set <X3D::X3DPtr <X3D::X3DNode>> affectedInterpolators;
 
@@ -1982,7 +1994,9 @@ AnimationEditor::removeKeyframes ()
 			interpolatorsToRemove .emplace_back (interpolator);
 	}
 
-	getBrowserWindow () -> removeNodesFromScene (executionContext, interpolatorsToRemove, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, interpolatorsToRemove, true, undoStep);
+				
+	getBrowserWindow () -> getSelection () -> removeNodes (interpolatorsToRemove, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -2472,7 +2486,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto executionContext = X3D::X3DExecutionContextPtr (animation -> getExecutionContext ());
+		const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
 		const auto interpolator     = executionContext -> createNode (typeName);
 		const auto name             = getInterpolatorName (node, field);
 		

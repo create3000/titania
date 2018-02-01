@@ -50,6 +50,8 @@
 
 #include "NavigationInfoEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../ComposedWidgets/MFStringWidget.h"
 
@@ -155,9 +157,13 @@ NavigationInfoEditor::on_new_navigation_info_clicked ()
 void
 NavigationInfoEditor::on_remove_navigation_info_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
+	const auto   undoStep           = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
+	const auto & navigationInfoNode = nodeName .getNode ();
+	const auto   executionContext   = X3D::X3DExecutionContextPtr (navigationInfoNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { navigationInfoNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ navigationInfoNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_navigationInfo (nullptr);

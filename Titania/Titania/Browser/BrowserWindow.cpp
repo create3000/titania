@@ -802,8 +802,7 @@ BrowserWindow::on_delete_activated ()
 	if (getGeometryEditor () -> on_delete ())
 		return;
 
-	const auto selection        = getSelection () -> getNodes ();
-	const auto executionContext = X3D::MakePtr (getSelectionContext (selection));
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -811,11 +810,12 @@ BrowserWindow::on_delete_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
+	const auto executionContext = X3D::MakePtr (getSelectionContext (selection));
+
+	X3D::X3DEditor::removeNodesFromScene (executionContext, selection, true, undoStep);
 
 	getSelection () -> clearNodes (undoStep);
-
-	removeNodesFromScene (executionContext, selection, true, undoStep);
 
 	addUndoStep (undoStep);
 }

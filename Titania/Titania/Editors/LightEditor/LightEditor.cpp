@@ -50,6 +50,7 @@
 
 #include "LightEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
@@ -131,7 +132,9 @@ LightEditor::on_remove_light_clicked ()
 	const auto & lightNode        = nodeName .getNode ();
 	const auto   executionContext = X3D::X3DExecutionContextPtr (lightNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (executionContext, { lightNode }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { lightNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ lightNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

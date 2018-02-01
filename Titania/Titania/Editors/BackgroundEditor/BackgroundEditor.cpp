@@ -50,6 +50,7 @@
 
 #include "BackgroundEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 #include "../../ComposedWidgets/TexturePreview.h"
 
@@ -306,9 +307,13 @@ BackgroundEditor::on_new_texture_background_clicked ()
 void
 BackgroundEditor::on_remove_background_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
+	const auto & backgroundNode   = nodeName .getNode ();
+	const auto   executionContext = X3D::X3DExecutionContextPtr (backgroundNode -> getExecutionContext ());
 
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (getCurrentContext (), { backgroundNode }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ backgroundNode }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_background (nullptr);

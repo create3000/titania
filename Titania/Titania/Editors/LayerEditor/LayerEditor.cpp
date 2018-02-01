@@ -651,10 +651,12 @@ LayerEditor::on_new_layer_set_button_clicked ()
 void
 LayerEditor::on_remove_layer_set_clicked ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove LayerSet"));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove LayerSet"));
+	const auto executionContext = X3D::X3DExecutionContextPtr (layerSet -> getExecutionContext ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
-	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { layerSet }, true, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { layerSet }, true, undoStep);
+
+	getBrowserWindow () -> getSelection () -> removeNodes ({ layerSet }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
