@@ -97,6 +97,9 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (backgroundNode);
 
+	getSkyAngleAdjustment ()    -> set_upper (math::pi <double> / 2);
+	getGroundAngleAdjustment () -> set_upper (math::pi <double> / 2);
+
 	setup ();
 }
 
