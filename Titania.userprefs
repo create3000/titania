@@ -1,43 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserDBus.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="62" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="98" Column="36" />
-      <File FileName="Titania/Titania/Browser/BrowserDBus.h" Line="70" Column="26" />
-      <File FileName="Titania/Titania/Browser/BrowserDBus.cpp" Line="51" Column="22" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="147" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="557" Column="90" />
+      <File FileName="Titania/share/gtksourceview-3.0/styles/x_ite.xml" Line="46" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.cpp" Line="91" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/WorldInfo.cpp" Line="126" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.h" Line="99" Column="6" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="build" expanded="True">
-              <Node name="debian" expanded="True" />
-            </Node>
-            <Node name="experimental" expanded="True" />
-            <Node name="Library" expanded="True">
-              <Node name="Tests" expanded="True">
-                <Node name="Geometry3D" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="libtitania-ftgl" expanded="True" />
-            <Node name="libtitania-peaseblossom" expanded="True" />
-            <Node name="libtitania-sqlite" expanded="True" />
-            <Node name="libtitania-standard" expanded="True" />
-            <Node name="libtitania-stream" expanded="True" />
-            <Node name="libtitania-x3d" expanded="True" />
-            <Node name="Titania" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="BrowserDBus.cpp" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

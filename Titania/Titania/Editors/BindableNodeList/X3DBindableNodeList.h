@@ -137,10 +137,13 @@ private:
 	on_unmap () final override;
 
 	void
-	set_browser (const X3D::BrowserPtr &);
+	set_live (const bool value);
 
 	void
-	set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNode> &);
+	set_browser (const X3D::BrowserPtr & browser);
+
+	void
+	set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & layer);
 
 	void
 	set_list ();
@@ -150,14 +153,14 @@ private:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton*) final override;
+	on_button_release_event (GdkEventButton* event) final override;
 
 	void
-	on_bind_toggled (const Gtk::TreePath &);
+	on_bind_toggled (const Gtk::TreePath & path);
 
 	///  @name Constants
 
@@ -283,6 +286,9 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value, const bool event)
 {
+	if (selection)
+		selection -> isLive () .removeInterest (&X3DBindableNodeList::set_live, this);
+
 	if (not editing or (activeLayer and value == getList (activeLayer) -> getList () .at (0)))
 	{
 		if (event)
@@ -298,8 +304,21 @@ X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value, cons
 			selection .set (value);
 	}
 
+	if (selection)
+		selection -> isLive () .addInterest (&X3DBindableNodeList::set_live, this);
+
 	if (editing)
 		set_stack ();
+}
+
+template <class Type>
+void
+X3DBindableNodeList <Type>::set_live (const bool value)
+{
+	if (value)
+		return;
+
+	setSelection (nullptr, true);
 }
 
 template <class Type>
@@ -454,7 +473,7 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 	if (not activeLayer)
 		return;
 
-	guint index;
+	guint index = 0;
 
 	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
 
