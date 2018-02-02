@@ -93,7 +93,7 @@ BackgroundTool::set_addTime (const X3D::time_type value)
 	{
 		const auto   tool     = getTool ();
 		const auto & position = tool -> getField <X3D::MFFloat> ("position");
-		auto       & color    = tool -> getField <X3D::MFColor> ("color");
+		auto       & color    = tool -> getField <X3D::MFColorRGBA> ("color");
 
 		if (position .size () == 1)
 		{
@@ -108,6 +108,7 @@ BackgroundTool::set_addTime (const X3D::time_type value)
 	}
 	catch (const X3D::X3DError & error)
 	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

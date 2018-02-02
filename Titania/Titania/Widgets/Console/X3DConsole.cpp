@@ -93,8 +93,6 @@ X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring 
 
 	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
 
-	std::clog << string << std::flush;
-
 	// Erase.
 
 	if (getTextBuffer () -> size () > CONSOLE_LIMIT)

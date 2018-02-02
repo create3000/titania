@@ -483,7 +483,6 @@ function set_addTime (value, time)
 		index1 = lowerBound (position, 0, position .length, value, less),
 		index0 = index1 - 1;
 	
-	
 	if (index1 < position .length)
 	{
 		if (index0 < 0)
@@ -560,7 +559,6 @@ function add_color (index, value, color)
 	// Add routes
 	
 	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
-	
 
 	Browser .addRoute (arrow, \"isActive\",            self, \"set_active\");
 	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"removeTime\");

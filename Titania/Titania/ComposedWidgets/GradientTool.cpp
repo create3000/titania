@@ -68,8 +68,7 @@ GradientTool::GradientTool (X3DBaseInterface* const editor,
 
 void
 GradientTool::realize ()
-{
-}
+{ }
 
 GradientTool::~GradientTool ()
 {

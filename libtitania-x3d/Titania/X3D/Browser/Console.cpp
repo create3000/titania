@@ -94,6 +94,8 @@ Console::push (const std::string & tag, const std::string & string)
 	messages .emplace_back (string);
 
 	getBrowser () -> queue_render ();
+
+	std::clog << string << std::flush;
 }
 
 void
