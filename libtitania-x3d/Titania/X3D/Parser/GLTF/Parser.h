@@ -102,13 +102,45 @@ private:
 	scenesObject (json_object* const root, json_object* const jobj);
 	
 	void
-	sceneObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Switch> & scenes);
+	sceneNumber (json_object* const root, json_object* const jobj);
+	
+	void
+	sceneObject (json_object* const root, json_object* const jobj);
+
+	void
+	sceneNodesObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Group> & group);
+
+	void
+	nodesObject (json_object* const root, json_object* const jobj);
+	
+	void
+	node1Object (json_object* const root, json_object* const jobj);
+	
+	void
+	node2Object (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform);
+
+	void
+	nodeChildrenObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform);
+
+	///
+
+	bool
+	doubleValue (json_object* const jobj, double & value);
 
 	bool
 	integerValue (json_object* const jobj, int32_t & value);
 
 	bool
+	matrix4dValue (json_object* const jobj, Matrix4d & value);
+
+	bool
+	rotation4dValue (json_object* const jobj, Rotation4d & value);
+
+	bool
 	stringValue (json_object* const jobj, std::string & value);
+
+	bool
+	vector3dValue (json_object* const jobj, Vector3d & value);
 
 	struct json_object*
 	json_object_object_get (struct json_object* obj, const char *key);
@@ -126,6 +158,9 @@ private:
 	const X3D::X3DScenePtr scene;
 	const basic::uri       uri;
 	std::istream &         istream;
+
+	X3D::X3DPtr <X3D::Switch>         scenes;
+	X3D::X3DPtrArray <X3D::Transform> nodes;
 
 };
 
