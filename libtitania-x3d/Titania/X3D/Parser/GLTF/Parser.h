@@ -84,6 +84,14 @@ public:
 
 private:
 
+	struct BufferView
+	{
+		std::shared_ptr <std::string> buffer;
+		int32_t                       byteLength;
+		int32_t                       byteOffset;
+		int32_t                       byteStride;
+	};
+
 	///  @name Member access
 
 	X3DBrowser*
@@ -96,31 +104,48 @@ private:
 	rootObject (json_object* const jobj);
 
 	void
-	assetObject (json_object* const root, json_object* const jobj);
+	assetObject (json_object* const jobj);
 	
 	void
-	scenesObject (json_object* const root, json_object* const jobj);
+	scenesObject (json_object* const jobj);
 	
 	void
-	sceneNumber (json_object* const root, json_object* const jobj);
+	sceneNumber (json_object* const jobj);
 	
 	void
-	sceneObject (json_object* const root, json_object* const jobj);
+	sceneObject (json_object* const jobj);
 
 	void
-	sceneNodesObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Group> & group);
+	sceneNodesObject (json_object* const jobj, const X3D::X3DPtr <X3D::Group> & groupNode);
 
 	void
-	nodesObject (json_object* const root, json_object* const jobj);
+	nodesObject (json_object* const jobj);
 	
 	void
-	node1Object (json_object* const root, json_object* const jobj);
+	node1Object (json_object* const jobj);
 	
 	void
-	node2Object (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform);
+	node2Object (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode);
 
 	void
-	nodeChildrenObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform);
+	nodeChildrenObject (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode);
+
+	void
+	meshesObject (json_object* const jobj);
+
+	void
+	bufferViewsObject (json_object* const jobj);
+
+	void
+	buffersObject (json_object* const jobj);
+
+	///
+
+	bool
+	bufferViewValue (json_object* const jobj, const std::shared_ptr <BufferView> & bufferView);
+
+	bool
+	bufferValue (json_object* const jobj, const std::shared_ptr <std::string> & value);
 
 	///
 
@@ -161,6 +186,10 @@ private:
 
 	X3D::X3DPtr <X3D::Switch>         scenes;
 	X3D::X3DPtrArray <X3D::Transform> nodes;
+	X3D::X3DPtrArray <X3D::Shape>     meshes;
+
+	std::vector <std::shared_ptr <BufferView>>  bufferViews;
+	std::vector <std::shared_ptr <std::string>> buffers;
 
 };
 

@@ -822,7 +822,7 @@ Parser::mtllib ()
 			{
 				try
 				{
-					auto material_istream = FileLoader (scene) .loadStream (uri .transform (mtllib));
+					auto material_istream = FileLoader (scene) .loadStream (mtllib);
 
 					MaterialParser materialParser (scene, material_istream);
 

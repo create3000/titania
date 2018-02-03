@@ -54,6 +54,8 @@
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Grouping/Switch.h"
+#include "../../Components/Shape/Shape.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
 
 extern "C" {
@@ -86,7 +88,10 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	            uri (uri),
 	        istream (istream),
 	         scenes (),
-	          nodes ()
+	          nodes (),
+	         meshes (),
+	    bufferViews (),
+	        buffers ()
 { }
 
 void
@@ -134,13 +139,17 @@ Parser::rootObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	assetObject  (jobj, json_object_object_get (jobj, "asset"));
-	nodesObject  (jobj, json_object_object_get (jobj, "nodes"));
-	scenesObject (jobj, json_object_object_get (jobj, "scenes"));
+	assetObject       (json_object_object_get (jobj, "asset"));
+	buffersObject     (json_object_object_get (jobj, "buffers"));
+	bufferViewsObject (json_object_object_get (jobj, "bufferViews"));
+	meshesObject      (json_object_object_get (jobj, "meshes"));
+	nodesObject       (json_object_object_get (jobj, "nodes"));
+	scenesObject      (json_object_object_get (jobj, "scenes"));
+	sceneNumber       (json_object_object_get (jobj, "scene"));
 }
 
 void
-Parser::assetObject (json_object* const root, json_object* const jobj)
+Parser::assetObject (json_object* const jobj)
 {
 	if (not jobj)
 		return;
@@ -150,11 +159,11 @@ Parser::assetObject (json_object* const root, json_object* const jobj)
 
 	// Create WorldInfo.
 
-	const auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
+	const auto worldInfoNode = scene -> createNode <X3D::WorldInfo> ();
 
-	worldInfo -> title () = scene -> getWorldURL () .name ();
+	worldInfoNode -> title () = scene -> getWorldURL () .name ();
 
-	scene -> getRootNodes () .emplace_back (worldInfo);
+	scene -> getRootNodes () .emplace_back (worldInfoNode);
 
 	// Get values.
 
@@ -164,22 +173,22 @@ Parser::assetObject (json_object* const root, json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "version"), versionCharacters))
 	{
-		worldInfo -> info () .emplace_back ("version: " + versionCharacters);
+		worldInfoNode -> info () .emplace_back ("version: " + versionCharacters);
 	}
 
 	if (stringValue (json_object_object_get (jobj, "generator"), generatorCharacters))
 	{
-		worldInfo -> info () .emplace_back ("generator: " + generatorCharacters);
+		worldInfoNode -> info () .emplace_back ("generator: " + generatorCharacters);
 	}
 
 	if (stringValue (json_object_object_get (jobj, "copyright"), copyrightCharacters))
 	{
-		worldInfo -> info () .emplace_back ("copyright: " + copyrightCharacters);
+		worldInfoNode -> info () .emplace_back ("copyright: " + copyrightCharacters);
 	}
 }
 
 void
-Parser::scenesObject (json_object* const root, json_object* const jobj)
+Parser::scenesObject (json_object* const jobj)
 {
 	if (not jobj)
 		return;
@@ -191,23 +200,19 @@ Parser::scenesObject (json_object* const root, json_object* const jobj)
 
 	scenes = scene -> createNode <X3D::Switch> ();
 
-	scene -> addNamedNode (scene -> getUniqueName ("Scenes"), scenes);
 	scene -> getRootNodes () .emplace_back (scenes);
-
-	// Set whitchChoice.
-
-	sceneNumber (root, json_object_object_get (root, "scene"));
+	scene -> addNamedNode (scene -> getUniqueName ("Scenes"), scenes);
 
 	// Scenes.
 
 	const int32_t size = json_object_array_length (jobj);
 
 	for (int32_t i = 0; i < size; ++ i)
-		sceneObject (root, json_object_array_get_idx (jobj, i));
+		sceneObject (json_object_array_get_idx (jobj, i));
 }
 
 void
-Parser::sceneNumber (json_object* const root, json_object* const jobj)
+Parser::sceneNumber (json_object* const jobj)
 {
 	int32_t value = 0;
 
@@ -218,7 +223,7 @@ Parser::sceneNumber (json_object* const root, json_object* const jobj)
 }
 
 void
-Parser::sceneObject (json_object* const root, json_object* const jobj)
+Parser::sceneObject (json_object* const jobj)
 {
 	if (not jobj)
 		return;
@@ -226,11 +231,11 @@ Parser::sceneObject (json_object* const root, json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	// Create Group.
+	// Create groupNode.
 
-	const auto group = scene -> createNode <X3D::Group> ();
+	const auto groupNode = scene -> createNode <X3D::Group> ();
 
-	scenes -> children () .emplace_back (group);
+	scenes -> children () .emplace_back (groupNode);
 
 	// Name
 
@@ -238,16 +243,16 @@ Parser::sceneObject (json_object* const root, json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
-		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), group);
+		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), groupNode);
 	}
 
 	// Add nodes.
 
-	sceneNodesObject (root, json_object_object_get (jobj, "nodes"), group);
+	sceneNodesObject (json_object_object_get (jobj, "nodes"), groupNode);
 }
 
 void
-Parser::sceneNodesObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Group> & group)
+Parser::sceneNodesObject (json_object* const jobj, const X3D::X3DPtr <X3D::Group> & groupNode)
 {
 	if (not jobj)
 		return;
@@ -267,7 +272,7 @@ Parser::sceneNodesObject (json_object* const root, json_object* const jobj, cons
 		{
 			try
 			{
-				group -> children () .emplace_back (nodes .at (index));
+				groupNode -> children () .emplace_back (nodes .at (index));
 			}
 			catch (const std::out_of_range & error)
 			{
@@ -278,7 +283,7 @@ Parser::sceneNodesObject (json_object* const root, json_object* const jobj, cons
 }
 
 void
-Parser::nodesObject (json_object* const root, json_object* const jobj)
+Parser::nodesObject (json_object* const jobj)
 {
 	if (not jobj)
 		return;
@@ -293,7 +298,7 @@ Parser::nodesObject (json_object* const root, json_object* const jobj)
 		const int32_t size = json_object_array_length (jobj);
 	
 		for (int32_t i = 0; i < size; ++ i)
-			node1Object (root, json_object_array_get_idx (jobj, i));
+			node1Object (json_object_array_get_idx (jobj, i));
 	}
 
 	// 2nd Pass.
@@ -301,12 +306,12 @@ Parser::nodesObject (json_object* const root, json_object* const jobj)
 		const int32_t size = json_object_array_length (jobj);
 
 		for (int32_t i = 0; i < size; ++ i)
-			node2Object (root, json_object_array_get_idx (jobj, i), nodes .get1Value (i));
+			node2Object (json_object_array_get_idx (jobj, i), nodes .get1Value (i));
 	}
 }
 
 void
-Parser::node1Object (json_object* const root, json_object* const jobj)
+Parser::node1Object (json_object* const jobj)
 {
 	if (not jobj)
 	{
@@ -322,9 +327,9 @@ Parser::node1Object (json_object* const root, json_object* const jobj)
 
 	// Create Transform.
 
-	const auto transform = scene -> createNode <X3D::Transform> ();
+	const auto transformNode = scene -> createNode <X3D::Transform> ();
 
-	nodes .emplace_back (transform);
+	nodes .emplace_back (transformNode);
 
 	// Name
 
@@ -332,38 +337,54 @@ Parser::node1Object (json_object* const root, json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
-		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), transform);
+		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), transformNode);
 	}
 
 	// Transformation Matrix
 
-	Vector3d   translation;
-	Rotation4d rotation;
-	Vector3d   scale;
-	Matrix4d   matrix;
+	Matrix4d matrix;
 
-	if (vector3dValue (json_object_object_get (jobj, "scale"), scale))
+	if (not matrix4dValue (json_object_object_get (jobj, "matrix"), matrix))
 	{
-		matrix .scale (scale);
+		Vector3d   translation;
+		Rotation4d rotation;
+		Vector3d   scale;
+	
+		if (vector3dValue (json_object_object_get (jobj, "scale"), scale))
+		{
+			matrix .scale (scale);
+		}
+	
+		if (rotation4dValue (json_object_object_get (jobj, "rotation"), rotation))
+		{
+			matrix .rotate (rotation);
+		}
+	
+		if (vector3dValue (json_object_object_get (jobj, "translation"), translation))
+		{
+			matrix .translate (translation);
+		}
 	}
 
-	if (rotation4dValue (json_object_object_get (jobj, "rotation"), rotation))
+	transformNode -> setMatrix (matrix);
+
+	// Add mesh.
+
+	int32_t mesh = 0;
+
+	if (integerValue (jobj, mesh))
 	{
-		matrix .rotate (rotation);
+		const auto & shapeNode = meshes .get1Value (mesh);
+
+		if (shapeNode)
+			transformNode -> children () .emplace_back (shapeNode);
+		else
+			getBrowser () -> getConsole () -> warn ("Mesh with index '", mesh, "' not found.\n");
 	}
-
-	if (vector3dValue (json_object_object_get (jobj, "translation"), translation))
-	{
-		matrix .translate (translation);
-	}
-
-	matrix4dValue (json_object_object_get (jobj, "matrix"), matrix);
-
-	transform -> setMatrix (matrix);
 }
 
 void
-Parser::node2Object (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform)
+Parser::node2Object (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode)
 {
 	if (not jobj)
 		return;
@@ -371,11 +392,14 @@ Parser::node2Object (json_object* const root, json_object* const jobj, const X3D
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	nodeChildrenObject (root, json_object_object_get (jobj, "children"), transform);
+	if (not transformNode)
+		return;
+
+	nodeChildrenObject (json_object_object_get (jobj, "children"), transformNode);
 }
 
 void
-Parser::nodeChildrenObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transform)
+Parser::nodeChildrenObject (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode)
 {
 	if (not jobj)
 		return;
@@ -383,7 +407,7 @@ Parser::nodeChildrenObject (json_object* const root, json_object* const jobj, co
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
-	// Children.
+	// Children
 
 	const int32_t size = json_object_array_length (jobj);
 
@@ -395,7 +419,7 @@ Parser::nodeChildrenObject (json_object* const root, json_object* const jobj, co
 		{
 			try
 			{
-				transform -> children () .emplace_back (nodes .at (index));
+				transformNode -> children () .emplace_back (nodes .at (index));
 			}
 			catch (const std::out_of_range &)
 			{
@@ -403,6 +427,145 @@ Parser::nodeChildrenObject (json_object* const root, json_object* const jobj, co
 			}
 		}
 	}
+}
+
+void
+Parser::meshesObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+}
+
+void
+Parser::bufferViewsObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Buffer View
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto bufferView = std::make_shared <BufferView> ();
+
+		if (bufferViewValue (json_object_array_get_idx (jobj, i), bufferView))
+		{
+			bufferViews .emplace_back (std::move (bufferView));
+		}
+		else
+		{
+			getBrowser () -> getConsole () -> warn ("No valid buffer view found at index '", i, "'.\n");
+
+			bufferViews .emplace_back ();
+		}
+	}
+}
+
+void
+Parser::buffersObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Buffer
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto buffer = std::make_shared <std::string> ();
+
+		if (bufferValue (json_object_array_get_idx (jobj, i), buffer))
+		{
+			buffers .emplace_back (std::move (buffer));
+		}
+		else
+		{
+			getBrowser () -> getConsole () -> warn ("No valid buffer found at index '", i, "'.\n");
+		
+			buffers .emplace_back ();
+		}
+	}
+}
+
+bool
+Parser::bufferViewValue (json_object* const jobj, const std::shared_ptr <BufferView> & bufferView)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return false;
+
+	// Uri
+
+	int32_t buffer = -1;
+
+	if (integerValue (json_object_object_get (jobj, "buffer"), buffer))
+	{
+		int32_t byteLength = 0;
+
+		if (integerValue (json_object_object_get (jobj, "byteLength"), byteLength))
+		{
+			int32_t byteOffset = 0;
+
+			if (integerValue (json_object_object_get (jobj, "byteOffset"), byteOffset))
+			{
+				int32_t byteStride = 0;
+
+				integerValue (json_object_object_get (jobj, "byteStride"), byteStride);
+
+				try
+				{
+					bufferView -> buffer     = buffers .at (buffer);
+					bufferView -> byteLength = byteLength;
+					bufferView -> byteOffset = byteOffset;
+					bufferView -> byteStride = byteStride;
+					return true;
+				}
+				catch (const std::out_of_range & error)
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::bufferValue (json_object* const jobj, const std::shared_ptr <std::string> & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return false;
+
+	// Uri
+
+	std::string uriCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "uri"), uriCharacters))
+	{
+		*value = FileLoader (scene) .loadDocument (uriCharacters);
+		return true;
+	}
+
+	return false;
 }
 
 bool
@@ -422,8 +585,7 @@ Parser::doubleValue (json_object* const jobj, double & value)
 			return true;
 
 		default:
-			value = 0;
-			return true;
+			return false;
 	}
 
 	return false;
@@ -436,10 +598,7 @@ Parser::integerValue (json_object* const jobj, int32_t & value)
 		return false;
 
 	if (json_object_get_type (jobj) not_eq json_type_int)
-	{
-		value = 0;
-		return true;
-	}
+		return false;
 
 	value = json_object_get_int (jobj);
 
@@ -547,10 +706,7 @@ Parser::stringValue (json_object* const jobj, std::string & value)
 		return false;
 
 	if (json_object_get_type (jobj) not_eq json_type_string)
-	{
-		value .clear ();
-		return true;
-	}
+		return false;
 
 	value = json_object_get_string (jobj);
 
