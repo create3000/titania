@@ -50,7 +50,6 @@
 
 #include "BrowserWindow.h"
 
-#include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
@@ -581,7 +580,11 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import_activated ()
 {
-	addDialog <FileImportDialog> ("FileImportDialog", false) -> run ();
+	const auto dialog = addDialog <FileOpenDialog> ("FileOpenDialog", false);
+
+	dialog -> getWindow () .set_title (_ ("Import File ..."));
+
+	dialog -> run ();
 }
 
 void

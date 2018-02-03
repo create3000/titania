@@ -59,6 +59,14 @@
       <mime-type>application/x-font-type1</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterGLTF">
+    <mime-types>
+      <mime-type>model/gltf+json</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.gltf</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterImage">
     <mime-types>
       <mime-type>image/*</mime-type>
@@ -111,6 +119,7 @@
       <mime-type>model/x3d+vrml</mime-type>
       <mime-type>model/x3d+xml</mime-type>
       <mime-type>application/json</mime-type>
+      <mime-type>model/gltf+json</mime-type>
       <mime-type>application/x-3ds</mime-type>
       <mime-type>image/x-3ds</mime-type>
       <mime-type>application/pdf</mime-type>
@@ -131,6 +140,7 @@
       <pattern>*.wrl.gz</pattern>
       <pattern>*.vrm</pattern>
       <pattern>*.vrml</pattern>
+      <pattern>*.gltf</pattern>
       <pattern>*.obj</pattern>
       <pattern>*.3ds</pattern>
       <pattern>*.pdf</pattern>

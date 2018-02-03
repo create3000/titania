@@ -87,9 +87,7 @@
     <Compile Include="Titania\Base\X3DEditorObject.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLightEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFileOpenDialogInterface.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DFileImportDialogInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFileSaveDialogInterface.cpp" />
-    <Compile Include="Titania\Dialogs\FileImportDialog\FileImportDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\FileOpenDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveDialog.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\GeometryPropertiesEditor.cpp" />
@@ -1063,9 +1061,7 @@
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment3.h" />
     <None Include="share\titania\ui\icons\Light.svg" />
     <None Include="Titania\UserInterfaces\X3DFileOpenDialogInterface.h" />
-    <None Include="Titania\UserInterfaces\X3DFileImportDialogInterface.h" />
     <None Include="Titania\UserInterfaces\X3DFileSaveDialogInterface.h" />
-    <None Include="Titania\Dialogs\FileImportDialog\FileImportDialog.h" />
     <None Include="Titania\Dialogs\FileOpenDialog\FileOpenDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveDialog.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\GeometryPropertiesEditor.h" />
@@ -2781,7 +2777,6 @@
     <None Include="Titania\Browser\IconFactory.h" />
     <None Include="share\titania\ui\icons\IconFactory.glade" />
     <None Include="share\titania\ui\BrowserWindow.glade" />
-    <None Include="share\titania\ui\Dialogs\FileImportDialog.glade" />
     <None Include="share\titania\ui\Dialogs\FileOpenDialog.glade" />
     <None Include="share\titania\ui\Dialogs\FileSaveDialog.glade" />
     <None Include="share\titania\ui\Editors\UndoHistoryEditor.glade" />

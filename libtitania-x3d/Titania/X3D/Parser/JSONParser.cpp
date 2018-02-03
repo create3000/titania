@@ -109,7 +109,7 @@ JSONParser::parseIntoScene ()
 
 	// Parse scene.
 
-	jsonObject (jobj);
+	rootObject (jobj);
 
 	// Delete the JSON object and tokener.
 
@@ -121,7 +121,7 @@ JSONParser::parseIntoScene ()
 }
 
 void
-JSONParser::jsonObject (json_object* const jobj)
+JSONParser::rootObject (json_object* const jobj)
 {
 	if (not jobj)
 		return;

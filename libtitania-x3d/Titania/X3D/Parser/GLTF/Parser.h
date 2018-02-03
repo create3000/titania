@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,89 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FILE_IMPORT_DIALOG_FILE_IMPORT_DIALOG_H__
-#define __TITANIA_FILE_IMPORT_DIALOG_FILE_IMPORT_DIALOG_H__
+#ifndef __TITANIA_X3D_PARSER_GLTF_PARSER_H__
+#define __TITANIA_X3D_PARSER_GLTF_PARSER_H__
 
-#include "../../UserInterfaces/X3DFileImportDialogInterface.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DScene.h"
+#include "../../Parser/X3DParser.h"
+
+struct json_object;
 
 namespace titania {
-namespace puck {
+namespace X3D {
+namespace GLTF {
 
-class FileImportDialog :
-	virtual public X3DFileImportDialogInterface
+class Parser :
+	public X3D::X3DParser
 {
 public:
 
 	///  @name Construction
 
-	FileImportDialog (X3DBrowserWindow* const browserWindow);
+	Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream);
 
-	basic::uri
-	getUrl () const;
+	///  @name Operations
 
+	virtual
 	void
-	run ();
+	parseIntoScene () final override;
 
 	///  @name Destruction
 
 	virtual
-	~FileImportDialog () final override;
+	~Parser () final override;
+
 
 private:
+
+	///  @name Member access
+
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
 
 	///  @name Operations
 
 	void
-	setFilter (const std::string &);
+	rootObject (json_object* const jobj);
+
+	void
+	assetObject (json_object* const root, json_object* const jobj);
+	
+	void
+	scenesObject (json_object* const root, json_object* const jobj);
+	
+	void
+	sceneObject (json_object* const root, json_object* const jobj, const X3D::X3DPtr <X3D::Switch> & scenes);
+
+	bool
+	integerValue (json_object* const jobj, int32_t & value);
+
+	bool
+	stringValue (json_object* const jobj, std::string & value);
+
+	struct json_object*
+	json_object_object_get (struct json_object* obj, const char *key);
+
+	///  @name Member types
+
+	using ElementsFunction = std::function <void (Parser*, json_object* const)>;
+
+	///  @name Static members
+	
+	static const std::map <std::string, ElementsFunction> objectsIndex;
+
+	///  @name Members
+
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
 
 };
 
-} // puck
+} // GLTF
+} // X3D
 } // titania
 
 #endif

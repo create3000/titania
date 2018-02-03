@@ -85,7 +85,7 @@ private:
 	///  @name Operations
 
 	void
-	jsonObject (json_object* const jobj);
+	rootObject (json_object* const jobj);
 
 	void
 	x3dObject (json_object* const jobj);
@@ -410,9 +410,11 @@ private:
 	getBrowser () const
 	{ return scene -> getBrowser (); }
 
-	///  @name Static members
+	///  @name Member types
 
 	using ElementsFunction = std::function <void (JSONParser*, json_object* const)>;
+
+	///  @name Static members
 	
 	static const std::map <std::string, ElementsFunction> objectsIndex;
 	static const std::string                              ProtoInstance;

@@ -118,6 +118,10 @@ public:
 	{ return m_FileFilterFonts; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterGLTF () const
+	{ return m_FileFilterGLTF; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImage () const
 	{ return m_FileFilterImage; }
 
@@ -206,6 +210,7 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DXMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterFonts;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterGLTF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterPDF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterSVG;

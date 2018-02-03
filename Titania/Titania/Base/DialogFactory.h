@@ -51,7 +51,6 @@
 #ifndef __TITANIA_BASE_DIALOG_FACTORY_H__
 #define __TITANIA_BASE_DIALOG_FACTORY_H__
 
-#include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileImportAsExternProtoDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
@@ -136,7 +135,6 @@ public:
 		         std::make_pair ("FileExportImageDialog",         constructDialog <FileExportImageDialog>),
 		         std::make_pair ("FileExportProtoDialog",         constructDialog <FileExportProtoDialog>),
 		         std::make_pair ("FileImportAsExternProtoDialog", constructDialog <FileImportAsExternProtoDialog>),
-		         std::make_pair ("FileImportDialog",              constructDialog <FileImportDialog>),
 		         std::make_pair ("FileOpenDialog",                constructDialog <FileOpenDialog>),
 		         std::make_pair ("FileOpenFontDialog",            constructDialog <FileOpenFontDialog>),
 		         std::make_pair ("FileSaveACopyDialog",           constructDialog <FileSaveACopyDialog>),

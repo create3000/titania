@@ -544,6 +544,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Autodesk/Parser.cpp \
 	Titania/X3D/Parser/Colors.cpp \
 	Titania/X3D/Parser/Filter.cpp \
+	Titania/X3D/Parser/GLTF/Parser.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/JSONParser.cpp \
 	Titania/X3D/Parser/Parser.cpp \

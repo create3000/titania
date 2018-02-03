@@ -15,7 +15,7 @@
    height="96"
    id="svg2408"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="model-x3d+xml.svg"
+   sodipodi:docname="model-gltf+json.svg"
    inkscape:export-filename="/home/holger/Projekte/Titania/libtitania-x3d/share/titania/mime/model/x3d+xml.png"
    inkscape:export-xdpi="120"
    inkscape:export-ydpi="120">
@@ -32,9 +32,9 @@
      inkscape:window-height="1056"
      id="namedview3312"
      showgrid="false"
-     inkscape:zoom="20.48"
-     inkscape:cx="38.685982"
-     inkscape:cy="52.297091"
+     inkscape:zoom="3.6203867"
+     inkscape:cx="39.299848"
+     inkscape:cy="38.919564"
      inkscape:window-x="59"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -650,7 +650,7 @@
      inkscape:label="Logo Small Black/White"
      style="display:inline">
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#d71f1f;fill-opacity:1;stroke:none;stroke-width:6.4000001;marker:none;enable-background:accumulate"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6.4000001;marker:none;enable-background:accumulate"
        d="m 26.5,6 c -0.07206,0.1879442 -0.149653,0.3726579 -0.21875,0.5625 -4.751481,13.054586 -1.024992,27.111251 8.25,36.3125 C 22.460592,43.861609 11.360476,51.122032 6,62.5625 V 84 c 0,0.6925 0.129796,1.350838 0.34375,1.96875 C 23.964112,91.785148 43.23639,82.552563 49.625,65 49.992025,63.991606 50.231911,62.956 50.5,61.9375 54.432177,67.664339 60.086184,72.293205 67.09375,74.84375 74.771133,77.638089 82.813899,77.515181 90,75.0625 v -7.03125 c -6.337021,2.808508 -13.667951,3.347532 -20.71875,0.78125 -9.127277,-3.322056 -15.300917,-10.914254 -17.5,-19.65625 5.335186,-3.847032 11.835119,-5.945868 18.5625,-5.40625 2.472242,0.198304 4.955622,0.733044 7.40625,1.625 5.047353,1.837086 9.185605,4.965636 12.25,8.875 V 45.0625 C 87.070377,42.674006 83.685464,40.739147 79.9375,39.375 72.964413,36.837004 65.72577,36.737293 59.0625,38.5625 c 0.467766,-0.986324 0.932203,-1.955142 1.3125,-3 C 64.082098,25.37733 62.638532,14.599719 57.40625,6 h -7.75 c 6.105533,7.393026 8.247953,17.678593 4.71875,27.375 -1.533338,4.21281 -4.080214,7.676853 -7.09375,10.5625 C 33.910599,37.957902 27.191025,22.735278 32.28125,8.75 32.629133,7.7941989 33.054161,6.8807058 33.5,6 Z m 10.46875,43.0625 c 2.647025,5.55e-4 5.341111,0.458825 8,1.21875 0.438464,4.118166 0.141543,8.364579 -1.375,12.53125 -5.092823,13.992416 -20.032298,21.340271 -34.125,17.3125 -0.4384653,-4.118164 -0.1415434,-8.36458 1.375,-12.53125 3.994686,-10.975309 14.049039,-17.949761 25,-18.5 0.376302,-0.01891 0.746854,-0.03133 1.125,-0.03125 z"
        id="path4497-3"
        inkscape:connector-curvature="0" />
