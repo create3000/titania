@@ -1001,7 +1001,7 @@ ProjectsEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
 std::string
 ProjectsEditor::getFileName (const std::string & filename, const std::string & suffix) const
 {
-	static const std::regex pattern (R"/(\.(?:x3d|x3dv|wrl|json|x3dz|x3dvz|wrz)$)/");
+	static const std::regex pattern (R"/(\.(?:x3d|x3dv|wrl|x3dj|x3dz|x3dvz|wrz)$)/");
 
 	return std::regex_replace (filename, pattern, "") + suffix;
 }
@@ -1016,10 +1016,10 @@ ProjectsEditor::getSuffix (const int32_t type) const
 			return ".x3d";
 		case 1:
 			return ".x3dv";
+		case 3:
+			return ".x3dj";
 		case 2:
 			return ".wrl";
-		case 3:
-			return ".json";
 		case 4:
 			return ".x3dz";
 		case 5:

@@ -105,7 +105,7 @@ private:
 
 	static
 	bool
-	generate_json (std::ostream & ostream, const X3DScenePtr & scene);
+	generate_x3dj (std::ostream & ostream, const X3DScenePtr & scene);
 
 	static
 	bool

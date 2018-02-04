@@ -62,7 +62,7 @@ namespace X3D {
 const std::set <std::string> FileGenerator::knowFileTypes = {
 	".x3d",
 	".x3dz",
-	".json",
+	".x3dj",
 	".x3dv",
 	".x3dvz",
 	".wrl",
@@ -83,7 +83,7 @@ throw (Error <INVALID_URL>,
 	static const std::map <std::string, GeneratorCallback> generators = {
 		std::make_pair (".x3d",   generate_x3d),
 		std::make_pair (".x3dz",  generate_x3d),
-		std::make_pair (".json",  generate_json),
+		std::make_pair (".x3dj",  generate_x3dj),
 		std::make_pair (".x3dv",  generate_x3dv),
 		std::make_pair (".x3dvz", generate_x3dv),
 		std::make_pair (".wrl",   generate_wrl),
@@ -121,7 +121,7 @@ throw (Error <INVALID_URL>,
 	static const std::map <std::string, bool> compressed = {
 		std::make_pair (".x3d",   false),
 		std::make_pair (".x3dz",  true),
-		std::make_pair (".json",  false),
+		std::make_pair (".x3dj",  false),
 		std::make_pair (".x3dv",  false),
 		std::make_pair (".x3dvz", true),
 		std::make_pair (".wrl",   false),
@@ -179,7 +179,7 @@ FileGenerator::generate_x3d (std::ostream & ostream, const X3DScenePtr & scene)
 }
 
 bool
-FileGenerator::generate_json (std::ostream & ostream, const X3DScenePtr & scene)
+FileGenerator::generate_x3dj (std::ostream & ostream, const X3DScenePtr & scene)
 {
 	if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 	{

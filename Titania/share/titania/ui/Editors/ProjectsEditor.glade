@@ -614,8 +614,8 @@
             <items>
               <item translatable="yes">X3D XML Encoding (*.x3d)</item>
               <item translatable="yes">X3D Classic VRML Encoding (*.x3dv)</item>
+              <item translatable="yes">X3D JSON Encoding (*.x3dj)</item>
               <item translatable="yes">VRML97 Encoding (*.wrl)</item>
-              <item translatable="yes">X3D JSON Encoding (*.json)</item>
               <item translatable="yes">Compressed X3D XML Encoding (*.x3dz)</item>
               <item translatable="yes">Compressed X3D Classic VRML Encoding (*.x3dvz)</item>
               <item translatable="yes">Compressed VRML97 Encoding (*.wrz)</item>
