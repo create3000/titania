@@ -96,6 +96,14 @@ const std::map <Parser::ComponentType, size_t> Parser::componentSizes = {
 	std::make_pair (ComponentType::FLOAT,          sizeof (float)),
 };
 
+const std::map <Parser::ComponentType, std::tuple <double, double, double, double>> Parser::normalizedRanges = {
+	std::make_pair (ComponentType::BYTE,           std::make_tuple (std::numeric_limits <int8_t>::min (),   std::numeric_limits <int8_t>::max (),  -1, 1)),
+	std::make_pair (ComponentType::UNSIGNED_BYTE,  std::make_tuple (std::numeric_limits <uint8_t>::min (),  std::numeric_limits <uint8_t>::max (),  0, 1)),
+	std::make_pair (ComponentType::SHORT,          std::make_tuple (std::numeric_limits <int16_t>::min (),  std::numeric_limits <int16_t>::max (), -1, 1)),
+	std::make_pair (ComponentType::UNSIGNED_SHORT, std::make_tuple (std::numeric_limits <uint16_t>::min (), std::numeric_limits <uint16_t>::max (), 0, 1)),
+	std::make_pair (ComponentType::UNSIGNED_INT,   std::make_tuple (std::numeric_limits <uint32_t>::min (), std::numeric_limits <uint32_t>::max (), 0, 1)),
+};
+
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	X3D::X3DParser (),
 	         scene (scene),
@@ -608,402 +616,6 @@ Parser::createCoordinate (const AccessorPtr & position)
 	return coordinateNode;
 }
 
-std::vector <double>
-Parser::getScalarArray (const AccessorPtr & accessor)
-{
-	static constexpr size_t components = 1;
-
-	std::vector <double> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto data = reinterpret_cast <const int8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto data = reinterpret_cast <const int16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto data = reinterpret_cast <const float*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0]);
-			}
-
-			break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector2d>
-Parser::getVec2Array (const AccessorPtr & accessor)
-{
-	static constexpr size_t components = 2;
-
-	std::vector <Vector2d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto data = reinterpret_cast <const int8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto data = reinterpret_cast <const int16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto data = reinterpret_cast <const float*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector3d>
-Parser::getVec3Array (const AccessorPtr & accessor)
-{
-	static constexpr size_t components = 3;
-
-	std::vector <Vector3d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto data = reinterpret_cast <const int8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto data = reinterpret_cast <const int16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto data = reinterpret_cast <const float*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector4d>
-Parser::getVec4Array (const AccessorPtr & accessor)
-{
-	static constexpr size_t components = 4;
-
-	std::vector <Vector4d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto data = reinterpret_cast <const int8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto data = reinterpret_cast <const int16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto data = reinterpret_cast <const float*> (first);
-
-			for (int32_t i = 0; i < count; ++ i, data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-	}
-
-	return array;
-}
-
 Parser::PrimitiveArray
 Parser::primitivesArray (json_object* const jobj)
 {
@@ -1189,6 +801,10 @@ Parser::accessorValue (json_object* const jobj)
 
 				if (integerValue (json_object_object_get (jobj, "count"), count))
 				{
+					bool normalized = false;
+
+					booleanValue (json_object_object_get (jobj, "normalized"), normalized);
+
 					try
 					{
 						const auto accessor = std::make_shared <Accessor> ();
@@ -1198,7 +814,7 @@ Parser::accessorValue (json_object* const jobj)
 						accessor -> componentType = componentTypes .at (componentType);
 						accessor -> byteOffset    = byteOffset;
 						accessor -> count         = count;
-
+						accessor -> normalized    = normalized;
 
 						return accessor;
 					}
@@ -1335,6 +951,520 @@ Parser::bufferValue (json_object* const jobj)
 	}
 
 	return nullptr;
+}
+
+std::vector <double>
+Parser::getScalarArray (const AccessorPtr & accessor)
+{
+	static constexpr size_t components = 1;
+
+	std::vector <double> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto data = reinterpret_cast <const int8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto data = reinterpret_cast <const uint8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto data = reinterpret_cast <const int16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto data = reinterpret_cast <const uint16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto data = reinterpret_cast <const uint32_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto data = reinterpret_cast <const float*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range = normalizedRanges .at (componentType);
+
+				for (auto & value : array)
+					value = project <double> (value, std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+	
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector2d>
+Parser::getVec2Array (const AccessorPtr & accessor)
+{
+	static constexpr size_t components = 2;
+
+	std::vector <Vector2d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto data = reinterpret_cast <const int8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto data = reinterpret_cast <const uint8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto data = reinterpret_cast <const int16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto data = reinterpret_cast <const uint16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto data = reinterpret_cast <const uint32_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto data = reinterpret_cast <const float*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range = normalizedRanges .at (componentType);
+
+				for (auto & value : array)
+				{
+					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+				}
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector3d>
+Parser::getVec3Array (const AccessorPtr & accessor)
+{
+	static constexpr size_t components = 3;
+
+	std::vector <Vector3d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto data = reinterpret_cast <const int8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto data = reinterpret_cast <const uint8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto data = reinterpret_cast <const int16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto data = reinterpret_cast <const uint16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto data = reinterpret_cast <const uint32_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto data = reinterpret_cast <const float*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range = normalizedRanges .at (componentType);
+
+				for (auto & value : array)
+				{
+					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [2] = project <double> (value [2], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+				}
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector4d>
+Parser::getVec4Array (const AccessorPtr & accessor)
+{
+	static constexpr size_t components = 4;
+
+	std::vector <Vector4d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto data = reinterpret_cast <const int8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto data = reinterpret_cast <const uint8_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto data = reinterpret_cast <const int16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto data = reinterpret_cast <const uint16_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto data = reinterpret_cast <const uint32_t*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto data = reinterpret_cast <const float*> (first);
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range = normalizedRanges .at (componentType);
+
+				for (auto & value : array)
+				{
+					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [2] = project <double> (value [2], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+					value [4] = project <double> (value [4], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
+				}
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+bool
+Parser::booleanValue (json_object* const jobj, bool & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_boolean)
+		return false;
+
+	value = json_object_get_boolean (jobj);
+
+	return true;
 }
 
 bool

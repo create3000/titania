@@ -131,6 +131,7 @@ private:
 		ComponentType componentType;
 		int32_t       byteOffset;
 		int32_t       count;
+		bool          normalized;
 	};
 
 	using AccessorPtr = std::shared_ptr <Accessor>;
@@ -140,7 +141,11 @@ private:
 		AccessorPtr position;
 		AccessorPtr normal;
 		AccessorPtr tangent;
-		AccessorPtr texxCoord0;
+		AccessorPtr texCoord0;
+		AccessorPtr texCoord1;
+		AccessorPtr color0;
+		AccessorPtr joints0;
+		AccessorPtr weights0;
 	};
 
 	using AttributesPtr = std::shared_ptr <Attributes>;
@@ -258,6 +263,9 @@ private:
 	///
 
 	bool
+	booleanValue (json_object* const jobj, bool & value);
+
+	bool
 	doubleValue (json_object* const jobj, double & value);
 
 	bool
@@ -286,7 +294,8 @@ private:
 
 	///  @name Static members
 	
-	static const std::map <ComponentType, size_t> componentSizes;
+	static const std::map <ComponentType, size_t>                                      componentSizes;
+	static const std::map <ComponentType, std::tuple <double, double, double, double>> normalizedRanges;
 
 	///  @name Members
 
