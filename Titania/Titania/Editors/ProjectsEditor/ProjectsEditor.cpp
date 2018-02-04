@@ -1016,9 +1016,9 @@ ProjectsEditor::getSuffix (const int32_t type) const
 			return ".x3d";
 		case 1:
 			return ".x3dv";
-		case 3:
-			return ".x3dj";
 		case 2:
+			return ".x3dj";
+		case 3:
 			return ".wrl";
 		case 4:
 			return ".x3dz";
