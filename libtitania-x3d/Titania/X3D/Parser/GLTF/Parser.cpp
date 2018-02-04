@@ -54,6 +54,8 @@
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Grouping/Switch.h"
+#include "../../Components/Rendering/Color.h"
+#include "../../Components/Rendering/ColorRGBA.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedTriangleSet.h"
 #include "../../Components/Rendering/Normal.h"
@@ -512,7 +514,7 @@ Parser::meshArray (json_object* const jobj)
 }
 
 X3D::X3DPtr <X3D::Shape>
-Parser::createShape (const PrimitivePtr & primitive)
+Parser::createShape (const PrimitivePtr & primitive) const
 {
 	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
 	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
@@ -564,34 +566,42 @@ Parser::createShape (const PrimitivePtr & primitive)
 }
 
 X3D::X3DPtr <X3D::IndexedTriangleSet>
-Parser::createIndexedTriangleSet (const PrimitivePtr & primitive)
+Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
 {
 	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+	const auto attributes   = primitive -> attributes;
 	const auto indices      = getScalarArray (primitive -> indices);
 
 	geometryNode -> index () .assign (indices .begin (), indices .end ());
 
-	geometryNode -> coord ()    = createCoordinate (primitive -> attributes -> position);
-	geometryNode -> normal ()   = createNormal (primitive -> attributes -> normal);
-	geometryNode -> texCoord () = createTextureCoordinate (primitive -> attributes -> texCoord);
+	geometryNode -> coord ()    = createCoordinate (attributes -> position);
+	geometryNode -> normal ()   = createNormal (attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
+
+	if (not attributes -> color .empty ())
+		geometryNode -> color () = createColor (attributes -> color [0]);
 
 	return geometryNode;
 }
 
 X3D::X3DPtr <X3D::TriangleSet>
-Parser::createTriangleSet (const PrimitivePtr & primitive)
+Parser::createTriangleSet (const PrimitivePtr & primitive) const
 {
 	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
+	const auto attributes   = primitive -> attributes;
 
-	geometryNode -> coord ()    = createCoordinate (primitive -> attributes -> position);
-	geometryNode -> normal ()   = createNormal (primitive -> attributes -> normal);
-	geometryNode -> texCoord () = createTextureCoordinate (primitive -> attributes -> texCoord);
+	geometryNode -> coord ()    = createCoordinate (attributes -> position);
+	geometryNode -> normal ()   = createNormal (attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
+
+	if (not attributes -> color .empty ())
+		geometryNode -> color () = createColor (attributes -> color [0]);
 
 	return geometryNode;
 }
 
 X3D::X3DPtr <X3D::Coordinate>
-Parser::createCoordinate (const AccessorPtr & accessor)
+Parser::createCoordinate (const AccessorPtr & accessor) const
 {
 	if (not accessor)
 		return nullptr;
@@ -637,7 +647,7 @@ Parser::createCoordinate (const AccessorPtr & accessor)
 }
 
 X3D::X3DPtr <X3D::Normal>
-Parser::createNormal (const AccessorPtr & accessor)
+Parser::createNormal (const AccessorPtr & accessor) const
 {
 	if (not accessor)
 		return nullptr;
@@ -646,8 +656,8 @@ Parser::createNormal (const AccessorPtr & accessor)
 	{
 		case AccessorType::VEC3:
 		{
-			const auto normalNode = scene -> createNode <X3D::Normal> ();
 			const auto array      = getVec3Array (accessor);
+			const auto normalNode = scene -> createNode <X3D::Normal> ();
 			auto &     vector     = normalNode -> vector ();
 
 			for (const auto & value : array)
@@ -663,7 +673,7 @@ Parser::createNormal (const AccessorPtr & accessor)
 }
 
 X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-Parser::createTextureCoordinate (const AccessorPtrArray & accessors)
+Parser::createTextureCoordinate (const AccessorPtrArray & accessors) const
 {
 	switch (accessors .size ())
 	{
@@ -690,7 +700,7 @@ Parser::createTextureCoordinate (const AccessorPtrArray & accessors)
 }
 
 X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-Parser::createSingleTextureCoordinate (const AccessorPtr & accessor)
+Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
 {
 	if (not accessor)
 		return nullptr;
@@ -699,8 +709,8 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor)
 	{
 		case AccessorType::VEC2:
 		{
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
 			const auto array                 = getVec2Array (accessor);
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
 			for (const auto & value : array)
@@ -710,8 +720,8 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor)
 		}
 		case AccessorType::VEC3:
 		{
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
 			const auto array                 = getVec3Array (accessor);
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
 			for (const auto & value : array)
@@ -721,14 +731,68 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor)
 		}
 		case AccessorType::VEC4:
 		{
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
 			const auto array                 = getVec4Array (accessor);
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
 			for (const auto & value : array)
 				points .emplace_back (value);
 
 			return textureCoordinateNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DColorNode>
+Parser::createColor (const AccessorPtr & accessor) const
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC3:
+		{
+			const auto array     = getVec3Array (accessor);
+			const auto colorNode = scene -> createNode <X3D::Color> ();
+			auto &     color     = colorNode -> color ();
+
+			for (const auto & value : array)
+				color .emplace_back (value .x (), value .y (), value .z ());
+
+			return colorNode;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto array       = getVec4Array (accessor);
+			const auto transparent = std::any_of (array .begin (),
+			                                      array .end (),
+			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
+
+			if (transparent)
+			{
+				const auto colorNode = scene -> createNode <X3D::ColorRGBA> ();
+				auto &     color     = colorNode -> color ();
+	
+				for (const auto & value : array)
+					color .emplace_back (value .x (), value .y (), value .z (), value .w ());
+	
+				return colorNode;
+			}
+			else
+			{
+				const auto colorNode = scene -> createNode <X3D::Color> ();
+				auto &     color     = colorNode -> color ();
+	
+				for (const auto & value : array)
+					color .emplace_back (value .x (), value .y (), value .z ());
+	
+				return colorNode;
+			}
 		}
 		default:
 			return nullptr;
@@ -1167,7 +1231,7 @@ Parser::bufferValue (json_object* const jobj)
 }
 
 std::vector <double>
-Parser::getScalarArray (const AccessorPtr & accessor)
+Parser::getScalarArray (const AccessorPtr & accessor) const
 {
 	static constexpr size_t components = 1;
 
@@ -1289,7 +1353,7 @@ Parser::getScalarArray (const AccessorPtr & accessor)
 }
 
 std::vector <Vector2d>
-Parser::getVec2Array (const AccessorPtr & accessor)
+Parser::getVec2Array (const AccessorPtr & accessor) const
 {
 	static constexpr size_t components = 2;
 
@@ -1414,7 +1478,7 @@ Parser::getVec2Array (const AccessorPtr & accessor)
 }
 
 std::vector <Vector3d>
-Parser::getVec3Array (const AccessorPtr & accessor)
+Parser::getVec3Array (const AccessorPtr & accessor) const
 {
 	static constexpr size_t components = 3;
 
@@ -1540,7 +1604,7 @@ Parser::getVec3Array (const AccessorPtr & accessor)
 }
 
 std::vector <Vector4d>
-Parser::getVec4Array (const AccessorPtr & accessor)
+Parser::getVec4Array (const AccessorPtr & accessor) const
 {
 	static constexpr size_t components = 4;
 

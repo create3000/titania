@@ -208,25 +208,28 @@ private:
 	meshArray (json_object* const jobj);
 
 	X3D::X3DPtr <X3D::Shape>
-	createShape (const PrimitivePtr & primitive);
+	createShape (const PrimitivePtr & primitive) const;
 
 	X3D::X3DPtr <X3D::IndexedTriangleSet>
-	createIndexedTriangleSet (const PrimitivePtr & primitive);
+	createIndexedTriangleSet (const PrimitivePtr & primitive) const;
 
 	X3D::X3DPtr <X3D::TriangleSet>
-	createTriangleSet (const PrimitivePtr & primitive);
+	createTriangleSet (const PrimitivePtr & primitive) const;
 
 	X3D::X3DPtr <X3D::Coordinate>
-	createCoordinate (const AccessorPtr & position);
+	createCoordinate (const AccessorPtr & position) const;
 
 	X3D::X3DPtr <X3D::Normal>
-	createNormal (const AccessorPtr & accessor);
+	createNormal (const AccessorPtr & accessor) const;
 
 	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-	createTextureCoordinate (const AccessorPtrArray & accessor);
+	createTextureCoordinate (const AccessorPtrArray & accessor) const;
 
 	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-	createSingleTextureCoordinate (const AccessorPtr & accessor);
+	createSingleTextureCoordinate (const AccessorPtr & accessor) const;
+
+	X3D::X3DPtr <X3D::X3DColorNode>
+	createColor (const AccessorPtr & accessor) const;
 
 	PrimitiveArray
 	primitivesArray (json_object* const jobj);
@@ -258,16 +261,16 @@ private:
 	///
 
 	std::vector <double>
-	getScalarArray (const AccessorPtr & accessor);
+	getScalarArray (const AccessorPtr & accessor) const;
 
 	std::vector <Vector2d>
-	getVec2Array (const AccessorPtr & accessor);
+	getVec2Array (const AccessorPtr & accessor) const;
 
 	std::vector <Vector3d>
-	getVec3Array (const AccessorPtr & accessor);
+	getVec3Array (const AccessorPtr & accessor) const;
 
 	std::vector <Vector4d>
-	getVec4Array (const AccessorPtr & accessor);
+	getVec4Array (const AccessorPtr & accessor) const;
 
 	///
 
