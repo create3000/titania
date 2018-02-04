@@ -537,10 +537,11 @@ Parser::createShape (const PrimitivePtr & primitive)
 X3D::X3DPtr <X3D::IndexedTriangleSet>
 Parser::createIndexedTriangleSet (const PrimitivePtr & primitive)
 {
-	const auto geometryNode   = scene -> createNode <X3D::IndexedTriangleSet> ();
-	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
+	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+	const auto indices      = getScalarArray (primitive -> indices);
 
-	geometryNode -> coord () = coordinateNode;
+	geometryNode -> index () .assign (indices .begin (), indices .end ());
+	geometryNode -> coord () = createCoordinate (primitive -> attributes -> position);
 
 	return geometryNode;
 }
@@ -550,7 +551,268 @@ Parser::createTriangleSet (const PrimitivePtr & primitive)
 {
 	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
 
+	geometryNode -> coord () = createCoordinate (primitive -> attributes -> position);
+
 	return geometryNode;
+}
+
+X3D::X3DPtr <X3D::Coordinate>
+Parser::createCoordinate (const AccessorPtr & position)
+{
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
+
+	auto & points = coordinateNode -> point ();
+
+	switch (position -> type)
+	{
+		case AccessorType::VEC2:
+		{
+			const auto array = getVec2Array (position);
+
+			for (const auto & value : array)
+				points .emplace_back (value [0], value [1], 0);
+
+			break;
+		}
+		case AccessorType::VEC3:
+		{
+			const auto array = getVec3Array (position);
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			break;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto array = getVec4Array (position);
+
+			for (const auto & value : array)
+				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
+
+			break;
+		}
+		default:
+			return nullptr;
+	}
+
+	return coordinateNode;
+}
+
+std::vector <double>
+Parser::getScalarArray (const AccessorPtr & accessor)
+{
+	std::vector <double> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto count         = accessor -> count;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto       data   = reinterpret_cast <const uint32_t*> (buffer -> contents .data ());
+			const auto stride = std::max <int32_t> (1, byteStride / sizeof (float));
+			const auto offset = byteOffset / sizeof (float);
+
+			data += offset;
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector2d>
+Parser::getVec2Array (const AccessorPtr & accessor)
+{
+	std::vector <Vector2d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto count         = accessor -> count;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data   = reinterpret_cast <const float*> (buffer -> contents .data ());
+			const auto stride = std::max <int32_t> (2, byteStride / sizeof (float));
+			const auto offset = byteOffset / sizeof (float);
+
+			data += offset;
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1]);
+			}
+
+			break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector3d>
+Parser::getVec3Array (const AccessorPtr & accessor)
+{
+	std::vector <Vector3d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto count         = accessor -> count;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data   = reinterpret_cast <const float*> (buffer -> contents .data ());
+			const auto stride = std::max <int32_t> (3, byteStride / sizeof (float));
+			const auto offset = byteOffset / sizeof (float);
+
+			data += offset;
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2]);
+			}
+
+			break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Vector4d>
+Parser::getVec4Array (const AccessorPtr & accessor)
+{
+	std::vector <Vector4d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto count         = accessor -> count;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data   = reinterpret_cast <const float*> (buffer -> contents .data ());
+			const auto stride = std::max <int32_t> (4, byteStride / sizeof (float));
+			const auto offset = byteOffset / sizeof (float);
+
+			data += offset;
+
+			for (int32_t i = 0; i < count; ++ i, data += stride)
+			{
+				array .emplace_back (data [0], data [1], data [2], data [3]);
+			}
+
+			break;
+		}
+	}
+
+	return array;
 }
 
 Parser::PrimitiveArray
@@ -699,8 +961,24 @@ Parser::accessorValue (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return nullptr;
 
-	if (json_object_object_get (jobj, "sparse"))
-		__LOG__ << "sparse not handled" << std::endl;
+	static const std::map <std::string, AccessorType> types = {
+		std::make_pair ("SCALAR", AccessorType::SCALAR),
+		std::make_pair ("VEC2",   AccessorType::VEC2),
+		std::make_pair ("VEC3",   AccessorType::VEC3),
+		std::make_pair ("VEC4",   AccessorType::VEC4),
+		std::make_pair ("MAT2",   AccessorType::MAT2),
+		std::make_pair ("MAT3",   AccessorType::MAT3),
+		std::make_pair ("MAT4",   AccessorType::MAT4),
+	};
+
+	static const std::map <int32_t, ComponentType> componentTypes = {
+		std::make_pair (5120, ComponentType::BYTE),
+		std::make_pair (5121, ComponentType::UNSIGNED_BYTE),
+		std::make_pair (5122, ComponentType::SHORT),
+		std::make_pair (5123, ComponentType::UNSIGNED_SHORT),
+		std::make_pair (5125, ComponentType::UNSIGNED_INT),
+		std::make_pair (5126, ComponentType::FLOAT),
+	};
 
 	int32_t bufferView = -1;
 
@@ -727,10 +1005,11 @@ Parser::accessorValue (json_object* const jobj)
 						const auto accessor = std::make_shared <Accessor> ();
 
 						accessor -> bufferView    = bufferViews .at (bufferView);
-						accessor -> type          = type;
-						accessor -> componentType = componentType;
+						accessor -> type          = types .at (type);
+						accessor -> componentType = componentTypes .at (componentType);
 						accessor -> byteOffset    = byteOffset;
 						accessor -> count         = count;
+
 
 						return accessor;
 					}
@@ -861,7 +1140,7 @@ Parser::bufferValue (json_object* const jobj)
 	{
 		const auto buffer = std::make_shared <Buffer> ();
 
-		buffer -> data = FileLoader (scene) .loadDocument (uriCharacters);
+		buffer -> contents = FileLoader (scene) .loadDocument (uriCharacters);
 
 		return buffer;
 	}

@@ -88,7 +88,7 @@ private:
 
 	struct Buffer
 	{
-		std::string data;
+		std::string contents;
 	};
 
 	using BufferPtr = std::shared_ptr <Buffer>;
@@ -103,13 +103,34 @@ private:
 
 	using BufferViewPtr = std::shared_ptr <BufferView>;
 
+	enum class AccessorType
+	{
+		SCALAR,
+		VEC2,
+		VEC3,
+		VEC4,
+		MAT2,
+		MAT3,
+		MAT4,
+	};
+
+	enum class ComponentType
+	{
+		BYTE,
+		UNSIGNED_BYTE,
+		SHORT,
+		UNSIGNED_SHORT,
+		UNSIGNED_INT,
+		FLOAT,
+	};
+
 	struct Accessor
 	{
-		BufferViewPtr        bufferView;
-		std::string          type;
-		int32_t              componentType;
-		int32_t              byteOffset;
-		int32_t              count;
+		BufferViewPtr bufferView;
+		AccessorType  type;
+		ComponentType componentType;
+		int32_t       byteOffset;
+		int32_t       count;
 	};
 
 	using AccessorPtr = std::shared_ptr <Accessor>;
@@ -190,6 +211,9 @@ private:
 	X3D::X3DPtr <X3D::TriangleSet>
 	createTriangleSet (const PrimitivePtr & primitive);
 
+	X3D::X3DPtr <X3D::Coordinate>
+	createCoordinate (const AccessorPtr & position);
+
 	PrimitiveArray
 	primitivesArray (json_object* const jobj);
 
@@ -219,6 +243,20 @@ private:
 
 	///
 
+	std::vector <double>
+	getScalarArray (const AccessorPtr & accessor);
+
+	std::vector <Vector2d>
+	getVec2Array (const AccessorPtr & accessor);
+
+	std::vector <Vector3d>
+	getVec3Array (const AccessorPtr & accessor);
+
+	std::vector <Vector4d>
+	getVec4Array (const AccessorPtr & accessor);
+
+	///
+
 	bool
 	doubleValue (json_object* const jobj, double & value);
 
@@ -236,6 +274,8 @@ private:
 
 	bool
 	vector3dValue (json_object* const jobj, Vector3d & value);
+
+	///
 
 	struct json_object*
 	json_object_object_get (struct json_object* obj, const char *key);
