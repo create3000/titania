@@ -286,7 +286,7 @@ private:
 
 	///  @name Static members
 	
-	static const std::map <std::string, ElementsFunction> objectsIndex;
+	static const std::map <ComponentType, size_t> componentSizes;
 
 	///  @name Members
 
