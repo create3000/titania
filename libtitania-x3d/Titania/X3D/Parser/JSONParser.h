@@ -84,6 +84,10 @@ private:
 
 	///  @name Operations
 
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
+
 	void
 	rootObject (json_object* const jobj);
 
@@ -402,13 +406,11 @@ private:
 	bool
 	vector4fValue (json_object* const jobj, const int32_t i, const UnitCategory unit, Vector4f & value);
 
+	///
+
 	static
 	struct json_object*
-	json_object_object_get (struct json_object* obj, const char *key);
-
-	X3DBrowser*
-	getBrowser () const
-	{ return scene -> getBrowser (); }
+	json_object_object_get (struct json_object* obj, const char* key);
 
 	///  @name Member types
 

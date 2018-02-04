@@ -134,18 +134,18 @@ private:
 		bool          normalized;
 	};
 
-	using AccessorPtr = std::shared_ptr <Accessor>;
+	using AccessorPtr      = std::shared_ptr <Accessor>;
+	using AccessorPtrArray = std::vector <AccessorPtr>;
 
 	struct Attributes
 	{
-		AccessorPtr position;
-		AccessorPtr normal;
-		AccessorPtr tangent;
-		AccessorPtr texCoord0;
-		AccessorPtr texCoord1;
-		AccessorPtr color0;
-		AccessorPtr joints0;
-		AccessorPtr weights0;
+		AccessorPtr      position;
+		AccessorPtr      normal;
+		AccessorPtr      tangent;
+		AccessorPtrArray texCoord;
+		AccessorPtrArray color;
+		AccessorPtrArray joints;
+		AccessorPtrArray weights;
 	};
 
 	using AttributesPtr = std::shared_ptr <Attributes>;
@@ -219,6 +219,15 @@ private:
 	X3D::X3DPtr <X3D::Coordinate>
 	createCoordinate (const AccessorPtr & position);
 
+	X3D::X3DPtr <X3D::Normal>
+	createNormal (const AccessorPtr & accessor);
+
+	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+	createTextureCoordinate (const AccessorPtrArray & accessor);
+
+	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+	createSingleTextureCoordinate (const AccessorPtr & accessor);
+
 	PrimitiveArray
 	primitivesArray (json_object* const jobj);
 
@@ -286,7 +295,10 @@ private:
 	///
 
 	struct json_object*
-	json_object_object_get (struct json_object* obj, const char *key);
+	json_object_object_get (struct json_object* obj, const std::string & key);
+
+	struct json_object*
+	json_object_object_get (struct json_object* obj, const char* key);
 
 	///  @name Member types
 

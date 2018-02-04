@@ -2698,7 +2698,7 @@ JSONParser::vector4fValue (json_object* const jobj, const int32_t i, const UnitC
 }
 
 struct json_object*
-JSONParser::json_object_object_get (struct json_object* obj, const char *key)
+JSONParser::json_object_object_get (struct json_object* obj, const char* key)
 {
 	struct json_object* value;
 

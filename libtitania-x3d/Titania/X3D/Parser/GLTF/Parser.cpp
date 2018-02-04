@@ -58,10 +58,17 @@
 #include "../../Components/Rendering/IndexedTriangleSet.h"
 #include "../../Components/Rendering/Normal.h"
 #include "../../Components/Rendering/TriangleSet.h"
+#include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/MultiTextureCoordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../Components/Texturing3D/TextureCoordinate3D.h"
+#include "../../Components/Texturing3D/TextureCoordinate4D.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
+
+#include <Titania/String.h>
 
 extern "C" {
 
@@ -507,7 +514,12 @@ Parser::meshArray (json_object* const jobj)
 X3D::X3DPtr <X3D::Shape>
 Parser::createShape (const PrimitivePtr & primitive)
 {
-	const auto shapeNode = scene -> createNode <X3D::Shape> ();
+	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
+	const auto materialNode   = scene -> createNode <X3D::Material> ();
+
+	shapeNode -> appearance ()    = appearanceNode;
+	appearanceNode -> material () = materialNode;
 
 	switch (primitive -> mode)
 	{
@@ -558,7 +570,10 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive)
 	const auto indices      = getScalarArray (primitive -> indices);
 
 	geometryNode -> index () .assign (indices .begin (), indices .end ());
-	geometryNode -> coord () = createCoordinate (primitive -> attributes -> position);
+
+	geometryNode -> coord ()    = createCoordinate (primitive -> attributes -> position);
+	geometryNode -> normal ()   = createNormal (primitive -> attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (primitive -> attributes -> texCoord);
 
 	return geometryNode;
 }
@@ -568,52 +583,158 @@ Parser::createTriangleSet (const PrimitivePtr & primitive)
 {
 	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
 
-	geometryNode -> coord () = createCoordinate (primitive -> attributes -> position);
+	geometryNode -> coord ()    = createCoordinate (primitive -> attributes -> position);
+	geometryNode -> normal ()   = createNormal (primitive -> attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (primitive -> attributes -> texCoord);
 
 	return geometryNode;
 }
 
 X3D::X3DPtr <X3D::Coordinate>
-Parser::createCoordinate (const AccessorPtr & position)
+Parser::createCoordinate (const AccessorPtr & accessor)
 {
+	if (not accessor)
+		return nullptr;
+
 	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	auto & points = coordinateNode -> point ();
 
-	switch (position -> type)
+	switch (accessor -> type)
 	{
 		case AccessorType::VEC2:
 		{
-			const auto array = getVec2Array (position);
+			const auto array = getVec2Array (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value [0], value [1], 0);
 
-			break;
+			return coordinateNode;
 		}
 		case AccessorType::VEC3:
 		{
-			const auto array = getVec3Array (position);
+			const auto array = getVec3Array (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value);
 
-			break;
+			return coordinateNode;
 		}
 		case AccessorType::VEC4:
 		{
-			const auto array = getVec4Array (position);
+			const auto array = getVec4Array (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
 
-			break;
+			return coordinateNode;
 		}
 		default:
 			return nullptr;
 	}
 
-	return coordinateNode;
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::Normal>
+Parser::createNormal (const AccessorPtr & accessor)
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC3:
+		{
+			const auto normalNode = scene -> createNode <X3D::Normal> ();
+			const auto array      = getVec3Array (accessor);
+			auto &     vector     = normalNode -> vector ();
+
+			for (const auto & value : array)
+				vector .emplace_back (value);
+
+			return normalNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+Parser::createTextureCoordinate (const AccessorPtrArray & accessors)
+{
+	switch (accessors .size ())
+	{
+		case 0:
+		{
+			return nullptr;
+		}
+		case 1:
+		{
+			return createSingleTextureCoordinate (accessors [0]);
+		}
+		default:
+		{
+			const auto textureCoordinateNode = scene -> createNode <X3D::MultiTextureCoordinate> ();
+
+			for (const auto & accessor : accessors)
+				textureCoordinateNode -> texCoord () .emplace_back (createSingleTextureCoordinate (accessor));
+
+			return textureCoordinateNode;
+		}
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+Parser::createSingleTextureCoordinate (const AccessorPtr & accessor)
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC2:
+		{
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
+			const auto array                 = getVec2Array (accessor);
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		case AccessorType::VEC3:
+		{
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
+			const auto array                 = getVec3Array (accessor);
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
+			const auto array                 = getVec4Array (accessor);
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
 }
 
 Parser::PrimitiveArray
@@ -704,7 +825,101 @@ Parser::attributesValue (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return nullptr;
 
-	// Primitive
+	const auto attribute = std::make_shared <Attributes> ();
+
+	// NORMAL
+
+	int32_t normal = -1;
+
+	if (integerValue (json_object_object_get (jobj, "NORMAL"), normal))
+	{
+		try
+		{
+			attribute -> normal = accessors .at (normal);
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	// TANGENT
+
+	int32_t tangent = -1;
+
+	if (integerValue (json_object_object_get (jobj, "TANGENT"), tangent))
+	{
+		try
+		{
+			attribute -> tangent = accessors .at (tangent);
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	// TEXCOORD
+
+	int32_t texCoord = -1;
+
+	for (size_t i = 0; integerValue (json_object_object_get (jobj, "TEXCOORD_" + basic::to_string (i, std::locale::classic ())), texCoord); ++ i, texCoord = -1)
+	{
+		try
+		{
+			attribute -> texCoord .emplace_back (accessors .at (texCoord));
+		}
+		catch (const std::out_of_range & error)
+		{
+			attribute -> texCoord .emplace_back ();
+		}
+	}
+
+	// COLOR
+
+	int32_t color = -1;
+
+	for (size_t i = 0; integerValue (json_object_object_get (jobj, "COLOR_" + basic::to_string (i, std::locale::classic ())), color); ++ i, color = -1)
+	{
+		try
+		{
+			attribute -> color .emplace_back (accessors .at (color));
+		}
+		catch (const std::out_of_range & error)
+		{
+			attribute -> color .emplace_back ();
+		}
+	}
+
+	// JOINTS
+
+	int32_t joints = -1;
+
+	for (size_t i = 0; integerValue (json_object_object_get (jobj, "JOINTS_" + basic::to_string (i, std::locale::classic ())), joints); ++ i, joints = -1)
+	{
+		try
+		{
+			attribute -> joints .emplace_back (accessors .at (joints));
+		}
+		catch (const std::out_of_range & error)
+		{
+			attribute -> joints .emplace_back ();
+		}
+	}
+
+	// WEIGHTS
+
+	int32_t weights = -1;
+
+	for (size_t i = 0; integerValue (json_object_object_get (jobj, "WEIGHTS_" + basic::to_string (i, std::locale::classic ())), weights); ++ i, weights = -1)
+	{
+		try
+		{
+			attribute -> weights .emplace_back (accessors .at (weights));
+		}
+		catch (const std::out_of_range & error)
+		{
+			attribute -> weights .emplace_back ();
+		}
+	}
+
+	// POSITION
 
 	int32_t position = -1;
 
@@ -712,8 +927,6 @@ Parser::attributesValue (json_object* const jobj)
 	{
 		try
 		{
-			const auto attribute = std::make_shared <Attributes> ();
-
 			attribute -> position = accessors .at (position);
 
 			return attribute;
@@ -1639,7 +1852,13 @@ Parser::vector3dValue (json_object* const jobj, Vector3d & value)
 }
 
 struct json_object*
-Parser::json_object_object_get (struct json_object* obj, const char *key)
+Parser::json_object_object_get (struct json_object* obj, const std::string & key)
+{
+	return json_object_object_get (obj, key .c_str ());
+}
+
+struct json_object*
+Parser::json_object_object_get (struct json_object* obj, const char* key)
 {
 	struct json_object* value;
 
