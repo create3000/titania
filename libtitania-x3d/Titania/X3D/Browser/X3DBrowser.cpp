@@ -696,6 +696,9 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	X3DBrowserContext::dispose ();
+	X3DBaseNode::dispose ();
+
 	if (future)
 		future -> dispose ();
 
@@ -703,9 +706,6 @@ X3DBrowser::dispose ()
 	supportedNodes      .reset ();
 	supportedComponents .reset ();
 	supportedProfiles   .reset ();
-
-	X3DBrowserContext::dispose ();
-	X3DBaseNode::dispose ();
 
 	removeChildObjects (getRootNodes ());
 

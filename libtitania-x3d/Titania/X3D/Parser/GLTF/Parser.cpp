@@ -54,7 +54,12 @@
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Grouping/Switch.h"
+#include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/IndexedTriangleSet.h"
+#include "../../Components/Rendering/Normal.h"
+#include "../../Components/Rendering/TriangleSet.h"
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
 
@@ -83,22 +88,20 @@ namespace GLTF {
 ////animation
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	 X3D::X3DParser (),
-	          scene (scene),
-	            uri (uri),
-	        istream (istream),
-	         scenes (),
-	          nodes (),
-	         meshes (),
-	    bufferViews (),
-	        buffers ()
+	X3D::X3DParser (),
+	         scene (scene),
+	           uri (uri),
+	       istream (istream),
+	        scenes (),
+	         nodes (),
+	        meshes (),
+	   bufferViews (),
+	       buffers ()
 { }
 
 void
 Parser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
-
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::XML);
 	scene -> setProfile (getBrowser () -> getProfile ("Full"));
@@ -142,6 +145,7 @@ Parser::rootObject (json_object* const jobj)
 	assetObject       (json_object_object_get (jobj, "asset"));
 	buffersObject     (json_object_object_get (jobj, "buffers"));
 	bufferViewsObject (json_object_object_get (jobj, "bufferViews"));
+	asseccorsObject   (json_object_object_get (jobj, "accessors"));
 	meshesObject      (json_object_object_get (jobj, "meshes"));
 	nodesObject       (json_object_object_get (jobj, "nodes"));
 	scenesObject      (json_object_object_get (jobj, "scenes"));
@@ -372,14 +376,16 @@ Parser::node1Object (json_object* const jobj)
 
 	int32_t mesh = 0;
 
-	if (integerValue (jobj, mesh))
+	if (integerValue (json_object_object_get (jobj, "mesh"), mesh))
 	{
-		const auto & shapeNode = meshes .get1Value (mesh);
-
-		if (shapeNode)
-			transformNode -> children () .emplace_back (shapeNode);
-		else
+		try
+		{
+			transformNode -> children () = meshes .at (mesh);
+		}
+		catch (const std::out_of_range & error)
+		{
 			getBrowser () -> getConsole () -> warn ("Mesh with index '", mesh, "' not found.\n");
+		}
 	}
 }
 
@@ -438,6 +444,306 @@ Parser::meshesObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	// Meshes
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		const auto mesh = meshArray (json_object_array_get_idx (jobj, i));
+
+		if (mesh .empty ())
+		{
+			getBrowser () -> getConsole () -> warn ("No valid mesh object found at index '", i, "'.\n");
+		}
+
+		meshes .emplace_back (std::move (mesh));
+	}
+}
+
+X3D::X3DPtrArray <X3D::Shape>
+Parser::meshArray (json_object* const jobj)
+{
+	X3D::X3DPtrArray <X3D::Shape> shapeNodes;
+
+	if (not jobj)
+		return shapeNodes;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return shapeNodes;
+
+	// Mesh
+
+	const auto primitives = primitivesArray (json_object_object_get (jobj, "primitives"));
+
+	for (const auto & primitive : primitives)
+	{
+		const auto shapeNode = createShape (primitive);
+
+		if (shapeNode)
+			shapeNodes .emplace_back (shapeNode);
+	}
+
+	return shapeNodes;
+}
+
+X3D::X3DPtr <X3D::Shape>
+Parser::createShape (const PrimitivePtr & primitive)
+{
+	const auto shapeNode = scene -> createNode <X3D::Shape> ();
+
+	switch (primitive -> mode)
+	{
+		case 0: // POINTS
+		{
+			break;
+		}
+		case 1: // LINES
+		{
+			break;
+		}
+		case 2: // LINE_LOOP
+		{
+			break;
+		}
+		case 3: // LINE_STRIP
+		{
+			break;
+		}
+		case 4: // TRIANGLES
+		{
+			if (primitive -> indices)
+				shapeNode -> geometry () = createIndexedTriangleSet (primitive);
+			else
+				shapeNode -> geometry () = createTriangleSet (primitive);
+
+			break;
+		}
+		case 5: // TRIANGLE_STRIP
+		{
+			break;
+		}
+		case 6: // TRIANGLE_FAN
+		{
+			break;
+		}
+		default:
+			return nullptr;
+	}
+
+	return shapeNode;
+}
+
+X3D::X3DPtr <X3D::IndexedTriangleSet>
+Parser::createIndexedTriangleSet (const PrimitivePtr & primitive)
+{
+	const auto geometryNode   = scene -> createNode <X3D::IndexedTriangleSet> ();
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
+
+	geometryNode -> coord () = coordinateNode;
+
+	return geometryNode;
+}
+
+X3D::X3DPtr <X3D::TriangleSet>
+Parser::createTriangleSet (const PrimitivePtr & primitive)
+{
+	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
+
+	return geometryNode;
+}
+
+Parser::PrimitiveArray
+Parser::primitivesArray (json_object* const jobj)
+{
+	PrimitiveArray primitives;
+
+	if (not jobj)
+		return primitives;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return primitives;
+
+	// Primitives
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto primitive = primitiveValue (json_object_array_get_idx (jobj, i));
+
+		if (primitive)
+		{
+			primitives .emplace_back (std::move (primitive));
+		}
+		else
+		{
+			getBrowser () -> getConsole () -> warn ("No valid primitive object found at index '", i, "'.\n");
+		}
+	}
+
+	return primitives;
+}
+
+Parser::PrimitivePtr
+Parser::primitiveValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Attributes
+
+	auto attributes = attributesValue (json_object_object_get (jobj, "attributes"));
+
+	if (not attributes)
+		return nullptr;
+
+	const auto primitive = std::make_shared <Primitive> ();
+
+	primitive -> attributes = std::move (attributes);
+	
+	// Indices
+
+	int32_t indices = -1;
+
+	integerValue (json_object_object_get (jobj, "indices"), indices);
+
+	if (indices > -1 and size_t (indices) < accessors .size ())
+	{
+		const auto & asseccor = accessors [indices];
+
+		if (not asseccor)
+			return nullptr;
+
+		primitive -> indices = asseccor;
+	}
+	
+	// Mode
+
+	int32_t mode = 4;
+
+	integerValue (json_object_object_get (jobj, "mode"), mode);
+
+	primitive -> mode = mode;
+
+	return primitive;
+}
+
+Parser::AttributesPtr
+Parser::attributesValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Primitive
+
+	int32_t position = -1;
+
+	if (integerValue (json_object_object_get (jobj, "POSITION"), position))
+	{
+		try
+		{
+			const auto attribute = std::make_shared <Attributes> ();
+
+			attribute -> position = accessors .at (position);
+
+			return attribute;
+		}
+		catch (const std::out_of_range & error)
+		{
+			return nullptr;
+		}
+	}
+
+	return nullptr;
+}
+
+void
+Parser::asseccorsObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Asseccors
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto accessor = accessorValue (json_object_array_get_idx (jobj, i));
+
+		if (not accessor)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid accessor view found at index '", i, "'.\n");
+		}
+
+		accessors .emplace_back (std::move (accessor));
+	}
+}
+
+Parser::AccessorPtr
+Parser::accessorValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	if (json_object_object_get (jobj, "sparse"))
+		__LOG__ << "sparse not handled" << std::endl;
+
+	int32_t bufferView = -1;
+
+	if (integerValue (json_object_object_get (jobj, "bufferView"), bufferView))
+	{
+		std::string type;
+
+		if (stringValue (json_object_object_get (jobj, "type"), type))
+		{
+			int32_t componentType = -1;
+
+			if (integerValue (json_object_object_get (jobj, "componentType"), componentType))
+			{
+				int32_t byteOffset = 0;
+
+				integerValue (json_object_object_get (jobj, "byteOffset"), byteOffset);
+
+				int32_t count = -1;
+
+				if (integerValue (json_object_object_get (jobj, "count"), count))
+				{
+					try
+					{
+						const auto accessor = std::make_shared <Accessor> ();
+
+						accessor -> bufferView    = bufferViews .at (bufferView);
+						accessor -> type          = type;
+						accessor -> componentType = componentType;
+						accessor -> byteOffset    = byteOffset;
+						accessor -> count         = count;
+
+						return accessor;
+					}
+					catch (const std::out_of_range & error)
+					{
+						return nullptr;
+					}
+				}
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 void
@@ -449,67 +755,31 @@ Parser::bufferViewsObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
-	// Buffer View
+	// Buffer Views
 
 	const int32_t size = json_object_array_length (jobj);
 
 	for (int32_t i = 0; i < size; ++ i)
 	{
-		auto bufferView = std::make_shared <BufferView> ();
+		auto bufferView = bufferViewValue (json_object_array_get_idx (jobj, i));
 
-		if (bufferViewValue (json_object_array_get_idx (jobj, i), bufferView))
-		{
-			bufferViews .emplace_back (std::move (bufferView));
-		}
-		else
+		if (not bufferView)
 		{
 			getBrowser () -> getConsole () -> warn ("No valid buffer view found at index '", i, "'.\n");
-
-			bufferViews .emplace_back ();
 		}
+
+		bufferViews .emplace_back (std::move (bufferView));
 	}
 }
 
-void
-Parser::buffersObject (json_object* const jobj)
+Parser::BufferViewPtr
+Parser::bufferViewValue (json_object* const jobj)
 {
 	if (not jobj)
-		return;
-
-	if (json_object_get_type (jobj) not_eq json_type_array)
-		return;
-
-	// Buffer
-
-	const int32_t size = json_object_array_length (jobj);
-
-	for (int32_t i = 0; i < size; ++ i)
-	{
-		auto buffer = std::make_shared <std::string> ();
-
-		if (bufferValue (json_object_array_get_idx (jobj, i), buffer))
-		{
-			buffers .emplace_back (std::move (buffer));
-		}
-		else
-		{
-			getBrowser () -> getConsole () -> warn ("No valid buffer found at index '", i, "'.\n");
-		
-			buffers .emplace_back ();
-		}
-	}
-}
-
-bool
-Parser::bufferViewValue (json_object* const jobj, const std::shared_ptr <BufferView> & bufferView)
-{
-	if (not jobj)
-		return false;
+		return nullptr;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-		return false;
-
-	// Uri
+		return nullptr;
 
 	int32_t buffer = -1;
 
@@ -521,39 +791,67 @@ Parser::bufferViewValue (json_object* const jobj, const std::shared_ptr <BufferV
 		{
 			int32_t byteOffset = 0;
 
-			if (integerValue (json_object_object_get (jobj, "byteOffset"), byteOffset))
+			integerValue (json_object_object_get (jobj, "byteOffset"), byteOffset);
+
+			int32_t byteStride = 0;
+
+			integerValue (json_object_object_get (jobj, "byteStride"), byteStride);
+
+			try
 			{
-				int32_t byteStride = 0;
+				const auto bufferView = std::make_shared <BufferView> ();
 
-				integerValue (json_object_object_get (jobj, "byteStride"), byteStride);
+				bufferView -> buffer     = buffers .at (buffer);
+				bufferView -> byteLength = byteLength;
+				bufferView -> byteOffset = byteOffset;
+				bufferView -> byteStride = byteStride;
 
-				try
-				{
-					bufferView -> buffer     = buffers .at (buffer);
-					bufferView -> byteLength = byteLength;
-					bufferView -> byteOffset = byteOffset;
-					bufferView -> byteStride = byteStride;
-					return true;
-				}
-				catch (const std::out_of_range & error)
-				{
-					return false;
-				}
+				return bufferView;
+			}
+			catch (const std::out_of_range & error)
+			{
+				return nullptr;
 			}
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
-bool
-Parser::bufferValue (json_object* const jobj, const std::shared_ptr <std::string> & value)
+void
+Parser::buffersObject (json_object* const jobj)
 {
 	if (not jobj)
-		return false;
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Buffers
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto buffer = bufferValue (json_object_array_get_idx (jobj, i));
+
+		if (not buffer)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid buffer found at index '", i, "'.\n");
+		}
+
+		buffers .emplace_back (std::move (buffer));
+	}
+}
+
+Parser::BufferPtr
+Parser::bufferValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-		return false;
+		return nullptr;
 
 	// Uri
 
@@ -561,11 +859,14 @@ Parser::bufferValue (json_object* const jobj, const std::shared_ptr <std::string
 
 	if (stringValue (json_object_object_get (jobj, "uri"), uriCharacters))
 	{
-		*value = FileLoader (scene) .loadDocument (uriCharacters);
-		return true;
+		const auto buffer = std::make_shared <Buffer> ();
+
+		buffer -> data = FileLoader (scene) .loadDocument (uriCharacters);
+
+		return buffer;
 	}
 
-	return false;
+	return nullptr;
 }
 
 bool

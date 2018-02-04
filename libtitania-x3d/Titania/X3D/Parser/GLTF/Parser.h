@@ -84,13 +84,55 @@ public:
 
 private:
 
+	///  @name Member types
+
+	struct Buffer
+	{
+		std::string data;
+	};
+
+	using BufferPtr = std::shared_ptr <Buffer>;
+
 	struct BufferView
 	{
-		std::shared_ptr <std::string> buffer;
-		int32_t                       byteLength;
-		int32_t                       byteOffset;
-		int32_t                       byteStride;
+		BufferPtr buffer;
+		int32_t   byteLength;
+		int32_t   byteOffset;
+		int32_t   byteStride;
 	};
+
+	using BufferViewPtr = std::shared_ptr <BufferView>;
+
+	struct Accessor
+	{
+		BufferViewPtr        bufferView;
+		std::string          type;
+		int32_t              componentType;
+		int32_t              byteOffset;
+		int32_t              count;
+	};
+
+	using AccessorPtr = std::shared_ptr <Accessor>;
+
+	struct Attributes
+	{
+		AccessorPtr position;
+		AccessorPtr normal;
+		AccessorPtr tangent;
+		AccessorPtr texxCoord0;
+	};
+
+	using AttributesPtr = std::shared_ptr <Attributes>;
+
+	struct Primitive
+	{
+		AttributesPtr attributes;
+		AccessorPtr   indices;
+		int32_t       mode;
+	};
+
+	using PrimitivePtr   = std::shared_ptr <Primitive>;
+	using PrimitiveArray = std::vector <PrimitivePtr>;
 
 	///  @name Member access
 
@@ -133,19 +175,47 @@ private:
 	void
 	meshesObject (json_object* const jobj);
 
+	bool
+	meshObject (json_object* const jobj);
+
+	X3D::X3DPtrArray <X3D::Shape>
+	meshArray (json_object* const jobj);
+
+	X3D::X3DPtr <X3D::Shape>
+	createShape (const PrimitivePtr & primitive);
+
+	X3D::X3DPtr <X3D::IndexedTriangleSet>
+	createIndexedTriangleSet (const PrimitivePtr & primitive);
+
+	X3D::X3DPtr <X3D::TriangleSet>
+	createTriangleSet (const PrimitivePtr & primitive);
+
+	PrimitiveArray
+	primitivesArray (json_object* const jobj);
+
+	PrimitivePtr
+	primitiveValue (json_object* const jobj);
+
+	AttributesPtr
+	attributesValue (json_object* const jobj);
+
+	void
+	asseccorsObject (json_object* const jobj);
+
+	AccessorPtr
+	accessorValue (json_object* const jobj);
+
 	void
 	bufferViewsObject (json_object* const jobj);
+
+	BufferViewPtr
+	bufferViewValue (json_object* const jobj);
 
 	void
 	buffersObject (json_object* const jobj);
 
-	///
-
-	bool
-	bufferViewValue (json_object* const jobj, const std::shared_ptr <BufferView> & bufferView);
-
-	bool
-	bufferValue (json_object* const jobj, const std::shared_ptr <std::string> & value);
+	BufferPtr
+	bufferValue (json_object* const jobj);
 
 	///
 
@@ -184,12 +254,12 @@ private:
 	const basic::uri       uri;
 	std::istream &         istream;
 
-	X3D::X3DPtr <X3D::Switch>         scenes;
-	X3D::X3DPtrArray <X3D::Transform> nodes;
-	X3D::X3DPtrArray <X3D::Shape>     meshes;
-
-	std::vector <std::shared_ptr <BufferView>>  bufferViews;
-	std::vector <std::shared_ptr <std::string>> buffers;
+	X3D::X3DPtr <X3D::Switch>                   scenes;
+	X3D::X3DPtrArray <X3D::Transform>           nodes;
+	std::vector <X3D::X3DPtrArray <X3D::Shape>> meshes;
+	std::vector <AccessorPtr>                   accessors;
+	std::vector <BufferViewPtr>                 bufferViews;
+	std::vector <BufferPtr>                     buffers;
 
 };
 
