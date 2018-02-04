@@ -983,6 +983,7 @@
     <None Include="share\mime\packages\gltf+json.xml" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+json.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-gltf+json.svg" />
+    <None Include="share\mime\packages\x3d+json.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -157,10 +157,10 @@
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DJSONEncoding">
     <mime-types>
-      <mime-type>application/json</mime-type>
+      <mime-type>model/x3d+json</mime-type>
     </mime-types>
     <patterns>
-      <pattern>*.json</pattern>
+      <pattern>*.x3dj</pattern>
     </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DXMLEncoding">

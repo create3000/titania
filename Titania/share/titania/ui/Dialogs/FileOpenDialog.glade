@@ -118,7 +118,7 @@
       <mime-type>model/vrml</mime-type>
       <mime-type>model/x3d+vrml</mime-type>
       <mime-type>model/x3d+xml</mime-type>
-      <mime-type>application/json</mime-type>
+      <mime-type>model/x3d+json</mime-type>
       <mime-type>model/gltf+json</mime-type>
       <mime-type>application/x-3ds</mime-type>
       <mime-type>image/x-3ds</mime-type>
@@ -134,7 +134,7 @@
       <pattern>*.x3dv</pattern>
       <pattern>*.x3dvz</pattern>
       <pattern>*.x3dv.gz</pattern>
-      <pattern>*.json</pattern>
+      <pattern>*.x3dj</pattern>
       <pattern>*.wrl</pattern>
       <pattern>*.wrz</pattern>
       <pattern>*.wrl.gz</pattern>
@@ -158,10 +158,10 @@
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DJSONEncoding">
     <mime-types>
-      <mime-type>application/json</mime-type>
+      <mime-type>model/x3d+json</mime-type>
     </mime-types>
     <patterns>
-      <pattern>*.json</pattern>
+      <pattern>*.x3dj</pattern>
     </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DXMLEncoding">

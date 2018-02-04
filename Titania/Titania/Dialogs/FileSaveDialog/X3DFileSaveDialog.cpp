@@ -67,7 +67,7 @@ static constexpr auto VIDEOS_FILTER    = "All Videos";
 static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
 static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
 static constexpr auto VRML97_ENCODING_FILTER                      = "VRML97 Encoding (*.wrl)";
-static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON Encoding (*.json)";
+static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON Encoding (*.x3dj)";
 static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed X3D XML Encoding (*.x3dz)";
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
@@ -207,7 +207,7 @@ X3DFileSaveDialog::getSuffix () const
 		return ".x3dv";
 
 	else if (getWindow () .get_filter () == getFileFilterX3DJSONEncoding ())
-		return ".json";
+		return ".x3dj";
 
 	else if (getWindow () .get_filter () == getFileFilterVrmlEncoding ())
 		return ".wrl";

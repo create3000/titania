@@ -176,7 +176,7 @@ GoldenGate::getContentTypeFunctions ()
 	contentTypes .emplace ("model/x3d+xml",                    &GoldenParser::parse <XMLParser>);
 	contentTypes .emplace ("application/xml",                  &GoldenParser::parse <XMLParser>);
 	contentTypes .emplace ("application/vnd.hzn-3d-crossword", &GoldenParser::parse <XMLParser>);
-	contentTypes .emplace ("application/json",                 &GoldenParser::parse <JSONParser>);
+	contentTypes .emplace ("model/x3d+json",                   &GoldenParser::parse <JSONParser>);
 	contentTypes .emplace ("model/gltf+json",                  &GoldenParser::parse <GLTF::Parser>);
 	contentTypes .emplace ("application/x-3ds",                &GoldenParser::parse <Autodesk::Parser>);
 	contentTypes .emplace ("image/x-3ds",                      &GoldenParser::parse <Autodesk::Parser>);
@@ -218,7 +218,7 @@ GoldenGate::getSuffixes ()
 	suffixes .emplace (".xml",    &GoldenParser::parse <XMLParser>);
 
 	// X3D XML Encoding 
-	suffixes .emplace (".json", &GoldenParser::parse <JSONParser>);
+	suffixes .emplace (".x3dj", &GoldenParser::parse <JSONParser>);
 
 	// GLTF
 	suffixes .emplace (".gltf", &GoldenParser::parse <GLTF::Parser>);
