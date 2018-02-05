@@ -1,13 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/GLTF/Parser.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="147" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="557" Column="90" />
-      <File FileName="Titania/share/gtksourceview-3.0/styles/x_ite.xml" Line="46" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.cpp" Line="91" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/WorldInfo.cpp" Line="126" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DBindableNode.h" Line="99" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/JSONParser.h" Line="57" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/GLTF/Parser.h" Line="232" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/GLTF/Parser.cpp" Line="775" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -219,6 +219,9 @@ private:
 	X3D::X3DPtr <X3D::Coordinate>
 	createCoordinate (const AccessorPtr & position) const;
 
+	X3D::X3DPtr <X3D::FloatVertexAttribute>
+	createTangent (const AccessorPtr & accessor) const;
+
 	X3D::X3DPtr <X3D::Normal>
 	createNormal (const AccessorPtr & accessor) const;
 

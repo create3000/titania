@@ -60,6 +60,7 @@
 #include "../../Components/Rendering/IndexedTriangleSet.h"
 #include "../../Components/Rendering/Normal.h"
 #include "../../Components/Rendering/TriangleSet.h"
+#include "../../Components/Shaders/FloatVertexAttribute.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
@@ -571,6 +572,7 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
 	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
 	const auto attributes   = primitive -> attributes;
 	const auto indices      = getScalarArray (primitive -> indices);
+	const auto tangent      = createTangent (attributes -> tangent);
 
 	geometryNode -> index () .assign (indices .begin (), indices .end ());
 
@@ -578,8 +580,13 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
 	geometryNode -> normal ()   = createNormal (attributes -> normal);
 	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
 
+	if (tangent)
+		geometryNode -> attrib () .emplace_back (tangent);
+
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
+
+	geometryNode -> normalPerVertex () = geometryNode -> normal ();
 
 	return geometryNode;
 }
@@ -589,10 +596,14 @@ Parser::createTriangleSet (const PrimitivePtr & primitive) const
 {
 	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
 	const auto attributes   = primitive -> attributes;
+	const auto tangent      = createTangent (attributes -> tangent);
 
 	geometryNode -> coord ()    = createCoordinate (attributes -> position);
 	geometryNode -> normal ()   = createNormal (attributes -> normal);
 	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
+
+	if (tangent)
+		geometryNode -> attrib () .emplace_back (tangent);
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
@@ -638,6 +649,42 @@ Parser::createCoordinate (const AccessorPtr & accessor) const
 				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
 
 			return coordinateNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::FloatVertexAttribute>
+Parser::createTangent (const AccessorPtr & accessor) const
+{
+	// Implementation note: When tangents are not specified, client implementations should calculate tangents using
+	// default MikkTSpace algorithms. For best results, the mesh triangles should also be processed using default
+	// MikkTSpace algorithms.
+
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC4:
+		{
+			const auto array      = getVec4Array (accessor);
+			const auto attribNode = scene -> createNode <X3D::FloatVertexAttribute> ();
+			auto &     attrib     = attribNode -> value ();
+
+			attribNode -> name ()          = "tangent";
+			attribNode -> numComponents () = 4;
+
+			for (const auto & value : array)
+			{
+				for (const auto & component : value)
+					attrib .emplace_back (component);
+			}
+
+			return attribNode;
 		}
 		default:
 			return nullptr;
@@ -1337,11 +1384,17 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 			case ComponentType::UNSIGNED_SHORT:
 			case ComponentType::UNSIGNED_INT:
 			{
-				const auto & range = normalizedRanges .at (componentType);
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
 
-				for (auto & value : array)
-					value = project <double> (value, std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-	
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (double & value)
+				{
+					value = project <double> (value, fromLow, fromHigh, toLow, toHigh);
+				});
+
 				break;
 			}
 			case ComponentType::FLOAT:
@@ -1459,13 +1512,17 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 			case ComponentType::UNSIGNED_SHORT:
 			case ComponentType::UNSIGNED_INT:
 			{
-				const auto & range = normalizedRanges .at (componentType);
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
 
-				for (auto & value : array)
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector2d & value)
 				{
-					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-				}
+					for (auto & component : value)
+						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+				});
 
 				break;
 			}
@@ -1584,14 +1641,17 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 			case ComponentType::UNSIGNED_SHORT:
 			case ComponentType::UNSIGNED_INT:
 			{
-				const auto & range = normalizedRanges .at (componentType);
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
 
-				for (auto & value : array)
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector3d & value)
 				{
-					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [2] = project <double> (value [2], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-				}
+					for (auto & component : value)
+						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+				});
 
 				break;
 			}
@@ -1710,15 +1770,17 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 			case ComponentType::UNSIGNED_SHORT:
 			case ComponentType::UNSIGNED_INT:
 			{
-				const auto & range = normalizedRanges .at (componentType);
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
 
-				for (auto & value : array)
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector4d & value)
 				{
-					value [0] = project <double> (value [0], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [1] = project <double> (value [1], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [2] = project <double> (value [2], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-					value [4] = project <double> (value [4], std::get <0> (range), std::get <1> (range), std::get <2> (range), std::get <3> (range));
-				}
+					for (auto & component : value)
+						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+				});
 
 				break;
 			}
