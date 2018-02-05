@@ -1308,9 +1308,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 	{
 		case ComponentType::BYTE:
 		{
-			auto data = reinterpret_cast <const int8_t*> (first);
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1319,9 +1320,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_BYTE:
 		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1330,9 +1332,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 		}
 		case ComponentType::SHORT:
 		{
-			auto data = reinterpret_cast <const int16_t*> (first);
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1341,9 +1344,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_SHORT:
 		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1352,9 +1356,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_INT:
 		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1363,9 +1368,10 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 		}
 		case ComponentType::FLOAT:
 		{
-			auto data = reinterpret_cast <const float*> (first);
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0]);
 			}
@@ -1436,9 +1442,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 	{
 		case ComponentType::BYTE:
 		{
-			auto data = reinterpret_cast <const int8_t*> (first);
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1447,9 +1454,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_BYTE:
 		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1458,9 +1466,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::SHORT:
 		{
-			auto data = reinterpret_cast <const int16_t*> (first);
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1469,9 +1478,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_SHORT:
 		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1480,9 +1490,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_INT:
 		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1491,9 +1502,10 @@ Parser::getVec2Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::FLOAT:
 		{
-			auto data = reinterpret_cast <const float*> (first);
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1]);
 			}
@@ -1565,9 +1577,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 	{
 		case ComponentType::BYTE:
 		{
-			auto data = reinterpret_cast <const int8_t*> (first);
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1576,9 +1589,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_BYTE:
 		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1587,9 +1601,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::SHORT:
 		{
-			auto data = reinterpret_cast <const int16_t*> (first);
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1598,9 +1613,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_SHORT:
 		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1609,9 +1625,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_INT:
 		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1620,9 +1637,10 @@ Parser::getVec3Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::FLOAT:
 		{
-			auto data = reinterpret_cast <const float*> (first);
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2]);
 			}
@@ -1694,9 +1712,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 	{
 		case ComponentType::BYTE:
 		{
-			auto data = reinterpret_cast <const int8_t*> (first);
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
@@ -1705,9 +1724,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_BYTE:
 		{
-			auto data = reinterpret_cast <const uint8_t*> (first);
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
@@ -1716,9 +1736,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::SHORT:
 		{
-			auto data = reinterpret_cast <const int16_t*> (first);
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
@@ -1727,9 +1748,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_SHORT:
 		{
-			auto data = reinterpret_cast <const uint16_t*> (first);
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
@@ -1738,9 +1760,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::UNSIGNED_INT:
 		{
-			auto data = reinterpret_cast <const uint32_t*> (first);
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
@@ -1749,9 +1772,10 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 		}
 		case ComponentType::FLOAT:
 		{
-			auto data = reinterpret_cast <const float*> (first);
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
 
-			for (int32_t i = 0; i < count; ++ i, data += stride)
+			for (; data not_eq last; data += stride)
 			{
 				array .emplace_back (data [0], data [1], data [2], data [3]);
 			}
