@@ -163,6 +163,8 @@ ProjectsEditor::on_remove_project_clicked ()
 {
 	for (const auto & folder : getSelectedFiles ())
 		removeRootFolder (folder);
+
+	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (getRootFolders () .begin (), getRootFolders () .end ()));
 }
 
 void
