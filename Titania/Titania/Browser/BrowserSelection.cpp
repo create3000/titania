@@ -94,10 +94,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 
 void
 BrowserSelection::connectNodes ()
-{
-	nodes .removeInterest (&BrowserSelection::connectNodes, this);
-	nodes .addInterest (&BrowserSelection::set_nodes, this);
-}
+{ }
 
 void
 BrowserSelection::set_browser ()
@@ -310,7 +307,7 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 {
 	const auto & selection = browser -> getSelection ();
 
-	undoStep -> addUndoFunction (&X3D::Selection::setNodes,    selection, selection -> getNodes ());
+	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
 	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
 	undoStep -> addRedoFunction (&X3D::Selection::removeNodes, selection, value);
@@ -393,7 +390,11 @@ BrowserSelection::assignNodes ()
 	const auto & selection = browser -> getSelection ();
 
 	if (selection -> getNodes () not_eq nodes)
+	{
 		nodes = selection -> getNodes ();
+
+		set_nodes (nodes);
+	}
 
 	if (selection -> getGeometries () not_eq geometryNodes)
 		geometryNodes = selection -> getGeometries ();

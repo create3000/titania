@@ -511,12 +511,12 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
 			return;
 
-		const auto   importedNodes = X3D::X3DEditor::importScene (getCurrentContext (), scene, undoStep);
+		const auto   importedNodes = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
 		const auto & layerSet      = getCurrentWorld () -> getLayerSet ();
 
-		undoStep -> addObjects (getCurrentContext (), layerSet);
+		undoStep -> addObjects (executionContext, layerSet);
 
-		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+		if (executionContext == getCurrentContext () and layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		{
 			for (const auto & node : importedNodes)
 				X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
@@ -524,7 +524,7 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 		else
 		{
 			for (const auto & node : importedNodes)
-				X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
+				X3D::X3DEditor::pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
 		}
 
 		getSelection () -> setNodes (importedNodes, undoStep);

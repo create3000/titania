@@ -306,11 +306,12 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 void
 ScriptEditor::set_live ()
 {
-	if (not node -> isLive ())
-	{
-		modified = false;
-	   set_node (nullptr);
-	}
+	if (node -> isLive ())
+		return;
+
+	modified = false;
+
+	set_node (nullptr);
 }
 
 bool
