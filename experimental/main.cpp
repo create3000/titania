@@ -160,98 +160,21 @@ using Spheroid3d   = math::spheroid3 <double>;
 using ConvexHull2d = math::convex_hull2 <double>;
 using ConvexHull3d = math::convex_hull3 <double>;
 
-
-class A
-{
-public:
-
-	constexpr
-	A () :
-		v ()
-	{ }
-
-	const Vector3d &
-	f () const
-	{ return v; };
-
-	Vector3d v;
-
-
-};
-// Octave transform matrix from Alexander Alekseev aka TDM 
-constexpr auto octave_m = Matrix2d (1.6,1.2,-1.2,1.6);
-
+ 
 void
-FractalNoise (int index, Vector2d vertex)
+text (const std::string & d)
 {
-   float m = 1.5;
-   float w = 0.5;
+    static const std::regex dataUrl (R"/(^data:(.*?)?(?:;charset=(.*?))?(?:;(base64))?(?:,([\s\S]*))$)/");
 
-	auto xy = vertex;
+	std::smatch match;
 
-	switch (index)
-	{
-		case 0:
-			std::clog << "Amplitude" << std::endl;
-			break;
-		case 1:
-			std::clog << "Frequency" << std::endl;
-			break;
-		case 2:
-			std::clog << "Speed" << std::endl;
-			break;
-		default:
-			break;
-	}
-
-   for (int i = 0; i < 6; i++)
-   {
-		auto amplitude1 = m * 0.15;
-		auto amplitude2 = w * 0.25;
-		auto frequency  = xy / vertex;
-		auto speed1     = Vector2d (0.511, 0.511) / frequency;
-		auto speed2     = Vector2d (0.333, 0.333) / frequency;
-			
-		switch (index)
-		{
-			case 0:
-				std::clog << amplitude1 << std::endl;
-				std::clog << amplitude2 << std::endl;
-				break;
-			case 1:
-				std::clog << frequency << std::endl;
-				std::clog << frequency << std::endl;
-				break;
-			case 2:
-				std::clog << speed1 << std::endl;
-				std::clog << speed2 << std::endl;
-				break;
-			default:
-				break;
-		}
-	
-		//xy = vertex * frequency [i] - s * frequency [i]
-
-      //f += Noise(xy+time*0.511) * m * 0.15;
-      //f += Noise(xy.yx-time*0.333) * w * 0.25;
-      w *= 0.5;
-      m *= 0.25;
-      xy = octave_m * xy;
-   }
+	if (std::regex_match (d, match, dataUrl))
+        std::clog << "Ok" << std::endl;
+    else
+        std::clog << "Ooops" << std::endl;
 }
 
-void
-f ()
-{
-	__LOG__ << 123 << std::endl;
-}
 
-template<typename T, typename... U>
-size_t getAddress(std::function<T(U...)> f) {
-    typedef T(fnType)(U...);
-    fnType ** fnPointer = f.template target<fnType*>();
-    return (size_t) *fnPointer;
-}
 int
 main (int argc, char** argv)
 {
@@ -268,6 +191,18 @@ main (int argc, char** argv)
 	#endif
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	auto f = Glib::file_get_contents ("/home/holger/xxx.txt");
+
+	
+
+	text ("data:,bah foo");
+	text ("data:text/plain,bah \n foo");
+	text ("data:text/plain;base64,bah foo");
+	text ("data:text/plain;charset=utf8,bah foo");
+	text ("data:text/plain;charset=utf8;base64,bah foo");
+	text (f);
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

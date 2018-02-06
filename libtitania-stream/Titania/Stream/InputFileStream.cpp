@@ -56,6 +56,8 @@
 
 #include <giomm.h>
 #include <glibmm/main.h>
+
+#include <regex>
 #include <utility>
 
 #include <Titania/LOG.h>
@@ -145,47 +147,40 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 	{
 		// data:[<MIME-TYPE>][;charset=<CHAR-SET>][;base64],<DATA>
 
-		std::string::size_type       first = url () .scheme () .size () + 1;
-		const std::string::size_type comma = url () .str () .find (',');
+		static const std::regex dataUrl (R"/(^data:(.*?)?(?:;charset=(.*?))?(?:;(base64))?(?:,([\s\S]*))$)/");
 
-		if (comma not_eq std::string::npos)
+		std::smatch match;
+
+		if (std::regex_match (url () .str (), match, dataUrl))
 		{
-			std::string header = url () .str () .substr (first, comma - first);
-			bool        base64 = false;
+			const auto contentType = match .str (1);
+			const auto charset     = match .str (2);
+			const auto base64      = match .str (3);
+			auto       data        = match .str (4);
 
-			if (header .size () >= 6)
+			if (base64 .empty ())
 			{
-				if (header .substr (header .size () - 6, 6) == "base64")
-				{
-					base64 = true;
-					header .resize (header .size () - 6);
+				auto escaped = Glib::uri_unescape_string (data);
 
-					if (not header .empty () and header .back () == ';')
-						header .pop_back ();
-				}
+				if (not escaped .empty ())
+					data = std::move (escaped);
 			}
+			else
+				data = base64_decode (data);
 
-			// header
-
-			const std::string::size_type semicolon = header .find (';');
-
-			if (not header .empty ())
-				file_response_headers .emplace ("Content-Type", header .substr (0, semicolon));
-
-			// data
-
-			first = comma + 1;
-
-			const std::string data = base64
-			                         ? base64_decode (url () .str () .substr (first))
-											 : Glib::uri_unescape_string (url () .str () .substr (first));
-
-			data_istream .reset (new std::istringstream (data));
+			if (not contentType .empty ())
+				file_response_headers .emplace ("Content-Type", contentType);
 
 			file_response_headers .emplace ("Content-Length", basic::to_string (data .size (), std::locale::classic ()));
+
+			data_istream .reset (new std::istringstream (data));
 		}
 		else
+		{
+			file_response_headers .emplace ("Content-Length", basic::to_string (0, std::locale::classic ()));
+
 			data_istream .reset (new std::istringstream ());
+		}
 
 		rdbuf (data_istream -> rdbuf ());
 		clear (data_istream -> rdstate ());

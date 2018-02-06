@@ -137,17 +137,11 @@ Shader::getSource (X3DBaseNode* const node, const std::string & string, const ba
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	static const std::regex version (R"/(^(?:\s+|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
-
 	ShaderSource          source;
 	std::set <basic::uri> files;
 
 	source .string = getSource (node, string, worldURL, source .uris, 0, files);
-
-	if (std::regex_search (source .string, version))
-		source .string = addConstants (node -> getBrowser (), source .string);
-	else
-		source .string = addConstants (node -> getBrowser (), "#version 100\n#line 1\n" + source .string);
+	source .string = addDefinitions (node -> getBrowser (), source .string);
 
 	return source;
 }
@@ -209,63 +203,74 @@ throw (Error <INVALID_URL>,
 }
 
 std::string
-Shader::addConstants (X3DBrowser* const browser, const std::string & source)
+Shader::addDefinitions (X3DBrowser* const browser, std::string source)
 {
-	static const std::regex version (R"/(^([\s\S]*?[\n]{0,1})(\s*#version\s+\d+.*?\n))/");
+	#define COMMENTS  R"/(\s+|/\*[\s\S]*?\*/|//.*?\n)/"
+	#define LINE      R"/(#line\s+.*?\n)/"
+	#define VERSION   R"/(#version\s+.*?\n)/"
+	#define EXTENSION R"/(#extension\s+.*?\n)/"
+	#define ANY       R"/([\s\S]*)/"
 
-	std::smatch match;
+	static const std::regex version ("^(?:" COMMENTS "|" LINE  ")*" VERSION "");
 
-	if (not std::regex_search (source, match, version))
+	std::smatch vmatch;
+
+	if (not std::regex_search (source, vmatch, version))
+		source = "#version 100\n#line 1\n" + source;
+
+	static const std::regex head ("^((?:" COMMENTS "|" LINE  ")*" VERSION "(?:" COMMENTS "|" LINE "|" EXTENSION ")*)(" ANY ")");
+
+	std::smatch hmatch;
+
+	if (not std::regex_search (source, hmatch, head))
 		return source;
 
-	const auto begin    = match .str (0);
+	const auto begin    = hmatch .str (1);
 	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
 
-	std::ostringstream constants;
+	std::ostringstream definitions;
 	std::ifstream types (basic::uri (get_data ("shaders/Shaders/Types.h")) .path ());
 
-	constants .imbue (std::locale::classic ());
+	definitions .imbue (std::locale::classic ());
 
-	constants << "$1$2";
+	definitions << "#define TITANIA\n";
 
-	constants << "#define TITANIA\n";
+	definitions << "#define x3d_None 0\n";
 
-	constants << "#define x3d_None 0\n";
+	definitions << "#define x3d_GeometryPoints  0\n";
+	definitions << "#define x3d_GeometryLines   1\n";
+	definitions << "#define x3d_Geometry2D      2\n";
+	definitions << "#define x3d_Geometry3D      3\n";
 
-	constants << "#define x3d_GeometryPoints  0\n";
-	constants << "#define x3d_GeometryLines   1\n";
-	constants << "#define x3d_Geometry2D      2\n";
-	constants << "#define x3d_Geometry3D      3\n";
+	definitions << "#define x3d_MaxClipPlanes  " << browser -> getMaxClipPlanes () << "\n";
 
-	constants << "#define x3d_MaxClipPlanes  " << browser -> getMaxClipPlanes () << "\n";
+	definitions << "#define x3d_LinearFog        1\n";
+	definitions << "#define x3d_ExponentialFog   2\n";
+	definitions << "#define x3d_Exponential2Fog  3\n";
 
-	constants << "#define x3d_LinearFog        1\n";
-	constants << "#define x3d_ExponentialFog   2\n";
-	constants << "#define x3d_Exponential2Fog  3\n";
+	definitions << "#define x3d_MaxLights         " << browser -> getMaxLights () << "\n";
+	definitions << "#define x3d_DirectionalLight  1\n";
+	definitions << "#define x3d_PointLight        2\n";
+	definitions << "#define x3d_SpotLight         3\n";
 
-	constants << "#define x3d_MaxLights         " << browser -> getMaxLights () << "\n";
-	constants << "#define x3d_DirectionalLight  1\n";
-	constants << "#define x3d_PointLight        2\n";
-	constants << "#define x3d_SpotLight         3\n";
-
-	constants << "#define x3d_MaxTextures                " << browser -> getMaxTextures () << "\n";
-	constants << "#define x3d_TextureType2D              2\n";
-	constants << "#define x3d_TextureType3D              3\n";
-	constants << "#define x3d_TextureTypeCubeMapTexture  4\n";
+	definitions << "#define x3d_MaxTextures                " << browser -> getMaxTextures () << "\n";
+	definitions << "#define x3d_TextureType2D              2\n";
+	definitions << "#define x3d_TextureType3D              3\n";
+	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
 
 	#ifdef TITANIA_DEBUG
-	constants << "#define X3D_SHADOWS\n";
+	definitions << "#define X3D_SHADOWS\n";
 	#endif
 
-	constants << "#define x3d_MaxShadows     4\n";
-	constants << "#define x3d_ShadowSamples  8\n";
+	definitions << "#define x3d_MaxShadows     4\n";
+	definitions << "#define x3d_ShadowSamples  8\n";
 
 	// Legacy
 
-	constants << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
-	constants << "#define x3d_NoneFog        0\n";
-	constants << "#define x3d_NoneLight      0\n";
-	constants << "#define x3d_NoneTexture    0\n";
+	definitions << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
+	definitions << "#define x3d_NoneFog        0\n";
+	definitions << "#define x3d_NoneLight      0\n";
+	definitions << "#define x3d_NoneTexture    0\n";
 
 	depreciatedWarning (browser, source, "x3d_NoneClipPlane", "x3d_NumClipPlanes");
 	depreciatedWarning (browser, source, "x3d_NoneFog",       "x3d_None");
@@ -274,14 +279,14 @@ Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 
 	// Types
 
-	constants << types .rdbuf ();
-	constants << "\n";
+	definitions << types .rdbuf ();
+	definitions << "\n";
 
 	// Combine
 
-	constants << "#line " << numLines  << "\n";
+	definitions << "#line " << (numLines - 1)  << "\n";
 
-	return std::regex_replace (source, version, constants .str ());
+	return hmatch .str (1) + definitions .str () + hmatch .str (2);
 }
 
 void

@@ -120,7 +120,7 @@ private:
 
 	static
 	std::string
-	addConstants (X3DBrowser* const browser, const std::string & source);
+	addDefinitions (X3DBrowser* const browser, std::string source);
 
 	static
 	void

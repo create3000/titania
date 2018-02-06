@@ -69,7 +69,7 @@ static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed 
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 
-static constexpr auto GLTF_FILE_FILTER             = "GL Transmission Format File (*.gltf)";
+static constexpr auto GLTF_FILE_FILTER             = "GL Transmission Format File 2.0 (*.gltf)";
 static constexpr auto AUTODESK_3DS_MAX_FILE_FILTER = "Autodesk 3DS Max File (*.3ds)";
 static constexpr auto WAVEFRONT_OBJ_FILE_FILTER    = "Wavefront OBJ File (*.obj)";
 static constexpr auto PDF_FILE_FILTER              = "Portable Document Format (*.pdf)";
