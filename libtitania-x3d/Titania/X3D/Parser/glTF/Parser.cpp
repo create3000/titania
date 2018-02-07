@@ -66,6 +66,7 @@
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/MultiTextureCoordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing3D/TextureCoordinate3D.h"
@@ -123,6 +124,8 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	        istream (istream),
 	         scenes (),
 	          nodes (),
+	         images (),
+	       textures (),
 	      materials (),
 	         meshes (),
 	    bufferViews (),
@@ -173,11 +176,11 @@ Parser::parseIntoScene ()
 void
 Parser::importProtos ()
 {
-	FileLoader (scene) .parseIntoScene (scene, { get_shader ("/glTF/gltfMaterial.x3d") .str () });
+	FileLoader (scene) .parseIntoScene (scene, { get_shader ("/glTF/pbrAppearance.x3d") .str () });
 
 	scene -> getRootNodes () .clear ();
 
-	defaultMaterial = scene -> createProto ("gltfMaterial");
+	defaultMaterial = scene -> createProto ("pbrAppearance");
 
 	addUninitializedNode (defaultMaterial);
 }
@@ -195,6 +198,8 @@ Parser::rootObject (json_object* const jobj)
 	buffersObject     (json_object_object_get (jobj, "buffers"));
 	bufferViewsObject (json_object_object_get (jobj, "bufferViews"));
 	asseccorsObject   (json_object_object_get (jobj, "accessors"));
+	imagesObject      (json_object_object_get (jobj, "images"));
+	texturesObject    (json_object_object_get (jobj, "textures"));
 	materialsObject   (json_object_object_get (jobj, "materials"));
 	meshesObject      (json_object_object_get (jobj, "meshes"));
 	nodesObject       (json_object_object_get (jobj, "nodes"));
@@ -622,6 +627,9 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
 
+	if (geometryNode -> texCoord ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORD");
+
 	geometryNode -> normalPerVertex () = geometryNode -> normal ();
 
 	return geometryNode;
@@ -650,8 +658,10 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
-		
 
+	if (geometryNode -> texCoord ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORD");
+		
 	return geometryNode;
 }
 
@@ -1338,6 +1348,134 @@ Parser::bufferValue (json_object* const jobj)
 }
 
 void
+Parser::imagesObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Images
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto image = imageValue (json_object_array_get_idx (jobj, i));
+
+		if (not image)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid image found at index '", i, "'.\n");
+		}
+
+		images .emplace_back (std::move (image));
+	}
+}
+
+Parser::ImagePtr
+Parser::imageValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Image
+
+	const auto image = std::make_shared <Image> ();
+
+	// uri
+
+	std::string uriCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "uri"), uriCharacters))
+	{
+		image -> uri = uriCharacters;
+	}
+
+	return image;
+}
+
+void
+Parser::texturesObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Materials
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto texture = textureValue (json_object_array_get_idx (jobj, i));
+
+		if (not texture)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid texture found at index '", i, "'.\n");
+		}
+
+		textures .emplace_back (std::move (texture));
+	}
+}
+
+X3D::X3DPtr <X3D::X3DTextureNode>
+Parser::textureValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create ImageTexture
+
+	const auto texture = scene -> createNode <X3D::ImageTexture> ();
+
+	// sampler
+
+	int32_t sampler = -1;
+
+	if (integerValue (json_object_object_get (jobj, "sampler"), sampler))
+	{
+		try
+		{
+			//samplers .at (sampler);
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	// source
+
+	int32_t source = -1;
+
+	if (integerValue (json_object_object_get (jobj, "source"), source))
+	{
+		try
+		{
+			const auto image = images .at (source);
+
+			if (image)
+			{
+				texture -> url () = { image -> uri };
+
+				return texture;
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	return nullptr;
+}
+
+void
 Parser::materialsObject (json_object* const jobj)
 {
 	if (not jobj)
@@ -1374,9 +1512,9 @@ Parser::materialValue (json_object* const jobj)
 
 	// Create Material
 
-	const auto material = scene -> createProto ("gltfMaterial");
+	const auto appearance = scene -> createProto ("pbrAppearance");
 
-	addUninitializedNode (material);
+	addUninitializedNode (appearance);
 
 	// Name
 
@@ -1385,7 +1523,7 @@ Parser::materialValue (json_object* const jobj)
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
 		if (not nameCharacters .empty ())
-			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), material);
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), appearance);
 	}
 
 	// doubleSided
@@ -1394,7 +1532,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (booleanValue (json_object_object_get (jobj, "doubleSided"), doubleSided))
 	{
-		material -> setMetaData <bool> ("/Titania/doubleSided", doubleSided);
+		appearance -> setMetaData <bool> ("/Titania/doubleSided", doubleSided);
 	}
 
 	// alphaMode
@@ -1403,7 +1541,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "alphaMode"), alphaMode))
 	{
-		material -> setField <X3D::SFString> ("alphaMode", alphaMode);
+		appearance -> setField <X3D::SFString> ("alphaMode", alphaMode);
 	}
 
 	// alphaMode
@@ -1412,7 +1550,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (doubleValue (json_object_object_get (jobj, "alphaCutoff"), alphaCutoff))
 	{
-		material -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
+		appearance -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
 	}
 
 	// emissiveFactor
@@ -1421,10 +1559,85 @@ Parser::materialValue (json_object* const jobj)
 
 	if (vector3dValue (json_object_object_get (jobj, "emissiveFactor"), emissiveFactor))
 	{
-		material -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
+		appearance -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
 	}
 
-	return material;
+	// pbrMetallicRoughness
+
+	pbrMetallicRoughness (json_object_object_get (jobj, "pbrMetallicRoughness"), appearance);
+
+	return appearance;
+}
+
+void
+Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// emissiveFactor
+
+	Vector4d baseColorFactor;
+
+	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
+	{
+		appearance -> setField <X3D::SFVec4f> ("baseColorFactor", baseColorFactor);
+	}
+
+	// metallicFactor
+
+	double metallicFactor = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "metallicFactor"), metallicFactor))
+	{
+		appearance -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
+	}
+
+	// roughnessFactor
+
+	double roughnessFactor = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "roughnessFactor"), roughnessFactor))
+	{
+		appearance -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
+	}
+
+	// baseColorTextureInfo
+
+	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), appearance);
+}
+
+void
+Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// roughnessFactor
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			const auto & texture = textures .at (index);
+
+			if (texture)
+			{
+				appearance -> setField <X3D::SFNode> ("baseColorTexture", texture);
+				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
 }
 
 std::vector <double>
@@ -2144,6 +2357,35 @@ Parser::vector3dValue (json_object* const jobj, Vector3d & value)
 			{
 				value = Vector3d (x, y, z);
 				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::vector4dValue (json_object* const jobj, Vector4d & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return false;
+
+	double x, y, z, w;
+
+	if (doubleValue (json_object_array_get_idx (jobj, 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, 2), z))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, 3), w))
+				{
+					value = Vector4d (x, y, z, w);
+					return true;
+				}
 			}
 		}
 	}

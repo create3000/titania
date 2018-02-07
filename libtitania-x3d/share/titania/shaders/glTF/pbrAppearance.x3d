@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
-<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'><head><meta name='comment' content='World of Titania'/><meta name='created' content='Mon, 05 Feb 2018 07:19:25 GMT'/><meta name='creator' content='Holger Seelig'/><meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/><meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/gltfMaterial.x3d'/><meta name='modified' content='Wed, 07 Feb 2018 14:03:40 GMT'/><meta name='titania-output-style' content='smallest'/></head><Scene><ProtoDeclare name='gltfMaterial'><ProtoInterface><field accessType='initializeOnly' type='MFString' name='defines'/><field accessType='initializeOnly' type='SFString' name='alphaMode' value='OPAQUE'/><field accessType='initializeOnly' type='SFFloat' name='alphaCutoff' value='0.5'/><field accessType='initializeOnly' type='SFVec3f' name='emissiveFactor'/><field accessType='initializeOnly' type='SFNode' name='emissiveTexture'/><field accessType='initializeOnly' type='SFNode' name='normalTexture'/><field accessType='initializeOnly' type='SFNode' name='occlusionTexture'/><field accessType='initializeOnly' type='SFNode' name='pbrMetallicRoughness'/></ProtoInterface><ProtoBody><Appearance><Material/><ComposedShader DEF='ComposedShader' language='GLSL'><field accessType='inputOutput' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/><field accessType='inputOutput' type='SFVec2f' name='metallicRoughnessValues' value='1 1'/><field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/><field accessType='inputOutput' type='SFNode' name='baseColorTexture'/><field accessType='inputOutput' type='SFNode' name='metallicRoughnessTexture'/><field accessType='inputOutput' type='SFNode' name='emissiveTexture'/><field accessType='inputOutput' type='SFNode' name='normalTexture'/><IS><connect nodeField='emissiveFactor' protoField='emissiveFactor'/></IS><ShaderPart DEF='pbrVertexShader'><![CDATA[data:x-shader/x-vertex,
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Mon, 05 Feb 2018 07:19:25 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
+    <meta name='modified' content='Wed, 07 Feb 2018 16:35:30 GMT'/>
+  </head>
+  <Scene>
+    <ProtoDeclare name='pbrAppearance'>
+      <ProtoInterface>
+        <field accessType='initializeOnly' type='MFString' name='defines'/>
+        <field accessType='initializeOnly' type='SFString' name='alphaMode' value='OPAQUE'/>
+        <field accessType='initializeOnly' type='SFFloat' name='alphaCutoff' value='0.5'/>
+        <field accessType='initializeOnly' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
+        <field accessType='initializeOnly' type='SFFloat' name='metallicFactor' value='1'/>
+        <field accessType='initializeOnly' type='SFFloat' name='roughnessFactor' value='1'/>
+        <field accessType='initializeOnly' type='SFVec3f' name='emissiveFactor'/>
+        <field accessType='initializeOnly' type='SFFloat' name='occlusionStrength'/>
+        <field accessType='initializeOnly' type='SFFloat' name='normalScale' value='1'/>
+        <field accessType='initializeOnly' type='SFNode' name='baseColorTexture'/>
+        <field accessType='initializeOnly' type='SFNode' name='metallicRoughnessTexture'/>
+        <field accessType='initializeOnly' type='SFNode' name='emissiveTexture'/>
+        <field accessType='initializeOnly' type='SFNode' name='occlusionTexture'/>
+        <field accessType='initializeOnly' type='SFNode' name='normalTexture'/>
+        <field accessType='initializeOnly' type='SFNode' name='pbrMetallicRoughness'/>
+      </ProtoInterface>
+      <ProtoBody>
+        <Appearance>
+          <Material/>
+          <ComposedShader DEF='ComposedShader'
+              language='GLSL'>
+            <field accessType='inputOutput' type='SFVec4f' name='baseColorFactor'/>
+            <field accessType='inputOutput' type='SFVec2f' name='metallicRoughnessValues' value='1 1'/>
+            <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
+            <field accessType='inputOutput' type='SFFloat' name='occlusionStrength'/>
+            <field accessType='inputOutput' type='SFFloat' name='normalScale'/>
+            <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='metallicRoughnessTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
+            <IS>
+              <connect nodeField='baseColorFactor' protoField='baseColorFactor'/>
+              <connect nodeField='emissiveFactor' protoField='emissiveFactor'/>
+              <connect nodeField='occlusionStrength' protoField='occlusionStrength'/>
+              <connect nodeField='normalScale' protoField='normalScale'/>
+              <connect nodeField='baseColorTexture' protoField='baseColorTexture'/>
+              <connect nodeField='metallicRoughnessTexture' protoField='metallicRoughnessTexture'/>
+              <connect nodeField='emissiveTexture' protoField='emissiveTexture'/>
+              <connect nodeField='occlusionTexture' protoField='occlusionTexture'/>
+              <connect nodeField='normalTexture' protoField='normalTexture'/>
+            </IS>
+            <ShaderPart DEF='pbrVertexShader'>
+<![CDATA[data:x-shader/x-vertex,
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
@@ -67,7 +122,11 @@ main ()
 
 	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
 }
-]]></ShaderPart><ShaderPart DEF='pbrFragmentShader' type='FRAGMENT'><![CDATA[data:x-shader/x-fragment,
+]]>
+            </ShaderPart>
+            <ShaderPart DEF='pbrFragmentShader'
+                type='FRAGMENT'>
+<![CDATA[data:x-shader/x-fragment,
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
@@ -81,7 +140,7 @@ precision highp int;
 
 uniform x3d_LightSourceParameters x3d_LightSource [1];
 uniform mat4 x3d_CameraSpaceMatrix;
-#define lightDirection (mat3 (x3d_CameraSpaceMatrix) * x3d_LightSource [0] .direction)
+#define lightDirection (mat3 (x3d_CameraSpaceMatrix) * -x3d_LightSource [0] .direction)
 #define lightColor (x3d_LightSource [0] .color)
 
 /*
@@ -93,8 +152,7 @@ uniform sampler2D u_brdfLUT;
 */
 
 #ifdef HAS_BASE_COLOR_MAP
-uniform sampler2D x3d_Texture2D [1];
-#define baseColorTexture x3d_Texture2D [0]
+uniform sampler2D baseColorTexture;
 #endif
 
 #ifdef HAS_NORMAL_MAP
@@ -386,12 +444,28 @@ main ()
 
 	gl_FragColor = vec4 (pow (color, vec3 (1.0 / 2.2)), baseColor .a);
 }
-]]></ShaderPart></ComposedShader></Appearance><Script DEF='gltfMaterialScript'><field accessType='initializeOnly' type='MFString' name='defines'/><field accessType='initializeOnly' type='SFNode' name='pbrMetallicRoughness'/><field accessType='initializeOnly' type='SFNode' name='shader'><ComposedShader USE='ComposedShader'/></field><IS><connect nodeField='defines' protoField='defines'/><connect nodeField='pbrMetallicRoughness' protoField='pbrMetallicRoughness'/></IS><![CDATA[ecmascript:
+]]>
+            </ShaderPart>
+          </ComposedShader>
+        </Appearance>
+        <Script DEF='gltfMaterialScript'>
+          <field accessType='initializeOnly' type='MFString' name='defines'/>
+          <field accessType='inputOutput' type='SFFloat' name='metallicFactor'/>
+          <field accessType='inputOutput' type='SFFloat' name='roughnessFactor'/>
+          <field accessType='initializeOnly' type='SFNode' name='shader'>
+            <ComposedShader USE='ComposedShader'/>
+          </field>
+          <IS>
+            <connect nodeField='defines' protoField='defines'/>
+            <connect nodeField='metallicFactor' protoField='metallicFactor'/>
+            <connect nodeField='roughnessFactor' protoField='roughnessFactor'/>
+          </IS>
+<![CDATA[ecmascript:
 
 function initialize ()
 {
 	set_defines (defines, 0);
-	set_pbrMetallicRoughness (pbrMetallicRoughness, 0);
+	set_metallicRoughnessValues ();
 }
 
 function set_defines (value, time)
@@ -417,16 +491,57 @@ function set_defines (value, time)
 	}
 }
 
-function set_pbrMetallicRoughness (value, time)
+function set_metallicRoughnessValues ()
 {
-	if (pbrMetallicRoughness)
-	{
-		shader .baseColorFactor         = pbrMetallicRoughness .baseColorFactor;
-		shader .metallicRoughnessValues = new SFVec2f (pbrMetallicRoughness .metallicFactor, pbrMetallicRoughness .roughnessFactor);
-	}
-	else
-	{
-		shader .baseColorFactor         = new SFVec4f (1, 1, 1, 1);
-		shader .metallicRoughnessValues = new SFVec2f (1, 1);
-	}
-}]]></Script></ProtoBody></ProtoDeclare><ProtoDeclare name='pbrMetallicRoughness'><ProtoInterface><field accessType='initializeOnly' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/><field accessType='initializeOnly' type='SFFloat' name='metallicFactor' value='1'/><field accessType='initializeOnly' type='SFFloat' name='roughnessFactor' value='1'/><field accessType='initializeOnly' type='SFNode' name='baseColorTexture'/><field accessType='initializeOnly' type='SFNode' name='metallicRoughnessTexture'/></ProtoInterface><ProtoBody></ProtoBody></ProtoDeclare><WorldInfo title='PBRShader'><MetadataSet DEF='Titania_1' name='Titania' reference='http://titania.create3000.de'><MetadataSet DEF='Prototype' containerField='value' name='Prototype' reference='http://titania.create3000.de'><MetadataString DEF='path' containerField='value' name='path' reference='http://titania.create3000.de' value='"gltfMaterial"'/></MetadataSet><MetadataSet DEF='Selection_2' containerField='value' name='Selection' reference='http://titania.create3000.de'><MetadataSet DEF='nodes' containerField='value' name='nodes' reference='http://titania.create3000.de'><!-- NULL --></MetadataSet><MetadataBoolean DEF='selectGeometry' containerField='value' name='selectGeometry' reference='http://titania.create3000.de' value='false'/></MetadataSet><MetadataSet DEF='Grid' containerField='value' name='Grid' reference='http://titania.create3000.de'><MetadataBoolean DEF='enabled' containerField='value' name='enabled' reference='http://titania.create3000.de' value='true'/></MetadataSet><MetadataSet DEF='Page' containerField='value' name='Page' reference='http://titania.create3000.de'><MetadataInteger DEF='activeView' containerField='value' name='activeView' reference='http://titania.create3000.de' value='1'/><MetadataInteger DEF='multiView' containerField='value' name='multiView' reference='http://titania.create3000.de' value='0'/></MetadataSet></MetadataSet></WorldInfo></Scene></X3D>
+	shader .metallicRoughnessValues = new SFVec2f (metallicFactor, roughnessFactor);
+}]]>
+        </Script>
+      </ProtoBody>
+    </ProtoDeclare>
+    <WorldInfo>
+      <MetadataSet DEF='Titania_1'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Prototype' containerField='value'
+            name='Prototype'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='path' containerField='value'
+              name='path'
+              reference='http://titania.create3000.de'
+              value='"pbrAppearance"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection_2' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataSet DEF='nodes' containerField='value'
+              name='nodes'
+              reference='http://titania.create3000.de'/>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Grid' containerField='value'
+            name='Grid'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='enabled' containerField='value'
+              name='enabled'
+              reference='http://titania.create3000.de'
+              value='true'/>
+        </MetadataSet>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+  </Scene>
+</X3D>

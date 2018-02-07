@@ -86,6 +86,14 @@ private:
 
 	///  @name Member types
 
+	struct Image
+	{
+		std::string uri;
+	};
+
+	using ImagePtr      = std::shared_ptr <Image>;
+	using ImagePtrArray = std::vector <ImagePtr>;
+
 	struct Buffer
 	{
 		std::string contents;
@@ -266,10 +274,28 @@ private:
 	bufferValue (json_object* const jobj);
 
 	void
+	imagesObject (json_object* const jobj);
+
+	ImagePtr
+	imageValue (json_object* const jobj);
+
+	void
+	texturesObject (json_object* const jobj);
+
+	X3D::X3DPtr <X3D::X3DTextureNode>
+	textureValue (json_object* const jobj);
+
+	void
 	materialsObject (json_object* const jobj);
 
 	X3D::SFNode
 	materialValue (json_object* const jobj);
+
+	void
+	pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearance);
+
+	void
+	baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
 
 	///
 
@@ -308,6 +334,9 @@ private:
 	bool
 	vector3dValue (json_object* const jobj, Vector3d & value);
 
+	bool
+	vector4dValue (json_object* const jobj, Vector4d & value);
+
 	///
 
 	struct json_object*
@@ -333,6 +362,8 @@ private:
 
 	X3D::X3DPtr <X3D::Switch>                   scenes;
 	X3D::X3DPtrArray <X3D::Transform>           nodes;
+	ImagePtrArray                               images;
+	X3D::X3DPtrArray <X3D::X3DTextureNode>      textures;
 	X3D::MFNode                                 materials;
 	std::vector <X3D::X3DPtrArray <X3D::Shape>> meshes;
 	std::vector <AccessorPtr>                   accessors;
