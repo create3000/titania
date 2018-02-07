@@ -57,7 +57,7 @@
 #include "../Parser/XMLParser.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Autodesk/Parser.h"
-#include "../Parser/GLTF/Parser.h"
+#include "../Parser/glTF/Parser.h"
 #include "../Parser/PDF/Parser.h"
 #include "../Parser/SVG/Parser.h"
 #include "../Parser/VRML1/Parser.h"
@@ -177,7 +177,7 @@ GoldenGate::getContentTypeFunctions ()
 	contentTypes .emplace ("application/xml",                  &GoldenParser::parse <XMLParser>);
 	contentTypes .emplace ("application/vnd.hzn-3d-crossword", &GoldenParser::parse <XMLParser>);
 	contentTypes .emplace ("model/x3d+json",                   &GoldenParser::parse <JSONParser>);
-	contentTypes .emplace ("model/gltf+json",                  &GoldenParser::parse <GLTF::Parser>);
+	contentTypes .emplace ("model/gltf+json",                  &GoldenParser::parse <glTF::Parser>);
 	contentTypes .emplace ("application/x-3ds",                &GoldenParser::parse <Autodesk::Parser>);
 	contentTypes .emplace ("image/x-3ds",                      &GoldenParser::parse <Autodesk::Parser>);
 
@@ -221,7 +221,7 @@ GoldenGate::getSuffixes ()
 	suffixes .emplace (".x3dj", &GoldenParser::parse <JSONParser>);
 
 	// GLTF
-	suffixes .emplace (".gltf", &GoldenParser::parse <GLTF::Parser>);
+	suffixes .emplace (".gltf", &GoldenParser::parse <glTF::Parser>);
 
 	// Autodesk 3DS Max
 	suffixes .emplace (".3ds", &GoldenParser::parse <Autodesk::Parser>);

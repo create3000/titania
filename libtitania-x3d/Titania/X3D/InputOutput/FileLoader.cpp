@@ -203,10 +203,10 @@ throw (Error <INVALID_URL>,
 		catch (const X3DError & error)
 		{
 			urlError .emplace_back (error .what ());
+
+			istream .close ();
 		}
 	}
-
-	istream .close ();
 
 	std::ostringstream error;
 

@@ -59,7 +59,7 @@ struct json_object;
 
 namespace titania {
 namespace X3D {
-namespace GLTF {
+namespace glTF {
 
 class Parser :
 	public X3D::X3DParser
@@ -152,9 +152,10 @@ private:
 
 	struct Primitive
 	{
-		AttributesPtr attributes;
-		AccessorPtr   indices;
-		int32_t       mode;
+		AttributesPtr              attributes;
+		AccessorPtr                indices;
+		X3D::X3DPtr <X3D::X3DNode> material;
+		int32_t                    mode;
 	};
 
 	using PrimitivePtr   = std::shared_ptr <Primitive>;
@@ -167,6 +168,9 @@ private:
 	{ return scene -> getBrowser (); }
 
 	///  @name Operations
+
+	void
+	importProtos ();
 
 	void
 	rootObject (json_object* const jobj);
@@ -201,20 +205,20 @@ private:
 	void
 	meshesObject (json_object* const jobj);
 
-	bool
-	meshObject (json_object* const jobj);
-
 	X3D::X3DPtrArray <X3D::Shape>
 	meshArray (json_object* const jobj);
 
 	X3D::X3DPtr <X3D::Shape>
 	createShape (const PrimitivePtr & primitive) const;
 
+	X3D::X3DPtr <X3D::X3DGeometryNode>
+	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
+
 	X3D::X3DPtr <X3D::IndexedTriangleSet>
-	createIndexedTriangleSet (const PrimitivePtr & primitive) const;
+	createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
 
 	X3D::X3DPtr <X3D::TriangleSet>
-	createTriangleSet (const PrimitivePtr & primitive) const;
+	createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
 
 	X3D::X3DPtr <X3D::Coordinate>
 	createCoordinate (const AccessorPtr & position) const;
@@ -260,6 +264,12 @@ private:
 
 	BufferPtr
 	bufferValue (json_object* const jobj);
+
+	void
+	materialsObject (json_object* const jobj);
+
+	X3D::SFNode
+	materialValue (json_object* const jobj);
 
 	///
 
@@ -323,14 +333,16 @@ private:
 
 	X3D::X3DPtr <X3D::Switch>                   scenes;
 	X3D::X3DPtrArray <X3D::Transform>           nodes;
+	X3D::MFNode                                 materials;
 	std::vector <X3D::X3DPtrArray <X3D::Shape>> meshes;
 	std::vector <AccessorPtr>                   accessors;
 	std::vector <BufferViewPtr>                 bufferViews;
 	std::vector <BufferPtr>                     buffers;
+	X3D::X3DPtr <X3D::X3DNode>                  defaultMaterial;
 
 };
 
-} // GLTF
+} // glTF
 } // X3D
 } // titania
 

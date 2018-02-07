@@ -979,11 +979,12 @@
     <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Background.fs" />
     <None Include="share\titania\shaders\Shaders\Background.vs" />
-    <None Include="Titania\X3D\Parser\GLTF\Parser.h" />
     <None Include="share\mime\packages\gltf+json.xml" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+json.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-gltf+json.svg" />
     <None Include="share\mime\packages\x3d+json.xml" />
+    <None Include="share\titania\shaders\glTF\gltfMaterial.x3d" />
+    <None Include="Titania\X3D\Parser\glTF\Parser.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1692,7 +1693,7 @@
     <Compile Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.cpp" />
     <Compile Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.cpp" />
-    <Compile Include="Titania\X3D\Parser\GLTF\Parser.cpp" />
+    <Compile Include="Titania\X3D\Parser\glTF\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1795,7 +1796,8 @@
     <Folder Include="Titania\X3D\Components\X_ITE\" />
     <Folder Include="Titania\X3D\Tools\X_ITE\" />
     <Folder Include="share\titania\shaders\Shaders\Inlcude\" />
-    <Folder Include="Titania\X3D\Parser\GLTF\" />
+    <Folder Include="share\titania\shaders\glTF\" />
+    <Folder Include="Titania\X3D\Parser\glTF\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

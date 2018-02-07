@@ -50,7 +50,9 @@
 
 #include "Parser.h"
 
+#include "../../Browser/Networking/config.h"
 #include "../../Components/Core/WorldInfo.h"
+#include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Grouping/Switch.h"
@@ -81,7 +83,7 @@ extern "C" {
 
 namespace titania {
 namespace X3D {
-namespace GLTF {
+namespace glTF {
 
 //accessors
 //asset
@@ -115,20 +117,26 @@ const std::map <Parser::ComponentType, std::tuple <double, double, double, doubl
 };
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	X3D::X3DParser (),
-	         scene (scene),
-	           uri (uri),
-	       istream (istream),
-	        scenes (),
-	         nodes (),
-	        meshes (),
-	   bufferViews (),
-	       buffers ()
+	 X3D::X3DParser (),
+	          scene (scene),
+	            uri (uri),
+	        istream (istream),
+	         scenes (),
+	          nodes (),
+	      materials (),
+	         meshes (),
+	    bufferViews (),
+	        buffers (),
+	defaultMaterial ()
 { }
 
 void
 Parser::parseIntoScene ()
 {
+	pushExecutionContext (scene);
+
+	importProtos ();
+
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::XML);
 	scene -> setProfile (getBrowser () -> getProfile ("Full"));
@@ -158,6 +166,20 @@ Parser::parseIntoScene ()
 
 	if (jerror not_eq json_tokener_success)
 		throw Error <INVALID_X3D> ("Invalid X3D: " + jerrorString);
+
+	popExecutionContext ();
+}
+
+void
+Parser::importProtos ()
+{
+	FileLoader (scene) .parseIntoScene (scene, { get_shader ("/glTF/gltfMaterial.x3d") .str () });
+
+	scene -> getRootNodes () .clear ();
+
+	defaultMaterial = scene -> createProto ("gltfMaterial");
+
+	addUninitializedNode (defaultMaterial);
 }
 
 void
@@ -173,6 +195,7 @@ Parser::rootObject (json_object* const jobj)
 	buffersObject     (json_object_object_get (jobj, "buffers"));
 	bufferViewsObject (json_object_object_get (jobj, "bufferViews"));
 	asseccorsObject   (json_object_object_get (jobj, "accessors"));
+	materialsObject   (json_object_object_get (jobj, "materials"));
 	meshesObject      (json_object_object_get (jobj, "meshes"));
 	nodesObject       (json_object_object_get (jobj, "nodes"));
 	scenesObject      (json_object_object_get (jobj, "scenes"));
@@ -274,7 +297,8 @@ Parser::sceneObject (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
-		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), groupNode);
+		if (not nameCharacters .empty ())
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), groupNode);
 	}
 
 	// Add nodes.
@@ -368,7 +392,8 @@ Parser::node1Object (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
-		scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), transformNode);
+		if (not nameCharacters .empty ())
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), transformNode);
 	}
 
 	// Transformation Matrix
@@ -518,56 +543,60 @@ X3D::X3DPtr <X3D::Shape>
 Parser::createShape (const PrimitivePtr & primitive) const
 {
 	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
-	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
-	const auto materialNode   = scene -> createNode <X3D::Material> ();
+	const auto appearanceNode = primitive -> material ? primitive -> material : defaultMaterial;
+	const auto geometryNode   = createGeometry (primitive, appearanceNode);
 
-	shapeNode -> appearance ()    = appearanceNode;
-	appearanceNode -> material () = materialNode;
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
 
+	return shapeNode;
+}
+
+X3D::X3DPtr <X3D::X3DGeometryNode>
+Parser::createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
+{
 	switch (primitive -> mode)
 	{
 		case 0: // POINTS
 		{
-			break;
+			return nullptr;
 		}
 		case 1: // LINES
 		{
-			break;
+			return nullptr;
 		}
 		case 2: // LINE_LOOP
 		{
-			break;
+			return nullptr;
 		}
 		case 3: // LINE_STRIP
 		{
-			break;
+			return nullptr;
 		}
 		case 4: // TRIANGLES
 		{
 			if (primitive -> indices)
-				shapeNode -> geometry () = createIndexedTriangleSet (primitive);
-			else
-				shapeNode -> geometry () = createTriangleSet (primitive);
+				return createIndexedTriangleSet (primitive, material);
 
-			break;
+			return createTriangleSet (primitive, material);
 		}
 		case 5: // TRIANGLE_STRIP
 		{
-			break;
+			return nullptr;
 		}
 		case 6: // TRIANGLE_FAN
 		{
-			break;
+			return nullptr;
 		}
 		default:
 			return nullptr;
 	}
 
-	return shapeNode;
+	return nullptr;
 }
 
 X3D::X3DPtr <X3D::IndexedTriangleSet>
-Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
+Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
 {
 	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
 	const auto attributes   = primitive -> attributes;
@@ -576,12 +605,19 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
 
 	geometryNode -> index () .assign (indices .begin (), indices .end ());
 
+	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
 	geometryNode -> coord ()    = createCoordinate (attributes -> position);
 	geometryNode -> normal ()   = createNormal (attributes -> normal);
 	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
 
 	if (tangent)
+	{
 		geometryNode -> attrib () .emplace_back (tangent);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENT");
+	}
+
+	if (geometryNode -> normal ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL");
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
@@ -592,21 +628,29 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive) const
 }
 
 X3D::X3DPtr <X3D::TriangleSet>
-Parser::createTriangleSet (const PrimitivePtr & primitive) const
+Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
 {
 	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
 	const auto attributes   = primitive -> attributes;
 	const auto tangent      = createTangent (attributes -> tangent);
 
+	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
 	geometryNode -> coord ()    = createCoordinate (attributes -> position);
 	geometryNode -> normal ()   = createNormal (attributes -> normal);
 	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
 
 	if (tangent)
+	{
 		geometryNode -> attrib () .emplace_back (tangent);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENT");
+	}
+
+	if (geometryNode -> normal ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL");
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
+		
 
 	return geometryNode;
 }
@@ -916,6 +960,22 @@ Parser::primitiveValue (json_object* const jobj)
 		primitive -> indices = asseccor;
 	}
 	
+	// Material
+
+	int32_t material = -1;
+
+	if (integerValue (json_object_object_get (jobj, "material"), material))
+	{
+		try
+		{
+			primitive -> material = materials .at (material);
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> warn ("Material with index '", material, "' not found.\n");
+		}
+	}
+
 	// Mode
 
 	int32_t mode = 4;
@@ -1275,6 +1335,96 @@ Parser::bufferValue (json_object* const jobj)
 	}
 
 	return nullptr;
+}
+
+void
+Parser::materialsObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Materials
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto material = materialValue (json_object_array_get_idx (jobj, i));
+
+		if (not material)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid material found at index '", i, "'.\n");
+		}
+
+		materials .emplace_back (std::move (material));
+	}
+}
+
+X3D::SFNode
+Parser::materialValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Material
+
+	const auto material = scene -> createProto ("gltfMaterial");
+
+	addUninitializedNode (material);
+
+	// Name
+
+	std::string nameCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
+	{
+		if (not nameCharacters .empty ())
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), material);
+	}
+
+	// doubleSided
+
+	bool doubleSided = false;
+
+	if (booleanValue (json_object_object_get (jobj, "doubleSided"), doubleSided))
+	{
+		material -> setMetaData <bool> ("/Titania/doubleSided", doubleSided);
+	}
+
+	// alphaMode
+
+	std::string alphaMode = "OPAQUE";
+
+	if (stringValue (json_object_object_get (jobj, "alphaMode"), alphaMode))
+	{
+		material -> setField <X3D::SFString> ("alphaMode", alphaMode);
+	}
+
+	// alphaMode
+
+	double alphaCutoff = 0.5;
+
+	if (doubleValue (json_object_object_get (jobj, "alphaCutoff"), alphaCutoff))
+	{
+		material -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
+	}
+
+	// emissiveFactor
+
+	Vector3d emissiveFactor;
+
+	if (vector3dValue (json_object_object_get (jobj, "emissiveFactor"), emissiveFactor))
+	{
+		material -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
+	}
+
+	return material;
 }
 
 std::vector <double>
@@ -2021,6 +2171,6 @@ Parser::json_object_object_get (struct json_object* obj, const char* key)
 Parser::~Parser ()
 { }
 
-} // GLTF
+} // glTF
 } // X3D
 } // titania
