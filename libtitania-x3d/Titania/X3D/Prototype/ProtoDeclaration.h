@@ -122,12 +122,6 @@ public:
 	///  @name Member access
 
 	virtual
-	std::string
-	getTitle () const
-	throw (Error <DISPOSED>) final override
-	{ return getExecutionContext () -> getTitle (); }
-
-	virtual
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,

@@ -248,10 +248,7 @@ X3DNotebookPage::updateTitle ()
 std::string
 X3DNotebookPage::getTitle () const
 {
-	auto title = mainBrowser -> getExecutionContext () -> getTitle ();
-
-	if (title .empty ())
-		title = getWorldURL () .basename ();
+	auto title = getWorldURL () .basename ();
 
 	if (title .empty () or getScene () -> getWorldURL () .empty ())
 		title = _ ("New Scene");

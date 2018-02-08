@@ -297,6 +297,18 @@ private:
 	void
 	baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
 
+	void
+	metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
+	void
+	emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
+	void
+	occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
+	void
+	normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
 	///
 
 	std::vector <double>

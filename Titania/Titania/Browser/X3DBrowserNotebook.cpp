@@ -664,7 +664,6 @@ X3DBrowserNotebook::set_executionContext ()
 void
 X3DBrowserNotebook::set_history ()
 {
-	const auto title    = getCurrentScene () -> getTitle ();
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (worldURL .empty ())
@@ -680,7 +679,7 @@ X3DBrowserNotebook::set_history ()
 
 	// Update history.
 
-	getHistory () -> setItem (title, worldURL, getIconFactory () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	getHistory () -> setItem (worldURL .basename (), worldURL, getIconFactory () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 }
 
 void

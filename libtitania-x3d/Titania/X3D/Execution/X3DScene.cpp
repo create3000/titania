@@ -119,26 +119,6 @@ X3DScene::initialize ()
 	X3DExecutionContext::initialize ();
 }
 
-std::string
-X3DScene::getTitle () const
-throw (Error <DISPOSED>)
-{
-	if (getWorldInfo () and not getWorldInfo () -> title () .empty ())
-		return getWorldInfo () -> title ();
-
-	try
-	{
-		const auto & title = getMetaData ("title");
-
-		if (not title .empty ())
-			return title;
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-
-	return getWorldURL () .basename ();
-}
-
 void
 X3DScene::setWorldURL (const basic::uri & value)
 throw (Error <INVALID_OPERATION_TIMING>,

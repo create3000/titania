@@ -50,6 +50,8 @@
 
 #include "Filter.h"
 
+#include <Titania/String.h>
+
 #include <regex>
 
 namespace titania {
@@ -86,7 +88,7 @@ GetNameFromString (const std::string & name_)
 {
 	static const std::regex Spaces (R"/(\s+)/");
 
-	auto name = std::regex_replace (name_, Spaces, "_");
+	auto name = std::regex_replace (basic::trim (name_), Spaces, "-");
 
 	FilterNonIdCharacters (name);
 

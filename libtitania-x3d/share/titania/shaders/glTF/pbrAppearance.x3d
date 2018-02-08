@@ -7,26 +7,26 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
-    <meta name='modified' content='Wed, 07 Feb 2018 16:35:30 GMT'/>
+    <meta name='modified' content='Thu, 08 Feb 2018 03:58:26 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
       <ProtoInterface>
-        <field accessType='initializeOnly' type='MFString' name='defines'/>
-        <field accessType='initializeOnly' type='SFString' name='alphaMode' value='OPAQUE'/>
-        <field accessType='initializeOnly' type='SFFloat' name='alphaCutoff' value='0.5'/>
-        <field accessType='initializeOnly' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
-        <field accessType='initializeOnly' type='SFFloat' name='metallicFactor' value='1'/>
-        <field accessType='initializeOnly' type='SFFloat' name='roughnessFactor' value='1'/>
-        <field accessType='initializeOnly' type='SFVec3f' name='emissiveFactor'/>
-        <field accessType='initializeOnly' type='SFFloat' name='occlusionStrength'/>
-        <field accessType='initializeOnly' type='SFFloat' name='normalScale' value='1'/>
-        <field accessType='initializeOnly' type='SFNode' name='baseColorTexture'/>
-        <field accessType='initializeOnly' type='SFNode' name='metallicRoughnessTexture'/>
-        <field accessType='initializeOnly' type='SFNode' name='emissiveTexture'/>
-        <field accessType='initializeOnly' type='SFNode' name='occlusionTexture'/>
-        <field accessType='initializeOnly' type='SFNode' name='normalTexture'/>
-        <field accessType='initializeOnly' type='SFNode' name='pbrMetallicRoughness'/>
+        <field accessType='inputOutput' type='MFString' name='defines'/>
+        <field accessType='inputOutput' type='SFString' name='alphaMode' value='OPAQUE'/>
+        <field accessType='inputOutput' type='SFFloat' name='alphaCutoff' value='0.5'/>
+        <field accessType='inputOutput' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
+        <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
+        <field accessType='inputOutput' type='SFFloat' name='roughnessFactor' value='1'/>
+        <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
+        <field accessType='inputOutput' type='SFFloat' name='occlusionStrength' value='1'/>
+        <field accessType='inputOutput' type='SFFloat' name='normalScale' value='1'/>
+        <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='metallicRoughnessTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='pbrMetallicRoughness'/>
       </ProtoInterface>
       <ProtoBody>
         <Appearance>
@@ -75,7 +75,7 @@ attribute vec4 x3d_Vertex;
 attribute vec3 x3d_Normal;
 #endif
 
-#ifdef HAS_TEXCOORD
+#ifdef HAS_TEXCOORDS
 attribute vec4 x3d_TexCoord;
 #endif
 
@@ -109,13 +109,13 @@ main ()
 			vec3 bitangentW = cross (normalW, tangentW) * tangent .w;
 
 			TBN = mat3 (tangentW, bitangentW, normalW);
-		#else
+		#else // HAS_TANGENTS
 			normal = normalize (vec3 (modelMatrix * vec4 (x3d_Normal .xyz, 0.0)));
 		#endif
 	#endif
 
-	#ifdef HAS_TEXCOORD
-		texCoord = x3d_TexCoord .st;
+	#ifdef HAS_TEXCOORDS
+		texCoord = vec2 (x3d_TexCoord .s, 1.0 - x3d_TexCoord .t);
 	#else
 		texCoord = vec2 (0.0, 0.0);
 	#endif
@@ -258,7 +258,7 @@ getNormal ()
 	#ifdef HAS_NORMAL_MAP
 		vec3 n = texture2D (normalTexture, texCoord) .rgb;
 		
-		n = normalize (tbn * ((2.0 * n - 1.0) * vec3 (normalScale, normalScale, 1.0)));
+		n = normalize (tbn * ((normalize (n) * 2.0 - 1.0) * vec3 (normalScale, normalScale, 1.0)));
 	#else
 		vec3 n = tbn [2] .xyz;
 	#endif
@@ -449,7 +449,7 @@ main ()
           </ComposedShader>
         </Appearance>
         <Script DEF='gltfMaterialScript'>
-          <field accessType='initializeOnly' type='MFString' name='defines'/>
+          <field accessType='inputOutput' type='MFString' name='defines'/>
           <field accessType='inputOutput' type='SFFloat' name='metallicFactor'/>
           <field accessType='inputOutput' type='SFFloat' name='roughnessFactor'/>
           <field accessType='initializeOnly' type='SFNode' name='shader'>
@@ -491,6 +491,16 @@ function set_defines (value, time)
 	}
 }
 
+function set_metallicFactor ()
+{
+	set_metallicRoughnessValues ();
+}
+
+function set_roughnessFactor ()
+{
+	set_metallicRoughnessValues ();
+}
+
 function set_metallicRoughnessValues ()
 {
 	shader .metallicRoughnessValues = new SFVec2f (metallicFactor, roughnessFactor);
@@ -515,7 +525,9 @@ function set_metallicRoughnessValues ()
             reference='http://titania.create3000.de'>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'/>
+              reference='http://titania.create3000.de'>
+            <!-- NULL -->
+          </MetadataSet>
           <MetadataBoolean DEF='selectGeometry' containerField='value'
               name='selectGeometry'
               reference='http://titania.create3000.de'

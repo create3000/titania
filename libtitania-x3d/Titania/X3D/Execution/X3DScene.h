@@ -77,11 +77,6 @@ public:
 	throw (Error <DISPOSED>)
 	{ return this == getExecutionContext (); }
 
-	virtual
-	std::string
-	getTitle () const
-	throw (Error <DISPOSED>) final override;
-
 	void
 	setWorldURL (const basic::uri & value)
 	throw (Error <INVALID_OPERATION_TIMING>,

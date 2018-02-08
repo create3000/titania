@@ -71,6 +71,7 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing3D/TextureCoordinate3D.h"
 #include "../../Components/Texturing3D/TextureCoordinate4D.h"
+#include "../../Editing/X3DEditor.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
 
@@ -178,7 +179,7 @@ Parser::importProtos ()
 {
 	FileLoader (scene) .parseIntoScene (scene, { get_shader ("/glTF/pbrAppearance.x3d") .str () });
 
-	scene -> getRootNodes () .clear ();
+	X3D::X3DEditor::removeNodesFromScene (scene, scene -> getRootNodes (), true, std::make_shared <X3D::UndoStep> ());
 
 	defaultMaterial = scene -> createProto ("pbrAppearance");
 
@@ -222,7 +223,7 @@ Parser::assetObject (json_object* const jobj)
 
 	worldInfoNode -> title () = scene -> getWorldURL () .name ();
 
-	scene -> getRootNodes () .emplace_back (worldInfoNode);
+	scene -> getRootNodes () .emplace_front (worldInfoNode);
 
 	// Get values.
 
@@ -618,17 +619,17 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 	if (tangent)
 	{
 		geometryNode -> attrib () .emplace_back (tangent);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENT");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
 	}
 
 	if (geometryNode -> normal ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
 
 	if (geometryNode -> texCoord ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORD");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
 
 	geometryNode -> normalPerVertex () = geometryNode -> normal ();
 
@@ -650,17 +651,17 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 	if (tangent)
 	{
 		geometryNode -> attrib () .emplace_back (tangent);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENT");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
 	}
 
 	if (geometryNode -> normal ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
 
 	if (not attributes -> color .empty ())
 		geometryNode -> color () = createColor (attributes -> color [0]);
 
 	if (geometryNode -> texCoord ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORD");
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
 		
 	return geometryNode;
 }
@@ -1562,6 +1563,18 @@ Parser::materialValue (json_object* const jobj)
 		appearance -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
 	}
 
+	// emissiveTextureInfo
+
+	emissiveTextureInfo (json_object_object_get (jobj, "emissiveTexture"), appearance);
+
+	// occlusionTextureInfo
+
+	occlusionTextureInfo (json_object_object_get (jobj, "occlusionTexture"), appearance);
+
+	// normalTextureInfo
+
+	normalTextureInfo (json_object_object_get (jobj, "normalTexture"), appearance);
+
 	// pbrMetallicRoughness
 
 	pbrMetallicRoughness (json_object_object_get (jobj, "pbrMetallicRoughness"), appearance);
@@ -1578,7 +1591,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	// emissiveFactor
+	// baseColorFactor
 
 	Vector4d baseColorFactor;
 
@@ -1608,6 +1621,10 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 	// baseColorTextureInfo
 
 	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), appearance);
+
+	// metallicRoughnessTextureInfo
+
+	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), appearance);
 }
 
 void
@@ -1619,7 +1636,7 @@ Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	// roughnessFactor
+	// index
 
 	int32_t index = -1;
 
@@ -1633,6 +1650,144 @@ Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 			{
 				appearance -> setField <X3D::SFNode> ("baseColorTexture", texture);
 				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
+Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// index
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			const auto & texture = textures .at (index);
+
+			if (texture)
+			{
+				appearance -> setField <X3D::SFNode> ("metallicRoughnessTexture", texture);
+				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_METAL_ROUGHNESS_MAP");
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
+Parser::emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// index
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			const auto & texture = textures .at (index);
+
+			if (texture)
+			{
+				appearance -> setField <X3D::SFNode> ("emissiveTexture", texture);
+				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_EMISSIVE_MAP");
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
+Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// scale
+
+	double strength = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "strength"), strength))
+	{
+		appearance -> setField <X3D::SFFloat> ("occlusionStrength", float (strength));
+	}
+
+	// index
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			const auto & texture = textures .at (index);
+
+			if (texture)
+			{
+				appearance -> setField <X3D::SFNode> ("occlusionTexture", texture);
+				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_OCCLUSION_MAP");
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
+Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// scale
+
+	double scale = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "scale"), scale))
+	{
+		appearance -> setField <X3D::SFFloat> ("normalScale", float (scale));
+	}
+
+	// index
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			const auto & texture = textures .at (index);
+
+			if (texture)
+			{
+				appearance -> setField <X3D::SFNode> ("normalTexture", texture);
+				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)
