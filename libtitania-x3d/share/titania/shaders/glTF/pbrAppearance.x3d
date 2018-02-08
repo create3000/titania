@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
-    <meta name='modified' content='Thu, 08 Feb 2018 03:58:26 GMT'/>
+    <meta name='modified' content='Thu, 08 Feb 2018 08:20:46 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -67,7 +67,7 @@ precision highp int;
 
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
-uniform mat4 x3d_CameraSpaceMatrix;
+uniform mat3 x3d_NormalMatrix;
 
 attribute vec4 x3d_Vertex;
 
@@ -97,20 +97,19 @@ varying vec3 normal;
 void
 main ()
 {
-	mat4 modelMatrix = x3d_CameraSpaceMatrix * x3d_ModelViewMatrix;
-	vec4 pos         = modelMatrix * x3d_Vertex;
+	vec4 pos = x3d_ModelViewMatrix * x3d_Vertex;
  
 	position = vec3 (pos .xyz) / pos .w;
 
 	#ifdef HAS_NORMALS
 		#ifdef HAS_TANGENTS
-			vec3 normalW    = normalize (vec3 (modelMatrix * vec4 (x3d_Normal, 0.0)));
-			vec3 tangentW   = normalize (vec3 (modelMatrix * vec4 (tangent .xyz, 0.0)));
+			vec3 normalW    = normalize (x3d_NormalMatrix * x3d_Normal);
+			vec3 tangentW   = normalize (x3d_NormalMatrix * tangent .xyz);
 			vec3 bitangentW = cross (normalW, tangentW) * tangent .w;
 
 			TBN = mat3 (tangentW, bitangentW, normalW);
 		#else // HAS_TANGENTS
-			normal = normalize (vec3 (modelMatrix * vec4 (x3d_Normal .xyz, 0.0)));
+			normal = normalize (x3d_NormalMatrix * x3d_Normal);
 		#endif
 	#endif
 
@@ -120,7 +119,7 @@ main ()
 		texCoord = vec2 (0.0, 0.0);
 	#endif
 
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+	gl_Position = x3d_ProjectionMatrix * pos;
 }
 ]]>
             </ShaderPart>
@@ -140,7 +139,7 @@ precision highp int;
 
 uniform x3d_LightSourceParameters x3d_LightSource [1];
 uniform mat4 x3d_CameraSpaceMatrix;
-#define lightDirection (mat3 (x3d_CameraSpaceMatrix) * -x3d_LightSource [0] .direction)
+#define lightDirection (-x3d_LightSource [0] .direction)
 #define lightColor (x3d_LightSource [0] .color)
 
 /*
@@ -177,7 +176,7 @@ uniform float occlusionStrength;
 uniform vec4 baseColorFactor;
 uniform vec2 metallicRoughnessValues;
 
-#define camera (x3d_CameraSpaceMatrix [3] .xyz)
+#define camera (vec3 (0.0))
 
 varying vec3 position;
 varying vec2 texCoord;
@@ -258,7 +257,7 @@ getNormal ()
 	#ifdef HAS_NORMAL_MAP
 		vec3 n = texture2D (normalTexture, texCoord) .rgb;
 		
-		n = normalize (tbn * ((normalize (n) * 2.0 - 1.0) * vec3 (normalScale, normalScale, 1.0)));
+		n = normalize (tbn * ((n * 2.0 - 1.0) * vec3 (normalScale, normalScale, 1.0)));
 	#else
 		vec3 n = tbn [2] .xyz;
 	#endif
@@ -387,11 +386,10 @@ main ()
 	vec3  specularEnvironmentR0  = specularColor .rgb;
 	vec3  specularEnvironmentR90 = vec3 (1.0, 1.0, 1.0) * reflectance90;
 
-	vec3 n          = getNormal ();                         // normal at surface point
-	vec3 v          = normalize (camera - position);        // Vector from surface point to camera
-	vec3 l          = normalize (lightDirection);           // Vector from surface point to light
-	vec3 h          = normalize (l + v);                    // Half vector between both l and v
-	vec3 reflection = -normalize (reflect (v, n));
+	vec3 n = getNormal ();                         // normal at surface point
+	vec3 v = normalize (camera - position);        // Vector from surface point to camera
+	vec3 l = normalize (lightDirection);           // Vector from surface point to light
+	vec3 h = normalize (l + v);                    // Half vector between both l and v
 
 	float NdotL = clamp (dot (n, l), 0.001, 1.0);
 	float NdotV = abs (dot (n, v)) + 0.001;
@@ -427,6 +425,7 @@ main ()
 	/*
 	// Calculate lighting contribution from image based lighting source (IBL)
 	#ifdef USE_IBL
+	vec3 reflection = -normalize (reflect (v, n));
 	color += getIBLContribution(pbrInputs, n, reflection);
 	#endif
 	*/

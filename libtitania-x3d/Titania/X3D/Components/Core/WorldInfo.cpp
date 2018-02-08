@@ -84,45 +84,8 @@ WorldInfo::create (X3DExecutionContext* const executionContext) const
 	return new WorldInfo (executionContext);
 }
 
-void
-WorldInfo::initialize ()
-{
-	X3DInfoNode::initialize ();
-
-	if (not getPrivate ())
-	{
-		if (not getExecutionContext () -> getWorldInfo ())
-			getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
-	}
-}
-
-void
-WorldInfo::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (getExecutionContext () -> getWorldInfo () == this)
-	{
-		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> ());
-		executionContext -> setWorldInfo (X3DPtr <WorldInfo> (this));
-	}
-
-	X3DInfoNode::setExecutionContext (executionContext);
-}
-
-void
-WorldInfo::setPrivate (const bool value)
-{
-	X3DInfoNode::setPrivate (value);
-
-	if (value)
-	{
-		if (getExecutionContext () -> getWorldInfo () == this)
-			getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> ());
-	}
-	else
-		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
-}
+WorldInfo:: ~WorldInfo ()
+{ }
 
 } // X3D
 } // titania

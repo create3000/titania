@@ -52,7 +52,6 @@
 
 #include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
-#include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
@@ -76,7 +75,6 @@ random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ())
 
 X3DExecutionContext::X3DExecutionContext () :
 	          X3DBaseNode (),
-	            worldInfo (),
 	           namedNodes (),
 	        importedNodes (),
 	  importedNodesOutput (),
@@ -95,8 +93,7 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	addType (X3DConstants::X3DExecutionContext);
 
-	addChildObjects (worldInfo,
-	                 namedNodesOutput,
+	addChildObjects (namedNodesOutput,
 	                 importedNodesOutput,
 	                 prototypesOutput,
 	                 externProtosLoadCount,
@@ -217,22 +214,6 @@ X3DExecutionContext::hasComponent (const ComponentType & component) const
 	}
 
 	return true;
-}
-
-// Meta data handling
-
-void
-X3DExecutionContext::setWorldInfo (const X3DPtr <WorldInfo> & value)
-throw (Error <DISPOSED>)
-{
-	worldInfo = value;
-}
-
-X3DPtr <WorldInfo>
-X3DExecutionContext::getWorldInfo () const
-throw (Error <DISPOSED>)
-{
-	return X3DPtr <WorldInfo> (worldInfo);
 }
 
 // Node handling

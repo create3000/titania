@@ -207,13 +207,6 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 {
 	try
 	{
-		// Restore WorldInfo
-
-		const auto worldInfo         = executionContext -> getWorldInfo ();
-		const auto importedWorldInfo = scene -> getWorldInfo ();
-	
-		undoStep -> addUndoFunction (&X3DExecutionContext::setWorldInfo, executionContext, worldInfo);
-
 		// Restore protos
 
 		undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
@@ -315,14 +308,6 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 
 		undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 		undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
-
-		// Remove imported WorldInfo and restore old one.
-
-		if (importedWorldInfo)
-			removeNodesFromScene (executionContext, { importedWorldInfo }, true, undoStep);
-
-		undoStep -> addRedoFunction (&X3DExecutionContext::setWorldInfo, executionContext, worldInfo);
-		executionContext -> setWorldInfo (worldInfo);
 
 		// Prototype support
 

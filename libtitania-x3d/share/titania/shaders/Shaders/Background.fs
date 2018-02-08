@@ -25,7 +25,8 @@ clip ()
 void
 main ()
 {
-	clip ();
+	// THERE IS A BUG WITH x3d_NumClipPlanes AND INT UNIFORMS.
+	//clip ();
 
 	gl_FragColor = C;
 }

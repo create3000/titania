@@ -167,16 +167,6 @@ public:
 	toUnit (const UnitCategory category, const long double value) const
 	throw (Error <DISPOSED>) = 0;
 
-	///  @name WorldInfo handling
-
-	void
-	setWorldInfo (const X3DPtr <WorldInfo> & value)
-	throw (Error <DISPOSED>);
-
-	X3DPtr <WorldInfo>
-	getWorldInfo () const
-	throw (Error <DISPOSED>);
-
 	///  @name Node handling
 
 	template <class Type, class ... Args>
@@ -570,9 +560,12 @@ public:
 
 protected:
 
+	///  @name Friends
+
 	friend class ExternProtoDeclaration;
 	friend class ImportedNode;
 	friend class Inline;
+	friend class WorldInfo;
 	friend class X3DBaseNode;
 	friend class X3DParser;
 
@@ -695,7 +688,6 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtr <WorldInfo>                   worldInfo; 
 	NamedNodeIndex                           namedNodes;
 	SFTime                                   namedNodesOutput;
 	ImportedNodeIndex                        importedNodes;

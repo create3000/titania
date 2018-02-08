@@ -89,12 +89,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
 	///  @name Fields
 
 	SFString &
@@ -112,21 +106,14 @@ public:
 	const MFString &
 	info () const
 	{ return *fields .info; }
-	
-	///  @name Member access
+
+	///  @name Destruction
 
 	virtual
-	void
-	setPrivate (const bool value) final override;
+	~WorldInfo () final override;
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
 
 	///  @name Static members
 

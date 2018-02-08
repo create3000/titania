@@ -190,26 +190,25 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
 }
 
-///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
+///  Returns the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
 ///  throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	auto worldInfo = scene -> getWorldInfo ();
-
-	if (not worldInfo)
+	if (scene -> getRootNodes () .empty () or not scene -> getRootNodes () .front () -> isType ({ X3D::X3DConstants::WorldInfo }))
 	{
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
-		worldInfo             = scene -> createNode <X3D::WorldInfo> ();
+		auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
+
 		worldInfo -> title () = scene-> getWorldURL () .name ();
 
-		scene -> getRootNodes () .emplace_front (worldInfo);
+		scene -> getRootNodes () .emplace_front (std::move (worldInfo));
 	}
 
-	return worldInfo;
+	return X3D::X3DPtr <X3D::WorldInfo> (scene -> getRootNodes () .front ());
 }
 
 ///  Adds @a undoStep to the current browser.
