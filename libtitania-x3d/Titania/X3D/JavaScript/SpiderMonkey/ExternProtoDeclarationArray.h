@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_EXTERN_PROTO_DECLARATION_ARRAY_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_EXTERN_PROTO_DECLARATION_ARRAY_H__
 
-#include "../../Prototype/ExternProtoArray.h"
+#include "../../Prototype/ExternProtoDeclarationArray.h"
 #include "X3DConstArray.h"
 #include "X3DExternProtoDeclaration.h"
 
@@ -59,14 +59,14 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ExternProtoDeclarationArray = jsX3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoArray>;
+using ExternProtoDeclarationArray = jsX3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoDeclarationArray>;
 
 template <>
 constexpr ObjectType
 ExternProtoDeclarationArray::getId ()
 { return ObjectType::ExternProtoDeclarationArray; }
 
-extern template class jsX3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoArray>;
+extern template class jsX3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoDeclarationArray>;
 
 } // spidermonkey
 } // X3D

@@ -526,11 +526,11 @@ private:
 
 	static
 	void
-	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoArray & protos);
+	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos);
 
 	static
 	void
-	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoArray & protos);
+	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & protos);
 
 	static
 	void

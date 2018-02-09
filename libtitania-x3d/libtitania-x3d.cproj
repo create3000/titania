@@ -413,8 +413,6 @@
     <None Include="Titania\X3D\Configuration\SupportedComponents.h" />
     <None Include="Titania\X3D\Configuration\SupportedNodes.h" />
     <None Include="Titania\X3D\Configuration\SupportedProfiles.h" />
-    <None Include="Titania\X3D\Prototype\ExternProtoArray.h" />
-    <None Include="Titania\X3D\Prototype\ProtoArray.h" />
     <None Include="Titania\X3D\Execution\Scene.h" />
     <None Include="Titania\X3D\Execution\X3DExecutionContext.h" />
     <None Include="Titania\X3D\Routing\Route.h" />
@@ -985,6 +983,8 @@
     <None Include="share\mime\packages\x3d+json.xml" />
     <None Include="Titania\X3D\Parser\glTF\Parser.h" />
     <None Include="share\titania\shaders\glTF\pbrAppearance.x3d" />
+    <None Include="Titania\X3D\Prototype\ExternProtoDeclarationArray.h" />
+    <None Include="Titania\X3D\Prototype\ProtoDeclarationArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1019,8 +1019,6 @@
     <Compile Include="Titania\X3D\Fields\X3DScalar.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
-    <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
-    <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
     <Compile Include="Titania\X3D\Routing\Route.cpp" />

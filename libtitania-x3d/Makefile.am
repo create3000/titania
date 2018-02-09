@@ -601,9 +601,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
 	Titania/X3D/Parser/XMLParser.cpp \
-	Titania/X3D/Prototype/ExternProtoArray.cpp \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
-	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \

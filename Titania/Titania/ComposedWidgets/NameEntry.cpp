@@ -139,46 +139,53 @@ NameEntry::on_key_press_event (GdkEventKey* event)
 void
 NameEntry::on_clicked ()
 {
-	if (not node)
-		return;
-
-	const std::string name = entry .get_text ();
-
-	if (name == node -> getName ())
+	try
 	{
-		nameOutput = X3D::SFTime::now ();
-		return;
-	}
-
-	if (node -> isType ({ X3D::X3DConstants::ExternProtoDeclaration }))
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Extern Prototype To »%s«", name .c_str ())));
-
-		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueExternProtoName (name), X3D::ExternProtoDeclarationPtr (node), undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	else if (node -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Prototype To »%s«", name .c_str ())));
-
-		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueProtoName (name), X3D::ProtoDeclarationPtr (node), undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename %s To »%s«"), node -> getTypeName () .c_str (), name .c_str ()));
-
-		if (name .empty ())
-			X3D::X3DEditor::removeNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), node, undoStep);
+		if (not node)
+			return;
+	
+		const std::string name = entry .get_text ();
+	
+		if (name == node -> getName ())
+		{
+			nameOutput = X3D::SFTime::now ();
+			return;
+		}
+	
+		if (node -> isType ({ X3D::X3DConstants::ExternProtoDeclaration }))
+		{
+				const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Extern Prototype To »%s«", name .c_str ())));
+		
+				X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueExternProtoName (name), X3D::ExternProtoDeclarationPtr (node), undoStep);
+		
+				getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		else if (node -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Prototype To »%s«", name .c_str ())));
+	
+			X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), getCurrentContext () -> getUniqueProtoName (name), X3D::ProtoDeclarationPtr (node), undoStep);
+	
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
 		else
-			X3D::X3DEditor::updateNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), name, node, undoStep);
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename %s To »%s«"), node -> getTypeName () .c_str (), name .c_str ()));
+	
+			if (name .empty ())
+				X3D::X3DEditor::removeNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), node, undoStep);
+			else
+				X3D::X3DEditor::updateNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), name, node, undoStep);
+	
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
 
-		getBrowserWindow () -> addUndoStep (undoStep);
+		nameOutput = X3D::SFTime::now ();
 	}
-
-	nameOutput = X3D::SFTime::now ();
+	catch (X3D::X3DError & error)
+	{
+		entry .error_bell ();
+	}
 }
 
 void

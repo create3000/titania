@@ -59,8 +59,8 @@
 #include "../Execution/ImportedNodeIndex.h"
 #include "../Execution/NamedNodeIndex.h"
 #include "../Fields.h"
-#include "../Prototype/ExternProtoArray.h"
-#include "../Prototype/ProtoArray.h"
+#include "../Prototype/ExternProtoDeclarationArray.h"
+#include "../Prototype/ProtoDeclarationArray.h"
 #include "../RenderingSurface/ContextLock.h"
 #include "../Routing/Route.h"
 #include "../Routing/RouteArray.h"
@@ -331,7 +331,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ProtoDeclarationPtr &
+	void
 	addProtoDeclaration (const std::string &, const ProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -349,12 +349,12 @@ public:
 	       Error <DISPOSED>);
 
 	const ProtoDeclarationPtr &
-	getProtoDeclaration (const std::string &)
+	getProtoDeclaration (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ProtoArray &
+	const ProtoDeclarationArray &
 	getProtoDeclarations () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -377,7 +377,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ExternProtoDeclarationPtr &
+	void
 	addExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -395,13 +395,13 @@ public:
 	       Error <DISPOSED>);
 
 	const ExternProtoDeclarationPtr &
-	getExternProtoDeclaration (const std::string &)
+	getExternProtoDeclaration (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const ExternProtoArray &
+	const ExternProtoDeclarationArray &
 	getExternProtoDeclarations () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -584,6 +584,14 @@ protected:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  @name Proto handling
+
+	size_t
+	getProtoDeclarationCount (const std::string & name) const;
+
+	size_t
+	getExternProtoDeclarationCount (const std::string & name) const;
+
 	///  @name Route handling
 
 	const RoutePtr &
@@ -692,9 +700,9 @@ private:
 	SFTime                                   namedNodesOutput;
 	ImportedNodeIndex                        importedNodes;
 	SFTime                                   importedNodesOutput;
-	ProtoArray                               prototypes;
+	ProtoDeclarationArray                    prototypes;
 	SFTime                                   prototypesOutput;
-	ExternProtoArray                         externProtos;
+	ExternProtoDeclarationArray              externProtos;
 	SFInt32                                  externProtosLoadCount;
 	std::set <const ExternProtoDeclaration*> loadingExternProtos;
 	SFTime                                   externProtosOutput;

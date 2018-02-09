@@ -95,7 +95,9 @@ X3DExecutionContext::X3DExecutionContext () :
 
 	addChildObjects (namedNodesOutput,
 	                 importedNodesOutput,
+	                 prototypes,
 	                 prototypesOutput,
+	                 externProtos,
 	                 externProtosLoadCount,
 	                 externProtosOutput,
 	                 routesOutput,
@@ -700,7 +702,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return prototype;
 }
 
-const ProtoDeclarationPtr &
+void
 X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoDeclarationPtr & prototype)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -709,18 +711,13 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
 
-	if (prototypes .count (name))
+	if (getProtoDeclarationCount (name))
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
-	prototypes .push_back (name, prototype);
-	prototypes .back () .setTainted (true);
-	prototypes .back () .addParent (this);
-
 	prototype -> setName (name);
+	prototypes .emplace_back (prototype);
 
 	prototypesOutput = getCurrentTime ();
-
-	return prototypes .back ();
 }
 
 void
@@ -732,26 +729,18 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	try
-	{
-		if (prototypes .rfind (prototype -> getName ()) == prototype)
-			prototypes .remap (prototype -> getName (), name);
-	}
-	catch (const std::out_of_range &)
-	{
-		try
-		{
-			prototypes .rfind (name) = prototype;
-		}
-		catch (const std::out_of_range &)
-		{
-			prototypes .push_back (name, prototype);
-			prototypes .back () .setTainted (true);
-			prototypes .back () .addParent (this);
-		}
-	}
+	if (getProtoDeclarationCount (name))
+		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto '" + name + "' is already in use.");
 
-	prototype -> setName (name);
+	if (getProtoDeclarationCount (prototype -> getName ()))
+	{
+		if (getProtoDeclaration (prototype -> getName ()) == prototype)
+			prototype -> setName (name);
+		else
+			addProtoDeclaration (name, prototype);
+	}
+	else
+		addProtoDeclaration (name, prototype);
 
 	prototypesOutput = getCurrentTime ();
 }
@@ -761,32 +750,50 @@ X3DExecutionContext::removeProtoDeclaration (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	prototypes .erase (name);
+	const auto iter = std::remove_if (prototypes .begin (), prototypes .end (),
+	[&name] (const ProtoDeclarationPtr & prototype)
+	{
+		return prototype -> getName () == name;
+	});
+
+	prototypes .erase (iter, prototypes .end ());
 
 	prototypesOutput = getCurrentTime ();
 }
 
 const ProtoDeclarationPtr &
-X3DExecutionContext::getProtoDeclaration (const std::string & name)
+X3DExecutionContext::getProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	try
+	const auto iter = std::find_if (prototypes .begin (), prototypes .end (),
+	[&name] (const ProtoDeclarationPtr & prototype)
 	{
-		return prototypes .rfind (name);
-	}
-	catch (const std::out_of_range &)
+		return prototype -> getName () == name;
+	});
+
+	if (iter == prototypes .end ())
+		throw Error <INVALID_NAME> ("Proto declaration '" + name + "' not found.");
+
+	return *iter;
+}
+
+size_t
+X3DExecutionContext::getProtoDeclarationCount (const std::string & name) const
+{
+	return std::count_if (prototypes .begin (), prototypes .end (),
+	[&name] (const ProtoDeclarationPtr & prototype)
 	{
-		throw Error <INVALID_NAME> ("PROTO '" + name + "' not found.");
-	}
+		return prototype -> getName () == name;
+	});
 }
 
 std::string
 X3DExecutionContext::getUniqueProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not name .empty () and not getProtoDeclarations () .count (name))
+	if (not name .empty () and not getProtoDeclarationCount (name))
 		return name;
 
 	name = RemoveTrailingNumber (name);
@@ -797,7 +804,7 @@ throw (Error <DISPOSED>)
 	if (uniqueName .empty ())
 		uniqueName = "Prototype";
 
-	while (getProtoDeclarations () .count (uniqueName))
+	while (getProtoDeclarationCount (uniqueName))
 	{
 		i = std::max <size_t> (64, i);
 
@@ -839,27 +846,22 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return externProto;
 }
 
-const ExternProtoDeclarationPtr &
+void
 X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const ExternProtoDeclarationPtr & externProto)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (name .empty ())
-		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
+		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto name is empty.");
 
-	if (externProtos .count (name))
-		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto '" + name + "' is already in use.");
-
-	externProtos .push_back (name, externProto);
-	externProtos .back () .setTainted (true);
-	externProtos .back () .addParent (this);
+	if (getExternProtoDeclarationCount (name))
+		throw Error <INVALID_NAME> ("Couldn't add extern extern proto declaration: extern proto '" + name + "' is already in use.");
 
 	externProto -> setName (name);
+	externProtos .emplace_back (externProto);
 
 	externProtosOutput = getCurrentTime ();
-
-	return externProtos .back ();
 }
 
 void
@@ -869,28 +871,20 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	if (name .empty ())
-		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
+		throw Error <INVALID_NAME> ("Couldn't update extern proto declaration: extern proto name is empty.");
 
-	try
-	{
-		if (externProtos .rfind (externProto -> getName ()) == externProto)
-			externProtos .remap (externProto -> getName (), name);
-	}
-	catch (const std::out_of_range &)
-	{
-		try
-		{
-			externProtos .rfind (name) = externProto;
-		}
-		catch (const std::out_of_range &)
-		{
-			externProtos .push_back (name, externProto);
-			externProtos .back () .setTainted (true);
-			externProtos .back () .addParent (this);
-		}
-	}
+	if (getExternProtoDeclarationCount (name))
+		throw Error <INVALID_NAME> ("Couldn't update extern extern proto declaration: extern proto '" + name + "' is already in use.");
 
-	externProto -> setName (name);
+	if (getExternProtoDeclarationCount (externProto -> getName ()))
+	{
+		if (getExternProtoDeclaration (externProto -> getName ()) == externProto)
+			externProto -> setName (name);
+		else
+			addExternProtoDeclaration (name, externProto);
+	}
+	else
+		addExternProtoDeclaration (name, externProto);
 
 	externProtosOutput = getCurrentTime ();
 }
@@ -900,34 +894,51 @@ X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	externProtos .erase (name);
+	const auto iter = std::remove_if (externProtos .begin (), externProtos .end (),
+	[&name] (const ExternProtoDeclarationPtr & externProto)
+	{
+		return externProto -> getName () == name;
+	});
+
+	externProtos .erase (iter, externProtos .end ());
 
 	externProtosOutput = getCurrentTime ();
 }
 
-const
-ExternProtoDeclarationPtr &
-X3DExecutionContext::getExternProtoDeclaration (const std::string & name)
+const ExternProtoDeclarationPtr &
+X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	try
+	const auto iter = std::find_if (externProtos .begin (), externProtos .end (),
+	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
-		return externProtos .rfind (name);
-	}
-	catch (const std::out_of_range &)
+		return externProto -> getName () == name;
+	});
+
+	if (iter == externProtos .end ())
+		throw Error <INVALID_NAME> ("Extern proto declaration '" + name + "' not found.");
+
+	return *iter;
+}
+
+size_t
+X3DExecutionContext::getExternProtoDeclarationCount (const std::string & name) const
+{
+	return std::count_if (externProtos .begin (), externProtos .end (),
+	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
-		throw Error <INVALID_NAME> ("EXTERNPROTO '" + name + "' not found.");
-	}
+		return externProto -> getName () == name;
+	});
 }
 
 std::string
 X3DExecutionContext::getUniqueExternProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not name .empty () and not getExternProtoDeclarations () .count (name))
+	if (not name .empty () and not getExternProtoDeclarationCount (name))
 		return name;
 
 	name = RemoveTrailingNumber (name);
@@ -938,7 +949,7 @@ throw (Error <DISPOSED>)
 	if (uniqueName .empty ())
 		uniqueName = "Prototype";
 
-	while (getExternProtoDeclarations () .count (uniqueName))
+	while (getExternProtoDeclarationCount (uniqueName))
 	{
 		i = std::max <size_t> (64, i);
 
@@ -1017,15 +1028,15 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		return prototypes .rfind (name) .getValue ();
+		return getProtoDeclaration (name) .getValue ();
 	}
-	catch (const std::out_of_range &)
+	catch (const Error <INVALID_NAME> &)
 	{
 		try
 		{
-			return externProtos .rfind (name) .getValue ();
+			return getExternProtoDeclaration (name) .getValue ();
 		}
-		catch (const std::out_of_range &)
+		catch (const Error <INVALID_NAME> &)
 		{
 			if (not isType ({ X3DConstants::X3DScene }))
 				return getExecutionContext () -> findProtoDeclaration (name, available);

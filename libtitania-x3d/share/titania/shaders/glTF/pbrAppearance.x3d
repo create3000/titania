@@ -142,13 +142,11 @@ uniform mat4 x3d_CameraSpaceMatrix;
 #define lightDirection (-x3d_LightSource [0] .direction)
 #define lightColor (x3d_LightSource [0] .color)
 
-/*
 #ifdef USE_IBL
-uniform samplerCube u_DiffuseEnvSampler;
-uniform samplerCube u_SpecularEnvSampler;
-uniform sampler2D u_brdfLUT;
+uniform samplerCube diffuseEnvironmentTexture;
+uniform samplerCube specularEnvironmentTexture;
+uniform sampler2D brdfLUT;
 #endif
-*/
 
 #ifdef HAS_BASE_COLOR_MAP
 uniform sampler2D baseColorTexture;
@@ -265,7 +263,6 @@ getNormal ()
 	return n;
 }
 
-/*
 #ifdef USE_IBL
 // Calculation of the lighting contribution from an optional Image Based Light source.
 // Precomputed Environment Maps are required uniform inputs and are computed as outlined in [1].
@@ -274,24 +271,24 @@ vec3
 getIBLContribution (PBRInfo pbrInputs, vec3 n, vec3 reflection)
 {
 	float mipCount = 9.0; // resolution of 512x512
-	float lod = (pbrInputs.perceptualRoughness * mipCount);
+	float lod      = pbrInputs .perceptualRoughness * mipCount;
+
 	// retrieve a scale and bias to F0. See [1], Figure 3
-	vec3 brdf = SRGBtoLINEAR(texture2D(u_brdfLUT, vec2(pbrInputs.NdotV, 1.0 - pbrInputs.perceptualRoughness))).rgb;
-	vec3 diffuseLight = SRGBtoLINEAR(textureCube(u_DiffuseEnvSampler, n)).rgb;
+	vec3 brdf         = SRGBtoLINEAR (texture2D (brdfLUT, vec2 (pbrInputs .NdotV, 1.0 - pbrInputs .perceptualRoughness))) .rgb;
+	vec3 diffuseLight = SRGBtoLINEAR (textureCube (diffuseEnvironmentTexture, n)) .rgb;
 
 	#ifdef USE_TEX_LOD
-		vec3 specularLight = SRGBtoLINEAR(textureCubeLodEXT(u_SpecularEnvSampler, reflection, lod)).rgb;
+		vec3 specularLight = SRGBtoLINEAR (textureCubeLodEXT (specularEnvironmentTexture, reflection, lod)) .rgb;
 	#else
-		vec3 specularLight = SRGBtoLINEAR(textureCube(u_SpecularEnvSampler, reflection)).rgb;
+		vec3 specularLight = SRGBtoLINEAR (textureCube (specularEnvironmentTexture, reflection)) .rgb;
 	#endif
 
-	vec3 diffuse = diffuseLight * pbrInputs.diffuseColor;
-	vec3 specular = specularLight * (pbrInputs.specularColor * brdf.x + brdf.y);
+	vec3 diffuse  = diffuseLight * pbrInputs .diffuseColor;
+	vec3 specular = specularLight * (pbrInputs .specularColor * brdf .x + brdf .y);
 
 	return diffuse + specular;
 }
 #endif
-*/
 
 // Basic Lambertian diffuse
 // Implementation from Lambert's Photometria https://archive.org/details/lambertsphotome00lambgoog
@@ -422,13 +419,11 @@ main ()
 	vec3 specContrib    = F * G * D / (4.0 * NdotL * NdotV);
 	vec3 color          = NdotL * lightColor * (diffuseContrib + specContrib);
 
-	/*
 	// Calculate lighting contribution from image based lighting source (IBL)
 	#ifdef USE_IBL
 	vec3 reflection = -normalize (reflect (v, n));
-	color += getIBLContribution(pbrInputs, n, reflection);
+	color += getIBLContribution (pbrInputs, n, reflection);
 	#endif
-	*/
 
 	// Apply optional PBR terms for additional (optional) shading
 	#ifdef HAS_OCCLUSION_MAP

@@ -1265,7 +1265,7 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 
 	// Update prototype
 
-	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, name, prototype);
 	executionContext -> updateProtoDeclaration (name, prototype);
 
@@ -1323,7 +1323,7 @@ X3DEditor::convertProtoToExternProto (const ProtoDeclarationPtr & prototype, con
 }
 
 void
-X3DEditor::restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoArray & protos)
+X3DEditor::restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos)
 {
 	const auto currentProtos = executionContext -> getProtoDeclarations ();
 
@@ -1345,7 +1345,7 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 
 	// Update name.
 
-	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, name, externProto);
 	executionContext -> updateExternProtoDeclaration (name, externProto);
 
@@ -1416,7 +1416,7 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 }
 
 void
-X3DEditor::restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoArray & externprotos)
+X3DEditor::restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & externprotos)
 {
 	const auto currentExternProtos = executionContext -> getExternProtoDeclarations ();
 

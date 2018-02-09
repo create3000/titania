@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,23 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_ARRAY_H__
-#define __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_ARRAY_H__
+#ifndef __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_DECLARATION_ARRAY_H__
+#define __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_DECLARATION_ARRAY_H__
 
+#include "../Fields/X3DPtrArray.h"
 #include "../Types/Pointer.h"
-
-#include <Titania/Basic/IndexedMultiMap.h>
-#include <string>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, ExternProtoDeclarationPtr> ExternProtoArray;
+using ExternProtoDeclarationArray = X3D::X3DPtrArray <ExternProtoDeclaration>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, X3D::ExternProtoDeclarationPtr>;
-
 } // titania
 
 #endif
