@@ -181,7 +181,7 @@ Parser::importProtos ()
 
 	X3D::X3DEditor::removeNodesFromScene (scene, scene -> getRootNodes (), true, std::make_shared <X3D::UndoStep> ());
 
-	defaultMaterial = scene -> createProto ("pbrAppearance");
+	defaultMaterial = createAppearance ();
 
 	addUninitializedNode (defaultMaterial);
 }
@@ -552,10 +552,22 @@ Parser::createShape (const PrimitivePtr & primitive) const
 	const auto appearanceNode = primitive -> material ? primitive -> material : defaultMaterial;
 	const auto geometryNode   = createGeometry (primitive, appearanceNode);
 
+	appearanceNode -> removeMetaData ("/Titania");
+
 	shapeNode -> appearance () = appearanceNode;
 	shapeNode -> geometry ()   = geometryNode;
 
 	return shapeNode;
+}
+
+X3D::X3DPtr <X3D::X3DNode>
+Parser::createAppearance () const
+{
+	const auto appearanceNode = scene -> createProto ("pbrAppearance");
+
+	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
+
+	return appearanceNode;
 }
 
 X3D::X3DPtr <X3D::X3DGeometryNode>
@@ -1517,9 +1529,9 @@ Parser::materialValue (json_object* const jobj)
 
 	// Create Material
 
-	const auto appearance = scene -> createProto ("pbrAppearance");
+	const auto appearanceNode = createAppearance ();
 
-	addUninitializedNode (appearance);
+	addUninitializedNode (appearanceNode);
 
 	// Name
 
@@ -1528,7 +1540,7 @@ Parser::materialValue (json_object* const jobj)
 	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
 	{
 		if (not nameCharacters .empty ())
-			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), appearance);
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), appearanceNode);
 	}
 
 	// doubleSided
@@ -1537,7 +1549,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (booleanValue (json_object_object_get (jobj, "doubleSided"), doubleSided))
 	{
-		appearance -> setMetaData <bool> ("/Titania/doubleSided", doubleSided);
+		appearanceNode -> setMetaData <bool> ("/Titania/doubleSided", doubleSided);
 	}
 
 	// alphaMode
@@ -1546,7 +1558,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "alphaMode"), alphaMode))
 	{
-		appearance -> setField <X3D::SFString> ("alphaMode", alphaMode);
+		appearanceNode -> setField <X3D::SFString> ("alphaMode", alphaMode);
 	}
 
 	// alphaMode
@@ -1555,7 +1567,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (doubleValue (json_object_object_get (jobj, "alphaCutoff"), alphaCutoff))
 	{
-		appearance -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
+		appearanceNode -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
 	}
 
 	// emissiveFactor
@@ -1564,30 +1576,30 @@ Parser::materialValue (json_object* const jobj)
 
 	if (vector3dValue (json_object_object_get (jobj, "emissiveFactor"), emissiveFactor))
 	{
-		appearance -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
+		appearanceNode -> setField <X3D::SFVec3f> ("emissiveFactor", emissiveFactor);
 	}
 
 	// emissiveTextureInfo
 
-	emissiveTextureInfo (json_object_object_get (jobj, "emissiveTexture"), appearance);
+	emissiveTextureInfo (json_object_object_get (jobj, "emissiveTexture"), appearanceNode);
 
 	// occlusionTextureInfo
 
-	occlusionTextureInfo (json_object_object_get (jobj, "occlusionTexture"), appearance);
+	occlusionTextureInfo (json_object_object_get (jobj, "occlusionTexture"), appearanceNode);
 
 	// normalTextureInfo
 
-	normalTextureInfo (json_object_object_get (jobj, "normalTexture"), appearance);
+	normalTextureInfo (json_object_object_get (jobj, "normalTexture"), appearanceNode);
 
 	// pbrMetallicRoughness
 
-	pbrMetallicRoughness (json_object_object_get (jobj, "pbrMetallicRoughness"), appearance);
+	pbrMetallicRoughness (json_object_object_get (jobj, "pbrMetallicRoughness"), appearanceNode);
 
-	return appearance;
+	return appearanceNode;
 }
 
 void
-Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1601,7 +1613,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
 	{
-		appearance -> setField <X3D::SFVec4f> ("baseColorFactor", baseColorFactor);
+		appearanceNode -> setField <X3D::SFVec4f> ("baseColorFactor", baseColorFactor);
 	}
 
 	// metallicFactor
@@ -1610,7 +1622,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (doubleValue (json_object_object_get (jobj, "metallicFactor"), metallicFactor))
 	{
-		appearance -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
+		appearanceNode -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
 	}
 
 	// roughnessFactor
@@ -1619,20 +1631,20 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (doubleValue (json_object_object_get (jobj, "roughnessFactor"), roughnessFactor))
 	{
-		appearance -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
+		appearanceNode -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
 	}
 
 	// baseColorTextureInfo
 
-	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), appearance);
+	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), appearanceNode);
 
 	// metallicRoughnessTextureInfo
 
-	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), appearance);
+	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), appearanceNode);
 }
 
 void
-Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1652,8 +1664,8 @@ Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 
 			if (texture)
 			{
-				appearance -> setField <X3D::SFNode> ("baseColorTexture", texture);
-				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
+				appearanceNode -> setField <X3D::SFNode> ("baseColorTexture", texture);
+				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)
@@ -1662,7 +1674,7 @@ Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 }
 
 void
-Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1682,8 +1694,8 @@ Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode
 
 			if (texture)
 			{
-				appearance -> setField <X3D::SFNode> ("metallicRoughnessTexture", texture);
-				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_METAL_ROUGHNESS_MAP");
+				appearanceNode -> setField <X3D::SFNode> ("metallicRoughnessTexture", texture);
+				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_METAL_ROUGHNESS_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)
@@ -1692,7 +1704,7 @@ Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode
 }
 
 void
-Parser::emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1712,8 +1724,8 @@ Parser::emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appear
 
 			if (texture)
 			{
-				appearance -> setField <X3D::SFNode> ("emissiveTexture", texture);
-				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_EMISSIVE_MAP");
+				appearanceNode -> setField <X3D::SFNode> ("emissiveTexture", texture);
+				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_EMISSIVE_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)
@@ -1722,7 +1734,7 @@ Parser::emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appear
 }
 
 void
-Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1736,7 +1748,7 @@ Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 
 	if (doubleValue (json_object_object_get (jobj, "strength"), strength))
 	{
-		appearance -> setField <X3D::SFFloat> ("occlusionStrength", float (strength));
+		appearanceNode -> setField <X3D::SFFloat> ("occlusionStrength", float (strength));
 	}
 
 	// index
@@ -1751,8 +1763,8 @@ Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 
 			if (texture)
 			{
-				appearance -> setField <X3D::SFNode> ("occlusionTexture", texture);
-				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_OCCLUSION_MAP");
+				appearanceNode -> setField <X3D::SFNode> ("occlusionTexture", texture);
+				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_OCCLUSION_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)
@@ -1761,7 +1773,7 @@ Parser::occlusionTextureInfo (json_object* const jobj, const X3D::SFNode & appea
 }
 
 void
-Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance)
+Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
 {
 	if (not jobj)
 		return;
@@ -1775,7 +1787,7 @@ Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearan
 
 	if (doubleValue (json_object_object_get (jobj, "scale"), scale))
 	{
-		appearance -> setField <X3D::SFFloat> ("normalScale", float (scale));
+		appearanceNode -> setField <X3D::SFFloat> ("normalScale", float (scale));
 	}
 
 	// index
@@ -1790,8 +1802,8 @@ Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearan
 
 			if (texture)
 			{
-				appearance -> setField <X3D::SFNode> ("normalTexture", texture);
-				appearance -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL_MAP");
+				appearanceNode -> setField <X3D::SFNode> ("normalTexture", texture);
+				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMAL_MAP");
 			}
 		}
 		catch (const std::out_of_range & error)

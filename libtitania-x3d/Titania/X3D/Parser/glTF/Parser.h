@@ -219,6 +219,9 @@ private:
 	X3D::X3DPtr <X3D::Shape>
 	createShape (const PrimitivePtr & primitive) const;
 
+	X3D::X3DPtr <X3D::X3DNode>
+	createAppearance () const;
+
 	X3D::X3DPtr <X3D::X3DGeometryNode>
 	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
 
