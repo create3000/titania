@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.0.6
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ UNIT angle degree 0.0174532925199433
 META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V4.0.6, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Thu, 16 Mar 2017 15:35:46 GMT"
+META "modified" "Fri, 09 Feb 2018 02:50:09 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -108,478 +108,35 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-            value DEF ScaleScript Script {
-              inputOnly      SFBool     set_active
-              inputOnly      SFVec3f    set_xScale
-              inputOnly      SFVec3f    set_yScale
-              inputOnly      SFVec3f    set_zScale
-              inputOnly      SFVec3f    set_xScaleBack
-              inputOnly      SFVec3f    set_yScaleBack
-              inputOnly      SFVec3f    set_zScaleBack
-              inputOnly      SFVec3f    set_scale1
-              inputOnly      SFVec3f    set_scale2
-              inputOnly      SFVec3f    set_scale3
-              inputOnly      SFVec3f    set_scale4
-              inputOnly      SFVec3f    set_scale5
-              inputOnly      SFVec3f    set_scale6
-              inputOnly      SFVec3f    set_scale7
-              inputOnly      SFVec3f    set_scale8
-              inputOnly      SFVec3f    set_linetype
-              inputOutput    SFBool     keepCenter FALSE
-              inputOutput    SFBool     scaleFromEdge TRUE
-              inputOutput    SFBool     scaleFromCenter TRUE
-              inputOutput    MFString   connectedAxes [ ]
-              inputOutput    SFBool     controlKey FALSE
-              inputOutput    SFBool     altKey FALSE
-              inputOutput    SFVec3f    bboxSize 0 0 0
-              inputOutput    SFVec3f    bboxCenter 0 0 0
-              inputOutput    SFNode     transform NULL
-              outputOnly     SFInt32    activeTool_changed
-              initializeOnly SFVec3f    translation 0 0 0
-              initializeOnly SFVec3f    scaleFactor 0 0 0
-              initializeOnly SFVec3f    center 0 0 0
-              initializeOnly SFVec3f    distanceFromCenter 0 0 0
-              initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-              initializeOnly SFBool     active FALSE
-              initializeOnly SFInt32    events 0
-              # Sensors below are not used anymore
-              initializeOnly MFNode     sensors [
-                DEF XScaleSensor PlaneSensor {
-                  enabled FALSE
-                  description "x-Axis"
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF YScaleSensor PlaneSensor {
-                  enabled FALSE
-                  description "y-Axis"
-                  autoOffset FALSE
-                  maxPosition 0 -1
-                }
-                DEF ZScaleSensor PlaneSensor {
-                  enabled FALSE
-                  description "z-Axis"
-                  axisRotation 0 -1 0 1.5708
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF XScaleBackSensor PlaneSensor {
-                  enabled FALSE
-                  description "x-Axis"
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF YScaleBackSensor PlaneSensor {
-                  enabled FALSE
-                  description "y-Axis"
-                  autoOffset FALSE
-                  maxPosition 0 -1
-                }
-                DEF ZScaleBackSensor PlaneSensor {
-                  enabled FALSE
-                  description "z-Axis"
-                  axisRotation 0 -1 0 1.5708
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor1 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor2 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor3 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor4 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor5 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor6 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor7 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-                DEF ScaleSensor8 PlaneSensor {
-                  axisRotation 0 0 1 3.14159265358979
-                  autoOffset FALSE
-                  maxPosition -1 0
-                }
-              ]
-              # Sensors above are not used anymore
-              initializeOnly SFNode     lineProperties DEF LineProperties LineProperties {
-                linewidthScaleFactor 1
-              }
-              initializeOnly SFNode     self USE ScaleScript
-
-              url "ecmascript:
-
-function set_transform ()
-{
-	Browser .addRoute (transform, 'scale', self, 'set_linetype');
-
-	set_linetype (transform .scale);
-}
-
-function set_linetype (scale)
-{
-	var matrix = new SFMatrix4f ();
-	matrix .setTransform (transform .translation,
-	                      transform .rotation,
-	                      transform .scale,
-	                      transform .scaleOrientation,
-	                      transform .center);
-
-	var x = new SFVec3f (matrix [0], matrix [1], matrix [2]);
-	var y = new SFVec3f (matrix [4], matrix [5], matrix [6]);
-	var z = new SFVec3f (matrix [8], matrix [9], matrix [10]);
-
-	if (x .cross (y) .dot (z) >= 0)
-		lineProperties .linetype = 1; // SOLID
-	else
-		lineProperties .linetype = 2;
-}
-
-function set_scaleFromCenter ()
-{
-   var fun = [
-      set_xScale,
-		set_yScale,
-		set_zScale,
-		set_xScaleBack,
-		set_yScaleBack,
-		set_zScaleBack,
-		set_scale1,
-		set_scale2,
-		set_scale3,
-		set_scale4,
-		set_scale5,
-		set_scale6,
-		set_scale7,
-		set_scale8,
-   ];
-
-	for (var i in sensors)
-	{
-		if (sensors [i] .isActive)
-		{
-			fun [i] (sensors [i] .translation_changed);
-		}
-	}
-}
-
-function set_active (value)
-{
-	active = value;
-
-	if (active)
-	{
-		for (var i in sensors)
-		{
-			if (sensors [i] .isActive)
-			{
-				activeTool_changed = 3 + parseInt (i);
-			}
-		}
-
-		translation = transform .translation;
-		scaleFactor = transform .scale;
-		center      = transform .center;
-
-		matrix .setTransform (transform .translation,
-		                      transform .rotation,
-		                      transform .scale,
-		                      transform .scaleOrientation,
-		                      transform .center);
-
-		distanceFromCenter = bboxCenter .subtract (transform .center);
-	}
-	else
-		activeTool_changed = 0;
-}
-
-// isActive
-
-function set_xScale (value)
-{
-	if (bboxSize .x)
-		set_axisScale (\"x\", value, 1);
-}
-
-function set_yScale (value)
-{
-	if (bboxSize .y)
-		set_axisScale (\"y\", value, 1);
-}
-
-function set_zScale (value)
-{
-	if (bboxSize .z)
-		set_axisScale (\"z\", value, 1);
-}
-
-function set_xScaleBack (value)
-{		       
-	if (bboxSize .x)
-		set_axisScale (\"x\", value, -1);
-}
-
-function set_yScaleBack (value)
-{
-	if (bboxSize .y)
-		set_axisScale (\"y\", value, -1);
-}
-
-function set_zScaleBack (value)
-{
-	if (bboxSize .z)
-		set_axisScale (\"z\", value, -1);
-}
-
-function set_axisScale (axis, value, sgn)
-{
-	value = value [axis];
-
-	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
-	{
-		var
-			vector = new SFVec3f (1, 1, 1),
-			offset = new SFVec3f ();
-	
-		vector [axis] = 1 + sgn * value / bboxSize [axis];
-		offset [axis] = -sgn * bboxSize [axis] / 2;
-
-		connect (axis, vector, offset);
-
-		scale (vector, offset);
-	}
-	else if (scaleFromCenter)
-	{
-		var
-			vector = new SFVec3f (1, 1, 1),
-			offset = new SFVec3f ();
-	
-		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
-
-		connect (axis, vector, offset);
-
-		scale (vector, offset);
-	}
-}
-
-function connect (axis, vector, offset)
-{
-	for (var i = 0, length = connectedAxes .length; i < length; ++ i)
-	{
-		var
-			lhs = connectedAxes [i] [0] .toLowerCase (),
-			rhs = connectedAxes [i] [1] .toLowerCase ();
-	
-		if (rhs == axis)
-		{
-			vector [lhs] = vector [rhs];
-			offset [lhs] = offset [rhs];
-		}
-	}
-}
-
-function set_scale1 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, -1, -1));
-}
-
-function set_scale2 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, -1, -1));
-}
-
-function set_scale3 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, 1, -1));
-}
-
-function set_scale4 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, 1, -1));
-}
-
-function set_scale5 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, -1, 1));
-}
-
-function set_scale6 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, -1, 1));
-}
-
-function set_scale7 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, 1, 1));
-}
-
-function set_scale8 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, 1, 1));
-}
-
-function set_scale (value, sgn, centerOffset)
-{
-	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
-	{
-		centerOffset = centerOffset .multVec (bboxSize .divide (2));
-
-		var s = 1 + sgn * value .length () / bboxSize .length ();
-
-		scale (new SFVec3f (s, s, s), centerOffset);
-	}
-	else if (scaleFromCenter)
-	{
-		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
-
-		scale (new SFVec3f (s, s, s), new SFVec3f ());
-	}
-}
-
-function scale (value, centerOffset)
-{
-	if (events)
-	{
-		// Prevent accidentially move.
-		-- events;
-		return;
-	}
-
-	var scale = new SFMatrix4f ();
-	scale .setTransform (new SFVec3f (), new SFRotation (), value);
-
-	var scaledMatrix = matrix .multLeft (scale);
-	var t            = new SFVec3f ();
-	var r            = new SFRotation ();
-	var s            = new SFVec3f ();
-	var so           = new SFRotation ();
-
-	scaledMatrix .getTransform (t, r, s, so, center);
-
-	if (s .x && s .y && s .z)
-	{
-		transform .translation      = t;
-		transform .rotation         = r;
-		transform .scale            = s;
-		transform .scaleOrientation = so;
-
-		if (keepCenter)
-			translateKeepCenter (scaledMatrix, distanceFromCenter .add (centerOffset));
-		else
-			translate (scaledMatrix, distanceFromCenter .add (centerOffset));
-	}
-}
-
-function translate (scaledMatrix, distanceFromCenter)
-{
-	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
-
-	transform .translation = translation .subtract (centerOffset);
-}
-
-function translateKeepCenter (scaledMatrix, distanceFromCenter)
-{
-	try
-	{
-		var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
-	
-		transform .translation = translation .subtract (centerOffset);
-		transform .center      = center .add (centerOffset);
-	}
-	catch (error)
-	{ }
-}
-
-function sgn (value)
-{
-	return value < 0 ? -1 : value > 0 ? 1 : 0;
-}
-"
-              directOutput TRUE
-            }
-          }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput SFBool     pickable TRUE
-              inputOutput MFString   tools [
-                "MOVE",
-                "ROTATE",
-                "SCALE"
-              ]
-              inputOutput SFInt32    toolMode 0
-              inputOutput SFBool     scaleXAxis TRUE
-              inputOutput SFBool     scaleYAxis TRUE
-              inputOutput SFBool     scaleZAxis TRUE
-              inputOutput SFBool     scaleXBackAxis TRUE
-              inputOutput SFBool     scaleYBackAxis TRUE
-              inputOutput SFBool     scaleZBackAxis TRUE
-              inputOutput SFBool     scaleUniform TRUE
-              inputOutput SFBool     scaleFromEdge TRUE
-              inputOutput SFBool     scaleFromCenter TRUE
-              inputOutput MFString   connectedAxes [ ]
-              inputOutput SFColor    color 0.35 1 0.7
-              inputOutput SFDouble   snapAngle 0.196349540849362
-              inputOutput SFBool     displayBBox TRUE
-              inputOutput SFBool     displayCenter TRUE
-              inputOutput SFBool     controlKey FALSE
-              inputOutput SFBool     shiftKey FALSE
-              inputOutput SFBool     altKey FALSE
-              inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFVec3f    bboxSize 0 0 0
-              inputOutput SFVec3f    bboxCenter 0 0 0
-              inputOutput SFBool     isActive FALSE
-              inputOutput SFTime     touchTime 0
-              inputOutput SFBool     keepCenter_changed FALSE
-              inputOutput SFInt32    activeTool_changed 0
-              inputOutput SFNode     transform NULL
-
-              url "ecmascript:
-"
+            value DEF Transparent Appearance {
+              material Material {
+                transparency 1
+              }
             }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -635,7 +192,7 @@ Collision {
                 }
               }
               ScreenGroup {
-                children DEF XYZ_1 Shape {
+                children DEF XYZ_2 Shape {
                   geometry IndexedLineSet {
                     colorPerVertex FALSE
                     coordIndex [
@@ -656,7 +213,7 @@ Collision {
                         0 0 1
                       ]
                     }
-                    coord DEF Axes_1 Coordinate {
+                    coord DEF Axes_3 Coordinate {
                       point [
                         -50 0 0,
                         50 0 0,
@@ -673,8 +230,10 @@ Collision {
           }
           DEF BoundingBox Shape {
             appearance Appearance {
-              lineProperties USE LineProperties
-              material DEF _2 Material {
+              lineProperties DEF LineProperties LineProperties {
+                linewidthScaleFactor 1
+              }
+              material DEF _4 Material {
                 emissiveColor 0.35 1 0.7
               }
             }
@@ -719,15 +278,14 @@ Collision {
               }
             }
           }
-          DEF _3 BooleanSwitch {
+          DEF _5 BooleanSwitch {
             whichChoice TRUE
             bboxSize 0 0 0
             children [
-              DEF _4 Group { }
-              DEF _5 Group {
+              DEF _6 Group { }
+              DEF _7 Group {
                 children [
                   DEF Front Transform {
-                    translation 0 0 0.01
                     scale 0 0 1
                     children Transform {
                       children [
@@ -735,11 +293,7 @@ Collision {
                           autoOffset FALSE
                         }
                         DEF Plane Shape {
-                          appearance DEF Transparent Appearance {
-                            material Material {
-                              transparency 1
-                            }
-                          }
+                          appearance USE Transparent
                           geometry Rectangle2D {
                             size 1 1
                           }
@@ -748,10 +302,9 @@ Collision {
                     }
                   }
                   DEF Right Transform {
-                    translation 0.01 0 0
                     scale 1 0 0
                     children Transform {
-                      rotation 0 1 0 1.5708
+                      rotation 0 1 0 90.0002104591497
                       children [
                         DEF RightSensor PlaneSensor {
                           autoOffset FALSE
@@ -761,10 +314,9 @@ Collision {
                     }
                   }
                   DEF Back Transform {
-                    translation 0 0 -0.01
                     scale 0 0 1
                     children Transform {
-                      rotation 0 1 0 3.14159
+                      rotation 0 1 0 179.999847960504
                       children [
                         DEF BackSensor PlaneSensor {
                           autoOffset FALSE
@@ -774,10 +326,9 @@ Collision {
                     }
                   }
                   DEF Left Transform {
-                    translation -0.01 0 0
                     scale 1 0 0
                     children Transform {
-                      rotation 0 -1 0 1.5708
+                      rotation 0 -1 0 90.0002104591497
                       children [
                         DEF LeftSensor PlaneSensor {
                           autoOffset FALSE
@@ -787,10 +338,9 @@ Collision {
                     }
                   }
                   DEF Top Transform {
-                    translation 0 0.01 0
                     scale 0 1 0
                     children Transform {
-                      rotation -1 0 0 1.5708
+                      rotation -1 0 0 90.0002104591497
                       children [
                         DEF TopSensor PlaneSensor {
                           autoOffset FALSE
@@ -800,10 +350,9 @@ Collision {
                     }
                   }
                   DEF Bottom Transform {
-                    translation 0 -0.01 0
                     scale 0 1 0
                     children Transform {
-                      rotation 1 0 0 1.5708
+                      rotation 1 0 0 90.0002104591497
                       children [
                         DEF BottomSensor PlaneSensor {
                           autoOffset FALSE
@@ -819,19 +368,19 @@ Collision {
         ]
       }
     }
-    DEF _6 DepthBuffer {
+    DEF _8 DepthBuffer {
       enabled FALSE
       depthOffset 1000000000
       children DEF AdjustmentHandles Transform {
         children [
-          DEF ToolModeSwitch_1 Switch {
+          DEF ToolModeSwitch_9 Switch {
             whichChoice 0
             children [
               Group {
                 children [
                   DEF X Group {
                     children [
-                      DEF Front_1 Group {
+                      DEF Front_10 Group {
                         children [
                           DEF XHandle Transform {
                             translation 0.5 0 0
@@ -841,8 +390,8 @@ Collision {
                                 children [
                                   Transform {
                                     translation 10.5 0 0
-                                    rotation 0 0 -1 1.5708
-                                    children DEF _7 Shape {
+                                    rotation 0 0 -1 90.0002104591497
+                                    children DEF _11 Shape {
                                       appearance DEF Red Appearance {
                                         material Material {
                                           ambientIntensity 0
@@ -859,32 +408,32 @@ Collision {
                                   }
                                   Transform {
                                     translation 8 0 0
-                                    children DEF _8 Shape {
+                                    children DEF _12 Shape {
                                       appearance USE Red
                                       geometry DEF Sphere Sphere {
                                         radius 8
                                       }
                                     }
                                   }
-                                  DEF _9 BooleanSwitch {
+                                  DEF _13 BooleanSwitch {
                                     whichChoice TRUE
                                     children [
-                                      DEF _10 Transform {
+                                      DEF _14 Transform {
                                         translation 6 0 0
-                                        rotation 0 0 -1 1.5708
-                                        children DEF _11 Shape {
+                                        rotation 0 0 -1 90.0002104591497
+                                        children DEF _15 Shape {
                                           appearance USE Red
-                                          geometry DEF _12 Cone {
+                                          geometry DEF _16 Cone {
                                             height 12
                                             bottomRadius 4
                                           }
                                         }
                                       }
-                                      DEF _13 Transform {
+                                      DEF _17 Transform {
                                         translation 6 0 0
-                                        rotation 0.999364381620497 0 0.0356487411879094 2.98023223876953e-08
-                                        scaleOrientation -0.357406744336593 0.862856209461017 -0.357406744336593 4.51948301921753
-                                        children DEF _14 Shape {
+                                        rotation 0.999364381620497 0 0.0356487411879094 1.70754729250319e-06
+                                        scaleOrientation -0.357406744336593 0.862856209461017 -0.357406744336593 258.947302582207
+                                        children DEF _18 Shape {
                                           appearance USE Red
                                           geometry DEF Box Box {
                                             size 12 12 12
@@ -903,47 +452,52 @@ Collision {
                             autoOffset FALSE
                             maxPosition -1 0
                           }
-                          USE XScaleSensor
+                          DEF XScaleSensor PlaneSensor {
+                            enabled FALSE
+                            description "x-Axis"
+                            autoOffset FALSE
+                            maxPosition -1 0
+                          }
                         ]
                       }
-                      DEF Back_1 Group {
+                      DEF Back_19 Group {
                         children [
                           DEF XBack Transform {
                             translation -0.5 0 0
                             children ScreenGroup {
-                              children DEF _15 Switch {
+                              children DEF _20 Switch {
                                 whichChoice 0
                                 children [
-                                  DEF _16 Transform {
+                                  DEF _21 Transform {
                                     translation -3.5 0 0
-                                    rotation 0 0 -1 1.5708
-                                    children DEF _17 Shape {
+                                    rotation 0 0 -1 90.0002104591497
+                                    children DEF _22 Shape {
                                       appearance USE Red
-                                      geometry DEF _18 Cylinder {
+                                      geometry DEF _23 Cylinder {
                                         height 8
                                         radius 7
                                       }
                                     }
                                   }
-                                  USE _16
-                                  DEF _19 BooleanSwitch {
+                                  USE _21
+                                  DEF _24 BooleanSwitch {
                                     whichChoice TRUE
                                     children [
-                                      DEF _20 Transform {
+                                      DEF _25 Transform {
                                         translation -2.5 0 0
-                                        rotation 0 0 -1 1.5708
-                                        children DEF _21 Shape {
+                                        rotation 0 0 -1 90.0002104591497
+                                        children DEF _26 Shape {
                                           appearance USE Red
-                                          geometry DEF _22 Cylinder {
+                                          geometry DEF _27 Cylinder {
                                             height 5
                                             radius 4
                                           }
                                         }
                                       }
-                                      DEF _23 Transform {
+                                      DEF _28 Transform {
                                         translation -4 0 0
                                         scale 0.666667 1 1
-                                        children USE _14
+                                        children USE _18
                                       }
                                     ]
                                   }
@@ -953,14 +507,19 @@ Collision {
                           }
                           USE ModeTouch
                           USE XTranslationSensor
-                          USE XScaleBackSensor
+                          DEF XScaleBackSensor PlaneSensor {
+                            enabled FALSE
+                            description "x-Axis"
+                            autoOffset FALSE
+                            maxPosition -1 0
+                          }
                         ]
                       }
                     ]
                   }
                   DEF Y Group {
                     children [
-                      DEF Front_2 Group {
+                      DEF Front_29 Group {
                         children [
                           DEF YHandle Transform {
                             translation 0 0.5 0
@@ -970,7 +529,7 @@ Collision {
                                 children [
                                   Transform {
                                     translation 0 10.5 0
-                                    children DEF _24 Shape {
+                                    children DEF _30 Shape {
                                       appearance DEF Green Appearance {
                                         material Material {
                                           ambientIntensity 0
@@ -984,23 +543,23 @@ Collision {
                                   }
                                   Transform {
                                     translation 0 8 0
-                                    children DEF _25 Shape {
+                                    children DEF _31 Shape {
                                       appearance USE Green
                                       geometry USE Sphere
                                     }
                                   }
-                                  DEF _26 BooleanSwitch {
+                                  DEF _32 BooleanSwitch {
                                     children [
-                                      DEF _27 Transform {
+                                      DEF _33 Transform {
                                         translation 0 6 0
-                                        children DEF _28 Shape {
+                                        children DEF _34 Shape {
                                           appearance USE Green
-                                          geometry USE _12
+                                          geometry USE _16
                                         }
                                       }
-                                      DEF _29 Transform {
+                                      DEF _35 Transform {
                                         translation 0 6 0
-                                        children DEF _30 Shape {
+                                        children DEF _36 Shape {
                                           appearance USE Green
                                           geometry USE Box
                                         }
@@ -1017,39 +576,44 @@ Collision {
                             autoOffset FALSE
                             maxPosition 0 -1
                           }
-                          USE YScaleSensor
+                          DEF YScaleSensor PlaneSensor {
+                            enabled FALSE
+                            description "y-Axis"
+                            autoOffset FALSE
+                            maxPosition 0 -1
+                          }
                         ]
                       }
-                      DEF Back_2 Group {
+                      DEF Back_37 Group {
                         children [
                           DEF YBack Transform {
                             translation 0 -0.5 0
                             children ScreenGroup {
-                              children DEF _31 Switch {
+                              children DEF _38 Switch {
                                 whichChoice 0
                                 children [
-                                  DEF _32 Transform {
+                                  DEF _39 Transform {
                                     translation 0 -3.5 0
-                                    children DEF _33 Shape {
+                                    children DEF _40 Shape {
                                       appearance USE Green
-                                      geometry USE _18
+                                      geometry USE _23
                                     }
                                   }
-                                  USE _32
-                                  DEF _34 BooleanSwitch {
+                                  USE _39
+                                  DEF _41 BooleanSwitch {
                                     whichChoice TRUE
                                     children [
-                                      DEF _35 Transform {
+                                      DEF _42 Transform {
                                         translation 0 -2.5 0
-                                        children DEF _36 Shape {
+                                        children DEF _43 Shape {
                                           appearance USE Green
-                                          geometry USE _22
+                                          geometry USE _27
                                         }
                                       }
-                                      DEF _37 Transform {
+                                      DEF _44 Transform {
                                         translation 0 -4 0
                                         scale 1 0.666667 1
-                                        children USE _30
+                                        children USE _36
                                       }
                                     ]
                                   }
@@ -1059,14 +623,19 @@ Collision {
                           }
                           USE ModeTouch
                           USE YTranslationSensor
-                          USE YScaleBackSensor
+                          DEF YScaleBackSensor PlaneSensor {
+                            enabled FALSE
+                            description "y-Axis"
+                            autoOffset FALSE
+                            maxPosition 0 -1
+                          }
                         ]
                       }
                     ]
                   }
                   DEF Z Group {
                     children [
-                      DEF Front_3 Group {
+                      DEF Front_45 Group {
                         children [
                           DEF ZHandle Transform {
                             translation 0 0 0.5
@@ -1076,8 +645,8 @@ Collision {
                                 children [
                                   Transform {
                                     translation 0 0 10.5
-                                    rotation 1 0 0 1.5708
-                                    children DEF _38 Shape {
+                                    rotation 1 0 0 90.0002104591497
+                                    children DEF _46 Shape {
                                       appearance DEF Blue Appearance {
                                         material Material {
                                           ambientIntensity 0
@@ -1091,24 +660,24 @@ Collision {
                                   }
                                   Transform {
                                     translation 0 0 8
-                                    children DEF _39 Shape {
+                                    children DEF _47 Shape {
                                       appearance USE Blue
                                       geometry USE Sphere
                                     }
                                   }
-                                  DEF _40 BooleanSwitch {
+                                  DEF _48 BooleanSwitch {
                                     children [
-                                      DEF _41 Transform {
+                                      DEF _49 Transform {
                                         translation 0 0 6
-                                        rotation 1 0 0 1.5708
-                                        children DEF _42 Shape {
+                                        rotation 1 0 0 90.0002104591497
+                                        children DEF _50 Shape {
                                           appearance USE Blue
-                                          geometry USE _12
+                                          geometry USE _16
                                         }
                                       }
-                                      DEF _43 Transform {
+                                      DEF _51 Transform {
                                         translation 0 0 6
-                                        children DEF _44 Shape {
+                                        children DEF _52 Shape {
                                           appearance USE Blue
                                           geometry USE Box
                                         }
@@ -1122,45 +691,51 @@ Collision {
                           USE ModeTouch
                           DEF ZTranslationSensor PlaneSensor {
                             description "z-Axis"
-                            axisRotation 0 -1 0 1.5708
+                            axisRotation 0 -1 0 90.0002104591497
                             autoOffset FALSE
                             maxPosition -1 0
                           }
-                          USE ZScaleSensor
+                          DEF ZScaleSensor PlaneSensor {
+                            enabled FALSE
+                            description "z-Axis"
+                            axisRotation 0 -1 0 90.0002104591497
+                            autoOffset FALSE
+                            maxPosition -1 0
+                          }
                         ]
                       }
-                      DEF Back_3 Group {
+                      DEF Back_53 Group {
                         children [
                           DEF ZBack Transform {
                             translation 0 0 -0.5
                             children ScreenGroup {
-                              children DEF _45 Switch {
+                              children DEF _54 Switch {
                                 whichChoice 0
                                 children [
-                                  DEF _46 Transform {
+                                  DEF _55 Transform {
                                     translation 0 0 -3.5
-                                    rotation 1 0 0 1.5708
-                                    children DEF _47 Shape {
+                                    rotation 1 0 0 90.0002104591497
+                                    children DEF _56 Shape {
                                       appearance USE Blue
-                                      geometry USE _18
+                                      geometry USE _23
                                     }
                                   }
-                                  USE _46
-                                  DEF _48 BooleanSwitch {
+                                  USE _55
+                                  DEF _57 BooleanSwitch {
                                     whichChoice TRUE
                                     children [
-                                      DEF _49 Transform {
+                                      DEF _58 Transform {
                                         translation 0 0 -2.5
-                                        rotation 1 0 0 1.5708
-                                        children DEF _50 Shape {
+                                        rotation 1 0 0 90.0002104591497
+                                        children DEF _59 Shape {
                                           appearance USE Blue
-                                          geometry USE _22
+                                          geometry USE _27
                                         }
                                       }
-                                      DEF _51 Transform {
+                                      DEF _60 Transform {
                                         translation 0 0 -4
                                         scale 1 1 0.666667
-                                        children USE _44
+                                        children USE _52
                                       }
                                     ]
                                   }
@@ -1170,7 +745,13 @@ Collision {
                           }
                           USE ModeTouch
                           USE ZTranslationSensor
-                          USE ZScaleBackSensor
+                          DEF ZScaleBackSensor PlaneSensor {
+                            enabled FALSE
+                            description "z-Axis"
+                            axisRotation 0 -1 0 90.0002104591497
+                            autoOffset FALSE
+                            maxPosition -1 0
+                          }
                         ]
                       }
                     ]
@@ -1182,29 +763,29 @@ Collision {
                   DEF XFront Group {
                     children [
                       ScreenGroup {
-                        children DEF XSwitch_1 Switch {
+                        children DEF XSwitch_61 Switch {
                           whichChoice 0
                           children [
                             Transform {
                               translation 60.5 0 0
-                              rotation 0 0 -1 1.5708
-                              children USE _7
+                              rotation 0 0 -1 90.0002104591497
+                              children USE _11
                             }
                             Transform {
                               translation 58 0 0
-                              children USE _8
+                              children USE _12
                             }
-                            DEF _52 BooleanSwitch {
+                            DEF _62 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _53 Transform {
+                                DEF _63 Transform {
                                   translation 56 0 0
-                                  rotation 0 0 -1 1.5708
-                                  children USE _11
+                                  rotation 0 0 -1 90.0002104591497
+                                  children USE _15
                                 }
-                                DEF _54 Transform {
+                                DEF _64 Transform {
                                   translation 56 0 0
-                                  children USE _14
+                                  children USE _18
                                 }
                               ]
                             }
@@ -1216,30 +797,30 @@ Collision {
                       USE XScaleSensor
                     ]
                   }
-                  DEF XBack_1 Group {
+                  DEF XBack_65 Group {
                     children [
                       ScreenGroup {
-                        children DEF _55 Switch {
+                        children DEF _66 Switch {
                           whichChoice 0
                           children [
-                            DEF _56 Transform {
+                            DEF _67 Transform {
                               translation -53.5 0 0
-                              rotation 0 0 -1 1.5708
-                              children USE _17
+                              rotation 0 0 -1 90.0002104591497
+                              children USE _22
                             }
-                            USE _56
-                            DEF _57 BooleanSwitch {
+                            USE _67
+                            DEF _68 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _58 Transform {
+                                DEF _69 Transform {
                                   translation -52.5 0 0
-                                  rotation 0 0 -1 1.5708
-                                  children USE _21
+                                  rotation 0 0 -1 90.0002104591497
+                                  children USE _26
                                 }
-                                DEF _59 Transform {
+                                DEF _70 Transform {
                                   translation -54 0 0
                                   scale 0.666667 1 1
-                                  children USE _14
+                                  children USE _18
                                 }
                               ]
                             }
@@ -1254,27 +835,27 @@ Collision {
                   DEF YFront Group {
                     children [
                       ScreenGroup {
-                        children DEF YSwitch_1 Switch {
+                        children DEF YSwitch_71 Switch {
                           whichChoice 0
                           children [
                             Transform {
                               translation 0 60.5 0
-                              children USE _24
+                              children USE _30
                             }
                             Transform {
                               translation 0 58 0
-                              children USE _25
+                              children USE _31
                             }
-                            DEF _60 BooleanSwitch {
+                            DEF _72 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _61 Transform {
+                                DEF _73 Transform {
                                   translation 0 56 0
-                                  children USE _28
+                                  children USE _34
                                 }
-                                DEF _62 Transform {
+                                DEF _74 Transform {
                                   translation 0 56 0
-                                  children USE _30
+                                  children USE _36
                                 }
                               ]
                             }
@@ -1286,28 +867,28 @@ Collision {
                       USE YScaleSensor
                     ]
                   }
-                  DEF YBack_1 Group {
+                  DEF YBack_75 Group {
                     children [
                       ScreenGroup {
-                        children DEF _63 Switch {
+                        children DEF _76 Switch {
                           whichChoice 0
                           children [
-                            DEF _64 Transform {
+                            DEF _77 Transform {
                               translation 0 -53.5 0
-                              children USE _33
+                              children USE _40
                             }
-                            USE _64
-                            DEF _65 BooleanSwitch {
+                            USE _77
+                            DEF _78 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _66 Transform {
+                                DEF _79 Transform {
                                   translation 0 -52.5 0
-                                  children USE _36
+                                  children USE _43
                                 }
-                                DEF _67 Transform {
+                                DEF _80 Transform {
                                   translation 0 -54 0
                                   scale 1 0.666667 1
-                                  children USE _30
+                                  children USE _36
                                 }
                               ]
                             }
@@ -1322,29 +903,29 @@ Collision {
                   DEF ZFront Group {
                     children [
                       ScreenGroup {
-                        children DEF ZSwitch_1 Switch {
+                        children DEF ZSwitch_81 Switch {
                           whichChoice 0
                           children [
                             Transform {
                               translation 0 0 60.5
-                              rotation 1 0 0 1.5708
-                              children USE _38
+                              rotation 1 0 0 90.0002104591497
+                              children USE _46
                             }
                             Transform {
                               translation 0 0 58
-                              children USE _39
+                              children USE _47
                             }
-                            DEF _68 BooleanSwitch {
+                            DEF _82 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _69 Transform {
+                                DEF _83 Transform {
                                   translation 0 0 56
-                                  rotation 1 0 0 1.5708
-                                  children USE _42
+                                  rotation 1 0 0 90.0002104591497
+                                  children USE _50
                                 }
-                                DEF _70 Transform {
+                                DEF _84 Transform {
                                   translation 0 0 56
-                                  children USE _44
+                                  children USE _52
                                 }
                               ]
                             }
@@ -1356,30 +937,30 @@ Collision {
                       USE ZScaleSensor
                     ]
                   }
-                  DEF ZBack_1 Group {
+                  DEF ZBack_85 Group {
                     children [
                       ScreenGroup {
-                        children DEF _71 Switch {
+                        children DEF _86 Switch {
                           whichChoice 0
                           children [
-                            DEF _72 Transform {
+                            DEF _87 Transform {
                               translation 0 0 -53.5
-                              rotation 1 0 0 1.5708
-                              children USE _47
+                              rotation 1 0 0 90.0002104591497
+                              children USE _56
                             }
-                            USE _72
-                            DEF _73 BooleanSwitch {
+                            USE _87
+                            DEF _88 BooleanSwitch {
                               whichChoice TRUE
                               children [
-                                DEF _74 Transform {
+                                DEF _89 Transform {
                                   translation 0 0 -52.5
-                                  rotation 1 0 0 1.5708
-                                  children USE _50
+                                  rotation 1 0 0 90.0002104591497
+                                  children USE _59
                                 }
-                                DEF _75 Transform {
+                                DEF _90 Transform {
                                   translation 0 0 -54
                                   scale 1 1 0.666667
-                                  children USE _44
+                                  children USE _52
                                 }
                               ]
                             }
@@ -1400,9 +981,9 @@ Collision {
             children [
               Group { }
               Group { }
-              DEF _76 BooleanSwitch {
+              DEF _91 BooleanSwitch {
                 children [
-                  DEF _77 Group { }
+                  DEF _92 Group { }
                   DEF ScaleHandlesSwitch Switch {
                     whichChoice 0
                     children [
@@ -1411,7 +992,11 @@ Collision {
                         children [
                           DEF ScaleHandle1 Transform {
                             children [
-                              USE ScaleSensor1
+                              DEF ScaleSensor1 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               DEF ScaleHandle ScreenGroup {
                                 children Transform {
                                   children Shape {
@@ -1431,43 +1016,71 @@ Collision {
                           }
                           DEF ScaleHandle2 Transform {
                             children [
-                              USE ScaleSensor2
+                              DEF ScaleSensor2 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle3 Transform {
                             children [
-                              USE ScaleSensor3
+                              DEF ScaleSensor3 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle4 Transform {
                             children [
-                              USE ScaleSensor4
+                              DEF ScaleSensor4 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle5 Transform {
                             children [
-                              USE ScaleSensor5
+                              DEF ScaleSensor5 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle6 Transform {
                             children [
-                              USE ScaleSensor6
+                              DEF ScaleSensor6 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle7 Transform {
                             children [
-                              USE ScaleSensor7
+                              DEF ScaleSensor7 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
                           DEF ScaleHandle8 Transform {
                             children [
-                              USE ScaleSensor8
+                              DEF ScaleSensor8 PlaneSensor {
+                                axisRotation 0 0 1 180
+                                autoOffset FALSE
+                                maxPosition -1 0
+                              }
                               USE ScaleHandle
                             ]
                           }
@@ -1482,21 +1095,21 @@ Collision {
         ]
       }
     }
-    DEF _78 DepthBuffer {
+    DEF _93 DepthBuffer {
       enabled FALSE
       depthOffset 1000000000
       children [
         DEF CenterPoint Transform {
           children [
-            DEF _79 TouchSensor { }
-            DEF _80 BooleanSwitch {
+            DEF _94 TouchSensor { }
+            DEF _95 BooleanSwitch {
               children [
-                DEF _81 Group { }
-                DEF _82 ScreenGroup {
-                  children DEF _83 BooleanSwitch {
+                DEF _96 Group { }
+                DEF _97 ScreenGroup {
+                  children DEF _98 BooleanSwitch {
                     bboxSize 0 0 0
                     children [
-                      DEF _84 Shape {
+                      DEF _99 Shape {
                         appearance Appearance {
                           material Material {
                             ambientIntensity 0
@@ -1505,13 +1118,13 @@ Collision {
                           }
                           shaders ToolShader { }
                         }
-                        geometry DEF _85 Sphere {
+                        geometry DEF _100 Sphere {
                           radius 5
                         }
                       }
-                      DEF _86 Shape {
+                      DEF _101 Shape {
                         appearance USE Red
-                        geometry USE _85
+                        geometry USE _100
                       }
                     ]
                   }
@@ -1527,15 +1140,15 @@ Collision {
                     Group {
                       children [
                         DEF XRotationSensor CylinderSensor {
-                          axisRotation 0 0 1 1.5708
-                          diskAngle 1.3
+                          axisRotation 0 0 1 90.0002104591497
+                          diskAngle 74.4845
                           autoOffset FALSE
                         }
                         DEF XRotationHandle Transform {
-                          rotation 0 1 0 1.5708
+                          rotation 0 1 0 90.0002104591497
                           children [
                             DEF Cylinder Transform {
-                              rotation 1 0 0 1.5708
+                              rotation 1 0 0 90.0002104591497
                               children Shape {
                                 appearance USE Transparent
                                 geometry Cylinder {
@@ -1570,11 +1183,11 @@ Collision {
                     Group {
                       children [
                         DEF YRotationSensor CylinderSensor {
-                          diskAngle 1.3
+                          diskAngle 74.4845
                           autoOffset FALSE
                         }
                         DEF YRotationHandle Transform {
-                          rotation 1 0 0 1.5708
+                          rotation 1 0 0 90.0002104591497
                           children [
                             USE Cylinder
                             Shape {
@@ -1604,8 +1217,8 @@ Collision {
                     Group {
                       children [
                         DEF ZRotationSensor CylinderSensor {
-                          axisRotation 1 0 0 1.5708
-                          diskAngle 1.3
+                          axisRotation 1 0 0 90.0002104591497
+                          diskAngle 74.4845
                           autoOffset FALSE
                         }
                         DEF ZRotationHandle Transform {
@@ -1642,9 +1255,9 @@ Collision {
             }
           ]
         }
-        DEF _87 BooleanSwitch {
+        DEF _102 BooleanSwitch {
           children [
-            DEF _88 Group { }
+            DEF _103 Group { }
             DEF CenterLine Shape {
               appearance Appearance {
                 lineProperties LineProperties {
@@ -1696,9 +1309,9 @@ Collision {
   ]
 }
 
-DEF _89 BooleanFilter { }
+DEF _104 BooleanFilter { }
 
-DEF _90 TimeTrigger { }
+DEF _105 TimeTrigger { }
 
 DEF ModeDoubleClick DoubleClick { }
 
@@ -1846,7 +1459,6 @@ DEF BBoxScript Script {
   outputOnly     SFDouble   handlesDepthOffset_changed
   outputOnly     SFDouble   rotationHandlesDepthOffset_changed
   outputOnly     SFInt32    scaleToolWhichChoice_changed
-  initializeOnly SFFloat    offset 0.01
   initializeOnly SFVec3f    xAxis 1 0 0
   initializeOnly SFVec3f    yAxis 0 1 0
   initializeOnly SFVec3f    zAxis 0 0 1
@@ -1876,6 +1488,7 @@ function initialize ()
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
+	var offset      = bboxSize1_2 / 20;
 
 	// BBox
 
@@ -2353,9 +1966,406 @@ function eventsProcessed ()
   directOutput TRUE
 }
 
-USE ScaleScript
+DEF ScaleScript Script {
+  inputOnly      SFBool     set_active
+  inputOnly      SFVec3f    set_xScale
+  inputOnly      SFVec3f    set_yScale
+  inputOnly      SFVec3f    set_zScale
+  inputOnly      SFVec3f    set_xScaleBack
+  inputOnly      SFVec3f    set_yScaleBack
+  inputOnly      SFVec3f    set_zScaleBack
+  inputOnly      SFVec3f    set_scale1
+  inputOnly      SFVec3f    set_scale2
+  inputOnly      SFVec3f    set_scale3
+  inputOnly      SFVec3f    set_scale4
+  inputOnly      SFVec3f    set_scale5
+  inputOnly      SFVec3f    set_scale6
+  inputOnly      SFVec3f    set_scale7
+  inputOnly      SFVec3f    set_scale8
+  inputOnly      SFVec3f    set_linetype
+  inputOutput    SFBool     keepCenter FALSE
+  inputOutput    SFBool     scaleFromEdge TRUE
+  inputOutput    SFBool     scaleFromCenter TRUE
+  inputOutput    MFString   connectedAxes [ ]
+  inputOutput    SFBool     controlKey FALSE
+  inputOutput    SFBool     altKey FALSE
+  inputOutput    SFVec3f    bboxSize 0 0 0
+  inputOutput    SFVec3f    bboxCenter 0 0 0
+  inputOutput    SFNode     transform NULL
+  outputOnly     SFInt32    activeTool_changed
+  initializeOnly SFVec3f    translation 0 0 0
+  initializeOnly SFVec3f    scaleFactor 0 0 0
+  initializeOnly SFVec3f    center 0 0 0
+  initializeOnly SFVec3f    distanceFromCenter 0 0 0
+  initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  initializeOnly SFBool     active FALSE
+  initializeOnly SFInt32    events 0
+  # Sensors below are not used anymore
+  initializeOnly MFNode     sensors [
+    USE XScaleSensor
+    USE YScaleSensor
+    USE ZScaleSensor
+    USE XScaleBackSensor
+    USE YScaleBackSensor
+    USE ZScaleBackSensor
+    USE ScaleSensor1
+    USE ScaleSensor2
+    USE ScaleSensor3
+    USE ScaleSensor4
+    USE ScaleSensor5
+    USE ScaleSensor6
+    USE ScaleSensor7
+    USE ScaleSensor8
+  ]
+  # Sensors above are not used anymore
+  initializeOnly SFNode     lineProperties USE LineProperties
+  initializeOnly SFNode     self USE ScaleScript
 
-USE Tool
+  url "ecmascript:
+
+function set_transform ()
+{
+	Browser .addRoute (transform, 'scale', self, 'set_linetype');
+
+	set_linetype (transform .scale);
+}
+
+function set_linetype (scale)
+{
+	var matrix = new SFMatrix4f ();
+	matrix .setTransform (transform .translation,
+	                      transform .rotation,
+	                      transform .scale,
+	                      transform .scaleOrientation,
+	                      transform .center);
+
+	var x = new SFVec3f (matrix [0], matrix [1], matrix [2]);
+	var y = new SFVec3f (matrix [4], matrix [5], matrix [6]);
+	var z = new SFVec3f (matrix [8], matrix [9], matrix [10]);
+
+	if (x .cross (y) .dot (z) >= 0)
+		lineProperties .linetype = 1; // SOLID
+	else
+		lineProperties .linetype = 2;
+}
+
+function set_scaleFromCenter ()
+{
+   var fun = [
+      set_xScale,
+		set_yScale,
+		set_zScale,
+		set_xScaleBack,
+		set_yScaleBack,
+		set_zScaleBack,
+		set_scale1,
+		set_scale2,
+		set_scale3,
+		set_scale4,
+		set_scale5,
+		set_scale6,
+		set_scale7,
+		set_scale8,
+   ];
+
+	for (var i in sensors)
+	{
+		if (sensors [i] .isActive)
+		{
+			fun [i] (sensors [i] .translation_changed);
+		}
+	}
+}
+
+function set_active (value)
+{
+	active = value;
+
+	if (active)
+	{
+		for (var i in sensors)
+		{
+			if (sensors [i] .isActive)
+			{
+				activeTool_changed = 3 + parseInt (i);
+			}
+		}
+
+		translation = transform .translation;
+		scaleFactor = transform .scale;
+		center      = transform .center;
+
+		matrix .setTransform (transform .translation,
+		                      transform .rotation,
+		                      transform .scale,
+		                      transform .scaleOrientation,
+		                      transform .center);
+
+		distanceFromCenter = bboxCenter .subtract (transform .center);
+	}
+	else
+		activeTool_changed = 0;
+}
+
+// isActive
+
+function set_xScale (value)
+{
+	if (bboxSize .x)
+		set_axisScale (\"x\", value, 1);
+}
+
+function set_yScale (value)
+{
+	if (bboxSize .y)
+		set_axisScale (\"y\", value, 1);
+}
+
+function set_zScale (value)
+{
+	if (bboxSize .z)
+		set_axisScale (\"z\", value, 1);
+}
+
+function set_xScaleBack (value)
+{		       
+	if (bboxSize .x)
+		set_axisScale (\"x\", value, -1);
+}
+
+function set_yScaleBack (value)
+{
+	if (bboxSize .y)
+		set_axisScale (\"y\", value, -1);
+}
+
+function set_zScaleBack (value)
+{
+	if (bboxSize .z)
+		set_axisScale (\"z\", value, -1);
+}
+
+function set_axisScale (axis, value, sgn)
+{
+	value = value [axis];
+
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + sgn * value / bboxSize [axis];
+		offset [axis] = -sgn * bboxSize [axis] / 2;
+
+		connect (axis, vector, offset);
+
+		scale (vector, offset);
+	}
+	else if (scaleFromCenter)
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
+
+		connect (axis, vector, offset);
+
+		scale (vector, offset);
+	}
+}
+
+function connect (axis, vector, offset)
+{
+	for (var i = 0, length = connectedAxes .length; i < length; ++ i)
+	{
+		var
+			lhs = connectedAxes [i] [0] .toLowerCase (),
+			rhs = connectedAxes [i] [1] .toLowerCase ();
+	
+		if (rhs == axis)
+		{
+			vector [lhs] = vector [rhs];
+			offset [lhs] = offset [rhs];
+		}
+	}
+}
+
+function set_scale1 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, -1, -1));
+}
+
+function set_scale2 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, -1, -1));
+}
+
+function set_scale3 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, 1, -1));
+}
+
+function set_scale4 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, 1, -1));
+}
+
+function set_scale5 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, -1, 1));
+}
+
+function set_scale6 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, -1, 1));
+}
+
+function set_scale7 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, 1, 1));
+}
+
+function set_scale8 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, 1, 1));
+}
+
+function set_scale (value, sgn, centerOffset)
+{
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
+	{
+		centerOffset = centerOffset .multVec (bboxSize .divide (2));
+
+		var s = 1 + sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (s, s, s), centerOffset);
+	}
+	else if (scaleFromCenter)
+	{
+		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (s, s, s), new SFVec3f ());
+	}
+}
+
+function scale (value, centerOffset)
+{
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
+	var scale = new SFMatrix4f ();
+	scale .setTransform (new SFVec3f (), new SFRotation (), value);
+
+	var scaledMatrix = matrix .multLeft (scale);
+	var t            = new SFVec3f ();
+	var r            = new SFRotation ();
+	var s            = new SFVec3f ();
+	var so           = new SFRotation ();
+
+	scaledMatrix .getTransform (t, r, s, so, center);
+
+	if (s .x && s .y && s .z)
+	{
+		transform .translation      = t;
+		transform .rotation         = r;
+		transform .scale            = s;
+		transform .scaleOrientation = so;
+
+		if (keepCenter)
+			translateKeepCenter (scaledMatrix, distanceFromCenter .add (centerOffset));
+		else
+			translate (scaledMatrix, distanceFromCenter .add (centerOffset));
+	}
+}
+
+function translate (scaledMatrix, distanceFromCenter)
+{
+	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
+
+	transform .translation = translation .subtract (centerOffset);
+}
+
+function translateKeepCenter (scaledMatrix, distanceFromCenter)
+{
+	try
+	{
+		var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
+	
+		transform .translation = translation .subtract (centerOffset);
+		transform .center      = center .add (centerOffset);
+	}
+	catch (error)
+	{ }
+}
+
+function sgn (value)
+{
+	return value < 0 ? -1 : value > 0 ? 1 : 0;
+}
+"
+  directOutput TRUE
+}
+
+DEF Tool Script {
+  inputOutput SFBool     pickable TRUE
+  inputOutput MFString   tools [
+    "MOVE",
+    "ROTATE",
+    "SCALE"
+  ]
+  inputOutput SFInt32    toolMode 0
+  inputOutput SFBool     scaleXAxis TRUE
+  inputOutput SFBool     scaleYAxis TRUE
+  inputOutput SFBool     scaleZAxis TRUE
+  inputOutput SFBool     scaleXBackAxis TRUE
+  inputOutput SFBool     scaleYBackAxis TRUE
+  inputOutput SFBool     scaleZBackAxis TRUE
+  inputOutput SFBool     scaleUniform TRUE
+  inputOutput SFBool     scaleFromEdge TRUE
+  inputOutput SFBool     scaleFromCenter TRUE
+  inputOutput MFString   connectedAxes [ ]
+  inputOutput SFColor    color 0.35 1 0.7
+  inputOutput SFDouble   snapAngle 0.196349540849362
+  inputOutput SFBool     displayBBox TRUE
+  inputOutput SFBool     displayCenter TRUE
+  inputOutput SFBool     controlKey FALSE
+  inputOutput SFBool     shiftKey FALSE
+  inputOutput SFBool     altKey FALSE
+  inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFVec3f    bboxSize 0 0 0
+  inputOutput SFVec3f    bboxCenter 0 0 0
+  inputOutput SFBool     isActive FALSE
+  inputOutput SFTime     touchTime 0
+  inputOutput SFBool     keepCenter_changed FALSE
+  inputOutput SFInt32    activeTool_changed 0
+  inputOutput SFNode     transform NULL
+
+  url "ecmascript:
+"
+}
 
 
 # Debug
@@ -2381,8 +2391,8 @@ ROUTE ModeDoubleClick.doubleClickTime TO ModeScript.set_time
 ROUTE ModeScript.move TO XTranslationSensor.set_enabled
 ROUTE ModeScript.move TO YTranslationSensor.set_enabled
 ROUTE ModeScript.move TO ZTranslationSensor.set_enabled
-ROUTE ModeScript.whichChoice_changed TO XSwitch_1.set_whichChoice
-ROUTE ModeScript.whichChoice_changed TO YSwitch_1.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO XSwitch_61.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO YSwitch_71.set_whichChoice
 ROUTE ModeScript.whichChoice_changed TO RotationHandlesSwitch.set_whichChoice
 
 # Move Tool
@@ -2464,34 +2474,34 @@ ROUTE ScaleSensor5.translation_changed TO ScaleScript.set_scale5
 ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
 ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
 ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-ROUTE _79.touchTime TO CenterDoubleClick.set_time
+ROUTE _94.touchTime TO CenterDoubleClick.set_time
 ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
 ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-ROUTE CenterScript.keepCenter_changed TO _83.set_whichChoice
+ROUTE CenterScript.keepCenter_changed TO _98.set_whichChoice
 ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-ROUTE _90.triggerTime TO ModeDoubleClick.set_time
-ROUTE XRotationSensor.isActive TO _89.set_boolean
-ROUTE YRotationSensor.isActive TO _89.set_boolean
-ROUTE ZRotationSensor.isActive TO _89.set_boolean
-ROUTE _89.inputFalse TO _90.set_boolean
-ROUTE ScaleSensor1.isActive TO _89.set_boolean
-ROUTE ScaleSensor2.isActive TO _89.set_boolean
-ROUTE ScaleSensor3.isActive TO _89.set_boolean
-ROUTE ScaleSensor4.isActive TO _89.set_boolean
-ROUTE ScaleSensor5.isActive TO _89.set_boolean
-ROUTE ScaleSensor6.isActive TO _89.set_boolean
-ROUTE ScaleSensor7.isActive TO _89.set_boolean
-ROUTE ScaleSensor8.isActive TO _89.set_boolean
+ROUTE _105.triggerTime TO ModeDoubleClick.set_time
+ROUTE XRotationSensor.isActive TO _104.set_boolean
+ROUTE YRotationSensor.isActive TO _104.set_boolean
+ROUTE ZRotationSensor.isActive TO _104.set_boolean
+ROUTE _104.inputFalse TO _105.set_boolean
+ROUTE ScaleSensor1.isActive TO _104.set_boolean
+ROUTE ScaleSensor2.isActive TO _104.set_boolean
+ROUTE ScaleSensor3.isActive TO _104.set_boolean
+ROUTE ScaleSensor4.isActive TO _104.set_boolean
+ROUTE ScaleSensor5.isActive TO _104.set_boolean
+ROUTE ScaleSensor6.isActive TO _104.set_boolean
+ROUTE ScaleSensor7.isActive TO _104.set_boolean
+ROUTE ScaleSensor8.isActive TO _104.set_boolean
 ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
 ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
 ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
 ROUTE ZScaleBackSensor.isActive TO ScaleScript.set_active
 ROUTE YScaleBackSensor.isActive TO ScaleScript.set_active
 ROUTE XScaleBackSensor.isActive TO ScaleScript.set_active
-ROUTE XSwitch_1.whichChoice_changed TO _55.set_whichChoice
-ROUTE YSwitch_1.whichChoice_changed TO _63.set_whichChoice
-ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _78.set_depthOffset
-ROUTE BBoxScript.handlesDepthOffset_changed TO _6.set_depthOffset
+ROUTE XSwitch_61.whichChoice_changed TO _66.set_whichChoice
+ROUTE YSwitch_71.whichChoice_changed TO _76.set_whichChoice
+ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _93.set_depthOffset
+ROUTE BBoxScript.handlesDepthOffset_changed TO _8.set_depthOffset
 ROUTE BBoxScript.scaleToolWhichChoice_changed TO ScaleHandlesSwitch.set_whichChoice
 ROUTE Tool.bboxCenter_changed TO _1.set_translation
 ROUTE FrontSensor.isActive TO Tool.set_isActive
@@ -2519,7 +2529,7 @@ ROUTE ScaleSensor5.isActive TO Tool.set_isActive
 ROUTE ScaleSensor6.isActive TO Tool.set_isActive
 ROUTE ScaleSensor7.isActive TO Tool.set_isActive
 ROUTE ScaleSensor8.isActive TO Tool.set_isActive
-ROUTE _79.touchTime TO Tool.set_touchTime
+ROUTE _94.touchTime TO Tool.set_touchTime
 ROUTE XRotationSensor.isActive TO Tool.set_isActive
 ROUTE YRotationSensor.isActive TO Tool.set_isActive
 ROUTE ZRotationSensor.isActive TO Tool.set_isActive
@@ -2552,20 +2562,20 @@ ROUTE Tool.bboxSize_changed TO ScaleScript.set_bboxSize
 ROUTE Tool.bboxCenter_changed TO ScaleScript.set_bboxCenter
 ROUTE Tool.transform_changed TO ScaleScript.set_transform
 ROUTE ScaleScript.activeTool_changed TO Tool.set_activeTool_changed
-ROUTE ModeScript.whichChoice_changed TO ZSwitch_1.set_whichChoice
-ROUTE ZSwitch_1.whichChoice_changed TO _71.set_whichChoice
-ROUTE ZSwitch.whichChoice_changed TO _45.set_whichChoice
-ROUTE YSwitch.whichChoice_changed TO _31.set_whichChoice
-ROUTE XSwitch.whichChoice_changed TO _15.set_whichChoice
-ROUTE XSwitch_1.whichChoice_changed TO XSwitch.set_whichChoice
-ROUTE YSwitch_1.whichChoice_changed TO YSwitch.set_whichChoice
-ROUTE ZSwitch_1.whichChoice_changed TO ZSwitch.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO ZSwitch_81.set_whichChoice
+ROUTE ZSwitch_81.whichChoice_changed TO _86.set_whichChoice
+ROUTE ZSwitch.whichChoice_changed TO _54.set_whichChoice
+ROUTE YSwitch.whichChoice_changed TO _38.set_whichChoice
+ROUTE XSwitch.whichChoice_changed TO _20.set_whichChoice
+ROUTE XSwitch_61.whichChoice_changed TO XSwitch.set_whichChoice
+ROUTE YSwitch_71.whichChoice_changed TO YSwitch.set_whichChoice
+ROUTE ZSwitch_81.whichChoice_changed TO ZSwitch.set_whichChoice
 ROUTE Tool.toolMode_changed TO ToolModeSwitch.set_whichChoice
-ROUTE Tool.toolMode_changed TO ToolModeSwitch_1.set_whichChoice
+ROUTE Tool.toolMode_changed TO ToolModeSwitch_9.set_whichChoice
 ROUTE Tool.tools_changed TO ModeScript.set_tools
-ROUTE Tool.displayBBox_changed TO _3.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _87.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _80.set_whichChoice
+ROUTE Tool.displayBBox_changed TO _5.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _102.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _95.set_whichChoice
 ROUTE Tool.pickable_changed TO ModeScript.set_pickable
 ROUTE Tool.pickable_changed TO FrontSensor.set_enabled
 ROUTE Tool.pickable_changed TO RightSensor.set_enabled
@@ -2574,23 +2584,23 @@ ROUTE Tool.pickable_changed TO LeftSensor.set_enabled
 ROUTE Tool.pickable_changed TO TopSensor.set_enabled
 ROUTE Tool.pickable_changed TO BottomSensor.set_enabled
 ROUTE Tool.pickable_changed TO ModeTouch.set_enabled
-ROUTE Tool.pickable_changed TO _79.set_enabled
-ROUTE Tool.color_changed TO _2.set_emissiveColor
+ROUTE Tool.pickable_changed TO _94.set_enabled
+ROUTE Tool.color_changed TO _4.set_emissiveColor
 ROUTE Tool.controlKey_changed TO ScaleScript.set_controlKey
 ROUTE Tool.scaleFromEdge_changed TO ScaleScript.set_scaleFromEdge
-ROUTE Tool.scaleXAxis_changed TO _52.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _60.set_whichChoice
-ROUTE Tool.scaleZAxis_changed TO _68.set_whichChoice
+ROUTE Tool.scaleXAxis_changed TO _62.set_whichChoice
+ROUTE Tool.scaleYAxis_changed TO _72.set_whichChoice
+ROUTE Tool.scaleZAxis_changed TO _82.set_whichChoice
 ROUTE Tool.scaleXAxis_changed TO ModeScript.set_scaleXAxis
 ROUTE Tool.scaleYAxis_changed TO ModeScript.set_scaleYAxis
 ROUTE Tool.scaleZAxis_changed TO ModeScript.set_scaleZAxis
-ROUTE Tool.scaleZAxis_changed TO _40.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _26.set_whichChoice
-ROUTE Tool.scaleXAxis_changed TO _9.set_whichChoice
+ROUTE Tool.scaleZAxis_changed TO _48.set_whichChoice
+ROUTE Tool.scaleYAxis_changed TO _32.set_whichChoice
+ROUTE Tool.scaleXAxis_changed TO _13.set_whichChoice
 ROUTE ModeScript.scaleZ TO ZScaleSensor.set_enabled
 ROUTE ModeScript.scaleY TO YScaleSensor.set_enabled
 ROUTE ModeScript.scaleX TO XScaleSensor.set_enabled
-ROUTE ModeScript.scale TO _76.set_whichChoice
+ROUTE ModeScript.scale TO _91.set_whichChoice
 ROUTE Tool.scaleUniform_changed TO ModeScript.set_scaleUniform
 ROUTE Tool.connectedAxes_changed TO ScaleScript.set_connectedAxes
 ROUTE Tool.scaleXBackAxis_changed TO ModeScript.set_scaleXBackAxis
@@ -2599,12 +2609,12 @@ ROUTE Tool.scaleZBackAxis_changed TO ModeScript.set_scaleZBackAxis
 ROUTE ModeScript.scaleXBack TO XScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleYBack TO YScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleZBack TO ZScaleBackSensor.set_enabled
-ROUTE Tool.scaleXBackAxis_changed TO _57.set_whichChoice
-ROUTE Tool.scaleXBackAxis_changed TO _19.set_whichChoice
-ROUTE Tool.scaleYBackAxis_changed TO _65.set_whichChoice
-ROUTE Tool.scaleYBackAxis_changed TO _34.set_whichChoice
-ROUTE Tool.scaleZBackAxis_changed TO _73.set_whichChoice
-ROUTE Tool.scaleZBackAxis_changed TO _48.set_whichChoice
+ROUTE Tool.scaleXBackAxis_changed TO _68.set_whichChoice
+ROUTE Tool.scaleXBackAxis_changed TO _24.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _78.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _41.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _88.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _57.set_whichChoice
 ROUTE Tool.scaleFromCenter_changed TO ScaleScript.set_scaleFromCenter
 
 EXPORT Tool

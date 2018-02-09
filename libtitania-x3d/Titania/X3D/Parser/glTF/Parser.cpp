@@ -625,7 +625,10 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
 
 	if (not attributes -> color .empty ())
+	{
 		geometryNode -> color () = createColor (attributes -> color [0]);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
+	}
 
 	if (geometryNode -> texCoord ())
 		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
@@ -656,7 +659,10 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
 
 	if (not attributes -> color .empty ())
+	{
 		geometryNode -> color () = createColor (attributes -> color [0]);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
+	}
 
 	if (geometryNode -> texCoord ())
 		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
