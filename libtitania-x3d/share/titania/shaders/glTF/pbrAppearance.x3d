@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
-    <meta name='modified' content='Thu, 08 Feb 2018 08:20:46 GMT'/>
+    <meta name='modified' content='Fri, 09 Feb 2018 02:24:08 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -26,7 +26,6 @@
         <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
         <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
         <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
-        <field accessType='inputOutput' type='SFNode' name='pbrMetallicRoughness'/>
       </ProtoInterface>
       <ProtoBody>
         <Appearance>
@@ -43,6 +42,9 @@
             <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
             <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
             <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='diffuseEnvironmentTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='specularEnvironmentTexture'/>
+            <field accessType='inputOutput' type='SFNode' name='brdfLUT'/>
             <IS>
               <connect nodeField='baseColorFactor' protoField='baseColorFactor'/>
               <connect nodeField='emissiveFactor' protoField='emissiveFactor'/>
@@ -86,6 +88,13 @@ attribute vec4 tangent;
 varying vec3 position;
 varying vec2 texCoord;
 
+#ifndef HAS_BASE_COLOR_MAP
+#ifdef HAS_COLORS
+attribute vec4 x3d_Color;
+varying vec4 color;
+#endif
+#endif
+
 #ifdef HAS_NORMALS
 #ifdef HAS_TANGENTS
 varying mat3 TBN;
@@ -117,6 +126,12 @@ main ()
 		texCoord = vec2 (x3d_TexCoord .s, 1.0 - x3d_TexCoord .t);
 	#else
 		texCoord = vec2 (0.0, 0.0);
+	#endif
+
+	#ifndef HAS_BASE_COLOR_MAP
+	#ifdef HAS_COLORS
+		color = x3d_Color;;
+	#endif
 	#endif
 
 	gl_Position = x3d_ProjectionMatrix * pos;
@@ -178,6 +193,12 @@ uniform vec2 metallicRoughnessValues;
 
 varying vec3 position;
 varying vec2 texCoord;
+
+#ifndef HAS_BASE_COLOR_MAP
+#ifdef HAS_COLORS
+varying vec4 color;
+#endif
+#endif
 
 #ifdef HAS_NORMALS
 #ifdef HAS_TANGENTS
@@ -364,7 +385,11 @@ main ()
 	#ifdef HAS_BASE_COLOR_MAP
 		vec4 baseColor = SRGBtoLINEAR (texture2D (baseColorTexture, texCoord)) * baseColorFactor;
 	#else
-		vec4 baseColor = baseColorFactor;
+		#ifdef HAS_COLORS
+			vec4 baseColor = color * baseColorFactor;
+		#else
+			vec4 baseColor = baseColorFactor;
+		#endif
 	#endif
 
 	vec3 f0           = vec3 (0.04);
@@ -417,26 +442,26 @@ main ()
 	// Calculation of analytical lighting contribution
 	vec3 diffuseContrib = (1.0 - F) * diffuse (pbrInputs);
 	vec3 specContrib    = F * G * D / (4.0 * NdotL * NdotV);
-	vec3 color          = NdotL * lightColor * (diffuseContrib + specContrib);
+	vec3 finalColor     = NdotL * lightColor * (diffuseContrib + specContrib);
 
 	// Calculate lighting contribution from image based lighting source (IBL)
 	#ifdef USE_IBL
 	vec3 reflection = -normalize (reflect (v, n));
-	color += getIBLContribution (pbrInputs, n, reflection);
+	finalColor += getIBLContribution (pbrInputs, n, reflection);
 	#endif
 
 	// Apply optional PBR terms for additional (optional) shading
 	#ifdef HAS_OCCLUSION_MAP
 		float ao = texture2D (occlusionTexture, texCoord) .r;
-		color = mix (color, color * ao, occlusionStrength);
+		finalColor = mix (finalColor, finalColor * ao, occlusionStrength);
 	#endif
 
 	#ifdef HAS_EMISSIVE_MAP
 		vec3 emissive = SRGBtoLINEAR (texture2D (emissiveTexture, texCoord)) .rgb * emissiveFactor;
-		color += emissive;
+		finalColor += emissive;
 	#endif
 
-	gl_FragColor = vec4 (pow (color, vec3 (1.0 / 2.2)), baseColor .a);
+	gl_FragColor = vec4 (pow (finalColor, vec3 (1.0 / 2.2)), baseColor .a);
 }
 ]]>
             </ShaderPart>
@@ -464,6 +489,8 @@ function initialize ()
 
 function set_defines (value, time)
 {
+	var DEFINES = new RegExp ("// BEGIN DEFINES\\n[\\s\\S]*?// END DEFINES\\n");
+
 	var text = "";
 	
 	text += "// BEGIN DEFINES\n";
@@ -481,7 +508,7 @@ function set_defines (value, time)
 			part = shader .parts [i],
 			url  = part .url [0];
 
-		part .url [0] = url .replace (new RegExp ("// BEGIN DEFINES\n[\s\S]*// END DEFINES\n"), text);
+		part .url [0] = url .replace (DEFINES, text);
 	}
 }
 
