@@ -145,14 +145,6 @@ X3DRenderingSurface::queue_render ()
 }
 
 void
-X3DRenderingSurface::on_style_updated ()
-{
-	Gtk::DrawingArea::on_style_updated ();
-
-	queue_resize ();
-}
-
-void
 X3DRenderingSurface::on_realize ()
 {
 	try
@@ -187,19 +179,27 @@ X3DRenderingSurface::on_map ()
 	queue_resize ();
 }
 
-bool
-X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
+void
+X3DRenderingSurface::on_style_updated ()
+{
+	Gtk::DrawingArea::on_style_updated ();
+
+	queue_resize ();
+}
+
+void
+X3DRenderingSurface::on_size_allocate (Gtk::Allocation & allocation)
 {
 	try
 	{
-		Gtk::DrawingArea::on_configure_event (event);
+		Gtk::DrawingArea::on_size_allocate (allocation);
 
 		if (not get_mapped ())
-			return false;
+			return;
 
 		ContextLock lock (this);
 
-		frameBuffer .reset (new FrameBuffer (this, get_width (), get_height (), getAntialiasing (), true)),
+		frameBuffer .reset (new FrameBuffer (this, allocation .get_width (), allocation .get_height (), getAntialiasing (), true)),
 		frameBuffer -> setup ();
 		frameBuffer -> bind ();
 
@@ -210,11 +210,11 @@ X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
 
 		const auto x = margin .get_left ()   + border .get_left ()   + padding .get_left ();
 		const auto y = margin .get_bottom () + border .get_bottom () + padding .get_bottom ();
-		const auto w = get_width ()  - x - (margin .get_right () + border .get_right () + padding .get_right ());
-		const auto h = get_height () - y - (margin .get_top ()   + border .get_top ()   + padding .get_top ());
+		const auto w = allocation .get_width ()  - x - (margin .get_right () + border .get_right () + padding .get_right ());
+		const auto h = allocation .get_height () - y - (margin .get_top ()   + border .get_top ()   + padding .get_top ());
 
-		glViewport (0, 0, get_width (), get_height ());
-		glScissor  (0, 0, get_width (), get_height ());
+		glViewport (0, 0, allocation .get_width (), allocation .get_height ());
+		glScissor  (0, 0, allocation .get_width (), allocation .get_height ());
 
 		glClearColor (0, 0, 0, 0);
 		glClear (GL_COLOR_BUFFER_BIT);
@@ -222,16 +222,14 @@ X3DRenderingSurface::on_configure_event (GdkEventConfigure* const event)
 		on_reshape (x, y, w, h);
 		reshapeSignal .emit (x, y, w, h);
 
-		on_timeout ();
-
 		frameBuffer -> unbind ();
+
+		on_timeout ();
 	}
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-
-	return false;
 }
 
 void

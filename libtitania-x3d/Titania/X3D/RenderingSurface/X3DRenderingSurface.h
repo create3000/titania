@@ -159,10 +159,6 @@ protected:
 
 	virtual
 	void
-	on_style_updated () override;
-
-	virtual
-	void
 	on_realize () override;
 
 	virtual
@@ -174,8 +170,12 @@ protected:
 	on_map () override;
 
 	virtual
-	bool
-	on_configure_event (GdkEventConfigure* const event) override;
+	void
+	on_style_updated () override;
+
+	virtual
+	void
+	on_size_allocate (Gtk::Allocation & allocation) override;
 
 	virtual
 	void

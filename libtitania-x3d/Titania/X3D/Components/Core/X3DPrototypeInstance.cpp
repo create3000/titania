@@ -432,11 +432,8 @@ throw (Error <DISPOSED>)
 void
 X3DPrototypeInstance::setProtoDeclarationNode (const X3DProtoDeclarationNodePtr & value)
 {
-	if (protoNode)
-	{
-		protoNode -> removeInstance (this);
-		protoNode -> name_changed () .removeInterest (typeNameOutput);
-	}
+	protoNode -> removeInstance (this);
+	protoNode -> name_changed () .removeInterest (typeNameOutput);
 
 	protoNode = value;
 
@@ -524,8 +521,10 @@ X3DPrototypeInstance::set_live ()
 {
 	const bool value = getExecutionContext () -> isLive () and X3DBaseNode::isLive ();
 
-	if (value not_eq live)
-		live = value;
+	if (value == live)
+		return;
+
+	live = value;
 }
 
 void

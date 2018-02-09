@@ -360,6 +360,9 @@ public:
 	       Error <DISPOSED>)
 	{ return prototypes; }
 
+	bool
+	hasProtoDeclaration (const std::string & name) const;
+
 	std::string
 	getUniqueProtoName (std::string) const
 	throw (Error <DISPOSED>);
@@ -406,6 +409,9 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return externProtos; }
+
+	bool
+	hasExternProtoDeclaration (const std::string & name) const;
 
 	std::string
 	getUniqueExternProtoName (std::string) const
@@ -583,14 +589,6 @@ protected:
 	addUninitializedNode (X3DBaseNode* const node)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
-	///  @name Proto handling
-
-	size_t
-	getProtoDeclarationCount (const std::string & name) const;
-
-	size_t
-	getExternProtoDeclarationCount (const std::string & name) const;
 
 	///  @name Route handling
 

@@ -147,16 +147,16 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 	{
 		// data:[<MIME-TYPE>][;charset=<CHAR-SET>][;base64],<DATA>
 
-		static const std::regex dataUrl (R"/(^data:(.*?)?(?:;charset=(.*?))?(?:;(base64))?(?:,([\s\S]*))$)/");
+		static const std::regex dataUrl (R"/(^data:(.*?)(?:;charset=(.*))?(?:;(base64))?,)/");
 
 		std::smatch match;
 
-		if (std::regex_match (url () .str (), match, dataUrl))
+		if (std::regex_search (url () .str (), match, dataUrl))
 		{
 			const auto contentType = match .str (1);
 			const auto charset     = match .str (2);
 			const auto base64      = match .str (3);
-			auto       data        = match .str (4);
+			auto       data        = url () .str () .substr (match .str (0) .size ());
 
 			if (base64 .empty ())
 			{

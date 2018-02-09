@@ -711,7 +711,7 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
 
-	if (getProtoDeclarationCount (name))
+	if (hasProtoDeclaration (name))
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
 	prototype -> setName (name);
@@ -729,10 +729,10 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
 
-	if (getProtoDeclarationCount (name))
+	if (hasProtoDeclaration (name))
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto '" + name + "' is already in use.");
 
-	if (getProtoDeclarationCount (prototype -> getName ()))
+	if (hasProtoDeclaration (prototype -> getName ()))
 	{
 		if (getProtoDeclaration (prototype -> getName ()) == prototype)
 			prototype -> setName (name);
@@ -779,8 +779,8 @@ throw (Error <INVALID_NAME>,
 	return *iter;
 }
 
-size_t
-X3DExecutionContext::getProtoDeclarationCount (const std::string & name) const
+bool
+X3DExecutionContext::hasProtoDeclaration (const std::string & name) const
 {
 	return std::count_if (prototypes .begin (), prototypes .end (),
 	[&name] (const ProtoDeclarationPtr & prototype)
@@ -793,7 +793,7 @@ std::string
 X3DExecutionContext::getUniqueProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not name .empty () and not getProtoDeclarationCount (name))
+	if (not name .empty () and not hasProtoDeclaration (name))
 		return name;
 
 	name = RemoveTrailingNumber (name);
@@ -804,7 +804,7 @@ throw (Error <DISPOSED>)
 	if (uniqueName .empty ())
 		uniqueName = "Prototype";
 
-	while (getProtoDeclarationCount (uniqueName))
+	while (hasProtoDeclaration (uniqueName))
 	{
 		i = std::max <size_t> (64, i);
 
@@ -855,7 +855,7 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto name is empty.");
 
-	if (getExternProtoDeclarationCount (name))
+	if (hasExternProtoDeclaration (name))
 		throw Error <INVALID_NAME> ("Couldn't add extern extern proto declaration: extern proto '" + name + "' is already in use.");
 
 	externProto -> setName (name);
@@ -873,10 +873,10 @@ throw (Error <INVALID_NAME>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update extern proto declaration: extern proto name is empty.");
 
-	if (getExternProtoDeclarationCount (name))
+	if (hasExternProtoDeclaration (name))
 		throw Error <INVALID_NAME> ("Couldn't update extern extern proto declaration: extern proto '" + name + "' is already in use.");
 
-	if (getExternProtoDeclarationCount (externProto -> getName ()))
+	if (hasExternProtoDeclaration (externProto -> getName ()))
 	{
 		if (getExternProtoDeclaration (externProto -> getName ()) == externProto)
 			externProto -> setName (name);
@@ -924,8 +924,8 @@ throw (Error <INVALID_NAME>,
 	return *iter;
 }
 
-size_t
-X3DExecutionContext::getExternProtoDeclarationCount (const std::string & name) const
+bool
+X3DExecutionContext::hasExternProtoDeclaration (const std::string & name) const
 {
 	return std::count_if (externProtos .begin (), externProtos .end (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
@@ -938,7 +938,7 @@ std::string
 X3DExecutionContext::getUniqueExternProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not name .empty () and not getExternProtoDeclarationCount (name))
+	if (not name .empty () and not hasExternProtoDeclaration (name))
 		return name;
 
 	name = RemoveTrailingNumber (name);
@@ -949,7 +949,7 @@ throw (Error <DISPOSED>)
 	if (uniqueName .empty ())
 		uniqueName = "Prototype";
 
-	while (getExternProtoDeclarationCount (uniqueName))
+	while (hasExternProtoDeclaration (uniqueName))
 	{
 		i = std::max <size_t> (64, i);
 
