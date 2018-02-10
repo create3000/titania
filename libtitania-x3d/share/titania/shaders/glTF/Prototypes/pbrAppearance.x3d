@@ -7,15 +7,14 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Sat, 10 Feb 2018 11:14:48 GMT'/>
+    <meta name='modified' content='Sat, 10 Feb 2018 11:17:58 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
       <ProtoInterface>
         <field accessType='inputOutput' type='MFString' name='defines'/>
-        <field accessType='inputOutput' type='SFString' name='alphaMode' value='OPAQUE'/>
-        <field accessType='inputOutput' type='SFFloat' name='alphaFactor' value='1'/>
         <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor' value='1 1 1'/>
+        <field accessType='inputOutput' type='SFFloat' name='alphaFactor' value='1'/>
         <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
         <field accessType='inputOutput' type='SFFloat' name='roughnessFactor' value='1'/>
         <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
@@ -29,6 +28,9 @@
       </ProtoInterface>
       <ProtoBody>
         <Appearance>
+          <IS>
+            <connect nodeField='texture' protoField='baseColorTexture'/>
+          </IS>
           <Material DEF='_1'/>
           <ComposedShader DEF='pbrShader'
               language='GLSL'>
