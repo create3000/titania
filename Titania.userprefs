@@ -1,15 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/Shaders/Background.fs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Parser/JSONParser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Background.fs" Line="30" Column="1" />
-      <File FileName="Titania/titania" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp" Line="212" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.h" Line="387" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp" Line="185" Column="1" />
+      <File FileName="build/version.pl" Line="63" Column="33" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="72" Column="86" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
