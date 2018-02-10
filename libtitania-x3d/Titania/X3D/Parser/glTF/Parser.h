@@ -88,6 +88,7 @@ private:
 
 	struct Image
 	{
+		std::string name;
 		std::string uri;
 	};
 
@@ -277,6 +278,12 @@ private:
 	bufferValue (json_object* const jobj);
 
 	void
+	samplersObject (json_object* const jobj);
+
+	X3D::X3DPtr <X3D::TextureProperties>
+	samplerValue (json_object* const jobj);
+
+	void
 	imagesObject (json_object* const jobj);
 
 	ImagePtr
@@ -377,6 +384,7 @@ private:
 
 	X3D::X3DPtr <X3D::Switch>                   scenes;
 	X3D::X3DPtrArray <X3D::Transform>           nodes;
+	X3D::X3DPtrArray <X3D::TextureProperties>   samplers;
 	ImagePtrArray                               images;
 	X3D::X3DPtrArray <X3D::X3DTextureNode>      textures;
 	X3D::MFNode                                 materials;

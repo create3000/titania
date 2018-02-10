@@ -5,17 +5,14 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sat, 10 Feb 2018 02:42:59 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
-    <meta name='identifier' content=''/>
-    <meta name='modified' content='Sat, 10 Feb 2018 02:42:59 GMT'/>
-    <meta name='titania-output-style' content='Nicest'/>
+    <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
+    <meta name='modified' content='Sat, 10 Feb 2018 11:07:56 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
       <ProtoInterface>
         <field accessType='inputOutput' type='MFString' name='defines'/>
-        <field accessType='inputOutput' type='SFString' name='alphaMode' value='OPAQUE'/>
-        <field accessType='inputOutput' type='SFFloat' name='alphaCutoff' value='0.5'/>
         <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor' value='1 1 1'/>
         <field accessType='inputOutput' type='SFFloat' name='alphaFactor' value='1'/>
         <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
@@ -562,5 +559,40 @@ function set_metallicRoughnessValues ()
         </Script>
       </ProtoBody>
     </ProtoDeclare>
+    <WorldInfo
+        title='pbrAppearance'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Selection' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+        <MetadataSet DEF='Prototype' containerField='value'
+            name='Prototype'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='path' containerField='value'
+              name='path'
+              reference='http://titania.create3000.de'
+              value='"pbrAppearance"'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
   </Scene>
 </X3D>

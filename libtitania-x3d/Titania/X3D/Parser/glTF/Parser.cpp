@@ -69,6 +69,7 @@
 #include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/MultiTextureCoordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing3D/TextureCoordinate3D.h"
 #include "../../Components/Texturing3D/TextureCoordinate4D.h"
 #include "../../Editing/X3DEditor.h"
@@ -128,6 +129,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	       istream (istream),
 	        scenes (),
 	         nodes (),
+	      samplers (),
 	        images (),
 	      textures (),
 	     materials (),
@@ -215,6 +217,7 @@ Parser::rootObject (json_object* const jobj)
 	buffersObject     (json_object_object_get (jobj, "buffers"));
 	bufferViewsObject (json_object_object_get (jobj, "bufferViews"));
 	asseccorsObject   (json_object_object_get (jobj, "accessors"));
+	samplersObject    (json_object_object_get (jobj, "samplers"));
 	imagesObject      (json_object_object_get (jobj, "images"));
 	texturesObject    (json_object_object_get (jobj, "textures"));
 	materialsObject   (json_object_object_get (jobj, "materials"));
@@ -1383,6 +1386,148 @@ Parser::bufferValue (json_object* const jobj)
 }
 
 void
+Parser::samplersObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Samplers
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto sampler = samplerValue (json_object_array_get_idx (jobj, i));
+
+		if (not sampler)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid sampler found at index '", i, "'.\n");
+		}
+
+		samplers .emplace_back (std::move (sampler));
+	}
+}
+
+X3D::X3DPtr <X3D::TextureProperties>
+Parser::samplerValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Sampler
+
+	const auto texturePropertiesNode = scene -> createNode <X3D::TextureProperties> ();
+
+	texturePropertiesNode -> textureCompression () = "DEFAULT";
+
+	// name
+
+	std::string nameCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
+	{
+		if (not nameCharacters .empty ())
+			scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (nameCharacters)), texturePropertiesNode);
+	}
+
+	// minFilter
+
+	static const std::map <int32_t, std::pair <std::string, bool>> minificationFilters = {
+		std::make_pair (9728, std::make_pair ("NEAREST_PIXEL",                false)),
+		std::make_pair (9729, std::make_pair ("AVG_PIXEL",                    false)),
+		std::make_pair (9984, std::make_pair ("NEAREST_PIXEL_NEAREST_MIPMAP", true)),
+		std::make_pair (9985, std::make_pair ("AVG_PIXEL_NEAREST_MIPMAP",     true)),
+		std::make_pair (9986, std::make_pair ("NEAREST_PIXEL_AVG_MIPMAP",     true)),
+		std::make_pair (9987, std::make_pair ("AVG_PIXEL_AVG_MIPMAP",         true)),
+	};
+
+	int32_t minFilter = -1;
+
+	integerValue (json_object_object_get (jobj, "minFilter"), minFilter);
+
+	try
+	{
+		const auto & minificationFilter = minificationFilters .at (minFilter);
+
+		texturePropertiesNode -> minificationFilter () = minificationFilter .first;
+		texturePropertiesNode -> generateMipMaps ()    = minificationFilter .second;
+	}
+	catch (const std::out_of_range & error)
+	{
+		texturePropertiesNode -> minificationFilter () = "AVG_PIXEL";
+		texturePropertiesNode -> generateMipMaps ()    = false;
+	}
+
+	// magFilter
+
+	static const std::map <int32_t, std::string> magnificationFilters = {
+		std::make_pair (9728, "NEAREST_PIXEL"),
+		std::make_pair (9729, "AVG_PIXEL"),
+	};
+
+	int32_t magFilter = -1;
+
+	integerValue (json_object_object_get (jobj, "magFilter"), magFilter);
+
+	try
+	{
+		const auto & magnificationFilter = magnificationFilters .at (magFilter);
+
+		texturePropertiesNode -> magnificationFilter () = magnificationFilter;
+	}
+	catch (const std::out_of_range & error)
+	{
+		texturePropertiesNode -> magnificationFilter () = "AVG_PIXEL";
+	}
+
+	// boundaryMode
+
+	static const std::map <int32_t, std::string> boundaryModes = {
+		std::make_pair (33071, "CLAMP_TO_EDGE"),
+		std::make_pair (33648, "MIRRORED_REPEAT"),
+		std::make_pair (10497, "REPEAT"),
+	};
+
+	// wrapS
+
+	int32_t wrapS = -1;
+
+	integerValue (json_object_object_get (jobj, "wrapS"), wrapS);
+
+	try
+	{
+		texturePropertiesNode -> boundaryModeS () = boundaryModes .at (wrapS);
+	}
+	catch (const std::out_of_range & error)
+	{
+		texturePropertiesNode -> boundaryModeS () = "REPEAT";
+	}
+
+	// wrapT
+
+	int32_t wrapT = -1;
+
+	integerValue (json_object_object_get (jobj, "wrapT"), wrapT);
+
+	try
+	{
+		texturePropertiesNode -> boundaryModeT () = boundaryModes .at (wrapT);
+	}
+	catch (const std::out_of_range & error)
+	{
+		texturePropertiesNode -> boundaryModeS () = "REPEAT";
+	}
+
+	return texturePropertiesNode;
+}
+
+void
 Parser::imagesObject (json_object* const jobj)
 {
 	if (not jobj)
@@ -1420,6 +1565,15 @@ Parser::imageValue (json_object* const jobj)
 	// Create Image
 
 	const auto image = std::make_shared <Image> ();
+
+	// name
+
+	std::string nameCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
+	{
+		image -> name = nameCharacters;
+	}
 
 	// uri
 
@@ -1470,7 +1624,7 @@ Parser::textureValue (json_object* const jobj)
 
 	// Create ImageTexture
 
-	const auto texture = scene -> createNode <X3D::ImageTexture> ();
+	const auto textureNode = scene -> createNode <X3D::ImageTexture> ();
 
 	// sampler
 
@@ -1480,7 +1634,7 @@ Parser::textureValue (json_object* const jobj)
 	{
 		try
 		{
-			//samplers .at (sampler);
+			textureNode -> textureProperties () = samplers .at (sampler);
 		}
 		catch (const std::out_of_range & error)
 		{ }
@@ -1498,9 +1652,12 @@ Parser::textureValue (json_object* const jobj)
 
 			if (image)
 			{
-				texture -> url () = { image -> uri };
+				if (not image -> name .empty ())
+					scene -> addNamedNode (scene -> getUniqueName (X3D::GetNameFromString (image -> name)), textureNode);
 
-				return texture;
+				textureNode -> url () = { image -> uri };
+
+				return textureNode;
 			}
 		}
 		catch (const std::out_of_range & error)
