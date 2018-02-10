@@ -179,7 +179,7 @@ Parser::parseIntoScene ()
 void
 Parser::importProtos ()
 {
-	static const std::regex version (R"/(/titania/[\d\.]+/)/");
+	static const std::regex version (R"/(/titania/(?:[\d\.]+|alpha)/)/");
 
 	const auto filename = get_shader ("/glTF/pbrAppearance.x3d");
 

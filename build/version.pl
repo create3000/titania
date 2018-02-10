@@ -72,11 +72,11 @@ if ($result == 0)
 
 	publish ("$VERSION");
 	rsync ("alpha");
+	rsync ($VERSION);
 
 	unless ($ALPHA)
 	{
 		publish ("latest");
 		rsync ("latest");
-		rsync ($VERSION);
 	}
 }
