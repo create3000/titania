@@ -100,7 +100,8 @@ private:
 		std::string contents;
 	};
 
-	using BufferPtr = std::shared_ptr <Buffer>;
+	using BufferPtr      = std::shared_ptr <Buffer>;
+	using BufferPtrArray = std::vector <BufferPtr>;
 
 	struct BufferView
 	{
@@ -110,7 +111,8 @@ private:
 		int32_t   byteStride;
 	};
 
-	using BufferViewPtr = std::shared_ptr <BufferView>;
+	using BufferViewPtr      = std::shared_ptr <BufferView>;
+	using BufferViewPtrArray = std::vector <BufferViewPtr>;
 
 	enum class AccessorType
 	{
@@ -157,7 +159,8 @@ private:
 		AccessorPtrArray weights;
 	};
 
-	using AttributesPtr = std::shared_ptr <Attributes>;
+	using AttributesPtr      = std::shared_ptr <Attributes>;
+	using AttributesPtrArray = std::vector <AttributesPtr>;
 
 	struct Primitive
 	{
@@ -165,10 +168,55 @@ private:
 		AccessorPtr                indices;
 		X3D::X3DPtr <X3D::X3DNode> material;
 		int32_t                    mode;
+		AttributesPtrArray         targets;
+		X3D::X3DPtr <X3D::Shape>   shapeNode;
 	};
 
 	using PrimitivePtr   = std::shared_ptr <Primitive>;
 	using PrimitiveArray = std::vector <PrimitivePtr>;
+
+	struct Mesh
+	{
+		PrimitiveArray primitives;
+	};
+
+	using MeshPtr      = std::shared_ptr <Mesh>;
+	using MeshPtrArray = std::vector <MeshPtr>;
+
+	struct Node
+	{
+		X3D::X3DPtr <X3D::Transform> transformNode;
+		MeshPtr                      mesh;
+	};
+
+	using NodePtr      = std::shared_ptr <Node>;
+	using NodePtrArray = std::vector <NodePtr>;
+
+	struct AnimationSampler
+	{
+		std::string interpolation;
+		AccessorPtr input;
+		AccessorPtr output;
+	};
+
+	using AnimationSamplerPtr   = std::shared_ptr <AnimationSampler>;
+	using AnimationSamplerArray = std::vector <AnimationSamplerPtr>;
+
+	enum class PathType
+	{
+		TRANSLATION,
+		ROTATION,
+		SCALE,
+		WEIGHTS
+	};
+
+	struct AnimationTarget
+	{
+		PathType path;
+		NodePtr  node;
+	};
+
+	using AnimationTargetPtr = std::shared_ptr <AnimationTarget>;
 
 	///  @name Member access
 
@@ -202,11 +250,11 @@ private:
 	void
 	nodesObject (json_object* const jobj);
 	
-	void
-	node1Object (json_object* const jobj);
+	NodePtr
+	node1Value (json_object* const jobj);
 	
 	void
-	node2Object (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode);
+	node2Object (json_object* const jobj, const NodePtr & transformNode);
 
 	void
 	nodeChildrenObject (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode);
@@ -214,7 +262,7 @@ private:
 	void
 	meshesObject (json_object* const jobj);
 
-	X3D::X3DPtrArray <X3D::Shape>
+	MeshPtr
 	meshArray (json_object* const jobj);
 
 	X3D::X3DPtr <X3D::Shape>
@@ -258,6 +306,12 @@ private:
 
 	AttributesPtr
 	attributesValue (json_object* const jobj);
+
+	AttributesPtrArray
+	targetsValue (json_object* const jobj);
+
+	AttributesPtr
+	targetValue (json_object* const jobj);
 
 	void
 	asseccorsObject (json_object* const jobj);
@@ -318,6 +372,39 @@ private:
 
 	void
 	normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
+	///
+
+	void
+	animationsObject (json_object* const jobj);
+
+	X3D::X3DPtr <X3D::Group>
+	animationValue (json_object* const jobj);
+
+	void
+	animationChannelsObject (json_object* const jobj, const X3D::X3DPtr <X3D::Group> & animation, const AnimationSamplerArray & samplers);
+
+	X3D::X3DPtr <X3D::Group>
+	animationChannelValue (json_object* const jobj, const AnimationSamplerArray & samplers);
+
+	AnimationTargetPtr
+	animationTargetValue (json_object* const jobj);
+
+	AnimationSamplerArray
+	animationSamplersValue (json_object* const jobj);
+
+	AnimationSamplerPtr
+	animationSamplerValue (json_object* const jobj);
+
+	X3D::X3DPtr <CoordinateInterpolator>
+	createCoordinateInterpolator (const AttributesPtrArray & targets,
+                                 const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                 const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const;
+
+	X3D::X3DPtr <NormalInterpolator>
+	createNormalInterpolator (const AttributesPtrArray & targets,
+	                          const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+	                          const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const;
 
 	///
 
@@ -382,16 +469,16 @@ private:
 	const basic::uri       uri;
 	std::istream &         istream;
 
-	X3D::X3DPtr <X3D::Switch>                   scenes;
-	X3D::X3DPtrArray <X3D::Transform>           nodes;
-	X3D::X3DPtrArray <X3D::TextureProperties>   samplers;
-	ImagePtrArray                               images;
-	X3D::X3DPtrArray <X3D::X3DTextureNode>      textures;
-	X3D::MFNode                                 materials;
-	std::vector <X3D::X3DPtrArray <X3D::Shape>> meshes;
-	std::vector <AccessorPtr>                   accessors;
-	std::vector <BufferViewPtr>                 bufferViews;
-	std::vector <BufferPtr>                     buffers;
+	X3D::X3DPtr <X3D::Switch>                 scenes;
+	NodePtrArray                              nodes;
+	X3D::X3DPtrArray <X3D::TextureProperties> samplers;
+	ImagePtrArray                             images;
+	X3D::X3DPtrArray <X3D::X3DTextureNode>    textures;
+	X3D::MFNode                               materials;
+	MeshPtrArray                              meshes;
+	AccessorPtrArray                          accessors;
+	BufferViewPtrArray                        bufferViews;
+	BufferPtrArray                            buffers;
 
 };
 

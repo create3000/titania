@@ -56,6 +56,10 @@
 #include "../../Components/Grouping/Group.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Grouping/Switch.h"
+#include "../../Components/Interpolation/PositionInterpolator.h"
+#include "../../Components/Interpolation/OrientationInterpolator.h"
+#include "../../Components/Interpolation/CoordinateInterpolator.h"
+#include "../../Components/Interpolation/NormalInterpolator.h"
 #include "../../Components/Rendering/Color.h"
 #include "../../Components/Rendering/ColorRGBA.h"
 #include "../../Components/Rendering/Coordinate.h"
@@ -72,6 +76,7 @@
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing3D/TextureCoordinate3D.h"
 #include "../../Components/Texturing3D/TextureCoordinate4D.h"
+#include "../../Components/Time/TimeSensor.h"
 #include "../../Editing/X3DEditor.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
@@ -225,6 +230,7 @@ Parser::rootObject (json_object* const jobj)
 	nodesObject       (json_object_object_get (jobj, "nodes"));
 	scenesObject      (json_object_object_get (jobj, "scenes"));
 	sceneNumber       (json_object_object_get (jobj, "scene"));
+	animationsObject  (json_object_object_get (jobj, "animations"));
 }
 
 void
@@ -352,11 +358,14 @@ Parser::sceneNodesObject (json_object* const jobj, const X3D::X3DPtr <X3D::Group
 		{
 			try
 			{
-				groupNode -> children () .emplace_back (nodes .at (index));
+				const auto node = nodes .at (index);
+
+				if (node)
+					groupNode -> children () .emplace_back (node -> transformNode);
 			}
 			catch (const std::out_of_range & error)
 			{
-				getBrowser () -> getConsole () -> warn ("Node with index '", index, "' not found.\n");
+				getBrowser () -> getConsole () -> error ("Node with index '", index, "' not found.\n");
 			}
 		}
 	}
@@ -378,7 +387,16 @@ Parser::nodesObject (json_object* const jobj)
 		const int32_t size = json_object_array_length (jobj);
 	
 		for (int32_t i = 0; i < size; ++ i)
-			node1Object (json_object_array_get_idx (jobj, i));
+		{
+			auto node = node1Value (json_object_array_get_idx (jobj, i));
+
+			if (not node)
+			{
+				getBrowser () -> getConsole () -> warn ("No valid node found at index '", i, "'.\n");
+			}
+
+			nodes .emplace_back (std::move (node));
+		}
 	}
 
 	// 2nd Pass.
@@ -386,30 +404,28 @@ Parser::nodesObject (json_object* const jobj)
 		const int32_t size = json_object_array_length (jobj);
 
 		for (int32_t i = 0; i < size; ++ i)
-			node2Object (json_object_array_get_idx (jobj, i), nodes .get1Value (i));
+			node2Object (json_object_array_get_idx (jobj, i), nodes [i]);
 	}
 }
 
-void
-Parser::node1Object (json_object* const jobj)
+Parser::NodePtr
+Parser::node1Value (json_object* const jobj)
 {
 	if (not jobj)
-	{
-		nodes .emplace_back ();
-		return;
-	}
+		return nullptr;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-	{
-		nodes .emplace_back ();
-		return;
-	}
+		return nullptr;
+
+	// Create Node.
+
+	const auto node = std::make_shared <Node> ();
 
 	// Create Transform.
 
 	const auto transformNode = scene -> createNode <X3D::Transform> ();
 
-	nodes .emplace_back (transformNode);
+	node -> transformNode = transformNode;
 
 	// Name
 
@@ -457,17 +473,29 @@ Parser::node1Object (json_object* const jobj)
 	{
 		try
 		{
-			transformNode -> children () = meshes .at (mesh);
+			node -> mesh = meshes .at (mesh);
+
+			if (node -> mesh)
+			{
+				for (const auto & primitive : node -> mesh -> primitives)
+					transformNode -> children () .emplace_back (primitive -> shapeNode);
+			}
+			else
+			{
+				getBrowser () -> getConsole () -> warn ("No mesh at index '", mesh, "'.\n");
+			}
 		}
 		catch (const std::out_of_range & error)
 		{
-			getBrowser () -> getConsole () -> warn ("Mesh with index '", mesh, "' not found.\n");
+			getBrowser () -> getConsole () -> error ("Mesh with index '", mesh, "' not found.\n");
 		}
 	}
+
+	return node;
 }
 
 void
-Parser::node2Object (json_object* const jobj, const X3D::X3DPtr <X3D::Transform> & transformNode)
+Parser::node2Object (json_object* const jobj, const NodePtr & node)
 {
 	if (not jobj)
 		return;
@@ -475,10 +503,10 @@ Parser::node2Object (json_object* const jobj, const X3D::X3DPtr <X3D::Transform>
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	if (not transformNode)
+	if (not node)
 		return;
 
-	nodeChildrenObject (json_object_object_get (jobj, "children"), transformNode);
+	nodeChildrenObject (json_object_object_get (jobj, "children"), node -> transformNode);
 }
 
 void
@@ -502,11 +530,14 @@ Parser::nodeChildrenObject (json_object* const jobj, const X3D::X3DPtr <X3D::Tra
 		{
 			try
 			{
-				transformNode -> children () .emplace_back (nodes .at (index));
+				const auto node = nodes .at (index);
+
+				if (node)
+					transformNode -> children () .emplace_back (node -> transformNode);
 			}
 			catch (const std::out_of_range &)
 			{
-				getBrowser () -> getConsole () -> warn ("Node with index '", index, "' not found.\n");
+				getBrowser () -> getConsole () -> error ("Node with index '", index, "' not found.\n");
 			}
 		}
 	}
@@ -529,7 +560,7 @@ Parser::meshesObject (json_object* const jobj)
 	{
 		const auto mesh = meshArray (json_object_array_get_idx (jobj, i));
 
-		if (mesh .empty ())
+		if (not mesh)
 		{
 			getBrowser () -> getConsole () -> warn ("No valid mesh object found at index '", i, "'.\n");
 		}
@@ -538,30 +569,24 @@ Parser::meshesObject (json_object* const jobj)
 	}
 }
 
-X3D::X3DPtrArray <X3D::Shape>
+Parser::MeshPtr
 Parser::meshArray (json_object* const jobj)
 {
-	X3D::X3DPtrArray <X3D::Shape> shapeNodes;
-
 	if (not jobj)
-		return shapeNodes;
+		return nullptr;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-		return shapeNodes;
+		return nullptr;
+
+	// Create Mesh
+
+	const auto mesh = std::make_shared <Mesh> ();
 
 	// Mesh
 
-	const auto primitives = primitivesArray (json_object_object_get (jobj, "primitives"));
+	mesh -> primitives = primitivesArray (json_object_object_get (jobj, "primitives"));
 
-	for (const auto & primitive : primitives)
-	{
-		const auto shapeNode = createShape (primitive);
-
-		if (shapeNode)
-			shapeNodes .emplace_back (shapeNode);
-	}
-
-	return shapeNodes;
+	return mesh;
 }
 
 X3D::X3DPtr <X3D::Shape>
@@ -981,7 +1006,7 @@ Parser::primitiveValue (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return nullptr;
 
-	// Attributes
+	// attributes
 
 	auto attributes = attributesValue (json_object_object_get (jobj, "attributes"));
 
@@ -992,7 +1017,7 @@ Parser::primitiveValue (json_object* const jobj)
 
 	primitive -> attributes = std::move (attributes);
 	
-	// Indices
+	// indices
 
 	int32_t indices = -1;
 
@@ -1008,7 +1033,7 @@ Parser::primitiveValue (json_object* const jobj)
 		primitive -> indices = asseccor;
 	}
 	
-	// Material
+	// material
 
 	int32_t material = -1;
 
@@ -1020,17 +1045,25 @@ Parser::primitiveValue (json_object* const jobj)
 		}
 		catch (const std::out_of_range & error)
 		{
-			getBrowser () -> getConsole () -> warn ("Material with index '", material, "' not found.\n");
+			getBrowser () -> getConsole () -> error ("Material with index '", material, "' not found.\n");
 		}
 	}
 
-	// Mode
+	// mode
 
 	int32_t mode = 4;
 
 	integerValue (json_object_object_get (jobj, "mode"), mode);
 
 	primitive -> mode = mode;
+
+	// targets
+
+	primitive -> targets = targetsValue (json_object_object_get (jobj, "targets"));
+
+	// shapeNode
+
+	primitive -> shapeNode = createShape (primitive);
 
 	return primitive;
 }
@@ -1157,6 +1190,38 @@ Parser::attributesValue (json_object* const jobj)
 	}
 
 	return nullptr;
+}
+
+Parser::AttributesPtrArray
+Parser::targetsValue (json_object* const jobj)
+{
+	if (not jobj)
+		return { };
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return { };
+
+	// Create Targets
+
+	AttributesPtrArray targets;
+
+	// Targets
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto target = attributesValue (json_object_array_get_idx (jobj, i));
+
+		if (not target)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid morph target view found at index '", i, "'.\n");
+		}
+
+		targets .emplace_back (std::move (target));
+	}
+
+	return targets;
 }
 
 void
@@ -1733,7 +1798,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "alphaMode"), alphaMode))
 	{
-		appearanceNode -> setField <X3D::SFString> ("alphaMode", alphaMode);
+		//appearanceNode -> setField <X3D::SFString> ("alphaMode", alphaMode);
 	}
 
 	// alphaMode
@@ -1984,6 +2049,485 @@ Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearan
 		}
 		catch (const std::out_of_range & error)
 		{ }
+	}
+}
+
+void
+Parser::animationsObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Create Animations Group
+
+	const auto animations = scene -> createNode <X3D::Group> ();
+
+	scene -> addNamedNode (scene -> getUniqueName ("Animations"), animations);
+	scene -> getRootNodes () .emplace_back (animations);
+
+	// Animations
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto animation = animationValue (json_object_array_get_idx (jobj, i));
+
+		if (not animation)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid animation found at index '", i, "'.\n");
+		}
+		else
+		{
+			animations -> children () .emplace_back (std::move (animation));
+		}
+	}
+}
+
+X3D::X3DPtr <X3D::Group>
+Parser::animationValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Animation
+
+	const auto animation = scene -> createNode <X3D::Group> ();
+
+	// name
+
+	std::string nameCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "name"), nameCharacters))
+	{
+		if (not nameCharacters .empty ())
+			scene -> addNamedNode (scene -> getUniqueName (nameCharacters), animation);
+	}
+
+	// samplers
+
+	const auto samplers = animationSamplersValue (json_object_object_get (jobj, "samplers"));
+
+	// channels
+
+	animationChannelsObject (json_object_object_get (jobj, "channels"), animation, samplers);
+
+	return animation;
+}
+
+void
+Parser::animationChannelsObject (json_object* const jobj, const X3D::X3DPtr <X3D::Group> & animation, const AnimationSamplerArray & samplers)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Animations
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto animationChannel = animationChannelValue (json_object_array_get_idx (jobj, i), samplers);
+
+		if (not animationChannel)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid animation channel found at index '", i, "'.\n");
+		}
+		else
+		{
+			scene -> addNamedNode (scene -> getUniqueName ("Channel" + basic::to_string (i, std::locale::classic ())), animationChannel);
+
+			animation -> children () .emplace_back (animationChannel);
+		}
+	}
+}
+
+X3D::X3DPtr <X3D::Group>
+Parser::animationChannelValue (json_object* const jobj, const AnimationSamplerArray & samplers)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// target
+
+	const auto animationTarget = animationTargetValue (json_object_object_get (jobj, "target"));
+
+	if (not animationTarget)
+		return nullptr;
+
+	const auto node = animationTarget -> node;
+
+	// Create Group
+
+	const auto groupNode = scene -> createNode <X3D::Group> ();
+
+	// Create TimeSensor
+
+	const auto timeSensorNode = scene -> createNode <X3D::TimeSensor> ();
+
+	timeSensorNode -> loop () = true;
+
+	groupNode -> children () .emplace_back (timeSensorNode);
+
+	// input
+
+	int32_t sampler = -1;
+
+	if (integerValue (json_object_object_get (jobj, "sampler"), sampler))
+	{
+		try
+		{
+			const auto animationSampler = samplers .at (sampler);
+
+			if (not animationSampler)
+				return nullptr;
+
+			const auto times = getScalarArray (animationSampler -> input);
+
+			if (times .empty ())
+				return nullptr;
+
+			timeSensorNode -> cycleInterval () = times .back ();
+
+			switch (animationTarget -> path)
+			{
+				case PathType::TRANSLATION:
+				{
+					break;
+				}
+				case PathType::ROTATION:
+				{
+					break;
+				}
+				case PathType::SCALE:
+				{
+					break;
+				}
+				case PathType::WEIGHTS:
+				{
+					if (not node -> mesh)
+						return nullptr;
+
+					for (const auto & primitive : node -> mesh -> primitives)
+					{
+						const auto & shapeNode    = primitive -> shapeNode;
+						const auto   geometryNode = X3D::X3DPtr <X3D::X3DGeometryNode> (shapeNode -> geometry ());
+
+						if (not geometryNode)
+							continue;
+
+						const auto coordinateInterpolatorNode = createCoordinateInterpolator (primitive -> targets, timeSensorNode, geometryNode);
+
+						if (coordinateInterpolatorNode)
+							groupNode -> children () .emplace_back (coordinateInterpolatorNode);
+
+						const auto normalInterpolatorNode = createNormalInterpolator (primitive -> targets, timeSensorNode, geometryNode);
+
+						if (normalInterpolatorNode)
+							groupNode -> children () .emplace_back (normalInterpolatorNode);
+					}
+
+					break;
+				}
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+
+	return groupNode;
+}
+
+Parser::AnimationTargetPtr
+Parser::animationTargetValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+ 
+	// Create Animation Target
+
+	const auto animationTarget = std::make_shared <AnimationTarget> ();
+
+	// path
+
+	static const std::map <std::string, PathType> pathTypes = {
+		std::make_pair ("translation", PathType::TRANSLATION),
+		std::make_pair ("rotation",    PathType::ROTATION),
+		std::make_pair ("scale",       PathType::SCALE),
+		std::make_pair ("weights",     PathType::WEIGHTS),
+	};
+
+	std::string path;
+
+	if (stringValue (json_object_object_get (jobj, "path"), path))
+	{
+		try
+		{
+			animationTarget -> path = pathTypes .at (path);
+		}
+		catch (const std::out_of_range & error)
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		return nullptr;
+	}
+
+	// node
+
+	int32_t node = -1;
+
+	if (integerValue (json_object_object_get (jobj, "node"), node))
+	{
+		try
+		{
+			animationTarget -> node = nodes .at (node);
+
+			if (not animationTarget -> node)
+				return nullptr;
+		}
+		catch (const std::out_of_range & error)
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		return nullptr;
+	}
+
+	return animationTarget;
+}
+
+Parser::AnimationSamplerArray
+Parser::animationSamplersValue (json_object* const jobj)
+{
+	if (not jobj)
+		return { };
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return { };
+
+	// Create Animation Samplers
+
+	AnimationSamplerArray animationSamplers;
+
+	// Animations
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto animationSampler = animationSamplerValue (json_object_array_get_idx (jobj, i));
+
+		if (not animationSampler)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid animation sampler found at index '", i, "'.\n");
+		}
+
+		animationSamplers .emplace_back (std::move (animationSampler));
+	}
+
+	return animationSamplers;
+}
+
+Parser::AnimationSamplerPtr
+Parser::animationSamplerValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Animation Sampler
+
+	const auto animationSampler = std::make_shared <AnimationSampler> ();
+
+	// interpolation
+
+	std::string interpolation = "LINEAR";
+
+	if (stringValue (json_object_object_get (jobj, "interpolation"), interpolation))
+	{
+		animationSampler -> interpolation = interpolation;
+	}
+
+	// input
+
+	int32_t input = -1;
+
+	if (integerValue (json_object_object_get (jobj, "input"), input))
+	{
+		try
+		{
+			animationSampler -> input = accessors .at (input);
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("Invalid animation input accessors found.\n");
+			return nullptr;
+		}
+	}
+	else
+	{
+		getBrowser () -> getConsole () -> warn ("Invalid animation input accessors found.\n");
+		return nullptr;
+	}
+
+	// output
+
+	int32_t output = -1;
+
+	if (integerValue (json_object_object_get (jobj, "output"), output))
+	{
+		try
+		{
+			animationSampler -> output = accessors .at (output);
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("Invalid animation output accessors found.\n");
+			return nullptr;
+		}
+	}
+	else
+	{
+		getBrowser () -> getConsole () -> warn ("Invalid animation output accessors found.\n");
+		return nullptr;
+	}
+
+	return animationSampler;
+}
+
+X3D::X3DPtr <CoordinateInterpolator>
+Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
+                                      const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                      const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const
+{
+	try
+	{
+		auto coordinateNode = X3D::X3DPtr <X3D::Coordinate> (geometryNode -> getField <X3D::SFNode> ("coord"));
+	
+		if (not coordinateNode)
+		{
+			coordinateNode = scene -> createNode <X3D::Coordinate> ();
+
+			if (not targets .empty ())
+			{
+				if (not targets .front () -> position)
+					return nullptr;
+	
+				const auto array = getVec3Array (targets .front () -> position);
+	
+				for (const auto & value : array)
+					coordinateNode -> point () .emplace_back (value);
+			}
+
+			geometryNode -> getField <X3D::SFNode> ("coord") = coordinateNode;
+		}
+
+		const auto interpolatorNode = scene -> createNode <X3D::CoordinateInterpolator> ();
+
+		for (size_t i = 0, size = targets .size (); i < size; ++ i)
+		{
+			interpolatorNode -> key () .emplace_back (float (i) / float (size - 1));
+		}
+
+		for (const auto & target : targets)
+		{
+			if (not target -> position)
+				return nullptr;
+
+			const auto array = getVec3Array (target -> position);
+
+			for (const auto & value : array)
+				interpolatorNode -> keyValue () .emplace_back (value);
+		}
+	
+		scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+		scene -> addRoute (interpolatorNode, "value_changed", coordinateNode, "set_point");
+
+		return interpolatorNode;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
+		return nullptr;
+	}
+}
+
+X3D::X3DPtr <NormalInterpolator>
+Parser::createNormalInterpolator (const AttributesPtrArray & targets,
+                                  const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                  const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const
+{
+	try
+	{
+		auto normalNode = X3D::X3DPtr <X3D::Normal> (geometryNode -> getField <X3D::SFNode> ("normal"));
+
+		if (not normalNode)
+		{
+			normalNode = scene -> createNode <X3D::Normal> ();
+
+			if (not targets .empty ())
+			{
+				if (not targets .front () -> normal)
+					return nullptr;
+	
+				const auto array = getVec3Array (targets .front () -> normal);
+	
+				for (const auto & value : array)
+					normalNode -> vector () .emplace_back (value);
+			}
+
+			geometryNode -> getField <X3D::SFNode> ("normal") = normalNode;
+		}
+
+		const auto interpolatorNode = scene -> createNode <X3D::NormalInterpolator> ();
+
+		for (size_t i = 0, size = targets .size (); i < size; ++ i)
+		{
+			interpolatorNode -> key () .emplace_back (float (i) / float (size - 1));
+		}
+
+		for (const auto & target : targets)
+		{
+			if (not target -> normal)
+				return nullptr;
+
+			const auto array = getVec3Array (target -> normal);
+
+			for (const auto & value : array)
+				interpolatorNode -> keyValue () .emplace_back (value);
+		}
+
+		scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+		scene -> addRoute (interpolatorNode, "value_changed", normalNode, "set_vector");
+
+		return interpolatorNode;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
+		return nullptr;
 	}
 }
 
