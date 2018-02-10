@@ -7,13 +7,11 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
-    <meta name='modified' content='Sat, 10 Feb 2018 03:58:30 GMT'/>
+    <meta name='modified' content='Sat, 10 Feb 2018 11:11:00 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='pbrAppearance' url='"http://code.create3000.de/titania/alpha/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance", "https://cdn.rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance", "https://rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance", "file:///usr/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance", "Prototypes/pbrAppearance.x3d#pbrAppearance"'>
       <field accessType='inputOutput' type='MFString' name='defines'/>
-      <field accessType='inputOutput' type='SFString' name='alphaMode'/>
-      <field accessType='inputOutput' type='SFFloat' name='alphaCutoff'/>
       <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor'/>
       <field accessType='inputOutput' type='SFFloat' name='alphaFactor'/>
       <field accessType='inputOutput' type='SFFloat' name='metallicFactor'/>
@@ -44,7 +42,9 @@
             reference='http://titania.create3000.de'>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'/>
+              reference='http://titania.create3000.de'>
+            <ProtoInstance name='pbrAppearance' DEF='_3' containerField='value'/>
+          </MetadataSet>
           <MetadataBoolean DEF='selectGeometry' containerField='value'
               name='selectGeometry'
               reference='http://titania.create3000.de'
@@ -72,5 +72,6 @@
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
+    <ProtoInstance name='pbrAppearance' USE='_3'/>
   </Scene>
 </X3D>

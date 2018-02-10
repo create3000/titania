@@ -1742,7 +1742,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (doubleValue (json_object_object_get (jobj, "alphaCutoff"), alphaCutoff))
 	{
-		appearanceNode -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
+		//appearanceNode -> setField <X3D::SFFloat> ("alphaCutoff", float (alphaCutoff));
 	}
 
 	// emissiveFactor
