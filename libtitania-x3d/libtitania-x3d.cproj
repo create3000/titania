@@ -985,6 +985,7 @@
     <None Include="share\titania\shaders\glTF\pbrAppearance.x3d" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclarationArray.h" />
     <None Include="Titania\X3D\Prototype\ProtoDeclarationArray.h" />
+    <None Include="share\titania\shaders\glTF\Prototypes\pbrAppearance.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1796,6 +1797,7 @@
     <Folder Include="share\titania\shaders\Shaders\Inlcude\" />
     <Folder Include="share\titania\shaders\glTF\" />
     <Folder Include="Titania\X3D\Parser\glTF\" />
+    <Folder Include="share\titania\shaders\glTF\Prototypes\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -115,6 +115,7 @@
     <None Include="..\debian\.gitignore">
       <Link>debian\.gitignore</Link>
     </None>
+    <None Include="version.pl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

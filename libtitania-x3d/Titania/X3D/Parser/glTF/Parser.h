@@ -384,7 +384,6 @@ private:
 	std::vector <AccessorPtr>                   accessors;
 	std::vector <BufferViewPtr>                 bufferViews;
 	std::vector <BufferPtr>                     buffers;
-	X3D::X3DPtr <X3D::X3DNode>                  defaultMaterial;
 
 };
 

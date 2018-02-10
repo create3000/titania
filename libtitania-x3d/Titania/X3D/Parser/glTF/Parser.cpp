@@ -74,6 +74,7 @@
 #include "../../Editing/X3DEditor.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Parser/Filter.h"
+#include "../../Prototype/ExternProtoDeclaration.h"
 
 #include <Titania/String.h>
 
@@ -82,6 +83,8 @@ extern "C" {
 #include <json-c/json.h>
 
 }
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -119,19 +122,18 @@ const std::map <Parser::ComponentType, std::tuple <double, double, double, doubl
 };
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	 X3D::X3DParser (),
-	          scene (scene),
-	            uri (uri),
-	        istream (istream),
-	         scenes (),
-	          nodes (),
-	         images (),
-	       textures (),
-	      materials (),
-	         meshes (),
-	    bufferViews (),
-	        buffers (),
-	defaultMaterial ()
+	X3D::X3DParser (),
+	         scene (scene),
+	           uri (uri),
+	       istream (istream),
+	        scenes (),
+	         nodes (),
+	        images (),
+	      textures (),
+	     materials (),
+	        meshes (),
+	   bufferViews (),
+	       buffers ()
 { }
 
 void
@@ -177,13 +179,27 @@ Parser::parseIntoScene ()
 void
 Parser::importProtos ()
 {
-	FileLoader (scene) .parseIntoScene (scene, { get_shader ("/glTF/pbrAppearance.x3d") .str () });
+	static const std::regex version (R"/(/titania/[\d\.]+/)/");
+
+	const auto filename = get_shader ("/glTF/pbrAppearance.x3d");
+
+	FileLoader (scene) .parseIntoScene (scene, { filename .str () });
+
+	scene -> setWorldURL (uri);
+
+	for (const auto & externproto : scene -> getExternProtoDeclarations ())
+	{
+		externproto -> transform (externproto -> url (), filename, uri);
+
+		for (auto & URL : externproto -> url ())
+			URL = std::regex_replace (URL .str (), version, "/titania/" + getBrowser () -> getVersion () + "/");
+
+		#ifdef TITANIA_DEBUG
+		externproto -> url () .emplace_front (externproto -> url () .back ());
+		#endif
+	}
 
 	X3D::X3DEditor::removeNodesFromScene (scene, scene -> getRootNodes (), true, std::make_shared <X3D::UndoStep> ());
-
-	defaultMaterial = createAppearance ();
-
-	addUninitializedNode (defaultMaterial);
 }
 
 void
@@ -549,7 +565,7 @@ X3D::X3DPtr <X3D::Shape>
 Parser::createShape (const PrimitivePtr & primitive) const
 {
 	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
-	const auto appearanceNode = primitive -> material ? primitive -> material : defaultMaterial;
+	const auto appearanceNode = primitive -> material ? primitive -> material : createAppearance ();
 	const auto geometryNode   = createGeometry (primitive, appearanceNode);
 
 	appearanceNode -> removeMetaData ("/Titania");
@@ -564,6 +580,8 @@ X3D::X3DPtr <X3D::X3DNode>
 Parser::createAppearance () const
 {
 	const auto appearanceNode = scene -> createProto ("pbrAppearance");
+
+	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
 
 	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
 
@@ -1613,7 +1631,8 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
 	{
-		appearanceNode -> setField <X3D::SFVec4f> ("baseColorFactor", baseColorFactor);
+		appearanceNode -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
+		appearanceNode -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
 	}
 
 	// metallicFactor

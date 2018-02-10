@@ -205,18 +205,18 @@ throw (Error <INVALID_URL>,
 std::string
 Shader::addDefinitions (X3DBrowser* const browser, std::string source)
 {
-	#define COMMENTS     R"/(\s+|/\*[\s\S]*?\*/|//.*?\n)/"
-	#define LINE         R"/(#line\s+.*?\n)/"
-	#define IFDEF        R"/(#ifdef\s+.*?\n)/"
-	#define IFNDEF       R"/(#ifndef\s+.*?\n)/"
-	#define ELSE         R"/(#else.*?\n)/"
-	#define ENDIF        R"/(#endif+.*?\n)/"
-	#define DEFINE       R"/(#define\s+(?:[^\n\\]|\\[^\r\n]|\\\r?\n)*\n)/"
-	#define PRAGMA       R"/(#pragma\s+.*?\n)/"
-	#define PREPROCESSOR LINE "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" PRAGMA
-	#define VERSION      R"/(#version\s+.*?\n)/"
-	#define EXTENSION    R"/(#extension\s+.*?\n)/"
-	#define ANY          R"/([\s\S]*)/"
+	#define COMMENTS     "\\s+|/\\*[\\s\\S]*?\\*/|//.*?\\n"
+	#define LINE         "#line\\s+.*?\\n"
+	#define IFDEF        "#ifdef\\s+.*?\\n"
+	#define IFNDEF       "#ifndef\\s+.*?\\n"
+	#define ELSE         "#else.*?\\n"
+	#define ENDIF        "#endif+.*?\\n"
+	#define DEFINE       "#define\\s+(?:[^\\n\\\\]|\\\\[^\\r\\n]|\\\\\\r?\\n)*\\n"
+	#define PRAGMA       "#pragma\\s+.*?\\n"
+	#define PREPROCESSOR  LINE "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" PRAGMA
+	#define VERSION      "#version\\s+.*?\\n"
+	#define EXTENSION    "#extension\\s+.*?\\n"
+	#define ANY          "[\\s\\S]*"
 
 	static const std::regex version ("^(?:" COMMENTS "|" LINE  ")*" VERSION "");
 
