@@ -55,7 +55,7 @@ sub rsync
 
 	foreach (@folders)
 	{
-		system "mkdir", "-p", "$ftp/%_";
+		system "mkdir", "-p", "$ftp/$_";
 		system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
 	}
 }
