@@ -44,12 +44,20 @@ sub publish
 sub rsync
 {
 	my $release = shift;
-	my $ftp      = "/run/user/1000/gvfs/ftp:host=create3000.de/html/create3000.de/code/htdocs/x_ite";
+	my $local   = "/home/holger/Projekte/Titania/libtitania-x3d/share/titania";
+	my $ftp     = "/run/user/1000/gvfs/ftp:host=create3000.de/html/create3000.de/code/htdocs/titania/$release/";
+
+	my @folders = (
+		"/shaders/glTF/",
+	);
 
 	say "Uploading $release";
 
-	system "mkdir", "-p", "$ftp/$release/dist/";
-	system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "/home/holger/Projekte/X_ITE/dist/", "$ftp/$release/dist/";
+	foreach (@folders)
+	{
+		system "mkdir", "-p", "$ftp/%_";
+		system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
+	}
 }
 
 my $result = system "zenity", "--question", "--text=Do you really want to publish X_ITE X3D v$VERSION now?", "--ok-label=Yes", "--cancel-label=No";
@@ -63,13 +71,12 @@ if ($result == 0)
 	commit;
 
 	publish ("$VERSION");
-	publish ("latest");
+	rsync ("alpha");
 
-	# FTP
-
-	#unless ($ALPHA)
-	#{
-	#	rsync ("latest");
-	#	rsync ($VERSION);
-	#}
+	unless ($ALPHA)
+	{
+		publish ("latest");
+		rsync ("latest");
+		rsync ($VERSION);
+	}
 }
