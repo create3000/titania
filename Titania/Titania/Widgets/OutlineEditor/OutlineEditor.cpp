@@ -1544,6 +1544,8 @@ OutlineEditor::selectField (const double x, const double y)
 	bool       inProtoDeclaration = false;
 	bool       hasReferences      = false;
 
+__LOG__ << isField << std::endl;
+
 	if (isField)
 	{	
 		const auto   iter             = treeView -> get_model () -> get_iter (fieldPath);
@@ -1556,7 +1558,7 @@ OutlineEditor::selectField (const double x, const double y)
 		if (inProtoDeclaration)
 		{
 			hasReferences = not field -> getReferences () .empty ();
-	
+
 			// Create reference menu
 	
 			for (const auto & widget : getAddReferenceMenu () .get_children ())
@@ -1567,13 +1569,13 @@ OutlineEditor::selectField (const double x, const double y)
 				if (field -> getType () not_eq reference -> getType ())
 					continue;
 	
-				if (field -> getAccessType () == reference -> getAccessType () or field -> getAccessType () == X3D::inputOutput)
+				if (reference -> isReference (field -> getAccessType ()))
 				{
-					if (field -> getReferences () .count (reference))
-						continue;
-	
 					try
 					{
+						if (field -> getReferences () .count (reference))
+							continue;
+	
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 	
 						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_add_reference_activate),
@@ -1584,7 +1586,7 @@ OutlineEditor::selectField (const double x, const double y)
 	
 						getAddReferenceMenu () .append (*menuItem);
 					}
-					catch (const X3D::X3DError &)
+					catch (const X3D::X3DError & error)
 					{
 						// menuItem ???
 					}

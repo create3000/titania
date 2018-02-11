@@ -185,7 +185,7 @@ X3DFieldDefinition::isHidden () const
 	return false;
 }
 
-///  Returns true if this field is a reference for @a accesType, otherwise false.
+///  Returns true if this field (from proto) is a reference for @a accesType (from node within proto), otherwise false.
 bool
 X3DFieldDefinition::isReference (const AccessType accessType) const
 {

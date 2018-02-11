@@ -5,9 +5,9 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sat, 10 Feb 2018 02:42:59 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V4.0.6, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Sun, 11 Feb 2018 01:13:46 GMT'/>
+    <meta name='modified' content='Sun, 11 Feb 2018 01:36:21 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -29,10 +29,6 @@
       </ProtoInterface>
       <ProtoBody>
         <Appearance DEF='_1'>
-          <IS>
-            <connect nodeField='texture' protoField='baseColorTexture'/>
-          </IS>
-          <Material DEF='_2'/>
           <ComposedShader DEF='pbrShader'
               language='GLSL'>
             <field accessType='inputOutput' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
@@ -476,16 +472,16 @@ main ()
           <field accessType='inputOutput' type='SFFloat' name='alphaFactor'/>
           <field accessType='inputOutput' type='SFFloat' name='metallicFactor'/>
           <field accessType='inputOutput' type='SFFloat' name='roughnessFactor'/>
+          <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
           <field accessType='initializeOnly' type='SFNode' name='appearance'>
             <Appearance USE='_1'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='material'>
-            <Material USE='_2'/>
+            <Material/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='shader'>
             <ComposedShader USE='pbrShader'/>
           </field>
-          <field accessType='initializeOnly' type='SFNode' name='baseColorTexture'/>
           <IS>
             <connect nodeField='defines' protoField='defines'/>
             <connect nodeField='alphaMode' protoField='alphaMode'/>
@@ -493,6 +489,7 @@ main ()
             <connect nodeField='alphaFactor' protoField='alphaFactor'/>
             <connect nodeField='metallicFactor' protoField='metallicFactor'/>
             <connect nodeField='roughnessFactor' protoField='roughnessFactor'/>
+            <connect nodeField='baseColorTexture' protoField='baseColorTexture'/>
           </IS>
 <![CDATA[ecmascript:
 
@@ -531,6 +528,22 @@ function set_defines (value, time)
 
 function set_alphaMode ()
 {
+	switch (alphaMode)
+	{
+		case "MASK":
+		case "BLEND":
+		{
+			appearance .material = material;
+			appearance .texture  = baseColorTexture;
+			break;
+		}
+		default:
+		{
+			appearance .material = null;
+			appearance .texture  = null;
+			break;
+		}
+	}
 }
 
 function set_baseColorFactor ()
@@ -585,7 +598,9 @@ function set_metallicRoughnessValues ()
               value='false'/>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'/>
+              reference='http://titania.create3000.de'>
+            <!-- NULL -->
+          </MetadataSet>
         </MetadataSet>
         <MetadataSet DEF='Page' containerField='value'
             name='Page'
