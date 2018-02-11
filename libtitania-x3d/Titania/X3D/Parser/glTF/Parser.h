@@ -192,11 +192,18 @@ private:
 	using NodePtr      = std::shared_ptr <Node>;
 	using NodePtrArray = std::vector <NodePtr>;
 
+	enum class InterpolationType
+	{
+		LINEAR,
+		STEP,
+		CUBICSPLINE
+	};
+
 	struct AnimationSampler
 	{
-		std::string interpolation;
-		AccessorPtr input;
-		AccessorPtr output;
+		InterpolationType interpolation;
+		AccessorPtr       input;
+		AccessorPtr       output;
 	};
 
 	using AnimationSamplerPtr   = std::shared_ptr <AnimationSampler>;
@@ -396,12 +403,30 @@ private:
 	AnimationSamplerPtr
 	animationSamplerValue (json_object* const jobj);
 
-	X3D::X3DPtr <CoordinateInterpolator>
+	X3D::X3DPtr <X3D::X3DInterpolatorNode>
+	createTranslationInterpolator (const std::vector <double> & times,
+	                               const AnimationSamplerPtr & animationSampler,
+	                               const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+	                               const X3D::X3DPtr <X3D::Transform> & transformNode);
+
+	X3D::X3DPtr <X3D::X3DInterpolatorNode>
+	createRotationInterpolator (const std::vector <double> & times,
+	                            const AnimationSamplerPtr & animationSampler,
+	                            const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+	                            const X3D::X3DPtr <X3D::Transform> & transformNode);
+
+	X3D::X3DPtr <X3D::X3DInterpolatorNode>
+	createScaleInterpolator (const std::vector <double> & times,
+	                         const AnimationSamplerPtr & animationSampler,
+	                         const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+	                         const X3D::X3DPtr <X3D::Transform> & transformNode);
+
+	X3D::X3DPtr <X3D::CoordinateInterpolator>
 	createCoordinateInterpolator (const AttributesPtrArray & targets,
                                  const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
                                  const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const;
 
-	X3D::X3DPtr <NormalInterpolator>
+	X3D::X3DPtr <X3D::NormalInterpolator>
 	createNormalInterpolator (const AttributesPtrArray & targets,
 	                          const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
 	                          const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const;
@@ -446,6 +471,9 @@ private:
 	bool
 	vector4dValue (json_object* const jobj, Vector4d & value);
 
+	Rotation4d
+	getRotation (const Vector4d & value);
+
 	///
 
 	struct json_object*
@@ -459,6 +487,8 @@ private:
 	using ElementsFunction = std::function <void (Parser*, json_object* const)>;
 
 	///  @name Static members
+
+	static constexpr double epsilon = 0.000001;
 	
 	static const std::map <ComponentType, size_t>                                      componentSizes;
 	static const std::map <ComponentType, std::tuple <double, double, double, double>> normalizedRanges;

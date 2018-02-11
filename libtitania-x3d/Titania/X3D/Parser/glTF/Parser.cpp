@@ -60,6 +60,8 @@
 #include "../../Components/Interpolation/OrientationInterpolator.h"
 #include "../../Components/Interpolation/CoordinateInterpolator.h"
 #include "../../Components/Interpolation/NormalInterpolator.h"
+#include "../../Components/Interpolation/SplinePositionInterpolator.h"
+#include "../../Components/Interpolation/SquadOrientationInterpolator.h"
 #include "../../Components/Rendering/Color.h"
 #include "../../Components/Rendering/ColorRGBA.h"
 #include "../../Components/Rendering/Coordinate.h"
@@ -2205,16 +2207,29 @@ Parser::animationChannelValue (json_object* const jobj, const AnimationSamplerAr
 			{
 				case PathType::TRANSLATION:
 				{
-					
+					const auto translationInterpolator = createTranslationInterpolator (times, animationSampler, timeSensorNode, node -> transformNode);
+
+					if (translationInterpolator)
+						groupNode -> children () .emplace_back (translationInterpolator);
 
 					break;
 				}
 				case PathType::ROTATION:
 				{
+					const auto rotationInterpolator = createRotationInterpolator (times, animationSampler, timeSensorNode, node -> transformNode);
+
+					if (rotationInterpolator)
+						groupNode -> children () .emplace_back (rotationInterpolator);
+
 					break;
 				}
 				case PathType::SCALE:
 				{
+					const auto scaleInterpolator = createScaleInterpolator (times, animationSampler, timeSensorNode, node -> transformNode);
+
+					if (scaleInterpolator)
+						groupNode -> children () .emplace_back (scaleInterpolator);
+
 					break;
 				}
 				case PathType::WEIGHTS:
@@ -2365,11 +2380,24 @@ Parser::animationSamplerValue (json_object* const jobj)
 
 	// interpolation
 
+	static const std::map <std::string, InterpolationType> interpolationTypes = {
+		std::make_pair ("LINEAR",      InterpolationType::LINEAR),
+		std::make_pair ("STEP",        InterpolationType::STEP),
+		std::make_pair ("CUBICSPLINE", InterpolationType::CUBICSPLINE),
+	};
+
 	std::string interpolation = "LINEAR";
 
 	if (stringValue (json_object_object_get (jobj, "interpolation"), interpolation))
 	{
-		animationSampler -> interpolation = interpolation;
+		try
+		{
+			animationSampler -> interpolation = interpolationTypes .at (interpolation);
+		}
+		catch (const std::out_of_range & error)
+		{
+			animationSampler -> interpolation = InterpolationType::LINEAR;
+		}
 	}
 
 	// input
@@ -2419,7 +2447,265 @@ Parser::animationSamplerValue (json_object* const jobj)
 	return animationSampler;
 }
 
-X3D::X3DPtr <CoordinateInterpolator>
+X3D::X3DPtr <X3D::X3DInterpolatorNode>
+Parser::createTranslationInterpolator (const std::vector <double> & times,
+                                       const AnimationSamplerPtr & animationSampler,
+                                       const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                       const X3D::X3DPtr <X3D::Transform> & transformNode)
+{
+	switch (animationSampler -> interpolation)
+	{
+		case InterpolationType::LINEAR:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+		
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (keyValue);
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::STEP:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			if (not times .empty ())
+			{
+				interpolatorNode -> key () .emplace_back (times .front () / cycleInterval);
+
+				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
+				}
+
+				if (times .size () > 1)
+					interpolatorNode -> key () .emplace_back (times .back () / cycleInterval);
+			}
+
+			if (not keyValues .empty ())
+			{
+				interpolatorNode -> keyValue () .emplace_back (keyValues .front ());
+
+				for (size_t i = 0, size = keyValues .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> keyValue () .emplace_back (keyValues [i - 1]);
+					interpolatorNode -> keyValue () .emplace_back (keyValues [i]);
+				}
+
+				if (keyValues .size () > 1)
+					interpolatorNode -> keyValue () .emplace_back (keyValues .back ());
+			}
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::CUBICSPLINE:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+		
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (keyValue);
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
+		
+			return interpolatorNode;
+		}
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DInterpolatorNode>
+Parser::createRotationInterpolator (const std::vector <double> & times,
+                                    const AnimationSamplerPtr & animationSampler,
+                                    const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                    const X3D::X3DPtr <X3D::Transform> & transformNode)
+{
+	switch (animationSampler -> interpolation)
+	{
+		case InterpolationType::LINEAR:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::OrientationInterpolator> ();
+			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (getRotation (keyValue));
+
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::STEP:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::OrientationInterpolator> ();
+			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			if (not times .empty ())
+			{
+				interpolatorNode -> key () .emplace_back (times .front () / cycleInterval);
+
+				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
+				}
+
+				if (times .size () > 1)
+					interpolatorNode -> key () .emplace_back (times .back () / cycleInterval);
+			}
+
+			if (not keyValues .empty ())
+			{
+				interpolatorNode -> keyValue () .emplace_back (getRotation (keyValues .front ()));
+
+				for (size_t i = 0, size = keyValues .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> keyValue () .emplace_back (getRotation (keyValues [i - 1]));
+					interpolatorNode -> keyValue () .emplace_back (getRotation (keyValues [i]));
+				}
+
+				if (keyValues .size () > 1)
+					interpolatorNode -> keyValue () .emplace_back (getRotation (keyValues .back ()));
+			}
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::CUBICSPLINE:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::SquadOrientationInterpolator> ();
+			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+		
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (getRotation (keyValue));
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
+		
+			return interpolatorNode;
+		}
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DInterpolatorNode>
+Parser::createScaleInterpolator (const std::vector <double> & times,
+                                 const AnimationSamplerPtr & animationSampler,
+                                 const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
+                                 const X3D::X3DPtr <X3D::Transform> & transformNode)
+{
+	switch (animationSampler -> interpolation)
+	{
+		case InterpolationType::LINEAR:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+		
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (keyValue);
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::STEP:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+
+			if (not times .empty ())
+			{
+				interpolatorNode -> key () .emplace_back (times .front () / cycleInterval);
+
+				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
+				}
+
+				if (times .size () > 1)
+					interpolatorNode -> key () .emplace_back (times .back () / cycleInterval);
+			}
+
+			if (not keyValues .empty ())
+			{
+				interpolatorNode -> keyValue () .emplace_back (keyValues .front ());
+
+				for (size_t i = 0, size = keyValues .size () - 1; i < size; ++ i)
+				{
+					interpolatorNode -> keyValue () .emplace_back (keyValues [i - 1]);
+					interpolatorNode -> keyValue () .emplace_back (keyValues [i]);
+				}
+
+				if (keyValues .size () > 1)
+					interpolatorNode -> keyValue () .emplace_back (keyValues .back ());
+			}
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
+		
+			return interpolatorNode;
+		}
+		case InterpolationType::CUBICSPLINE:
+		{
+			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
+			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto cycleInterval    = times .back ();
+		
+			for (const auto t : times)
+				interpolatorNode -> key () .emplace_back (t / cycleInterval);
+
+			for (const auto keyValue : keyValues)
+				interpolatorNode -> keyValue () .emplace_back (keyValue);
+			
+			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
+			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
+		
+			return interpolatorNode;
+		}
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::CoordinateInterpolator>
 Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
                                       const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
                                       const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const
@@ -2476,7 +2762,7 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 	}
 }
 
-X3D::X3DPtr <NormalInterpolator>
+X3D::X3DPtr <X3D::NormalInterpolator>
 Parser::createNormalInterpolator (const AttributesPtrArray & targets,
                                   const X3D::X3DPtr <X3D::TimeSensor> & timeSensorNode,
                                   const X3D::X3DPtr <X3D::X3DGeometryNode> & geometryNode) const
@@ -3284,6 +3570,15 @@ Parser::vector4dValue (json_object* const jobj, Vector4d & value)
 	}
 
 	return false;
+}
+
+Rotation4d
+Parser::getRotation (const Vector4d & value)
+{
+	return Rotation4d (Quaternion4d (value .x (),
+	                                 value .y (),
+	                                 value .z (),
+	                                 value .w ()));
 }
 
 struct json_object*
