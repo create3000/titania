@@ -1798,7 +1798,7 @@ Parser::materialValue (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "alphaMode"), alphaMode))
 	{
-		//appearanceNode -> setField <X3D::SFString> ("alphaMode", alphaMode);
+		appearanceNode -> setField <X3D::SFString> ("alphaMode", alphaMode);
 	}
 
 	// alphaMode
@@ -2205,6 +2205,8 @@ Parser::animationChannelValue (json_object* const jobj, const AnimationSamplerAr
 			{
 				case PathType::TRANSLATION:
 				{
+					
+
 					break;
 				}
 				case PathType::ROTATION:
