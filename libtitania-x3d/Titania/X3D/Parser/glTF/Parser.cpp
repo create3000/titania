@@ -233,6 +233,7 @@ Parser::rootObject (json_object* const jobj)
 	scenesObject      (json_object_object_get (jobj, "scenes"));
 	sceneNumber       (json_object_object_get (jobj, "scene"));
 	animationsObject  (json_object_object_get (jobj, "animations"));
+	skinsObject       (json_object_object_get (jobj, "skins"));
 }
 
 void
@@ -480,7 +481,19 @@ Parser::node1Value (json_object* const jobj)
 			if (node -> mesh)
 			{
 				for (const auto & primitive : node -> mesh -> primitives)
-					transformNode -> children () .emplace_back (primitive -> shapeNode);
+				{
+					if (primitive -> jointGeometryNodes .empty ())
+					{
+						transformNode -> children () .emplace_back (primitive -> shapeNode);
+					}
+					else
+					{
+						const auto switchNode = scene -> createNode <X3D::Switch> ();
+
+						switchNode    -> children () .emplace_back (primitive -> shapeNode);
+						transformNode -> children () .emplace_back (switchNode);
+					}
+				}
 			}
 			else
 			{
@@ -491,6 +504,19 @@ Parser::node1Value (json_object* const jobj)
 		{
 			getBrowser () -> getConsole () -> error ("Mesh with index '", mesh, "' not found.\n");
 		}
+	}
+
+	// skin
+
+	int32_t skin = -1;
+
+	if (integerValue (json_object_object_get (jobj, "skin"), skin))
+	{
+		node -> skin = skin;
+	}
+	else
+	{
+		node -> skin = -1;
 	}
 
 	return node;
@@ -695,6 +721,43 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 
 	geometryNode -> normalPerVertex () = geometryNode -> normal ();
 
+	// Joints
+
+	for (const auto & attribute : attributes -> joints)
+	{
+		try
+		{
+			const auto joints = getScalarArray (attribute);
+	
+			std::map <int32_t, std::vector <int32_t>> map;
+	
+			for (const auto index : indices)
+				map [joints .at (index)] .emplace_back (index);
+	
+			for (const auto & pair : map)
+			{
+				const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+		
+				for (const auto index : pair .second)
+					jointGeometryNode -> index () .emplace_back (index);
+	
+				jointGeometryNode -> solid ()           = geometryNode -> solid ();
+				jointGeometryNode -> coord ()           = geometryNode -> coord ();
+				jointGeometryNode -> normal ()          = geometryNode -> normal ();
+				jointGeometryNode -> texCoord ()        = geometryNode -> texCoord ();
+				jointGeometryNode -> attrib ()          = geometryNode -> attrib ();
+				jointGeometryNode -> color ()           = geometryNode -> color ();
+				jointGeometryNode -> normalPerVertex () = geometryNode -> normalPerVertex ();
+	
+				primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
+			}
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> warn ("Invalid joint array.\n");
+		}
+	}
+
 	return geometryNode;
 }
 
@@ -726,6 +789,34 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 
 	if (geometryNode -> texCoord ())
 		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
+
+	// Joints
+
+	for (const auto & attribute : attributes -> joints)
+	{
+		const auto joints = getScalarArray (attribute);
+
+		std::map <int32_t, std::vector <int32_t>> map;
+
+		for (size_t index = 0, size = joints .size (); index < size; ++ index)
+			map [joints [index]] .emplace_back (index);
+
+		for (const auto & pair : map)
+		{
+			const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+	
+			for (const auto index : pair .second)
+				jointGeometryNode -> index () .emplace_back (index);
+
+			jointGeometryNode -> solid ()    = geometryNode -> solid ();
+			jointGeometryNode -> coord ()    = geometryNode -> coord ();
+			jointGeometryNode -> texCoord () = geometryNode -> texCoord ();
+			jointGeometryNode -> attrib ()   = geometryNode -> attrib ();
+			jointGeometryNode -> color ()    = geometryNode -> color ();
+
+			primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
+		}
+	}
 		
 	return geometryNode;
 }
@@ -2412,13 +2503,13 @@ Parser::animationSamplerValue (json_object* const jobj)
 		}
 		catch (const std::out_of_range & error)
 		{
-			getBrowser () -> getConsole () -> error ("Invalid animation input accessors found.\n");
+			getBrowser () -> getConsole () -> error ("Invalid animation input accessor found.\n");
 			return nullptr;
 		}
 	}
 	else
 	{
-		getBrowser () -> getConsole () -> warn ("Invalid animation input accessors found.\n");
+		getBrowser () -> getConsole () -> warn ("Invalid animation input accessor found.\n");
 		return nullptr;
 	}
 
@@ -2434,13 +2525,13 @@ Parser::animationSamplerValue (json_object* const jobj)
 		}
 		catch (const std::out_of_range & error)
 		{
-			getBrowser () -> getConsole () -> error ("Invalid animation output accessors found.\n");
+			getBrowser () -> getConsole () -> error ("Invalid animation output accessor found.\n");
 			return nullptr;
 		}
 	}
 	else
 	{
-		getBrowser () -> getConsole () -> warn ("Invalid animation output accessors found.\n");
+		getBrowser () -> getConsole () -> warn ("Invalid animation output accessor found.\n");
 		return nullptr;
 	}
 
@@ -2817,6 +2908,178 @@ Parser::createNormalInterpolator (const AttributesPtrArray & targets,
 		getBrowser () -> getConsole () -> error (error .what (), "\n");
 		return nullptr;
 	}
+}
+
+void
+Parser::skinsObject (json_object* const jobj)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	// Create skin array.
+
+	auto skins = SkinPtrArray ();
+
+	// Skins
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		auto skin = skinValue (json_object_array_get_idx (jobj, i));
+
+		if (not skin)
+		{
+			getBrowser () -> getConsole () -> warn ("No valid skin found at index '", i, "'.\n");
+		}
+
+		skins .emplace_back (std::move (skin));
+	}
+
+	/// Node skins
+
+	for (const auto & node : nodes)
+	{
+		try
+		{	
+			if (node -> skin == -1)
+				continue;
+
+			if (not node -> mesh)
+				continue;
+
+			const auto skin = skins .at (node -> skin);
+
+			if (not skin)
+				continue;
+
+			for (const auto & primitive : node -> mesh -> primitives)
+			{
+				const auto & shapeNode = primitive -> shapeNode;
+
+				for (const auto & pair : primitive -> jointGeometryNodes)
+				{
+					try
+					{
+						const auto   joint              = pair .first;
+						const auto   jointNode          = skin -> joints .at (joint);
+						const auto & jointGeometryNode  = pair .second;
+						const auto   jointShapeNode     = scene -> createNode <X3D::Shape> ();
+						const auto   jointTransformNode = scene -> createNode <X3D::Transform> ();
+
+						if (joint >= 0 and joint < int32_t (skin -> inverseBindMatrices .size ()))
+							jointTransformNode -> setMatrix (skin -> inverseBindMatrices [joint]);
+
+						jointShapeNode -> appearance () = shapeNode -> appearance ();
+						jointShapeNode -> geometry ()   = jointGeometryNode;
+
+						jointTransformNode -> children () .emplace_back (jointShapeNode);
+						jointNode -> transformNode -> children () .emplace_back (jointTransformNode);
+					}
+					catch (const std::out_of_range & error)
+					{
+						getBrowser () -> getConsole () -> error ("No valid joint for mesh found.\n");
+					}
+				}
+			}
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("No valid skin for node found.\n");
+		}
+	}
+}
+
+Parser::SkinPtr
+Parser::skinValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// Create Animation
+
+	const auto skin = std::make_shared <Skin> ();
+
+	// inverseBindMatrices
+
+	int32_t inverseBindMatrices = -1;
+
+	if (integerValue (json_object_object_get (jobj, "inverseBindMatrices"), inverseBindMatrices))
+	{
+		try
+		{
+			skin -> inverseBindMatrices = getMatrix4Array (accessors .at (inverseBindMatrices));
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("Invalid inverseBindMatrices accessor found.\n");
+		}
+	}
+
+	// joints
+
+	skin -> joints = jointsValue (json_object_object_get (jobj, "joints"));
+
+	// inverseBindMatrices
+
+	int32_t skeleton = -1;
+
+	if (integerValue (json_object_object_get (jobj, "skeleton"), skeleton))
+	{
+		try
+		{
+			skin -> skeleton = nodes .at (skeleton);
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("Invalid skeleton node found.\n");
+		}
+	}
+
+	return skin;
+}
+
+Parser::NodePtrArray
+Parser::jointsValue (json_object* const jobj)
+{
+	if (not jobj)
+		return { };
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return { };
+
+	// Create skin array.
+
+	auto joints = NodePtrArray ();
+
+	// Skins
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		try
+		{
+			int32_t node = -1;
+	
+			integerValue (json_object_array_get_idx (jobj, i), node);
+
+			joints .emplace_back (nodes .at (node));
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> error ("Invalid joint node found.\n");
+			joints .emplace_back ();
+		}
+	}
+
+	return joints;
 }
 
 std::vector <double>
@@ -3343,6 +3606,231 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 				const auto   toHigh   = std::get <3> (range);
 
 				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector4d & value)
+				{
+					for (auto & component : value)
+						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+				});
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+std::vector <Matrix4d>
+Parser::getMatrix4Array (const AccessorPtr & accessor) const
+{
+	static constexpr size_t components = 16;
+
+	std::vector <Matrix4d> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [ 0],
+				                     data [ 1],
+				                     data [ 2],
+				                     data [ 3],
+				                     data [ 4],
+				                     data [ 5],
+				                     data [ 6],
+				                     data [ 7],
+				                     data [ 8],
+				                     data [ 9],
+				                     data [10],
+				                     data [11],
+				                     data [12],
+				                     data [13],
+				                     data [14],
+				                     data [15]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
+
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Matrix4d & value)
 				{
 					for (auto & component : value)
 						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);

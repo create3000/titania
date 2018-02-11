@@ -164,12 +164,13 @@ private:
 
 	struct Primitive
 	{
-		AttributesPtr              attributes;
-		AccessorPtr                indices;
-		X3D::X3DPtr <X3D::X3DNode> material;
-		int32_t                    mode;
-		AttributesPtrArray         targets;
-		X3D::X3DPtr <X3D::Shape>   shapeNode;
+		AttributesPtr                                          attributes;
+		AccessorPtr                                            indices;
+		X3D::X3DPtr <X3D::X3DNode>                             material;
+		int32_t                                                mode;
+		AttributesPtrArray                                     targets;
+		X3D::X3DPtr <X3D::Shape>                               shapeNode;
+		std::map <int32_t, X3D::X3DPtr <X3D::X3DGeometryNode>> jointGeometryNodes;
 	};
 
 	using PrimitivePtr   = std::shared_ptr <Primitive>;
@@ -187,6 +188,7 @@ private:
 	{
 		X3D::X3DPtr <X3D::Transform> transformNode;
 		MeshPtr                      mesh;
+		int32_t                      skin;
 	};
 
 	using NodePtr      = std::shared_ptr <Node>;
@@ -224,6 +226,16 @@ private:
 	};
 
 	using AnimationTargetPtr = std::shared_ptr <AnimationTarget>;
+
+	struct Skin
+	{
+		std::vector <Matrix4d> inverseBindMatrices;
+		NodePtrArray           joints;
+		NodePtr                skeleton;
+	};
+
+	using SkinPtr      = std::shared_ptr <Skin>;
+	using SkinPtrArray = std::vector <SkinPtr>;
 
 	///  @name Member access
 
@@ -433,6 +445,17 @@ private:
 
 	///
 
+	void
+	skinsObject (json_object* const jobj);
+
+	SkinPtr
+	skinValue (json_object* const jobj);
+
+	NodePtrArray
+	jointsValue (json_object* const jobj);
+
+	///
+
 	std::vector <double>
 	getScalarArray (const AccessorPtr & accessor) const;
 
@@ -444,6 +467,9 @@ private:
 
 	std::vector <Vector4d>
 	getVec4Array (const AccessorPtr & accessor) const;
+
+	std::vector <Matrix4d>
+	getMatrix4Array (const AccessorPtr & accessor) const;
 
 	///
 
