@@ -835,7 +835,7 @@ Parser::createCoordinate (const AccessorPtr & accessor) const
 	{
 		case AccessorType::VEC2:
 		{
-			const auto array = getVec2Array (accessor);
+			const auto array = getVecArray <Vector2d> (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value [0], value [1], 0);
@@ -844,7 +844,7 @@ Parser::createCoordinate (const AccessorPtr & accessor) const
 		}
 		case AccessorType::VEC3:
 		{
-			const auto array = getVec3Array (accessor);
+			const auto array = getVecArray <Vector3d> (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value);
@@ -853,7 +853,7 @@ Parser::createCoordinate (const AccessorPtr & accessor) const
 		}
 		case AccessorType::VEC4:
 		{
-			const auto array = getVec4Array (accessor);
+			const auto array = getVecArray <Vector4d> (accessor);
 
 			for (const auto & value : array)
 				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
@@ -881,7 +881,7 @@ Parser::createTangent (const AccessorPtr & accessor) const
 	{
 		case AccessorType::VEC4:
 		{
-			const auto array      = getVec4Array (accessor);
+			const auto array      = getVecArray <Vector4d> (accessor);
 			const auto attribNode = scene -> createNode <X3D::FloatVertexAttribute> ();
 			auto &     attrib     = attribNode -> value ();
 
@@ -913,7 +913,7 @@ Parser::createNormal (const AccessorPtr & accessor) const
 	{
 		case AccessorType::VEC3:
 		{
-			const auto array      = getVec3Array (accessor);
+			const auto array      = getVecArray <Vector3d> (accessor);
 			const auto normalNode = scene -> createNode <X3D::Normal> ();
 			auto &     vector     = normalNode -> vector ();
 
@@ -966,7 +966,7 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
 	{
 		case AccessorType::VEC2:
 		{
-			const auto array                 = getVec2Array (accessor);
+			const auto array                 = getVecArray <Vector2d> (accessor);
 			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
@@ -977,7 +977,7 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
 		}
 		case AccessorType::VEC3:
 		{
-			const auto array                 = getVec3Array (accessor);
+			const auto array                 = getVecArray <Vector3d> (accessor);
 			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
@@ -988,7 +988,7 @@ Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
 		}
 		case AccessorType::VEC4:
 		{
-			const auto array                 = getVec4Array (accessor);
+			const auto array                 = getVecArray <Vector4d> (accessor);
 			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
 			auto &     points                = textureCoordinateNode -> point ();
 
@@ -1014,7 +1014,7 @@ Parser::createColor (const AccessorPtr & accessor) const
 	{
 		case AccessorType::VEC3:
 		{
-			const auto array     = getVec3Array (accessor);
+			const auto array     = getVecArray <Vector3d> (accessor);
 			const auto colorNode = scene -> createNode <X3D::Color> ();
 			auto &     color     = colorNode -> color ();
 
@@ -1025,7 +1025,7 @@ Parser::createColor (const AccessorPtr & accessor) const
 		}
 		case AccessorType::VEC4:
 		{
-			const auto array       = getVec4Array (accessor);
+			const auto array       = getVecArray <Vector4d> (accessor);
 			const auto transparent = std::any_of (array .begin (),
 			                                      array .end (),
 			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
@@ -2549,7 +2549,7 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 		case InterpolationType::LINEAR:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			for (const auto t : times)
@@ -2566,7 +2566,7 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 		case InterpolationType::STEP:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			if (not times .empty ())
@@ -2605,7 +2605,7 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 		case InterpolationType::CUBICSPLINE:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 		
 			for (const auto t : times)
@@ -2635,7 +2635,7 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 		case InterpolationType::LINEAR:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::OrientationInterpolator> ();
-			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector4d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			for (const auto t : times)
@@ -2652,7 +2652,7 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 		case InterpolationType::STEP:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::OrientationInterpolator> ();
-			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector4d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			if (not times .empty ())
@@ -2691,7 +2691,7 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 		case InterpolationType::CUBICSPLINE:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::SquadOrientationInterpolator> ();
-			const auto keyValues        = getVec4Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector4d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 		
 			for (const auto t : times)
@@ -2721,7 +2721,7 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 		case InterpolationType::LINEAR:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			for (const auto t : times)
@@ -2738,7 +2738,7 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 		case InterpolationType::STEP:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::PositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 
 			if (not times .empty ())
@@ -2777,7 +2777,7 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 		case InterpolationType::CUBICSPLINE:
 		{
 			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
-			const auto keyValues        = getVec3Array (animationSampler -> output);
+			const auto keyValues        = getVecArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
 		
 			for (const auto t : times)
@@ -2814,7 +2814,7 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 				if (not targets .front () -> position)
 					return nullptr;
 	
-				const auto array = getVec3Array (targets .front () -> position);
+				const auto array = getVecArray <Vector3d> (targets .front () -> position);
 	
 				for (const auto & value : array)
 					coordinateNode -> point () .emplace_back (value);
@@ -2835,7 +2835,7 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 			if (not target -> position)
 				return nullptr;
 
-			const auto array = getVec3Array (target -> position);
+			const auto array = getVecArray <Vector3d> (target -> position);
 
 			for (const auto & value : array)
 				interpolatorNode -> keyValue () .emplace_back (value);
@@ -2871,7 +2871,7 @@ Parser::createNormalInterpolator (const AttributesPtrArray & targets,
 				if (not targets .front () -> normal)
 					return nullptr;
 	
-				const auto array = getVec3Array (targets .front () -> normal);
+				const auto array = getVecArray <Vector3d> (targets .front () -> normal);
 	
 				for (const auto & value : array)
 					normalNode -> vector () .emplace_back (value);
@@ -2892,7 +2892,7 @@ Parser::createNormalInterpolator (const AttributesPtrArray & targets,
 			if (not target -> normal)
 				return nullptr;
 
-			const auto array = getVec3Array (target -> normal);
+			const auto array = getVecArray <Vector3d> (target -> normal);
 
 			for (const auto & value : array)
 				interpolatorNode -> keyValue () .emplace_back (value);
@@ -3085,9 +3085,11 @@ Parser::jointsValue (json_object* const jobj)
 std::vector <double>
 Parser::getScalarArray (const AccessorPtr & accessor) const
 {
+	using Type = double;
+
 	static constexpr size_t components = 1;
 
-	std::vector <double> array;
+	std::vector <Type> array;
 
 	const auto bufferView    = accessor -> bufferView;
 	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
@@ -3201,414 +3203,9 @@ Parser::getScalarArray (const AccessorPtr & accessor) const
 				const auto   toLow    = std::get <2> (range);
 				const auto   toHigh   = std::get <3> (range);
 
-				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (double & value)
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Type & value)
 				{
 					value = project <double> (value, fromLow, fromHigh, toLow, toHigh);
-				});
-
-				break;
-			}
-			case ComponentType::FLOAT:
-				break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector2d>
-Parser::getVec2Array (const AccessorPtr & accessor) const
-{
-	static constexpr size_t components = 2;
-
-	std::vector <Vector2d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto normalized    = accessor -> normalized;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto       data = reinterpret_cast <const int8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto       data = reinterpret_cast <const uint8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto       data = reinterpret_cast <const int16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto       data = reinterpret_cast <const uint16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto       data = reinterpret_cast <const uint32_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto       data = reinterpret_cast <const float*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1]);
-			}
-
-			break;
-		}
-	}
-
-	if (normalized)
-	{
-		switch (componentType)
-		{
-			case ComponentType::BYTE:
-			case ComponentType::UNSIGNED_BYTE:
-			case ComponentType::SHORT:
-			case ComponentType::UNSIGNED_SHORT:
-			case ComponentType::UNSIGNED_INT:
-			{
-				const auto & range    = normalizedRanges .at (componentType);
-				const auto   fromLow  = std::get <0> (range);
-				const auto   fromHigh = std::get <1> (range);
-				const auto   toLow    = std::get <2> (range);
-				const auto   toHigh   = std::get <3> (range);
-
-				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector2d & value)
-				{
-					for (auto & component : value)
-						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
-				});
-
-				break;
-			}
-			case ComponentType::FLOAT:
-				break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector3d>
-Parser::getVec3Array (const AccessorPtr & accessor) const
-{
-	static constexpr size_t components = 3;
-
-	std::vector <Vector3d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto normalized    = accessor -> normalized;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto       data = reinterpret_cast <const int8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto       data = reinterpret_cast <const uint8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto       data = reinterpret_cast <const int16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto       data = reinterpret_cast <const uint16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto       data = reinterpret_cast <const uint32_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto       data = reinterpret_cast <const float*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2]);
-			}
-
-			break;
-		}
-	}
-
-	if (normalized)
-	{
-		switch (componentType)
-		{
-			case ComponentType::BYTE:
-			case ComponentType::UNSIGNED_BYTE:
-			case ComponentType::SHORT:
-			case ComponentType::UNSIGNED_SHORT:
-			case ComponentType::UNSIGNED_INT:
-			{
-				const auto & range    = normalizedRanges .at (componentType);
-				const auto   fromLow  = std::get <0> (range);
-				const auto   fromHigh = std::get <1> (range);
-				const auto   toLow    = std::get <2> (range);
-				const auto   toHigh   = std::get <3> (range);
-
-				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector3d & value)
-				{
-					for (auto & component : value)
-						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
-				});
-
-				break;
-			}
-			case ComponentType::FLOAT:
-				break;
-		}
-	}
-
-	return array;
-}
-
-std::vector <Vector4d>
-Parser::getVec4Array (const AccessorPtr & accessor) const
-{
-	static constexpr size_t components = 4;
-
-	std::vector <Vector4d> array;
-
-	const auto bufferView    = accessor -> bufferView;
-	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
-	const auto componentType = accessor -> componentType;
-	const auto componentSize = componentSizes .at (componentType);
-	const auto count         = accessor -> count;
-	const auto normalized    = accessor -> normalized;
-	const auto buffer        = bufferView -> buffer;
-	const auto byteStride    = bufferView -> byteStride;
-	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
-	const auto first         = buffer -> contents .data () + byteOffset;
-	const auto last          = first + byteStride * (count - 1) + componentSize * components;
-	const auto bufferFirst   = buffer -> contents .data ();
-	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
-
-	if (first < bufferFirst or first >= bufferLast)
-		return array;
-
-	if (last < bufferFirst or last >= bufferLast)
-		return array;
-
-	switch (componentType)
-	{
-		case ComponentType::BYTE:
-		{
-			auto       data = reinterpret_cast <const int8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_BYTE:
-		{
-			auto       data = reinterpret_cast <const uint8_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::SHORT:
-		{
-			auto       data = reinterpret_cast <const int16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_SHORT:
-		{
-			auto       data = reinterpret_cast <const uint16_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::UNSIGNED_INT:
-		{
-			auto       data = reinterpret_cast <const uint32_t*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-		case ComponentType::FLOAT:
-		{
-			auto       data = reinterpret_cast <const float*> (first);
-			const auto last = data + stride * count;
-
-			for (; data not_eq last; data += stride)
-			{
-				array .emplace_back (data [0], data [1], data [2], data [3]);
-			}
-
-			break;
-		}
-	}
-
-	if (normalized)
-	{
-		switch (componentType)
-		{
-			case ComponentType::BYTE:
-			case ComponentType::UNSIGNED_BYTE:
-			case ComponentType::SHORT:
-			case ComponentType::UNSIGNED_SHORT:
-			case ComponentType::UNSIGNED_INT:
-			{
-				const auto & range    = normalizedRanges .at (componentType);
-				const auto   fromLow  = std::get <0> (range);
-				const auto   fromHigh = std::get <1> (range);
-				const auto   toLow    = std::get <2> (range);
-				const auto   toHigh   = std::get <3> (range);
-
-				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Vector4d & value)
-				{
-					for (auto & component : value)
-						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
 				});
 
 				break;
@@ -3624,9 +3221,11 @@ Parser::getVec4Array (const AccessorPtr & accessor) const
 std::vector <Matrix4d>
 Parser::getMatrix4Array (const AccessorPtr & accessor) const
 {
-	static constexpr size_t components = 16;
+	using Type = Matrix4d;
 
-	std::vector <Matrix4d> array;
+	static constexpr size_t components = Type () .rows () * Type () .columns ();
+
+	std::vector <Type> array;
 
 	const auto bufferView    = accessor -> bufferView;
 	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
@@ -3657,22 +3256,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3684,22 +3278,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3711,22 +3300,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3738,22 +3322,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3765,22 +3344,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3792,22 +3366,17 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 			for (; data not_eq last; data += stride)
 			{
-				array .emplace_back (data [ 0],
-				                     data [ 1],
-				                     data [ 2],
-				                     data [ 3],
-				                     data [ 4],
-				                     data [ 5],
-				                     data [ 6],
-				                     data [ 7],
-				                     data [ 8],
-				                     data [ 9],
-				                     data [10],
-				                     data [11],
-				                     data [12],
-				                     data [13],
-				                     data [14],
-				                     data [15]);
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
 			}
 
 			break;
@@ -3830,7 +3399,7 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 				const auto   toLow    = std::get <2> (range);
 				const auto   toHigh   = std::get <3> (range);
 
-				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Matrix4d & value)
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Type & value)
 				{
 					for (auto & component : value)
 						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
