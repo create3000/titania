@@ -7,10 +7,10 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrMetallicRoughness.x3d'/>
-    <meta name='modified' content='Mon, 12 Feb 2018 05:22:57 GMT'/>
+    <meta name='modified' content='Mon, 12 Feb 2018 05:24:39 GMT'/>
   </head>
   <Scene>
-    <ExternProtoDeclare name='pbrAppearance' url='"http://code.create3000.de/titania/alpha/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "https://cdn.rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "https://rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "file:///usr/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrMetallicRoughness", "Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness"'>
+    <ExternProtoDeclare name='pbrMetallicRoughness' url='"http://code.create3000.de/titania/alpha/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "https://cdn.rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "https://rawgit.com/create3000/titania/4.0.5/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "file:///usr/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrMetallicRoughness", "Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness"'>
       <field accessType='inputOutput' type='MFString' name='defines'/>
       <field accessType='inputOutput' type='SFString' name='alphaMode'/>
       <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor'/>
@@ -36,7 +36,7 @@
           <MetadataString DEF='path' containerField='value'
               name='path'
               reference='http://titania.create3000.de'
-              value='"pbrAppearance"'/>
+              value='"pbrMetallicRoughness"'/>
         </MetadataSet>
         <MetadataSet DEF='Selection_2' containerField='value'
             name='Selection'
@@ -44,7 +44,7 @@
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
               reference='http://titania.create3000.de'>
-            <ProtoInstance name='pbrAppearance' DEF='_3' containerField='value'/>
+            <ProtoInstance name='pbrMetallicRoughness' DEF='_3' containerField='value'/>
           </MetadataSet>
           <MetadataBoolean DEF='selectGeometry' containerField='value'
               name='selectGeometry'
@@ -73,6 +73,6 @@
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
-    <ProtoInstance name='pbrAppearance' USE='_3'/>
+    <ProtoInstance name='pbrMetallicRoughness' USE='_3'/>
   </Scene>
 </X3D>
