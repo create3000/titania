@@ -468,7 +468,7 @@ ScreenText::draw (ShapeContainer* const context)
 		glLoadIdentity ();
 		glMatrixMode (GL_MODELVIEW);
 
-		glLoadMatrixd (modelViewMatrix .data ());
+		glLoadMatrixd (modelViewMatrix .front () .data ());
 	}
 
 	context -> getBrowser () -> setTexture (textureNode);

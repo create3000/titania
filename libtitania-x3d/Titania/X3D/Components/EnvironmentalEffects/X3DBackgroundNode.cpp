@@ -434,7 +434,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 
 		if (browser -> getFixedPipelineRequired ())
 		{
-			glLoadMatrixd (modelViewMatrix .data ());
+			glLoadMatrixd (modelViewMatrix .front () .data ());
 
 			// Draw background sphere and texture cube.
 	
@@ -514,13 +514,13 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 
 		if (shaderNode -> isExtensionGPUShaderFP64Available ())
 		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
-			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .data ());
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
+			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .front () .data ());
 		}
 		else
 		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
-			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .data ());
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
+			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .front () .data ());
 		}
 
 		// Draw.
@@ -592,13 +592,13 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 		if (shaderNode -> isExtensionGPUShaderFP64Available ())
 		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .data ());
-			glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .data ());
+			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
+			glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .front () .data ());
 		}
 		else
 		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .data ());
-			glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .data ());
+			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
+			glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .front () .data ());
 		}
 
 		// ModelViewMatrix
@@ -630,7 +630,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 		if (browser -> getFixedPipelineRequired ())
 		{
 			glPushMatrix ();
-			glMultMatrixd (cubeRotations [i] .data ());
+			glMultMatrixd (cubeRotations [i] .front () .data ());
 
 			texture -> draw (renderObject);
 
@@ -644,9 +644,9 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 			renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
 
 			if (shaderNode -> isExtensionGPUShaderFP64Available ())
-				glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .data ());
+				glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .front () .data ());
 			else
-				glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .data ());
+				glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .front () .data ());
 
 			texture -> setShaderUniforms (shaderNode);
 

@@ -571,7 +571,7 @@ X3DRenderObject::depth (const CollisionContainerArray & shapes, const size_t num
 	// Setup projection matrix.
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .front () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer.
@@ -642,7 +642,7 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	// Setup projection matrix
 	// for fixed pipeline, background, particle systems.
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .front () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Draw background.

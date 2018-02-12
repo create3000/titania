@@ -79,7 +79,7 @@ class SFMatrix4 :
 {
 public:
 
-	using value_type    = typename InternalType::value_type;
+	using value_type    = typename InternalType::value_type::value_type;
 	using size_type     = typename InternalType::size_type;
 	using vector_type   = SFVec3 <typename InternalType::vector_type>;
 	using rotation_type = SFRotation;
@@ -148,6 +148,15 @@ public:
 
 	value_type
 	operator [ ] (const size_type & index) const;
+
+	///  @name Capacity
+
+	///  Returns the number of elements in the matrix.
+	static
+	constexpr
+	size_type
+	getSize ()
+	{ return InternalType () .rows () * InternalType () .columns (); }
 
 	///  @name Arithmetic operations
 
@@ -287,10 +296,10 @@ inline
 typename SFMatrix4 <InternalType>::value_type
 SFMatrix4 <InternalType>::at (const size_type & index) const
 {
-	if (index > std::tuple_size <InternalType>::value)
+	if (index > getSize ())
 		throw std::out_of_range ("SFMatrix4::at ");
 
-	return getValue () .data () [index];
+	return getValue () .front () .data () [index];
 }
 
 template <class InternalType>
@@ -298,7 +307,7 @@ inline
 void
 SFMatrix4 <InternalType>::set1Value (const size_type & index, const value_type & value)
 {
-	get () .data () [index] = value;
+	get () .front () .data () [index] = value;
 	addEvent ();
 }
 
@@ -307,7 +316,7 @@ inline
 typename SFMatrix4 <InternalType>::value_type
 SFMatrix4 <InternalType>::get1Value (const size_type & index) const
 {
-	return getValue () .data () [index];
+	return getValue () .front () .data () [index];
 }
 
 template <class InternalType>
@@ -315,7 +324,7 @@ inline
 typename SFMatrix4 <InternalType>::value_type
 SFMatrix4 <InternalType>::operator [ ] (const size_type & index) const
 {
-	return getValue () .data () [index];
+	return getValue () .front () .data () [index];
 }
 
 template <class InternalType>

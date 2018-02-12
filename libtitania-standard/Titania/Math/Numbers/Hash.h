@@ -232,7 +232,7 @@ struct hash <titania::math::matrix2 <double>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };
@@ -246,7 +246,7 @@ struct hash <titania::math::matrix2 <float>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };
@@ -260,7 +260,7 @@ struct hash <titania::math::matrix3 <double>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };
@@ -274,7 +274,7 @@ struct hash <titania::math::matrix3 <float>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };
@@ -288,7 +288,7 @@ struct hash <titania::math::matrix4 <double>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };
@@ -302,7 +302,7 @@ struct hash <titania::math::matrix4 <float>>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type::value_type> () (array .front () .data (), array .front () .data () + (array .rows () * array .columns ()));
 	}
 
 };

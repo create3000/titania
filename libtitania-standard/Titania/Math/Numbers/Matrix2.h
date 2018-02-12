@@ -87,52 +87,53 @@ class matrix2
 {
 private:
 
-	static constexpr size_t Order = 2;
-	static constexpr size_t Size  = Order * Order;
+	static constexpr size_t Order   = 4;
+	static constexpr size_t Rows    = Order;
+	static constexpr size_t Columns = Order;
 
 	///  C Array typedef.
-	using array_type = std::array <Type, Size>;
+	using array_type = std::array <Type, Rows * Columns>;
 
 
 public:
 
 	///  @name Member types
 
-	///  Array typedef.
-	using matrix_type = vector2 <vector2 <Type>>;
+	///  Type.
+	using value_type = vector2 <Type>;
 
 	///  Type.
-	using value_type = Type;
+	using matrix_type = vector2 <value_type>;
 
 	///  Size typedef.  Used for size and indices.
-	using size_type = typename array_type::size_type;
+	using size_type = typename matrix_type::size_type;
 
 	///  std::ptrdiff_t
-	using difference_type = typename array_type::difference_type;
+	using difference_type = typename matrix_type::difference_type;
 
-	///  value_type &
-	using reference = typename array_type::reference;
+	///  matrix_type &
+	using reference = typename matrix_type::reference;
 
-	///  const value_type &
-	using const_reference = typename array_type::const_reference;
+	///  const matrix_type &
+	using const_reference = typename matrix_type::const_reference;
 
-	///  value_type*
-	using pointer = typename array_type::pointer;
+	///  matrix_type*
+	using pointer = typename matrix_type::pointer;
 
-	///  const value_type*
-	using const_pointer = typename array_type::const_pointer;
+	///  const matrix_type*
+	using const_pointer = typename matrix_type::const_pointer;
 
 	///  Random access iterator
-	using iterator = typename array_type::iterator;
+	using iterator = typename matrix_type::iterator;
 
 	///  Constant random access iterator 
-	using const_iterator = typename array_type::const_iterator;
+	using const_iterator = typename matrix_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using reverse_iterator = typename array_type::reverse_iterator;
+	using reverse_iterator = typename matrix_type::reverse_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = typename array_type::const_reverse_iterator;
+	using const_reverse_iterator = typename matrix_type::const_reverse_iterator;
 
 	///  Vector typedef.
 	using vector_type = Type;
@@ -289,37 +290,37 @@ public:
 	constexpr
 	reference
 	front ()
-	{ return m_array .front (); }
+	{ return m_matrix .front (); }
 
 	///  Returns a reference to the first element in the container. 
 	constexpr
 	const_reference
 	front () const
-	{ return m_array .front (); }
+	{ return m_matrix .front (); }
 
 	///  Returns reference to the last element in the container. 
 	constexpr
 	reference
 	back ()
-	{ return m_array .back (); }
+	{ return m_matrix .back (); }
 
 	///  Returns reference to the last element in the container. 
 	constexpr
 	const_reference
 	back () const
-	{ return m_array .back (); }
+	{ return m_matrix .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	constexpr
 	pointer
 	data ()
-	{ return m_array .data (); }
+	{ return m_matrix .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	constexpr
 	const_pointer
 	data () const
-	{ return m_array .data (); }
+	{ return m_matrix .data (); }
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
@@ -336,73 +337,73 @@ public:
 	constexpr
 	iterator
 	begin ()
-	{ return m_array .begin (); }
+	{ return m_matrix .begin (); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	begin () const
-	{ return m_array .begin (); }
+	{ return m_matrix .begin (); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	cbegin () const
-	{ return m_array .cbegin (); }
+	{ return m_matrix .cbegin (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	iterator
 	end ()
-	{ return m_array .end (); }
+	{ return m_matrix .end (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	end () const
-	{ return m_array .end (); }
+	{ return m_matrix .end (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	cend () const
-	{ return m_array .cend (); }
+	{ return m_matrix .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
 	constexpr
 	reverse_iterator
 	rbegin ()
-	{ return m_array .rbegin (); }
+	{ return m_matrix .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
 	constexpr
 	const_reverse_iterator
 	rbegin () const
-	{ return m_array .rbegin (); }
+	{ return m_matrix .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
 	constexpr
 	const_reverse_iterator
 	crbegin () const
-	{ return m_array .crbegin (); }
+	{ return m_matrix .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	reverse_iterator
 	rend ()
-	{ return m_array .rend (); }
+	{ return m_matrix .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	const_reverse_iterator
 	rend () const
-	{ return m_array .rend (); }
+	{ return m_matrix .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	const_reverse_iterator
 	crend () const
-	{ return m_array .crend (); }
+	{ return m_matrix .crend (); }
 
 	///  @name Capacity
 
@@ -422,38 +423,38 @@ public:
 	constexpr
 	size_type
 	columns () const
-	{ return Order; }
+	{ return Columns; }
 
 	///  Returns the number of rows of this matrix. As this is a square matrix, the number is the same as order ().
 	constexpr
 	size_type
 	rows () const
-	{ return Order; }
+	{ return Rows; }
 
-	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
+	///  Returns the number of elements in the matrix. The size is the same as rows ().
 	constexpr
 	size_type
 	size () const
-	{ return Size; }
+	{ return Rows; }
 
 	///  Returns the maximum possible number of elements. Because each matrix is a fixed-size container,
 	///  the value is also the value returned by size.
 	constexpr
 	size_type
 	max_size () const
-	{ return Size; }
+	{ return Rows; }
 
 	///  @name Operations
 
 	///  Fill the container with specified @a value. 
 	void
-	fill (const Type & value)
-	{ m_array .fill (value); }
+	fill (const value_type & value)
+	{ m_matrix .fill (value); }
 
 	///  Swaps the contents.
 	void
 	swap (matrix2 & other)
-	{ m_array .swap (other .m_array); }
+	{ m_matrix .swap (other .m_matrix); }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix inplace.
@@ -729,8 +730,8 @@ void
 matrix2 <Type>::mult_left (const matrix2 & matrix)
 {
 	#define MULT_LEFT(i, j) \
-	   (m_array [0 * 2 + j] * matrix .m_array [i * 2 + 0] +   \
-	    m_array [1 * 2 + j] * matrix .m_array [i * 2 + 1])
+	   (m_matrix [0] [j] * matrix .m_matrix [i] [0] +   \
+	    m_matrix [1] [j] * matrix .m_matrix [i] [1])
 
 	*this = matrix2 <Type> (MULT_LEFT (0, 0),
 	                        MULT_LEFT (0, 1),
@@ -746,8 +747,8 @@ void
 matrix2 <Type>::mult_right (const matrix2 & matrix)
 {
 	#define MULT_RIGHT(i, j) \
-	   (m_array [i * 2 + 0] * matrix .m_array [0 * 2 + j] +   \
-	    m_array [i * 2 + 1] * matrix .m_array [1 * 2 + j])
+	   (m_matrix [i] [0] * matrix .m_matrix [0] [j] +   \
+	    m_matrix [i] [1] * matrix .m_matrix [1] [j])
 
 	*this = matrix2 <Type> (MULT_RIGHT (0, 0),
 	                        MULT_RIGHT (0, 1),
@@ -1134,14 +1135,14 @@ class tuple_size <titania::math::matrix2 <Type>> :
 template <std::size_t I, class Type>
 struct tuple_element <I, titania::math::matrix2 <Type>>
 {
-	using type = Type;
+	using type = typename titania::math::matrix2 <Type>::value_type;
 };
 
 ///  Extracts the Ith element element from the matrix.
 template <size_t Index, class Type>
 inline
 constexpr
-Type &
+typename titania::math::matrix2 <Type>::value_type &
 get (titania::math::matrix2 <Type> & matrix)
 {
 	return matrix [Index];
@@ -1151,7 +1152,7 @@ get (titania::math::matrix2 <Type> & matrix)
 template <size_t Index, class Type>
 inline
 constexpr
-const Type &
+const typename titania::math::matrix2 <Type>::value_type &
 get (const titania::math::matrix2 <Type> & matrix)
 {
 	return matrix [Index];
@@ -1161,7 +1162,7 @@ get (const titania::math::matrix2 <Type> & matrix)
 template <size_t Index, class Type>
 inline
 constexpr
-Type &&
+typename titania::math::matrix2 <Type>::value_type &&
 get (titania::math::matrix2 <Type> && matrix)
 {
 	return std::move (matrix [Index]);
@@ -1171,7 +1172,7 @@ get (titania::math::matrix2 <Type> && matrix)
 template <size_t Index, class Type>
 inline
 constexpr
-const Type &&
+const typename titania::math::matrix2 <Type>::value_type &&
 get (const titania::math::matrix2 <Type> && matrix)
 {
 	return std::move (matrix [Index]);

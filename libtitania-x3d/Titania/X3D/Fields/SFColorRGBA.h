@@ -155,6 +155,15 @@ public:
 	value_type
 	operator [ ] (const size_type & index) const;
 
+	///  @name Capacity
+
+	///  Returns the number of elements in the color.
+	static
+	constexpr
+	size_type
+	getSize ()
+	{ return internal_type () .size (); }
+
 	///  @name Operations
 
 	void

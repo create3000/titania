@@ -176,6 +176,15 @@ public:
 	value_type
 	operator [ ] (const size_type & index) const;
 
+	///  @name Capacity
+
+	///  Returns the number of elements in the vector.
+	static
+	constexpr
+	size_type
+	getSize ()
+	{ return InternalType () .size (); }
+
 	///  @name Arithmetic operations
 
 	SFVec4 &

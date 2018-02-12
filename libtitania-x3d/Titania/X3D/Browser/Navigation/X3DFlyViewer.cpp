@@ -472,7 +472,7 @@ X3DFlyViewer::display (const MoveType type)
 	}
 	
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projection .data ());
+	glLoadMatrixd (projection .front () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Draw a black and a white line.

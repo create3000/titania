@@ -1489,7 +1489,7 @@ ParticleSystem::updateGeometry (const Matrix4d & modelViewMatrix)
 					const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
 					const auto rotation         = getScreenAlignedRotation (modelViewMatrix);
 	
-					glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
+					glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .front () .data ());
 				}
 			}
 			catch (const std::domain_error &)

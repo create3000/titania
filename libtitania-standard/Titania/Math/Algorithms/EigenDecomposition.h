@@ -62,10 +62,10 @@ namespace math {
 template <class MatrixType, size_t JacobiRank = MatrixType::order ()>
 void
 eigen_decomposition (MatrixType matrix,
-                     typename MatrixType::value_type evalues [JacobiRank],
-                     typename MatrixType::value_type evectors [JacobiRank] [JacobiRank])
+                     typename MatrixType::value_type::value_type evalues [JacobiRank],
+                     typename MatrixType::value_type::value_type evectors [JacobiRank] [JacobiRank])
 {
-	typedef typename MatrixType::value_type value_type;
+	using value_type = typename MatrixType::value_type::value_type;
 
 	value_type sm;             // smallest entry
 	value_type theta;          // angle for Jacobi rotation

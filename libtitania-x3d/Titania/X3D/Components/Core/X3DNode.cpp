@@ -103,7 +103,7 @@ public:
 		>::type
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
 	{
-		static constexpr auto s = std::tuple_size <typename Type::value_type::internal_type>::value;
+		static constexpr auto s = Type::value_type::getSize ();
 
 		auto names = std::vector <std::string> ();
 	
@@ -210,7 +210,7 @@ public:
 	{
 		try
 		{
-			static constexpr auto s = std::tuple_size <typename Type::value_type::internal_type>::value;
+			static constexpr auto s = Type::value_type::getSize ();
 
 			std::vector <std::string> names;
 		
@@ -645,7 +645,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFColor::internal_type>::value)
+	if (metaValue .size () < SFColor::getSize ())
 		return defaultValue;
 
 	return SFColor::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -658,7 +658,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFColorRGBA::internal_type>::value)
+	if (metaValue .size () < SFColorRGBA::getSize ())
 		return defaultValue;
 
 	return SFColorRGBA::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -718,7 +718,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFMatrix3d::internal_type>::value)
+	if (metaValue .size () < SFMatrix3d::getSize ())
 		return defaultValue;
 
 	return SFMatrix3d::internal_type (metaValue [0],
@@ -739,7 +739,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFMatrix3f::internal_type>::value)
+	if (metaValue .size () < SFMatrix3f::getSize ())
 		return defaultValue;
 
 	return SFMatrix3f::internal_type (metaValue [0],
@@ -760,7 +760,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFMatrix4d::internal_type>::value)
+	if (metaValue .size () < SFMatrix4d::getSize ())
 		return defaultValue;
 
 	return SFMatrix4d::internal_type (metaValue [ 0],
@@ -788,7 +788,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFMatrix4f::internal_type>::value)
+	if (metaValue .size () < SFMatrix4f::getSize ())
 		return defaultValue;
 
 	return SFMatrix4f::internal_type (metaValue [ 0],
@@ -824,7 +824,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFRotation::internal_type>::value)
+	if (metaValue .size () < SFRotation::getSize ())
 		return defaultValue;
 
 	return SFRotation::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -845,7 +845,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec2d::internal_type>::value)
+	if (metaValue .size () < SFVec2d::getSize ())
 		return defaultValue;
 
 	return SFVec2d::internal_type (metaValue [0], metaValue [1]);
@@ -858,7 +858,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec2f::internal_type>::value)
+	if (metaValue .size () < SFVec2f::getSize ())
 		return defaultValue;
 
 	return SFVec2f::internal_type (metaValue [0], metaValue [1]);
@@ -871,7 +871,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec3d::internal_type>::value)
+	if (metaValue .size () < SFVec3d::getSize ())
 		return defaultValue;
 
 	return SFVec3d::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -884,7 +884,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec3f::internal_type>::value)
+	if (metaValue .size () < SFVec3f::getSize ())
 		return defaultValue;
 
 	return SFVec3f::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -897,7 +897,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec4d::internal_type>::value)
+	if (metaValue .size () < SFVec4d::getSize ())
 		return defaultValue;
 
 	return SFVec4d::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -910,7 +910,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < std::tuple_size <SFVec4f::internal_type>::value)
+	if (metaValue .size () < SFVec4f::getSize ())
 		return defaultValue;
 
 	return SFVec4f::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -1312,7 +1312,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3d matrix;
 	
-				for (size_t i = 0; i < std::tuple_size <Matrix3d>::value; ++ i)
+				for (size_t i = 0; i < matrix .getSize (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1325,7 +1325,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3f matrix;
 	
-				for (size_t i = 0; i < std::tuple_size <Matrix3f>::value; ++ i)
+				for (size_t i = 0; i < matrix .getSize (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1338,7 +1338,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4d matrix;
 	
-				for (size_t i = 0; i < std::tuple_size <Matrix4d>::value; ++ i)
+				for (size_t i = 0; i < matrix .getSize (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1351,7 +1351,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4f matrix;
 	
-				for (size_t i = 0; i < std::tuple_size <Matrix4f>::value; ++ i)
+				for (size_t i = 0; i < matrix .getSize (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1452,7 +1452,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFColor array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Color3f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFColor::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
 	
 				field = array;
@@ -1465,7 +1465,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFColorRGBA array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Color4f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFColorRGBA::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
 	
 				field = array;
@@ -1527,7 +1527,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Matrix3d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3d::getSize ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1548,7 +1548,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Matrix3f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3f::getSize ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1569,7 +1569,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Matrix4d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4d::getSize ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1597,7 +1597,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Matrix4f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4f::getSize ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1633,7 +1633,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFRotation array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Rotation4d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFRotation::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
 	
 				field = array;
@@ -1666,7 +1666,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec2d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector2d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec2d::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1));
 	
 				field = array;
@@ -1679,7 +1679,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec2f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector2f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec2f::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1));
 	
 				field = array;
@@ -1692,7 +1692,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec3d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector3d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec3d::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
 	
 				field = array;
@@ -1705,7 +1705,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec3f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector3f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec3f::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
 	
 				field = array;
@@ -1718,7 +1718,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec4d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector4d>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec4d::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
 	
 				field = array;
@@ -1731,7 +1731,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec4f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <Vector4f>::value)
+				for (size_t i = 0, size = value .size (); i < size; i += SFVec4f::getSize ())
 					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
 	
 				field = array;
@@ -1841,7 +1841,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < std::tuple_size <Matrix3d>::value; ++ i)
+			for (size_t i = 0; i < field .getSize (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1854,7 +1854,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < std::tuple_size <Matrix3f>::value; ++ i)
+			for (size_t i = 0; i < field .getSize (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1867,7 +1867,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < std::tuple_size <Matrix4d>::value; ++ i)
+			for (size_t i = 0; i < field .getSize (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1880,7 +1880,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < std::tuple_size <Matrix4f>::value; ++ i)
+			for (size_t i = 0; i < field .getSize (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -2081,7 +2081,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < std::tuple_size <Matrix3d>::value; ++ i)
+				for (size_t i = 0; i < SFMatrix3d::getSize (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2096,7 +2096,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < std::tuple_size <Matrix3f>::value; ++ i)
+				for (size_t i = 0; i < SFMatrix3f::getSize (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2111,7 +2111,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < std::tuple_size <Matrix4d>::value; ++ i)
+				for (size_t i = 0; i < SFMatrix4d::getSize (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2126,7 +2126,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < std::tuple_size <Matrix4f>::value; ++ i)
+				for (size_t i = 0; i < SFMatrix4f::getSize (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 

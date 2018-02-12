@@ -417,29 +417,29 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		case X3DConstants::SFMatrix3d:
 		{
 			if (extensionGPUShaderFP64)
-				glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .data ());
+				glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .front () .data ());
 			else
-				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFMatrix3d*> (field) -> getValue ()) .data ());
+				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFMatrix3d*> (field) -> getValue ()) .front () .data ());
 
 			break;
 		}
 		case X3DConstants::SFMatrix3f:
 		{
-			glUniformMatrix3fv (location, 1, false, static_cast <SFMatrix3f*> (field) -> getValue () .data ());
+			glUniformMatrix3fv (location, 1, false, static_cast <SFMatrix3f*> (field) -> getValue () .front () .data ());
 			break;
 		}
 		case X3DConstants::SFMatrix4d:
 		{
 			if (extensionGPUShaderFP64)
-				glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .data ());
+				glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .front () .data ());
 			else
-				glUniformMatrix4fv (location, 1, false, Matrix4f (static_cast <SFMatrix4d*> (field) -> getValue ()) .data ());
+				glUniformMatrix4fv (location, 1, false, Matrix4f (static_cast <SFMatrix4d*> (field) -> getValue ()) .front () .data ());
 
 			break;
 		}
 		case X3DConstants::SFMatrix4f:
 		{
-			glUniformMatrix4fv (location, 1, false, static_cast <SFMatrix4f*> (field) -> getValue () .data ());
+			glUniformMatrix4fv (location, 1, false, static_cast <SFMatrix4f*> (field) -> getValue () .front () .data ());
 			break;
 		}
 		case X3DConstants::SFNode:
@@ -488,9 +488,9 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		case X3DConstants::SFRotation:
 		{
 			if (extensionGPUShaderFP64)
-				glUniformMatrix3dv (location, 1, false, static_cast <SFRotation*> (field) -> getValue () .matrix () .data ());
+				glUniformMatrix3dv (location, 1, false, static_cast <SFRotation*> (field) -> getValue () .matrix () .front () .data ());
 			else
-				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFRotation*> (field) -> getValue () .matrix ()) .data ());
+				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFRotation*> (field) -> getValue () .matrix ()) .front () .data ());
 
 			break;
 		}
@@ -632,7 +632,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			if (extensionGPUShaderFP64)
 			{
 				std::vector <Matrix3d> vector (array -> begin (), array -> end ());
-				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix3dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
 			{
@@ -642,7 +642,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				for (const auto & value : *array)
 					vector .emplace_back (value .getValue ());
 
-				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix3fv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 
 			break;
@@ -652,7 +652,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			const auto array = static_cast <MFMatrix3f*> (field);
 
 			std::vector <Matrix3f> vector (array -> begin (), array -> end ());
-			glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
+			glUniformMatrix3fv (location, vector .size (), false, vector [0] .front () .data ());
 			break;
 		}
 		case X3DConstants::MFMatrix4d:
@@ -662,7 +662,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			if (extensionGPUShaderFP64)
 			{
 				std::vector <Matrix4d> vector (array -> begin (), array -> end ());
-				glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix4dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
 			{
@@ -672,7 +672,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				for (const auto & value : *array)
 					vector .emplace_back (value .getValue ());
 
-				glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix4fv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 
 			break;
@@ -682,7 +682,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			const auto array = static_cast <MFMatrix4f*> (field);
 
 			std::vector <Matrix4f> vector (array -> begin (), array -> end ());
-			glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
+			glUniformMatrix4fv (location, vector .size (), false, vector [0] .front () .data ());
 			break;
 		}
 		case X3DConstants::MFNode:
@@ -771,7 +771,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				for (const auto & value : *array)
 					vector .emplace_back (value .getValue () .matrix ());
 	
-				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix3dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
 			{
@@ -781,7 +781,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				for (const auto & value : *array)
 					vector .emplace_back (value .getValue () .matrix ());
 	
-				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
+				glUniformMatrix3fv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 
 			break;
@@ -1067,13 +1067,13 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 
 	if (extensionGPUShaderFP64)
 	{
-		glUniformMatrix4dv (x3d_ProjectionMatrix,  1, false, projectionMatrix  .data ());
-		glUniformMatrix4dv (x3d_CameraSpaceMatrix, 1, false, cameraSpaceMatrix .data ());
+		glUniformMatrix4dv (x3d_ProjectionMatrix,  1, false, projectionMatrix  .front () .data ());
+		glUniformMatrix4dv (x3d_CameraSpaceMatrix, 1, false, cameraSpaceMatrix .front () .data ());
 	}
 	else
 	{
-		glUniformMatrix4fv (x3d_ProjectionMatrix,  1, false, Matrix4f (projectionMatrix)  .data ());
-		glUniformMatrix4fv (x3d_CameraSpaceMatrix, 1, false, Matrix4f (cameraSpaceMatrix) .data ());
+		glUniformMatrix4fv (x3d_ProjectionMatrix,  1, false, Matrix4f (projectionMatrix)  .front () .data ());
+		glUniformMatrix4fv (x3d_CameraSpaceMatrix, 1, false, Matrix4f (cameraSpaceMatrix) .front () .data ());
 	}
 
 	// Set global lights.
@@ -1155,13 +1155,13 @@ throw (std::domain_error)
 
 	if (extensionGPUShaderFP64)
 	{
-		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix    .data ());
-		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .data ());
+		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix    .front () .data ());
+		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .front () .data ());
 	}
 	else
 	{
-		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .data ());
-		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .data ());
+		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .front () .data ());
+		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .front () .data ());
 	}
 }
 
@@ -1393,15 +1393,15 @@ X3DProgrammableShaderObject::disableVertexAttrib ()
 void
 X3DProgrammableShaderObject::setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix)
 {
-	glUniformMatrix3fv (x3d_NormalMatrix, 1, true, normalMatrix .data ());
+	glUniformMatrix3fv (x3d_NormalMatrix, 1, true, normalMatrix .front () .data ());
 
 	if (extensionGPUShaderFP64)
 	{
-		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .data ());
+		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .front () .data ());
 	}
 	else
 	{
-		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .data ());
+		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .front () .data ());
 	}
 }
 

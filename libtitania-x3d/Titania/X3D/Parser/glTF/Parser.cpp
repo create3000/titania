@@ -3401,8 +3401,11 @@ Parser::getMatrix4Array (const AccessorPtr & accessor) const
 
 				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Type & value)
 				{
-					for (auto & component : value)
-						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+					for (auto & vector : value)
+					{
+						for (auto & component : vector)
+							component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+					}
 				});
 
 				break;
