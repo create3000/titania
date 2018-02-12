@@ -56,6 +56,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
 #include "../../Editing/X3DEditor.h"
+#include "../../Prototype/X3DProtoDeclarationNode.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Routing/Router.h"
 
@@ -431,7 +432,7 @@ X3DTransformNodeTool::set_active ()
 		{
 			// Prototype support
 		
-			X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
+			X3DEditor::requestUpdateInstances (X3DProtoDeclarationNodePtr (this -> getExecutionContext ()), undoStep);
 		
 			// Send undo step
 

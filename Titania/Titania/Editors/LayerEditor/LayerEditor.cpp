@@ -411,7 +411,7 @@ LayerEditor::on_visibility_toggled (const Gtk::TreePath & path)
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -442,7 +442,7 @@ LayerEditor::on_pickable_toggled (const Gtk::TreePath & path)
 
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (layer -> isPickable ()), layer -> isPickable ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -526,7 +526,7 @@ LayerEditor::on_active_layer_toggled (const Gtk::TreePath & path)
 
 	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> activeLayer ()), layerSet -> activeLayer ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -602,7 +602,7 @@ LayerEditor::on_layer_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	undoStep -> addRedoFunction (&X3D::SFInt32::setValue, std::ref (layerSet -> privateActiveLayer ()), layerSet -> privateActiveLayer ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -643,7 +643,7 @@ LayerEditor::on_new_layer_set_button_clicked ()
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayerSet> ());
 
 	X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -678,7 +678,7 @@ LayerEditor::on_new_layer_clicked ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Layer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::Layer> ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 	X3D::X3DEditor::pushBackIntoArray (layerSet, layerSet -> layers (), node, undoStep);
 	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -702,7 +702,7 @@ LayerEditor::on_new_layout_layer_clicked ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayoutLayer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayoutLayer> ());
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 	X3D::X3DEditor::pushBackIntoArray (layerSet, layerSet -> layers (), node, undoStep);
 	getBrowserWindow () -> getSelection () -> setNodes ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -791,7 +791,7 @@ LayerEditor::on_remove_layer_button_clicked ()
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -885,7 +885,7 @@ LayerEditor::on_top_clicked ()
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -984,7 +984,7 @@ LayerEditor::on_up_clicked ()
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -1087,7 +1087,7 @@ LayerEditor::on_down_clicked ()
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -1177,7 +1177,7 @@ LayerEditor::on_bottom_clicked ()
 
 	set_order (undoStep);
 
-	X3D::X3DEditor::requestUpdateInstances (getCurrentContext (), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (getCurrentContext ()), undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 

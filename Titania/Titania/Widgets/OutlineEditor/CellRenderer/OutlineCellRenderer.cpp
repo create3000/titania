@@ -838,7 +838,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
 
-			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+			X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -864,7 +864,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());
 			*field = std::move (*value);
 
-			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+			X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 			delete value;

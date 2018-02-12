@@ -420,7 +420,7 @@ PrototypeEditor::on_create_instance_clicked ()
 void
 PrototypeEditor::on_update_instances_clicked ()
 {
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DExecutionContextPtr (protoNode), std::make_shared <X3D::UndoStep> ());
+	X3D::X3DEditor::requestUpdateInstances (protoNode, std::make_shared <X3D::UndoStep> ());
 }
 
 PrototypeEditor::~PrototypeEditor ()

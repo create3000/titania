@@ -248,11 +248,7 @@ public:
 
 	static
 	void
-	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
-
-	static
-	void
-	requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep);
+	requestUpdateInstances (const X3DProtoDeclarationNodePtr & protoNode, const UndoStepPtr & undoStep);
 
 	static
 	void

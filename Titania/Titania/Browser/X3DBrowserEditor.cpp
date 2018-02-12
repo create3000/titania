@@ -588,7 +588,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 				// Prototype support
 
-				X3D::X3DEditor::requestUpdateInstances (transform, nudgeUndoStep);
+				X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (transform -> getExecutionContext ()), nudgeUndoStep);
 			}
 
 			// 

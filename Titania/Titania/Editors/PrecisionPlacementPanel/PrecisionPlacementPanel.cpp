@@ -249,7 +249,7 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 
 		// Proto support
 	
-		X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+		X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);

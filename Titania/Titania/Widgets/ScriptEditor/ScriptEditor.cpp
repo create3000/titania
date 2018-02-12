@@ -370,7 +370,7 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 	sourceText -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, sourceText, *sourceText);
 
-	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 	getCurrentBrowser () -> getConsole () -> log (basic::sprintf (_ ("%s : %s »%s« is build.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 

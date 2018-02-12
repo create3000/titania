@@ -64,6 +64,7 @@
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
 #include "../../../Editing/X3DEditor.h"
+#include "../../../Prototype/X3DProtoDeclarationNode.h"
 
 #include <Titania/String/sprintf.h>
 
@@ -352,7 +353,7 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 		{
 			// Prototype support
 		
-			X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
+			X3DEditor::requestUpdateInstances (X3DProtoDeclarationNodePtr (this -> getExecutionContext ()), undoStep);
 		
 			// Send undo step
 

@@ -498,7 +498,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::MFString>, node, HEIGHT_MAP, X3D::MFString ({ URL .str () }));
 	undoStep -> addRedoFunction (&NodeType::loadHeightMap, node, url, minHeight, maxHeight);
 
-	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -531,7 +531,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_remove_clicked ()
 	undoStep -> addRedoFunction (&NodeType::removeMetaData, node, HEIGHT_MAP);
 	undoStep -> addRedoFunction (&FieldType::setValue,  std::ref (node -> height ()), node -> height ());
 
-	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 	addUndoStep (undoStep);
 

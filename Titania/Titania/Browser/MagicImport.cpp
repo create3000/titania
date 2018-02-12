@@ -97,7 +97,7 @@ MagicImport::import (const X3D::X3DExecutionContextPtr & executionContext, const
 
 		if (importFunctions1 .at (magic) (executionContext, const_cast <X3D::MFNode &> (selection), scene, undoStep))
 		{
-			X3D::X3DEditor::requestUpdateInstances (executionContext, undoStep);
+			X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (executionContext), undoStep);
 			return true;
 		}
 
@@ -122,7 +122,7 @@ MagicImport::process (const X3D::X3DExecutionContextPtr & executionContext, cons
 
 		importFunctions2 .at (magic) (executionContext, const_cast <X3D::MFNode &> (importedNodes), scene, undoStep);
 
-		X3D::X3DEditor::requestUpdateInstances (executionContext, undoStep);
+		X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (executionContext), undoStep);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }

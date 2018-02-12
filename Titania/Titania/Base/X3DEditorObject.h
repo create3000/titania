@@ -59,6 +59,7 @@
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <Titania/X3D/Fields/X3DPtrArray.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
+#include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 
 #include <Titania/String/sprintf.h>
 #include <Titania/String/to_string.h>
@@ -604,7 +605,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 			// Prototype support
 
-			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+			X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -701,7 +702,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	// Prototype support
 
-	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
 
 	return true;
 }
