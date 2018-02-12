@@ -190,7 +190,7 @@ Parser::importProtos ()
 {
 	static const std::regex version (R"/(/titania/(?:[\d\.]+|alpha)/)/");
 
-	const auto filename = get_shader ("/glTF/pbrAppearance.x3d");
+	const auto filename = get_shader ("/glTF/pbrMetallicRoughness.x3d");
 
 	FileLoader (scene) .parseIntoScene (scene, { filename .str () });
 
@@ -1722,7 +1722,7 @@ Parser::createShape (const PrimitivePtr & primitive) const
 X3D::X3DPtr <X3D::X3DNode>
 Parser::createAppearance () const
 {
-	const auto appearanceNode = scene -> createProto ("pbrAppearance");
+	const auto appearanceNode = scene -> createProto ("pbrMetallicRoughness");
 
 	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
 

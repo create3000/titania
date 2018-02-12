@@ -7,10 +7,11 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Sun, 11 Feb 2018 01:36:21 GMT'/>
+    <meta name='modified' content='Mon, 12 Feb 2018 05:16:52 GMT'/>
+    <meta name='titania-output-style' content='Nicest'/>
   </head>
   <Scene>
-    <ProtoDeclare name='pbrAppearance'>
+    <ProtoDeclare name='pbrMetallicRoughness'>
       <ProtoInterface>
         <field accessType='inputOutput' type='MFString' name='defines'/>
         <field accessType='inputOutput' type='SFString' name='alphaMode' value='OPAQUE'/>
@@ -54,7 +55,7 @@
               <connect nodeField='occlusionTexture' protoField='occlusionTexture'/>
               <connect nodeField='normalTexture' protoField='normalTexture'/>
             </IS>
-            <ShaderPart DEF='pbrVertexShader'>
+            <ShaderPart DEF='pbrMetallicRoughnessVertexShader'>
 <![CDATA[data:x-shader/x-vertex,
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
@@ -136,7 +137,7 @@ main ()
 }
 ]]>
             </ShaderPart>
-            <ShaderPart DEF='pbrFragmentShader'
+            <ShaderPart DEF='pbrMetallicRoughnessFragmentShader'
                 type='FRAGMENT'>
 <![CDATA[data:x-shader/x-fragment,
 
@@ -465,7 +466,7 @@ main ()
             </ShaderPart>
           </ComposedShader>
         </Appearance>
-        <Script DEF='pbrAppearanceScript'>
+        <Script DEF='pbrMetallicRoughnessScript'>
           <field accessType='inputOutput' type='MFString' name='defines'/>
           <field accessType='inputOutput' type='SFString' name='alphaMode'/>
           <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor'/>
@@ -620,7 +621,7 @@ function set_metallicRoughnessValues ()
           <MetadataString DEF='path' containerField='value'
               name='path'
               reference='http://titania.create3000.de'
-              value='"pbrAppearance"'/>
+              value='"pbrMetallicRoughness"'/>
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
