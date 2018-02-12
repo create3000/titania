@@ -456,15 +456,17 @@ private:
 
 	///
 
-	std::vector <double>
+	template <class Type>
+	std::vector <Type>
 	getScalarArray (const AccessorPtr & accessor) const;
-
-	std::vector <Matrix4d>
-	getMatrix4Array (const AccessorPtr & accessor) const;
 
 	template <class Type>
 	std::vector <Type>
-	getVecArray (const AccessorPtr & accessor) const;
+	getVectorArray (const AccessorPtr & accessor) const;
+
+	template <class Type>
+	std::vector <Type>
+	getMatrixArray (const AccessorPtr & accessor) const;
 
 	///
 
@@ -535,7 +537,142 @@ private:
 
 template <class Type>
 std::vector <Type>
-Parser::getVecArray (const AccessorPtr & accessor) const
+Parser::getScalarArray (const AccessorPtr & accessor) const
+{
+	static constexpr size_t components = 1;
+
+	std::vector <Type> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				array .emplace_back (data [0]);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
+
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Type & value)
+				{
+					value = project <double> (value, fromLow, fromHigh, toLow, toHigh);
+				});
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+template <class Type>
+std::vector <Type>
+Parser::getVectorArray (const AccessorPtr & accessor) const
 {
 	static constexpr size_t components = std::tuple_size <Type>::value;
 
@@ -687,6 +824,205 @@ Parser::getVecArray (const AccessorPtr & accessor) const
 				{
 					for (auto & component : value)
 						component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+				});
+
+				break;
+			}
+			case ComponentType::FLOAT:
+				break;
+		}
+	}
+
+	return array;
+}
+
+template <class Type>
+std::vector <Type>
+Parser::getMatrixArray (const AccessorPtr & accessor) const
+{
+	static constexpr size_t components = Type () .rows () * Type () .columns ();
+
+	std::vector <Type> array;
+
+	const auto bufferView    = accessor -> bufferView;
+	const auto byteOffset    = accessor -> byteOffset + bufferView -> byteOffset;
+	const auto componentType = accessor -> componentType;
+	const auto componentSize = componentSizes .at (componentType);
+	const auto count         = accessor -> count;
+	const auto normalized    = accessor -> normalized;
+	const auto buffer        = bufferView -> buffer;
+	const auto byteStride    = bufferView -> byteStride;
+	const auto stride        = std::max <size_t> (components, byteStride / componentSize);
+	const auto first         = buffer -> contents .data () + byteOffset;
+	const auto last          = first + byteStride * (count - 1) + componentSize * components;
+	const auto bufferFirst   = buffer -> contents .data ();
+	const auto bufferLast    = buffer -> contents .data () + buffer -> contents .size ();
+
+	if (first < bufferFirst or first >= bufferLast)
+		return array;
+
+	if (last < bufferFirst or last >= bufferLast)
+		return array;
+
+	switch (componentType)
+	{
+		case ComponentType::BYTE:
+		{
+			auto       data = reinterpret_cast <const int8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_BYTE:
+		{
+			auto       data = reinterpret_cast <const uint8_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+		case ComponentType::SHORT:
+		{
+			auto       data = reinterpret_cast <const int16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_SHORT:
+		{
+			auto       data = reinterpret_cast <const uint16_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+		case ComponentType::UNSIGNED_INT:
+		{
+			auto       data = reinterpret_cast <const uint32_t*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+		case ComponentType::FLOAT:
+		{
+			auto       data = reinterpret_cast <const float*> (first);
+			const auto last = data + stride * count;
+
+			for (; data not_eq last; data += stride)
+			{
+				Type value;
+
+				for (size_t r = 0, i = 0; r < value .rows (); ++ r)
+				{
+					for (size_t c = 0; c < value .columns (); ++ c, ++ i)
+					{
+						value [r] [c] = data [i];
+					}
+				}
+
+				array .emplace_back (value);
+			}
+
+			break;
+		}
+	}
+
+	if (normalized)
+	{
+		switch (componentType)
+		{
+			case ComponentType::BYTE:
+			case ComponentType::UNSIGNED_BYTE:
+			case ComponentType::SHORT:
+			case ComponentType::UNSIGNED_SHORT:
+			case ComponentType::UNSIGNED_INT:
+			{
+				const auto & range    = normalizedRanges .at (componentType);
+				const auto   fromLow  = std::get <0> (range);
+				const auto   fromHigh = std::get <1> (range);
+				const auto   toLow    = std::get <2> (range);
+				const auto   toHigh   = std::get <3> (range);
+
+				std::for_each (array .begin (), array .end (), [fromLow, fromHigh, toLow, toHigh] (Type & value)
+				{
+					for (auto & vector : value)
+					{
+						for (auto & component : vector)
+							component = project <double> (component, fromLow, fromHigh, toLow, toHigh);
+					}
 				});
 
 				break;
