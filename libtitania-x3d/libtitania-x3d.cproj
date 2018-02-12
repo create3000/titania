@@ -982,11 +982,11 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-gltf+json.svg" />
     <None Include="share\mime\packages\x3d+json.xml" />
     <None Include="Titania\X3D\Parser\glTF\Parser.h" />
+    <None Include="share\titania\shaders\glTF\pbrAppearance.x3d" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclarationArray.h" />
     <None Include="Titania\X3D\Prototype\ProtoDeclarationArray.h" />
+    <None Include="share\titania\shaders\glTF\Prototypes\pbrAppearance.x3d" />
     <None Include="share\titania\shaders\glTF\brdfLUT.png" />
-    <None Include="share\titania\shaders\glTF\pbrMetallicRoughness.x3d" />
-    <None Include="share\titania\shaders\glTF\Prototypes\pbrMetallicRoughness.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
