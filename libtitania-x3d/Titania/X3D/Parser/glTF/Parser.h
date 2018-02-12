@@ -284,39 +284,6 @@ private:
 	MeshPtr
 	meshArray (json_object* const jobj);
 
-	X3D::X3DPtr <X3D::Shape>
-	createShape (const PrimitivePtr & primitive) const;
-
-	X3D::X3DPtr <X3D::X3DNode>
-	createAppearance () const;
-
-	X3D::X3DPtr <X3D::X3DGeometryNode>
-	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
-
-	X3D::X3DPtr <X3D::IndexedTriangleSet>
-	createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
-
-	X3D::X3DPtr <X3D::TriangleSet>
-	createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
-
-	X3D::X3DPtr <X3D::Coordinate>
-	createCoordinate (const AccessorPtr & position) const;
-
-	X3D::X3DPtr <X3D::FloatVertexAttribute>
-	createTangent (const AccessorPtr & accessor) const;
-
-	X3D::X3DPtr <X3D::Normal>
-	createNormal (const AccessorPtr & accessor) const;
-
-	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-	createTextureCoordinate (const AccessorPtrArray & accessor) const;
-
-	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-	createSingleTextureCoordinate (const AccessorPtr & accessor) const;
-
-	X3D::X3DPtr <X3D::X3DColorNode>
-	createColor (const AccessorPtr & accessor) const;
-
 	PrimitiveArray
 	primitivesArray (json_object* const jobj);
 
@@ -391,6 +358,39 @@ private:
 
 	void
 	normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
+
+	X3D::X3DPtr <X3D::Shape>
+	createShape (const PrimitivePtr & primitive) const;
+
+	X3D::X3DPtr <X3D::X3DNode>
+	createAppearance () const;
+
+	X3D::X3DPtr <X3D::X3DGeometryNode>
+	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
+
+	X3D::X3DPtr <X3D::IndexedTriangleSet>
+	createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
+
+	X3D::X3DPtr <X3D::TriangleSet>
+	createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
+
+	X3D::X3DPtr <X3D::Coordinate>
+	createCoordinate (const AccessorPtr & position) const;
+
+	X3D::X3DPtr <X3D::FloatVertexAttribute>
+	createTangent (const AccessorPtr & accessor) const;
+
+	X3D::X3DPtr <X3D::Normal>
+	createNormal (const AccessorPtr & accessor) const;
+
+	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+	createTextureCoordinate (const AccessorPtrArray & accessor) const;
+
+	X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+	createSingleTextureCoordinate (const AccessorPtr & accessor) const;
+
+	X3D::X3DPtr <X3D::X3DColorNode>
+	createColor (const AccessorPtr & accessor) const;
 
 	///
 

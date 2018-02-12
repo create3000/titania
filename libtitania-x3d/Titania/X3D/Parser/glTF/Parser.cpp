@@ -617,447 +617,6 @@ Parser::meshArray (json_object* const jobj)
 	return mesh;
 }
 
-X3D::X3DPtr <X3D::Shape>
-Parser::createShape (const PrimitivePtr & primitive) const
-{
-	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
-	const auto appearanceNode = primitive -> material ? primitive -> material : createAppearance ();
-	const auto geometryNode   = createGeometry (primitive, appearanceNode);
-
-	appearanceNode -> removeMetaData ("/Titania");
-
-	shapeNode -> appearance () = appearanceNode;
-	shapeNode -> geometry ()   = geometryNode;
-
-	return shapeNode;
-}
-
-X3D::X3DPtr <X3D::X3DNode>
-Parser::createAppearance () const
-{
-	const auto appearanceNode = scene -> createProto ("pbrAppearance");
-
-	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
-
-	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
-
-	return appearanceNode;
-}
-
-X3D::X3DPtr <X3D::X3DGeometryNode>
-Parser::createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
-{
-	switch (primitive -> mode)
-	{
-		case 0: // POINTS
-		{
-			return nullptr;
-		}
-		case 1: // LINES
-		{
-			return nullptr;
-		}
-		case 2: // LINE_LOOP
-		{
-			return nullptr;
-		}
-		case 3: // LINE_STRIP
-		{
-			return nullptr;
-		}
-		case 4: // TRIANGLES
-		{
-			if (primitive -> indices)
-				return createIndexedTriangleSet (primitive, material);
-
-			return createTriangleSet (primitive, material);
-		}
-		case 5: // TRIANGLE_STRIP
-		{
-			return nullptr;
-		}
-		case 6: // TRIANGLE_FAN
-		{
-			return nullptr;
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::IndexedTriangleSet>
-Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
-{
-	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
-	const auto attributes   = primitive -> attributes;
-	const auto indices      = getScalarArray <int32_t> (primitive -> indices);
-	const auto tangent      = createTangent (attributes -> tangent);
-
-	geometryNode -> index () .assign (indices .begin (), indices .end ());
-
-	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
-	geometryNode -> coord ()    = createCoordinate (attributes -> position);
-	geometryNode -> normal ()   = createNormal (attributes -> normal);
-	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
-
-	if (tangent)
-	{
-		geometryNode -> attrib () .emplace_back (tangent);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
-	}
-
-	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
-
-	if (not attributes -> color .empty ())
-	{
-		geometryNode -> color () = createColor (attributes -> color [0]);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
-	}
-
-	if (geometryNode -> texCoord ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
-
-	geometryNode -> normalPerVertex () = geometryNode -> normal ();
-
-	// Joints
-
-	for (const auto & attribute : attributes -> joints)
-	{
-		try
-		{
-			const auto joints = getScalarArray <int32_t> (attribute);
-	
-			std::map <int32_t, std::vector <int32_t>> map;
-	
-			for (const auto index : indices)
-				map [joints .at (index)] .emplace_back (index);
-	
-			for (const auto & pair : map)
-			{
-				const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
-		
-				for (const auto index : pair .second)
-					jointGeometryNode -> index () .emplace_back (index);
-	
-				jointGeometryNode -> solid ()           = geometryNode -> solid ();
-				jointGeometryNode -> coord ()           = geometryNode -> coord ();
-				jointGeometryNode -> normal ()          = geometryNode -> normal ();
-				jointGeometryNode -> texCoord ()        = geometryNode -> texCoord ();
-				jointGeometryNode -> attrib ()          = geometryNode -> attrib ();
-				jointGeometryNode -> color ()           = geometryNode -> color ();
-				jointGeometryNode -> normalPerVertex () = geometryNode -> normalPerVertex ();
-	
-				primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
-			}
-		}
-		catch (const std::out_of_range & error)
-		{
-			getBrowser () -> getConsole () -> warn ("Invalid joint array.\n");
-		}
-	}
-
-	return geometryNode;
-}
-
-X3D::X3DPtr <X3D::TriangleSet>
-Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
-{
-	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
-	const auto attributes   = primitive -> attributes;
-	const auto tangent      = createTangent (attributes -> tangent);
-
-	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
-	geometryNode -> coord ()    = createCoordinate (attributes -> position);
-	geometryNode -> normal ()   = createNormal (attributes -> normal);
-	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
-
-	if (tangent)
-	{
-		geometryNode -> attrib () .emplace_back (tangent);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
-	}
-
-	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
-
-	if (not attributes -> color .empty ())
-	{
-		geometryNode -> color () = createColor (attributes -> color [0]);
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
-	}
-
-	if (geometryNode -> texCoord ())
-		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
-
-	// Joints
-
-	for (const auto & attribute : attributes -> joints)
-	{
-		const auto joints = getScalarArray <int32_t> (attribute);
-
-		std::map <int32_t, std::vector <int32_t>> map;
-
-		for (size_t index = 0, size = joints .size (); index < size; ++ index)
-			map [joints [index]] .emplace_back (index);
-
-		for (const auto & pair : map)
-		{
-			const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
-	
-			for (const auto index : pair .second)
-				jointGeometryNode -> index () .emplace_back (index);
-
-			jointGeometryNode -> solid ()    = geometryNode -> solid ();
-			jointGeometryNode -> coord ()    = geometryNode -> coord ();
-			jointGeometryNode -> texCoord () = geometryNode -> texCoord ();
-			jointGeometryNode -> attrib ()   = geometryNode -> attrib ();
-			jointGeometryNode -> color ()    = geometryNode -> color ();
-
-			primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
-		}
-	}
-		
-	return geometryNode;
-}
-
-X3D::X3DPtr <X3D::Coordinate>
-Parser::createCoordinate (const AccessorPtr & accessor) const
-{
-	if (not accessor)
-		return nullptr;
-
-	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
-
-	auto & points = coordinateNode -> point ();
-
-	switch (accessor -> type)
-	{
-		case AccessorType::VEC2:
-		{
-			const auto array = getVectorArray <Vector2d> (accessor);
-
-			for (const auto & value : array)
-				points .emplace_back (value [0], value [1], 0);
-
-			return coordinateNode;
-		}
-		case AccessorType::VEC3:
-		{
-			const auto array = getVectorArray <Vector3d> (accessor);
-
-			for (const auto & value : array)
-				points .emplace_back (value);
-
-			return coordinateNode;
-		}
-		case AccessorType::VEC4:
-		{
-			const auto array = getVectorArray <Vector4d> (accessor);
-
-			for (const auto & value : array)
-				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
-
-			return coordinateNode;
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::FloatVertexAttribute>
-Parser::createTangent (const AccessorPtr & accessor) const
-{
-	// Implementation note: When tangents are not specified, client implementations should calculate tangents using
-	// default MikkTSpace algorithms. For best results, the mesh triangles should also be processed using default
-	// MikkTSpace algorithms.
-
-	if (not accessor)
-		return nullptr;
-
-	switch (accessor -> type)
-	{
-		case AccessorType::VEC4:
-		{
-			const auto array      = getVectorArray <Vector4d> (accessor);
-			const auto attribNode = scene -> createNode <X3D::FloatVertexAttribute> ();
-			auto &     attrib     = attribNode -> value ();
-
-			attribNode -> name ()          = "tangent";
-			attribNode -> numComponents () = 4;
-
-			for (const auto & value : array)
-			{
-				for (const auto & component : value)
-					attrib .emplace_back (component);
-			}
-
-			return attribNode;
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::Normal>
-Parser::createNormal (const AccessorPtr & accessor) const
-{
-	if (not accessor)
-		return nullptr;
-
-	switch (accessor -> type)
-	{
-		case AccessorType::VEC3:
-		{
-			const auto array      = getVectorArray <Vector3d> (accessor);
-			const auto normalNode = scene -> createNode <X3D::Normal> ();
-			auto &     vector     = normalNode -> vector ();
-
-			for (const auto & value : array)
-				vector .emplace_back (value);
-
-			return normalNode;
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-Parser::createTextureCoordinate (const AccessorPtrArray & accessors) const
-{
-	switch (accessors .size ())
-	{
-		case 0:
-		{
-			return nullptr;
-		}
-		case 1:
-		{
-			return createSingleTextureCoordinate (accessors [0]);
-		}
-		default:
-		{
-			const auto textureCoordinateNode = scene -> createNode <X3D::MultiTextureCoordinate> ();
-
-			for (const auto & accessor : accessors)
-				textureCoordinateNode -> texCoord () .emplace_back (createSingleTextureCoordinate (accessor));
-
-			return textureCoordinateNode;
-		}
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
-Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
-{
-	if (not accessor)
-		return nullptr;
-
-	switch (accessor -> type)
-	{
-		case AccessorType::VEC2:
-		{
-			const auto array                 = getVectorArray <Vector2d> (accessor);
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
-			auto &     points                = textureCoordinateNode -> point ();
-
-			for (const auto & value : array)
-				points .emplace_back (value);
-
-			return textureCoordinateNode;
-		}
-		case AccessorType::VEC3:
-		{
-			const auto array                 = getVectorArray <Vector3d> (accessor);
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
-			auto &     points                = textureCoordinateNode -> point ();
-
-			for (const auto & value : array)
-				points .emplace_back (value);
-
-			return textureCoordinateNode;
-		}
-		case AccessorType::VEC4:
-		{
-			const auto array                 = getVectorArray <Vector4d> (accessor);
-			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
-			auto &     points                = textureCoordinateNode -> point ();
-
-			for (const auto & value : array)
-				points .emplace_back (value);
-
-			return textureCoordinateNode;
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
-X3D::X3DPtr <X3D::X3DColorNode>
-Parser::createColor (const AccessorPtr & accessor) const
-{
-	if (not accessor)
-		return nullptr;
-
-	switch (accessor -> type)
-	{
-		case AccessorType::VEC3:
-		{
-			const auto array     = getVectorArray <Vector3d> (accessor);
-			const auto colorNode = scene -> createNode <X3D::Color> ();
-			auto &     color     = colorNode -> color ();
-
-			for (const auto & value : array)
-				color .emplace_back (value .x (), value .y (), value .z ());
-
-			return colorNode;
-		}
-		case AccessorType::VEC4:
-		{
-			const auto array       = getVectorArray <Vector4d> (accessor);
-			const auto transparent = std::any_of (array .begin (),
-			                                      array .end (),
-			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
-
-			if (transparent)
-			{
-				const auto colorNode = scene -> createNode <X3D::ColorRGBA> ();
-				auto &     color     = colorNode -> color ();
-	
-				for (const auto & value : array)
-					color .emplace_back (value .x (), value .y (), value .z (), value .w ());
-	
-				return colorNode;
-			}
-			else
-			{
-				const auto colorNode = scene -> createNode <X3D::Color> ();
-				auto &     color     = colorNode -> color ();
-	
-				for (const auto & value : array)
-					color .emplace_back (value .x (), value .y (), value .z ());
-	
-				return colorNode;
-			}
-		}
-		default:
-			return nullptr;
-	}
-
-	return nullptr;
-}
-
 Parser::PrimitiveArray
 Parser::primitivesArray (json_object* const jobj)
 {
@@ -2143,6 +1702,496 @@ Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearan
 		catch (const std::out_of_range & error)
 		{ }
 	}
+}
+
+X3D::X3DPtr <X3D::Shape>
+Parser::createShape (const PrimitivePtr & primitive) const
+{
+	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = primitive -> material ? primitive -> material : createAppearance ();
+	const auto geometryNode   = createGeometry (primitive, appearanceNode);
+
+	appearanceNode -> removeMetaData ("/Titania");
+
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
+
+	return shapeNode;
+}
+
+X3D::X3DPtr <X3D::X3DNode>
+Parser::createAppearance () const
+{
+	const auto appearanceNode = scene -> createProto ("pbrAppearance");
+
+	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
+
+	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
+
+	return appearanceNode;
+}
+
+X3D::X3DPtr <X3D::X3DGeometryNode>
+Parser::createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
+{
+	switch (primitive -> mode)
+	{
+		case 0: // POINTS
+		{
+			return nullptr;
+		}
+		case 1: // LINES
+		{
+			return nullptr;
+		}
+		case 2: // LINE_LOOP
+		{
+			return nullptr;
+		}
+		case 3: // LINE_STRIP
+		{
+			return nullptr;
+		}
+		case 4: // TRIANGLES
+		{
+			if (primitive -> indices)
+				return createIndexedTriangleSet (primitive, material);
+
+			return createTriangleSet (primitive, material);
+		}
+		case 5: // TRIANGLE_STRIP
+		{
+			return nullptr;
+		}
+		case 6: // TRIANGLE_FAN
+		{
+			return nullptr;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::IndexedTriangleSet>
+Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
+{
+	const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+	const auto attributes   = primitive -> attributes;
+	const auto indices      = getScalarArray <int32_t> (primitive -> indices);
+	const auto tangent      = createTangent (attributes -> tangent);
+
+	geometryNode -> index () .assign (indices .begin (), indices .end ());
+
+	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
+	geometryNode -> coord ()    = createCoordinate (attributes -> position);
+	geometryNode -> normal ()   = createNormal (attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
+
+	if (tangent)
+	{
+		geometryNode -> attrib () .emplace_back (tangent);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
+	}
+
+	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
+
+	if (not attributes -> color .empty ())
+	{
+		geometryNode -> color () = createColor (attributes -> color [0]);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
+	}
+
+	if (geometryNode -> texCoord ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
+
+	geometryNode -> normalPerVertex () = geometryNode -> normal ();
+
+	// Joints
+
+	for (const auto & attribute : attributes -> joints)
+	{
+		try
+		{
+			const auto joints = getScalarArray <int32_t> (attribute);
+	
+			std::map <int32_t, std::vector <int32_t>> map;
+	
+			for (size_t i = 0, size = indices .size () - indices .size () % 3; i < size; i += 3)
+			{
+				const auto joint = joints .at (indices [i]);
+
+				map [joint] .emplace_back (indices [i + 0]);
+				map [joint] .emplace_back (indices [i + 1]);
+				map [joint] .emplace_back (indices [i + 2]);
+			}
+
+			for (const auto & pair : map)
+			{
+				const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+		
+				for (const auto index : pair .second)
+					jointGeometryNode -> index () .emplace_back (index);
+	
+				jointGeometryNode -> solid ()           = geometryNode -> solid ();
+				jointGeometryNode -> coord ()           = geometryNode -> coord ();
+				jointGeometryNode -> normal ()          = geometryNode -> normal ();
+				jointGeometryNode -> texCoord ()        = geometryNode -> texCoord ();
+				jointGeometryNode -> attrib ()          = geometryNode -> attrib ();
+				jointGeometryNode -> color ()           = geometryNode -> color ();
+				jointGeometryNode -> normalPerVertex () = geometryNode -> normalPerVertex ();
+	
+				primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
+			}
+		}
+		catch (const std::out_of_range & error)
+		{
+			getBrowser () -> getConsole () -> warn ("Invalid joint array.\n");
+		}
+	}
+
+	return geometryNode;
+}
+
+X3D::X3DPtr <X3D::TriangleSet>
+Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const
+{
+	const auto geometryNode = scene -> createNode <X3D::TriangleSet> ();
+	const auto attributes   = primitive -> attributes;
+	const auto tangent      = createTangent (attributes -> tangent);
+
+	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
+	geometryNode -> coord ()    = createCoordinate (attributes -> position);
+	geometryNode -> normal ()   = createNormal (attributes -> normal);
+	geometryNode -> texCoord () = createTextureCoordinate (attributes -> texCoord);
+
+	if (tangent)
+	{
+		geometryNode -> attrib () .emplace_back (tangent);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TANGENTS");
+	}
+
+	material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_NORMALS");
+
+	if (not attributes -> color .empty ())
+	{
+		geometryNode -> color () = createColor (attributes -> color [0]);
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_COLORS");
+	}
+
+	if (geometryNode -> texCoord ())
+		material -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_TEXCOORDS");
+
+	// Joints
+
+	for (const auto & attribute : attributes -> joints)
+	{
+		const auto joints = getScalarArray <int32_t> (attribute);
+
+		std::map <int32_t, std::vector <int32_t>> map;
+
+		for (size_t index = 0, size = joints .size () - joints .size () % 3; index < size; index += 3)
+		{
+			const auto joint = joints [index];
+
+			map [joint] .emplace_back (index + 0);
+			map [joint] .emplace_back (index + 1);
+			map [joint] .emplace_back (index + 2);
+		}
+
+		for (const auto & pair : map)
+		{
+			const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
+	
+			for (const auto index : pair .second)
+				jointGeometryNode -> index () .emplace_back (index);
+
+			jointGeometryNode -> solid ()    = geometryNode -> solid ();
+			jointGeometryNode -> coord ()    = geometryNode -> coord ();
+			jointGeometryNode -> texCoord () = geometryNode -> texCoord ();
+			jointGeometryNode -> attrib ()   = geometryNode -> attrib ();
+			jointGeometryNode -> color ()    = geometryNode -> color ();
+
+			primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
+		}
+	}
+		
+	return geometryNode;
+}
+
+X3D::X3DPtr <X3D::Coordinate>
+Parser::createCoordinate (const AccessorPtr & accessor) const
+{
+	if (not accessor)
+		return nullptr;
+
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
+
+	auto & points = coordinateNode -> point ();
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC2:
+		{
+			const auto array = getVectorArray <Vector2d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			for (const auto & value : array)
+				points .emplace_back (value [0], value [1], 0);
+
+			return coordinateNode;
+		}
+		case AccessorType::VEC3:
+		{
+			const auto array = getVectorArray <Vector3d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return coordinateNode;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto array = getVectorArray <Vector4d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			for (const auto & value : array)
+				points .emplace_back (value [0] / value [3], value [1] / value [3], value [2] / value [3]);
+
+			return coordinateNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::FloatVertexAttribute>
+Parser::createTangent (const AccessorPtr & accessor) const
+{
+	// Implementation note: When tangents are not specified, client implementations should calculate tangents using
+	// default MikkTSpace algorithms. For best results, the mesh triangles should also be processed using default
+	// MikkTSpace algorithms.
+
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC4:
+		{
+			const auto array = getVectorArray <Vector4d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto attribNode = scene -> createNode <X3D::FloatVertexAttribute> ();
+			auto &     attrib     = attribNode -> value ();
+
+			attribNode -> name ()          = "tangent";
+			attribNode -> numComponents () = 4;
+
+			for (const auto & value : array)
+			{
+				for (const auto & component : value)
+					attrib .emplace_back (component);
+			}
+
+			return attribNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::Normal>
+Parser::createNormal (const AccessorPtr & accessor) const
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC3:
+		{
+			const auto array = getVectorArray <Vector3d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto normalNode = scene -> createNode <X3D::Normal> ();
+			auto &     vector     = normalNode -> vector ();
+
+			for (const auto & value : array)
+				vector .emplace_back (value);
+
+			return normalNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+Parser::createTextureCoordinate (const AccessorPtrArray & accessors) const
+{
+	switch (accessors .size ())
+	{
+		case 0:
+		{
+			return nullptr;
+		}
+		case 1:
+		{
+			return createSingleTextureCoordinate (accessors [0]);
+		}
+		default:
+		{
+			const auto textureCoordinateNode = scene -> createNode <X3D::MultiTextureCoordinate> ();
+
+			for (const auto & accessor : accessors)
+				textureCoordinateNode -> texCoord () .emplace_back (createSingleTextureCoordinate (accessor));
+
+			return textureCoordinateNode;
+		}
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DTextureCoordinateNode>
+Parser::createSingleTextureCoordinate (const AccessorPtr & accessor) const
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC2:
+		{
+			const auto array = getVectorArray <Vector2d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate> ();
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		case AccessorType::VEC3:
+		{
+			const auto array = getVectorArray <Vector3d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate3D> ();
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto array = getVectorArray <Vector4d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto textureCoordinateNode = scene -> createNode <X3D::TextureCoordinate4D> ();
+			auto &     points                = textureCoordinateNode -> point ();
+
+			for (const auto & value : array)
+				points .emplace_back (value);
+
+			return textureCoordinateNode;
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
+}
+
+X3D::X3DPtr <X3D::X3DColorNode>
+Parser::createColor (const AccessorPtr & accessor) const
+{
+	if (not accessor)
+		return nullptr;
+
+	switch (accessor -> type)
+	{
+		case AccessorType::VEC3:
+		{
+			const auto array = getVectorArray <Vector3d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto colorNode = scene -> createNode <X3D::Color> ();
+			auto &     color     = colorNode -> color ();
+
+			for (const auto & value : array)
+				color .emplace_back (value .x (), value .y (), value .z ());
+
+			return colorNode;
+		}
+		case AccessorType::VEC4:
+		{
+			const auto array = getVectorArray <Vector4d> (accessor);
+
+			if (array .empty ())
+				return nullptr;
+
+			const auto transparent = std::any_of (array .begin (),
+			                                      array .end (),
+			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
+
+			if (transparent)
+			{
+				const auto colorNode = scene -> createNode <X3D::ColorRGBA> ();
+				auto &     color     = colorNode -> color ();
+	
+				for (const auto & value : array)
+					color .emplace_back (value .x (), value .y (), value .z (), value .w ());
+	
+				return colorNode;
+			}
+			else
+			{
+				const auto colorNode = scene -> createNode <X3D::Color> ();
+				auto &     color     = colorNode -> color ();
+
+				for (const auto & value : array)
+					color .emplace_back (value .x (), value .y (), value .z ());
+	
+				return colorNode;
+			}
+		}
+		default:
+			return nullptr;
+	}
+
+	return nullptr;
 }
 
 void
