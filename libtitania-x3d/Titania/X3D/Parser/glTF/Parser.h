@@ -342,15 +342,6 @@ private:
 	materialValue (json_object* const jobj);
 
 	void
-	pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearance);
-
-	void
-	baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
-
-	void
-	metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
-
-	void
 	emissiveTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
 
 	void
@@ -359,14 +350,29 @@ private:
 	void
 	normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearance);
 
+	void
+	pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearance);
+
+	void
+	materialExtensions (json_object* const jobj, const X3D::SFNode & appearanceNode);
+	
+	void
+	pbrSpecularGlossiness (json_object* const jobj, const X3D::SFNode & appearanceNode);
+
+	X3D::X3DPtr <X3D::X3DTextureNode>
+	textureInfoValue (json_object* const jobj);
+
 	X3D::X3DPtr <X3D::Shape>
 	createShape (const PrimitivePtr & primitive) const;
 
 	X3D::X3DPtr <X3D::X3DNode>
 	createAppearance () const;
 
-	X3D::X3DPtr <X3D::X3DNode>
+	X3D::SFNode
 	createMetallicRoughness () const;
+
+	X3D::SFNode
+	createSpecularGlossiness () const;
 
 	X3D::X3DPtr <X3D::X3DGeometryNode>
 	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;

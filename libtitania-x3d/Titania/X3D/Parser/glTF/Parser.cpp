@@ -207,10 +207,6 @@ Parser::importProto (const std::string & name)
 
 		for (auto & URL : externproto -> url ())
 			URL = std::regex_replace (URL .str (), version, "/titania/" + getBrowser () -> getVersion () + "/");
-
-		#ifdef TITANIA_DEBUG
-		externproto -> url () .emplace_front (externproto -> url () .back ());
-		#endif
 	}
 
 	// Remove unneccessary nodes.
@@ -1496,119 +1492,11 @@ Parser::materialValue (json_object* const jobj)
 
 	pbrMetallicRoughness (json_object_object_get (jobj, "pbrMetallicRoughness"), appearanceNode);
 
+	// extensions
+
+	materialExtensions (json_object_object_get (jobj, "extensions"), appearanceNode);
+
 	return appearanceNode;
-}
-
-void
-Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearanceNode)
-{
-	if (not jobj)
-		return;
-
-	if (json_object_get_type (jobj) not_eq json_type_object)
-		return;
-
-	// Create pbrMetallicRoughness
-
-	const auto metallicRoughness = createMetallicRoughness ();
-
-	appearanceNode -> setField <X3D::SFNode> ("metallicRoughness", metallicRoughness);
-
-	// baseColorFactor
-
-	Vector4d baseColorFactor;
-
-	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
-	{
-		metallicRoughness -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
-		metallicRoughness -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
-	}
-
-	// metallicFactor
-
-	double metallicFactor = 1;
-
-	if (doubleValue (json_object_object_get (jobj, "metallicFactor"), metallicFactor))
-	{
-		metallicRoughness -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
-	}
-
-	// roughnessFactor
-
-	double roughnessFactor = 1;
-
-	if (doubleValue (json_object_object_get (jobj, "roughnessFactor"), roughnessFactor))
-	{
-		metallicRoughness -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
-	}
-
-	// baseColorTextureInfo
-
-	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), metallicRoughness);
-
-	// metallicRoughnessTextureInfo
-
-	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), metallicRoughness);
-}
-
-void
-Parser::baseColorTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
-{
-	if (not jobj)
-		return;
-
-	if (json_object_get_type (jobj) not_eq json_type_object)
-		return;
-
-	// index
-
-	int32_t index = -1;
-
-	if (integerValue (json_object_object_get (jobj, "index"), index))
-	{
-		try
-		{
-			const auto & texture = textures .at (index);
-
-			if (texture)
-			{
-				appearanceNode -> setField <X3D::SFNode> ("baseColorTexture", texture);
-				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
-			}
-		}
-		catch (const std::out_of_range & error)
-		{ }
-	}
-}
-
-void
-Parser::metallicRoughnessTextureInfo (json_object* const jobj, const X3D::SFNode & appearanceNode)
-{
-	if (not jobj)
-		return;
-
-	if (json_object_get_type (jobj) not_eq json_type_object)
-		return;
-
-	// index
-
-	int32_t index = -1;
-
-	if (integerValue (json_object_object_get (jobj, "index"), index))
-	{
-		try
-		{
-			const auto & texture = textures .at (index);
-
-			if (texture)
-			{
-				appearanceNode -> setField <X3D::SFNode> ("metallicRoughnessTexture", texture);
-				appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_METAL_ROUGHNESS_MAP");
-			}
-		}
-		catch (const std::out_of_range & error)
-		{ }
-	}
 }
 
 void
@@ -1719,6 +1607,171 @@ Parser::normalTextureInfo (json_object* const jobj, const X3D::SFNode & appearan
 	}
 }
 
+void
+Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appearanceNode)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// Create pbrMetallicRoughness
+
+	const auto metallicRoughness = createMetallicRoughness ();
+
+	appearanceNode -> setField <X3D::SFNode> ("metallicRoughness", metallicRoughness);
+
+	// baseColorFactor
+
+	Vector4d baseColorFactor (1, 1, 1, 1);
+
+	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
+	{
+		metallicRoughness -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
+		metallicRoughness -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
+	}
+
+	// metallicFactor
+
+	double metallicFactor = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "metallicFactor"), metallicFactor))
+	{
+		metallicRoughness -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
+	}
+
+	// roughnessFactor
+
+	double roughnessFactor = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "roughnessFactor"), roughnessFactor))
+	{
+		metallicRoughness -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
+	}
+
+	// baseColorTextureInfo
+
+	const auto baseColorTexture = textureInfoValue (json_object_object_get (jobj, "baseColorTexture"));
+
+	if (baseColorTexture)
+		appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_BASE_COLOR_MAP");
+
+	metallicRoughness -> setField <X3D::SFNode> ("baseColorTexture", baseColorTexture);
+
+	// metallicRoughnessTextureInfo
+
+	const auto metallicRoughnessTexture = textureInfoValue (json_object_object_get (jobj, "metallicRoughnessTexture"));
+
+	if (metallicRoughnessTexture)
+		appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_METAL_ROUGHNESS_MAP");
+
+	metallicRoughness -> setField <X3D::SFNode> ("metallicRoughnessTexture", metallicRoughnessTexture);
+}
+
+void
+Parser::materialExtensions (json_object* const jobj, const X3D::SFNode & appearanceNode)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// KHR_materials_pbrSpecularGlossiness
+
+	pbrSpecularGlossiness (json_object_object_get (jobj, "KHR_materials_pbrSpecularGlossiness"), appearanceNode);
+}
+
+void
+Parser::pbrSpecularGlossiness (json_object* const jobj, const X3D::SFNode & appearanceNode)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	// Create pbrMetallicRoughness
+
+	const auto specularGlossiness = createSpecularGlossiness ();
+
+	appearanceNode -> getField <X3D::MFNode> ("extensions") .emplace_back (specularGlossiness);
+
+	// baseColorFactor
+
+	Vector3d diffuseFactor (1, 1, 1);
+
+	if (vector3dValue (json_object_object_get (jobj, "diffuseFactor"), diffuseFactor))
+	{
+		specularGlossiness -> setField <X3D::SFVec3f> ("diffuseFactor", Vector3f (diffuseFactor));
+	}
+
+	// baseColorFactor
+
+	Vector3d specularFactor (1, 1, 1);
+
+	if (vector3dValue (json_object_object_get (jobj, "specularFactor"), specularFactor))
+	{
+		specularGlossiness -> setField <X3D::SFVec3f> ("specularFactor", Vector3f (specularFactor));
+	}
+
+	// metallicFactor
+
+	double glossinessFactor = 1;
+
+	if (doubleValue (json_object_object_get (jobj, "glossinessFactor"), glossinessFactor))
+	{
+		specularGlossiness -> setField <X3D::SFFloat> ("glossinessFactor", float (glossinessFactor));
+	}
+
+	// diffuseTextureInfo
+
+	const auto diffuseTexture = textureInfoValue (json_object_object_get (jobj, "diffuseTexture"));
+
+	if (diffuseTexture)
+		appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_DIFFUSE_MAP");
+
+	specularGlossiness -> setField <X3D::SFNode> ("diffuseTexture", diffuseTexture);
+
+	// specularGlossinessTexture
+
+	const auto specularGlossinessTexture = textureInfoValue (json_object_object_get (jobj, "specularGlossinessTexture"));
+
+	if (specularGlossinessTexture)
+		appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("HAS_SPECULAR_GLOSSINESS_MAP");
+
+	specularGlossiness -> setField <X3D::SFNode> ("specularGlossinessTexture", specularGlossinessTexture);
+}
+
+X3D::X3DPtr <X3D::X3DTextureNode>
+Parser::textureInfoValue (json_object* const jobj)
+{
+	if (not jobj)
+		return nullptr;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return nullptr;
+
+	// index
+
+	int32_t index = -1;
+
+	if (integerValue (json_object_object_get (jobj, "index"), index))
+	{
+		try
+		{
+			return textures .at (index);
+		}
+		catch (const std::out_of_range & error)
+		{
+			return nullptr;
+		}
+	}
+
+	return nullptr;
+}
+
 X3D::X3DPtr <X3D::Shape>
 Parser::createShape (const PrimitivePtr & primitive) const
 {
@@ -1739,25 +1792,37 @@ Parser::createAppearance () const
 {
 	const_cast <Parser*> (this) -> importProto ("pbrAppearance");
 
-	const auto appearanceNode = scene -> createProto ("pbrAppearance");
+	const auto instance = scene -> createProto ("pbrAppearance");
 
-	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
+	const_cast <Parser*> (this) -> addUninitializedNode (instance);
 
-	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
+	instance -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
 
-	return appearanceNode;
+	return instance;
 }
 
-X3D::X3DPtr <X3D::X3DNode>
+X3D::SFNode
 Parser::createMetallicRoughness () const
 {
 	const_cast <Parser*> (this) -> importProto ("pbrMetallicRoughness");
 
-	const auto metallicRoughness = scene -> createProto ("pbrMetallicRoughness");
+	const auto instance = scene -> createProto ("pbrMetallicRoughness");
 
-	const_cast <Parser*> (this) -> addUninitializedNode (metallicRoughness);
+	const_cast <Parser*> (this) -> addUninitializedNode (instance);
 
-	return metallicRoughness;
+	return instance;
+}
+
+X3D::SFNode
+Parser::createSpecularGlossiness () const
+{
+	const_cast <Parser*> (this) -> importProto ("pbrSpecularGlossiness");
+
+	const auto instance = scene -> createProto ("pbrSpecularGlossiness");
+
+	const_cast <Parser*> (this) -> addUninitializedNode (instance);
+
+	return instance;
 }
 
 X3D::X3DPtr <X3D::X3DGeometryNode>
