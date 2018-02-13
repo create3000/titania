@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 04:31:24 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 04:33:05 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -689,13 +689,13 @@ function set_extensions (value, time)
 
 	if (specularGlossiness)
 	{
-		shader .diffuseColor              = specularGlossiness .diffuseColor;
+		shader .diffuseFactor             = specularGlossiness .diffuseFactor;
 		shader .diffuseTexture            = specularGlossiness .diffuseTexture;
 		shader .specularFactor            = specularGlossiness .specularFactor;
 		shader .glossinessFactor          = specularGlossiness .glossinessFactor;
 		shader .specularGlossinessTexture = specularGlossiness .specularGlossinessTexture;
 
-		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseColor",              shader, "diffuseColor"));
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseFactor",             shader, "diffuseFactor"));
 		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseTexture",            shader, "diffuseTexture"));
 		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "specularFactor",            shader, "specularFactor"));
 		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "glossinessFactor",          shader, "glossinessFactor"));
@@ -728,9 +728,7 @@ function set_extensions (value, time)
               value='false'/>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'>
-            <!-- NULL -->
-          </MetadataSet>
+              reference='http://titania.create3000.de'/>
         </MetadataSet>
         <MetadataSet DEF='Page' containerField='value'
             name='Page'
