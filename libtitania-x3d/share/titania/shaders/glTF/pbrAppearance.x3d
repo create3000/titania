@@ -7,16 +7,20 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 06:48:53 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 06:53:31 GMT'/>
   </head>
   <Scene>
-    <ExternProtoDeclare name='pbrAppearance' url='"Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness"'>
-      <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor'/>
-      <field accessType='inputOutput' type='SFFloat' name='alphaFactor'/>
-      <field accessType='inputOutput' type='SFFloat' name='metallicFactor'/>
-      <field accessType='inputOutput' type='SFFloat' name='roughnessFactor'/>
-      <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
-      <field accessType='inputOutput' type='SFNode' name='metallicRoughnessTexture'/>
+    <ExternProtoDeclare name='pbrAppearance' url='"Prototypes/pbrAppearance.x3d#pbrAppearance", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance"'>
+      <field accessType='inputOutput' type='MFString' name='defines'/>
+      <field accessType='inputOutput' type='SFString' name='alphaMode'/>
+      <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
+      <field accessType='inputOutput' type='SFFloat' name='occlusionStrength'/>
+      <field accessType='inputOutput' type='SFFloat' name='normalScale'/>
+      <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='metallicRoughness'/>
+      <field accessType='inputOutput' type='MFNode' name='extensions'/>
     </ExternProtoDeclare>
     <WorldInfo>
       <MetadataSet DEF='Titania_1'
