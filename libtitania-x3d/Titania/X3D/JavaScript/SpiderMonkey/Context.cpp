@@ -495,6 +495,10 @@ Context::initialize ()
 	if (not evaluate (getECMAScript (), worldURL .front () == getExecutionContext () -> getWorldURL () ? "" : worldURL .front () .str ()))
 		throw std::invalid_argument ("Couldn't evaluate script.");
 
+	// Do not execute Script nodes within ProtoDeclarations.
+	if (getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+		return;
+
 	setEventHandler ();
 
 	set_live ();
