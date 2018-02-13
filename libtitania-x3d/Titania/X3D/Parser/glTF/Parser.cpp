@@ -142,15 +142,14 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	     materials (),
 	        meshes (),
 	   bufferViews (),
-	       buffers ()
+	       buffers (),
+	    extensions ()
 { }
 
 void
 Parser::parseIntoScene ()
 {
 	pushExecutionContext (scene);
-
-	importProtos ();
 
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::XML);
@@ -186,15 +185,21 @@ Parser::parseIntoScene ()
 }
 
 void
-Parser::importProtos ()
+Parser::importProto (const std::string & name)
 {
 	static const std::regex version (R"/(/titania/(?:[\d\.]+|alpha)/)/");
 
-	const auto filename = get_shader ("/glTF/pbrAppearance.x3d");
+	if (not extensions .emplace (name) .second)
+		return;
+	
+	const auto size     = scene -> getRootNodes () .size ();
+	const auto filename = get_shader ("/glTF/" + name + ".x3d");
 
 	FileLoader (scene) .parseIntoScene (scene, { filename .str () });
 
 	scene -> setWorldURL (uri);
+
+	// Update externprosto url field.
 
 	for (const auto & externproto : scene -> getExternProtoDeclarations ())
 	{
@@ -208,7 +213,11 @@ Parser::importProtos ()
 		#endif
 	}
 
-	X3D::X3DEditor::removeNodesFromScene (scene, scene -> getRootNodes (), true, std::make_shared <X3D::UndoStep> ());
+	// Remove unneccessary nodes.
+
+	const auto nodes = X3D::MFNode (scene -> getRootNodes () .begin () + size, scene -> getRootNodes () .end ());
+
+	X3D::X3DEditor::removeNodesFromScene (scene, nodes, true, std::make_shared <X3D::UndoStep> ());
 }
 
 void
@@ -1499,14 +1508,20 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+	// Create pbrMetallicRoughness
+
+	const auto metallicRoughness = createMetallicRoughness ();
+
+	appearanceNode -> setField <X3D::SFNode> ("metallicRoughness", metallicRoughness);
+
 	// baseColorFactor
 
 	Vector4d baseColorFactor;
 
 	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
 	{
-		appearanceNode -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
-		appearanceNode -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
+		metallicRoughness -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
+		metallicRoughness -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
 	}
 
 	// metallicFactor
@@ -1515,7 +1530,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (doubleValue (json_object_object_get (jobj, "metallicFactor"), metallicFactor))
 	{
-		appearanceNode -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
+		metallicRoughness -> setField <X3D::SFFloat> ("metallicFactor", float (metallicFactor));
 	}
 
 	// roughnessFactor
@@ -1524,16 +1539,16 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (doubleValue (json_object_object_get (jobj, "roughnessFactor"), roughnessFactor))
 	{
-		appearanceNode -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
+		metallicRoughness -> setField <X3D::SFFloat> ("roughnessFactor", float (roughnessFactor));
 	}
 
 	// baseColorTextureInfo
 
-	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), appearanceNode);
+	baseColorTextureInfo (json_object_object_get (jobj, "baseColorTexture"), metallicRoughness);
 
 	// metallicRoughnessTextureInfo
 
-	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), appearanceNode);
+	metallicRoughnessTextureInfo (json_object_object_get (jobj, "metallicRoughnessTexture"), metallicRoughness);
 }
 
 void
@@ -1722,6 +1737,8 @@ Parser::createShape (const PrimitivePtr & primitive) const
 X3D::X3DPtr <X3D::X3DNode>
 Parser::createAppearance () const
 {
+	const_cast <Parser*> (this) -> importProto ("pbrAppearance");
+
 	const auto appearanceNode = scene -> createProto ("pbrAppearance");
 
 	const_cast <Parser*> (this) -> addUninitializedNode (appearanceNode);
@@ -1729,6 +1746,18 @@ Parser::createAppearance () const
 	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("MANUAL_SRGB");
 
 	return appearanceNode;
+}
+
+X3D::X3DPtr <X3D::X3DNode>
+Parser::createMetallicRoughness () const
+{
+	const_cast <Parser*> (this) -> importProto ("pbrMetallicRoughness");
+
+	const auto metallicRoughness = scene -> createProto ("pbrMetallicRoughness");
+
+	const_cast <Parser*> (this) -> addUninitializedNode (metallicRoughness);
+
+	return metallicRoughness;
 }
 
 X3D::X3DPtr <X3D::X3DGeometryNode>

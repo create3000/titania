@@ -246,7 +246,7 @@ private:
 	///  @name Operations
 
 	void
-	importProtos ();
+	importProto (const std::string & name);
 
 	void
 	rootObject (json_object* const jobj);
@@ -364,6 +364,9 @@ private:
 
 	X3D::X3DPtr <X3D::X3DNode>
 	createAppearance () const;
+
+	X3D::X3DPtr <X3D::X3DNode>
+	createMetallicRoughness () const;
 
 	X3D::X3DPtr <X3D::X3DGeometryNode>
 	createGeometry (const PrimitivePtr & primitive, const X3D::X3DPtr <X3D::X3DNode> & material) const;
@@ -532,6 +535,7 @@ private:
 	AccessorPtrArray                          accessors;
 	BufferViewPtrArray                        bufferViews;
 	BufferPtrArray                            buffers;
+	std::set <std::string>                    extensions;
 
 };
 
