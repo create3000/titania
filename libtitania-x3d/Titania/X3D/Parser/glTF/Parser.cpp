@@ -181,16 +181,20 @@ Parser::importProto (const std::string & name)
 	if (not extensions .emplace (name) .second)
 		return;
 	
-	const auto size     = scene -> getRootNodes () .size ();
-	const auto filename = get_shader ((USE_PROTOTYPES ? "/glTF/Prototypes/" : "/glTF/") + name + ".x3d");
+	const auto externprotos = scene -> getExternProtoDeclarations () .size ();
+	const auto rootNodes    = scene -> getRootNodes () .size ();
+	const auto filename     = get_shader ((USE_PROTOTYPES ? "/glTF/Prototypes/" : "/glTF/") + name + ".x3d");
 
 	FileLoader (scene) .parseIntoScene (scene, { filename .str () });
 
 	scene -> setWorldURL (uri);
 
-	// Update externprosto url field.
+	// Update externproto's url field.
 
-	for (const auto & externproto : scene -> getExternProtoDeclarations ())
+	const auto importedExternprotos = X3D::ExternProtoDeclarationArray (scene -> getExternProtoDeclarations () .begin () + externprotos,
+	                                                                    scene -> getExternProtoDeclarations () .end ());
+
+	for (const auto & externproto : importedExternprotos)
 	{
 		externproto -> url () = {
 			"http://code.create3000.de/titania/alpha/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
@@ -208,9 +212,10 @@ Parser::importProto (const std::string & name)
 
 	// Remove unneccessary nodes.
 
-	const auto nodes = X3D::MFNode (scene -> getRootNodes () .begin () + size, scene -> getRootNodes () .end ());
+	const auto importedRootNodes = X3D::MFNode (scene -> getRootNodes () .begin () + rootNodes,
+	                                            scene -> getRootNodes () .end ());
 
-	X3D::X3DEditor::removeNodesFromScene (scene, nodes, true, std::make_shared <X3D::UndoStep> ());
+	X3D::X3DEditor::removeNodesFromScene (scene, importedRootNodes, true, std::make_shared <X3D::UndoStep> ());
 }
 
 void
