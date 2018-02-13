@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrSpecularGlossiness.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 02:13:31 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 06:29:09 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='pbrSpecularGlossiness' url='"Prototypes/pbrSpecularGlossiness.x3d#pbrSpecularGlossiness", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrSpecularGlossiness.x3d#pbrSpecularGlossiness"'>

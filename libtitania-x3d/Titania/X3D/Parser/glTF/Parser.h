@@ -520,7 +520,8 @@ private:
 
 	///  @name Static members
 
-	static constexpr double epsilon = 0.000001;
+	static const bool   USE_PROTOTYPES;
+	static const double EPSILON;
 	
 	static const std::map <ComponentType, size_t>                                      componentSizes;
 	static const std::map <ComponentType, std::tuple <double, double, double, double>> normalizedRanges;

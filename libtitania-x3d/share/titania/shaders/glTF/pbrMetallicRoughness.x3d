@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrMetallicRoughness.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 02:44:33 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 06:29:03 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='pbrMetallicRoughness' url='"Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d#pbrMetallicRoughness"'>

@@ -98,19 +98,8 @@ namespace titania {
 namespace X3D {
 namespace glTF {
 
-//accessors
-//asset
-//bufferViews
-//buffers
-//images
-//materials
-//meshes
-//nodes
-//samplers
-//scene
-//scenes
-//textures
-////animation
+const bool   Parser::USE_PROTOTYPES = false;
+const double Parser::EPSILON        = 0.000001;
 
 const std::map <Parser::ComponentType, size_t> Parser::componentSizes = {
 	std::make_pair (ComponentType::BYTE,           sizeof (int8_t)),
@@ -193,7 +182,7 @@ Parser::importProto (const std::string & name)
 		return;
 	
 	const auto size     = scene -> getRootNodes () .size ();
-	const auto filename = get_shader ("/glTF/" + name + ".x3d");
+	const auto filename = get_shader ((USE_PROTOTYPES ? "/glTF/Prototypes/" : "/glTF/") + name + ".x3d");
 
 	FileLoader (scene) .parseIntoScene (scene, { filename .str () });
 
@@ -1696,6 +1685,7 @@ Parser::pbrSpecularGlossiness (json_object* const jobj, const X3D::SFNode & appe
 
 	const auto specularGlossiness = createSpecularGlossiness ();
 
+	appearanceNode -> getField <X3D::MFString> ("defines")  .emplace_back ("KHR_materials_pbrSpecularGlossiness");
 	appearanceNode -> getField <X3D::MFNode> ("extensions") .emplace_back (specularGlossiness);
 
 	// baseColorFactor
@@ -2718,7 +2708,7 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 
 				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
 				{
-					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - EPSILON);
 					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
 				}
 
@@ -2804,7 +2794,7 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 
 				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
 				{
-					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - EPSILON);
 					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
 				}
 
@@ -2890,7 +2880,7 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 
 				for (size_t i = 0, size = times .size () - 1; i < size; ++ i)
 				{
-					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - epsilon);
+					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval - EPSILON);
 					interpolatorNode -> key () .emplace_back (times [i] / cycleInterval);
 				}
 
