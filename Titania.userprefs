@@ -1,10 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp" Line="177" Column="47" />
-      <File FileName="libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d" Line="438" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp" Line="1880" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d" Line="717" Column="6" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Routing/Route.cpp" Line="1" Column="1" />
     </Files>
