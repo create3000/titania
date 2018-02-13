@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 08:01:14 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 08:57:43 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -369,24 +369,29 @@ main ()
 		#ifdef HAS_SPECULAR_MAP
 			vec4  specularGlossiness  = SRGBtoLINEAR (texture2D (specularGlossinessTexture, texCoord));
 			float perceptualRoughness = 1.0 - specularGlossiness .a * glossinessFactor;
-
-			vec3  specularColor = specularGlossiness .rgb * specularFactor;
+			vec3  specularColor       = specularGlossiness .rgb * specularFactor;
 		#else
 			float perceptualRoughness = 1.0 - glossinessFactor;
 			vec3  specularColor       = specularFactor;
 		#endif
 
 		float metallic = metallicRoughnessValues .x;
-
+			
+		#ifdef HAS_METAL_ROUGHNESS_MAP
+			// Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
+			// This layout intentionally reserves the 'r' channel for (optional) occlusion map data
+			vec4 mrSample = texture2D (metallicRoughnessTexture, texCoord);
+			
+			perceptualRoughness = mrSample .g * perceptualRoughness;
+			metallic            = mrSample .b * metallic;
+		#endif
+	
 		perceptualRoughness = clamp (perceptualRoughness, c_MinRoughness, 1.0);
 		metallic            = clamp (metallic, 0.0, 1.0);
-		
+
 		// Roughness is authored as perceptual roughness; as is convention,
 		// convert to material roughness by squaring the perceptual roughness [2].
 		float alphaRoughness = perceptualRoughness * perceptualRoughness;
-
-		// Compute reflectance.
-		float reflectance = max (max (specularColor .r, specularColor .g), specularColor .b);
 
 		// glTF extension KHR_materials_pbrSpecularGlossiness
 		#ifdef HAS_DIFFUSE_MAP
@@ -400,14 +405,14 @@ main ()
 		#ifdef HAS_COLORS
 			baseColor *= color;
 		#endif
-
+	
 		vec3 f0 = vec3 (0.04);
-		
-		vec3 diffuseColor = baseColor .rgb * (vec3 (1.0) - f0);
-		diffuseColor *= 1.0 - metallic;
-
+	
 		// Compute reflectance.
 		float reflectance = max (max (specularColor .r, specularColor .g), specularColor .b);
+
+		vec3 diffuseColor = baseColor .rgb * (vec3 (1.0) - f0);
+		diffuseColor *= 1.0 - reflectance;
 	#else
 		// Metallic and Roughness material properties are packed together
 		// In glTF, these factors can be specified by fixed scalar values
@@ -523,8 +528,6 @@ main ()
         <Script DEF='pbrAppearanceScript'>
           <field accessType='inputOutput' type='MFString' name='defines'/>
           <field accessType='inputOutput' type='SFString' name='alphaMode'/>
-          <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor' value='1 1 1'/>
-          <field accessType='inputOutput' type='SFFloat' name='alphaFactor' value='1'/>
           <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
           <field accessType='inputOutput' type='SFFloat' name='roughnessFactor' value='1'/>
           <field accessType='inputOutput' type='SFNode' name='metallicRoughness'/>
@@ -558,7 +561,6 @@ function initialize ()
 {
 	set_defines ();
 	set_alphaMode (alphaMode, 0);
-	set_baseColorAlphaFactor ();
 	set_metallicRoughnessValues ();
 	set_metallicRoughness ();
 	set_extensions ();
@@ -609,24 +611,6 @@ function set_alphaMode ()
 	}
 }
 
-function set_baseColorFactor ()
-{
-	set_baseColorAlphaFactor ();
-}
-
-function set_alphaactor ()
-{
-	set_baseColorAlphaFactor ();
-}
-
-function set_baseColorAlphaFactor ()
-{
-	shader .baseColorFactor .x = baseColorFactor .x;
-	shader .baseColorFactor .y = baseColorFactor .y;
-	shader .baseColorFactor .z = baseColorFactor .z;
-	shader .baseColorFactor .w = alphaFactor;
-}
-
 function set_metallicFactor ()
 {
 	set_metallicRoughnessValues ();
@@ -667,13 +651,12 @@ function set_metallicRoughness (value, time)
 		self .roughnessFactor              = metallicRoughness .roughnessFactor;
 		self .baseColorTexture             = metallicRoughness .baseColorTexture;
 		
+		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorFactor",          shader, "baseColorFactor"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorTexture",         shader, "baseColorTexture"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "metallicRoughnessTexture", shader, "metallicRoughnessTexture"));
 		
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "metallicFactor",   self, "metallicFactor"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "roughnessFactor",  self, "roughnessFactor"));
-		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorFactor",  self, "baseColorFactor"));
-		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "alphaFactor",      self, "alphaFactor"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorTexture", self, "baseColorTexture"));
 	}
 	else

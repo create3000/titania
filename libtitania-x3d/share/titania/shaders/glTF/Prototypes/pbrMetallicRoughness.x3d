@@ -7,13 +7,12 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrMetallicRoughness.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 06:45:37 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 08:58:57 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrMetallicRoughness'>
       <ProtoInterface>
-        <field accessType='inputOutput' type='SFVec3f' name='baseColorFactor' value='1 1 1'/>
-        <field accessType='inputOutput' type='SFFloat' name='alphaFactor' value='1'/>
+        <field accessType='inputOutput' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
         <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
         <field accessType='inputOutput' type='SFFloat' name='roughnessFactor' value='1'/>
         <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
