@@ -20,7 +20,7 @@
         <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
         <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
         <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
-        <field accessType='inputOutput' type='SFNode' name='metalicRoughness'/>
+        <field accessType='inputOutput' type='SFNode' name='metallicRoughness'/>
         <field accessType='inputOutput' type='MFNode' name='extensions'/>
       </ProtoInterface>
       <ProtoBody>
@@ -512,7 +512,7 @@ main ()
           <IS>
             <connect nodeField='defines' protoField='defines'/>
             <connect nodeField='alphaMode' protoField='alphaMode'/>
-            <connect nodeField='metallicRoughness' protoField='metalicRoughness'/>
+            <connect nodeField='metallicRoughness' protoField='metallicRoughness'/>
             <connect nodeField='extensions' protoField='extensions'/>
           </IS>
 <![CDATA[ecmascript:
@@ -584,7 +584,7 @@ function set_metallicRoughness (value, time)
 {
 	if (metallicRoughness)
 	{
-		shader .metalicFactor              = metallicRoughness .metalicFactor;
+		shader .metallicFactor             = metallicRoughness .metallicFactor;
 		shader .roughness                  = metallicRoughness .roughness;
 		shader .baseColorTexture           = metallicRoughness .baseColorTexture;
 		shader .metallicRoughnessTexture   = metallicRoughness .metallicRoughnessTexture;
@@ -595,7 +595,7 @@ function set_metallicRoughness (value, time)
 	}
 	else
 	{
-		shader .metalicFactor              = 1;
+		shader .metallicFactor             = 1;
 		shader .roughness                  = 1;
 		shader .baseColorTexture           = null;
 		shader .metallicRoughnessTexture   = null;

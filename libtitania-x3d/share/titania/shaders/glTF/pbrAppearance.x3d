@@ -19,7 +19,7 @@
       <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
       <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
       <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
-      <field accessType='inputOutput' type='SFNode' name='metalicRoughness'/>
+      <field accessType='inputOutput' type='SFNode' name='metallicRoughness'/>
       <field accessType='inputOutput' type='MFNode' name='extensions'/>
     </ExternProtoDeclare>
     <WorldInfo>
