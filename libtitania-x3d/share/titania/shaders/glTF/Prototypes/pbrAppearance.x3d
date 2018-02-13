@@ -641,11 +641,10 @@ function set_metallicRoughness (value, time)
 
 	if (metallicRoughness)
 	{
+		shader .baseColorFactor            = metallicRoughness .baseColorFactor;
 		shader .baseColorTexture           = metallicRoughness .baseColorTexture;
 		shader .metallicRoughnessTexture   = metallicRoughness .metallicRoughnessTexture;
 		
-		self .baseColorFactor              = metallicRoughness .baseColorFactor;
-		self .alphaFactor                  = metallicRoughness .alphaFactor;
 		self .metallicFactor               = metallicRoughness .metallicFactor;
 		self .roughnessFactor              = metallicRoughness .roughnessFactor;
 		self .baseColorTexture             = metallicRoughness .baseColorTexture;
