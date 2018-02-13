@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 09:54:08 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 10:39:56 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -652,13 +652,12 @@ function set_metallicRoughness (value, time)
 	}
 	else
 	{
-		shader .metallicFactor             = 1;
-		shader .roughness                  = 1;
+		shader .baseColorFactor            = new SFVec4f (1, 1, 1, 1);
 		shader .baseColorTexture           = null;
 		shader .metallicRoughnessTexture   = null;
 
-		self .baseColorFactor              = new SFVec3f (1, 1, 1);
-		self .alphaFactor                  = 1;
+		self .metallicFactor               = 1;
+		self .roughnessFactor              = 1;
 		self .baseColorTexture             = null;
 	}
 }
