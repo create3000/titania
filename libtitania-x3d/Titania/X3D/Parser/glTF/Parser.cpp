@@ -1622,6 +1622,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	const auto metallicRoughness = createMetallicRoughness ();
 
+	appearanceNode -> getField <X3D::MFString> ("defines") .emplace_back ("KHR_materials_pbrMetallicRoughness");
 	appearanceNode -> setField <X3D::SFNode> ("metallicRoughness", metallicRoughness);
 
 	// baseColorFactor
@@ -1630,8 +1631,7 @@ Parser::pbrMetallicRoughness (json_object* const jobj, const X3D::SFNode & appea
 
 	if (vector4dValue (json_object_object_get (jobj, "baseColorFactor"), baseColorFactor))
 	{
-		metallicRoughness -> setField <X3D::SFVec3f> ("baseColorFactor", Vector3f (baseColorFactor .x (), baseColorFactor .y (), baseColorFactor .z ()));
-		metallicRoughness -> setField <X3D::SFFloat> ("alphaFactor", float (baseColorFactor .w ()));
+		metallicRoughness -> setField <X3D::SFVec4f> ("baseColorFactor", Vector4f (baseColorFactor));
 	}
 
 	// metallicFactor
