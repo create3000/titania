@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 04:28:40 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 04:31:24 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -676,6 +676,8 @@ function set_extensions (value, time)
 
 	// glTF extension KHR_materials_pbrSpecularGlossiness
 
+	var currentScene = Browser .currentScene;
+
 	// Delete routes.
 
 	for (var i = 0; i < specularGlossinessRoutes .length; ++ i)
@@ -684,8 +686,6 @@ function set_extensions (value, time)
 	specularGlossinessRoutes .length = 0;
 
 	// Assign values and connect routes.
-
-print (specularGlossiness);
 
 	if (specularGlossiness)
 	{
