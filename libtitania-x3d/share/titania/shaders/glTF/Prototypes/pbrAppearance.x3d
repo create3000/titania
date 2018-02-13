@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 03:13:35 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 03:14:47 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -20,7 +20,7 @@
         <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
         <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
         <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
-        <field accessType='inputOutput' type='SFNode' name='metallcRoughness'/>
+        <field accessType='inputOutput' type='SFNode' name='metalicRoughness'/>
         <field accessType='inputOutput' type='MFNode' name='extensions'/>
       </ProtoInterface>
       <ProtoBody>
@@ -512,7 +512,7 @@ main ()
           <IS>
             <connect nodeField='defines' protoField='defines'/>
             <connect nodeField='alphaMode' protoField='alphaMode'/>
-            <connect nodeField='metallicRoughness' protoField='metallcRoughness'/>
+            <connect nodeField='metallicRoughness' protoField='metalicRoughness'/>
             <connect nodeField='extensions' protoField='extensions'/>
           </IS>
 <![CDATA[ecmascript:
