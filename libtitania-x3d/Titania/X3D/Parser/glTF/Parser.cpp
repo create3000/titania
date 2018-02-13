@@ -1703,11 +1703,11 @@ Parser::pbrSpecularGlossiness (json_object* const jobj, const X3D::SFNode & appe
 
 	// baseColorFactor
 
-	Vector3d diffuseFactor (1, 1, 1);
+	Vector4d diffuseFactor (1, 1, 1, 1);
 
-	if (vector3dValue (json_object_object_get (jobj, "diffuseFactor"), diffuseFactor))
+	if (vector4dValue (json_object_object_get (jobj, "diffuseFactor"), diffuseFactor))
 	{
-		specularGlossiness -> setField <X3D::SFVec3f> ("diffuseFactor", Vector3f (diffuseFactor));
+		specularGlossiness -> setField <X3D::SFVec4f> ("diffuseFactor", Vector4f (diffuseFactor));
 	}
 
 	// baseColorFactor

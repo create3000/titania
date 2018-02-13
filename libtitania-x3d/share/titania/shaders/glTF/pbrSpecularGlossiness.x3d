@@ -7,11 +7,11 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrSpecularGlossiness.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 06:29:09 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 07:53:24 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='pbrSpecularGlossiness' url='"Prototypes/pbrSpecularGlossiness.x3d#pbrSpecularGlossiness", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrSpecularGlossiness.x3d#pbrSpecularGlossiness"'>
-      <field accessType='inputOutput' type='SFVec3f' name='diffuseFactor'/>
+      <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor'/>
       <field accessType='inputOutput' type='SFVec3f' name='specularFactor'/>
       <field accessType='inputOutput' type='SFFloat' name='glossinessFactor'/>
       <field accessType='inputOutput' type='SFNode' name='diffuseTexture'/>

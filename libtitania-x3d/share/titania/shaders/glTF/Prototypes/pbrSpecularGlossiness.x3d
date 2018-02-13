@@ -7,12 +7,12 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrSpecularGlossiness.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 02:14:05 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 07:53:09 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrSpecularGlossiness'>
       <ProtoInterface>
-        <field accessType='inputOutput' type='SFVec3f' name='diffuseFactor' value='1 1 1'/>
+        <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor' value='1 1 1 1'/>
         <field accessType='inputOutput' type='SFVec3f' name='specularFactor' value='1 1 1'/>
         <field accessType='inputOutput' type='SFFloat' name='glossinessFactor' value='1'/>
         <field accessType='inputOutput' type='SFNode' name='diffuseTexture'/>
@@ -45,6 +45,14 @@
               name='selectGeometry'
               reference='http://titania.create3000.de'
               value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Prototype' containerField='value'
+            name='Prototype'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='path' containerField='value'
+              name='path'
+              reference='http://titania.create3000.de'
+              value='"pbrSpecularGlossiness"'/>
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
