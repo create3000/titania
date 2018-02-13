@@ -7,7 +7,7 @@
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 09:10:18 GMT'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 09:18:07 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -535,7 +535,8 @@ main ()
             <Appearance USE='_1'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='material'>
-            <Material/>
+            <Material
+                transparency='1'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='shader'>
             <ComposedShader USE='pbrShader'/>
