@@ -237,7 +237,7 @@ Parser::rootObject (json_object* const jobj)
 	scenesObject      (json_object_object_get (jobj, "scenes"));
 	sceneNumber       (json_object_object_get (jobj, "scene"));
 	animationsObject  (json_object_object_get (jobj, "animations"));
-	skinsObject       (json_object_object_get (jobj, "skins"));
+	//skinsObject       (json_object_object_get (jobj, "skins"));
 }
 
 void
@@ -486,17 +486,17 @@ Parser::node1Value (json_object* const jobj)
 			{
 				for (const auto & primitive : node -> mesh -> primitives)
 				{
-					if (primitive -> jointGeometryNodes .empty ())
-					{
+//					if (primitive -> jointGeometryNodes .empty ())
+//					{
 						transformNode -> children () .emplace_back (primitive -> shapeNode);
-					}
-					else
-					{
-						const auto switchNode = scene -> createNode <X3D::Switch> ();
-
-						switchNode    -> children () .emplace_back (primitive -> shapeNode);
-						transformNode -> children () .emplace_back (switchNode);
-					}
+//					}
+//					else
+//					{
+//						const auto switchNode = scene -> createNode <X3D::Switch> ();
+//
+//						switchNode    -> children () .emplace_back (primitive -> shapeNode);
+//						transformNode -> children () .emplace_back (switchNode);
+//					}
 				}
 			}
 			else
