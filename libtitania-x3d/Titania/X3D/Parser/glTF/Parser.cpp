@@ -197,7 +197,7 @@ Parser::importProto (const std::string & name)
 	for (const auto & externproto : importedExternprotos)
 	{
 		externproto -> url () = {
-			"http://code.create3000.de/titania/alpha/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
+			"http://code.create3000.de/titania/" + getBrowser () -> getVersion () + "/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
 			"https://cdn.rawgit.com/create3000/titania/" + getBrowser () -> getVersion () + "/libtitania-x3d/share/titania/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
 			"https://rawgit.com/create3000/titania/" + getBrowser () -> getVersion () + "/libtitania-x3d/share/titania/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
 			"file:///usr/share/titania/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
