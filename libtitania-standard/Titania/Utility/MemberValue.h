@@ -51,38 +51,46 @@
 #ifndef __TITANIA_UTILITY_MEMBER_VALUE_H__
 #define __TITANIA_UTILITY_MEMBER_VALUE_H__
 
+#include <functional>
+
 namespace titania {
 namespace basic {
 
-template <class Type, class Class>
+template <class Type>
 class member_value
 {
 public:
 
-	using getter_type = Type (Class::*)() const;
-	using setter_type = void (Class::*) (const Type &);
+	///  @name Member types
+
+	using getter_type = std::function <Type ()>;
+	using setter_type = std::function <void (const Type &)>;
+
+	///  @name Construction
 
 	constexpr
-	member_value (Class* const object, const setter_type setter, const getter_type getter) :
-		object (object),
+	member_value (const setter_type & setter, const getter_type & getter) :
 		setter (setter),
 		getter (getter)
 	{ }
 
+	///  @name Operators
+
 	member_value &
 	operator = (const Type & value)
 	{
-		(object ->* setter) (value);
+		setter (value);
 		return *this;
 	}
 
 	operator Type () const
-	{ return (object ->* getter)(); }
+	{ return getter (); }
 
 
 private:
 
-	Class* const      object;
+	///  @name Members
+
 	const setter_type setter;
 	const getter_type getter;
 
