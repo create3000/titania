@@ -56,6 +56,7 @@
 #include <ostream>
 #include <stdexcept>
 
+#include "../../Basic/SubscriptIterator.h"
 #include "../../Utility/MemberValue.h"
 #include "../Functional.h"
 #include "Quaternion.h"
@@ -102,6 +103,18 @@ public:
 
 	///  const value_type*
 	using const_pointer = const value_type*;
+
+	///  Random access iterator
+	using iterator = basic::subscript_iterator <rotation4>;
+
+	///  Constant random access iterator 
+	using const_iterator = const basic::subscript_iterator <rotation4>;
+
+	///  std::reverse_iterator <iterator>
+	using reverse_iterator = std::reverse_iterator <iterator>;
+
+	///  std::reverse_iterator <iterator>
+	using const_reverse_iterator = const std::reverse_iterator <iterator>;
 
 	///  vector3 <Type>
 	using vector_type = vector3 <Type>;
@@ -211,6 +224,16 @@ public:
 	Type
 	angle () const;
 
+	///  Set quaternion of this rotation.
+	void
+	quat (const quaternion <Type> & q)
+	{ m_quat = q; }
+
+	///  Returns quaternion of this rotation.
+	const quaternion <Type> &
+	quat () const
+	{ return m_quat; }
+
 	///  Assign rotation @a matrix to this rotation.
 	template <class Up>
 	void
@@ -264,15 +287,103 @@ public:
 	Type
 	operator [ ] (const size_type index) const;
 
-	///  Set quaternion of this rotation.
-	void
-	quat (const quaternion <Type> & q)
-	{ m_quat = q; }
+	///  Returns a reference to the first element in the container. 
+	constexpr
+	reference
+	front ()
+	{ return (*this) [0]; }
 
-	///  Returns quaternion of this rotation.
-	const quaternion <Type> &
-	quat () const
-	{ return m_quat; }
+	///  Returns a reference to the first element in the container. 
+	constexpr
+	Type
+	front () const
+	{ return (*this) [0]; }
+
+	///  Returns reference to the last element in the container. 
+	constexpr
+	reference
+	back ()
+	{ return (*this) [3]; }
+
+	///  Returns reference to the last element in the container. 
+	constexpr
+	Type
+	back () const
+	{ return (*this) [3]; }
+
+	///  @name Iterators
+
+	///  Returns an iterator to the beginning.
+	constexpr
+	iterator
+	begin ()
+	{ return iterator (*this, 0); }
+
+	///  Returns an iterator to the beginning.
+	constexpr
+	const_iterator
+	begin () const
+	{ return const_iterator (const_cast <rotation4 &> (*this), 0); }
+
+	///  Returns an iterator to the beginning.
+	constexpr
+	const_iterator
+	cbegin () const
+	{ return const_iterator (const_cast <rotation4 &> (*this), 0); }
+
+	///  Returns an iterator to the end.
+	constexpr
+	iterator
+	end ()
+	{ return iterator (*this, 4); }
+
+	///  Returns an iterator to the end.
+	constexpr
+	const_iterator
+	end () const
+	{ return const_iterator (const_cast <rotation4 &> (*this), 4); }
+
+	///  Returns an iterator to the end.
+	constexpr
+	const_iterator
+	cend () const
+	{ return const_iterator (const_cast <rotation4 &> (*this), 4); }
+
+	///  Returns a reverse iterator to the beginning.
+	constexpr
+	reverse_iterator
+	rbegin ()
+	{ return reverse_iterator (end ()); }
+
+	///  returns a reverse iterator to the beginning.
+	constexpr
+	const_reverse_iterator
+	rbegin () const
+	{ return const_reverse_iterator (end ()); }
+
+	///  Returns a reverse iterator to the beginning.
+	constexpr
+	const_reverse_iterator
+	crbegin () const
+	{ return const_reverse_iterator (cend ()); }
+
+	///  Returns a reverse iterator to the end.
+	constexpr
+	reverse_iterator
+	rend ()
+	{ return reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	constexpr
+	const_reverse_iterator
+	rend () const
+	{ return const_reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	constexpr
+	const_reverse_iterator
+	crend () const
+	{ return const_reverse_iterator (cbegin ()); }
 
 	///  @name Capacity
 

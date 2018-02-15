@@ -61,16 +61,16 @@ class reference_iterator
 {
 public:
 
-	typedef IteratorType iterator_type;
+	using iterator_type = IteratorType;
 
-	typedef typename IteratorType::iterator_category iterator_category;
+	using iterator_category = typename IteratorType::iterator_category;
 
-	typedef Type*  pointer;
-	typedef Type   value_type;
-	typedef Type & reference;
+	using pointer    = Type*;
+	using value_type = Type;
+	using reference  = Type &;
 
-	typedef size_t size_type;
-	typedef size_t difference_type;
+	using size_type       = size_t;
+	using difference_type = size_t;
 
 	reference_iterator () :
 		iter ()
@@ -81,8 +81,8 @@ public:
 		iter (iter)
 	{ }
 
-	reference_iterator (const reference_iterator & value) :
-		iter (value .iter)
+	reference_iterator (const reference_iterator & other) :
+		iter (other .iter)
 	{ }
 
 	reference_iterator &

@@ -54,14 +54,11 @@
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.h" />
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.h" />
     <None Include="Makefile.am" />
-    <None Include="cl.hpp" />
     <None Include="OddEvenMergeSort.h" />
     <None Include="URI.h" />
-    <None Include="EmptyCHeaderFile.h" />
     <None Include="Makefile.in" />
     <None Include="experimental.cproj" />
     <None Include="experimental.pidb" />
-    <None Include="Construction.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

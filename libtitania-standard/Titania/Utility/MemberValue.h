@@ -68,6 +68,12 @@ public:
 
 	///  @name Construction
 
+	member_value () = delete;
+
+	member_value (const member_value & other) = default;
+
+	member_value (member_value && other) = default;
+
 	constexpr
 	member_value (const setter_type & setter, const getter_type & getter) :
 		setter (setter),
@@ -75,6 +81,20 @@ public:
 	{ }
 
 	///  @name Operators
+
+	member_value &
+	operator = (const member_value & other)
+	{
+		setter (other .getter ());
+		return *this;
+	}
+
+	member_value &
+	operator = (member_value && other)
+	{
+		setter (other .getter ());
+		return *this;
+	}
 
 	member_value &
 	operator = (const Type & value)
@@ -85,6 +105,10 @@ public:
 
 	operator Type () const
 	{ return getter (); }
+
+	///  @name Destruction
+
+	~member_value () = default;
 
 
 private:
