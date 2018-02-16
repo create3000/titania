@@ -159,17 +159,14 @@ public:
 	value_type
 	getAngle () const;
 
-	value_type
-	at (const size_type & index) const;
-
 	void
 	set1Value (const size_type & index, const value_type & value);
 
 	value_type
 	get1Value (const size_type & index) const;
 
-	void
-	getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const;
+	value_type
+	at (const size_type & index) const;
 
 	value_type
 	operator [ ] (const size_type & index) const;
@@ -383,14 +380,6 @@ SFRotation4 <InternalType>::get1Value (const size_type & index) const
 
 template <class InternalType>
 inline
-void
-SFRotation4 <InternalType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
-{
-	getValue () .get (x, y, z, angle);
-}
-
-template <class InternalType>
-inline
 typename SFRotation4 <InternalType>::value_type
 SFRotation4 <InternalType>::operator [ ] (const size_type & index) const
 {
@@ -477,19 +466,17 @@ inline
 void
 SFRotation4 <InternalType>::toStream (std::ostream & ostream) const
 {
-	value_type x, y, z, angle;
-
-	getValue () .get (x, y, z, angle);
+	const auto r = getValue () .get ();
 
 	ostream
 		<< Generator::SetPrecision <value_type>
-		<< x
+		<< r .x
 		<< Generator::Space
-		<< y
+		<< r .y
 		<< Generator::Space
-		<< z
+		<< r .z
 		<< Generator::Space
-		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, angle);
+		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
 }
 
 template <class InternalType>
@@ -521,22 +508,20 @@ inline
 void
 SFRotation4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 {
-	value_type x, y, z, angle;
-
-	getValue () .get (x, y, z, angle);
+	const auto r = getValue () .get ();
 
 	ostream
 		<< Generator::SetPrecision <value_type>
-		<< x
+		<< r .x
 		<< ','
 		<< Generator::TidySpace
-		<< y
+		<< r .y
 		<< ','
 		<< Generator::TidySpace
-		<< z
+		<< r .z
 		<< ','
 		<< Generator::TidySpace
-		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, angle);
+		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
 }
 
 ///  @relates SFRotation4

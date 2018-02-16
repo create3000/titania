@@ -349,9 +349,7 @@ get_field_value (const X3D::X3DScene* const scene,
 
 		case X3D::X3DConstants::SFRotation:
 		{
-			X3D::SFRotation::value_type x, y, z, angle;
-
-			static_cast <const X3D::SFRotation*> (fieldDefinition) -> getValue (x, y, z, angle);
+			const auto rotation = static_cast <const X3D::SFRotation*> (fieldDefinition) -> getValue () .get ();
 
 			std::ostringstream osstream;
 
@@ -360,13 +358,13 @@ get_field_value (const X3D::X3DScene* const scene,
 
 			osstream
 				<< X3D::Generator::SetPrecision <X3D::SFRotation::value_type>
-				<< x
+				<< rotation .x
 				<< " "
-				<< y
+				<< rotation .y
 				<< " "
-				<< z
+				<< rotation .z
 				<< " "
-				<< scene -> toUnit (X3D::UnitCategory::ANGLE, angle);
+				<< scene -> toUnit (X3D::UnitCategory::ANGLE, rotation .angle);
 
 			return osstream .str ();
 		}

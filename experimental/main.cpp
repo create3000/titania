@@ -181,8 +181,10 @@ main (int argc, char** argv)
 	for (const auto & v : r)
 		std::cout << v << std::endl;
 
-	for (const auto & v : basic::make_reverse_range (r))
-		std::cout << v << std::endl;
+	for (Rotation4d::reference v : r)
+		v = 1;
+
+	std::cout << r << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

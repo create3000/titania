@@ -65,6 +65,15 @@
 namespace titania {
 namespace math {
 
+template <class Type>
+struct rotation_type
+{
+	Type x;
+	Type y;
+	Type z;
+	Type angle;
+};
+
 /**
  *  Template to represent an arbitary rotation about an axis.
  *
@@ -252,10 +261,9 @@ public:
 	void
 	set (const Type & x, const Type & y, const Type & z, const Type & angle);
 
-	///  Get @a x, @a y, @a z and @a angle componentwise.
-	template <class T>
-	void
-	get (T & x, T & y, T & z, T & angle) const;
+	///  Get x, y, z and angle componentwise.
+	rotation_type <Type>
+	get () const;
 
 	///  Access specified element with bounds checking.
 	constexpr
@@ -522,33 +530,27 @@ template <class Type>
 void
 rotation4 <Type>::x (const Type & value)
 {
-	Type x, y, z, angle;
+	const auto r = get ();
 
-	get (x, y, z, angle);
-
-	*this = rotation4 (value, y, z, angle);
+	*this = rotation4 (value, r .y, r .z, r. angle);
 }
 
 template <class Type>
 void
 rotation4 <Type>::y (const Type & value)
 {
-	Type x, y, z, angle;
+	const auto r = get ();
 
-	get (x, y, z, angle);
-
-	*this = rotation4 (x, value, z, angle);
+	*this = rotation4 (r .x, value,  r .z,  r .angle);
 }
 
 template <class Type>
 void
 rotation4 <Type>::z (const Type & value)
 {
-	Type x, y, z, angle;
+	const auto r = get ();
 
-	get (x, y, z, angle);
-
-	*this = rotation4 (x, y, value, angle);
+	*this = rotation4 (r .x, r .y, value, r .angle);
 }
 
 template <class Type>
@@ -604,25 +606,29 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 }
 
 template <class Type>
-template <class T>
-void
-rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
+rotation_type <Type>
+rotation4 <Type>::get () const
 {
+	rotation_type <Type> r;
+
 	if (std::abs (m_quat .w ()) >= 1)
 	{
-		x     = 0;
-		y     = 0;
-		z     = 1;
-		angle = 0;
-		return;
+		r .x     = 0;
+		r .y     = 0;
+		r .z     = 1;
+		r .angle = 0;
+	}
+	else
+	{
+		const vector3 <Type> vector = normalize (imag (m_quat));
+	
+		r .x     = vector .x ();
+		r .y     = vector .y ();
+		r .z     = vector .z ();
+		r .angle = 2 * std::acos (m_quat .w ());
 	}
 
-	const vector3 <Type> vector = normalize (imag (m_quat));
-
-	x     = vector .x ();
-	y     = vector .y ();
-	z     = vector .z ();
-	angle = 2 * std::acos (m_quat .w ());
+	return r;
 }
 
 ///  Access components by @a index.
@@ -906,15 +912,13 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const rotation4 <Type> & rotation)
 {
-	Type x, y, z, angle;
-
-	rotation .get (x, y, z, angle);
+	const auto r = rotation .get ();
 
 	return ostream
-	       << x << ' '
-	       << y << ' '
-	       << z << ' '
-	       << angle;
+	       << r .x << ' '
+	       << r .y << ' '
+	       << r .z << ' '
+	       << r .angle;
 }
 
 extern template class rotation4 <float>;

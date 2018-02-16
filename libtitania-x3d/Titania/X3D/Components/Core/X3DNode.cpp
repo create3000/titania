@@ -1252,8 +1252,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 			{
 				auto &       field = static_cast <SFColor &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
-	
-				field = Color3f (value .at (0), value .at (1), value .at (2));
+
+				field = Color3f (value .at (0),
+				                 value .at (1),
+				                 value .at (2));
+
 				break;
 			}
 			case X3D::X3DConstants::SFColorRGBA:
@@ -1261,7 +1264,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field    = static_cast <SFColorRGBA &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
-				field = Color4f (value .at (0), value .at (1), value .at (2), value .at (3));
+				field = Color4f (value .at (0),
+				                 value .at (1),
+				                 value .at (2),
+				                 value .at (3));
+
 				break;
 			}
 			case X3D::X3DConstants::SFDouble:
@@ -1370,7 +1377,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFRotation &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
-				field = Rotation4d (value .at (0), value .at (1), value .at (2), value .at (3));
+				field = Rotation4d (value .at (0),
+				                    value .at (1),
+				                    value .at (2),
+				                    value .at (3));
+
 				break;
 			}
 			case X3D::X3DConstants::SFString:
@@ -1394,7 +1405,9 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec2d &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
-				field = Vector2d (value .at (0), value .at (1));
+				field = Vector2d (value .at (0),
+				                  value .at (1));
+
 				break;
 			}
 			case X3D::X3DConstants::SFVec2f:
@@ -1402,7 +1415,9 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec2f &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
-				field = Vector2f (value .at (0), value .at (1));
+				field = Vector2f (value .at (0),
+				                  value .at (1));
+
 				break;
 			}
 			case X3D::X3DConstants::SFVec3d:
@@ -1410,7 +1425,10 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec3d &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
-				field = Vector3d (value .at (0), value .at (1), value .at (2));
+				field = Vector3d (value .at (0),
+				                  value .at (1),
+				                  value .at (2));
+
 				break;
 			}
 			case X3D::X3DConstants::SFVec3f:
@@ -1418,7 +1436,10 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec3f &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
-				field = Vector3f (value .at (0), value .at (1), value .at (2));
+				field = Vector3f (value .at (0),
+				                  value .at (1),
+				                  value .at (2));
+
 				break;
 			}
 			case X3D::X3DConstants::SFVec4d:
@@ -1426,7 +1447,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec4d &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName (), true) -> value ();
 	
-				field = Vector4d (value .at (0), value .at (1), value .at (2), value .at (3));
+				field = Vector4d (value .at (0),
+				                  value .at (1),
+				                  value .at (2),
+				                  value .at (3));
+
 				break;
 			}
 			case X3D::X3DConstants::SFVec4f:
@@ -1434,7 +1459,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				auto &       field = static_cast <SFVec4f &> (*fieldDefinition);
 				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName (), true) -> value ();
 	
-				field = Vector4f (value .at (0), value .at (1), value .at (2), value .at (3));
+				field = Vector4f (value .at (0),
+				                  value .at (1),
+				                  value .at (2),
+				                  value .at (3));
+
 				break;
 			}
 			case X3D::X3DConstants::MFBool:
@@ -1453,8 +1482,12 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFColor array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFColor::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
-	
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2));
+				}
+
 				field = array;
 				break;
 			}
@@ -1466,8 +1499,13 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFColorRGBA array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFColorRGBA::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
-	
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3));
+				}
+
 				field = array;
 				break;
 			}
@@ -1528,7 +1566,8 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFMatrix3d array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3d::getSize ())
-					array .emplace_back (value .at (i),
+				{
+					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
 					                     value .at (i + 3),
@@ -1537,7 +1576,8 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 					                     value .at (i + 6),
 					                     value .at (i + 7),
 					                     value .at (i + 8));
-	
+				}
+
 				field = array;
 				break;
 			}
@@ -1549,7 +1589,8 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFMatrix3f array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3f::getSize ())
-					array .emplace_back (value .at (i),
+				{
+					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
 					                     value .at (i + 3),
@@ -1558,6 +1599,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 					                     value .at (i + 6),
 					                     value .at (i + 7),
 					                     value .at (i + 8));
+				}
 	
 				field = array;
 				break;
@@ -1570,22 +1612,24 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFMatrix4d array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4d::getSize ())
-					array .emplace_back (value .at (i),
-					                     value .at (i + 1),
-					                     value .at (i + 2),
-					                     value .at (i + 3),
-					                     value .at (i + 4),
-					                     value .at (i + 5),
-					                     value .at (i + 6),
-					                     value .at (i + 7),
-					                     value .at (i + 8),
-					                     value .at (i + 9),
+				{
+					array .emplace_back (value .at (i +  0),
+					                     value .at (i +  1),
+					                     value .at (i +  2),
+					                     value .at (i +  3),
+					                     value .at (i +  4),
+					                     value .at (i +  5),
+					                     value .at (i +  6),
+					                     value .at (i +  7),
+					                     value .at (i +  8),
+					                     value .at (i +  9),
 					                     value .at (i + 10),
 					                     value .at (i + 11),
 					                     value .at (i + 12),
 					                     value .at (i + 13),
 					                     value .at (i + 14),
 					                     value .at (i + 15));
+				}
 	
 				field = array;
 				break;
@@ -1598,23 +1642,25 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFMatrix4f array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4f::getSize ())
-					array .emplace_back (value .at (i),
-					                     value .at (i + 1),
-					                     value .at (i + 2),
-					                     value .at (i + 3),
-					                     value .at (i + 4),
-					                     value .at (i + 5),
-					                     value .at (i + 6),
-					                     value .at (i + 7),
-					                     value .at (i + 8),
-					                     value .at (i + 9),
-					                     value .at (i + 10),
-					                     value .at (i + 11),
-					                     value .at (i + 12),
-					                     value .at (i + 13),
-					                     value .at (i + 14),
-					                     value .at (i + 15));
-	
+				{
+					array .emplace_back (value [i +  0],
+					                     value [i +  1],
+					                     value [i +  2],
+					                     value [i +  3],
+					                     value [i +  4],
+					                     value [i +  5],
+					                     value [i +  6],
+					                     value [i +  7],
+					                     value [i +  8],
+					                     value [i +  9],
+					                     value [i + 10],
+					                     value [i + 11],
+					                     value [i + 12],
+					                     value [i + 13],
+					                     value [i + 14],
+					                     value [i + 15]);
+				}
+
 				field = array;
 				break;
 			}
@@ -1634,8 +1680,13 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFRotation array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFRotation::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
-	
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3));
+				}
+
 				field = array;
 				break;
 			}
@@ -1667,7 +1718,10 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec2d array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec2d::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1));
+				}
 	
 				field = array;
 				break;
@@ -1680,7 +1734,10 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec2f array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec2f::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1));
+				}
 	
 				field = array;
 				break;
@@ -1693,7 +1750,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec3d array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec3d::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2));
+				}
 	
 				field = array;
 				break;
@@ -1706,7 +1767,11 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec3f array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec3f::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2));
+				}
 	
 				field = array;
 				break;
@@ -1719,7 +1784,12 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec4d array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec4d::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3));
+				}
 	
 				field = array;
 				break;
@@ -1732,7 +1802,12 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 				MFVec4f array;
 	
 				for (size_t i = 0, size = value .size (); i < size; i += SFVec4f::getSize ())
-					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+				{
+					array .emplace_back (value .at (i + 0),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3));
+				}
 	
 				field = array;
 				break;
@@ -1898,12 +1973,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		{
 			const auto & field    = static_cast <const SFRotation &> (*fieldDefinition);
 			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
+			const auto   rotation = field .getValue () .get ();
 
-			SFRotation::value_type x, y, z, angle;
-
-			field .getValue (x, y, z, angle);
-
-			metadata -> value () = { x, y, z, angle };
+			metadata -> value () = { rotation .x, rotation .y, rotation .z, rotation .angle };
 			break;
 		}
 		case X3D::X3DConstants::SFString:
@@ -2149,14 +2221,12 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				SFRotation::value_type x, y, z, angle;
+				const auto rotation = value .getValue () .get ();
 
-				value .getValue (x, y, z, angle);
-
-				array .emplace_back (x);
-				array .emplace_back (y);
-				array .emplace_back (z);
-				array .emplace_back (angle);
+				array .emplace_back (rotation .x);
+				array .emplace_back (rotation .y);
+				array .emplace_back (rotation .z);
+				array .emplace_back (rotation .angle);
 			}
 
 			break;

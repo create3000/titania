@@ -164,14 +164,14 @@ public:
 	value_type
 	getW () const;
 
-	value_type
-	at (const size_type & index) const;
-
 	void
 	set1Value (const size_type & index, const value_type & value);
 
 	value_type
 	get1Value (const size_type & index) const;
+
+	value_type
+	at (const size_type & index) const;
 
 	value_type
 	operator [ ] (const size_type & index) const;

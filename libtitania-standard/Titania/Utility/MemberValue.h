@@ -52,6 +52,7 @@
 #define __TITANIA_UTILITY_MEMBER_VALUE_H__
 
 #include <functional>
+#include <type_traits>
 
 namespace titania {
 namespace basic {
@@ -105,6 +106,16 @@ public:
 
 	operator Type () const
 	{ return getter (); }
+
+	Type
+	get () const
+	{ return getter (); }
+
+// C++17
+//	template <class ... Args>
+//	std::invoke_result_t <Type, Args ...>
+//	operator () (Args && ... args) const
+//	{ return std::invoke (get (), std::forward <Args> (args) ...); }
 
 	///  @name Destruction
 
