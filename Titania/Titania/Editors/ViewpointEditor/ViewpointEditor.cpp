@@ -242,7 +242,7 @@ ViewpointEditor::update (const X3D::UndoStepPtr & undoStep)
 
 	// Proto support
 
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (viewpointNode -> getExecutionContext ()), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (viewpointNode, undoStep);
 }
 
 void

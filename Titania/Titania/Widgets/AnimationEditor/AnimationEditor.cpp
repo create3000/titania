@@ -192,7 +192,7 @@ AnimationEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
 	// Proto support
 
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (animation -> getExecutionContext ()), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (animation, undoStep);
 
 	// Add undo step
 
@@ -439,7 +439,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		animation -> isLive ()   .removeInterest (&AnimationEditor::set_animation_live, this);
 		animation -> children () .removeInterest (&AnimationEditor::set_interpolators, this);
 
-		X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (animation -> getExecutionContext ()), std::make_shared <X3D::UndoStep> ());
+		X3D::X3DEditor::requestUpdateInstances (animation, std::make_shared <X3D::UndoStep> ());
 	}
 
 	if (timeSensor)

@@ -432,8 +432,8 @@ X3DTransformNodeTool::set_active ()
 		{
 			// Prototype support
 		
-			X3DEditor::requestUpdateInstances (X3DProtoDeclarationNodePtr (this -> getExecutionContext ()), undoStep);
-		
+			X3DEditor::requestUpdateInstances (SFNode (getNode <X3DTransformNode> ()), undoStep);
+
 			// Send undo step
 
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

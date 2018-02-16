@@ -4,13 +4,19 @@
 bin_PROGRAMS =  \
 	titania-experimental
 	
-AM_CPPFLAGS = -I$(top_builddir)/libtitania-standard \
+AM_CPPFLAGS = $(TITANIA_EXPERIMENTAL_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
-	-I$(top_builddir)/libtitania-stream
+	$(TITANIA_X3D_CFLAGS)  \
+	-I$(top_builddir)/libtitania-standard \
+	-I$(top_builddir)/libtitania-stream \
+	-I$(top_builddir)/libtitania-x3d
 
-titania_experimental_LDADD = $(top_builddir)/libtitania-standard/libtitania-standard.la \
+titania_experimental_LDADD = $(TITANIA_EXPERIMENTAL_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la
+	$(TITANIA_X3D_LIBS)  \
+	$(top_builddir)/libtitania-standard/libtitania-standard.la \
+	$(top_builddir)/libtitania-stream/libtitania-stream.la \
+	$(top_builddir)/libtitania-x3d/libtitania-x3d.la
 
 titania_experimental_SOURCES = main.cpp
 

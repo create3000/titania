@@ -104,10 +104,11 @@ PROGRAMS = $(bin_PROGRAMS)
 am_titania_experimental_OBJECTS = main.$(OBJEXT)
 titania_experimental_OBJECTS = $(am_titania_experimental_OBJECTS)
 am__DEPENDENCIES_1 =
-titania_experimental_DEPENDENCIES =  \
-	$(top_builddir)/libtitania-standard/libtitania-standard.la \
+titania_experimental_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la
+	$(top_builddir)/libtitania-standard/libtitania-standard.la \
+	$(top_builddir)/libtitania-stream/libtitania-stream.la \
+	$(top_builddir)/libtitania-x3d/libtitania-x3d.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -344,13 +345,19 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -I$(top_builddir)/libtitania-standard \
+AM_CPPFLAGS = $(TITANIA_EXPERIMENTAL_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
-	-I$(top_builddir)/libtitania-stream
+	$(TITANIA_X3D_CFLAGS)  \
+	-I$(top_builddir)/libtitania-standard \
+	-I$(top_builddir)/libtitania-stream \
+	-I$(top_builddir)/libtitania-x3d
 
-titania_experimental_LDADD = $(top_builddir)/libtitania-standard/libtitania-standard.la \
+titania_experimental_LDADD = $(TITANIA_EXPERIMENTAL_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la
+	$(TITANIA_X3D_LIBS)  \
+	$(top_builddir)/libtitania-standard/libtitania-standard.la \
+	$(top_builddir)/libtitania-stream/libtitania-stream.la \
+	$(top_builddir)/libtitania-x3d/libtitania-x3d.la
 
 titania_experimental_SOURCES = main.cpp
 all: all-am

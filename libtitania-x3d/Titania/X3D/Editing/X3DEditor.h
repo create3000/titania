@@ -248,7 +248,23 @@ public:
 
 	static
 	void
+	requestUpdateInstances (const ExternProtoDeclarationPtr & externProto, const UndoStepPtr & undoStep);
+	
+	static
+	void
+	requestUpdateInstances (const ProtoDeclarationPtr & prototype, const UndoStepPtr & undoStep);
+	
+	static
+	void
 	requestUpdateInstances (const X3DProtoDeclarationNodePtr & protoNode, const UndoStepPtr & undoStep);
+	
+	static
+	void
+	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
+
+	static
+	void
+	requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void

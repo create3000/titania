@@ -605,7 +605,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 			// Prototype support
 
-			X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
+			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -702,7 +702,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	// Prototype support
 
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ()), undoStep);
+	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
 	return true;
 }

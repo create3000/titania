@@ -353,7 +353,7 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 		{
 			// Prototype support
 		
-			X3DEditor::requestUpdateInstances (X3DProtoDeclarationNodePtr (this -> getExecutionContext ()), undoStep);
+			X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 		
 			// Send undo step
 

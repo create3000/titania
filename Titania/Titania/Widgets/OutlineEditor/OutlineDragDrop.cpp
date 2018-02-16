@@ -932,8 +932,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Gdk::Dr
 
 		// Proto support
 	
-		X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (sourceNode -> getExecutionContext ()), undoStep);
-		X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (destNode -> getExecutionContext ()),   undoStep);
+		X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+		X3D::X3DEditor::requestUpdateInstances (destNode,   undoStep);
 	
 		// Add undo step.
 
@@ -1225,8 +1225,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 
 	// Proto support
 
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (sourceNode -> getExecutionContext ()), undoStep);
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr ((*destNode) -> getExecutionContext ()),   undoStep);
+	X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (*destNode,  undoStep);
 
 	// Add undo step.
 
@@ -1454,8 +1454,8 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Gdk::DragAction
 
 	// Proto support
 
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (sourceNode -> getExecutionContext ()), undoStep);
-	X3D::X3DEditor::requestUpdateInstances (X3D::X3DProtoDeclarationNodePtr (destNode -> getExecutionContext ()),   undoStep);
+	X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (destNode,   undoStep);
 
 	// Add undo step.
 
