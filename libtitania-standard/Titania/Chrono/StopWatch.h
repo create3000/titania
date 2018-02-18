@@ -120,7 +120,9 @@ private:
 
 };
 
+extern template class stopwatch <float>;
 extern template class stopwatch <double>;
+extern template class stopwatch <long double>;
 
 } // chrono
 } // titania

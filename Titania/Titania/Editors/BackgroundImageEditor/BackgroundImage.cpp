@@ -95,8 +95,8 @@ BackgroundImage::setUrl (const X3D::MFString & value)
 
 	X3D::MFString absoluteUrl;
 
-	for (const auto & URL : url)
-		absoluteUrl .emplace_back (page -> getMainBrowser () -> getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+	for (const auto & URL : basic::make_const_range (url))
+		absoluteUrl .emplace_back (page -> getMainBrowser () -> getExecutionContext () -> getWorldURL () .transform (URL .raw ()));
 
 	texture -> url () = absoluteUrl;
 }

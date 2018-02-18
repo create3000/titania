@@ -86,7 +86,7 @@ X3DRenderPanel::getFilename (const size_t id, const basic::uri & filename) const
 		if (filenameArray .at (id) .empty ())
 			return filename;
 
-		return filenameArray .at (id) .str ();
+		return filenameArray .at (id) .raw ();
 	}
 	catch (const std::exception &)
 	{
@@ -121,7 +121,7 @@ X3DRenderPanel::getCodec (const size_t id, const std::string & codec) const
 		if (codecArray .at (id) .empty ())
 			return codec;
 
-		return codecArray .at (id) .str ();
+		return codecArray .at (id);
 	}
 	catch (const std::exception &)
 	{
@@ -328,7 +328,7 @@ X3DRenderPanel::getViewpoint (const size_t id, const std::string & viewpoint) co
 	{
 		const auto viewpointArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/viewpoint");
 
-		return viewpointArray .at (id) .str ();
+		return viewpointArray .at (id);
 	}
 	catch (const std::exception &)
 	{

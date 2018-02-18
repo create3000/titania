@@ -63,8 +63,6 @@ JSClass ProtoDeclarationArray::static_class = {
 
 };
 
-template class jsX3DConstArray <X3DProtoDeclaration, X3D::ProtoDeclarationArray>;
-
 } // spidermonkey
 } // X3D
 } // titania

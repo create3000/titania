@@ -108,7 +108,7 @@ public:
 	///  Constructs new X3DBasePtrArray.
 	template <class Up, std::enable_if_t <std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = false>
 	X3DBasePtrArray (const X3DBasePtrArray <Up> & other) :
-		X3DArrayField <ValueType> (other .begin (), other .end ()),
+		X3DArrayField <ValueType> (other .cbegin (), other .cend ()),
 		               cloneCount (0)
 	{ }
 
@@ -116,7 +116,7 @@ public:
 	template <class Up, std::enable_if_t <not std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = true>
 	explicit
 	X3DBasePtrArray (const X3DBasePtrArray <Up> & other) :
-		X3DArrayField <ValueType> (other .begin (), other .end ()),
+		X3DArrayField <ValueType> (other .cbegin (), other .cend ()),
 		               cloneCount (0)
 	{ }
 
@@ -217,7 +217,7 @@ public:
 	X3DBasePtrArray &
 	operator = (const X3DBasePtrArray <Up> & other)
 	{
-		assign (other .begin (), other .end ());
+		assign (other .cbegin (), other .cend ());
 		return *this;
 	}
 
@@ -292,7 +292,7 @@ public:
 		for (const auto & value : other)
 			b .emplace (value ? value -> getId () : 0);
 
-		std::set_intersection (a. begin (), a .end (), b .begin (), b .end (), std::inserter (i, i .end ()));
+		std::set_intersection (a. cbegin (), a .cend (), b .cbegin (), b .cend (), std::inserter (i, i .end ()));
 
 		erase (std::remove_if (begin (), end (),
 		                       [&i] (const ValueType & value)
@@ -422,7 +422,7 @@ private:
 };
 
 template <class ValueType>
-const std::string X3DBasePtrArray <ValueType>::typeName ("MFNode");
+const std::string X3DBasePtrArray <ValueType>::typeName = "MFNode";
 
 template <class ValueType>
 X3DBasePtrArray <ValueType>*
@@ -700,8 +700,8 @@ bool
 operator == (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
 {
 	return lhs .size () == rhs .size () &&
-	       std::equal (lhs .begin (), lhs .end (),
-	                   rhs .begin ());
+	       std::equal (lhs .cbegin (), lhs .cend (),
+	                   rhs .cbegin ());
 }
 
 ///  Compares two X3DBasePtrArray.
@@ -721,8 +721,8 @@ inline
 bool
 operator < (const X3DBasePtrArray <LHS> & lhs, const X3DBasePtrArray <RHS> & rhs)
 {
-	return std::lexicographical_compare (lhs .begin (), lhs .end (),
-	                                     rhs .begin (), rhs .end ());
+	return std::lexicographical_compare (lhs .cbegin (), lhs .cend (),
+	                                     rhs .cbegin (), rhs .cend ());
 }
 
 ///  Lexicographically compares two X3DBasePtrArray.

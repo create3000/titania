@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
 
 #include "../../Fields.h"
-#include "../../Fields/X3DWeakPtr.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "../../Types/Pointer.h"
 
 namespace titania {

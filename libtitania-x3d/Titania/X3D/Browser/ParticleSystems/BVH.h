@@ -615,11 +615,6 @@ template <class Type>
 BVH <Type>::~BVH ()
 { }
 
-//
-extern template class BVH <float>;
-extern template class BVH <double>;
-//extern template class BVH <long double>;
-
 } // X3D
 } // titania
 

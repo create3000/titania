@@ -64,6 +64,4 @@ typedef std::map <std::string, const X3DBaseNode*> BaseNodeArray;
 } // X3D
 } // titania
 
-extern template class std::map <std::string, const titania::X3D::X3DBaseNode*>;
-
 #endif

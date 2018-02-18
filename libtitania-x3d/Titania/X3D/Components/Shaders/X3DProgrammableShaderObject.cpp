@@ -553,7 +553,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFBool*> (field);
 
-			std::vector <int32_t> vector (array -> begin (), array -> end ());
+			std::vector <int32_t> vector (array -> cbegin (), array -> cend ());
 			glUniform1iv (location, vector .size (), vector .data ());
 			break;
 		}
@@ -561,7 +561,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFColor*> (field);
 
-			std::vector <Color3f> vector (array -> begin (), array -> end ());
+			std::vector <Color3f> vector (array -> cbegin (), array -> cend ());
 			glUniform3fv (location, vector .size (), vector [0] .data ());
 			break;
 		}
@@ -569,7 +569,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFColorRGBA*> (field);
 
-			std::vector <Color4f> vector (array -> begin (), array -> end ());
+			std::vector <Color4f> vector (array -> cbegin (), array -> cend ());
 			glUniform4fv (location, vector .size (), vector [0] .data ());
 			break;
 		}
@@ -579,12 +579,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <double> vector (array -> begin (), array -> end ());
-				glUniform1dv (location, vector .size (), vector .data ());
+				glUniform1dv (location, array -> getValue () .size (), array -> getValue () .data ());
 			}
 			else
 			{
-				std::vector <float> vector (array -> begin (), array -> end ());
+				std::vector <float> vector (array -> cbegin (), array -> cend ());
 				glUniform1fv (location, vector .size (), vector .data ());
 			}
 
@@ -594,8 +593,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFFloat*> (field);
 
-			std::vector <float> vector (array -> begin (), array -> end ());
-			glUniform1fv (location, vector .size (), vector .data ());
+			glUniform1fv (location, array -> getValue () .size (), array -> getValue () .data ());
 			break;
 		}
 		case X3DConstants::MFImage:
@@ -621,8 +619,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFInt32*> (field);
 
-			std::vector <int32_t> vector (array -> begin (), array -> end ());
-			glUniform1iv (location, vector .size (), vector .data ());
+			glUniform1iv (location, array -> getValue () .size (), array -> getValue () .data ());
 			break;
 		}
 		case X3DConstants::MFMatrix3d:
@@ -631,7 +628,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Matrix3d> vector (array -> begin (), array -> end ());
+				std::vector <Matrix3d> vector (array -> cbegin (), array -> cend ());
 				glUniformMatrix3dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
@@ -651,7 +648,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFMatrix3f*> (field);
 
-			std::vector <Matrix3f> vector (array -> begin (), array -> end ());
+			std::vector <Matrix3f> vector (array -> cbegin (), array -> cend ());
 			glUniformMatrix3fv (location, vector .size (), false, vector [0] .front () .data ());
 			break;
 		}
@@ -661,7 +658,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Matrix4d> vector (array -> begin (), array -> end ());
+				std::vector <Matrix4d> vector (array -> cbegin (), array -> cend ());
 				glUniformMatrix4dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
@@ -681,7 +678,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFMatrix4f*> (field);
 
-			std::vector <Matrix4f> vector (array -> begin (), array -> end ());
+			std::vector <Matrix4f> vector (array -> cbegin (), array -> cend ());
 			glUniformMatrix4fv (location, vector .size (), false, vector [0] .front () .data ());
 			break;
 		}
@@ -796,12 +793,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <double> vector (array -> begin (), array -> end ());
-				glUniform1dv (location, vector .size (), vector .data ());
+				glUniform1dv (location, array -> getValue () .size (), array -> getValue () .data ());
 			}
 			else
 			{
-				std::vector <float> vector (array -> begin (), array -> end ());
+				std::vector <float> vector (array -> cbegin (), array -> cend ());
 				glUniform1fv (location, vector .size (), vector .data ());
 			}
 
@@ -813,7 +809,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Vector2d> vector (array -> begin (), array -> end ());
+				std::vector <Vector2d> vector (array -> cbegin (), array -> cend ());
 				glUniform2dv (location, vector .size (), vector [0] .data ());
 			}
 			else
@@ -833,7 +829,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFVec2f*> (field);
 
-			std::vector <Vector2f> vector (array -> begin (), array -> end ());
+			std::vector <Vector2f> vector (array -> cbegin (), array -> cend ());
 			glUniform2fv (location, vector .size (), vector [0] .data ());
 			break;
 		}
@@ -843,7 +839,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Vector3d> vector (array -> begin (), array -> end ());
+				std::vector <Vector3d> vector (array -> cbegin (), array -> cend ());
 				glUniform3dv (location, vector .size (), vector [0] .data ());
 			}
 			else
@@ -863,7 +859,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFVec3f*> (field);
 
-			std::vector <Vector3f> vector (array -> begin (), array -> end ());
+			std::vector <Vector3f> vector (array -> cbegin (), array -> cend ());
 			glUniform3fv (location, vector .size (), vector [0] .data ());
 			break;
 		}
@@ -873,7 +869,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Vector4d> vector (array -> begin (), array -> end ());
+				std::vector <Vector4d> vector (array -> cbegin (), array -> cend ());
 				glUniform4dv (location, vector .size (), vector [0] .data ());
 			}
 			else
@@ -893,7 +889,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFVec4f*> (field);
 
-			std::vector <Vector4f> vector (array -> begin (), array -> end ());
+			std::vector <Vector4f> vector (array -> cbegin (), array -> cend ());
 			glUniform4fv (location, vector .size (), vector [0] .data ());
 			break;
 		}

@@ -106,7 +106,7 @@ Console::prepareEvents ()
 	if (messages .empty ())
 	   return;
 
-	messages_changed .assign (messages .begin (), messages .end ());
+	messages_changed .assign (messages .cbegin (), messages .cend ());
 	messages .clear ();
 }
 

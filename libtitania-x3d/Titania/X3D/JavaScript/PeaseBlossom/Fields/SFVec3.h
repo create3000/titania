@@ -518,9 +518,6 @@ SFVec3f::getType ()
 	return ObjectType::SFVec3f;
 }
 
-extern template class SFVec3 <X3D::SFVec3d>;
-extern template class SFVec3 <X3D::SFVec3f>;
-
 } // peaseblossom
 } // X3D
 } // titania

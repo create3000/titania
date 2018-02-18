@@ -198,28 +198,6 @@ constexpr ObjectType
 MFVec4f::getType ()
 { return ObjectType::MFVec4f; }
 
-extern template class Array <SFBool, X3D::MFBool>;
-extern template class Array <SFColor, X3D::MFColor>;
-extern template class Array <SFColorRGBA, X3D::MFColorRGBA>;
-extern template class Array <SFDouble, X3D::MFDouble>;
-extern template class Array <SFFloat, X3D::MFFloat>;
-extern template class Array <SFImage, X3D::MFImage>;
-extern template class Array <SFInt32, X3D::MFInt32>;
-extern template class Array <SFMatrix3d, X3D::MFMatrix3d>;
-extern template class Array <SFMatrix3f, X3D::MFMatrix3f>;
-extern template class Array <SFMatrix4d, X3D::MFMatrix4d>;
-extern template class Array <SFMatrix4f, X3D::MFMatrix4f>;
-extern template class Array <SFNode, X3D::MFNode>;
-extern template class Array <SFString, X3D::MFString>;
-extern template class Array <SFTime, X3D::MFTime>;
-extern template class Array <SFRotation, X3D::MFRotation>;
-extern template class Array <SFVec2d, X3D::MFVec2d>;
-extern template class Array <SFVec2f, X3D::MFVec2f>;
-extern template class Array <SFVec3d, X3D::MFVec3d>;
-extern template class Array <SFVec3f, X3D::MFVec3f>;
-extern template class Array <SFVec4d, X3D::MFVec4d>;
-extern template class Array <SFVec4f, X3D::MFVec4f>;
-
 } // peaseblossom
 } // X3D
 } // titania

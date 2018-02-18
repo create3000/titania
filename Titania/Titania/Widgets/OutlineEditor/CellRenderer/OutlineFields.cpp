@@ -149,11 +149,65 @@ static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const X3D::SFString* const fieldDefinition,
+	              const bool* const fieldDefinition,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	return useLocale ? fieldDefinition -> toLocaleString () : fieldDefinition -> toString ();
+	X3D::SFBool value (*fieldDefinition);
+
+	return useLocale ? value .toLocaleString () : value .toString ();
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const float* const fieldDefinition,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFFloat value (*fieldDefinition);
+
+	return useLocale ? value .toLocaleString () : value .toString ();
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const double* const fieldDefinition,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFDouble value (*fieldDefinition);
+
+	return useLocale ? value .toLocaleString () : value .toString ();
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const int32_t* const fieldDefinition,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFInt32 value (*fieldDefinition);
+
+	return useLocale ? value .toLocaleString () : value .toString ();
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::String* const fieldDefinition,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFString value (*fieldDefinition);
+
+	return useLocale ? value .toLocaleString () : value .toString ();
 }
 
 template <class Type>
@@ -178,7 +232,9 @@ array_to_string (const X3D::X3DScene* const scene,
 			<< X3D::Generator::ForceBreak;
 	}
 
-	ostream << get_field_value (scene, &array, &array [lines - 1], false, useLocale);
+	const auto & value = array [lines - 1];
+
+	ostream << get_field_value (scene, &array, &value, false, useLocale);
 
 	if (lines < array .size ())
 	{
@@ -522,7 +578,7 @@ static
 void
 set_array (const X3D::X3DScene* const scene, Type & array)
 {
-	for (auto & value : array)
+	for (typename Type::reference value : array)
 	   set_field_value (scene, &array, &value);
 }
 
@@ -534,12 +590,6 @@ set_field_value (const X3D::X3DScene* const scene,
 {
 	switch (fieldDefinition -> getType ())
 	{
-		case X3D::X3DConstants::MFDouble:
-			return set_array (scene, *static_cast <X3D::MFDouble*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFFloat:
-			return set_array (scene, *static_cast <X3D::MFFloat*> (fieldDefinition));
-
 		case X3D::X3DConstants::MFVec2d:
 			return set_array (scene, *static_cast <X3D::MFVec2d*> (fieldDefinition));
 

@@ -53,9 +53,9 @@
 namespace titania {
 namespace chrono {
 
+template class clock_base <float>;
 template class clock_base <double>;
-template std::istream & operator >> (std::istream &, clock_base <double> &);
-template std::ostream & operator << (std::ostream &, const clock_base <double> &);
+template class clock_base <long double>;
 
 } // chrono
 } // titania

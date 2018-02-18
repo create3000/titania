@@ -80,9 +80,6 @@ const pb::Callbacks SFMatrix3f::callbacks = {
 	dispose <SFMatrix3f>
 };
 
-template class SFMatrix3 <X3D::SFMatrix3d>;
-template class SFMatrix3 <X3D::SFMatrix3f>;
-
 } // peaseblossom
 } // X3D
 } // titania

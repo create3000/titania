@@ -1223,7 +1223,7 @@ OutlineEditor::on_remove_parent_activate ()
 				for (const auto & node : mfnode)
 					applyTransformation (node, rootNodes [index], undoStep);
 
-				X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index, mfnode .begin (), mfnode .end (), undoStep);
+				X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index, mfnode .cbegin (), mfnode .cend (), undoStep);
 				X3D::X3DEditor::removeNode (executionContext, executionContext, rootNodes, index + mfnode .size (), undoStep);
 				break;
 			}
@@ -1299,7 +1299,7 @@ OutlineEditor::on_remove_parent_activate ()
 						for (const auto & node : mfnode)
 							applyTransformation (node, secondmfnode [secondIndex], undoStep);
 
-						X3D::X3DEditor::insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .begin (), mfnode .end (), undoStep);
+						X3D::X3DEditor::insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .cbegin (), mfnode .cend (), undoStep);
 						X3D::X3DEditor::removeNode (executionContext, secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
 						break;
 					}

@@ -66,7 +66,4 @@ using UnitArray = std::array <Unit, 5>;
 } // X3D
 } // titania
 
-extern template class std::map <std::string, titania::X3D::UnitCategory>;
-extern template class std::array <titania::X3D::Unit, 5>;
-
 #endif

@@ -182,7 +182,7 @@ Extrusion::createPoints (const bool hasCaps) const
 
 		if (beginCap ())
 		{
-			for (const auto & point : basic::make_range (points .begin (), crossSection () .size ()))
+			for (const auto & point : basic::make_range (points .cbegin (), crossSection () .size ()))
 				points .emplace_back (point);
 		}
 
@@ -768,7 +768,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	const auto points = createPoints (capMax);
 
-	coord -> point () .assign (points .begin (), points .end ());
+	coord -> point () .assign (points .cbegin (), points .cend ());
 
 	// Build body.
 

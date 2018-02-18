@@ -50,14 +50,14 @@
 
 #include "MFNode.h"
 
-template class std::vector <titania::X3D::SFNode*>;
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-template class X3DField <Array <SFNode>>;
+template class X3DField <Array <SFNode*>>;
 template class X3DArrayField <SFNode>;
-template class X3DBasePtrArray <X3DPtr <X3DBaseNode>>;
+template class X3DBasePtrArray <SFNode>;
 
 } // X3D
 } // titania

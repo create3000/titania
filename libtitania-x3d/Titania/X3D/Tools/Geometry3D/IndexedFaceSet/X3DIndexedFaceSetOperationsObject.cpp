@@ -226,7 +226,7 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 					normalArray .emplace (getFaceNormalIndex (faceNumber), normalArray .size ());
 			}
 
-			coordArray .emplace (coordIndex () [vertex], coordArray .size ());
+			coordArray .emplace (coordIndex () .get1Value (vertex), coordArray .size ());
 		}
 	}
 
@@ -239,7 +239,7 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 
 		for (const auto & vertex : vertices)
 		{
-		   const auto point = coordArray [coordIndex () [vertex]];
+		   const auto point = coordArray [coordIndex () .get1Value (vertex)];
 
 			if (color)
 			{
@@ -397,7 +397,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		redoSetColorIndex    (undoStep);
 
 		redoRestoreSelectedFaces (selection, undoStep);
-		replaceSelectedFaces () .assign (selection .begin (), selection .end ());
+		replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
 
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}
@@ -450,9 +450,9 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 		
 		for (const auto & index : indices)
 		{
-			pointsToRemove .emplace_back (coordIndex () [index]);
+			pointsToRemove .emplace_back (coordIndex () .get1Value (index));
 
-			coordIndex () [index] = masterPoint;
+			coordIndex () .set1Value (index, masterPoint);
 		}
 	}
 
@@ -467,7 +467,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	 
 		pointsToRemove .erase (removed, pointsToRemove .end ());
 
-		masterPoint -= std::lower_bound (pointsToRemove .begin (), pointsToRemove .end (), masterPoint) - pointsToRemove .begin ();
+		masterPoint -= std::lower_bound (pointsToRemove .cbegin (), pointsToRemove .cend (), masterPoint) - pointsToRemove .cbegin ();
 
 		erasePoints (pointsToRemove);
 	}
@@ -491,7 +491,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	redoSetColorIndex    (undoStep);
 
 	redoRestoreSelectedPoints ({ masterPoint }, undoStep);
-	replaceSelectedPoints () .assign (selection .begin (), selection .end ());
+	replaceSelectedPoints () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -523,7 +523,7 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 	redoSetCoordIndex    (undoStep);
 
 	redoRestoreSelectedPoints (selection, undoStep);
-	replaceSelectedPoints () .assign (selection .begin (), selection .end ());
+	replaceSelectedPoints () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -550,7 +550,7 @@ X3DIndexedFaceSetOperationsObject::set_formNewFace ()
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
 	redoRestoreSelectedFaces (selection, undoStep);
 
-	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
+	replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -596,7 +596,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
 
 	redoRestoreSelectedEdges (selection, undoStep);
-	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+	replaceSelectedEdges () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -653,14 +653,14 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	for (const auto & face : getSelectedFaces ())
 	{
 		for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
-		   facesPoints .emplace_back (coordIndex () [vertex]);
+		   facesPoints .emplace_back (coordIndex () .get1Value (vertex));
 	}
 
 	std::sort (facesPoints .begin (), facesPoints .end ());
 
 	facesPoints .erase (std::unique (facesPoints .begin (), facesPoints .end ()), facesPoints .end ());
 
-	std::set_difference (facesPoints .begin (), facesPoints .end (), points .begin (), points .end (), std::inserter (selection, selection .begin ()));
+	std::set_difference (facesPoints .cbegin (), facesPoints .cend (), points .cbegin (), points .cend (), std::inserter (selection, selection .begin ()));
 
 	//
 
@@ -672,8 +672,8 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
 
-	redoRestoreSelectedFaces (std::vector <int32_t> (selection .begin (), selection .end ()), undoStep);
-	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
+	redoRestoreSelectedFaces (std::vector <int32_t> (selection .cbegin (), selection .cend ()), undoStep);
+	replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -713,7 +713,7 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 	redoSetCoordIndex    (undoStep);
 
 	redoRestoreSelectedFaces (selection, undoStep);
-	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
+	replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -751,7 +751,7 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 	redoSetColorIndex    (undoStep);
 	redoRestoreSelectedFaces (selection, undoStep);
 
-	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
+	replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -851,15 +851,15 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 		if (indices .empty ())
 			continue;
 		
-		points .emplace_back (coordIndex () [indices [0]]);
+		points .emplace_back (coordIndex () .get1Value (indices [0]));
 
-		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+		for (const auto & index : std::make_pair (indices .cbegin () + 1, indices .cend ()))
 		{
 			const auto size = getCoord () -> getSize ();
 			
 			points .emplace_back (size);
 			
-			coordIndex () [index] = size;
+			coordIndex () .set1Value (index, size);
 
 			getCoord () -> set1Point (size, point);
 		}
@@ -952,8 +952,8 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	for (const auto & edge : edges)
 	{
-		pointIndex .emplace (coordIndex () [edge .first],  edge .first);
-		pointIndex .emplace (coordIndex () [edge .second], edge .second);
+		pointIndex .emplace (coordIndex () .get1Value (edge .first),  edge .first);
+		pointIndex .emplace (coordIndex () .get1Value (edge .second), edge .second);
 	}
 		
 	for (const auto & point : pointIndex)
@@ -1015,10 +1015,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			}
 		}
 
-		coordIndex () .emplace_back (coordIndex ()         [first]);
-		coordIndex () .emplace_back (coordIndex ()         [second]);
-		coordIndex () .emplace_back (points [coordIndex () [second]]);
-		coordIndex () .emplace_back (points [coordIndex () [first]]);
+		coordIndex () .emplace_back (coordIndex () .get1Value (first));
+		coordIndex () .emplace_back (coordIndex () .get1Value (second));
+		coordIndex () .emplace_back (points [coordIndex () .get1Value (second)]);
+		coordIndex () .emplace_back (points [coordIndex () .get1Value (first)]);
 		coordIndex () .emplace_back (-1);
 
 		++ numFaces;
@@ -1034,7 +1034,7 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 				for (const auto & vertex : vertices)
 				{
-					const auto iter = points .find (coordIndex () [vertex]);
+					const auto iter = points .find (coordIndex () .get1Value (vertex));
 	
 				   if (iter not_eq points .end ())
 						coordIndex () .emplace_back (iter -> second);
@@ -1054,7 +1054,7 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			{
 				for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
 				{
-					const auto iter = points .find (coordIndex () [vertex]);
+					const auto iter = points .find (coordIndex () .get1Value (vertex));
 	
 				   if (iter not_eq points .end ())
 						vertices .emplace (vertex, iter -> second);
@@ -1062,7 +1062,7 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			}
 	
 			for (const auto & vertex : vertices)
-				coordIndex () [vertex .first] = vertex .second;
+				coordIndex () .set1Value (vertex .first, vertex .second);
 		}
 	}
 
@@ -1080,7 +1080,7 @@ X3DIndexedFaceSetOperationsObject::chipOf (const std::vector <size_t> & selected
 	std::map <int32_t, std::vector <size_t>> pointIndex;
 
 	for (const auto vertex : selectedVertices)
-	   pointIndex [coordIndex () [vertex]] .emplace_back (vertex);
+	   pointIndex [coordIndex () .get1Value (vertex)] .emplace_back (vertex);
 
 	std::vector <int32_t> points;
 
@@ -1092,7 +1092,7 @@ X3DIndexedFaceSetOperationsObject::chipOf (const std::vector <size_t> & selected
 		points .emplace_back (size);
 	
 		for (const auto & vertex : pair .second)
-			coordIndex () [vertex] = size;
+			coordIndex () .set1Value (vertex, size);
 
 		getCoord () -> set1Point (size, point);
 	}
@@ -1159,14 +1159,14 @@ X3DIndexedFaceSetOperationsObject::erasePoints (const std::vector <int32_t> & po
 	for (size_t i = 0, size = points .size (); i < size; ++ i)
 		counts .emplace_back (count ++);
 
-	for (auto & index : coordIndex ())
+	for (MFInt32::reference index : coordIndex ())
 	{
-		const auto iter = std::upper_bound (points .begin (), points .end (), index);
+		const auto iter = std::upper_bound (points .cbegin (), points .cend (), index);
 
 		if (iter == points .end ())
-			index -= count;
+			index = index .get () - count;
 		else
-			index -= counts [iter - points .begin ()];
+			index = index .get () - counts [iter - points .cbegin ()];
 	}
 }
 

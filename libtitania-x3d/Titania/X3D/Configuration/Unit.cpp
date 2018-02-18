@@ -51,7 +51,7 @@
 #include "Unit.h"
 
 #include "../Base/X3DObject.h"
-#include "../InputOutput/Generator.h"
+#include "../InputOutput/XMLGenerator.h"
 #include "../Fields/SFString.h"
 
 namespace titania {

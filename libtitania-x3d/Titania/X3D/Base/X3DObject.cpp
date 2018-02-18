@@ -88,7 +88,7 @@ void
 X3DObject::addComments (const std::vector <std::string> & value)
 {
 	realize ();
-	data -> comments .insert (data -> comments .end (), value .begin (), value .end ());
+	data -> comments .insert (data -> comments .end (), value .cbegin (), value .cend ());
 }
 
 const std::vector <std::string> &

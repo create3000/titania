@@ -238,7 +238,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 
 			for (size_t f = 0; f < numForces; ++ f)
 			{
-				velocity += speeds [f] .getValue () * (getRandomNormalWithAngle (turbulences [f]) * rotations [f]);
+				velocity += speeds [f] * (getRandomNormalWithAngle (turbulences [f]) * rotations [f]);
 			}
 
 			if (boundedVolume)
@@ -299,13 +299,13 @@ X3DParticleEmitterNode::bounce (const std::unique_ptr <BVH <float>> & boundedVol
 			return plane .distance (intersections [lhs]) < plane .distance (intersections [rhs]);
 		});
 
-		const auto iter = std::upper_bound (indices .begin (), indices .end (), 0.0f,
+		const auto iter = std::upper_bound (indices .cbegin (), indices .cend (), 0.0f,
 		[&] (const float lhs, const size_t rhs)
 		{
 			return lhs < plane .distance (intersections [rhs]);
 		});
 		
-		if (iter not_eq indices .end ())
+		if (iter not_eq indices .cend ())
 		{
 			const auto   index              = *iter;
 			const auto & intersection       = intersections [index];
@@ -362,11 +362,11 @@ X3DParticleEmitterNode::getColors (std::vector <SoftParticle> & particles,
 		}
 		else
 		{
-			const auto iter = std::upper_bound (colorKeys .begin (), colorKeys .end (), fraction);
+			const auto iter = std::upper_bound (colorKeys .cbegin (), colorKeys .cend (), fraction);
 
-			if (iter not_eq colorKeys .end ())
+			if (iter not_eq colorKeys .cend ())
 			{
-				index1 = iter - colorKeys .begin ();
+				index1 = iter - colorKeys .cbegin ();
 				index0 = index1 - 1;
 		
 				const float key0 = colorKeys [index0];

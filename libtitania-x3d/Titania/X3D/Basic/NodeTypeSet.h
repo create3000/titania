@@ -62,6 +62,4 @@ typedef std::set <NodeType> NodeTypeSet;
 } // X3D
 } // titania
 
-extern template class std::set <titania::X3D::NodeType>;
-
 #endif

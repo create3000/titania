@@ -64,6 +64,4 @@ using NamedNodeIndex = std::map <std::string, NamedNodePtr> ;
 } // X3D
 } // titania
 
-extern template class std::map <std::string, titania::X3D::NamedNodePtr>;
-
 #endif

@@ -56,6 +56,7 @@
 #include "../InputOutput/X3DGenerator.h"
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/ImportedNodeIndex.h"
+#include "../Types/String.h"
 
 #include <map>
 #include <set>
@@ -200,10 +201,6 @@ public:
 	bool
 	MetaData (std::ostream & ostream)
 	{ return get (ostream) -> metadata; }
-
-	static
-	void
-	XMLEncode (std::ostream & ostream, const std::string & string);
 
 	///  @name Destruction
 
@@ -402,26 +399,6 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeObjectType & value)
 {
 	value .object -> toXMLStream (ostream);
-	return ostream;
-}
-
-// XMLEncode
-
-struct XMLEncodeStringType { const std::string & string; };
-
-inline
-XMLEncodeStringType
-XMLEncode (const std::string & string)
-{
-	return XMLEncodeStringType { string };
-}
-
-template <typename CharT, typename Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
-{
-	Generator::XMLEncode (ostream, value .string);
 	return ostream;
 }
 

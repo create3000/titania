@@ -133,15 +133,6 @@ template <class InternalType>
 const size_t SFMatrix3 <InternalType>::size = 9;
 
 template <class InternalType>
-JSClass SFMatrix3 <InternalType>::static_class = {
-	"InternalType", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
-};
-
-template <class InternalType>
 JSFunctionSpec SFMatrix3 <InternalType>::functions [ ] = {
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
@@ -636,9 +627,6 @@ template <>
 constexpr ObjectType
 SFMatrix3f::getId ()
 { return ObjectType::SFMatrix3f; }
-
-extern template class SFMatrix3 <X3D::SFMatrix3d>;
-extern template class SFMatrix3 <X3D::SFMatrix3f>;
 
 } // spidermonkey
 } // X3D

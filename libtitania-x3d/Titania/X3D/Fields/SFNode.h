@@ -52,15 +52,16 @@
 #define __TITANIA_X3D_FIELDS_SFNODE_H__
 
 #include "X3DPtr.h"
-#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-using SFNode = X3DPtr <X3DBaseNode>;
+class X3DBaseNode;
 
 extern template class X3DField <X3DBaseNode*>;
 extern template class X3DPtr <X3DBaseNode>;
+
+using SFNode = X3DPtr <X3DBaseNode>;
 
 } // X3D
 } // titania

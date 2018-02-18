@@ -144,7 +144,7 @@ Notification::set_active (const bool value)
 		else
 		{
 			for (const auto index : headUpDisplay -> layers () .indices_of (notificationLayer))
-				headUpDisplay -> order () .remove (SFInt32 (index + 1));
+				headUpDisplay -> order () .remove (index + 1);
 		}
 	}
 	catch (const X3DError & error)

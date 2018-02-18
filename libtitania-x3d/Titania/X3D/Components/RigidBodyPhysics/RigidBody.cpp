@@ -205,8 +205,8 @@ RigidBody::set_position ()
 void
 RigidBody::set_forces ()
 {
-	force = std::accumulate (forces () .begin (),
-	                         forces () .end (),
+	force = std::accumulate (forces () .cbegin (),
+	                         forces () .cend (),
 	                         Vector3f (),
 	                         [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
 }
@@ -230,7 +230,7 @@ RigidBody::set_geometry ()
 			value .emplace_back (geometryNode);
 	}
 
-	geometryNodes .set (value .begin (), value .end ());
+	geometryNodes .set (value .cbegin (), value .cend ());
 
 	// Set body.
 

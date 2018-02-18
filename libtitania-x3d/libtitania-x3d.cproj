@@ -991,6 +991,12 @@
     <None Include="share\titania\shaders\glTF\pbrSpecularGlossiness.x3d" />
     <None Include="share\titania\shaders\glTF\Prototypes\pbrMetallicRoughness.x3d" />
     <None Include="share\titania\shaders\glTF\pbrMetallicRoughness.x3d" />
+    <None Include="Titania\X3D\Basic\X3DNativeArrayField.h" />
+    <None Include="Titania\X3D\Fields\NativeArrayFields.h" />
+    <None Include="Titania\X3D\Fields\MFTime.h" />
+    <None Include="Titania\X3D\InputOutput\VRMLGenerator.h" />
+    <None Include="Titania\X3D\InputOutput\XMLGenerator.h" />
+    <None Include="Titania\X3D\InputOutput\JSONGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -998,7 +1004,6 @@
     <Compile Include="Titania\X3D\Execution\X3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\Fields\ArrayFields.cpp" />
     <Compile Include="Titania\X3D\Fields\MFInt32.cpp" />
-    <Compile Include="Titania\X3D\Fields\MFNode.cpp" />
     <Compile Include="Titania\X3D\Fields\SFColor.cpp" />
     <Compile Include="Titania\X3D\Fields\SFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\Fields\SFImage.cpp" />
@@ -1012,8 +1017,6 @@
     <Compile Include="Titania\X3D\Fields\SFVec4.cpp" />
     <Compile Include="Titania\X3D\Base\X3DInput.cpp" />
     <Compile Include="Titania\X3D\Base\X3DOutput.cpp" />
-    <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
-    <Compile Include="Titania\X3D\Basic\FieldDefinitionSet.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowser.cpp" />
     <Compile Include="Titania\X3D\Configuration\ComponentInfo.cpp" />
@@ -1026,10 +1029,7 @@
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />
-    <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
     <Compile Include="Titania\X3D\Routing\Route.cpp" />
-    <Compile Include="Titania\X3D\Routing\RouteSet.cpp" />
-    <Compile Include="Titania\X3D\Types\Image.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\CADAssembly.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\CADFace.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\CADLayer.cpp" />
@@ -1309,26 +1309,21 @@
     <Compile Include="Titania\X3D\Components\Time\TimeSensor.cpp" />
     <Compile Include="Titania\X3D\Components\Time\X3DTimeDependentNode.cpp" />
     <Compile Include="Titania\X3D\Execution\X3DScene.cpp" />
-    <Compile Include="Titania\X3D\Configuration\ComponentInfoArray.cpp" />
-    <Compile Include="Titania\X3D\Configuration\ProfileInfoArray.cpp" />
     <Compile Include="Titania\X3D\Base\Output.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserContext.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DBaseNode.cpp" />
     <Compile Include="Titania\X3D\Base\X3DChildObject.cpp" />
-    <Compile Include="Titania\X3D\Base\ChildObjectSet.cpp" />
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
-    <Compile Include="Titania\X3D\Basic\NodeSet.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey.cpp" />
     <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.cpp" />
     <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptContext.cpp" />
     <Compile Include="Titania\X3D\Execution\ImportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\ExportedNode.cpp" />
     <Compile Include="Titania\X3D\Execution\World.cpp" />
-    <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.cpp" />
@@ -1348,8 +1343,6 @@
     <Compile Include="Titania\X3D\Rendering\PolygonModeContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.cpp" />
     <Compile Include="Titania\X3D\Configuration\Unit.cpp" />
-    <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
-    <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\LODTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\CollisionTool.cpp" />
@@ -1388,11 +1381,8 @@
     <Compile Include="Titania\X3D\Browser\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DGarbargeCollector.cpp" />
-    <Compile Include="Titania\X3D\Execution\ExportedNodeIndex.cpp" />
-    <Compile Include="Titania\X3D\Execution\ImportedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldSet.cpp" />
-    <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
@@ -1408,7 +1398,6 @@
     <Compile Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Picking\PickableGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\CylinderOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
     <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
@@ -1464,7 +1453,6 @@
     <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
     <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionContainer.cpp" />
-    <Compile Include="Titania\X3D\Browser\ParticleSystems\BVH.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\Random.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing\X3DTexture.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing\Texture.cpp" />
@@ -1476,7 +1464,6 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoHistory.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoStep.cpp" />
     <Compile Include="Titania\X3D\Editing\X3DEditor.cpp" />
-    <Compile Include="Titania\X3D\Basic\NodeTypeSet.cpp" />
     <Compile Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\Font.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\FontFace.cpp" />
@@ -1551,7 +1538,6 @@
     <Compile Include="Titania\X3D\Parser\XMLParser.cpp" />
     <Compile Include="Titania\X3D\Parser\PDF\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
-    <Compile Include="Titania\X3D\Configuration\BaseNodeArray.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DGenerator.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSculpToolObject.cpp" />
@@ -1668,7 +1654,6 @@
     <Compile Include="Titania\X3D\RenderingSurface\RenderingContext.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\X3DRenderingSurface.cpp" />
     <Compile Include="Titania\X3D\RenderingSurface\ContextLock.cpp" />
-    <Compile Include="Titania\X3D\Configuration\SupportedFieldsArray.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AngleGridTool.cpp" />
     <Compile Include="Titania\X3D\Routing\Router.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\X3DSoundContext.cpp" />
@@ -1698,6 +1683,13 @@
     <Compile Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\EnvironmentalEffects\X3DEnvironmentalEffectsContext.cpp" />
     <Compile Include="Titania\X3D\Parser\glTF\Parser.cpp" />
+    <Compile Include="Titania\X3D\Fields\MFNode.cpp" />
+    <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
+    <Compile Include="Titania\X3D\Fields\NativeArrayFields.cpp" />
+    <Compile Include="Titania\X3D\Fields\MFTime.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\VRMLGenerator.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\XMLGenerator.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\JSONGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

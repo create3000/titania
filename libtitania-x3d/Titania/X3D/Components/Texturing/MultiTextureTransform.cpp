@@ -113,7 +113,7 @@ MultiTextureTransform::set_textureTransform ()
 			value .emplace_back (textureTransformNode);
 	}
 
-	textureTransformNodes .set (value .begin (), value .end ());
+	textureTransformNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : textureTransformNodes)
 		node -> addInterest (this);

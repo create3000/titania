@@ -214,7 +214,7 @@ X3DExternProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 
 		instance -> setup ();
 
-		return X3DField::get <SFNode> (cx, &instance, &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, instance, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

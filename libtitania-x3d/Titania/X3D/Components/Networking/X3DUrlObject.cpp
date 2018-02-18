@@ -102,9 +102,11 @@ X3DUrlObject::initialize ()
 void
 X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
 {
-	for (auto & value : url)
+	MFString transformed = url;
+
+	for (MFString::reference value : transformed)
 	{
-		const basic::uri URL = value .str ();
+		const basic::uri URL (value .get ());
 
 		if (URL .is_relative () and not URL .filename (true) .empty ())
 		{
@@ -114,7 +116,9 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 		}
 	}
 
-	url .erase (std::unique (url .begin (), url .end ()), url .end ());
+	transformed .erase (std::unique (url .begin (), url .end ()), url .end ());
+
+	url .set (transformed);
 }
 
 void

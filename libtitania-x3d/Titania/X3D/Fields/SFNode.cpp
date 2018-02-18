@@ -50,6 +50,8 @@
 
 #include "SFNode.h"
 
+#include "../Basic/X3DBaseNode.h"
+
 namespace titania {
 namespace X3D {
 

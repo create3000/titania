@@ -108,11 +108,11 @@ CoordinateChaser::initialize ()
 
 	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
 	{
-		value .assign (initialValue () .begin (), initialValue () .end ());
+		value .assign (initialValue () .cbegin (), initialValue () .cend ());
 		value .resize (initialDestination () .size ());
 	}
 
-	buffer [0] .assign (initialDestination () .begin (), initialDestination () .end ());
+	buffer [0] .assign (initialDestination () .cbegin (), initialDestination () .cend ());
 
 	set_destination () .set (initialDestination ());
 
@@ -130,11 +130,11 @@ CoordinateChaser::set_value_ ()
 		bufferEndTime = getCurrentTime ();
 
 	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
-		value .assign (set_value () .begin (), set_value () .end ());
+		value .assign (set_value () .cbegin (), set_value () .cend ());
 
 	buffer [0] .resize (set_value () .size ());
 
-	previousValue .assign (set_value () .begin (), set_value () .end ());
+	previousValue .assign (set_value () .cbegin (), set_value () .cend ());
 
 	value_changed () = set_value ();
 
@@ -179,7 +179,7 @@ CoordinateChaser::prepareEvents ()
 		}
 	}
 
-	value_changed () .assign (output .begin (), output .end ());
+	value_changed () .assign (output .cbegin (), output .cend ());
 
 	if (equals (output, set_destination (), getTolerance ()))
 		set_active (false);
@@ -222,10 +222,10 @@ CoordinateChaser::updateBuffer ()
 			if (seconds == buffer .size ())
 				previousValue = buffer [0];
 			else
-				previousValue .assign (set_destination () .begin (), set_destination () .end ());
+				previousValue .assign (set_destination () .cbegin (), set_destination () .cend ());
 
 			for (auto & value : buffer)
-				value .assign (set_destination () .begin (), set_destination () .end ());
+				value .assign (set_destination () .cbegin (), set_destination () .cend ());
 		}
 
 		bufferEndTime += seconds * getStepTime ();

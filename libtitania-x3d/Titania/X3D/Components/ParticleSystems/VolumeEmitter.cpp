@@ -227,7 +227,7 @@ VolumeEmitter::set_geometry ()
 
 		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
 	
-		std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
+		std::vector <Vector3f> vertices (verticesAux .cbegin (), verticesAux .cend ());
 
 		// Calculate area so far
 
@@ -256,7 +256,7 @@ VolumeEmitter::set_geometry ()
 	
 		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
 	
-		std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
+		std::vector <Vector3f> vertices (verticesAux .cbegin (), verticesAux .cend ());
 	
 		// Calculate area so far
 
@@ -336,11 +336,11 @@ VolumeEmitter::getRandomPosition () const
 		}
 		else
 		{
-			const auto iter = std::upper_bound (areaSoFarArray .begin (), areaSoFarArray .end (), fraction);
+			const auto iter = std::upper_bound (areaSoFarArray .cbegin (), areaSoFarArray .cend (), fraction);
 	
-			if (iter not_eq areaSoFarArray .end ())
+			if (iter not_eq areaSoFarArray .cend ())
 			{
-				index0 = (iter - areaSoFarArray .begin ()) - 1;
+				index0 = (iter - areaSoFarArray .cbegin ()) - 1;
 			}
 			else
 			{

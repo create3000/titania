@@ -129,7 +129,7 @@ Texture3DFuture::loadAsync (const MFString & url,
 
 			checkForInterrupt ();
 
-			Texture3DPtr texture (new Texture3D (loader .loadDocument (URL)));
+			Texture3DPtr texture (new Texture3D (loader .loadDocument (URL .raw ())));
 
 			checkForInterrupt ();
 
@@ -160,7 +160,7 @@ Texture3DFuture::loadAsync (const MFString & url,
 		{
 			checkForInterrupt ();
 
-			getBrowser () -> getConsole () -> error ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .str ()), "'\n");
+			getBrowser () -> getConsole () -> error ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .raw ()), "'\n");
 
 			throw;
 		}

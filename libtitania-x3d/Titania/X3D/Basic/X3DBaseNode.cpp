@@ -596,8 +596,8 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		return;
 
 	const auto iter = userDefined
-	                  ? std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field -> second)
-							: std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+	                  ? std::find (fieldDefinitions .cend () - numUserDefinedFields, fieldDefinitions .cend (), field -> second)
+							: std::find (fieldDefinitions .cbegin (), fieldDefinitions .cend (), field -> second);
 
 	if (iter not_eq fieldDefinitions .end ())
 	{
@@ -749,12 +749,12 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	auto userDefinedFields = getUserDefinedFields ();
-	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), field);
+	auto iter              = std::find (userDefinedFields .cbegin (), userDefinedFields .cend (), field);
 
 	if (iter == userDefinedFields .end ())
 		return;
 
-	FieldArray lock (userDefinedFields .begin (), userDefinedFields .end ());
+	FieldArray lock (userDefinedFields .cbegin (), userDefinedFields .cend ());
 
 	setUserDefinedFields ({ });
 	field -> setAccessType (accessType);
@@ -787,7 +787,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	FieldDefinitionArray predefinedFields;
 
-	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
+	for (const auto & field : std::make_pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
 	{
 		try
 		{
@@ -832,7 +832,7 @@ X3DBaseNode::getChangedFields () const
 {
 	FieldDefinitionArray changedFields;
 
-	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
+	for (const auto & field : std::make_pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
 	{
 		if (field -> getReferences () .empty ())
 		{
@@ -1082,7 +1082,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< getComments () .front ()
 			<< Generator::ForceBreak;
 
-		for (const auto & comment : std::make_pair (getComments () .begin () + 1, getComments (). end ()))
+		for (const auto & comment : std::make_pair (getComments () .cbegin () + 1, getComments () .cend ()))
 		{
 			ostream
 				<< Generator::Indent
@@ -1142,7 +1142,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : std::make_pair (userDefinedFields .begin (), userDefinedFields .end () - 1))
+			for (const auto & field : std::make_pair (userDefinedFields .cbegin (), userDefinedFields .cend () - 1))
 			{
 				toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
 				ostream << Generator::Break;
@@ -1173,7 +1173,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		ostream << Generator::IncIndent;
 
-		for (const auto & field : std::make_pair (fields .begin (), fields .end () - 1))
+		for (const auto & field : std::make_pair (fields .cbegin (), fields .cend () - 1))
 		{
 			if (not Generator::MetaData (ostream) and field -> getName () == "metadata")
 				continue;
@@ -1883,7 +1883,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 		if (sourceText -> size () not_eq 1)
 			sourceText = nullptr;
 	
-		if (sourceText and not std::regex_search (sourceText -> front () .str (), ECMAScript))
+		if (sourceText and not std::regex_search (sourceText -> front () .raw (), ECMAScript))
 			sourceText = nullptr;
 	}
 
@@ -2194,7 +2194,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 		if (not sourceText -> front () .empty ())
 		{
-			if (sourceText -> front () .getValue () [sourceText -> front () .length () - 1] == '\n')
+			if (sourceText -> front () [sourceText -> front () .length () - 1] == '\n')
 				sourceTextLines .pop_back ();
 		}
 

@@ -82,7 +82,7 @@ namespace std {
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -96,7 +96,7 @@ namespace std {
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -110,7 +110,7 @@ struct hash <titania::X3D::MFDouble>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 	}
 
 };
@@ -124,7 +124,7 @@ struct hash <titania::X3D::MFFloat>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 	}
 
 };
@@ -138,7 +138,7 @@ struct hash <titania::X3D::MFInt32>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 	}
 
 };
@@ -152,7 +152,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -166,7 +166,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -180,7 +180,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -194,7 +194,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -208,7 +208,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -222,7 +222,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -236,7 +236,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -250,7 +250,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -264,7 +264,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -278,7 +278,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -292,7 +292,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};

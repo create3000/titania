@@ -159,6 +159,21 @@ private:
 		return peaseblossom::get1Argument <typename Class::internal_type::internal_type> (value);
 	}
 
+	template <class Class>
+	static
+	typename std::enable_if <
+	   std::is_integral <typename Class::internal_type>::value or
+	   std::is_floating_point <typename Class::internal_type>::value or
+	   std::is_same <typename Class::internal_type, std::string>::value or
+	   std::is_same <typename Class::internal_type, X3D::String>::value,
+	   typename Class::internal_type
+	   >::type
+	get1Argument (const pb::var & value)
+	throw (pb::pbError)
+	{
+		return peaseblossom::get1Argument <typename Class::internal_type> (value);
+	}
+
 	///  @name Static members
 
 	static const std::string   typeName;
@@ -301,7 +316,7 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
-		return get <Type> (context, &array -> get1Value (index));
+		return get <Type> (context, array -> get1Value (index));
 	}
 	catch (const std::bad_alloc &)
 	{

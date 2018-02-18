@@ -53,7 +53,9 @@
 namespace titania {
 namespace chrono {
 
+template class counting_clock <float>;
 template class counting_clock <double>;
+template class counting_clock <long double>;
 
 } // chrono
 } // titania

@@ -63,6 +63,4 @@ using ChildObjectSet = std::set <X3DChildObject*>;
 } // X3D
 } // titania
 
-extern template class std::set <titania::X3D::X3DChildObject*>;
-
 #endif

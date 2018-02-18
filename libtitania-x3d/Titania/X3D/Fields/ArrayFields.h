@@ -57,78 +57,40 @@
 #include "../Fields/SFMatrix3.h"
 #include "../Fields/SFMatrix4.h"
 #include "../Fields/SFRotation4.h"
-#include "../Fields/SFString.h"
-#include "../Fields/SFTime.h"
 #include "../Fields/SFVec2.h"
 #include "../Fields/SFVec3.h"
 #include "../Fields/SFVec4.h"
-#include "../Fields/X3DScalar.h"
 
 #include "../Basic/X3DArrayField.h"
-
-//  Inhibit implicit instantiation for required instantiations.
-extern template class std::vector <titania::X3D::SFBool*>;
-extern template class std::vector <titania::X3D::SFColor*>;
-extern template class std::vector <titania::X3D::SFColorRGBA*>;
-extern template class std::vector <titania::X3D::SFDouble*>;
-extern template class std::vector <titania::X3D::SFFloat*>;
-extern template class std::vector <titania::X3D::SFImage*>;
-extern template class std::vector <titania::X3D::SFMatrix3d*>;
-extern template class std::vector <titania::X3D::SFMatrix3f*>;
-extern template class std::vector <titania::X3D::SFMatrix4d*>;
-extern template class std::vector <titania::X3D::SFMatrix4f*>;
-extern template class std::vector <titania::X3D::SFRotation*>;
-extern template class std::vector <titania::X3D::SFString*>;
-extern template class std::vector <titania::X3D::SFTime*>;
-extern template class std::vector <titania::X3D::SFVec2d*>;
-extern template class std::vector <titania::X3D::SFVec2f*>;
-extern template class std::vector <titania::X3D::SFVec3d*>;
-extern template class std::vector <titania::X3D::SFVec3f*>;
-extern template class std::vector <titania::X3D::SFVec4d*>;
-extern template class std::vector <titania::X3D::SFVec4f*>;
 
 namespace titania {
 namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
-extern template class X3DField <Array <SFBool>> ;
-extern template class X3DField <Array <SFColor>> ;
-extern template class X3DField <Array <SFColorRGBA>> ;
-extern template class X3DField <Array <SFDouble>> ;
-extern template class X3DField <Array <SFFloat>> ;
-extern template class X3DField <Array <SFImage>> ;
-extern template class X3DField <Array <SFMatrix3d>> ;
-extern template class X3DField <Array <SFMatrix3f>> ;
-extern template class X3DField <Array <SFMatrix4d>> ;
-extern template class X3DField <Array <SFMatrix4f>> ;
-extern template class X3DField <Array <SFRotation>> ;
-extern template class X3DField <Array <SFString>> ;
-extern template class X3DField <Array <SFTime>> ;
-extern template class X3DField <Array <SFVec2d>> ;
-extern template class X3DField <Array <SFVec2f>> ;
-extern template class X3DField <Array <SFVec3d>> ;
-extern template class X3DField <Array <SFVec3f>> ;
-extern template class X3DField <Array <SFVec4d>> ;
-extern template class X3DField <Array <SFVec4f>> ;
-
-template <>
-void
-X3DArrayField <SFString>::toXMLStream (std::ostream &) const;
+extern template class X3DField <Array <SFColor*>> ;
+extern template class X3DField <Array <SFColorRGBA*>> ;
+extern template class X3DField <Array <SFImage*>> ;
+extern template class X3DField <Array <SFMatrix3d*>> ;
+extern template class X3DField <Array <SFMatrix3f*>> ;
+extern template class X3DField <Array <SFMatrix4d*>> ;
+extern template class X3DField <Array <SFMatrix4f*>> ;
+extern template class X3DField <Array <SFRotation*>> ;
+extern template class X3DField <Array <SFVec2d*>> ;
+extern template class X3DField <Array <SFVec2f*>> ;
+extern template class X3DField <Array <SFVec3d*>> ;
+extern template class X3DField <Array <SFVec3f*>> ;
+extern template class X3DField <Array <SFVec4d*>> ;
+extern template class X3DField <Array <SFVec4f*>> ;
 
 // Inhibit implicit instantiation for required instantiations.
-extern template class X3DArrayField <SFBool>;
 extern template class X3DArrayField <SFColor>;
 extern template class X3DArrayField <SFColorRGBA>;
-extern template class X3DArrayField <SFDouble>;
-extern template class X3DArrayField <SFFloat>;
 extern template class X3DArrayField <SFImage>;
 extern template class X3DArrayField <SFMatrix3d>;
 extern template class X3DArrayField <SFMatrix3f>;
 extern template class X3DArrayField <SFMatrix4d>;
 extern template class X3DArrayField <SFMatrix4f>;
 extern template class X3DArrayField <SFRotation>;
-extern template class X3DArrayField <SFString>;
-extern template class X3DArrayField <SFTime>;
 extern template class X3DArrayField <SFVec2d>;
 extern template class X3DArrayField <SFVec2f>;
 extern template class X3DArrayField <SFVec3d>;
@@ -137,28 +99,20 @@ extern template class X3DArrayField <SFVec4d>;
 extern template class X3DArrayField <SFVec4f>;
 
 // Typedefs for standard X3DArrayFields
-using MFBool      = X3DArrayField <SFBool>;
 using MFColor     = X3DArrayField <SFColor>;
 using MFColorRGBA = X3DArrayField <SFColorRGBA>;
-using MFDouble    = X3DArrayField <SFDouble>;
-using MFFloat     = X3DArrayField <SFFloat>;
 using MFImage     = X3DArrayField <SFImage>;
 using MFMatrix3d  = X3DArrayField <SFMatrix3d>;
 using MFMatrix3f  = X3DArrayField <SFMatrix3f>;
 using MFMatrix4d  = X3DArrayField <SFMatrix4d>;
 using MFMatrix4f  = X3DArrayField <SFMatrix4f>;
 using MFRotation  = X3DArrayField <SFRotation>;
-using MFString    = X3DArrayField <SFString>;
-using MFTime      = X3DArrayField <SFTime>;
 using MFVec2d     = X3DArrayField <SFVec2d>;
 using MFVec2f     = X3DArrayField <SFVec2f>;
 using MFVec3d     = X3DArrayField <SFVec3d>;
 using MFVec3f     = X3DArrayField <SFVec3f>;
 using MFVec4d     = X3DArrayField <SFVec4d>;
 using MFVec4f     = X3DArrayField <SFVec4f>;
-
-template <class Type>
-using MFEnum = X3DArrayField <SFEnum <Type>>;
 
 } // X3D
 } // titania

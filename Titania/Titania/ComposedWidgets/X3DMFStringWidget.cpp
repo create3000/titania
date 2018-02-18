@@ -378,10 +378,10 @@ X3DMFStringWidget::set_buffer ()
 
 	if (pair .second > -2)
 	{
-		for (const auto & value : string)
+		for (const auto & value : basic::make_const_range (string))
 		{
 			const auto iter = listStore -> append ();
-			(*iter) [columns .string] = value .length () ? value .getValue () : displayValue;
+			(*iter) [columns .string] = value .length () ? value : displayValue;
 		}
 	}
 

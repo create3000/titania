@@ -393,7 +393,7 @@ throw (Error <NOT_SUPPORTED>,
 
 		geometry -> coord () = coord;
 
-		coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .end ());
+		coord -> point () .assign (optionsNode -> getVertices () .cbegin (), optionsNode -> getVertices () .cend ());
 
 		if (radius not_eq 1)
 		{
@@ -424,7 +424,7 @@ throw (Error <NOT_SUPPORTED>,
 
 		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
 	
-		coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .end ());
+		coord -> point () .assign (optionsNode -> getVertices () .cbegin (), optionsNode -> getVertices () .cend ());
 
 		if (radius not_eq 1)
 		{
@@ -455,7 +455,7 @@ throw (Error <NOT_SUPPORTED>,
 	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const double scale     = minRadius / maxRadius;
 
-	coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .begin ());
+	coord -> point () .assign (optionsNode -> getVertices () .cbegin (), optionsNode -> getVertices () .cbegin ());
 
 	for (auto & point : optionsNode -> getVertices ())
 		coord -> point () .emplace_back (point * minRadius);

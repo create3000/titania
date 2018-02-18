@@ -1254,6 +1254,8 @@ JSONParser::mfboolValue (json_object* const jobj, MFBool* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1308,6 +1310,8 @@ JSONParser::mfcolorValue (json_object* const jobj, MFColor* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -1384,6 +1388,8 @@ JSONParser::mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1447,6 +1453,8 @@ JSONParser::mfdoubleValue (json_object* const jobj, MFDouble* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1486,6 +1494,8 @@ JSONParser::mffloatValue (json_object* const jobj, MFFloat* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -1574,6 +1584,8 @@ JSONParser::mfimageValue (json_object* const jobj, MFImage* const field)
 		break;
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1629,6 +1641,8 @@ JSONParser::mfint32Value (json_object* const jobj, MFInt32* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1683,6 +1697,8 @@ JSONParser::mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -1777,6 +1793,8 @@ JSONParser::mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -1869,6 +1887,8 @@ JSONParser::mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -1984,6 +2004,8 @@ JSONParser::mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -2070,6 +2092,8 @@ JSONParser::mfnodeValue (json_object* const jobj, MFNode* const field)
 
 	childrenArray (jobj, *field);
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -2124,6 +2148,8 @@ JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -2187,6 +2213,8 @@ JSONParser::mfstringValue (json_object* const jobj, MFString* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -2225,6 +2253,8 @@ JSONParser::mftimeValue (json_object* const jobj, MFTime* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -2281,6 +2311,8 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -2356,6 +2388,8 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -2429,6 +2463,8 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -2508,6 +2544,8 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 			field -> emplace_back ();
 	}
 
+	field -> shrink_to_fit ();
+
 	return true;
 }
 
@@ -2585,6 +2623,8 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }
@@ -2667,6 +2707,8 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 		else
 			field -> emplace_back ();
 	}
+
+	field -> shrink_to_fit ();
 
 	return true;
 }

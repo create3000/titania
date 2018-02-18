@@ -181,7 +181,7 @@ LSystem::build ()
 
 		// Generate L-System and setup turtle renderer.
 
-		const LSystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), rule () .begin (), rule () .end ());
+		const LSystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), rule () .cbegin (), rule () .cend ());
 
 		TurtleRenderer renderer;
 

@@ -144,7 +144,7 @@ TextureFuture::loadAsync (const MFString & url,
 
 			checkForInterrupt ();
 
-			TexturePtr texture (new Texture (loader .loadDocument (URL)));
+			TexturePtr texture (new Texture (loader .loadDocument (URL .raw ())));
 
 			checkForInterrupt ();
 
@@ -178,7 +178,7 @@ TextureFuture::loadAsync (const MFString & url,
 		{
 			checkForInterrupt ();
 
-			getBrowser () -> getConsole () -> error ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .str ()), "'.\n");
+			getBrowser () -> getConsole () -> error ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .raw ()), "'.\n");
 
 			throw;
 		}

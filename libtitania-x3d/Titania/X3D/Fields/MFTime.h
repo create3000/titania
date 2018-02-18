@@ -48,14 +48,48 @@
  *
  ******************************************************************************/
 
-#include "NodeTypeArray.h"
+#ifndef __TITANIA_X3D_FIELDS_MFTIME_H__
+#define __TITANIA_X3D_FIELDS_MFTIME_H__
+
+#include "../Basic/X3DNativeArrayField.h"
+#include "../Types/Time.h"
 
 namespace titania {
 namespace X3D {
 
-//
+extern template class X3DField <Array <time_type>> ;
+extern template class X3DNativeArrayField <time_type>;
+
+/**
+ *  Class to represent a X3D SFTime field.
+ */
+class MFTime :
+	public X3DNativeArrayField <time_type>
+{
+public:
+
+	using X3DNativeArrayField <time_type>::X3DNativeArrayField;
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	FieldType
+	getType () const final override
+	{ return type; }
+
+
+private:
+
+	static const std::string typeName;
+	static const FieldType   type;
+
+};
 
 } // X3D
 } // titania
 
-template class std::vector <titania::X3D::NodeType>;
+#endif

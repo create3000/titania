@@ -72,9 +72,6 @@ JSClass SFMatrix3f::static_class = {
 
 };
 
-template class SFMatrix3 <X3D::SFMatrix3d>;
-template class SFMatrix3 <X3D::SFMatrix3f>;
-
 } // spidermonkey
 } // X3D
 } // titania

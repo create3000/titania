@@ -578,9 +578,7 @@ operator * (const SFRotation4 <InternalType> & rotation, const typename Internal
 extern template class SFRotation4 <Rotation4d>;
 extern template class SFRotation4 <Rotation4f>;
 
-typedef SFRotation4 <Rotation4d> SFRotation4d;
-typedef SFRotation4 <Rotation4f> SFRotation4f;
-typedef SFRotation4 <Rotation4d> SFRotation;
+using SFRotation = SFRotation4 <Rotation4d>;
 
 } // X3D
 } // titania

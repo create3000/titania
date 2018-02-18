@@ -118,7 +118,7 @@ public:
 
 	void
 	addInterfaceComments (const std::vector <std::string> & value)
-	{ comments .insert (comments .end (), value .begin (), value .end ()); }
+	{ comments .insert (comments .end (), value .cbegin (), value .cend ()); }
 
 	const std::vector <std::string> &
 	getInterfaceComments () const

@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_FIELDS_X3DSCALAR_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/Generator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
 #include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
-
-template <class InternalType>
-class X3DArrayField;
 
 extern template class X3DField <bool>;
 extern template class X3DField <double>;
@@ -85,6 +85,7 @@ public:
 	using X3DField <InternalType>::addEvent;
 	using X3DField <InternalType>::operator =;
 	using X3DField <InternalType>::getValue;
+	using X3DField <InternalType>::getUnit;
 
 	///  @name Construction
 
@@ -241,21 +242,17 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ }
+	{ VRMLGenerator::VRMLEncode (ostream, getValue (), getUnit ()); }
 
 	virtual
 	void
 	toXMLStream (std::ostream & ostream) const final override
-	{ }
+	{ XMLGenerator::XMLEncode (ostream, getValue (), getUnit ()); }
 
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override
-	{ }
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const
-	{ toJSONStream (ostream); }
+	{ JSONGenerator::JSONEncode (ostream, getValue (), getUnit ()); }
 
 
 private:
@@ -335,54 +332,6 @@ throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>);
-
-template <>
-void
-X3DScalar <bool>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <double>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <float>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <int32_t>::toStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <bool>::toXMLStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <double>::toXMLStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <float>::toXMLStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <int32_t>::toXMLStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <bool>::toJSONStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <double>::toJSONStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <float>::toJSONStream (std::ostream & ostream) const;
-
-template <>
-void
-X3DScalar <int32_t>::toJSONStream (std::ostream & ostream) const;
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <double>;

@@ -146,7 +146,7 @@ X3DGeometryNode::setCameraObject (const bool value)
 Box3d
 X3DGeometryNode::createBBox () const
 {
-	return Box3d (vertices .begin (), vertices .end (), math::iterator_type ());
+	return Box3d (vertices .cbegin (), vertices .cend (), math::iterator_type ());
 }
 
 void
@@ -157,7 +157,7 @@ X3DGeometryNode::setAttribs (const X3DPtrArray <X3DVertexAttributeNode> & nodes,
 
 	const size_t numAttribs = nodes .size ();
 
-	attribNodes .assign (nodes .begin (), nodes .end ());
+	attribNodes .assign (nodes .cbegin (), nodes .cend ());
 	attribBufferIds .resize (numAttribs);
 
 	glGenBuffers (numAttribs, attribBufferIds .data ());
@@ -206,8 +206,8 @@ X3DGeometryNode::addElements (const GLenum vertexMode, const size_t count)
 bool
 X3DGeometryNode::isClipped (const Vector3d & point, const ClipPlaneContainerArray & clipPlanes) const
 {
-	return std::any_of (clipPlanes .begin (),
-	                    clipPlanes .end (),
+	return std::any_of (clipPlanes .cbegin (),
+	                    clipPlanes .cend (),
 	                    [&point] (const std::shared_ptr <ClipPlaneContainer> & clipPlane)
 	                    { return clipPlane -> isClipped (point); });
 }
@@ -509,7 +509,7 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 
 			if (intersects (line, { }, modelViewMatrix, intersections))
 			{
-				const auto iter = std::find_if (intersections .begin (), intersections .end (),
+				const auto iter = std::find_if (intersections .cbegin (), intersections .cend (),
 				[&] (const IntersectionPtr & intersection)
 				{
 					return (intersection -> point * modelViewMatrix) .z () - z > 1e-5;
@@ -730,7 +730,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
 
 	std::vector <Vector3f> normals_ (normals .size ());
 
-	std::for_each (normalIndex .begin (), normalIndex .end (), [&normals, &normals_, &cosCreaseAngle] (const NormalIndex::value_type & point)
+	std::for_each (normalIndex .cbegin (), normalIndex .cend (), [&normals, &normals_, &cosCreaseAngle] (const NormalIndex::value_type & point)
 	{
 		for (const auto & index : point .second)
 		{

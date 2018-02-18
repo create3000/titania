@@ -72,12 +72,12 @@ public:
 	using difference_type = size_t;
 
 	subscript_iterator () :
-		m_container (),
+		m_container (nullptr),
 		    m_index (-1)
 	{ }
 
 	explicit
-	subscript_iterator (Container & container, const size_t index) :
+	subscript_iterator (Container* container, const size_t index) :
 		m_container (container),
 		    m_index (index)
 	{ }
@@ -101,11 +101,11 @@ public:
 
 	reference
 	operator * () const
-	{ return m_container .get () [m_index]; }
+	{ return m_container -> operator [ ] (m_index); }
 
 	pointer
 	operator -> () const
-	{ return &m_container .get () [m_index]; }
+	{ return &m_container -> operator [ ] (m_index); }
 
 	subscript_iterator &
 	operator ++ ()
@@ -155,13 +155,13 @@ public:
 
 	reference
 	operator [ ] (const size_type i) const
-	{ return m_container .get () [i]; }
+	{ return m_container -> operator [ ] (i); }
 
 
 private:
 
-	std::reference_wrapper <Container> m_container;
-	size_type                          m_index;
+	Container* m_container;
+	size_type  m_index;
 
 };
 

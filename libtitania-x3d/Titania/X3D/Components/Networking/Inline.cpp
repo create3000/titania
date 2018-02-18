@@ -224,7 +224,7 @@ Inline::requestImmediateLoad ()
 			getBrowser () -> getConsole () -> error (error .what (), "\n");
 	
 			for (const auto & string : loader .getUrlError ())
-				getBrowser () -> getConsole () -> error (string .str (), "\n");
+				getBrowser () -> getConsole () -> error (string .raw (), "\n");
 
 			setLoadState (FAILED_STATE);
 			setLoadedUrl ("");

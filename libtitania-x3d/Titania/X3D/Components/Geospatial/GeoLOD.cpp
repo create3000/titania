@@ -242,8 +242,8 @@ GeoLOD::set_childLoadState ()
 	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
 	{
 		children () .insert (children () .end (),
-		                     child1Inline -> getRootNodes () .begin (),
-		                     child1Inline -> getRootNodes () .end ());
+		                     child1Inline -> getRootNodes () .cbegin (),
+		                     child1Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
 	else if (child1Inline -> url () .empty ())
@@ -252,8 +252,8 @@ GeoLOD::set_childLoadState ()
 	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
 	{
 		children () .insert (children () .end (),
-		                     child2Inline -> getRootNodes () .begin (),
-		                     child2Inline -> getRootNodes () .end ());
+		                     child2Inline -> getRootNodes () .cbegin (),
+		                     child2Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
 	else if (child2Inline -> url () .empty ())
@@ -262,8 +262,8 @@ GeoLOD::set_childLoadState ()
 	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
 	{
 		children () .insert (children () .end (),
-		                     child3Inline -> getRootNodes () .begin (),
-		                     child3Inline -> getRootNodes () .end ());
+		                     child3Inline -> getRootNodes () .cbegin (),
+		                     child3Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
 	else if (child2Inline -> url () .empty ())
@@ -272,8 +272,8 @@ GeoLOD::set_childLoadState ()
 	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
 	{
 		children () .insert (children () .end (),
-		                     child4Inline -> getRootNodes () .begin (),
-		                     child4Inline -> getRootNodes () .end ());
+		                     child4Inline -> getRootNodes () .cbegin (),
+		                     child4Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
 	else if (child4Inline -> url () .empty ())

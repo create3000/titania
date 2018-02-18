@@ -197,9 +197,9 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const clock_base <Typ
 	return ostream << clock .cycle ();
 }
 
+extern template class clock_base <float>;
 extern template class clock_base <double>;
-extern template std::istream & operator >> (std::istream &, clock_base <double> &);
-extern template std::ostream & operator << (std::ostream &, const clock_base <double> &);
+extern template class clock_base <long double>;
 
 } // basic
 } // titania

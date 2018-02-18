@@ -290,10 +290,10 @@ private:
 	buildNormals (const PolygonArray & polygons);
 
 	void
-	tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices);
+	tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices) const;
 
 	void
-	tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons);
+	tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons) const;
 
 	bool
 	isPerVertex (const MFInt32 & index) const;

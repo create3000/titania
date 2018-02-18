@@ -80,9 +80,6 @@ const pb::Callbacks SFVec3f::callbacks = {
 	dispose <SFVec3f>
 };
 
-template class SFVec3 <X3D::SFVec3d>;
-template class SFVec3 <X3D::SFVec3f>;
-
 } // peaseblossom
 } // X3D
 } // titania

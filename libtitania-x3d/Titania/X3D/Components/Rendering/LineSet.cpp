@@ -142,7 +142,7 @@ LineSet::set_attrib ()
 			value .emplace_back (attribNode);
 	}
 
-	attribNodes .set (value .begin (), value .end ());
+	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (this);

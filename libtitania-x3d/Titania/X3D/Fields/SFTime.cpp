@@ -57,8 +57,8 @@
 namespace titania {
 namespace X3D {
 
-const std::string             SFTime::typeName ("SFTime");
-const FieldType SFTime::type = X3DConstants::SFTime;
+const std::string SFTime::typeName = "SFTime";
+const FieldType SFTime::type       = X3DConstants::SFTime;
 
 SFTime::SFTime () :
 	X3DField <time_type> ()
@@ -76,7 +76,7 @@ SFTime::SFTime (const time_type value) :
 time_type
 SFTime::now ()
 {
-	return chrono::basic_now <time_type> ();
+	return chrono::basic_now <double> ();
 }
 
 //int32_t

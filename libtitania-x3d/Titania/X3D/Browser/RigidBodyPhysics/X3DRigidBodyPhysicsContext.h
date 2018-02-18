@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtrArray.h"
 #include "../../Types/Pointer.h"
 
 namespace titania {

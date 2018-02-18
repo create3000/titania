@@ -206,8 +206,8 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 	}
 	else
 	{
-		const auto point1       = getCoord () -> get1Point (coordIndex () [startEdge .first]);
-		const auto point2       = getCoord () -> get1Point (coordIndex () [startEdge .second]);
+		const auto point1       = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .first));
+		const auto point2       = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .second));
 		const auto edgeLine     = Line3d (point1, point2, math::points_type ());
 		const auto closestPoint = edgeLine .closest_point (knifeTouchSensor -> getHitPoint ());
 
@@ -340,8 +340,8 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 		}
 		else
 		{
-			const auto point1     = getCoord () -> get1Point (coordIndex () [endEdge .first]);
-			const auto point2     = getCoord () -> get1Point (coordIndex () [endEdge .second]);
+			const auto point1     = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .first));
+			const auto point2     = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .second));
 			const auto edgeLine   = Line3d (point1, point2, math::points_type ());
 			const auto orthoPoint = edgeLine .closest_point (cutPoints .first);
 	
@@ -426,7 +426,7 @@ X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 		{
 			// Edge
-			setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
+			setHotPoints ({ coordIndex () .get1Value (edge .index0), coordIndex () .get1Value (edge .index1) });
 
 			cutFaces = getFaceSelection () -> getAdjacentFaces (edge);
 		}
@@ -473,7 +473,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 		const auto closestEdge = getFaceSelection () -> getClosestEdge (cutSegment, cutFaces);
 		const auto edge        = closestEdge .first;
 		const auto face        = closestEdge .second;
-		const auto index       = std::find (cutFaces .begin (), cutFaces .end (), face) - cutFaces .begin ();
+		const auto index       = std::find (cutFaces .cbegin (), cutFaces .cend (), face) - cutFaces .cbegin ();
 
 		if (planeSensor not_eq planeSensors [index])
 		   return false;
@@ -488,7 +488,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 		if (vertices .size () >= 3)
 		{
 			const auto cutVertex     = getFaceSelection () -> getClosestVertex (hitPoint, vertices);
-			const auto cutPoint      = coordIndex () [cutVertex];
+			const auto cutPoint      = coordIndex () .get1Value (cutVertex);
 			const auto point         = getCoord () -> get1Point (cutPoint);
 			const auto pointDistance = getDistance (hitPoint, point, modelViewMatrix, projectionMatrix, viewport);
 
@@ -499,7 +499,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 			if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 			{
 				// Edge
-				setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
+				setHotPoints ({ coordIndex () .get1Value (edge .index0), coordIndex () .get1Value (edge .index1) });
 			}
 			else
 			{
@@ -530,8 +530,8 @@ X3DIndexedFaceSetKnifeObject::snapToCenter (const std::pair <size_t, size_t> & e
 	if (not cutSnapping ())
 		return false;
 
-	const auto point1   = getCoord () -> get1Point (coordIndex () [edge .first]);
-	const auto point2   = getCoord () -> get1Point (coordIndex () [edge .second]);
+	const auto point1   = getCoord () -> get1Point (coordIndex () .get1Value (edge .first));
+	const auto point2   = getCoord () -> get1Point (coordIndex () .get1Value (edge .second));
 	const auto center   = (point1 + point2) / 2.0;
 	const auto distance = getDistance (center, point, modelViewMatrix, projectionMatrix, viewport);
 
@@ -560,7 +560,7 @@ X3DIndexedFaceSetKnifeObject::snapToVertex (const size_t face,
 		return false;
 
 	const auto vertices      = getFaceSelection () -> getFaceVertices (face);
-	const auto closestPoint  = coordIndex () [getFaceSelection () -> getClosestVertex (vertex, vertices)];
+	const auto closestPoint  = coordIndex () .get1Value (getFaceSelection () -> getClosestVertex (vertex, vertices));
 	const auto closestVertex = getCoord () -> get1Point (closestPoint);
 
 	if (getDistance (closestVertex, vertex, modelViewMatrix, projectionMatrix, viewport) > SELECTION_DISTANCE)
@@ -646,7 +646,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	redoSetColorIndex    (undoStep);
 
 	redoRestoreSelectedEdges (selection, undoStep);
-	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+	replaceSelectedEdges () .assign (selection .cbegin (), selection .cend ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }

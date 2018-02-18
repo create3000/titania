@@ -93,10 +93,6 @@ const pb::Callbacks VrmlMatrix::callbacks = {
 	dispose <VrmlMatrix>
 };
 
-template class SFMatrix4 <X3D::SFMatrix4d>;
-template class SFMatrix4 <X3D::SFMatrix4f>;
-template class SFMatrix4 <X3D::VrmlMatrix>;
-
 } // peaseblossom
 } // X3D
 } // titania

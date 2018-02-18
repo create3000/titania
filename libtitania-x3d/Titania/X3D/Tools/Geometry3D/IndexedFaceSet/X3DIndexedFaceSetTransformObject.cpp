@@ -437,7 +437,7 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 Box3d
 X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 {
-	auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
+	auto points = std::vector <Vector3d> (selectionCoord -> point () .cbegin (), selectionCoord -> point () .cend ());
 	auto bbox   = Box3d ();
 
 	std::sort (points .begin (), points .end ());
@@ -459,7 +459,7 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 				{
 					if (getSelectedEdges () .size () == 1)
 					{
-						const auto & edge = *getSelectedEdges () .begin ();
+						const auto & edge = *getSelectedEdges () .cbegin ();
 
 						std::set <size_t> faces;
 

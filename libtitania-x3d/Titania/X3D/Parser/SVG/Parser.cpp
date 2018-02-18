@@ -943,7 +943,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto bbox          = X3D::Box2d (points .begin (), points .end (), math::iterator_type ());
+	const auto bbox          = X3D::Box2d (points .cbegin (), points .cend (), math::iterator_type ());
 	const auto transformNode = getTransform (xmlElement);
 
 	groupNodes .emplace_back (transformNode);
@@ -1074,7 +1074,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto bbox          = X3D::Box2d (points .begin (), points .end (), math::iterator_type ());
+	const auto bbox          = X3D::Box2d (points .cbegin (), points .cend (), math::iterator_type ());
 	const auto transformNode = getTransform (xmlElement);
 
 	groupNodes .emplace_back (transformNode);
@@ -1205,7 +1205,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	auto bbox = X3D::Box2d ();
 
 	for (const auto & contour : contours)
-		bbox += X3D::Box2d (contour .first .begin (), contour .first .end (), math::iterator_type ());
+		bbox += X3D::Box2d (contour .first .cbegin (), contour .first .cend (), math::iterator_type ());
 
 	const auto transformNode = getTransform (xmlElement);
 

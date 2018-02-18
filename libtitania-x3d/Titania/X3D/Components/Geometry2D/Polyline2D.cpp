@@ -117,7 +117,7 @@ Polyline2D::isTransparent () const
 void
 Polyline2D::build ()
 {
-	for (const auto & vertex : lineSegments ())
+	for (const auto & vertex : basic::make_const_range (lineSegments ()))
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 
 	addElements (GL_LINE_STRIP, getVertices () .size ());
@@ -137,7 +137,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	geometry -> coord () = coord;
 
-	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+	coord -> point () .assign (getVertices () .cbegin (), getVertices () .cend ());
 
 	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
 		geometry -> coordIndex () .emplace_back (i);

@@ -140,13 +140,13 @@ throw (Error <DISPOSED>)
 }
 
 bool
-Script::loadDocument (const SFString & URL, std::string & scheme, std::string & ecmascript)
+Script::loadDocument (const std::string & URL, std::string & scheme, std::string & ecmascript)
 {
 	static const std::regex ECMAScript (R"/(\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:([\s\S]*))/");
 
 	std::smatch match;
 
-	if (std::regex_match (URL .str (), match, ECMAScript))
+	if (std::regex_match (URL, match, ECMAScript))
 	{
 		scheme     = match .str (1);
 		ecmascript = match .str (2);
@@ -188,7 +188,7 @@ Script::requestImmediateLoad ()
 		std::string scheme;
 		std::string ecmascript;
 
-		if (loadDocument (URL, scheme, ecmascript))
+		if (loadDocument (URL .get (), scheme, ecmascript))
 		{
 			try
 			{

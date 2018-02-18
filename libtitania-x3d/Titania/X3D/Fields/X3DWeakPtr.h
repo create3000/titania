@@ -364,7 +364,7 @@ private:
 };
 
 template <class InternalType>
-const std::string X3DWeakPtr <InternalType>::typeName ("SFNode");
+const std::string X3DWeakPtr <InternalType>::typeName = "SFNode";
 
 ///  @relates X3DWeakPtr
 ///  @name Comparision operations

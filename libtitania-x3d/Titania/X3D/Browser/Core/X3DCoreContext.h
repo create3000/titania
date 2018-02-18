@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_CORE_X3DCORE_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DScalar.h"
 
 #include <atomic>
 

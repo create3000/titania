@@ -98,7 +98,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 	auto points       = mesh3 <double>::points_type ();
 	auto coordIndices = std::vector <int32_t> ();
 
-	for (const auto & index : geometryNode -> coordIndex ())
+	for (const auto & index : basic::make_const_range (geometryNode -> coordIndex ()))
 	{
 		if (index < 0)
 		{
@@ -273,7 +273,7 @@ throw (Error <INVALID_NODE>,
 
 		auto result = std::move (meshes .front ());
 
-		for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
+		for (const auto & mesh : std::make_pair (meshes .cbegin () + 1, meshes .cend ()))
 			result = booleanOperation (result, mesh);
 	
 		// Store result in target geometry.
@@ -286,7 +286,7 @@ throw (Error <INVALID_NODE>,
 			targetGeometry -> coordIndex () .emplace_back (-1);
 		}
 
-		targetCoord -> point () .assign (result .points () .begin (), result .points () .end ());
+		targetCoord -> point () .assign (result .points () .cbegin (), result .points () .cend ());
 
 		// Sometimes CGAL does not return solid geometries, thus we merge this points.
       executionContext -> realize ();
@@ -400,9 +400,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			addNormals = true;
 	}
 
-	const auto numVertices = targetGeometry -> coordIndex () .size ();
-	const auto numFaces    = targetGeometry -> colorPerVertex () or targetGeometry -> normalPerVertex ()
-	                         ? std::count_if (targetGeometry -> coordIndex () .begin (), targetGeometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
+	const auto   numVertices = targetGeometry -> coordIndex () .size ();
+	const size_t numFaces    = targetGeometry -> colorPerVertex () or targetGeometry -> normalPerVertex ()
+	                         ? std::count_if (targetGeometry -> coordIndex () .cbegin (), targetGeometry -> coordIndex () .cend (), [ ] (const int32_t i) { return i < 0; })
 	                         : 0;
 
 	if (addColors)
@@ -414,7 +414,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			if (targetGeometry -> colorPerVertex ())
 			{
 				for (size_t i = targetGeometry -> colorIndex () .size (); i < numVertices; ++ i)
-					targetGeometry -> colorIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+					targetGeometry -> colorIndex () .emplace_back (targetGeometry -> coordIndex () .get1Value (i));
 			}
 			else
 			{
@@ -433,7 +433,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			// If there are not enough indices in texCoordIndex, add them.
 
 			for (size_t i = targetGeometry -> texCoordIndex () .size (); i < numVertices; ++ i)
-				targetGeometry -> texCoordIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+				targetGeometry -> texCoordIndex () .emplace_back (targetGeometry -> coordIndex () .get1Value (i));
 		}
 		else
 			targetGeometry -> addTexCoords ();
@@ -448,7 +448,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			if (targetGeometry -> normalPerVertex ())
 			{
 			   for (size_t i = targetGeometry -> normalIndex () .size (); i < numVertices; ++ i)
-					targetGeometry -> normalIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+					targetGeometry -> normalIndex () .emplace_back (targetGeometry -> coordIndex () .get1Value (i));
 			}
 			else
 			{
@@ -462,9 +462,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		const auto numVertices = geometryNode -> coordIndex () .size ();
-		const auto numFaces    = geometryNode -> colorPerVertex () or geometryNode -> normalPerVertex ()
-	                            ? std::count_if (geometryNode -> coordIndex () .begin (), geometryNode -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
+		const auto   numVertices = geometryNode -> coordIndex () .size ();
+		const size_t numFaces    = geometryNode -> colorPerVertex () or geometryNode -> normalPerVertex ()
+	                            ? std::count_if (geometryNode -> coordIndex () .cbegin (), geometryNode -> coordIndex () .cend (), [ ] (const int32_t i) { return i < 0; })
 	                            : 0;
 
 		if (addColors)
@@ -474,7 +474,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				if (geometryNode -> colorPerVertex ())
 				{
 					for (size_t i = geometryNode -> colorIndex () .size (); i < numVertices; ++ i)
-						geometryNode -> colorIndex () .emplace_back (geometryNode -> coordIndex () [i]);
+						geometryNode -> colorIndex () .emplace_back (geometryNode -> coordIndex () .get1Value (i));
 				}
 				else
 				{
@@ -491,7 +491,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			if (geometryNode -> getTexCoord ())
 			{
 				for (size_t i = geometryNode -> texCoordIndex () .size (); i < numVertices; ++ i)
-					geometryNode -> texCoordIndex () .emplace_back (geometryNode -> coordIndex () [i]);
+					geometryNode -> texCoordIndex () .emplace_back (geometryNode -> coordIndex () .get1Value (i));
 			}
 			else
 				geometryNode -> addTexCoords ();
@@ -504,7 +504,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				if (geometryNode -> normalPerVertex ())
 				{
 				   for (size_t i = geometryNode -> normalIndex () .size (); i < numVertices; ++ i)
-						geometryNode -> normalIndex () .emplace_back (geometryNode -> coordIndex () [i]);
+						geometryNode -> normalIndex () .emplace_back (geometryNode -> coordIndex () .get1Value (i));
 				}
 				else
 				{
@@ -545,7 +545,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 		for (size_t i = 0, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 		{
-		   const int32_t index = geometryNode -> coordIndex () [i];
+		   const int32_t index = geometryNode -> coordIndex () .get1Value (i);
 
 		   if (index < 0)
 		   {
@@ -578,7 +578,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 		for (size_t i = 0, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 		{
-			const int32_t index = geometryNode -> coordIndex () [i];
+			const int32_t index = geometryNode -> coordIndex () .get1Value (i);
 
 			if (index < 0)
 			{
@@ -768,10 +768,10 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 
 	// Remove Shape nodes from selection.
 
-	nodes .assign (shapes .begin (), shapes .end ());
+	nodes .assign (shapes .cbegin (), shapes .cend ());
 	nodes .remove (masterShape);
 
-	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
+	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), undoStep);
 
 	for (const auto & node : nodes)
 		X3DEditor::removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { node }, undoStep);

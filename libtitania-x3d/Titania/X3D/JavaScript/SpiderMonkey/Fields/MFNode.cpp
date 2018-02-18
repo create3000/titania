@@ -244,8 +244,6 @@ MFNode::splice (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template class X3DArrayField <SFNode, X3D::MFNode>;
-
 } // spidermonkey
 } // X3D
 } // titania

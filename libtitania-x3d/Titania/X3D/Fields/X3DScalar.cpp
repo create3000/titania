@@ -50,24 +50,22 @@
 
 #include "X3DScalar.h"
 
-#include "../Execution/X3DExecutionContext.h"
-#include "../InputOutput/Generator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {
 namespace X3D {
 
 template <>
-const std::string X3DField <bool>::typeName ("SFBool");
+const std::string X3DField <bool>::typeName = "SFBool";
 
 template <>
-const std::string X3DField <double>::typeName ("SFDouble");
+const std::string X3DField <double>::typeName = "SFDouble";
 
 template <>
-const std::string X3DField <float>::typeName ("SFFloat");
+const std::string X3DField <float>::typeName = "SFFloat";
 
 template <>
-const std::string X3DField <int32_t>::typeName ("SFInt32");
+const std::string X3DField <int32_t>::typeName = "SFInt32";
 
 template <>
 const FieldType X3DField <bool>::type = X3DConstants::SFBool;
@@ -89,23 +87,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+	bool value = false;
 
-	if (Grammar::TRUE_ (istream))
-	{
-		setValue (true);
-		return;
-	}
-
-	if (Grammar::FALSE_ (istream))
-	{
-		setValue (false);
-		return;
-	}
-
-	istream .setstate (std::ios_base::failbit);
+	if (Grammar::VRMLDecode (istream, value))
+		setValue (value);
 }
 
 template <>
@@ -116,13 +101,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
 	double value = 0;
-	
-	if (Grammar::Double (istream, value))
+
+	if (Grammar::VRMLDecode (istream, value))
 		setValue (value);
 }
 
@@ -134,13 +115,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
 	float value = 0;
 
-	if (Grammar::Float (istream, value))
+	if (Grammar::VRMLDecode (istream, value))
 		setValue (value);
 }
 
@@ -152,102 +129,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
-
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
 	int32_t value = 0;
 
-	if (Grammar::Int32 (istream, value))
+	if (Grammar::VRMLDecode (istream, value))
 		setValue (value);
-}
-
-template <>
-void
-X3DScalar <bool>::toStream (std::ostream & ostream) const
-{
-	ostream << (getValue () ? "TRUE" : "FALSE");
-}
-
-template <>
-void
-X3DScalar <double>::toStream (std::ostream & ostream) const
-{
-	const auto unit = Generator::Unit (ostream, getUnit ());
-
-	ostream << Generator::SetPrecision <double> << Generator::ToUnit (ostream, unit, getValue ());
-}
-
-template <>
-void
-X3DScalar <float>::toStream (std::ostream & ostream) const
-{
-	const auto unit = Generator::Unit (ostream, getUnit ());
-
-	ostream << Generator::SetPrecision <float> << Generator::ToUnit (ostream, unit, getValue ());
-}
-
-template <>
-void
-X3DScalar <int32_t>::toStream (std::ostream & ostream) const
-{
-	ostream << getValue ();
-}
-
-template <>
-void
-X3DScalar <bool>::toXMLStream (std::ostream & ostream) const
-{
-	ostream << (getValue () ? "true" : "false");
-}
-
-template <>
-void
-X3DScalar <double>::toXMLStream (std::ostream & ostream) const
-{
-	toStream (ostream);
-}
-
-template <>
-void
-X3DScalar <float>::toXMLStream (std::ostream & ostream) const
-{
-	toStream (ostream);
-}
-
-template <>
-void
-X3DScalar <int32_t>::toXMLStream (std::ostream & ostream) const
-{
-	toStream (ostream);
-}
-
-template <>
-void
-X3DScalar <bool>::toJSONStream (std::ostream & ostream) const
-{
-	ostream << (getValue () ? "true" : "false");
-}
-
-template <>
-void
-X3DScalar <double>::toJSONStream (std::ostream & ostream) const
-{
-	toStream (ostream);
-}
-
-template <>
-void
-X3DScalar <float>::toJSONStream (std::ostream & ostream) const
-{
-	toStream (ostream);
-}
-
-template <>
-void
-X3DScalar <int32_t>::toJSONStream (std::ostream & ostream) const
-{
-	toStream (ostream);
 }
 
 template class X3DField <bool>;

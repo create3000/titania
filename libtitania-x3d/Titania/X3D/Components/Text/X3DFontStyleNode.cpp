@@ -125,12 +125,12 @@ X3DTextGeometry::horizontal ()
 
 	for (int32_t l = first; l not_eq last; l += step)
 	{
-		const auto & line = text -> string () [l];
+		const auto & line = text -> string () .get1Value (l);
 
 		// Get line extents.
 
 		Vector2d min, max;
-		getHorizontalLineExtents (line .getValue (), min, max);
+		getHorizontalLineExtents (line, min, max);
 
 		Vector2d size = max - min;
 
@@ -233,7 +233,7 @@ X3DTextGeometry::vertical ()
 {
 	size_t numChars = 0;
 
-	for (const auto & line : text -> string ())
+	for (const auto & line : std::make_pair (text -> string () .cbegin (), text -> string () .cend ()))
 		numChars += line .length ();
 
 	charSpacings .resize (numChars);
@@ -262,7 +262,7 @@ X3DTextGeometry::vertical ()
 
 	for (int32_t l = first; l not_eq last; l += step)
 	{
-		const auto & line = text -> string () [l] .getValue ();
+		const auto & line = text -> string () .get1Value (l);
 		
 		const int32_t t0       = t;
 		const size_t  numChars = line .length ();
@@ -600,7 +600,7 @@ X3DFontStyleNode::createFont () const
 	{
 		for (const auto & familyName : family ())
 		{
-			const Font font = createFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
+			const auto font = createFont (familyName .empty () ? "SERIF" : familyName, isExactMatch);
 	
 			if (isExactMatch)
 				return font;
@@ -703,9 +703,11 @@ X3DFontStyleNode::set_justify ()
 void
 X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
 {
-	for (auto & value : url)
+	MFString transformed = url;
+
+	for (MFString::reference value : transformed)
 	{
-		const basic::uri URL = value .str ();
+		const basic::uri URL (value .get ());
 
 		if (URL .name () == URL)
 			continue;
@@ -718,7 +720,9 @@ X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, con
 		}
 	}
 
-	url .erase (std::unique (url .begin (), url .end ()), url .end ());
+	transformed .erase (std::unique (url .begin (), url .end ()), url .end ());
+
+	url .set (transformed);
 }
 
 void

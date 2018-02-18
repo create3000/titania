@@ -237,7 +237,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	geometry -> coord () = coord;
 
-	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+	coord -> point () .assign (getVertices () .cbegin (), getVertices () .cend ());
 
 	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
 		geometry -> coordIndex () .emplace_back (i);

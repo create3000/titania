@@ -60,8 +60,6 @@ class Route;
 
 typedef X3DSet <Route*> RouteSet;
 
-extern template class X3DSet <Route*>;
-
 } // X3D
 } // titania
 

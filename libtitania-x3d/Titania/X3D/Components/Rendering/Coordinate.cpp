@@ -88,7 +88,7 @@ Coordinate::create (X3DExecutionContext* const executionContext) const
 Box3d
 Coordinate::getBBox () const
 {
-	return Box3f (point () .begin (), point () .end (), math::iterator_type ());
+	return Box3f (point () .cbegin (), point () .cend (), math::iterator_type ());
 }
 
 void

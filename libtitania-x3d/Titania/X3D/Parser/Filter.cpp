@@ -50,8 +50,9 @@
 
 #include "Filter.h"
 
-#include <Titania/String.h>
+#include "../Basic/X3DBaseNode.h"
 
+#include <Titania/String.h>
 #include <regex>
 
 namespace titania {

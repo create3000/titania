@@ -187,7 +187,7 @@ RenderingProperties::set_Enabled ()
 		else
 		{
 			for (const auto index : headUpDisplay -> layers () .indices_of (layer))
-				headUpDisplay -> order () .remove (SFInt32 (index + 1));
+				headUpDisplay -> order () .remove (index + 1);
 
 			getBrowser () -> initialized ()   .removeInterest (&RenderingProperties::reset, this);
 			getBrowser () -> prepareEvents () .removeInterest (&RenderingProperties::prepare, this);
@@ -315,7 +315,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s %s"), Vendor () .c_str (), Renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
-		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2] .getValue (), getBrowser () -> getViewport () [3] .getValue ()));
+		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2], getBrowser () -> getViewport () [3]));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getTextureUnits () .size (), getBrowser () -> getCombinedTextureUnits () .size ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));

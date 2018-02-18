@@ -6,7 +6,6 @@ lib_LTLIBRARIES =  \
 
 libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
-	Titania/X3D/Base/ChildObjectSet.cpp \
 	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
@@ -16,12 +15,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/X3DOutput.cpp \
 	Titania/X3D/Base/X3DParentObject.cpp \
 	Titania/X3D/Base/X3DReferenceObject.cpp \
-	Titania/X3D/Basic/FieldDefinitionArray.cpp \
-	Titania/X3D/Basic/FieldDefinitionSet.cpp \
 	Titania/X3D/Basic/FieldSet.cpp \
-	Titania/X3D/Basic/NodeSet.cpp \
-	Titania/X3D/Basic/NodeTypeArray.cpp \
-	Titania/X3D/Basic/NodeTypeSet.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/Error.cpp \
@@ -68,12 +62,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Networking/config.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
-	Titania/X3D/Browser/ParticleSystems/BVH.cpp \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Rendering/L-System.cpp \
@@ -418,18 +410,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/X_ITE/PolygonOffset.cpp \
 	Titania/X3D/Components/X_ITE/TouchGroup.cpp \
 	Titania/X3D/Components/X_ITE/TransformMatrix3D.cpp \
-	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
-	Titania/X3D/Configuration/ComponentInfoArray.cpp \
 	Titania/X3D/Configuration/ProfileInfo.cpp \
-	Titania/X3D/Configuration/ProfileInfoArray.cpp \
 	Titania/X3D/Configuration/SupportedComponents.cpp \
 	Titania/X3D/Configuration/SupportedFields.cpp \
-	Titania/X3D/Configuration/SupportedFieldsArray.cpp \
 	Titania/X3D/Configuration/SupportedNodes.cpp \
 	Titania/X3D/Configuration/SupportedProfiles.cpp \
 	Titania/X3D/Configuration/Unit.cpp \
-	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Editing/Combine.cpp \
 	Titania/X3D/Editing/Selection/FaceSelection.cpp \
 	Titania/X3D/Editing/Undo/UndoGroup.cpp \
@@ -439,11 +426,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Editing/X3DEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
-	Titania/X3D/Execution/ExportedNodeIndex.cpp \
 	Titania/X3D/Execution/ImportedNode.cpp \
-	Titania/X3D/Execution/ImportedNodeIndex.cpp \
 	Titania/X3D/Execution/NamedNode.cpp \
-	Titania/X3D/Execution/NamedNodeIndex.cpp \
 	Titania/X3D/Execution/Scene.cpp \
 	Titania/X3D/Execution/World.cpp \
 	Titania/X3D/Execution/X3DExecutionContext.cpp \
@@ -451,6 +435,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/ArrayFields.cpp \
 	Titania/X3D/Fields/MFInt32.cpp \
 	Titania/X3D/Fields/MFNode.cpp \
+	Titania/X3D/Fields/MFTime.cpp \
+	Titania/X3D/Fields/NativeArrayFields.cpp \
 	Titania/X3D/Fields/SFColor.cpp \
 	Titania/X3D/Fields/SFColorRGBA.cpp \
 	Titania/X3D/Fields/SFImage.cpp \
@@ -468,7 +454,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/InputOutput/FileLoader.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/GoldenGate.cpp \
+	Titania/X3D/InputOutput/JSONGenerator.cpp \
+	Titania/X3D/InputOutput/VRMLGenerator.cpp \
 	Titania/X3D/InputOutput/X3DGenerator.cpp \
+	Titania/X3D/InputOutput/XMLGenerator.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
@@ -621,9 +610,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	Titania/X3D/Routing/Route.cpp \
-	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/Router.cpp \
-	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Routing/X3DRouterObject.cpp \
 	Titania/X3D/Thread/SceneFuture.cpp \
 	Titania/X3D/Thread/Texture3DFuture.cpp \
@@ -708,8 +695,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
-	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp \
-	Titania/X3D/Types/Image.cpp
+	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_FTGL_LIBS) \

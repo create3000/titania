@@ -353,66 +353,7 @@ Generator::ToUnit (std::ostream & ostream, const UnitCategory unit, const long d
 	return value;
 }
 
-void
-Generator::XMLEncode (std::ostream & ostream, const std::string & string)
-{
-	for (const auto & c : string)
-	{
-		switch (c)
-		{
-			case '\t' :
-			{
-				ostream << "&#x9;";
-				break;
-			}
-			case '\n':
-			{
-				ostream << "&#xA;";
-				break;
-			}
-			case '\r':
-			{
-				ostream << "&#xD;";
-				break;
-			}
-			case '<':
-			{
-				ostream << "&lt;";
-				break;
-			}
-			case '>':
-			{
-				ostream << "&gt;";
-				break;
-			}
-			case '&':
-			{
-				ostream << "&amp;";
-				break;
-			}
-			case '\'':
-			{
-				ostream << "&apos;";
-				break;
-			}
-			case '"':
-			{
-				ostream << "\\\"";
-				break;
-			}
-			case '\\':
-			{
-				ostream << "\\\\";
-				break;
-			}
-			default:
-			{
-				ostream << c;
-				break;
-			}
-		}
-	}
-}
+// Destruction
 
 void
 Generator::dispose (std::ios_base::event event, std::ios_base & stream, int index)

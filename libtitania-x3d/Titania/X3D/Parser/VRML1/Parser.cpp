@@ -268,7 +268,7 @@ Parser::lines (const std::string & string)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	lineNumber += std::count (string .begin (), string .end (), '\n');
+	lineNumber += std::count (string .cbegin (), string .cend (), '\n');
 }
 
 void

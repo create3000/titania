@@ -130,7 +130,7 @@ X3DComposedGeometryNode::set_attrib ()
 			value .emplace_back (attribNode);
 	}
 
-	attribNodes .set (value .begin (), value .end ());
+	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (this);
@@ -300,7 +300,7 @@ X3DComposedGeometryNode::addNormals (const size_t vertexCount, size_t size)
 	const auto normals    = createNormals (vertexCount, size);
 	const auto normalNode = getExecutionContext () -> createNode <Normal> ();
 
-	normalNode -> vector () .assign (normals .begin (), normals .end ());
+	normalNode -> vector () .assign (normals .cbegin (), normals .cend ());
 
 	normal () = normalNode;
 

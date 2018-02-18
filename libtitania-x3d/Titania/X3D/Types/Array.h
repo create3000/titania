@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 template <class Type>
-using Array = std::vector <Type*>;
+using Array = std::vector <Type>;
 
 } // X3D
 } // titania

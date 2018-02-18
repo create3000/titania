@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,16 +48,72 @@
  *
  ******************************************************************************/
 
-#include "ExportedNodeIndex.h"
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_XMLGENERATOR_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_XMLGENERATOR_H__
 
-#include "../Execution/ExportedNode.h"
+#include "../InputOutput/VRMLGenerator.h"
 
 namespace titania {
 namespace X3D {
 
-//
+class XMLGenerator
+{
+public:
+
+	// XML
+
+	static
+	void
+	XMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+
+	static
+	void
+	XMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	XMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	XMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	XMLEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	std::enable_if_t <std::is_enum <Type>::value, void>
+	XMLEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, int32_t (value), unitCategory); }
+
+};
+
+// XMLEncode
+
+struct XMLEncodeStringType { const String & string; };
+
+inline
+XMLEncodeStringType
+XMLEncode (const String & string)
+{
+	return XMLEncodeStringType { string };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
+{
+	XMLGenerator::XMLEncode (ostream, value .string, UnitCategory::NONE);
+	return ostream;
+}
 
 } // X3D
 } // titania
 
-template class std::map <std::string, titania::X3D::ExportedNodePtr>;
+#endif

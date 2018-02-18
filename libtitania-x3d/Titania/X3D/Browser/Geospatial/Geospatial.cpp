@@ -231,7 +231,7 @@ Geospatial::getZone (const MFString & geoSystem)
 	{
 		std::smatch zone;
 
-		if (std::regex_match (string .str (), zone, Zone))
+		if (std::regex_match (string .raw (), zone, Zone))
 			return std::atoi (zone .str (1) .c_str ());
 	}
 

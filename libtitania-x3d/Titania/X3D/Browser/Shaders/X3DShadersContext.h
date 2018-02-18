@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
 #include "../Shaders/ShadingType.h"
 
 namespace titania {

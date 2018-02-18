@@ -58,9 +58,7 @@
 #include "../Basic/NodeTypeSet.h"
 #include "../Basic/TraverseType.h"
 #include "../Basic/X3DFieldDefinition.h"
-#include "../Fields/ArrayFields.h"
-#include "../Fields/SFTime.h"
-#include "../Fields/X3DScalar.h"
+#include "../Fields.h"
 
 #include <map>
 
@@ -467,7 +465,7 @@ public:
 	virtual
 	void
 	addInnerComments (const std::vector <std::string> & value)
-	{ comments .insert (comments .end (), value .begin (), value .end ()); }
+	{ comments .insert (comments .end (), value .cbegin (), value .cend ()); }
 
 	///  Returns the comments for this node.
 	virtual

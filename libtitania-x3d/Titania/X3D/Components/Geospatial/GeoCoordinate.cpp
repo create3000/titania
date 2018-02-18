@@ -117,7 +117,7 @@ GeoCoordinate::eventsProcessed ()
 Box3d
 GeoCoordinate::getBBox () const
 {
-	return Box3d (points .begin (), points .end (), math::iterator_type ());
+	return Box3d (points .cbegin (), points .cend (), math::iterator_type ());
 }
 
 void

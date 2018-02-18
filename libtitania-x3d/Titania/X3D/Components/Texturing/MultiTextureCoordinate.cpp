@@ -133,7 +133,7 @@ MultiTextureCoordinate::set_texCoord ()
 			value .emplace_back (texCoordNode);
 	}
 
-	texCoords .set (value .begin (), value .end ());
+	texCoords .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : texCoords)
 		node -> addInterest (this);

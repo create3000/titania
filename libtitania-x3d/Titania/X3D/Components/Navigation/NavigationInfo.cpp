@@ -161,7 +161,7 @@ NavigationInfo::set_type ()
 	{
 		try
 		{
-			const auto viewerType = viewerTypes .at (string);
+			const auto viewerType = viewerTypes .at (string .get ());
 
 			switch (viewer)
 			{
@@ -198,7 +198,7 @@ NavigationInfo::set_type ()
 	{
 		for (const auto & string : type ())
 		{
-			const auto viewer = viewerTypes .find (string);
+			const auto viewer = viewerTypes .find (string .get ());
 
 			if (viewer not_eq viewerTypes .end ())
 			{

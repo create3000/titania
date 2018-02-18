@@ -323,7 +323,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 	std::vector <X3DFieldDefinition*> outputInterests;
 
 	if (data)
-		outputInterests .assign (data -> outputInterests .begin (), data -> outputInterests .end ());
+		outputInterests .assign (data -> outputInterests .cbegin (), data -> outputInterests .cend ());
 
 	processInterests ();
 

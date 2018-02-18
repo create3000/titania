@@ -154,12 +154,12 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 
 	const auto vertices = std::array <Vector3d, 3> ({ A, B, C });
 	const auto vD       = std::array <double, 3> ({ abs (A - p), abs (B - p), abs (C - p) });
-	const auto iter     = std::min_element (vD .begin (), vD .end ());
+	const auto iter     = std::min_element (vD .cbegin (), vD .cend ());
 
 	// Test all three vertices of the triangle.
 
 	if (*iter < std::abs (snapDistance ()))
-		p = vertices [iter - vD .begin ()];
+		p = vertices [iter - vD .cbegin ()];
 
 	else
 	{
@@ -176,10 +176,10 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 		const auto pT     = Plane3d (C, nT);
 		const auto planes = std::array <Plane3d, 3> ({ pU, pV, pT });
 		const auto eD     = std::array <double, 3> ({ std::abs (pU .distance (p)), std::abs (pV .distance (p)), std::abs (pT .distance (p)) });
-		const auto iter   = std::min_element (eD .begin (), eD .end ());
+		const auto iter   = std::min_element (eD .cbegin (), eD .cend ());
 
 		if (*iter < std::abs (snapDistance ()))
-			p = planes [iter - eD .begin ()] .closest_point (p);
+			p = planes [iter - eD .cbegin ()] .closest_point (p);
 	}
 
 	{

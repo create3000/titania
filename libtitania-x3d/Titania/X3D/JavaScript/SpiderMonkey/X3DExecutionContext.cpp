@@ -362,7 +362,7 @@ X3DExecutionContext::createNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto name             = getArgument <std::string> (cx, argv, 0);
 		auto node                   = executionContext -> createNode (name);
 
-		return X3DField::get <SFNode> (cx, &node, &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, node, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -383,7 +383,7 @@ X3DExecutionContext::createProto (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto  name             = getArgument <std::string> (cx, argv, 0);
 		auto        node             = X3D::SFNode (executionContext -> createProto (name));
 
-		return X3DField::get <SFNode> (cx, &node, &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, node, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -475,7 +475,7 @@ X3DExecutionContext::getNamedNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto name             = getArgument <std::string> (cx, argv, 0);
 		auto namedNode              = executionContext -> getNamedNode (name);
 
-		return X3DField::get <SFNode> (cx, &namedNode, &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, namedNode, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -575,9 +575,9 @@ X3DExecutionContext::getImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv             = JS_ARGV (cx, vp);
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 		const auto importedName     = getArgument <std::string> (cx, argv, 0);
-		auto importedNode           = executionContext -> getImportedNode (importedName);
+		auto       importedNode     = executionContext -> getImportedNode (importedName);
 
-		return X3DField::get <SFNode> (cx, &importedNode, &JS_RVAL (cx, vp));
+		return X3DField::get <SFNode> (cx, importedNode, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

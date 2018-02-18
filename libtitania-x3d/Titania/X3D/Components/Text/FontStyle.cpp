@@ -118,7 +118,7 @@ PolygonText::triangulate (std::vector <size_t> & indices, std::vector <Vector3d>
 
 		for (int32_t i = first; i not_eq last; i += step)
 		{
-			const auto & line = getText () -> string () [i] .getValue ();
+			const auto & line = getText () -> string () .get1Value (i);
 
 			fontStyle -> getPolygonFont () -> triangulate (leftToRight
 	                                                     ? line
@@ -139,7 +139,7 @@ PolygonText::triangulate (std::vector <size_t> & indices, std::vector <Vector3d>
 
 		for (int32_t i = first, g = 0; i not_eq last; i += step)
 		{
-			const auto & line = getText () -> string () [i] .getValue ();
+			const auto & line = getText () -> string () .get1Value (i);
 
 			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{

@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_PARSER_GRAMMAR_H__
 #define __TITANIA_X3D_PARSER_GRAMMAR_H__
 
-#include <Titania/InputOutput.h>
+#include "../Types/String.h"
 
+#include <Titania/InputOutput.h>
 #include <set>
 
 namespace titania {
@@ -150,6 +151,44 @@ public:
 	static const io::sequence NamedColor;
 
 	static const io::hex <int32_t> HexValue;
+
+	// Decode
+
+	static
+	bool
+	VRMLDecode (std::istream & istream, bool & value);
+
+	static
+	bool
+	VRMLDecode (std::istream & istream, double & value);
+
+	static
+	bool
+	VRMLDecode (std::istream & istream, float & value);
+
+	static
+	bool
+	VRMLDecode (std::istream & istream, int32_t & value);
+
+	static
+	bool
+	VRMLDecode (std::istream & istream, X3D::String & value);
+
+	template <class Type>
+	static
+	std::enable_if_t <std::is_enum <Type>::value, bool>
+	VRMLDecode (std::istream & istream, Type & value)
+	{
+		int32_t tmp;
+
+		if (VRMLDecode (istream, tmp))
+		{
+			value = Type (tmp);
+			return true;
+		}
+
+		return false;
+	}
 
 private:
 

@@ -202,7 +202,7 @@ PolylineEmitter::set_polyline ()
 	{
 		const auto polylinesAux = polylineNode -> getPolylines ();
 	
-		polylines .assign (polylinesAux .begin (), polylinesAux .end ());
+		polylines .assign (polylinesAux .cbegin (), polylinesAux .cend ());
 
 		// Length map
 
@@ -220,7 +220,7 @@ PolylineEmitter::set_polyline ()
 	{
 		const auto polylineArrayAux = polylineNode -> getPolylines ();
 	
-		const std::vector <Vector3f> polylineArray (polylineArrayAux .begin (), polylineArrayAux .end ());
+		const std::vector <Vector3f> polylineArray (polylineArrayAux .cbegin (), polylineArrayAux .cend ());
 	
 		if (polylineArray .empty ())
 		{
@@ -293,11 +293,11 @@ PolylineEmitter::getRandomPosition () const
 	}
 	else
 	{
-		const auto iter = std::upper_bound (lengthSoFarArray .begin (), lengthSoFarArray .end (), fraction);
+		const auto iter = std::upper_bound (lengthSoFarArray .cbegin (), lengthSoFarArray .cend (), fraction);
 
-		if (iter not_eq lengthSoFarArray .end ())
+		if (iter not_eq lengthSoFarArray .cend ())
 		{
-			index1 = iter - lengthSoFarArray .begin ();
+			index1 = iter - lengthSoFarArray .cbegin ();
 			index0 = index1 - 1;
 	
 			const auto key0 = lengthSoFarArray [index0];

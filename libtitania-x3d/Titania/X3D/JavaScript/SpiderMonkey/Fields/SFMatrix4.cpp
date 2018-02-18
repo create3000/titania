@@ -81,10 +81,6 @@ JSClass VrmlMatrix::static_class = {
 
 };
 
-template class SFMatrix4 <X3D::SFMatrix4d>;
-template class SFMatrix4 <X3D::SFMatrix4f>;
-template class SFMatrix4 <X3D::VrmlMatrix>;
-
 } // spidermonkey
 } // X3D
 } // titania

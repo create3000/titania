@@ -94,8 +94,8 @@ ColorRGBA::initialize ()
 bool
 ColorRGBA::getTransparent () const
 {
-	return std::any_of (color () .begin (),
-	                    color () .end (),
+	return std::any_of (color () .cbegin (),
+	                    color () .cend (),
 	                    [ ] (const Color4f & value) { return value .a () < 1; });	                  
 }
 

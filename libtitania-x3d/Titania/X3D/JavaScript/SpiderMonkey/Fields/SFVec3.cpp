@@ -72,9 +72,6 @@ JSClass SFVec3f::static_class = {
 
 };
 
-template class SFVec3 <X3D::SFVec3f>;
-template class SFVec3 <X3D::SFVec3d>;
-
 } // spidermonkey
 } // X3D
 } // titania

@@ -148,7 +148,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		for (const auto & child : circle)
 			child -> dispose ();
 
-		addDisposedObjects (circle .begin (), circle .end ());
+		addDisposedObjects (circle .cbegin (), circle .cend ());
 	}
 }
 

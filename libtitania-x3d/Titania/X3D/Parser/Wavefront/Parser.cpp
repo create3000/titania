@@ -296,7 +296,7 @@ MaterialParser::whiteSpaces ()
 
 	Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
 
-	lineNumber += std::count (whiteSpaceCharacters .begin (), whiteSpaceCharacters .end (), '\n');
+	lineNumber += std::count (whiteSpaceCharacters .cbegin (), whiteSpaceCharacters .cend (), '\n');
 
 	whiteSpaceCharacters .clear ();
 }
@@ -735,7 +735,7 @@ Parser::whiteSpaces ()
 
 	Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
 
-	lineNumber += std::count (whiteSpaceCharacters .begin (), whiteSpaceCharacters .end (), '\n');
+	lineNumber += std::count (whiteSpaceCharacters .cbegin (), whiteSpaceCharacters .cend (), '\n');
 
 	whiteSpaceCharacters .clear ();
 }

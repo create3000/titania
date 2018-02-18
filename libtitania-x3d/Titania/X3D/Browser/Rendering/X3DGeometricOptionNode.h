@@ -52,8 +52,6 @@
 #define __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
 
 #include "../Core/X3DOptionNode.h"
-
-#include "../../Fields/SFNode.h"
 #include "../../Rendering/OpenGL.h"
 
 namespace titania {

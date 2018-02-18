@@ -286,7 +286,7 @@ GeoElevationGrid::createPoints () const
 
 	std::vector <Vector3d> points = createGeoPoints ();
 
-	std::transform (points .begin (), points .end (), points .begin (), std::bind (&GeoElevationGrid::getCoord, this, _1));
+	std::transform (points .cbegin (), points .cend (), points .begin (), std::bind (&GeoElevationGrid::getCoord, this, _1));
 
 	return points;
 }
@@ -374,7 +374,7 @@ GeoElevationGrid::build ()
 
 	std::vector <size_t>::const_iterator index;
 
-	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
+	for (index = coordIndex .cbegin (); index not_eq coordIndex .cend (); ++ face)
 	{
 		for (int32_t p = 0; p < 4; ++ p, ++ index)
 		{
@@ -550,7 +550,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coordIndex = createCoordIndex ();
 	const auto points     = createGeoPoints ();
 
-	coord -> point () .assign (points .begin (), points .end ());
+	coord -> point () .assign (points .cbegin (), points .cend ());
 
 	if (texCoord)
 	{

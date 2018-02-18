@@ -64,7 +64,7 @@ class SFBool
 {
 public:
 
-	using internal_type = X3D::SFBool;
+	using internal_type = bool;
 
 };
 
@@ -72,7 +72,7 @@ class SFDouble
 {
 public:
 
-	using internal_type = X3D::SFDouble;
+	using internal_type = double;
 
 };
 
@@ -80,7 +80,7 @@ class SFFloat
 {
 public:
 
-	using internal_type = X3D::SFFloat;
+	using internal_type = float;
 
 };
 
@@ -88,7 +88,7 @@ class SFInt32
 {
 public:
 
-	using internal_type = X3D::SFInt32;
+	using internal_type = int32_t;
 
 };
 
@@ -96,7 +96,7 @@ class SFString
 {
 public:
 
-	using internal_type = X3D::SFString;
+	using internal_type = X3D::String;
 
 };
 
@@ -104,57 +104,57 @@ class SFTime
 {
 public:
 
-	using internal_type = X3D::SFTime;
+	using internal_type = X3D::time_type;
 
 };
 
 template <>
 inline
 JSBool
-X3DField::get <SFBool> (JSContext* const cx, X3D::SFBool* const field, jsval* const vp)
+X3DField::get <SFBool> (JSContext* const cx, const SFBool::internal_type & value, jsval* const vp)
 {
-	*vp = field -> getValue () ? JSVAL_TRUE : JSVAL_FALSE;
+	*vp = value ? JSVAL_TRUE : JSVAL_FALSE;
 	return true;
 }
 
 template <>
 inline
 JSBool
-X3DField::get <SFDouble> (JSContext* const cx, X3D::SFDouble* const field, jsval* const vp)
+X3DField::get <SFDouble> (JSContext* const cx, const SFDouble::internal_type & value, jsval* const vp)
 {
-	return JS_NewNumberValue (cx, field -> getValue (), vp);
+	return JS_NewNumberValue (cx, value, vp);
 }
 
 template <>
 inline
 JSBool
-X3DField::get <SFFloat> (JSContext* const cx, X3D::SFFloat* const field, jsval* const vp)
+X3DField::get <SFFloat> (JSContext* const cx, const SFFloat::internal_type & value, jsval* const vp)
 {
-	return JS_NewNumberValue (cx, field -> getValue (), vp);
+	return JS_NewNumberValue (cx, value, vp);
 }
 
 template <>
 inline
 JSBool
-X3DField::get <SFInt32> (JSContext* const cx, X3D::SFInt32* const field, jsval* const vp)
+X3DField::get <SFInt32> (JSContext* const cx, const SFInt32::internal_type & value, jsval* const vp)
 {
-	return JS_NewNumberValue (cx, field -> getValue (), vp);
+	return JS_NewNumberValue (cx, value, vp);
 }
 
 template <>
 inline
 JSBool
-X3DField::get <SFString> (JSContext* const cx, X3D::SFString* const field, jsval* vp)
+X3DField::get <SFString> (JSContext* const cx, const SFString::internal_type & value, jsval* const vp)
 {
-	return JS_NewStringValue (cx, field -> getValue (), vp);
+	return JS_NewStringValue (cx, value, vp);
 }
 
 template <>
 inline
 JSBool
-X3DField::get <SFTime> (JSContext* const cx, X3D::SFTime* const field, jsval* const vp)
+X3DField::get <SFTime> (JSContext* const cx, const SFTime::internal_type & value, jsval* const vp)
 {
-	return JS_NewNumberValue (cx, field -> getValue (), vp);
+	return JS_NewNumberValue (cx, value, vp);
 }
 
 } // spidermonkey

@@ -328,7 +328,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		                                   dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
 		                                   dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) };
 
-		const auto index0 = std::max_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
+		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
 
 		const std::vector <Vector3d> y = { matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }; // Rotation axis, equates to grid normal
 		const std::vector <Vector3d> z = { matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }; // Vector to snap, later transformed to grid space
@@ -499,7 +499,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	Vector3d scale (1, 1, 1);
 	scale [axis] = ratio;
 
-	for (const auto & connectedAxis : master -> connectedAxes ())
+	for (const auto & connectedAxis : basic::make_const_range (master -> connectedAxes ()))
 	{
 		try
 		{
@@ -509,8 +509,8 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 				std::make_pair ('z', 2),
 			};
 
-			const auto lhs = axes .at (std::tolower (connectedAxis .getValue () .at (0)));
-			const auto rhs = axes .at (std::tolower (connectedAxis .getValue () .at (1)));
+			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
+			const auto rhs = axes .at (std::tolower (connectedAxis .at (1)));
 
 			if (rhs == axis)
 				scale [lhs] = scale [rhs];

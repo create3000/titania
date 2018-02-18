@@ -51,19 +51,16 @@
 #ifndef __TITANIA_X3D_FIELDS_MFINT32_H__
 #define __TITANIA_X3D_FIELDS_MFINT32_H__
 
-#include "../Basic/X3DArrayField.h"
-#include "../Fields/X3DScalar.h"
-
-extern template class std::vector <titania::X3D::SFInt32*>;
+#include "../Basic/X3DNativeArrayField.h"
 
 namespace titania {
 namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
-extern template class X3DField <Array <SFInt32>>;
-extern template class X3DArrayField <SFInt32>;
+extern template class X3DField <Array <int32_t>>;
+extern template class X3DNativeArrayField <int32_t>;
 
-using MFInt32 = X3DArrayField <SFInt32>;
+using MFInt32 = X3DNativeArrayField <int32_t>;
 
 } // X3D
 

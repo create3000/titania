@@ -302,10 +302,10 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 
 	// Rewrite indices.
 
-	startVertex1 = std::find (vertices .begin (), vertices .end (), startVertex1) - vertices .begin ();
-	startVertex2 = std::find (vertices .begin (), vertices .end (), startVertex2) - vertices .begin ();
-	endVertex1   = std::find (vertices .begin (), vertices .end (), endVertex1)   - vertices .begin ();
-	endVertex2   = std::find (vertices .begin (), vertices .end (), endVertex2)   - vertices .begin ();
+	startVertex1 = std::find (vertices .cbegin (), vertices .cend (), startVertex1) - vertices .cbegin ();
+	startVertex2 = std::find (vertices .cbegin (), vertices .cend (), startVertex2) - vertices .cbegin ();
+	endVertex1   = std::find (vertices .cbegin (), vertices .cend (), endVertex1)   - vertices .cbegin ();
+	endVertex2   = std::find (vertices .cbegin (), vertices .cend (), endVertex2)   - vertices .cbegin ();
 
 	if (endVertex1 < startVertex1)
 		endVertex1 += vertices .size ();
@@ -524,13 +524,13 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (not colorPerVertex ())
 	{
 		for (const auto & pair : basic::make_reverse_range (fillIndices))
-			colorIndex () .insert (colorIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+			colorIndex () .insert (colorIndex () .begin () + pair .first, pair .second, -1);
 	}
 
 	if (not normalPerVertex ())
 	{
 		for (const auto & pair : basic::make_reverse_range (fillIndices))
-			normalIndex () .insert (normalIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+			normalIndex () .insert (normalIndex () .begin () + pair .first, pair .second, -1);
 	}
 
 	std::fill (coordIndex () .begin () + begin, coordIndex () .begin () + end, -1);
@@ -988,10 +988,10 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 	
 		// Rewrite indices.
 	
-		startVertex1 = std::find (vertices .begin (), vertices .end (), startVertex1) - vertices .begin ();
-		startVertex2 = std::find (vertices .begin (), vertices .end (), startVertex2) - vertices .begin ();
-		endVertex1   = std::find (vertices .begin (), vertices .end (), endVertex1)   - vertices .begin ();
-		endVertex2   = std::find (vertices .begin (), vertices .end (), endVertex2)   - vertices .begin ();
+		startVertex1 = std::find (vertices .cbegin (), vertices .cend (), startVertex1) - vertices .cbegin ();
+		startVertex2 = std::find (vertices .cbegin (), vertices .cend (), startVertex2) - vertices .cbegin ();
+		endVertex1   = std::find (vertices .cbegin (), vertices .cend (), endVertex1)   - vertices .cbegin ();
+		endVertex2   = std::find (vertices .cbegin (), vertices .cend (), endVertex2)   - vertices .cbegin ();
 	
 		if (endVertex1 < startVertex1)
 			endVertex1 += vertices .size ();
@@ -1208,13 +1208,13 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 	if (not colorPerVertex ())
 	{
 		for (const auto & pair : basic::make_reverse_range (fillIndices))
-			colorIndex () .insert (colorIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+			colorIndex () .insert (colorIndex () .begin () + pair .first, pair .second, -1);
 	}
 
 	if (not normalPerVertex ())
 	{
 		for (const auto & pair : basic::make_reverse_range (fillIndices))
-			normalIndex () .insert (normalIndex () .begin () + pair .first, pair .second, SFInt32 (-1));
+			normalIndex () .insert (normalIndex () .begin () + pair .first, pair .second, -1);
 	}
 
 	// 

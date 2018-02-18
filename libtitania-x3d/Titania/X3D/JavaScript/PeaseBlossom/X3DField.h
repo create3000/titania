@@ -91,7 +91,7 @@ public:
 	template <class Class>
 	static
 	pb::var
-	get (Context* const, typename Class::internal_type* const);
+	get (Context* const, const typename Class::internal_type &);
 
 	template <class Class>
 	static
@@ -148,14 +148,14 @@ private:
 
 template <class Class>
 pb::var
-X3DField::get (Context* const context, typename Class::internal_type* const field)
+X3DField::get (Context* const context, const typename Class::internal_type & field)
 {
-	const auto object = context -> getObject (getKey <Class> (field));
+	const auto object = context -> getObject (getKey <Class> (const_cast <typename Class::internal_type*> (&field)));
 
 	if (object)
 		return object;
 
-	return create <Class> (context -> getProgram (), field);
+	return create <Class> (context -> getProgram (), const_cast <typename Class::internal_type*> (&field));
 }
 
 template <class Class>

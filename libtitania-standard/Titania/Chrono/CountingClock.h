@@ -85,7 +85,9 @@ private:
 
 };
 
+extern template class counting_clock <float>;
 extern template class counting_clock <double>;
+extern template class counting_clock <long double>;
 
 } // chrono
 } // titania

@@ -234,27 +234,6 @@ JSClass MFVec4f::static_class = {
 
 };
 
-template class X3DArrayField <SFBool, X3D::MFBool>;
-template class X3DArrayField <SFColor, X3D::MFColor>;
-template class X3DArrayField <SFColorRGBA, X3D::MFColorRGBA>;
-template class X3DArrayField <SFDouble, X3D::MFDouble>;
-template class X3DArrayField <SFFloat, X3D::MFFloat>;
-template class X3DArrayField <SFImage, X3D::MFImage>;
-template class X3DArrayField <SFInt32, X3D::MFInt32>;
-template class X3DArrayField <SFMatrix3d, X3D::MFMatrix3d>;
-template class X3DArrayField <SFMatrix3f, X3D::MFMatrix3f>;
-template class X3DArrayField <SFMatrix4d, X3D::MFMatrix4d>;
-template class X3DArrayField <SFMatrix4f, X3D::MFMatrix4f>;
-template class X3DArrayField <SFRotation, X3D::MFRotation>;
-template class X3DArrayField <SFString, X3D::MFString>;
-template class X3DArrayField <SFTime, X3D::MFTime>;
-template class X3DArrayField <SFVec2d, X3D::MFVec2d>;
-template class X3DArrayField <SFVec2f, X3D::MFVec2f>;
-template class X3DArrayField <SFVec3d, X3D::MFVec3d>;
-template class X3DArrayField <SFVec3f, X3D::MFVec3f>;
-template class X3DArrayField <SFVec4d, X3D::MFVec4d>;
-template class X3DArrayField <SFVec4f, X3D::MFVec4f>;
-
 } // spidermonkey
 } // X3D
 } // titania

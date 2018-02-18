@@ -137,11 +137,11 @@ PrototypeEditor::getProto () const
 	{
 		auto path = getWorldInfo (getCurrentScene ()) -> getMetaData <X3D::MFString> ("/Titania/Prototype/path");
 
-		X3D::X3DProtoDeclarationNode* protoNode = getCurrentContext () -> findProtoDeclaration (path .at (0));
+		X3D::X3DProtoDeclarationNode* protoNode = getCurrentContext () -> findProtoDeclaration (path .at (0) .get ());
 
 		path .pop_front ();
 
-		for (const auto & name : path)
+		for (const auto & name : basic::make_const_range (path))
 		{
 			const auto proto = dynamic_cast <X3D::ProtoDeclaration*> (protoNode);
 

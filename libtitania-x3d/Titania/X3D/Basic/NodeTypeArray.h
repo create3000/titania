@@ -62,6 +62,4 @@ typedef std::vector <NodeType> NodeTypeArray;
 } // X3D
 } // titania
 
-extern template class std::vector <titania::X3D::NodeType>;
-
 #endif

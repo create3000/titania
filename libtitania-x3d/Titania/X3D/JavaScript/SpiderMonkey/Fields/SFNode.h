@@ -124,12 +124,12 @@ X3DField::getKey <SFNode> (X3D::SFNode* const field)
 template <>
 inline
 JSBool
-X3DField::get <SFNode> (JSContext* const cx, X3D::SFNode* const field, jsval* const vp)
+X3DField::get <SFNode> (JSContext* const cx, const X3D::SFNode & field, jsval* const vp)
 {
-	if (field -> getValue ())
+	if (field .getValue ())
 	{
 		const auto context = getContext (cx);
-		const auto object  = context -> getObject (getKey <SFNode> (field));
+		const auto object  = context -> getObject (getKey <SFNode> (const_cast <X3D::SFNode*> (&field)));
 
 		if (object)
 		{
@@ -137,7 +137,7 @@ X3DField::get <SFNode> (JSContext* const cx, X3D::SFNode* const field, jsval* co
 			return true;
 		}
 
-		return create <SFNode> (cx, new X3D::SFNode (*field), vp);
+		return create <SFNode> (cx, new X3D::SFNode (field), vp);
 	}
 
 	*vp = JSVAL_NULL;

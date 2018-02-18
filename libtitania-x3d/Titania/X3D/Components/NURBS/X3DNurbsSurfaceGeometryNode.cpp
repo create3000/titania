@@ -157,7 +157,7 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 std::vector <float>
 X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t order, const int32_t dimension) const
 {
-	std::vector <float> knots (knot .begin (), knot .end ());
+	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
 	// check the knot-vectors. If they are not according to standard
 	// default uniform knot vectors will be generated.
@@ -235,7 +235,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	const auto cp = controlPointNode -> getControlPoints (weight ());
 
-	std::vector <Vector4f> controlPoints (cp .begin (), cp .end ());
+	std::vector <Vector4f> controlPoints (cp .cbegin (), cp .cend ());
 
 	// Knots
 
@@ -469,16 +469,16 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 		   //__LOG__ << "GL_TRIANGLES" << std::endl;
 			
 			self -> getTexCoords () [0] .insert (self -> getTexCoords () [0] .end (), 
-			                                     self -> texCoords .begin (),
-			                                     self -> texCoords .end ());
+			                                     self -> texCoords .cbegin (),
+			                                     self -> texCoords .cend ());
 
 			self -> getNormals () .insert (self -> getNormals () .end (), 
-			                               self -> normals .begin (),
-			                               self -> normals .end ());
+			                               self -> normals .cbegin (),
+			                               self -> normals .cend ());
 
 			self -> getVertices () .insert (self -> getVertices () .end (), 
-			                                self -> vertices .begin (),
-			                                self -> vertices .end ());
+			                                self -> vertices .cbegin (),
+			                                self -> vertices .cend ());
 
 			self -> numVertices += self -> vertices .size ();      
 

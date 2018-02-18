@@ -92,7 +92,7 @@ NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 std::vector <float>
 NurbsCurve2D::getKnots (const MFDouble & knot, const int32_t order, const int32_t dimension) const
 {
-	std::vector <float> knots (knot .begin (), knot .end ());
+	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
 	bool generateUniform = true;
 

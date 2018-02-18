@@ -64,7 +64,7 @@ class SFBool
 {
 public:
 
-	using internal_type = X3D::SFBool;
+	using internal_type = bool;
 
 };
 
@@ -72,7 +72,7 @@ class SFDouble
 {
 public:
 
-	using internal_type = X3D::SFDouble;
+	using internal_type = double;
 
 };
 
@@ -80,7 +80,7 @@ class SFFloat
 {
 public:
 
-	using internal_type = X3D::SFFloat;
+	using internal_type = float;
 
 };
 
@@ -88,7 +88,7 @@ class SFInt32
 {
 public:
 
-	using internal_type = X3D::SFInt32;
+	using internal_type = int32_t;
 
 };
 
@@ -96,7 +96,7 @@ class SFString
 {
 public:
 
-	using internal_type = X3D::SFString;
+	using internal_type = X3D::String;
 
 };
 
@@ -104,56 +104,56 @@ class SFTime
 {
 public:
 
-	using internal_type = X3D::SFTime;
+	using internal_type = X3D::time_type;
 
 };
 
 template <>
 inline
 pb::var
-X3DField::get <SFBool> (Context* const, SFBool::internal_type* const field)
+X3DField::get <SFBool> (Context* const, const SFBool::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 template <>
 inline
 pb::var
-X3DField::get <SFDouble> (Context* const, SFDouble::internal_type* const field)
+X3DField::get <SFDouble> (Context* const, const SFDouble::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 template <>
 inline
 pb::var
-X3DField::get <SFFloat> (Context* const, SFFloat::internal_type* const field)
+X3DField::get <SFFloat> (Context* const, const SFFloat::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 template <>
 inline
 pb::var
-X3DField::get <SFInt32> (Context* const, SFInt32::internal_type* const field)
+X3DField::get <SFInt32> (Context* const, const SFInt32::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 template <>
 inline
 pb::var
-X3DField::get <SFString> (Context* const, SFString::internal_type* const field)
+X3DField::get <SFString> (Context* const, const SFString::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 template <>
 inline
 pb::var
-X3DField::get <SFTime> (Context* const, SFTime::internal_type* const field)
+X3DField::get <SFTime> (Context* const, const SFTime::internal_type & value)
 {
-	return field -> getValue ();
+	return value;
 }
 
 } // peaseblossom

@@ -75,30 +75,5 @@ X3DError::~X3DError ()
 throw ()
 { }
 
-///////////////////////////////////////////////////////////////////////////////
-
-template class Error <BROWSER_UNAVAILABLE>;
-template class Error <CONNECTION_ERROR>;
-template class Error <DISPOSED>;
-template class Error <IMPORTED_NODE>;
-template class Error <INITIALIZED_ERROR>;
-template class Error <INSUFFICIENT_CAPABILITIES>;
-template class Error <INVALID_ACCESS_TYPE>;
-template class Error <INVALID_BROWSER>;
-template class Error <INVALID_DOCUMENT>;
-template class Error <INVALID_EXECUTION_CONTEXT>;
-template class Error <INVALID_FIELD>;
-template class Error <INVALID_NAME>;
-template class Error <INVALID_NODE>;
-template class Error <INVALID_OPERATION_TIMING>;
-template class Error <INVALID_SCENE>;
-template class Error <INVALID_URL>;
-template class Error <INVALID_X3D>;
-template class Error <NODE_IN_USE>;
-template class Error <NODE_NOT_AVAILABLE>;
-template class Error <NOT_SHARED>;
-template class Error <NOT_SUPPORTED>;
-template class Error <URL_UNAVAILABLE>;
-
 } // X3D
 } // titania/

@@ -239,7 +239,7 @@ throw (std::out_of_range)
 
 	istream .clear ();
 
-	return std::string (string .rbegin (), string .rend ());
+	return std::string (string .crbegin (), string .crend ());
 }
 
 void
@@ -338,7 +338,7 @@ Parser::lines (const std::string & string)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	lineNumber += std::count (string .begin (), string .end (), '\n');
+	lineNumber += std::count (string .cbegin (), string .cend (), '\n');
 }
 
 bool
@@ -2073,6 +2073,8 @@ Parser::sfboolValues (MFBool* _field)
 
 	while (sfboolValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2140,6 +2142,8 @@ Parser::sfcolorValues (MFColor* _field)
 
 	while (sfcolorValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2210,6 +2214,8 @@ Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 
 	while (sfcolorRGBAValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2274,6 +2280,8 @@ Parser::sfdoubleValues (MFDouble* _field)
 
 	while (sfdoubleValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2337,6 +2345,8 @@ Parser::sffloatValues (MFFloat* _field)
 
 	while (sffloatValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2416,6 +2426,8 @@ Parser::sfimageValues (MFImage* _field)
 
 	while (sfimageValue (&value))
 		_field -> emplace_back (std::move (value));
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2475,6 +2487,8 @@ Parser::sfint32Values (MFInt32* _field)
 
 	while (sfint32Value (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2560,6 +2574,8 @@ Parser::sfmatrix3dValues (MFMatrix3d* _field)
 
 	while (sfmatrix3dValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2645,6 +2661,8 @@ Parser::sfmatrix3fValues (MFMatrix3f* _field)
 
 	while (sfmatrix3fValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2751,6 +2769,8 @@ Parser::sfmatrix4dValues (MFMatrix4d* _field)
 
 	while (sfmatrix4dValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2857,6 +2877,8 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 
 	while (sfmatrix4fValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2906,6 +2928,8 @@ Parser::nodeStatements (MFNode* _field)
 
 	while (nodeStatement (_node))
 		_field -> emplace_back (std::move (_node));
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -2974,6 +2998,8 @@ Parser::sfrotationValues (MFRotation* _field)
 
 	while (sfrotationValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3003,7 +3029,7 @@ Parser::mfstringValue (MFString* _field)
 
 	if (sfstringValue (&value))
 	{
-		_field -> emplace_back (value);
+		_field -> emplace_back (value .str ());
 		return true;
 	}
 
@@ -3032,7 +3058,9 @@ Parser::sfstringValues (MFString* _field)
 	_field -> clear ();
 
 	while (sfstringValue (&value))
-		_field -> emplace_back (value);
+		_field -> emplace_back (value .str ());
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3092,6 +3120,8 @@ Parser::sftimeValues (MFTime* _field)
 
 	while (sftimeValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3163,6 +3193,8 @@ Parser::sfvec2dValues (MFVec2d* _field)
 
 	while (sfvec2dValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3234,6 +3266,8 @@ Parser::sfvec2fValues (MFVec2f* _field)
 
 	while (sfvec2fValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3309,6 +3343,8 @@ Parser::sfvec3dValues (MFVec3d* _field)
 
 	while (sfvec3dValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3384,6 +3420,8 @@ Parser::sfvec3fValues (MFVec3f* _field)
 
 	while (sfvec3fValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3463,6 +3501,8 @@ Parser::sfvec4dValues (MFVec4d* _field)
 
 	while (sfvec4dValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 bool
@@ -3542,6 +3582,8 @@ Parser::sfvec4fValues (MFVec4f* _field)
 
 	while (sfvec4fValue (&value))
 		_field -> emplace_back (value);
+
+	_field -> shrink_to_fit ();
 }
 
 Parser::~Parser ()

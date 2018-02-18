@@ -53,7 +53,9 @@
 namespace titania {
 namespace chrono {
 
+template class stopwatch <float>;
 template class stopwatch <double>;
+template class stopwatch <long double>;
 
 } // chrono
 } // titania

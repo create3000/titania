@@ -100,7 +100,7 @@ TriangleSet2D::build ()
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
-	for (const auto & vertex : vertices ())
+	for (const auto & vertex : basic::make_const_range (vertices ()))
 	{
 		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
@@ -154,10 +154,10 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
+	for (const auto & point : basic::make_range (getTexCoords () [0] .cbegin (), getElements () [0] .count ()))
 		texCoord -> point () .emplace_back (point .x (), point .y ());
 
-	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count ());
+	coord -> point () .assign (getVertices () .cbegin (), getVertices () .cbegin () + getElements () [0] .count ());
 
 	for (int32_t i = 0, size = getVertices () .size (); i < size; i += 3)
 	{

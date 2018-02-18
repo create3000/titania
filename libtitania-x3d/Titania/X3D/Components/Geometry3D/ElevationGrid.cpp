@@ -172,7 +172,7 @@ ElevationGrid::set_attrib ()
 			value .emplace_back (attribNode);
 	}
 
-	attribNodes .set (value .begin (), value .end ());
+	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (this);
@@ -415,7 +415,7 @@ ElevationGrid::build ()
 
 	std::vector <size_t>::const_iterator index;
 
-	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
+	for (index = coordIndex .cbegin (); index not_eq coordIndex .cend (); ++ face)
 	{
 		for (int32_t p = 0; p < 6; ++ p, ++ index)
 		{
@@ -464,9 +464,9 @@ ElevationGrid::getMinMaxHeight () const
 	if (height () .empty ())
 		return std::make_pair (0, 0);
 
-	const auto pair = std::minmax_element (height () .begin (), height () .end ());
+	const auto pair = std::minmax_element (height () .cbegin (), height () .cend ());
 
-	return std::make_pair (pair .first -> getValue (), pair .second -> getValue ());
+	return std::make_pair (*pair .first, *pair .second);
 }
 
 void
@@ -604,7 +604,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coordIndex = createCoordIndex ();
 	const auto points     = createPoints ();
 
-	coord -> point () .assign (points .begin (), points .end ());
+	coord -> point () .assign (points .cbegin (), points .cend ());
 
 	if (texCoord)
 	{

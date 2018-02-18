@@ -208,7 +208,7 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & modelMatrix,
 	                             X3DPtr <X3DLayerNode> (layer),
 	                             layerNumber,
 	                             depthOffset,
-	                             MFNode (hierarchy .begin (), hierarchy .end ())));
+	                             MFNode (hierarchy .cbegin (), hierarchy .cend ())));
 }
 
 bool
@@ -227,8 +227,8 @@ X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const doubl
 
 	selectedLayer = getNearestHit () -> layer;
 
-	activeSensors .assign (getNearestHit () -> sensors .begin (),
-	                       getNearestHit () -> sensors .end ());
+	activeSensors .assign (getNearestHit () -> sensors .cbegin (),
+	                       getNearestHit () -> sensors .cend ());
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
 		pointingDeviceSensorNode -> set_active (true, getNearestHit ());
@@ -299,7 +299,7 @@ X3DPointingDeviceSensorContext::motion ()
 	std::vector <PointingDeviceSensorContainerPtr> difference;
 
 	if (getHits () .empty ())
-		difference .assign (overSensors .begin (), overSensors .end ());
+		difference .assign (overSensors .cbegin (), overSensors .cend ());
 
 	else
 	{

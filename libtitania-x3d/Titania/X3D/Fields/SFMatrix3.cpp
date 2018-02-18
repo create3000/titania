@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 template <>
-const std::string X3DField <Matrix3d>::typeName ("SFMatrix3d");
+const std::string X3DField <Matrix3d>::typeName = "SFMatrix3d";
 
 template <>
-const std::string X3DField <Matrix3f>::typeName ("SFMatrix3f");
+const std::string X3DField <Matrix3f>::typeName = "SFMatrix3f";
 
 template <>
 const FieldType X3DField <Matrix3d>::type = X3DConstants::SFMatrix3d;

@@ -980,7 +980,7 @@ throw (Error <DISPOSED>)
 
 		array .erase (array .begin (), array .begin () + 3);
 
-		images .emplace_back (width, height, components, MFInt32 (array .begin (), array .begin () + size));
+		images .emplace_back (width, height, components, MFInt32 (array .cbegin (), array .cbegin () + size));
 
 		array .erase (array .begin (), array .begin () + size);
 	}
@@ -1135,7 +1135,7 @@ throw (Error <INVALID_NODE>,
 		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), metadata ());
 	}
 
-	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
+	for (const auto & name : std::make_pair (names .cbegin () + 2, names .cend () - 1))
 	{
 	   metadataSet = metadataSet -> getValue <MetadataSet> (name, throw_);
 	}
@@ -1193,7 +1193,7 @@ throw (Error <DISPOSED>)
 
 			try
 			{
-				for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))
+				for (const auto & name : std::make_pair (names .cbegin () + 2, names .cend () - 1))
 					metadataSets .emplace_back (metadataSets .back () -> getValue <MetadataSet> (name, true));
 			}
 			catch (const Error <INVALID_NAME> &)
@@ -2244,7 +2244,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 			const auto & field    = static_cast <const MFTime &> (*fieldDefinition);
 			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
 
-			metadata -> value () .assign (field .begin (), field .end ());
+			metadata -> value () .assign (field .cbegin (), field .cend ());
 			break;
 		}
 		case X3D::X3DConstants::MFVec2d:

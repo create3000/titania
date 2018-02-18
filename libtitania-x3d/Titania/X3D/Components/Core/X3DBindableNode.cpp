@@ -97,7 +97,7 @@ X3DBindableNode::addLayer (X3DLayerNode* const layer)
 void 
 X3DBindableNode::removeLayer (X3DLayerNode* const layer)
 {
-	const auto iter = std::find (layers .begin (), layers .end (), layer);
+	const auto iter = std::find (layers .cbegin (), layers .cend (), layer);
 
 	if (iter not_eq layers .end ())
 		layers .erase (iter);

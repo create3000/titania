@@ -61,8 +61,6 @@ using Image = math::image <MFInt32>;
 
 } // X3D
 
-extern template class math::image <X3D::MFInt32>;
-
 } // titania
 
 #endif

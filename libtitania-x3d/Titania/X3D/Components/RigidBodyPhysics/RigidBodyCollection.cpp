@@ -228,7 +228,7 @@ RigidBodyCollection::set_bodies ()
 			value .emplace_back (bodyNode);
 	}
 
-	bodyNodes .set (value .begin (), value .end ());
+	bodyNodes .set (value .cbegin (), value .cend ());
 
 	set_gravity ();
 }

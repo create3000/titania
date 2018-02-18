@@ -867,7 +867,7 @@ ParticleSystem::set_color ()
 
 			// Keys
 
-			std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
+			std::vector <float> colorKeysArray (colorKey () .cbegin (), colorKey () .cend ());
 			colorKeysArray .resize (numColors);
 
 			glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
@@ -946,7 +946,7 @@ ParticleSystem::set_texCoord ()
 
 			// Keys
 
-			std::vector <float> texCoordKeysArray (texCoordKey () .begin (), texCoordKey () .end ());
+			std::vector <float> texCoordKeysArray (texCoordKey () .cbegin (), texCoordKey () .cend ());
 			texCoordKeysArray .resize (numTexCoord);
 
 			glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);

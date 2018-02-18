@@ -639,8 +639,8 @@ SFMatrix3 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 extern template class SFMatrix3 <Matrix3d>;
 extern template class SFMatrix3 <Matrix3f>;
 
-typedef SFMatrix3 <Matrix3d> SFMatrix3d;
-typedef SFMatrix3 <Matrix3f> SFMatrix3f;
+using SFMatrix3d = SFMatrix3 <Matrix3d>;
+using SFMatrix3f = SFMatrix3 <Matrix3f>;
 
 } // X3D
 } // titania

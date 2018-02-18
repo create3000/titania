@@ -63,6 +63,4 @@ typedef std::vector <X3DFieldDefinition*> FieldDefinitionArray;
 } // X3D
 } // titania
 
-extern template class std::vector <titania::X3D::X3DFieldDefinition*>;
-
 #endif

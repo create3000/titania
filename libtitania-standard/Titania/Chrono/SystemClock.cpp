@@ -53,7 +53,9 @@
 namespace titania {
 namespace chrono {
 
+template class system_clock <float>;
 template class system_clock <double>;
+template class system_clock <long double>;
 
 } // chrono
 } // titania

@@ -59,14 +59,12 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using RouteArray = jsX3DConstArray <X3DRoute, X3D::RouteArray>;
+using RouteArray = X3DConstArray <X3DRoute, X3D::RouteArray>;
 
 template <>
 constexpr ObjectType
 RouteArray::getId ()
 { return ObjectType::RouteArray; }
-
-extern template class jsX3DConstArray <X3DRoute, X3D::RouteArray>;
 
 } // spidermonkey
 } // X3D

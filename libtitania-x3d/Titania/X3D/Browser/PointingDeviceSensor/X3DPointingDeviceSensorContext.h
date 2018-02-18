@@ -54,6 +54,7 @@
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
 #include "../../Types/Pointer.h"
+#include "../../Basic/X3DBaseNode.h"
 #include "HitArray.h"
 #include "Intersection.h"
 #include "SelectionType.h"

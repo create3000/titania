@@ -191,27 +191,6 @@ constexpr ObjectType
 MFVec4f::getId ()
 { return ObjectType::MFVec4f; }
 
-extern template class X3DArrayField <SFBool, X3D::MFBool>;
-extern template class X3DArrayField <SFColor, X3D::MFColor>;
-extern template class X3DArrayField <SFColorRGBA, X3D::MFColorRGBA>;
-extern template class X3DArrayField <SFDouble, X3D::MFDouble>;
-extern template class X3DArrayField <SFFloat, X3D::MFFloat>;
-extern template class X3DArrayField <SFImage, X3D::MFImage>;
-extern template class X3DArrayField <SFInt32, X3D::MFInt32>;
-extern template class X3DArrayField <SFMatrix3d, X3D::MFMatrix3d>;
-extern template class X3DArrayField <SFMatrix3f, X3D::MFMatrix3f>;
-extern template class X3DArrayField <SFMatrix4d, X3D::MFMatrix4d>;
-extern template class X3DArrayField <SFMatrix4f, X3D::MFMatrix4f>;
-extern template class X3DArrayField <SFRotation, X3D::MFRotation>;
-extern template class X3DArrayField <SFString, X3D::MFString>;
-extern template class X3DArrayField <SFTime, X3D::MFTime>;
-extern template class X3DArrayField <SFVec2d, X3D::MFVec2d>;
-extern template class X3DArrayField <SFVec2f, X3D::MFVec2f>;
-extern template class X3DArrayField <SFVec3d, X3D::MFVec3d>;
-extern template class X3DArrayField <SFVec3f, X3D::MFVec3f>;
-extern template class X3DArrayField <SFVec4d, X3D::MFVec4d>;
-extern template class X3DArrayField <SFVec4f, X3D::MFVec4f>;
-
 } // spidermonkey
 } // X3D
 } // titania

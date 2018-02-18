@@ -144,29 +144,6 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 	return ostream << error .what ();
 }
 
-extern template class Error <BROWSER_UNAVAILABLE>;
-extern template class Error <CONNECTION_ERROR>;
-extern template class Error <DISPOSED>;
-extern template class Error <IMPORTED_NODE>;
-extern template class Error <INITIALIZED_ERROR>;
-extern template class Error <INSUFFICIENT_CAPABILITIES>;
-extern template class Error <INVALID_ACCESS_TYPE>;
-extern template class Error <INVALID_BROWSER>;
-extern template class Error <INVALID_DOCUMENT>;
-extern template class Error <INVALID_EXECUTION_CONTEXT>;
-extern template class Error <INVALID_FIELD>;
-extern template class Error <INVALID_NAME>;
-extern template class Error <INVALID_NODE>;
-extern template class Error <INVALID_OPERATION_TIMING>;
-extern template class Error <INVALID_SCENE>;
-extern template class Error <INVALID_URL>;
-extern template class Error <INVALID_X3D>;
-extern template class Error <NODE_IN_USE>;
-extern template class Error <NODE_NOT_AVAILABLE>;
-extern template class Error <NOT_SHARED>;
-extern template class Error <NOT_SUPPORTED>;
-extern template class Error <URL_UNAVAILABLE>;
-
 } // X3D
 } // titania
 

@@ -162,7 +162,7 @@ X3DGroupingNode::set_addChildren ()
 
 	const auto first = children () .size ();
 
-	children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
+	children () .insert (children () .end (), addChildren () .cbegin (), addChildren () .cend ());
 	add (first, addChildren ());
 
 	addChildren () .set ({ });

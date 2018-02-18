@@ -271,7 +271,7 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 		{
 			relativeMatrix .get (t, r, s, so);
 
-			for (const auto & connectedAxis : basic::make_reverse_range (connectedAxes ()))
+			for (const auto & connectedAxis : basic::make_const_reverse_range (connectedAxes ()))
 			{
 				try
 				{
@@ -281,8 +281,8 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 						std::make_pair ('z', 2),
 					};
 		
-					const auto lhs = axes .at (std::tolower (connectedAxis .getValue () .at (0)));
-					const auto rhs = axes .at (std::tolower (connectedAxis .getValue () .at (1)));
+					const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
+					const auto rhs = axes .at (std::tolower (connectedAxis .at (1)));
 
 					s [lhs] = s [rhs];
 				}
@@ -364,7 +364,7 @@ X3DTransformNodeTool::set_tools ()
 
 	availableTools .clear ();
 
-	for (const auto & tool : tools ())
+	for (const auto & tool : basic::make_const_range (tools ()))
 	{
 		try
 		{
@@ -387,7 +387,7 @@ X3DTransformNodeTool::set_active ()
 
 	if (isActive ())
 	{
-		//
+		// Begin undo.
 
 		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{
@@ -399,6 +399,8 @@ X3DTransformNodeTool::set_active ()
 	}
 	else
 	{
+		// End undo.
+
 		std::string description;
 
       switch (getActiveTool ())

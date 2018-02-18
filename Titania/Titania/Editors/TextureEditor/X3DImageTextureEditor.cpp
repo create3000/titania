@@ -117,12 +117,12 @@ X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 void
 X3DImageTextureEditor::on_embed_image_clicked ()
 {
-	for (const auto & URL : imageTexture -> url ())
+	for (const auto & URL : basic::make_const_range (imageTexture -> url ()))
 	{
 		try
 		{
 			X3D::FileLoader loader (imageTexture -> getExecutionContext ());
-			const std::string image = loader .loadDocument (URL);
+			const std::string image = loader .loadDocument (URL .raw ());
 
 			bool        result_uncertain;
 			std::string contentType = Gio::content_type_guess (loader .getWorldURL () .path (), (guchar*) image .data (), image .size (), result_uncertain);

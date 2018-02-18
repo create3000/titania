@@ -65,6 +65,4 @@ typedef std::set <X3DFieldDefinition*> FieldDefinitionSet;
 } // X3D
 } // titania
 
-extern template class std::set <titania::X3D::X3DFieldDefinition*>;
-
 #endif

@@ -1946,7 +1946,7 @@ AnimationEditor::moveKeyframe (const X3D::X3DPtr <X3D::X3DNode> & interpolator, 
 	keyValue .resize (key .size () * components * keySize);
 	keyType  .resize (key .size ());
 
-	const auto type = std::string (keyType [index]);
+	const auto type = std::string (keyType [index] .get ());
 
 	std::vector <double> value;
 	
@@ -2072,7 +2072,7 @@ AnimationEditor::scaleKeyframes (const X3D::X3DPtr <X3D::X3DNode> & interpolator
 
 	undoStep -> addUndoFunction (&X3D::X3DNode::setMetaData <X3D::MFInt32>, interpolator, "/Interpolator/key", key);
 
-	for (auto & frame : key)
+	for (X3D::MFInt32::reference frame : key)
 	{
 		frame = std::round (frame / (double) fromDuration * toDuration);
 	}

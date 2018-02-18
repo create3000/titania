@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,10 +48,49 @@
  *
  ******************************************************************************/
 
-#include "Image.h"
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_VRMLGENERATOR_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_VRMLGENERATOR_H__
+
+#include "../InputOutput/Generator.h"
 
 namespace titania {
+namespace X3D {
 
-template class math::image <X3D::MFInt32>;
+class VRMLGenerator
+{
+public:
 
+	// VRML
+
+	static
+	void
+	VRMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+
+	static
+	void
+	VRMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory);
+
+	static
+	void
+	VRMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory);
+
+	static
+	void
+	VRMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory);
+
+	static
+	void
+	VRMLEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	std::enable_if_t <std::is_enum <Type>::value, void>
+	VRMLEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ VRMLEncode (ostream, int32_t (value), unitCategory); }
+
+};
+
+} // X3D
 } // titania
+
+#endif

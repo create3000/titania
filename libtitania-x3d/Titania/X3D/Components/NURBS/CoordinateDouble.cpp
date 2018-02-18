@@ -86,7 +86,7 @@ CoordinateDouble::create (X3DExecutionContext* const executionContext) const
 Box3d
 CoordinateDouble::getBBox () const
 {
-	return Box3d (point () .begin (), point () .end (), math::iterator_type ());
+	return Box3d (point () .cbegin (), point () .cend (), math::iterator_type ());
 }
 
 void

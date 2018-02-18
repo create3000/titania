@@ -95,11 +95,29 @@ namespace basic {
 
 template <class Range>
 inline
+std::pair <decltype (std::cbegin (std::declval <Range> ())),
+           decltype (std::cend (std::declval <Range> ()))> 
+make_const_range (Range && range)
+{
+	return std::make_pair (std::cbegin (range), std::cend (range));
+}
+
+template <class Range>
+inline
 std::pair <std::reverse_iterator <decltype (std::end (std::declval <Range> ()))>,
            std::reverse_iterator <decltype (std::begin (std::declval <Range> ()))>> 
 make_reverse_range (Range && range)
 {
 	return std::make_pair (std::make_reverse_iterator (std::end (range)), std::make_reverse_iterator (std::begin (range)));
+}
+
+template <class Range>
+inline
+std::pair <std::reverse_iterator <decltype (std::cend (std::declval <Range> ()))>,
+           std::reverse_iterator <decltype (std::cbegin (std::declval <Range> ()))>> 
+make_const_reverse_range (Range && range)
+{
+	return std::make_pair (std::make_reverse_iterator (std::cend (range)), std::make_reverse_iterator (std::cbegin (range)));
 }
 
 template <class Iterator>

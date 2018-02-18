@@ -540,9 +540,6 @@ SFMatrix3f::getType ()
 	return ObjectType::SFMatrix3f;
 }
 
-extern template class SFMatrix3 <X3D::SFMatrix3d>;
-extern template class SFMatrix3 <X3D::SFMatrix3f>;
-
 } // peaseblossom
 } // X3D
 } // titania

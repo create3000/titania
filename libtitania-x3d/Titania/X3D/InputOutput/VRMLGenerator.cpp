@@ -48,15 +48,65 @@
  *
  ******************************************************************************/
 
-#include "UnitArray.h"
+#include "VRMLGenerator.h"
 
 namespace titania {
 namespace X3D {
 
-//
+// VRML
+
+void
+VRMLGenerator::VRMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+{
+	ostream << (value ? "TRUE" : "FALSE");
+}
+
+void
+VRMLGenerator::VRMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+{
+	const auto unit = Generator::Unit (ostream, unitCategory);
+
+	ostream << Generator::SetPrecision <double> << Generator::ToUnit (ostream, unit, value);
+}
+
+void
+VRMLGenerator::VRMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+{
+	const auto unit = Generator::Unit (ostream, unitCategory);
+
+	ostream << Generator::SetPrecision <float> << Generator::ToUnit (ostream, unit, value);
+}
+
+void
+VRMLGenerator::VRMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+{
+	ostream << value;
+}
+
+void
+VRMLGenerator::VRMLEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
+{
+	ostream << '"';
+
+	for (const auto & character : value .raw ())
+	{
+		switch (character)
+		{
+			case '"':
+			case '\\':
+			{
+				ostream << '\\';
+				break;
+			}
+			default:
+				break;
+		}
+
+		ostream << character;
+	}
+
+	ostream << '"';
+}
 
 } // X3D
 } // titania
-
-template class std::map <std::string, titania::X3D::UnitCategory>;
-template class std::array <titania::X3D::Unit, 5>;

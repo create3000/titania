@@ -51,7 +51,7 @@ if test "x$enable_feature" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_FEATURE"
 fi
 
-LDFLAGS="-rdynamic"
+LDFLAGS="-rdynamic -latomic"
 
 
 

@@ -276,7 +276,7 @@ SFImage::getArray (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 		const auto context = getContext (ec);
 		const auto lhs     = getThis <SFImage> (ec, object);
 
-		return get <MFInt32> (context, &lhs -> getArray ());
+		return get <MFInt32> (context, lhs -> getArray ());
 	}
 	catch (const std::invalid_argument &)
 	{

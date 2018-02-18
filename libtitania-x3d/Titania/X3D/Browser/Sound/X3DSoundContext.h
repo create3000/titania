@@ -52,8 +52,6 @@
 #define __TITANIA_X3D_BROWSER_TIME_X3DSOUND_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DScalar.h"
-#include "../../Fields/X3DWeakPtrArray.h"
 
 namespace titania {
 namespace X3D {

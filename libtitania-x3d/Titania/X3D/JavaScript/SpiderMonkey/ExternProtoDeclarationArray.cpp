@@ -63,8 +63,6 @@ JSClass ExternProtoDeclarationArray::static_class = {
 
 };
 
-template class jsX3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoDeclarationArray>;
-
 } // spidermonkey
 } // X3D
 } // titania

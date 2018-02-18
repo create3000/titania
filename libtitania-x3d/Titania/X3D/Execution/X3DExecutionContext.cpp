@@ -125,7 +125,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (sameBrowser)
 		return;
 
-	const MFNode nodes (getParents () .begin (), getParents () .end ());
+	const MFNode nodes (getParents () .cbegin (), getParents () .cend ());
 
 	for (const auto & node : nodes)
 	{
@@ -441,8 +441,8 @@ throw (Error <INVALID_NODE>,
 	if (not node)
 		throw Error <INVALID_NODE> ("Node is NULL.");
 
-	const auto count = std::count_if (importedNodes .begin (),
-	                                  importedNodes .end (),
+	const auto count = std::count_if (importedNodes .cbegin (),
+	                                  importedNodes .cend (),
 	                                  [&] (const ImportedNodeIndex::value_type & pair)
 	{
 		try
@@ -497,8 +497,8 @@ throw (Error <INVALID_NODE>,
 	if (importedName .empty ())
 		importedName = exportedName;
 
-	const auto iter = std::find_if (importedNodes .begin (),
-	                                importedNodes .end (),
+	const auto iter = std::find_if (importedNodes .cbegin (),
+	                                importedNodes .cend (),
 	                                [&] (const ImportedNodeIndex::value_type & pair)
 	{
 		const auto & importedNode = pair .second;
@@ -650,8 +650,8 @@ throw (Error <INVALID_NODE>,
 	if (node -> getExecutionContext () == this)
 		return node -> getName ();
 
-	const auto iter = std::find_if (importedNodes .begin (),
-	                                importedNodes .end (),
+	const auto iter = std::find_if (importedNodes .cbegin (),
+	                                importedNodes .cend (),
 	                                [&] (const ImportedNodeIndex::value_type & pair)
 	{
 		try
@@ -767,7 +767,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto iter = std::find_if (prototypes .begin (), prototypes .end (),
+	const auto iter = std::find_if (prototypes .cbegin (), prototypes .cend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
@@ -782,7 +782,7 @@ throw (Error <INVALID_NAME>,
 bool
 X3DExecutionContext::hasProtoDeclaration (const std::string & name) const
 {
-	return std::count_if (prototypes .begin (), prototypes .end (),
+	return std::count_if (prototypes .cbegin (), prototypes .cend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
@@ -912,7 +912,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto iter = std::find_if (externProtos .begin (), externProtos .end (),
+	const auto iter = std::find_if (externProtos .cbegin (), externProtos .cend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
@@ -927,7 +927,7 @@ throw (Error <INVALID_NAME>,
 bool
 X3DExecutionContext::hasExternProtoDeclaration (const std::string & name) const
 {
-	return std::count_if (externProtos .begin (), externProtos .end (),
+	return std::count_if (externProtos .cbegin (), externProtos .cend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
@@ -1428,7 +1428,7 @@ X3DExecutionContext::importNodes (const X3DExecutionContext* const executionCont
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const MFNode nodes (executionContext -> getParents () .begin (), executionContext -> getParents () .end ());
+	const MFNode nodes (executionContext -> getParents () .cbegin (), executionContext -> getParents () .cend ());
 
 	for (const auto & node : nodes)
 	{
@@ -1752,7 +1752,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 
-		for (const auto & value : std::make_pair (getRootNodes () .begin (), getRootNodes () .end ()))
+		for (const auto & value : std::make_pair (getRootNodes () .cbegin (), getRootNodes () .cend ()))
 		{
 			if (value)
 			{

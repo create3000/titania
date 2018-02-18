@@ -198,7 +198,7 @@ MultiTexture::set_mode ()
 	{
 		auto mode = std::vector <std::string> ();
 
-		basic::split (std::back_inserter (mode), string, ",");
+		basic::split (std::back_inserter (mode), string .get (), ",");
 
 		for (auto & s : mode)
 			s = basic::trim (s);
@@ -243,7 +243,7 @@ MultiTexture::set_source ()
 
 	for (const auto & string : source ())
 	{
-		auto iter = map .find (string);
+		auto iter = map .find (string .get ());
 
 		if (iter not_eq map .end ())
 			sources .emplace_back (iter -> second);
@@ -265,7 +265,7 @@ MultiTexture::set_function ()
 
 	for (const auto & string : function ())
 	{
-		auto iter = map .find (string);
+		auto iter = map .find (string .get ());
 
 		if (iter not_eq map .end ())
 			functions .emplace_back (iter -> second);
@@ -291,7 +291,7 @@ MultiTexture::set_texture ()
 			value .emplace_back (textureNode);
 	}
 
-	textureNodes .set (value .begin (), value .end ());
+	textureNodes .set (value .cbegin (), value .cend ());
 }
 
 void

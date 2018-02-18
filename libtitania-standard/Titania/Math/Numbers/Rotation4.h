@@ -325,37 +325,37 @@ public:
 	constexpr
 	iterator
 	begin ()
-	{ return iterator (*this, 0); }
+	{ return iterator (this, 0); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	begin () const
-	{ return const_iterator (const_cast <rotation4 &> (*this), 0); }
+	{ return const_iterator (const_cast <rotation4*> (this), 0); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	cbegin () const
-	{ return const_iterator (const_cast <rotation4 &> (*this), 0); }
+	{ return const_iterator (const_cast <rotation4*> (this), 0); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	iterator
 	end ()
-	{ return iterator (*this, 4); }
+	{ return iterator (this, 4); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	end () const
-	{ return const_iterator (const_cast <rotation4 &> (*this), 4); }
+	{ return const_iterator (const_cast <rotation4*> (this), 4); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	cend () const
-	{ return const_iterator (const_cast <rotation4 &> (*this), 4); }
+	{ return const_iterator (const_cast <rotation4*> (this), 4); }
 
 	///  Returns a reverse iterator to the beginning.
 	constexpr

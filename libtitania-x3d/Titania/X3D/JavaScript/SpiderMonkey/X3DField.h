@@ -94,15 +94,15 @@ public:
 
 	///  @name Construction
 
-	template <class Type>
+	template <class Class>
 	static
 	JSBool
-	get (JSContext* const, typename Type::internal_type* const, jsval* const);
+	get (JSContext* const cx, const typename Class::internal_type & field, jsval* const vp);
 
-	template <class Type>
+	template <class Class>
 	static
 	JSBool
-	create (JSContext* const, typename Type::internal_type* const, jsval* const);
+	create (JSContext* const cx, typename Class::internal_type* const field, jsval* const vp);
 
 
 protected:
@@ -117,7 +117,7 @@ protected:
 
 	///  @name Destruction
 
-	template <class Type>
+	template <class Class>
 	static
 	void
 	finalize (JSContext*, JSObject*);
@@ -147,10 +147,10 @@ private:
 
 template <class Class>
 JSBool
-X3DField::get (JSContext* const cx, typename Class::internal_type* const field, jsval* const vp)
+X3DField::get (JSContext* const cx, const typename Class::internal_type & field, jsval* const vp)
 {
 	const auto context = getContext (cx);
-	const auto object  = context -> getObject (getKey <Class> (field));
+	const auto object  = context -> getObject (getKey <Class> (const_cast <typename Class::internal_type*> (&field)));
 
 	if (object)
 	{
@@ -158,7 +158,7 @@ X3DField::get (JSContext* const cx, typename Class::internal_type* const field, 
 		return true;
 	}
 
-	return create <Class> (cx, field, vp);
+	return create <Class> (cx, const_cast <typename Class::internal_type*> (&field), vp);
 }
 
 template <class Class>

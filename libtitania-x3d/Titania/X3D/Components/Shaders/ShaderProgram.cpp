@@ -158,7 +158,7 @@ ShaderProgram::requestImmediateLoad ()
 
 	valid = false;
 
-	for (const auto & URL : url ())
+	for (const auto & URL : basic::make_const_range (url ()))
 	{
 		try
 		{
@@ -166,7 +166,7 @@ ShaderProgram::requestImmediateLoad ()
 
 			FileLoader loader (getExecutionContext ());
 
-			const auto document = loader .loadDocument (URL);
+			const auto document = loader .loadDocument (URL .raw ());
 			const auto source   = Shader::getSource (this, document, loader .getWorldURL ());
 			const auto string   = source .string .c_str ();
 

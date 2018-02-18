@@ -116,7 +116,7 @@ X3DRoute::sourceNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 		const auto & route      = *getThis <X3DRoute> (cx, obj);
 		auto         sourceNode = route -> getSourceNode ();
 
-		return X3DField::get <SFNode> (cx, &sourceNode, vp);
+		return X3DField::get <SFNode> (cx, sourceNode, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -147,7 +147,7 @@ X3DRoute::destinationNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 		const auto & route           = *getThis <X3DRoute> (cx, obj);
 		auto         destinationNode = route -> getDestinationNode ();
 
-		return X3DField::get <SFNode> (cx, &destinationNode, vp);
+		return X3DField::get <SFNode> (cx, destinationNode, vp);
 	}
 	catch (const std::exception & error)
 	{

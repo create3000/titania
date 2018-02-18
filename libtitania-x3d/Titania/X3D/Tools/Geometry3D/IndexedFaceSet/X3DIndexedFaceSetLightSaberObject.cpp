@@ -100,7 +100,7 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 				screenPoints .emplace_back (screenPoint .x (), screenPoint .y ());
 			}
 	
-			if (cutLine .intersects (screenPoints .begin (), screenPoints .end ()))
+			if (cutLine .intersects (screenPoints .cbegin (), screenPoints .cend ()))
 			{
 				intersectingFaces    .emplace_back (face);
 				intersectingVertices .emplace_back (std::move (vertices));
@@ -131,8 +131,8 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 
 				if (intersection .second)
 				{
-					const auto point1   = coordIndex () [vertices [index1]];
-					const auto point2   = coordIndex () [vertices [index2]];
+					const auto point1   = coordIndex () .get1Value (vertices [index1]);
+					const auto point2   = coordIndex () .get1Value (vertices [index2]);
 					const auto line     = Line3d (getCoord () -> get1Point (point1), getCoord () -> get1Point (point2), points_type ());
 					const auto ray      = ViewVolume::unProjectRay (intersection .first, invModelViewProjection, viewport);
 					const auto cutPoint = line .closest_point (ray) .first;
@@ -182,7 +182,7 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 		redoSetColorIndex    (undoStep);
 
 		redoRestoreSelectedEdges (selection, undoStep);
-		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+		replaceSelectedEdges () .assign (selection .cbegin (), selection .cend ());
 
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 

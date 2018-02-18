@@ -597,7 +597,7 @@ private:
 };
 
 template <class InternalType>
-const std::string X3DPtr <InternalType>::typeName ("SFNode");
+const std::string X3DPtr <InternalType>::typeName = "SFNode";
 
 ///  @relates X3DPtr
 ///  @name Comparision operations

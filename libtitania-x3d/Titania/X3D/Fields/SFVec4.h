@@ -855,8 +855,8 @@ operator / (const typename InternalType::value_type & lhs, const SFVec4 <Interna
 extern template class SFVec4 <Vector4d>;
 extern template class SFVec4 <Vector4f>;
 
-typedef SFVec4 <Vector4d> SFVec4d;
-typedef SFVec4 <Vector4f> SFVec4f;
+using SFVec4d = SFVec4 <Vector4d>;
+using SFVec4f = SFVec4 <Vector4f>;
 
 } // X3D
 } // titania

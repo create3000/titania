@@ -61,9 +61,6 @@ namespace X3D {
 using ProfileInfoArray = basic::indexed_multimap <std::string, const ProfileInfoPtr>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, const X3D::ProfileInfoPtr>;
-
 } // titania
 
 #endif

@@ -118,14 +118,14 @@ public:
 	   {
 			if (not name .empty ())
 			{
-				for (const auto & node : std::make_pair (list .begin () + 1, list .end ()))
+				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 				{
 					if (node -> getName () == name)
 						return node;
 				}
 			}
 
-			for (const auto & node : std::make_pair (list .begin () + 1, list .end ()))
+			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
 				if (node -> isBound ())
 					return node;
@@ -160,7 +160,7 @@ public:
 
 			for (const auto & node : list)
 			{
-				if (not std::count (temp .begin (), temp .end (), node))
+				if (not std::count (temp .cbegin (), temp .cend (), node))
 					difference .emplace_back (node);
 			}
 

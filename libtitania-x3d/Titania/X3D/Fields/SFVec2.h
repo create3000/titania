@@ -793,8 +793,8 @@ operator / (const typename InternalType::value_type & lhs, const SFVec2 <Interna
 extern template class SFVec2 <Vector2d>;
 extern template class SFVec2 <Vector2f>;
 
-typedef SFVec2 <Vector2d> SFVec2d;
-typedef SFVec2 <Vector2f> SFVec2f;
+using SFVec2d = SFVec2 <Vector2d>;
+using SFVec2f = SFVec2 <Vector2f>;
 
 } // X3D
 } // titania

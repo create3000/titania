@@ -63,8 +63,6 @@ JSClass RouteArray::static_class = {
 
 };
 
-template class jsX3DConstArray <X3DRoute, X3D::RouteArray>;
-
 } // spidermonkey
 } // X3D
 } // titania

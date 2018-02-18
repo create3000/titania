@@ -51,13 +51,15 @@
 #include "SFString.h"
 
 #include "../InputOutput/Generator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {
 namespace X3D {
 
 template <>
-const std::string X3DField <String>::typeName ("SFString");
+const std::string X3DField <String>::typeName = "SFString";
 
 template <>
 const FieldType X3DField <String>::type = X3DConstants::SFString;
@@ -201,84 +203,28 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	String value;
 
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	std::string string;
-
-	if (Grammar::String (istream, string))
-		setValue (string);
-
-	else
-		istream .setstate (std::ios_base::failbit);
+	if (Grammar::VRMLDecode (istream, value))
+		*this = std::move (value);
 }
 
 void
 SFString::toStream (std::ostream & ostream) const
 {
-	ostream << '"';
-
-	for (const auto & character : getValue () .raw ())
-	{
-		switch (character)
-		{
-			case '"':
-			case '\\':
-			{
-				ostream << '\\';
-				break;
-			}
-			default:
-				break;
-		}
-
-		ostream << character;
-	}
-
-	ostream << '"';
+	VRMLGenerator::VRMLEncode (ostream, getValue (), getUnit ());
 }
 
 void
 SFString::toXMLStream (std::ostream & ostream) const
 {
-	Generator::XMLEncode (ostream, getValue () .raw ());
+	XMLGenerator::XMLEncode (ostream, getValue (), getUnit ());
 }
 
 void
 SFString::toJSONStream (std::ostream & ostream) const
 {
-	ostream << '"';
-
-	for (const auto & character : getValue () .raw ())
-	{
-		switch (character)
-		{
-			case '"':
-			case '\\':
-			{
-				ostream
-					<< '\\'
-					<< character;
-				break;
-			}
-			case '\r':
-				ostream << "\\r";
-				break;
-			case '\n':
-				ostream << "\\n";
-				break;
-			case '\t':
-				ostream << "\\t";
-				break;
-			default:
-				ostream << character;
-				break;
-		}
-
-	}
-
-	ostream << '"';
+	JSONGenerator::JSONEncode (ostream, getValue (), getUnit ());
 }
 
 } // X3D

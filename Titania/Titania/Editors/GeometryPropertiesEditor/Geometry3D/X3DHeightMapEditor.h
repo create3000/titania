@@ -376,7 +376,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 		if (heighHashValue .empty ())
 			undoStep -> addUndoFunction (&NodeType::removeMetaData, node, HEIGHT_HASH);
 		else
-			undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heighHashValue [0]);
+			undoStep -> addUndoFunction (&NodeType::template setMetaData <std::string>, node, HEIGHT_HASH, heighHashValue [0] .raw ());
 	}
 
 	endUndoGroup ("height", undoStep);
@@ -399,7 +399,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	node -> height () .resize (metaHeight .size ());
 
 	for (size_t i = 0, size = metaHeight .size (); i < size; ++ i)
-		node -> height () [i] = math::project <typename FieldType::value_type::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
+		node -> height () [i] = math::project <typename FieldType::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
 
 	const X3D::SFString heightHash (getHeightHash ());
 
@@ -437,7 +437,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 
 	for (const auto & value : heightMaps)
 	{
-		const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
+		const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .raw ());
 
 		if (Glib::file_test (heightMap .path (), Glib::FILE_TEST_EXISTS))
 		{

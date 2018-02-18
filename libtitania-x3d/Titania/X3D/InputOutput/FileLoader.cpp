@@ -152,7 +152,7 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			const basic::uri uri = URL .str ();
+			const basic::uri uri (URL);
 
 			if (uri .filename (true) .empty ())
 				executionContext -> changeViewpoint (uri .fragment ());
@@ -193,7 +193,7 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			loadStream (URL .str (), istream);
+			loadStream (URL .raw (), istream);
 
 			GoldenGate::read (istream, scene, worldURL);
 
@@ -211,7 +211,7 @@ throw (Error <INVALID_URL>,
 	std::ostringstream error;
 
 	for (const auto & string : urlError)
-		error << string .str ();
+		error << string;
 
 	throw Error <URL_UNAVAILABLE> (error .str () + "\nCouldn't load any URL of " + url .toString () + "\n");
 }
@@ -228,19 +228,6 @@ FileLoader::stop ()
 }
 
 //  Stream Handling
-
-/***
- *
- *  thread save
- *
- */
-std::string
-FileLoader::loadDocument (const SFString & URL)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
-{
-	return loadDocument (URL .str ());
-}
 
 /***
  *

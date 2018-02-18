@@ -52,6 +52,8 @@
 #define __TITANIA_BROWSER_NOTEBOOK_ROUTE_GRAPH_ROUTE_GRAPH_NODE_H__
 
 #include <Titania/X3D/Fields/SFNode.h>
+#include <Titania/X3D/Types/Numbers.h>
+#include <Titania/X3D/Types/Pointer.h>
 
 #include <gtkmm.h>
 

@@ -279,7 +279,7 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices)
+IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices) const
 {
 	if (not getCoord ())
 		return;
@@ -293,7 +293,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex () .back () > -1)
-			coordIndex () .emplace_back (-1);
+			const_cast <IndexedFaceSet*> (this) -> coordIndex () .emplace_back (-1);
 
 		// Construct triangle array and determine the number of used points.
 		size_t face = 0;
@@ -369,7 +369,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 }
 
 void
-IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons)
+IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons) const
 {
 	Vertices &     vertices = polygons .back () .vertices; // Index to coord index
 	ElementArray & elements = polygons .back () .elements; // Index to vertices
@@ -590,7 +590,7 @@ IndexedFaceSet::addColors ()
 
 	colorNode -> color () .emplace_back (1, 1, 1, 1);
 
-	for (const auto & index : coordIndex ())
+	for (const auto & index : basic::make_const_range (coordIndex ()))
 		colorIndex () .emplace_back (index < 0 ? -1 : 0);
 }
 
@@ -610,7 +610,7 @@ IndexedFaceSet::addTexCoords ()
 
 	std::map <int32_t, size_t> indices; // coord index, texCoord index
 
-	for (const auto & index : coordIndex ())
+	for (const auto & index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 			continue;
@@ -624,7 +624,7 @@ IndexedFaceSet::addTexCoords ()
 		}
 	}
 
-	for (const auto & index : coordIndex ())
+	for (const auto & index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 			texCoordIndex () .emplace_back (-1);
@@ -649,13 +649,14 @@ IndexedFaceSet::addNormals ()
 	normal () = normalNode;
 
 	size_t i      = 0;
-	auto   normal = normals .begin ();
+	auto   normal = normals .cbegin ();
 
-	for (const auto & index : coordIndex ())
+	for (const auto & index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
+		{
 			normalIndex () .emplace_back (-1);
-
+		}
 		else
 		{
 			normalIndex () .emplace_back (i ++);
@@ -757,9 +758,9 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 		   const auto i0       = vertices [0];
 		   const auto i1       = vertices [v + 1];
 		   const auto i2       = vertices [v + 2];
-			const auto index0   = coordIndex () [i0] .getValue ();
-			const auto index1   = coordIndex () [i1] .getValue ();
-			const auto index2   = coordIndex () [i2] .getValue ();
+			const auto index0   = coordIndex () [i0];
+			const auto index1   = coordIndex () [i1];
+			const auto index2   = coordIndex () [i2];
 			const auto point0   = getCoord () -> get1Point (index0);
 			const auto point1   = getCoord () -> get1Point (index1);
 			const auto point2   = getCoord () -> get1Point (index2);
@@ -806,7 +807,7 @@ IndexedFaceSet::rebuildIndices ()
 	size_t faceNumber = 0;
 	size_t count      = 0;
 
-	for (const int32_t index : coordIndex ())
+	for (const int32_t index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 		{
@@ -830,7 +831,7 @@ IndexedFaceSet::rebuildIndices ()
 
 	for (const auto & vertex : indices)
 	{
-		const int32_t index      = coordIndex () [vertex];
+		const int32_t index      = coordIndex () .get1Value (vertex);
 		const size_t  faceNumber = faceNumbers [face];
 
 		if (index < 0)
@@ -899,7 +900,7 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 		const auto i0 = i;
 		const auto i1 = i + 1 == last ? faceIndex : i + 1;
 
-	   if (coordIndex () [i0] not_eq coordIndex () [i1])
+	   if (coordIndex () .get1Value (i0) not_eq coordIndex () .get1Value (i1))
 	      indices .emplace_back (i0);
 	}
 
@@ -927,7 +928,7 @@ IndexedFaceSet::rebuildColor ()
 
 	// Build indices map
 
-	for (const auto & index : colorIndex () .empty () ? coordIndex () : colorIndex ())
+	for (const auto & index : basic::make_const_range (colorIndex () .empty () ? coordIndex () : colorIndex ()))
 	{
 		if (index < 0)
 			continue;
@@ -942,7 +943,7 @@ IndexedFaceSet::rebuildColor ()
 
 	// Rebuild index
 	   
-	for (auto & index : colorIndex ())
+	for (MFInt32::reference index : colorIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -966,7 +967,7 @@ IndexedFaceSet::rebuildColor ()
 				colors .emplace_back (c .r (), c .g (), c .b ());
 			}
 
-			node -> color () .assign (colors .begin (), colors .end ());
+			node -> color () .assign (colors .cbegin (), colors .cend ());
 			break;
 		}
 		case X3DConstants::ColorRGBA:
@@ -978,7 +979,7 @@ IndexedFaceSet::rebuildColor ()
 			for (const auto & pair : map)
 			   colors .emplace_back (node -> get1Color (pair .first));
 
-			node -> color () .assign (colors .begin (), colors .end ());
+			node -> color () .assign (colors .cbegin (), colors .cend ());
 			break;
 		}
 		default:
@@ -1001,7 +1002,7 @@ IndexedFaceSet::rebuildTexCoord ()
 
 	// Build indices map
 
-	for (const auto & index : texCoordIndex () .empty () ? coordIndex () : texCoordIndex ())
+	for (const auto & index : basic::make_const_range (texCoordIndex () .empty () ? coordIndex () : texCoordIndex ()))
 	{
 		if (index < 0)
 			continue;
@@ -1016,7 +1017,7 @@ IndexedFaceSet::rebuildTexCoord ()
 
 	// Rebuild index
 	   
-	for (auto & index : texCoordIndex ())
+	for (MFInt32::reference index : texCoordIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -1062,7 +1063,7 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 				points .emplace_back (t .x (), t .y ());
 			}
 
-			node -> point () .assign (points .begin (), points .end ());
+			node -> point () .assign (points .cbegin (), points .cend ());
 			break;
 		}
 		case X3DConstants::TextureCoordinate3D:
@@ -1089,7 +1090,7 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			for (const auto & pair : map)
 			   points .emplace_back (node -> get1Point (pair .first));
 
-			node -> point () .assign (points .begin (), points .end ());
+			node -> point () .assign (points .cbegin (), points .cend ());
 			break;
 		}
 		default:
@@ -1110,7 +1111,7 @@ IndexedFaceSet::rebuildNormal ()
 
 	// Build indices map
 
-	for (const auto & index : normalIndex () .empty () ? coordIndex () : normalIndex ())
+	for (const auto & index : basic::make_const_range (normalIndex () .empty () ? coordIndex () : normalIndex ()))
 	{
 		if (index < 0)
 			continue;
@@ -1125,7 +1126,7 @@ IndexedFaceSet::rebuildNormal ()
 
 	// Rebuild index
 	   
-	for (auto & index : normalIndex ())
+	for (MFInt32::reference index : normalIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -1146,7 +1147,7 @@ IndexedFaceSet::rebuildNormal ()
 			for (const auto & pair : map)
 			   normals .emplace_back (node -> get1Vector (pair .first));
 
-			node -> vector () .assign (normals .begin (), normals .end ());
+			node -> vector () .assign (normals .cbegin (), normals .cend ());
 			break;
 		}
 		default:
@@ -1169,7 +1170,7 @@ IndexedFaceSet::rebuildCoord ()
 
 	// Build indices map
 
-	for (const auto & index : coordIndex ())
+	for (const auto & index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 			continue;
@@ -1184,7 +1185,7 @@ IndexedFaceSet::rebuildCoord ()
 
 	// Rebuild coordIndex.
 	   
-	for (auto & index : coordIndex ())
+	for (MFInt32::reference index : coordIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -1205,7 +1206,7 @@ IndexedFaceSet::rebuildCoord ()
 			for (const auto & pair : map)
 			   points .emplace_back (coordinate -> get1Point (pair .first));
 
-			coordinate -> point () .assign (points .begin (), points .end ());
+			coordinate -> point () .assign (points .cbegin (), points .cend ());
 			break;
 		}
 		case X3DConstants::CoordinateDouble:
@@ -1217,7 +1218,7 @@ IndexedFaceSet::rebuildCoord ()
 			for (const auto & pair : map)
 			   points .emplace_back (coordinate -> get1Point (pair .first));
 
-			coordinate -> point () .assign (points .begin (), points .end ());
+			coordinate -> point () .assign (points .cbegin (), points .cend ());
 			break;
 		}
 		case X3DConstants::GeoCoordinate:
@@ -1229,7 +1230,7 @@ IndexedFaceSet::rebuildCoord ()
 			for (const auto & pair : map)
 			   points .emplace_back (coordinate -> get1Point (pair .first));
 
-			coordinate -> point () .assign (points .begin (), points .end ());
+			coordinate -> point () .assign (points .cbegin (), points .cend ());
 			break;
 		}
 		default:
@@ -1263,7 +1264,7 @@ IndexedFaceSet::mergePoints (const double distance)
 	
 	// Rewrite coordIndex.
 
-	for (auto & index : coordIndex ())
+	for (MFInt32::reference index : coordIndex ())
 	{
 		if (index < 0)
 			continue;

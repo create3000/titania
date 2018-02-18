@@ -64,6 +64,4 @@ using SupportedFieldsArray = std::map <std::string, const X3DFieldDefinition*>;
 } // X3D
 } // titania
 
-extern template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
-
 #endif

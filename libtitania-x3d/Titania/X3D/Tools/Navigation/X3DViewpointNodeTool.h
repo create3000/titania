@@ -106,12 +106,12 @@ public:
 	{ return getNode <X3DViewpointNode> () -> positionOffset (); }
 
 	virtual
-	SFRotation4d &
+	SFRotation &
 	orientationOffset () final override
 	{ return getNode <X3DViewpointNode> () -> orientationOffset (); }
 
 	virtual
-	const SFRotation4d &
+	const SFRotation &
 	orientationOffset () const final override
 	{ return getNode <X3DViewpointNode> () -> orientationOffset (); }
 

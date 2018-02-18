@@ -203,7 +203,7 @@ FaceSelection::getFaces () const
 	size_t face  = 0;
 	size_t count = 0;
 
-	for (const int32_t index : geometryNode -> coordIndex ())
+	for (const int32_t index : basic::make_const_range (geometryNode -> coordIndex ()))
 	{
 		if (index < 0)
 		{
@@ -264,8 +264,8 @@ FaceSelection::getAdjacentFaces (const Points & points) const
 std::vector <size_t>
 FaceSelection::getAdjacentFaces (const std::pair <size_t, size_t> & edge) const
 {
-	const auto faces0 = getAdjacentFaces (geometryNode -> coordIndex () [edge .first]);
-	const auto faces1 = getAdjacentFaces (geometryNode -> coordIndex () [edge .second]);
+	const auto faces0 = getAdjacentFaces (geometryNode -> coordIndex () .get1Value (edge .first));
+	const auto faces1 = getAdjacentFaces (geometryNode -> coordIndex () .get1Value (edge .second));
 
 	std::vector <size_t> set0;
 	std::vector <size_t> set1;
@@ -280,8 +280,8 @@ FaceSelection::getAdjacentFaces (const std::pair <size_t, size_t> & edge) const
 	std::sort (set0 .begin (), set0 .end ());
 	std::sort (set1 .begin (), set1 .end ());
 
-	std::set_intersection (set0 .begin (), set0 .end (),
-	                       set1 .begin (), set1 .end (),
+	std::set_intersection (set0 .cbegin (), set0 .cend (),
+	                       set1 .cbegin (), set1 .cend (),
 	                       std::back_inserter (intersection));
 
 	return intersection;
@@ -336,16 +336,16 @@ FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <si
 	{
 		for (size_t v = 0, size = vertices .size () - 2; v < size; ++ v)
 		{
-		   const auto i0       = vertices [0];
-		   const auto i1       = vertices [v + 1];
-		   const auto i2       = vertices [v + 2];
-			const auto index0   = geometryNode -> coordIndex () [i0] .getValue ();
-			const auto index1   = geometryNode -> coordIndex () [i1] .getValue ();
-			const auto index2   = geometryNode -> coordIndex () [i2] .getValue ();
-			const auto point0   = coordNode -> get1Point (index0);
-			const auto point1   = coordNode -> get1Point (index1);
-			const auto point2   = coordNode -> get1Point (index2);
-			const auto distance = Triangle3d (point0, point1, point2) .distance_to_point (hitPoint);
+		   const auto    i0       = vertices [0];
+		   const auto    i1       = vertices [v + 1];
+		   const auto    i2       = vertices [v + 2];
+			const int32_t index0   = geometryNode -> coordIndex () .get1Value (i0);
+			const int32_t index1   = geometryNode -> coordIndex () .get1Value (i1);
+			const int32_t index2   = geometryNode -> coordIndex () .get1Value (i2);
+			const auto    point0   = coordNode -> get1Point (index0);
+			const auto    point1   = coordNode -> get1Point (index1);
+			const auto    point2   = coordNode -> get1Point (index2);
+			const auto    distance = Triangle3d (point0, point1, point2) .distance_to_point (hitPoint);
 
 			if (distance < minDistance)
 				minDistance = distance;
@@ -359,7 +359,7 @@ FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <si
 		tessellator .begin_contour ();
 	
 		for (const auto & vertex : vertices)
-			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
+			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (vertex)), vertex);
 	
 		tessellator .end_contour ();
 		tessellator .end_polygon ();
@@ -401,7 +401,7 @@ FaceSelection::getFaceVertices (const size_t face) const
 
 	for (size_t i = face, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 	{
-		const auto index = geometryNode -> coordIndex () [i] .getValue ();
+		const int32_t index = geometryNode -> coordIndex () .get1Value (i);
 
 		if (index < 0)
 			break;
@@ -420,12 +420,12 @@ FaceSelection::getFaceEdges (const size_t face) const
 
 	for (size_t i = face, size = geometryNode -> coordIndex () .size () - 1; i < size; ++ i)
 	{
-		const auto index = geometryNode -> coordIndex () [i] .getValue ();
+		const int32_t index = geometryNode -> coordIndex () .get1Value (i);
 
 		if (index < 0)
 			break;
 
-		if (geometryNode -> coordIndex () [i + 1] < 0)
+		if (geometryNode -> coordIndex () .get1Value (i + 1) < 0)
 		{
 			edges .emplace_back (i, face);
 			break;
@@ -445,7 +445,7 @@ FaceSelection::getFaceCenter (const size_t face) const
 
 	for (size_t i = face, size = geometryNode -> coordIndex () .size () - 1; i < size; ++ i)
 	{
-		const auto index = geometryNode -> coordIndex () [i] .getValue ();
+		const int32_t index = geometryNode -> coordIndex () .get1Value (i);
 
 		if (index < 0)
 			break;
@@ -470,10 +470,10 @@ FaceSelection::getAdjacentEdges (const Points & points) const
 		{
 			for (const auto & edge : getFaceEdges (face .index))
 			{
-				if (geometryNode -> coordIndex () [edge .first] .getValue () == point)
+				if (geometryNode -> coordIndex () .get1Value (edge .first) == point)
 					edges .emplace_back (edge);
 
-				if (geometryNode -> coordIndex () [edge .second] .getValue () == point)
+				if (geometryNode -> coordIndex () .get1Value (edge .second) == point)
 					edges .emplace_back (edge .second, edge .first);
 			}
 		}
@@ -494,8 +494,8 @@ FaceSelection::getHorizonEdges (const std::vector <size_t> & faces) const
 			const auto i0 = edge .first;
 			const auto i1 = edge .second;
 
-			const auto index0 = geometryNode -> coordIndex () [i0] .getValue ();
-			const auto index1 = geometryNode -> coordIndex () [i1] .getValue ();
+			const int32_t index0 = geometryNode -> coordIndex () .get1Value (i0);
+			const int32_t index1 = geometryNode -> coordIndex () .get1Value (i1);
 	
 			selectedEdges [std::minmax (index0, index1)] .emplace (std::minmax (i0, i1)); 
 		}
@@ -508,7 +508,7 @@ FaceSelection::getHorizonEdges (const std::vector <size_t> & faces) const
 		if (edge .second .size () not_eq 1)
 			continue;
 
-		horizonEdges .emplace_back (*edge .second .begin ());
+		horizonEdges .emplace_back (*edge .second .cbegin ());
 	}
 	
 	return horizonEdges;
@@ -531,7 +531,7 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 		tessellator .begin_contour ();
 	
 		for (const auto & vertex : vertices)
-			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
+			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (vertex)), vertex);
 	
 		tessellator .end_contour ();
 		tessellator .end_polygon ();
@@ -557,8 +557,8 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 		{
 		   const auto i0       = element [i];
 		   const auto i1       = element [(i + 1) % size];
-			const auto point0   = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
-			const auto point1   = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto point0   = coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (i0));
+			const auto point1   = coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (i1));
 			const auto segment  = LineSegment3d (point0, point1);
 			const auto distance = segment .distance (hitPoint);
 
@@ -568,8 +568,8 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 		}
 	}
 
-	const auto iter = std::min_element (distances .begin (), distances .end ());
-	const auto i    = iter - distances .begin ();
+	const auto iter = std::min_element (distances .cbegin (), distances .cend ());
+	const auto i    = iter - distances .cbegin ();
 
 	return Edge {
 		indices [i] .first,
@@ -598,8 +598,8 @@ throw (std::domain_error)
 		{
 			const auto i0            = vertices [i];
 			const auto i1            = vertices [(i + 1) % size];
-			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
-			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (i0));
+			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () .get1Value (i1));
 			const auto segment       = LineSegment3d (point0, point1);
 			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point1 ());
 			const auto closestPoint1 = cutSegment .line () .closest_point (segment .line ()) .first;
@@ -681,9 +681,9 @@ FaceSelection::getClosestVertex (const Vector3d & hitPoint, const std::vector <s
 
 	for (const auto i : vertices)
 	{
-		const auto i0    = geometryNode -> coordIndex () [i];
-		const auto point = coordNode -> get1Point (i0);
-		const auto d     = abs (hitPoint - point);
+		const int32_t i0    = geometryNode -> coordIndex () .get1Value (i);
+		const auto    point = coordNode -> get1Point (i0);
+		const auto    d     = abs (hitPoint - point);
 
 		if (d < distance)
 		{

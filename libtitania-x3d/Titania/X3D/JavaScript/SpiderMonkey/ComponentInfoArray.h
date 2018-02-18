@@ -59,14 +59,12 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ComponentInfoArray = jsX3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
+using ComponentInfoArray = X3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
 
 template <>
 constexpr ObjectType
 ComponentInfoArray::getId ()
 { return ObjectType::ComponentInfoArray; }
-
-extern template class jsX3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
 
 } // spidermonkey
 } // X3D

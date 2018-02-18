@@ -688,7 +688,7 @@ X3DBrowserNotebook::set_urlError ()
 	std::ostringstream error;
 
 	for (const auto & string : getCurrentBrowser () -> getUrlError ())
-		error << string .str ();
+		error << string;
 
 	const auto dialog = createDialog <MessageDialog> ("MessageDialog");
 

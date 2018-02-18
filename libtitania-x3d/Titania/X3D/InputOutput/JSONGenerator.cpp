@@ -48,14 +48,54 @@
  *
  ******************************************************************************/
 
-#include "BaseNodeArray.h"
+#include "JSONGenerator.h"
 
 namespace titania {
 namespace X3D {
 
-//
+// JSON
+
+void
+JSONGenerator::JSONEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+{
+	ostream << (value ? "true" : "false");
+}
+
+void
+JSONGenerator::JSONEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
+{
+	ostream << '"';
+
+	for (const auto & character : value .raw ())
+	{
+		switch (character)
+		{
+			case '"':
+			case '\\':
+			{
+				ostream
+					<< '\\'
+					<< character;
+				break;
+			}
+			case '\r':
+				ostream << "\\r";
+				break;
+			case '\n':
+				ostream << "\\n";
+				break;
+			case '\t':
+				ostream << "\\t";
+				break;
+			default:
+				ostream << character;
+				break;
+		}
+
+	}
+
+	ostream << '"';
+}
 
 } // X3D
 } // titania
-
-template class std::map <std::string, const titania::X3D::X3DBaseNode*>;

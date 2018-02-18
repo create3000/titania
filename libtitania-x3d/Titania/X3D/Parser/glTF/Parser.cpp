@@ -191,8 +191,8 @@ Parser::importProto (const std::string & name)
 
 	// Update externproto's url field.
 
-	const auto importedExternprotos = X3D::ExternProtoDeclarationArray (scene -> getExternProtoDeclarations () .begin () + externprotos,
-	                                                                    scene -> getExternProtoDeclarations () .end ());
+	const auto importedExternprotos = X3D::ExternProtoDeclarationArray (scene -> getExternProtoDeclarations () .cbegin () + externprotos,
+	                                                                    scene -> getExternProtoDeclarations () .cend ());
 
 	for (const auto & externproto : importedExternprotos)
 	{
@@ -209,8 +209,8 @@ Parser::importProto (const std::string & name)
 
 	// Remove unneccessary nodes.
 
-	const auto importedRootNodes = X3D::MFNode (scene -> getRootNodes () .begin () + rootNodes,
-	                                            scene -> getRootNodes () .end ());
+	const auto importedRootNodes = X3D::MFNode (scene -> getRootNodes () .cbegin () + rootNodes,
+	                                            scene -> getRootNodes () .cend ());
 
 	X3D::X3DEditor::removeNodesFromScene (scene, importedRootNodes, true, std::make_shared <X3D::UndoStep> ());
 }
@@ -1876,7 +1876,7 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 	const auto indices      = getScalarArray <int32_t> (primitive -> indices);
 	const auto tangent      = createTangent (attributes -> tangent);
 
-	geometryNode -> index () .assign (indices .begin (), indices .end ());
+	geometryNode -> index () .assign (indices .cbegin (), indices .cend ());
 
 	geometryNode -> solid ()    = not material -> getMetaData <bool> ("doubleSided");
 	geometryNode -> coord ()    = createCoordinate (attributes -> position);
@@ -2256,8 +2256,8 @@ Parser::createColor (const AccessorPtr & accessor) const
 			if (array .empty ())
 				return nullptr;
 
-			const auto transparent = std::any_of (array .begin (),
-			                                      array .end (),
+			const auto transparent = std::any_of (array .cbegin (),
+			                                      array .cend (),
 			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
 
 			if (transparent)

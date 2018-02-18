@@ -86,8 +86,6 @@ template <>
 JSBool
 MFNode::splice (JSContext *, uint32_t, jsval*);
 
-extern template class X3DArrayField <SFNode, X3D::MFNode>;
-
 } // spidermonkey
 } // X3D
 } // titania

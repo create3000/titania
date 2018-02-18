@@ -62,9 +62,6 @@ namespace X3D {
 typedef basic::indexed_multimap <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, RoutePtr> RouteArray;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::RoutePtr>;
-
 } // titania
 
 #endif

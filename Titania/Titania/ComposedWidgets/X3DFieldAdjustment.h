@@ -128,6 +128,11 @@ private:
 	
 	template <class ValueType, class Value>
 	void
+	set_value (X3D::X3DNativeArrayField <ValueType> & field, const Value & value) const
+	{ field .set1Value (index, value); }
+	
+	template <class ValueType, class Value>
+	void
 	set_value (X3D::X3DArrayField <ValueType> & field, const Value & value) const
 	{ field .set1Value (index, value); }
 
@@ -159,7 +164,11 @@ private:
 	template <class ValueType>
 	double
 	get_value (const X3D::X3DField <ValueType> & field) const
-	{ return field; }
+	{ return field .getValue (); }
+	
+	template <class ValueType>
+	double
+	get_value (X3D::X3DNativeArrayField <ValueType> &);
 	
 	template <class ValueType>
 	double
@@ -217,7 +226,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	setup ();
 
 	buffer               .addInterest (&X3DFieldAdjustment::set_buffer, this);
-	getCurrentContext () .addInterest (&X3DFieldAdjustment::set_field, this);
+	getCurrentContext () .addInterest (&X3DFieldAdjustment::set_field,  this);
 	   
 	adjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DFieldAdjustment::on_value_changed));
 
@@ -369,6 +378,14 @@ X3DFieldAdjustment <Type>::get_index (X3D::X3DArrayField <ValueType> & field) co
 		return -1;
 
 	return std::min <int32_t> (index, field .size () - 1);
+}
+
+template <class Type>
+template <class ValueType>
+double
+X3DFieldAdjustment <Type>::get_value (X3D::X3DNativeArrayField <ValueType> & field)
+{
+	return field .get1Value (index);
 }
 
 template <class Type>

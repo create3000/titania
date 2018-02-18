@@ -106,7 +106,9 @@ private:
 
 };
 
+extern template class system_clock <float>;
 extern template class system_clock <double>;
+extern template class system_clock <long double>;
 
 } // chrono
 } // titania

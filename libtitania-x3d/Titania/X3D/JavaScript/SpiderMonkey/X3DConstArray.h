@@ -66,7 +66,7 @@ namespace X3D {
 namespace spidermonkey {
 
 template <class Type, class InternalType>
-class jsX3DConstArray
+class X3DConstArray
 {
 public:
 
@@ -120,16 +120,7 @@ private:
 };
 
 template <class Type, class InternalType>
-JSClass jsX3DConstArray <Type, InternalType>::static_class = {
-	"jsX3DConstArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
-};
-
-template <class Type, class InternalType>
-JSPropertySpec jsX3DConstArray <Type, InternalType>::properties [ ] = {
+JSPropertySpec X3DConstArray <Type, InternalType>::properties [ ] = {
 	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, nullptr },
 	{ 0 }
 
@@ -137,7 +128,7 @@ JSPropertySpec jsX3DConstArray <Type, InternalType>::properties [ ] = {
 
 template <class Type, class InternalType>
 JSObject*
-jsX3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
+X3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, nullptr, nullptr, nullptr);
 
@@ -149,7 +140,7 @@ jsX3DConstArray <Type, InternalType>::init (JSContext* const cx, JSObject* const
 
 template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, InternalType>::create (JSContext* const cx, const InternalType* const array, jsval* const vp)
+X3DConstArray <Type, InternalType>::create (JSContext* const cx, const InternalType* const array, jsval* const vp)
 {
 	const auto result = JS_NewObject (cx, &static_class, nullptr, nullptr);
 
@@ -165,11 +156,11 @@ jsX3DConstArray <Type, InternalType>::create (JSContext* const cx, const Interna
 
 template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+X3DConstArray <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	try
 	{
-		const auto array = getThis <jsX3DConstArray> (cx, obj);
+		const auto array = getThis <X3DConstArray> (cx, obj);
 
 		size_t* index;
 
@@ -220,14 +211,14 @@ jsX3DConstArray <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, J
 
 template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
 		if (not JSID_IS_INT (id))
 			return true;
 
-		const auto array = getThis <jsX3DConstArray> (cx, obj);
+		const auto array = getThis <X3DConstArray> (cx, obj);
 		const auto index = JSID_TO_INT (id);
 
 		if (index < 0 or index >= (int32_t) array -> size ())
@@ -243,11 +234,11 @@ jsX3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, j
 
 template <class Type, class InternalType>
 JSBool
-jsX3DConstArray <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+X3DConstArray <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto array = getThis <jsX3DConstArray> (cx, obj);
+		const auto array = getThis <X3DConstArray> (cx, obj);
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
 	}

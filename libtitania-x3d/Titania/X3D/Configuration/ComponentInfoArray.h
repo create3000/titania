@@ -61,9 +61,6 @@ namespace X3D {
 using ComponentInfoArray = basic::indexed_multimap <ComponentType, ComponentInfoPtr>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <X3D::ComponentType, X3D::ComponentInfoPtr>;
-
 } // titania
 
 #endif

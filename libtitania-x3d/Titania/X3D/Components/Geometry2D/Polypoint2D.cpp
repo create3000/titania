@@ -113,7 +113,7 @@ Polypoint2D::isTransparent () const
 void
 Polypoint2D::build ()
 {
-	for (const auto & vertex : point ())
+	for (const auto & vertex : basic::make_const_range (point ()))
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 
 	addElements (GL_POINTS, getVertices () .size ());
@@ -133,7 +133,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	geometry -> coord () = coord;
 
-	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+	coord -> point () .assign (getVertices () .cbegin (), getVertices () .cend ());
 
 	return geometry;
 }

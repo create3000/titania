@@ -143,7 +143,7 @@ MFStringComboBoxText::getString (const X3D::X3DPtrArray <NodeType> & nodes, cons
 			{
 				try
 				{
-					found = field .at (index) .getValue ();
+					found = field .at (index);
 				}
 				catch (const std::exception &)
 				{
@@ -158,7 +158,7 @@ MFStringComboBoxText::getString (const X3D::X3DPtrArray <NodeType> & nodes, cons
 				{
 					try
 					{
-						found = field .at (index) .getValue ();
+						found = field .at (index);
 					}
 					catch (const std::exception &)
 					{

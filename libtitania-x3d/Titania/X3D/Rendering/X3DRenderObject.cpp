@@ -434,8 +434,8 @@ X3DRenderObject::collide ()
 	{
 		std::sort (collisions .begin (), collisions .end ());
 
-		std::set_difference (activeCollisions .begin (), activeCollisions .end (),
-		                     collisions .begin (), collisions .end (),
+		std::set_difference (activeCollisions .cbegin (), activeCollisions .cend (),
+		                     collisions .cbegin (), collisions .cend (),
 		                     std::back_inserter (difference));
 	}
 

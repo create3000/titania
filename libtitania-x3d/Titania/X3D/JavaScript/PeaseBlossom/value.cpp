@@ -286,130 +286,130 @@ getValue (Context* const context, X3DFieldDefinition* const field)
 	switch (field -> getType ())
 	{
 		case X3D::X3DConstants::SFBool:
-			return X3DField::get <SFBool> (context, static_cast <X3D::SFBool*> (field));
+			return X3DField::get <SFBool> (context, *static_cast <X3D::SFBool*> (field));
 
 		case X3D::X3DConstants::SFColor:
-			return X3DField::get <SFColor> (context, static_cast <X3D::SFColor*> (field));
+			return X3DField::get <SFColor> (context, *static_cast <X3D::SFColor*> (field));
 
 		case X3D::X3DConstants::SFColorRGBA:
-			return X3DField::get <SFColorRGBA> (context, static_cast <X3D::SFColorRGBA*> (field));
+			return X3DField::get <SFColorRGBA> (context, *static_cast <X3D::SFColorRGBA*> (field));
 
 		case X3D::X3DConstants::SFDouble:
-			return X3DField::get <SFDouble> (context, static_cast <X3D::SFDouble*> (field));
+			return X3DField::get <SFDouble> (context, *static_cast <X3D::SFDouble*> (field));
 
 		case X3D::X3DConstants::SFFloat:
-			return X3DField::get <SFFloat> (context, static_cast <X3D::SFFloat*> (field));
+			return X3DField::get <SFFloat> (context, *static_cast <X3D::SFFloat*> (field));
 
 		case X3D::X3DConstants::SFImage:
-			return X3DField::get <SFImage> (context, static_cast <X3D::SFImage*> (field));
+			return X3DField::get <SFImage> (context, *static_cast <X3D::SFImage*> (field));
 
 		case X3D::X3DConstants::SFInt32:
-			return X3DField::get <SFInt32> (context, static_cast <X3D::SFInt32*> (field));
+			return X3DField::get <SFInt32> (context, *static_cast <X3D::SFInt32*> (field));
 
 		case X3D::X3DConstants::SFMatrix3d:
-			return X3DField::get <SFMatrix3d> (context, static_cast <X3D::SFMatrix3d*> (field));
+			return X3DField::get <SFMatrix3d> (context, *static_cast <X3D::SFMatrix3d*> (field));
 
 		case X3D::X3DConstants::SFMatrix3f:
-			return X3DField::get <SFMatrix3f> (context, static_cast <X3D::SFMatrix3f*> (field));
+			return X3DField::get <SFMatrix3f> (context, *static_cast <X3D::SFMatrix3f*> (field));
 
 		case X3D::X3DConstants::SFMatrix4d:
-			return X3DField::get <SFMatrix4d> (context, static_cast <X3D::SFMatrix4d*> (field));
+			return X3DField::get <SFMatrix4d> (context, *static_cast <X3D::SFMatrix4d*> (field));
 
 		case X3D::X3DConstants::SFMatrix4f:
-			return X3DField::get <SFMatrix4f> (context, static_cast <X3D::SFMatrix4f*> (field));
+			return X3DField::get <SFMatrix4f> (context, *static_cast <X3D::SFMatrix4f*> (field));
 
 		case X3D::X3DConstants::SFNode:
-			return X3DField::get <SFNode> (context, static_cast <X3D::SFNode*> (field));
+			return X3DField::get <SFNode> (context, *static_cast <X3D::SFNode*> (field));
 
 		case X3D::X3DConstants::SFRotation:
-			return X3DField::get <SFRotation> (context, static_cast <X3D::SFRotation*> (field));
+			return X3DField::get <SFRotation> (context, *static_cast <X3D::SFRotation*> (field));
 
 		case X3D::X3DConstants::SFString:
-			return X3DField::get <SFString> (context, static_cast <X3D::SFString*> (field));
+			return X3DField::get <SFString> (context, *static_cast <X3D::SFString*> (field));
 
 		case X3D::X3DConstants::SFTime:
-			return X3DField::get <SFTime> (context, static_cast <X3D::SFTime*> (field));
+			return X3DField::get <SFTime> (context, *static_cast <X3D::SFTime*> (field));
 
 		case X3D::X3DConstants::SFVec2d:
-			return X3DField::get <SFVec2d> (context, static_cast <X3D::SFVec2d*> (field));
+			return X3DField::get <SFVec2d> (context, *static_cast <X3D::SFVec2d*> (field));
 
 		case X3D::X3DConstants::SFVec2f:
-			return X3DField::get <SFVec2f> (context, static_cast <X3D::SFVec2f*> (field));
+			return X3DField::get <SFVec2f> (context, *static_cast <X3D::SFVec2f*> (field));
 
 		case X3D::X3DConstants::SFVec3d:
-			return X3DField::get <SFVec3d> (context, static_cast <X3D::SFVec3d*> (field));
+			return X3DField::get <SFVec3d> (context, *static_cast <X3D::SFVec3d*> (field));
 
 		case X3D::X3DConstants::SFVec3f:
-			return X3DField::get <SFVec3f> (context, static_cast <X3D::SFVec3f*> (field));
+			return X3DField::get <SFVec3f> (context, *static_cast <X3D::SFVec3f*> (field));
 
 		case X3D::X3DConstants::SFVec4d:
-			return X3DField::get <SFVec4d> (context, static_cast <X3D::SFVec4d*> (field));
+			return X3DField::get <SFVec4d> (context, *static_cast <X3D::SFVec4d*> (field));
 
 		case X3D::X3DConstants::SFVec4f:
-			return X3DField::get <SFVec4f> (context, static_cast <X3D::SFVec4f*> (field));
+			return X3DField::get <SFVec4f> (context, *static_cast <X3D::SFVec4f*> (field));
 
 		case X3D::X3DConstants::MFBool:
-			return X3DField::get <MFBool> (context, static_cast <X3D::MFBool*> (field));
+			return X3DField::get <MFBool> (context, *static_cast <X3D::MFBool*> (field));
 
 		case X3D::X3DConstants::MFColor:
-			return X3DField::get <MFColor> (context, static_cast <X3D::MFColor*> (field));
+			return X3DField::get <MFColor> (context, *static_cast <X3D::MFColor*> (field));
 
 		case X3D::X3DConstants::MFColorRGBA:
-			return X3DField::get <MFColorRGBA> (context, static_cast <X3D::MFColorRGBA*> (field));
+			return X3DField::get <MFColorRGBA> (context, *static_cast <X3D::MFColorRGBA*> (field));
 
 		case X3D::X3DConstants::MFDouble:
-			return X3DField::get <MFDouble> (context, static_cast <X3D::MFDouble*> (field));
+			return X3DField::get <MFDouble> (context, *static_cast <X3D::MFDouble*> (field));
 
 		case X3D::X3DConstants::MFFloat:
-			return X3DField::get <MFFloat> (context, static_cast <X3D::MFFloat*> (field));
+			return X3DField::get <MFFloat> (context, *static_cast <X3D::MFFloat*> (field));
 
 		case X3D::X3DConstants::MFImage:
-			return X3DField::get <MFImage> (context, static_cast <X3D::MFImage*> (field));
+			return X3DField::get <MFImage> (context, *static_cast <X3D::MFImage*> (field));
 
 		case X3D::X3DConstants::MFInt32:
-			return X3DField::get <MFInt32> (context, static_cast <X3D::MFInt32*> (field));
+			return X3DField::get <MFInt32> (context, *static_cast <X3D::MFInt32*> (field));
 
 		case X3D::X3DConstants::MFMatrix3d:
-			return X3DField::get <MFMatrix3d> (context, static_cast <X3D::MFMatrix3d*> (field));
+			return X3DField::get <MFMatrix3d> (context, *static_cast <X3D::MFMatrix3d*> (field));
 
 		case X3D::X3DConstants::MFMatrix3f:
-			return X3DField::get <MFMatrix3f> (context, static_cast <X3D::MFMatrix3f*> (field));
+			return X3DField::get <MFMatrix3f> (context, *static_cast <X3D::MFMatrix3f*> (field));
 
 		case X3D::X3DConstants::MFMatrix4d:
-			return X3DField::get <MFMatrix4d> (context, static_cast <X3D::MFMatrix4d*> (field));
+			return X3DField::get <MFMatrix4d> (context, *static_cast <X3D::MFMatrix4d*> (field));
 
 		case X3D::X3DConstants::MFMatrix4f:
-			return X3DField::get <MFMatrix4f> (context, static_cast <X3D::MFMatrix4f*> (field));
+			return X3DField::get <MFMatrix4f> (context, *static_cast <X3D::MFMatrix4f*> (field));
 
 		case X3D::X3DConstants::MFNode:
-			return X3DField::get <MFNode> (context, static_cast <X3D::MFNode*> (field));
+			return X3DField::get <MFNode> (context, *static_cast <X3D::MFNode*> (field));
 
 		case X3D::X3DConstants::MFRotation:
-			return X3DField::get <MFRotation> (context, static_cast <X3D::MFRotation*> (field));
+			return X3DField::get <MFRotation> (context, *static_cast <X3D::MFRotation*> (field));
 
 		case X3D::X3DConstants::MFString:
-			return X3DField::get <MFString> (context, static_cast <X3D::MFString*> (field));
+			return X3DField::get <MFString> (context, *static_cast <X3D::MFString*> (field));
 
 		case X3D::X3DConstants::MFTime:
-			return X3DField::get <MFTime> (context, static_cast <X3D::MFTime*> (field));
+			return X3DField::get <MFTime> (context, *static_cast <X3D::MFTime*> (field));
 
 		case X3D::X3DConstants::MFVec2d:
-			return X3DField::get <MFVec2d> (context, static_cast <X3D::MFVec2d*> (field));
+			return X3DField::get <MFVec2d> (context, *static_cast <X3D::MFVec2d*> (field));
 
 		case X3D::X3DConstants::MFVec2f:
-			return X3DField::get <MFVec2f> (context, static_cast <X3D::MFVec2f*> (field));
+			return X3DField::get <MFVec2f> (context, *static_cast <X3D::MFVec2f*> (field));
 
 		case X3D::X3DConstants::MFVec3d:
-			return X3DField::get <MFVec3d> (context, static_cast <X3D::MFVec3d*> (field));
+			return X3DField::get <MFVec3d> (context, *static_cast <X3D::MFVec3d*> (field));
 
 		case X3D::X3DConstants::MFVec3f:
-			return X3DField::get <MFVec3f> (context, static_cast <X3D::MFVec3f*> (field));
+			return X3DField::get <MFVec3f> (context, *static_cast <X3D::MFVec3f*> (field));
 
 		case X3D::X3DConstants::MFVec4d:
-			return X3DField::get <MFVec4d> (context, static_cast <X3D::MFVec4d*> (field));
+			return X3DField::get <MFVec4d> (context, *static_cast <X3D::MFVec4d*> (field));
 
 		case X3D::X3DConstants::MFVec4f:
-			return X3DField::get <MFVec4f> (context, static_cast <X3D::MFVec4f*> (field));
+			return X3DField::get <MFVec4f> (context, *static_cast <X3D::MFVec4f*> (field));
 	}
 
 	return pb::undefined;

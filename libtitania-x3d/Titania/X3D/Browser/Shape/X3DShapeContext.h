@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_SHAPE_X3DSHAPE_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {

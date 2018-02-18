@@ -61,12 +61,12 @@ namespace spidermonkey {
 
 template <class ValueType>
 class X3DConstArrayField :
-	public X3D::X3DField <Array <ValueType>> 
+	public X3D::X3DField <Array <ValueType*>> 
 {
 public:
 
-	typedef ValueType         value_type;
-	typedef Array <ValueType> internal_type;
+	typedef ValueType          value_type;
+	typedef Array <ValueType*> internal_type;
 
 	typedef basic::reference_iterator <typename internal_type::iterator, ValueType>                     iterator;
 	typedef basic::reference_iterator <typename internal_type::reverse_iterator, ValueType>             reverse_iterator;

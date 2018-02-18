@@ -124,11 +124,6 @@ public:
 	//  Stream Handling
 
 	std::string
-	loadDocument (const SFString & URL)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	std::string
 	loadDocument (const basic::uri & uri)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);

@@ -81,7 +81,7 @@ public:
 		getter (getter)
 	{ }
 
-	///  @name Operators
+	///  @name Assignment operator
 
 	member_value &
 	operator = (const member_value & other)
@@ -104,18 +104,36 @@ public:
 		return *this;
 	}
 
-	operator Type () const
-	{ return getter (); }
+	///  @name Element access
+
+	void
+	set (const Type & value)
+	{ setter (value); }
 
 	Type
 	get () const
 	{ return getter (); }
+
+	operator Type () const
+	{ return getter (); }
+
+	///  @name Operations
 
 // C++17
 //	template <class ... Args>
 //	std::invoke_result_t <Type, Args ...>
 //	operator () (Args && ... args) const
 //	{ return std::invoke (get (), std::forward <Args> (args) ...); }
+
+	///  Swaps the contents.
+	void
+	swap (member_value && other)
+	{
+		const auto tmp = getter ();
+
+		setter (other .getter ());
+		other .setter (tmp);
+	}
 
 	///  @name Destruction
 
@@ -133,5 +151,18 @@ private:
 
 } // basic
 } // titania
+
+namespace std {
+
+/// Specializes the std::swap algorithm for member_value.
+template <class Type>
+inline
+void
+swap (titania::basic::member_value <Type> && lhs, titania::basic::member_value <Type> && rhs)
+{
+	lhs .swap (std::move (rhs));
+}
+
+} // std
 
 #endif

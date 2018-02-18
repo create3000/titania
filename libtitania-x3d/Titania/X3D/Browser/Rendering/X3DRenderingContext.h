@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_RENDERING_X3DRENDERING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
 #include "../../Rendering/OpenGL.h"
 #include "../../Types/MatrixStack.h"
 
@@ -63,7 +62,7 @@ namespace X3D {
 
 class MotionBlur;
 
-using ClipPlaneStack   = std::stack <GLenum, std::vector <GLenum>>;
+using ClipPlaneStack    = std::stack <GLenum, std::vector <GLenum>>;
 using AlphaChannelStack = std::stack <bool, std::vector <bool>>;
 
 class X3DRenderingContext :

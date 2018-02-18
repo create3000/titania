@@ -53,26 +53,70 @@
 
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 
+using namespace titania;
 using namespace titania::X3D;
+
+namespace titania {
+namespace X3D {
+
+template class X3DNativeArrayField <int32_t>;
+
+}
+}
+
+template <class Type>
+void
+f ()
+{
+	static constexpr size_t N = 10'000'000;
+
+	const auto t0 = chrono::now ();
+
+	Type a (N);
+
+	std::fill (a .begin (), a .end (), typename Type::value_type (1));
+
+	auto y = a [1];
+	auto z = a [1];
+
+	std::swap (y, z);
+	
+
+	a [1] .swap (a [2]);
+	std::swap (a [1], a [2]);
+
+	std::clog << (chrono::now () - t0) << std::endl;
+}
 
 int
 main (int argc, char** argv)
 {
 	std::clog << "Starting main ..." << std::endl;
+	std::cout << std::boolalpha;
 	std::clog << std::boolalpha;
+	std::cerr << std::boolalpha;
+	std::cout << std::setprecision (std::numeric_limits <float>::digits10);
 	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
+	std::cerr << std::setprecision (std::numeric_limits <float>::digits10);
+	//std::cout << std::setprecision (std::numeric_limits <double>::digits10);
 	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+	//std::cerr << std::setprecision (std::numeric_limits <double>::digits10);
+	std::cout .imbue (std::locale (""));
 	std::clog .imbue (std::locale (""));
+	std::cerr .imbue (std::locale (""));
 
 	std::locale::global (std::locale (""));
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	MFInt32 a (10);
+	//f <MFBool> ();
+	f <MFInt32> ();
+	//f <MFVec3f> ();
 
-	std::iota (a .begin (), a .end (), 0);
+	Vector3d a;
+	Vector3d b;
 
-	std::cout << a << std::endl;
+	std::swap (a, b);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

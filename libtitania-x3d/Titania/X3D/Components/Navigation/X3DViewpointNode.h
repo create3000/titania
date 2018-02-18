@@ -111,12 +111,12 @@ public:
 	{ return fields .positionOffset; }
 
 	virtual
-	SFRotation4d &
+	SFRotation &
 	orientationOffset ()
 	{ return fields .orientationOffset; }
 
 	virtual
-	const SFRotation4d &
+	const SFRotation &
 	orientationOffset () const
 	{ return fields .orientationOffset; }
 
@@ -323,11 +323,11 @@ private:
 	scaleOffset () const
 	{ return fields .scaleOffset; }
 
-	SFRotation4d &
+	SFRotation &
 	scaleOrientationOffset ()
 	{ return fields .scaleOrientationOffset; }
 
-	const SFRotation4d &
+	const SFRotation &
 	scaleOrientationOffset () const
 	{ return fields .scaleOrientationOffset; }
 
@@ -380,9 +380,9 @@ private:
 		SFRotation* const orientation;
 		SFBool* const jump;
 		SFVec3d positionOffset;
-		SFRotation4d orientationOffset;
+		SFRotation orientationOffset;
 		SFVec3d scaleOffset;
-		SFRotation4d scaleOrientationOffset;
+		SFRotation scaleOrientationOffset;
 		SFVec3d centerOfRotationOffset;
 		SFDouble fieldOfViewScale;
 	};

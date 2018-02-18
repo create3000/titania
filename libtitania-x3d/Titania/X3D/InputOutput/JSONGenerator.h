@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,14 +48,52 @@
  *
  ******************************************************************************/
 
-#include "SupportedFieldsArray.h"
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_JSONGENERATOR_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_JSONGENERATOR_H__
+
+#include "../InputOutput/VRMLGenerator.h"
 
 namespace titania {
 namespace X3D {
 
-//
+class JSONGenerator
+{
+public:
+
+	// JSON
+
+	static
+	void
+	JSONEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+
+	static
+	void
+	JSONEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	JSONEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	JSONEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+
+	static
+	void
+	JSONEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	std::enable_if_t <std::is_enum <Type>::value, void>
+	JSONEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ VRMLGenerator::VRMLEncode (ostream, int32_t (value), unitCategory); }
+
+};
 
 } // X3D
 } // titania
 
-template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
+#endif

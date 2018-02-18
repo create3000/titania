@@ -211,7 +211,7 @@ CollisionSensor::update ()
 						Vector3d contactPosition;
 						Vector3d contactNormal;
 						double   contactDepth = 0;
-						Box3d    contactBox (triangles1 .begin (), triangles1 .end (), iterator_type ());
+						Box3d    contactBox (triangles1 .cbegin (), triangles1 .cend (), iterator_type ());
 
 						for (size_t i = 0, size = triangles1 .size (); i < size; i += 3)
 						{

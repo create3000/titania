@@ -159,16 +159,16 @@ X3DField::getKey <SFNode> (X3D::SFNode* const field)
 template <>
 inline
 pb::var
-X3DField::get <SFNode> (Context* const context, X3D::SFNode* const field)
+X3DField::get <SFNode> (Context* const context, const X3D::SFNode & field)
 {
-	if (field -> getValue ())
+	if (field .getValue ())
 	{
-		const auto object = context -> getObject (getKey <SFNode> (field));
+		const auto object = context -> getObject (getKey <SFNode> (const_cast <X3D::SFNode*> (&field)));
 
 		if (object)
 			return object;
 
-		return create <SFNode> (context -> getProgram (), new X3D::SFNode (*field));
+		return create <SFNode> (context -> getProgram (), new X3D::SFNode (field));
 	}
 
 	return nullptr;

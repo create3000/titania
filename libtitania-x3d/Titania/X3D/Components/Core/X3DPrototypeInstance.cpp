@@ -258,7 +258,7 @@ X3DPrototypeInstance::update ()
 		X3DExecutionContext::dispose ();
 
 		const auto proto  = protoNode -> getProtoDeclaration ();
-		const auto fields = FieldArray (getFieldDefinitions () .begin (), getFieldDefinitions () .end ());
+		const auto fields = FieldArray (getFieldDefinitions () .cbegin (), getFieldDefinitions () .cend ());
 		const auto map    = fieldMappings;
 
 		for (const auto & fieldPtr : fields)

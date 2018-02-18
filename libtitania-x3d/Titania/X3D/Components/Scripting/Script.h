@@ -156,7 +156,7 @@ private:
 	///  @name Operations
 
 	bool
-	loadDocument (const SFString &, std::string & scheme, std::string &);
+	loadDocument (const std::string & URL, std::string & scheme, std::string & ecmascript);
 
 	///  @name Event handling
 

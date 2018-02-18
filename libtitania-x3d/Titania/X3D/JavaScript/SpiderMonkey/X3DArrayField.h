@@ -150,20 +150,27 @@ private:
 		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, argv, index);
 	}
 
+	template <class Class>
+	static
+	typename std::enable_if <
+	   std::is_integral <typename Class::internal_type>::value or
+	   std::is_floating_point <typename Class::internal_type>::value or
+	   std::is_same <typename Class::internal_type, std::string>::value or
+	   std::is_same <typename Class::internal_type, X3D::String>::value,
+	   typename Class::internal_type
+	   >::type
+	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
+	throw (std::invalid_argument,
+	       std::domain_error)
+	{
+		return spidermonkey::getArgument <typename Class::internal_type> (cx, argv, index);
+	}
+
 	///  @name Static members
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
-
-};
-
-template <class Type, class InternalType>
-JSClass X3DArrayField <Type, InternalType>::static_class = {
-	"X3DArrayField", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
-	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
@@ -327,7 +334,7 @@ X3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsi
 		if (index < 0)
 			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 
-		return get <Type> (cx, &array -> get1Value (index), vp);
+		return get <Type> (cx, array -> get1Value (index), vp);
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -406,7 +413,7 @@ X3DArrayField <Type, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* 
 
 		array -> pop_front ();
 
-		return get <Type> (cx, value, vp);
+		return get <Type> (cx, *value, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -435,7 +442,7 @@ X3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp
 
 		array -> pop_back ();
 
-		return get <Type> (cx, value, vp);
+		return get <Type> (cx, *value, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -464,7 +471,7 @@ X3DArrayField <Type, InternalType>::splice (JSContext* cx, uint32_t argc, jsval*
 		if (index + deleteCount > (int32_t) array -> size ())
 			deleteCount = array -> size () - index;
 
-		result -> insert (result -> begin (), array -> begin () + index, array -> begin () + (index + deleteCount));
+		result -> insert (result -> begin (), array -> cbegin () + index, array -> cbegin () + (index + deleteCount));
 		array  -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
 
 		for (ssize_t i = argc - 1; i >= 2; -- i)

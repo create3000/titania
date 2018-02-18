@@ -546,10 +546,6 @@ VrmlMatrix::getType ()
 	return ObjectType::VrmlMatrix;
 }
 
-extern template class SFMatrix4 <X3D::SFMatrix4d>;
-extern template class SFMatrix4 <X3D::SFMatrix4f>;
-extern template class SFMatrix4 <X3D::VrmlMatrix>;
-
 } // peaseblossom
 } // X3D
 } // titania

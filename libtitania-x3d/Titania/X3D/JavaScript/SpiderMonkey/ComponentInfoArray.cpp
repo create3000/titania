@@ -63,8 +63,6 @@ JSClass ComponentInfoArray::static_class = {
 
 };
 
-template class jsX3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
-
 } // spidermonkey
 } // X3D
 } // titania

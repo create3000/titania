@@ -61,6 +61,8 @@ namespace X3D {
 template <class ValueType>
 class X3DArrayField;
 
+extern template class X3DField <time_type>;
+
 /**
  *  Class to represent a X3D SFTime field.
  */
@@ -71,6 +73,7 @@ public:
 
 	using value_type = time_type;
 
+	using X3DField <time_type>::toLocaleString;
 	using X3DField <time_type>::addInterest;
 	using X3DField <time_type>::operator =;
 
@@ -93,28 +96,6 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>)
 	{ return new SFTime (*this); }
-
-	///  @name Interest service
-
-	template <class Class>
-	void
-	addInterest (void (Class::* memberFunction) (const SFTime &), Class* const object) const
-	{ addInterest (memberFunction, object, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (void (Class::* memberFunction) (const SFTime &), Class & object) const
-	{ addInterest (memberFunction, object, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (void (Class::* memberFunction) (const time_type), Class* const object) const
-	{ addInterest (memberFunction, object, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (void (Class::* memberFunction) (const time_type), Class & object) const
-	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Common members
 
@@ -171,6 +152,28 @@ public:
 	std::string
 	toUTCString () const;
 
+	///  @name Interest service
+
+	template <class Class>
+	void
+	addInterest (void (Class::* memberFunction) (const SFTime &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
+
+	template <class Class>
+	void
+	addInterest (void (Class::* memberFunction) (const SFTime &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
+
+	template <class Class>
+	void
+	addInterest (void (Class::* memberFunction) (const time_type), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
+
+	template <class Class>
+	void
+	addInterest (void (Class::* memberFunction) (const time_type), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
+
 	///  @name Input/Output
 
 	///  Parses a date according to std::get_time with locale support.
@@ -222,8 +225,7 @@ protected:
 private:
 
 	static const std::string typeName;
-
-	static const FieldType type;
+	static const FieldType   type;
 
 };
 

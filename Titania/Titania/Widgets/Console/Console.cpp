@@ -101,16 +101,16 @@ Console::set_messages (const X3D::MFString & messages)
 	for (size_t i = 0; i < messages .size (); i += 2)
 	{
 		if (messages [i] == "error")
-			error (messages [i + 1] .str ());
+			error (messages [i + 1]);
 
 		else if (messages [i] == "warn")
-			warn (messages [i + 1] .str ());
+			warn (messages [i + 1]);
 
 		else if (messages [i] == "log")
-			log (messages [i + 1] .str ());
+			log (messages [i + 1]);
 
 		else
-			print (messages [i + 1] .str ());
+			print (messages [i + 1]);
 	}
 }
 

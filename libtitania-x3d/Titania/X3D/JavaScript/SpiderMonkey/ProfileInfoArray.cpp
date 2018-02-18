@@ -63,8 +63,6 @@ JSClass ProfileInfoArray::static_class = {
 
 };
 
-template class jsX3DConstArray <ProfileInfo, X3D::ProfileInfoArray>;
-
 } // spidermonkey
 } // X3D
 } // titania

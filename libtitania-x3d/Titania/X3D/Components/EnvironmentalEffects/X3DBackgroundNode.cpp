@@ -358,7 +358,7 @@ X3DBackgroundNode::build ()
 
 		if (groundColor () .size () > groundAngle () .size ())
 		{
-			std::vector <double> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
+			std::vector <double> vAngle (groundAngle () .crbegin (), groundAngle () .crend ());
 
 			if (vAngle .empty () or vAngle .front () < pi_2 <double>)
 				vAngle .insert (vAngle .begin (), pi_2 <double>);

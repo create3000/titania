@@ -445,8 +445,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		image () .setComponents (3);
 
-		for (auto & pixel : array)
-			pixel >>= 8;
+		for (MFInt32::reference pixel : array)
+			pixel = pixel .get () >> 8;
 	}
 }
 

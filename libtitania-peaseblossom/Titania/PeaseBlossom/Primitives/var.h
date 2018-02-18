@@ -146,6 +146,14 @@ public:
 	{ }
 
 	///  Constructs new var.
+	constexpr
+	var (const long double number) :
+		pbOutputStreamObject (),
+		               value ({ number_ : number }),
+		                type (NUMBER)
+	{ }
+
+	///  Constructs new var.
 	var (const Glib::ustring & string) :
 		pbOutputStreamObject (),
 		               value ({ string_ : new Glib::ustring (string) }),

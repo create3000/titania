@@ -48,14 +48,80 @@
  *
  ******************************************************************************/
 
-#include "ChildObjectSet.h"
+#include "XMLGenerator.h"
 
 namespace titania {
 namespace X3D {
 
-//
+
+// XML
+
+void
+XMLGenerator::XMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+{
+	ostream << (value ? "true" : "false");
+}
+
+void
+XMLGenerator::XMLEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory)
+{
+	for (const auto & c : string .raw ())
+	{
+		switch (c)
+		{
+			case '\t' :
+			{
+				ostream << "&#x9;";
+				break;
+			}
+			case '\n':
+			{
+				ostream << "&#xA;";
+				break;
+			}
+			case '\r':
+			{
+				ostream << "&#xD;";
+				break;
+			}
+			case '<':
+			{
+				ostream << "&lt;";
+				break;
+			}
+			case '>':
+			{
+				ostream << "&gt;";
+				break;
+			}
+			case '&':
+			{
+				ostream << "&amp;";
+				break;
+			}
+			case '\'':
+			{
+				ostream << "&apos;";
+				break;
+			}
+			case '"':
+			{
+				ostream << "\\\"";
+				break;
+			}
+			case '\\':
+			{
+				ostream << "\\\\";
+				break;
+			}
+			default:
+			{
+				ostream << c;
+				break;
+			}
+		}
+	}
+}
 
 } // X3D
 } // titania
-
-template class std::set <titania::X3D::X3DChildObject*>;

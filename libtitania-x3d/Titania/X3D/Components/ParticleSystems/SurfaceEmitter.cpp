@@ -216,7 +216,7 @@ SurfaceEmitter::set_geometry ()
 
 			surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
 	
-			vertices .assign (verticesAux .begin (), verticesAux .end ());
+			vertices .assign (verticesAux .cbegin (), verticesAux .cend ());
 
 			// Calculate area so far array
 
@@ -244,7 +244,7 @@ SurfaceEmitter::set_geometry ()
 	
 			surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
 	
-			const std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
+			const std::vector <Vector3f> vertices (verticesAux .cbegin (), verticesAux .cend ());
 	
 			float               surfaceArea = 0;
 			std::vector <float> surfaceAreas (1);
@@ -321,11 +321,11 @@ SurfaceEmitter::getRandomPosition () const
 	}
 	else
 	{
-		const auto iter = std::upper_bound (areaSoFarArray .begin (), areaSoFarArray .end (), fraction);
+		const auto iter = std::upper_bound (areaSoFarArray .cbegin (), areaSoFarArray .cend (), fraction);
 
-		if (iter not_eq areaSoFarArray .end ())
+		if (iter not_eq areaSoFarArray .cend ())
 		{
-			index0 = (iter - areaSoFarArray .begin ()) - 1;
+			index0 = (iter - areaSoFarArray .cbegin ()) - 1;
 		}
 		else
 		{

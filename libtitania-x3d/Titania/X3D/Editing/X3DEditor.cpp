@@ -848,7 +848,7 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 	// Remove exported nodes
 
 	if (removeFromSceneGraph)
-		removeNodesFromSceneGraph (executionContext, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
+		removeNodesFromSceneGraph (executionContext, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), undoStep);
 
 	// Delete children of node if not in scene graph
 
@@ -1010,7 +1010,7 @@ X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNo
 void
 X3DEditor::removeNode (const SFNode & parent, MFNode & mfnode, const SFNode & node, const UndoStepPtr & undoStep)
 {
-	if (std::find (mfnode .begin (), mfnode .end (), node) == mfnode .end ())
+	if (std::find (mfnode .cbegin (), mfnode .cend (), node) == mfnode .cend ())
 		return;
 
 	undoStep -> addObjects (parent);
@@ -1356,13 +1356,13 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 
 	undoStep -> addUndoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
 
-	for (auto & URL : externProto -> url ())
+	for (MFString::reference URL : externProto -> url ())
 	{
-		basic::uri uri = URL .str ();
+		basic::uri uri (URL .get ());
 
 		uri .fragment (externProto -> getProtoDeclaration () -> getName ());
 
-		URL = uri .str ();
+		URL .set (uri .str ());
 	}
 
 	undoStep -> addRedoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
@@ -2013,7 +2013,7 @@ void
 X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessType, const std::string & name, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
-	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), field);
+	auto iter              = std::find (userDefinedFields .cbegin (), userDefinedFields .cend (), field);
 
 	if (iter == userDefinedFields .end ())
 		return;
@@ -2022,7 +2022,7 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 
 	// Save all involved fields.
 
-	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()));
+	undoStep -> addObjects (FieldArray (userDefinedFields .cbegin (), userDefinedFields .cend ()));
 
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
 	// functions we will execute later.
@@ -2031,7 +2031,7 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 
 	const auto references = field -> getReferences ();
 
-	undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+	undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 	for (const auto & reference : references)
 	{
@@ -2080,7 +2080,7 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 
 				const auto references = instanceField -> getReferences ();
 	
-				undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+				undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 				referencesIndex .emplace (instance, references);
 
@@ -2158,7 +2158,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 	// Save all involved fields.
 
-	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (newField));
+	undoStep -> addObjects (FieldArray (userDefinedFields .cbegin (), userDefinedFields .cend ()), FieldPtr (newField));
 
 	// Handle IS references, if node is proto.
 
@@ -2185,7 +2185,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 		const auto references = oldField -> getReferences ();
 	
-		undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+		undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 		for (const auto & reference : references)
 		{
@@ -2230,7 +2230,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 				const auto references = instanceField -> getReferences ();
 	
-				undoStep -> addObjects (FieldArray (references .begin (), references .end ()));
+				undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 				referencesIndex .emplace (instance, references);
 
@@ -2378,7 +2378,7 @@ X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* cons
 
 	const auto userDefinedFields = node -> getUserDefinedFields ();
 
-	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (field));
+	undoStep -> addObjects (FieldArray (userDefinedFields .cbegin (), userDefinedFields .cend ()), FieldPtr (field));
 
 	// Remove user data from old field.
 
@@ -2406,11 +2406,11 @@ X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray
 
 	const auto currentUserDefinedFields = node -> getUserDefinedFields ();
 
-	std::set <X3DFieldDefinition*>    lhs (currentUserDefinedFields .begin (), currentUserDefinedFields .end ());
-	std::set <X3DFieldDefinition*>    rhs (userDefinedFields .begin (), userDefinedFields .end ());
+	std::set <X3DFieldDefinition*>    lhs (currentUserDefinedFields .cbegin (), currentUserDefinedFields .cend ());
+	std::set <X3DFieldDefinition*>    rhs (userDefinedFields .cbegin (), userDefinedFields .cend ());
 	std::vector <X3DFieldDefinition*> difference;
 
-	std::set_difference (lhs .begin (), lhs .end (), rhs .begin (), rhs .end (), std::back_inserter (difference));
+	std::set_difference (lhs .cbegin (), lhs .cend (), rhs .cbegin (), rhs .cend (), std::back_inserter (difference));
 
 	for (const auto & field : difference)
 	{
@@ -2553,7 +2553,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext,
 	std::sort (importedNodes .begin (), importedNodes .end ());
 	std::sort (selection .begin (), selection .end ());
 
-	std::set_difference (importedNodes .begin (), importedNodes .end (), selection .begin (), selection .end (), std::back_inserter (unused));
+	std::set_difference (importedNodes .cbegin (), importedNodes .cend (), selection .cbegin (), selection .cend (), std::back_inserter (unused));
 
 	removeNodesFromScene (executionContext, unused, false, undoStep);
 
@@ -3162,7 +3162,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 	
 		createParentGroup (executionContext, group, executionContext -> getRootNodes (), leader, executionContext, undoStep);
 	
-		MFNode tail (children .begin (), children .end () - 1);
+		MFNode tail (children .cbegin (), children .cend () - 1);
 	
 		addToGroup (executionContext, group, tail, undoStep);
 		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), leader, undoStep);
@@ -4048,7 +4048,7 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 }
 
 void
-X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep)
+X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::const_iterator & first, const MFNode::const_iterator & last, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);

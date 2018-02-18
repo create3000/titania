@@ -479,7 +479,7 @@ public:
 
 	static
 	void
-	insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep);
+	insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::const_iterator & first, const MFNode::const_iterator & last, const UndoStepPtr & undoStep);
 
 	static
 	void

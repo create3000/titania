@@ -356,7 +356,7 @@ X3DGeometryNodeTool::intersects (X3DRenderObject* const renderObject,
 {
 	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (renderObject, frameBuffer, depthBuffer, intersections);
 
-	selection .insert (selection .end (), hitPoints .begin (), hitPoints .end ());
+	selection .insert (selection .end (), hitPoints .cbegin (), hitPoints .cend ());
 
 	return hitPoints;
 }

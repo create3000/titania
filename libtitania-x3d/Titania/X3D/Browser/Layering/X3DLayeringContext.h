@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_BROWSER_LAYERING_X3DLAYERING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
 
 #include <stack>
 

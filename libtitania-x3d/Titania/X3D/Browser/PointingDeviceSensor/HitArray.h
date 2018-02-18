@@ -63,6 +63,4 @@ using HitArray = std::deque <HitPtr>;
 } // X3D
 } // titania
 
-extern template class std::deque <titania::X3D::HitPtr>;
-
 #endif

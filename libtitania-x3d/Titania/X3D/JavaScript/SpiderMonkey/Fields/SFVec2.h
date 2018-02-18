@@ -130,15 +130,6 @@ template <class InternalType>
 const size_t SFVec2 <InternalType>::size = 2;
 
 template <class InternalType>
-JSClass SFVec2 <InternalType>::static_class = {
-	"SFVec2", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
-};
-
-template <class InternalType>
 JSPropertySpec SFVec2 <InternalType>::properties [ ] = {
 	{ "x", X, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "y", Y, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
@@ -510,9 +501,6 @@ template <>
 constexpr ObjectType
 SFVec2f::getId ()
 { return ObjectType::SFVec2f; }
-
-extern template class SFVec2 <X3D::SFVec2d>;
-extern template class SFVec2 <X3D::SFVec2f>;
 
 } // spidermonkey
 } // X3D
