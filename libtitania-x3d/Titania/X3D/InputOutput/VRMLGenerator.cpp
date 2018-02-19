@@ -56,13 +56,25 @@ namespace X3D {
 // VRML
 
 void
-VRMLGenerator::VRMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+VRMLGenerator::Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
 {
 	ostream << (value ? "TRUE" : "FALSE");
 }
 
 void
-VRMLGenerator::VRMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+VRMLGenerator::Encode (std::ostream & ostream, const Color3f & value, const UnitCategory unitCategory)
+{
+	ostream << X3DGenerator::SetPrecision <Color3f::value_type> << value;
+}
+
+void
+VRMLGenerator::Encode (std::ostream & ostream, const Color4f & value, const UnitCategory unitCategory)
+{
+	ostream << X3DGenerator::SetPrecision <Color4f::value_type> << value;
+}
+
+void
+VRMLGenerator::Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
 {
 	const auto unit = Generator::Unit (ostream, unitCategory);
 
@@ -70,7 +82,7 @@ VRMLGenerator::VRMLEncode (std::ostream & ostream, const double value, const Uni
 }
 
 void
-VRMLGenerator::VRMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+VRMLGenerator::Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
 {
 	const auto unit = Generator::Unit (ostream, unitCategory);
 
@@ -78,13 +90,13 @@ VRMLGenerator::VRMLEncode (std::ostream & ostream, const float value, const Unit
 }
 
 void
-VRMLGenerator::VRMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+VRMLGenerator::Encode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
 {
 	ostream << value;
 }
 
 void
-VRMLGenerator::VRMLEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
+VRMLGenerator::Encode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
 {
 	ostream << '"';
 

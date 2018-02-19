@@ -323,7 +323,7 @@ MFColorButton::set_buffer ()
 			const auto & value = field .get1Value (index);
 			const auto   rgba  = to_rgba (value);
 
-			hsv = value .getHSV ();
+			hsv = value .hsv ();
 
 			dialog .get_color_selection () -> set_current_rgba (rgba);
 			dialog .get_color_selection () -> set_previous_rgba (rgba);
@@ -629,7 +629,7 @@ MFColorButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & context)
 			const double  x      = colorsBorder [0] + column * colorsSize + column * colorsGap;
 			const double  y      = colorsBorder [3] + row * colorsSize + row * colorsGap;
 
-			context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), 1);
+			context -> set_source_rgba (color .r (), color .g (), color .b (), 1);
 			context -> rectangle (x, y, colorsSize, colorsSize);
 			context -> fill ();
 
@@ -683,7 +683,7 @@ MFColorButton::on_copy ()
 		try
 		{
 			auto & field = node -> getField <X3D::MFColor> (name);
-			clipboard -> set_string () = field .get1Value (index) .toString ();
+			clipboard -> set_string () = X3D::SFColor (field .get1Value (index)) .toString ();
 			break;
 		}
 		catch (const X3D::X3DError &)

@@ -98,7 +98,7 @@ X3DInterpolatorNode::set_fraction_ ()
 	if (key () .size () == 1)
 		return interpolate (0, 0, 0);
 
-	if (set_fraction () <= key () [0])
+	if (set_fraction () <= key () .get1Value (0))
 		return interpolate (0, 1, 0);
 
 	if (set_fraction () >= key () [key () .size () - 1])
@@ -110,7 +110,7 @@ X3DInterpolatorNode::set_fraction_ ()
 	{
 		const size_t index1 = iter - key () .cbegin ();
 		const size_t index0 = index1 - 1;
-		const float  weight = (set_fraction () - key () [index0]) / (key () [index1] - key () [index0]);
+		const float  weight = (set_fraction () - key () .get1Value (index0)) / (key () .get1Value (index1) - key () .get1Value (index0));
 
 		interpolate (index0, index1, math::clamp (weight, 0.0f, 1.0f));
 	}

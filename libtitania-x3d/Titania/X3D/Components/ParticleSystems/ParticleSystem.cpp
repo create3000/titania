@@ -1422,8 +1422,8 @@ ParticleSystem::animateParticles ()
 			for (const auto & physicsModelNode : physicsModelNodes)
 				physicsModelNode -> addForce (emitterNode, velocity, turbulence);
 
-			for (auto & v : velocity)
-				v *= deltaTime / emitterNode -> mass ();
+			for (MFVec3f::reference v : velocity)
+				v = v .get () * float (deltaTime / emitterNode -> mass ());
 
 			transformShader -> setField <MFVec3f> ("velocity",   velocity,                    true);
 			transformShader -> setField <MFFloat> ("turbulence", turbulence,                  true);

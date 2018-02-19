@@ -98,10 +98,10 @@ Coordinate::set1Point (const size_t index, const Vector3d & value)
 }
 
 Vector3d
-Coordinate::get1Point (const size_t index)
+Coordinate::get1Point (const size_t index) const
 {
 	if (index < point () .size ())
-		return Vector3d (point () [index] .getValue ());
+		return Vector3d (point () [index]);
 
 	return Vector3d ();
 }
@@ -137,7 +137,7 @@ void
 Coordinate::addVertex (math::tessellator <double, size_t> & tessellator, const size_t index, const size_t i) const
 {
 	if (index < point () .size ())
-		tessellator .add_vertex (point () [index] .getValue (), i);
+		tessellator .add_vertex (point () [index], i);
 
 	else
 		tessellator .add_vertex (Vector3d (), i);
@@ -147,7 +147,7 @@ void
 Coordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
-		vertices .emplace_back (point () [index] .getValue ());
+		vertices .emplace_back (point () [index]);
 
 	else
 		vertices .emplace_back ();
@@ -163,17 +163,17 @@ Coordinate::getControlPoints (const MFDouble & weight) const
 	if (weight .size () < point () .size ())
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (),
-			                             point () [i] .getY (),
-			                             point () [i] .getZ (),
+			controlPoints .emplace_back (point () [i] .x (),
+			                             point () [i] .y (),
+			                             point () [i] .z (),
 			                             1);
 	}
 	else
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (),
-			                             point () [i] .getY (),
-			                             point () [i] .getZ (),
+			controlPoints .emplace_back (point () [i] .x (),
+			                             point () [i] .y (),
+			                             point () [i] .z (),
 			                             weight [i]);
 	}
 

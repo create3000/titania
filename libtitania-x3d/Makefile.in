@@ -558,9 +558,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Execution/Scene.lo Titania/X3D/Execution/World.lo \
 	Titania/X3D/Execution/X3DExecutionContext.lo \
 	Titania/X3D/Execution/X3DScene.lo \
-	Titania/X3D/Fields/ArrayFields.lo \
-	Titania/X3D/Fields/MFInt32.lo Titania/X3D/Fields/MFNode.lo \
-	Titania/X3D/Fields/MFTime.lo \
+	Titania/X3D/Fields/MFImage.lo Titania/X3D/Fields/MFInt32.lo \
+	Titania/X3D/Fields/MFNode.lo Titania/X3D/Fields/MFTime.lo \
 	Titania/X3D/Fields/NativeArrayFields.lo \
 	Titania/X3D/Fields/SFColor.lo \
 	Titania/X3D/Fields/SFColorRGBA.lo \
@@ -654,7 +653,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Parser/Colors.lo Titania/X3D/Parser/Filter.lo \
 	Titania/X3D/Parser/glTF/Parser.lo \
 	Titania/X3D/Parser/Grammar.lo Titania/X3D/Parser/JSONParser.lo \
-	Titania/X3D/Parser/Parser.lo Titania/X3D/Parser/PDF/Parser.lo \
+	Titania/X3D/Parser/MiniParser.lo Titania/X3D/Parser/Parser.lo \
+	Titania/X3D/Parser/PDF/Parser.lo \
 	Titania/X3D/Parser/SVG/Parser.lo \
 	Titania/X3D/Parser/VRML1/Converter.lo \
 	Titania/X3D/Parser/VRML1/Nodes/Background.lo \
@@ -1498,7 +1498,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Execution/World.cpp \
 	Titania/X3D/Execution/X3DExecutionContext.cpp \
 	Titania/X3D/Execution/X3DScene.cpp \
-	Titania/X3D/Fields/ArrayFields.cpp \
+	Titania/X3D/Fields/MFImage.cpp \
 	Titania/X3D/Fields/MFInt32.cpp \
 	Titania/X3D/Fields/MFNode.cpp \
 	Titania/X3D/Fields/MFTime.cpp \
@@ -1602,6 +1602,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Parser/glTF/Parser.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/JSONParser.cpp \
+	Titania/X3D/Parser/MiniParser.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/PDF/Parser.cpp \
 	Titania/X3D/Parser/SVG/Parser.cpp \
@@ -3531,7 +3532,7 @@ Titania/X3D/Fields/$(am__dirstamp):
 Titania/X3D/Fields/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Fields/$(DEPDIR)
 	@: > Titania/X3D/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Fields/ArrayFields.lo: Titania/X3D/Fields/$(am__dirstamp) \
+Titania/X3D/Fields/MFImage.lo: Titania/X3D/Fields/$(am__dirstamp) \
 	Titania/X3D/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Fields/MFInt32.lo: Titania/X3D/Fields/$(am__dirstamp) \
 	Titania/X3D/Fields/$(DEPDIR)/$(am__dirstamp)
@@ -3881,6 +3882,8 @@ Titania/X3D/Parser/glTF/Parser.lo:  \
 Titania/X3D/Parser/Grammar.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/JSONParser.lo: Titania/X3D/Parser/$(am__dirstamp) \
+	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/MiniParser.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Parser.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
@@ -5217,7 +5220,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/World.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/X3DExecutionContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/X3DScene.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/ArrayFields.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/MFImage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/MFInt32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/MFNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/MFTime.Plo@am__quote@
@@ -5300,6 +5303,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Filter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/JSONParser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/MiniParser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/X3DParser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/XMLParser.Plo@am__quote@

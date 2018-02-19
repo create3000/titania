@@ -103,7 +103,7 @@ void
 SquadOrientationInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Rotation4d ());
 
 	squad -> generate (closed (), key (), keyValue ());
 }

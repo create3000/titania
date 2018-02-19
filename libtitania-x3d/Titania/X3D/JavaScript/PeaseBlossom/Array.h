@@ -57,7 +57,15 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-template <class Type, class InternalType>
+template <class InternalType>
+struct ArrayValue :
+	public X3D::X3DBase
+{
+	InternalType* array;
+	size_t        index;
+};
+
+template <class ValueType, class InternalType>
 class Array :
 	public X3DArrayField
 {
@@ -66,8 +74,8 @@ public:
 	///  @name Member types
 
 	using internal_type = InternalType;
-	using value_type    = Type;
-	using single_type   = typename InternalType::value_type;
+	using value_type    = ValueType;
+	using single_type   = typename ValueType::internal_type;
 
 	///  @name Common members
 
@@ -173,6 +181,35 @@ private:
 	{
 		return peaseblossom::get1Argument <typename Class::internal_type> (value);
 	}
+	
+	template <class Class>
+	static
+	typename std::enable_if <
+	   std::is_integral <Class>::value or
+	   std::is_floating_point <Class>::value or
+	   std::is_same <Class, X3D::String>::value or
+		std::is_base_of <X3D::X3DFieldDefinition, Class>::value,
+		const Class &
+	>::type
+	check (InternalType* const array, const size_t index, const Class & value)
+	{
+		return value;
+	}
+
+	template <class Class>
+	static
+	typename std::enable_if <
+	   not (std::is_integral <Class>::value or
+	        std::is_floating_point <Class>::value or
+	        std::is_same <Class, X3D::String>::value or
+		     std::is_base_of <X3D::X3DFieldDefinition, Class>::value),
+		const single_type &
+	>::type
+	check (InternalType* const array, const size_t index, const Class & value)
+	{
+		const auto field = new single_type (value);
+		return *field;
+	}
 
 	///  @name Static members
 
@@ -181,9 +218,9 @@ private:
 
 };
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 pb::ptr <pb::NativeFunction>
-Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
+Array <ValueType, InternalType>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
 	using namespace std::placeholders;
 
@@ -202,9 +239,9 @@ Array <Type, InternalType>::initialize (Context* const context, const pb::ptr <p
 	return function;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 pb::var
-Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <ValueType, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
@@ -218,7 +255,7 @@ Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & 
 			const auto array = new InternalType ();
 
 			for (size_t i = 0, size = args .size (); i < size; ++ i)
-				array -> emplace_back (get1Argument <Type> (args [i]));
+				array -> emplace_back (get1Argument <ValueType> (args [i]));
 
 			setUserData <Array> (ec, object, array);
 			break;
@@ -228,9 +265,9 @@ Array <Type, InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & 
 	return pb::undefined;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-Array <Type, InternalType>::enumerate (pb::pbObject* const object, const pb::EnumerateType type, std::string & propertyName, void* & userData)
+Array <ValueType, InternalType>::enumerate (pb::pbObject* const object, const pb::EnumerateType type, std::string & propertyName, void* & userData)
 {
 	const auto array = getObject <InternalType> (object);
 
@@ -267,9 +304,9 @@ Array <Type, InternalType>::enumerate (pb::pbObject* const object, const pb::Enu
 	return false;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-Array <Type, InternalType>::hasProperty (pb::pbObject* const object, const pb::Identifier & identifier)
+Array <ValueType, InternalType>::hasProperty (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	const auto index = identifier .toUInt32 ();
 
@@ -281,9 +318,9 @@ Array <Type, InternalType>::hasProperty (pb::pbObject* const object, const pb::I
 	return index < array -> size ();
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 void
-Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Identifier & identifier, const pb::var & value)
+Array <ValueType, InternalType>::set1Value (pb::pbObject* const object, const pb::Identifier & identifier, const pb::var & value)
 {
 	try
 	{
@@ -294,7 +331,7 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 
 		const auto array = getObject <InternalType> (object);
 
-		array -> set1Value (index, get1Argument <Type> (value));
+		array -> set1Value (index, get1Argument <ValueType> (value));
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -302,9 +339,9 @@ Array <Type, InternalType>::set1Value (pb::pbObject* const object, const pb::Ide
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 pb::var
-Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier)
+Array <ValueType, InternalType>::get1Value (pb::pbObject* const object, const pb::Identifier & identifier)
 {
 	try
 	{
@@ -316,7 +353,7 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 		const auto context = getContext (object);
 		const auto array   = getObject <InternalType> (object);
 
-		return get <Type> (context, array -> get1Value (index));
+		return get <ValueType> (context, check <typename InternalType::value_type> (array, index, array -> get1Value (index)));
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -324,13 +361,13 @@ Array <Type, InternalType>::get1Value (pb::pbObject* const object, const pb::Ide
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 pb::var
-Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <ValueType, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs  = getThis <Array <Type, InternalType>>  (ec, object);
+		const auto lhs  = getThis <Array <ValueType, InternalType>>  (ec, object);
 		const auto size = args [0] .toUInt32 ();
 
 		if (basic::to_string (size, std::locale::classic ()) == args [0] .toString ())
@@ -352,13 +389,13 @@ Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & 
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 pb::var
-Array <Type, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+Array <ValueType, InternalType>::getLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	try
 	{
-		const auto lhs = getThis <Array <Type, InternalType>>  (ec, object);
+		const auto lhs = getThis <Array <ValueType, InternalType>>  (ec, object);
 
 		return lhs -> size ();
 	}

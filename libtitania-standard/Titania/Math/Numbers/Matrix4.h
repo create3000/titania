@@ -576,14 +576,14 @@ public:
 	constexpr
 	size_type
 	size () const
-	{ return Rows; }
+	{ return Rows * Columns; }
 
 	///  Returns the maximum possible number of elements. Because each matrix is a fixed-size container,
 	///  the value is also the value returned by size.
 	constexpr
 	size_type
 	max_size () const
-	{ return Rows; }
+	{ return Rows * Columns; }
 
 	///  @name Operations
 

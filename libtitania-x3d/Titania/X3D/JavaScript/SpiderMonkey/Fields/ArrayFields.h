@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_ARRAY_FIELDS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_ARRAY_FIELDS_H__
 
-#include "../../../Fields/ArrayFields.h"
+#include "../../../Fields.h"
 #include "../X3DArrayField.h"
 
 #include "SFColor.h"

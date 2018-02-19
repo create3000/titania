@@ -684,11 +684,11 @@ SoftSystem::animateParticles ()
 		for (const auto & physicsModelNode : physicsModelNodes)
 			physicsModelNode -> addForce (emitterNode, velocities, turbulences);
 
-		for (auto & v : velocities)
-			v *= deltaTime / emitterNode -> mass ();
+		for (MFVec3f::reference v : velocities)
+			v = v .get () * float (deltaTime / emitterNode -> mass ());
 
-		for (const auto & v : velocities)
-			speeds .emplace_back (abs (v .getValue ()));
+		for (const auto & v : basic::make_const_range (velocities))
+			speeds .emplace_back (abs (v));
 
 		numForces = velocities .size ();
 	}

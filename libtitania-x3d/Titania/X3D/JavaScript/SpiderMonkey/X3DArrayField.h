@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
+#include "ArrayValue.h"
 #include "Context.h"
 #include "Error.h"
 #include "String.h"
@@ -60,7 +61,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 class X3DArrayField :
 	public X3DField
 {
@@ -68,9 +69,9 @@ public:
 
 	///  @name Member types
 
-	using value_type    = Type;
+	using value_type    = ValueType;
 	using internal_type = InternalType;
-	using single_type   = typename InternalType::value_type;
+	using single_type   = typename ValueType::internal_type;
 
 	///  @name Construction
 
@@ -166,6 +167,35 @@ private:
 		return spidermonkey::getArgument <typename Class::internal_type> (cx, argv, index);
 	}
 
+	template <class Class>
+	static
+	typename std::enable_if <
+	   std::is_integral <Class>::value or
+	   std::is_floating_point <Class>::value or
+	   std::is_same <Class, X3D::String>::value or
+		std::is_base_of <X3D::X3DFieldDefinition, Class>::value,
+		const Class &
+	>::type
+	check (InternalType* const array, const size_t index, const Class & value)
+	{
+		return value;
+	}
+
+	template <class Class>
+	static
+	typename std::enable_if <
+	   not (std::is_integral <Class>::value or
+	        std::is_floating_point <Class>::value or
+	        std::is_same <Class, X3D::String>::value or
+		     std::is_base_of <X3D::X3DFieldDefinition, Class>::value),
+		const single_type &
+	>::type
+	check (InternalType* const array, const size_t index, const Class & value)
+	{
+		const auto field = new single_type (value);
+		return *field;
+	}
+
 	///  @name Static members
 
 	static JSClass        static_class;
@@ -174,15 +204,15 @@ private:
 
 };
 
-template <class Type, class InternalType>
-JSPropertySpec X3DArrayField <Type, InternalType>::properties [ ] = {
+template <class ValueType, class InternalType>
+JSPropertySpec X3DArrayField <ValueType, InternalType>::properties [ ] = {
 	{ "length", LENGTH, JSPROP_SHARED | JSPROP_PERMANENT, length, length },
 	{ 0 }
 
 };
 
-template <class Type, class InternalType>
-JSFunctionSpec X3DArrayField <Type, InternalType>::functions [ ] = {
+template <class ValueType, class InternalType>
+JSFunctionSpec X3DArrayField <ValueType, InternalType>::functions [ ] = {
 	{ "unshift",     unshift, 1, 0 },
 	{ "push",        push,    1, 0 },
 	{ "shift",       shift,   0, 0 },
@@ -193,9 +223,9 @@ JSFunctionSpec X3DArrayField <Type, InternalType>::functions [ ] = {
 
 };
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSObject*
-X3DArrayField <Type, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
+X3DArrayField <ValueType, InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -205,15 +235,15 @@ X3DArrayField <Type, InternalType>::init (JSContext* const cx, JSObject* const g
 	return proto;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::construct (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
 		if (argc == 0)
 		{
-			return create <X3DArrayField <Type, InternalType>> (cx, new InternalType (), &JS_RVAL (cx, vp));
+			return create <X3DArrayField <ValueType, InternalType>> (cx, new InternalType (), &JS_RVAL (cx, vp));
 		}
 		else
 		{
@@ -222,10 +252,10 @@ X3DArrayField <Type, InternalType>::construct (JSContext* cx, uint32_t argc, jsv
 
 			for (uint32_t i = 0; i < argc; ++ i)
 			{
-				array -> emplace_back (getArgument <Type> (cx, argv, i));
+				array -> emplace_back (getArgument <ValueType> (cx, argv, i));
 			}
 
-			return create <X3DArrayField <Type, InternalType>> (cx, array, &JS_RVAL (cx, vp));
+			return create <X3DArrayField <ValueType, InternalType>> (cx, array, &JS_RVAL (cx, vp));
 		}
 	}
 	catch (const std::exception & error)
@@ -234,9 +264,9 @@ X3DArrayField <Type, InternalType>::construct (JSContext* cx, uint32_t argc, jsv
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+X3DArrayField <ValueType, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	try
 	{
@@ -289,9 +319,9 @@ X3DArrayField <Type, InternalType>::enumerate (JSContext* cx, JSObject* obj, JSI
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+X3DArrayField <ValueType, InternalType>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
@@ -304,7 +334,7 @@ X3DArrayField <Type, InternalType>::set1Value (JSContext* cx, JSObject* obj, jsi
 		if (index < 0)
 			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 
-		array -> set1Value (index, getArgument <Type> (cx, vp, 0));
+		array -> set1Value (index, getArgument <ValueType> (cx, vp, 0));
 
 		*vp = JSVAL_VOID;
 		return true;
@@ -319,9 +349,9 @@ X3DArrayField <Type, InternalType>::set1Value (JSContext* cx, JSObject* obj, jsi
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+X3DArrayField <ValueType, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
@@ -334,7 +364,7 @@ X3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsi
 		if (index < 0)
 			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 
-		return get <Type> (cx, array -> get1Value (index), vp);
+		return get <ValueType> (cx, check <typename InternalType::value_type> (array, index, array -> get1Value (index)), vp);
 	}
 	catch (const std::bad_alloc &)
 	{
@@ -346,9 +376,9 @@ X3DArrayField <Type, InternalType>::get1Value (JSContext* cx, JSObject* obj, jsi
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
@@ -359,7 +389,7 @@ X3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval
 		const auto array = getThis <X3DArrayField> (cx, vp);
 
 		for (ssize_t i = argc - 1; i >= 0; -- i)
-			array -> emplace_front (getArgument <Type> (cx, argv, i));
+			array -> emplace_front (getArgument <ValueType> (cx, argv, i));
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
@@ -369,9 +399,9 @@ X3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::push (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc == 0)
 		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
@@ -382,7 +412,7 @@ X3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* v
 		const auto array = getThis <X3DArrayField> (cx, vp);
 
 		for (uint32_t i = 0; i < argc; ++ i)
-			array -> emplace_back (getArgument <Type> (cx, argv, i));
+			array -> emplace_back (getArgument <ValueType> (cx, argv, i));
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
@@ -392,9 +422,9 @@ X3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* v
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .shift: wrong number of arguments.", getClass () -> name);
@@ -413,7 +443,7 @@ X3DArrayField <Type, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* 
 
 		array -> pop_front ();
 
-		return get <Type> (cx, *value, vp);
+		return get <ValueType> (cx, *value, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -421,9 +451,9 @@ X3DArrayField <Type, InternalType>::shift (JSContext* cx, uint32_t argc, jsval* 
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .pop: wrong number of arguments.", getClass () -> name);
@@ -442,7 +472,7 @@ X3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp
 
 		array -> pop_back ();
 
-		return get <Type> (cx, *value, vp);
+		return get <ValueType> (cx, *value, vp);
 	}
 	catch (const std::exception & error)
 	{
@@ -450,9 +480,9 @@ X3DArrayField <Type, InternalType>::pop (JSContext* cx, uint32_t argc, jsval* vp
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::splice (JSContext* cx, uint32_t argc, jsval* vp)
+X3DArrayField <ValueType, InternalType>::splice (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc < 2)
 		return ThrowException (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
@@ -475,9 +505,9 @@ X3DArrayField <Type, InternalType>::splice (JSContext* cx, uint32_t argc, jsval*
 		array  -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
 
 		for (ssize_t i = argc - 1; i >= 2; -- i)
-			array -> emplace (array -> begin () + index, getArgument <Type> (cx, argv, i));
+			array -> emplace (array -> begin () + index, getArgument <ValueType> (cx, argv, i));
 
-		return create <X3DArrayField <Type, InternalType>> (cx, result, &JS_RVAL (cx, vp));
+		return create <X3DArrayField <ValueType, InternalType>> (cx, result, &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -485,9 +515,9 @@ X3DArrayField <Type, InternalType>::splice (JSContext* cx, uint32_t argc, jsval*
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+X3DArrayField <ValueType, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
@@ -508,9 +538,9 @@ X3DArrayField <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid i
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSBool
-X3DArrayField <Type, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+X3DArrayField <ValueType, InternalType>::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{

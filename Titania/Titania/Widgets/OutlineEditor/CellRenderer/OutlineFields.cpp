@@ -149,65 +149,234 @@ static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const bool* const fieldDefinition,
+	              const bool* const value,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::SFBool value (*fieldDefinition);
+	X3D::SFBool field (*value);
 
-	return useLocale ? value .toLocaleString () : value .toString ();
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
 }
 
 static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const float* const fieldDefinition,
+	              const X3D::Color3f* const value,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::SFFloat value (*fieldDefinition);
+	X3D::SFColor field (*value);
 
-	return useLocale ? value .toLocaleString () : value .toString ();
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
 }
 
 static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const double* const fieldDefinition,
+	              const X3D::Color4f* const value,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::SFDouble value (*fieldDefinition);
+	X3D::SFColorRGBA field (*value);
 
-	return useLocale ? value .toLocaleString () : value .toString ();
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
 }
 
 static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const int32_t* const fieldDefinition,
+	              const float* const value,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::SFInt32 value (*fieldDefinition);
+	X3D::SFFloat field (*value);
 
-	return useLocale ? value .toLocaleString () : value .toString ();
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
 }
 
 static
 std::string
 get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const parent,
-	              const X3D::String* const fieldDefinition,
+	              const double* const value,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::SFString value (*fieldDefinition);
+	X3D::SFDouble field (*value);
 
-	return useLocale ? value .toLocaleString () : value .toString ();
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const int32_t* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFInt32 field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::Matrix3d* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFMatrix3d field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::Matrix3f* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFMatrix3f field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::Matrix4d* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFMatrix4d field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::Matrix4f* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFMatrix4f field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::Rotation4d* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFRotation field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::String* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFString field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector2 <double>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec2d field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector2 <float>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec2f field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector3 <double>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec3d field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector3 <float>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec3f field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector4 <double>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec4d field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
+}
+
+static
+std::string
+get_field_value (const X3D::X3DScene* const scene,
+	              const X3D::X3DFieldDefinition* const parent,
+	              const X3D::vector4 <float>* const value,
+	              const bool ellipsize,
+	              const bool useLocale)
+{
+	X3D::SFVec4f field (*value);
+
+	return get_field_value (scene, parent, &field, ellipsize, useLocale);
 }
 
 template <class Type>
@@ -225,7 +394,7 @@ array_to_string (const X3D::X3DScene* const scene,
 
 	const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
 
-	for (const auto & value : basic::make_range (array .begin (), lines - 1))
+	for (const auto & value : basic::make_range (array .cbegin (), lines - 1))
 	{
 		ostream
 			<< get_field_value (scene, &array, &value, false, useLocale)
@@ -303,14 +472,184 @@ get_field_value (const X3D::X3DScene* const scene,
 {
 	switch (fieldDefinition -> getType ())
 	{
-		case X3D::X3DConstants::SFNode:
-			return "";
+		case X3D::X3DConstants::SFDouble:
+		{
+			std::ostringstream osstream;
 
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFDouble::value_type>
+				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFDouble*> (fieldDefinition));
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFFloat:
+		{
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFFloat::value_type>
+				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFFloat*> (fieldDefinition));
+
+			return osstream .str ();
+		}
 		case X3D::X3DConstants::SFImage:
 			return get_field_value (scene, *static_cast <const X3D::SFImage*> (fieldDefinition), ellipsize, useLocale);
 
+		case X3D::X3DConstants::SFNode:
+			return "";
+
+		case X3D::X3DConstants::SFRotation:
+		{
+			const auto rotation = static_cast <const X3D::SFRotation*> (fieldDefinition) -> getValue () .get ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFRotation::value_type>
+				<< rotation .x
+				<< " "
+				<< rotation .y
+				<< " "
+				<< rotation .z
+				<< " "
+				<< scene -> toUnit (X3D::UnitCategory::ANGLE, rotation .angle);
+
+			return osstream .str ();
+		}
+
 		case X3D::X3DConstants::SFString:
 			return static_cast <const X3D::SFString*> (fieldDefinition) -> getValue ();
+
+		case X3D::X3DConstants::SFVec2d:
+		{
+			const auto & field = *static_cast <const X3D::SFVec2d*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec2d::value_type>
+				<< scene -> toUnit (unit, field .getX ())
+				<< " "
+				<< scene -> toUnit (unit, field .getY ());
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFVec2f:
+		{
+			const auto & field = *static_cast <const X3D::SFVec2f*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec2f::value_type>
+				<< scene -> toUnit (unit, field .getX ())
+				<< " "
+				<< scene -> toUnit (unit, field .getY ());
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFVec3d:
+		{
+			const auto & field = *static_cast <const X3D::SFVec3d*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+			const auto   geo   = parent -> isGeospatial ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec3d::value_type>
+				<< (geo ? field .getX () : scene -> toUnit (unit, field .getX ()))
+				<< " "
+				<< (geo ? field .getY () : scene -> toUnit (unit, field .getY ()))
+				<< " "
+				<< scene -> toUnit (unit, field .getZ ());
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFVec3f:
+		{
+			const auto & field = *static_cast <const X3D::SFVec3f*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec3f::value_type>
+				<< scene -> toUnit (unit, field .getX ())
+				<< " "
+				<< scene -> toUnit (unit, field .getY ())
+				<< " "
+				<< scene -> toUnit (unit, field .getZ ());
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFVec4d:
+		{
+			const auto & field = *static_cast <const X3D::SFVec4d*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec4d::value_type>
+				<< scene -> toUnit (unit, field .getX ())
+				<< " "
+				<< scene -> toUnit (unit, field .getY ())
+				<< " "
+				<< scene -> toUnit (unit, field .getZ ())
+				<< " "
+				<< scene -> toUnit (unit, field .getW ());
+
+			return osstream .str ();
+		}
+		case X3D::X3DConstants::SFVec4f:
+		{
+			const auto & field = *static_cast <const X3D::SFVec4f*> (fieldDefinition);
+			const auto   unit  = parent -> getUnit ();
+
+			std::ostringstream osstream;
+
+			if (not useLocale)
+				osstream .imbue (std::locale::classic ());
+
+			osstream
+				<< X3D::Generator::SetPrecision <X3D::SFVec4f::value_type>
+				<< scene -> toUnit (unit, field .getX ())
+				<< " "
+				<< scene -> toUnit (unit, field .getY ())
+				<< " "
+				<< scene -> toUnit (unit, field .getZ ())
+				<< " "
+				<< scene -> toUnit (unit, field .getW ());
+
+			return osstream .str ();
+		}
 
 		case X3D::X3DConstants::MFBool:
 			return array_to_string (scene, *static_cast <const X3D::MFBool*> (fieldDefinition), ellipsize, useLocale);
@@ -375,183 +714,6 @@ get_field_value (const X3D::X3DScene* const scene,
 		case X3D::X3DConstants::MFVec4f:
 			return array_to_string (scene, *static_cast <const X3D::MFVec4f*> (fieldDefinition), ellipsize, useLocale);
 
-		case X3D::X3DConstants::SFDouble:
-		{
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFDouble::value_type>
-				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFDouble*> (fieldDefinition));
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFFloat:
-		{
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFFloat::value_type>
-				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFFloat*> (fieldDefinition));
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFRotation:
-		{
-			const auto rotation = static_cast <const X3D::SFRotation*> (fieldDefinition) -> getValue () .get ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFRotation::value_type>
-				<< rotation .x
-				<< " "
-				<< rotation .y
-				<< " "
-				<< rotation .z
-				<< " "
-				<< scene -> toUnit (X3D::UnitCategory::ANGLE, rotation .angle);
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec2d:
-		{
-			const auto & field = *static_cast <const X3D::SFVec2d*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec2d::value_type>
-				<< scene -> toUnit (unit, field .getX ())
-				<< " "
-				<< scene -> toUnit (unit, field .getY ());
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec2f:
-		{
-			const auto & field = *static_cast <const X3D::SFVec2f*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec2f::value_type>
-				<< scene -> toUnit (unit, field .getX ())
-				<< " "
-				<< scene -> toUnit (unit, field .getY ());
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec3d:
-		{
-			const auto & field = *static_cast <const X3D::SFVec3d*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-			const auto   geo   = parent -> isGeospatial ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec3d::value_type>
-				<< (geo ? field .getX () : scene -> toUnit (unit, field .getX ()))
-				<< " "
-				<< (geo ? field .getY () : scene -> toUnit (unit, field .getY ()))
-				<< " "
-				<< scene -> toUnit (unit, field .getZ ());
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec3f:
-		{
-			const auto & field = *static_cast <const X3D::SFVec3f*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec3f::value_type>
-				<< scene -> toUnit (unit, field .getX ())
-				<< " "
-				<< scene -> toUnit (unit, field .getY ())
-				<< " "
-				<< scene -> toUnit (unit, field .getZ ());
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec4d:
-		{
-			const auto & field = *static_cast <const X3D::SFVec4d*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec4d::value_type>
-				<< scene -> toUnit (unit, field .getX ())
-				<< " "
-				<< scene -> toUnit (unit, field .getY ())
-				<< " "
-				<< scene -> toUnit (unit, field .getZ ())
-				<< " "
-				<< scene -> toUnit (unit, field .getW ());
-
-			return osstream .str ();
-		}
-
-		case X3D::X3DConstants::SFVec4f:
-		{
-			const auto & field = *static_cast <const X3D::SFVec4f*> (fieldDefinition);
-			const auto   unit  = parent -> getUnit ();
-
-			std::ostringstream osstream;
-
-			if (not useLocale)
-				osstream .imbue (std::locale::classic ());
-
-			osstream
-				<< X3D::Generator::SetPrecision <X3D::SFVec4f::value_type>
-				<< scene -> toUnit (unit, field .getX ())
-				<< " "
-				<< scene -> toUnit (unit, field .getY ())
-				<< " "
-				<< scene -> toUnit (unit, field .getZ ())
-				<< " "
-				<< scene -> toUnit (unit, field .getW ());
-
-			return osstream .str ();
-		}
-
 		default:
 			return useLocale ? fieldDefinition -> toLocaleString () : fieldDefinition -> toString ();
 	}
@@ -562,52 +724,22 @@ get_field_value (const X3D::X3DScene* const scene,
 	              const X3D::X3DFieldDefinition* const fieldDefinition,
 	              const bool ellipsize,
 	              const bool useLocale)
-{ return get_field_value (scene, fieldDefinition, fieldDefinition, ellipsize, useLocale); }
+{
+	
+
+	return get_field_value (scene, fieldDefinition, fieldDefinition, ellipsize, useLocale);
+}
 
 /*
  * set_field_value
  */
 
-
 static
 void
-set_field_value (const X3D::X3DScene* const, const X3D::X3DFieldDefinition* const, X3D::X3DFieldDefinition* const);
-
-template <class Type>
-static
-void
-set_array (const X3D::X3DScene* const scene, Type & array)
-{
-	for (typename Type::reference value : array)
-	   set_field_value (scene, &array, &value);
-}
-
-static
-void
-set_field_value (const X3D::X3DScene* const scene,
-	              const X3D::X3DFieldDefinition* const parent,
-	              X3D::X3DFieldDefinition* const fieldDefinition)
+set_field_value (const X3D::X3DScene* const scene, X3D::X3DFieldDefinition* const parent, X3D::X3DFieldDefinition* const fieldDefinition)
 {
 	switch (fieldDefinition -> getType ())
 	{
-		case X3D::X3DConstants::MFVec2d:
-			return set_array (scene, *static_cast <X3D::MFVec2d*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFVec2f:
-			return set_array (scene, *static_cast <X3D::MFVec2f*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFVec3d:
-			return set_array (scene, *static_cast <X3D::MFVec3d*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFVec3f:
-			return set_array (scene, *static_cast <X3D::MFVec3f*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFVec4d:
-			return set_array (scene, *static_cast <X3D::MFVec4d*> (fieldDefinition));
-
-		case X3D::X3DConstants::MFVec4f:
-			return set_array (scene, *static_cast <X3D::MFVec4f*> (fieldDefinition));
-
 		case X3D::X3DConstants::SFDouble:
 		{
 			auto & field = *static_cast <X3D::SFDouble*> (fieldDefinition);
@@ -615,7 +747,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field = scene -> fromUnit (parent -> getUnit (), field);
 			return;
 		}
-
 		case X3D::X3DConstants::SFFloat:
 		{
 			auto & field = *static_cast <X3D::SFFloat*> (fieldDefinition);
@@ -623,7 +754,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field = scene -> fromUnit (parent -> getUnit (), field);
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec2d:
 		{
 			auto &     field = *static_cast <X3D::SFVec2d*> (fieldDefinition);
@@ -633,7 +763,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setY (scene -> fromUnit (unit, field .getY ()));
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec2f:
 		{
 			auto &     field = *static_cast <X3D::SFVec2f*> (fieldDefinition);
@@ -643,13 +772,12 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setY (scene -> fromUnit (unit, field .getY ()));
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec3d:
 		{
 			auto &     field = *static_cast <X3D::SFVec3d*> (fieldDefinition);
 			const auto unit  = parent -> getUnit ();
 
-			if (not parent -> isGeospatial ())
+			if (not field .isGeospatial ())
 			{
 				field .setX (scene -> fromUnit (unit, field .getX ()));
 				field .setY (scene -> fromUnit (unit, field .getY ()));
@@ -658,7 +786,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setZ (scene -> fromUnit (unit, field .getZ ()));
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec3f:
 		{
 			auto &     field = *static_cast <X3D::SFVec3f*> (fieldDefinition);
@@ -669,7 +796,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setZ (scene -> fromUnit (unit, field .getZ ()));
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec4d:
 		{
 			auto &     field = *static_cast <X3D::SFVec4d*> (fieldDefinition);
@@ -681,7 +807,6 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setW (scene -> fromUnit (unit, field .getW ()));
 			return;
 		}
-
 		case X3D::X3DConstants::SFVec4f:
 		{
 			auto &     field = *static_cast <X3D::SFVec4f*> (fieldDefinition);
@@ -693,7 +818,119 @@ set_field_value (const X3D::X3DScene* const scene,
 			field .setW (scene -> fromUnit (unit, field .getW ()));
 			return;
 		}
+		case X3D::X3DConstants::MFVec2d:
+		{
+			auto &     array = *static_cast <X3D::MFVec2d*> (fieldDefinition);
+			const auto unit  = array .getUnit ();
 
+			for (X3D::MFVec2d::reference value : array)
+			{
+				auto v = value .get ();
+
+				v .x (scene -> fromUnit (unit, v .x ()));
+				v .y (scene -> fromUnit (unit, v .y ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
+		case X3D::X3DConstants::MFVec2f:
+		{
+			auto &     array = *static_cast <X3D::MFVec2f*> (fieldDefinition);
+			const auto unit  = array .getUnit ();
+
+			for (X3D::MFVec2f::reference value : array)
+			{
+				auto v = value .get ();
+
+				v .x (scene -> fromUnit (unit, v .x ()));
+				v .y (scene -> fromUnit (unit, v .y ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
+		case X3D::X3DConstants::MFVec3d:
+		{
+			auto &     array      = *static_cast <X3D::MFVec3d*> (fieldDefinition);
+			const auto unit       = array .getUnit ();
+			const auto geospatial = array .isGeospatial ();
+
+			for (X3D::MFVec3d::reference value : array)
+			{
+				auto v = value .get ();
+
+				if (not geospatial)
+				{
+					v .x (scene -> fromUnit (unit, v .x ()));
+					v .y (scene -> fromUnit (unit, v .y ()));
+				}
+	
+				v .z (scene -> fromUnit (unit, v .z ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
+		case X3D::X3DConstants::MFVec3f:
+		{
+			auto &     array = *static_cast <X3D::MFVec3f*> (fieldDefinition);
+			const auto unit  = array .getUnit ();
+
+			for (X3D::MFVec3f::reference value : array)
+			{
+				auto v = value .get ();
+
+				v .x (scene -> fromUnit (unit, v .x ()));
+				v .y (scene -> fromUnit (unit, v .y ()));
+				v .z (scene -> fromUnit (unit, v .z ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
+		case X3D::X3DConstants::MFVec4d:
+		{
+			auto &     array = *static_cast <X3D::MFVec4d*> (fieldDefinition);
+			const auto unit  = array .getUnit ();
+
+			for (X3D::MFVec4d::reference value : array)
+			{
+				auto v = value .get ();
+
+				v .x (scene -> fromUnit (unit, v .x ()));
+				v .y (scene -> fromUnit (unit, v .y ()));
+				v .z (scene -> fromUnit (unit, v .z ()));
+				v .w (scene -> fromUnit (unit, v .w ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
+		case X3D::X3DConstants::MFVec4f:
+		{
+			auto &     array = *static_cast <X3D::MFVec4f*> (fieldDefinition);
+			const auto unit  = array .getUnit ();
+
+			for (X3D::MFVec4f::reference value : array)
+			{
+				auto v = value .get ();
+
+				v .x (scene -> fromUnit (unit, v .x ()));
+				v .y (scene -> fromUnit (unit, v .y ()));
+				v .z (scene -> fromUnit (unit, v .z ()));
+				v .w (scene -> fromUnit (unit, v .w ()));
+
+				value .set (v);
+			}
+
+			return;
+		}
 		default:
 			return;
 	}
@@ -737,12 +974,12 @@ set_field_value_from_string (const X3D::X3DScene* const scene,
 
 			size_t i = 0;
 
-			for (const auto & vector : array)
+			for (const auto & vector : basic::make_const_range (array))
 			{
-				field [i] = X3D::Rotation4d (vector .getX (),
-				                             vector .getY (),
-				                             vector .getZ (),
-				                             scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
+				field [i] = X3D::Rotation4d (vector .x (),
+				                             vector .y (),
+				                             vector .z (),
+				                             scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .w ()));
 			
 			   ++ i;
 			}

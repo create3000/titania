@@ -48,12 +48,20 @@
  *
  ******************************************************************************/
 
-#include "Image.h"
+#include "MFImage.h"
 
 namespace titania {
-namespace math {
+namespace X3D {
 
-template class image <std::valarray <int32_t>>;
+template <>
+const std::string X3DField <Array <SFImage*>>::typeName = "MFImage";
 
-} // math
+template <>
+const FieldType X3DField <Array <SFImage*>>::type = X3DConstants::MFImage;
+
+// Explicit instantiation for required instantiations.
+template class X3DField <Array <SFImage*>>;
+template class X3DArrayField <SFImage>;
+
+} // X3D
 } // titania

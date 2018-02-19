@@ -50,6 +50,7 @@
 
 #include "X3DParser.h"
 
+#include "../Base/X3DGarbageCollector.h"
 #include "../Basic/X3DBaseNode.h"
 #include "../Execution/X3DExecutionContext.h"
 
@@ -162,7 +163,9 @@ X3DParser::fromUnit (const UnitCategory unit, long double value) const
 }
 
 X3DParser::~X3DParser ()
-{ }
+{
+	X3DGarbageCollector::trimFreeMemory ();
+}
 
 } // X3D
 } // titania

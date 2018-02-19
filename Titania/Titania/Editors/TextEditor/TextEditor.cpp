@@ -275,8 +275,8 @@ TextEditor::set_char_spacing (const double kerning)
 		{
 			const auto numChars   = text -> string () .get1Value (i) .length ();
 			const auto lineLength = text -> getFontStyle () -> horizontal ()
-			                        ? measure -> lineBounds () .get1Value (i) .getX ()
-			                        : measure -> lineBounds () .get1Value (i) .getY ();
+			                        ? measure -> lineBounds () .get1Value (i) .x ()
+			                        : measure -> lineBounds () .get1Value (i) .y ();
 
 			if (numChars)
 				text -> length () .set1Value (i, (numChars - 1) * kerning + lineLength);
@@ -299,8 +299,8 @@ TextEditor::set_length ()
 	{
 		const auto numChars   = text -> string () .get1Value (i) .length ();
 		const auto lineLength = text -> getFontStyle () -> horizontal ()
-		                        ? measure -> lineBounds () .get1Value (i) .getX ()
-		                        : measure -> lineBounds () .get1Value (i) .getY ();
+		                        ? measure -> lineBounds () .get1Value (i) .x ()
+		                        : measure -> lineBounds () .get1Value (i) .y ();
 
 		kerning += (text -> length () .get1Value (i) - lineLength) / (numChars - 1);
 	}

@@ -90,6 +90,7 @@ using Rotation4d = rotation4 <double>;
 using Rotation4f = rotation4 <float>;
 
 // time_type is defined in Time.h
+// String is defined in String.h
 
 using Vector2d = vector2 <double>;
 using Vector2f = vector2 <float>;
@@ -102,6 +103,23 @@ using Vector3i = vector3 <int32_t>;
 using Vector4d = vector4 <double>;
 using Vector4f = vector4 <float>;
 using Vector4i = vector4 <int32_t>;
+
+// Templates
+
+template <class Type>
+using Matrix3 = matrix3 <Type>;
+
+template <class Type>
+using Matrix4 = matrix4 <Type>;
+
+template <class Type>
+using Vector2 = vector2 <Type>;
+
+template <class Type>
+using Vector3 = vector3 <Type>;
+
+template <class Type>
+using Vector4 = vector4 <Type>;
 
 } // X3D
 } // titania

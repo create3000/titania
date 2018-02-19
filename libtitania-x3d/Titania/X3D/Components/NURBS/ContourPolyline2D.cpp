@@ -81,7 +81,7 @@ ContourPolyline2D::draw (GLUnurbs* nurbsRenderer) const
 	std::vector <Vector2f> controlPoints;
 
 	for (const auto & value : controlPoint ())
-		controlPoints .emplace_back (value .getValue ());
+		controlPoints .emplace_back (value);
 
 	gluPwlCurve (nurbsRenderer,
 	             controlPoints .size (), controlPoints [0] .data (),

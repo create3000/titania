@@ -204,7 +204,7 @@ X3DParticleEmitterNode::animate (SoftSystem* const softSystem, const time_type d
 	std::vector <Rotation4f> rotations; // rotations to directions of forces
 
 	for (const auto & velocity : velocities)
-		rotations .emplace_back (Vector3f (0, 0, 1), velocity .getValue ());
+		rotations .emplace_back (Vector3f (0, 0, 1), velocity);
 
 	for (size_t i = 0; i < numParticles; ++ i)
 	{

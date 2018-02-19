@@ -50,7 +50,7 @@
 
 #include "X3DScalar.h"
 
-#include "../Parser/Grammar.h"
+#include "../Parser/MiniParser.h"
 
 namespace titania {
 namespace X3D {
@@ -89,7 +89,7 @@ throw (Error <INVALID_X3D>,
 {
 	bool value = false;
 
-	if (Grammar::VRMLDecode (istream, value))
+	if (MiniParser::Decode (istream, value))
 		setValue (value);
 }
 
@@ -103,7 +103,7 @@ throw (Error <INVALID_X3D>,
 {
 	double value = 0;
 
-	if (Grammar::VRMLDecode (istream, value))
+	if (MiniParser::Decode (istream, value))
 		setValue (value);
 }
 
@@ -117,7 +117,7 @@ throw (Error <INVALID_X3D>,
 {
 	float value = 0;
 
-	if (Grammar::VRMLDecode (istream, value))
+	if (MiniParser::Decode (istream, value))
 		setValue (value);
 }
 
@@ -131,7 +131,7 @@ throw (Error <INVALID_X3D>,
 {
 	int32_t value = 0;
 
-	if (Grammar::VRMLDecode (istream, value))
+	if (MiniParser::Decode (istream, value))
 		setValue (value);
 }
 

@@ -65,7 +65,8 @@ public:
 	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
 	void
-	dispose () = 0;
+	dispose ()
+	{ }
 
 	///  Destructs this object.
 	virtual

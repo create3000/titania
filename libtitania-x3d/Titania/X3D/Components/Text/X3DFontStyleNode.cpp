@@ -414,8 +414,14 @@ X3DTextGeometry::vertical ()
 		{
 			size_t l = 0;
 			
-			for (auto & lineBound : text -> lineBounds ())
-				lineBound .setY (lineBound .getY () + max .y () - yPad [l ++] * scale);
+			for (MFVec2f::reference lineBound : text -> lineBounds ())
+			{
+				auto lb = lineBound .get ();
+
+				lb .y (lb .y () + max .y () - yPad [l ++] * scale);
+
+				lineBound .set (lb);
+			}
 
 			break;
 		}
@@ -425,8 +431,14 @@ X3DTextGeometry::vertical ()
 		{
 			size_t l = 0;
 			
-			for (auto & lineBound : text -> lineBounds ())
-				lineBound .setY (lineBound .getY () + yPad [l ++] * scale - min .y ());
+			for (MFVec2f::reference lineBound : text -> lineBounds ())
+			{
+				auto lb = lineBound .get ();
+
+				lb .y (lb .y () + yPad [l ++] * scale - min .y ());
+
+				lineBound .set (lb);
+			}
 
 			break;
 		}

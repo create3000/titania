@@ -64,32 +64,78 @@ public:
 
 	static
 	void
-	XMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
 
 	static
 	void
-	XMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const Color3f & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
 
 	static
 	void
-	XMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const Color4f & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
 
 	static
 	void
-	XMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
 
 	static
 	void
-	XMLEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	static
+	void
+	Encode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix3 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix4 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const rotation4 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	static
+	void
+	Encode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector2 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector3 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector4 <Type> & value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
 
 	template <class Type>
 	static
 	std::enable_if_t <std::is_enum <Type>::value, void>
-	XMLEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, int32_t (value), unitCategory); }
+	Encode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, int32_t (value), unitCategory); }
 
 };
 
@@ -109,7 +155,7 @@ inline
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
 {
-	XMLGenerator::XMLEncode (ostream, value .string, UnitCategory::NONE);
+	XMLGenerator::Encode (ostream, value .string, UnitCategory::NONE);
 	return ostream;
 }
 

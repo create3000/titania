@@ -87,12 +87,12 @@ Color::set1Color (const size_t index, const Color4f & value)
 }
 
 Color4f
-Color::get1Color (const size_t index)
+Color::get1Color (const size_t index) const
 {
 	if (index < color () .size ())
 	{
-		const auto & value = color () .get1Value (index);
-		return Color4f (value .getRed (), value .getGreen (), value .getBlue (), 1);
+		const auto & value = color () [index];
+		return Color4f (value .r (), value .g (), value .b (), 1);
 	}
 
 	return Color4f (1, 1, 1, 1);

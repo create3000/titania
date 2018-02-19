@@ -196,8 +196,8 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (radius () not_eq 1.0f)
 	{
-		for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
-			point *= radius () .getValue ();
+		for (MFVec3f::reference point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+			point = point .get () * radius () .getValue ();
 	}
 
 	return geometry;

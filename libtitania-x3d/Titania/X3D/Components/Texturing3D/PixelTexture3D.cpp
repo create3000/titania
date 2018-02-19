@@ -113,10 +113,11 @@ PixelTexture3D::update ()
 		return;	
 	}
 
-	const size_t components  = std::max <int32_t> (0, image () [COMPONENTS]);
-	const size_t width       = std::max <int32_t> (0, image () [WIDTH]);
-	const size_t height      = std::max <int32_t> (0, image () [HEIGHT]);
-	const size_t depth       = std::max <int32_t> (0, image () [DEPTH]);
+	const auto & image       = this -> image ();
+	const size_t components  = std::max <int32_t> (0, image [COMPONENTS]);
+	const size_t width       = std::max <int32_t> (0, image [WIDTH]);
+	const size_t height      = std::max <int32_t> (0, image [HEIGHT]);
+	const size_t depth       = std::max <int32_t> (0, image [DEPTH]);
 	const size_t size        = width * height;
 	const size_t size3D      = width * height * depth;
 
@@ -126,8 +127,8 @@ PixelTexture3D::update ()
 		return;
 	}
 
-	if (image () .size () < OFFSET + size3D)
-		image () .resize (OFFSET + size3D);
+	if (image .size () < OFFSET + size3D)
+		const_cast <MFInt32 &> (image) .resize (OFFSET + size3D);
 
 	MagickImageArrayPtr mimages (new MagickImageArray ());
 
@@ -153,7 +154,7 @@ PixelTexture3D::update ()
 					const auto row = h * width;
 
 					for (size_t w = 0; w < width; ++ w)
-						pixels .emplace_back (image () [first + row + w]);
+						pixels .emplace_back (image [first + row + w]);
 				}
 
 				Magick::Blob blob (pixels .data (), pixels .size ());
@@ -176,7 +177,7 @@ PixelTexture3D::update ()
 
 					for (size_t w = 0; w < width; ++ w)
 					{
-						const auto & pixel = image () [first + row + w];
+						const auto & pixel = image [first + row + w];
 
 						const uint8_t color = pixel >> 8;
 						pixels .emplace_back (color);
@@ -204,7 +205,7 @@ PixelTexture3D::update ()
 
 					for (size_t w = 0; w < width; ++ w)
 					{
-						const auto & pixel = image () [first + row + w];
+						const auto & pixel = image [first + row + w];
 				
 						pixels .emplace_back (pixel >> 16);
 						pixels .emplace_back (pixel >> 8);
@@ -230,7 +231,7 @@ PixelTexture3D::update ()
 
 					for (size_t w = 0; w < width; ++ w)
 					{
-						const auto & pixel = image () [first + row + w];
+						const auto & pixel = image [first + row + w];
 				
 						pixels .emplace_back (pixel >> 24);
 						pixels .emplace_back (pixel >> 16);
@@ -272,19 +273,19 @@ throw (Error <INVALID_NODE>,
 
 	ContextLock lock (texture3DNode -> getBrowser ());
 
+	auto &        image      = this -> image ();
 	const int32_t width      = texture3DNode -> getWidth ();
 	const int32_t height     = texture3DNode -> getHeight ();
 	const int32_t depth      = texture3DNode -> depth ();
 	const int32_t components = texture3DNode -> components ();
 
-	X3D::MFInt32 & array = image ();
 
-	array .resize (OFFSET);
+	image .resize (OFFSET);
 
-	array [WIDTH]      = width;
-	array [HEIGHT]     = height;
-	array [DEPTH]      = depth;
-	array [COMPONENTS] = components;
+	image [WIDTH]      = width;
+	image [HEIGHT]     = height;
+	image [DEPTH]      = depth;
+	image [COMPONENTS] = components;
 
 	switch (components)
 	{
@@ -314,7 +315,7 @@ throw (Error <INVALID_NODE>,
 					{
 						auto p = first + (row + w);
 	
-						array .emplace_back (*p);
+						image .emplace_back (*p);
 					}
 				}
 			}
@@ -351,7 +352,7 @@ throw (Error <INVALID_NODE>,
 						p     += 3;
 						point |= *p;
 	
-						array .emplace_back (point);
+						image .emplace_back (point);
 					}
 				}
 			}
@@ -388,7 +389,7 @@ throw (Error <INVALID_NODE>,
 						point |= *p ++ << 8;
 						point |= *p;
 	
-						array .emplace_back (point);
+						image .emplace_back (point);
 					}
 				}
 			}
@@ -426,7 +427,7 @@ throw (Error <INVALID_NODE>,
 						point |= *p ++ << 8;
 						point |= *p;
 	
-						array .emplace_back (point);
+						image .emplace_back (point);
 					}
 				}
 			}

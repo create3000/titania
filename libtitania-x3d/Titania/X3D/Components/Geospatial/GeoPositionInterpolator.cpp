@@ -116,7 +116,7 @@ void
 GeoPositionInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec3d ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Vector3d ());
 }
 
 void
@@ -124,8 +124,8 @@ GeoPositionInterpolator::interpolate (size_t index0, size_t index1, const float 
 {
 	try
 	{
-		const auto keyValue0 = getCoord (keyValue () [index0]);
-		const auto keyValue1 = getCoord (keyValue () [index1]);
+		const auto keyValue0 = getCoord (keyValue () .get1Value (index0));
+		const auto keyValue1 = getCoord (keyValue () .get1Value (index1));
 		const auto coord     = geospatial::gc_lerp (keyValue0, keyValue1, double (weight));
 	
 		geovalue_changed () = getGeoCoord (coord);

@@ -579,7 +579,6 @@
     <Compile Include="Titania\Basic\Path.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
-    <Compile Include="Titania\Math\Image.cpp" />
     <Compile Include="Titania\Math\Geometry\Cylinder3.cpp" />
     <Compile Include="Titania\InputOutput\Character.cpp" />
     <Compile Include="Titania\InputOutput\QuotedString.cpp" />

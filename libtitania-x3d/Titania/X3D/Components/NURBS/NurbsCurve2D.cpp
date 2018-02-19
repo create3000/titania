@@ -138,16 +138,20 @@ NurbsCurve2D::getControlPoints () const
 	if (weight () .size () < controlPoint () .size ())
 	{
 		for (size_t i = 0; i < controlPoint () .size (); i ++)
-			controlPoints .emplace_back (controlPoint () [i] .getX (),
-			                             controlPoint () [i] .getY (),
+		{
+			controlPoints .emplace_back (controlPoint () [i] .x (),
+			                             controlPoint () [i] .y (),
 			                             1);
+		}
 	}
 	else
 	{
 		for (size_t i = 0; i < controlPoint () .size (); i ++)
-			controlPoints .emplace_back (controlPoint () [i] .getX (), 
-			                             controlPoint () [i] .getY (), 
+		{
+			controlPoints .emplace_back (controlPoint () [i] .x (), 
+			                             controlPoint () [i] .y (), 
 			                             weight () [i]);
+		}
 	}
 
 	return controlPoints;

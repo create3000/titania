@@ -96,7 +96,7 @@ void
 OrientationInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFRotation ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Rotation4d ());
 }
 
 void
@@ -104,7 +104,7 @@ OrientationInterpolator::interpolate (size_t index0, size_t index1, const float 
 {
 	try
 	{
-		value_changed () = slerp <double> (keyValue () [index0], keyValue () [index1], weight);
+		value_changed () = slerp <double> (keyValue () .get1Value (index0), keyValue () .get1Value (index1), weight);
 	}
 	catch (const std::domain_error &)
 	{

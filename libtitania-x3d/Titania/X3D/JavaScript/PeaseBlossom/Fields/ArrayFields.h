@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_PEASE_BLOSSOM_FIELDS_ARRAY_FIELDS_H__
 
 #include "../Array.h"
-#include "../../../Fields/ArrayFields.h"
+#include "../../../Fields.h"
 
 #include "SFColor.h"
 #include "SFColorRGBA.h"
@@ -91,7 +91,6 @@ using MFVec3d     = Array <SFVec3d, X3D::MFVec3d>;
 using MFVec3f     = Array <SFVec3f, X3D::MFVec3f>;
 using MFVec4d     = Array <SFVec4d, X3D::MFVec4d>;
 using MFVec4f     = Array <SFVec4f, X3D::MFVec4f>;
-
 
 template <>
 constexpr ObjectType

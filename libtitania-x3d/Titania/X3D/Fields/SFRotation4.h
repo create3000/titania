@@ -52,15 +52,15 @@
 #define __TITANIA_X3D_FIELDS_SFROTATION4_H__
 
 #include "../Basic/X3DField.h"
-#include "../InputOutput/Generator.h"
+#include "../InputOutput/VRMLGenerator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 #include "../Types/Numbers.h"
 #include "SFVec3.h"
 
 namespace titania {
 namespace X3D {
-
-template <class InternalType>
-class X3DArrayField;
 
 extern template class X3DField <Rotation4d>;
 extern template class X3DField <Rotation4f>;
@@ -85,6 +85,7 @@ public:
 
 	using X3DField <InternalType>::addInterest;
 	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::getUnit;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;
 	using X3DField <InternalType>::operator =;
@@ -171,15 +172,6 @@ public:
 	value_type
 	operator [ ] (const size_type & index) const;
 
-	///  @name Capacity
-
-	///  Returns the number of elements in the rotation.
-	static
-	constexpr
-	size_type
-	getSize ()
-	{ return InternalType () .size (); }
-
 	///  @name Arithmetic operations
 
 	SFRotation4 &
@@ -218,14 +210,6 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override;
-
-
-protected:
-
-	friend class X3DArrayField <SFRotation4>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:
@@ -436,29 +420,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	InternalType value;
 
-	value_type x, y, z, angle;
-
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	if (Grammar::Number <value_type> (istream, x))
-	{
-		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-		if (Grammar::Number <value_type> (istream, y))
-		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-			if (Grammar::Number <value_type> (istream, z))
-			{
-				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-				if (Grammar::Number <value_type> (istream, angle))
-					setValue (InternalType (x, y, z, angle));
-			}
-	   }
-	}
+	if (MiniParser::Decode (istream, value))
+		setValue (value);
 }
 
 template <class InternalType>
@@ -466,17 +431,7 @@ inline
 void
 SFRotation4 <InternalType>::toStream (std::ostream & ostream) const
 {
-	const auto r = getValue () .get ();
-
-	ostream
-		<< Generator::SetPrecision <value_type>
-		<< r .x
-		<< Generator::Space
-		<< r .y
-		<< Generator::Space
-		<< r .z
-		<< Generator::Space
-		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -484,7 +439,7 @@ inline
 void
 SFRotation4 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -496,32 +451,11 @@ SFRotation4 <InternalType>::toJSONStream (std::ostream & ostream) const
 		<< '['
 		<< Generator::TidySpace;
 
-	toJSONStreamValue (ostream);
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 
 	ostream
 		<< Generator::TidySpace
 		<< ']';
-}
-
-template <class InternalType>
-inline
-void
-SFRotation4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
-{
-	const auto r = getValue () .get ();
-
-	ostream
-		<< Generator::SetPrecision <value_type>
-		<< r .x
-		<< ','
-		<< Generator::TidySpace
-		<< r .y
-		<< ','
-		<< Generator::TidySpace
-		<< r .z
-		<< ','
-		<< Generator::TidySpace
-		<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
 }
 
 ///  @relates SFRotation4

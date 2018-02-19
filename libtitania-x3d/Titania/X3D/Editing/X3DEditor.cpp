@@ -3518,8 +3518,8 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 
-			for (auto & point : coordinate -> point ())
-				point = matrix .mult_vec_matrix (point .getValue ());
+			for (MFVec3f::reference point : coordinate -> point ())
+				point = matrix .mult_vec_matrix (point .get ());
 
 			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 			return;
@@ -3531,8 +3531,8 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 
-			for (auto & point : coordinate -> point ())
-				point = matrix .mult_vec_matrix (point);
+			for (MFVec3d::reference point : coordinate -> point ())
+				point = matrix .mult_vec_matrix (point .get ());
 
 			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 			return;

@@ -211,7 +211,7 @@ TexCoordChaser2D::updateBuffer ()
 
 				for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 				{
-					buffer [i] [j] = lerp (set_destination () [j] .getValue (), buffer [seconds] [j], alpha);
+					buffer [i] [j] = lerp (set_destination () .get1Value (j), buffer [seconds] [j], alpha);
 				}
  			}
 		}

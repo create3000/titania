@@ -61,23 +61,23 @@ namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DField <Array <bool>> ;
-//extern template class X3DField <Array <Color3f>> ;
-//extern template class X3DField <Array <Color4f*>> ;
+extern template class X3DField <Array <Color3f>> ;
+extern template class X3DField <Array <Color4f>> ;
 extern template class X3DField <Array <double>> ;
 extern template class X3DField <Array <float>> ;
 //extern template class X3DField <Array <SFImage*>> ;
-//extern template class X3DField <Array <Matrix3d>> ;
-//extern template class X3DField <Array <Matrix3f>> ;
-//extern template class X3DField <Array <Matrix4d>> ;
-//extern template class X3DField <Array <Matrix4f>> ;
-//extern template class X3DField <Array <Rotation4d>> ;
+extern template class X3DField <Array <Matrix3d>> ;
+extern template class X3DField <Array <Matrix3f>> ;
+extern template class X3DField <Array <Matrix4d>> ;
+extern template class X3DField <Array <Matrix4f>> ;
+extern template class X3DField <Array <Rotation4d>> ;
 extern template class X3DField <Array <String>> ;
-//extern template class X3DField <Array <Vector2d>> ;
-//extern template class X3DField <Array <Vector2f>> ;
-//extern template class X3DField <Array <Vector3d>> ;
-//extern template class X3DField <Array <Vector3f>> ;
-//extern template class X3DField <Array <Vector4d>> ;
-//extern template class X3DField <Array <Vector4f>> ;
+extern template class X3DField <Array <Vector2d>> ;
+extern template class X3DField <Array <Vector2f>> ;
+extern template class X3DField <Array <Vector3d>> ;
+extern template class X3DField <Array <Vector3f>> ;
+extern template class X3DField <Array <Vector4d>> ;
+extern template class X3DField <Array <Vector4f>> ;
 
 template <>
 void
@@ -85,43 +85,43 @@ X3DNativeArrayField <String>::toXMLStream (std::ostream &) const;
 
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DNativeArrayField <bool>;
-//extern template class X3DNativeArrayField <Color3f>;
-//extern template class X3DNativeArrayField <Color4f>;
+extern template class X3DNativeArrayField <Color3f>;
+extern template class X3DNativeArrayField <Color4f>;
 extern template class X3DNativeArrayField <double>;
 extern template class X3DNativeArrayField <float>;
 //extern template class X3DNativeArrayField <SFImage>;
-//extern template class X3DNativeArrayField <Matrix3d>;
-//extern template class X3DNativeArrayField <Matrix3f>;
-//extern template class X3DNativeArrayField <Matrix4d>;
-//extern template class X3DNativeArrayField <Matrix4f>;
-//extern template class X3DNativeArrayField <Rotation4d>;
+extern template class X3DNativeArrayField <Matrix3d>;
+extern template class X3DNativeArrayField <Matrix3f>;
+extern template class X3DNativeArrayField <Matrix4d>;
+extern template class X3DNativeArrayField <Matrix4f>;
+extern template class X3DNativeArrayField <Rotation4d>;
 extern template class X3DNativeArrayField <String>;
-//extern template class X3DNativeArrayField <Vector2d>;
-//extern template class X3DNativeArrayField <Vector2f>;
-//extern template class X3DNativeArrayField <Vector3d>;
-//extern template class X3DNativeArrayField <Vector3f>;
-//extern template class X3DNativeArrayField <Vector4d>;
-//extern template class X3DNativeArrayField <Vector4f>;
+extern template class X3DNativeArrayField <Vector2d>;
+extern template class X3DNativeArrayField <Vector2f>;
+extern template class X3DNativeArrayField <Vector3d>;
+extern template class X3DNativeArrayField <Vector3f>;
+extern template class X3DNativeArrayField <Vector4d>;
+extern template class X3DNativeArrayField <Vector4f>;
 
 // Typedefs for standard X3DNativeArrayFields
 using MFBool      = X3DNativeArrayField <bool>;
-//using MFColor     = X3DNativeArrayField <Color3f>;
-//using MFColorRGBA = X3DNativeArrayField <Color4f>;
+using MFColor     = X3DNativeArrayField <Color3f>;
+using MFColorRGBA = X3DNativeArrayField <Color4f>;
 using MFDouble    = X3DNativeArrayField <double>;
 using MFFloat     = X3DNativeArrayField <float>;
 ////using MFImage     = X3DNativeArrayField <SFImage>;
-//using MFMatrix3d  = X3DNativeArrayField <Matrix3d>;
-//using MFMatrix3f  = X3DNativeArrayField <Matrix3f>;
-//using MFMatrix4d  = X3DNativeArrayField <Matrix4d>;
-//using MFMatrix4f  = X3DNativeArrayField <Matrix4f>;
-//using MFRotation  = X3DNativeArrayField <Rotation4d>;
+using MFMatrix3d  = X3DNativeArrayField <Matrix3d>;
+using MFMatrix3f  = X3DNativeArrayField <Matrix3f>;
+using MFMatrix4d  = X3DNativeArrayField <Matrix4d>;
+using MFMatrix4f  = X3DNativeArrayField <Matrix4f>;
+using MFRotation  = X3DNativeArrayField <Rotation4d>;
 using MFString    = X3DNativeArrayField <String>;
-//using MFVec2d     = X3DNativeArrayField <Vector2d>;
-//using MFVec2f     = X3DNativeArrayField <Vector2f>;
-//using MFVec3d     = X3DNativeArrayField <Vector3d>;
-//using MFVec3f     = X3DNativeArrayField <Vector3f>;
-//using MFVec4d     = X3DNativeArrayField <Vector4d>;
-//using MFVec4f     = X3DNativeArrayField <Vector4f>;
+using MFVec2d     = X3DNativeArrayField <Vector2d>;
+using MFVec2f     = X3DNativeArrayField <Vector2f>;
+using MFVec3d     = X3DNativeArrayField <Vector3d>;
+using MFVec3f     = X3DNativeArrayField <Vector3f>;
+using MFVec4d     = X3DNativeArrayField <Vector4d>;
+using MFVec4f     = X3DNativeArrayField <Vector4f>;
 
 template <class Type>
 using MFEnum = X3DNativeArrayField <Type>;

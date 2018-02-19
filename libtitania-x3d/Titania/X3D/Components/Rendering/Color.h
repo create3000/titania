@@ -115,7 +115,7 @@ public:
 
 	virtual
 	Color4f
-	get1Color (const size_t) final override;
+	get1Color (const size_t) const final override;
 	
 	virtual
 	void

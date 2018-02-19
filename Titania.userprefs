@@ -1,14 +1,74 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/glTF/Parser.cpp" Line="484" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d" Line="9" Column="41" />
-      <File FileName="Titania/Titania/Applications/Tidy/Tidy.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/FileGenerator.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProtoDeclaration.cpp" Line="263" Column="1" />
+      <File FileName="experimental/main.cpp" Line="107" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="662" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DNativeArrayField.h" Line="599" Column="7" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="373" Column="46" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetSelectionObject.cpp" Line="280" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetOperationsObject.cpp" Line="1051" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp" Line="588" Column="3" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Titania" expanded="True">
+            <Node name="build" expanded="True" />
+            <Node name="experimental" expanded="True" />
+            <Node name="libtitania-ftgl" expanded="True" />
+            <Node name="libtitania-peaseblossom" expanded="True" />
+            <Node name="libtitania-sqlite" expanded="True" />
+            <Node name="libtitania-standard" expanded="True">
+              <Node name="Titania" expanded="True">
+                <Node name="Utility" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="libtitania-stream" expanded="True" />
+            <Node name="libtitania-x3d" expanded="True">
+              <Node name="Titania" expanded="True">
+                <Node name="X3D" expanded="True">
+                  <Node name="Basic" expanded="True" />
+                  <Node name="Browser" expanded="True">
+                    <Node name="Navigation" expanded="True" />
+                    <Node name="Shaders" expanded="True" />
+                  </Node>
+                  <Node name="Components" expanded="True">
+                    <Node name="Shaders" expanded="True" />
+                  </Node>
+                  <Node name="Configuration" expanded="True" />
+                  <Node name="InputOutput" expanded="True" />
+                  <Node name="JavaScript" expanded="True">
+                    <Node name="SpiderMonkey" expanded="True">
+                      <Node name="Fields" expanded="True" />
+                    </Node>
+                  </Node>
+                  <Node name="Parser" expanded="True" />
+                  <Node name="Tools" expanded="True">
+                    <Node name="Geometry3D" expanded="True">
+                      <Node name="IndexedFaceSet" expanded="True">
+                        <Node name="X3DIndexedFaceSetOperationsObject.cpp" selected="True" />
+                      </Node>
+                    </Node>
+                  </Node>
+                  <Node name="Types" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="Titania" expanded="True">
+                <Node name="Widgets" expanded="True">
+                  <Node name="OutlineEditor" expanded="True">
+                    <Node name="CellRenderer" expanded="True" />
+                  </Node>
+                  <Node name="ScriptEditor" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

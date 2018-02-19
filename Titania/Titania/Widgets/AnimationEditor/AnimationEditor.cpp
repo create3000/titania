@@ -1754,8 +1754,8 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			for (const auto & vector : array)
 			{
-				value .emplace_back (vector .getX ());
-				value .emplace_back (vector .getY ());
+				value .emplace_back (vector .x ());
+				value .emplace_back (vector .y ());
 			}
 
 			addKeyframe (interpolator, frame, value, activeType, undoStep);
@@ -1781,9 +1781,9 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 
 			for (const auto & vector : array)
 			{
-				value .emplace_back (vector .getX ());
-				value .emplace_back (vector .getY ());
-				value .emplace_back (vector .getZ ());
+				value .emplace_back (vector .x ());
+				value .emplace_back (vector .y ());
+				value .emplace_back (vector .z ());
 			}
 
 			addKeyframe (interpolator, frame, value, activeType, undoStep);

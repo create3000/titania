@@ -291,7 +291,7 @@ X3DGradientTool::set_value (const X3D::time_type &)
 					X3D::MFColor color;
 
 					for (const auto & c : value)
-						color .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
+						color .emplace_back (c .r (), c .g (), c .b ());
 
 					field = get_color (color);
 				}
@@ -392,7 +392,7 @@ X3DGradientTool::set_editTime (const X3D::UndoStepPtr & undoStep)
 					X3D::MFColor color;
 
 					for (const auto & c : outputColor)
-						color .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
+						color .emplace_back (c .r (), c .g (), c .b ());
 
 					nodeColor = get_color (color);
 	
@@ -467,8 +467,8 @@ X3DGradientTool::set_buffer ()
 	{
 		if (not rgba)
 		{
-			for (const auto & c : color)
-				colorRGBA .emplace_back (c .getRed (), c .getGreen (), c .getBlue (), 1);
+			for (const auto & c : basic::make_const_range (color))
+				colorRGBA .emplace_back (c .r (), c .g (), c .b (), 1);
 		}
 
 		const auto values = get_tool_values (position, colorRGBA);

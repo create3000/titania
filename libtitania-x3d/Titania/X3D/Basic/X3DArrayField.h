@@ -247,46 +247,46 @@ public:
 	set1Value (const size_type index, Arg &&);
 
 	///  Access specified element with bounds checking and element creation.
-	ValueType &
+	reference
 	get1Value (const size_type);
 
 	///  Access specified element.
-	ValueType &
+	reference
 	operator [ ] (const size_type index)
 	{ return *get () [index]; }
 
 	///  Access specified element.
-	const ValueType &
+	const_reference
 	operator [ ] (const size_type index) const
 	{ return *getValue () [index]; }
 
 	///  Access specified element with bounds checking.
-	ValueType &
+	reference
 	at (const size_type index)
 	{ return *get () .at (index); }
 
 	///  Access specified element with bounds checking.
-	const ValueType &
+	const_reference
 	at (const size_type index) const
 	{ return *getValue () .at (index); }
 
 	///  Access the first element.
-	ValueType &
+	reference
 	front ()
 	{ return *get () .front (); }
 
 	///  Access the first element.
-	const ValueType &
+	const_reference
 	front () const
 	{ return *getValue () .front (); }
 
 	///  Access the last element.
-	ValueType &
+	reference
 	back ()
 	{ return *get () .back (); }
 
 	///  Access the last element.
-	const ValueType &
+	const_reference
 	back () const
 	{ return *getValue () .back (); }
 

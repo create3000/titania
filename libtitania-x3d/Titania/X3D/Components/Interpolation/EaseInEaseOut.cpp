@@ -96,19 +96,20 @@ void
 EaseInEaseOut::set_keyValue ()
 {
 	if (easeInEaseOut () .size () < key () .size ())
-		easeInEaseOut () .resize (key () .size (), easeInEaseOut () .size () ? easeInEaseOut () .back () : SFVec2f ());
+		easeInEaseOut () .resize (key () .size (), easeInEaseOut () .size () ? easeInEaseOut () .back () : Vector2f ());
 }
 
 void
 EaseInEaseOut::interpolate (size_t index0, size_t index1, const float weight)
 {
-	float       easeOut = easeInEaseOut () [index0] .getY ();
-	float       easeIn  = easeInEaseOut () [index1] .getX ();
+	float       easeOut = easeInEaseOut () .get1Value (index0) .y ();
+	float       easeIn  = easeInEaseOut () .get1Value (index1) .x ();
 	const float sum     = easeOut + easeIn;
 
 	if (sum < 0)
+	{
 		modifiedFraction_changed () = weight;
-
+	}
 	else
 	{
 		if (sum > 1)

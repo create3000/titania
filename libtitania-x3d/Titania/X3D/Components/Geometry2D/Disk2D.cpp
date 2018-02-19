@@ -368,7 +368,7 @@ throw (Error <NOT_SUPPORTED>,
 {
 	if (innerRadius () == outerRadius ())
 	{
-		const double radius = std::abs (outerRadius ());
+		const float radius = std::abs (outerRadius ());
 
 		// Point
 
@@ -397,8 +397,8 @@ throw (Error <NOT_SUPPORTED>,
 
 		if (radius not_eq 1)
 		{
-			for (auto & vertex : coord -> point ())
-				vertex *= radius;
+			for (MFVec3f::reference vertex : coord -> point ())
+				vertex = vertex .get () * radius;
 		}
 
 		for (int32_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
@@ -422,14 +422,14 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		// Disk
 
-		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
+		const float radius = std::abs (std::max (innerRadius (), outerRadius ()));
 	
 		coord -> point () .assign (optionsNode -> getVertices () .cbegin (), optionsNode -> getVertices () .cend ());
 
 		if (radius not_eq 1)
 		{
-			for (auto & vertex : coord -> point ())
-				vertex *= radius;
+			for (MFVec3f::reference vertex : coord -> point ())
+				vertex = vertex .get () * radius;
 		}
 
 		for (auto & point : optionsNode -> getTexCoords ())

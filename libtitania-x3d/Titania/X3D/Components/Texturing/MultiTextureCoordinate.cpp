@@ -106,7 +106,7 @@ MultiTextureCoordinate::set1Point (const size_t index, const Vector4f & value)
 }
 
 Vector4f
-MultiTextureCoordinate::get1Point (const size_t index)
+MultiTextureCoordinate::get1Point (const size_t index) const
 {
 	for (const auto & texCoordNode : texCoords)
 		return texCoordNode -> get1Point (index);

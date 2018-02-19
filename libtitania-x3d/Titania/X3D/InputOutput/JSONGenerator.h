@@ -64,32 +64,204 @@ public:
 
 	static
 	void
-	JSONEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
 
 	static
 	void
-	JSONEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const Color3f & value, const UnitCategory unitCategory);
 
 	static
 	void
-	JSONEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const Color4f & value, const UnitCategory unitCategory);
 
 	static
 	void
-	JSONEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
 
 	static
 	void
-	JSONEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	static
+	void
+	Encode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix3 <Type> & value, const UnitCategory unitCategory)
+	{
+		ostream
+			<< X3DGenerator::SetPrecision <Type>
+			<< value [0] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [0] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [0] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [2];
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix4 <Type> & value, const UnitCategory unitCategory)
+	{
+		ostream
+			<< X3DGenerator::SetPrecision <Type>
+			<< value [0] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [0] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [0] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [0] [3]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [1] [3]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [2] [3]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [3] [0]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [3] [1]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [3] [2]
+			<< ','
+			<< X3DGenerator::TidySpace
+			<< value [3] [3];
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const rotation4 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto r = value .get ();
+	
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< r .x
+			<< ','
+			<< Generator::TidySpace
+			<< r .y
+			<< ','
+			<< Generator::TidySpace
+			<< r .z
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
+	}
+
+	static
+	void
+	Encode (std::ostream & ostream, const String & string, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector2 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+	
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .y ());
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector3 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+	
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .y ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .z ());
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector4 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+	
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .y ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .z ())
+			<< ','
+			<< Generator::TidySpace
+			<< Generator::ToUnit (ostream, unit, value .w ());
+	}
 
 	template <class Type>
 	static
 	std::enable_if_t <std::is_enum <Type>::value, void>
-	JSONEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
-	{ VRMLGenerator::VRMLEncode (ostream, int32_t (value), unitCategory); }
+	Encode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ VRMLGenerator::Encode (ostream, int32_t (value), unitCategory); }
 
 };
 

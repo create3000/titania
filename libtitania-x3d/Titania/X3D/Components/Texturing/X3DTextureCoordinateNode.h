@@ -76,7 +76,7 @@ public:
 
 	virtual
 	Vector4f
-	get1Point (const size_t) = 0;
+	get1Point (const size_t) const = 0;
 
 	void
 	addTexCoord (TexCoordArray & texCoord, const size_t index) const

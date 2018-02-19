@@ -376,7 +376,6 @@
     <None Include="Titania\X3D\Fields\SFImage.h" />
     <None Include="Titania\X3D\Fields\SFString.h" />
     <None Include="Titania\X3D.h" />
-    <None Include="Titania\X3D\Fields\ArrayFields.h" />
     <None Include="Titania\X3D\Fields\MFNode.h" />
     <None Include="Titania\X3D\Fields\MFInt32.h" />
     <None Include="Titania\X3D\Components\H-Anim\HAnimDisplacer.h" />
@@ -997,12 +996,14 @@
     <None Include="Titania\X3D\InputOutput\VRMLGenerator.h" />
     <None Include="Titania\X3D\InputOutput\XMLGenerator.h" />
     <None Include="Titania\X3D\InputOutput\JSONGenerator.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ArrayValue.h" />
+    <None Include="Titania\X3D\Fields\MFImage.h" />
+    <None Include="Titania\X3D\Parser\MiniParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
     <Compile Include="Titania\X3D\Execution\Scene.cpp" />
     <Compile Include="Titania\X3D\Execution\X3DExecutionContext.cpp" />
-    <Compile Include="Titania\X3D\Fields\ArrayFields.cpp" />
     <Compile Include="Titania\X3D\Fields\MFInt32.cpp" />
     <Compile Include="Titania\X3D\Fields\SFColor.cpp" />
     <Compile Include="Titania\X3D\Fields\SFColorRGBA.cpp" />
@@ -1690,6 +1691,8 @@
     <Compile Include="Titania\X3D\InputOutput\VRMLGenerator.cpp" />
     <Compile Include="Titania\X3D\InputOutput\XMLGenerator.cpp" />
     <Compile Include="Titania\X3D\InputOutput\JSONGenerator.cpp" />
+    <Compile Include="Titania\X3D\Fields\MFImage.cpp" />
+    <Compile Include="Titania\X3D\Parser\MiniParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -87,10 +87,10 @@ Normal::set1Vector (const size_t index, const Vector3f & value)
 }
 
 Vector3f
-Normal::get1Vector (const size_t index)
+Normal::get1Vector (const size_t index) const
 {
 	if (index < vector () .size ())
-		return vector () [index] .getValue ();
+		return vector () [index];
 
 	return Vector3f (0, 0, 0);
 }

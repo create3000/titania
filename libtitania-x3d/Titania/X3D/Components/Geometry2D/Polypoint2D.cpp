@@ -114,7 +114,7 @@ void
 Polypoint2D::build ()
 {
 	for (const auto & vertex : basic::make_const_range (point ()))
-		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+		getVertices () .emplace_back (vertex .x (), vertex .y (), 0);
 
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (false);

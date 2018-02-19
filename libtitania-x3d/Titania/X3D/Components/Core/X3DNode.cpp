@@ -70,7 +70,45 @@ public:
 
 	template <class Type, class Metadata>
 	static
-	typename std::enable_if <
+	std::enable_if_t <
+		std::is_same <Type, SFColor>::value or
+		std::is_same <Type, SFColorRGBA>::value or
+		std::is_same <Type, SFMatrix3d>::value or
+		std::is_same <Type, SFMatrix3f>::value or
+		std::is_same <Type, SFMatrix4d>::value or
+		std::is_same <Type, SFMatrix4f>::value or
+		std::is_same <Type, SFRotation>::value  or
+		std::is_same <Type, SFVec2d>::value or
+		std::is_same <Type, SFVec2f>::value or
+		std::is_same <Type, SFVec3d>::value or
+		std::is_same <Type, SFVec3f>::value or
+		std::is_same <Type, SFVec4d>::value or
+		std::is_same <Type, SFVec4f>::value,
+		void
+	>
+	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
+	{
+		static constexpr auto s = std::tuple_size <typename Type::value_type> ();
+
+		auto names = std::vector <std::string> ();
+	
+		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+	
+		const auto metadataSet = node -> getMetadataSet (names, false);
+		auto  &    metaValue   = metadataSet -> getValue <Metadata> (names .back (), false) -> value ();
+	
+		metaValue .resize (value .size () * s);
+	
+		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+		{
+			for (size_t c = 0; c < s; ++ c)
+				metaValue [m ++] = value [i] .get1Value (c);
+		}
+	}
+
+	template <class Type, class Metadata>
+	static
+	std::enable_if_t <
 		std::is_same <Type, MFBool>::value or
 		std::is_same <Type, MFDouble>::value or
 		std::is_same <Type, MFFloat>::value or
@@ -78,7 +116,7 @@ public:
 		std::is_same <Type, MFNode>::value or
 		std::is_same <Type, MFString>::value,
 		void
-		>::type
+	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
 	{
 		auto names = std::vector <std::string> ();
@@ -92,18 +130,21 @@ public:
 	
 	template <class Type, class Metadata>
 	static
-	typename std::enable_if <
-		not (std::is_same <Type, MFBool>::value or
-		     std::is_same <Type, MFDouble>::value or
-		     std::is_same <Type, MFFloat>::value or
-		     std::is_same <Type, MFInt32>::value or
-		     std::is_same <Type, MFNode>::value or
-		     std::is_same <Type, MFString>::value),
+	std::enable_if_t <
+		std::is_same <Type, MFColor>::value or
+		std::is_same <Type, MFColorRGBA>::value or
+		std::is_same <Type, MFRotation>::value or
+		std::is_same <Type, MFVec2d>::value or
+		std::is_same <Type, MFVec2f>::value or
+		std::is_same <Type, MFVec3d>::value or
+		std::is_same <Type, MFVec3f>::value or
+		std::is_same <Type, MFVec4d>::value or
+		std::is_same <Type, MFVec4f>::value,
 		void
-		>::type
+	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
 	{
-		static constexpr auto s = Type::value_type::getSize ();
+		static constexpr auto s = std::tuple_size <typename Type::value_type> ();
 
 		auto names = std::vector <std::string> ();
 	
@@ -113,17 +154,49 @@ public:
 		auto  &    metaValue   = metadataSet -> getValue <Metadata> (names .back (), false) -> value ();
 	
 		metaValue .resize (value .size () * s);
-	
+
 		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
 		{
-			for (size_t v = 0; v < s; ++ v)
-				metaValue [m ++] = value [i] .get1Value (v);
+			for (size_t c = 0; c < s; ++ c)
+				metaValue [m ++] = value [i] [c];
 		}
 	}
-	
+
 	template <class Type, class Metadata>
 	static
-	typename std::enable_if <
+	std::enable_if_t <
+		std::is_same <Type, MFMatrix3d>::value or
+		std::is_same <Type, MFMatrix3f>::value or
+		std::is_same <Type, MFMatrix4d>::value or
+		std::is_same <Type, MFMatrix4f>::value,
+		void
+	>
+	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
+	{
+		static constexpr auto s = std::tuple_size <typename Type::value_type> ();
+
+		auto names = std::vector <std::string> ();
+	
+		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+	
+		const auto metadataSet = node -> getMetadataSet (names, false);
+		auto  &    metaValue   = metadataSet -> getValue <Metadata> (names .back (), false) -> value ();
+	
+		metaValue .resize (value .size () * s);
+
+		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+		{
+			const auto & v = value [i];
+
+			for (size_t r = 0; r < v .rows (); ++ r)
+				for (size_t c = 0; c < v .columns (); ++ c)
+					metaValue [m ++] = v [r] [c];
+		}
+	}
+
+	template <class Type, class Metadata>
+	static
+	std::enable_if_t <
 		std::is_same <Type, SFBool::internal_type>::value or
 		std::is_same <Type, SFDouble::internal_type>::value or
 		std::is_same <Type, SFFloat::internal_type>::value or
@@ -131,7 +204,7 @@ public:
 		std::is_same <Type, SFNode>::value or
 		std::is_same <Type, SFString::internal_type>::value,
 		Type
-		>::type
+	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
 	{
 		try
@@ -157,7 +230,58 @@ public:
 	
 	template <class Type, class Metadata>
 	static
-	typename std::enable_if <
+	std::enable_if_t <
+		std::is_same <Type, SFColor>::value or
+		std::is_same <Type, SFColorRGBA>::value or
+		std::is_same <Type, SFMatrix3d>::value or
+		std::is_same <Type, SFMatrix3f>::value or
+		std::is_same <Type, SFMatrix4d>::value or
+		std::is_same <Type, SFMatrix4f>::value or
+		std::is_same <Type, SFRotation>::value  or
+		std::is_same <Type, SFVec2d>::value or
+		std::is_same <Type, SFVec2f>::value or
+		std::is_same <Type, SFVec3d>::value or
+		std::is_same <Type, SFVec3f>::value or
+		std::is_same <Type, SFVec4d>::value or
+		std::is_same <Type, SFVec4f>::value,
+		Type
+	>
+	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
+	{
+		try
+		{
+			static constexpr auto s = std::tuple_size <typename Type::value_type> ();
+
+			std::vector <std::string> names;
+		
+			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+		
+			const auto   metadataSet = node -> getMetadataSet (names, true);
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back (), true) -> value ();
+	
+			Type value (metaValue .size () / s);
+	
+			for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+			{
+				for (size_t c = 0; c < s; ++ c)
+					value [i] .set1Value (c, metaValue [m ++]);
+			}
+	
+			return value;
+		}
+		catch (const Error <DISPOSED> &)
+		{
+			throw;
+		}
+		catch (const X3DError &)
+		{
+			return defaultValue;
+		}
+	}
+
+	template <class Type, class Metadata>
+	static
+	std::enable_if_t <
 		std::is_same <Type, MFBool>::value or
 		std::is_same <Type, MFDouble>::value or
 		std::is_same <Type, MFFloat>::value or
@@ -165,7 +289,7 @@ public:
 		std::is_same <Type, MFNode>::value or
 		std::is_same <Type, MFString>::value,
 		Type
-		>::type
+	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
 	{
 		try
@@ -191,26 +315,23 @@ public:
 	
 	template <class Type, class Metadata>
 	static
-	typename std::enable_if <
-		not (std::is_same <Type, SFBool::internal_type>::value or
-		     std::is_same <Type, SFDouble::internal_type>::value or
-		     std::is_same <Type, SFFloat::internal_type>::value or
-		     std::is_same <Type, SFInt32::internal_type>::value or
-		     std::is_same <Type, SFNode>::value or
-		     std::is_same <Type, SFString::internal_type>::value or
-		     std::is_same <Type, MFBool>::value or
-		     std::is_same <Type, MFDouble>::value or
-		     std::is_same <Type, MFFloat>::value or
-		     std::is_same <Type, MFInt32>::value or
-		     std::is_same <Type, MFNode>::value or
-		     std::is_same <Type, MFString>::value),
+	std::enable_if_t <
+		std::is_same <Type, MFColor>::value or
+		std::is_same <Type, MFColorRGBA>::value or
+		std::is_same <Type, MFRotation>::value or
+		std::is_same <Type, MFVec2d>::value or
+		std::is_same <Type, MFVec2f>::value or
+		std::is_same <Type, MFVec3d>::value or
+		std::is_same <Type, MFVec3f>::value or
+		std::is_same <Type, MFVec4d>::value or
+		std::is_same <Type, MFVec4f>::value,
 		Type
-		>::type
+	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
 	{
 		try
 		{
-			static constexpr auto s = Type::value_type::getSize ();
+			static constexpr auto s = std::tuple_size <typename Type::value_type> ();
 
 			std::vector <std::string> names;
 		
@@ -223,8 +344,59 @@ public:
 	
 			for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
 			{
-				for (size_t v = 0; v < s; ++ v)
-					value [i] .set1Value (v, metaValue [m ++]);
+				typename Type::value_type v;
+
+				for (size_t c = 0; c < s; ++ c)
+					v [c] = metaValue [m ++];
+
+				value [i] = v;
+			}
+	
+			return value;
+		}
+		catch (const Error <DISPOSED> &)
+		{
+			throw;
+		}
+		catch (const X3DError &)
+		{
+			return defaultValue;
+		}
+	}
+	
+	template <class Type, class Metadata>
+	static
+	std::enable_if_t <
+		std::is_same <Type, MFMatrix3d>::value or
+		std::is_same <Type, MFMatrix3f>::value or
+		std::is_same <Type, MFMatrix4d>::value or
+		std::is_same <Type, MFMatrix4f>::value,
+		Type
+	>
+	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
+	{
+		try
+		{
+			static constexpr auto s = std::tuple_size <typename Type::value_type> ();
+
+			std::vector <std::string> names;
+		
+			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+		
+			const auto   metadataSet = node -> getMetadataSet (names, true);
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back (), true) -> value ();
+	
+			Type value (metaValue .size () / s);
+	
+			for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+			{
+				typename Type::value_type v;
+
+				for (size_t r = 0; r < v .rows (); ++ r)
+					for (size_t c = 0; c < v .columns (); ++ c)
+						v [r] [c] = metaValue [m ++];
+
+				value [i] = v;
 			}
 	
 			return value;
@@ -645,7 +817,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFColor::getSize ())
+	if (metaValue .size () < std::tuple_size <SFColor::internal_type> ())
 		return defaultValue;
 
 	return SFColor::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -658,7 +830,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFColorRGBA::getSize ())
+	if (metaValue .size () < std::tuple_size <SFColorRGBA::internal_type> ())
 		return defaultValue;
 
 	return SFColorRGBA::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -718,7 +890,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFMatrix3d::getSize ())
+	if (metaValue .size () < std::tuple_size <SFMatrix3d::internal_type> ())
 		return defaultValue;
 
 	return SFMatrix3d::internal_type (metaValue [0],
@@ -739,7 +911,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFMatrix3f::getSize ())
+	if (metaValue .size () < std::tuple_size <SFMatrix3f::internal_type> ())
 		return defaultValue;
 
 	return SFMatrix3f::internal_type (metaValue [0],
@@ -760,7 +932,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFMatrix4d::getSize ())
+	if (metaValue .size () < std::tuple_size <SFMatrix4d::internal_type> ())
 		return defaultValue;
 
 	return SFMatrix4d::internal_type (metaValue [ 0],
@@ -788,7 +960,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFMatrix4f::getSize ())
+	if (metaValue .size () < std::tuple_size <SFMatrix4f::internal_type> ())
 		return defaultValue;
 
 	return SFMatrix4f::internal_type (metaValue [ 0],
@@ -824,7 +996,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFRotation::getSize ())
+	if (metaValue .size () < std::tuple_size <SFRotation::internal_type> ())
 		return defaultValue;
 
 	return SFRotation::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -845,7 +1017,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFVec2d::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec2d::internal_type> ())
 		return defaultValue;
 
 	return SFVec2d::internal_type (metaValue [0], metaValue [1]);
@@ -858,7 +1030,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFVec2f::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec2f::internal_type> ())
 		return defaultValue;
 
 	return SFVec2f::internal_type (metaValue [0], metaValue [1]);
@@ -871,7 +1043,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFVec3d::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec3d::internal_type> ())
 		return defaultValue;
 
 	return SFVec3d::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -884,7 +1056,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFVec3f::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec3f::internal_type> ())
 		return defaultValue;
 
 	return SFVec3f::internal_type (metaValue [0], metaValue [1], metaValue [2]);
@@ -897,7 +1069,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (metaValue .size () < SFVec4d::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec4d::internal_type> ())
 		return defaultValue;
 
 	return SFVec4d::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -910,7 +1082,7 @@ throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (metaValue .size () < SFVec4f::getSize ())
+	if (metaValue .size () < std::tuple_size <SFVec4f::internal_type> ())
 		return defaultValue;
 
 	return SFVec4f::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
@@ -1319,7 +1491,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3d matrix;
 	
-				for (size_t i = 0; i < matrix .getSize (); ++ i)
+				for (size_t i = 0; i < std::tuple_size <SFMatrix3d::internal_type> (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1332,7 +1504,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3f matrix;
 	
-				for (size_t i = 0; i < matrix .getSize (); ++ i)
+				for (size_t i = 0; i < std::tuple_size <SFMatrix3f::internal_type> (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1345,7 +1517,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4d matrix;
 	
-				for (size_t i = 0; i < matrix .getSize (); ++ i)
+				for (size_t i = 0; i < std::tuple_size <SFMatrix4d::internal_type> (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1358,7 +1530,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4f matrix;
 	
-				for (size_t i = 0; i < matrix .getSize (); ++ i)
+				for (size_t i = 0; i < std::tuple_size <SFMatrix4f::internal_type> (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1481,7 +1653,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFColor array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFColor::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFColor::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1498,7 +1670,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFColorRGBA array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFColorRGBA::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFColorRGBA::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1565,7 +1737,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3d::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFMatrix3d::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1588,7 +1760,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix3f::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFMatrix3f::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1611,7 +1783,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4d::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFMatrix4d::internal_type> ())
 				{
 					array .emplace_back (value .at (i +  0),
 					                     value .at (i +  1),
@@ -1641,7 +1813,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFMatrix4f::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFMatrix4f::internal_type> ())
 				{
 					array .emplace_back (value [i +  0],
 					                     value [i +  1],
@@ -1679,7 +1851,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFRotation array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFRotation::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFRotation::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1717,7 +1889,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec2d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec2d::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec2d::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1));
@@ -1733,7 +1905,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec2f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec2f::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec2f::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1));
@@ -1749,7 +1921,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec3d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec3d::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec3d::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1766,7 +1938,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec3f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec3f::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec3f::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1783,7 +1955,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec4d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec4d::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec4d::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1801,7 +1973,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFVec4f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += SFVec4f::getSize ())
+				for (size_t i = 0, size = value .size (); i < size; i += std::tuple_size <SFVec4f::internal_type> ())
 				{
 					array .emplace_back (value .at (i + 0),
 					                     value .at (i + 1),
@@ -1916,7 +2088,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < field .getSize (); ++ i)
+			for (size_t i = 0; i < std::tuple_size <SFMatrix3d::internal_type> (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1929,7 +2101,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < field .getSize (); ++ i)
+			for (size_t i = 0; i < std::tuple_size <SFMatrix3f::internal_type> (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1942,7 +2114,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < field .getSize (); ++ i)
+			for (size_t i = 0; i < std::tuple_size <SFMatrix4d::internal_type> (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1955,7 +2127,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < field .getSize (); ++ i)
+			for (size_t i = 0; i < std::tuple_size <SFMatrix4f::internal_type> (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -2077,9 +2249,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getRed   ());
-				array .emplace_back (value .getGreen ());
-				array .emplace_back (value .getBlue  ());
+				array .emplace_back (value .r   ());
+				array .emplace_back (value .g ());
+				array .emplace_back (value .b  ());
 			}
 
 			break;
@@ -2093,10 +2265,10 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getRed   ());
-				array .emplace_back (value .getGreen ());
-				array .emplace_back (value .getBlue  ());
-				array .emplace_back (value .getAlpha ());
+				array .emplace_back (value .r   ());
+				array .emplace_back (value .g ());
+				array .emplace_back (value .b  ());
+				array .emplace_back (value .a ());
 			}
 
 			break;
@@ -2153,8 +2325,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < SFMatrix3d::getSize (); ++ i)
-					array .emplace_back (value .get1Value (i));
+				for (size_t r = 0; r < value .rows (); ++ r)
+					for (size_t c = 0; c < value .columns (); ++ c)
+						array .emplace_back (value [r] [c]);
 			}
 
 			break;
@@ -2168,8 +2341,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < SFMatrix3f::getSize (); ++ i)
-					array .emplace_back (value .get1Value (i));
+				for (size_t r = 0; r < value .rows (); ++ r)
+					for (size_t c = 0; c < value .columns (); ++ c)
+						array .emplace_back (value [r] [c]);
 			}
 
 			break;
@@ -2183,8 +2357,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < SFMatrix4d::getSize (); ++ i)
-					array .emplace_back (value .get1Value (i));
+				for (size_t r = 0; r < value .rows (); ++ r)
+					for (size_t c = 0; c < value .columns (); ++ c)
+						array .emplace_back (value [r] [c]);
 			}
 
 			break;
@@ -2198,8 +2373,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < SFMatrix4f::getSize (); ++ i)
-					array .emplace_back (value .get1Value (i));
+				for (size_t r = 0; r < value .rows (); ++ r)
+					for (size_t c = 0; c < value .columns (); ++ c)
+						array .emplace_back (value [r] [c]);
 			}
 
 			break;
@@ -2221,7 +2397,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				const auto rotation = value .getValue () .get ();
+				const auto rotation = value .get ();
 
 				array .emplace_back (rotation .x);
 				array .emplace_back (rotation .y);
@@ -2256,8 +2432,8 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
 			}
 
 			break;
@@ -2271,8 +2447,8 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
 			}
 
 			break;
@@ -2286,9 +2462,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
-				array .emplace_back (value .getZ ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
+				array .emplace_back (value .z ());
 			}
 
 			break;
@@ -2302,9 +2478,9 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
-				array .emplace_back (value .getZ ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
+				array .emplace_back (value .z ());
 			}
 
 			break;
@@ -2318,10 +2494,10 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
-				array .emplace_back (value .getZ ());
-				array .emplace_back (value .getW ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
+				array .emplace_back (value .z ());
+				array .emplace_back (value .w ());
 			}
 
 			break;
@@ -2335,10 +2511,10 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				array .emplace_back (value .getX ());
-				array .emplace_back (value .getY ());
-				array .emplace_back (value .getZ ());
-				array .emplace_back (value .getW ());
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
+				array .emplace_back (value .z ());
+				array .emplace_back (value .w ());
 			}
 
 			break;

@@ -432,7 +432,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Execution/World.cpp \
 	Titania/X3D/Execution/X3DExecutionContext.cpp \
 	Titania/X3D/Execution/X3DScene.cpp \
-	Titania/X3D/Fields/ArrayFields.cpp \
+	Titania/X3D/Fields/MFImage.cpp \
 	Titania/X3D/Fields/MFInt32.cpp \
 	Titania/X3D/Fields/MFNode.cpp \
 	Titania/X3D/Fields/MFTime.cpp \
@@ -536,6 +536,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/glTF/Parser.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/JSONParser.cpp \
+	Titania/X3D/Parser/MiniParser.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/PDF/Parser.cpp \
 	Titania/X3D/Parser/SVG/Parser.cpp \

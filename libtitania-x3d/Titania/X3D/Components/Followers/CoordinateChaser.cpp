@@ -213,7 +213,7 @@ CoordinateChaser::updateBuffer ()
 
 				for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 				{
-					buffer [i] [j] = lerp (set_destination () [j] .getValue (), buffer [seconds] [j], alpha);
+					buffer [i] [j] = lerp (set_destination () [j] .get (), buffer [seconds] [j], alpha);
 				}
  			}
 		}

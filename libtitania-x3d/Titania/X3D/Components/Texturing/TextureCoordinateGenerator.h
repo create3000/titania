@@ -118,7 +118,7 @@ public:
 
 	virtual
 	Vector4f
-	get1Point (const size_t) final override
+	get1Point (const size_t) const final override
 	{ return Vector4f (0, 0, 0, 1); }
 
 	virtual

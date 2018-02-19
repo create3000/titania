@@ -51,23 +51,7 @@
 #ifndef __TITANIA_X3D_FIELDS_HASH_H__
 #define __TITANIA_X3D_FIELDS_HASH_H__
 
-#include "SFColor.h"
-#include "SFColorRGBA.h"
-#include "SFImage.h"
-#include "SFMatrix3.h"
-#include "SFMatrix4.h"
-#include "SFNode.h"
-#include "SFRotation4.h"
-#include "SFString.h"
-#include "SFTime.h"
-#include "SFVec2.h"
-#include "SFVec3.h"
-#include "SFVec4.h"
-#include "X3DScalar.h"
-
-#include "ArrayFields.h"
-#include "MFInt32.h"
-#include "MFNode.h"
+#include "../Fields.h"
 
 #include <Titania/Math/Numbers/Hash.h>
 
@@ -152,7 +136,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -165,8 +149,8 @@ struct hash <titania::X3D::MFInt32>
 //
 //	result_type
 //	operator () (const argument_type & array) const
-//	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//	
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -180,7 +164,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -194,7 +178,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -208,7 +192,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -222,7 +206,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -236,7 +220,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -250,7 +234,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -264,7 +248,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -278,7 +262,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};
@@ -292,7 +276,7 @@ struct hash <titania::X3D::MFInt32>
 //	result_type
 //	operator () (const argument_type & array) const
 //	{
-//		return array_hash <typename argument_type::value_type::value_type> () (array .cbegin (), array .cend ());
+//		return array_hash <typename argument_type::value_type> () (array .cbegin (), array .cend ());
 //	}
 //
 //};

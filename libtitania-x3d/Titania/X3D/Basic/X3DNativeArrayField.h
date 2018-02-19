@@ -56,6 +56,7 @@
 #include "../InputOutput/XMLGenerator.h"
 #include "../InputOutput/JSONGenerator.h"
 #include "../Parser/Grammar.h"
+#include "../Parser/MiniParser.h"
 #include "../Types/Array.h"
 
 #include <Titania/Algorithm.h>
@@ -229,9 +230,8 @@ public:
 	///  @name Element access
 
 	///  Access specified element with bounds checking and element creation.
-	template <class Arg>
 	void
-	set1Value (const size_type index, Arg &&);
+	set1Value (const size_type index, const value_type & value);
 
 	///  Access specified element with bounds checking and element creation.
 	const_reference
@@ -595,15 +595,14 @@ X3DNativeArrayField <ValueType>::set (InputIterator first, const InputIterator &
 }
 
 template <class ValueType>
-template <class Arg>
 inline
 void
-X3DNativeArrayField <ValueType>::set1Value (const size_type index, Arg && value)
+X3DNativeArrayField <ValueType>::set1Value (const size_type index, const value_type & value)
 {
 	if (index >= size ())
 		resize (index + 1);
 
-	get () [index] = std::forward <Arg> (value);
+	get () [index] = value;
 
 	addEvent ();
 }
@@ -772,9 +771,9 @@ throw (Error <INVALID_X3D>,
 		if (Grammar::OpenBracket (istream))
 		{
 			X3DNativeArrayField array;
-			value_type          value;
+			ValueType           value;
 
-			while (Grammar::VRMLDecode (istream, value))
+			while (MiniParser::Decode (istream, value))
 				array .emplace_back (value);
 
 			istream .clear (~std::ios_base::failbit & istream .rdstate ());
@@ -789,9 +788,9 @@ throw (Error <INVALID_X3D>,
 		}
 		else
 		{
-			value_type value;
+			ValueType value;
 
-			if (Grammar::VRMLDecode (istream, value))
+			if (MiniParser::Decode (istream, value))
 			{
 				clear ();
 				emplace_back (value);
@@ -816,7 +815,7 @@ X3DNativeArrayField <ValueType>::toStream (std::ostream & ostream) const
 		{
 			Generator::PushUnitCategory (ostream, getUnit ());
 
-			VRMLGenerator::VRMLEncode (ostream, front (), getUnit ());
+			VRMLGenerator::Encode (ostream, front (), getUnit ());
 
 			Generator::PopUnitCategory (ostream);
 			return;
@@ -829,7 +828,7 @@ X3DNativeArrayField <ValueType>::toStream (std::ostream & ostream) const
 
 			for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 			{
-				VRMLGenerator::VRMLEncode (ostream, value, getUnit ());
+				VRMLGenerator::Encode (ostream, value, getUnit ());
 
 				ostream
 					<< Generator::Comma
@@ -839,9 +838,9 @@ X3DNativeArrayField <ValueType>::toStream (std::ostream & ostream) const
 					ostream << Generator::Indent;
 			}
 
-			ostream
-				<< back ()
-				<< Generator::CloseBracket;
+			VRMLGenerator::Encode (ostream, back (), getUnit ());
+
+			ostream << Generator::CloseBracket;
 
 			Generator::PopUnitCategory (ostream);
 
@@ -861,14 +860,14 @@ X3DNativeArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 
 	for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 	{
-		XMLGenerator::XMLEncode (ostream, value, getUnit ());
+		XMLGenerator::Encode (ostream, value, getUnit ());
 
 		ostream
 			<< Generator::Comma
 			<< Generator::TidySpace;
 	}
 
-	XMLGenerator::XMLEncode (ostream, back (), getUnit ());
+	XMLGenerator::Encode (ostream, back (), getUnit ());
 
 	Generator::PopUnitCategory (ostream);
 }
@@ -898,7 +897,7 @@ X3DNativeArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 			if (Generator::HasListBreak (ostream))
 				ostream << Generator::Indent;
 
-			JSONGenerator::JSONEncode (ostream, value, getUnit ());
+			JSONGenerator::Encode (ostream, value, getUnit ());
 
 			ostream
 				<< ','
@@ -908,7 +907,7 @@ X3DNativeArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 		if (Generator::HasListBreak (ostream))
 			ostream << Generator::Indent;
 
-		JSONGenerator::JSONEncode (ostream, back (), getUnit ());
+		JSONGenerator::Encode (ostream, back (), getUnit ());
 
 		ostream
 			<< Generator::ListBreak

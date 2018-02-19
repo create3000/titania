@@ -53,7 +53,6 @@
 #include "../Bits/X3DConstants.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
-#include "../Fields/ArrayFields.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
 #include "../Parser/Filter.h"

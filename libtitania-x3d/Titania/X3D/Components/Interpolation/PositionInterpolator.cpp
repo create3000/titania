@@ -96,13 +96,13 @@ void
 PositionInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec3f ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Vector3f ());
 }
 
 void
 PositionInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = math::lerp <Vector3f> (keyValue () [index0], keyValue () [index1], weight);
+	value_changed () = math::lerp <Vector3f> (keyValue () .get1Value (index0), keyValue () .get1Value (index1), weight);
 }
 
 } // X3D

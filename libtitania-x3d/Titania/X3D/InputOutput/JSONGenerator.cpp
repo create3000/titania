@@ -56,13 +56,48 @@ namespace X3D {
 // JSON
 
 void
-JSONGenerator::JSONEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+JSONGenerator::Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
 {
 	ostream << (value ? "true" : "false");
 }
 
 void
-JSONGenerator::JSONEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
+JSONGenerator::Encode (std::ostream & ostream, const Color3f & value, const UnitCategory unitCategory)
+{
+	const auto unit = Generator::Unit (ostream, unitCategory);
+
+	ostream
+		<< Generator::SetPrecision <Color3f::value_type>
+		<< Generator::ToUnit (ostream, unit, value .r ())
+		<< ','
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, value .g ())
+		<< ','
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, value .b ());
+}
+
+void
+JSONGenerator::Encode (std::ostream & ostream, const Color4f & value, const UnitCategory unitCategory)
+{
+	const auto unit = Generator::Unit (ostream, unitCategory);
+
+	ostream
+		<< Generator::SetPrecision <Color4f::value_type>
+		<< Generator::ToUnit (ostream, unit, value .r ())
+		<< ','
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, value .g ())
+		<< ','
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, value .b ())
+		<< ','
+		<< Generator::TidySpace
+		<< Generator::ToUnit (ostream, unit, value .a ());
+}
+
+void
+JSONGenerator::Encode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
 {
 	ostream << '"';
 

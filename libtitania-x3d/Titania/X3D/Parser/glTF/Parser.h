@@ -851,7 +851,7 @@ template <class Type>
 std::vector <Type>
 Parser::getMatrixArray (const AccessorPtr & accessor) const
 {
-	static constexpr size_t components = Type () .rows () * Type () .columns ();
+	static constexpr size_t components = Type () .size ();
 
 	std::vector <Type> array;
 

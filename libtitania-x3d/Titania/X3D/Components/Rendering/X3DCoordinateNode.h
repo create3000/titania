@@ -83,7 +83,7 @@ public:
 
 	virtual
 	Vector3d
-	get1Point (const size_t) = 0;
+	get1Point (const size_t) const = 0;
 
 	virtual
 	Vector3f

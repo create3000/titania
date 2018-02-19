@@ -83,6 +83,11 @@ public:
 		objects .insert (objects .end (), first, last);
 	}
 
+	static
+	void
+	trimFreeMemory ();
+
+
 protected:
 
 	///  @name Construction
@@ -96,10 +101,6 @@ protected:
 	static
 	void
 	deleteObjectsAsync ();
-
-	static
-	void
-	trimFreeMemory ();
 
 
 private:

@@ -97,12 +97,12 @@ void
 ColorInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFColor ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Color3f ());
 
 	keyValueHSV .clear ();
 
-	for (const auto & value : keyValue ())
-		keyValueHSV .emplace_back (value .getHSV ());
+	for (const auto & value : basic::make_const_range (keyValue ()))
+		keyValueHSV .emplace_back (value .hsv ());
 }
 
 void

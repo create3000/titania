@@ -58,11 +58,11 @@ namespace X3D {
 template <>
 const std::string X3DField <Array <bool>>::typeName = "MFBool";
 
-//template <>
-//const std::string X3DField <Array <Color3f>>::typeName = "MFColor";
-//
-//template <>
-//const std::string X3DField <Array <Color4f>>::typeName = "MFColorRGBA";
+template <>
+const std::string X3DField <Array <Color3f>>::typeName = "MFColor";
+
+template <>
+const std::string X3DField <Array <Color4f>>::typeName = "MFColorRGBA";
 
 template <>
 const std::string X3DField <Array <double>>::typeName = "MFDouble";
@@ -72,53 +72,53 @@ const std::string X3DField <Array <float>>::typeName = "MFFloat";
 
 //template <>
 //const std::string X3DField <Array <SFImage*>>::typeName = "MFImage";
-//
-//template <>
-//const std::string X3DField <Array <Matrix3d>>::typeName = "MFMatrix3d";
-//
-//template <>
-//const std::string X3DField <Array <Matrix3f>>::typeName = "MFMatrix3f";
-//
-//template <>
-//const std::string X3DField <Array <Matrix4d>>::typeName = "MFMatrix4d";
-//
-//template <>
-//const std::string X3DField <Array <Matrix4f>>::typeName = "MFMatrix4f";
-//
-//template <>
-//const std::string X3DField <Array <Rotation4d>>::typeName = "MFRotation";
+
+template <>
+const std::string X3DField <Array <Matrix3d>>::typeName = "MFMatrix3d";
+
+template <>
+const std::string X3DField <Array <Matrix3f>>::typeName = "MFMatrix3f";
+
+template <>
+const std::string X3DField <Array <Matrix4d>>::typeName = "MFMatrix4d";
+
+template <>
+const std::string X3DField <Array <Matrix4f>>::typeName = "MFMatrix4f";
+
+template <>
+const std::string X3DField <Array <Rotation4d>>::typeName = "MFRotation";
 
 template <>
 const std::string X3DField <Array <String>>::typeName = "MFString";
 
-//template <>
-//const std::string X3DField <Array <Vecor2d>>::typeName = "MFVec2d";
-//
-//template <>
-//const std::string X3DField <Array <Vecor2f>>::typeName = "MFVec2f";
-//
-//template <>
-//const std::string X3DField <Array <Vecor3d>>::typeName = "MFVec3d";
-//
-//template <>
-//const std::string X3DField <Array <Vecor3f>>::typeName = "MFVec3f";
-//
-//template <>
-//const std::string X3DField <Array <Vecor4d>>::typeName = "MFVec4d";
-//
-//template <>
-//const std::string X3DField <Array <Vecor4f>>::typeName = "MFVec4f";
+template <>
+const std::string X3DField <Array <Vector2d>>::typeName = "MFVec2d";
+
+template <>
+const std::string X3DField <Array <Vector2f>>::typeName = "MFVec2f";
+
+template <>
+const std::string X3DField <Array <Vector3d>>::typeName = "MFVec3d";
+
+template <>
+const std::string X3DField <Array <Vector3f>>::typeName = "MFVec3f";
+
+template <>
+const std::string X3DField <Array <Vector4d>>::typeName = "MFVec4d";
+
+template <>
+const std::string X3DField <Array <Vector4f>>::typeName = "MFVec4f";
 
 // type
 
 template <>
 const FieldType X3DField <Array <bool>>::type = X3DConstants::MFBool;
 
-//template <>
-//const FieldType X3DField <Array <Color3f>>::type = X3DConstants::MFColor;
-//
-//template <>
-//const FieldType X3DField <Array <Color4f>>::type = X3DConstants::MFColorRGBA;
+template <>
+const FieldType X3DField <Array <Color3f>>::type = X3DConstants::MFColor;
+
+template <>
+const FieldType X3DField <Array <Color4f>>::type = X3DConstants::MFColorRGBA;
 
 template <>
 const FieldType X3DField <Array <double>>::type = X3DConstants::MFDouble;
@@ -129,41 +129,41 @@ const FieldType X3DField <Array <float>>::type = X3DConstants::MFFloat;
 //template <>
 //const FieldType X3DField <Array <SFImage*>>::type = X3DConstants::MFImage;
 
-//template <>
-//const FieldType X3DField <Array <Matrix3d>>::type = X3DConstants::MFMatrix3d;
-//
-//template <>
-//const FieldType X3DField <Array <Matrix3f>>::type = X3DConstants::MFMatrix3f;
-//
-//template <>
-//const FieldType X3DField <Array <Matrix4d>>::type = X3DConstants::MFMatrix4d;
-//
-//template <>
-//const FieldType X3DField <Array <Matrix4f>>::type = X3DConstants::MFMatrix4f;
-//
-//template <>
-//const FieldType X3DField <Array <Rotation4d>>::type = X3DConstants::MFRotation;
+template <>
+const FieldType X3DField <Array <Matrix3d>>::type = X3DConstants::MFMatrix3d;
+
+template <>
+const FieldType X3DField <Array <Matrix3f>>::type = X3DConstants::MFMatrix3f;
+
+template <>
+const FieldType X3DField <Array <Matrix4d>>::type = X3DConstants::MFMatrix4d;
+
+template <>
+const FieldType X3DField <Array <Matrix4f>>::type = X3DConstants::MFMatrix4f;
+
+template <>
+const FieldType X3DField <Array <Rotation4d>>::type = X3DConstants::MFRotation;
 
 template <>
 const FieldType X3DField <Array <String>>::type = X3DConstants::MFString;
 
-//template <>
-//const FieldType X3DField <Array <Vecor2d>>::type = X3DConstants::MFVec2d;
-//
-//template <>
-//const FieldType X3DField <Array <Vecor2f>>::type = X3DConstants::MFVec2f;
-//
-//template <>
-//const FieldType X3DField <Array <Vecor3d>>::type = X3DConstants::MFVec3d;
-//
-//template <>
-//const FieldType X3DField <Array <Vecor3f>>::type = X3DConstants::MFVec3f;
-//
-//template <>
-//const FieldType X3DField <Array <Vecor4d>>::type = X3DConstants::MFVec4d;
-//
-//template <>
-//const FieldType X3DField <Array <Vector4f>>::type = X3DConstants::MFVec4f;
+template <>
+const FieldType X3DField <Array <Vector2d>>::type = X3DConstants::MFVec2d;
+
+template <>
+const FieldType X3DField <Array <Vector2f>>::type = X3DConstants::MFVec2f;
+
+template <>
+const FieldType X3DField <Array <Vector3d>>::type = X3DConstants::MFVec3d;
+
+template <>
+const FieldType X3DField <Array <Vector3f>>::type = X3DConstants::MFVec3f;
+
+template <>
+const FieldType X3DField <Array <Vector4d>>::type = X3DConstants::MFVec4d;
+
+template <>
+const FieldType X3DField <Array <Vector4f>>::type = X3DConstants::MFVec4f;
 
 // MFString
 
@@ -178,7 +178,7 @@ X3DNativeArrayField <String>::toXMLStream (std::ostream & ostream) const
 			ostream
 				<< '"';
 
-			XMLGenerator::XMLEncode (ostream, value, getUnit ());
+			XMLGenerator::Encode (ostream, value, getUnit ());
 
 			ostream
 				<< '"'
@@ -195,43 +195,43 @@ X3DNativeArrayField <String>::toXMLStream (std::ostream & ostream) const
 
 // Explicit instantiation for required instantiations.
 template class X3DField <Array <bool>>;
-//template class X3DField <Array <Color3f>>;
-//template class X3DField <Array <Color4f>>;
+template class X3DField <Array <Color3f>>;
+template class X3DField <Array <Color4f>>;
 template class X3DField <Array <double>>;
 template class X3DField <Array <float>>;
 ////template class X3DField <Array <SFImage*>>;
-//template class X3DField <Array <Matrix3d>>;
-//template class X3DField <Array <Matrix3f>>;
-//template class X3DField <Array <Matrix4d>>;
-//template class X3DField <Array <Matrix4f>>;
-//template class X3DField <Array <Rotation4d>>;
+template class X3DField <Array <Matrix3d>>;
+template class X3DField <Array <Matrix3f>>;
+template class X3DField <Array <Matrix4d>>;
+template class X3DField <Array <Matrix4f>>;
+template class X3DField <Array <Rotation4d>>;
 template class X3DField <Array <String>>;
-//template class X3DField <Array <Vector2d>>;
-//template class X3DField <Array <Vector2f>>;
-//template class X3DField <Array <Vector3d>>;
-//template class X3DField <Array <Vector3f>>;
-//template class X3DField <Array <Vector4d>>;
-//template class X3DField <Array <Vector4f>>;
+template class X3DField <Array <Vector2d>>;
+template class X3DField <Array <Vector2f>>;
+template class X3DField <Array <Vector3d>>;
+template class X3DField <Array <Vector3f>>;
+template class X3DField <Array <Vector4d>>;
+template class X3DField <Array <Vector4f>>;
 
 // Explicit instantiation for required instantiations.
 template class X3DNativeArrayField <bool>;
-//template class X3DNativeArrayField <Color3f>;
-//template class X3DNativeArrayField <Color4f>;
+template class X3DNativeArrayField <Color3f>;
+template class X3DNativeArrayField <Color4f>;
 template class X3DNativeArrayField <double>;
 template class X3DNativeArrayField <float>;
 ////template class X3DNativeArrayField <SFImage>;
-//template class X3DNativeArrayField <Matrix3d;
-//template class X3DNativeArrayField <Matrix3f;
-//template class X3DNativeArrayField <Matrix4d;
-//template class X3DNativeArrayField <Matrix4f;
-//template class X3DNativeArrayField <Rotation4d>;
+template class X3DNativeArrayField <Matrix3d>;
+template class X3DNativeArrayField <Matrix3f>;
+template class X3DNativeArrayField <Matrix4d>;
+template class X3DNativeArrayField <Matrix4f>;
+template class X3DNativeArrayField <Rotation4d>;
 template class X3DNativeArrayField <String>;
-//template class X3DNativeArrayField <Vector2d>;
-//template class X3DNativeArrayField <Vector2f>;
-//template class X3DNativeArrayField <Vector3d>;
-//template class X3DNativeArrayField <Vector3f>;
-//template class X3DNativeArrayField <Vector4d>;
-//template class X3DNativeArrayField <Vector4f>;
+template class X3DNativeArrayField <Vector2d>;
+template class X3DNativeArrayField <Vector2f>;
+template class X3DNativeArrayField <Vector3d>;
+template class X3DNativeArrayField <Vector3f>;
+template class X3DNativeArrayField <Vector4d>;
+template class X3DNativeArrayField <Vector4f>;
 
 } // X3D
 } // titania

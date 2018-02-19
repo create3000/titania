@@ -52,14 +52,14 @@
 #define __TITANIA_X3D_FIELDS_SFVEC3_H__
 
 #include "../Basic/X3DField.h"
-#include "../InputOutput/Generator.h"
+#include "../InputOutput/VRMLGenerator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 #include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
-
-template <class InternalType>
-class X3DArrayField;
 
 extern template class X3DField <Vector3d>;
 extern template class X3DField <Vector3f>;
@@ -170,15 +170,6 @@ public:
 	value_type
 	operator [ ] (const size_type & index) const;
 
-	///  @name Capacity
-
-	///  Returns the number of elements in the vector.
-	static
-	constexpr
-	size_type
-	getSize ()
-	{ return InternalType () .size (); }
-
 	///  @name Arithmetic operations
 
 	SFVec3 &
@@ -253,14 +244,6 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override;
-
-
-protected:
-
-	friend class X3DArrayField <SFVec3>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:
@@ -515,24 +498,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	InternalType value;
 
-	value_type x, y, z;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	if (Grammar::Number <value_type> (istream, x))
-	{
-		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-		if (Grammar::Number <value_type> (istream, y))
-		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-			if (Grammar::Number <value_type> (istream, z))
-				setValue (InternalType (x, y, z));
-	   }
-	}
+	if (MiniParser::Decode (istream, value))
+		setValue (value);
 }
 
 template <class InternalType>
@@ -540,15 +509,7 @@ inline
 void
 SFVec3 <InternalType>::toStream (std::ostream & ostream) const
 {
-	const auto unit = Generator::Unit (ostream, getUnit ());
-
-	ostream
-		<< Generator::SetPrecision <value_type>
-		<< Generator::ToUnit (ostream, unit, getValue () .x ())
-		<< Generator::Space
-		<< Generator::ToUnit (ostream, unit, getValue () .y ())
-		<< Generator::Space
-		<< Generator::ToUnit (ostream, unit, getValue () .z ());
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -556,7 +517,7 @@ inline
 void
 SFVec3 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -568,29 +529,11 @@ SFVec3 <InternalType>::toJSONStream (std::ostream & ostream) const
 		<< '['
 		<< Generator::TidySpace;
 
-	toJSONStreamValue (ostream);
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 
 	ostream
 		<< Generator::TidySpace
 		<< ']';
-}
-
-template <class InternalType>
-inline
-void
-SFVec3 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
-{
-	const auto unit = Generator::Unit (ostream, getUnit ());
-
-	ostream
-		<< Generator::SetPrecision <value_type>
-		<< Generator::ToUnit (ostream, unit, getValue () .x ())
-		<< ','
-		<< Generator::TidySpace
-		<< Generator::ToUnit (ostream, unit, getValue () .y ())
-		<< ','
-		<< Generator::TidySpace
-		<< Generator::ToUnit (ostream, unit, getValue () .z ());
 }
 
 ///  @relates SFVec3

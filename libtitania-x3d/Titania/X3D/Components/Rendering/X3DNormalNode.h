@@ -69,7 +69,7 @@ public:
 
 	virtual
 	Vector3f
-	get1Vector (const size_t) = 0;
+	get1Vector (const size_t) const = 0;
 
 	virtual
 	void

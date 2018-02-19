@@ -132,7 +132,7 @@ GeoCoordinate::set1Point (const size_t index, const Vector3d & value)
 }
 
 Vector3d
-GeoCoordinate::get1Point (const size_t index)
+GeoCoordinate::get1Point (const size_t index) const
 {
 	if (index < points .size ())
 		return points [index];

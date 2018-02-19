@@ -53,6 +53,7 @@
 #include "../InputOutput/Generator.h"
 #include "../InputOutput/XMLGenerator.h"
 #include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {
@@ -205,26 +206,26 @@ throw (Error <INVALID_X3D>,
 {
 	String value;
 
-	if (Grammar::VRMLDecode (istream, value))
+	if (MiniParser::Decode (istream, value))
 		*this = std::move (value);
 }
 
 void
 SFString::toStream (std::ostream & ostream) const
 {
-	VRMLGenerator::VRMLEncode (ostream, getValue (), getUnit ());
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 void
 SFString::toXMLStream (std::ostream & ostream) const
 {
-	XMLGenerator::XMLEncode (ostream, getValue (), getUnit ());
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 void
 SFString::toJSONStream (std::ostream & ostream) const
 {
-	JSONGenerator::JSONEncode (ostream, getValue (), getUnit ());
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 } // X3D

@@ -143,8 +143,8 @@ throw (Error <NOT_SUPPORTED>,
 
 	const auto size1_2 = size () / 2.0f;
 
-	for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
-		point *= size1_2;
+	for (MFVec3f::reference point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+		point = point .get () * size1_2;
 
 	return geometry;
 }

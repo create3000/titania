@@ -105,7 +105,7 @@ public:
 
 	virtual
 	Vector3f
-	get1Vector (const size_t) final override;
+	get1Vector (const size_t) const final override;
 
 	virtual
 	void

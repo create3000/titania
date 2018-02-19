@@ -172,9 +172,9 @@ public:
 		               std::is_same <Type, SFFloat::internal_type>::value or
 		               std::is_same <Type, SFImage>::value or
 		               std::is_same <Type, SFInt32::internal_type>::value or
-							std::is_same <Type, SFMatrix3d::internal_type>::value or
-							std::is_same <Type, SFMatrix3f::internal_type>::value or
-							std::is_same <Type, SFMatrix4d::internal_type>::value or
+	                  std::is_same <Type, SFMatrix3d::internal_type>::value or
+	                  std::is_same <Type, SFMatrix3f::internal_type>::value or
+	                  std::is_same <Type, SFMatrix4d::internal_type>::value or
 							std::is_same <Type, SFMatrix4f::internal_type>::value or
 		               std::is_same <Type, SFRotation::internal_type>::value  or
 		               std::is_same <Type, SFString::internal_type>::value or
@@ -190,11 +190,11 @@ public:
 		               std::is_same <Type, SFDouble>::value or
 		               std::is_same <Type, SFFloat>::value or
 		               std::is_same <Type, SFInt32>::value or
-							std::is_same <Type, SFMatrix3d>::value or
-							std::is_same <Type, SFMatrix3f>::value or
-							std::is_same <Type, SFMatrix4d>::value or
-							std::is_same <Type, SFMatrix4f>::value or
-							std::is_same <Type, SFNode>::value or
+		               std::is_same <Type, SFMatrix3d>::value or
+		               std::is_same <Type, SFMatrix3f>::value or
+		               std::is_same <Type, SFMatrix4d>::value or
+		               std::is_same <Type, SFMatrix4f>::value or
+		               std::is_same <Type, SFNode>::value or
 		               std::is_same <Type, SFRotation>::value  or
 		               std::is_same <Type, SFString>::value or
 		               std::is_same <Type, SFVec2d>::value or
@@ -210,11 +210,11 @@ public:
 		               std::is_same <Type, MFFloat>::value or
 		               std::is_same <Type, MFImage>::value or
 		               std::is_same <Type, MFInt32>::value or
-							std::is_same <Type, MFMatrix3d>::value or
-							std::is_same <Type, MFMatrix3f>::value or
-							std::is_same <Type, MFMatrix4d>::value or
-							std::is_same <Type, MFMatrix4f>::value or
-							std::is_same <Type, MFNode>::value or
+		               std::is_same <Type, MFMatrix3d>::value or
+		               std::is_same <Type, MFMatrix3f>::value or
+		               std::is_same <Type, MFMatrix4d>::value or
+		               std::is_same <Type, MFMatrix4f>::value or
+		               std::is_same <Type, MFNode>::value or
 		               std::is_same <Type, MFRotation>::value or
 		               std::is_same <Type, MFString>::value or
 		               std::is_same <Type, MFVec2d>::value or

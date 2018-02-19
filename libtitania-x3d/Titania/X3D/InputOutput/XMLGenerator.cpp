@@ -57,13 +57,13 @@ namespace X3D {
 // XML
 
 void
-XMLGenerator::XMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
+XMLGenerator::Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory)
 {
 	ostream << (value ? "true" : "false");
 }
 
 void
-XMLGenerator::XMLEncode (std::ostream & ostream, const String & string, const UnitCategory unitCategory)
+XMLGenerator::Encode (std::ostream & ostream, const String & string, const UnitCategory unitCategory)
 {
 	for (const auto & c : string .raw ())
 	{

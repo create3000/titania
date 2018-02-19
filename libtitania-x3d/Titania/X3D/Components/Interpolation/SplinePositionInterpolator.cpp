@@ -107,7 +107,7 @@ void
 SplinePositionInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec3f ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Vector3f ());
 
 	set_keyVelocity ();
 }

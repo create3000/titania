@@ -151,10 +151,10 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (size () not_eq Vector2f (2, 2))
 	{
-		const auto size1_2 = Vector3d (size () .getX (), size () .getY (), 0) / 2.0;
+		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
 
-		for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
-			point *= size1_2;
+		for (MFVec3f::reference point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+			point = point .get () * size1_2;
 	}
 
 	return geometry;

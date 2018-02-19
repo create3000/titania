@@ -94,11 +94,11 @@ TextureCoordinate3D::set1Point (const size_t index, const Vector4f & value)
 }
 
 Vector4f
-TextureCoordinate3D::get1Point (const size_t index)
+TextureCoordinate3D::get1Point (const size_t index) const
 {
 	if (index < point () .size ())
 	{
-	   const auto & p = point () [index] .getValue ();
+	   const auto & p = point () [index];
 		return Vector4f (p .x (), p .y (), p .z (), 1);
 	}
 

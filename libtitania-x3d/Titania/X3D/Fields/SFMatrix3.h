@@ -52,14 +52,15 @@
 #define __TITANIA_X3D_FIELDS_SFMATRIX3_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/VRMLGenerator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 #include "../Types/Numbers.h"
 #include "SFVec2.h"
 
 namespace titania {
 namespace X3D {
-
-template <class InternalType>
-class X3DArrayField;
 
 extern template class X3DField <Matrix3d>;
 extern template class X3DField <Matrix3f>;
@@ -85,6 +86,7 @@ public:
 
 	using X3DField <InternalType>::addInterest;
 	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::getUnit;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;
 	using X3DField <InternalType>::operator =;
@@ -146,15 +148,6 @@ public:
 
 	value_type
 	operator [ ] (const size_type & index) const;
-
-	///  @name Capacity
-
-	///  Returns the number of elements in the matrix.
-	static
-	constexpr
-	size_type
-	getSize ()
-	{ return InternalType () .rows () * InternalType () .columns (); }
 
 	///  @name Arithmetic operations
 
@@ -265,14 +258,6 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-protected:
-
-	friend class X3DArrayField <SFMatrix3>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const;
-
-
 private:
 
 	using X3DField <InternalType>::get;
@@ -294,10 +279,10 @@ inline
 typename SFMatrix3 <InternalType>::value_type
 SFMatrix3 <InternalType>::at (const size_type & index) const
 {
-	if (index > getSize ())
+	if (index > getValue () .size ())
 		throw std::out_of_range ("SFMatrix4::at ");
 
-	return getValue () .front ()  .data () [index];
+	return getValue () .front () .data () [index];
 }
 
 template <class InternalType>
@@ -513,60 +498,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	InternalType value;
 
-	value_type e11, e12, e13;
-	value_type e21, e22, e23;
-	value_type e31, e32, e33;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	if (Grammar::Number <value_type> (istream, e11))
-	{
-		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-		if (Grammar::Number <value_type> (istream, e12))
-		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-			if (Grammar::Number <value_type> (istream, e13))
-			{
-				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-				if (Grammar::Number <value_type> (istream, e21))
-				{
-					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-					if (Grammar::Number <value_type> (istream, e22))
-					{
-						Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-						if (Grammar::Number <value_type> (istream, e23))
-						{
-							Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-							if (Grammar::Number <value_type> (istream, e31))
-							{
-								Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-								if (Grammar::Number <value_type> (istream, e32))
-								{
-									Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-									if (Grammar::Number <value_type> (istream, e33))
-									{
-										setValue (InternalType (e11, e12, e13,
-										                     e21, e22, e23,
-										                     e31, e32, e33));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	if (MiniParser::Decode (istream, value))
+		setValue (value);
 }
 
 template <class InternalType>
@@ -574,7 +509,7 @@ inline
 void
 SFMatrix3 <InternalType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -582,7 +517,7 @@ inline
 void
 SFMatrix3 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -594,45 +529,11 @@ SFMatrix3 <InternalType>::toJSONStream (std::ostream & ostream) const
 		<< '['
 		<< X3DGenerator::TidySpace;
 
-	toJSONStreamValue (ostream);
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 
 	ostream
 		<< X3DGenerator::TidySpace
 		<< ']';
-}
-
-template <class InternalType>
-inline
-void
-SFMatrix3 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
-{
-	ostream
-		<< X3DGenerator::SetPrecision <value_type>
-		<< getValue () [0] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [0] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [0] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [2];
 }
 
 // SFMatrix4d and SFMatrix4f

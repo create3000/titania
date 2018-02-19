@@ -173,7 +173,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Geometry/Sphere3.lo \
 	Titania/Math/Geometry/Spheroid3.lo \
 	Titania/Math/Geometry/Triangle2.lo \
-	Titania/Math/Geometry/Triangle3.lo Titania/Math/Image.lo \
+	Titania/Math/Geometry/Triangle3.lo \
 	Titania/Math/Mesh/Combine.lo Titania/Math/Numbers/Color3.lo \
 	Titania/Math/Numbers/Color4.lo Titania/Math/Numbers/Matrix2.lo \
 	Titania/Math/Numbers/Matrix3.lo \
@@ -477,7 +477,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/Spheroid3.cpp \
 	Titania/Math/Geometry/Triangle2.cpp \
 	Titania/Math/Geometry/Triangle3.cpp \
-	Titania/Math/Image.cpp \
 	Titania/Math/Mesh/Combine.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \
@@ -769,14 +768,6 @@ Titania/Math/Geometry/Triangle2.lo:  \
 Titania/Math/Geometry/Triangle3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math
-	@: > Titania/Math/$(am__dirstamp)
-Titania/Math/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/$(DEPDIR)
-	@: > Titania/Math/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Image.lo: Titania/Math/$(am__dirstamp) \
-	Titania/Math/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Mesh/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Math/Mesh
 	@: > Titania/Math/Mesh/$(am__dirstamp)
@@ -878,8 +869,6 @@ mostlyclean-compile:
 	-rm -f Titania/Geospatial/*.lo
 	-rm -f Titania/InputOutput/*.$(OBJEXT)
 	-rm -f Titania/InputOutput/*.lo
-	-rm -f Titania/Math/*.$(OBJEXT)
-	-rm -f Titania/Math/*.lo
 	-rm -f Titania/Math/Algorithms/*.$(OBJEXT)
 	-rm -f Titania/Math/Algorithms/*.lo
 	-rm -f Titania/Math/Geometry/*.$(OBJEXT)
@@ -933,7 +922,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/Sequence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/String.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/$(DEPDIR)/Image.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box2.Plo@am__quote@
@@ -1008,7 +996,6 @@ clean-libtool:
 	-rm -rf Titania/External/ApproxMVBB/pugixml/.libs Titania/External/ApproxMVBB/pugixml/_libs
 	-rm -rf Titania/Geospatial/.libs Titania/Geospatial/_libs
 	-rm -rf Titania/InputOutput/.libs Titania/InputOutput/_libs
-	-rm -rf Titania/Math/.libs Titania/Math/_libs
 	-rm -rf Titania/Math/Algorithms/.libs Titania/Math/Algorithms/_libs
 	-rm -rf Titania/Math/Geometry/.libs Titania/Math/Geometry/_libs
 	-rm -rf Titania/Math/Mesh/.libs Titania/Math/Mesh/_libs
@@ -1153,8 +1140,6 @@ distclean-generic:
 	-rm -f Titania/Geospatial/$(am__dirstamp)
 	-rm -f Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/InputOutput/$(am__dirstamp)
-	-rm -f Titania/Math/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/$(am__dirstamp)
 	-rm -f Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Math/Algorithms/$(am__dirstamp)
 	-rm -f Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
@@ -1181,7 +1166,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Mesh/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/RegEx/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Mesh/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/RegEx/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1227,7 +1212,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Mesh/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/RegEx/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Mesh/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/RegEx/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

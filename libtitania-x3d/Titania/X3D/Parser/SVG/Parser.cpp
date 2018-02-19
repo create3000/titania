@@ -993,8 +993,8 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 
-				for (const auto & point : coordinateNode -> point ())
-					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
+				for (const auto & point : basic::make_const_range (coordinateNode -> point ()))
+					texCoordNode -> point () .emplace_back ((Vector2d (point .x (), point .y ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -1124,8 +1124,8 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 	
-				for (const auto & point : coordinateNode -> point ())
-					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
+				for (const auto & point : basic::make_const_range (coordinateNode -> point ()))
+					texCoordNode -> point () .emplace_back ((Vector2d (point .x (), point .y ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -1264,8 +1264,8 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 	
-				for (const auto & point : coordinateNode -> point ())
-					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
+				for (const auto & point : basic::make_const_range (coordinateNode -> point ()))
+					texCoordNode -> point () .emplace_back ((Vector2d (point .x (), point .y ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}

@@ -53,7 +53,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <valarray>
+#include <utility>
 
 namespace titania {
 namespace math {
@@ -63,97 +63,117 @@ class image
 {
 public:
 
-	typedef Array  array_type;
-	typedef size_t size_type;
+	///  @name Member types
+
+	using array_type = Array;
+	using size_type  = size_t;
+
+	///  @name Construction
 
 	image () :
-		value  ({ 0, 0, 0, Array () })
+		     m_width (0),
+		    m_height (0),
+		m_components (0),
+		     m_array ()
 	{ }
 
 	image (const image & img) :
-		value  (img .value)
+		     m_width (img .m_width),
+		    m_height (img .m_height),
+		m_components (img .m_components),
+		     m_array (img .m_array)
 	{ }
 
 	image (image && img) :
-		value  ({ img .width (), img .height (), img .components () })
+		     m_width (img .m_width),
+		    m_height (img .m_height),
+		m_components (img .m_components),
+		     m_array (std::move (img .m_array))
 	{
-		value .array = std::move (img .value .array);
-		img .resize ();
+		img .check_resize ();
 	}
 
 	image (const size_type width, const size_type height, const size_type components, const Array & array) :
-		value  ({ width, height, components, array })
-	{ resize (); }
+		     m_width (width),
+		    m_height (height),
+		m_components (components),
+		     m_array (array)
+	{ check_resize (); }
 
 	image (const size_type width, const size_type height, const size_type components, Array && array) :
-		value  ({ width, height, components, std::move (array) })
-	{ resize (); }
+		     m_width (width),
+		    m_height (height),
+		m_components (components),
+		     m_array (std::move (array))
+	{ check_resize (); }
+
+	///  @name Assignment operators
 
 	image &
-	operator = (const image &);
+	operator = (const image & other);
 
 	image &
-	operator = (image &&);
+	operator = (image && other);
+
+	///  @name Member access
 
 	void
-	set (const size_type, const size_type, const size_type, const Array &);
-
-	void
-	set (const size_type, const size_type, const size_type, Array &&);
-
-	void
-	get (size_type &, size_type &, size_type &, Array &) const;
-
-	void
-	width (const size_type);
+	width (const size_type value);
 
 	size_type
 	width () const
-	{ return value .width; }
+	{ return m_width; }
 
 	void
-	height (const size_type);
+	height (const size_type value);
 
 	size_type
 	height () const
-	{ return value .height; }
+	{ return m_height; }
 
 	void
 	components (const size_type components)
-	{ value .components = components; }
+	{ m_components = components; }
 
 	size_type
 	components () const
-	{ return value .components; }
+	{ return m_components; }
 
 	void
-	array (const Array &);
+	array (const Array & array);
 
 	Array &
 	array ()
-	{ return value .array; }
+	{ return m_array; }
 
 	const Array &
 	array () const
-	{ return value .array; }
+	{ return m_array; }
+
+	void
+	set (const size_type width, const size_type height, const size_type components, const Array & array);
+
+	void
+	set (const size_type width, const size_type height, const size_type components, Array && array);
+
+	void
+	get (size_type & width, size_type & height, size_type & components, Array & array) const;
 
 
 private:
 
+	///  @name Operations
+
 	void
-	resize ()
-	{ value .array .resize (value .width * value .height); }
+	check_resize ()
+	{ m_array .resize (m_width * m_height); }
 
-	struct Value
-	{
-		size_type width;
-		size_type height;
-		size_type components;
+	///  @name Member access
 
-		Array array;
-	};
-
-	Value value;
+	size_type m_width;
+	size_type m_height;
+	size_type m_components;
+	Array     m_array;
 
 };
 
@@ -161,10 +181,10 @@ template <class Array>
 image <Array> &
 image <Array>::operator = (const image <Array> & img)
 {
-	value .width      = img .width  ();
-	value .height     = img .height ();
-	value .components = img .components ();
-	value .array      = img .array  ();
+	m_width      = img .m_width;
+	m_height     = img .m_height;
+	m_components = img .m_components;
+	m_array      = img .m_array;
 
 	return *this;
 }
@@ -173,16 +193,16 @@ template <class Array>
 image <Array> &
 image <Array>::operator = (image <Array> && img)
 {
-	value .width      = img .width  ();
-	value .height     = img .height ();
-	value .components = img .components ();
-	value .array      = std::move (img .array  ());
+	m_width      = img .m_width;
+	m_height     = img .m_height;
+	m_components = img .m_components;
+	m_array      = std::move (img .m_array);
 
-	img .value .width      = 0;
-	img .value .height     = 0;
-	img .value .components = 0;
+	img .m_width      = 0;
+	img .m_height     = 0;
+	img .m_components = 0;
 
-	img .resize ();
+	img .check_resize ();
 
 	return *this;
 }
@@ -191,61 +211,61 @@ template <class Array>
 void
 image <Array>::set (const size_type width, const size_type height, const size_type components, const Array & array)
 {
-	value .width      = width;
-	value .height     = height;
-	value .components = components;
-	value .array      = array;
+	m_width      = width;
+	m_height     = height;
+	m_components = components;
+	m_array      = array;
 
-	resize ();
+	check_resize ();
 }
 
 template <class Array>
 void
 image <Array>::set (const size_type width, const size_type height, const size_type components, Array && array)
 {
-	value .width      = width;
-	value .height     = height;
-	value .components = components;
-	value .array      = std::move (array);
+	m_width      = width;
+	m_height     = height;
+	m_components = components;
+	m_array      = std::move (array);
 
-	resize ();
+	check_resize ();
 }
 
 template <class Array>
 void
 image <Array>::get (size_type & width, size_type & height, size_type & components, Array & array) const
 {
-	width      = value .width;
-	height     = value .height;
-	components = value .components;
-	array      = value .array;
+	width      = m_width;
+	height     = m_height;
+	components = m_components;
+	array      = m_array;
 }
 
 template <class Array>
 void
 image <Array>::width (const size_type width)
 {
-	value .width = width;
+	m_width = width;
 
-	resize ();
+	check_resize ();
 }
 
 template <class Array>
 void
 image <Array>::height (const size_type height)
 {
-	value .height = height;
+	m_height = height;
 
-	resize ();
+	check_resize ();
 }
 
 template <class Array>
 void
 image <Array>::array (const Array & array)
 {
-	value .array = array;
+	m_array = array;
 
-	resize ();
+	check_resize ();
 }
 
 template <class Array>
@@ -266,8 +286,6 @@ operator not_eq (const image <Array> & a, const image <Array> & b)
 {
 	return not (a == b);
 }
-
-extern template class image <std::valarray <int32_t>>;
 
 } // math
 } // titania

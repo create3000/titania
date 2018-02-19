@@ -106,8 +106,8 @@ CoordinateInterpolator2D::interpolate (size_t index0, size_t index1, const float
 
 	for (size_t i = 0; i < size; ++ i)
 	{
-		value_changed () [i] = math::lerp <Vector2f> (keyValue () [index0 + i],
-		                                              keyValue () [index1 + i],
+		value_changed () [i] = math::lerp <Vector2f> (keyValue () .get1Value (index0 + i),
+		                                              keyValue () .get1Value (index1 + i),
 		                                              weight);
 	}
 }

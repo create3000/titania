@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_VRMLGENERATOR_H__
 
 #include "../InputOutput/Generator.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
@@ -64,29 +65,115 @@ public:
 
 	static
 	void
-	VRMLEncode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const bool value, const UnitCategory unitCategory);
 
 	static
 	void
-	VRMLEncode (std::ostream & ostream, const double value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const Color3f & value, const UnitCategory unitCategory);
 
 	static
 	void
-	VRMLEncode (std::ostream & ostream, const float value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const Color4f & value, const UnitCategory unitCategory);
 
 	static
 	void
-	VRMLEncode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory);
 
 	static
 	void
-	VRMLEncode (std::ostream & ostream, const String & value, const UnitCategory unitCategory);
+	Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory);
+
+	static
+	void
+	Encode (std::ostream & ostream, const int32_t value, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix3 <Type> & value, const UnitCategory unitCategory)
+	{ ostream << X3DGenerator::SetPrecision <Type> << value; }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const matrix4 <Type> & value, const UnitCategory unitCategory)
+	{ ostream << X3DGenerator::SetPrecision <Type> << value; }
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const rotation4 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto r = value .get ();
+
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< r .x
+			<< Generator::Space
+			<< r .y
+			<< Generator::Space
+			<< r .z
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
+	}
+
+	static
+	void
+	Encode (std::ostream & ostream, const String & value, const UnitCategory unitCategory);
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector2 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .y ());
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector3 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .y ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .z ());
+	}
+
+	template <class Type>
+	static
+	void
+	Encode (std::ostream & ostream, const vector4 <Type> & value, const UnitCategory unitCategory)
+	{
+		const auto unit = Generator::Unit (ostream, unitCategory);
+
+		ostream
+			<< Generator::SetPrecision <Type>
+			<< Generator::ToUnit (ostream, unit, value .x ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .y ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .z ())
+			<< Generator::Space
+			<< Generator::ToUnit (ostream, unit, value .w ());
+	}
 
 	template <class Type>
 	static
 	std::enable_if_t <std::is_enum <Type>::value, void>
-	VRMLEncode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
-	{ VRMLEncode (ostream, int32_t (value), unitCategory); }
+	Encode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
+	{ Encode (ostream, int32_t (value), unitCategory); }
 
 };
 

@@ -103,7 +103,7 @@ TriangleSet2D::build ()
 	for (const auto & vertex : basic::make_const_range (vertices ()))
 	{
 		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+		getVertices () .emplace_back (vertex .x (), vertex .y (), 0);
 	}
 
 	const size_t resize = vertices () .size () - (vertices () .size () % 3); // Resize to a factor of 3.

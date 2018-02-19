@@ -96,13 +96,13 @@ void
 PositionInterpolator2D::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
-		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFVec2f ());
+		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : Vector2f ());
 }
 
 void
 PositionInterpolator2D::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = math::lerp <Vector2f> (keyValue () [index0], keyValue () [index1], weight);
+	value_changed () = math::lerp <Vector2f> (keyValue () .get1Value (index0), keyValue () .get1Value (index1), weight);
 }
 
 } // X3D

@@ -77,7 +77,7 @@ public:
 
 	virtual
 	Color4f
-	get1Color (const size_t) = 0;
+	get1Color (const size_t) const = 0;
 
 	virtual
 	void

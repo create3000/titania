@@ -65,9 +65,9 @@
 #include "Fields/SFVec4.h"
 #include "Fields/X3DScalar.h"
 
-#include "Fields/ArrayFields.h"
 #include "Fields/NativeArrayFields.h"
 #include "Fields/MFInt32.h"
+#include "Fields/MFImage.h"
 #include "Fields/MFNode.h"
 #include "Fields/MFTime.h"
 

@@ -103,7 +103,7 @@ PixelTexture::update ()
 	const size_t width      = image () .getWidth ();
 	const size_t height     = image () .getHeight ();
 	const size_t components = image () .getComponents ();
-	auto &       array      = image () .getArray ();
+	const auto & array      = image () .getArray ();
 	const size_t size       = width * height;
 
 	if (components < 1 or components > 4 or width < 1 or height < 1)
@@ -113,7 +113,7 @@ PixelTexture::update ()
 	}
 
 	if (array .size () < size)
-		array .resize (size);
+		const_cast <MFInt32 &> (array) .resize (size);
 
 	MagickImageArrayPtr mimages (new MagickImageArray ());
 	mimages -> emplace_back ();
@@ -257,7 +257,7 @@ throw (Error <INVALID_NODE>,
 	const int32_t width      = texture2DNode -> getWidth ();
 	const int32_t height     = texture2DNode -> getHeight ();
 	const int32_t components = texture2DNode -> components ();
-	X3D::MFInt32 array;
+	X3D::MFInt32  array;
 
 	switch (components)
 	{

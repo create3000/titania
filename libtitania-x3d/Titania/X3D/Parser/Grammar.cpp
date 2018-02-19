@@ -51,6 +51,7 @@
 #include "Grammar.h"
 
 #include "../Configuration/SupportedFields.h"
+#include "../Parser/Colors.h"
 
 #include <regex>
 
@@ -303,80 +304,6 @@ Grammar::WhiteSpacesNoComma (std::istream & istream, std::string & string)
 		return WhiteSpaces (istream, string);
 
 	return WhiteSpacesNoCommaSequence (istream, string);
-}
-
-// Field handling
-
-bool
-Grammar::VRMLDecode (std::istream & istream, bool & value)
-{
-	std::string whiteSpaces;
-	
-	WhiteSpacesNoComma (istream, whiteSpaces);
-
-	if (TRUE_ (istream))
-	{
-		value = true;
-		return true;
-	}
-
-	if (FALSE_ (istream))
-	{
-		value = false;
-		return true;
-	}
-
-	istream .setstate (std::ios_base::failbit);
-	return false;
-}
-
-bool
-Grammar::VRMLDecode (std::istream & istream, double & value)
-{
-	std::string whiteSpaces;
-	
-	WhiteSpacesNoComma (istream, whiteSpaces);
-
-	return Double (istream, value);
-}
-
-bool
-Grammar::VRMLDecode (std::istream & istream, float & value)
-{
-	std::string whiteSpaces;
-	
-	WhiteSpacesNoComma (istream, whiteSpaces);
-
-	return Float (istream, value);
-}
-
-bool
-Grammar::VRMLDecode (std::istream & istream, int32_t & value)
-{
-	std::string whiteSpaces;
-
-	WhiteSpacesNoComma (istream, whiteSpaces);
-
-	return Int32 (istream, value);
-}
-
-bool
-Grammar::VRMLDecode (std::istream & istream, X3D::String & value)
-{
-	std::string whiteSpaces;
-
-	WhiteSpacesNoComma (istream, whiteSpaces);
-
-	std::string string;
-
-	if (String (istream, string))
-	{
-		value = string;
-		return true;
-	}
-
-	istream .setstate (std::ios_base::failbit);
-	return false;
 }
 
 } // X3D

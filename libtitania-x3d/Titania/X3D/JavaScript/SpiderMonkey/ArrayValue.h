@@ -48,132 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_COORDINATE_DOUBLE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_COORDINATE_DOUBLE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ARRAY_VALUE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ARRAY_VALUE_H__
 
-#include "../Rendering/X3DCoordinateNode.h"
+#include "../../Base/X3DBase.h"
 
 namespace titania {
 namespace X3D {
+namespace spidermonkey {
 
-class CoordinateDouble :
-	public X3DCoordinateNode
+template <class InternalType>
+struct ArrayValue :
+	public X3D::X3DBase
 {
-public:
-
-	CoordinateDouble (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFVec3d &
-	point ()
-	{ return *fields .point; }
-
-	const MFVec3d &
-	point () const
-	{ return *fields .point; }
-
-	///  @name Member access
-
-	virtual
-	Box3d
-	getBBox () const final override;
-
-	virtual
-	void
-	set1Point (const size_t, const Vector3d &) final override;
-
-	virtual
-	Vector3d
-	get1Point (const size_t) const final override;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const final override;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (math::tessellator <double, size_t> &, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (std::vector <Vector3d>&, const size_t) const final override;
-
-	virtual
-	std::vector <Vector4d>
-	getControlPoints (const MFDouble & weight) const final override;
-
-	virtual
-	void
-	erasePoint (const size_t) final override;
-
-	virtual
-	bool
-	isEmpty () const final override
-	{ return point () .empty (); }
-
-	virtual
-	size_t
-	getSize () const final override
-	{ return point () .size (); }
-
-	///  @name Operations
-	
-	virtual
-	void
-	resize (const size_t value) final override
-	{ point () .resize (value); }
-
-
-private:
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		MFVec3d* const point;
-	};
-
-	Fields fields;
-
+	InternalType* array;
+	size_t        index;
 };
 
+} // spidermonkey
 } // X3D
 } // titania
 

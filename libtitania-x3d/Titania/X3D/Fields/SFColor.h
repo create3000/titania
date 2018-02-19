@@ -57,9 +57,6 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
-class X3DArrayField;
-
 extern template class X3DField <Color3f>;
 
 /**
@@ -148,15 +145,6 @@ public:
 	value_type
 	operator [ ] (const size_type & index) const;
 
-	///  @name Capacity
-
-	///  Returns the number of elements in the color.
-	static
-	constexpr
-	size_type
-	getSize ()
-	{ return internal_type () .size (); }
-
 	///  @name Operations
 
 	void
@@ -189,14 +177,6 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override;
-
-
-protected:
-
-	friend class X3DArrayField <SFColor>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

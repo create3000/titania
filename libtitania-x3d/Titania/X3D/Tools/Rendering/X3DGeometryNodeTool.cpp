@@ -321,9 +321,9 @@ X3DGeometryNodeTool::eventProcessed ()
 		edgesVertexCount .resize (c);
 		edgesPoint       .resize (p);
 
-		std::sort (verticesPoint .begin (), verticesPoint .end ());
-
-		verticesPoint .erase (std::unique (verticesPoint .begin (), verticesPoint .end ()), verticesPoint .end ());
+//		std::sort (verticesPoint .begin (), verticesPoint .end ());
+//
+//		verticesPoint .erase (std::unique (verticesPoint .begin (), verticesPoint .end ()), verticesPoint .end ());
 	}
 	catch (const X3DError & error)
 	{

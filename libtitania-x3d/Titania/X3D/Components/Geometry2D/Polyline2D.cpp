@@ -118,7 +118,7 @@ void
 Polyline2D::build ()
 {
 	for (const auto & vertex : basic::make_const_range (lineSegments ()))
-		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+		getVertices () .emplace_back (vertex .x (), vertex .y (), 0);
 
 	addElements (GL_LINE_STRIP, getVertices () .size ());
 	setSolid (false);

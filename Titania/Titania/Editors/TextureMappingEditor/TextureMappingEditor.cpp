@@ -921,8 +921,9 @@ TextureMappingEditor::on_rotate (const std::string & description, const float an
 	for (const auto & vertex : vertices)
 	{
 		auto &     point   = texCoord -> point () .get1Value (vertex);
-		const auto rotated = math::rotate (point .getValue () - center, angle) + center;
-		point .setValue (rotated);
+		const auto rotated = math::rotate (point - center, angle) + center;
+
+		texCoord -> point () .set1Value (vertex, rotated);
 	}
 
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -956,9 +957,11 @@ TextureMappingEditor::on_flip ()
 
 	for (const auto & vertex : vertices)
 	{
-		auto &     point = texCoord -> point () .get1Value (vertex);
-		const auto x     = point .getX ();
-		point .setX (center2 - x);
+		auto point = texCoord -> point () .get1Value (vertex);
+
+		point .x (center2 - point .x ());
+
+		texCoord -> point () .set1Value (vertex, point);
 	}
 
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -991,9 +994,11 @@ TextureMappingEditor::on_flop ()
 
 	for (const auto & vertex : vertices)
 	{
-		auto &     point = texCoord -> point () .get1Value (vertex);
-		const auto y     = point .getY ();
-		point .setY (center2 - y);
+		auto point = texCoord -> point () .get1Value (vertex);
+
+		point .y (center2 - point .y ());
+
+		texCoord -> point () .set1Value (vertex, point);
 	}
 
 	undoStep -> addRedoFunction (&X3D::MFVec2f::setValue, std::ref (texCoord -> point ()), texCoord -> point ());
@@ -1741,8 +1746,8 @@ TextureMappingEditor::set_left_coord ()
 
 		selectedCoord -> point () .resize (texCoord -> point () .size ());
 
-		for (const auto & point : texCoord -> point ())
-			selectedCoord -> point () [i ++] = X3D::Vector3f (point .getX (), point .getY (), 0);
+		for (const auto & point : basic::make_const_range (texCoord -> point ()))
+			selectedCoord -> point () [i ++] = X3D::Vector3f (point .x (), point .y (), 0);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -1836,7 +1841,7 @@ TextureMappingEditor::set_left_selected_faces ()
 void
 TextureMappingEditor::set_left_active (const bool value)
 {
-	using set1Value = void (X3D::MFVec2f::*) (const X3D::MFVec2f::size_type, const X3D::SFVec2f &);
+	using set1Value = void (X3D::MFVec2f::*) (const X3D::MFVec2f::size_type, const X3D::MFVec2f::value_type &);
 
 	if (value)
 	{

@@ -242,17 +242,17 @@ public:
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
-	{ VRMLGenerator::VRMLEncode (ostream, getValue (), getUnit ()); }
+	{ VRMLGenerator::Encode (ostream, getValue (), getUnit ()); }
 
 	virtual
 	void
 	toXMLStream (std::ostream & ostream) const final override
-	{ XMLGenerator::XMLEncode (ostream, getValue (), getUnit ()); }
+	{ XMLGenerator::Encode (ostream, getValue (), getUnit ()); }
 
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override
-	{ JSONGenerator::JSONEncode (ostream, getValue (), getUnit ()); }
+	{ JSONGenerator::Encode (ostream, getValue (), getUnit ()); }
 
 
 private:

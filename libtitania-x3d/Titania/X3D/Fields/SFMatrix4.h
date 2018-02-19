@@ -52,15 +52,16 @@
 #define __TITANIA_X3D_FIELDS_SFMATRIX4_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/VRMLGenerator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 #include "../Types/Numbers.h"
 #include "SFRotation4.h"
 #include "SFVec3.h"
 
 namespace titania {
 namespace X3D {
-
-template <class InternalType>
-class X3DArrayField;
 
 extern template class X3DField <Matrix4d>;
 extern template class X3DField <Matrix4f>;
@@ -85,6 +86,7 @@ public:
 	using rotation_type = SFRotation;
 
 	using X3DField <InternalType>::addInterest;
+	using X3DField <InternalType>::getUnit;
 	using X3DField <InternalType>::addEvent;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;
@@ -148,15 +150,6 @@ public:
 
 	value_type
 	operator [ ] (const size_type & index) const;
-
-	///  @name Capacity
-
-	///  Returns the number of elements in the matrix.
-	static
-	constexpr
-	size_type
-	getSize ()
-	{ return InternalType () .rows () * InternalType () .columns (); }
 
 	///  @name Arithmetic operations
 
@@ -267,14 +260,6 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-protected:
-
-	friend class X3DArrayField <SFMatrix4>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const;
-
-
 private:
 
 	using X3DField <InternalType>::get;
@@ -296,7 +281,7 @@ inline
 typename SFMatrix4 <InternalType>::value_type
 SFMatrix4 <InternalType>::at (const size_type & index) const
 {
-	if (index > getSize ())
+	if (index > getValue () .size ())
 		throw std::out_of_range ("SFMatrix4::at ");
 
 	return getValue () .front () .data () [index];
@@ -516,97 +501,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	InternalType value;
 
-	value_type e11, e12, e13, e14;
-	value_type e21, e22, e23, e24;
-	value_type e31, e32, e33, e34;
-	value_type e41, e42, e43, e44;
-	
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	if (Grammar::Number <value_type> (istream, e11))
-	{
-		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-		if (Grammar::Number <value_type> (istream, e12))
-		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-			if (Grammar::Number <value_type> (istream, e13))
-			{
-				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-				if (Grammar::Number <value_type> (istream, e14))
-				{
-					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-					if (Grammar::Number <value_type> (istream, e21))
-					{
-						Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-						if (Grammar::Number <value_type> (istream, e22))
-						{
-							Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-							if (Grammar::Number <value_type> (istream, e23))
-							{
-								Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-								if (Grammar::Number <value_type> (istream, e24))
-								{
-									Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-									if (Grammar::Number <value_type> (istream, e31))
-									{
-										Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-										if (Grammar::Number <value_type> (istream, e32))
-										{
-											Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-											if (Grammar::Number <value_type> (istream, e33))
-											{
-												Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-												if (Grammar::Number <value_type> (istream, e34))
-												{
-													Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-													if (Grammar::Number <value_type> (istream, e41))
-													{
-														Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-														if (Grammar::Number <value_type> (istream, e42))
-														{
-															Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-															if (Grammar::Number <value_type> (istream, e43))
-															{
-																Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-																if (Grammar::Number <value_type> (istream, e44))
-																{
-																	setValue (InternalType (e11, e12, e13, e14,
-																	                     e21, e22, e23, e24,
-																	                     e31, e32, e33, e34,
-																	                     e41, e42, e43, e44));
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	if (MiniParser::Decode (istream, value))
+		setValue (value);
 }
 
 template <class InternalType>
@@ -614,7 +512,7 @@ inline
 void
 SFMatrix4 <InternalType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -622,7 +520,7 @@ inline
 void
 SFMatrix4 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 template <class InternalType>
@@ -634,66 +532,11 @@ SFMatrix4 <InternalType>::toJSONStream (std::ostream & ostream) const
 		<< '['
 		<< X3DGenerator::TidySpace;
 
-	toJSONStreamValue (ostream);
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 
 	ostream
 		<< X3DGenerator::TidySpace
 		<< ']';
-}
-
-template <class InternalType>
-inline
-void
-SFMatrix4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
-{
-	ostream
-		<< X3DGenerator::SetPrecision <value_type>
-		<< getValue () [0] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [0] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [0] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [0] [3]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [1] [3]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [2] [3]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [3] [0]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [3] [1]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [3] [2]
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () [3] [3];
 }
 
 // SFMatrix4d and SFMatrix4f

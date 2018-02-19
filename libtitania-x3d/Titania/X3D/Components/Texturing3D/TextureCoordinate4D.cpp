@@ -94,7 +94,7 @@ TextureCoordinate4D::set1Point (const size_t index, const Vector4f & value)
 }
 
 Vector4f
-TextureCoordinate4D::get1Point (const size_t index)
+TextureCoordinate4D::get1Point (const size_t index) const
 {
 	if (index < point () .size ())
 		return point () [index];

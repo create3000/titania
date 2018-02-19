@@ -50,9 +50,10 @@
 
 #include "SFColor.h"
 
-#include "../Parser/Colors.h"
-
-#include <Titania/String/tolower.h>
+#include "../InputOutput/VRMLGenerator.h"
+#include "../InputOutput/XMLGenerator.h"
+#include "../InputOutput/JSONGenerator.h"
+#include "../Parser/MiniParser.h"
 
 namespace titania {
 namespace X3D {
@@ -153,122 +154,22 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::string whiteSpaces;
+	Color3f value;
 
-	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-	// Parse C hex colors.
-
-	{
-		uint32_t value;
-	
-		if (Grammar::Hex (istream, value))
-		{
-			const value_type r = (value >> 16 & 0xff) / value_type (0xff);
-			const value_type g = (value >> 8  & 0xff) / value_type (0xff);
-			const value_type b = (value >> 0  & 0xff) / value_type (0xff);
-
-			setValue (internal_type (r, g, b));
-			return;
-		}
-	}
-
-	// Parse X3D colors.
-
-	{
-		value_type r, g, b;
-	
-		if (Grammar::Number <value_type> (istream, r))
-		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-	
-			if (Grammar::Number <value_type> (istream, g))
-			{
-				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-	
-				if (Grammar::Number <value_type> (istream, b))
-				{
-					setValue (internal_type (r, g, b));
-					return;
-				}
-		   }
-	
-			return;
-		}
-
-		istream .clear ();
-	}
-
-	// Parse HTML hex colors and shorthand hex colors.
-
-	if (Grammar::NumberSign (istream))
-	{
-		const auto pos = istream .tellg ();
-
-		int32_t number;
-
-		if (Grammar::HexValue (istream, number))
-		{
-			istream .clear ();
-
-			if (istream .tellg () - pos == 3)
-			{
-				// Shorthand hex color
-
-				static const auto sc = [ ] (const uint32_t c) { return c << 4 | c; };
-
-				const auto b = sc ((number >>= 0) & 0xf) / value_type (0xff);
-				const auto g = sc ((number >>= 4) & 0xf) / value_type (0xff);
-				const auto r = sc ((number >>= 4) & 0xf) / value_type (0xff);
-
-				setValue (internal_type (r, g, b));
-				return;
-			}
-
-			const auto b = ((number >>= 0) & 0xff) / value_type (0xff);
-			const auto g = ((number >>= 8) & 0xff) / value_type (0xff);
-			const auto r = ((number >>= 8) & 0xff) / value_type (0xff);
-
-			setValue (internal_type (r, g, b));
-			return;
-		}
-
-		return;
-	}
-
-	// Parse named colors.
-
-	{
-		std::string colorName;
-	
-		if (Grammar::NamedColor (istream, colorName))
-		{
-			try
-			{
-				setValue (Colors::get (basic::tolower (colorName, std::locale::classic ())));
-				return;
-			}
-			catch (const std::out_of_range &)
-			{
-				for (size_t i = 0, size = colorName .size (); i < size; ++ i)
-					istream .unget ();
-			}
-		}
-	}
-
-	istream .setstate (std::ios::failbit);
+	if (MiniParser::Decode (istream, value))
+		setValue (value);
 }
 
 void
 SFColor::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
+	VRMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 void
 SFColor::toXMLStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	XMLGenerator::Encode (ostream, getValue (), getUnit ());
 }
 
 void
@@ -278,25 +179,11 @@ SFColor::toJSONStream (std::ostream & ostream) const
 		<< '['
 		<< X3DGenerator::TidySpace;
 
-	toJSONStreamValue (ostream);
+	JSONGenerator::Encode (ostream, getValue (), getUnit ());
 
 	ostream
 		<< X3DGenerator::TidySpace
 		<< ']';
-}
-
-void
-SFColor::toJSONStreamValue (std::ostream & ostream) const
-{
-	ostream
-		<< X3DGenerator::SetPrecision <value_type>
-		<< getValue () .r ()
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () .g ()
-		<< ','
-		<< X3DGenerator::TidySpace
-		<< getValue () .b ();
 }
 
 } // X3D
