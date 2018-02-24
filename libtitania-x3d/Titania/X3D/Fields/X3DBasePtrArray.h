@@ -367,11 +367,14 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-private:
+protected:
 
 	using X3DArrayField <ValueType>::get;
 	using X3DArrayField <ValueType>::addChild;
 	using X3DArrayField <ValueType>::removeChildren;
+
+
+private:
 
 	///  @name Element handling
 

@@ -78,17 +78,17 @@ public:
 	{ }
 
 	image (const image & img) :
-		     m_width (img .m_width),
-		    m_height (img .m_height),
-		m_components (img .m_components),
-		     m_array (img .m_array)
+		     m_width (img .width ()),
+		    m_height (img .height ()),
+		m_components (img .components ()),
+		     m_array (img .array ())
 	{ }
 
 	image (image && img) :
-		     m_width (img .m_width),
-		    m_height (img .m_height),
-		m_components (img .m_components),
-		     m_array (std::move (img .m_array))
+		     m_width (img .width ()),
+		    m_height (img .height ()),
+		m_components (img .components ()),
+		     m_array (std::move (img .array ()))
 	{
 		img .check_resize ();
 	}
@@ -181,10 +181,10 @@ template <class Array>
 image <Array> &
 image <Array>::operator = (const image <Array> & img)
 {
-	m_width      = img .m_width;
-	m_height     = img .m_height;
-	m_components = img .m_components;
-	m_array      = img .m_array;
+	m_width      = img .width ();
+	m_height     = img .height ();
+	m_components = img .components ();
+	m_array      = img .array ();
 
 	return *this;
 }
@@ -193,10 +193,10 @@ template <class Array>
 image <Array> &
 image <Array>::operator = (image <Array> && img)
 {
-	m_width      = img .m_width;
-	m_height     = img .m_height;
-	m_components = img .m_components;
-	m_array      = std::move (img .m_array);
+	m_width      = img .width ();
+	m_height     = img .height ();
+	m_components = img .components ();
+	m_array      = std::move (img .array ());
 
 	img .m_width      = 0;
 	img .m_height     = 0;

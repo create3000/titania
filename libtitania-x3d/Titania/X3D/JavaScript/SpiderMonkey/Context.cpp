@@ -121,6 +121,7 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	              fields (),
 	           functions (),
 	             objects (),
+	          references (),
 	               files (),
 	              future (),
 	               frame (0)
@@ -376,7 +377,6 @@ Context::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 
 void
 Context::addObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const object)
-noexcept (true)
 {
 	assert (objects .emplace (key -> getId (), object) .second);
 
@@ -387,7 +387,6 @@ noexcept (true)
 
 void
 Context::removeObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field)
-noexcept (true)
 {
 	if (objects .erase (key -> getId ()))
 		field -> removeParent (this);
@@ -398,11 +397,44 @@ noexcept (true)
 
 JSObject*
 Context::getObject (X3D::X3DChildObject* const key) const
-noexcept (true)
 {
 	const auto iter = objects .find (key -> getId ());
 
 	if (iter not_eq objects .end ())
+		return iter -> second;
+
+	return nullptr;
+}
+
+void
+Context::setReference (X3D::X3DFieldDefinition* const array, const size_t index, X3D::X3DFieldDefinition* const reference)
+{
+	const auto key  = std::make_pair (size_t (array), index);
+	const auto iter = references .find (key);
+
+	if (iter not_eq references .end ())
+		iter -> second -> disposed () .removeInterest (&Context::removeReference, this);
+
+	reference -> disposed () .addInterest (&Context::removeReference, this, array, index);
+
+	references .emplace (key, reference);
+}
+
+void
+Context::removeReference (X3D::X3DFieldDefinition* const array, const size_t index)
+{
+	const auto key = std::make_pair (size_t (array), index);
+	
+	references .erase (key);
+}
+
+X3D::X3DFieldDefinition*
+Context::getReference (X3D::X3DFieldDefinition* const array, const size_t index)
+{
+	const auto key  = std::make_pair (size_t (array), index);
+	const auto iter = references .find (key);
+
+	if (iter not_eq references .end ())
 		return iter -> second;
 
 	return nullptr;

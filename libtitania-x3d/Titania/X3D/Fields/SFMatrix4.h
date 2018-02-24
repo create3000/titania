@@ -260,7 +260,7 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-private:
+protected:
 
 	using X3DField <InternalType>::get;
 

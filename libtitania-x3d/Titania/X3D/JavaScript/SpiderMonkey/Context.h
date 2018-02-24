@@ -122,16 +122,22 @@ public:
 	{ return protos [size_t (type)]; }
 
 	void
-	addObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const, JSObject* const)
-	noexcept (true);
+	addObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const object);
 
 	void
-	removeObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const)
-	noexcept (true);
+	removeObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field);
 
 	JSObject*
-	getObject (X3D::X3DChildObject* const) const
-	noexcept (true);
+	getObject (X3D::X3DChildObject* const key) const;
+
+	void
+	setReference (X3D::X3DFieldDefinition* const array, const size_t index, X3D::X3DFieldDefinition* const reference);
+
+	void
+	removeReference (X3D::X3DFieldDefinition* const array, const size_t index);
+
+	X3D::X3DFieldDefinition*
+	getReference (X3D::X3DFieldDefinition* const array, const size_t index);
 
 	X3DPtr <X3D::SceneFuture> &
 	getFuture ()
@@ -249,11 +255,12 @@ private:
 	jsval prepareEventsFn;
 	jsval eventsProcessedFn;
 
-	std::vector <JSObject*>                    protos;
-	std::map <std::string, jsval>              fields;
-	std::map <X3D::X3DFieldDefinition*, jsval> functions;
-	std::map <size_t, JSObject*>               objects;
-	std::map <basic::uri, jsval>               files;
+	std::vector <JSObject*>                                         protos;
+	std::map <std::string, jsval>                                   fields;
+	std::map <X3D::X3DFieldDefinition*, jsval>                      functions;
+	std::map <size_t, JSObject*>                                    objects;
+	std::map <std::pair <size_t, size_t>, X3D::X3DFieldDefinition*> references;
+	std::map <basic::uri, jsval>                                    files;
 
 	X3DPtr <X3D::SceneFuture> future;
 

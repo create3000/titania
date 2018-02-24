@@ -469,6 +469,8 @@ public:
 
 protected:
 
+	using X3DField <InternalType*>::reset;
+
 	friend class X3DArrayField <X3DPtr <InternalType>>;
 
 	void
@@ -482,8 +484,6 @@ private:
 
 	template <class Up>
 	friend class X3DPtr;
-
-	using X3DField <InternalType*>::reset;
 
 	///  @name Operations
 

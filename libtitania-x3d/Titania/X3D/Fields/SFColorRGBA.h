@@ -26,14 +26,14 @@
  * marked to indicate is contains 'non-military use only' components.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ *i
  * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
  * Titania is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License version 3 only, as published by the
- * Free Software Foundation.
+ * Free Software Foundaton.
  *
  * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
@@ -186,7 +186,7 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-private:
+protected:
 
 	using X3DField <Color4f>::get;
 

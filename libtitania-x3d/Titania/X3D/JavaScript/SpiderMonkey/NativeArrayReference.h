@@ -51,18 +51,94 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ARRAY_VALUE_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ARRAY_VALUE_H__
 
-#include "../../Base/X3DBase.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class InternalType>
-struct ArrayValue :
-	public X3D::X3DBase
+template <class ArrayType, class SingleType>
+class NativeArrayReference :
+	public SingleType
 {
-	InternalType* array;
-	size_t        index;
+public:
+
+	///  @name Construction
+
+	/// Constructs NativeArrayReference.
+	NativeArrayReference (ArrayType* const array, const size_t index) :
+		SingleType (),
+		     array (array),
+		     index (index)
+	{
+		array -> addParent (this);
+	}
+
+	///  @name Operations
+
+	///  Obtain value referenced by index.
+	virtual
+	const typename SingleType::internal_type &
+	getValue () const final override
+	{
+		const_cast <NativeArrayReference*> (this) -> SingleType::set (array -> get1Value (index));
+
+		return SingleType::getValue ();
+	}
+
+	///  Set value referenced by index.
+	virtual
+	void
+	addEvent () final override
+	{
+		array -> set1Value (index, SingleType::getValue ());
+	}
+
+	///  @name Destruction
+
+	///  6.7.8 dispose
+	virtual
+	void
+	dispose () final override
+	{
+		array -> removeParent (this);
+		array .dispose ();
+
+		SingleType::dispose ();
+	}
+
+	/// Destructs NativeArrayReference.
+	virtual
+	~NativeArrayReference ()
+	{ }
+
+
+protected:
+
+	/// Prohibit child events.
+	virtual
+	void
+	addEventObject (X3DChildObject* const object)
+	{ }
+
+	///  Obtain value referenced by index.
+	virtual
+	typename SingleType::internal_type &
+	get () final override
+	{
+		SingleType::set (array -> get1Value (index));
+
+		return SingleType::get ();
+	}
+
+
+private:
+
+	///  @name Members
+
+	X3D::X3DPtr <ArrayType> array;
+	size_t                  index;
+
 };
 
 } // spidermonkey

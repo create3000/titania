@@ -1,74 +1,19 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="107" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="662" Column="7" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DNativeArrayField.h" Line="599" Column="7" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="373" Column="46" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetSelectionObject.cpp" Line="280" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetOperationsObject.cpp" Line="1051" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp" Line="588" Column="3" />
+      <File FileName="experimental/main.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Utility/MemberValue.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/NativeArrayReference.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.h" Line="196" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Arguments.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Browser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DField.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="534" Column="75" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="build" expanded="True" />
-            <Node name="experimental" expanded="True" />
-            <Node name="libtitania-ftgl" expanded="True" />
-            <Node name="libtitania-peaseblossom" expanded="True" />
-            <Node name="libtitania-sqlite" expanded="True" />
-            <Node name="libtitania-standard" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="Utility" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="libtitania-stream" expanded="True" />
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Basic" expanded="True" />
-                  <Node name="Browser" expanded="True">
-                    <Node name="Navigation" expanded="True" />
-                    <Node name="Shaders" expanded="True" />
-                  </Node>
-                  <Node name="Components" expanded="True">
-                    <Node name="Shaders" expanded="True" />
-                  </Node>
-                  <Node name="Configuration" expanded="True" />
-                  <Node name="InputOutput" expanded="True" />
-                  <Node name="JavaScript" expanded="True">
-                    <Node name="SpiderMonkey" expanded="True">
-                      <Node name="Fields" expanded="True" />
-                    </Node>
-                  </Node>
-                  <Node name="Parser" expanded="True" />
-                  <Node name="Tools" expanded="True">
-                    <Node name="Geometry3D" expanded="True">
-                      <Node name="IndexedFaceSet" expanded="True">
-                        <Node name="X3DIndexedFaceSetOperationsObject.cpp" selected="True" />
-                      </Node>
-                    </Node>
-                  </Node>
-                  <Node name="Types" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="Widgets" expanded="True">
-                  <Node name="OutlineEditor" expanded="True">
-                    <Node name="CellRenderer" expanded="True" />
-                  </Node>
-                  <Node name="ScriptEditor" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

@@ -996,9 +996,9 @@
     <None Include="Titania\X3D\InputOutput\VRMLGenerator.h" />
     <None Include="Titania\X3D\InputOutput\XMLGenerator.h" />
     <None Include="Titania\X3D\InputOutput\JSONGenerator.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ArrayValue.h" />
     <None Include="Titania\X3D\Fields\MFImage.h" />
     <None Include="Titania\X3D\Parser\MiniParser.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\NativeArrayReference.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

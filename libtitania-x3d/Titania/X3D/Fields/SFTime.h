@@ -213,15 +213,6 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-protected:
-
-	friend class X3DArrayField <SFTime>;
-
-	void
-	toJSONStreamValue (std::ostream & ostream) const
-	{ toJSONStream (ostream); }
-
-
 private:
 
 	static const std::string typeName;

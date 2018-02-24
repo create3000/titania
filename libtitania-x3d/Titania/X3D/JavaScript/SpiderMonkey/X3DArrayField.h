@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_X3DARRAY_FIELD_H__
 
-#include "ArrayValue.h"
 #include "Context.h"
 #include "Error.h"
+#include "NativeArrayReference.h"
 #include "String.h"
 #include "X3DField.h"
 
@@ -176,7 +176,7 @@ private:
 		std::is_base_of <X3D::X3DFieldDefinition, Class>::value,
 		const Class &
 	>::type
-	check (InternalType* const array, const size_t index, const Class & value)
+	getReference (JSContext* cx, InternalType* const array, const size_t index, const Class & value)
 	{
 		return value;
 	}
@@ -190,10 +190,11 @@ private:
 		     std::is_base_of <X3D::X3DFieldDefinition, Class>::value),
 		const single_type &
 	>::type
-	check (InternalType* const array, const size_t index, const Class & value)
+	getReference (JSContext* cx, InternalType* const array, const size_t index, const Class & value)
 	{
-		const auto field = new single_type (value);
-		return *field;
+		const auto reference = new NativeArrayReference <InternalType, single_type> (array, index);
+
+		return *reference;
 	}
 
 	///  @name Static members
@@ -364,7 +365,7 @@ X3DArrayField <ValueType, InternalType>::get1Value (JSContext* cx, JSObject* obj
 		if (index < 0)
 			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 
-		return get <ValueType> (cx, check <typename InternalType::value_type> (array, index, array -> get1Value (index)), vp);
+		return get <ValueType> (cx, getReference <typename InternalType::value_type> (cx, array, index, array -> get1Value (index)), vp);
 	}
 	catch (const std::bad_alloc &)
 	{

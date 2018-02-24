@@ -179,7 +179,7 @@ public:
 	toJSONStream (std::ostream & ostream) const final override;
 
 
-private:
+protected:
 
 	using X3DField <Color3f>::get;
 

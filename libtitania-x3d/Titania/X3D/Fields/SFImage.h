@@ -193,15 +193,12 @@ public:
 
 protected:
 
+	using X3DField <Image>::get;
+
 	friend class X3DArrayField <SFImage>;
 
 	void
 	toJSONStreamValue (std::ostream & ostream) const;
-
-
-private:
-
-	using X3DField <Image>::get;
 
 };
 

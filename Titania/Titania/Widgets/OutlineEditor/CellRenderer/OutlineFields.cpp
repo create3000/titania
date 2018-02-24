@@ -527,8 +527,12 @@ get_field_value (const X3D::X3DScene* const scene,
 		}
 
 		case X3D::X3DConstants::SFString:
-			return static_cast <const X3D::SFString*> (fieldDefinition) -> getValue ();
+		{
+			if (parent == fieldDefinition)
+				return static_cast <const X3D::SFString*> (fieldDefinition) -> getValue ();
 
+			return static_cast <const X3D::SFString*> (fieldDefinition) -> toString ();
+		}
 		case X3D::X3DConstants::SFVec2d:
 		{
 			const auto & field = *static_cast <const X3D::SFVec2d*> (fieldDefinition);

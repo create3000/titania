@@ -77,7 +77,7 @@ public:
 	copy (X3DExecutionContext* const, X3DFieldDefinition* field, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override
-	{ static_cast <X3DField*> (field) -> set (value); }
+	{ static_cast <X3DField*> (field) -> set (getValue ()); }
 
 	///  @name Assignment operators
 
@@ -119,10 +119,11 @@ public:
 	{
 		static const InternalType defaultValue = InternalType ();
 
-		return value == defaultValue;
+		return getValue () == defaultValue;
 	}
 
 	///  Returns the value of this field.
+	virtual
 	const InternalType &
 	getValue () const
 	{ return value; }
@@ -168,7 +169,7 @@ public:
 
 	///  Conversion operator.
 	operator const InternalType & () const
-	{ return value; }
+	{ return getValue (); }
 
 	///  @name Logical operators
 
@@ -235,6 +236,7 @@ protected:
 	/// @name Member access
 
 	///  Get a non const value.
+	virtual
 	InternalType &
 	get ()
 	{ return value; }
@@ -243,7 +245,7 @@ protected:
 	virtual
 	void
 	reset ()
-	{ value = InternalType (); }
+	{ set (InternalType ()); }
 
 
 private:
