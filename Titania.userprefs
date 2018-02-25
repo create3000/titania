@@ -1,18 +1,18 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="1" Column="1" />
       <File FileName="libtitania-standard/Titania/Utility/MemberValue.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/NativeArrayReference.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.h" Line="196" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Arguments.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Browser.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DField.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="534" Column="75" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
