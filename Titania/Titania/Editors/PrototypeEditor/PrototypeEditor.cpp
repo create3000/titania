@@ -182,6 +182,7 @@ PrototypeEditor::setProtoDeclarationNode (const X3D::X3DProtoDeclarationNodePtr 
 		getNameBox ()                   .set_sensitive (true);
 		getConvertProtoButton ()        .set_visible (not protoNode -> isExternproto ());
 		getFoldExternProtoBackButton () .set_visible (protoNode -> isExternproto ());
+		getFoldExternProtoBackButton () .set_sensitive (protoNode -> checkLoadState () == X3D::COMPLETE_STATE);
 		getCreateInstanceButton ()      .set_sensitive (true);
 		getUpdateInstancesButton ()     .set_sensitive (true);
 	
