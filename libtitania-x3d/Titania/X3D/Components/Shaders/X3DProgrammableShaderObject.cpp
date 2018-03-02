@@ -56,18 +56,15 @@
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 
-#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../EnvironmentalEffects/X3DFogObject.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DAppearanceNode.h"
 #include "../Shape/X3DMaterialNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
+#include "../Shape/X3DShapeNode.h"
+#include "../Texturing/MultiTexture.h"
 #include "../Texturing/X3DTextureTransformNode.h"
-#include "../Texturing3D/X3DTexture3DNode.h"
 
 #include <Titania/String/to_string.h>
-
-#include "../Shape/X3DShapeNode.h"
 
 namespace titania {
 namespace X3D {
@@ -130,8 +127,8 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_Vertex (-1),
 	   extensionGPUShaderFP64 (false),
 	transformFeedbackVaryings (),
-	             textureUnits (),
-	          numGlobalLights (0)
+	          numGlobalLights (0),
+	                 textures ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
 }
@@ -171,8 +168,6 @@ void
 X3DProgrammableShaderObject::getDefaultUniforms ()
 {
 	const auto program = getProgramId ();
-
-	glUseProgram (program);
 
 	x3d_ClipPlane             .clear ();
 	x3d_LightType             .clear ();
@@ -269,8 +264,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	glUniform1iv (x3d_Texture2D,            texture2D      .size (), texture2D      .data ()); // Set texture to active texture unit 2.
 	glUniform1iv (x3d_CubeMapTexture,       cubeMapTexture .size (), cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
 	glUniform1iv (glGetUniformLocation (program, "x3d_ShadowMap"), shadowMap .size (), shadowMap .data ()); // Set cube map texture to active texture unit 5
-
-	glUseProgram (0);
 }
 
 GLint
@@ -302,6 +295,8 @@ X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::stri
 void
 X3DProgrammableShaderObject::addShaderFields ()
 {
+	textures .clear ();
+
 	for (const auto & field : getUserDefinedFields ())
 	{
 		field -> addInterest (&X3DProgrammableShaderObject::set_field, this, field);
@@ -332,7 +327,35 @@ throw (Error <DISPOSED>)
 {
 	try
 	{
-		getField (name) -> removeInterest (&X3DProgrammableShaderObject::set_field, this);
+		const auto field = getField (name);
+
+		switch (field -> getType ())
+		{
+			case X3DConstants::SFNode:
+			{
+				const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
+	
+				textures .erase (location);
+				break;
+			}
+			case X3DConstants::MFNode:
+			{
+				const auto & mfnode = *static_cast <MFNode*> (field);
+	
+				for (size_t i = 0, size = mfnode .size (); i < size; ++ i)
+				{
+					const auto location = glGetUniformLocation (getProgramId (), (field -> getName () + "[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
+	
+					textures .erase (location);
+				}
+	
+				break;
+			}
+			default:
+				break;
+		}
+
+		field -> removeInterest (&X3DProgrammableShaderObject::set_field, this);
 	}
 	catch (const X3DError &)
 	{ }
@@ -343,8 +366,6 @@ throw (Error <DISPOSED>)
 void
 X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 {
-	glUseProgram (getProgramId ());
-
 	const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
 
 	if (location == -1)
@@ -355,8 +376,6 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		//if (not getProgramId ())
 		//	getBrowser () -> println ("Warning: Couldn't allocate shader.");
 		#endif
-
-		glUseProgram (0);
 		return;
 	}
 
@@ -444,45 +463,18 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFNode:
 		{
-			const auto node = static_cast <const SFNode*> (field);
+			const auto & sfnode  = *static_cast <SFNode*> (field);
+			const auto   texture = x3d_cast <X3DTextureNode*> (sfnode);
 
-			GLint textureUnit = 0;
-			glGetUniformiv (getProgramId (), location, &textureUnit);
+__LOG__ << field -> getName () << " : " << texture << std::endl;
 
-			if (not textureUnit)
+			if (texture and not x3d_cast <MultiTexture*> (sfnode))
 			{
-				if (getBrowser () -> getCombinedTextureUnits () .empty ())
-				{
-					getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.\n");
-					break;
-				}
-				else
-				{
-					textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-					getBrowser () -> getCombinedTextureUnits () .pop ();
-					textureUnits .emplace_back (textureUnit);
-				}
+				textures [location] = std::make_shared <TextureValue> (field -> getName (), texture -> getTarget (), texture -> getTextureId (), -1);
+				break;
 			}
 
-			glActiveTexture (GL_TEXTURE0 + textureUnit);
-
-			const auto texture = x3d_cast <X3DTextureNode*> (*node);
-
-			if (x3d_cast <X3DTexture2DNode*> (texture))
-				glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-			else if (x3d_cast <X3DTexture3DNode*> (texture))
-				glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
-
-			else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
-				glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-
-			else
-				glBindTexture (GL_TEXTURE_2D, 0);
-
-			glUniform1i (location, textureUnit);
-			glActiveTexture (GL_TEXTURE0);
-
+			textures .erase (location);
 			break;
 		}
 		case X3DConstants::SFRotation:
@@ -708,78 +700,26 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::MFNode:
 		{
-			// Push back texture units
+			const auto & mfnode = *static_cast <MFNode*> (field);
+
+			for (size_t i = 0, size = mfnode .size (); i < size; ++ i)
 			{
-				std::vector <size_t> textureUnits;
+				const auto location = glGetUniformLocation (getProgramId (), (field -> getName () + "[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
 
-				for (size_t i = 0;; ++ i)
-				{
-					GLint textureUnit = 0;
-
-					const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
-
-					if (location not_eq -1)
-					{
-						glGetUniformiv (getProgramId (), location, &textureUnit);
-
-						if (textureUnit)
-							textureUnits .emplace_back (textureUnit);
-					}
-					else
-						break;
-				}
-
-				for (const auto & textureUnit : textureUnits)
-					getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
-			}
-
-			// Set uniform variable;
-
-			const auto array = static_cast <const MFNode*> (field);
-
-			if (array -> empty ())
-				break;
-
-			std::vector <GLint> vector;
-			vector .reserve (array -> size ());
-
-			for (const auto & node : *array)
-			{
-				GLint textureUnit = 0;
-
-				if (getBrowser () -> getCombinedTextureUnits () .empty ())
-				{
-					getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", field -> getName (), "' available.");
+				if (location == -1)
 					break;
-				}
-				else
+
+				const auto & sfnode  = mfnode [i];
+				const auto   texture = x3d_cast <X3DTextureNode*> (sfnode);
+	
+				if (texture and not x3d_cast <MultiTexture*> (sfnode))
 				{
-					textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-					getBrowser () -> getCombinedTextureUnits () .pop ();
-					textureUnits .emplace_back (textureUnit);
+					textures [location] = std::make_shared <TextureValue> (field -> getName (), texture -> getTarget (), texture -> getTextureId (), -1);
+					continue;
 				}
 
-				glActiveTexture (GL_TEXTURE0 + textureUnit);
-
-				const auto texture = x3d_cast <X3DTextureNode*> (node);
-
-				if (x3d_cast <X3DTexture2DNode*> (texture))
-					glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-				else if (x3d_cast <X3DTexture3DNode*> (texture))
-					glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
-
-				else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
-					glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-
-				else
-					glBindTexture (GL_TEXTURE_2D, 0);
-
-				vector .emplace_back (textureUnit);
+				textures .erase (location);
 			}
-
-			glUniform1iv (location, vector .size (), vector .data ());
-			glActiveTexture (GL_TEXTURE0);
 
 			break;
 		}
@@ -924,52 +864,23 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			break;
 		}
 	}
-
-	glUseProgram (0);
 }
 
 void
-X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint textureId)
+X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, const GLenum textureTarget, const GLuint textureId)
 {
-	glUseProgram (getProgramId ());
-
 	const GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
 
 	if (location not_eq -1)
 	{
-		GLint textureUnit = 0;
-		glGetUniformiv (getProgramId (), location, &textureUnit);
-
-		if (not textureUnit)
-		{
-			if (getBrowser () -> getCombinedTextureUnits () .empty ())
-			{
-				getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", name, "' available.");
-				return;
-			}
-			else
-			{
-				textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-				getBrowser () -> getCombinedTextureUnits () .pop ();
-				textureUnits .emplace_back (textureUnit);
-			}
-		}
-
-		glActiveTexture (GL_TEXTURE0 + textureUnit);
-		glBindTexture (GL_TEXTURE_BUFFER, textureId);
-
-		glUniform1i (location, textureUnit);
-		glActiveTexture (GL_TEXTURE0);
-
+		textures [location] = std::make_shared <TextureValue> (name, textureTarget, textureId, -1);
 	}
 	else
 	{
 		#ifdef TITANIA_DEBUG
-		//getBrowser () -> println ("Warning: Uniform variable '", name, "' not found.");
+		getBrowser () -> getConsole () -> error ("Error: Uniform variable '", name, "' not found.");
 		#endif
 	}
-
-	glUseProgram (0);
 }
 
 /*
@@ -1112,7 +1023,6 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 
 void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
-throw (std::domain_error)
 {
 	static const auto textureType = std::vector <int32_t> ({ 0 });
 
@@ -1205,6 +1115,48 @@ X3DProgrammableShaderObject::setClipPlanes (const X3DBrowser* const browser, con
 
 	if (numClipPlanes < browser -> getMaxClipPlanes ())
 		glUniform4f (x3d_ClipPlane [numClipPlanes], 88, 51, 68, 33);
+}
+
+void
+X3DProgrammableShaderObject::enable ()
+{
+	for (const auto & pair : textures)
+	{
+		const auto location      = pair .first;
+		const auto object        = pair .second;
+		const auto textureTarget = object -> textureTarget;
+		const auto textureId     = object -> textureId;
+
+		if (getBrowser () -> getCombinedTextureUnits () .empty ())
+		{
+			getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", object -> name, "' available.");
+			continue;
+		}
+	
+		const auto textureUnit = object -> textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+		getBrowser () -> getCombinedTextureUnits () .pop ();
+
+		glUniform1i (location, textureUnit);
+		glActiveTexture (GL_TEXTURE0 + textureUnit);
+		glBindTexture (textureTarget, textureId);
+	}
+
+	glActiveTexture (GL_TEXTURE0);
+}
+
+void
+X3DProgrammableShaderObject::disable ()
+{
+	for (const auto & pair : textures)
+	{
+		const auto object      = pair .second;
+		const auto textureUnit = object -> textureUnit;
+
+		if (textureUnit not_eq -1)
+			getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
+
+		object -> textureUnit = -1;
+	}
 }
 
 void
@@ -1439,10 +1391,7 @@ X3DProgrammableShaderObject::setMatrices (const Matrix3f & normalMatrix, const M
 
 void
 X3DProgrammableShaderObject::dispose ()
-{
-	for (const auto & textureUnit : textureUnits)
-		getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
-}
+{ }
 
 } // X3D
 } // titania

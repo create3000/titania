@@ -148,11 +148,28 @@ public:
 	void
 	requestImmediateLoad () final override;
 
+	virtual
+	void
+	enable () final override;
+
+	virtual
+	void
+	disable () final override;
+
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () final override;
+
+
+protected:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_field (X3DFieldDefinition* const field) final override;
 
 
 private:

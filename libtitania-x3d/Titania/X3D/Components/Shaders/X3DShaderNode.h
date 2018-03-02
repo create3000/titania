@@ -121,8 +121,7 @@ public:
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context)
-	throw (std::domain_error) = 0;
+	setLocalUniforms (ShapeContainer* const context) = 0;
 
 	virtual
 	void

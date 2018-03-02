@@ -142,6 +142,11 @@ public:
 	///  @name Member access
 
 	virtual
+	GLenum
+	getTarget () const
+	{ return GL_NONE; }
+
+	virtual
 	bool
 	isTransparent () const final override;
 

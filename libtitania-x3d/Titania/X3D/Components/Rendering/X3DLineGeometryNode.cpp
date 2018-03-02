@@ -122,7 +122,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		context -> setGeometryType  (getGeometryType ());
 		context -> setColorMaterial (not getColors () .empty ());
 	
-		//shaderNode -> enable ();
+		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 	
 		// Setup vertex attributes.
@@ -180,7 +180,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		context -> setGeometryType  (getGeometryType ());
 		context -> setColorMaterial (not getColors () .empty ());
 	
-		//shaderNode -> enable ();
+		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 	
 		// Setup vertex attributes.

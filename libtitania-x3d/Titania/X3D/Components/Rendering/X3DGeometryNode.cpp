@@ -956,7 +956,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		{
 			// Enable shader
 
-			//shaderNode -> enable ();
+			shaderNode -> enable ();
 			shaderNode -> setLocalUniforms (context);
 
 			// Enable vertex attribute nodes
@@ -1074,7 +1074,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 		// Setup shader
 
-		//shaderNode -> enable ();
+		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 
 		// Enable vertex attribute nodes
@@ -1162,6 +1162,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		shaderNode -> disable ();
 
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
+		shaderNode -> disable ();
 	}
 	catch (const std::exception & error)
 	{

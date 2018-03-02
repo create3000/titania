@@ -123,6 +123,11 @@ public:
 	///  @name Member access
 
 	virtual
+	GLenum
+	getTarget () const final override
+	{ return GL_TEXTURE_2D; }
+
+	virtual
 	bool
 	isTransparent () const override
 	{ return transparent; }

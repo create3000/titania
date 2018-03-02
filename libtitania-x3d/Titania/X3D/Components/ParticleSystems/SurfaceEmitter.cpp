@@ -163,9 +163,11 @@ SurfaceEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 SurfaceEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 {
-	shader -> setTextureBuffer ("normalMap",      normalMapId);
-	shader -> setTextureBuffer ("surfaceMap",     surfaceMapId);
-	shader -> setTextureBuffer ("surfaceAreaMap", surfaceAreaMapId);
+	shader -> enable ();
+	shader -> setTextureBuffer ("normalMap",      GL_TEXTURE_BUFFER, normalMapId);
+	shader -> setTextureBuffer ("surfaceMap",     GL_TEXTURE_BUFFER, surfaceMapId);
+	shader -> setTextureBuffer ("surfaceAreaMap", GL_TEXTURE_BUFFER, surfaceAreaMapId);
+	shader -> disable ();
 }
 
 void

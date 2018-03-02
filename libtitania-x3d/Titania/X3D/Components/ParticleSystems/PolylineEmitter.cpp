@@ -175,8 +175,10 @@ PolylineEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 PolylineEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 {
-	shader -> setTextureBuffer ("polylineMap", polylineMapId);
-	shader -> setTextureBuffer ("lengthMap",   lengthMapId);
+	shader -> enable ();
+	shader -> setTextureBuffer ("polylineMap", GL_TEXTURE_BUFFER, polylineMapId);
+	shader -> setTextureBuffer ("lengthMap",   GL_TEXTURE_BUFFER, lengthMapId);
+	shader -> disable ();
 }
 
 void

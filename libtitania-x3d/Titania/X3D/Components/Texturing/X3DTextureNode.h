@@ -73,16 +73,20 @@ public:
 	///  @name Member access
 
 	virtual
+	GLenum
+	getTarget () const = 0;
+
+	GLuint
+	getTextureId () const
+	{ return textureId; }
+
+	virtual
 	bool
 	isTransparent () const = 0;
 
 	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const = 0;
-
-	GLuint
-	getTextureId () const
-	{ return textureId; }
 
 	///  @name Operations
 

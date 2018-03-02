@@ -137,6 +137,10 @@ public:
 	{ return fields .components; }
 
 	///  @name Member access
+	virtual
+	GLenum
+	getTarget () const final override
+	{ return GL_TEXTURE_3D; }
 
 	virtual
 	bool

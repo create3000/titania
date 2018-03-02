@@ -82,6 +82,11 @@ public:
 	///  @name Member access
 
 	virtual
+	GLenum
+	getTarget () const final override
+	{ return GL_TEXTURE_CUBE_MAP; }
+
+	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const = 0;
 

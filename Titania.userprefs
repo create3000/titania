@@ -1,21 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Utility/MemberValue.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/NativeArrayReference.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DField.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Arguments.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Browser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DField.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp" Line="1" Column="1" />
-      <File FileName="Titania/titania" Line="1" Column="1" />
-      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="188" Column="2" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="132" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="452" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1129" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="82" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTexture.h" Line="147" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

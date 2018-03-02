@@ -1131,6 +1131,7 @@ SoftSystem::draw (ShapeContainer* const context)
 			context -> setGeometryType  (shaderGeometryType);
 			context -> setColorMaterial (colorMaterial);
 
+			shaderNode -> enable ();
 			shaderNode -> setLocalUniforms (context);
 
 			// Setup vertex attributes.

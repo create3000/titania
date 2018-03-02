@@ -112,7 +112,7 @@ public:
 
 	virtual
 	GLuint
-	getProgramId () const final override
+	getProgramId () const
 	{ return programId; }
 
 	///  @name Operations
@@ -149,8 +149,7 @@ public:
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context)
-	throw (std::domain_error) final override;
+	setLocalUniforms (ShapeContainer* const context) final override;
 
 	virtual
 	void
@@ -245,6 +244,15 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+
+protected:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_field (X3DFieldDefinition* const field) final override;
 
 
 private:

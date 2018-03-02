@@ -212,9 +212,11 @@ ComposedShader::set_loaded ()
 		if (valid)
 		{
 			// Initialize uniform variables
-	
+
+			glUseProgram (programId);
 			getDefaultUniforms ();
 			addShaderFields ();
+			glUseProgram (0);
 		}
 
 		// Print info log
@@ -243,14 +245,28 @@ ComposedShader::set_loaded ()
 }
 
 void
+ComposedShader::set_field (X3DFieldDefinition* const field)
+{
+	glUseProgram (programId);
+
+	X3DProgrammableShaderObject::set_field (field);
+
+	glUseProgram (0);
+}
+
+void
 ComposedShader::enable ()
 {
 	glUseProgram (programId);
+
+	X3DProgrammableShaderObject::enable ();
 }
 
 void
 ComposedShader::disable ()
 {
+	X3DProgrammableShaderObject::disable ();
+
 	glUseProgram (0);
 }
 
@@ -269,9 +285,7 @@ ComposedShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 
 void
 ComposedShader::setLocalUniforms (ShapeContainer* const context)
-throw (std::domain_error)
 {
-	glUseProgram (programId);
 	X3DProgrammableShaderObject::setLocalUniforms (context);
 }
 

@@ -208,12 +208,18 @@ void
 ProgramShader::enable ()
 {
 	glBindProgramPipeline (pipelineId);
+
+	for (const auto & programNode : programNodes)
+		programNode -> enable ();
 }
 
 void
 ProgramShader::disable ()
 {
 	glBindProgramPipeline (0);
+
+	for (const auto & programNode : programNodes)
+		programNode -> disable ();
 }
 
 void
@@ -236,7 +242,6 @@ ProgramShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 
 void
 ProgramShader::setLocalUniforms (ShapeContainer* const context)
-throw (std::domain_error)
 {
 	glBindProgramPipeline (pipelineId);
 

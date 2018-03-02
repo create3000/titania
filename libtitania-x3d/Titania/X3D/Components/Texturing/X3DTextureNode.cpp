@@ -93,7 +93,7 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 
 	if (std::max (width, height) < getBrowser () -> getMinTextureSize () and not haveTextureProperties)
 	{
-		glTexParameteri (target, GL_GENERATE_MIPMAP, false);
+		glTexParameteri (target, GL_GENERATE_MIPMAP,    false);
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}

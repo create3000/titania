@@ -143,8 +143,7 @@ public:
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context)
-	throw (std::domain_error) final override
+	setLocalUniforms (ShapeContainer* const context) final override
 	{ }
 
 	virtual

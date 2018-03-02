@@ -216,8 +216,10 @@ ShaderProgram::requestImmediateLoad ()
 					Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, source .uris);
 		
 					// Initialize uniform variables
+					glUseProgram (programId);
 					getDefaultUniforms ();
 					addShaderFields ();
+					glUseProgram (0);
 	
 					glDeleteShader (shaderId);
 
@@ -238,6 +240,18 @@ ShaderProgram::requestImmediateLoad ()
 }
 
 void
+ShaderProgram::enable ()
+{
+	X3DProgrammableShaderObject::enable ();
+}
+
+void
+ShaderProgram::disable ()
+{
+	X3DProgrammableShaderObject::disable ();
+}
+
+void
 ShaderProgram::set_url ()
 {
 	buffer .addEvent ();
@@ -249,6 +263,16 @@ ShaderProgram::set_buffer ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
+}
+
+void
+ShaderProgram::set_field (X3DFieldDefinition* const field)
+{
+	glUseProgram (programId);
+
+	X3DProgrammableShaderObject::set_field (field);
+
+	glUseProgram (0);
 }
 
 void

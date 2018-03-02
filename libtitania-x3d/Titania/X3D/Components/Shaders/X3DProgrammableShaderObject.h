@@ -293,7 +293,7 @@ public:
 	{ transformFeedbackVaryings = value; }
 
 	void
-	setTextureBuffer (const std::string & name, GLuint textureId);
+	setTextureBuffer (const std::string & name, const GLenum textureTarget, const GLuint textureId);
 
 	///  @name Pipeline
 
@@ -303,11 +303,18 @@ public:
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context)
-	throw (std::domain_error);
+	setLocalUniforms (ShapeContainer* const context);
 
 	void
 	setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes);
+
+	virtual
+	void
+	enable ();
+
+	virtual
+	void
+	disable ();
 
 	virtual
 	void
@@ -406,6 +413,10 @@ protected:
 	void
 	addShaderFields ();
 
+	virtual
+	void
+	set_field (X3DFieldDefinition* const field);
+
 	///  @name Destructions
 
 	virtual
@@ -425,8 +436,22 @@ private:
 	void
 	set_shading (const ShadingType & shading);
 
-	void
-	set_field (X3DFieldDefinition* const field);
+	///  @name Member types
+
+	struct TextureValue
+	{
+		TextureValue (const std::string & name, const GLenum textureTarget, const GLuint textureId, const int32_t textureUnit) :
+			         name (name),
+			textureTarget (textureTarget),
+			    textureId (textureId),
+			  textureUnit (textureUnit)
+		{ }
+
+		std::string name;
+		GLenum      textureTarget;
+		GLuint      textureId;
+		int32_t     textureUnit;
+	};
 
 	///  @name Members
 
@@ -496,8 +521,9 @@ private:
 
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
-	std::vector <size_t>      textureUnits;
 	size_t                    numGlobalLights;
+
+	std::map <GLint, std::shared_ptr <TextureValue>> textures;
 
 };
 

@@ -1253,13 +1253,15 @@ ParticleSystem::set_transform_shader_texture_buffers ()
 {
 	// Color ramp
 
-	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
-	transformShader -> setTextureBuffer ("colorKeyMap",  colorRampMapId [COLOR_RAMP_KEYS]);
-	transformShader -> setTextureBuffer ("colorRampMap", colorRampMapId [COLOR_RAMP_VALUES]);
+	transformShader -> enable ();
+	transformShader -> setTextureBuffer ("particleMap",  GL_TEXTURE_BUFFER, particleMapId);
+	transformShader -> setTextureBuffer ("colorKeyMap",  GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
+	transformShader -> setTextureBuffer ("colorRampMap", GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
 
-	transformShader -> setTextureBuffer ("boundedNormalMap",  boundedNormalMapId);
-	transformShader -> setTextureBuffer ("boundedSurfaceMap", boundedSurfaceMapId);
-	transformShader -> setTextureBuffer ("boundedVolumeMap",  boundedVolumeMapId);
+	transformShader -> setTextureBuffer ("boundedNormalMap",  GL_TEXTURE_BUFFER, boundedNormalMapId);
+	transformShader -> setTextureBuffer ("boundedSurfaceMap", GL_TEXTURE_BUFFER, boundedSurfaceMapId);
+	transformShader -> setTextureBuffer ("boundedVolumeMap",  GL_TEXTURE_BUFFER, boundedVolumeMapId);
+	transformShader -> disable ();
 
 	// Emitter
 
@@ -1308,8 +1310,10 @@ ParticleSystem::set_geometry_shader ()
 void
 ParticleSystem::set_geometry_shader_texture_buffers ()
 {
-	geometryShader -> setTextureBuffer ("texCoordKeyMap",  texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
-	geometryShader -> setTextureBuffer ("texCoordRampMap", texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
+	geometryShader -> enable ();
+	geometryShader -> setTextureBuffer ("texCoordKeyMap",  GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
+	geometryShader -> setTextureBuffer ("texCoordRampMap", GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
+	geometryShader -> disable ();
 }
 
 bool
@@ -1709,6 +1713,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 				// Enable shader.
 			
+				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
 
 				// Enable vertex attribute nodes.
@@ -1726,6 +1731,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 				
 				shaderNode -> disableColorAttrib ();
 				shaderNode -> disableVertexAttrib ();
+				shaderNode -> disable ();
 
 				glBindBuffer (GL_ARRAY_BUFFER, 0);
 				break;
@@ -1779,6 +1785,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 				// Enable shader.
 			
+				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
 		
 				// Enable vertex attribute nodes
@@ -1798,6 +1805,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 				shaderNode -> disableColorAttrib ();
 				shaderNode -> disableTexCoordAttrib ();
 				shaderNode -> disableVertexAttrib ();
+				shaderNode -> disable ();
 
 				glBindBuffer (GL_ARRAY_BUFFER, 0);
 				break;
