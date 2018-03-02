@@ -185,7 +185,7 @@ X3DBrowser::set_loaded (const bool loaded)
 	                      '\n');
 
 	if (not loaded)
-		getConsole () -> warn ("*** Warning: Cobweb compatibility mode not fully possible!");
+		getConsole () -> warn ("*** Warning: X_ITE compatibility mode not fully possible!");
 }
 
 void
