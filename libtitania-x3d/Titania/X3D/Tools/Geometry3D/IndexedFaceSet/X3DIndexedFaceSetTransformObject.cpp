@@ -169,7 +169,6 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (&X3DIndexedFaceSetTransformObject::set_transform_active, this);
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (isActive ());
 		transformTool -> getField <SFTime> ("touchTime") .addInterest (touchTime ());
-		transformTool -> setField <SFBool> ("grouping", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (&X3DIndexedFaceSetTransformObject::set_selection, this);
 
@@ -187,6 +186,9 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	// Update tranform tool if selection changes.
 
 	if (active)
+		return;
+
+	if (transformTool -> getField <SFBool> ("grouped"))
 		return;
 
 	Vector3d   center, size;
@@ -426,7 +428,7 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	{
 		// Transform tool was moved:
 
-		if (not active)
+		if (transformTool -> getField <SFBool> ("grouped") ? false : not active)
 			return;
 
 		// Prevent accidentially move.

@@ -250,15 +250,14 @@ public:
 	color () const
 	{ return *fields .color; }
 
-	/// XXX: PRIVATE
 	/// If true, this node is part of a tranformation group.
 	SFBool &
-	transformationGroup ()
-	{ return *fields .transformationGroup; }
+	grouped ()
+	{ return *fields .grouped; }
 
 	const SFBool &
-	transformationGroup () const
-	{ return *fields .transformationGroup; }
+	grouped () const
+	{ return *fields .grouped; }
 
 	/// If true, if the user has actived (clicked) on of the handles.
 	SFBool &
@@ -368,7 +367,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_transformationGroup ();
+	set_grouped ();
 
 	void
 	set_tools ();
@@ -395,7 +394,6 @@ private:
 		Fields ();
 
 		SFBool* const grouping;
-		SFBool* const transformationGroup;
 		MFString* const tools;
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;
@@ -410,6 +408,7 @@ private:
 		SFColor* const color;
 		SFBool* const displayBBox;
 		SFBool* const displayCenter;
+		SFBool* const grouped;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 	};

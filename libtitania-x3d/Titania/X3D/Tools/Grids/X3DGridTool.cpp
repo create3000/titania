@@ -630,7 +630,7 @@ X3DGridTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master
 	if (not master -> grouping ())
 		return;
 
-	if (not master -> transformationGroup ())
+	if (not master -> grouped ())
 		return;
 
 	const auto groupMatrix      = master -> getGroupMatrix () * master -> getModelMatrix ();
@@ -646,7 +646,7 @@ X3DGridTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master
 			if (not tool -> grouping ())
 				continue;
 
-			if (not tool -> transformationGroup ())
+			if (not tool -> grouped ())
 				continue;
 
 			tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());

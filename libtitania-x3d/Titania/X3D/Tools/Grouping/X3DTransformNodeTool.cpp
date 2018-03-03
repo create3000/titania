@@ -68,24 +68,24 @@ namespace titania {
 namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
-	           grouping (new SFBool (true)),
-	transformationGroup (new SFBool (false)),
-	              tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
-	         scaleXAxis (new SFBool (true)),
-	         scaleYAxis (new SFBool (true)),
-	         scaleZAxis (new SFBool (true)),
-	     scaleXBackAxis (new SFBool (true)),
-	     scaleYBackAxis (new SFBool (true)),
-	     scaleZBackAxis (new SFBool (true)),
-	       scaleUniform (new SFBool (true)),
-	      scaleFromEdge (new SFBool (true)),
-	    scaleFromCenter (new SFBool (true)),
-	      connectedAxes (new MFString ()),
-	              color (new SFColor (ToolColors::GREEN)),
-	        displayBBox (new SFBool (true)),
-	      displayCenter (new SFBool (true)),
-	           isActive (new SFBool ()),
-	          touchTime (new SFTime ())
+	       grouping (new SFBool (true)),
+	          tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	     scaleXAxis (new SFBool (true)),
+	     scaleYAxis (new SFBool (true)),
+	     scaleZAxis (new SFBool (true)),
+	 scaleXBackAxis (new SFBool (true)),
+	 scaleYBackAxis (new SFBool (true)),
+	 scaleZBackAxis (new SFBool (true)),
+	   scaleUniform (new SFBool (true)),
+	  scaleFromEdge (new SFBool (true)),
+	scaleFromCenter (new SFBool (true)),
+	  connectedAxes (new MFString ()),
+	          color (new SFColor (ToolColors::GREEN)),
+	    displayBBox (new SFBool (true)),
+	  displayCenter (new SFBool (true)),
+	        grouped (new SFBool (false)),
+	       isActive (new SFBool ()),
+	      touchTime (new SFTime ())
 { }
 
 X3DTransformNodeTool::X3DTransformNodeTool () :
@@ -99,24 +99,24 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
-	addField (inputOutput, "grouping",            grouping ());
-	addField (inputOutput, "tools",               tools ());
-	addField (inputOutput, "scaleXAxis",          scaleXAxis ());
-	addField (inputOutput, "scaleYAxis",          scaleYAxis ());
-	addField (inputOutput, "scaleZAxis",          scaleZAxis ());
-	addField (inputOutput, "scaleXBackAxis",      scaleXBackAxis ());
-	addField (inputOutput, "scaleYBackAxis",      scaleYBackAxis ());
-	addField (inputOutput, "scaleZBackAxis",      scaleZBackAxis ());
-	addField (inputOutput, "scaleUniform",        scaleUniform ());
-	addField (inputOutput, "scaleFromEdge",       scaleFromEdge ());
-	addField (inputOutput, "scaleFromCenter",     scaleFromCenter ());
-	addField (inputOutput, "connectedAxes",       connectedAxes ());
-	addField (inputOutput, "color",               color ());
-	addField (inputOutput, "displayBBox",         displayBBox ());
-	addField (inputOutput, "displayCenter",       displayCenter ());
-	addField (outputOnly,  "transformationGroup", transformationGroup ());
-	addField (outputOnly,  "isActive",            isActive ());
-	addField (outputOnly,  "touchTime",           touchTime ());
+	addField (inputOutput, "grouping",        grouping ());
+	addField (inputOutput, "tools",           tools ());
+	addField (inputOutput, "scaleXAxis",      scaleXAxis ());
+	addField (inputOutput, "scaleYAxis",      scaleYAxis ());
+	addField (inputOutput, "scaleZAxis",      scaleZAxis ());
+	addField (inputOutput, "scaleXBackAxis",  scaleXBackAxis ());
+	addField (inputOutput, "scaleYBackAxis",  scaleYBackAxis ());
+	addField (inputOutput, "scaleZBackAxis",  scaleZBackAxis ());
+	addField (inputOutput, "scaleUniform",    scaleUniform ());
+	addField (inputOutput, "scaleFromEdge",   scaleFromEdge ());
+	addField (inputOutput, "scaleFromCenter", scaleFromCenter ());
+	addField (inputOutput, "connectedAxes",   connectedAxes ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "displayBBox",     displayBBox ());
+	addField (inputOutput, "displayCenter",   displayCenter ());
+	addField (outputOnly,  "grouped",         grouped ());
+	addField (outputOnly,  "isActive",        isActive ());
+	addField (outputOnly,  "touchTime",       touchTime ());
 
 	setCameraObject (true);
 }
@@ -146,9 +146,9 @@ X3DTransformNodeTool::initialize ()
 	{
 		X3DChildNodeTool::initialize ();
 
-		transformationGroup () .addInterest (&X3DTransformNodeTool::set_transformationGroup, this);
-		tools ()               .addInterest (&X3DTransformNodeTool::set_tools,               this);
-		isActive ()            .addInterest (&X3DTransformNodeTool::set_active,              this);
+		grouped ()  .addInterest (&X3DTransformNodeTool::set_grouped, this);
+		tools ()    .addInterest (&X3DTransformNodeTool::set_tools,   this);
+		isActive () .addInterest (&X3DTransformNodeTool::set_active,  this);
 	
 		getBrowser () -> addTransformTool (this);
 	
@@ -295,7 +295,7 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 
 		//
 
-		auto matrix = (transformationGroup () ? groupMatrix : getMatrix ()) * relativeMatrix;
+		auto matrix = (grouped () ? groupMatrix : getMatrix ()) * relativeMatrix;
 
 		matrix .get (t, r, s, so);
 
@@ -348,7 +348,7 @@ X3DTransformNodeTool::endUndo (const UndoStepPtr & undoStep)
 }
 
 void
-X3DTransformNodeTool::set_transformationGroup ()
+X3DTransformNodeTool::set_grouped ()
 {
 	groupMatrix = getMatrix ();
 }
@@ -383,7 +383,7 @@ X3DTransformNodeTool::set_active ()
 	// Activate transformation group.
 
 	for (const auto & tool : getBrowser () -> getTransformTools ())
-		tool -> transformationGroup () = isActive ();
+		tool -> grouped () = isActive ();
 
 	if (isActive ())
 	{
@@ -457,7 +457,7 @@ X3DTransformNodeTool::eventsProcessed ()
 		if (not grouping ())
 			return;
 
-		if (not transformationGroup ())
+		if (not grouped ())
 			return;
 
 		const auto differenceMatrix = inverse (groupMatrix * modelMatrix) * getMatrix () * modelMatrix;
@@ -472,7 +472,7 @@ X3DTransformNodeTool::eventsProcessed ()
 				if (not tool -> grouping ())
 					continue;
 
-				if (not tool -> transformationGroup ())
+				if (not tool -> grouped ())
 					continue;
 
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
