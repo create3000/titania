@@ -736,9 +736,12 @@ template <class ValueType>
 void
 X3DNativeArrayField <ValueType>::resize (const size_type count, const value_type & value)
 {
-	get () .resize (count, value);
+	if (count not_eq get () .size ())
+	{
+		get () .resize (count, value);
 
-	addEvent ();
+		addEvent ();
+	}
 }
 
 template <class ValueType>

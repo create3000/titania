@@ -867,15 +867,17 @@ X3DArrayField <ValueType>::resize (const size_type count, const ValueType & valu
 			field = new ValueType (value);
 			addChild (field);
 		}
+	
+		addEvent ();
 	}
 	else if (count < currentSize)
 	{
 		removeChildren (get () .begin () + count, get () .end ());
 
 		get () .resize (count);
+	
+		addEvent ();
 	}
-
-	addEvent ();
 }
 
 template <class ValueType>

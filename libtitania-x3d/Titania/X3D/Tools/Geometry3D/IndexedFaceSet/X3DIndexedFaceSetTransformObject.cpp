@@ -169,6 +169,7 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (&X3DIndexedFaceSetTransformObject::set_transform_active, this);
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (isActive ());
 		transformTool -> getField <SFTime> ("touchTime") .addInterest (touchTime ());
+		transformTool -> setField <SFBool> ("grouping", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (&X3DIndexedFaceSetTransformObject::set_selection, this);
 
@@ -183,6 +184,8 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
+	// Update tranform tool if selection changes.
+
 	if (active)
 		return;
 
@@ -226,14 +229,20 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = orientation;
 
+	// Reset transformTool matrix.
+
 	transformTool -> translation ()      = Vector3f ();
 	transformTool -> rotation ()         = Rotation4f ();
 	transformTool -> scale ()            = Vector3f (1, 1, 1);
 	transformTool -> scaleOrientation () = Rotation4f ();
 	transformTool -> center ()           = center;
 
+	// Update selectionTransform bbox.
+
 	selectionTransform -> bboxCenter () = transformTool -> bboxCenter () = center;
 	selectionTransform -> bboxSize ()   = transformTool -> bboxSize ()   = size;
+
+	// Remember axisRotation.
 
 	axisRotation = Matrix4d (orientation);
 }
@@ -415,9 +424,11 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 {
 	try
 	{
+		// Transform tool was moved:
+
 		if (not active)
 			return;
-	
+
 		// Prevent accidentially move.
 		if (events ++ < EVENTS)
 			return;

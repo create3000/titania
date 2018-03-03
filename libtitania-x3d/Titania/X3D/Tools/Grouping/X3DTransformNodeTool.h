@@ -250,6 +250,7 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	/// XXX: PRIVATE
 	/// If true, this node is part of a tranformation group.
 	SFBool &
 	transformationGroup ()
