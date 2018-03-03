@@ -235,8 +235,8 @@ function eventsProcessed ()
 	{
 		for (var i = 0, length = position .length; i < length; ++ i)
 		{
-			p .push (position [i]);
 			c .push (color [i]);
+			p .push (position [i]);
 		}
 	
 		if (position [0] > 0)
@@ -261,7 +261,7 @@ function eventsProcessed ()
 
 	// color
 
-	for (var i = 0, length = p .length; i < length; ++ i)
+	for (var i = 0, length = c .length; i < length; ++ i)
 	{
 		geometry .color .color [i * 2]     = c [i];
 		geometry .color .color [i * 2 + 1] = c [i];
@@ -424,10 +424,10 @@ function set_values (p, c)
 		whichChoice = length - 1;
 
 	set_enableFirst (enableFirst);
-	inputWhichChoice (whichChoice);
+	set_inputWhichChoice (whichChoice);
 }
 
-function inputWhichChoice (value)
+function set_inputWhichChoice (value)
 {
 	whichChoice = value;
 
@@ -438,8 +438,8 @@ function inputWhichChoice (value)
 		arrows [i] .active = false;
 	}
 
-	if (value >= 0 && arrows .length)
-		arrows [Math .min (value, arrows .length - 1)] .active = true;
+	if (whichChoice >= 0 && arrows .length)
+		arrows [Math .min (whichChoice, arrows .length - 1)] .active = true;
 }
 
 function set_active (value)
@@ -590,7 +590,7 @@ function set_removeTime (value, time)
 	}
 
 	updateFields ();
-	inputWhichChoice (whichChoice);
+	set_inputWhichChoice (whichChoice);
 
 	outputRemoveTime = time;
 }

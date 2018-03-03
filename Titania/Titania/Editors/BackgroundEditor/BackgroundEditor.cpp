@@ -171,6 +171,7 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 	getBackgroundBox ()          .set_sensitive (inScene);
 	
 	nodeName .setNode (backgroundNode);
+
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
 	skyAngle     .setNodes (nodes);

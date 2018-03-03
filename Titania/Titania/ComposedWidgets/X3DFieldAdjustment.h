@@ -154,6 +154,10 @@ private:
 	
 	template <class ValueType>
 	int32_t
+	get_index (X3D::X3DNativeArrayField <ValueType> & field) const;
+	
+	template <class ValueType>
+	int32_t
 	get_index (X3D::X3DArrayField <ValueType> & field) const;
 
 	template <class ValueType>
@@ -367,6 +371,17 @@ X3DFieldAdjustment <Type>::set_buffer ()
 		widget .set_visible (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+template <class ValueType>
+int32_t
+X3DFieldAdjustment <Type>::get_index (X3D::X3DNativeArrayField <ValueType> & field) const
+{
+	if (field .empty ())
+		return -1;
+
+	return std::min <int32_t> (index, field .size () - 1);
 }
 
 template <class Type>
