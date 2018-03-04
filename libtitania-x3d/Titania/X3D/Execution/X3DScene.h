@@ -299,11 +299,7 @@ public:
 
 	virtual
 	MFNode
-	import (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	importScene (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Input/Output
 
@@ -359,14 +355,10 @@ protected:
 	///  @name Import handling
 
 	void
-	importMetaData (const X3DScene* const)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	importMetaData (const X3DScene* const);
 
 	void
-	importExportedNodes (const X3DScene* const)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	importExportedNodes (const X3DScene* const);
 
 
 private:

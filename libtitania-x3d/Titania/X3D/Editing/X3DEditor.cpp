@@ -294,7 +294,7 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 
 		// Imported scene
 
-		const auto importedNodes = executionContext -> import (scene);
+		const auto importedNodes = executionContext -> importScene (scene);
 
 		// Remove nodes undo step
 
@@ -366,7 +366,7 @@ X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3
 	basic::ifilestream text (exportNodes (sourceContext, nodes, "XML", true));
 
 	const auto scene         = destContext -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
-	const auto importedNodes = destContext -> import (scene);
+	const auto importedNodes = destContext -> importScene (scene);
 
 	return importedNodes;
 }

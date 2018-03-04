@@ -124,7 +124,7 @@ FileLoader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene (false);
+	const auto scene = executionContext -> getBrowser () -> createScene (false);
 
 	parseIntoScene (scene, url);
 

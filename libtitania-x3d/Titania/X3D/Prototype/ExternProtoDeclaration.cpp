@@ -100,9 +100,16 @@ throw (Error <INVALID_NAME>,
 		case CLONE:
 		case COPY_OR_CLONE:
 		{
-			executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
+			try
+			{
+				return executionContext -> getExternProtoDeclaration (getName ()) .getValue ();
+			}
+			catch (const X3DError & error)
+			{
+				executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
 
-			return const_cast <ExternProtoDeclaration*> (this);
+				return const_cast <ExternProtoDeclaration*> (this);
+			}
 		}
 		case FLAT_COPY:
 		{

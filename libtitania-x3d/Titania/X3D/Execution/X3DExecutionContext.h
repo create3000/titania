@@ -534,11 +534,7 @@ public:
 
 	virtual
 	MFNode
-	import (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	importScene (X3DExecutionContext* const executionContext);
 
 	///  @name Input/Output
 
@@ -604,29 +600,19 @@ protected:
 	///  @name Import handling
 
 	void
-	importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type);
 
 	void
-	importProtos (const X3DExecutionContext* const executionContext, const CopyType type)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	importProtos (const X3DExecutionContext* const executionContext, const CopyType type);
 
 	void
-	copyRootNodes (const X3DExecutionContext* const executionContext, const CopyType type)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copyRootNodes (const X3DExecutionContext* const executionContext, const CopyType type);
 
 	void
-	copyImportedNodes (const X3DExecutionContext* const executionContext, const CopyType type)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copyImportedNodes (const X3DExecutionContext* const executionContext, const CopyType type);
 
 	void
-	copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type)
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type);
 
 
 private:
@@ -660,34 +646,16 @@ private:
 	///  @name Import handling
 
 	void
-	updateNamedNodes (X3DExecutionContext* const executionContext) const
-	throw (Error <IMPORTED_NODE>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateNamedNodes (X3DExecutionContext* const executionContext) const;
 
 	void
-	updateImportedNodes (X3DExecutionContext* const executionContext) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateImportedNodes (X3DExecutionContext* const executionContext) const;
 
 	void
-	importNodes (const X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	importNodes (const X3DExecutionContext* const);
 
 	void
-	importNamedNodes (const X3DExecutionContext* const)
-	throw (Error <IMPORTED_NODE>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	importNamedNodes (const X3DExecutionContext* const);
 
 	void
 	importRoutes (X3DExecutionContext* const executionContext);

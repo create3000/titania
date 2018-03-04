@@ -1357,12 +1357,15 @@ throw (Error <INVALID_NAME>,
 
 // Import handling
 
+///	 importScene
+///
+///	 throws:
+///      Error <INVALID_NAME>,
+///	   Error <NOT_SUPPORTED>,
+///	   Error <INVALID_OPERATION_TIMING>,
+///	   Error <DISPOSED>
 MFNode
-X3DExecutionContext::import (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DExecutionContext::importScene (X3DExecutionContext* const executionContext)
 {
 	ContextLock lock (getBrowser ());
 
@@ -1384,49 +1387,46 @@ throw (Error <INVALID_NAME>,
 
 void
 X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionContext) const
-throw (Error <IMPORTED_NODE>,
-       Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	// Rename nodes that the name is unique in both contexts.
 
 	for (const auto & pair : NamedNodeIndex (executionContext -> getNamedNodes ()))
 	{
-		const auto & name       = pair .first;
-		const auto & namedNode  = pair .second;
-		const auto   uniqueName = getVeryUniqueName (executionContext, name);
-
-		executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
+		try
+		{
+			const auto & name       = pair .first;
+			const auto & namedNode  = pair .second;
+			const auto   uniqueName = getVeryUniqueName (executionContext, name);
+	
+			executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
 	}
 }
 
 void
 X3DExecutionContext::updateImportedNodes (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <URL_UNAVAILABLE>,
-       Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
 	{
-		const auto & importedNode       = pair .second;
-		const auto   uniqueImportedName = getVeryUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
-
-		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
-
-		if (uniqueImportedName not_eq importedNode -> getImportedName ())
-			executionContext -> removeImportedNode (importedNode -> getImportedName ());
+		try
+		{
+			const auto & importedNode       = pair .second;
+			const auto   uniqueImportedName = getVeryUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
+	
+			executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
+	
+			if (uniqueImportedName not_eq importedNode -> getImportedName ())
+				executionContext -> removeImportedNode (importedNode -> getImportedName ());
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
 	}
 }
 
 void
 X3DExecutionContext::importNodes (const X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const MFNode nodes (executionContext -> getParents () .cbegin (), executionContext -> getParents () .cend ());
 
@@ -1447,21 +1447,30 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 void
 X3DExecutionContext::importNamedNodes (const X3DExecutionContext* const executionContext)
-throw (Error <IMPORTED_NODE>,
-       Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	for (const auto & node : executionContext -> getNamedNodes ())
-		updateNamedNode (node .first, node .second -> getLocalNode ());
+	{
+		try
+		{
+			updateNamedNode (node .first, node .second -> getLocalNode ());
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 void
 X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 {
 	for (const auto & route : executionContext -> routes)
-		addRoute (route);
+	{
+		try
+		{
+			addRoute (route);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 
 	executionContext -> routes .clear ();
 }
@@ -1470,26 +1479,34 @@ X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> copy (this, type);
+	{
+		try
+		{
+			externProto -> copy (this, type);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CopyType type)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> copy (this, type);
+	{
+		try
+		{
+			proto -> copy (this, type);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 void
 X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext, const CopyType type)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
@@ -1503,20 +1520,30 @@ throw (Error <INVALID_NAME>,
 
 void
 X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext, const CopyType type)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode .second -> copy (this, type);
+	{
+		try
+		{
+			importedNode .second -> copy (this, type);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 void
 X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> copy (this, type);
+	{
+		try
+		{
+			route -> copy (this, type);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 void

@@ -369,7 +369,7 @@ AnimationEditor::on_new ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create New Animation"));
 	const auto groups           = getSelection <X3D::X3DNode> ({ X3D::X3DConstants::X3DGroupingNode, X3D::X3DConstants::ViewpointGroup });
 	const auto group            = groups .back ();
-	const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
+	const auto executionContext = X3D::MakePtr (group -> getExecutionContext ());
 	const auto name             = executionContext -> getUniqueName (getNewNameEntry () .get_text ());
 	const auto animation        = executionContext -> createNode <X3D::Group> ();
 	const auto timeSensor       = executionContext -> createNode <X3D::TimeSensor> ();
@@ -392,13 +392,14 @@ AnimationEditor::on_new ()
 
 	const auto undoRemoveNode = std::make_shared <X3D::UndoStep> ();
 
-	X3D::X3DEditor::removeNodesFromScene (executionContext, { animation }, true, undoStep);
-
-	getBrowserWindow () -> getSelection () -> removeNodes ({ animation }, undoStep);
+	X3D::X3DEditor::removeNodesFromScene (executionContext, { animation }, true, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
+
+	getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
+	getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
 
 	addUndoStep (undoStep);
 }

@@ -684,12 +684,6 @@
     <None Include="Tests\3rd Party\Wavefront\EmpireState_lp.obj\EmpireState_lp.obj" />
     <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_d.png" />
     <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_lp.max" />
-    <None Include="Tests\3rd Party\SVG\Test.svg" />
-    <None Include="Tests\3rd Party\SVG\tree24.jpg" />
-    <None Include="Tests\3rd Party\SVG\Vase.svg" />
-    <None Include="Tests\3rd Party\SVG\Vase.pdf" />
-    <None Include="Tests\3rd Party\SVG\Gradient.svg" />
-    <None Include="Tests\3rd Party\SVG\Arc.svg" />
     <None Include="Tests\Shape\Gray.x3dv" />
     <None Include="Tests\Rendering\IndexedLineSet-L-System.x3dv" />
     <None Include="Tests\Handles\Torus.json" />
@@ -709,6 +703,13 @@
     <None Include="Tests\ParticleSystems\SoftSystem\PointEmitter-ColorRamp.x3d" />
     <None Include="Tests\ParticleSystems\SoftSystem\ConeEmitter.x3d" />
     <None Include="Tests\Shaders\soap-bubble.shader.h" />
+    <None Include="Tests\3rd Party\SVG\Arc.svg" />
+    <None Include="Tests\3rd Party\SVG\Five_Pointed_Star_Solid.svg" />
+    <None Include="Tests\3rd Party\SVG\Gradient.svg" />
+    <None Include="Tests\3rd Party\SVG\Test.svg" />
+    <None Include="Tests\3rd Party\SVG\tree24.jpg" />
+    <None Include="Tests\3rd Party\SVG\Vase.pdf" />
+    <None Include="Tests\3rd Party\SVG\Vase.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -761,6 +762,7 @@
     <Folder Include="Examples\" />
     <Folder Include="Tests\3rd Party\Autodesk\" />
     <Folder Include="Tests\ParticleSystems\SoftSystem\" />
+    <Folder Include="Tests\3rd Party\SVG\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

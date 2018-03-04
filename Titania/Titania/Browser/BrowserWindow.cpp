@@ -580,11 +580,15 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import_activated ()
 {
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("Import Scene");
 	const auto dialog = addDialog <FileOpenDialog> ("FileOpenDialog", false);
 
 	dialog -> getWindow () .set_title (_ ("Import File ..."));
-
 	dialog -> run ();
+
+	import ({ dialog -> getUrl () }, undoStep);
+
+	addUndoStep (undoStep);
 }
 
 void

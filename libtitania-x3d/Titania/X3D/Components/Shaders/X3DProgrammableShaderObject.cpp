@@ -466,8 +466,6 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			const auto & sfnode  = *static_cast <SFNode*> (field);
 			const auto   texture = x3d_cast <X3DTextureNode*> (sfnode);
 
-__LOG__ << field -> getName () << " : " << texture << std::endl;
-
 			if (texture and not x3d_cast <MultiTexture*> (sfnode))
 			{
 				textures [location] = std::make_shared <TextureValue> (field -> getName (), texture -> getTarget (), texture -> getTextureId (), -1);

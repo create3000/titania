@@ -64,6 +64,7 @@
 #include "../Parser/Wavefront/Parser.h"
 
 #include <Titania/Physics/Constants.h>
+#include <Titania/InputOutput/String.h>
 #include <Titania/OS/find_data_file.h>
 #include <Titania/String/to_string.h>
 
@@ -345,23 +346,10 @@ GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 bool
 GoldenGate::isVRML1 (std::istream & istream)
 {
-	const auto   state     = istream .rdstate ();
-	auto         data      = std::string (16, 0);
-	const size_t data_size = istream .rdbuf () -> sgetn (&data [0], data .size ());
+	static const io::string VRML1_0 ("#VRML V1.0");
+	static const io::string VRML1_1 ("#VRML V1.1");
 
-	// Reset stream.
-
-	for (size_t i = 0; i < data_size; ++ i)
-	{
-		if (not istream .unget ())
-			break;
-	}
-
-	istream .clear (state);
-
-	static const std::regex VRML1 (R"/(^#VRML\s+V1.[01])/");
-
-	return std::regex_search (data, VRML1);
+	return VRML1_0 .lookahead (istream) or VRML1_1 .lookahead (istream);
 }
 
 } // X3D

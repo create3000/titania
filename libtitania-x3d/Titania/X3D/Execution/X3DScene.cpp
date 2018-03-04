@@ -507,12 +507,15 @@ X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string ex
 
 // Import handling
 
+///	 importScene
+///
+///	 throws:
+///      Error <INVALID_NAME>,
+///	   Error <NOT_SUPPORTED>,
+///	   Error <INVALID_OPERATION_TIMING>,
+///	   Error <DISPOSED>
 MFNode
-X3DScene::import (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DScene::importScene (X3DExecutionContext* const executionContext)
 {
 	ContextLock lock (getBrowser ());
 
@@ -526,7 +529,7 @@ throw (Error <INVALID_NAME>,
 	if (scene)
 		updateExportedNodes (scene);
 
-	const auto nodes = X3DExecutionContext::import (executionContext);
+	const auto nodes = X3DExecutionContext::importScene (executionContext);
 
 	if (scene)
 		importExportedNodes (scene);
@@ -536,8 +539,6 @@ throw (Error <INVALID_NAME>,
 
 void
 X3DScene::importMetaData (const X3DScene* const scene)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & metaData : scene -> getMetaDatas ())
 		addMetaData (metaData .first, metaData .second);
@@ -548,23 +549,33 @@ X3DScene::updateExportedNodes (X3DScene* const scene) const
 {
 	for (const auto & pair : ExportedNodeIndex (scene -> getExportedNodes ()))
 	{
-		const auto & exportedNode       = pair .second;
-		const auto   uniqueExportedName = getVeryUniqueExportedName (scene, exportedNode -> getExportedName ());
-
-		scene -> updateExportedNode (uniqueExportedName, exportedNode -> getLocalNode ());
-
-		if (uniqueExportedName not_eq exportedNode -> getExportedName ())
-			scene -> removeExportedNode (exportedNode -> getExportedName ());
+		try
+		{
+			const auto & exportedNode       = pair .second;
+			const auto   uniqueExportedName = getVeryUniqueExportedName (scene, exportedNode -> getExportedName ());
+	
+			scene -> updateExportedNode (uniqueExportedName, exportedNode -> getLocalNode ());
+	
+			if (uniqueExportedName not_eq exportedNode -> getExportedName ())
+				scene -> removeExportedNode (exportedNode -> getExportedName ());
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
 	}
 }
 
 void
 X3DScene::importExportedNodes (const X3DScene* const scene)
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	for (const auto & exportedNode : scene -> getExportedNodes ())
-		exportedNode .second -> copy (this);
+	{
+		try
+		{
+			exportedNode .second -> copy (this);
+		}
+		catch (const Error <DISPOSED> & error)
+		{ }
+	}
 }
 
 // Input/Output

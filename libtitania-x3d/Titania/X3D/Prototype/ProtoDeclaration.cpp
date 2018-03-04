@@ -95,9 +95,16 @@ throw (Error <INVALID_NAME>,
 		case CLONE:
 		case COPY_OR_CLONE:
 		{
-			executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
-
-			return const_cast <ProtoDeclaration*> (this);
+			try
+			{
+				return executionContext -> getProtoDeclaration (getName ()) .getValue ();
+			}
+			catch (const X3DError & error)
+			{
+				executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
+	
+				return const_cast <ProtoDeclaration*> (this);
+			}
 		}
 		case FLAT_COPY:
 			break;
