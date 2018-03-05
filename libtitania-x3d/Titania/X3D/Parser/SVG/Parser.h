@@ -97,7 +97,7 @@ private:
 
 	using Tesselator = math::tessellator <double, size_t>;
 	using Points     = std::vector <X3D::Vector2d>;
-	using Contour    = std::pair <Points, bool>;
+	using Contour    = std::pair <Points, bool>; // Points, closed
 	using Contours   = std::vector <Contour>;
 
 	struct Gradient
@@ -389,8 +389,7 @@ private:
 	X3D::X3DPtrArray <X3D::X3DGroupingNode> groupNodes;
 	X3D::X3DPtr <X3D::OrthoViewpoint>       viewpoint;
 	X3D::X3DPtr <X3D::TextureProperties>    texturePropertiesNode;
-	Vector3d                                translation;
-	Vector3d                                scale;
+	Matrix4d                                viewMatrix;
 
 	std::string whiteSpaceCharacters;
 

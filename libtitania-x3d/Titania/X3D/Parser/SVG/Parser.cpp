@@ -221,8 +221,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	           groupNodes ({ rootTransform }),
 	            viewpoint (scene -> createNode <X3D::OrthoViewpoint> ()),
 	texturePropertiesNode (scene -> createNode <X3D::TextureProperties> ()),
-	          translation (),
-	                scale (1, 1, 1),
+	           viewMatrix (),
 	 whiteSpaceCharacters ()
 {
 	xmlParser -> set_throw_messages (true);
@@ -336,11 +335,12 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	// Create first layer.
 
-	scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], -math::pixel <double> * height / viewBox [3], 1);
-	translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0) * scale;
+	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], -math::pixel <double> * height / viewBox [3], 1);
+	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0) * scale;
 
-	rootTransform -> translation () = translation;
-	rootTransform -> scale ()       = scale;
+	viewMatrix .set (translation, Rotation4d (), scale);
+
+	rootTransform -> setMatrix (viewMatrix);
 
 	// Parse elements.
 
@@ -519,11 +519,7 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 		}
 		else
 		{
-			Matrix4d m;
-
-			m .set (translation, Rotation4d (), scale);
-
-			transformNode -> setMatrix (transformNode -> getMatrix () * m);
+			transformNode -> setMatrix (transformNode -> getMatrix () * viewMatrix);
 		}
 		// Clear.
 
