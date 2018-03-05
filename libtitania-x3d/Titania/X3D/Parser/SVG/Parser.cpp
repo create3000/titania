@@ -517,7 +517,14 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 			layerSet -> layers () .emplace_back (layer);
 			layer -> children ()  .emplace_back (rootTransform);
 		}
+		else
+		{
+			Matrix4d m;
 
+			m .set (translation, Rotation4d (), scale);
+
+			transformNode -> setMatrix (transformNode -> getMatrix () * m);
+		}
 		// Clear.
 
 		rootTransform = nullptr;
@@ -533,9 +540,6 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 		layerSet -> layers () .emplace_back (layer);
 		layer -> children ()  .emplace_back (viewpoint);
 		layer -> children ()  .emplace_back (transformNode);
-
-		transformNode -> translation () = translation;
-		transformNode -> scale ()       = scale;
 	}
 
 	// Get child elements.
