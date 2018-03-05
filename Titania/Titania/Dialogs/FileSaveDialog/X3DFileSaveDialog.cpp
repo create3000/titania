@@ -274,6 +274,8 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 
 	const auto scene = browser -> createX3DFromString (string);
 
+	scene -> setWorldURL (worldURL);
+
 	return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
 }
 
