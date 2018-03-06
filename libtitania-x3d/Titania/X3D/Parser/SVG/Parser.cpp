@@ -1368,38 +1368,6 @@ Parser::paintURL (const basic::uri & url,
 }
 
 void
-Parser::paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
-                       const Gradient & gradient,
-                       const X3D::Box2d & bbox,
-                       const Cairo::RefPtr <Cairo::Context> & context)
-{
-	// Determine gradient transform.
-
-	X3D::Matrix3d m;
-
-	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
-	m .translate (X3D::Vector2d (1, 1));
-	m .scale     (X3D::Vector2d (1, -1));
-	m .mult_left (inverse (bbox .matrix ()));
-	m .mult_left (gradient .gradientTransform);
-
-	const auto gradientTransform = Cairo::Matrix (m [0] [0], m [1] [0], m [0] [1], m [1] [1], m [2] [0], m [2] [1]);
-
-	// Add colors.
-
-	for (const auto & stop : gradient .stops)
-		cairoGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
-
-	// Paint.
-
-	context -> set_matrix (gradientTransform);
-	context -> set_source (cairoGradient);
-	context -> set_identity_matrix ();
-	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
-	context -> fill ();
-}
-
-void
 Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
                                     const X3D::Box2d & bbox,
                                     const Cairo::RefPtr <Cairo::Context> & context)
@@ -1411,20 +1379,6 @@ Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
 	const auto linearGradient = Cairo::LinearGradient::create (gradient .x1, gradient .y1, gradient .x2, gradient .y2);
 
 	paintGradient (linearGradient, gradient, bbox, context);
-}
-
-void
-Parser::gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
-{
-	try
-	{
-		if (not xmlElement)
-			return;
-
-		gradientIndex .at (xmlElement -> get_name ()) (this, xmlElement, gradient);
-	}
-	catch (const std::out_of_range &)
-	{ }
 }
 
 void
@@ -1490,13 +1444,21 @@ Parser::radialGradientElement (xmlpp::Element* const xmlElement, Gradient & grad
 
 	// Attributes
 
-	lengthAttribute    (xmlElement -> get_attribute ("cx"),                gradient .cx);
-	lengthAttribute    (xmlElement -> get_attribute ("cy"),                gradient .cy);
-	lengthAttribute    (xmlElement -> get_attribute ("x2"),                gradient .x2);
-	lengthAttribute    (xmlElement -> get_attribute ("y2"),                gradient .y2);
-	lengthAttribute    (xmlElement -> get_attribute ("r"),                 gradient .r); // default 50%
-	lengthAttribute    (xmlElement -> get_attribute ("fx"),                gradient .fx);
-	lengthAttribute    (xmlElement -> get_attribute ("fy"),                gradient .fy);
+	lengthAttribute (xmlElement -> get_attribute ("cx"), gradient .cx);
+	lengthAttribute (xmlElement -> get_attribute ("cy"), gradient .cy);
+
+	lengthAttribute (xmlElement -> get_attribute ("x2"), gradient .x2);
+	lengthAttribute (xmlElement -> get_attribute ("y2"), gradient .y2);
+
+	if (not lengthAttribute (xmlElement -> get_attribute ("r"),  gradient .r))
+		 gradient .r = gradient .cx;
+
+	if (not lengthAttribute (xmlElement -> get_attribute ("fx"), gradient .fx))
+		 gradient .fx = gradient .cx;
+
+	if (not lengthAttribute (xmlElement -> get_attribute ("fy"), gradient .fy))
+		 gradient .fy =  gradient .cy;
+
 	stringAttribute    (xmlElement -> get_attribute ("gradientUnits"),     gradient .gradientUnits);
 	transformAttribute (xmlElement -> get_attribute ("gradientTransform"), gradient .gradientTransform);
 	stringAttribute    (xmlElement -> get_attribute ("spreadMethod"),      gradient .spreadMethod);
@@ -1527,6 +1489,52 @@ Parser::stopElement (xmlpp::Element* const xmlElement, Gradient & gradient)
 	styleAttributes  (xmlElement, style);
 
 	gradient .stops .emplace (offset, Color4f (style .stopColor .r (), style .stopColor .g (), style .stopColor .b (), style .stopOpacity));
+}
+
+void
+Parser::gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		gradientIndex .at (xmlElement -> get_name ()) (this, xmlElement, gradient);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
+Parser::paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
+                       const Gradient & gradient,
+                       const X3D::Box2d & bbox,
+                       const Cairo::RefPtr <Cairo::Context> & context)
+{
+	// Determine gradient transform.
+
+	X3D::Matrix3d m;
+
+	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
+	m .translate (X3D::Vector2d (1, 1));
+	m .scale     (X3D::Vector2d (1, -1));
+	m .mult_left (inverse (bbox .matrix ()));
+	m .mult_left (gradient .gradientTransform);
+
+	const auto gradientTransform = Cairo::Matrix (m [0] [0], m [0] [1], m [1] [0], m [1] [1], m [2] [0], m [2] [1]);
+
+	// Add colors.
+
+	for (const auto & stop : gradient .stops)
+		cairoGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
+
+	// Paint.
+
+	context -> set_matrix (gradientTransform);
+	context -> set_source (cairoGradient);
+	context -> set_identity_matrix ();
+	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
+	context -> fill ();
 }
 
 void

@@ -262,11 +262,11 @@ bezier::arc_curve (const vector2 <Type> & p0,
 			sweepAngle -= 2 * pi <Type>;
 	}
 
-	if (not sweepFlag and sweepAngle > 0)
-		sweepAngle -= 2 * pi <Type>;
-
-	else if (sweepFlag and sweepAngle < 0)
+	if (sweepFlag and sweepAngle < 0)
 		sweepAngle += 2 * pi <Type>;
+
+	else if (not sweepFlag and sweepAngle > 0)
+		sweepAngle -= 2 * pi <Type>;
 
 	// Interpolate:
 

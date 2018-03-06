@@ -275,18 +275,9 @@ private:
 	          const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
-	paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
-	               const Gradient & gradient,
-	               const X3D::Box2d & bbox,
-	               const Cairo::RefPtr <Cairo::Context> & context);
-
-	void
 	paintLinearGradientElement (xmlpp::Element* const xmlElement,
 	                            const X3D::Box2d & bbox,
 	                            const Cairo::RefPtr <Cairo::Context> & context);
-
-	void
-	gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
 
 	void
 	linearGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
@@ -304,6 +295,15 @@ private:
 	
 	void
 	stopElement (xmlpp::Element* const xmlElement, Gradient & gradient);
+
+	void
+	gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
+
+	void
+	paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
+	               const Gradient & gradient,
+	               const X3D::Box2d & bbox,
+	               const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
 	idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node);
