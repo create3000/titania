@@ -293,14 +293,14 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	double        height = 0;
 	X3D::Vector4d viewBox;
 
+	if (not viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox))
+		viewBox = X3D::Vector4d (0, 0, 100, 100);
+
 	if (not lengthAttribute  (xmlElement -> get_attribute ("width"), width))
-		width = 100;
+		width = viewBox [2];
 
 	if (not lengthAttribute  (xmlElement -> get_attribute ("height"), height))
-		height = 100;
-
-	if (not viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox))
-		viewBox = X3D::Vector4d (0, 0, width, height);
+		height = viewBox [3];
 
 	// Create background.
 
@@ -339,6 +339,9 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0) * scale;
 
 	viewMatrix .set (translation, Rotation4d (), scale);
+
+__LOG__ << viewBox << std::endl;
+__LOG__ << scale << std::endl;
 
 	rootTransform -> setMatrix (viewMatrix);
 
