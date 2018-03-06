@@ -97,8 +97,31 @@ private:
 
 	using Tesselator = math::tessellator <double, size_t>;
 	using Points     = std::vector <X3D::Vector2d>;
-	using Contour    = std::pair <Points, bool>; // Points, closed
-	using Contours   = std::vector <Contour>;
+
+	struct Curve
+	{
+		Curve (Points && points, const bool closed) :
+			points (std::move (points)),
+			closed (closed)
+		{ }
+
+		Points points;
+		bool   closed;
+	};
+
+	using CurvePtr = std::shared_ptr <Curve>;
+
+	struct Contour
+	{
+		Contour (Points && points, const bool closed) :
+			curve (std::make_shared <Curve> (std::move (points), closed))
+		{ }
+
+		CurvePtr curve;
+	};
+
+	using ContourPtr = std::shared_ptr <Contour>;
+	using Contours   = std::vector <ContourPtr>;
 
 	struct Gradient
 	{

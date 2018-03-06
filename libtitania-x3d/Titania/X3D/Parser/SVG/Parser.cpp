@@ -58,7 +58,6 @@
 #include "../../Components/Geometry2D/Disk2D.h"
 #include "../../Components/Geometry2D/Rectangle2D.h"
 #include "../../Components/Geometry2D/Polyline2D.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Layering/Layer.h"
@@ -68,6 +67,7 @@
 #include "../../Components/Networking/Anchor.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Components/Rendering/IndexedTriangleSet.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Shape/Material.h"
@@ -986,7 +986,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 			// Create geometry.
 	
 			const auto shapeNode    = scene -> createNode <X3D::Shape> ();
-			const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
 
 			try
 			{
@@ -1008,10 +1008,9 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometryNode -> coordIndex () .emplace_back (-1);
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 			}
 	
 			transformNode -> children () .emplace_back (shapeNode);
@@ -1117,7 +1116,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 			// Create geometry.
 	
 			const auto shapeNode    = scene -> createNode <X3D::Shape> ();
-			const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto geometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
 
 			try
 			{
@@ -1139,10 +1138,9 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometryNode -> coordIndex () .emplace_back (-1);
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 			}
 
 			transformNode -> children () .emplace_back (shapeNode);
@@ -1205,7 +1203,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	auto bbox = X3D::Box2d ();
 
 	for (const auto & contour : contours)
-		bbox += X3D::Box2d (contour .first .cbegin (), contour .first .cend (), math::iterator_type ());
+		bbox += X3D::Box2d (contour -> curve -> points .cbegin (), contour -> curve -> points .cend (), math::iterator_type ());
 
 	const auto transformNode = getTransform (xmlElement);
 
@@ -1217,7 +1215,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	for (const auto & contour : contours)
 	{
-		for (const auto & point : contour .first)
+		for (const auto & point : contour -> curve -> points)
 			coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 	}
 
@@ -1240,7 +1238,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		{
 			tessellator .begin_contour ();
 
-			for (const auto & point : contour .first)
+			for (const auto & point : contour -> curve -> points)
 			{
 				tessellator .add_vertex (X3D::Vector3d (point .x (), point .y (), 0), index ++);
 			}
@@ -1257,7 +1255,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			// Create geometry.
 	
 			const auto shapeNode     = scene -> createNode <X3D::Shape> ();
-			const auto geometryNode  = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto geometryNode  = scene -> createNode <X3D::IndexedTriangleSet> ();
 
 			try
 			{
@@ -1279,10 +1277,9 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometryNode -> coordIndex () .emplace_back (-1);
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> index () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 			}
 
 			transformNode -> children () .emplace_back (shapeNode);
@@ -1304,14 +1301,14 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 		for (const auto & contour : contours)
 		{
-			if (contour .first .size () > 1)
+			if (contour -> curve -> points .size () > 1)
 			{
 				const auto first = index;
 
-				for (size_t i = 0, size = contour .first .size (); i < size; ++ i)
+				for (size_t i = 0, size = contour -> curve -> points .size (); i < size; ++ i)
 					geometryNode -> coordIndex () .emplace_back (index ++);
 
-				if (contour .second)
+				if (contour -> curve -> closed)
 					geometryNode -> coordIndex () .emplace_back (first);
 
 				geometryNode -> coordIndex () .emplace_back (-1);
@@ -1956,7 +1953,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 				vstream .get ();
 
 				if (not points .empty ())
-					contours .emplace_back (std::move (points), false);
+					contours .emplace_back (std::make_shared <Contour> (std::move (points), false));
 
 				whiteSpaces (vstream);
 	
@@ -2432,7 +2429,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 				vstream .get ();
 
 				if (not points .empty ())
-					contours .emplace_back (std::move (points), true);
+					contours .emplace_back (std::make_shared <Contour> (std::move (points), true));
 
 				commaWhiteSpaces (vstream);
 				continue;
@@ -2445,7 +2442,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	}
 
 	if (not points .empty ())
-		contours .emplace_back (std::move (points), false);
+		contours .emplace_back (std::make_shared <Contour> (std::move (points), false));
 
 	return true;
 }
