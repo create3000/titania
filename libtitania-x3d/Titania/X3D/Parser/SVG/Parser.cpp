@@ -2433,7 +2433,12 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 				vstream .get ();
 
 				if (not points .empty ())
+				{
+					ax = points .front () .x ();
+					ay = points .front () .y ();
+
 					contours .emplace_back (std::make_shared <Contour> (std::move (points), true));
+				}
 
 				commaWhiteSpaces (vstream);
 				continue;
