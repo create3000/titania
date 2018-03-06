@@ -710,6 +710,7 @@
     <None Include="Tests\3rd Party\SVG\tree24.jpg" />
     <None Include="Tests\3rd Party\SVG\Vase.pdf" />
     <None Include="Tests\3rd Party\SVG\Vase.svg" />
+    <None Include="Tests\3rd Party\SVG\Circles.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

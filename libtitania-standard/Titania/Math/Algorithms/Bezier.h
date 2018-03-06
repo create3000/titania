@@ -166,6 +166,7 @@ bezier::arc_curve (const vector2 <Type> & p0,
                    const Type & tolerance,
                    Container & points)
 {
+	// https://ericeastwood.com/blog/25/curves-and-arcs-quadratic-cubic-elliptical-svg-implementations
 	// See https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes.
 
 	// If the endpoints are identical, then this is equivalent to omitting the elliptical arc segment entirely.
@@ -242,18 +243,23 @@ bezier::arc_curve (const vector2 <Type> & p0,
 	const auto endVector = vector2 <Type> ((-transformedPoint .x () - transformedCenter .x ()) / rx,
 	                                       (-transformedPoint .y () - transformedCenter .y ()) / ry);
 
-	const auto startAngle = std::atan2 (startVector .y (), startVector .x ());
-	const auto endAngle   = std::atan2 (endVector .y (), endVector .x ());
+	const auto get_angle  = [ ] (double x) { return x > 0 ? x : 2 * pi <Type> + x; }; // transform angle to range [0, 2pi]
+	const auto startAngle = get_angle (std::atan2 (startVector .y (), startVector .x ()));
+	const auto endAngle   = get_angle (std::atan2 (endVector   .y (), endVector   .x ()));
 
 	auto sweepAngle = endAngle - startAngle;
 
-	if ((largeArcFlag and std::abs (sweepAngle) < pi <Type>) or
-	    (not largeArcFlag and std::abs (sweepAngle) > pi <Type>))
+	if (largeArcFlag)
 	{
+		// sweepAngle must be positive
+		if (sweepAngle < 0)
+			sweepAngle += 2 * pi <Type>;
+	}
+	else
+	{
+		// sweepAngle must be negative
 		if (sweepAngle > 0)
 			sweepAngle -= 2 * pi <Type>;
-		else
-			sweepAngle = -2 * pi <Type> - sweepAngle;
 	}
 
 	if (not sweepFlag and sweepAngle > 0)

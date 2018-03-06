@@ -117,9 +117,9 @@ public:
 
 	///  @name Intersection
 
-	///  Returns true if @a point intersects with this triangle, otherwise false.
+	///  Returns true if @a point is within this triangle, otherwise false.
 	bool
-	intersects (const vector2 <Type> & point) const;
+	contains (const vector2 <Type> & point) const;
 
 
 private:
@@ -134,28 +134,20 @@ private:
 
 template <class Type>
 bool
-triangle2 <Type>::intersects (const vector2 <Type> & point) const
+triangle2 <Type>::contains (const vector2 <Type> & point) const
 {
-	const auto p = vector3 <Type> (point .x (), point .y (), 0);
-	const auto A = b () - a ();
-	const auto P = plane3 <Type> (vector3 <Type> (a () .x (), a () .y (), 0), normalize (vector3 <Type> (A .y (), -A .x (), 0)));
+	const auto dX   = point .x () - c () .x ();
+	const auto dY   = point .y () - c () .y ();
+	const auto dX21 = c () .x () - b () .x ();
+	const auto dY12 = b () .y () - c () .y ();
+	const auto D    = dY12 * (a () .x () - c () .x ()) + dX21 * (a () .y () - c () .y ());
+	const auto s    = dY12 * dX + dX21 * dY;
+	const auto t    = (c () .y () - a () .y ()) * dX + (a () .x () - c () .x ()) * dY;
 
-	if (P .distance (p) < 0)
-		return false;
+	if (D < 0)
+		return s <= 0 && t <= 0 and s + t >= D;
 
-	const auto B = c () - b ();
-	const auto Q = plane3 <Type> (vector3 <Type> (b () .x (), b () .y (), 0), normalize (vector3 <Type> (B .y (), -B .x (), 0)));
-
-	if (Q .distance (p) < 0)
-		return false;
-
-	const auto C = a () - c ();
-	const auto R = plane3 <Type> (vector3 <Type> (c () .x (), c () .y (), 0), normalize (vector3 <Type> (C .y (), -C .x (), 0)));
-
-	if (R .distance (p) < 0)
-		return false;
-
-	return true;
+	return s >= 0 && t >= 0 && s + t <= D;
 }
 
 ///  @relates triangle2

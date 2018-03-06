@@ -1213,10 +1213,16 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
+	size_t index = 0;
+
 	for (const auto & contour : contours)
 	{
+		contour -> index = index;
+
 		for (const auto & point : contour -> curve -> points)
 			coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
+
+		index += contour -> curve -> points .size ();
 	}
 
 	if (style .fillType not_eq ColorType::NONE)
@@ -1232,11 +1238,11 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 		tessellator .begin_polygon ();
 
-		size_t index = 0;
-
 		for (const auto & contour : contours)
 		{
 			tessellator .begin_contour ();
+
+			size_t index = contour -> index;
 
 			for (const auto & point : contour -> curve -> points)
 			{
@@ -1250,7 +1256,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 		const auto triangles = tessellator .triangles ();
 
-		if (triangles .size () >= 3)
+		if (triangles .size ())
 		{
 			// Create geometry.
 	
@@ -1270,10 +1276,10 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			catch (const std::domain_error &)
 			{ }
 	
-			shapeNode -> appearance ()  = getFillAppearance (style, bbox);
-			shapeNode -> geometry ()    = geometryNode;
-			geometryNode -> solid ()    = false;
-			geometryNode -> coord ()    = coordinateNode;
+			shapeNode -> appearance () = getFillAppearance (style, bbox);
+			shapeNode -> geometry ()   = geometryNode;
+			geometryNode -> solid ()   = false;
+			geometryNode -> coord ()   = coordinateNode;
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
@@ -1297,19 +1303,17 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		shapeNode -> geometry ()   = geometryNode;
 		geometryNode -> coord ()   = coordinateNode;
 
-		size_t index = 0;
-
 		for (const auto & contour : contours)
 		{
 			if (contour -> curve -> points .size () > 1)
 			{
-				const auto first = index;
+				size_t index = contour -> index;
 
 				for (size_t i = 0, size = contour -> curve -> points .size (); i < size; ++ i)
 					geometryNode -> coordIndex () .emplace_back (index ++);
 
 				if (contour -> curve -> closed)
-					geometryNode -> coordIndex () .emplace_back (first);
+					geometryNode -> coordIndex () .emplace_back (contour -> index);
 
 				geometryNode -> coordIndex () .emplace_back (-1);
 			}

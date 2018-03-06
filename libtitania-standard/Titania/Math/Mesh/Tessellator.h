@@ -139,6 +139,32 @@ public:
 		m_vertices ()
 	{ }
 
+	tessellator_polygon (const tessellator_polygon & other) :
+		    m_type (other .m_type),
+		m_vertices (other .m_vertices)
+	{ }
+
+	tessellator_polygon (tessellator_polygon && other) :
+		    m_type (other .m_type),
+		m_vertices (std::move (other .m_vertices))
+	{ }
+
+	///  @name Assignment operators
+
+	tessellator_polygon &
+	operator = (const tessellator_polygon & other)
+	{
+		m_type     = other .m_type;
+		m_vertices = other .m_vertices;
+	}
+
+	tessellator_polygon &
+	operator = (tessellator_polygon && other)
+	{
+		m_type     = other .m_type;
+		m_vertices = std::move (other .m_vertices);
+	}
+
 	///  @name Member access
 
 	const GLenum &
@@ -160,6 +186,10 @@ public:
 	size_type
 	size () const
 	{ return m_vertices .size (); }
+
+	bool
+	empty () const
+	{ return m_vertices .empty (); }
 
 
 private:
@@ -202,6 +232,9 @@ public:
 
 	void
 	combine (const combine_function_type & value);
+
+	void
+	clear ();
 
 	void
 	begin_polygon ();
@@ -314,11 +347,16 @@ tessellator <Type, Args ...>::combine (const combine_function_type & value)
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::begin_polygon ()
+tessellator <Type, Args ...>::clear ()
 {
 	m_polygons .clear ();
 	m_vertices .clear ();
+}
 
+template <class Type, class ... Args>
+void
+tessellator <Type, Args ...>::begin_polygon ()
+{
 	gluTessBeginPolygon (m_tess, this);
 }
 
@@ -406,7 +444,7 @@ tessellator <Type, Args ...>::triangles () const
 
 	auto & vertices = triangles .m_vertices;
 
-	for (const auto & polygon : this -> polygons ())
+	for (auto & polygon : this -> polygons ())
 	{
 		switch (polygon .type ())
 		{
@@ -415,9 +453,9 @@ tessellator <Type, Args ...>::triangles () const
 				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [0]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 1]));
+					vertices .emplace_back (polygon .m_vertices [0]);
+					vertices .emplace_back (polygon .m_vertices [i]);
+					vertices .emplace_back (polygon .m_vertices [i + 1]);
 				}
 
 				break;
@@ -427,9 +465,9 @@ tessellator <Type, Args ...>::triangles () const
 				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [is_odd (i) ? i + 1 : i]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [is_odd (i) ? i : i + 1]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 2]));
+					vertices .emplace_back (polygon .m_vertices [is_odd (i) ? i + 1 : i]);
+					vertices .emplace_back (polygon .m_vertices [is_odd (i) ? i : i + 1]);
+					vertices .emplace_back (polygon .m_vertices [i + 2]);
 				}
 
 				break;
@@ -439,9 +477,9 @@ tessellator <Type, Args ...>::triangles () const
 				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 1]));
-					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 2]));
+					vertices .emplace_back (polygon .m_vertices [i]);
+					vertices .emplace_back (polygon .m_vertices [i + 1]);
+					vertices .emplace_back (polygon .m_vertices [i + 2]);
 				}
 
 				break;

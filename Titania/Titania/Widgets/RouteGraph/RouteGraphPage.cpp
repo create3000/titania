@@ -1017,7 +1017,7 @@ RouteGraphPage::on_route_button_press_event (GdkEventButton* event)
 
 					// Intersect with arrow
 
-					if (get_arrow (sourcePosition, destinationPosition) .intersects (pointer))
+					if (get_arrow (sourcePosition, destinationPosition) .contains (pointer))
 					{
 						const auto routeptr = X3D::RoutePtr (route);
 

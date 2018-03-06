@@ -114,10 +114,12 @@ private:
 	struct Contour
 	{
 		Contour (Points && points, const bool closed) :
-			curve (std::make_shared <Curve> (std::move (points), closed))
+			curve (std::make_shared <Curve> (std::move (points), closed)),
+			index (0)
 		{ }
 
-		CurvePtr curve;
+		CurvePtr curve; // Curve
+		size_t   index; // First coord index
 	};
 
 	using ContourPtr = std::shared_ptr <Contour>;

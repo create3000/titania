@@ -384,6 +384,7 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 		return;
 	}
 
+	tessellator -> clear ();
 	tessellator -> begin_polygon ();
 	tessellator -> begin_contour ();
 
