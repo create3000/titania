@@ -301,8 +301,6 @@ private:
 
 	///  @name Member types
 
-	using FieldKey = std::tuple <FieldType, AccessType, std::string>;
-
 	///  @name Static members
 
 	static const ComponentType component;
@@ -310,10 +308,10 @@ private:
 
 	///  @name Members
 
-	X3DProtoDeclarationNodePtr               protoNode;
-	SFTime                                   typeNameOutput;
-	SFBool                                   live;
-	std::map <FieldKey, X3DFieldDefinition*> fieldMappings;
+	X3DProtoDeclarationNodePtr                          protoNode;
+	SFTime                                              typeNameOutput;
+	SFBool                                              live;
+	std::map <X3DFieldDefinition*, X3DFieldDefinition*> fieldMappings;
 
 };
 

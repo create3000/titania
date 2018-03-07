@@ -97,7 +97,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          protoField -> getName (),
 		          *field);
 
-		fieldMappings .emplace (std::make_tuple (protoField -> getType (), protoField -> getAccessType (), protoField -> getName ()), field);
+		fieldMappings .emplace (protoField, field);
 	}
 
 	if (protoNode -> isExternproto ())
@@ -221,7 +221,7 @@ X3DPrototypeInstance::construct ()
 				          protoField -> getName (),
 				          *field);
 
-				fieldMappings .emplace (std::make_tuple (protoField -> getType (), protoField -> getAccessType (), protoField -> getName ()), field);
+				fieldMappings .emplace (protoField, field);
 			}
 		}
 
@@ -268,7 +268,7 @@ X3DPrototypeInstance::update ()
 
 		for (const auto & protoField : proto -> getFieldDefinitions ())
 		{
-			const auto iter = map .find (std::make_tuple (protoField -> getType (), protoField -> getAccessType (), protoField -> getName ()));
+			const auto iter = map .find (protoField);
 
 			// Reuse old field.
 
@@ -280,7 +280,7 @@ X3DPrototypeInstance::update ()
 				          protoField -> getName (),
 				          *field);
 
-				fieldMappings .emplace (std::make_tuple (protoField -> getType (), protoField -> getAccessType (), protoField -> getName ()), field);
+				fieldMappings .emplace (protoField, field);
 				continue;
 			}
 
@@ -345,7 +345,7 @@ X3DPrototypeInstance::update ()
 			          protoField -> getName (),
 			          *field);
 
-			fieldMappings .emplace (std::make_tuple (protoField -> getType (), protoField -> getAccessType (), protoField -> getName ()), field);
+			fieldMappings .emplace (protoField, field);
 		}
 
 		construct ();
