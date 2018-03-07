@@ -428,7 +428,7 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	{
 		// Transform tool was moved:
 
-		if (transformTool -> getField <SFBool> ("grouped") ? false : not active)
+		if (not (active or transformTool -> getField <SFBool> ("grouped")))
 			return;
 
 		// Prevent accidentially move.

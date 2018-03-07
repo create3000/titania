@@ -109,14 +109,13 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//f <MFBool> ();
-	f <MFInt32> ();
-	//f <MFVec3f> ();
+	auto a = [ ] (bool a, bool g) { return g ? false : not a; };
+	auto b = [ ] (bool a, bool g) { return not (a or g); };
 
-	Vector3d a;
-	Vector3d b;
-
-	std::swap (a, b);
+	__LOG__ << (a (false, false) == b (false, false)) << std::endl; 
+	__LOG__ << (a (false, true)  == b (false, true))  << std::endl; 
+	__LOG__ << (a (true,  false) == b (true,  false)) << std::endl; 
+	__LOG__ << (a (true,  true)  == b (true,  true))  << std::endl; 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

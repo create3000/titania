@@ -138,16 +138,17 @@ triangle2 <Type>::contains (const vector2 <Type> & point) const
 {
 	const auto dX   = point .x () - c () .x ();
 	const auto dY   = point .y () - c () .y ();
+	const auto dX02 = a () .x () - c () .x ();
 	const auto dX21 = c () .x () - b () .x ();
 	const auto dY12 = b () .y () - c () .y ();
-	const auto D    = dY12 * (a () .x () - c () .x ()) + dX21 * (a () .y () - c () .y ());
+	const auto D    = dY12 * dX02 + dX21 * (a () .y () - c () .y ());
 	const auto s    = dY12 * dX + dX21 * dY;
-	const auto t    = (c () .y () - a () .y ()) * dX + (a () .x () - c () .x ()) * dY;
+	const auto t    = (c () .y () - a () .y ()) * dX + dX02 * dY;
 
 	if (D < 0)
-		return s <= 0 && t <= 0 and s + t >= D;
+		return s <= 0 and t <= 0 and s + t >= D;
 
-	return s >= 0 && t >= 0 && s + t <= D;
+	return s >= 0 and t >= 0 and s + t <= D;
 }
 
 ///  @relates triangle2
