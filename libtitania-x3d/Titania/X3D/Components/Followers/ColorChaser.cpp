@@ -130,7 +130,7 @@ ColorChaser::set_value_ ()
 
 	const auto hsv = set_value () .getHSV ();
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : buffer)
 		value = hsv;
 
 	previousValue = hsv;

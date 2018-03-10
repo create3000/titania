@@ -129,10 +129,8 @@ CoordinateChaser::set_value_ ()
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : buffer)
 		value .assign (set_value () .cbegin (), set_value () .cend ());
-
-	buffer [0] .resize (set_value () .size ());
 
 	previousValue .assign (set_value () .cbegin (), set_value () .cend ());
 

@@ -130,7 +130,7 @@ OrientationChaser::set_value_ ()
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : buffer)
 		value = set_value ();
 
 	previousValue = set_value ();
