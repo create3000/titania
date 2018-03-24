@@ -27,7 +27,8 @@ Build-Depends: debhelper (>= 5),
                libgtop2-dev,
                libcgal-dev,
                libgmp-dev,
-               libmpfr-dev
+               libmpfr-dev,
+               libbullet-dev
 
 Homepage: http://titania.create3000.de/
 Package: titania
@@ -52,6 +53,7 @@ Depends: ${misc:Depends},
          libcgal12,
          libgmp10,
          libmpfr4,
+         libbullet2.86,
          ttf-ubuntu-font-family,
          ffmpeg
 Recommends: gstreamer1.0-plugins-base,

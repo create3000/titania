@@ -17803,7 +17803,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0\""; } >&5
+libgtop-2.0
+bullet\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
 gl
 glibmm-2.4
@@ -17815,7 +17816,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0") 2>&5
+libgtop-2.0
+bullet") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
@@ -17830,7 +17832,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0" 2>/dev/null`
+libgtop-2.0
+bullet" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17853,7 +17856,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0\""; } >&5
+libgtop-2.0
+bullet\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
 gl
 glibmm-2.4
@@ -17865,7 +17869,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0") 2>&5
+libgtop-2.0
+bullet") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
@@ -17880,7 +17885,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0" 2>/dev/null`
+libgtop-2.0
+bullet" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17912,7 +17918,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0" 2>&1`
+libgtop-2.0
+bullet" 2>&1`
         else
 	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtkmm-3.0
 gl
@@ -17925,7 +17932,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0" 2>&1`
+libgtop-2.0
+bullet" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_X3D_PKG_ERRORS" >&5
@@ -17941,7 +17949,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0) were not met:
+libgtop-2.0
+bullet) were not met:
 
 $TITANIA_X3D_PKG_ERRORS
 

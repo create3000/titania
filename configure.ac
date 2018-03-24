@@ -125,7 +125,8 @@ mozjs185
 libxml++-2.6
 json-c
 ImageMagick++
-libgtop-2.0)
+libgtop-2.0
+bullet)
 
 PKG_CHECK_MODULES(TITANIA_FTGL,
 freetype2

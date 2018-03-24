@@ -164,19 +164,20 @@ ScriptEditor::restore ()
 {
 	try
 	{
-	   if (node)
-	   {
-			// Update TextView and thus we can scoll to iter.
-			while (Gtk::Main::events_pending ())
-				Gtk::Main::iteration ();
+		// Update TextView and thus we can scoll to iter.
+		// Anything can happen now.
+		while (Gtk::Main::events_pending ())
+			Gtk::Main::iteration ();
 
-			ScriptEditorDatabase database;
+	   if (not node)
+			return;
 
-			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getPathFromNode (node));
+		ScriptEditorDatabase database;
 
-			getTextView () .get_hadjustment () -> set_value (std::get <1> (item));
-			getTextView () .get_vadjustment () -> set_value (std::get <2> (item));
-		}
+		const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getPathFromNode (node));
+
+		getTextView () .get_hadjustment () -> set_value (std::get <1> (item));
+		getTextView () .get_vadjustment () -> set_value (std::get <2> (item));
 	}
 	catch (const std::exception & error)
 	{
