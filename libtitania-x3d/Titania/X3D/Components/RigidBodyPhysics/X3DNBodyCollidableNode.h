@@ -102,6 +102,16 @@ public:
 	getCompoundShape () const
 	{ return compoundShape; }
 
+	///  @name Events
+
+	SFTime &
+	collisionShape_changed ()
+	{ return collisionShape; }
+
+	const SFTime &
+	collisionShape_changed () const
+	{ return collisionShape; }
+	
 	///  @name Destruction
 
 	virtual
@@ -127,6 +137,10 @@ protected:
 	btTransform
 	getLocalTransform () const;
 
+	const std::shared_ptr <btEmptyShape> &
+	getEmptyShape () const
+	{ return emptyShape; }
+
 
 private:
 
@@ -151,6 +165,8 @@ private:
 	///  @name Members
 
 	std::shared_ptr <btCompoundShape> compoundShape;
+	std::shared_ptr <btEmptyShape>    emptyShape;
+	SFTime                            collisionShape;
 
 };
 

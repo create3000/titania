@@ -125,6 +125,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member access
+
+	std::shared_ptr <btCollisionShape>
+	createConcaveGeometry ();
+
 	///  @name Event handlers
 
 	void
@@ -135,6 +140,7 @@ private:
 
 	void
 	set_collidableGeometry ();
+
 
 	///  @name Static members
 
@@ -156,6 +162,8 @@ private:
 	X3DPtr <Shape>                     shapeNode;
 	X3DPtr <X3DGeometryNode>           geometryNode;
 	std::shared_ptr <btCollisionShape> collisionShape;
+	std::shared_ptr <btTriangleMesh>   triangleMesh;
+
 };
 
 } // X3D

@@ -328,7 +328,10 @@ void
 RigidBody::set_geometry ()
 {
 	for (const auto & geometryNode : geometryNodes)
+	{
 		geometryNode -> removeInterest (&SFTime::addEvent, transform);
+		geometryNode -> collisionShape_changed () .removeInterest (&RigidBody::set_compoundShape, this);
+	}
 
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -345,7 +348,10 @@ RigidBody::set_geometry ()
 	geometryNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & geometryNode : geometryNodes)
+	{
 		geometryNode -> addInterest (&SFTime::addEvent, transform);
+		geometryNode -> collisionShape_changed () .addInterest (&RigidBody::set_compoundShape, this);
+	}
 
 	set_compoundShape ();
 }

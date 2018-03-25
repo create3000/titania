@@ -56,6 +56,8 @@
 #include "../../Rendering/X3DRenderObject.h"
 
 #include "../Geometry3D/Box.h"
+#include "../Geometry3D/Cone.h"
+#include "../Geometry3D/Cylinder.h"
 #include "../Geometry3D/Sphere.h"
 #include "../Shape/Shape.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -77,7 +79,8 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	                    fields (),
 	                 shapeNode (),
 	              geometryNode (),
-	            collisionShape ()
+	            collisionShape (),
+	              triangleMesh ()
 {
 	addType (X3DConstants::CollidableShape);
 
@@ -122,6 +125,36 @@ CollidableShape::getBBox () const
 	}
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
+}
+
+std::shared_ptr <btCollisionShape>
+CollidableShape::createConcaveGeometry ()
+{
+	// Triangulate.
+
+	std::vector <Color4f>  colors;
+	TexCoordArray          texCoords (geometryNode -> getPolygonTexCoords () .size ());
+	std::vector <Vector3f> normals;
+	std::vector <Vector3d> vertices;
+
+	geometryNode -> triangulate (colors, texCoords, normals, vertices);
+
+	// Create Bullet shape.
+
+	triangleMesh = std::make_shared <btTriangleMesh> ();
+
+	for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+	{
+		const auto & v0 = vertices [i + 0];
+		const auto & v1 = vertices [i + 1];
+		const auto & v2 = vertices [i + 2];
+
+		triangleMesh -> addTriangle (btVector3 (v0 .x (), v0 .y (), v0 .z ()),
+		                             btVector3 (v1 .x (), v1 .y (), v1 .z ()),
+		                             btVector3 (v2 .x (), v2 .y (), v2 .z ()));
+	}
+
+	return std::make_shared <btBvhTriangleMeshShape> (triangleMesh .get (), false);
 }
 
 void
@@ -181,6 +214,30 @@ CollidableShape::set_collidableGeometry ()
 				collisionShape .reset (new btBoxShape (btVector3 (half .x (), half .y (), half .z ())));
 				break;
 			}
+			case X3DConstants::Cone:
+			{
+				const auto cone = dynamic_cast <Cone*> (geometryNode .getValue ());
+
+				if (cone -> side () and cone -> bottom ())
+					collisionShape .reset (new btConeShape (cone -> bottomRadius (), cone -> height ()));
+				else
+					collisionShape = createConcaveGeometry ();
+
+				break;
+			}
+			case X3DConstants::Cylinder:
+			{
+				const auto cylinder  = dynamic_cast <Cylinder*> (geometryNode .getValue ());
+				const auto radius    = cylinder -> radius ();
+				const auto height1_2 = cylinder -> height () / 2.0f;
+
+				if (cylinder -> side () and cylinder -> top () and cylinder -> bottom ())
+					collisionShape .reset (new btCylinderShape (btVector3 (radius, height1_2, radius)));
+				else
+					collisionShape = createConcaveGeometry ();
+
+				break;
+			}
 			case X3DConstants::Sphere:
 			{
 				const auto sphere = dynamic_cast <Sphere*> (geometryNode .getValue ());
@@ -190,18 +247,20 @@ CollidableShape::set_collidableGeometry ()
 			}
 			default:
 			{
-				collisionShape .reset ();
+				collisionShape = createConcaveGeometry ();
 				break;
 			}
 		}
 	}
 	else
 	{
-		collisionShape .reset ();	
+		collisionShape = getEmptyShape ();	
 	}
 
-	if (collisionShape)
-		getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
+	getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
+
+	// Propagate shape change.
+	collisionShape_changed () = getCurrentTime ();
 }
 
 void
