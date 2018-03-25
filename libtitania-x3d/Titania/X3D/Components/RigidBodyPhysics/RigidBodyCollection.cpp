@@ -90,6 +90,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	          X3DChildNode (),
 	                fields (),
 	             bodyNodes (),
+	          colliderNode (),
 	   collisionSensorNode (new CollisionSensor (getExecutionContext ())),
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
@@ -122,7 +123,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
 
-	addChildObjects (bodyNodes, collisionSensorNode);
+	addChildObjects (bodyNodes, colliderNode, collisionSensorNode);
 }
 
 X3DBaseNode*
@@ -198,8 +199,10 @@ RigidBodyCollection::set_gravity ()
 void
 RigidBodyCollection::set_collider ()
 {
-	collisionSensorNode -> collider () = x3d_cast <CollisionCollection*> (collider ());
-	collisionSensorNode -> enabled ()  = collisionSensorNode -> collider ();
+	colliderNode .set (x3d_cast <CollisionCollection*> (collider ()));
+
+	collisionSensorNode -> collider () = colliderNode;
+	collisionSensorNode -> enabled ()  = colliderNode;
 }
 
 void
@@ -243,7 +246,14 @@ RigidBodyCollection::set_dynamicsWorld ()
 	}
 
 	for (const auto rigidBody : rigidBodies)
+	{
+		if (colliderNode)
+		{
+			rigidBody -> getCollisionShape () -> setMargin (contactSurfaceThickness ());
+		}
+
 		dynamicsWorld -> addRigidBody (rigidBody .get ());
+	}
 }
 
 void
@@ -252,9 +262,27 @@ RigidBodyCollection::update ()
 	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
 
 	const time_type dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());
-	const time_type deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
+	time_type       deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
 
-	dynamicsWorld -> stepSimulation (deltaTime, iterations (), deltaTime / iterations ());
+	if (preferAccuracy ())
+	{
+		deltaTime /= iterations ();
+
+		for (int32_t i = 0; i < iterations (); ++ i)
+		{
+			for (const auto & bodyNode : bodyNodes)
+				bodyNode	-> applyForces ();
+
+			dynamicsWorld -> stepSimulation (deltaTime, 0);
+		}
+	}
+	else
+	{
+		for (const auto & bodyNode : bodyNodes)
+			bodyNode	-> applyForces ();
+
+		dynamicsWorld -> stepSimulation (deltaTime, iterations (), deltaTime / iterations ());
+	}
 
 	for (const auto & bodyNode : bodyNodes)
 		bodyNode	-> update ();

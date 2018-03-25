@@ -91,12 +91,13 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      X3DNode (),
 	       fields (),
-	        force (),
 	geometryNodes (),
 	compoundShape (new btCompoundShape ()),
 	  motionState (new btDefaultMotionState ()),
 	    rigidBody (),
-	    transform ()
+	    transform (),
+	        force (),
+	       torque ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -149,14 +150,24 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
-	position ()         .addInterest (&RigidBody::set_position,         this);
-	orientation ()      .addInterest (&RigidBody::set_orientation,      this);
-	linearVelocity ()   .addInterest (&RigidBody::set_linearVelocity,   this);
-	angularVelocity ()  .addInterest (&RigidBody::set_angularVelocity,  this);
-	orientation ()      .addInterest (&RigidBody::set_orientation,      this);
-	useGlobalGravity () .addInterest (&RigidBody::set_useGlobalGravity, this);
-	forces ()           .addInterest (&RigidBody::set_forces,           this);
-	geometry ()         .addInterest (&RigidBody::set_geometry,         this);
+	position ()             .addInterest (&RigidBody::set_position,           this);
+	orientation ()          .addInterest (&RigidBody::set_orientation,        this);
+	linearVelocity ()       .addInterest (&RigidBody::set_linearVelocity,     this);
+	angularVelocity ()      .addInterest (&RigidBody::set_angularVelocity,    this);
+	useFiniteRotation ()    .addInterest (&RigidBody::set_finiteRotationAxis, this);
+	finiteRotationAxis ()   .addInterest (&RigidBody::set_finiteRotationAxis, this);
+	orientation ()          .addInterest (&RigidBody::set_orientation,        this);
+	autoDamp ()             .addInterest (&RigidBody::set_damping,            this);
+	linearDampingFactor ()  .addInterest (&RigidBody::set_damping,            this);
+	angularDampingFactor () .addInterest (&RigidBody::set_damping,            this);
+	useGlobalGravity ()     .addInterest (&RigidBody::set_useGlobalGravity,   this);
+	forces ()               .addInterest (&RigidBody::set_forces,             this);
+	torques ()              .addInterest (&RigidBody::set_torques,            this);
+	autoDisable ()          .addInterest (&RigidBody::set_disable,            this);
+	disableTime ()          .addInterest (&RigidBody::set_disable,            this);
+	disableLinearSpeed ()   .addInterest (&RigidBody::set_disable,            this);
+	disableAngularSpeed ()  .addInterest (&RigidBody::set_disable,            this);
+	geometry ()             .addInterest (&RigidBody::set_geometry,           this);
 
 	fixed ()   .addInterest (&RigidBody::set_massProps, this);
 	mass ()    .addInterest (&RigidBody::set_massProps, this);
@@ -168,6 +179,7 @@ RigidBody::initialize ()
 	set_rigidBody ();
 
 	set_forces ();
+	set_torques ();
 }
 
 void
@@ -211,12 +223,34 @@ void
 RigidBody::set_linearVelocity ()
 {
 	rigidBody -> setLinearVelocity (btVector3 (linearVelocity () .getX (), linearVelocity () .getY (), linearVelocity () .getZ ()));
+	rigidBody -> activate ();
 }
 
 void
 RigidBody::set_angularVelocity ()
 {
 	rigidBody -> setAngularVelocity (btVector3 (angularVelocity () .getX (), angularVelocity () .getY (), angularVelocity () .getZ ()));
+	rigidBody -> activate ();
+}
+
+void
+RigidBody::set_finiteRotationAxis ()
+{
+	if (useFiniteRotation ())
+		rigidBody -> setAngularFactor (btVector3 (finiteRotationAxis () .getX (), finiteRotationAxis () .getY (), finiteRotationAxis () .getZ ()));
+	else
+		rigidBody -> setAngularFactor (btVector3 (1, 1, 1));
+}
+
+void
+RigidBody::set_damping ()
+{
+	if (autoDamp ())
+		rigidBody -> setDamping (linearDampingFactor (), angularDampingFactor ());
+	else
+		rigidBody -> setDamping (0, 0);
+
+	rigidBody -> activate ();
 }
 
 void
@@ -249,6 +283,8 @@ RigidBody::set_useGlobalGravity ()
 		rigidBody -> setFlags (BT_DISABLE_WORLD_GRAVITY);
 		rigidBody -> setGravity (btVector3 (0, 0, 0));
 	}
+
+	rigidBody -> activate ();
 }
 
 void
@@ -259,7 +295,33 @@ RigidBody::set_forces ()
 	                         Vector3f (),
 	                         [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
 
-	rigidBody -> applyForce (btVector3 (force .x (), force .y (), force .z ()), btVector3 (0, 0, 0));
+	rigidBody -> activate ();
+}
+
+void
+RigidBody::set_torques ()
+{
+	torque = std::accumulate (torques () .cbegin (),
+	                          torques () .cend (),
+	                          Vector3f (),
+	                          [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
+
+	rigidBody -> activate ();
+}
+
+void
+RigidBody::set_disable ()
+{
+	if (autoDisable ())
+	{
+		rigidBody -> setDeactivationTime (disableTime ());
+		rigidBody -> setSleepingThresholds (disableLinearSpeed (), disableAngularSpeed ());
+	}
+	else
+	{
+		rigidBody -> setDeactivationTime (0);
+		rigidBody -> setSleepingThresholds (0, 0);
+	}
 }
 
 void
@@ -313,15 +375,33 @@ RigidBody::set_rigidBody ()
 	set_orientation ();
 	set_linearVelocity ();
 	set_angularVelocity ();
+	set_finiteRotationAxis ();
+	set_damping ();
 	set_centerOfMass ();
 	set_massProps ();
 	set_useGlobalGravity ();
-	set_forces ();
+	set_disable ();
+}
+
+void
+RigidBody::applyForces ()
+{
+	if (fixed ())
+		return;
+
+	rigidBody -> applyForce (btVector3 (force .x (), force .y (), force .z ()), btVector3 (0, 0, 0));
+	rigidBody -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
 }
 
 void
 RigidBody::update ()
 {
+	if (fixed ())
+		return;
+
+	if (not rigidBody -> isActive ())
+		return;
+
 	btTransform transform;
 
 	motionState -> getWorldTransform (transform);

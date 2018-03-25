@@ -286,6 +286,9 @@ public:
 	///  @name Operations
 
 	void
+	applyForces ();
+
+	void
 	update ();
 
 	///  @name Destruction
@@ -318,6 +321,12 @@ private:
 	
 	void
 	set_angularVelocity ();
+	
+	void
+	set_finiteRotationAxis ();
+	
+	void
+	set_damping ();
 
 	void
 	set_centerOfMass ();
@@ -330,6 +339,12 @@ private:
 
 	void
 	set_forces ();
+
+	void
+	set_torques ();
+
+	void
+	set_disable ();
 
 	void
 	set_geometry ();
@@ -381,12 +396,13 @@ private:
 
 	///  @name Members
 
-	Vector3f                               force;
 	X3DPtrArray <X3DNBodyCollidableNode>   geometryNodes;
 	std::shared_ptr <btCompoundShape>      compoundShape;
 	std::shared_ptr <btDefaultMotionState> motionState;
 	std::shared_ptr <btRigidBody>          rigidBody;
 	SFTime                                 transform;
+	Vector3f                               force;
+	Vector3f                               torque;
 };
 
 } // X3D
