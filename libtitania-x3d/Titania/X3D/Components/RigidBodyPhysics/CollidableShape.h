@@ -56,9 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class Shape;
-class X3DGeometryNode;
-
 class CollidableShape :
 	public X3DNBodyCollidableNode
 {
@@ -108,14 +105,6 @@ public:
 	Box3d
 	getBBox () const final override;
 
-	virtual
-	Matrix4d
-	getCollidableMatrix () const final override;
-
-	virtual
-	const CollidableGeometry &
-	getCollidableGeometry () const final override;
-
 	///  @name Operations
 
 	virtual
@@ -147,9 +136,6 @@ private:
 	void
 	set_collidableGeometry ();
 
-	void
-	eventsProcessed ();
-
 	///  @name Static members
 
 	static const ComponentType component;
@@ -167,10 +153,9 @@ private:
 
 	Fields fields;
 
-	X3DPtr <Shape>           shapeNode;
-	X3DPtr <X3DGeometryNode> geometryNode;
-	CollidableGeometry       collidableGeometry;
-
+	X3DPtr <Shape>                     shapeNode;
+	X3DPtr <X3DGeometryNode>           geometryNode;
+	std::shared_ptr <btCollisionShape> collisionShape;
 };
 
 } // X3D

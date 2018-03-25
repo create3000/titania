@@ -66,11 +66,9 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	                  bodyNode ()
+	             compoundShape (new btCompoundShape ())
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
-
-	addChildObjects (bodyNode);
 }
 
 void
@@ -79,18 +77,38 @@ X3DNBodyCollidableNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DTransformMatrix3DObject::initialize ();
 	X3DBoundedObject::initialize ();
+
+	addInterest (&X3DNBodyCollidableNode::eventsProcessed, this);
+
+	eventsProcessed ();
 }
 
 void
-X3DNBodyCollidableNode::setBody (const X3DPtr <RigidBody> & value)
+X3DNBodyCollidableNode::setLocalTransform (const Vector3f & t, const Rotation4d & r)
 {
-	bodyNode = value;
+	translation () = t;
+	rotation ()    = r;
+
+	eventsProcessed ();
 }
 
-const X3DPtr <RigidBody> &
-X3DNBodyCollidableNode::getBody () const
+btTransform
+X3DNBodyCollidableNode::getLocalTransform () const
 {
-	return bodyNode;
+	const auto & t = translation () .getValue ();
+	const auto & q = rotation () .getValue () .quat ();
+	const auto   m = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (t .x (), t .y (), t .z ()));
+
+	return m;
+}
+
+void
+X3DNBodyCollidableNode::eventsProcessed ()
+{
+	setMatrix (translation () .getValue (), rotation () .getValue ());
+
+	if (compoundShape -> getNumChildShapes ())
+		compoundShape -> updateChildTransform (0, getLocalTransform ());
 }
 
 void

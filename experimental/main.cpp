@@ -49,20 +49,11 @@
  ******************************************************************************/
 
 #include <Titania/X3D.h>
-#include <Titania/X3D/Prototype/ProtoDeclaration.h>
 
-#include <Titania/X3D/Prototype/ProtoDeclaration.h>
+#include <btBulletDynamicsCommon.h>
 
 using namespace titania;
 using namespace titania::X3D;
-
-namespace titania {
-namespace X3D {
-
-template class X3DNativeArrayField <int32_t>;
-
-}
-}
 
 template <class Type>
 void
@@ -109,13 +100,46 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto a = [ ] (bool a, bool g) { return g ? false : not a; };
-	auto b = [ ] (bool a, bool g) { return not (a or g); };
-
-	__LOG__ << (a (false, false) == b (false, false)) << std::endl; 
-	__LOG__ << (a (false, true)  == b (false, true))  << std::endl; 
-	__LOG__ << (a (true,  false) == b (true,  false)) << std::endl; 
-	__LOG__ << (a (true,  true)  == b (true,  true))  << std::endl; 
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	
+	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	
+	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+	
+	btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+	
+	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	
+	
+	btCollisionShape* groundShape = new btBoxShape(btVector3(10, 1, 10));
+	
+	btCollisionShape* fallShape = new btSphereShape(1);
+	
+	
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
+	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	dynamicsWorld->addRigidBody(groundRigidBody);
+	
+	
+	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 5, 0)));
+	btScalar mass = 1;
+	btVector3 fallInertia(0, 0, 0);
+	fallShape->calculateLocalInertia(mass, fallInertia);
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
+	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	dynamicsWorld->addRigidBody(fallRigidBody);
+	
+	
+	for (int i = 0; i < 300; i++) {
+		dynamicsWorld->stepSimulation(1 / 60.f, 10);
+		
+		btTransform trans;
+		fallRigidBody->getMotionState()->getWorldTransform(trans);
+		
+		std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

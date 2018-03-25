@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class X3DNBodyCollisionSpaceNode :
-	virtual public X3DNode, public X3DBoundedObject
+	virtual public X3DNode,
+	public X3DBoundedObject
 {
 public:
 

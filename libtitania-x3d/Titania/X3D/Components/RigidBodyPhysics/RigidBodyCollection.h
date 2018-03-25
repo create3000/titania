@@ -53,12 +53,10 @@
 
 #include "../Core/X3DChildNode.h"
 
+#include <btBulletDynamicsCommon.h>
+
 namespace titania {
 namespace X3D {
-
-class CollisionCollection;
-class CollisionSensor;
-class RigidBody;
 
 class RigidBodyCollection :
 	virtual public X3DChildNode
@@ -229,6 +227,11 @@ public:
 	bodies () const
 	{ return *fields .bodies; }
 
+	///  @name Destrunction
+
+	virtual
+	~RigidBodyCollection () final override;
+
 
 private:
 
@@ -241,6 +244,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_enabled ();
+
+	void
 	set_contacts_ ();
 
 	void
@@ -251,6 +257,12 @@ private:
 
 	void
 	set_bodies ();
+
+	void
+	set_dynamicsWorld ();
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -286,6 +298,14 @@ private:
 
 	X3DPtrArray <RigidBody>  bodyNodes;
 	X3DPtr <CollisionSensor> collisionSensorNode;
+
+	std::shared_ptr <btBroadphaseInterface>               broadphase;
+	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
+	std::shared_ptr <btCollisionDispatcher>               dispatcher;
+	std::shared_ptr <btSequentialImpulseConstraintSolver> solver;
+	std::shared_ptr <btDiscreteDynamicsWorld>             dynamicsWorld;
+	std::vector <std::shared_ptr <btRigidBody>>           rigidBodies;
+	time_type                                             deltaTime;
 
 };
 

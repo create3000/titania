@@ -107,14 +107,6 @@ public:
 	Box3d
 	getBBox () const final override;
 
-	virtual
-	Matrix4d
-	getCollidableMatrix () const final override;
-
-	virtual
-	const CollidableGeometry &
-	getCollidableGeometry () const final override;
-
 	///  @name Operations
 
 	virtual
@@ -139,9 +131,6 @@ private:
 
 	void
 	set_collidable ();
-
-	void
-	eventsProcessed ();
 
 	///  @name Static members
 

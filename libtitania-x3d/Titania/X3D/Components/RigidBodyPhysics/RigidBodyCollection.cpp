@@ -51,11 +51,13 @@
 #include "RigidBodyCollection.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
 #include "../RigidBodyPhysics/CollisionSensor.h"
 #include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -84,11 +86,17 @@ RigidBodyCollection::Fields::Fields () :
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DChildNode (),
-	             fields (),
-	          bodyNodes (),
-	collisionSensorNode (new CollisionSensor (getExecutionContext ()))
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DChildNode (),
+	                fields (),
+	             bodyNodes (),
+	   collisionSensorNode (new CollisionSensor (getExecutionContext ())),
+	            broadphase (new btDbvtBroadphase ()),
+	collisionConfiguration (new btDefaultCollisionConfiguration ()),
+	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
+	                solver (new btSequentialImpulseConstraintSolver),
+	         dynamicsWorld (new btDiscreteDynamicsWorld (dispatcher .get (), broadphase .get (), solver .get (), collisionConfiguration .get ())),
+	             deltaTime (0)
 {
 	addType (X3DConstants::RigidBodyCollection);
 
@@ -128,14 +136,20 @@ RigidBodyCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
+	isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
+	getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
+
+	enabled ()      .addInterest (&RigidBodyCollection::set_enabled,   this);
 	set_contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
-	gravity ()      .addInterest (&RigidBodyCollection::set_gravity, this);
-	collider ()     .addInterest (&RigidBodyCollection::set_collider, this);
-	bodies ()       .addInterest (&RigidBodyCollection::set_bodies, this);
+	gravity ()      .addInterest (&RigidBodyCollection::set_gravity,   this);
+	collider ()     .addInterest (&RigidBodyCollection::set_collider,  this);
+	bodies ()       .addInterest (&RigidBodyCollection::set_bodies,    this);
 
 	collisionSensorNode -> contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
 	collisionSensorNode -> setup ();
 
+	set_enabled ();
+	set_gravity ();
 	set_collider ();
 	set_bodies ();
 }
@@ -145,67 +159,40 @@ RigidBodyCollection::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (isInitialized ())
+	{
+		getBrowser () -> sensorEvents () .removeInterest (&RigidBodyCollection::update, this);
+		getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
+	}
+
 	collisionSensorNode -> setExecutionContext (executionContext);
 
 	X3DChildNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_enabled ();
+}
+
+void
+RigidBodyCollection::set_enabled ()
+{
+	if (getExecutionContext () -> isLive () and isLive () and enabled ())
+		getBrowser () -> sensorEvents () .addInterest (&RigidBodyCollection::update, this);
+	else
+		getBrowser () -> sensorEvents () .removeInterest (&RigidBodyCollection::update, this);
 }
 
 void
 RigidBodyCollection::set_contacts_ ()
 {
-	__LOG__ << set_contacts () .size () << std::endl;
-
-	std::multimap <RigidBody*, Contact*> contactIndex;
-
-	for (const auto & node : set_contacts ())
-	{
-		const auto contactNode = x3d_cast <Contact*> (node);
-
-		if (contactNode)
-		{
-			const auto bodyNode = x3d_cast <RigidBody*> (contactNode -> body1 ());
-
-			if (bodyNode)
-			{
-				contactIndex .emplace (bodyNode, contactNode);
-			}
-		}
-	}
-
-	for (const auto & bodyNode : bodyNodes)
-	{
-		if (not bodyNode -> enabled ())
-			continue;
-
-		const auto range = contactIndex .equal_range (bodyNode);
-
-		for (const auto & pair : range)
-		{
-			const auto & contactNode    = pair .second;
-			const auto & contactNormal  = negate (contactNode -> contactNormal () .getValue ());
-			const auto & linearVelocity = bodyNode -> linearVelocity () .getValue ();
-
-			__LOG__ << contactNode -> geometry1 () -> getName () << " : " << bodyNode .getValue () << std::endl;
-			__LOG__ << contactNormal << std::endl;
-			__LOG__ << linearVelocity << std::endl;
-			__LOG__ << dot (normalize (linearVelocity), contactNormal) << std::endl;
-
-			if (dot (normalize (linearVelocity), contactNormal) < 0)
-				continue;
-
-			__LOG__ << reflect (negate (linearVelocity), contactNormal) << std::endl;
-			__LOG__ << reflect (linearVelocity, contactNormal) << std::endl;
-
-			bodyNode -> linearVelocity () = reflect (linearVelocity, contactNormal);
-		}
-	}
 }
 
 void
 RigidBodyCollection::set_gravity ()
 {
-	for (const auto & bodyNode : bodyNodes)
-		bodyNode -> setGravity (gravity ());
+	dynamicsWorld -> setGravity (btVector3 (gravity () .getX (),
+	                                        gravity () .getY (),
+	                                        gravity () .getZ ()));
 }
 
 void
@@ -218,6 +205,9 @@ RigidBodyCollection::set_collider ()
 void
 RigidBodyCollection::set_bodies ()
 {
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+
 	std::vector <RigidBody*> value;
 
 	for (const auto & node : bodies ())
@@ -230,8 +220,48 @@ RigidBodyCollection::set_bodies ()
 
 	bodyNodes .set (value .cbegin (), value .cend ());
 
-	set_gravity ();
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+
+	set_dynamicsWorld ();
 }
+
+void
+RigidBodyCollection::set_dynamicsWorld ()
+{
+	for (const auto rigidBody : rigidBodies)
+		dynamicsWorld -> removeRigidBody (rigidBody .get ());
+
+	rigidBodies .clear ();
+
+	for (const auto & bodyNode : bodyNodes)
+	{
+		if (not bodyNode -> enabled ())
+			continue;
+
+		rigidBodies .emplace_back (bodyNode -> getRigidBody ());
+	}
+
+	for (const auto rigidBody : rigidBodies)
+		dynamicsWorld -> addRigidBody (rigidBody .get ());
+}
+
+void
+RigidBodyCollection::update ()
+{
+	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
+
+	const time_type dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());
+	const time_type deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
+
+	dynamicsWorld -> stepSimulation (deltaTime, iterations (), deltaTime / iterations ());
+
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode	-> update ();
+}
+
+RigidBodyCollection::~RigidBodyCollection ()
+{ }
 
 } // X3D
 } // titania

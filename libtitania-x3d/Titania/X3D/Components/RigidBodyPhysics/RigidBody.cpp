@@ -51,7 +51,6 @@
 #include "RigidBody.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
@@ -92,9 +91,12 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      X3DNode (),
 	       fields (),
-	      gravity (),
 	        force (),
-	geometryNodes ()
+	geometryNodes (),
+	compoundShape (new btCompoundShape ()),
+	  motionState (new btDefaultMotionState ()),
+	    rigidBody (),
+	    transform ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -131,7 +133,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "geometry",             geometry ());
 
-	addChildObjects (geometryNodes);
+	addChildObjects (geometryNodes, transform);
 
 	// XXX: Define units!!!
 }
@@ -147,52 +149,25 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (&RigidBody::set_fixed, this);
-	isLive () .addInterest (&RigidBody::set_fixed, this);
+	position ()         .addInterest (&RigidBody::set_position,         this);
+	orientation ()      .addInterest (&RigidBody::set_orientation,      this);
+	linearVelocity ()   .addInterest (&RigidBody::set_linearVelocity,   this);
+	angularVelocity ()  .addInterest (&RigidBody::set_angularVelocity,  this);
+	orientation ()      .addInterest (&RigidBody::set_orientation,      this);
+	useGlobalGravity () .addInterest (&RigidBody::set_useGlobalGravity, this);
+	forces ()           .addInterest (&RigidBody::set_forces,           this);
+	geometry ()         .addInterest (&RigidBody::set_geometry,         this);
 
-	shutdown () .addInterest (&RigidBody::set_shutdown, this);
+	fixed ()   .addInterest (&RigidBody::set_massProps, this);
+	mass ()    .addInterest (&RigidBody::set_massProps, this);
+	inertia () .addInterest (&RigidBody::set_massProps, this);
 
-	fixed ()    .addInterest (&RigidBody::set_fixed, this);
-	position () .addInterest (&RigidBody::set_position, this);
-	forces ()   .addInterest (&RigidBody::set_forces, this);
-	geometry () .addInterest (&RigidBody::set_geometry, this);
+	transform .addInterest (&RigidBody::set_transform, this);
 
-	set_fixed ();
-	set_forces ();
 	set_geometry ();
-}
+	set_rigidBody ();
 
-void
-RigidBody::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (isInitialized ())
-	{
-		getBrowser () -> removeCollidableNodes (geometryNodes);
-
-		getBrowser () -> sensorEvents () .removeInterest (&RigidBody::update, this);
-		getExecutionContext () -> isLive () .removeInterest (&RigidBody::set_fixed, this);
-	}
-
-	X3DNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (&RigidBody::set_fixed, this);
-	
-		set_fixed ();
-		set_geometry ();
-	}
-}
-
-void
-RigidBody::set_fixed ()
-{
-	if (getExecutionContext () -> isLive () and isLive () and not fixed ())
-		getBrowser () -> sensorEvents () .addInterest (&RigidBody::update, this);
-	else
-		getBrowser () -> sensorEvents () .removeInterest (&RigidBody::update, this);
+	set_forces ();
 }
 
 void
@@ -203,20 +178,95 @@ RigidBody::set_position ()
 }
 
 void
+RigidBody::set_orientation ()
+{
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> rotation () = orientation ();
+}
+
+void
+RigidBody::set_transform ()
+{
+	const auto & p  = position () .getValue ();
+	const auto & q  = orientation () .getValue () .quat ();
+	const auto   t  = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (p .x (), p .y (), p .z ()));
+
+	auto it = btTransform ();
+	auto im = Matrix4f ();
+
+	im .set (position () .getValue (), orientation () .getValue ());
+	im .inverse ();
+
+	it .setFromOpenGLMatrix (im [0] .data ());
+
+	for (int32_t i = 0, size = compoundShape -> getNumChildShapes (); i < size; ++ i)
+		compoundShape -> updateChildTransform (i, it, compoundShape -> getChildShape (i));
+
+	motionState -> setWorldTransform (t);
+
+	rigidBody -> setMotionState (motionState .get ());
+}
+
+void
+RigidBody::set_linearVelocity ()
+{
+	rigidBody -> setLinearVelocity (btVector3 (linearVelocity () .getX (), linearVelocity () .getY (), linearVelocity () .getZ ()));
+}
+
+void
+RigidBody::set_angularVelocity ()
+{
+	rigidBody -> setAngularVelocity (btVector3 (angularVelocity () .getX (), angularVelocity () .getY (), angularVelocity () .getZ ()));
+}
+
+void
+RigidBody::set_centerOfMass ()
+{
+	rigidBody -> setCenterOfMassTransform (btTransform (btQuaternion (0, 0, 0, 1), btVector3 (centerOfMass () .getX (), centerOfMass () .getY (), centerOfMass () .getZ ())));
+}
+
+void
+RigidBody::set_massProps ()
+{
+	auto localInertia = btVector3 (inertia () [0] + inertia () [1] + inertia () [2],
+	                               inertia () [3] + inertia () [4] + inertia () [5],
+	                               inertia () [6] + inertia () [7] + inertia () [8]);
+
+	compoundShape -> calculateLocalInertia (fixed () ? 0 : mass (), localInertia);
+
+	rigidBody -> setMassProps (fixed () ? 0 : mass (), localInertia);
+}
+
+void
+RigidBody::set_useGlobalGravity ()
+{
+	if (useGlobalGravity ())
+	{
+		rigidBody -> setFlags (0);
+	}
+	else
+	{
+		rigidBody -> setFlags (BT_DISABLE_WORLD_GRAVITY);
+		rigidBody -> setGravity (btVector3 (0, 0, 0));
+	}
+}
+
+void
 RigidBody::set_forces ()
 {
 	force = std::accumulate (forces () .cbegin (),
 	                         forces () .cend (),
 	                         Vector3f (),
 	                         [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
+
+	rigidBody -> applyForce (btVector3 (force .x (), force .y (), force .z ()), btVector3 (0, 0, 0));
 }
 
 void
 RigidBody::set_geometry ()
 {
-	// Remove collidable n-body nodes from global CollisionCollection.
-
-	getBrowser () -> removeCollidableNodes (geometryNodes);
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> removeInterest (&SFTime::addEvent, transform);
 
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -232,54 +282,63 @@ RigidBody::set_geometry ()
 
 	geometryNodes .set (value .cbegin (), value .cend ());
 
-	// Set body.
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> addInterest (&SFTime::addEvent, transform);
+
+	set_compoundShape ();
+}
+
+void
+RigidBody::set_compoundShape ()
+{
+	for (int32_t i = compoundShape -> getNumChildShapes () - 1; i >= 0; -- i)
+		compoundShape -> removeChildShape (compoundShape -> getChildShape (i));
+
+	const auto & t = negate (position () .getValue ());
+	const auto & q = inverse (orientation () .getValue ()) .quat ();
+	const auto   m = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (t .x (), t .y (), t .z ()));
 
 	for (const auto & geometryNode : geometryNodes)
-		geometryNode -> setBody (X3DPtr <RigidBody> (this));
+		compoundShape -> addChildShape (m, geometryNode -> getCompoundShape () .get ());
+}
 
-	// Register collidable n-body nodes for global CollisionCollection.
+void
+RigidBody::set_rigidBody ()
+{
+	btRigidBody::btRigidBodyConstructionInfo rbInfo (0, motionState .get (), compoundShape .get ());
 
-	getBrowser () -> addCollidableNodes (geometryNodes);
-
-	// Update geometry nodes translaton and rotation.
+	rigidBody .reset (new btRigidBody (rbInfo));
 
 	set_position ();
+	set_orientation ();
+	set_linearVelocity ();
+	set_angularVelocity ();
+	set_centerOfMass ();
+	set_massProps ();
+	set_useGlobalGravity ();
+	set_forces ();
 }
 
 void
 RigidBody::update ()
 {
-	if (autoDisable ())
-	{
-		if (abs (linearVelocity () .getValue ()) <  0.001)
-			return;
-	}
-	else
-	{
-		if (abs (linearVelocity () .getValue ()) < disableLinearSpeed ())
-			return;
-	}
+	btTransform transform;
 
-	const float currentFrameRate   = getBrowser () -> getCurrentFrameRate ();
-	const auto  linearDamping      = linearVelocity () * linearDampingFactor () .getValue ();
-	auto        linearAcceleration = useGlobalGravity () ? gravity : Vector3f ();
+	motionState -> getWorldTransform (transform);
 
-	if (mass ())
-		linearAcceleration += force / mass () .getValue ();
+	const auto btOrigin          = transform .getOrigin ();
+	const auto btQuaternion      = transform .getRotation ();
+	const auto btLinearVeloctity = rigidBody -> getLinearVelocity ();
+	const auto btAngularVelocity = rigidBody -> getAngularVelocity ();
 
-	linearVelocity () += linearAcceleration / currentFrameRate;
-	
-	if (autoDamp ())
-		linearVelocity () -= linearDamping;
-
-	position () += linearVelocity () / currentFrameRate;
+	position ()        = Vector3f (btOrigin .getX (), btOrigin .getY (), btOrigin .getZ ());
+	orientation ()     = Rotation4d (Quaternion4d (btQuaternion .x (), btQuaternion .y (), btQuaternion .z (), btQuaternion .w ()));
+	linearVelocity ()  = Vector3f (btLinearVeloctity .getX (), btLinearVeloctity .getY (), btLinearVeloctity .getZ ());
+	angularVelocity () = Vector3f (btAngularVelocity .getX (), btAngularVelocity .getY (), btAngularVelocity .getZ ());
 }
 
-void
-RigidBody::set_shutdown ()
-{
-	getBrowser () -> removeCollidableNodes (geometryNodes);
-}
+RigidBody::~RigidBody ()
+{ }
 
 } // X3D
 } // titania

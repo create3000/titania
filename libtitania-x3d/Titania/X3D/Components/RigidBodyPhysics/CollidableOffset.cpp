@@ -96,10 +96,8 @@ CollidableOffset::initialize ()
 	X3DNBodyCollidableNode::initialize ();
 
 	collidable () .addInterest (&CollidableOffset::set_collidable, this);
-	addInterest (&CollidableOffset::eventsProcessed, this);
 
 	set_collidable ();
-	eventsProcessed ();
 }
 
 Box3d
@@ -118,27 +116,12 @@ CollidableOffset::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
 }
 
-Matrix4d
-CollidableOffset::getCollidableMatrix () const
-{
-	if (collidableNode)
-		return collidableNode -> getCollidableMatrix () * getMatrix ();
-
-	throw Error <INVALID_NODE> ("CollidableOffset::getCollidableMatrix");
-}
-
-const CollidableGeometry &
-CollidableOffset::getCollidableGeometry () const
-{
-	if (collidableNode)
-		return collidableNode -> getCollidableGeometry ();
-
-	throw Error <INVALID_NODE> ("CollidableOffset::getCollidableGeometry");
-}
-
 void
 CollidableOffset::set_collidable ()
 {
+	if (getCompoundShape () -> getNumChildShapes ())
+		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
+
 	if (collidableNode)
 		collidableNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
 
@@ -149,15 +132,11 @@ CollidableOffset::set_collidable ()
 		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 
 		setCameraObject (collidableNode -> isCameraObject ());
+
+		getCompoundShape () -> addChildShape (getLocalTransform (), collidableNode -> getCompoundShape () .get ());
 	}
 	else
 		setCameraObject (false);
-}
-
-void
-CollidableOffset::eventsProcessed ()
-{
-	setMatrix (translation () .getValue (), rotation () .getValue ());
 }
 
 void

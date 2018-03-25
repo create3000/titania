@@ -56,10 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class X3DNBodyCollidableNode;
-
-using CollidableIndex = std::map <Vector3i, std::set <X3DNBodyCollidableNode*>>;
-
 class CollisionCollection :
 	virtual public X3DChildNode
 {

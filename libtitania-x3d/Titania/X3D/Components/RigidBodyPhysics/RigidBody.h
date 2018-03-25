@@ -53,10 +53,10 @@
 
 #include "../Core/X3DNode.h"
 
+#include <btBulletDynamicsCommon.h>
+
 namespace titania {
 namespace X3D {
-
-class X3DNBodyCollidableNode;
 
 class RigidBody :
 	virtual public X3DNode
@@ -70,12 +70,6 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final override;
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
 
 	///  @name Common members
 
@@ -283,14 +277,21 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
+	///  @name Member access
 
-protected:
+	const std::shared_ptr <btRigidBody> &
+	getRigidBody () const
+	{ return rigidBody; }
 
-	friend class RigidBodyCollection;
+	///  @name Operations
 
 	void
-	setGravity (const Vector3f & value)
-	{ gravity = value; }
+	update ();
+
+	///  @name Destruction
+
+	virtual
+	~RigidBody () final override;
 
 
 private:
@@ -304,10 +305,28 @@ private:
 	///  @name Event handlers
 
 	void
-	set_fixed ();
+	set_position ();
 
 	void
-	set_position ();
+	set_orientation ();
+
+	void
+	set_transform ();
+
+	void
+	set_linearVelocity ();
+	
+	void
+	set_angularVelocity ();
+
+	void
+	set_centerOfMass ();
+
+	void
+	set_massProps ();
+
+	void
+	set_useGlobalGravity ();
 
 	void
 	set_forces ();
@@ -316,13 +335,10 @@ private:
 	set_geometry ();
 
 	void
-	update ();
+	set_compoundShape ();
 
 	void
-	updateGeometries ();
-
-	void
-	set_shutdown ();
+	set_rigidBody ();
 
 	///  @name Static members
 
@@ -330,7 +346,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -363,10 +379,14 @@ private:
 
 	Fields fields;
 
-	Vector3f                             gravity;
-	Vector3f                             force;
-	X3DPtrArray <X3DNBodyCollidableNode> geometryNodes;
+	///  @name Members
 
+	Vector3f                               force;
+	X3DPtrArray <X3DNBodyCollidableNode>   geometryNodes;
+	std::shared_ptr <btCompoundShape>      compoundShape;
+	std::shared_ptr <btDefaultMotionState> motionState;
+	std::shared_ptr <btRigidBody>          rigidBody;
+	SFTime                                 transform;
 };
 
 } // X3D

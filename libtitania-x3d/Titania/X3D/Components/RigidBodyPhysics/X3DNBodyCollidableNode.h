@@ -55,24 +55,10 @@
 #include "../Grouping/X3DBoundedObject.h"
 #include "../Grouping/X3DTransformMatrix3DObject.h"
 
+#include <btBulletDynamicsCommon.h>
+
 namespace titania {
 namespace X3D {
-
-template <class Type>
-class BVH;
-
-class RigidBody;
-
-class CollidableGeometry {
-public:
-
-	Box3d                          bbox;
-	std::vector <Vector3d>         points;
-	std::vector <Vector3d>         edges;
-	std::vector <Vector3d>         normals;
-	std::shared_ptr <BVH <double>> bvh;
-
-};
 
 class X3DNBodyCollidableNode :
 	virtual public X3DChildNode,
@@ -110,18 +96,11 @@ public:
 	///  @name Member access
 
 	void
-	setBody (const X3DPtr <RigidBody> & value);
+	setLocalTransform (const Vector3f & t, const Rotation4d & r);
 
-	const X3DPtr <RigidBody> &
-	getBody () const;
-
-	virtual
-	Matrix4d
-	getCollidableMatrix () const = 0;
-
-	virtual
-	const CollidableGeometry &
-	getCollidableGeometry () const = 0;
+	const std::shared_ptr <btCompoundShape> &
+	getCompoundShape () const
+	{ return compoundShape; }
 
 	///  @name Destruction
 
@@ -143,10 +122,20 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	btTransform
+	getLocalTransform () const;
+
 
 private:
 
-	///  @name Members
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -159,7 +148,9 @@ private:
 
 	Fields fields;
 
-	X3DPtr <RigidBody> bodyNode;
+	///  @name Members
+
+	std::shared_ptr <btCompoundShape> compoundShape;
 
 };
 

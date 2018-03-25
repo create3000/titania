@@ -51,10 +51,12 @@
 #include "CollidableShape.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
+
+#include "../Geometry3D/Box.h"
+#include "../Geometry3D/Sphere.h"
 #include "../Shape/Shape.h"
 #include "../Rendering/X3DGeometryNode.h"
 
@@ -75,7 +77,7 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	                    fields (),
 	                 shapeNode (),
 	              geometryNode (),
-	        collidableGeometry ()
+	            collisionShape ()
 {
 	addType (X3DConstants::CollidableShape);
 
@@ -102,10 +104,8 @@ CollidableShape::initialize ()
 	X3DNBodyCollidableNode::initialize ();
 
 	shape () .addInterest (&CollidableShape::set_shape, this);
-	addInterest (&CollidableShape::eventsProcessed, this);
 
 	set_shape ();
-	eventsProcessed ();
 }
 
 Box3d
@@ -122,24 +122,6 @@ CollidableShape::getBBox () const
 	}
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
-}
-
-Matrix4d
-CollidableShape::getCollidableMatrix () const
-{
-	if (geometryNode)
-		return getMatrix ();
-
-	throw Error <INVALID_NODE> ("CollidableOffset::getCollidableMatrix");
-}
-
-const CollidableGeometry &
-CollidableShape::getCollidableGeometry () const
-{
-	if (geometryNode)
-		return collidableGeometry;
-
-	throw Error <INVALID_NODE> ("CollidableShape::getCollidableGeometry");
 }
 
 void
@@ -173,7 +155,7 @@ CollidableShape::set_geometry ()
 		geometryNode -> removeInterest (&CollidableShape::set_collidableGeometry, this);
 
 	if (shapeNode)
-		geometryNode = shapeNode -> getGeometry ();
+		geometryNode .set (shapeNode -> getGeometry ());
 
 	if (geometryNode)
 		geometryNode -> addInterest (&CollidableShape::set_collidableGeometry, this);
@@ -184,67 +166,42 @@ CollidableShape::set_geometry ()
 void
 CollidableShape::set_collidableGeometry ()
 {
+	if (collisionShape)
+		getCompoundShape () -> removeChildShape (collisionShape .get ());
+
 	if (geometryNode)
 	{
-		// Triangulate geometry
-
-		std::vector <Color4f>  colors_;
-		TexCoordArray          texCoords_;
-		std::vector <Vector3f> normals_;
-		std::vector <Vector3d> vertices;
-
-		geometryNode -> triangulate (colors_, texCoords_, normals_, vertices);
-
-		// BBox
-
-		collidableGeometry .bbox = geometryNode -> getBBox ();
-
-		// Points
-
-		auto & points = collidableGeometry .points;
-
-		points = vertices;
-
-		std::sort (points .begin (), points .end ());
-		points .erase (std::unique (points .begin (), points .end ()), points .end ());
-
-		// Edges
-
-		auto & edges = collidableGeometry .edges;
-
-		edges .clear ();
-
-		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+		switch (geometryNode -> getType () .back ())
 		{
-			edges .emplace_back (vertices [i + 0] - vertices [i + 1]);
-			edges .emplace_back (vertices [i + 1] - vertices [i + 2]);
-			edges .emplace_back (vertices [i + 2] - vertices [i + 0]);
+			case X3DConstants::Box:
+			{
+				const auto box  = dynamic_cast <Box*> (geometryNode .getValue ());
+				const auto half = box -> size () / 2.0f;
+
+				collisionShape .reset (new btBoxShape (btVector3 (half .x (), half .y (), half .z ())));
+				break;
+			}
+			case X3DConstants::Sphere:
+			{
+				const auto sphere = dynamic_cast <Sphere*> (geometryNode .getValue ());
+
+				collisionShape .reset (new btSphereShape (sphere -> radius ()));
+				break;
+			}
+			default:
+			{
+				collisionShape .reset ();
+				break;
+			}
 		}
-
-		std::sort (edges .begin (), edges .end ());
-		edges .erase (std::unique (edges .begin (), edges .end ()), edges .end ());
-		
-		// Face normals
-
-		auto & normals = collidableGeometry .normals;
-
-		normals .clear ();
-
-		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
-		{
-			normals .emplace_back (Triangle3d (vertices [i], vertices [i + 1], vertices [i + 2]) .normal ());
-		}
-
-		// Create BVH
-
-		collidableGeometry .bvh .reset (new BVH <double> ({ }, std::move (vertices)));
 	}
-}
+	else
+	{
+		collisionShape .reset ();	
+	}
 
-void
-CollidableShape::eventsProcessed ()
-{
-	setMatrix (translation () .getValue (), rotation () .getValue ());
+	if (collisionShape)
+		getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
 }
 
 void
