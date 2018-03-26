@@ -146,6 +146,9 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	torques ()             .setUnit (UnitCategory::FORCE);
 	disableLinearSpeed ()  .setUnit (UnitCategory::SPEED);
 	disableAngularSpeed () .setUnit (UnitCategory::ANGULAR_RATE);
+
+	// Manage gravity.
+	rigidBody -> setFlags (rigidBody -> getFlags () & ~BT_DISABLE_WORLD_GRAVITY);
 }
 
 X3DBaseNode*
@@ -169,7 +172,6 @@ RigidBody::initialize ()
 	autoDamp ()             .addInterest (&RigidBody::set_damping,            this);
 	linearDampingFactor ()  .addInterest (&RigidBody::set_damping,            this);
 	angularDampingFactor () .addInterest (&RigidBody::set_damping,            this);
-	useGlobalGravity ()     .addInterest (&RigidBody::set_useGlobalGravity,   this);
 	forces ()               .addInterest (&RigidBody::set_forces,             this);
 	torques ()              .addInterest (&RigidBody::set_torques,            this);
 	autoDisable ()          .addInterest (&RigidBody::set_disable,            this);
@@ -279,22 +281,6 @@ RigidBody::set_massProps ()
 }
 
 void
-RigidBody::set_useGlobalGravity ()
-{
-	if (useGlobalGravity ())
-	{
-		rigidBody -> setFlags (0);
-	}
-	else
-	{
-		rigidBody -> setFlags (BT_DISABLE_WORLD_GRAVITY);
-		rigidBody -> setGravity (btVector3 (0, 0, 0));
-	}
-
-	rigidBody -> activate ();
-}
-
-void
 RigidBody::set_forces ()
 {
 	force = std::accumulate (forces () .cbegin (),
@@ -381,16 +367,16 @@ RigidBody::set_rigidBody ()
 	set_damping ();
 	set_centerOfMass ();
 	set_massProps ();
-	set_useGlobalGravity ();
 	set_disable ();
 }
 
 void
-RigidBody::applyForces ()
+RigidBody::applyForces (const Vector3f & gravity)
 {
 	if (fixed ())
 		return;
 
+	rigidBody -> setGravity (useGlobalGravity () ? btVector3 (gravity .x (), gravity .y (), gravity .z ()) : btVector3 (0, 0, 0));
 	rigidBody -> applyForce (btVector3 (force .x (), force .y (), force .z ()), btVector3 (0, 0, 0));
 	rigidBody -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
 }

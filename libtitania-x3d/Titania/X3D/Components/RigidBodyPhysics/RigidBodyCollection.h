@@ -241,6 +241,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member access
+
+	time_type
+	getTimeStep () const;
+
 	///  @name Event handlers
 
 	void
@@ -279,7 +284,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -305,17 +310,18 @@ private:
 
 	Fields fields;
 
-	X3DPtrArray <RigidBody>      bodyNodes;
-	X3DPtr <CollisionCollection> colliderNode;
-	X3DPtr <CollisionSensor>     collisionSensorNode;
+	///  @name Members
 
+	X3DPtrArray <RigidBody>                               bodyNodes;
+	X3DPtr <CollisionCollection>                          colliderNode;
+	X3DPtr <CollisionSensor>                              collisionSensorNode;
 	std::shared_ptr <btBroadphaseInterface>               broadphase;
 	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
 	std::shared_ptr <btCollisionDispatcher>               dispatcher;
 	std::shared_ptr <btSequentialImpulseConstraintSolver> solver;
 	std::shared_ptr <btDiscreteDynamicsWorld>             dynamicsWorld;
 	std::vector <std::shared_ptr <btRigidBody>>           rigidBodies;
-	time_type                                             deltaTime;
+	mutable time_type                                     deltaTime;
 
 };
 

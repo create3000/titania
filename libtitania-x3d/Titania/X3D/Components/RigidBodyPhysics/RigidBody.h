@@ -286,7 +286,7 @@ public:
 	///  @name Operations
 
 	void
-	applyForces ();
+	applyForces (const Vector3f & gravity);
 
 	void
 	update ();
@@ -333,9 +333,6 @@ private:
 
 	void
 	set_massProps ();
-
-	void
-	set_useGlobalGravity ();
 
 	void
 	set_forces ();

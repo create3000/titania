@@ -97,6 +97,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
 	                solver (new btSequentialImpulseConstraintSolver ()),
 	         dynamicsWorld (new btDiscreteDynamicsWorld (dispatcher .get (), broadphase .get (), solver .get (), collisionConfiguration .get ())),
+	           rigidBodies (),
 	             deltaTime (0)
 {
 	addType (X3DConstants::RigidBodyCollection);
@@ -182,6 +183,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		set_enabled ();
 }
 
+time_type
+RigidBodyCollection::getTimeStep () const
+{
+	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
+
+	const time_type dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());
+	time_type       deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
+
+	return deltaTime;
+}
+
 void
 RigidBodyCollection::set_enabled ()
 {
@@ -207,29 +219,14 @@ RigidBodyCollection::set_gravity ()
 void
 RigidBodyCollection::set_contactSurfaceThickness ()
 {
-	for (const auto rigidBody : rigidBodies)
-		rigidBody -> getCollisionShape () -> setMargin (contactSurfaceThickness ());
+	for (const auto bodyNode : bodyNodes)
+		bodyNode -> getRigidBody () -> getCollisionShape () -> setMargin (contactSurfaceThickness ());
 }
 
 void
 RigidBodyCollection::set_collider ()
 {
-	if (colliderNode)
-	{
-		colliderNode -> bounce ()               .removeInterest (&RigidBodyCollection::set_bounce,               this);
-		colliderNode -> frictionCoefficients () .removeInterest (&RigidBodyCollection::set_frictionCoefficients, this);
-	}
-
 	colliderNode .set (x3d_cast <CollisionCollection*> (collider ()));
-
-	if (colliderNode)
-	{
-		colliderNode -> bounce ()               .addInterest (&RigidBodyCollection::set_bounce,               this);
-		colliderNode -> frictionCoefficients () .addInterest (&RigidBodyCollection::set_frictionCoefficients, this);
-	}
-
-	set_bounce ();
-	set_frictionCoefficients ();
 
 	collisionSensorNode -> collider () = colliderNode;
 	collisionSensorNode -> enabled ()  = colliderNode;
@@ -299,8 +296,6 @@ RigidBodyCollection::set_bodies ()
 		bodyNode -> enabled () .addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
 	set_dynamicsWorld ();
-	set_bounce ();
-	set_frictionCoefficients ();
 }
 
 void
@@ -326,10 +321,10 @@ RigidBodyCollection::set_dynamicsWorld ()
 void
 RigidBodyCollection::update ()
 {
-	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
+	time_type deltaTime = getTimeStep ();
 
-	const time_type dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());
-	time_type       deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
+	set_bounce ();
+	set_frictionCoefficients ();
 
 	if (preferAccuracy ())
 	{
@@ -338,7 +333,7 @@ RigidBodyCollection::update ()
 		for (int32_t i = 0; i < iterations (); ++ i)
 		{
 			for (const auto & bodyNode : bodyNodes)
-				bodyNode	-> applyForces ();
+				bodyNode	-> applyForces (gravity ());
 
 			dynamicsWorld -> stepSimulation (deltaTime, 0);
 		}
@@ -346,9 +341,9 @@ RigidBodyCollection::update ()
 	else
 	{
 		for (const auto & bodyNode : bodyNodes)
-			bodyNode	-> applyForces ();
+			bodyNode	-> applyForces (gravity ());
 
-		dynamicsWorld -> stepSimulation (deltaTime, iterations (), deltaTime / iterations ());
+		dynamicsWorld -> stepSimulation (deltaTime, iterations () + 2, deltaTime / iterations ());
 	}
 
 	for (const auto & bodyNode : bodyNodes)
