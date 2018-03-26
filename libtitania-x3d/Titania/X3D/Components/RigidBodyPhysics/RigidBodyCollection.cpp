@@ -91,7 +91,6 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	                fields (),
 	             bodyNodes (),
 	          colliderNode (),
-	   collisionSensorNode (new CollisionSensor (getExecutionContext ())),
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
@@ -124,7 +123,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
 
-	addChildObjects (bodyNodes, colliderNode, collisionSensorNode);
+	addChildObjects (bodyNodes, colliderNode);
 
 	gravity ()                 .setUnit (UnitCategory::ACCELERATION);
 	constantForceMix ()        .setUnit (UnitCategory::FORCE);
@@ -155,9 +154,6 @@ RigidBodyCollection::initialize ()
 	collider ()                .addInterest (&RigidBodyCollection::set_collider,                this);
 	bodies ()                  .addInterest (&RigidBodyCollection::set_bodies,                  this);
 
-	collisionSensorNode -> contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
-	collisionSensorNode -> setup ();
-
 	set_enabled ();
 	set_gravity ();
 	set_collider ();
@@ -172,12 +168,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 	{
 		getBrowser () -> sensorEvents () .removeInterest (&RigidBodyCollection::update, this);
-		getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
+		getExecutionContext () -> isLive () .removeInterest (&RigidBodyCollection::set_enabled, this);
 	}
 
-	collisionSensorNode -> setExecutionContext (executionContext);
-
 	X3DChildNode::setExecutionContext (executionContext);
+
+	getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
 
 	if (isInitialized ())
 		set_enabled ();
@@ -227,9 +223,6 @@ void
 RigidBodyCollection::set_collider ()
 {
 	colliderNode .set (x3d_cast <CollisionCollection*> (collider ()));
-
-	collisionSensorNode -> collider () = colliderNode;
-	collisionSensorNode -> enabled ()  = colliderNode;
 }
 
 void

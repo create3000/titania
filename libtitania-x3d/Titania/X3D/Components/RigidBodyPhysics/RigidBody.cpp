@@ -147,7 +147,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	disableLinearSpeed ()  .setUnit (UnitCategory::SPEED);
 	disableAngularSpeed () .setUnit (UnitCategory::ANGULAR_RATE);
 
-	// Manage gravity.
+	// Manage gravity by ourself.
 	rigidBody -> setFlags (rigidBody -> getFlags () & ~BT_DISABLE_WORLD_GRAVITY);
 }
 
@@ -352,12 +352,6 @@ RigidBody::set_compoundShape ()
 	for (const auto & geometryNode : geometryNodes)
 		compoundShape -> addChildShape (btTransform (), geometryNode -> getCompoundShape () .get ());
 
-	set_rigidBody ();
-}
-
-void
-RigidBody::set_rigidBody ()
-{
 	set_position ();
 	set_orientation ();
 	set_transform ();

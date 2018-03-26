@@ -314,7 +314,6 @@ private:
 
 	X3DPtrArray <RigidBody>                               bodyNodes;
 	X3DPtr <CollisionCollection>                          colliderNode;
-	X3DPtr <CollisionSensor>                              collisionSensorNode;
 	std::shared_ptr <btBroadphaseInterface>               broadphase;
 	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
 	std::shared_ptr <btCollisionDispatcher>               dispatcher;

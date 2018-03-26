@@ -349,9 +349,6 @@ private:
 	void
 	set_compoundShape ();
 
-	void
-	set_rigidBody ();
-
 	///  @name Static members
 
 	static const ComponentType component;
