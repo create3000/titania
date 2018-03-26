@@ -124,6 +124,13 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "bodies",                  bodies ());
 
 	addChildObjects (bodyNodes, colliderNode, collisionSensorNode);
+
+	gravity ()                 .setUnit (UnitCategory::ACCELERATION);
+	constantForceMix ()        .setUnit (UnitCategory::FORCE);
+	maxCorrectionSpeed ()      .setUnit (UnitCategory::SPEED);
+	contactSurfaceThickness () .setUnit (UnitCategory::LENGTH);
+	disableLinearSpeed ()      .setUnit (UnitCategory::LENGTH);
+	disableAngularSpeed ()     .setUnit (UnitCategory::ANGULAR_RATE);
 }
 
 X3DBaseNode*
@@ -140,11 +147,12 @@ RigidBodyCollection::initialize ()
 	isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
 	getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
 
-	enabled ()      .addInterest (&RigidBodyCollection::set_enabled,   this);
-	set_contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
-	gravity ()      .addInterest (&RigidBodyCollection::set_gravity,   this);
-	collider ()     .addInterest (&RigidBodyCollection::set_collider,  this);
-	bodies ()       .addInterest (&RigidBodyCollection::set_bodies,    this);
+	enabled ()                 .addInterest (&RigidBodyCollection::set_enabled,                 this);
+	set_contacts ()            .addInterest (&RigidBodyCollection::set_contacts_,               this);
+	gravity ()                 .addInterest (&RigidBodyCollection::set_gravity,                 this);
+	contactSurfaceThickness () .addInterest (&RigidBodyCollection::set_contactSurfaceThickness, this);
+	collider ()                .addInterest (&RigidBodyCollection::set_collider,                this);
+	bodies ()                  .addInterest (&RigidBodyCollection::set_bodies,                  this);
 
 	collisionSensorNode -> contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
 	collisionSensorNode -> setup ();
@@ -197,19 +205,77 @@ RigidBodyCollection::set_gravity ()
 }
 
 void
+RigidBodyCollection::set_contactSurfaceThickness ()
+{
+	for (const auto rigidBody : rigidBodies)
+		rigidBody -> getCollisionShape () -> setMargin (contactSurfaceThickness ());
+}
+
+void
 RigidBodyCollection::set_collider ()
 {
+	if (colliderNode)
+	{
+		colliderNode -> bounce ()               .removeInterest (&RigidBodyCollection::set_bounce,               this);
+		colliderNode -> frictionCoefficients () .removeInterest (&RigidBodyCollection::set_frictionCoefficients, this);
+	}
+
 	colliderNode .set (x3d_cast <CollisionCollection*> (collider ()));
+
+	if (colliderNode)
+	{
+		colliderNode -> bounce ()               .addInterest (&RigidBodyCollection::set_bounce,               this);
+		colliderNode -> frictionCoefficients () .addInterest (&RigidBodyCollection::set_frictionCoefficients, this);
+	}
+
+	set_bounce ();
+	set_frictionCoefficients ();
 
 	collisionSensorNode -> collider () = colliderNode;
 	collisionSensorNode -> enabled ()  = colliderNode;
 }
 
 void
+RigidBodyCollection::set_bounce ()
+{
+	if (colliderNode)
+	{
+		for (const auto & bodyNode : bodyNodes)
+			bodyNode -> getRigidBody () -> setRestitution (colliderNode -> bounce ());
+	}
+	else
+	{
+		for (const auto & bodyNode : bodyNodes)
+			bodyNode -> getRigidBody () -> setRestitution (0);
+	}
+}
+
+void
+RigidBodyCollection::set_frictionCoefficients ()
+{
+	if (colliderNode)
+	{
+		for (const auto & bodyNode : bodyNodes)
+		{
+			bodyNode -> getRigidBody () -> setFriction (colliderNode -> frictionCoefficients () .getX ());
+			bodyNode -> getRigidBody () -> setRollingFriction (colliderNode -> frictionCoefficients () .getY ());
+		}
+	}
+	else
+	{
+		for (const auto & bodyNode : bodyNodes)
+		{
+			bodyNode -> getRigidBody () -> setFriction (0.5);
+			bodyNode -> getRigidBody () -> setRollingFriction (0);
+		}
+	}
+}
+
+void
 RigidBodyCollection::set_bodies ()
 {
 	for (const auto & bodyNode : bodyNodes)
-		bodyNode -> removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+		bodyNode -> enabled () .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
 	std::vector <RigidBody*> value;
 
@@ -224,9 +290,11 @@ RigidBodyCollection::set_bodies ()
 	bodyNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & bodyNode : bodyNodes)
-		bodyNode -> addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+		bodyNode -> enabled () .addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
 	set_dynamicsWorld ();
+	set_bounce ();
+	set_frictionCoefficients ();
 }
 
 void
@@ -246,14 +314,7 @@ RigidBodyCollection::set_dynamicsWorld ()
 	}
 
 	for (const auto rigidBody : rigidBodies)
-	{
-		if (colliderNode)
-		{
-			rigidBody -> getCollisionShape () -> setMargin (contactSurfaceThickness ());
-		}
-
 		dynamicsWorld -> addRigidBody (rigidBody .get ());
-	}
 }
 
 void

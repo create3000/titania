@@ -93,8 +93,9 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	       fields (),
 	geometryNodes (),
 	compoundShape (new btCompoundShape ()),
+	   emptyShape (new btEmptyShape ()),
 	  motionState (new btDefaultMotionState ()),
-	    rigidBody (),
+	    rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
 	    transform (),
 	        force (),
 	       torque ()
@@ -136,7 +137,16 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addChildObjects (geometryNodes, transform);
 
-	// XXX: Define units!!!
+	// Units
+
+	position ()            .setUnit (UnitCategory::LENGTH);
+	linearVelocity ()      .setUnit (UnitCategory::SPEED);
+	angularVelocity ()     .setUnit (UnitCategory::ANGULAR_RATE);
+	mass ()                .setUnit (UnitCategory::MASS);
+	forces ()              .setUnit (UnitCategory::FORCE);
+	torques ()             .setUnit (UnitCategory::FORCE);
+	disableLinearSpeed ()  .setUnit (UnitCategory::SPEED);
+	disableAngularSpeed () .setUnit (UnitCategory::ANGULAR_RATE);
 }
 
 X3DBaseNode*
@@ -176,8 +186,6 @@ RigidBody::initialize ()
 	transform .addInterest (&RigidBody::set_transform, this);
 
 	set_geometry ();
-	set_rigidBody ();
-
 	set_forces ();
 	set_torques ();
 }
@@ -362,23 +370,25 @@ RigidBody::set_compoundShape ()
 	for (int32_t i = compoundShape -> getNumChildShapes () - 1; i >= 0; -- i)
 		compoundShape -> removeChildShape (compoundShape -> getChildShape (i));
 
-	const auto & t = negate (position () .getValue ());
-	const auto & q = inverse (orientation () .getValue ()) .quat ();
-	const auto   m = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (t .x (), t .y (), t .z ()));
+	if (geometryNodes .size ())
+	{
+		for (const auto & geometryNode : geometryNodes)
+			compoundShape -> addChildShape (btTransform (), geometryNode -> getCompoundShape () .get ());
+	}
+	else
+	{
+		compoundShape -> addChildShape (btTransform (), emptyShape .get ());
+	}
 
-	for (const auto & geometryNode : geometryNodes)
-		compoundShape -> addChildShape (m, geometryNode -> getCompoundShape () .get ());
+	set_rigidBody ();
 }
 
 void
 RigidBody::set_rigidBody ()
 {
-	btRigidBody::btRigidBodyConstructionInfo rbInfo (0, motionState .get (), compoundShape .get ());
-
-	rigidBody .reset (new btRigidBody (rbInfo));
-
 	set_position ();
 	set_orientation ();
+	set_transform ();
 	set_linearVelocity ();
 	set_angularVelocity ();
 	set_finiteRotationAxis ();

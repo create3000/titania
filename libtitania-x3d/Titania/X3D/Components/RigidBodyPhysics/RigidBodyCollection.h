@@ -253,7 +253,16 @@ private:
 	set_gravity ();
 
 	void
+	set_contactSurfaceThickness ();
+
+	void
 	set_collider ();
+
+	void
+	set_bounce ();
+
+	void
+	set_frictionCoefficients ();
 
 	void
 	set_bodies ();

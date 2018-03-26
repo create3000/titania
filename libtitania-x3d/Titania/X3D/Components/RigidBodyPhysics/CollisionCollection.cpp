@@ -100,6 +100,10 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput, "collidables",              collidables ());
 
 	addChildObjects (collidableNodes);
+
+	minBounceSpeed ()           .setUnit (UnitCategory::SPEED);
+	surfaceSpeed ()             .setUnit (UnitCategory::SPEED);
+	softnessConstantForceMix () .setUnit (UnitCategory::FORCE);
 }
 
 X3DBaseNode*
@@ -121,34 +125,27 @@ CollisionCollection::initialize ()
 void
 CollisionCollection::set_collidables ()
 {
-	try
+	// Get collidable nodes.
+
+	collidableNodes .clear ();
+
+	for (const auto & node : collidables ())
 	{
-		// Get collidable nodes.
+		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
 
-		collidableNodes .clear ();
-
-		for (const auto & node : collidables ())
+		if (collidableNode)
 		{
-			const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
-
-			if (collidableNode)
-			{
-				collidableNodes .emplace_back (collidableNode);
-				continue;
-			}
-
-			const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
-
-			if (collisionSpaceNode)
-			{
-				for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
-					collidableNodes .emplace_back (collidableNode);
-			}
+			collidableNodes .emplace_back (collidableNode);
+			continue;
 		}
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
+
+		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+
+		if (collisionSpaceNode)
+		{
+			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
+				collidableNodes .emplace_back (collidableNode);
+		}
 	}
 }
 

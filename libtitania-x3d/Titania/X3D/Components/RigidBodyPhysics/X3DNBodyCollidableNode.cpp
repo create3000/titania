@@ -73,6 +73,8 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
 	addChildObjects (collisionShape);
+
+	translation () .setUnit (UnitCategory::LENGTH);
 }
 
 void
