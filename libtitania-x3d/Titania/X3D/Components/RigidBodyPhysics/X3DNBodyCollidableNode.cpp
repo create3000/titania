@@ -66,8 +66,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	             compoundShape (new btCompoundShape ()),
-	                emptyShape (new btEmptyShape ()),
+	             compoundShape (new btCompoundShape (true)),
 	            collisionShape ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);

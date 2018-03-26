@@ -123,17 +123,13 @@ CollidableOffset::set_collidable ()
 		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
 
 	if (collidableNode)
-	{
-		collidableNode -> isCameraObject ()         .removeInterest (const_cast <SFBool &> (isCameraObject ()));
-		collidableNode -> collisionShape_changed () .removeInterest (collisionShape_changed ());
-	}
+		collidableNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
 
 	collidableNode .set (x3d_cast <X3DNBodyCollidableNode*> (collidable ()));
 
 	if (collidableNode)
 	{
-		collidableNode -> isCameraObject ()         .addInterest (const_cast <SFBool &> (isCameraObject ()));
-		collidableNode -> collisionShape_changed () .addInterest (collisionShape_changed ());
+		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 
 		setCameraObject (collidableNode -> isCameraObject ());
 
@@ -142,11 +138,7 @@ CollidableOffset::set_collidable ()
 	else
 	{
 		setCameraObject (false);
-		getCompoundShape () -> addChildShape (getLocalTransform (), getEmptyShape () .get ());
 	}
-
-	// Propagate shape change.
-	collisionShape_changed () = getCurrentTime ();
 }
 
 void

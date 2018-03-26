@@ -92,8 +92,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	      X3DNode (),
 	       fields (),
 	geometryNodes (),
-	compoundShape (new btCompoundShape ()),
-	   emptyShape (new btEmptyShape ()),
+	compoundShape (new btCompoundShape (true)),
 	  motionState (new btDefaultMotionState ()),
 	    rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
 	    transform (),
@@ -336,10 +335,7 @@ void
 RigidBody::set_geometry ()
 {
 	for (const auto & geometryNode : geometryNodes)
-	{
 		geometryNode -> removeInterest (&SFTime::addEvent, transform);
-		geometryNode -> collisionShape_changed () .removeInterest (&RigidBody::set_compoundShape, this);
-	}
 
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -356,10 +352,7 @@ RigidBody::set_geometry ()
 	geometryNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & geometryNode : geometryNodes)
-	{
 		geometryNode -> addInterest (&SFTime::addEvent, transform);
-		geometryNode -> collisionShape_changed () .addInterest (&RigidBody::set_compoundShape, this);
-	}
 
 	set_compoundShape ();
 }
@@ -370,15 +363,8 @@ RigidBody::set_compoundShape ()
 	for (int32_t i = compoundShape -> getNumChildShapes () - 1; i >= 0; -- i)
 		compoundShape -> removeChildShape (compoundShape -> getChildShape (i));
 
-	if (geometryNodes .size ())
-	{
-		for (const auto & geometryNode : geometryNodes)
-			compoundShape -> addChildShape (btTransform (), geometryNode -> getCompoundShape () .get ());
-	}
-	else
-	{
-		compoundShape -> addChildShape (btTransform (), emptyShape .get ());
-	}
+	for (const auto & geometryNode : geometryNodes)
+		compoundShape -> addChildShape (btTransform (), geometryNode -> getCompoundShape () .get ());
 
 	set_rigidBody ();
 }
@@ -427,10 +413,10 @@ RigidBody::update ()
 	const auto btLinearVeloctity = rigidBody -> getLinearVelocity ();
 	const auto btAngularVelocity = rigidBody -> getAngularVelocity ();
 
-	position ()        = Vector3f (btOrigin .getX (), btOrigin .getY (), btOrigin .getZ ());
+	position ()        = Vector3f (btOrigin .x (), btOrigin .y (), btOrigin .z ());
 	orientation ()     = Rotation4d (Quaternion4d (btQuaternion .x (), btQuaternion .y (), btQuaternion .z (), btQuaternion .w ()));
-	linearVelocity ()  = Vector3f (btLinearVeloctity .getX (), btLinearVeloctity .getY (), btLinearVeloctity .getZ ());
-	angularVelocity () = Vector3f (btAngularVelocity .getX (), btAngularVelocity .getY (), btAngularVelocity .getZ ());
+	linearVelocity ()  = Vector3f (btLinearVeloctity .x (), btLinearVeloctity .y (), btLinearVeloctity .z ());
+	angularVelocity () = Vector3f (btAngularVelocity .x (), btAngularVelocity .y (), btAngularVelocity .z ());
 }
 
 RigidBody::~RigidBody ()

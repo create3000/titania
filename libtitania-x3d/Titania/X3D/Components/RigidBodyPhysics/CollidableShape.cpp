@@ -189,6 +189,8 @@ CollidableShape::set_geometry ()
 
 	if (shapeNode)
 		geometryNode .set (shapeNode -> getGeometry ());
+	else
+		geometryNode .set (nullptr);
 
 	if (geometryNode)
 		geometryNode -> addInterest (&CollidableShape::set_collidableGeometry, this);
@@ -254,13 +256,11 @@ CollidableShape::set_collidableGeometry ()
 	}
 	else
 	{
-		collisionShape = getEmptyShape ();	
+		collisionShape .reset ();	
 	}
 
-	getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
-
-	// Propagate shape change.
-	collisionShape_changed () = getCurrentTime ();
+	if (collisionShape)
+		getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
 }
 
 void

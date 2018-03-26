@@ -398,7 +398,6 @@ private:
 
 	X3DPtrArray <X3DNBodyCollidableNode>     geometryNodes;
 	std::shared_ptr <btCompoundShape>        compoundShape;
-	std::shared_ptr <btEmptyShape>           emptyShape;
 	std::shared_ptr <btDefaultMotionState>   motionState;
 	std::shared_ptr <btRigidBody>            rigidBody;
 	SFTime                                   transform;
