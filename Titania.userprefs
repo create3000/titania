@@ -1,8 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="experimental/main.cpp" Line="119" Column="1" />
+      <File FileName="experimental/main.cpp" Line="110" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.h" Line="400" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="403" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.h" Line="265" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.cpp" Line="350" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionCollection.cpp" Line="145" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionCollection.h" Line="191" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -11,7 +17,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.h" line="75" column="22" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

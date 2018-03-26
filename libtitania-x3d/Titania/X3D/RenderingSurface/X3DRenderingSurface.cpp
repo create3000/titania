@@ -82,19 +82,20 @@ X3DRenderingSurface::X3DRenderingSurface () :
 { }
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
-	Gtk::DrawingArea (),
-	      initialized (false),
-	          context (new RenderingContext (other ? other -> context : nullptr)),
-	       extensions (),
-	     antialiasing (0),
-	        frameRate (60),
-	      frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
-	      setupSignal (),
-	    reshapeSignal (),
-	     renderSignal (),
-	timeoutDispatcher (new Glib::Dispatcher ()),
-	timeoutConnection (),
-	            mutex ()
+	  Gtk::DrawingArea (),
+	        initialized (false),
+	            context (new RenderingContext (other ? other -> context : nullptr)),
+	         extensions (),
+	       antialiasing (0),
+	          frameRate (60),
+	processRenderEvents (true),
+	        frameBuffer (new FrameBuffer (this, 1, 1, 0, true)),
+	        setupSignal (),
+	      reshapeSignal (),
+	       renderSignal (),
+	  timeoutDispatcher (new Glib::Dispatcher ()),
+	  timeoutConnection (),
+	              mutex ()
 {
 	ContextLock lock (this);
 
@@ -133,14 +134,17 @@ X3DRenderingSurface::unlock ()
 void
 X3DRenderingSurface::queue_render ()
 {
-	if (std::this_thread::get_id () == mainTreadId)
+	if (processRenderEvents)
 	{
-		on_dispatch ();
-	}
-	else
-	{
-		if (timeoutDispatcher)
-			timeoutDispatcher -> emit ();
+		if (std::this_thread::get_id () == mainTreadId)
+		{
+			on_dispatch ();
+		}
+		else
+		{
+			if (timeoutDispatcher)
+				timeoutDispatcher -> emit ();
+		}
 	}
 }
 

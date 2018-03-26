@@ -95,6 +95,16 @@ public:
 	getFrameRate () const
 	{ return frameRate; }
 
+	///  Sets whether the context should process render events.
+	void
+	setProcessRenderEvents (const bool value)
+	{ processRenderEvents = value; }
+
+	///  Sets whether the context should process render events.
+	bool
+	getProcessRenderEvents () const
+	{ return processRenderEvents; }
+
 	///  @name Operations
 
 	///  Marks the currently rendered data (if any) as invalid, and queues a redraw of the widget.
@@ -215,6 +225,7 @@ private:
 	std::set <std::string>                                  extensions;
 	size_t                                                  antialiasing;
 	size_t                                                  frameRate;
+	bool                                                    processRenderEvents;
 	std::unique_ptr <FrameBuffer>                           frameBuffer;
 	sigc::signal <void>                                     setupSignal;
 	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;

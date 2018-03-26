@@ -77,10 +77,11 @@ CollisionCollection::Fields::Fields () :
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     X3DChildNode (),
-	           fields (),
-	  collidableNodes ()
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          X3DChildNode (),
+	                fields (),
+	       collidableNodes (),
+	appliedParametersTypes ()
 {
 	addType (X3DConstants::CollisionCollection);
 
@@ -117,36 +118,66 @@ CollisionCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	collidables () .addInterest (&CollisionCollection::set_collidables, this);
+	appliedParameters () .addInterest (&CollisionCollection::set_appliedParameters, this);
+	collidables ()       .addInterest (&CollisionCollection::set_collidables, this);
 
+	set_appliedParameters ();
 	set_collidables ();
+}
+
+void
+CollisionCollection::set_appliedParameters ()
+{
+	static const std::map <std::string, AppliedParametersType> appliedParametersIndex = {
+		std::make_pair ("BOUNCE",                 AppliedParametersType::BOUNCE),
+		std::make_pair ("USER_FRICTION",          AppliedParametersType::USER_FRICTION),
+		std::make_pair ("FRICTION_COEFFICIENT-2", AppliedParametersType::FRICTION_COEFFICIENT_2),
+		std::make_pair ("ERROR_REDUCTION",        AppliedParametersType::ERROR_REDUCTION),
+		std::make_pair ("CONSTANT_FORCE",         AppliedParametersType::CONSTANT_FORCE),
+		std::make_pair ("SPEED-1",                AppliedParametersType::SPEED_1),
+		std::make_pair ("SPEED-2",                AppliedParametersType::SPEED_2),
+		std::make_pair ("SLIP-1",                 AppliedParametersType::SLIP_1),
+		std::make_pair ("SLIP-2",                 AppliedParametersType::SLIP_2),
+	};
+
+	appliedParametersTypes .clear ();
+
+	for (const auto & value : basic::make_const_range (appliedParameters ()))
+	{
+		try
+		{
+			appliedParametersTypes .emplace (appliedParametersIndex .at (value));
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
 }
 
 void
 CollisionCollection::set_collidables ()
 {
-	// Get collidable nodes.
-
-	collidableNodes .clear ();
-
-	for (const auto & node : collidables ())
-	{
-		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
-
-		if (collidableNode)
-		{
-			collidableNodes .emplace_back (collidableNode);
-			continue;
-		}
-
-		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
-
-		if (collisionSpaceNode)
-		{
-			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
-				collidableNodes .emplace_back (collidableNode);
-		}
-	}
+//	// Get collidable nodes.
+//
+//	collidableNodes .clear ();
+//
+//	for (const auto & node : collidables ())
+//	{
+//		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
+//
+//		if (collidableNode)
+//		{
+//			collidableNodes .emplace_back (collidableNode);
+//			continue;
+//		}
+//
+//		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+//
+//		if (collisionSpaceNode)
+//		{
+//			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
+//				collidableNodes .emplace_back (collidableNode);
+//		}
+//	}
 }
 
 } // X3D

@@ -162,6 +162,7 @@ RenderThread::set_loadCount ()
 			return;
 
 		browser -> getLoadCount () .removeInterest (&RenderThread::set_loadCount, this);
+		browser -> setProcessRenderEvents (false);
 
 		// Start thread or timeout version depending on grafix card driver.
 

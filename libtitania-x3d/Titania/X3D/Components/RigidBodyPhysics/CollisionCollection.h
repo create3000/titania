@@ -56,6 +56,19 @@
 namespace titania {
 namespace X3D {
 
+enum class AppliedParametersType
+{
+	BOUNCE,
+	USER_FRICTION,
+	FRICTION_COEFFICIENT_2,
+	ERROR_REDUCTION,
+	CONSTANT_FORCE,
+	SPEED_1,
+	SPEED_2,
+	SLIP_1,
+	SLIP_2
+};
+
 class CollisionCollection :
 	virtual public X3DChildNode
 {
@@ -173,6 +186,10 @@ public:
 
 	///  @name Member access
 
+	const std::set <AppliedParametersType> &
+	getAppliedParameters () const
+	{ return appliedParametersTypes; }
+
 	const X3DPtrArray <X3DNBodyCollidableNode> &
 	getCollidables () const
 	{ return collidableNodes; }
@@ -187,6 +204,9 @@ private:
 	initialize () final override;
 
 	///  @name Event handlers
+
+	void
+	set_appliedParameters ();
 
 	void
 	set_collidables ();
@@ -218,6 +238,7 @@ private:
 	Fields fields;
 
 	X3DPtrArray <X3DNBodyCollidableNode> collidableNodes;
+	std::set <AppliedParametersType>     appliedParametersTypes;
 
 };
 

@@ -84,7 +84,7 @@ X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & ur
 	          parameter (parameter),
 	        description (),
 	       currentSpeed (0),
-	   currentFrameRate (0),
+	   currentFrameRate (60),
 	    supportedFields (sharedBrowser ? sharedBrowser -> supportedFields     : std::make_shared <SupportedFields> ()),
 	     supportedNodes (sharedBrowser ? sharedBrowser -> supportedNodes      : std::make_shared <SupportedNodes> (this)),
 	supportedComponents (sharedBrowser ? sharedBrowser -> supportedComponents : std::make_shared <SupportedComponents> ()),
@@ -193,14 +193,13 @@ X3DBrowser::set_prepareEvents ()
 {
 	if (getActiveLayer ())
 		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getCameraSpaceMatrix () .origin (), currentFrameRate);
-
 	else
 		currentSpeed .setPosition (Vector3f (), 0);
 
 	if (getClock () -> interval ())
 		currentFrameRate = 1 / getClock () -> interval ();
 	else
-		currentFrameRate = 0;
+		currentFrameRate = 60;
 }
 
 void

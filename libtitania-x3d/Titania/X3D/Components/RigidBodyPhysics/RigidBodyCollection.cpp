@@ -95,7 +95,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
-	                solver (new btSequentialImpulseConstraintSolver),
+	                solver (new btSequentialImpulseConstraintSolver ()),
 	         dynamicsWorld (new btDiscreteDynamicsWorld (dispatcher .get (), broadphase .get (), solver .get (), collisionConfiguration .get ())),
 	             deltaTime (0)
 {
@@ -240,14 +240,17 @@ RigidBodyCollection::set_bounce ()
 {
 	if (colliderNode)
 	{
-		for (const auto & bodyNode : bodyNodes)
-			bodyNode -> getRigidBody () -> setRestitution (colliderNode -> bounce ());
+		if (colliderNode -> getAppliedParameters () .count (AppliedParametersType::BOUNCE))
+		{
+			for (const auto & bodyNode : bodyNodes)
+				bodyNode -> getRigidBody () -> setRestitution (colliderNode -> bounce ());
+
+			return;
+		}
 	}
-	else
-	{
-		for (const auto & bodyNode : bodyNodes)
-			bodyNode -> getRigidBody () -> setRestitution (0);
-	}
+
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> getRigidBody () -> setRestitution (0);
 }
 
 void
@@ -255,19 +258,22 @@ RigidBodyCollection::set_frictionCoefficients ()
 {
 	if (colliderNode)
 	{
-		for (const auto & bodyNode : bodyNodes)
+		if (colliderNode -> getAppliedParameters () .count (AppliedParametersType::FRICTION_COEFFICIENT_2))
 		{
-			bodyNode -> getRigidBody () -> setFriction (colliderNode -> frictionCoefficients () .getX ());
-			bodyNode -> getRigidBody () -> setRollingFriction (colliderNode -> frictionCoefficients () .getY ());
+			for (const auto & bodyNode : bodyNodes)
+			{
+				bodyNode -> getRigidBody () -> setFriction (colliderNode -> frictionCoefficients () .getX ());
+				bodyNode -> getRigidBody () -> setRollingFriction (colliderNode -> frictionCoefficients () .getY ());
+			}
+
+			return;
 		}
 	}
-	else
+
+	for (const auto & bodyNode : bodyNodes)
 	{
-		for (const auto & bodyNode : bodyNodes)
-		{
-			bodyNode -> getRigidBody () -> setFriction (0.5);
-			bodyNode -> getRigidBody () -> setRollingFriction (0);
-		}
+		bodyNode -> getRigidBody () -> setFriction (0.5);
+		bodyNode -> getRigidBody () -> setRollingFriction (0);
 	}
 }
 
