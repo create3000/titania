@@ -233,7 +233,14 @@ RigidBodyCollection::set_bounce ()
 		if (colliderNode -> getAppliedParameters () .count (AppliedParametersType::BOUNCE))
 		{
 			for (const auto & bodyNode : bodyNodes)
-				bodyNode -> getRigidBody () -> setRestitution (colliderNode -> bounce ());
+			{
+				const auto & rigidBody = bodyNode -> getRigidBody ();
+
+				if (rigidBody -> getLinearVelocity () .length () > colliderNode -> minBounceSpeed ())
+					rigidBody -> setRestitution (colliderNode -> bounce ());
+				else
+					rigidBody -> setRestitution (0);
+			}
 
 			return;
 		}
