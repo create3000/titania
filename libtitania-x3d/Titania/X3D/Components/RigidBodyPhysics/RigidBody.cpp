@@ -92,7 +92,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	      X3DNode (),
 	       fields (),
 	geometryNodes (),
-	compoundShape (new btCompoundShape (true)),
+	compoundShape (new btCompoundShape ()),
 	  motionState (new btDefaultMotionState ()),
 	    rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
 	    transform (),
@@ -221,7 +221,7 @@ RigidBody::set_transform ()
 	it .setFromOpenGLMatrix (im [0] .data ());
 
 	for (int32_t i = 0, size = compoundShape -> getNumChildShapes (); i < size; ++ i)
-		compoundShape -> updateChildTransform (i, it, compoundShape -> getChildShape (i));
+		compoundShape -> updateChildTransform (i, it, true);
 
 	motionState -> setWorldTransform (t);
 

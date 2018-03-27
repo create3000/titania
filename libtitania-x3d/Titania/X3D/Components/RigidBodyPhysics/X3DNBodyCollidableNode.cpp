@@ -66,7 +66,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	             compoundShape (new btCompoundShape (true))
+	             compoundShape (new btCompoundShape ())
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
@@ -110,7 +110,7 @@ X3DNBodyCollidableNode::eventsProcessed ()
 	setMatrix (translation () .getValue (), rotation () .getValue ());
 
 	if (compoundShape -> getNumChildShapes ())
-		compoundShape -> updateChildTransform (0, getLocalTransform ());
+		compoundShape -> updateChildTransform (0, getLocalTransform (), true);
 }
 
 void

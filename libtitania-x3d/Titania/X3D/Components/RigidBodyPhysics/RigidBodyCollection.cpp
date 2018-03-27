@@ -124,6 +124,8 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 
 	addChildObjects (bodyNodes, colliderNode);
 
+	// Units
+
 	gravity ()                 .setUnit (UnitCategory::ACCELERATION);
 	constantForceMix ()        .setUnit (UnitCategory::FORCE);
 	maxCorrectionSpeed ()      .setUnit (UnitCategory::SPEED);
@@ -183,7 +185,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 time_type
 RigidBodyCollection::getTimeStep () const
 {
-	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applys.
+	static constexpr int32_t DELAY = 15; // Delay in frames when dt full applies.
 
 	const time_type dt        = 1 / std::max (10.0, getBrowser () -> getCurrentFrameRate ());
 	time_type       deltaTime = this -> deltaTime = ((DELAY - 1) * this -> deltaTime + dt) / DELAY; // Moving average about DELAY frames.
@@ -203,6 +205,8 @@ RigidBodyCollection::set_enabled ()
 void
 RigidBodyCollection::set_contacts_ ()
 {
+	if (colliderNode)
+		return;
 }
 
 void

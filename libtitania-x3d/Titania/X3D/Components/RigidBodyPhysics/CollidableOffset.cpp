@@ -123,12 +123,16 @@ CollidableOffset::set_collidable ()
 		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
 
 	if (collidableNode)
+	{
+		collidableNode -> removeInterest (&CollidableOffset::addEvent, this);
 		collidableNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+	}
 
 	collidableNode .set (x3d_cast <X3DNBodyCollidableNode*> (collidable ()));
 
 	if (collidableNode)
 	{
+		collidableNode -> addInterest (&CollidableOffset::addEvent, this);
 		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 
 		setCameraObject (collidableNode -> isCameraObject ());
