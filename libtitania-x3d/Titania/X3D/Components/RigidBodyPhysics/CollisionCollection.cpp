@@ -156,28 +156,28 @@ CollisionCollection::set_appliedParameters ()
 void
 CollisionCollection::set_collidables ()
 {
-//	// Get collidable nodes.
-//
-//	collidableNodes .clear ();
-//
-//	for (const auto & node : collidables ())
-//	{
-//		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
-//
-//		if (collidableNode)
-//		{
-//			collidableNodes .emplace_back (collidableNode);
-//			continue;
-//		}
-//
-//		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
-//
-//		if (collisionSpaceNode)
-//		{
-//			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
-//				collidableNodes .emplace_back (collidableNode);
-//		}
-//	}
+	// Get collidable nodes.
+
+	collidableNodes .clear ();
+
+	for (const auto & node : collidables ())
+	{
+		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
+
+		if (collidableNode)
+		{
+			collidableNodes .emplace_back (collidableNode);
+			continue;
+		}
+
+		const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+
+		if (collisionSpaceNode)
+		{
+			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
+				collidableNodes .emplace_back (collidableNode);
+		}
+	}
 }
 
 } // X3D

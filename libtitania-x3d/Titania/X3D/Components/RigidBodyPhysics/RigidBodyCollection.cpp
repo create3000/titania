@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
-#include "../RigidBodyPhysics/CollisionSensor.h"
 #include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
@@ -173,10 +172,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	X3DChildNode::setExecutionContext (executionContext);
 
-	getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
-
 	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (&RigidBodyCollection::set_enabled, this);
+	
 		set_enabled ();
+	}
 }
 
 time_type

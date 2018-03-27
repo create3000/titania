@@ -66,12 +66,9 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	             compoundShape (new btCompoundShape (true)),
-	            collisionShape ()
+	             compoundShape (new btCompoundShape (true))
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
-
-	addChildObjects (collisionShape);
 
 	translation () .setUnit (UnitCategory::LENGTH);
 }

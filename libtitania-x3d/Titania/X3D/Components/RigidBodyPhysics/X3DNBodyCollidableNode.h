@@ -94,13 +94,13 @@ public:
 	{ return *fields .rotation; }
 
 	///  @name Member access
-
-	void
-	setLocalTransform (const Vector3f & t, const Rotation4d & r);
-
+	
 	const std::shared_ptr <btCompoundShape> &
 	getCompoundShape () const
 	{ return compoundShape; }
+
+	void
+	setLocalTransform (const Vector3f & t, const Rotation4d & r);
 	
 	///  @name Destruction
 
@@ -151,7 +151,6 @@ private:
 	///  @name Members
 
 	std::shared_ptr <btCompoundShape> compoundShape;
-	SFTime                            collisionShape;
 
 };
 
