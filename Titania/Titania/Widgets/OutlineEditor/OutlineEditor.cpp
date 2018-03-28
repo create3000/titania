@@ -1074,8 +1074,20 @@ OutlineEditor::on_create_parent_viewport_activate ()
 	on_create_parent ("Viewport");
 }
 
+void
+OutlineEditor::on_create_parent_collidable_shape_activate ()
+{
+	on_create_parent ("CollidableShape", "shape", X3D::X3DConstants::SFNode);
+}
+
+void
+OutlineEditor::on_create_parent_collidable_offset_activate ()
+{
+	on_create_parent ("CollidableOffset", "collidable", X3D::X3DConstants::SFNode);
+}
+
 X3D::SFNode
-OutlineEditor::on_create_parent (const std::string & typeName, const std::string & fieldName)
+OutlineEditor::on_create_parent (const std::string & typeName, const std::string & fieldName, const X3D::FieldType fieldType)
 {
 	if (nodePath .empty ())
 		return nullptr;
@@ -1097,9 +1109,12 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		auto &     rootNodes = executionContext -> getRootNodes ();
 		const auto index     = treeView -> get_index (iter);
 		const auto child     = rootNodes [index];
-		auto &     children  = group -> getField <X3D::MFNode> (fieldName);
 
-		X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+		if (fieldType == X3D::X3DConstants::SFNode)
+			X3D::X3DEditor::replaceNode (executionContext, group, group -> getField <X3D::SFNode> (fieldName), child, undoStep);
+		else
+			X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
+
 		X3D::X3DEditor::replaceNode (executionContext, executionContext, rootNodes, index, group, undoStep);
 		//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 		getBrowserWindow () -> expandNodes ({ group });
@@ -1136,10 +1151,13 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		{
 			case X3D::X3DConstants::SFNode:
 			{
-				auto & child    = *static_cast <X3D::SFNode*> (field);
-				auto & children = group -> getField <X3D::MFNode> (fieldName);
+				auto & child = *static_cast <X3D::SFNode*> (field);
 
-				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+				if (fieldType == X3D::X3DConstants::SFNode)
+					X3D::X3DEditor::replaceNode (executionContext, group, group -> getField <X3D::SFNode> (fieldName), child, undoStep);
+				else
+					X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
+
 				X3D::X3DEditor::replaceNode (executionContext, parent, child, group, undoStep);
 				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 				getBrowserWindow () -> expandNodes ({ group });
@@ -1150,9 +1168,12 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				auto &       mfnode   = *static_cast <X3D::MFNode*> (field);
 				const auto   index    = treeView -> get_index (iter);
 				const auto & child    = mfnode [index];
-				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
-				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+				if (fieldType == X3D::X3DConstants::SFNode)
+					X3D::X3DEditor::replaceNode (executionContext, group, group -> getField <X3D::SFNode> (fieldName), child, undoStep);
+				else
+					X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
+
 				X3D::X3DEditor::replaceNode (executionContext, parent, mfnode, index, group, undoStep);
 				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 				getBrowserWindow () -> expandNodes ({ group });

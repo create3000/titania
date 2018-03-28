@@ -106,7 +106,8 @@ CollidableShape::initialize ()
 {
 	X3DNBodyCollidableNode::initialize ();
 
-	shape () .addInterest (&CollidableShape::set_shape, this);
+	enabled () .addInterest (&CollidableShape::set_collidableGeometry, this);
+	shape ()   .addInterest (&CollidableShape::set_shape, this);
 
 	set_shape ();
 }
@@ -204,7 +205,7 @@ CollidableShape::set_collidableGeometry ()
 	if (collisionShape)
 		getCompoundShape () -> removeChildShape (collisionShape .get ());
 
-	if (geometryNode)
+	if (geometryNode and enabled ())
 	{
 		switch (geometryNode -> getType () .back ())
 		{
@@ -261,6 +262,8 @@ CollidableShape::set_collidableGeometry ()
 
 	if (collisionShape)
 		getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
+
+	addEvent ();
 }
 
 void

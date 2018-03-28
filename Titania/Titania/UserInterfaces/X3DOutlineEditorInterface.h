@@ -330,6 +330,14 @@ public:
 	{ return *m_CreateParentViewportMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentCollidableShapeMenuItem () const
+	{ return *m_CreateParentCollidableShapeMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCollidableOffsetMenuItem () const
+	{ return *m_CreateParentCollidableOffsetMenuItem; }
+
+	Gtk::MenuItem &
 	getRemoveParentMenuItem () const
 	{ return *m_RemoveParentMenuItem; }
 
@@ -521,6 +529,14 @@ public:
 
 	virtual
 	void
+	on_create_parent_collidable_shape_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_collidable_offset_activate () = 0;
+
+	virtual
+	void
 	on_remove_parent_activate () = 0;
 
 	virtual
@@ -639,6 +655,8 @@ private:
 	Gtk::MenuItem* m_CreateParentLayerSetMenuItem;
 	Gtk::MenuItem* m_CreateParentLayerMenuItem;
 	Gtk::MenuItem* m_CreateParentViewportMenuItem;
+	Gtk::MenuItem* m_CreateParentCollidableShapeMenuItem;
+	Gtk::MenuItem* m_CreateParentCollidableOffsetMenuItem;
 	Gtk::MenuItem* m_RemoveParentMenuItem;
 	Gtk::SeparatorMenuItem* m_EditSeparator;
 	Gtk::MenuItem* m_ViewMenuItem;

@@ -132,6 +132,9 @@ private:
 	void
 	set_collidable ();
 
+	void
+	set_collidableGeometry ();
+
 	///  @name Static members
 
 	static const ComponentType component;

@@ -283,10 +283,7 @@ RigidBody::set_massProps ()
 void
 RigidBody::set_forces ()
 {
-	force = std::accumulate (forces () .cbegin (),
-	                         forces () .cend (),
-	                         Vector3f (),
-	                         [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
+	force = std::accumulate (forces () .cbegin (), forces () .cend (), Vector3f (), std::plus <Vector3f> ());
 
 	rigidBody -> activate ();
 }
@@ -294,10 +291,7 @@ RigidBody::set_forces ()
 void
 RigidBody::set_torques ()
 {
-	torque = std::accumulate (torques () .cbegin (),
-	                          torques () .cend (),
-	                          Vector3f (),
-	                          [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
+	torque = std::accumulate (torques () .cbegin (), torques () .cend (), Vector3f (), std::plus <Vector3f> ());
 
 	rigidBody -> activate ();
 }
@@ -307,12 +301,10 @@ RigidBody::set_disable ()
 {
 	if (autoDisable ())
 	{
-		rigidBody -> setDeactivationTime (disableTime ());
 		rigidBody -> setSleepingThresholds (disableLinearSpeed (), disableAngularSpeed ());
 	}
 	else
 	{
-		rigidBody -> setDeactivationTime (0);
 		rigidBody -> setSleepingThresholds (0, 0);
 	}
 }

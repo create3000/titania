@@ -95,7 +95,8 @@ CollidableOffset::initialize ()
 {
 	X3DNBodyCollidableNode::initialize ();
 
-	collidable () .addInterest (&CollidableOffset::set_collidable, this);
+	enabled ()    .addInterest (&CollidableOffset::set_collidableGeometry, this);
+	collidable () .addInterest (&CollidableOffset::set_collidable,         this);
 
 	set_collidable ();
 }
@@ -119,9 +120,6 @@ CollidableOffset::getBBox () const
 void
 CollidableOffset::set_collidable ()
 {
-	if (getCompoundShape () -> getNumChildShapes ())
-		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
-
 	if (collidableNode)
 	{
 		collidableNode -> removeInterest (&CollidableOffset::addEvent, this);
@@ -136,13 +134,23 @@ CollidableOffset::set_collidable ()
 		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 
 		setCameraObject (collidableNode -> isCameraObject ());
-
-		getCompoundShape () -> addChildShape (getLocalTransform (), collidableNode -> getCompoundShape () .get ());
 	}
 	else
 	{
 		setCameraObject (false);
 	}
+
+	set_collidableGeometry ();
+}
+
+void
+CollidableOffset::set_collidableGeometry ()
+{
+	if (getCompoundShape () -> getNumChildShapes ())
+		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
+
+	if (collidableNode and enabled ())
+		getCompoundShape () -> addChildShape (getLocalTransform (), collidableNode -> getCompoundShape () .get ());
 }
 
 void

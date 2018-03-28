@@ -678,6 +678,30 @@
                 <signal name="activate" handler="on_create_parent_viewport_activate" swapped="no"/>
               </object>
             </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCollidableShapeMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CollidableShape</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_collidable_shape_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="CreateParentCollidableOffsetMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">CollidableOffset</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_collidable_offset_activate" swapped="no"/>
+              </object>
+            </child>
           </object>
         </child>
       </object>

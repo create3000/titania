@@ -283,8 +283,16 @@ private:
 	void
 	on_create_parent_viewport_activate () final override;
 
+	virtual
+	void
+	on_create_parent_collidable_shape_activate () final override;
+
+	virtual
+	void
+	on_create_parent_collidable_offset_activate () final override;
+
 	X3D::SFNode
-	on_create_parent (const std::string &, const std::string & = "children");
+	on_create_parent (const std::string &, const std::string & = "children", const X3D::FieldType fieldType = X3D::X3DConstants::MFNode);
 
 	virtual
 	void
