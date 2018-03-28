@@ -125,7 +125,8 @@ protected:
 	///  @name Member access
 
 	void
-	setSubTransform (const Vector3f & t, const Rotation4d & r);
+	setOffset (const Vector3f & value)
+	{ offset = value; }
 
 	btTransform
 	getLocalTransform () const;
@@ -154,7 +155,7 @@ private:
 	///  @name Members
 
 	std::shared_ptr <btCompoundShape> compoundShape;
-	Matrix4f                          subMatrix;
+	Vector3f                          offset;
 
 };
 

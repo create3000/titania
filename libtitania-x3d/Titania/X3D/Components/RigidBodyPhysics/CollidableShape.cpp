@@ -59,6 +59,7 @@
 #include "../Geometry3D/Box.h"
 #include "../Geometry3D/Cone.h"
 #include "../Geometry3D/Cylinder.h"
+#include "../Geometry3D/ElevationGrid.h"
 #include "../Geometry3D/Sphere.h"
 #include "../Shape/Shape.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -209,7 +210,10 @@ CollidableShape::set_collidableGeometry ()
 	if (collisionShape)
 		getCompoundShape () -> removeChildShape (collisionShape .get ());
 
-	setSubTransform (Vector3f (), Rotation4d ());
+	triangleMesh .reset ();
+	heightField .clear ();
+
+	setOffset (Vector3f ());
 
 	if (geometryNode and enabled ())
 	{
@@ -256,6 +260,42 @@ CollidableShape::set_collidableGeometry ()
 					collisionShape .reset (new btCylinderShape (btVector3 (radius, height1_2, radius)));
 				else
 					collisionShape = createConcaveGeometry ();
+
+				break;
+			}
+			case X3DConstants::ElevationGrid:
+			{
+				const auto elevationGrid = dynamic_cast <ElevationGrid*> (geometryNode .getValue ());
+
+				if (elevationGrid -> xDimension () > 1 and elevationGrid -> zDimension () > 1)
+				{
+					const auto minmax = std::minmax_element (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
+					const auto min    = minmax .first  not_eq elevationGrid -> height () .end () ? *minmax .first  : 0.0f;
+					const auto max    = minmax .second not_eq elevationGrid -> height () .end () ? *minmax .second : 0.0f;
+
+					heightField .assign (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
+					heightField .resize (elevationGrid -> xDimension () * elevationGrid -> zDimension ());
+
+					collisionShape .reset (new btHeightfieldTerrainShape (elevationGrid -> xDimension (),
+					                                                      elevationGrid -> zDimension (),
+					                                                      heightField .data (),
+					                                                      1,
+					                                                      min,
+					                                                      max,
+					                                                      1,
+					                                                      PHY_FLOAT,
+					                                                      true));
+	
+					collisionShape -> setLocalScaling (btVector3 (elevationGrid -> xSpacing (), 1, elevationGrid -> zSpacing ()));
+
+					setOffset (Vector3f (elevationGrid -> xSpacing () * (elevationGrid -> xDimension () - 1) * 0.5,
+					                     (min + max) * 0.5,
+					                     elevationGrid -> zSpacing () * (elevationGrid -> zDimension () - 1) * 0.5));
+				}
+				else
+				{
+					collisionShape .reset ();	
+				}
 
 				break;
 			}
