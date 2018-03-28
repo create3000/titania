@@ -221,8 +221,9 @@ RigidBody::set_transform ()
 	it .setFromOpenGLMatrix (im [0] .data ());
 
 	for (int32_t i = 0, size = compoundShape -> getNumChildShapes (); i < size; ++ i)
-		compoundShape -> updateChildTransform (i, it, true);
+		compoundShape -> updateChildTransform (i, it, false);
 
+	compoundShape -> recalculateLocalAabb ();
 	motionState -> setWorldTransform (t);
 
 	rigidBody -> setMotionState (motionState .get ());

@@ -213,6 +213,7 @@ CollidableShape::set_collidableGeometry ()
 
 	triangleMesh .reset ();
 	heightField .clear ();
+	heightField .shrink_to_fit ();
 
 	setOffset (Vector3f ());
 
