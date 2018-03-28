@@ -64,6 +64,7 @@
 #include "../Shape/Shape.h"
 #include "../Rendering/X3DGeometryNode.h"
 
+#include <BulletCollision/CollisionShapes/btBox2dShape.h>
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
 namespace titania {
@@ -221,6 +222,12 @@ CollidableShape::set_collidableGeometry ()
 		{
 			case X3DConstants::Rectangle2D:
 			{
+//				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
+//				const auto half      = rectangle -> size () * 0.5f;
+//
+//				collisionShape .reset (new btBox2dShape (btVector3 (half .x (), half .y (), 0)));
+//				break;
+
 				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
 				const auto size      = rectangle -> size () .getValue ();
 
@@ -234,7 +241,7 @@ CollidableShape::set_collidableGeometry ()
 			case X3DConstants::Box:
 			{
 				const auto box  = dynamic_cast <Box*> (geometryNode .getValue ());
-				const auto half = box -> size () / 2.0f;
+				const auto half = box -> size () * 0.5f;
 
 				collisionShape .reset (new btBoxShape (btVector3 (half .x (), half .y (), half .z ())));
 				break;
@@ -254,7 +261,7 @@ CollidableShape::set_collidableGeometry ()
 			{
 				const auto cylinder  = dynamic_cast <Cylinder*> (geometryNode .getValue ());
 				const auto radius    = cylinder -> radius ();
-				const auto height1_2 = cylinder -> height () / 2.0f;
+				const auto height1_2 = cylinder -> height () * 0.5f;
 
 				if (cylinder -> side () and cylinder -> top () and cylinder -> bottom ())
 					collisionShape .reset (new btCylinderShape (btVector3 (radius, height1_2, radius)));
@@ -288,9 +295,9 @@ CollidableShape::set_collidableGeometry ()
 	
 					collisionShape -> setLocalScaling (btVector3 (elevationGrid -> xSpacing (), 1, elevationGrid -> zSpacing ()));
 
-					setOffset (Vector3f (elevationGrid -> xSpacing () * (elevationGrid -> xDimension () - 1) * 0.5,
-					                     (min + max) * 0.5,
-					                     elevationGrid -> zSpacing () * (elevationGrid -> zDimension () - 1) * 0.5));
+					setOffset (Vector3f (elevationGrid -> xSpacing () * (elevationGrid -> xDimension () - 1) * 0.5f,
+					                     (min + max) * 0.5f,
+					                     elevationGrid -> zSpacing () * (elevationGrid -> zDimension () - 1) * 0.5f));
 				}
 				else
 				{
