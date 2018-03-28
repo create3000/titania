@@ -55,12 +55,15 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
+#include "../Geometry2D/Rectangle2D.h"
 #include "../Geometry3D/Box.h"
 #include "../Geometry3D/Cone.h"
 #include "../Geometry3D/Cylinder.h"
 #include "../Geometry3D/Sphere.h"
 #include "../Shape/Shape.h"
 #include "../Rendering/X3DGeometryNode.h"
+
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
 namespace titania {
 namespace X3D {
@@ -80,7 +83,8 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	                 shapeNode (),
 	              geometryNode (),
 	            collisionShape (),
-	              triangleMesh ()
+	              triangleMesh (),
+	               heightField ()
 {
 	addType (X3DConstants::CollidableShape);
 
@@ -205,10 +209,24 @@ CollidableShape::set_collidableGeometry ()
 	if (collisionShape)
 		getCompoundShape () -> removeChildShape (collisionShape .get ());
 
+	setSubTransform (Vector3f (), Rotation4d ());
+
 	if (geometryNode and enabled ())
 	{
 		switch (geometryNode -> getType () .back ())
 		{
+			case X3DConstants::Rectangle2D:
+			{
+				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
+				const auto size      = rectangle -> size () .getValue ();
+
+				heightField = { 0, 0, 0, 0 };
+
+				collisionShape .reset (new btHeightfieldTerrainShape (2, 2, heightField .data (), 1, 0, 0, 2, PHY_FLOAT, false));
+
+				collisionShape -> setLocalScaling (btVector3 (size .x (), size .y (), 1));
+				break;
+			}
 			case X3DConstants::Box:
 			{
 				const auto box  = dynamic_cast <Box*> (geometryNode .getValue ());

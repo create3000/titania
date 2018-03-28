@@ -66,7 +66,8 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	             compoundShape (new btCompoundShape ())
+	             compoundShape (new btCompoundShape ()),
+	                 subMatrix ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
@@ -86,6 +87,12 @@ X3DNBodyCollidableNode::initialize ()
 }
 
 void
+X3DNBodyCollidableNode::setSubTransform (const Vector3f & t, const Rotation4d & r)
+{
+	subMatrix .set (t, r);
+}
+
+void
 X3DNBodyCollidableNode::setLocalTransform (const Vector3f & t, const Rotation4d & r)
 {
 	translation () = t;
@@ -97,11 +104,15 @@ X3DNBodyCollidableNode::setLocalTransform (const Vector3f & t, const Rotation4d 
 btTransform
 X3DNBodyCollidableNode::getLocalTransform () const
 {
-	const auto & t = translation () .getValue ();
-	const auto & q = rotation () .getValue () .quat ();
-	const auto   m = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (t .x (), t .y (), t .z ()));
+	auto l = btTransform ();
+	auto m = Matrix4f ();
 
-	return m;
+	m .set (translation () .getValue (), rotation () .getValue ());
+	m .mult_left (subMatrix);
+
+	l .setFromOpenGLMatrix (m [0] .data ());
+
+	return l;
 }
 
 void

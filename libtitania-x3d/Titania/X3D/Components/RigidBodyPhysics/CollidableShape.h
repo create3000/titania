@@ -163,6 +163,7 @@ private:
 	X3DPtr <X3DGeometryNode>           geometryNode;
 	std::shared_ptr <btCollisionShape> collisionShape;
 	std::shared_ptr <btTriangleMesh>   triangleMesh;
+	std::vector <btScalar>             heightField;
 
 };
 
