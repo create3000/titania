@@ -102,6 +102,8 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 
 	addChildObjects (collidableNodes);
 
+	// Units
+
 	minBounceSpeed ()           .setUnit (UnitCategory::SPEED);
 	surfaceSpeed ()             .setUnit (UnitCategory::SPEED);
 	softnessConstantForceMix () .setUnit (UnitCategory::FORCE);

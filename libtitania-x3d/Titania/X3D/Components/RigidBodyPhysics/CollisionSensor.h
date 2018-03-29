@@ -97,14 +97,6 @@ public:
 
 	///  @name Fields
 
-	SFNode &
-	collider ()
-	{ return *fields .collider; }
-
-	const SFNode &
-	collider () const
-	{ return *fields .collider; }
-
 	MFNode &
 	intersections ()
 	{ return *fields .intersections; }
@@ -120,6 +112,14 @@ public:
 	const MFNode &
 	contacts () const
 	{ return *fields .contacts; }
+
+	SFNode &
+	collider ()
+	{ return *fields .collider; }
+
+	const SFNode &
+	collider () const
+	{ return *fields .collider; }
 
 
 private:
@@ -158,9 +158,9 @@ private:
 	{
 		Fields ();
 
-		SFNode* const collider;
 		MFNode* const intersections;
 		MFNode* const contacts;
+		SFNode* const collider;
 	};
 
 	Fields fields;
