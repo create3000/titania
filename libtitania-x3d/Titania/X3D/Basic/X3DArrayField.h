@@ -209,7 +209,6 @@ public:
 	assign (const InputIterator & first, const InputIterator & last)
 	{
 		set (first, last);
-
 		addEvent ();
 	}
 
@@ -593,7 +592,10 @@ X3DArrayField <ValueType> &
 X3DArrayField <ValueType>::operator = (X3DArrayField && other)
 {
 	if (&other == this)
+	{
+		addEvent ();
 		return *this;
+	}
 
 	clear ();
 

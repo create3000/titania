@@ -97,6 +97,14 @@ public:
 
 	///  @name Fields
 
+	SFNode &
+	collider ()
+	{ return *fields .collider; }
+
+	const SFNode &
+	collider () const
+	{ return *fields .collider; }
+
 	MFNode &
 	intersections ()
 	{ return *fields .intersections; }
@@ -113,14 +121,6 @@ public:
 	contacts () const
 	{ return *fields .contacts; }
 
-	SFNode &
-	collider ()
-	{ return *fields .collider; }
-
-	const SFNode &
-	collider () const
-	{ return *fields .collider; }
-
 
 private:
 
@@ -129,6 +129,11 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Member access
+
+	const X3DPtr <Contact> &
+	getContact () const;
 
 	///  @name Event handlers
 
@@ -153,14 +158,15 @@ private:
 	{
 		Fields ();
 
+		SFNode* const collider;
 		MFNode* const intersections;
 		MFNode* const contacts;
-		SFNode* const collider;
 	};
 
 	Fields fields;
 
-	X3DPtr <CollisionCollection> colliderNode;
+	X3DPtr <CollisionCollection>  colliderNode;
+	mutable X3DPtrArray <Contact> contactCache;
 
 };
 

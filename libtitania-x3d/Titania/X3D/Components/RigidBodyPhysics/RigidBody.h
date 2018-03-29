@@ -279,9 +279,9 @@ public:
 
 	///  @name Member access
 
-	const std::shared_ptr <btRigidBody> &
-	getRigidBody () const
-	{ return rigidBody; }
+	const X3DPtr <RigidBodyCollection> &
+	getCollection () const
+	{ return collectionNode; }
 
 	///  @name Operations
 
@@ -295,6 +295,24 @@ public:
 
 	virtual
 	~RigidBody () final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class CollisionSensor;
+	friend class RigidBodyCollection;
+
+	///  @name Member access
+
+	void
+	setCollection (RigidBodyCollection* const value)
+	{ collectionNode = value; }
+
+	const std::shared_ptr <btRigidBody> &
+	getRigidBody () const
+	{ return rigidBody; }
 
 
 private:
@@ -390,6 +408,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <RigidBodyCollection>             collectionNode;
 	X3DPtrArray <X3DNBodyCollidableNode>     geometryNodes;
 	std::shared_ptr <btCompoundShape>        compoundShape;
 	std::shared_ptr <btDefaultMotionState>   motionState;

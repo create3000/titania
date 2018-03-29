@@ -253,10 +253,13 @@ public:
 	operator = (X3DPtr && other)
 	{
 		if (&other == this)
-			return *this;
-
-		if (moveObject (other))
+		{
 			addEvent ();
+			return *this;
+		}
+
+		moveObject (other);
+		addEvent ();
 
 		return *this;
 	}
@@ -267,10 +270,13 @@ public:
 	operator = (X3DPtr <Up> && other)
 	{
 		if (static_cast <X3DFieldDefinition*> (&other) == static_cast <X3DFieldDefinition*> (this))
-			return *this;
-
-		if (moveObject (other))
+		{
 			addEvent ();
+			return *this;
+		}
+
+		moveObject (other);
+		addEvent ();
 
 		return *this;
 	}
@@ -283,7 +289,10 @@ public:
 	set (const internal_type & value) final override
 	{
 		if (value == getValue ())
+		{
+			addEvent ();
 			return;
+		}
 
 		// FIRST ADD OBJECT TO AVOID DISPOSE!!!
 		addObject (value);

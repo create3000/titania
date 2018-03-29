@@ -63,10 +63,10 @@ Contact::Fields::Fields () :
 	                position (new SFVec3f ()),
 	           contactNormal (new SFVec3f (0, 1, 0)),
 	                   depth (new SFFloat ()),
+	       frictionDirection (new SFVec3f (0, 1, 0)),
 	       appliedParameters (new MFString ({ "BOUNCE" })),
 	                  bounce (new SFFloat ()),
 	          minBounceSpeed (new SFFloat ()),
-	       frictionDirection (new SFVec3f (0, 1, 0)),
 	    frictionCoefficients (new SFVec2f ()),
 	            surfaceSpeed (new SFVec2f ()),
 	        slipCoefficients (new SFVec2f ()),
@@ -89,12 +89,12 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "position",                 position ());
 	addField (inputOutput, "contactNormal",            contactNormal ());
 	addField (inputOutput, "depth",                    depth ());
+	addField (inputOutput, "frictionDirection",        frictionDirection ());
 
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
 	
 	addField (inputOutput, "bounce",                   bounce ());
 	addField (inputOutput, "minBounceSpeed",           minBounceSpeed ());
-	addField (inputOutput, "frictionDirection",        frictionDirection ());
 	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
 	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
 

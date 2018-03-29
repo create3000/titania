@@ -94,7 +94,11 @@ public:
 	{ return *fields .rotation; }
 
 	///  @name Member access
-	
+
+	const X3DPtr <RigidBody> &
+	getBody () const
+	{ return bodyNode; }
+
 	const std::shared_ptr <btCompoundShape> &
 	getCompoundShape () const
 	{ return compoundShape; }
@@ -114,6 +118,10 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class RigidBody;
+
 	///  @name Construction
 
 	X3DNBodyCollidableNode ();
@@ -123,6 +131,10 @@ protected:
 	initialize () override;
 
 	///  @name Member access
+
+	void
+	setBody (RigidBody* const value)
+	{ bodyNode = value; }
 
 	void
 	setOffset (const Vector3f & value)
@@ -154,6 +166,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <RigidBody>                bodyNode;
 	std::shared_ptr <btCompoundShape> compoundShape;
 	Vector3f                          offset;
 

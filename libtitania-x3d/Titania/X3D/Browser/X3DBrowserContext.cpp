@@ -78,7 +78,6 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	     X3DParticleSystemsContext (),
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
-	    X3DRigidBodyPhysicsContext (),
 	           X3DScriptingContext (),
 	               X3DShapeContext (),
 	               X3DSoundContext (),
@@ -151,7 +150,6 @@ X3DBrowserContext::initialize ()
 	X3DParticleSystemsContext::initialize ();
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
-	X3DRigidBodyPhysicsContext::initialize ();
 	X3DScriptingContext::initialize ();
 	X3DShapeContext::initialize ();
 	X3DSoundContext::initialize ();
@@ -466,7 +464,6 @@ X3DBrowserContext::dispose ()
 	X3DSoundContext::dispose ();
 	X3DShapeContext::dispose ();
 	X3DScriptingContext::dispose ();
-	X3DRigidBodyPhysicsContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();
 	X3DParticleSystemsContext::dispose ();

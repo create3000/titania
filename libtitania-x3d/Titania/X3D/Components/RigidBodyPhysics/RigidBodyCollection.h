@@ -233,6 +233,19 @@ public:
 	~RigidBodyCollection () final override;
 
 
+protected:
+
+	///  @name Friends
+
+	friend class CollisionSensor;
+
+	///  @name Member access
+
+	const std::shared_ptr <btDiscreteDynamicsWorld> &
+	getDynamicsWorld () const
+	{ return dynamicsWorld; }
+
+
 private:
 
 	///  @name Construction

@@ -113,6 +113,14 @@ public:
 	depth () const
 	{ return *fields .depth; }
 
+	SFVec3f &
+	frictionDirection ()
+	{ return *fields .frictionDirection; }
+
+	const SFVec3f &
+	frictionDirection () const
+	{ return *fields .frictionDirection; }
+
 	MFString &
 	appliedParameters ()
 	{ return *fields .appliedParameters; }
@@ -136,14 +144,6 @@ public:
 	const SFFloat &
 	minBounceSpeed () const
 	{ return *fields .minBounceSpeed; }
-
-	SFVec3f &
-	frictionDirection ()
-	{ return *fields .frictionDirection; }
-
-	const SFVec3f &
-	frictionDirection () const
-	{ return *fields .frictionDirection; }
 
 	SFVec2f &
 	frictionCoefficients ()
@@ -236,10 +236,10 @@ private:
 		SFVec3f* const position;
 		SFVec3f* const contactNormal;
 		SFFloat* const depth;
+		SFVec3f* const frictionDirection;
 		MFString* const appliedParameters;
 		SFFloat* const bounce;
 		SFFloat* const minBounceSpeed;
-		SFVec3f* const frictionDirection;
 		SFVec2f* const frictionCoefficients;
 		SFVec2f* const surfaceSpeed;
 		SFVec2f* const slipCoefficients;

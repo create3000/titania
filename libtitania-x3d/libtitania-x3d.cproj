@@ -803,7 +803,6 @@
     <None Include="Titania\X3D\Rendering\DependentRenderer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DObjectTool.h" />
-    <None Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.h" />
     <None Include="Titania\X3D\Parser\Autodesk\Parser.h" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.h" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.rc" />
@@ -999,6 +998,7 @@
     <None Include="Titania\X3D\Fields\MFImage.h" />
     <None Include="Titania\X3D\Parser\MiniParser.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\NativeArrayReference.h" />
+    <None Include="Titania\X3D\Browser\RigidBodyPhysics\ContactContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1512,7 +1512,6 @@
     <Compile Include="Titania\X3D\Rendering\X3DShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\DependentRenderer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.cpp" />
-    <Compile Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.cpp" />
     <Compile Include="Titania\X3D\Parser\Autodesk\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_atmosphere.c" />
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_background.c" />
@@ -1773,7 +1772,6 @@
     <Folder Include="share\fonts\truetype\" />
     <Folder Include="share\fonts\truetype\titania-fonts\" />
     <Folder Include="Titania\X3D\Bits\" />
-    <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
     <Folder Include="Titania\X3D\Parser\Autodesk\" />
     <Folder Include="Titania\X3D\Parser\Autodesk\lib3ds\" />
     <Folder Include="Titania\X3D\Parser\SVG\" />
@@ -1798,6 +1796,7 @@
     <Folder Include="share\titania\shaders\glTF\" />
     <Folder Include="Titania\X3D\Parser\glTF\" />
     <Folder Include="share\titania\shaders\glTF\Prototypes\" />
+    <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

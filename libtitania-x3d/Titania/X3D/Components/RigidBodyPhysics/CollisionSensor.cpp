@@ -51,12 +51,13 @@
 #include "CollisionSensor.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/ParticleSystems/BVH.h"
+#include "../../Browser/RigidBodyPhysics/ContactContext.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
 #include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
@@ -67,29 +68,30 @@ const std::string   CollisionSensor::typeName       = "CollisionSensor";
 const std::string   CollisionSensor::containerField = "children";
 
 CollisionSensor::Fields::Fields () :
+	     collider (new SFNode ()),
 	intersections (new MFNode ()),
-	     contacts (new MFNode ()),
-	     collider (new SFNode ())
+	     contacts (new MFNode ())
 { }
 
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSensorNode (),
 	       fields (),
-	 colliderNode ()
+	 colliderNode (),
+	 contactCache ()
 {
 	addType (X3DConstants::CollisionSensor);
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
 	addField (outputOnly,  "isActive",      isActive ());
+	addField (inputOutput, "collider",      collider ());
 	addField (outputOnly,  "intersections", intersections ());
 	addField (outputOnly,  "contacts",      contacts ());
-	addField (inputOutput, "collider",      collider ());
 
 	addField (VRML_V2_0, "collidables", "collider");
 
-	addChildObjects (colliderNode);
+	addChildObjects (colliderNode, contactCache);
 }
 
 X3DBaseNode*
@@ -106,11 +108,36 @@ CollisionSensor::initialize ()
 	getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
 	isLive () .addInterest (&CollisionSensor::set_enabled, this);
 
-	enabled ()  .addInterest (&CollisionSensor::set_enabled, this);
+	enabled ()  .addInterest (&CollisionSensor::set_enabled,  this);
 	collider () .addInterest (&CollisionSensor::set_collider, this);
 
-	set_enabled ();
 	set_collider ();
+}
+
+const X3DPtr <Contact> &
+CollisionSensor::getContact () const
+{
+	if (contactCache .size ())
+	{
+		std::sort (contactCache .begin (), contactCache .end (),
+		[ ] (const X3DPtr <Contact> & lhs, const X3DPtr <Contact> & rhs)
+		{
+			return lhs -> getParents () .size () < rhs -> getParents () .size ();
+		});
+
+		const auto & front = contactCache .front ();
+
+		// If a Contact is only referenced in the cache, parents size is 1.
+		if (front -> getParents () .size () == 1)
+			return front;
+	}
+
+	auto contactNode = MakePtr <Contact> (getExecutionContext ());
+
+	contactNode -> setup ();
+	contactCache .emplace_back (std::move (contactNode));
+
+	return contactCache .back ();
 }
 
 void
@@ -120,7 +147,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> finished () .removeInterest (&CollisionSensor::update, this);
+		getBrowser () -> sensorEvents ()    .removeInterest (&CollisionSensor::update,      this);
 		getExecutionContext () -> isLive () .removeInterest (&CollisionSensor::set_enabled, this);
 	}
 
@@ -129,19 +156,18 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 	{
 		getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
-	
+
 		set_enabled ();
-		set_collider ();
 	}
 }
 
 void
 CollisionSensor::set_enabled ()
 {
-	if (enabled () and isLive () and getExecutionContext () -> isLive ())
-		getBrowser () -> finished () .addInterest (&CollisionSensor::update, this);
+	if (colliderNode and enabled () and isLive () and getExecutionContext () -> isLive ())
+		getBrowser () -> sensorEvents () .addInterest (&CollisionSensor::update, this);
 	else
-		getBrowser () -> finished () .removeInterest (&CollisionSensor::update, this);
+		getBrowser () -> sensorEvents () .removeInterest (&CollisionSensor::update, this);
 }
 
 void
@@ -149,31 +175,92 @@ CollisionSensor::set_collider ()
 {
 	colliderNode = x3d_cast <CollisionCollection*> (collider ());
 
-	if (colliderNode)
-		return;
-
-	colliderNode = new CollisionCollection (getExecutionContext ());
-
-	colliderNode -> enabled () = true;
-	colliderNode -> setup ();
+	set_enabled ();
 }
 
 void
 CollisionSensor::update ()
 {
-	if (not colliderNode -> enabled ())
-		return;
+	const auto & collidableNodes = colliderNode -> getCollidables ();
+	auto         bodyIndex       = std::map <const btRigidBody*, std::pair <RigidBody*, X3DNBodyCollidableNode*>> ();
 
-//	// Send events
-//
-//	if (isActive () != bool (contactNodes .size ()))
-//		isActive () = contactNodes .size ();
-//
-//	if (not intersectionNodes .empty ())
-//		intersections () = std::move (intersectionNodes);
-//
-//	if (not contactNodes .empty ())
-//		contacts () = std::move (contactNodes);
+	for (const auto & collidableNode : collidableNodes)
+	{
+		const auto & bodyNode = collidableNode -> getBody ();
+
+		if (bodyNode)
+			bodyIndex .emplace (bodyNode -> getRigidBody () .get (), std::make_pair (bodyNode, collidableNode));
+	}
+
+	// Check collisions and create Contact nodes.
+
+	X3DPtrArray <X3DNBodyCollidableNode> intersectionNodes;
+	X3DPtrArray <Contact>                contactNodes;
+
+	for (const auto & pair1 : bodyIndex)
+	{
+		const auto   bodyNode       = pair1 .second .first;
+		const auto   collidableNode = pair1 .second .second;
+		const auto & rigidBody      = bodyNode -> getRigidBody ();
+		const auto & collectionNode = bodyNode -> getCollection ();
+
+		if (not collectionNode)
+			continue;
+
+		const auto & dynamicsWorld = collectionNode -> getDynamicsWorld ();
+
+		ContactContext context;
+		ContactSensorCallback callback (rigidBody .get (), context);
+
+		dynamicsWorld -> contactTest (rigidBody .get (), callback);
+
+		if (not context .active)
+			continue;
+
+		const auto & contactNode = getContact ();
+
+		contactNode -> position ()                 = context .position;
+		contactNode -> contactNormal ()            = context .contactNormal;
+		contactNode -> depth ()                    = context .depth;
+		contactNode -> frictionDirection ()        = context .frictionDirection;
+		contactNode -> appliedParameters ()        = colliderNode -> appliedParameters ();
+		contactNode -> bounce ()                   = colliderNode -> bounce ();
+		contactNode -> minBounceSpeed ()           = colliderNode -> minBounceSpeed ();
+		contactNode -> frictionCoefficients ()     = colliderNode -> frictionCoefficients ();
+		contactNode -> surfaceSpeed ()             = colliderNode -> surfaceSpeed ();
+		contactNode -> slipCoefficients ()         = colliderNode -> slipFactors ();
+		contactNode -> softnessConstantForceMix () = colliderNode -> softnessConstantForceMix ();
+		contactNode -> softnessErrorCorrection ()  = colliderNode -> softnessErrorCorrection ();
+		contactNode -> geometry1 ()                = collidableNode;
+		contactNode -> body1 ()                    = bodyNode;
+
+		try
+		{
+			const auto & pair2 = bodyIndex .at (context .rigidBody2);
+	
+			contactNode -> geometry2 () = pair2 .second;
+			contactNode -> body2 ()     = pair2 .first;
+		}
+		catch (const std::out_of_range & error)
+		{
+			contactNode -> geometry2 () = nullptr;
+			contactNode -> body2 ()     = nullptr;
+		}
+
+		intersectionNodes .emplace_back (collidableNode);
+		contactNodes      .emplace_back (contactNode);
+	}
+
+	// Send events
+
+	if (isActive () != bool (contactNodes .size ()))
+		isActive () = contactNodes .size ();
+
+	if (not intersectionNodes .empty ())
+		intersections () = std::move (intersectionNodes);
+
+	if (not contactNodes .empty ())
+		contacts () = std::move (contactNodes);
 }
 
 } // X3D

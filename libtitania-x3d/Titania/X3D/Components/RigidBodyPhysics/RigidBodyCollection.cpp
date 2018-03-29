@@ -283,16 +283,27 @@ void
 RigidBodyCollection::set_bodies ()
 {
 	for (const auto & bodyNode : bodyNodes)
+	{
 		bodyNode -> enabled () .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+
+		bodyNode -> setCollection (nullptr);
+	}
 
 	std::vector <RigidBody*> value;
 
 	for (const auto & node : bodies ())
 	{
 		const auto bodyNode = x3d_cast <RigidBody*> (node);
-		
-		if (bodyNode)
-			value .emplace_back (bodyNode);
+
+		if (not bodyNode)
+			continue;
+
+		if (bodyNode -> getCollection ())
+			continue;
+
+		bodyNode -> setCollection (this);
+
+		value .emplace_back (bodyNode);
 	}
 
 	bodyNodes .set (value .cbegin (), value .cend ());

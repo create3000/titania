@@ -66,10 +66,15 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
+	                  bodyNode (),
 	             compoundShape (new btCompoundShape ()),
 	                    offset ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
+
+	addChildObjects (bodyNode);
+
+	// Units
 
 	translation () .setUnit (UnitCategory::LENGTH);
 }

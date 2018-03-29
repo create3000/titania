@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
@@ -88,16 +89,17 @@ RigidBody::Fields::Fields () :
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      X3DNode (),
-	       fields (),
-	geometryNodes (),
-	compoundShape (new btCompoundShape ()),
-	  motionState (new btDefaultMotionState ()),
-	    rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
-	    transform (),
-	        force (),
-	       torque ()
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DNode (),
+	        fields (),
+	collectionNode (),
+	 geometryNodes (),
+	 compoundShape (new btCompoundShape ()),
+	   motionState (new btDefaultMotionState ()),
+	     rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
+	     transform (),
+	         force (),
+	        torque ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -134,7 +136,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "geometry",             geometry ());
 
-	addChildObjects (geometryNodes, transform);
+	addChildObjects (collectionNode, geometryNodes, transform);
 
 	// Units
 
@@ -314,8 +316,11 @@ void
 RigidBody::set_geometry ()
 {
 	for (const auto & geometryNode : geometryNodes)
+	{
 		geometryNode -> removeInterest (&SFTime::addEvent, transform);
 
+		geometryNode -> setBody (nullptr);
+	}
 	// Sort out X3DNBodyCollidableNode nodes.
 
 	std::vector <X3DNBodyCollidableNode*> value;
@@ -324,8 +329,15 @@ RigidBody::set_geometry ()
 	{
 		const auto geometryNode = x3d_cast <X3DNBodyCollidableNode*> (node);
 		
-		if (geometryNode)
-			value .emplace_back (geometryNode);
+		if (not geometryNode)
+			continue;
+
+		if (geometryNode -> getBody ())
+			continue;
+
+		geometryNode -> setBody (this);
+
+		value .emplace_back (geometryNode);
 	}
 
 	geometryNodes .set (value .cbegin (), value .cend ());
