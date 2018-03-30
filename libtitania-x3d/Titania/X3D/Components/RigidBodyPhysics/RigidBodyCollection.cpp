@@ -57,6 +57,7 @@
 #include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
+#include "../RigidBodyPhysics/X3DRigidJointNode.h"
 
 namespace titania {
 namespace X3D {
@@ -80,16 +81,17 @@ RigidBodyCollection::Fields::Fields () :
 	     disableLinearSpeed (new SFFloat ()),
 	    disableAngularSpeed (new SFFloat ()),
 	               collider (new SFNode ()),
-	                 joints (new MFNode ()),
-	                 bodies (new MFNode ())
+	                 bodies (new MFNode ()),
+	                 joints (new MFNode ())
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	          X3DChildNode (),
 	                fields (),
-	             bodyNodes (),
 	          colliderNode (),
+	            jointNodes (),
+	             bodyNodes (),
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
@@ -119,10 +121,10 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed ());
 
 	addField (initializeOnly, "collider",                collider ());
-	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
+	addField (inputOutput,    "joints",                  joints ());
 
-	addChildObjects (bodyNodes, colliderNode);
+	addChildObjects (colliderNode, jointNodes, bodyNodes);
 
 	// Units
 
@@ -154,6 +156,7 @@ RigidBodyCollection::initialize ()
 	contactSurfaceThickness () .addInterest (&RigidBodyCollection::set_contactSurfaceThickness, this);
 	collider ()                .addInterest (&RigidBodyCollection::set_collider,                this);
 	bodies ()                  .addInterest (&RigidBodyCollection::set_bodies,                  this);
+	joints ()                  .addInterest (&RigidBodyCollection::set_joints,                  this);
 
 	set_enabled ();
 	set_gravity ();
@@ -280,6 +283,34 @@ RigidBodyCollection::set_frictionCoefficients ()
 }
 
 void
+RigidBodyCollection::set_joints ()
+{
+	for (const auto & jointNode : jointNodes)
+	{
+		jointNode -> setCollection (nullptr);
+	}
+
+	std::vector <X3DRigidJointNode*> value;
+
+	for (const auto & node : joints ())
+	{
+		const auto jointNode = x3d_cast <X3DRigidJointNode*> (node);
+
+		if (not jointNode)
+			continue;
+
+		if (jointNode -> getCollection ())
+			continue;
+
+		jointNode -> setCollection (this);
+
+		value .emplace_back (jointNode);
+	}
+
+	jointNodes .set (value .cbegin (), value .cend ());
+}
+
+void
 RigidBodyCollection::set_bodies ()
 {
 	for (const auto & bodyNode : bodyNodes)
@@ -311,6 +342,7 @@ RigidBodyCollection::set_bodies ()
 	for (const auto & bodyNode : bodyNodes)
 		bodyNode -> enabled () .addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
+	set_joints ();
 	set_dynamicsWorld ();
 }
 

@@ -146,8 +146,24 @@ public:
 	{ return *fields .separationRate; }
 
 
-private:
+protected:
 
+	///  @name Joint handling
+
+	virtual
+	void
+	addJoint () final override;
+
+	virtual
+	void
+	removeJoint () final override;
+
+	virtual
+	void
+	update () final override;
+
+
+private:
 
 	///  @name Static members
 

@@ -53,6 +53,8 @@
 
 #include "../Core/X3DNode.h"
 
+#include <btBulletDynamicsCommon.h>
+
 namespace titania {
 namespace X3D {
 
@@ -60,6 +62,16 @@ class X3DRigidJointNode :
 	virtual public X3DNode
 {
 public:
+
+	///  @name Fields
+
+	MFString &
+	forceOutput ()
+	{ return *fields .forceOutput; }
+
+	const MFString &
+	forceOutput () const
+	{ return *fields .forceOutput; }
 
 	SFNode &
 	body1 ()
@@ -77,32 +89,83 @@ public:
 	body2 () const
 	{ return *fields .body2; }
 
-	MFString &
-	forceOutput ()
-	{ return *fields .forceOutput; }
+	///  @name Destruction
 
-	const MFString &
-	forceOutput () const
-	{ return *fields .forceOutput; }
+	~X3DRigidJointNode ();
 
 
 protected:
 
+	///  @name Friends
+
+	friend class RigidBodyCollection;
+
+	///  @name Construction
+
 	X3DRigidJointNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
+	void
+	setCollection (RigidBodyCollection* const value);
+
+	const X3DPtr <RigidBodyCollection> &
+	getCollection () const
+	{ return collection; }
+
+	const X3DPtr <RigidBody> &
+	getBody1 () const
+	{ return bodyNode1; }
+
+	const X3DPtr <RigidBody> &
+	getBody2 () const
+	{ return bodyNode2; }
+
+	///  @name Joint handling
+
+	virtual
+	void
+	addJoint () = 0;
+
+	virtual
+	void
+	removeJoint () = 0;
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_bodies ();
+
+	virtual
+	void
+	update () = 0;
+
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
+		MFString* const forceOutput;
 		SFNode* const body1;
 		SFNode* const body2;
-		MFString* const forceOutput;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <RigidBodyCollection> collection;
+	X3DPtr <RigidBody>           bodyNode1;
+	X3DPtr <RigidBody>           bodyNode2;
+	SFTime                       updateOutput;
 
 };
 

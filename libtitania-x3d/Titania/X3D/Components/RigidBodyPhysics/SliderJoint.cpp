@@ -95,5 +95,20 @@ SliderJoint::create (X3DExecutionContext* const executionContext) const
 	return new SliderJoint (executionContext);
 }
 
+void
+SliderJoint::addJoint ()
+{
+}
+
+void
+SliderJoint::removeJoint ()
+{
+}
+
+void
+SliderJoint::update ()
+{
+}
+
 } // X3D
 } // titania

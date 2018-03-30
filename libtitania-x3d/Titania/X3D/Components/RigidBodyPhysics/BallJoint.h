@@ -113,9 +113,41 @@ public:
 	body2AnchorPoint () const
 	{ return *fields .body2AnchorPoint; }
 
+	///  @name Desruction
+
+	virtual
+	~BallJoint () final override;
+
+
+protected:
+
+	///  @name Joint handling
+
+	virtual
+	void
+	addJoint () final override;
+
+	virtual
+	void
+	removeJoint () final override;
+
+	virtual
+	void
+	update () final override;
+	
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_anchorPoint ();
 
 	///  @name Static members
 
@@ -123,7 +155,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -135,6 +167,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::shared_ptr <btPoint2PointConstraint> joint;
 
 };
 

@@ -430,7 +430,8 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not treeView -> row_expanded (path))
 		return;
 
-	treeView -> update ();
+	treeView -> collapse_row (path);
+	treeView -> expand_row (path, false);
 }
 
 //bool

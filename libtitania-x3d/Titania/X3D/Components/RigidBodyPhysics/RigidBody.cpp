@@ -149,8 +149,11 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	disableLinearSpeed ()  .setUnit (UnitCategory::SPEED);
 	disableAngularSpeed () .setUnit (UnitCategory::ANGULAR_RATE);
 
-	// Manage gravity by ourself.
+	// Manage gravity by ourself, otherwise useGlobalGravity cannot be toggled dynamically.
 	rigidBody -> setFlags (rigidBody -> getFlags () & ~BT_DISABLE_WORLD_GRAVITY);
+
+	// gContactAddedCallback, search for conveyor belt
+	//rigidBody -> setCollisionFlags (rigidBody -> getCollisionFlags () | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 }
 
 X3DBaseNode*
@@ -383,11 +386,11 @@ RigidBody::applyForces (const Vector3f & gravity)
 void
 RigidBody::update ()
 {
-	if (fixed ())
-		return;
+//	if (fixed ())
+//		return;
 
-	if (not rigidBody -> isActive ())
-		return;
+//	if (not rigidBody -> isActive ())
+//		return;
 
 	btTransform transform;
 

@@ -50,21 +50,80 @@
 
 #include "X3DRigidJointNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
+
 namespace titania {
 namespace X3D {
 
 X3DRigidJointNode::Fields::Fields () :
-	body1 (new SFNode ()),
-	body2 (new SFNode ()),
-	forceOutput (new MFString ({ "NONE" }))
+	forceOutput (new MFString ({ "NONE" })),
+	      body1 (new SFNode ()),
+	      body2 (new SFNode ())
 { }
 
 X3DRigidJointNode::X3DRigidJointNode () :
-	X3DNode (),
-	 fields ()
+	     X3DNode (),
+	      fields (),
+	  collection (),
+	   bodyNode1 (),
+	   bodyNode2 (),
+	updateOutput ()
 {
 	addType (X3DConstants::X3DRigidJointNode);
+
+	addChildObjects (collection, bodyNode1, bodyNode2, updateOutput);
 }
+
+void
+X3DRigidJointNode::initialize ()
+{
+	X3DNode::initialize ();
+
+	body1 () .addInterest (&X3DRigidJointNode::set_bodies, this);
+	body2 () .addInterest (&X3DRigidJointNode::set_bodies, this);
+
+	updateOutput .addInterest (&X3DRigidJointNode::update, this);
+
+	set_bodies ();
+}
+
+void
+X3DRigidJointNode::setCollection (RigidBodyCollection* const value)
+{
+	removeJoint ();
+
+	collection .set (value);
+
+	addJoint ();
+}
+
+void
+X3DRigidJointNode::set_bodies ()
+{
+	removeJoint ();
+
+	if (bodyNode1)
+		bodyNode1 -> removeInterest (&SFTime::addEvent, updateOutput);
+
+	if (bodyNode2)
+		bodyNode2 -> removeInterest (&SFTime::addEvent, updateOutput);
+
+	bodyNode1 .set (x3d_cast <RigidBody*> (body1 ()));
+	bodyNode2 .set (x3d_cast <RigidBody*> (body2 ()));
+
+	if (bodyNode1)
+		bodyNode1 -> addInterest (&SFTime::addEvent, updateOutput);
+
+	if (bodyNode2)
+		bodyNode2 -> addInterest (&SFTime::addEvent, updateOutput);
+
+	addJoint ();
+}
+
+X3DRigidJointNode::~X3DRigidJointNode ()
+{ }
 
 } // X3D
 } // titania

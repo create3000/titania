@@ -125,5 +125,20 @@ DoubleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 	return new DoubleAxisHingeJoint (executionContext);
 }
 
+void
+DoubleAxisHingeJoint::addJoint ()
+{
+}
+
+void
+DoubleAxisHingeJoint::removeJoint ()
+{
+}
+
+void
+DoubleAxisHingeJoint::update ()
+{
+}
+
 } // X3D
 } // titania

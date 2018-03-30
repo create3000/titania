@@ -301,6 +301,7 @@ protected:
 
 	///  @name Friends
 
+	friend class BallJoint;
 	friend class CollisionSensor;
 	friend class RigidBodyCollection;
 

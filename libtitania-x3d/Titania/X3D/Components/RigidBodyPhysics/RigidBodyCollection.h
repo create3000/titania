@@ -212,20 +212,20 @@ public:
 	{ return *fields .collider; }
 
 	MFNode &
-	joints ()
-	{ return *fields .joints; }
-
-	const MFNode &
-	joints () const
-	{ return *fields .joints; }
-
-	MFNode &
 	bodies ()
 	{ return *fields .bodies; }
 
 	const MFNode &
 	bodies () const
 	{ return *fields .bodies; }
+
+	MFNode &
+	joints ()
+	{ return *fields .joints; }
+
+	const MFNode &
+	joints () const
+	{ return *fields .joints; }
 
 	///  @name Destrunction
 
@@ -237,6 +237,7 @@ protected:
 
 	///  @name Friends
 
+	friend class BallJoint;
 	friend class CollisionSensor;
 
 	///  @name Member access
@@ -283,6 +284,9 @@ private:
 	set_frictionCoefficients ();
 
 	void
+	set_joints ();
+
+	void
 	set_bodies ();
 
 	void
@@ -317,16 +321,17 @@ private:
 		SFFloat* const disableLinearSpeed;
 		SFFloat* const disableAngularSpeed;
 		SFNode* const collider;
-		MFNode* const joints;
 		MFNode* const bodies;
+		MFNode* const joints;
 	};
 
 	Fields fields;
 
 	///  @name Members
 
-	X3DPtrArray <RigidBody>                               bodyNodes;
 	X3DPtr <CollisionCollection>                          colliderNode;
+	X3DPtrArray <X3DRigidJointNode>                       jointNodes;
+	X3DPtrArray <RigidBody>                               bodyNodes;
 	std::shared_ptr <btBroadphaseInterface>               broadphase;
 	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
 	std::shared_ptr <btCollisionDispatcher>               dispatcher;

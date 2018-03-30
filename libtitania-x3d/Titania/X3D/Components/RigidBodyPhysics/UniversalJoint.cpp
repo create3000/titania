@@ -103,5 +103,20 @@ UniversalJoint::create (X3DExecutionContext* const executionContext) const
 	return new UniversalJoint (executionContext);
 }
 
+void
+UniversalJoint::addJoint ()
+{
+}
+
+void
+UniversalJoint::removeJoint ()
+{
+}
+
+void
+UniversalJoint::update ()
+{
+}
+
 } // X3D
 } // titania

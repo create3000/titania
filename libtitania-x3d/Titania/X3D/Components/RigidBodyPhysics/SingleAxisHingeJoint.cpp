@@ -101,5 +101,20 @@ SingleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 	return new SingleAxisHingeJoint (executionContext);
 }
 
+void
+SingleAxisHingeJoint::addJoint ()
+{
+}
+
+void
+SingleAxisHingeJoint::removeJoint ()
+{
+}
+
+void
+SingleAxisHingeJoint::update ()
+{
+}
+
 } // X3D
 } // titania

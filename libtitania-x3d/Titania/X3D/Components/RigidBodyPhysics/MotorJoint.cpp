@@ -127,5 +127,20 @@ MotorJoint::create (X3DExecutionContext* const executionContext) const
 	return new MotorJoint (executionContext);
 }
 
+void
+MotorJoint::addJoint ()
+{
+}
+
+void
+MotorJoint::removeJoint ()
+{
+}
+
+void
+MotorJoint::update ()
+{
+}
+
 } // X3D
 } // titania

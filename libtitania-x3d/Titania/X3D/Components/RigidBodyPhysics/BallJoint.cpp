@@ -50,7 +50,10 @@
 
 #include "BallJoint.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 
 namespace titania {
 namespace X3D {
@@ -68,17 +71,22 @@ BallJoint::Fields::Fields () :
 BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DRigidJointNode (),
-	           fields ()
+	           fields (),
+	            joint ()
 {
 	addType (X3DConstants::BallJoint);
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "body1",            body1 ());
-	addField (inputOutput, "body2",            body2 ());
 	addField (inputOutput, "forceOutput",      forceOutput ());
 	addField (inputOutput, "anchorPoint",      anchorPoint ());
 	addField (outputOnly,  "body1AnchorPoint", body1AnchorPoint ());
 	addField (outputOnly,  "body2AnchorPoint", body2AnchorPoint ());
+	addField (inputOutput, "body1",            body1 ());
+	addField (inputOutput, "body2",            body2 ());
+
+	// Units
+
+	anchorPoint () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*
@@ -86,6 +94,87 @@ BallJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new BallJoint (executionContext);
 }
+
+void
+BallJoint::initialize ()
+{
+	X3DRigidJointNode::initialize ();
+
+	anchorPoint () .addInterest (&BallJoint::set_anchorPoint, this);
+}
+
+void
+BallJoint::addJoint ()
+{
+	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
+	{
+		const auto & anchorPoint1 = anchorPoint () .getValue ();
+		const auto & anchorPoint2 = anchorPoint () .getValue ();
+
+		joint .reset (new btPoint2PointConstraint (*getBody1 () -> getRigidBody (),
+		                                           *getBody2 () -> getRigidBody (),
+		                                           btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
+		                                           btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ())));
+	}
+	else
+	{
+		joint .reset ();
+	}
+
+	if (getCollection ())
+	{
+		if (joint)
+		{
+			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+		}
+	}
+}
+
+void
+BallJoint::removeJoint ()
+{
+	if (getCollection ())
+	{
+		if (joint)
+		{
+			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+		}
+	}
+}
+
+void
+BallJoint::set_anchorPoint ()
+{
+	removeJoint ();
+	addJoint ();
+}
+
+void
+BallJoint::update ()
+{
+	if (getBody1 ())
+	{
+		auto matrix1      = Matrix4f ();
+		auto anchorPoint1 = anchorPoint () .getValue ();
+
+		matrix1 .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
+
+		body1AnchorPoint () = anchorPoint1 * matrix1;
+	}
+
+	if (getBody2 ())
+	{
+		auto matrix2      = Matrix4f ();
+		auto anchorPoint2 = anchorPoint () .getValue ();
+
+		matrix2 .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
+
+		body2AnchorPoint () = anchorPoint2 * matrix2;
+	}
+}
+
+BallJoint::~BallJoint ()
+{ }
 
 } // X3D
 } // titania
