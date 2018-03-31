@@ -100,7 +100,7 @@ BallJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	anchorPoint () .addInterest (&BallJoint::set_joint, this);
+	anchorPoint () .addInterest (&BallJoint::set_anchorPoint, this);
 }
 
 void
@@ -124,9 +124,7 @@ BallJoint::addJoint ()
 	if (getCollection ())
 	{
 		if (joint)
-		{
 			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-		}
 	}
 }
 
@@ -136,9 +134,7 @@ BallJoint::removeJoint ()
 	if (getCollection ())
 	{
 		if (joint)
-		{
 			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-		}
 	}
 }
 
@@ -162,6 +158,19 @@ BallJoint::update2 ()
 	matrix2 .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
 	body2AnchorPoint () = anchorPoint2 * matrix2;
+}
+
+void
+BallJoint::set_anchorPoint ()
+{
+	if (joint)
+	{
+		const auto & anchorPoint1 = anchorPoint () .getValue ();
+		const auto & anchorPoint2 = anchorPoint () .getValue ();
+
+		joint -> setPivotA (btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()));
+		joint -> setPivotB (btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()));
+	}
 }
 
 BallJoint::~BallJoint ()
