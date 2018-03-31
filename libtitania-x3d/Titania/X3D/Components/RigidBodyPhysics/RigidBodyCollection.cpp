@@ -315,7 +315,8 @@ RigidBodyCollection::set_bodies ()
 {
 	for (const auto & bodyNode : bodyNodes)
 	{
-		bodyNode -> enabled () .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+		bodyNode -> enabled ()       .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
+		bodyNode -> getCollection () .removeInterest (&RigidBodyCollection::set_bodies,        this);
 
 		bodyNode -> setCollection (nullptr);
 	}
@@ -330,7 +331,10 @@ RigidBodyCollection::set_bodies ()
 			continue;
 
 		if (bodyNode -> getCollection ())
+		{
+			bodyNode -> getCollection () .addInterest (&RigidBodyCollection::set_bodies, this);
 			continue;
+		}
 
 		bodyNode -> setCollection (this);
 

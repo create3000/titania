@@ -64,16 +64,15 @@ X3DRigidJointNode::Fields::Fields () :
 { }
 
 X3DRigidJointNode::X3DRigidJointNode () :
-	     X3DNode (),
-	      fields (),
-	  collection (),
-	   bodyNode1 (),
-	   bodyNode2 (),
-	updateOutput ()
+	   X3DNode (),
+	    fields (),
+	collection (),
+	 bodyNode1 (),
+	 bodyNode2 ()
 {
 	addType (X3DConstants::X3DRigidJointNode);
 
-	addChildObjects (collection, bodyNode1, bodyNode2, updateOutput);
+	addChildObjects (collection, bodyNode1, bodyNode2);
 }
 
 void
@@ -84,8 +83,6 @@ X3DRigidJointNode::initialize ()
 	body1 () .addInterest (&X3DRigidJointNode::set_bodies, this);
 	body2 () .addInterest (&X3DRigidJointNode::set_bodies, this);
 
-	updateOutput .addInterest (&X3DRigidJointNode::update, this);
-
 	set_bodies ();
 }
 
@@ -94,7 +91,7 @@ X3DRigidJointNode::setCollection (RigidBodyCollection* const value)
 {
 	removeJoint ();
 
-	collection .set (value);
+	collection = value;
 
 	addJoint ();
 }
@@ -105,20 +102,39 @@ X3DRigidJointNode::set_bodies ()
 	removeJoint ();
 
 	if (bodyNode1)
-		bodyNode1 -> removeInterest (&SFTime::addEvent, updateOutput);
+	{
+		bodyNode1 -> removeInterest (&X3DRigidJointNode::update1, this);
+		bodyNode1 -> getCollection () .removeInterest (&X3DRigidJointNode::set_joint, this);
+	}
 
 	if (bodyNode2)
-		bodyNode2 -> removeInterest (&SFTime::addEvent, updateOutput);
+	{
+		bodyNode2 -> removeInterest (&X3DRigidJointNode::update2, this);
+		bodyNode2 -> getCollection () .removeInterest (&X3DRigidJointNode::set_joint, this);
+	}
 
 	bodyNode1 .set (x3d_cast <RigidBody*> (body1 ()));
 	bodyNode2 .set (x3d_cast <RigidBody*> (body2 ()));
 
 	if (bodyNode1)
-		bodyNode1 -> addInterest (&SFTime::addEvent, updateOutput);
+	{
+		bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
+		bodyNode1 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
+	}
 
 	if (bodyNode2)
-		bodyNode2 -> addInterest (&SFTime::addEvent, updateOutput);
+	{
+		bodyNode2 -> addInterest (&X3DRigidJointNode::update2, this);
+		bodyNode2 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
+	}
 
+	addJoint ();
+}
+
+void
+X3DRigidJointNode::set_joint ()
+{
+	removeJoint ();
 	addJoint ();
 }
 

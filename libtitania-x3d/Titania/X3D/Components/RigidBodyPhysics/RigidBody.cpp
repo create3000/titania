@@ -321,6 +321,7 @@ RigidBody::set_geometry ()
 	for (const auto & geometryNode : geometryNodes)
 	{
 		geometryNode -> removeInterest (&SFTime::addEvent, transform);
+		geometryNode -> getBody () .removeInterest (&RigidBody::set_geometry, this);
 
 		geometryNode -> setBody (nullptr);
 	}
@@ -336,7 +337,10 @@ RigidBody::set_geometry ()
 			continue;
 
 		if (geometryNode -> getBody ())
+		{
+			geometryNode -> getBody () .addInterest (&RigidBody::set_geometry, this);
 			continue;
+		}
 
 		geometryNode -> setBody (this);
 

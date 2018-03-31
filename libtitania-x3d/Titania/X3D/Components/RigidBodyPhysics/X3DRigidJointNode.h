@@ -135,6 +135,19 @@ protected:
 	void
 	removeJoint () = 0;
 
+	virtual
+	void
+	update1 () = 0;
+
+	virtual
+	void
+	update2 () = 0;
+
+	///  @name Event handlers
+
+	void
+	set_joint ();
+
 
 private:
 
@@ -142,10 +155,6 @@ private:
 
 	void
 	set_bodies ();
-
-	virtual
-	void
-	update () = 0;
 
 	///  @name Fields
 
@@ -165,7 +174,6 @@ private:
 	X3DPtr <RigidBodyCollection> collection;
 	X3DPtr <RigidBody>           bodyNode1;
 	X3DPtr <RigidBody>           bodyNode2;
-	SFTime                       updateOutput;
 
 };
 

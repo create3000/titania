@@ -100,7 +100,7 @@ BallJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	anchorPoint () .addInterest (&BallJoint::set_anchorPoint, this);
+	anchorPoint () .addInterest (&BallJoint::set_joint, this);
 }
 
 void
@@ -143,34 +143,25 @@ BallJoint::removeJoint ()
 }
 
 void
-BallJoint::set_anchorPoint ()
+BallJoint::update1 ()
 {
-	removeJoint ();
-	addJoint ();
+	auto matrix1      = Matrix4f ();
+	auto anchorPoint1 = anchorPoint () .getValue ();
+
+	matrix1 .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
+
+	body1AnchorPoint () = anchorPoint1 * matrix1;
 }
 
 void
-BallJoint::update ()
+BallJoint::update2 ()
 {
-	if (getBody1 ())
-	{
-		auto matrix1      = Matrix4f ();
-		auto anchorPoint1 = anchorPoint () .getValue ();
+	auto matrix2      = Matrix4f ();
+	auto anchorPoint2 = anchorPoint () .getValue ();
 
-		matrix1 .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
+	matrix2 .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
-		body1AnchorPoint () = anchorPoint1 * matrix1;
-	}
-
-	if (getBody2 ())
-	{
-		auto matrix2      = Matrix4f ();
-		auto anchorPoint2 = anchorPoint () .getValue ();
-
-		matrix2 .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
-
-		body2AnchorPoint () = anchorPoint2 * matrix2;
-	}
+	body2AnchorPoint () = anchorPoint2 * matrix2;
 }
 
 BallJoint::~BallJoint ()

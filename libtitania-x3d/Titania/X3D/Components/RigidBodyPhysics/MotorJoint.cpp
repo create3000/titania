@@ -138,7 +138,12 @@ MotorJoint::removeJoint ()
 }
 
 void
-MotorJoint::update ()
+MotorJoint::update1 ()
+{
+}
+
+void
+MotorJoint::update2 ()
 {
 }
 

@@ -112,7 +112,12 @@ SingleAxisHingeJoint::removeJoint ()
 }
 
 void
-SingleAxisHingeJoint::update ()
+SingleAxisHingeJoint::update1 ()
+{
+}
+
+void
+SingleAxisHingeJoint::update2 ()
 {
 }
 

@@ -106,7 +106,12 @@ SliderJoint::removeJoint ()
 }
 
 void
-SliderJoint::update ()
+SliderJoint::update1 ()
+{
+}
+
+void
+SliderJoint::update2 ()
 {
 }
 

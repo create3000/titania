@@ -114,7 +114,12 @@ UniversalJoint::removeJoint ()
 }
 
 void
-UniversalJoint::update ()
+UniversalJoint::update1 ()
+{
+}
+
+void
+UniversalJoint::update2 ()
 {
 }
 

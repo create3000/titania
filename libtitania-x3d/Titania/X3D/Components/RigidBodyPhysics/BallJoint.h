@@ -133,7 +133,11 @@ protected:
 
 	virtual
 	void
-	update () final override;
+	update1 () final override;
+
+	virtual
+	void
+	update2 () final override;
 	
 
 private:
@@ -143,11 +147,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_anchorPoint ();
 
 	///  @name Static members
 

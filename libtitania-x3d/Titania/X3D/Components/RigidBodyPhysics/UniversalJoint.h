@@ -192,7 +192,11 @@ protected:
 
 	virtual
 	void
-	update () final override;
+	update1 () final override;
+
+	virtual
+	void
+	update2 () final override;
 
 
 private:
