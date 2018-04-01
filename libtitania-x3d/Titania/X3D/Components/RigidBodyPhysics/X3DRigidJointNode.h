@@ -63,6 +63,14 @@ class X3DRigidJointNode :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	MFString &
@@ -140,6 +148,9 @@ protected:
 	removeJoint () = 0;
 
 	///  @name Event handlers
+
+	void
+	set_live ();
 
 	void
 	set_body1 ();

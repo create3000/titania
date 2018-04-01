@@ -83,11 +83,24 @@ X3DRigidJointNode::initialize ()
 {
 	X3DNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&X3DRigidJointNode::set_live, this);
+	isLive () .addInterest (&X3DRigidJointNode::set_live, this);
+
 	body1 () .addInterest (&X3DRigidJointNode::set_body1, this);
 	body2 () .addInterest (&X3DRigidJointNode::set_body2, this);
 
 	set_body1 ();
 	set_body2 ();
+}
+
+void
+X3DRigidJointNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DNode::setExecutionContext (executionContext);
+
+	set_live ();
 }
 
 void
@@ -98,6 +111,27 @@ X3DRigidJointNode::setCollection (RigidBodyCollection* const value)
 	collectionNode = value;
 
 	addJoint ();
+}
+
+void
+X3DRigidJointNode::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		if (bodyNode1)
+			bodyNode1 -> removeInterest (&X3DRigidJointNode::update1, this);
+
+		if (bodyNode2)
+			bodyNode2 -> removeInterest (&X3DRigidJointNode::update2, this);
+	}
+	else
+	{
+		if (bodyNode1)
+			bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
+
+		if (bodyNode2)
+			bodyNode2 -> addInterest (&X3DRigidJointNode::update2, this);
+	}
 }
 
 void
@@ -115,7 +149,9 @@ X3DRigidJointNode::set_body1 ()
 
 	if (bodyNode1)
 	{
-		bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
+		if (not (getExecutionContext () -> isLive () and isLive ()))
+			bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
+
 		bodyNode1 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
 
 		initialize1 ();
@@ -139,7 +175,9 @@ X3DRigidJointNode::set_body2 ()
 
 	if (bodyNode2)
 	{
-		bodyNode2 -> addInterest (&X3DRigidJointNode::update2, this);
+		if (not (getExecutionContext () -> isLive () and isLive ()))
+			bodyNode2 -> addInterest (&X3DRigidJointNode::update2, this);
+
 		bodyNode2 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
 
 		initialize2 ();
