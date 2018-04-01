@@ -107,27 +107,30 @@ public:
 
 	virtual
 	Box3d
-	getBBox () const final override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	///  @name Destruction
 
 	virtual
-	~CollidableOffset () final override;
+	~CollidableOffset () override;
 
 
-private:
+protected:
 	
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 
@@ -143,7 +146,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -153,6 +156,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	X3DPtr <X3DNBodyCollidableNode> collidableNode;
 

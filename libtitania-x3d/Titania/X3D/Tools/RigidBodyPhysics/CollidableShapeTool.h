@@ -76,6 +76,18 @@ public:
 		//addType (X3DConstants::CollidableShapeTool);
 	}
 
+	///  @name Fields
+
+	virtual
+	SFNode &
+	shape () final override
+	{ return getNode <CollidableShape> () -> shape (); }
+
+	virtual
+	const SFNode &
+	shape () const final override
+	{ return getNode <CollidableShape> () -> shape (); }
+
 	///  @name Member access
 
 	virtual

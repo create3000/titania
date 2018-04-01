@@ -123,6 +123,7 @@
 #include "../../Tools/Rendering/TriangleSetTool.h"
 #include "../../Tools/Rendering/TriangleStripSetTool.h"
 
+#include "../../Tools/RigidBodyPhysics/CollidableOffsetTool.h"
 #include "../../Tools/RigidBodyPhysics/CollidableShapeTool.h"
 
 #include "../../Tools/Shape/ShapeTool.h"
@@ -149,6 +150,7 @@ SupportedTools::SupportedTools () :
 	addTool ("CADLayer",                [ ] (X3DBaseNode* const node) { return new CADLayerTool                (node); });
 	addTool ("CADPart",                 [ ] (X3DBaseNode* const node) { return new CADPartTool                 (node); });
 	addTool ("Circle2D",                [ ] (X3DBaseNode* const node) { return new Circle2DTool                (node); });
+	addTool ("CollidableOffset",        [ ] (X3DBaseNode* const node) { return new CollidableOffsetTool        (node); });
 	addTool ("CollidableShape",         [ ] (X3DBaseNode* const node) { return new CollidableShapeTool         (node); });
 	addTool ("Collision",               [ ] (X3DBaseNode* const node) { return new CollisionTool               (node); });
 	addTool ("Cone",                    [ ] (X3DBaseNode* const node) { return new ConeTool                    (node); });
