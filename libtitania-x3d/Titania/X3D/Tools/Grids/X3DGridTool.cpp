@@ -255,7 +255,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
-		if (master -> getActiveTool () not_eq ToolType::MOVE)
+		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
 			return;
 
 		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid

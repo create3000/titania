@@ -84,7 +84,7 @@ X3DNBodyCollidableNodeTool::realize ()
 	setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
 	getTransformTool () -> displayCenter () = false;
-	getTransformTool () -> tools ()         = { "MOVE", "ROTATE" };
+	getTransformTool () -> tools ()         = { "TRANSLATE", "ROTATE" };
 	getTransformTool () -> color ()         = color;
 
 	translation () .addInterest (getTransformTool () -> translation ());
@@ -114,12 +114,9 @@ X3DNBodyCollidableNodeTool::reshape (X3DRenderObject* const renderObject)
 	try
 	{
 		const auto bbox = getChildBBox ();
-	
-		if (bbox .size () not_eq getTransformTool () -> bboxSize ())
-			getTransformTool () -> bboxSize () = bbox .size ();
-	
-		if (bbox .center () not_eq getTransformTool () -> bboxCenter ())
-			getTransformTool () -> bboxCenter () = bbox .center ();
+
+		getTransformTool () -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
+		getTransformTool () -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 	}
 	catch (const X3DError & error)
 	{ }

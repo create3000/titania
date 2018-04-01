@@ -92,7 +92,7 @@ X3DEnvironmentalSensorNodeTool::realize ()
 
 		addTool ();
 
-		getTransformTool () -> tools ()         = { "MOVE", "SCALE" };
+		getTransformTool () -> tools ()         = { "TRANSLATE", "SCALE" };
 		getTransformTool () -> displayCenter () = false;
 
 		getToolNode () -> setField <SFColor> ("color", color);

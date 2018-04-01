@@ -60,7 +60,7 @@ enum class ToolType :
 	uint32_t
 {
 	DEFAULT,
-	MOVE,
+	TRANSLATE,
 	ROTATE,
 	SCALE
 

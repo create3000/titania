@@ -73,7 +73,7 @@ SpotLightTool::realize ()
 	{
 		X3DLightNodeTool::realize ();
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
 	}
 	catch (const X3DError & error)
 	{

@@ -1322,7 +1322,7 @@ DEF ModeScript Script {
   inputOnly      SFTime   set_time
   inputOutput    SFBool   pickable TRUE
   inputOutput    MFString tools [
-    "MOVE",
+    "TRANSLATE",
     "ROTATE",
     "SCALE"
   ]
@@ -1428,7 +1428,7 @@ function set_tool (value)
 
 	switch (tools [value])
 	{
-		case \"MOVE\":
+		case \"TRANSLATE\":
 			move                = true;
 			whichChoice_changed = 0;
 			break;
@@ -2331,7 +2331,7 @@ function sgn (value)
 DEF Tool Script {
   inputOutput SFBool     pickable TRUE
   inputOutput MFString   tools [
-    "MOVE",
+    "TRANSLATE",
     "ROTATE",
     "SCALE"
   ]

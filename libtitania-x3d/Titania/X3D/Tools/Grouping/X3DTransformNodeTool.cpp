@@ -69,7 +69,7 @@ namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
 	       grouping (new SFBool (true)),
-	          tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	          tools (new MFString ({ "TRANSLATE", "ROTATE", "SCALE" })),
 	     scaleXAxis (new SFBool (true)),
 	     scaleYAxis (new SFBool (true)),
 	     scaleZAxis (new SFBool (true)),
@@ -299,7 +299,7 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 
 		matrix .get (t, r, s, so);
 
-		if (not availableTools .count (ToolType::MOVE))
+		if (not availableTools .count (ToolType::TRANSLATE))
 			t = Vector3d ();
 
 		if (not availableTools .count (ToolType::ROTATE))
@@ -357,9 +357,9 @@ void
 X3DTransformNodeTool::set_tools ()
 {
 	static const std::map <std::string, ToolType> toolTypes = {
-		std::make_pair ("MOVE",   ToolType::MOVE),
-		std::make_pair ("ROTATE", ToolType::ROTATE),
-		std::make_pair ("SCALE",  ToolType::SCALE),
+		std::make_pair ("TRANSLATE", ToolType::TRANSLATE),
+		std::make_pair ("ROTATE",    ToolType::ROTATE),
+		std::make_pair ("SCALE",     ToolType::SCALE),
 	};
 
 	availableTools .clear ();
@@ -408,7 +408,7 @@ X3DTransformNodeTool::set_active ()
 			case ToolType::DEFAULT:
 				description = basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ());
 				break;
-			case ToolType::MOVE:
+			case ToolType::TRANSLATE:
 				description = basic::sprintf (_ ("Edit Field %s »translation«"), getTypeName () .c_str ());
 				break;
 			case ToolType::ROTATE:

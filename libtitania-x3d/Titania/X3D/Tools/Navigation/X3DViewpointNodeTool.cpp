@@ -108,7 +108,7 @@ X3DViewpointNodeTool::realize ()
 
 		addTool ();
 
-		getTransformTool () -> setField <MFString> ("tools",         MFString ({ "MOVE", "ROTATE" }));
+		getTransformTool () -> setField <MFString> ("tools",         MFString ({ "TRANSLATE", "ROTATE" }));
 		getTransformTool () -> setField <SFBool>   ("displayCenter", false);
 
 		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());

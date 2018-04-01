@@ -72,7 +72,7 @@ PointLightTool::realize ()
 	{
 		X3DLightNodeTool::realize ();
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE" }));
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE" }));
 	}
 	catch (const X3DError & error)
 	{

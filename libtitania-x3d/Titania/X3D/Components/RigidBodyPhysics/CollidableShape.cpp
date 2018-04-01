@@ -163,7 +163,7 @@ CollidableShape::createConcaveGeometry ()
 	}
 
 	if (vertices .empty ())
-		return std::make_shared <btCompoundShape> ();
+		return nullptr;
 
 	return std::make_shared <btBvhTriangleMeshShape> (triangleMesh .get (), false);
 }

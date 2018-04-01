@@ -72,7 +72,7 @@ DirectionalLightTool::realize ()
 	{
 		X3DLightNodeTool::realize ();
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
 	
 		// Connect tool location
 	
