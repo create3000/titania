@@ -167,13 +167,10 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
-	position ()             .addInterest (&RigidBody::set_position,           this);
-	orientation ()          .addInterest (&RigidBody::set_orientation,        this);
 	linearVelocity ()       .addInterest (&RigidBody::set_linearVelocity,     this);
 	angularVelocity ()      .addInterest (&RigidBody::set_angularVelocity,    this);
 	useFiniteRotation ()    .addInterest (&RigidBody::set_finiteRotationAxis, this);
 	finiteRotationAxis ()   .addInterest (&RigidBody::set_finiteRotationAxis, this);
-	orientation ()          .addInterest (&RigidBody::set_orientation,        this);
 	autoDamp ()             .addInterest (&RigidBody::set_damping,            this);
 	linearDampingFactor ()  .addInterest (&RigidBody::set_damping,            this);
 	angularDampingFactor () .addInterest (&RigidBody::set_damping,            this);
@@ -324,6 +321,12 @@ RigidBody::set_geometry ()
 		geometryNode -> getBody () .removeInterest (&RigidBody::set_geometry, this);
 
 		geometryNode -> setBody (nullptr);
+
+		geometryNode -> translation () .removeInterest (position ());
+		geometryNode -> rotation ()    .removeInterest (orientation ());
+
+		position ()    .removeInterest (geometryNode -> translation ());
+		orientation () .removeInterest (geometryNode -> rotation ());
 	}
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -350,7 +353,15 @@ RigidBody::set_geometry ()
 	geometryNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & geometryNode : geometryNodes)
+	{
 		geometryNode -> addInterest (&SFTime::addEvent, transform);
+
+		geometryNode -> translation () .addInterest (position ());
+		geometryNode -> rotation ()    .addInterest (orientation ());
+
+		position ()    .addInterest (geometryNode -> translation ());
+		orientation () .addInterest (geometryNode -> rotation ());
+	}
 
 	set_compoundShape ();
 }

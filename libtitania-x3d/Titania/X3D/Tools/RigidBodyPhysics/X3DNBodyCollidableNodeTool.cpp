@@ -89,6 +89,7 @@ X3DNBodyCollidableNodeTool::realize ()
 
 	translation () .addInterest (getTransformTool () -> translation ());
 	rotation ()    .addInterest (getTransformTool () -> rotation ());
+
 	getTransformTool () -> translation () .addInterest (translation ());
 	getTransformTool () -> rotation ()    .addInterest (rotation ());
 
