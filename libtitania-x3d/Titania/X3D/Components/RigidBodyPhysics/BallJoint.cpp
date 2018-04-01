@@ -108,13 +108,9 @@ BallJoint::addJoint ()
 {
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
 	{
-		const auto & anchorPoint1 = anchorPoint () .getValue ();
-		const auto & anchorPoint2 = anchorPoint () .getValue ();
+		joint .reset (new btPoint2PointConstraint (*getBody1 () -> getRigidBody (), *getBody2 () -> getRigidBody (), btVector3 (), btVector3 ()));
 
-		joint .reset (new btPoint2PointConstraint (*getBody1 () -> getRigidBody (),
-		                                           *getBody2 () -> getRigidBody (),
-		                                           btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
-		                                           btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ())));
+		set_anchorPoint ();
 	}
 	else
 	{
@@ -139,38 +135,44 @@ BallJoint::removeJoint ()
 }
 
 void
+BallJoint::set_anchorPoint ()
+{
+	if (joint)
+	{
+		auto anchorPoint1 = anchorPoint () .getValue ();
+		auto anchorPoint2 = anchorPoint () .getValue ();
+
+		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
+		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+
+		joint -> setPivotA (btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()));
+		joint -> setPivotB (btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()));
+
+		body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+		body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+	}
+}
+
+void
 BallJoint::update1 ()
 {
-	auto matrix1      = Matrix4f ();
-	auto anchorPoint1 = anchorPoint () .getValue ();
+	// Editing support.
+	if (getExecutionContext () -> isLive ())
+		return;
 
-	matrix1 .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
-
-	body1AnchorPoint () = anchorPoint1 * matrix1;
+	initialize1 ();
+	set_anchorPoint ();
 }
 
 void
 BallJoint::update2 ()
 {
-	auto matrix2      = Matrix4f ();
-	auto anchorPoint2 = anchorPoint () .getValue ();
+	// Editing support.
+	if (getExecutionContext () -> isLive ())
+		return;
 
-	matrix2 .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
-
-	body2AnchorPoint () = anchorPoint2 * matrix2;
-}
-
-void
-BallJoint::set_anchorPoint ()
-{
-	if (joint)
-	{
-		const auto & anchorPoint1 = anchorPoint () .getValue ();
-		const auto & anchorPoint2 = anchorPoint () .getValue ();
-
-		joint -> setPivotA (btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()));
-		joint -> setPivotB (btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()));
-	}
+	initialize2 ();
+	set_anchorPoint ();
 }
 
 BallJoint::~BallJoint ()

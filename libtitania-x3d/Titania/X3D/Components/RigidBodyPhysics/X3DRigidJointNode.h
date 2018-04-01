@@ -89,17 +89,20 @@ public:
 	body2 () const
 	{ return *fields .body2; }
 
+	void
+	setCollection (RigidBodyCollection* const value);
+
+	const X3DPtr <RigidBodyCollection> &
+	getCollection () const
+	{ return collectionNode; }
+
 	///  @name Destruction
 
 	~X3DRigidJointNode ();
 
 
 protected:
-
-	///  @name Friends
-
-	friend class RigidBodyCollection;
-
+	
 	///  @name Construction
 
 	X3DRigidJointNode ();
@@ -110,13 +113,6 @@ protected:
 
 	///  @name Member access
 
-	void
-	setCollection (RigidBodyCollection* const value);
-
-	const X3DPtr <RigidBodyCollection> &
-	getCollection () const
-	{ return collection; }
-
 	const X3DPtr <RigidBody> &
 	getBody1 () const
 	{ return bodyNode1; }
@@ -124,6 +120,14 @@ protected:
 	const X3DPtr <RigidBody> &
 	getBody2 () const
 	{ return bodyNode2; }
+
+	const Matrix4f &
+	getInverseMatrix1 () const
+	{ return inverseMatrix1; }
+
+	const Matrix4f &
+	getInverseMatrix2 () const
+	{ return inverseMatrix2; }
 
 	///  @name Joint handling
 
@@ -135,6 +139,23 @@ protected:
 	void
 	removeJoint () = 0;
 
+	///  @name Event handlers
+
+	void
+	set_body1 ();
+
+	void
+	set_body2 ();
+
+	void
+	set_joint ();
+
+	void
+	initialize1 ();
+
+	void
+	initialize2 ();
+
 	virtual
 	void
 	update1 () = 0;
@@ -143,18 +164,8 @@ protected:
 	void
 	update2 () = 0;
 
-	///  @name Event handlers
-
-	void
-	set_joint ();
-
 
 private:
-
-	///  @name Event handlers
-
-	void
-	set_bodies ();
 
 	///  @name Fields
 
@@ -171,9 +182,11 @@ private:
 
 	///  @name Members
 
-	X3DPtr <RigidBodyCollection> collection;
+	X3DPtr <RigidBodyCollection> collectionNode;
 	X3DPtr <RigidBody>           bodyNode1;
 	X3DPtr <RigidBody>           bodyNode2;
+	Matrix4f                     inverseMatrix1;
+	Matrix4f                     inverseMatrix2;
 
 };
 

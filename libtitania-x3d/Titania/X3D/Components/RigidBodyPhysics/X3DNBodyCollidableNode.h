@@ -62,50 +62,60 @@ namespace X3D {
 
 class X3DNBodyCollidableNode :
 	virtual public X3DChildNode,
-	public X3DTransformMatrix3DObject,
-	public X3DBoundedObject
+	virtual public X3DTransformMatrix3DObject,
+	virtual public X3DBoundedObject
 {
 public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
 
+	virtual
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
 
+	virtual
 	const SFVec3f &
 	translation () const
 	{ return *fields .translation; }
 
+	virtual
 	SFRotation &
 	rotation ()
 	{ return *fields .rotation; }
 
+	virtual
 	const SFRotation &
 	rotation () const
 	{ return *fields .rotation; }
 
 	///  @name Member access
+	
+	virtual
+	void
+	setBody (RigidBody* const value)
+	{ bodyNode = value; }
 
+	virtual
 	const X3DPtr <RigidBody> &
 	getBody () const
 	{ return bodyNode; }
 
+	virtual
 	const std::shared_ptr <btCompoundShape> &
 	getCompoundShape () const
 	{ return compoundShape; }
 
-	void
-	setLocalTransform (const Vector3f & t, const Rotation4d & r);
-	
 	///  @name Destruction
 
 	virtual
@@ -118,10 +128,6 @@ public:
 
 protected:
 
-	///  @name Friends
-
-	friend class RigidBody;
-
 	///  @name Construction
 
 	X3DNBodyCollidableNode ();
@@ -131,10 +137,6 @@ protected:
 	initialize () override;
 
 	///  @name Member access
-
-	void
-	setBody (RigidBody* const value)
-	{ bodyNode = value; }
 
 	void
 	setOffset (const Vector3f & value)

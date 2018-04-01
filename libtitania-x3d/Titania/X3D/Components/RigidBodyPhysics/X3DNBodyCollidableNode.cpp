@@ -91,15 +91,6 @@ X3DNBodyCollidableNode::initialize ()
 	eventsProcessed ();
 }
 
-void
-X3DNBodyCollidableNode::setLocalTransform (const Vector3f & t, const Rotation4d & r)
-{
-	translation () = t;
-	rotation ()    = r;
-
-	eventsProcessed ();
-}
-
 btTransform
 X3DNBodyCollidableNode::getLocalTransform () const
 {

@@ -227,24 +227,16 @@ public:
 	joints () const
 	{ return *fields .joints; }
 
-	///  @name Destrunction
-
-	virtual
-	~RigidBodyCollection () final override;
-
-
-protected:
-
-	///  @name Friends
-
-	friend class BallJoint;
-	friend class CollisionSensor;
-
 	///  @name Member access
 
 	const std::shared_ptr <btDiscreteDynamicsWorld> &
 	getDynamicsWorld () const
 	{ return dynamicsWorld; }
+
+	///  @name Destrunction
+
+	virtual
+	~RigidBodyCollection () final override;
 
 
 private:

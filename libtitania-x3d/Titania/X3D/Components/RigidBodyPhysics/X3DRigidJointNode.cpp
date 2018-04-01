@@ -51,6 +51,7 @@
 #include "X3DRigidJointNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 #include "../RigidBodyPhysics/RigidBodyCollection.h"
 
@@ -64,15 +65,17 @@ X3DRigidJointNode::Fields::Fields () :
 { }
 
 X3DRigidJointNode::X3DRigidJointNode () :
-	   X3DNode (),
-	    fields (),
-	collection (),
-	 bodyNode1 (),
-	 bodyNode2 ()
+	       X3DNode (),
+	        fields (),
+	collectionNode (),
+	     bodyNode1 (),
+	     bodyNode2 (),
+	inverseMatrix1 (),
+	inverseMatrix2 ()
 {
 	addType (X3DConstants::X3DRigidJointNode);
 
-	addChildObjects (collection, bodyNode1, bodyNode2);
+	addChildObjects (collectionNode, bodyNode1, bodyNode2);
 }
 
 void
@@ -80,10 +83,11 @@ X3DRigidJointNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	body1 () .addInterest (&X3DRigidJointNode::set_bodies, this);
-	body2 () .addInterest (&X3DRigidJointNode::set_bodies, this);
+	body1 () .addInterest (&X3DRigidJointNode::set_body1, this);
+	body2 () .addInterest (&X3DRigidJointNode::set_body2, this);
 
-	set_bodies ();
+	set_body1 ();
+	set_body2 ();
 }
 
 void
@@ -91,13 +95,13 @@ X3DRigidJointNode::setCollection (RigidBodyCollection* const value)
 {
 	removeJoint ();
 
-	collection = value;
+	collectionNode = value;
 
 	addJoint ();
 }
 
 void
-X3DRigidJointNode::set_bodies ()
+X3DRigidJointNode::set_body1 ()
 {
 	removeJoint ();
 
@@ -107,25 +111,38 @@ X3DRigidJointNode::set_bodies ()
 		bodyNode1 -> getCollection () .removeInterest (&X3DRigidJointNode::set_joint, this);
 	}
 
+	bodyNode1 .set (x3d_cast <RigidBody*> (body1 ()));
+
+	if (bodyNode1)
+	{
+		bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
+		bodyNode1 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
+
+		initialize1 ();
+	}
+
+	addJoint ();
+}
+
+void
+X3DRigidJointNode::set_body2 ()
+{
+	removeJoint ();
+
 	if (bodyNode2)
 	{
 		bodyNode2 -> removeInterest (&X3DRigidJointNode::update2, this);
 		bodyNode2 -> getCollection () .removeInterest (&X3DRigidJointNode::set_joint, this);
 	}
 
-	bodyNode1 .set (x3d_cast <RigidBody*> (body1 ()));
 	bodyNode2 .set (x3d_cast <RigidBody*> (body2 ()));
-
-	if (bodyNode1)
-	{
-		bodyNode1 -> addInterest (&X3DRigidJointNode::update1, this);
-		bodyNode1 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
-	}
 
 	if (bodyNode2)
 	{
 		bodyNode2 -> addInterest (&X3DRigidJointNode::update2, this);
 		bodyNode2 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
+
+		initialize2 ();
 	}
 
 	addJoint ();
@@ -136,6 +153,20 @@ X3DRigidJointNode::set_joint ()
 {
 	removeJoint ();
 	addJoint ();
+}
+
+void
+X3DRigidJointNode::initialize1 ()
+{
+	inverseMatrix1 .set (bodyNode1 -> position () .getValue (), bodyNode1 -> orientation () .getValue ());
+	inverseMatrix1 .inverse ();
+}
+
+void
+X3DRigidJointNode::initialize2 ()
+{
+	inverseMatrix2 .set (bodyNode2 -> position () .getValue (), bodyNode2 -> orientation () .getValue ());
+	inverseMatrix2 .inverse ();
 }
 
 X3DRigidJointNode::~X3DRigidJointNode ()

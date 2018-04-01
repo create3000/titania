@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,124 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLIDABLE_SHAPE_H__
-#define __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLIDABLE_SHAPE_H__
+#ifndef __TITANIA_X3D_TOOLS_RIGID_BODY_PHYSICS_COLLIDABLE_SHAPE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_RIGID_BODY_PHYSICS_COLLIDABLE_SHAPE_TOOL_H__
 
-#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/RigidBodyPhysics/CollidableShape.h"
 
 namespace titania {
 namespace X3D {
 
-class CollidableShape :
-	virtual public X3DNBodyCollidableNode
+class CollidableShapeTool :
+	virtual public CollidableShape,
+	public X3DNBodyCollidableNodeTool
 {
 public:
 
 	///  @name Construction
 
-	CollidableShape (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFNode &
-	shape ()
-	{ return *fields .shape; }
-
-	virtual
-	const SFNode &
-	shape () const
-	{ return *fields .shape; }
+	CollidableShapeTool (X3DBaseNode* const node) :
+		               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           CollidableShape (node -> getExecutionContext ()),
+		               X3DBaseTool (node),
+		X3DNBodyCollidableNodeTool (ToolColors::RED)
+	{
+		//addType (X3DConstants::CollidableShapeTool);
+	}
 
 	///  @name Member access
 
 	virtual
 	Box3d
-	getBBox () const override;
+	getBBox () const final override
+	{ return X3DNBodyCollidableNodeTool::getBBox (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ X3DNBodyCollidableNodeTool::traverse (type, renderObject); }
 
 	///  @name Destruction
 
 	virtual
-	~CollidableShape () override;
-
-
-private:
-	
-	///  @name Construction
+	void
+	dispose ()
+	{ X3DNBodyCollidableNodeTool::dispose (); }
 
 	virtual
+	~CollidableShapeTool () final override
+	{ }
+
+
+protected:
+	
+	virtual
 	void
-	initialize () override;
+	initialize () final override
+	{ X3DNBodyCollidableNodeTool::initialize (); }
 
-	///  @name Member access
-
-	std::shared_ptr <btCollisionShape>
-	createConcaveGeometry ();
-
-	///  @name Event handlers
-
-	void
-	set_shape ();
-
-	void
-	set_geometry ();
-
-	void
-	set_collidableGeometry ();
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const shape;
-	};
-
-	Fields fields;
-
-	X3DPtr <Shape>                     shapeNode;
-	X3DPtr <X3DGeometryNode>           geometryNode;
-	std::shared_ptr <btCollisionShape> collisionShape;
-	std::shared_ptr <btTriangleMesh>   triangleMesh;
-	std::vector <btScalar>             heightField;
 
 };
 

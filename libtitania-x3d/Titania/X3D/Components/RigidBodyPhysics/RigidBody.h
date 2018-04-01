@@ -279,9 +279,17 @@ public:
 
 	///  @name Member access
 
+	void
+	setCollection (RigidBodyCollection* const value)
+	{ collectionNode = value; }
+
 	const X3DPtr <RigidBodyCollection> &
 	getCollection () const
 	{ return collectionNode; }
+
+	const std::shared_ptr <btRigidBody> &
+	getRigidBody () const
+	{ return rigidBody; }
 
 	///  @name Operations
 
@@ -295,25 +303,6 @@ public:
 
 	virtual
 	~RigidBody () final override;
-
-
-protected:
-
-	///  @name Friends
-
-	friend class BallJoint;
-	friend class CollisionSensor;
-	friend class RigidBodyCollection;
-
-	///  @name Member access
-
-	void
-	setCollection (RigidBodyCollection* const value)
-	{ collectionNode = value; }
-
-	const std::shared_ptr <btRigidBody> &
-	getRigidBody () const
-	{ return rigidBody; }
 
 
 private:
@@ -409,14 +398,14 @@ private:
 
 	///  @name Members
 
-	X3DPtr <RigidBodyCollection>             collectionNode;
-	X3DPtrArray <X3DNBodyCollidableNode>     geometryNodes;
-	std::shared_ptr <btCompoundShape>        compoundShape;
-	std::shared_ptr <btDefaultMotionState>   motionState;
-	std::shared_ptr <btRigidBody>            rigidBody;
-	SFTime                                   transform;
-	Vector3f                                 force;
-	Vector3f                                 torque;
+	X3DPtr <RigidBodyCollection>           collectionNode;
+	X3DPtrArray <X3DNBodyCollidableNode>   geometryNodes;
+	std::shared_ptr <btCompoundShape>      compoundShape;
+	std::shared_ptr <btDefaultMotionState> motionState;
+	std::shared_ptr <btRigidBody>          rigidBody;
+	SFTime                                 transform;
+	Vector3f                               force;
+	Vector3f                               torque;
 };
 
 } // X3D

@@ -59,7 +59,7 @@ namespace X3D {
 class X3DNBodyCollidableNode;
 
 class CollidableOffset :
-	public X3DNBodyCollidableNode
+	virtual public X3DNBodyCollidableNode
 {
 public:
 
@@ -93,10 +93,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFNode &
 	collidable ()
 	{ return *fields .collidable; }
 
+	virtual
 	const SFNode &
 	collidable () const
 	{ return *fields .collidable; }
