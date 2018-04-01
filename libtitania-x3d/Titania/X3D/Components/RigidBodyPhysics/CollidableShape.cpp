@@ -51,6 +51,7 @@
 #include "CollidableShape.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
@@ -160,6 +161,9 @@ CollidableShape::createConcaveGeometry ()
 		                             btVector3 (v1 .x (), v1 .y (), v1 .z ()),
 		                             btVector3 (v2 .x (), v2 .y (), v2 .z ()));
 	}
+
+	if (vertices .empty ())
+		return std::make_shared <btCompoundShape> ();
 
 	return std::make_shared <btBvhTriangleMeshShape> (triangleMesh .get (), false);
 }
@@ -335,15 +339,35 @@ CollidableShape::set_collidableGeometry ()
 void
 CollidableShape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (shapeNode)
+	if (not shapeNode)
+		return;
+
+	switch (type)
 	{
-		renderObject -> getModelViewMatrix () .push ();
-		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+		case TraverseType::POINTER:
+		{
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
 
-		shapeNode -> traverse (type, renderObject);
-
-		renderObject -> getModelViewMatrix () .pop ();
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+			shapeNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+			break;
+		}
+		default:
+		{
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+			shapeNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+			break;
+		}
 	}
+
 }
 
 CollidableShape::~CollidableShape ()

@@ -109,6 +109,11 @@ public:
 	Box3d
 	getBBox () const override;
 
+	virtual
+	const X3DPtr <X3DNBodyCollidableNode> &
+	getCollidable () const
+	{ return collidableNode; }
+
 	///  @name Operations
 
 	virtual

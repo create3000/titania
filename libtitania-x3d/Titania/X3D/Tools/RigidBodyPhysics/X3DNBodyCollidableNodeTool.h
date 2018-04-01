@@ -54,7 +54,6 @@
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
 #include "../Grouping/X3DTransformMatrix3DObjectTool.h"
-#include "../ToolColors.h"
 
 #include "../../Components/RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
@@ -104,6 +103,11 @@ public:
 	///  @name Member access
 
 	virtual
+	Box3d
+	getBBox () const override
+	{ return getNode <X3DNBodyCollidableNode> () -> getBBox (); }
+
+	virtual
 	void
 	setBody (RigidBody* const value) final override
 	{ getNode <X3DNBodyCollidableNode> () -> setBody (value); }
@@ -122,26 +126,16 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override
-	{
-		X3DChildNodeTool::traverse (type, renderObject);
-		X3DBoundedObjectTool::traverse (type, renderObject);
-	}
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	/// @name Destruction
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObjectTool::dispose ();
-		X3DTransformMatrix3DObjectTool::dispose ();
-		X3DChildNodeTool::dispose ();
-	}
+	dispose () override;
 
 	virtual
-	~X3DNBodyCollidableNodeTool () override
-	{ }
+	~X3DNBodyCollidableNodeTool () override;
 
 	/// @name Destruction
 
@@ -149,41 +143,36 @@ protected:
 
 	///  @name Construction
 
-	X3DNBodyCollidableNodeTool (const Color3f & color) :
-		        X3DNBodyCollidableNode (),
-		              X3DChildNodeTool (),
-		X3DTransformMatrix3DObjectTool (),
-		          X3DBoundedObjectTool (color)
-	{
-		//addType (X3DConstants::X3DNBodyCollidableNodeTool);
-	}
+	X3DNBodyCollidableNodeTool (const Color3f & color);
 
 	virtual
 	void
-	initialize () override
-	{
-		X3DChildNodeTool::initialize ();
-		X3DTransformMatrix3DObjectTool::initialize ();
-		X3DBoundedObjectTool::initialize ();
-	}
+	initialize () override;
 
+	virtual
 	void
-	realize ()
-	{
-		X3DBoundedObjectTool::realize ();
+	realize () final override;
 
-		getNode <X3DNBodyCollidableNode> () -> enabled () .addInterest (&X3DNBodyCollidableNodeTool::set_enabled, this);
+	virtual
+	Box3d
+	getChildBBox () const = 0;
 
-		set_enabled (getNode <X3DNBodyCollidableNode> () -> enabled ());
-	}
-	
+
+private:
+
 	///  @name Event handlers
 
 	void
-	set_enabled (const bool value)
-	{
-		setLinetype (value ? LineType::SOLID : LineType::DOTTED);
-	}
+	set_enabled (const bool value);
+
+	///  @name Operations
+
+	void
+	reshape (X3DRenderObject* const renderObject);
+
+	///  @name Members
+
+	Color3f color;
 
 };
 

@@ -107,6 +107,11 @@ public:
 	Box3d
 	getBBox () const override;
 
+	virtual
+	const X3DPtr <Shape> &
+	getShape () const
+	{ return shapeNode; }
+
 	///  @name Operations
 
 	virtual

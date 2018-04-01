@@ -50,6 +50,8 @@
 
 #include "CollidableOffset.h"
 
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
@@ -156,14 +158,32 @@ CollidableOffset::set_collidableGeometry ()
 void
 CollidableOffset::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (collidableNode)
-	{
-		renderObject -> getModelViewMatrix () .push ();
-		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	if (not collidableNode)
+		return;
 
-		collidableNode -> traverse (type, renderObject);
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 	
-		renderObject -> getModelViewMatrix () .pop ();
+			collidableNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+		}
+		default:
+		{
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+			collidableNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+			break;
+		}
 	}
 }
 

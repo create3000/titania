@@ -55,6 +55,7 @@
 #include "../ToolColors.h"
 
 #include "../../Components/RigidBodyPhysics/CollidableShape.h"
+#include "../../Components/Shape/Shape.h"
 
 namespace titania {
 namespace X3D {
@@ -95,6 +96,11 @@ public:
 	getBBox () const final override
 	{ return X3DNBodyCollidableNodeTool::getBBox (); }
 
+	virtual
+	const X3DPtr <Shape> &
+	getShape () const final override
+	{ return getNode <CollidableShape> () -> getShape (); }
+
 	///  @name Operations
 
 	virtual
@@ -116,11 +122,24 @@ public:
 
 protected:
 	
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override
 	{ X3DNBodyCollidableNodeTool::initialize (); }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getChildBBox () const final override
+	{
+		if (getShape ())
+			return getShape () -> getBBox ();
+
+		return Box3d ();
+	}
 
 };
 

@@ -95,6 +95,11 @@ public:
 	getBBox () const final override
 	{ return X3DNBodyCollidableNodeTool::getBBox (); }
 
+	virtual
+	const X3DPtr <X3DNBodyCollidableNode> &
+	getCollidable () const final override
+	{ return getNode <CollidableOffset> () -> getCollidable (); }
+
 	///  @name Operations
 
 	virtual
@@ -116,11 +121,24 @@ public:
 
 protected:
 	
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override
 	{ X3DNBodyCollidableNodeTool::initialize (); }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getChildBBox () const final override
+	{
+		if (getCollidable ())
+			return getCollidable () -> getBBox ();
+
+		return Box3d ();
+	}
 
 };
 

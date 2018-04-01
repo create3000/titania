@@ -1002,6 +1002,7 @@
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\X3DNBodyCollidableNodeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableShapeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableOffsetTool.h" />
+    <None Include="share\titania\tools\NBodyCollidableNodeTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1695,6 +1696,7 @@
     <Compile Include="Titania\X3D\InputOutput\JSONGenerator.cpp" />
     <Compile Include="Titania\X3D\Fields\MFImage.cpp" />
     <Compile Include="Titania\X3D\Parser\MiniParser.cpp" />
+    <Compile Include="Titania\X3D\Tools\RigidBodyPhysics\X3DNBodyCollidableNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

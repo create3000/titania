@@ -596,6 +596,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 	static const NodeTypeSet lowestTypes = {
 		X3DConstants::X3DEnvironmentalSensorNode,
 		X3DConstants::X3DLightNode,
+		X3DConstants::X3DNBodyCollidableNode,
 		X3DConstants::X3DPrototypeInstance,
 		X3DConstants::X3DTransformNode,
 		X3DConstants::X3DViewpointNode,
@@ -603,6 +604,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 
 	static const NodeTypeSet highestTypes = {
 		X3DConstants::X3DPrototypeInstance,
+		X3DConstants::X3DNBodyCollidableNode,
 		X3DConstants::X3DTransformNode,
 	};
 

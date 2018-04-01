@@ -78,7 +78,7 @@ protected:
 
 	X3DChildNodeTool () :
 		X3DChildNode (),
-		X3DNodeTool ()
+		 X3DNodeTool ()
 	{
 		addType (X3DConstants::X3DChildNodeTool);
 	}
