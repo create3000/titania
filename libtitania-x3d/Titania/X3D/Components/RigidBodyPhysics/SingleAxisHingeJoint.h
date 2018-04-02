@@ -106,20 +106,20 @@ public:
 	{ return *fields .axis; }
 
 	SFFloat &
-	maxAngle ()
-	{ return *fields .maxAngle; }
-
-	const SFFloat &
-	maxAngle () const
-	{ return *fields .maxAngle; }
-
-	SFFloat &
 	minAngle ()
 	{ return *fields .minAngle; }
 
 	const SFFloat &
 	minAngle () const
 	{ return *fields .minAngle; }
+
+	SFFloat &
+	maxAngle ()
+	{ return *fields .maxAngle; }
+
+	const SFFloat &
+	maxAngle () const
+	{ return *fields .maxAngle; }
 
 	SFFloat &
 	stopBounce ()
@@ -136,6 +136,21 @@ public:
 	const SFFloat &
 	stopErrorCorrection () const
 	{ return *fields .stopErrorCorrection; }
+	SFVec3f &
+	body1AnchorPoint ()
+	{ return *fields .body1AnchorPoint; }
+
+	const SFVec3f &
+	body1AnchorPoint () const
+	{ return *fields .body1AnchorPoint; }
+
+	SFVec3f &
+	body2AnchorPoint ()
+	{ return *fields .body2AnchorPoint; }
+
+	const SFVec3f &
+	body2AnchorPoint () const
+	{ return *fields .body2AnchorPoint; }
 
 	SFFloat &
 	angle ()
@@ -153,24 +168,15 @@ public:
 	angleRate () const
 	{ return *fields .angleRate; }
 
-	SFVec3f &
-	body1AnchorPoint ()
-	{ return *fields .body1AnchorPoint; }
-
-	const SFVec3f &
-	body1AnchorPoint () const
-	{ return *fields .body1AnchorPoint; }
-
-	SFVec3f &
-	body2AnchorPoint ()
-	{ return *fields .body2AnchorPoint; }
-
-	const SFVec3f &
-	body2AnchorPoint () const
-	{ return *fields .body2AnchorPoint; }
 
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Joint handling
 
@@ -193,13 +199,28 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class OutputType
+	{
+		body1AnchorPoint,
+		body2AnchorPoint,
+		angle,
+		angularRate
+	};
+
+	///  @name Event handlers
+
+	void
+	set_forceOutput ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -207,17 +228,22 @@ private:
 
 		SFVec3f* const anchorPoint;
 		SFVec3f* const axis;
-		SFFloat* const maxAngle;
 		SFFloat* const minAngle;
+		SFFloat* const maxAngle;
 		SFFloat* const stopBounce;
 		SFFloat* const stopErrorCorrection;
-		SFFloat* const angle;
-		SFFloat* const angleRate;
 		SFVec3f* const body1AnchorPoint;
 		SFVec3f* const body2AnchorPoint;
+		SFFloat* const angle;
+		SFFloat* const angleRate;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::array <bool, 4>                outputs;
+	std::shared_ptr <btHingeConstraint> joint;
 
 };
 

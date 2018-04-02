@@ -50,7 +50,6 @@
 
 #include "BallJoint.h"
 
-#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 #include "../RigidBodyPhysics/RigidBodyCollection.h"
@@ -63,7 +62,7 @@ const std::string   BallJoint::typeName       = "BallJoint";
 const std::string   BallJoint::containerField = "joints";
 
 BallJoint::Fields::Fields () :
-	anchorPoint (new SFVec3f ()),
+	     anchorPoint (new SFVec3f ()),
 	body1AnchorPoint (new SFVec3f ()),
 	body2AnchorPoint (new SFVec3f ())
 { }
@@ -72,6 +71,7 @@ BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DRigidJointNode (),
 	           fields (),
+	          outputs (),
 	            joint ()
 {
 	addType (X3DConstants::BallJoint);
@@ -100,7 +100,10 @@ BallJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
+	forceOutput () .addInterest (&BallJoint::set_forceOutput, this);
 	anchorPoint () .addInterest (&BallJoint::set_anchorPoint, this);
+
+	set_forceOutput ();
 }
 
 void
@@ -135,6 +138,34 @@ BallJoint::removeJoint ()
 }
 
 void
+BallJoint::set_forceOutput ()
+{
+	const std::map <std::string, OutputType> outputTypes = {
+		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+	};
+
+	std::fill (outputs .begin (), outputs .end (), false);
+
+	for (const auto & value : basic::make_const_range (forceOutput ()))
+	{
+		try
+		{
+			if (value == "ALL")
+			{
+				std::fill (outputs .begin (), outputs .end (), true);
+			}
+			else
+			{
+				outputs [size_t (outputTypes .at (value))] = true;
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
 BallJoint::set_anchorPoint ()
 {
 	if (joint)
@@ -148,8 +179,11 @@ BallJoint::set_anchorPoint ()
 		joint -> setPivotA (btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()));
 		joint -> setPivotB (btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()));
 
-		body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
-		body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+		if (outputs [size_t (OutputType::body1AnchorPoint)])
+			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+
+		if (outputs [size_t (OutputType::body2AnchorPoint)])
+			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
 	}
 }
 
@@ -157,10 +191,12 @@ void
 BallJoint::update1 ()
 {
 	// Editing support.
+
 	if (getExecutionContext () -> isLive ())
 		return;
 
 	initialize1 ();
+
 	set_anchorPoint ();
 }
 
@@ -168,10 +204,12 @@ void
 BallJoint::update2 ()
 {
 	// Editing support.
+
 	if (getExecutionContext () -> isLive ())
 		return;
 
 	initialize2 ();
+
 	set_anchorPoint ();
 }
 

@@ -51,6 +51,8 @@
 #include "SingleAxisHingeJoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 
 namespace titania {
 namespace X3D {
@@ -60,39 +62,41 @@ const std::string   SingleAxisHingeJoint::typeName       = "SingleAxisHingeJoint
 const std::string   SingleAxisHingeJoint::containerField = "joints";
 
 SingleAxisHingeJoint::Fields::Fields () :
-	anchorPoint (new SFVec3f ()),
-	axis (new SFVec3f ()),
-	maxAngle (new SFFloat (3.14159)),
-	minAngle (new SFFloat (-3.14159)),
-	stopBounce (new SFFloat ()),
+	        anchorPoint (new SFVec3f ()),
+	               axis (new SFVec3f ()),
+	           minAngle (new SFFloat (-3.14159)),
+	           maxAngle (new SFFloat (3.14159)),
+	         stopBounce (new SFFloat ()),
 	stopErrorCorrection (new SFFloat (0.8)),
-	angle (new SFFloat ()),
-	angleRate (new SFFloat ()),
-	body1AnchorPoint (new SFVec3f ()),
-	body2AnchorPoint (new SFVec3f ())
+	   body1AnchorPoint (new SFVec3f ()),
+	   body2AnchorPoint (new SFVec3f ()),
+	              angle (new SFFloat ()),
+	          angleRate (new SFFloat ())
 { }
 
 SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DRigidJointNode (),
-	           fields ()
+	           fields (),
+	          outputs (),
+	            joint ()
 {
 	addType (X3DConstants::SingleAxisHingeJoint);
 
 	addField (inputOutput, "metadata",            metadata ());
-	addField (inputOutput, "body1",               body1 ());
-	addField (inputOutput, "body2",               body2 ());
 	addField (inputOutput, "forceOutput",         forceOutput ());
 	addField (inputOutput, "anchorPoint",         anchorPoint ());
 	addField (inputOutput, "axis",                axis ());
-	addField (inputOutput, "maxAngle",            maxAngle ());
 	addField (inputOutput, "minAngle",            minAngle ());
+	addField (inputOutput, "maxAngle",            maxAngle ());
 	addField (inputOutput, "stopBounce",          stopBounce ());
 	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection ());
-	addField (outputOnly,  "angle",               angle ());
-	addField (outputOnly,  "angleRate",           angleRate ());
 	addField (outputOnly,  "body1AnchorPoint",    body1AnchorPoint ());
 	addField (outputOnly,  "body2AnchorPoint",    body2AnchorPoint ());
+	addField (outputOnly,  "angle",               angle ());
+	addField (outputOnly,  "angleRate",           angleRate ());
+	addField (inputOutput, "body1",               body1 ());
+	addField (inputOutput, "body2",               body2 ());
 }
 
 X3DBaseNode*
@@ -102,23 +106,120 @@ SingleAxisHingeJoint::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+SingleAxisHingeJoint::initialize ()
+{
+	X3DRigidJointNode::initialize ();
+
+	forceOutput () .addInterest (&SingleAxisHingeJoint::set_forceOutput, this);
+	anchorPoint () .addInterest (&SingleAxisHingeJoint::set_joint,       this);
+	axis ()        .addInterest (&SingleAxisHingeJoint::set_joint,       this);
+
+	set_forceOutput ();
+}
+
+void
 SingleAxisHingeJoint::addJoint ()
 {
+	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
+	{
+ 		auto anchorPoint1 = anchorPoint () .getValue ();
+		auto anchorPoint2 = anchorPoint () .getValue ();
+		auto axis1        = this -> axis () .getValue ();
+		auto axis2        = this -> axis () .getValue ();
+
+		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
+		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
+		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
+
+	   joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
+		                                     *getBody2 () -> getRigidBody (),
+		                                     btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
+		                                     btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()),
+		                                     btVector3 (axis1 .x (), axis1 .y (), axis1 .z ()),
+		                                     btVector3 (axis2 .x (), axis2 .y (), axis2 .z ()),
+		                                     false));
+
+		if (outputs [size_t (OutputType::body1AnchorPoint)])
+			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+
+		if (outputs [size_t (OutputType::body2AnchorPoint)])
+			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+	}
+	else
+	{
+		joint .reset ();
+	}
+
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+	}
 }
 
 void
 SingleAxisHingeJoint::removeJoint ()
 {
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+	}
+}
+
+void
+SingleAxisHingeJoint::set_forceOutput ()
+{
+	const std::map <std::string, OutputType> outputTypes = {
+		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+		std::make_pair ("angle",            OutputType::angle),
+		std::make_pair ("angularRate",      OutputType::angularRate),
+	};
+
+	std::fill (outputs .begin (), outputs .end (), false);
+
+	for (const auto & value : basic::make_const_range (forceOutput ()))
+	{
+		try
+		{
+			if (value == "ALL")
+			{
+				std::fill (outputs .begin (), outputs .end (), true);
+			}
+			else
+			{
+				outputs [size_t (outputTypes .at (value))] = true;
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
 }
 
 void
 SingleAxisHingeJoint::update1 ()
 {
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize1 ();
+	set_joint ();
 }
 
 void
 SingleAxisHingeJoint::update2 ()
 {
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize2 ();
+	set_joint ();
 }
 
 } // X3D

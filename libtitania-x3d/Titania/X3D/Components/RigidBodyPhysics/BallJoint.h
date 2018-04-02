@@ -121,6 +121,12 @@ public:
 
 protected:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Joint handling
 
 	virtual
@@ -142,13 +148,18 @@ protected:
 
 private:
 
-	///  @name Construction
+	///  @name Member types
 
-	virtual
-	void
-	initialize () final override;
+	enum class OutputType
+	{
+		body1AnchorPoint,
+		body2AnchorPoint
+	};
 
 	///  @name Event handlers
+
+	void
+	set_forceOutput ();
 
 	void
 	set_anchorPoint ();
@@ -174,6 +185,7 @@ private:
 
 	///  @name Members
 
+	std::array <bool, 2>                      outputs;
 	std::shared_ptr <btPoint2PointConstraint> joint;
 
 };
