@@ -71,7 +71,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DBrowser::version = "4.0.6a";
+const std::string X3DBrowser::version = "4.1.0";
 
 const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
 const std::string   X3DBrowser::typeName       = "Browser";
