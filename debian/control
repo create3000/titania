@@ -44,23 +44,19 @@ Depends: ${misc:Depends},
          libjson-c3,
          libfontconfig1,
          libmagick++-6.q16-7,
-         libcurl3,
+         libcurl4,
          libsqlite3-0,
          libgstreamermm-1.0-1,
          zlib1g,
          libgtop-2.0-11,
          gettext,
-         libcgal12,
+         libcgal13,
          libgmp10,
-         libmpfr4,
-         libbullet2.86,
+         libmpfr6,
+         libbullet2.87,
          ttf-ubuntu-font-family,
          ffmpeg
-Recommends: gstreamer1.0-plugins-base,
-            gstreamer1.0-plugins-good,
-            gstreamer1.0-plugins-bad,
-            gstreamer1.0-plugins-ugly,
-            inkscape
+Recommends: inkscape
 Conflicts:
 Replaces:
 Provides: titania

@@ -1,0 +1,22 @@
+<ListOfTaskListEntry>
+  <TaskListEntry file="" description="Merge Points Dialog, Polygon Reducder" />
+  <TaskListEntry file="" description="Bezier Algorithmus neu machen" />
+  <TaskListEntry file="" description="Polygone verbinden Button" />
+  <TaskListEntry file="" description="Proto zu Externproto (save Proto)" />
+  <TaskListEntry file="" description="Gauroud Fog" />
+  <TaskListEntry file="" description="BBox size and center edit Option" />
+  <TaskListEntry file="" description="Color show/edit Field in Outline Editor, wie in Firefox" />
+  <TaskListEntry file="" description="MFColor widget, dbclick on Color opens Color Editor Dialog" />
+  <TaskListEntry file="" description="Anchor Editor" />
+  <TaskListEntry file="" description="ProtoInstance Editor" />
+  <TaskListEntry file="" description="Font Bibiliothek memory leak? und überarbeiten" />
+  <TaskListEntry file="" description="Screen Save Visualisation Tool" />
+  <TaskListEntry file="" description="Edit Proto menu item in Outline Editor" />
+  <TaskListEntry file="" description="Remove deleted Interpolator when all keyFrames are deleted" />
+  <TaskListEntry file="" description="selection setEnabled wegmachen selection setSelection (nullptr) erlauben" />
+  <TaskListEntry file="" description="active layer und layer button leiste in page" />
+  <TaskListEntry file="" description="project management tab, Verionskontrolle" />
+  <TaskListEntry file="" description="shadows" />
+  <TaskListEntry file="" description="JavaScript Manager wie bei GEdit External Tools; input selection; function main (selection : MFNode) " />
+  <TaskListEntry file="" description="glTF" />
+</ListOfTaskListEntry>

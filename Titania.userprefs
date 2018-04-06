@@ -1,28 +1,29 @@
-﻿<Properties StartupItem="Titania/Titania.cproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+﻿<Properties StartupConfiguration="{BD471A40-76AE-4035-B56B-E29658A0ACB3}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/RigidBodyPhysics/X3DNBodyCollidableNodeTool.h">
     <Files>
       <File FileName="experimental/main.cpp" Line="110" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.h" Line="401" Column="56" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="323" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.h" Line="241" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.cpp" Line="338" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/BallJoint.h" Line="141" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/BallJoint.cpp" Line="168" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/RigidBodyPhysics/X3DNBodyCollidableNodeTool.h" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/BallJoint.cpp" Line="168" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/RigidBodyPhysics/X3DNBodyCollidableNodeTool.h" Line="87" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp" Line="95" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp" Line="183" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="54" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
-      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" relfile="miscellaneous/makefiles/generate.pl" line="64" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" relfile="libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" relfile="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" relfile="libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.miscellaneous.uncrustify-all PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
