@@ -33,24 +33,21 @@ rules.make
 stamp-h1
 
 
-./*/bin
-./*/obj
-./experimental/experimental
-./experimental/titania-experimental
+*/bin
+*/obj
+experimental/experimental
+experimental/titania-experimental
 
 .debhelper
-./debian/titania
+debian/titania
 titania.debhelper.log
 titania.postinst.debhelper
 titania.postrm.debhelper
 titania.substvars
 
 
-./Documentation/Titania/html
+Documentation/Titania/html
 *.tmp
 
-./build/snapcraft/parts
-./build/snapcraft/prime
-./build/snapcraft/stage
 titania_*.snap
 

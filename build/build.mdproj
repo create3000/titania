@@ -22,9 +22,6 @@
     <None Include="..\autogen.sh">
       <Link>autogen.sh</Link>
     </None>
-    <None Include="..\ChangeLog">
-      <Link>ChangeLog</Link>
-    </None>
     <None Include="..\COPYING">
       <Link>COPYING</Link>
     </None>
@@ -51,9 +48,6 @@
     </None>
     <None Include="..\debian\rules">
       <Link>debian\rules</Link>
-    </None>
-    <None Include="..\.bzrignore">
-      <Link>.bzrignore</Link>
     </None>
     <None Include="..\.gitignore">
       <Link>.gitignore</Link>
@@ -116,6 +110,9 @@
       <Link>debian\.gitignore</Link>
     </None>
     <None Include="version.pl" />
+    <None Include="..\.bzrignore">
+      <Link>.bzrignore</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

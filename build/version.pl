@@ -71,12 +71,14 @@ if ($result == 0)
 	commit;
 
 	publish ("$VERSION");
-	rsync ("alpha");
 	rsync ($VERSION);
+	rsync ("alpha");
 
 	unless ($ALPHA)
 	{
 		publish ("latest");
 		rsync ("latest");
+		publish ("stable");
+		rsync ("stable");
 	}
 }
