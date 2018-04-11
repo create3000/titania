@@ -78,7 +78,5 @@ if ($result == 0)
 	{
 		publish ("latest");
 		rsync ("latest");
-		publish ("stable");
-		rsync ("stable");
 	}
 }

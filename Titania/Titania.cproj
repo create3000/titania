@@ -3159,6 +3159,20 @@
     <None Include="Titania\Applications\BrowserApplication\BrowserApplication.h" />
     <None Include="Titania\Applications\BrowserApplication\X3DBrowserApplication.h" />
     <None Include="Titania\Applications\BrowserApplication\X3DDBusInterface.h" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\BallJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollidableOffset" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollidableShape" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionCollection" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionSensor" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionSpace" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\Contact" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\RigidBody" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\RigidBodyCollection" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SingleAxisHingeJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\DoubleAxisHingeJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\MotorJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SliderJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\UniversalJoint" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3328,6 +3342,7 @@
     <Folder Include="Titania\Applications\Info\" />
     <Folder Include="Titania\Applications\Tidy\" />
     <Folder Include="Titania\Applications\BrowserApplication\" />
+    <Folder Include="share\app-info\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
@@ -3368,6 +3383,9 @@
     <Content Include="share\titania\ui\Widgets\OutlineEditor.glade" />
     <Content Include="share\titania\ui\Editors\BindableNodeList.glade" />
     <Content Include="share\applications\de.create3000.titania.desktop">
+      <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
+    </Content>
+    <Content Include="share\app-info\de.create3000.titania.xml">
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
     </Content>
   </ItemGroup>
