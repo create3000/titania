@@ -12,7 +12,8 @@ META "modified" "Mon, 27 Nov 2017 14:12:56 GMT"
 EXTERNPROTO ToolShader [ ]
 [
   "../../tools/library/ToolShader.x3dv",
-  "/usr/share/titania/tools/library/ToolShader.x3dv"
+  "file:///usr/share/titania/tools/library/ToolShader.x3dv",
+  "file:///app/share/titania/tools/library/ToolShader.x3dv"
 ]
 
 WorldInfo {

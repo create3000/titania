@@ -3347,7 +3347,6 @@
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
     <Content Include="share\titania\ui\icons\icon-bw.svg" />
-    <Content Include="share\icons\hicolor\scalable\apps\titania.svg" />
     <Content Include="share\menu\titania" />
     <Content Include="share\titania\ui\style.css" />
     <Content Include="share\titania\pages\about\library\info.png" />
@@ -3388,6 +3387,7 @@
     <Content Include="share\app-info\de.create3000.titania.xml">
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
     </Content>
+    <Content Include="share\icons\hicolor\scalable\apps\de.create3000.titania.svg" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

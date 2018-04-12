@@ -25,7 +25,8 @@ EXTERNPROTO SculpToolBrush [
 [
   "../../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
   "../../tools/SculpToolBrush.x3dv#SculpToolBrush",
-  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///app/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
 ]
 
 WorldInfo {

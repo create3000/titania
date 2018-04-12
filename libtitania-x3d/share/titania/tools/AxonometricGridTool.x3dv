@@ -32,7 +32,8 @@ EXTERNPROTO AxonometricGrid [
 ]
 [
   "library/AxonometricGrid.x3dv#AxonometricGrid",
-  "file:///usr/share/titania/tools/library/AxonometricGrid.x3dv#AxonometricGrid"
+  "file:///usr/share/titania/tools/library/AxonometricGrid.x3dv#AxonometricGrid",
+  "file:///app/share/titania/tools/library/AxonometricGrid.x3dv#AxonometricGrid"
 ]
 
 WorldInfo {
