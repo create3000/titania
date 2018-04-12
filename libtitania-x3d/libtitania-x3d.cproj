@@ -781,10 +781,6 @@
     <None Include="Titania\X3D\Browser\Shaders\ShadingType.h" />
     <None Include="Titania\X3D\Browser\Shaders\X3DShadersContext.h" />
     <None Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.h" />
-    <None Include="share\mime\packages\vrml.xml" />
-    <None Include="share\mime\packages\x3d+binary.xml" />
-    <None Include="share\mime\packages\x3d+vrml.xml" />
-    <None Include="share\mime\packages\x3d+xml.xml" />
     <None Include="Titania\X3D\Browser\Rendering\GeometryType.h" />
     <None Include="share\titania\icc\sRGB_IEC61966-2-1_black_scaled.icc" />
     <None Include="share\titania\icc\sRGB_v4_ICC_preference.icc" />
@@ -975,10 +971,8 @@
     <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Background.fs" />
     <None Include="share\titania\shaders\Shaders\Background.vs" />
-    <None Include="share\mime\packages\gltf+json.xml" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+json.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-gltf+json.svg" />
-    <None Include="share\mime\packages\x3d+json.xml" />
     <None Include="Titania\X3D\Parser\glTF\Parser.h" />
     <None Include="share\titania\shaders\glTF\pbrAppearance.x3d" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclarationArray.h" />
@@ -1003,6 +997,12 @@
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableShapeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableOffsetTool.h" />
     <None Include="share\titania\tools\NBodyCollidableNodeTool.x3dv" />
+    <None Include="share\mime\model\vrml.xml" />
+    <None Include="share\mime\model\x3d+binary.xml" />
+    <None Include="share\mime\model\x3d+vrml.xml" />
+    <None Include="share\mime\model\x3d+xml.xml" />
+    <None Include="share\mime\model\gltf+json.xml" />
+    <None Include="share\mime\model\x3d+json.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1771,7 +1771,6 @@
     <Folder Include="share\titania\shaders\Shaders\" />
     <Folder Include="Titania\X3D\Browser\Shaders\" />
     <Folder Include="share\mime\" />
-    <Folder Include="share\mime\packages\" />
     <Folder Include="share\titania\icc\" />
     <Folder Include="share\fonts\" />
     <Folder Include="share\fonts\truetype\" />
@@ -1803,6 +1802,7 @@
     <Folder Include="share\titania\shaders\glTF\Prototypes\" />
     <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
     <Folder Include="Titania\X3D\Tools\RigidBodyPhysics\" />
+    <Folder Include="share\mime\model\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
