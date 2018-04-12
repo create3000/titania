@@ -465,13 +465,6 @@
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
-    <None Include="share\titania\mime\model\vrml.png" />
-    <None Include="share\titania\mime\model\x3d+vrml.png" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
-    <None Include="share\titania\mime\model\x3d+xml.png" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
-    <None Include="share\titania\mime\model\x3d+binary.png" />
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
@@ -759,10 +752,6 @@
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
     <None Include="Titania\X3D\Editing\Combine.h" />
     <None Include="share\titania\tools\library\gradient.png" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg">
-      <DeployService-Deploy>True</DeployService-Deploy>
-      <DeployService-TargetDirectoryId>CommonApplicationData</DeployService-TargetDirectoryId>
-    </None>
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetCutObject.h" />
     <None Include="Titania\X3D\Browser\Tools\LassoSelection.h" />
     <None Include="Titania\X3D\Browser\Tools\RectangleSelection.h" />
@@ -971,8 +960,6 @@
     <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Background.fs" />
     <None Include="share\titania\shaders\Shaders\Background.vs" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+json.svg" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-gltf+json.svg" />
     <None Include="Titania\X3D\Parser\glTF\Parser.h" />
     <None Include="share\titania\shaders\glTF\pbrAppearance.x3d" />
     <None Include="Titania\X3D\Prototype\ExternProtoDeclarationArray.h" />
@@ -997,12 +984,21 @@
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableShapeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableOffsetTool.h" />
     <None Include="share\titania\tools\NBodyCollidableNodeTool.x3dv" />
-    <None Include="share\mime\packages\vrml.xml" />
-    <None Include="share\mime\packages\x3d+binary.xml" />
-    <None Include="share\mime\packages\x3d+vrml.xml" />
-    <None Include="share\mime\packages\x3d+xml.xml" />
-    <None Include="share\mime\packages\gltf+json.xml" />
-    <None Include="share\mime\packages\x3d+json.xml" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-gltf+json.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-vrml.svg">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-TargetDirectoryId>CommonApplicationData</DeployService-TargetDirectoryId>
+    </None>
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-x3d+binary.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-x3d+json.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-x3d+vrml.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\de.create3000.titania.model-x3d+xml.svg" />
+    <None Include="share\mime\packages\de.create3000.titania.gltf+json.xml" />
+    <None Include="share\mime\packages\de.create3000.titania.vrml.xml" />
+    <None Include="share\mime\packages\de.create3000.titania.x3d+binary.xml" />
+    <None Include="share\mime\packages\de.create3000.titania.x3d+json.xml" />
+    <None Include="share\mime\packages\de.create3000.titania.x3d+vrml.xml" />
+    <None Include="share\mime\packages\de.create3000.titania.x3d+xml.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
