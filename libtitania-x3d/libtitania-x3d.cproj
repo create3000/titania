@@ -997,12 +997,12 @@
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableShapeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableOffsetTool.h" />
     <None Include="share\titania\tools\NBodyCollidableNodeTool.x3dv" />
-    <None Include="share\mime\model\vrml.xml" />
-    <None Include="share\mime\model\x3d+binary.xml" />
-    <None Include="share\mime\model\x3d+vrml.xml" />
-    <None Include="share\mime\model\x3d+xml.xml" />
-    <None Include="share\mime\model\gltf+json.xml" />
-    <None Include="share\mime\model\x3d+json.xml" />
+    <None Include="share\mime\packages\vrml.xml" />
+    <None Include="share\mime\packages\x3d+binary.xml" />
+    <None Include="share\mime\packages\x3d+vrml.xml" />
+    <None Include="share\mime\packages\x3d+xml.xml" />
+    <None Include="share\mime\packages\gltf+json.xml" />
+    <None Include="share\mime\packages\x3d+json.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1802,7 +1802,7 @@
     <Folder Include="share\titania\shaders\glTF\Prototypes\" />
     <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
     <Folder Include="Titania\X3D\Tools\RigidBodyPhysics\" />
-    <Folder Include="share\mime\model\" />
+    <Folder Include="share\mime\packages\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
