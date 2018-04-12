@@ -60,7 +60,7 @@
 		<comment xml:lang="zh_TW">VRML 文件</comment>
 		<acronym>VRML</acronym>
 		<expanded-acronym>Virtual Reality Modeling Language</expanded-acronym>
-		<generic-icon name="model-vrml"/>
+		<generic-icon name="de.create3000.titania.model-vrml"/>
 		<sub-class-of type="text/plain"/>
 		<magic priority="50">
 			<match type="string" offset="0" value="#VRML"/>
