@@ -289,10 +289,7 @@ public:
 	set (const internal_type & value) final override
 	{
 		if (value == getValue ())
-		{
-			addEvent ();
 			return;
-		}
 
 		// FIRST ADD OBJECT TO AVOID DISPOSE!!!
 		addObject (value);

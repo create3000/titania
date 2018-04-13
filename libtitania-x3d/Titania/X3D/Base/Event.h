@@ -68,6 +68,11 @@ public:
 		sources ()
 	{ }
 
+	Event (const Event & event) :
+		 object (event .object),
+		sources (event .sources)
+	{ }
+
 	///  @name Members
 
 	const X3DChildObject* const      object;
