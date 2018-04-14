@@ -3342,7 +3342,7 @@
     <Folder Include="Titania\Applications\Info\" />
     <Folder Include="Titania\Applications\Tidy\" />
     <Folder Include="Titania\Applications\BrowserApplication\" />
-    <Folder Include="share\app-info\" />
+    <Folder Include="share\appdata\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
@@ -3385,7 +3385,7 @@
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
     </Content>
     <Content Include="share\icons\hicolor\scalable\apps\de.create3000.titania.svg" />
-    <Content Include="share\app-info\de.create3000.titania.appdata.xml">
+    <Content Include="share\appdata\de.create3000.titania.appdata.xml">
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
     </Content>
   </ItemGroup>
