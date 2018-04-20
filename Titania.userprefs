@@ -1,12 +1,21 @@
 ﻿<Properties StartupConfiguration="{BD471A40-76AE-4035-B56B-E29658A0ACB3}|Default" StartupItem="Titania/Titania.cproj">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.h" Line="408" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="399" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.cpp" Line="1" Column="1" />
-      <File FileName=".gitignore" Line="1" Column="1" />
-      <File FileName=".bzrignore" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/SingleAxisHingeJoint.h" Line="246" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/SingleAxisHingeJoint.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/DoubleAxisHingeJoint.h" Line="359" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/DoubleAxisHingeJoint.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/MotorJoint.h" Line="324" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/MotorJoint.cpp" Line="204" Column="8" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="497" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="496" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="434" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="160" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />

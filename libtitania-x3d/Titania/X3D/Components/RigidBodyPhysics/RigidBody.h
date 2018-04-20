@@ -406,6 +406,7 @@ private:
 	SFTime                                 transform;
 	Vector3f                               force;
 	Vector3f                               torque;
+
 };
 
 } // X3D

@@ -51,6 +51,8 @@
 #include "MotorJoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 
 namespace titania {
 namespace X3D {
@@ -60,65 +62,67 @@ const std::string   MotorJoint::typeName       = "MotorJoint";
 const std::string   MotorJoint::containerField = "joints";
 
 MotorJoint::Fields::Fields () :
-	axis1Angle (new SFFloat ()),
-	axis1Torque (new SFFloat ()),
-	axis2Angle (new SFFloat ()),
-	axis2Torque (new SFFloat ()),
-	axis3Angle (new SFFloat ()),
-	axis3Torque (new SFFloat ()),
-	enabledAxes (new SFInt32 (1)),
-	motor1Axis (new SFVec3f ()),
-	motor2Axis (new SFVec3f ()),
-	motor3Axis (new SFVec3f ()),
-	stop1Bounce (new SFFloat ()),
+	            autoCalc (new SFBool ()),
+	         enabledAxes (new SFInt32 (1)),
+	          motor1Axis (new SFVec3f ()),
+	          motor2Axis (new SFVec3f ()),
+	          motor3Axis (new SFVec3f ()),
+	          axis1Angle (new SFFloat ()),
+	          axis2Angle (new SFFloat ()),
+	          axis3Angle (new SFFloat ()),
+	         axis1Torque (new SFFloat ()),
+	         axis2Torque (new SFFloat ()),
+	         axis3Torque (new SFFloat ()),
+	         stop1Bounce (new SFFloat ()),
+	         stop2Bounce (new SFFloat ()),
+	         stop3Bounce (new SFFloat ()),
 	stop1ErrorCorrection (new SFFloat (0.8)),
-	stop2Bounce (new SFFloat ()),
 	stop2ErrorCorrection (new SFFloat (0.8)),
-	stop3Bounce (new SFFloat ()),
 	stop3ErrorCorrection (new SFFloat (0.8)),
-	motor1Angle (new SFFloat ()),
-	motor1AngleRate (new SFFloat ()),
-	motor2Angle (new SFFloat ()),
-	motor2AngleRate (new SFFloat ()),
-	motor3Angle (new SFFloat ()),
-	motor3AngleRate (new SFFloat ()),
-	autoCalc (new SFBool ())
+	         motor1Angle (new SFFloat ()),
+	         motor2Angle (new SFFloat ()),
+	         motor3Angle (new SFFloat ()),
+	     motor1AngleRate (new SFFloat ()),
+	     motor2AngleRate (new SFFloat ()),
+	     motor3AngleRate (new SFFloat ())
 { }
 
 MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DRigidJointNode (),
-	           fields ()
+	           fields (),
+	          outputs (),
+	            joint ()
 {
 	addType (X3DConstants::MotorJoint);
 
 	addField (inputOutput,    "metadata",             metadata ());
-	addField (inputOutput,    "body1",                body1 ());
-	addField (inputOutput,    "body2",                body2 ());
 	addField (inputOutput,    "forceOutput",          forceOutput ());
-	addField (inputOutput,    "axis1Angle",           axis1Angle ());
-	addField (inputOutput,    "axis1Torque",          axis1Torque ());
-	addField (inputOutput,    "axis2Angle",           axis2Angle ());
-	addField (inputOutput,    "axis2Torque",          axis2Torque ());
-	addField (inputOutput,    "axis3Angle",           axis3Angle ());
-	addField (inputOutput,    "axis3Torque",          axis3Torque ());
+	addField (initializeOnly, "autoCalc",             autoCalc ());
 	addField (inputOutput,    "enabledAxes",          enabledAxes ());
 	addField (inputOutput,    "motor1Axis",           motor1Axis ());
 	addField (inputOutput,    "motor2Axis",           motor2Axis ());
 	addField (inputOutput,    "motor3Axis",           motor3Axis ());
+	addField (inputOutput,    "axis1Angle",           axis1Angle ());
+	addField (inputOutput,    "axis2Angle",           axis2Angle ());
+	addField (inputOutput,    "axis3Angle",           axis3Angle ());
+	addField (inputOutput,    "axis1Torque",          axis1Torque ());
+	addField (inputOutput,    "axis2Torque",          axis2Torque ());
+	addField (inputOutput,    "axis3Torque",          axis3Torque ());
 	addField (inputOutput,    "stop1Bounce",          stop1Bounce ());
-	addField (inputOutput,    "stop1ErrorCorrection", stop1ErrorCorrection ());
 	addField (inputOutput,    "stop2Bounce",          stop2Bounce ());
-	addField (inputOutput,    "stop2ErrorCorrection", stop2ErrorCorrection ());
 	addField (inputOutput,    "stop3Bounce",          stop3Bounce ());
+	addField (inputOutput,    "stop1ErrorCorrection", stop1ErrorCorrection ());
+	addField (inputOutput,    "stop2ErrorCorrection", stop2ErrorCorrection ());
 	addField (inputOutput,    "stop3ErrorCorrection", stop3ErrorCorrection ());
 	addField (outputOnly,     "motor1Angle",          motor1Angle ());
-	addField (outputOnly,     "motor1AngleRate",      motor1AngleRate ());
 	addField (outputOnly,     "motor2Angle",          motor2Angle ());
-	addField (outputOnly,     "motor2AngleRate",      motor2AngleRate ());
 	addField (outputOnly,     "motor3Angle",          motor3Angle ());
+	addField (outputOnly,     "motor1AngleRate",      motor1AngleRate ());
+	addField (outputOnly,     "motor2AngleRate",      motor2AngleRate ());
 	addField (outputOnly,     "motor3AngleRate",      motor3AngleRate ());
-	addField (initializeOnly, "autoCalc",             autoCalc ());
+	addField (inputOutput,    "body1",                body1 ());
+	addField (inputOutput,    "body2",                body2 ());
 }
 
 X3DBaseNode*
@@ -128,23 +132,180 @@ MotorJoint::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+MotorJoint::initialize ()
+{
+	X3DRigidJointNode::initialize ();
+
+	forceOutput () .addInterest (&MotorJoint::set_forceOutput, this);
+	autoCalc ()    .addInterest (&MotorJoint::set_joint,       this);
+	enabledAxes () .addInterest (&MotorJoint::set_joint,       this);
+	motor1Axis ()  .addInterest (&MotorJoint::set_joint,       this);
+	motor2Axis ()  .addInterest (&MotorJoint::set_joint,       this);
+	motor3Axis ()  .addInterest (&MotorJoint::set_joint,       this);
+
+	set_forceOutput ();
+}
+
+void
+MotorJoint::set_forceOutput ()
+{
+	const std::map <std::string, OutputType> outputTypes = {
+		std::make_pair ("motor1Angle",     OutputType::motor1Angle),
+		std::make_pair ("motor2Angle",     OutputType::motor2Angle),
+		std::make_pair ("motor3Angle",     OutputType::motor3Angle),
+		std::make_pair ("motor1AngleRate", OutputType::motor1AngleRate),
+		std::make_pair ("motor2AngleRate", OutputType::motor2AngleRate),
+		std::make_pair ("motor3AngleRate", OutputType::motor3AngleRate),
+	};
+
+	std::fill (outputs .begin (), outputs .end (), false);
+
+	for (const auto & value : basic::make_const_range (forceOutput ()))
+	{
+		try
+		{
+			if (value == "ALL")
+			{
+				std::fill (outputs .begin (), outputs .end (), true);
+			}
+			else
+			{
+				outputs [size_t (outputTypes .at (value))] = true;
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
+}
+
+void
 MotorJoint::addJoint ()
 {
+	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
+	{
+		Matrix4f matrixA;
+		Matrix4f matrixB;
+
+		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
+		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
+
+		btTransform frameInA;
+		btTransform frameInB;
+
+		frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
+		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
+
+	   joint .reset (new btGeneric6DofConstraint (*getBody1 () -> getRigidBody (),
+		                                           *getBody2 () -> getRigidBody (),
+		                                            frameInA,
+		                                            frameInB,
+		                                            true));
+
+		if ((motor3Axis () .getX () and autoCalc ()) or enabledAxes () >= 1)
+		{
+			joint -> getRotationalLimitMotor (0) -> m_enableMotor    = true;
+			joint -> getRotationalLimitMotor (0) -> m_targetVelocity = axis1Torque ();
+			joint -> getRotationalLimitMotor (0) -> m_maxMotorForce  = 100;
+			joint -> getRotationalLimitMotor (0) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (0) -> m_hiLimit        = 10;
+		}
+		else
+		{
+			joint -> getRotationalLimitMotor (0) -> m_enableMotor    = false;
+			joint -> getRotationalLimitMotor (0) -> m_targetVelocity = 0;
+			joint -> getRotationalLimitMotor (0) -> m_maxMotorForce  = 0;
+			joint -> getRotationalLimitMotor (0) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (0) -> m_hiLimit        = 0;
+		}
+
+		if ((motor3Axis () .getY () and autoCalc ()) or enabledAxes () >= 2)
+		{
+			joint -> getRotationalLimitMotor (1) -> m_enableMotor    = true;
+			joint -> getRotationalLimitMotor (1) -> m_targetVelocity = axis2Torque ();
+			joint -> getRotationalLimitMotor (1) -> m_maxMotorForce  = 100;
+			joint -> getRotationalLimitMotor (1) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (1) -> m_hiLimit        = 10;
+		}
+		else
+		{
+			joint -> getRotationalLimitMotor (1) -> m_enableMotor    = false;
+			joint -> getRotationalLimitMotor (1) -> m_targetVelocity = 0;
+			joint -> getRotationalLimitMotor (1) -> m_maxMotorForce  = 0;
+			joint -> getRotationalLimitMotor (1) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (1) -> m_hiLimit        = 0;
+		}
+
+		if ((motor3Axis () .getZ () and autoCalc ()) or enabledAxes () >= 2)
+		{
+			joint -> getRotationalLimitMotor (2) -> m_enableMotor    = true;
+			joint -> getRotationalLimitMotor (2) -> m_targetVelocity = axis3Torque ();
+			joint -> getRotationalLimitMotor (2) -> m_maxMotorForce  = 100;
+			joint -> getRotationalLimitMotor (2) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (2) -> m_hiLimit        = 10;
+		}
+		else
+		{
+			joint -> getRotationalLimitMotor (2) -> m_enableMotor    = false;
+			joint -> getRotationalLimitMotor (2) -> m_targetVelocity = 0;
+			joint -> getRotationalLimitMotor (2) -> m_maxMotorForce  = 0;
+			joint -> getRotationalLimitMotor (2) -> m_loLimit        = 0;
+			joint -> getRotationalLimitMotor (2) -> m_hiLimit        = 0;
+		}
+
+		joint -> enableFeedback (true);
+	}
+	else
+	{
+		joint .reset ();
+	}
+
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+	}
 }
 
 void
 MotorJoint::removeJoint ()
 {
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+	}
 }
 
 void
 MotorJoint::update1 ()
 {
+	const auto torque = axis2Torque () * motor2Axis ();
+
+	getBody1 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
+
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize1 ();
+	set_joint ();
 }
 
 void
 MotorJoint::update2 ()
 {
+	const auto torque = axis3Torque () * motor3Axis ();
+
+	getBody2 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
+
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize2 ();
+	set_joint ();
 }
 
 } // X3D

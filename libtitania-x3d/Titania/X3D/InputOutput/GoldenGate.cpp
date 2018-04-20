@@ -107,7 +107,7 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 		{
 			const std::string contentType = istream .response_headers () .at ("Content-Type");
 		
-			//__LOG__ << contentType << " : " << uri << std::endl;
+			__LOG__ << contentType << " : " << uri << std::endl;
 	
 			try
 			{
@@ -134,10 +134,10 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 		}
 		catch (const std::out_of_range &)
 		{ }
-	
+
 		text (scene, uri, istream);
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{
 		throw;
 	}
@@ -171,6 +171,7 @@ GoldenGate::getContentTypeFunctions ()
 {
 	std::map <std::string, GoldenFunction> contentTypes;
 
+	contentTypes .emplace ("text/plain",                       &text);
 	contentTypes .emplace ("model/vrml",                       &vrml);
 	contentTypes .emplace ("x-world/x-vrml",                   &vrml);
 	contentTypes .emplace ("model/x3d+vrml",                   &vrml);
@@ -184,9 +185,9 @@ GoldenGate::getContentTypeFunctions ()
 
 	if (Glib::find_program_in_path ("inkscape") .size ())
 	{
-		contentTypes .emplace ("application/pdf",                  &GoldenParser::parse <PDF::Parser>);
-		contentTypes .emplace ("application/x-pdf",                &GoldenParser::parse <PDF::Parser>);
-		contentTypes .emplace ("application/x-gzpdf",              &GoldenParser::parse <PDF::Parser>);
+		contentTypes .emplace ("application/pdf",     &GoldenParser::parse <PDF::Parser>);
+		contentTypes .emplace ("application/x-pdf",   &GoldenParser::parse <PDF::Parser>);
+		contentTypes .emplace ("application/x-gzpdf", &GoldenParser::parse <PDF::Parser>);
 	}
 
 	contentTypes .emplace ("image/svg+xml",   &GoldenParser::parse <SVG::Parser>);

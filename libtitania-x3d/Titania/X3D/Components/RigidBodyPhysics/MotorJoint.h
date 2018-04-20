@@ -89,53 +89,13 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	axis1Angle ()
-	{ return *fields .axis1Angle; }
+	SFBool &
+	autoCalc ()
+	{ return *fields .autoCalc; }
 
-	const SFFloat &
-	axis1Angle () const
-	{ return *fields .axis1Angle; }
-
-	SFFloat &
-	axis1Torque ()
-	{ return *fields .axis1Torque; }
-
-	const SFFloat &
-	axis1Torque () const
-	{ return *fields .axis1Torque; }
-
-	SFFloat &
-	axis2Angle ()
-	{ return *fields .axis2Angle; }
-
-	const SFFloat &
-	axis2Angle () const
-	{ return *fields .axis2Angle; }
-
-	SFFloat &
-	axis2Torque ()
-	{ return *fields .axis2Torque; }
-
-	const SFFloat &
-	axis2Torque () const
-	{ return *fields .axis2Torque; }
-
-	SFFloat &
-	axis3Angle ()
-	{ return *fields .axis3Angle; }
-
-	const SFFloat &
-	axis3Angle () const
-	{ return *fields .axis3Angle; }
-
-	SFFloat &
-	axis3Torque ()
-	{ return *fields .axis3Torque; }
-
-	const SFFloat &
-	axis3Torque () const
-	{ return *fields .axis3Torque; }
+	const SFBool &
+	autoCalc () const
+	{ return *fields .autoCalc; }
 
 	SFInt32 &
 	enabledAxes ()
@@ -170,20 +130,60 @@ public:
 	{ return *fields .motor3Axis; }
 
 	SFFloat &
+	axis1Angle ()
+	{ return *fields .axis1Angle; }
+
+	const SFFloat &
+	axis1Angle () const
+	{ return *fields .axis1Angle; }
+
+	SFFloat &
+	axis2Angle ()
+	{ return *fields .axis2Angle; }
+
+	const SFFloat &
+	axis2Angle () const
+	{ return *fields .axis2Angle; }
+
+	SFFloat &
+	axis3Angle ()
+	{ return *fields .axis3Angle; }
+
+	const SFFloat &
+	axis3Angle () const
+	{ return *fields .axis3Angle; }
+
+	SFFloat &
+	axis1Torque ()
+	{ return *fields .axis1Torque; }
+
+	const SFFloat &
+	axis1Torque () const
+	{ return *fields .axis1Torque; }
+
+	SFFloat &
+	axis2Torque ()
+	{ return *fields .axis2Torque; }
+
+	const SFFloat &
+	axis2Torque () const
+	{ return *fields .axis2Torque; }
+
+	SFFloat &
+	axis3Torque ()
+	{ return *fields .axis3Torque; }
+
+	const SFFloat &
+	axis3Torque () const
+	{ return *fields .axis3Torque; }
+
+	SFFloat &
 	stop1Bounce ()
 	{ return *fields .stop1Bounce; }
 
 	const SFFloat &
 	stop1Bounce () const
 	{ return *fields .stop1Bounce; }
-
-	SFFloat &
-	stop1ErrorCorrection ()
-	{ return *fields .stop1ErrorCorrection; }
-
-	const SFFloat &
-	stop1ErrorCorrection () const
-	{ return *fields .stop1ErrorCorrection; }
 
 	SFFloat &
 	stop2Bounce ()
@@ -194,20 +194,28 @@ public:
 	{ return *fields .stop2Bounce; }
 
 	SFFloat &
-	stop2ErrorCorrection ()
-	{ return *fields .stop2ErrorCorrection; }
-
-	const SFFloat &
-	stop2ErrorCorrection () const
-	{ return *fields .stop2ErrorCorrection; }
-
-	SFFloat &
 	stop3Bounce ()
 	{ return *fields .stop3Bounce; }
 
 	const SFFloat &
 	stop3Bounce () const
 	{ return *fields .stop3Bounce; }
+
+	SFFloat &
+	stop1ErrorCorrection ()
+	{ return *fields .stop1ErrorCorrection; }
+
+	const SFFloat &
+	stop1ErrorCorrection () const
+	{ return *fields .stop1ErrorCorrection; }
+
+	SFFloat &
+	stop2ErrorCorrection ()
+	{ return *fields .stop2ErrorCorrection; }
+
+	const SFFloat &
+	stop2ErrorCorrection () const
+	{ return *fields .stop2ErrorCorrection; }
 
 	SFFloat &
 	stop3ErrorCorrection ()
@@ -226,28 +234,12 @@ public:
 	{ return *fields .motor1Angle; }
 
 	SFFloat &
-	motor1AngleRate ()
-	{ return *fields .motor1AngleRate; }
-
-	const SFFloat &
-	motor1AngleRate () const
-	{ return *fields .motor1AngleRate; }
-
-	SFFloat &
 	motor2Angle ()
 	{ return *fields .motor2Angle; }
 
 	const SFFloat &
 	motor2Angle () const
 	{ return *fields .motor2Angle; }
-
-	SFFloat &
-	motor2AngleRate ()
-	{ return *fields .motor2AngleRate; }
-
-	const SFFloat &
-	motor2AngleRate () const
-	{ return *fields .motor2AngleRate; }
 
 	SFFloat &
 	motor3Angle ()
@@ -258,6 +250,22 @@ public:
 	{ return *fields .motor3Angle; }
 
 	SFFloat &
+	motor1AngleRate ()
+	{ return *fields .motor1AngleRate; }
+
+	const SFFloat &
+	motor1AngleRate () const
+	{ return *fields .motor1AngleRate; }
+
+	SFFloat &
+	motor2AngleRate ()
+	{ return *fields .motor2AngleRate; }
+
+	const SFFloat &
+	motor2AngleRate () const
+	{ return *fields .motor2AngleRate; }
+
+	SFFloat &
 	motor3AngleRate ()
 	{ return *fields .motor3AngleRate; }
 
@@ -265,16 +273,14 @@ public:
 	motor3AngleRate () const
 	{ return *fields .motor3AngleRate; }
 
-	SFBool &
-	autoCalc ()
-	{ return *fields .autoCalc; }
-
-	const SFBool &
-	autoCalc () const
-	{ return *fields .autoCalc; }
-
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Joint handling
 
@@ -297,44 +303,69 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class OutputType
+	{
+		motor1Angle,
+		motor2Angle,
+		motor3Angle,
+		motor1AngleRate,
+		motor2AngleRate,
+		motor3AngleRate
+	};
+
+	///  @name Event handlers
+
+	void
+	set_forceOutput ();
+
+	void
+	set_torque ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
-		SFFloat* const axis1Angle;
-		SFFloat* const axis1Torque;
-		SFFloat* const axis2Angle;
-		SFFloat* const axis2Torque;
-		SFFloat* const axis3Angle;
-		SFFloat* const axis3Torque;
+		SFBool* const autoCalc;
 		SFInt32* const enabledAxes;
 		SFVec3f* const motor1Axis;
 		SFVec3f* const motor2Axis;
 		SFVec3f* const motor3Axis;
+		SFFloat* const axis1Angle;
+		SFFloat* const axis2Angle;
+		SFFloat* const axis3Angle;
+		SFFloat* const axis1Torque;
+		SFFloat* const axis2Torque;
+		SFFloat* const axis3Torque;
 		SFFloat* const stop1Bounce;
-		SFFloat* const stop1ErrorCorrection;
 		SFFloat* const stop2Bounce;
-		SFFloat* const stop2ErrorCorrection;
 		SFFloat* const stop3Bounce;
+		SFFloat* const stop1ErrorCorrection;
+		SFFloat* const stop2ErrorCorrection;
 		SFFloat* const stop3ErrorCorrection;
 		SFFloat* const motor1Angle;
-		SFFloat* const motor1AngleRate;
 		SFFloat* const motor2Angle;
-		SFFloat* const motor2AngleRate;
 		SFFloat* const motor3Angle;
+		SFFloat* const motor1AngleRate;
+		SFFloat* const motor2AngleRate;
 		SFFloat* const motor3AngleRate;
-		SFBool* const autoCalc;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::array <bool, 8>                      outputs;
+	std::shared_ptr <btGeneric6DofConstraint> joint;
 
 };
 

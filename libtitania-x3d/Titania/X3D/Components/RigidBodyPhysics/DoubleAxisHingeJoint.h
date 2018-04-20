@@ -114,6 +114,22 @@ public:
 	{ return *fields .axis2; }
 
 	SFFloat &
+	minAngle1 ()
+	{ return *fields .minAngle1; }
+
+	const SFFloat &
+	minAngle1 () const
+	{ return *fields .minAngle1; }
+
+	SFFloat &
+	maxAngle1 ()
+	{ return *fields .maxAngle1; }
+
+	const SFFloat &
+	maxAngle1 () const
+	{ return *fields .maxAngle1; }
+
+	SFFloat &
 	desiredAngularVelocity1 ()
 	{ return *fields .desiredAngularVelocity1; }
 
@@ -130,14 +146,6 @@ public:
 	{ return *fields .desiredAngularVelocity2; }
 
 	SFFloat &
-	maxAngle1 ()
-	{ return *fields .maxAngle1; }
-
-	const SFFloat &
-	maxAngle1 () const
-	{ return *fields .maxAngle1; }
-
-	SFFloat &
 	maxTorque1 ()
 	{ return *fields .maxTorque1; }
 
@@ -152,14 +160,6 @@ public:
 	const SFFloat &
 	maxTorque2 () const
 	{ return *fields .maxTorque2; }
-
-	SFFloat &
-	minAngle1 ()
-	{ return *fields .minAngle1; }
-
-	const SFFloat &
-	minAngle1 () const
-	{ return *fields .minAngle1; }
 
 	SFFloat &
 	stopBounce1 ()
@@ -186,20 +186,20 @@ public:
 	{ return *fields .stopErrorCorrection1; }
 
 	SFFloat &
-	suspensionErrorCorrection ()
-	{ return *fields .suspensionErrorCorrection; }
-
-	const SFFloat &
-	suspensionErrorCorrection () const
-	{ return *fields .suspensionErrorCorrection; }
-
-	SFFloat &
 	suspensionForce ()
 	{ return *fields .suspensionForce; }
 
 	const SFFloat &
 	suspensionForce () const
 	{ return *fields .suspensionForce; }
+
+	SFFloat &
+	suspensionErrorCorrection ()
+	{ return *fields .suspensionErrorCorrection; }
+
+	const SFFloat &
+	suspensionErrorCorrection () const
+	{ return *fields .suspensionErrorCorrection; }
 
 	SFVec3f &
 	body1AnchorPoint ()
@@ -208,14 +208,6 @@ public:
 	const SFVec3f &
 	body1AnchorPoint () const
 	{ return *fields .body1AnchorPoint; }
-
-	SFVec3f &
-	body1Axis ()
-	{ return *fields .body1Axis; }
-
-	const SFVec3f &
-	body1Axis () const
-	{ return *fields .body1Axis; }
 
 	SFVec3f &
 	body2AnchorPoint ()
@@ -242,6 +234,14 @@ public:
 	{ return *fields .hinge1Angle; }
 
 	SFFloat &
+	hinge2AngleRate ()
+	{ return *fields .hinge2AngleRate; }
+
+	const SFFloat &
+	hinge2AngleRate () const
+	{ return *fields .hinge2AngleRate; }
+
+	SFFloat &
 	hinge1AngleRate ()
 	{ return *fields .hinge1AngleRate; }
 
@@ -257,16 +257,22 @@ public:
 	hinge2Angle () const
 	{ return *fields .hinge2Angle; }
 
-	SFFloat &
-	hinge2AngleRate ()
-	{ return *fields .hinge2AngleRate; }
+	SFVec3f &
+	body1Axis ()
+	{ return *fields .body1Axis; }
 
-	const SFFloat &
-	hinge2AngleRate () const
-	{ return *fields .hinge2AngleRate; }
+	const SFVec3f &
+	body1Axis () const
+	{ return *fields .body1Axis; }
 
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Joint handling
 
@@ -289,13 +295,32 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class OutputType
+	{
+		body1AnchorPoint,
+		body2AnchorPoint,
+		body1Axis,
+		body2Axis,
+		hinge1Angle,
+		hinge2Angle,
+		hinge1AngleRate,
+		hinge2AngleRate
+	};
+
+	///  @name Event handlers
+
+	void
+	set_forceOutput ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -304,28 +329,33 @@ private:
 		SFVec3f* const anchorPoint;
 		SFVec3f* const axis1;
 		SFVec3f* const axis2;
+		SFFloat* const minAngle1;
+		SFFloat* const maxAngle1;
 		SFFloat* const desiredAngularVelocity1;
 		SFFloat* const desiredAngularVelocity2;
-		SFFloat* const maxAngle1;
 		SFFloat* const maxTorque1;
 		SFFloat* const maxTorque2;
-		SFFloat* const minAngle1;
 		SFFloat* const stopBounce1;
 		SFFloat* const stopConstantForceMix1;
 		SFFloat* const stopErrorCorrection1;
-		SFFloat* const suspensionErrorCorrection;
 		SFFloat* const suspensionForce;
+		SFFloat* const suspensionErrorCorrection;
 		SFVec3f* const body1AnchorPoint;
-		SFVec3f* const body1Axis;
 		SFVec3f* const body2AnchorPoint;
+		SFVec3f* const body1Axis;
 		SFVec3f* const body2Axis;
 		SFFloat* const hinge1Angle;
-		SFFloat* const hinge1AngleRate;
 		SFFloat* const hinge2Angle;
+		SFFloat* const hinge1AngleRate;
 		SFFloat* const hinge2AngleRate;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::array <bool, 8>                outputs;
+	std::shared_ptr <btHingeConstraint> joint;
 
 };
 

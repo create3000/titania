@@ -169,7 +169,6 @@ public:
 	{ return *fields .angleRate; }
 
 
-
 protected:
 
 	///  @name Construction
