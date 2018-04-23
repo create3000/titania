@@ -157,6 +157,14 @@ protected:
 	Box3d
 	getChildBBox () const = 0;
 
+	virtual
+	void
+	beginUndo () final override;
+	
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
+
 
 private:
 
@@ -172,7 +180,9 @@ private:
 
 	///  @name Members
 
-	Color3f color;
+	Color3f    color;
+	Vector3f   startTranslation;
+	Rotation4d startRotation;
 
 };
 

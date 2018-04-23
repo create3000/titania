@@ -137,11 +137,14 @@ MotorJoint::initialize ()
 	X3DRigidJointNode::initialize ();
 
 	forceOutput () .addInterest (&MotorJoint::set_forceOutput, this);
-	autoCalc ()    .addInterest (&MotorJoint::set_joint,       this);
-	enabledAxes () .addInterest (&MotorJoint::set_joint,       this);
-	motor1Axis ()  .addInterest (&MotorJoint::set_joint,       this);
-	motor2Axis ()  .addInterest (&MotorJoint::set_joint,       this);
-	motor3Axis ()  .addInterest (&MotorJoint::set_joint,       this);
+	autoCalc ()    .addInterest (&MotorJoint::set_axes,        this);
+	enabledAxes () .addInterest (&MotorJoint::set_axes,        this);
+	motor1Axis ()  .addInterest (&MotorJoint::set_axes,        this);
+	motor2Axis ()  .addInterest (&MotorJoint::set_axes,        this);
+	motor3Axis ()  .addInterest (&MotorJoint::set_axes,        this);
+	axis1Torque () .addInterest (&MotorJoint::set_axes,        this);
+	axis2Torque () .addInterest (&MotorJoint::set_axes,        this);
+	axis3Torque () .addInterest (&MotorJoint::set_axes,        this);
 
 	set_forceOutput ();
 }
@@ -179,6 +182,65 @@ MotorJoint::set_forceOutput ()
 }
 
 void
+MotorJoint::set_axes ()
+{
+	const auto rotationalLimitMotor0 = joint -> getRotationalLimitMotor (0);
+	const auto rotationalLimitMotor1 = joint -> getRotationalLimitMotor (1);
+	const auto rotationalLimitMotor2 = joint -> getRotationalLimitMotor (2);
+
+	if (autoCalc () ? motor3Axis () .getX () : enabledAxes () > 0)
+	{
+		rotationalLimitMotor0 -> m_enableMotor    = true;
+		rotationalLimitMotor0 -> m_targetVelocity = axis1Torque ();
+		rotationalLimitMotor0 -> m_maxMotorForce  = 100;
+		rotationalLimitMotor0 -> m_loLimit        = -math::pi <double>;
+		rotationalLimitMotor0 -> m_hiLimit        = math::pi <double>;
+	}
+	else
+	{
+		rotationalLimitMotor0-> m_enableMotor    = false;
+		rotationalLimitMotor0-> m_targetVelocity = 0;
+		rotationalLimitMotor0-> m_maxMotorForce  = 0;
+		rotationalLimitMotor0-> m_loLimit        = 0;
+		rotationalLimitMotor0-> m_hiLimit        = 0;
+	}
+
+	if (autoCalc () ? motor3Axis () .getY () : enabledAxes () > 1)
+	{
+		rotationalLimitMotor1 -> m_enableMotor    = true;
+		rotationalLimitMotor1 -> m_targetVelocity = axis2Torque ();
+		rotationalLimitMotor1 -> m_maxMotorForce  = 100;
+		rotationalLimitMotor1 -> m_loLimit        = -math::pi <double>;
+		rotationalLimitMotor1 -> m_hiLimit        = math::pi <double>;
+	}
+	else
+	{
+		rotationalLimitMotor1 -> m_enableMotor    = false;
+		rotationalLimitMotor1 -> m_targetVelocity = 0;
+		rotationalLimitMotor1 -> m_maxMotorForce  = 0;
+		rotationalLimitMotor1 -> m_loLimit        = 0;
+		rotationalLimitMotor1 -> m_hiLimit        = 0;
+	}
+
+	if (autoCalc () ? motor3Axis () .getZ () : enabledAxes () > 2)
+	{
+		rotationalLimitMotor2 -> m_enableMotor    = true;
+		rotationalLimitMotor2 -> m_targetVelocity = axis3Torque ();
+		rotationalLimitMotor2 -> m_maxMotorForce  = 100;
+		rotationalLimitMotor2 -> m_loLimit        = -math::pi <double>;
+		rotationalLimitMotor2 -> m_hiLimit        = math::pi <double>;
+	}
+	else
+	{
+		rotationalLimitMotor2 -> m_enableMotor    = false;
+		rotationalLimitMotor2 -> m_targetVelocity = 0;
+		rotationalLimitMotor2 -> m_maxMotorForce  = 0;
+		rotationalLimitMotor2 -> m_loLimit        = 0;
+		rotationalLimitMotor2 -> m_hiLimit        = 0;
+	}
+}
+
+void
 MotorJoint::addJoint ()
 {
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
@@ -189,10 +251,12 @@ MotorJoint::addJoint ()
 		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
 		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
+		matrixB *= ~matrixA;
+
 		btTransform frameInA;
 		btTransform frameInB;
 
-		frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
+		frameInA .setIdentity ();
 		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
 
 	   joint .reset (new btGeneric6DofConstraint (*getBody1 () -> getRigidBody (),
@@ -201,58 +265,9 @@ MotorJoint::addJoint ()
 		                                            frameInB,
 		                                            true));
 
-		if ((motor3Axis () .getX () and autoCalc ()) or enabledAxes () >= 1)
-		{
-			joint -> getRotationalLimitMotor (0) -> m_enableMotor    = true;
-			joint -> getRotationalLimitMotor (0) -> m_targetVelocity = axis1Torque ();
-			joint -> getRotationalLimitMotor (0) -> m_maxMotorForce  = 100;
-			joint -> getRotationalLimitMotor (0) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (0) -> m_hiLimit        = 10;
-		}
-		else
-		{
-			joint -> getRotationalLimitMotor (0) -> m_enableMotor    = false;
-			joint -> getRotationalLimitMotor (0) -> m_targetVelocity = 0;
-			joint -> getRotationalLimitMotor (0) -> m_maxMotorForce  = 0;
-			joint -> getRotationalLimitMotor (0) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (0) -> m_hiLimit        = 0;
-		}
-
-		if ((motor3Axis () .getY () and autoCalc ()) or enabledAxes () >= 2)
-		{
-			joint -> getRotationalLimitMotor (1) -> m_enableMotor    = true;
-			joint -> getRotationalLimitMotor (1) -> m_targetVelocity = axis2Torque ();
-			joint -> getRotationalLimitMotor (1) -> m_maxMotorForce  = 100;
-			joint -> getRotationalLimitMotor (1) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (1) -> m_hiLimit        = 10;
-		}
-		else
-		{
-			joint -> getRotationalLimitMotor (1) -> m_enableMotor    = false;
-			joint -> getRotationalLimitMotor (1) -> m_targetVelocity = 0;
-			joint -> getRotationalLimitMotor (1) -> m_maxMotorForce  = 0;
-			joint -> getRotationalLimitMotor (1) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (1) -> m_hiLimit        = 0;
-		}
-
-		if ((motor3Axis () .getZ () and autoCalc ()) or enabledAxes () >= 2)
-		{
-			joint -> getRotationalLimitMotor (2) -> m_enableMotor    = true;
-			joint -> getRotationalLimitMotor (2) -> m_targetVelocity = axis3Torque ();
-			joint -> getRotationalLimitMotor (2) -> m_maxMotorForce  = 100;
-			joint -> getRotationalLimitMotor (2) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (2) -> m_hiLimit        = 10;
-		}
-		else
-		{
-			joint -> getRotationalLimitMotor (2) -> m_enableMotor    = false;
-			joint -> getRotationalLimitMotor (2) -> m_targetVelocity = 0;
-			joint -> getRotationalLimitMotor (2) -> m_maxMotorForce  = 0;
-			joint -> getRotationalLimitMotor (2) -> m_loLimit        = 0;
-			joint -> getRotationalLimitMotor (2) -> m_hiLimit        = 0;
-		}
-
 		joint -> enableFeedback (true);
+
+		set_axes ();
 	}
 	else
 	{
@@ -279,9 +294,9 @@ MotorJoint::removeJoint ()
 void
 MotorJoint::update1 ()
 {
-	const auto torque = axis2Torque () * motor2Axis ();
-
-	getBody1 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
+//	const auto torque = axis2Torque () * motor2Axis ();
+//
+//	getBody1 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
 
 	// Editing support.
 
@@ -295,9 +310,9 @@ MotorJoint::update1 ()
 void
 MotorJoint::update2 ()
 {
-	const auto torque = axis3Torque () * motor3Axis ();
-
-	getBody2 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
+//	const auto torque = axis3Torque () * motor3Axis ();
+//
+//	getBody2 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
 
 	// Editing support.
 

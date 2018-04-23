@@ -148,10 +148,10 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			HierarchyGuard guard (renderObject -> getBrowser (), this);
-		
 			try
 			{
+				HierarchyGuard guard (renderObject -> getBrowser (), this);
+			
 				inlineNode -> traverse (type, renderObject);
 			}
 			catch (const X3DError & error)

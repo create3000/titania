@@ -62,7 +62,9 @@ X3DNBodyCollidableNodeTool::X3DNBodyCollidableNodeTool (const Color3f & color) :
 	              X3DChildNodeTool (),
 	X3DTransformMatrix3DObjectTool (),
 	          X3DBoundedObjectTool (color),
-                            color (color)
+                            color (color),
+                 startTranslation (),
+                    startRotation ()
 {
 	//addType (X3DConstants::X3DNBodyCollidableNodeTool);
 }
@@ -107,6 +109,29 @@ void
 X3DNBodyCollidableNodeTool::set_enabled (const bool value)
 {
 	setLinetype (value ? LineType::SOLID : LineType::DOTTED);
+}
+
+void
+X3DNBodyCollidableNodeTool::beginUndo ()
+{
+	startTranslation = translation ();
+	startRotation    = rotation ();
+}
+
+void
+X3DNBodyCollidableNodeTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (translation () not_eq startTranslation or
+	    rotation () not_eq startRotation)
+	{
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (translation ()), startTranslation);
+		undoStep -> addUndoFunction (&SFRotation::setValue, std::ref (rotation ()), startRotation);
+		undoStep -> addUndoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), true);
+
+		undoStep -> addRedoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), true);
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (translation ()), translation ());
+		undoStep -> addRedoFunction (&SFRotation::setValue, std::ref (rotation ()), rotation ());
+	}
 }
 
 void

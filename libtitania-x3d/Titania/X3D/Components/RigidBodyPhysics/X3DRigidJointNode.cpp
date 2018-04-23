@@ -98,6 +98,12 @@ X3DRigidJointNode::setExecutionContext (X3DExecutionContext* const executionCont
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (bodyNode1)
+		bodyNode1 -> removeInterest (&X3DRigidJointNode::update1, this);
+
+	if (bodyNode2)
+		bodyNode2 -> removeInterest (&X3DRigidJointNode::update2, this);
+
 	X3DNode::setExecutionContext (executionContext);
 
 	set_live ();

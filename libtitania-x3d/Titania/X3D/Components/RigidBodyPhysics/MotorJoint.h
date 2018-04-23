@@ -321,7 +321,7 @@ private:
 	set_forceOutput ();
 
 	void
-	set_torque ();
+	set_axes ();
 
 	///  @name Static members
 
