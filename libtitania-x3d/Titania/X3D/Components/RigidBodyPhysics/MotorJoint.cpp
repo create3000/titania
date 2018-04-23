@@ -193,16 +193,16 @@ MotorJoint::set_axes ()
 		rotationalLimitMotor0 -> m_enableMotor    = true;
 		rotationalLimitMotor0 -> m_targetVelocity = axis1Torque ();
 		rotationalLimitMotor0 -> m_maxMotorForce  = 100;
-		rotationalLimitMotor0 -> m_loLimit        = -math::pi <double>;
-		rotationalLimitMotor0 -> m_hiLimit        = math::pi <double>;
+
+		joint -> setLimit (0, -math::pi <float>, math::pi <float>);
 	}
 	else
 	{
 		rotationalLimitMotor0-> m_enableMotor    = false;
 		rotationalLimitMotor0-> m_targetVelocity = 0;
 		rotationalLimitMotor0-> m_maxMotorForce  = 0;
-		rotationalLimitMotor0-> m_loLimit        = 0;
-		rotationalLimitMotor0-> m_hiLimit        = 0;
+
+		joint -> setLimit (2, 0, 0);
 	}
 
 	if (autoCalc () ? motor3Axis () .getY () : enabledAxes () > 1)
@@ -210,16 +210,16 @@ MotorJoint::set_axes ()
 		rotationalLimitMotor1 -> m_enableMotor    = true;
 		rotationalLimitMotor1 -> m_targetVelocity = axis2Torque ();
 		rotationalLimitMotor1 -> m_maxMotorForce  = 100;
-		rotationalLimitMotor1 -> m_loLimit        = -math::pi <double>;
-		rotationalLimitMotor1 -> m_hiLimit        = math::pi <double>;
+
+		joint -> setLimit (1, -math::pi <float>, math::pi <float>);
 	}
 	else
 	{
 		rotationalLimitMotor1 -> m_enableMotor    = false;
 		rotationalLimitMotor1 -> m_targetVelocity = 0;
 		rotationalLimitMotor1 -> m_maxMotorForce  = 0;
-		rotationalLimitMotor1 -> m_loLimit        = 0;
-		rotationalLimitMotor1 -> m_hiLimit        = 0;
+
+		joint -> setLimit (2, 0, 0);
 	}
 
 	if (autoCalc () ? motor3Axis () .getZ () : enabledAxes () > 2)
@@ -227,16 +227,16 @@ MotorJoint::set_axes ()
 		rotationalLimitMotor2 -> m_enableMotor    = true;
 		rotationalLimitMotor2 -> m_targetVelocity = axis3Torque ();
 		rotationalLimitMotor2 -> m_maxMotorForce  = 100;
-		rotationalLimitMotor2 -> m_loLimit        = -math::pi <double>;
-		rotationalLimitMotor2 -> m_hiLimit        = math::pi <double>;
+
+		joint -> setLimit (2, -math::pi <float>, math::pi <float>);
 	}
 	else
 	{
 		rotationalLimitMotor2 -> m_enableMotor    = false;
 		rotationalLimitMotor2 -> m_targetVelocity = 0;
 		rotationalLimitMotor2 -> m_maxMotorForce  = 0;
-		rotationalLimitMotor2 -> m_loLimit        = 0;
-		rotationalLimitMotor2 -> m_hiLimit        = 0;
+
+		joint -> setLimit (2, 0, 0);
 	}
 }
 

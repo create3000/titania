@@ -999,6 +999,14 @@
     <None Include="share\mime\packages\de.create3000.titania.x3d+json.xml" />
     <None Include="share\mime\packages\de.create3000.titania.x3d+vrml.xml" />
     <None Include="share\mime\packages\de.create3000.titania.x3d+xml.xml" />
+    <None Include="share\fonts\truetype\titania-fonts\Ubuntu-B.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\Ubuntu-BI.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\UbuntuMono-B.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\UbuntuMono-BI.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\UbuntuMono-R.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\UbuntuMono-RI.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\Ubuntu-R.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\Ubuntu-RI.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
