@@ -25,7 +25,7 @@ EXTERNPROTO Grid [
   initializeOnly SFBool     solid
 ]
 [
-  "../../../../libtitania-x3d/share/titania/tools/library/Grid.x3dv#Grid",
+  "../../../../../libtitania-x3d/share/titania/tools/library/Grid.x3dv#Grid",
   "file:///usr/share/titania/tools/library/Grid.x3dv#Grid",
   "file:///app/share/titania/tools/library/Grid.x3dv#Grid"
 ]

@@ -98,20 +98,20 @@ public:
 	{ return *fields .axis; }
 
 	SFFloat &
-	maxSeparation ()
-	{ return *fields .maxSeparation; }
-
-	const SFFloat &
-	maxSeparation () const
-	{ return *fields .maxSeparation; }
-
-	SFFloat &
 	minSeparation ()
 	{ return *fields .minSeparation; }
 
 	const SFFloat &
 	minSeparation () const
 	{ return *fields .minSeparation; }
+
+	SFFloat &
+	maxSeparation ()
+	{ return *fields .maxSeparation; }
+
+	const SFFloat &
+	maxSeparation () const
+	{ return *fields .maxSeparation; }
 
 	SFFloat &
 	stopBounce ()
@@ -169,21 +169,34 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class OutputType
+	{
+		separation,
+		separationRate
+	};
+
+	///  @name Event handlers
+
+	void
+	set_forceOutput ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
 		SFVec3f* const axis;
-		SFFloat* const maxSeparation;
 		SFFloat* const minSeparation;
+		SFFloat* const maxSeparation;
 		SFFloat* const stopBounce;
 		SFFloat* const stopErrorCorrection;
 		SFFloat* const separation;
@@ -191,6 +204,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::array <bool, 2>                 outputs;
+	std::shared_ptr <btSliderConstraint> joint;
 
 };
 

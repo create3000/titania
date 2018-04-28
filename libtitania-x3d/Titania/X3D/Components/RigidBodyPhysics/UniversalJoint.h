@@ -122,20 +122,20 @@ public:
 	{ return *fields .stopBounce1; }
 
 	SFFloat &
-	stop1ErrorCorrection ()
-	{ return *fields .stop1ErrorCorrection; }
-
-	const SFFloat &
-	stop1ErrorCorrection () const
-	{ return *fields .stop1ErrorCorrection; }
-
-	SFFloat &
 	stop2Bounce ()
 	{ return *fields .stop2Bounce; }
 
 	const SFFloat &
 	stop2Bounce () const
 	{ return *fields .stop2Bounce; }
+
+	SFFloat &
+	stop1ErrorCorrection ()
+	{ return *fields .stop1ErrorCorrection; }
+
+	const SFFloat &
+	stop1ErrorCorrection () const
+	{ return *fields .stop1ErrorCorrection; }
 
 	SFFloat &
 	stop2ErrorCorrection ()
@@ -154,20 +154,20 @@ public:
 	{ return *fields .body1AnchorPoint; }
 
 	SFVec3f &
-	body1Axis ()
-	{ return *fields .body1Axis; }
-
-	const SFVec3f &
-	body1Axis () const
-	{ return *fields .body1Axis; }
-
-	SFVec3f &
 	body2AnchorPoint ()
 	{ return *fields .body2AnchorPoint; }
 
 	const SFVec3f &
 	body2AnchorPoint () const
 	{ return *fields .body2AnchorPoint; }
+
+	SFVec3f &
+	body1Axis ()
+	{ return *fields .body1Axis; }
+
+	const SFVec3f &
+	body1Axis () const
+	{ return *fields .body1Axis; }
 
 	SFVec3f &
 	body2Axis ()
@@ -179,6 +179,12 @@ public:
 
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Joint handling
 
@@ -201,13 +207,26 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class OutputType
+	{
+		body1AnchorPoint,
+		body2AnchorPoint
+	};
+
+	///  @name Event handlers
+
+	void
+	set_forceOutput ();
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -217,16 +236,21 @@ private:
 		SFVec3f* const axis1;
 		SFVec3f* const axis2;
 		SFFloat* const stopBounce1;
-		SFFloat* const stop1ErrorCorrection;
 		SFFloat* const stop2Bounce;
+		SFFloat* const stop1ErrorCorrection;
 		SFFloat* const stop2ErrorCorrection;
 		SFVec3f* const body1AnchorPoint;
-		SFVec3f* const body1Axis;
 		SFVec3f* const body2AnchorPoint;
+		SFVec3f* const body1Axis;
 		SFVec3f* const body2Axis;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::array <bool, 2>                    outputs;
+	std::shared_ptr <btUniversalConstraint> joint;
 
 };
 

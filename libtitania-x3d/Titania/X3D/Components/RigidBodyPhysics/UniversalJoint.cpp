@@ -51,6 +51,8 @@
 #include "UniversalJoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBody.h"
+#include "../RigidBodyPhysics/RigidBodyCollection.h"
 
 namespace titania {
 namespace X3D {
@@ -60,41 +62,43 @@ const std::string   UniversalJoint::typeName       = "UniversalJoint";
 const std::string   UniversalJoint::containerField = "joints";
 
 UniversalJoint::Fields::Fields () :
-	anchorPoint (new SFVec3f ()),
-	axis1 (new SFVec3f ()),
-	axis2 (new SFVec3f ()),
-	stopBounce1 (new SFFloat ()),
+	         anchorPoint (new SFVec3f ()),
+	               axis1 (new SFVec3f ()),
+	               axis2 (new SFVec3f ()),
+	         stopBounce1 (new SFFloat ()),
+	         stop2Bounce (new SFFloat ()),
 	stop1ErrorCorrection (new SFFloat (0.8)),
-	stop2Bounce (new SFFloat ()),
 	stop2ErrorCorrection (new SFFloat (0.8)),
-	body1AnchorPoint (new SFVec3f ()),
-	body1Axis (new SFVec3f ()),
-	body2AnchorPoint (new SFVec3f ()),
-	body2Axis (new SFVec3f ())
+	    body1AnchorPoint (new SFVec3f ()),
+	    body2AnchorPoint (new SFVec3f ()),
+	           body1Axis (new SFVec3f ()),
+	           body2Axis (new SFVec3f ())
 { }
 
 UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DRigidJointNode (),
-	           fields ()
+	           fields (),
+	          outputs (),
+	            joint ()
 {
 	addType (X3DConstants::UniversalJoint);
 
 	addField (inputOutput, "metadata",             metadata ());
-	addField (inputOutput, "body1",                body1 ());
-	addField (inputOutput, "body2",                body2 ());
 	addField (inputOutput, "forceOutput",          forceOutput ());
 	addField (inputOutput, "anchorPoint",          anchorPoint ());
 	addField (inputOutput, "axis1",                axis1 ());
 	addField (inputOutput, "axis2",                axis2 ());
 	addField (inputOutput, "stopBounce1",          stopBounce1 ());
-	addField (inputOutput, "stop1ErrorCorrection", stop1ErrorCorrection ());
 	addField (inputOutput, "stop2Bounce",          stop2Bounce ());
+	addField (inputOutput, "stop1ErrorCorrection", stop1ErrorCorrection ());
 	addField (inputOutput, "stop2ErrorCorrection", stop2ErrorCorrection ());
 	addField (outputOnly,  "body1AnchorPoint",     body1AnchorPoint ());
-	addField (outputOnly,  "body1Axis",            body1Axis ());
 	addField (outputOnly,  "body2AnchorPoint",     body2AnchorPoint ());
+	addField (outputOnly,  "body1Axis",            body1Axis ());
 	addField (outputOnly,  "body2Axis",            body2Axis ());
+	addField (inputOutput, "body1",                body1 ());
+	addField (inputOutput, "body2",                body2 ());
 }
 
 X3DBaseNode*
@@ -104,23 +108,113 @@ UniversalJoint::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+UniversalJoint::initialize ()
+{
+	X3DRigidJointNode::initialize ();
+
+	forceOutput () .addInterest (&UniversalJoint::set_forceOutput, this);
+	anchorPoint () .addInterest (&UniversalJoint::set_joint,       this);
+	axis1 ()       .addInterest (&UniversalJoint::set_joint,       this);
+	axis2 ()       .addInterest (&UniversalJoint::set_joint,       this);
+
+	set_forceOutput ();
+}
+
+void
 UniversalJoint::addJoint ()
 {
+	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
+	{
+		auto anchorPoint1 = anchorPoint () .getValue ();
+		auto anchorPoint2 = anchorPoint () .getValue ();
+
+		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
+		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+
+		joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
+		                                         *getBody2 () -> getRigidBody (),
+		                                         btVector3 (anchorPoint () .getX (), anchorPoint () .getY (), anchorPoint () .getZ ()),
+		                                         btVector3 (axis1 () .getX (), axis1 () .getY (), axis1 () .getZ ()),
+		                                         btVector3 (axis2 () .getX (), axis2 () .getY (), axis2 () .getZ ())));
+
+		if (outputs [size_t (OutputType::body1AnchorPoint)])
+			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+
+		if (outputs [size_t (OutputType::body2AnchorPoint)])
+			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+	}
+	else
+	{
+		joint .reset ();
+	}
+
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+	}
 }
 
 void
 UniversalJoint::removeJoint ()
 {
+	if (getCollection ())
+	{
+		if (joint)
+			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+	}
+}
+
+void
+UniversalJoint::set_forceOutput ()
+{
+	const std::map <std::string, OutputType> outputTypes = {
+		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+	};
+
+	std::fill (outputs .begin (), outputs .end (), false);
+
+	for (const auto & value : basic::make_const_range (forceOutput ()))
+	{
+		try
+		{
+			if (value == "ALL")
+			{
+				std::fill (outputs .begin (), outputs .end (), true);
+			}
+			else
+			{
+				outputs [size_t (outputTypes .at (value))] = true;
+			}
+		}
+		catch (const std::out_of_range & error)
+		{ }
+	}
 }
 
 void
 UniversalJoint::update1 ()
 {
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize1 ();
+	set_joint ();
 }
 
 void
 UniversalJoint::update2 ()
 {
+	// Editing support.
+
+	if (getExecutionContext () -> isLive ())
+		return;
+
+	initialize2 ();
+	set_joint ();
 }
 
 } // X3D

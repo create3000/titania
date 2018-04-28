@@ -323,6 +323,15 @@ private:
 	void
 	set_axes ();
 
+	void
+	set_axis1Angle ();
+	
+	void
+	set_axis2Angle ();
+	
+	void
+	set_axis3Angle ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -364,7 +373,7 @@ private:
 
 	///  @name Members
 
-	std::array <bool, 8>                      outputs;
+	std::array <bool, 6>                      outputs;
 	std::shared_ptr <btGeneric6DofConstraint> joint;
 
 };

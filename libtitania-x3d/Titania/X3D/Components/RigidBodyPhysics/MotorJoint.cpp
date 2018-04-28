@@ -145,6 +145,9 @@ MotorJoint::initialize ()
 	axis1Torque () .addInterest (&MotorJoint::set_axes,        this);
 	axis2Torque () .addInterest (&MotorJoint::set_axes,        this);
 	axis3Torque () .addInterest (&MotorJoint::set_axes,        this);
+	axis1Angle ()  .addInterest (&MotorJoint::set_axis1Angle,  this);
+	axis2Angle ()  .addInterest (&MotorJoint::set_axis2Angle,  this);
+	axis3Angle ()  .addInterest (&MotorJoint::set_axis3Angle,  this);
 
 	set_forceOutput ();
 }
@@ -188,7 +191,7 @@ MotorJoint::set_axes ()
 	const auto rotationalLimitMotor1 = joint -> getRotationalLimitMotor (1);
 	const auto rotationalLimitMotor2 = joint -> getRotationalLimitMotor (2);
 
-	if (autoCalc () ? motor3Axis () .getX () : enabledAxes () > 0)
+	if (autoCalc () and motor3Axis () .getX ())
 	{
 		rotationalLimitMotor0 -> m_enableMotor    = true;
 		rotationalLimitMotor0 -> m_targetVelocity = axis1Torque ();
@@ -202,10 +205,10 @@ MotorJoint::set_axes ()
 		rotationalLimitMotor0-> m_targetVelocity = 0;
 		rotationalLimitMotor0-> m_maxMotorForce  = 0;
 
-		joint -> setLimit (2, 0, 0);
+		joint -> setLimit (0, 0, 0);
 	}
 
-	if (autoCalc () ? motor3Axis () .getY () : enabledAxes () > 1)
+	if (autoCalc () and motor3Axis () .getY ())
 	{
 		rotationalLimitMotor1 -> m_enableMotor    = true;
 		rotationalLimitMotor1 -> m_targetVelocity = axis2Torque ();
@@ -219,10 +222,10 @@ MotorJoint::set_axes ()
 		rotationalLimitMotor1 -> m_targetVelocity = 0;
 		rotationalLimitMotor1 -> m_maxMotorForce  = 0;
 
-		joint -> setLimit (2, 0, 0);
+		joint -> setLimit (1, 0, 0);
 	}
 
-	if (autoCalc () ? motor3Axis () .getZ () : enabledAxes () > 2)
+	if (autoCalc () and motor3Axis () .getZ ())
 	{
 		rotationalLimitMotor2 -> m_enableMotor    = true;
 		rotationalLimitMotor2 -> m_targetVelocity = axis3Torque ();
@@ -241,6 +244,21 @@ MotorJoint::set_axes ()
 }
 
 void
+MotorJoint::set_axis1Angle ()
+{
+}
+
+void
+MotorJoint::set_axis2Angle ()
+{
+}
+
+void
+MotorJoint::set_axis3Angle ()
+{
+}
+
+void
 MotorJoint::addJoint ()
 {
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
@@ -251,7 +269,8 @@ MotorJoint::addJoint ()
 		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
 		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
-		matrixB *= ~matrixA;
+		matrixB .inverse ();
+		matrixB .mult_right (matrixA);
 
 		btTransform frameInA;
 		btTransform frameInB;
@@ -294,10 +313,6 @@ MotorJoint::removeJoint ()
 void
 MotorJoint::update1 ()
 {
-//	const auto torque = axis2Torque () * motor2Axis ();
-//
-//	getBody1 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
-
 	// Editing support.
 
 	if (getExecutionContext () -> isLive ())
@@ -310,10 +325,6 @@ MotorJoint::update1 ()
 void
 MotorJoint::update2 ()
 {
-//	const auto torque = axis3Torque () * motor3Axis ();
-//
-//	getBody2 () -> getRigidBody () -> applyTorque (btVector3 (torque .x (), torque .y (), torque .z ()));
-
 	// Editing support.
 
 	if (getExecutionContext () -> isLive ())
