@@ -114,7 +114,7 @@ CollidableShape::initialize ()
 	X3DNBodyCollidableNode::initialize ();
 
 	enabled () .addInterest (&CollidableShape::set_collidableGeometry, this);
-	shape ()   .addInterest (&CollidableShape::set_shape, this);
+	shape ()   .addInterest (&CollidableShape::set_shape,              this);
 
 	set_shape ();
 }

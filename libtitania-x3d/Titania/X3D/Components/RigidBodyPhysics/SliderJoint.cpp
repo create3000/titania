@@ -104,8 +104,6 @@ SliderJoint::addJoint ()
 {
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
 	{
-		// Dont't know what to do here:
-
 		const auto axisRotation = Matrix4f (Rotation4f (Vector3f (1, 0, 0), axis () .getValue ()));
 
 		Matrix4f matrixA;
@@ -114,31 +112,28 @@ SliderJoint::addJoint ()
 		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
 		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
-		matrixA .inverse ();
-		matrixA .mult_right (matrixB);
+		matrixA .mult_left (axisRotation);
+
+		matrixB .inverse ();
+		matrixB .mult_right (matrixA);
 
 		btTransform frameInA;
 		btTransform frameInB;
 
 		frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
-		frameInB .setFromOpenGLMatrix (axisRotation [0] .data ());
+		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
 
 	   joint .reset (new btSliderConstraint (*getBody1 () -> getRigidBody (),
 		                                      *getBody2 () -> getRigidBody (),
 		                                      frameInA,
 		                                      frameInB,
-		                                      false));
+		                                      true));
 
-		joint -> setLowerLinLimit (-10);
-		joint -> setUpperLinLimit (10);
 		joint -> setLowerAngLimit (0);
 		joint -> setUpperAngLimit (0);
 
 		auto a = joint -> getAncorInA ();
 		auto b = joint -> getAncorInB ();
-
-		__LOG__ << a .x () << " : " << a .y () << " : " << a .z () << std::endl;
-		__LOG__ << b .x () << " : " << b .y () << " : " << b .z () << std::endl;
 	}
 	else
 	{

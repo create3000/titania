@@ -328,6 +328,7 @@ RigidBody::set_geometry ()
 		position ()    .removeInterest (geometryNode -> translation ());
 		orientation () .removeInterest (geometryNode -> rotation ());
 	}
+
 	// Sort out X3DNBodyCollidableNode nodes.
 
 	std::vector <X3DNBodyCollidableNode*> value;

@@ -346,6 +346,7 @@ RigidBodyCollection::set_bodies ()
 	for (const auto & bodyNode : bodyNodes)
 		bodyNode -> enabled () .addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
+	set_contactSurfaceThickness ();
 	set_joints ();
 	set_dynamicsWorld ();
 }
