@@ -112,10 +112,9 @@ SliderJoint::addJoint ()
 		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
 		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
-		matrixA .mult_left (axisRotation);
+		matrixA .mult_right (axisRotation);
 
-		matrixB .inverse ();
-		matrixB .mult_right (matrixA);
+		matrixB = matrixA;
 
 		btTransform frameInA;
 		btTransform frameInB;
@@ -131,9 +130,6 @@ SliderJoint::addJoint ()
 
 		joint -> setLowerAngLimit (0);
 		joint -> setUpperAngLimit (0);
-
-		auto a = joint -> getAncorInA ();
-		auto b = joint -> getAncorInB ();
 	}
 	else
 	{
