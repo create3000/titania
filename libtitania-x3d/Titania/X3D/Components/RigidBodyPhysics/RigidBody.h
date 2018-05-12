@@ -400,6 +400,7 @@ private:
 
 	X3DPtr <RigidBodyCollection>           collectionNode;
 	X3DPtrArray <X3DNBodyCollidableNode>   geometryNodes;
+	X3DPtrArray <X3DNBodyCollidableNode>   otherGeometryNodes;
 	std::shared_ptr <btCompoundShape>      compoundShape;
 	std::shared_ptr <btDefaultMotionState> motionState;
 	std::shared_ptr <btRigidBody>          rigidBody;

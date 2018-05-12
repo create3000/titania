@@ -90,8 +90,9 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	          X3DChildNode (),
 	                fields (),
 	          colliderNode (),
+	        otherBodyNodes (),
 	            jointNodes (),
-	             bodyNodes (),
+	       otherJointNodes (),
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
@@ -124,7 +125,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "bodies",                  bodies ());
 	addField (inputOutput,    "joints",                  joints ());
 
-	addChildObjects (colliderNode, jointNodes, bodyNodes);
+	addChildObjects (colliderNode, bodyNodes, otherBodyNodes, jointNodes, otherJointNodes);
 
 	// Units
 
@@ -283,43 +284,16 @@ RigidBodyCollection::set_frictionCoefficients ()
 }
 
 void
-RigidBodyCollection::set_joints ()
-{
-	for (const auto & jointNode : jointNodes)
-	{
-		jointNode -> setCollection (nullptr);
-	}
-
-	std::vector <X3DRigidJointNode*> value;
-
-	for (const auto & node : joints ())
-	{
-		const auto jointNode = x3d_cast <X3DRigidJointNode*> (node);
-
-		if (not jointNode)
-			continue;
-
-		if (jointNode -> getCollection ())
-			continue;
-
-		jointNode -> setCollection (this);
-
-		value .emplace_back (jointNode);
-	}
-
-	jointNodes .set (value .cbegin (), value .cend ());
-}
-
-void
 RigidBodyCollection::set_bodies ()
 {
 	for (const auto & bodyNode : bodyNodes)
 	{
-		bodyNode -> enabled ()       .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
-		bodyNode -> getCollection () .removeInterest (&RigidBodyCollection::set_bodies,        this);
-
+		bodyNode -> enabled () .removeInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 		bodyNode -> setCollection (nullptr);
 	}
+
+	for (const auto & bodyNode : otherBodyNodes)
+		bodyNode -> getCollection () .removeInterest (&RigidBodyCollection::set_bodies,        this);
 
 	std::vector <RigidBody*> value;
 
@@ -333,6 +307,7 @@ RigidBodyCollection::set_bodies ()
 		if (bodyNode -> getCollection ())
 		{
 			bodyNode -> getCollection () .addInterest (&RigidBodyCollection::set_bodies, this);
+			otherBodyNodes .emplace_back (bodyNode);
 			continue;
 		}
 
@@ -369,6 +344,39 @@ RigidBodyCollection::set_dynamicsWorld ()
 
 	for (const auto rigidBody : rigidBodies)
 		dynamicsWorld -> addRigidBody (rigidBody .get ());
+}
+
+void
+RigidBodyCollection::set_joints ()
+{
+	for (const auto & jointNode : jointNodes)
+		jointNode -> setCollection (nullptr);
+
+	for (const auto & jointNode : otherJointNodes)
+		jointNode -> getCollection () .removeInterest (&RigidBodyCollection::set_joints, this);
+
+	std::vector <X3DRigidJointNode*> value;
+
+	for (const auto & node : joints ())
+	{
+		const auto jointNode = x3d_cast <X3DRigidJointNode*> (node);
+
+		if (not jointNode)
+			continue;
+
+		if (jointNode -> getCollection ())
+		{
+			jointNode -> getCollection () .addInterest (&RigidBodyCollection::set_joints, this);
+			otherJointNodes .emplace_back (jointNode);
+			continue;
+		}
+
+		jointNode -> setCollection (this);
+
+		value .emplace_back (jointNode);
+	}
+
+	jointNodes .set (value .cbegin (), value .cend ());
 }
 
 void

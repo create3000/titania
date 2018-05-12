@@ -61,6 +61,8 @@ class BallJoint :
 {
 public:
 
+	///  @name Construction
+
 	BallJoint (X3DExecutionContext* const executionContext);
 
 	virtual

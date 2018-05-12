@@ -61,6 +61,8 @@ class SingleAxisHingeJoint :
 {
 public:
 
+	///  @name Construction
+
 	SingleAxisHingeJoint (X3DExecutionContext* const executionContext);
 
 	virtual

@@ -276,10 +276,10 @@ private:
 	set_frictionCoefficients ();
 
 	void
-	set_joints ();
+	set_bodies ();
 
 	void
-	set_bodies ();
+	set_joints ();
 
 	void
 	set_dynamicsWorld ();
@@ -322,8 +322,10 @@ private:
 	///  @name Members
 
 	X3DPtr <CollisionCollection>                          colliderNode;
-	X3DPtrArray <X3DRigidJointNode>                       jointNodes;
 	X3DPtrArray <RigidBody>                               bodyNodes;
+	X3DPtrArray <RigidBody>                               otherBodyNodes;
+	X3DPtrArray <X3DRigidJointNode>                       jointNodes;
+	X3DPtrArray <X3DRigidJointNode>                       otherJointNodes;
 	std::shared_ptr <btBroadphaseInterface>               broadphase;
 	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
 	std::shared_ptr <btCollisionDispatcher>               dispatcher;

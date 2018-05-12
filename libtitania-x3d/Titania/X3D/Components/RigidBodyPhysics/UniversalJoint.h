@@ -61,6 +61,8 @@ class UniversalJoint :
 {
 public:
 
+	///  @name Construction
+
 	UniversalJoint (X3DExecutionContext* const executionContext);
 
 	virtual

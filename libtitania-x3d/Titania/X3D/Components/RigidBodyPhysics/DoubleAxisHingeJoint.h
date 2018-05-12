@@ -61,6 +61,8 @@ class DoubleAxisHingeJoint :
 {
 public:
 
+	///  @name Construction
+
 	DoubleAxisHingeJoint (X3DExecutionContext* const executionContext);
 
 	virtual

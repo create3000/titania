@@ -63,6 +63,7 @@ const std::string   SliderJoint::containerField = "joints";
 
 SliderJoint::Fields::Fields () :
 	               axis (new SFVec3f (0, 1, 0)),
+	        sliderForce (new SFFloat ()),
 	      minSeparation (new SFFloat ()),
 	      maxSeparation (new SFFloat (1)),
 	         stopBounce (new SFFloat ()),
@@ -83,6 +84,7 @@ SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "forceOutput",         forceOutput ());
 	addField (inputOutput, "axis",                axis ());
+	addField (inputOutput, "sliderForce",         sliderForce ());
 	addField (inputOutput, "minSeparation",       minSeparation ());
 	addField (inputOutput, "maxSeparation",       maxSeparation ());
 	addField (inputOutput, "stopBounce",          stopBounce ());
@@ -100,21 +102,38 @@ SliderJoint::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+SliderJoint::initialize ()
+{
+	X3DRigidJointNode::initialize ();
+
+	axis ()          .addInterest (&SliderJoint::set_joint,      this);
+	minSeparation () .addInterest (&SliderJoint::set_separation, this);
+	maxSeparation () .addInterest (&SliderJoint::set_separation, this);
+}
+
+void
 SliderJoint::addJoint ()
 {
+	/*
+	 * The X-Axis is the translation axis. Just produce a matrix ( coordinate system, relative to the object coordinate
+	 * system ) in your app where the X-Axis points along the translation direction and where the position is located where
+	 * the origin of the translation is ( as measured later on using the limits ). FrameA becomes this coordinate system you
+	 * defined. I then create a second matrix ( frameB ) which represents the same matrix as before but relative to the
+	 * parent object. Set the boolean parameter to "true" to use frameA as the master frame. Doing so things should work out
+	 * correctly, at least it worked for me so far.
+	*/
+
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
 	{
-		const auto axisRotation = Matrix4f (Rotation4f (Vector3f (1, 0, 0), axis () .getValue ()));
+		const auto axisRotation = Rotation4d (Vector3f (1, 0, 0), axis () .getValue ());
 
 		Matrix4f matrixA;
 		Matrix4f matrixB;
 
-		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
-		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
+		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
+		matrixB .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
 
-		matrixA .mult_right (axisRotation);
-
-		matrixB = matrixA;
+		//matrixB = matrixA;
 
 		btTransform frameInA;
 		btTransform frameInB;
@@ -130,6 +149,8 @@ SliderJoint::addJoint ()
 
 		joint -> setLowerAngLimit (0);
 		joint -> setUpperAngLimit (0);
+
+		set_separation ();
 	}
 	else
 	{
@@ -179,6 +200,16 @@ SliderJoint::set_forceOutput ()
 		catch (const std::out_of_range & error)
 		{ }
 	}
+}
+
+void
+SliderJoint::set_separation ()
+{
+	if (not joint)
+		return;
+
+	joint -> setLowerLinLimit (minSeparation ());
+	joint -> setUpperLinLimit (maxSeparation ());
 }
 
 void

@@ -89,17 +89,18 @@ RigidBody::Fields::Fields () :
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DNode (),
-	        fields (),
-	collectionNode (),
-	 geometryNodes (),
-	 compoundShape (new btCompoundShape ()),
-	   motionState (new btDefaultMotionState ()),
-	     rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
-	     transform (),
-	         force (),
-	        torque ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DNode (),
+	             fields (),
+	     collectionNode (),
+	      geometryNodes (),
+	 otherGeometryNodes (),
+	      compoundShape (new btCompoundShape ()),
+	        motionState (new btDefaultMotionState ()),
+	          rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
+	          transform (),
+	              force (),
+	             torque ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -136,7 +137,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "geometry",             geometry ());
 
-	addChildObjects (collectionNode, geometryNodes, transform);
+	addChildObjects (collectionNode, geometryNodes, otherGeometryNodes, transform);
 
 	// Units
 
@@ -318,8 +319,6 @@ RigidBody::set_geometry ()
 	for (const auto & geometryNode : geometryNodes)
 	{
 		geometryNode -> removeInterest (&SFTime::addEvent, transform);
-		geometryNode -> getBody () .removeInterest (&RigidBody::set_geometry, this);
-
 		geometryNode -> setBody (nullptr);
 
 		geometryNode -> translation () .removeInterest (position ());
@@ -328,6 +327,9 @@ RigidBody::set_geometry ()
 		position ()    .removeInterest (geometryNode -> translation ());
 		orientation () .removeInterest (geometryNode -> rotation ());
 	}
+
+	for (const auto & geometryNode : otherGeometryNodes)
+		geometryNode -> getBody () .removeInterest (&RigidBody::set_geometry, this);
 
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -343,6 +345,7 @@ RigidBody::set_geometry ()
 		if (geometryNode -> getBody ())
 		{
 			geometryNode -> getBody () .addInterest (&RigidBody::set_geometry, this);
+			otherGeometryNodes .emplace_back (geometryNode);
 			continue;
 		}
 

@@ -61,6 +61,8 @@ class MotorJoint :
 {
 public:
 
+	///  @name Construction
+
 	MotorJoint (X3DExecutionContext* const executionContext);
 
 	virtual

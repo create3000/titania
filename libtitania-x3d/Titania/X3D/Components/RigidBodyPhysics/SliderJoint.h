@@ -61,6 +61,8 @@ class SliderJoint :
 {
 public:
 
+	///  @name Construction
+
 	SliderJoint (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -96,6 +98,14 @@ public:
 	const SFVec3f &
 	axis () const
 	{ return *fields .axis; }
+
+	SFFloat &
+	sliderForce ()
+	{ return *fields .sliderForce; }
+
+	const SFFloat &
+	sliderForce () const
+	{ return *fields .sliderForce; }
 
 	SFFloat &
 	minSeparation ()
@@ -148,6 +158,12 @@ public:
 
 protected:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Joint handling
 
 	virtual
@@ -181,6 +197,9 @@ private:
 
 	void
 	set_forceOutput ();
+	
+	void
+	set_separation ();
 
 	///  @name Static members
 
@@ -195,6 +214,7 @@ private:
 		Fields ();
 
 		SFVec3f* const axis;
+		SFFloat* const sliderForce;
 		SFFloat* const minSeparation;
 		SFFloat* const maxSeparation;
 		SFFloat* const stopBounce;
