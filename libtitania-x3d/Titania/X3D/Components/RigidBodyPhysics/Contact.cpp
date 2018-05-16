@@ -106,6 +106,14 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "geometry2",                geometry2 ());
 	addField (inputOutput, "body1",                    body1 ());
 	addField (inputOutput, "body2",                    body2 ());
+
+	// Units
+
+	position ()                 .setUnit (UnitCategory::LENGTH);
+	depth ()                    .setUnit (UnitCategory::LENGTH);
+	minBounceSpeed ()           .setUnit (UnitCategory::SPEED);
+	surfaceSpeed ()             .setUnit (UnitCategory::SPEED);
+	softnessConstantForceMix () .setUnit (UnitCategory::FORCE);
 }
 
 X3DBaseNode*

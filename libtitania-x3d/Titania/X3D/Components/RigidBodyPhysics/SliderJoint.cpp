@@ -114,9 +114,12 @@ SliderJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	axis ()          .addInterest (&SliderJoint::set_joint,      this);
-	minSeparation () .addInterest (&SliderJoint::set_separation, this);
-	maxSeparation () .addInterest (&SliderJoint::set_separation, this);
+	forceOutput ()   .addInterest (&SliderJoint::set_forceOutput, this);
+	axis ()          .addInterest (&SliderJoint::set_joint,       this);
+	minSeparation () .addInterest (&SliderJoint::set_separation,  this);
+	maxSeparation () .addInterest (&SliderJoint::set_separation,  this);
+
+	set_forceOutput ();
 }
 
 void
