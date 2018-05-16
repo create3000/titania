@@ -121,6 +121,16 @@ DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const execution
 	addField (outputOnly,  "hinge2AngleRate",           hinge2AngleRate ());
 	addField (inputOutput, "body1",                     body1 ());
 	addField (inputOutput, "body2",                     body2 ());
+
+	// Units
+
+	anchorPoint ()             .setUnit (UnitCategory::LENGTH);
+	minAngle1 ()               .setUnit (UnitCategory::ANGLE);
+	maxAngle1 ()               .setUnit (UnitCategory::ANGLE);
+	desiredAngularVelocity1 () .setUnit (UnitCategory::ANGULAR_RATE);
+	desiredAngularVelocity2 () .setUnit (UnitCategory::ANGULAR_RATE);
+	stopConstantForceMix1 ()   .setUnit (UnitCategory::FORCE);
+	suspensionForce ()         .setUnit (UnitCategory::FORCE);
 }
 
 X3DBaseNode*
@@ -151,7 +161,6 @@ DoubleAxisHingeJoint::set_forceOutput ()
 		std::make_pair ("body1Axis",        OutputType::body1Axis),
 		std::make_pair ("body2Axis",        OutputType::body2Axis),
 		std::make_pair ("hinge1Angle",      OutputType::hinge1Angle),
-		std::make_pair ("hinge2Angle",      OutputType::hinge2Angle),
 		std::make_pair ("hinge2Angle",      OutputType::hinge2Angle),
 		std::make_pair ("hinge1AngleRate",  OutputType::hinge1AngleRate),
 		std::make_pair ("hinge2AngleRate",  OutputType::hinge2AngleRate),
@@ -192,7 +201,7 @@ DoubleAxisHingeJoint::addJoint ()
 		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
 		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
 
-	   joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
+		joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
 		                                     *getBody2 () -> getRigidBody (),
 		                                     btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
 		                                     btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()),

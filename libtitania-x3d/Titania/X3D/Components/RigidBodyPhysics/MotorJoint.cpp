@@ -123,6 +123,18 @@ MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "motor3AngleRate",      motor3AngleRate ());
 	addField (inputOutput,    "body1",                body1 ());
 	addField (inputOutput,    "body2",                body2 ());
+
+	// Units
+
+	axis1Angle ()      .setUnit (UnitCategory::ANGLE);
+	axis2Angle ()      .setUnit (UnitCategory::ANGLE);
+	axis3Angle ()      .setUnit (UnitCategory::ANGLE);
+	motor1Angle ()     .setUnit (UnitCategory::ANGLE);
+	motor2Angle ()     .setUnit (UnitCategory::ANGLE);
+	motor3Angle ()     .setUnit (UnitCategory::ANGLE);
+	motor1AngleRate () .setUnit (UnitCategory::ANGULAR_RATE);
+	motor2AngleRate () .setUnit (UnitCategory::ANGULAR_RATE);
+	motor3AngleRate () .setUnit (UnitCategory::ANGULAR_RATE);
 }
 
 X3DBaseNode*

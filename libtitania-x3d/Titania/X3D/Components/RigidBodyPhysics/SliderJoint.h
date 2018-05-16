@@ -100,14 +100,6 @@ public:
 	{ return *fields .axis; }
 
 	SFFloat &
-	sliderForce ()
-	{ return *fields .sliderForce; }
-
-	const SFFloat &
-	sliderForce () const
-	{ return *fields .sliderForce; }
-
-	SFFloat &
 	minSeparation ()
 	{ return *fields .minSeparation; }
 
@@ -122,6 +114,14 @@ public:
 	const SFFloat &
 	maxSeparation () const
 	{ return *fields .maxSeparation; }
+
+	SFFloat &
+	sliderForce ()
+	{ return *fields .sliderForce; }
+
+	const SFFloat &
+	sliderForce () const
+	{ return *fields .sliderForce; }
 
 	SFFloat &
 	stopBounce ()
@@ -214,9 +214,9 @@ private:
 		Fields ();
 
 		SFVec3f* const axis;
-		SFFloat* const sliderForce;
 		SFFloat* const minSeparation;
 		SFFloat* const maxSeparation;
+		SFFloat* const sliderForce;
 		SFFloat* const stopBounce;
 		SFFloat* const stopErrorCorrection;
 		SFFloat* const separation;

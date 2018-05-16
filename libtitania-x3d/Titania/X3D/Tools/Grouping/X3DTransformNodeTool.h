@@ -127,7 +127,7 @@ public:
 
 	///  @name Hidden fields
 
-	/// If true, this node takes part can be transform group leader.
+	/// If true, this node can be transform a group leader.
 	SFBool &
 	grouping ()
 	{ return *fields .grouping; }
@@ -250,7 +250,7 @@ public:
 	color () const
 	{ return *fields .color; }
 
-	/// If true, this node is part of a tranformation group.
+	/// If true, this node is part of a transformation group.
 	SFBool &
 	grouped ()
 	{ return *fields .grouped; }

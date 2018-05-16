@@ -63,9 +63,9 @@ const std::string   SliderJoint::containerField = "joints";
 
 SliderJoint::Fields::Fields () :
 	               axis (new SFVec3f (0, 1, 0)),
-	        sliderForce (new SFFloat ()),
 	      minSeparation (new SFFloat ()),
 	      maxSeparation (new SFFloat (1)),
+	        sliderForce (new SFFloat ()),
 	         stopBounce (new SFFloat ()),
 	stopErrorCorrection (new SFFloat (1)),
  	         separation (new SFFloat ()),
@@ -84,15 +84,23 @@ SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "forceOutput",         forceOutput ());
 	addField (inputOutput, "axis",                axis ());
-	addField (inputOutput, "sliderForce",         sliderForce ());
 	addField (inputOutput, "minSeparation",       minSeparation ());
 	addField (inputOutput, "maxSeparation",       maxSeparation ());
+	addField (inputOutput, "sliderForce",         sliderForce ());
 	addField (inputOutput, "stopBounce",          stopBounce ());
 	addField (inputOutput, "stopErrorCorrection", stopErrorCorrection ());
 	addField (outputOnly,  "separation",          separation ());
 	addField (outputOnly,  "separationRate",      separationRate ());
 	addField (inputOutput, "body1",               body1 ());
 	addField (inputOutput, "body2",               body2 ());
+
+	// Units
+
+	minSeparation ()  .setUnit (UnitCategory::LENGTH);
+	maxSeparation ()  .setUnit (UnitCategory::LENGTH);
+	sliderForce ()    .setUnit (UnitCategory::FORCE);
+	separation ()     .setUnit (UnitCategory::FORCE);
+	separationRate () .setUnit (UnitCategory::SPEED);
 }
 
 X3DBaseNode*
@@ -141,7 +149,7 @@ SliderJoint::addJoint ()
 		frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
 		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
 
-	   joint .reset (new btSliderConstraint (*getBody1 () -> getRigidBody (),
+		joint .reset (new btSliderConstraint (*getBody1 () -> getRigidBody (),
 		                                      *getBody2 () -> getRigidBody (),
 		                                      frameInA,
 		                                      frameInB,

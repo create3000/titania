@@ -99,6 +99,12 @@ UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "body2Axis",            body2Axis ());
 	addField (inputOutput, "body1",                body1 ());
 	addField (inputOutput, "body2",                body2 ());
+
+	// Units
+
+	anchorPoint ()      .setUnit (UnitCategory::LENGTH);
+	body1AnchorPoint () .setUnit (UnitCategory::LENGTH);
+	body2AnchorPoint () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

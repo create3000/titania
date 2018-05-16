@@ -97,6 +97,16 @@ SingleAxisHingeJoint::SingleAxisHingeJoint (X3DExecutionContext* const execution
 	addField (outputOnly,  "angleRate",           angleRate ());
 	addField (inputOutput, "body1",               body1 ());
 	addField (inputOutput, "body2",               body2 ());
+
+	// Units
+
+	anchorPoint ()      .setUnit (UnitCategory::LENGTH);
+	minAngle ()         .setUnit (UnitCategory::ANGLE);
+	maxAngle ()         .setUnit (UnitCategory::ANGLE);
+	body1AnchorPoint () .setUnit (UnitCategory::LENGTH);
+	body2AnchorPoint () .setUnit (UnitCategory::LENGTH);
+	angle ()            .setUnit (UnitCategory::ANGLE);
+	angleRate ()        .setUnit (UnitCategory::ANGULAR_RATE);
 }
 
 X3DBaseNode*
@@ -122,7 +132,7 @@ SingleAxisHingeJoint::addJoint ()
 {
 	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
 	{
- 		auto anchorPoint1 = anchorPoint () .getValue ();
+		auto anchorPoint1 = anchorPoint () .getValue ();
 		auto anchorPoint2 = anchorPoint () .getValue ();
 		auto axis1        = this -> axis () .getValue ();
 		auto axis2        = this -> axis () .getValue ();
@@ -132,7 +142,7 @@ SingleAxisHingeJoint::addJoint ()
 		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
 		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
 
-	   joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
+		joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
 		                                     *getBody2 () -> getRigidBody (),
 		                                     btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
 		                                     btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()),

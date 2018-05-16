@@ -85,6 +85,7 @@ X3DNBodyCollidableNodeTool::realize ()
 
 	setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
+	getTransformTool () -> grouping ()      = false;
 	getTransformTool () -> displayCenter () = false;
 	getTransformTool () -> tools ()         = { "TRANSLATE", "ROTATE" };
 	getTransformTool () -> color ()         = color;

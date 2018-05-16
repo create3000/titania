@@ -237,7 +237,7 @@ RigidBodyCollection::set_collider ()
 void
 RigidBodyCollection::set_bounce ()
 {
-	if (colliderNode)
+	if (colliderNode and colliderNode -> enabled ())
 	{
 		if (colliderNode -> getAppliedParameters () .count (AppliedParametersType::BOUNCE))
 		{
@@ -262,7 +262,7 @@ RigidBodyCollection::set_bounce ()
 void
 RigidBodyCollection::set_frictionCoefficients ()
 {
-	if (colliderNode)
+	if (colliderNode and colliderNode -> enabled ())
 	{
 		if (colliderNode -> getAppliedParameters () .count (AppliedParametersType::FRICTION_COEFFICIENT_2))
 		{
