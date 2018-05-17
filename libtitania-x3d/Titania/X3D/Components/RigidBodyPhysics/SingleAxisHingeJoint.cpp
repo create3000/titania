@@ -130,52 +130,58 @@ SingleAxisHingeJoint::initialize ()
 void
 SingleAxisHingeJoint::addJoint ()
 {
-	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
-	{
-		auto anchorPoint1 = anchorPoint () .getValue ();
-		auto anchorPoint2 = anchorPoint () .getValue ();
-		auto axis1        = this -> axis () .getValue ();
-		auto axis2        = this -> axis () .getValue ();
+	if (not getCollection ())
+		return;
 
-		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
-		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
-		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
-		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
+	if (not getBody1 ())
+		return;
 
-		joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
-		                                     *getBody2 () -> getRigidBody (),
-		                                     btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
-		                                     btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()),
-		                                     btVector3 (axis1 .x (), axis1 .y (), axis1 .z ()),
-		                                     btVector3 (axis2 .x (), axis2 .y (), axis2 .z ()),
-		                                     false));
+	if (not getBody2 ())
+		return;
 
-		if (outputs [size_t (OutputType::body1AnchorPoint)])
-			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+   if (getBody1 () -> getCollection () not_eq getCollection ())
+		return;
 
-		if (outputs [size_t (OutputType::body2AnchorPoint)])
-			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
-	}
-	else
-	{
-		joint .reset ();
-	}
+   if (getBody2 () -> getCollection () not_eq getCollection ())
+		return;
 
-	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-	}
+	auto anchorPoint1 = anchorPoint () .getValue ();
+	auto anchorPoint2 = anchorPoint () .getValue ();
+	auto axis1        = this -> axis () .getValue ();
+	auto axis2        = this -> axis () .getValue ();
+
+	anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
+	anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+	axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
+	axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
+
+	joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
+	                                     *getBody2 () -> getRigidBody (),
+	                                     btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()),
+	                                     btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()),
+	                                     btVector3 (axis1 .x (), axis1 .y (), axis1 .z ()),
+	                                     btVector3 (axis2 .x (), axis2 .y (), axis2 .z ()),
+	                                     false));
+
+	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+
+	if (outputs [size_t (OutputType::body1AnchorPoint)])
+		body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+
+	if (outputs [size_t (OutputType::body2AnchorPoint)])
+		body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
 }
 
 void
 SingleAxisHingeJoint::removeJoint ()
 {
+	if (not joint)
+		return;
+
 	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-	}
+		getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+
+	joint .reset ();
 }
 
 void

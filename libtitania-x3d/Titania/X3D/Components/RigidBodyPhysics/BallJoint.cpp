@@ -109,32 +109,38 @@ BallJoint::initialize ()
 void
 BallJoint::addJoint ()
 {
-	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
-	{
-		joint .reset (new btPoint2PointConstraint (*getBody1 () -> getRigidBody (), *getBody2 () -> getRigidBody (), btVector3 (), btVector3 ()));
+	if (not getCollection ())
+		return;
 
-		set_anchorPoint ();
-	}
-	else
-	{
-		joint .reset ();
-	}
+	if (not getBody1 ())
+		return;
 
-	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-	}
+	if (not getBody2 ())
+		return;
+
+   if (getBody1 () -> getCollection () not_eq getCollection ())
+		return;
+
+   if (getBody2 () -> getCollection () not_eq getCollection ())
+		return;
+
+	joint .reset (new btPoint2PointConstraint (*getBody1 () -> getRigidBody (), *getBody2 () -> getRigidBody (), btVector3 (), btVector3 ()));
+
+	set_anchorPoint ();
+
+	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
 }
 
 void
 BallJoint::removeJoint ()
 {
+	if (not joint)
+		return;
+
 	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-	}
+		getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+
+	joint .reset ();
 }
 
 void

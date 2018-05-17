@@ -318,8 +318,9 @@ RigidBody::set_geometry ()
 {
 	for (const auto & geometryNode : geometryNodes)
 	{
-		geometryNode -> removeInterest (&SFTime::addEvent, transform);
 		geometryNode -> setBody (nullptr);
+
+		geometryNode -> removeInterest (&SFTime::addEvent, transform);
 
 		geometryNode -> translation () .removeInterest (position ());
 		geometryNode -> rotation ()    .removeInterest (orientation ());
@@ -405,12 +406,6 @@ RigidBody::applyForces (const Vector3f & gravity)
 void
 RigidBody::update ()
 {
-//	if (fixed ())
-//		return;
-
-//	if (not rigidBody -> isActive ())
-//		return;
-
 	btTransform transform;
 
 	motionState -> getWorldTransform (transform);

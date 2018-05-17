@@ -129,56 +129,62 @@ UniversalJoint::initialize ()
 void
 UniversalJoint::addJoint ()
 {
-	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
-	{
-		auto anchorPoint1 = anchorPoint () .getValue ();
-		auto anchorPoint2 = anchorPoint () .getValue ();
-		auto axis1        = this -> axis1 () .getValue ();
-		auto axis2        = this -> axis2 () .getValue ();
+	if (not getCollection ())
+		return;
 
-		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
-		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
-		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
-		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
+	if (not getBody1 ())
+		return;
 
-		joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
-		                                         *getBody2 () -> getRigidBody (),
-		                                         btVector3 (anchorPoint () .getX (), anchorPoint () .getY (), anchorPoint () .getZ ()),
-		                                         btVector3 (axis1 .x (), axis1 .y (), axis1 .z ()),
-		                                         btVector3 (axis2 .x (), axis2 .y (), axis2 .z ())));
+	if (not getBody2 ())
+		return;
 
-		if (outputs [size_t (OutputType::body1AnchorPoint)])
-			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+   if (getBody1 () -> getCollection () not_eq getCollection ())
+		return;
 
-		if (outputs [size_t (OutputType::body2AnchorPoint)])
-			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+   if (getBody2 () -> getCollection () not_eq getCollection ())
+		return;
 
-		if (outputs [size_t (OutputType::body1Axis)])
-			body1Axis () = Vector3f (axis1 .x (), axis1 .y (), axis1 .z ());
+	auto anchorPoint1 = anchorPoint () .getValue ();
+	auto anchorPoint2 = anchorPoint () .getValue ();
+	auto axis1        = this -> axis1 () .getValue ();
+	auto axis2        = this -> axis2 () .getValue ();
 
-		if (outputs [size_t (OutputType::body2Axis)])
-			body2Axis () = Vector3f (axis2 .x (), axis2 .y (), axis2 .z ());
-	}
-	else
-	{
-		joint .reset ();
-	}
+	anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
+	anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+	axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
+	axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
 
-	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-	}
+	joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
+	                                         *getBody2 () -> getRigidBody (),
+	                                         btVector3 (anchorPoint () .getX (), anchorPoint () .getY (), anchorPoint () .getZ ()),
+	                                         btVector3 (this -> axis1 () .getX (), this -> axis1 () .getY (), this -> axis1 () .getZ ()),
+	                                         btVector3 (this -> axis2 () .getX (), this -> axis2 () .getY (), this -> axis2 () .getZ ())));
+
+	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
+
+	if (outputs [size_t (OutputType::body1AnchorPoint)])
+		body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+
+	if (outputs [size_t (OutputType::body2AnchorPoint)])
+		body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+
+	if (outputs [size_t (OutputType::body1Axis)])
+		body1Axis () = Vector3f (axis1 .x (), axis1 .y (), axis1 .z ());
+
+	if (outputs [size_t (OutputType::body2Axis)])
+		body2Axis () = Vector3f (axis2 .x (), axis2 .y (), axis2 .z ());
 }
 
 void
 UniversalJoint::removeJoint ()
 {
+	if (not joint)
+		return;
+
 	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-	}
+		getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+
+	joint .reset ();
 }
 
 void

@@ -322,8 +322,8 @@ RigidBodyCollection::set_bodies ()
 		bodyNode -> enabled () .addInterest (&RigidBodyCollection::set_dynamicsWorld, this);
 
 	set_contactSurfaceThickness ();
-	set_joints ();
 	set_dynamicsWorld ();
+	set_joints ();
 }
 
 void

@@ -134,55 +134,61 @@ SliderJoint::addJoint ()
 	 * correctly, at least it worked for me so far.
 	*/
 
-	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
-	{
-		const auto axisRotation = Rotation4d (Vector3f (1, 0, 0), axis () .getValue ());
+	if (not getCollection ())
+		return;
 
-		Matrix4f matrixA;
-		Matrix4f matrixB;
+	if (not getBody1 ())
+		return;
 
-		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
-		matrixB .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
+	if (not getBody2 ())
+		return;
 
-		//matrixB = matrixA;
+   if (getBody1 () -> getCollection () not_eq getCollection ())
+		return;
 
-		btTransform frameInA;
-		btTransform frameInB;
+   if (getBody2 () -> getCollection () not_eq getCollection ())
+		return;
 
-		frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
-		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
+	const auto axisRotation = Rotation4d (Vector3f (1, 0, 0), axis () .getValue ());
 
-		joint .reset (new btSliderConstraint (*getBody1 () -> getRigidBody (),
-		                                      *getBody2 () -> getRigidBody (),
-		                                      frameInA,
-		                                      frameInB,
-		                                      true));
+	Matrix4f matrixA;
+	Matrix4f matrixB;
 
-		joint -> setLowerAngLimit (0);
-		joint -> setUpperAngLimit (0);
+	matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
+	matrixB .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () * axisRotation);
 
-		set_separation ();
-	}
-	else
-	{
-		joint .reset ();
-	}
+	//matrixB = matrixA;
 
-	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-	}
+	btTransform frameInA;
+	btTransform frameInB;
+
+	frameInA .setFromOpenGLMatrix (matrixA [0] .data ());
+	frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
+
+	joint .reset (new btSliderConstraint (*getBody1 () -> getRigidBody (),
+	                                      *getBody2 () -> getRigidBody (),
+	                                      frameInA,
+	                                      frameInB,
+	                                      true));
+
+	joint -> setLowerAngLimit (0);
+	joint -> setUpperAngLimit (0);
+
+	set_separation ();
+
+	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
 }
 
 void
 SliderJoint::removeJoint ()
 {
+	if (not joint)
+		return;
+
 	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-	}
+		getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+
+	joint .reset ();
 }
 
 void

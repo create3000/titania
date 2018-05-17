@@ -161,9 +161,8 @@ X3DRigidJointNode::set_body1 ()
 		bodyNode1 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
 
 		initialize1 ();
+		addJoint ();
 	}
-
-	addJoint ();
 }
 
 void
@@ -187,9 +186,8 @@ X3DRigidJointNode::set_body2 ()
 		bodyNode2 -> getCollection () .addInterest (&X3DRigidJointNode::set_joint, this);
 
 		initialize2 ();
+		addJoint ();
 	}
-
-	addJoint ();
 }
 
 void

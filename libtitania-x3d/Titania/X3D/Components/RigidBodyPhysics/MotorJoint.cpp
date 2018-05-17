@@ -273,53 +273,59 @@ MotorJoint::set_axis3Angle ()
 void
 MotorJoint::addJoint ()
 {
-	if (getBody1 () and getBody1 () -> getCollection () == getCollection () and getBody2 () and getBody2 () -> getCollection () == getCollection ())
-	{
-		Matrix4f matrixA;
-		Matrix4f matrixB;
+	if (not getCollection ())
+		return;
 
-		matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
-		matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
+	if (not getBody1 ())
+		return;
 
-		matrixB .inverse ();
-		matrixB .mult_right (matrixA);
+	if (not getBody2 ())
+		return;
 
-		btTransform frameInA;
-		btTransform frameInB;
+   if (getBody1 () -> getCollection () not_eq getCollection ())
+		return;
 
-		frameInA .setIdentity ();
-		frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
+   if (getBody2 () -> getCollection () not_eq getCollection ())
+		return;
 
-	   joint .reset (new btGeneric6DofConstraint (*getBody1 () -> getRigidBody (),
-		                                           *getBody2 () -> getRigidBody (),
-		                                            frameInA,
-		                                            frameInB,
-		                                            true));
+	Matrix4f matrixA;
+	Matrix4f matrixB;
 
-		joint -> enableFeedback (true);
+	matrixA .set (getBody1 () -> position () .getValue (), getBody1 () -> orientation () .getValue ());
+	matrixB .set (getBody2 () -> position () .getValue (), getBody2 () -> orientation () .getValue ());
 
-		set_axes ();
-	}
-	else
-	{
-		joint .reset ();
-	}
+	matrixB .inverse ();
+	matrixB .mult_right (matrixA);
 
-	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
-	}
+	btTransform frameInA;
+	btTransform frameInB;
+
+	frameInA .setIdentity ();
+	frameInB .setFromOpenGLMatrix (matrixB [0] .data ());
+
+   joint .reset (new btGeneric6DofConstraint (*getBody1 () -> getRigidBody (),
+	                                           *getBody2 () -> getRigidBody (),
+	                                            frameInA,
+	                                            frameInB,
+	                                            true));
+
+	joint -> enableFeedback (true);
+
+	set_axes ();
+
+	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
 }
 
 void
 MotorJoint::removeJoint ()
 {
+	if (not joint)
+		return;
+
 	if (getCollection ())
-	{
-		if (joint)
-			getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
-	}
+		getCollection () -> getDynamicsWorld () -> removeConstraint (joint .get ());
+
+	joint .reset ();
 }
 
 void
