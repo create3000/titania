@@ -116,12 +116,12 @@ public:
 	{ return *fields .axis2; }
 
 	SFFloat &
-	stopBounce1 ()
-	{ return *fields .stopBounce1; }
+	stop1Bounce ()
+	{ return *fields .stop1Bounce; }
 
 	const SFFloat &
-	stopBounce1 () const
-	{ return *fields .stopBounce1; }
+	stop1Bounce () const
+	{ return *fields .stop1Bounce; }
 
 	SFFloat &
 	stop2Bounce ()
@@ -214,7 +214,9 @@ private:
 	enum class OutputType
 	{
 		body1AnchorPoint,
-		body2AnchorPoint
+		body2AnchorPoint,
+		body1Axis,
+		body2Axis,
 	};
 
 	///  @name Event handlers
@@ -237,7 +239,7 @@ private:
 		SFVec3f* const anchorPoint;
 		SFVec3f* const axis1;
 		SFVec3f* const axis2;
-		SFFloat* const stopBounce1;
+		SFFloat* const stop1Bounce;
 		SFFloat* const stop2Bounce;
 		SFFloat* const stop1ErrorCorrection;
 		SFFloat* const stop2ErrorCorrection;
@@ -251,7 +253,7 @@ private:
 
 	///  @name Members
 
-	std::array <bool, 2>                    outputs;
+	std::array <bool, 4>                    outputs;
 	std::shared_ptr <btUniversalConstraint> joint;
 
 };

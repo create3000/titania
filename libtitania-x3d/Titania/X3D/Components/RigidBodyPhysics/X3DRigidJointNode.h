@@ -106,6 +106,10 @@ public:
 
 	///  @name Destruction
 
+	virtual
+	void
+	dispose () override;
+
 	~X3DRigidJointNode ();
 
 

@@ -65,7 +65,7 @@ UniversalJoint::Fields::Fields () :
 	         anchorPoint (new SFVec3f ()),
 	               axis1 (new SFVec3f ()),
 	               axis2 (new SFVec3f ()),
-	         stopBounce1 (new SFFloat ()),
+	         stop1Bounce (new SFFloat ()),
 	         stop2Bounce (new SFFloat ()),
 	stop1ErrorCorrection (new SFFloat (0.8)),
 	stop2ErrorCorrection (new SFFloat (0.8)),
@@ -89,7 +89,7 @@ UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "anchorPoint",          anchorPoint ());
 	addField (inputOutput, "axis1",                axis1 ());
 	addField (inputOutput, "axis2",                axis2 ());
-	addField (inputOutput, "stopBounce1",          stopBounce1 ());
+	addField (inputOutput, "stop1Bounce",          stop1Bounce ());
 	addField (inputOutput, "stop2Bounce",          stop2Bounce ());
 	addField (inputOutput, "stop1ErrorCorrection", stop1ErrorCorrection ());
 	addField (inputOutput, "stop2ErrorCorrection", stop2ErrorCorrection ());
@@ -133,21 +133,31 @@ UniversalJoint::addJoint ()
 	{
 		auto anchorPoint1 = anchorPoint () .getValue ();
 		auto anchorPoint2 = anchorPoint () .getValue ();
+		auto axis1        = this -> axis1 () .getValue ();
+		auto axis2        = this -> axis2 () .getValue ();
 
 		anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
 		anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
+		axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
+		axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
 
 		joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
 		                                         *getBody2 () -> getRigidBody (),
 		                                         btVector3 (anchorPoint () .getX (), anchorPoint () .getY (), anchorPoint () .getZ ()),
-		                                         btVector3 (axis1 () .getX (), axis1 () .getY (), axis1 () .getZ ()),
-		                                         btVector3 (axis2 () .getX (), axis2 () .getY (), axis2 () .getZ ())));
+		                                         btVector3 (axis1 .x (), axis1 .y (), axis1 .z ()),
+		                                         btVector3 (axis2 .x (), axis2 .y (), axis2 .z ())));
 
 		if (outputs [size_t (OutputType::body1AnchorPoint)])
 			body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
 
 		if (outputs [size_t (OutputType::body2AnchorPoint)])
 			body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+
+		if (outputs [size_t (OutputType::body1Axis)])
+			body1Axis () = Vector3f (axis1 .x (), axis1 .y (), axis1 .z ());
+
+		if (outputs [size_t (OutputType::body2Axis)])
+			body2Axis () = Vector3f (axis2 .x (), axis2 .y (), axis2 .z ());
 	}
 	else
 	{

@@ -279,9 +279,9 @@ RigidBody::set_massProps ()
 	                               inertia () [3] + inertia () [4] + inertia () [5],
 	                               inertia () [6] + inertia () [7] + inertia () [8]);
 
-	compoundShape -> calculateLocalInertia (fixed () ? 0 : mass (), localInertia);
+	compoundShape -> calculateLocalInertia (fixed () ? 0.0f : mass (), localInertia);
 
-	rigidBody -> setMassProps (fixed () ? 0 : mass (), localInertia);
+	rigidBody -> setMassProps (fixed () ? 0.0f : mass (), localInertia);
 }
 
 void

@@ -213,6 +213,14 @@ X3DRigidJointNode::initialize2 ()
 	inverseMatrix2 .inverse ();
 }
 
+void
+X3DRigidJointNode::dispose ()
+{
+	removeJoint ();
+
+	X3DNode::dispose ();
+}
+
 X3DRigidJointNode::~X3DRigidJointNode ()
 { }
 
