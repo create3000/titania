@@ -291,6 +291,10 @@ public:
 	getRigidBody () const
 	{ return rigidBody; }
 
+	const Matrix4f &
+	getMatrix () const
+	{ return matrix; }
+
 	///  @name Operations
 
 	void
@@ -405,6 +409,7 @@ private:
 	std::shared_ptr <btDefaultMotionState> motionState;
 	std::shared_ptr <btRigidBody>          rigidBody;
 	SFTime                                 transform;
+	Matrix4f                               matrix;
 	Vector3f                               force;
 	Vector3f                               torque;
 

@@ -99,6 +99,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	        motionState (new btDefaultMotionState ()),
 	          rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
 	          transform (),
+	             matrix (),
 	              force (),
 	             torque ()
 {
@@ -189,9 +190,9 @@ RigidBody::initialize ()
 
 	transform .addInterest (&RigidBody::set_transform, this);
 
-	set_geometry ();
 	set_forces ();
 	set_torques ();
+	set_geometry ();
 }
 
 void
@@ -211,15 +212,13 @@ RigidBody::set_orientation ()
 void
 RigidBody::set_transform ()
 {
-	const auto & p  = position () .getValue ();
-	const auto & q  = orientation () .getValue () .quat ();
-	const auto   t  = btTransform (btQuaternion (q .x (), q .y (), q .z (), q .w ()), btVector3 (p .x (), p .y (), p .z ()));
+	auto t = btTransform ();
+
+	matrix .set (position () .getValue (), orientation () .getValue ());
+	t .setFromOpenGLMatrix (matrix [0] .data ());
 
 	auto it = btTransform ();
-	auto im = Matrix4f ();
-
-	im .set (position () .getValue (), orientation () .getValue ());
-	im .inverse ();
+	auto im = inverse (matrix);
 
 	it .setFromOpenGLMatrix (im [0] .data ());
 

@@ -150,10 +150,10 @@ SingleAxisHingeJoint::addJoint ()
 	auto axis1        = this -> axis () .getValue ();
 	auto axis2        = this -> axis () .getValue ();
 
-	anchorPoint1 = anchorPoint1 * getInverseMatrix1 ();
-	anchorPoint2 = anchorPoint2 * getInverseMatrix2 ();
-	axis1        = normalize (getInverseMatrix1 () .mult_dir_matrix (axis1));
-	axis2        = normalize (getInverseMatrix2 () .mult_dir_matrix (axis2));
+	anchorPoint1 = anchorPoint1 * getInitalInverseMatrix1 ();
+	anchorPoint2 = anchorPoint2 * getInitalInverseMatrix2 ();
+	axis1        = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (axis1));
+	axis2        = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (axis2));
 
 	joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
 	                                     *getBody2 () -> getRigidBody (),

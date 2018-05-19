@@ -189,6 +189,9 @@ private:
 
 	std::array <bool, 2>                      outputs;
 	std::shared_ptr <btPoint2PointConstraint> joint;
+	Vector3f                                  anchorPoint1;
+	Vector3f                                  anchorPoint2;
+
 
 };
 

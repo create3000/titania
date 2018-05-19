@@ -134,12 +134,12 @@ protected:
 	{ return bodyNode2; }
 
 	const Matrix4f &
-	getInverseMatrix1 () const
-	{ return inverseMatrix1; }
+	getInitalInverseMatrix1 () const
+	{ return initalInverseMatrix1; }
 
 	const Matrix4f &
-	getInverseMatrix2 () const
-	{ return inverseMatrix2; }
+	getInitalInverseMatrix2 () const
+	{ return initalInverseMatrix2; }
 
 	///  @name Joint handling
 
@@ -152,9 +152,6 @@ protected:
 	removeJoint () = 0;
 
 	///  @name Event handlers
-
-	void
-	set_live ();
 
 	void
 	set_body1 ();
@@ -200,8 +197,8 @@ private:
 	X3DPtr <RigidBodyCollection> collectionNode;
 	X3DPtr <RigidBody>           bodyNode1;
 	X3DPtr <RigidBody>           bodyNode2;
-	Matrix4f                     inverseMatrix1;
-	Matrix4f                     inverseMatrix2;
+	Matrix4f                     initalInverseMatrix1;
+	Matrix4f                     initalInverseMatrix2;
 
 };
 
