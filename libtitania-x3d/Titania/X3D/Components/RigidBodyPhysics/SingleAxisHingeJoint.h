@@ -207,7 +207,7 @@ private:
 		body1AnchorPoint,
 		body2AnchorPoint,
 		angle,
-		angularRate
+		angleRate
 	};
 
 	///  @name Event handlers
@@ -245,6 +245,8 @@ private:
 
 	std::array <bool, 4>                outputs;
 	std::shared_ptr <btHingeConstraint> joint;
+	Vector3f                            localAnchorPoint1;
+	Vector3f                            localAnchorPoint2;
 
 };
 

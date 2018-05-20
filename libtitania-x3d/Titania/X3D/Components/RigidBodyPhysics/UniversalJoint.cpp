@@ -144,35 +144,35 @@ UniversalJoint::addJoint ()
    if (getBody2 () -> getCollection () not_eq getCollection ())
 		return;
 
-	auto anchorPoint1 = anchorPoint () .getValue ();
-	auto anchorPoint2 = anchorPoint () .getValue ();
-	auto axis1        = this -> axis1 () .getValue ();
-	auto axis2        = this -> axis2 () .getValue ();
+	auto localAnchorPoint1 = anchorPoint () .getValue ();
+	auto localAnchorPoint2 = anchorPoint () .getValue ();
+	auto localAxis1        = axis1 () .getValue ();
+	auto localAxis2        = axis2 () .getValue ();
 
-	anchorPoint1 = anchorPoint1 * getInitalInverseMatrix1 ();
-	anchorPoint2 = anchorPoint2 * getInitalInverseMatrix2 ();
-	axis1        = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (axis1));
-	axis2        = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (axis2));
+	localAnchorPoint1 = localAnchorPoint1 * getInitalInverseMatrix1 ();
+	localAnchorPoint2 = localAnchorPoint2 * getInitalInverseMatrix2 ();
+	localAxis1        = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (localAxis1));
+	localAxis2        = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (localAxis2));
 
 	joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
 	                                         *getBody2 () -> getRigidBody (),
 	                                         btVector3 (anchorPoint () .getX (), anchorPoint () .getY (), anchorPoint () .getZ ()),
-	                                         btVector3 (this -> axis1 () .getX (), this -> axis1 () .getY (), this -> axis1 () .getZ ()),
-	                                         btVector3 (this -> axis2 () .getX (), this -> axis2 () .getY (), this -> axis2 () .getZ ())));
+	                                         btVector3 (axis1 () .getX (), axis1 () .getY (), axis1 () .getZ ()),
+	                                         btVector3 (axis2 () .getX (), axis2 () .getY (), axis2 () .getZ ())));
 
 	getCollection () -> getDynamicsWorld () -> addConstraint (joint .get (), true);
 
 	if (outputs [size_t (OutputType::body1AnchorPoint)])
-		body1AnchorPoint () = Vector3f (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ());
+		body1AnchorPoint () = localAnchorPoint1;
 
 	if (outputs [size_t (OutputType::body2AnchorPoint)])
-		body2AnchorPoint () = Vector3f (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ());
+		body2AnchorPoint () = localAnchorPoint2;
 
 	if (outputs [size_t (OutputType::body1Axis)])
-		body1Axis () = Vector3f (axis1 .x (), axis1 .y (), axis1 .z ());
+		body1Axis () = localAxis1;
 
 	if (outputs [size_t (OutputType::body2Axis)])
-		body2Axis () = Vector3f (axis2 .x (), axis2 .y (), axis2 .z ());
+		body2Axis () = localAxis2;
 }
 
 void

@@ -358,6 +358,10 @@ private:
 
 	std::array <bool, 8>                outputs;
 	std::shared_ptr <btHingeConstraint> joint;
+	Vector3f                            localAnchorPoint1;
+	Vector3f                            localAnchorPoint2;
+	Vector3f                            localAxis1;
+	Vector3f                            localAxis2;
 
 };
 

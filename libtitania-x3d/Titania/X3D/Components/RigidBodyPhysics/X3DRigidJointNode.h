@@ -63,14 +63,6 @@ class X3DRigidJointNode :
 {
 public:
 
-	///  @name Common members
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
 	///  @name Fields
 
 	MFString &

@@ -73,8 +73,8 @@ BallJoint::BallJoint (X3DExecutionContext* const executionContext) :
 	           fields (),
 	          outputs (),
 	            joint (),
-	     anchorPoint1 (),
-	     anchorPoint2 ()
+	localAnchorPoint1 (),
+	localAnchorPoint2 ()
 {
 	addType (X3DConstants::BallJoint);
 
@@ -179,49 +179,47 @@ BallJoint::set_anchorPoint ()
 	if (not joint)
 		return;
 
-	anchorPoint1 = anchorPoint () .getValue () * getInitalInverseMatrix1 ();
-	anchorPoint2 = anchorPoint () .getValue () * getInitalInverseMatrix2 ();
+	localAnchorPoint1 = anchorPoint () .getValue () * getInitalInverseMatrix1 ();
+	localAnchorPoint2 = anchorPoint () .getValue () * getInitalInverseMatrix2 ();
 
-	joint -> setPivotA (btVector3 (anchorPoint1 .x (), anchorPoint1 .y (), anchorPoint1 .z ()));
-	joint -> setPivotB (btVector3 (anchorPoint2 .x (), anchorPoint2 .y (), anchorPoint2 .z ()));
+	joint -> setPivotA (btVector3 (localAnchorPoint1 .x (), localAnchorPoint1 .y (), localAnchorPoint1 .z ()));
+	joint -> setPivotB (btVector3 (localAnchorPoint2 .x (), localAnchorPoint2 .y (), localAnchorPoint2 .z ()));
 }
 
 void
 BallJoint::update1 ()
 {
+	// Editing support.
+
+	if (not getExecutionContext () -> isLive ())
+	{
+		initialize1 ();
+		set_anchorPoint ();
+	}
+
 	// When the two bodies are initially placed in the scene, their initial positions define the resting coordinate
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body1AnchorPoint)])
-		body1AnchorPoint () = anchorPoint1 * getBody1 () -> getMatrix () * getInitalInverseMatrix1 ();
-
-	// Editing support.
-
-	if (getExecutionContext () -> isLive ())
-		return;
-
-	initialize1 ();
-
-	set_anchorPoint ();
+		body1AnchorPoint () = localAnchorPoint1 * getBody1 () -> getMatrix () * getInitalInverseMatrix1 ();
 }
 
 void
 BallJoint::update2 ()
 {
+	// Editing support.
+
+	if (not getExecutionContext () -> isLive ())
+	{
+		initialize2 ();
+		set_anchorPoint ();
+	}
+
 	// When the two bodies are initially placed in the scene, their initial positions define the resting coordinate
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body2AnchorPoint)])
-		body2AnchorPoint () = anchorPoint2 * getBody2 () -> getMatrix () * getInitalInverseMatrix2 ();
-
-	// Editing support.
-
-	if (getExecutionContext () -> isLive ())
-		return;
-
-	initialize2 ();
-
-	set_anchorPoint ();
+		body2AnchorPoint () = localAnchorPoint2 * getBody2 () -> getMatrix () * getInitalInverseMatrix2 ();
 }
 
 BallJoint::~BallJoint ()
