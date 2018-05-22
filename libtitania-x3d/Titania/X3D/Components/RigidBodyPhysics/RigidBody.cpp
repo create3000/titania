@@ -319,7 +319,8 @@ RigidBody::set_geometry ()
 	{
 		geometryNode -> setBody (nullptr);
 
-		geometryNode -> removeInterest (&SFTime::addEvent, transform);
+		geometryNode -> translation () .removeInterest (transform);
+		geometryNode -> rotation ()    .removeInterest (transform);
 
 		geometryNode -> translation () .removeInterest (position ());
 		geometryNode -> rotation ()    .removeInterest (orientation ());
@@ -358,7 +359,8 @@ RigidBody::set_geometry ()
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		geometryNode -> addInterest (&SFTime::addEvent, transform);
+		geometryNode -> translation () .addInterest (transform);
+		geometryNode -> rotation ()    .addInterest (transform);
 
 		geometryNode -> translation () .addInterest (position ());
 		geometryNode -> rotation ()    .addInterest (orientation ());

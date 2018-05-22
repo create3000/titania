@@ -126,11 +126,11 @@ protected:
 	{ return bodyNode2; }
 
 	const Matrix4f &
-	getInitalInverseMatrix1 () const
+	getInitialInverseMatrix1 () const
 	{ return initalInverseMatrix1; }
 
 	const Matrix4f &
-	getInitalInverseMatrix2 () const
+	getInitialInverseMatrix2 () const
 	{ return initalInverseMatrix2; }
 
 	///  @name Joint handling
@@ -144,6 +144,10 @@ protected:
 	removeJoint () = 0;
 
 	///  @name Event handlers
+
+	virtual
+	void
+	set_forceOutput () = 0;
 
 	void
 	set_body1 ();

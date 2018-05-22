@@ -83,9 +83,11 @@ X3DRigidJointNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	body1 () .addInterest (&X3DRigidJointNode::set_body1, this);
-	body2 () .addInterest (&X3DRigidJointNode::set_body2, this);
+	forceOutput () .addInterest (&X3DRigidJointNode::set_forceOutput, this);
+	body1 ()       .addInterest (&X3DRigidJointNode::set_body1,       this);
+	body2 ()       .addInterest (&X3DRigidJointNode::set_body2,       this);
 
+	set_forceOutput ();
 	set_body1 ();
 	set_body2 ();
 }

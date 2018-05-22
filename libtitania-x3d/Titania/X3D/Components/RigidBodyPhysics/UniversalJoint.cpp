@@ -118,12 +118,9 @@ UniversalJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	forceOutput () .addInterest (&UniversalJoint::set_forceOutput, this);
 	anchorPoint () .addInterest (&UniversalJoint::set_joint,       this);
 	axis1 ()       .addInterest (&UniversalJoint::set_joint,       this);
 	axis2 ()       .addInterest (&UniversalJoint::set_joint,       this);
-
-	set_forceOutput ();
 }
 
 void
@@ -149,10 +146,10 @@ UniversalJoint::addJoint ()
 	auto localAxis1        = axis1 () .getValue ();
 	auto localAxis2        = axis2 () .getValue ();
 
-	localAnchorPoint1 = localAnchorPoint1 * getInitalInverseMatrix1 ();
-	localAnchorPoint2 = localAnchorPoint2 * getInitalInverseMatrix2 ();
-	localAxis1        = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (localAxis1));
-	localAxis2        = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (localAxis2));
+	localAnchorPoint1 = localAnchorPoint1 * getInitialInverseMatrix1 ();
+	localAnchorPoint2 = localAnchorPoint2 * getInitialInverseMatrix2 ();
+	localAxis1        = normalize (getInitialInverseMatrix1 () .mult_dir_matrix (localAxis1));
+	localAxis2        = normalize (getInitialInverseMatrix2 () .mult_dir_matrix (localAxis2));
 
 	joint .reset (new btUniversalConstraint (*getBody1 () -> getRigidBody (),
 	                                         *getBody2 () -> getRigidBody (),

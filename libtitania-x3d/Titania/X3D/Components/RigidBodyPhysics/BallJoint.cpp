@@ -102,10 +102,7 @@ BallJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	forceOutput () .addInterest (&BallJoint::set_forceOutput, this);
 	anchorPoint () .addInterest (&BallJoint::set_anchorPoint, this);
-
-	set_forceOutput ();
 }
 
 void
@@ -179,8 +176,11 @@ BallJoint::set_anchorPoint ()
 	if (not joint)
 		return;
 
-	localAnchorPoint1 = anchorPoint () .getValue () * getInitalInverseMatrix1 ();
-	localAnchorPoint2 = anchorPoint () .getValue () * getInitalInverseMatrix2 ();
+	// The anchor position and axis values of joints are always specified in world coordinate positions, regardless of
+	// whether the two joining bodies have been offset or not.
+
+	localAnchorPoint1 = anchorPoint () .getValue () * getInitialInverseMatrix1 ();
+	localAnchorPoint2 = anchorPoint () .getValue () * getInitialInverseMatrix2 ();
 
 	joint -> setPivotA (btVector3 (localAnchorPoint1 .x (), localAnchorPoint1 .y (), localAnchorPoint1 .z ()));
 	joint -> setPivotB (btVector3 (localAnchorPoint2 .x (), localAnchorPoint2 .y (), localAnchorPoint2 .z ()));
@@ -201,7 +201,7 @@ BallJoint::update1 ()
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body1AnchorPoint)])
-		body1AnchorPoint () = localAnchorPoint1 * getBody1 () -> getMatrix () * getInitalInverseMatrix1 ();
+		body1AnchorPoint () = localAnchorPoint1 * getBody1 () -> getMatrix () * getInitialInverseMatrix1 ();
 }
 
 void
@@ -219,7 +219,7 @@ BallJoint::update2 ()
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body2AnchorPoint)])
-		body2AnchorPoint () = localAnchorPoint2 * getBody2 () -> getMatrix () * getInitalInverseMatrix2 ();
+		body2AnchorPoint () = localAnchorPoint2 * getBody2 () -> getMatrix () * getInitialInverseMatrix2 ();
 }
 
 BallJoint::~BallJoint ()

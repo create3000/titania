@@ -148,7 +148,6 @@ MotorJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	forceOutput () .addInterest (&MotorJoint::set_forceOutput, this);
 	autoCalc ()    .addInterest (&MotorJoint::set_axes,        this);
 	enabledAxes () .addInterest (&MotorJoint::set_axes,        this);
 	motor1Axis ()  .addInterest (&MotorJoint::set_axes,        this);
@@ -160,8 +159,6 @@ MotorJoint::initialize ()
 	axis1Angle ()  .addInterest (&MotorJoint::set_axis1Angle,  this);
 	axis2Angle ()  .addInterest (&MotorJoint::set_axis2Angle,  this);
 	axis3Angle ()  .addInterest (&MotorJoint::set_axis3Angle,  this);
-
-	set_forceOutput ();
 }
 
 void

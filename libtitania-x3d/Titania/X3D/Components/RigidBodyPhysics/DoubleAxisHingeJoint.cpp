@@ -149,12 +149,9 @@ DoubleAxisHingeJoint::initialize ()
 {
 	X3DRigidJointNode::initialize ();
 
-	forceOutput () .addInterest (&DoubleAxisHingeJoint::set_forceOutput, this);
 	anchorPoint () .addInterest (&DoubleAxisHingeJoint::set_joint,       this);
 	axis1 ()       .addInterest (&DoubleAxisHingeJoint::set_joint,       this);
 	axis2 ()       .addInterest (&DoubleAxisHingeJoint::set_joint,       this);
-
-	set_forceOutput ();
 }
 
 void
@@ -209,10 +206,10 @@ DoubleAxisHingeJoint::addJoint ()
    if (getBody2 () -> getCollection () not_eq getCollection ())
 		return;
 
-	localAnchorPoint1 = anchorPoint () .getValue () * getInitalInverseMatrix1 ();
-	localAnchorPoint2 = anchorPoint () .getValue () * getInitalInverseMatrix2 ();
-	localAxis1        = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (axis1 () .getValue ()));
-	localAxis2        = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (axis2 () .getValue ()));
+	localAnchorPoint1 = anchorPoint () .getValue () * getInitialInverseMatrix1 ();
+	localAnchorPoint2 = anchorPoint () .getValue () * getInitialInverseMatrix2 ();
+	localAxis1        = normalize (getInitialInverseMatrix1 () .mult_dir_matrix (axis1 () .getValue ()));
+	localAxis2        = normalize (getInitialInverseMatrix2 () .mult_dir_matrix (axis2 () .getValue ()));
 
 	joint .reset (new btHingeConstraint (*getBody1 () -> getRigidBody (),
 	                                     *getBody2 () -> getRigidBody (),
@@ -252,15 +249,15 @@ DoubleAxisHingeJoint::update1 ()
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body1AnchorPoint)])
-		body1AnchorPoint () = localAnchorPoint1 * getBody1 () -> getMatrix () * getInitalInverseMatrix1 ();
+		body1AnchorPoint () = localAnchorPoint1 * getBody1 () -> getMatrix () * getInitialInverseMatrix1 ();
 
 	if (outputs [size_t (OutputType::body1Axis)])
-		body1Axis () = normalize (getInitalInverseMatrix1 () .mult_dir_matrix (getBody1 () -> getMatrix () .mult_dir_matrix (localAxis1)));
+		body1Axis () = normalize (getInitialInverseMatrix1 () .mult_dir_matrix (getBody1 () -> getMatrix () .mult_dir_matrix (localAxis1)));
 
 	if (outputs [size_t (OutputType::hinge1Angle)])
 	{
 		const auto lastAngle  = hinge1Angle () .getValue ();
-		const auto difference = getInitalInverseMatrix1 () * getBody1 () -> getMatrix ();
+		const auto difference = getInitialInverseMatrix1 () * getBody1 () -> getMatrix ();
 
 		Vector3f   translation;
 		Rotation4f rotation;
@@ -289,15 +286,15 @@ DoubleAxisHingeJoint::update2 ()
 	// frames for the two bodies on that joint. Output values from those joints are then relative to this initial position.
 
 	if (outputs [size_t (OutputType::body2AnchorPoint)])
-		body2AnchorPoint () = localAnchorPoint2 * getBody2 () -> getMatrix () * getInitalInverseMatrix2 ();
+		body2AnchorPoint () = localAnchorPoint2 * getBody2 () -> getMatrix () * getInitialInverseMatrix2 ();
 
 	if (outputs [size_t (OutputType::body2Axis)])
-		body2Axis () = normalize (getInitalInverseMatrix2 () .mult_dir_matrix (getBody2 () -> getMatrix () .mult_dir_matrix (localAxis2)));
+		body2Axis () = normalize (getInitialInverseMatrix2 () .mult_dir_matrix (getBody2 () -> getMatrix () .mult_dir_matrix (localAxis2)));
 
 	if (outputs [size_t (OutputType::hinge2Angle)])
 	{
 		const auto lastAngle  = hinge2Angle () .getValue ();
-		const auto difference = getInitalInverseMatrix2 () * getBody2 () -> getMatrix ();
+		const auto difference = getInitialInverseMatrix2 () * getBody2 () -> getMatrix ();
 
 		Vector3f   translation;
 		Rotation4f rotation;

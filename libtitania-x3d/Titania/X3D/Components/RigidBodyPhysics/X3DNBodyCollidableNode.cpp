@@ -50,6 +50,7 @@
 
 #include "X3DNBodyCollidableNode.h"
 
+#include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 
 namespace titania {
@@ -68,7 +69,9 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	                    fields (),
 	                  bodyNode (),
 	             compoundShape (new btCompoundShape ()),
-	                    offset ()
+	                    offset (),
+	        initialTranslation (),
+	           initialRotation ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
@@ -86,7 +89,15 @@ X3DNBodyCollidableNode::initialize ()
 	X3DTransformMatrix3DObject::initialize ();
 	X3DBoundedObject::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&X3DNBodyCollidableNode::set_live, this);
+
+	translation () .addInterest (&X3DNBodyCollidableNode::set_translation, this);
+	rotation ()    .addInterest (&X3DNBodyCollidableNode::set_rotation,    this);
+
 	addInterest (&X3DNBodyCollidableNode::eventsProcessed, this);
+
+	initialTranslation = translation ();
+	initialRotation    = rotation ();
 
 	eventsProcessed ();
 }
@@ -103,6 +114,30 @@ X3DNBodyCollidableNode::getLocalTransform () const
 	l .setFromOpenGLMatrix (m [0] .data ());
 
 	return l;
+}
+
+void
+X3DNBodyCollidableNode::set_live ()
+{
+	if (not getExecutionContext () -> isLive ())
+	{
+		translation () = initialTranslation;
+		rotation ()    = initialRotation;
+	}
+}
+
+void
+X3DNBodyCollidableNode::set_translation ()
+{
+	if (not getExecutionContext () -> isLive ())
+		initialTranslation = translation ();	
+}
+
+void
+X3DNBodyCollidableNode::set_rotation ()
+{
+	if (not getExecutionContext () -> isLive ())
+		initialRotation = rotation ();
 }
 
 void
