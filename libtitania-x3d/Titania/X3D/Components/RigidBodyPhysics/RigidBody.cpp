@@ -89,19 +89,23 @@ RigidBody::Fields::Fields () :
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	            X3DNode (),
-	             fields (),
-	     collectionNode (),
-	      geometryNodes (),
-	 otherGeometryNodes (),
-	      compoundShape (new btCompoundShape ()),
-	        motionState (new btDefaultMotionState ()),
-	          rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
-	          transform (),
-	             matrix (),
-	              force (),
-	             torque ()
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	               X3DNode (),
+	                fields (),
+	        collectionNode (),
+	         geometryNodes (),
+	    otherGeometryNodes (),
+	         compoundShape (new btCompoundShape ()),
+	           motionState (new btDefaultMotionState ()),
+	             rigidBody (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState .get (), compoundShape .get ()))),
+	             transform (),
+	                matrix (),
+	                 force (),
+	                torque (),
+	       initialPosition (),
+	    initialOrientation (),
+	 initialLinearVelocity (),
+	initialAngularVelocity ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -169,6 +173,8 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&RigidBody::set_live, this);
+
 	linearVelocity ()       .addInterest (&RigidBody::set_linearVelocity,     this);
 	angularVelocity ()      .addInterest (&RigidBody::set_angularVelocity,    this);
 	useFiniteRotation ()    .addInterest (&RigidBody::set_finiteRotationAxis, this);
@@ -190,9 +196,26 @@ RigidBody::initialize ()
 
 	transform .addInterest (&RigidBody::set_transform, this);
 
+	initialPosition        = position ();
+	initialOrientation     = orientation ();
+	initialLinearVelocity  = linearVelocity ();
+	initialAngularVelocity = angularVelocity ();
+
 	set_forces ();
 	set_torques ();
 	set_geometry ();
+}
+
+void
+RigidBody::set_live ()
+{
+	if (not getExecutionContext () -> isLive ())
+	{
+		position ()        = initialPosition;
+		orientation ()     = initialOrientation;
+		linearVelocity ()  = initialLinearVelocity;
+		angularVelocity () = initialAngularVelocity;
+	}
 }
 
 void
@@ -229,6 +252,14 @@ RigidBody::set_transform ()
 	motionState -> setWorldTransform (t);
 
 	rigidBody -> setMotionState (motionState .get ());
+
+	// Editing support
+
+	if (not getExecutionContext () -> isLive ())
+	{
+		initialPosition    = position ();
+		initialOrientation = orientation ();
+	}
 }
 
 void
@@ -236,6 +267,11 @@ RigidBody::set_linearVelocity ()
 {
 	rigidBody -> setLinearVelocity (btVector3 (linearVelocity () .getX (), linearVelocity () .getY (), linearVelocity () .getZ ()));
 	rigidBody -> activate ();
+
+	// Editing support
+
+	if (not getExecutionContext () -> isLive ())
+		initialLinearVelocity = linearVelocity ();
 }
 
 void
@@ -243,6 +279,11 @@ RigidBody::set_angularVelocity ()
 {
 	rigidBody -> setAngularVelocity (btVector3 (angularVelocity () .getX (), angularVelocity () .getY (), angularVelocity () .getZ ()));
 	rigidBody -> activate ();
+
+	// Editing support
+
+	if (not getExecutionContext () -> isLive ())
+		initialAngularVelocity = angularVelocity ();
 }
 
 void

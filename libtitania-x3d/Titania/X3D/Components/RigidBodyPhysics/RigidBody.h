@@ -320,6 +320,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_live ();
+
+	void
 	set_position ();
 
 	void
@@ -412,6 +415,10 @@ private:
 	Matrix4f                               matrix;
 	Vector3f                               force;
 	Vector3f                               torque;
+	Vector3f                               initialPosition;
+	Rotation4d                             initialOrientation;
+	Vector3f                               initialLinearVelocity;
+	Vector3f                               initialAngularVelocity;
 
 };
 

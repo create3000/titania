@@ -151,15 +151,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_live ();
-
-	void
-	set_translation ();
-
-	void
-	set_rotation ();
-
-	void
 	eventsProcessed ();
 
 	///  @name Fields
@@ -180,8 +171,6 @@ private:
 	X3DPtr <RigidBody>                bodyNode;
 	std::shared_ptr <btCompoundShape> compoundShape;
 	Vector3f                          offset;
-	Vector3f                          initialTranslation;
-	Rotation4d                        initialRotation;
 
 };
 
