@@ -196,19 +196,23 @@ RigidBody::initialize ()
 
 	transform .addInterest (&RigidBody::set_transform, this);
 
+	set_forces ();
+	set_torques ();
+	set_geometry ();
+
+	// Editing support
+
 	initialPosition        = position ();
 	initialOrientation     = orientation ();
 	initialLinearVelocity  = linearVelocity ();
 	initialAngularVelocity = angularVelocity ();
-
-	set_forces ();
-	set_torques ();
-	set_geometry ();
 }
 
 void
 RigidBody::set_live ()
 {
+	// Editing support
+
 	if (not getExecutionContext () -> isLive ())
 	{
 		position ()        = initialPosition;

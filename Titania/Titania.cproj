@@ -3170,9 +3170,15 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\RigidBodyCollection" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SingleAxisHingeJoint" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\DoubleAxisHingeJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\MotorJoint" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SliderJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\UniversalJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\BallJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollidableOffset" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollidableShape" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\DoubleAxisHingeJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\RigidBody" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\RigidBodyCollection" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SingleAxisHingeJoint" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SliderJoint" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3343,6 +3349,7 @@
     <Folder Include="Titania\Applications\Tidy\" />
     <Folder Include="Titania\Applications\BrowserApplication\" />
     <Folder Include="share\appdata\" />
+    <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

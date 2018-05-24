@@ -196,6 +196,9 @@ MotorJoint::set_forceOutput ()
 void
 MotorJoint::set_axes ()
 {
+	if (not joint)
+		return;
+
 	const auto rotationalLimitMotor0 = joint -> getRotationalLimitMotor (0);
 	const auto rotationalLimitMotor1 = joint -> getRotationalLimitMotor (1);
 	const auto rotationalLimitMotor2 = joint -> getRotationalLimitMotor (2);
