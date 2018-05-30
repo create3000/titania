@@ -172,6 +172,10 @@ X3DLightEditorInterface::create ()
 	m_builder -> get_widget ("NewPointLightButton", m_NewPointLightButton);
 	m_builder -> get_widget ("NewSpotLightButton", m_NewSpotLightButton);
 
+	// Connect object Gtk::Adjustment with id 'SpotLightBeamWidthAdjustment'.
+	m_SpotLightBeamWidthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_spot_light_beam_width_value_changed));
+	m_SpotLightCutOffAngleAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_spot_light_cut_of_angle_value_changed));
+
 	// Connect object Gtk::Button with id 'NewLightPopupButton'.
 	m_NewLightPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_light_popup_clicked));
 	m_RemoveLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_remove_light_clicked));

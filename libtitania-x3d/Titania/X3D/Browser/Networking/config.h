@@ -57,19 +57,19 @@ namespace titania {
 namespace X3D {
 
 basic::uri
-get_page (const std::string &);
+get_page (const std::string & filename);
 
 basic::uri
-get_ui (const std::string &);
+get_ui (const std::string & filename);
 
 basic::uri
-get_shader (const std::string &);
+get_shader (const std::string & filename);
 
 basic::uri
-get_tool (const std::string &);
+get_tool (const std::string & filename);
 
 basic::uri
-get_data (const std::string &);
+get_data (const std::string & filename);
 
 } // X3D
 } // titania

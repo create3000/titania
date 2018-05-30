@@ -119,6 +119,18 @@ X3DSpotLightEditor::on_new_spot_light_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
+void
+X3DSpotLightEditor::on_spot_light_beam_width_value_changed ()
+{
+	getSpotLightCutOffAngleAdjustment () -> set_lower (getSpotLightBeamWidthAdjustment () -> get_value ());
+}
+
+void
+X3DSpotLightEditor::on_spot_light_cut_of_angle_value_changed ()
+{
+	getSpotLightBeamWidthAdjustment () -> set_upper (getSpotLightCutOffAngleAdjustment () -> get_value ());
+}
+
 X3DSpotLightEditor::~X3DSpotLightEditor ()
 { }
 

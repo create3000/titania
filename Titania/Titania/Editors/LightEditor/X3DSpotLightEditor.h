@@ -91,6 +91,14 @@ private:
 	void
 	on_new_spot_light_clicked () final override;
 
+	virtual
+	void
+	on_spot_light_beam_width_value_changed () final override;
+	
+	virtual
+	void
+	on_spot_light_cut_of_angle_value_changed () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> attenuation;

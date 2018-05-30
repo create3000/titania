@@ -457,6 +457,14 @@ public:
 
 	virtual
 	void
+	on_spot_light_beam_width_value_changed () = 0;
+
+	virtual
+	void
+	on_spot_light_cut_of_angle_value_changed () = 0;
+
+	virtual
+	void
 	on_new_light_popup_clicked () = 0;
 
 	virtual
