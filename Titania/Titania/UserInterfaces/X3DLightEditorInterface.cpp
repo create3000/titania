@@ -91,8 +91,8 @@ X3DLightEditorInterface::create ()
 	m_PointLightLocationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationYAdjustment"));
 	m_PointLightLocationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationZAdjustment"));
 	m_PointLightRadiusAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightRadiusAdjustment"));
+	m_ShadowBiasAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowBiasAdjustment"));
 	m_ShadowColorAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowColorAdjustment"));
-	m_ShadowDiffusionAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowDiffusionAdjustment"));
 	m_ShadowIntensityAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowIntensityAdjustment"));
 	m_ShadowMapSizeAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowMapSizeAdjustment"));
 	m_SpotLightAttenuationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightAttenuationXAdjustment"));
@@ -166,7 +166,8 @@ X3DLightEditorInterface::create ()
 	m_builder -> get_widget ("ShadowMapSizeSpinButton", m_ShadowMapSizeSpinButton);
 	m_builder -> get_widget ("ShadowColorBox", m_ShadowColorBox);
 	m_builder -> get_widget ("ShadowColorButton", m_ShadowColorButton);
-	m_builder -> get_widget ("ShadowDiffusionSpinButton", m_ShadowDiffusionSpinButton);
+	m_builder -> get_widget ("ShadowBiasBox", m_ShadowBiasBox);
+	m_builder -> get_widget ("ShadowBiasSpinButton", m_ShadowBiasSpinButton);
 	m_builder -> get_widget ("NewLightPopover", m_NewLightPopover);
 	m_builder -> get_widget ("NewDirectionalLightButton", m_NewDirectionalLightButton);
 	m_builder -> get_widget ("NewPointLightButton", m_NewPointLightButton);

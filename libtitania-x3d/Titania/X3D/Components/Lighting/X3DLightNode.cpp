@@ -65,10 +65,10 @@ X3DLightNode::Fields::Fields () :
 	           color (new SFColor (1, 1, 1)),
 	       intensity (new SFFloat (1)),
 	ambientIntensity (new SFFloat ()),
-
+	                  // Shadow support
 	     shadowColor (new SFColor (0, 0, 0)), // Color of shadow.
 	 shadowIntensity (new SFFloat (0)),       // Intensity of shadow color in the range (0, 1).
-	 shadowDiffusion (new SFFloat (0)),       // Diffusion of the shadow in length units in the range (0, inf).
+	      shadowBias (new SFFloat (0.005)),   // Bias of the shadow in the range (0, 1).
 	   shadowMapSize (new SFInt32 (1024))     // Size of the shadow map in pixels in the range (0, inf).
 { }
 
@@ -77,8 +77,6 @@ X3DLightNode::X3DLightNode () :
 	                 fields ()
 {
 	addType (X3DConstants::X3DLightNode);
-
-	shadowDiffusion () .setUnit (UnitCategory::LENGTH);
 
 	setCameraObject (true);
 }
@@ -114,9 +112,9 @@ X3DLightNode::getShadowIntensity () const
 }
 
 float
-X3DLightNode::getShadowDiffusion () const
+X3DLightNode::getShadowBias () const
 {
-	return std::max <float> (shadowDiffusion (), 0);
+	return math::clamp <float> (shadowBias (), 0, 1);
 }
 
 size_t
@@ -172,6 +170,8 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 				renderObject -> getLights ()      .emplace_back (lightContainer);
 			}
 		}
+
+		renderObject -> pushShadow (shadowIntensity () > 0);
 	}
 }
 
@@ -179,7 +179,10 @@ void
 X3DLightNode::pop (X3DRenderObject* const renderObject)
 {
 	if (on () and not global ())
+	{
 		renderObject -> getLocalLights () .pop_back ();
+		renderObject -> popShadow ();
+	}
 }
 
 } // X3D

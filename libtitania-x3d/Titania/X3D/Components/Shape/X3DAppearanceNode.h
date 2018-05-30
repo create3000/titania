@@ -83,11 +83,11 @@ public:
 
 	virtual
 	void
-	enable (X3DRenderObject* const renderObject) = 0;
+	enable (ShapeContainer* const context) = 0;
 
 	virtual
 	void
-	disable (X3DRenderObject* const renderObject) = 0;
+	disable (ShapeContainer* const context) = 0;
 
 
 protected:

@@ -142,12 +142,12 @@ public:
 	{ return m_PointLightRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getShadowColorAdjustment () const
-	{ return m_ShadowColorAdjustment; }
+	getShadowBiasAdjustment () const
+	{ return m_ShadowBiasAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getShadowDiffusionAdjustment () const
-	{ return m_ShadowDiffusionAdjustment; }
+	getShadowColorAdjustment () const
+	{ return m_ShadowColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getShadowIntensityAdjustment () const
@@ -433,9 +433,13 @@ public:
 	getShadowColorButton () const
 	{ return *m_ShadowColorButton; }
 
+	Gtk::Box &
+	getShadowBiasBox () const
+	{ return *m_ShadowBiasBox; }
+
 	Gtk::SpinButton &
-	getShadowDiffusionSpinButton () const
-	{ return *m_ShadowDiffusionSpinButton; }
+	getShadowBiasSpinButton () const
+	{ return *m_ShadowBiasSpinButton; }
 
 	Gtk::Popover &
 	getNewLightPopover () const
@@ -524,8 +528,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ShadowBiasAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShadowColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ShadowDiffusionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShadowIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShadowMapSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightAttenuationXAdjustment;
@@ -597,7 +601,8 @@ private:
 	Gtk::SpinButton* m_ShadowMapSizeSpinButton;
 	Gtk::Box* m_ShadowColorBox;
 	Gtk::Button* m_ShadowColorButton;
-	Gtk::SpinButton* m_ShadowDiffusionSpinButton;
+	Gtk::Box* m_ShadowBiasBox;
+	Gtk::SpinButton* m_ShadowBiasSpinButton;
 	Gtk::Popover* m_NewLightPopover;
 	Gtk::Button* m_NewDirectionalLightButton;
 	Gtk::Button* m_NewPointLightButton;

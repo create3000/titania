@@ -78,6 +78,7 @@ X3DShadersContext::X3DShadersContext () :
 	            gouraudShader (),
 	              phongShader (),
 	            defaultShader (),
+	             shadowShader (),
 	               shaderNode (nullptr)
 {
 	addChildObjects (shaders,
@@ -87,7 +88,8 @@ X3DShadersContext::X3DShadersContext () :
 	                 wireframeShader,
 	                 gouraudShader,
 	                 phongShader,
-	                 defaultShader);
+	                 defaultShader,
+	                 shadowShader);
 }
 
 void
@@ -113,11 +115,13 @@ X3DShadersContext::initialize ()
 			wireframeShader = getBrowser () -> getSharedContext () -> getWireframeShader ();
 			gouraudShader   = getBrowser () -> getSharedContext () -> getGouraudShader ();
 			phongShader     = getBrowser () -> getSharedContext () -> getPhongShader ();
+			shadowShader    = getBrowser () -> getSharedContext () -> getShadowShader ();
 
 			getBrowser () -> getLoadSensor () -> watchList () .append (pointShader     -> parts ());
 			getBrowser () -> getLoadSensor () -> watchList () .append (wireframeShader -> parts ());
 			getBrowser () -> getLoadSensor () -> watchList () .append (gouraudShader   -> parts ());
 			getBrowser () -> getLoadSensor () -> watchList () .append (phongShader     -> parts ());
+			getBrowser () -> getLoadSensor () -> watchList () .append (shadowShader    -> parts ());
 		}
 		else
 		{
@@ -125,6 +129,7 @@ X3DShadersContext::initialize ()
 			wireframeShader = createShader ("TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
 			gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
 			phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
+			shadowShader    = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () }, true);
 		}
 
 		// Shading
@@ -146,7 +151,7 @@ X3DShadersContext::setFixedPipeline (const bool value)
 }
 
 X3DPtr <ComposedShader>
-X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl)
+X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl, const bool shadow)
 {
 	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
@@ -155,6 +160,9 @@ X3DShadersContext::createShader (const std::string & name, const MFString & vert
 	fragmentPart -> setName (name + "FragmentShaderPart");
 	vertexPart   -> setName (name + "VertexShaderPart");
 	shader       -> setName (name + "ComposedShader");
+
+	vertexPart   -> setShadow (shadow);
+	fragmentPart -> setShadow (shadow);
 
 	fragmentPart -> type () = "FRAGMENT";
 	vertexPart   -> url ()  = vertexUrl;
@@ -187,6 +195,7 @@ X3DShadersContext::set_shading ()
 									not wireframeShader -> isValid () or
 									not gouraudShader -> isValid () or
 									not phongShader -> isValid () or
+									not shadowShader -> isValid () or
 	                        fixedPipelineDriver;
 
 	if (fixedPipelineRequired)

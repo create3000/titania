@@ -280,9 +280,10 @@ Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObje
 }
 
 void
-Appearance::enable (X3DRenderObject* const renderObject)
+Appearance::enable (ShapeContainer* const context)
 {
-	const auto browser = renderObject -> getBrowser ();
+	const auto renderObject = context -> getRenderer ();
+	const auto browser      = renderObject -> getBrowser ();
 
 	if (browser -> getFixedPipelineRequired ())
 	{
@@ -323,6 +324,8 @@ Appearance::enable (X3DRenderObject* const renderObject)
 
 	if (browser -> getShaders () and shaderNode)
 		browser -> setShader (shaderNode);
+	else if (context -> getShadow ())
+		browser -> setShader (browser -> getShadowShader ());
 	else
 		browser -> setShader (browser -> getDefaultShader ());
 
@@ -331,7 +334,7 @@ Appearance::enable (X3DRenderObject* const renderObject)
 }
 
 void
-Appearance::disable (X3DRenderObject* const renderObject)
+Appearance::disable (ShapeContainer* const context)
 {
 	if (blendModeNode)
 		blendModeNode -> disable ();

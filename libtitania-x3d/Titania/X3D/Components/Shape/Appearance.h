@@ -208,11 +208,11 @@ public:
 
 	virtual
 	void
-	enable (X3DRenderObject* const renderObject) final override;
+	enable (ShapeContainer* const context) final override;
 
 	virtual
 	void
-	disable (X3DRenderObject* const renderObject) final override;
+	disable (ShapeContainer* const context) final override;
 
 
 private:

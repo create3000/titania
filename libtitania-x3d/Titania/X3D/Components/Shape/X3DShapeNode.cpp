@@ -153,7 +153,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 	const auto renderObject = context -> getRenderer ();
 	const auto geometryType = getGeometryType ();
 
-	appearanceNode -> enable (renderObject);
+	appearanceNode -> enable (context);
 
 	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
 	{
@@ -208,7 +208,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 		}
 	}
 
-	appearanceNode -> disable (renderObject);
+	appearanceNode -> disable (context);
 
 	glDisable (GL_FOG);
 	glDisable (GL_COLOR_MATERIAL);

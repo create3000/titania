@@ -149,13 +149,13 @@ public:
 
 	virtual
 	SFFloat &
-	shadowDiffusion () final override
-	{ return getNode <X3DLightNode> () -> shadowDiffusion (); }
+	shadowBias () final override
+	{ return getNode <X3DLightNode> () -> shadowBias (); }
 
 	virtual
 	const SFFloat &
-	shadowDiffusion () const final override
-	{ return getNode <X3DLightNode> () -> shadowDiffusion (); }
+	shadowBias () const final override
+	{ return getNode <X3DLightNode> () -> shadowBias (); }
 
 	virtual
 	SFInt32 &
@@ -196,8 +196,8 @@ public:
 	
 	virtual
 	float
-	getShadowDiffusion () const final override
-	{ return getNode <X3DLightNode> () -> getShadowDiffusion (); }
+	getShadowBias () const final override
+	{ return getNode <X3DLightNode> () -> getShadowBias (); }
 
 	virtual
 	size_t

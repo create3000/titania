@@ -74,7 +74,8 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	      buffer (),
 	    shaderId (0),
 	       valid (false),
-	    openGLES (false)
+	    openGLES (false),
+	      shadow (false)
 {
 	addType (X3DConstants::ShaderPart);
 
@@ -134,7 +135,7 @@ ShaderPart::requestImmediateLoad ()
 			FileLoader loader (getExecutionContext ());
 
 			const auto document = loader .loadDocument (URL .raw ());
-			const auto source   = Shader::getSource (this, document, loader .getWorldURL ());
+			const auto source   = Shader::getSource (this, document, loader .getWorldURL (), shadow);
 			const auto string   = source .string .c_str ();
 
 			openGLES = Shader::getOpenGLES (source .string);

@@ -139,13 +139,13 @@ public:
 
 	virtual
 	SFFloat &
-	shadowDiffusion ()
-	{ return *fields .shadowDiffusion; }
+	shadowBias ()
+	{ return *fields .shadowBias; }
 
 	virtual
 	const SFFloat &
-	shadowDiffusion () const
-	{ return *fields .shadowDiffusion; }
+	shadowBias () const
+	{ return *fields .shadowBias; }
 
 	virtual
 	SFInt32 &
@@ -181,7 +181,7 @@ public:
 	
 	virtual
 	float
-	getShadowDiffusion () const;
+	getShadowBias () const;
 
 	virtual
 	size_t
@@ -250,7 +250,7 @@ private:
 		// Experimental
 		SFColor* const shadowColor;
 		SFFloat* const shadowIntensity;
-		SFFloat* const shadowDiffusion;
+		SFFloat* const shadowBias;
 		SFInt32* const shadowMapSize;
 	};
 

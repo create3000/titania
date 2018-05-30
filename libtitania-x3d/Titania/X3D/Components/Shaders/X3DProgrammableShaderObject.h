@@ -185,12 +185,16 @@ public:
 	{ return x3d_ShadowIntensity; }
 
 	const std::vector <GLint> &
-	getShadowDiffusionUniformLocation () const
-	{ return x3d_ShadowDiffusion; }
+	getShadowBiasUniformLocation () const
+	{ return x3d_ShadowBias; }
 
 	const std::vector <GLint> &
 	getShadowMatrixUniformLocation () const
 	{ return x3d_ShadowMatrix; }
+
+	const std::vector <GLint> &
+	getShadowMapSizeUniformLocation () const
+	{ return x3d_ShadowMapSize; }
 
 	const std::vector <GLint> &
 	getShadowMapUniformLocation () const
@@ -482,8 +486,9 @@ private:
 
 	std::vector <GLint> x3d_ShadowColor;
 	std::vector <GLint> x3d_ShadowIntensity;
-	std::vector <GLint> x3d_ShadowDiffusion;
+	std::vector <GLint> x3d_ShadowBias;
 	std::vector <GLint> x3d_ShadowMatrix;
+	std::vector <GLint> x3d_ShadowMapSize;
 	std::vector <GLint> x3d_ShadowMap;
 
 	GLint x3d_SeparateBackColor;

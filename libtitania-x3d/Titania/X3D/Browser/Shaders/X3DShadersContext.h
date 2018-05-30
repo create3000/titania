@@ -111,6 +111,10 @@ public:
 	getDefaultShader () const
 	{ return defaultShader; }
 
+	const X3DPtr <ComposedShader> &
+	getShadowShader () const
+	{ return shadowShader; }
+
 	void
 	setShader (X3DShaderNode* const value)
 	{ shaderNode = value; }
@@ -158,7 +162,7 @@ protected:
 	///  Operations
 
 	X3DPtr <ComposedShader>
-	createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl);
+	createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl, const bool shadow = false);
 
 
 private:
@@ -186,6 +190,7 @@ private:
 	X3DPtr <ComposedShader> gouraudShader;
 	X3DPtr <ComposedShader> phongShader;
 	X3DPtr <ComposedShader> defaultShader;
+	X3DPtr <ComposedShader> shadowShader;
 	X3DShaderNode*          shaderNode;
 
 

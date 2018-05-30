@@ -95,8 +95,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	          x3d_LightRadius (),
 	          x3d_ShadowColor (),
 	      x3d_ShadowIntensity (),
-	      x3d_ShadowDiffusion (),
+	           x3d_ShadowBias (),
 	         x3d_ShadowMatrix (),
+	        x3d_ShadowMapSize (),
 	            x3d_ShadowMap (),
 	    x3d_SeparateBackColor (-1),
 	     x3d_AmbientIntensity (-1),
@@ -214,11 +215,12 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
 		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
 
-		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowColor["     + is + "]") .c_str ()));
-		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowIntensity[" + is + "]") .c_str ()));
-		x3d_ShadowDiffusion       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowDiffusion[" + is + "]") .c_str ()));
-		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMatrix["    + is + "]") .c_str ()));
-		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap["       + is + "]") .c_str ()));
+		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowColor") .c_str ()));
+		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowIntensity") .c_str ()));
+		x3d_ShadowBias            .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowBias") .c_str ()));
+		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMatrix") .c_str ()));
+		x3d_ShadowMapSize         .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMapSize") .c_str ()));
+		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap[" + is + "]") .c_str ()));
 	}
 
 	x3d_SeparateBackColor = glGetUniformLocation (program, "x3d_SeparateBackColor");

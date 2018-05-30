@@ -953,9 +953,6 @@
     <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
     <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
     <None Include="share\titania\shaders\Shaders\Types.h" />
-    <None Include="share\titania\shaders\Shaders\Inlcude\Random.h" />
-    <None Include="share\titania\shaders\Shaders\Inlcude\Line3.h" />
-    <None Include="share\titania\shaders\Shaders\Inlcude\Plane3.h" />
     <None Include="share\titania\shaders\Shaders\Inlcude\Shadow.h" />
     <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Background.fs" />

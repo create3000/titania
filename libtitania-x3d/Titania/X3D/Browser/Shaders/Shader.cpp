@@ -133,7 +133,7 @@ Shader::getProgramStageBit (const std::string & type)
 }
 
 ShaderSource
-Shader::getSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL)
+Shader::getSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const bool shadow)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -141,7 +141,7 @@ throw (Error <INVALID_URL>,
 	std::set <basic::uri> files;
 
 	source .string = getSource (node, string, worldURL, source .uris, 0, files);
-	source .string = addDefinitions (node -> getBrowser (), source .string);
+	source .string = addDefinitions (node -> getBrowser (), source .string, shadow);
 
 	return source;
 }
@@ -203,7 +203,7 @@ throw (Error <INVALID_URL>,
 }
 
 std::string
-Shader::addDefinitions (X3DBrowser* const browser, std::string source)
+Shader::addDefinitions (X3DBrowser* const browser, std::string source, const bool shadow)
 {
 	#define COMMENTS     "\\s+|/\\*[\\s\\S]*?\\*/|//.*?\\n"
 	#define LINE         "#line\\s+.*?\\n"
@@ -265,12 +265,11 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source)
 	definitions << "#define x3d_TextureType3D              3\n";
 	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
 
-	#ifdef TITANIA_DEBUG
-	definitions << "#define X3D_SHADOWS\n";
-	#endif
+	if (shadow)
+		definitions << "#define X3D_SHADOWS\n";
 
 	definitions << "#define x3d_MaxShadows     4\n";
-	definitions << "#define x3d_ShadowSamples  8\n";
+	definitions << "#define x3d_ShadowSamples  8\n"; // XXX
 
 	// Legacy
 

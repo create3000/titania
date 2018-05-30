@@ -155,15 +155,16 @@ LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgr
 	{
 		const auto cameraSpaceMatrix = renderObject -> getCameraSpaceMatrix () .get ();
 
-		glUniform1f  (shaderObject -> getShadowIntensityUniformLocation () [i], node -> getShadowIntensity ());
-		glUniform1f  (shaderObject -> getShadowDiffusionUniformLocation () [i], node -> getShadowDiffusion ());
 		glUniform3fv (shaderObject -> getShadowColorUniformLocation     () [i], 1, node -> getShadowColor () .data ());
+		glUniform1f  (shaderObject -> getShadowIntensityUniformLocation () [i], node -> getShadowIntensity ());
+		glUniform1f  (shaderObject -> getShadowBiasUniformLocation      () [i], node -> getShadowBias ());
 
 		if (shaderObject -> isExtensionGPUShaderFP64Available ())
 			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, (cameraSpaceMatrix * shadowMatrix) .front () .data ());
 		else
 			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (cameraSpaceMatrix * shadowMatrix) .front () .data ());
 	
+		glUniform1i (shaderObject -> getShadowMapSizeUniformLocation () [i], node -> getShadowMapSize ());
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}
 	else

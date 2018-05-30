@@ -1,18 +1,10 @@
 /* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-*/
 
-uniform vec3      x3d_ShadowColor [x3d_MaxLights];
-uniform float     x3d_ShadowIntensity [x3d_MaxLights];
-uniform float     x3d_ShadowDiffusion [x3d_MaxLights];
-uniform mat4      x3d_ShadowMatrix [x3d_MaxLights];
 uniform sampler2D x3d_ShadowMap [x3d_MaxLights];
 
 #pragma X3D include "Pack.h"
-#pragma X3D include "Plane3.h"
-#pragma X3D include "Random.h"
 
 #ifdef X3D_SHADOWS
-
-Plane3 shadowPlane = Plane3 (vec3 (0.0), 0.0);
 
 float
 getShadowDepth (in int index, in vec2 shadowCoord)
@@ -61,19 +53,21 @@ getShadowDepth (in int index, in vec2 shadowCoord)
 }
 
 float
-getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in float lightAngle)
+texture2DCompare (in int i, in vec2 texCoord, in float compare)
+{
+	return step (getShadowDepth (i, texCoord), compare);
+}
+
+float
+getShadowIntensity (in int index, in int lightType, in float lightAngle, in float shadowIntensity, in float shadowBias, in mat4 shadowMatrix, in int shadowMapSize)
 {
 	if (shadowIntensity <= 0.0 || lightAngle <= 0.0)
 		return 0.0;
 
-	#define SHADOW_TEXTURE_EPS 0.01
-	#define SHADOW_BIAS_OFFSET 0.002
-	#define SHADOW_BIAS_FACTOR 0.004
-		
-	float shadowBias = SHADOW_BIAS_OFFSET + SHADOW_BIAS_FACTOR * (1.0 - abs (lightAngle));
-
 	if (lightType == x3d_PointLight)
 	{
+//		#define SHADOW_TEXTURE_EPS 0.01
+//		
 //		mat4 rotationProjectionBias [6];
 //		rotationProjectionBias [0] = mat4 (-0.1666666666666667, -0.25, -1.0001250156269537, -1.0, 0, 0.1443375672974065, 0.0, 0.0, -0.09622504486493763, 0.0, 0.0, 0.0, 0.0, 0.0, -0.12501562695336918, 0.0);
 //		rotationProjectionBias [1] = mat4 (0.16666666666666666, 0.25, 1.0001250156269537, 1.0, 0, 0.1443375672974065, 0.0, 0.0, 0.09622504486493771, 0.0, 0.0, 0.0, 0.0, 0.0, -0.12501562695336918, 0.0);
@@ -130,49 +124,57 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 	}
 	else
 	{
-		int value = 0;
+		vec4 shadowCoord = shadowMatrix * vec4 (v, 1.0);
+		vec2 texelSize   = vec2 (1.0) / vec2 (shadowMapSize);
 
-		for (int i = 0; i < x3d_ShadowSamples; ++ i)
-		{
-			vec3  vertex      = closest_point (shadowPlane, v + random3 () * shadowDiffusion);
-			vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
-			float bias        = shadowBias / shadowCoord .w; // 0.005 / shadowCoord .w;
+		shadowCoord .z   -= shadowBias;
+		shadowCoord .xyz /= shadowCoord .w;
 
-			shadowCoord .xyz /= shadowCoord .w;
+		float dx0 = - texelSize .x;
+		float dy0 = - texelSize .y;
+		float dx1 = + texelSize .x;
+		float dy1 = + texelSize .y;
 
-			if (shadowCoord .z >= 1.0)
-				continue;
+		float value = (
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx0, dy0), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (0.0, dy0), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx1, dy0), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx0, 0.0), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy, shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx1, 0.0), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx0, dy1), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (0.0, dy1), shadowCoord .z) +
+			texture2DCompare (index, shadowCoord .xy + vec2 (dx1, dy1), shadowCoord .z)
+		) * (1.0 / 9.0);
 
-			if (getShadowDepth (index, shadowCoord .xy) < shadowCoord .z - bias)
-			{
-				++ value;
-			}
-		}
-
-		return shadowIntensity * float (value) / float (x3d_ShadowSamples);
+		return shadowIntensity * value;
 	}
+//	else
+//	{
+//		vec4 shadowCoord = shadowMatrix * vec4 (v, 1.0);
+//
+//		shadowCoord .z   -= shadowBias;
+//		shadowCoord .xyz /= shadowCoord .w;
+//
+//		float value = 0.0;
+//
+//		for (int i = 0; i < x3d_ShadowSamples; ++ i)
+//		{
+//			value += step (getShadowDepth (index, shadowCoord .xy), shadowCoord .z - bias);
+//		}
+//
+//		return shadowIntensity * value / float (x3d_ShadowSamples);
+//	}
 
 	return 0.0;
-}
-
-void
-initShadows ()
-{
-	shadowPlane = plane3 (v, vN);
-
-	seed (int (fract (dot (v, v)) * float (RAND_MAX)));
 }
 
 #else
 
 float
-getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in float lightAngle)
+getShadowIntensity (in int i, in int lightType, in float lightAngle, in float shadowIntensity, in float shadowBias, in mat4 shadowMatrix, in int shadowMapSize)
 {
 	return 0.0;
 }
-
-void
-initShadows ()
-{ }
 
 #endif

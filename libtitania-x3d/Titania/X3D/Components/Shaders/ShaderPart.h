@@ -131,6 +131,14 @@ public:
 	getSourceText () const final override
 	{	return &url (); }
 
+	bool
+	getShadow () const
+	{ return shadow; }
+
+	void
+	setShadow (const bool value)
+	{ shadow = value; }
+
 	///  @name Operations
 
 	virtual
@@ -183,6 +191,7 @@ private:
 	GLuint shaderId;
 	GLint  valid;
 	bool   openGLES;
+	bool   shadow;
 
 };
 

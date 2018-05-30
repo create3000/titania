@@ -108,6 +108,14 @@ public:
 	getLocalLights () const
 	{ return localLights; }
 
+	bool
+	getShadow () const
+	{ return shadow; }
+
+	void
+	setShadow (const bool value)
+	{ shadow = value; }
+
 	void
 	setGeometryType (const GeometryType value)
 	{ geometryType = value; }
@@ -146,6 +154,7 @@ private:
 	bool                    transparent;
 	X3DFogObject*           fog;
 	LightContainerArray     localLights;
+	bool                    shadow;
 	GeometryType            geometryType;
 	bool                    colorMaterial;
 	double                  distance;

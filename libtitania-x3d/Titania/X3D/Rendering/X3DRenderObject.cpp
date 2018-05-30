@@ -95,6 +95,7 @@ X3DRenderObject::X3DRenderObject () :
 	             localLights (),
 	                  lights (),
 	              lightIndex (0),
+	                  shadow ({ false }),
 	                 layouts (),
 	generatedCubeMapTextures (),
 	                 shaders (),
@@ -392,6 +393,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 	context -> setLocalLights (getLocalLights ());
+	context -> setShadow (getShadow ());
 	context -> setDistance (center);
 
 	return true;
@@ -624,6 +626,7 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 		getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
 		getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
 		getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
+		getBrowser () -> getShadowShader ()    -> setGlobalUniforms (this);
 	}
 
 	for (const auto & shaderNode : getShaders ())
@@ -686,7 +689,9 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	{
 		// Reset to default OpenGL appearance
 
-		getBrowser () -> getDefaultAppearance () -> enable (this);
+		ShapeContainer context (this, false);
+
+		getBrowser () -> getDefaultAppearance () -> enable (&context);
 	}
 
 	// Clear node arrays.

@@ -76,6 +76,7 @@ class X3DGroupingNode;
 class X3DLayoutNode;
 class X3DShaderNode;
 
+using ShadowStack                = std::stack <bool>;
 using LocalFogStack              = std::vector <LocalFog*>;
 using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
@@ -210,6 +211,18 @@ public:
 	setLightIndex (const size_t value)
 	{ lightIndex = value; }
 
+	void
+	pushShadow (const bool value)
+	{ return shadow .push (shadow .top () or value); }
+
+	void
+	popShadow ()
+	{ return shadow .pop (); }
+
+	bool
+	getShadow () const
+	{ return shadow .top (); }
+
 	LayoutStack &
 	getLayouts ()
 	{ return layouts; }
@@ -329,6 +342,7 @@ private:
 	LightContainerArray        localLights;
 	LightContainerArray        lights;
 	size_t                     lightIndex;
+	ShadowStack                shadow;
 	LayoutStack                layouts;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
 	ShaderSet                  shaders;

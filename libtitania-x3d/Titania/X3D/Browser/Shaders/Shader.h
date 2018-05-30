@@ -75,7 +75,7 @@ public:
 
 	static
 	ShaderSource
-	getSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL)
+	getSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL, const bool shadow = false)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
@@ -120,7 +120,7 @@ private:
 
 	static
 	std::string
-	addDefinitions (X3DBrowser* const browser, std::string source);
+	addDefinitions (X3DBrowser* const browser, std::string source, const bool shadow);
 
 	static
 	void
