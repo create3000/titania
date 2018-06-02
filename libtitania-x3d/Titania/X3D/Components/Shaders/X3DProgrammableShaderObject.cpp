@@ -221,11 +221,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
 		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
 
-		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowSource[" + is + "].shadowColor") .c_str ()));
-		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowSource[" + is + "].shadowIntensity") .c_str ()));
-		x3d_ShadowBias            .emplace_back (glGetUniformLocation (program, ("x3d_ShadowSource[" + is + "].shadowBias") .c_str ()));
-		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_ShadowSource[" + is + "].shadowMatrix") .c_str ()));
-		x3d_ShadowMapSize         .emplace_back (glGetUniformLocation (program, ("x3d_ShadowSource[" + is + "].shadowMapSize") .c_str ()));
+		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowColor") .c_str ()));
+		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowIntensity") .c_str ()));
+		x3d_ShadowBias            .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowBias") .c_str ()));
+		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMatrix") .c_str ()));
+		x3d_ShadowMapSize         .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMapSize") .c_str ()));
 		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap[" + is + "]") .c_str ()));
 	}
 
