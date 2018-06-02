@@ -64,15 +64,8 @@ Init (int argc, char** argv)
 	// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made. 
 	XInitThreads (); // GStreamer
 
-	try
-	{
-		// Replace the C++ global locale as well as the C locale with the user-preferred locale.
-		std::locale::global (std::locale (""));
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	// Replace the C++ global locale as well as the C locale with the user-preferred locale.
+	std::locale::global (std::locale (""));
 
 //	// Initialize Gtk
 //	const bool success = gtk_init_check (&argc, &argv);
