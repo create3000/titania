@@ -269,7 +269,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
 			renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 	
-			renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
+			renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
 	
 			renderObject -> getModelViewMatrix          () .pop ();
 			renderObject -> getProjectionMatrix         () .pop ();

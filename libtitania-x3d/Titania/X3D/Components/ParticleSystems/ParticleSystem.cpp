@@ -467,6 +467,7 @@ bool
 ParticleSystem::isSoftSystem () const
 {
 	// Also in X3DParticleEmitterNode
+	return true;
 
 	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return true;

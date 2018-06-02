@@ -14,6 +14,7 @@ uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwis
 
 uniform int x3d_NumLights;
 uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+uniform x3d_ShadowSourceParameters x3d_ShadowSource [x3d_MaxLights];
 uniform bool x3d_SeparateBackColor;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform x3d_MaterialParameters x3d_BackMaterial;        
@@ -35,6 +36,7 @@ varying vec3 v;  // point on geometry
 void
 clip ()
 {
+	#pragma unroll_loop
 	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
 	{
 		if (i == x3d_NumClipPlanes)
@@ -129,6 +131,7 @@ getMaterialColor (in x3d_MaterialParameters material)
 
 		vec3 finalColor = vec3 (0.0, 0.0, 0.0);
 
+		#pragma unroll_loop
 		for (int i = 0; i < x3d_MaxLights; i ++)
 		{
 			if (i == x3d_NumLights)
@@ -142,6 +145,8 @@ getMaterialColor (in x3d_MaterialParameters material)
 
 			if (di || dL <= light .radius)
 			{
+				x3d_ShadowSourceParameters shadow = x3d_ShadowSource [i];
+
 				vec3 d = light .direction;
 				vec3 c = light .attenuation;
 				vec3 L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
@@ -155,11 +160,12 @@ getMaterialColor (in x3d_MaterialParameters material)
 				float attenuationFactor           = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
 				float spotFactor                  = light .type == x3d_SpotLight ? getSpotFactor (light .cutOffAngle, light .beamWidth, L, d) : 1.0;
 				float attenuationSpotFactor       = attenuationFactor * spotFactor;
-				vec3  ambientColor                = light .ambientIntensity * ambientTerm;
-				vec3  ambientDiffuseSpecularColor = ambientColor + light .intensity * (diffuseTerm + specularTerm);
-				float shadowIntensity             = getShadowIntensity (i, light .type, lightAngle, light .shadowIntensity, light .shadowBias, light .shadowMatrix, light .shadowMapSize);
+				vec3  ambientColor                = light .color * light .ambientIntensity * ambientTerm;
+				float shadowIntensity             = getShadowIntensity (i, light .type, lightAngle, shadow);
+				vec3  diffuseSpecularColor        = light .color * light .intensity * (diffuseTerm + specularTerm);
+				vec3  ambientDiffuseSpecularColor = ambientColor + mix (diffuseSpecularColor, shadow .shadowColor, shadowIntensity);
 
-				finalColor += attenuationSpotFactor * mix (light .color * ambientDiffuseSpecularColor, light .shadowColor, shadowIntensity);
+				finalColor += attenuationSpotFactor * ambientDiffuseSpecularColor;
 			}
 		}
 
@@ -223,6 +229,9 @@ getFogColor (in vec3 color)
 	return mix (x3d_Fog .color, color, getFogInterpolant ());
 }
 
+// DEBUG
+//uniform ivec4 x3d_Viewport;
+
 void
 main ()
 {
@@ -233,4 +242,8 @@ main ()
 	gl_FragColor = frontColor ? getMaterialColor (x3d_FrontMaterial) : getMaterialColor (x3d_BackMaterial);
 
 	gl_FragColor .rgb = getFogColor (gl_FragColor .rgb);
+
+	// DEBUG
+
+	//gl_FragColor .rgb = texture2D (x3d_ShadowMap [0], gl_FragCoord .xy / vec2 (x3d_Viewport .zw)) .rgb;
 }

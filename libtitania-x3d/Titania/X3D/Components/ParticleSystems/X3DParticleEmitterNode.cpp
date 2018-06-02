@@ -105,6 +105,8 @@ X3DParticleEmitterNode::setShaderFields (const X3DPtr <ComposedShader> & shader)
 bool
 X3DParticleEmitterNode::isSoftSystem () const
 {
+	return true;
+
 	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return true;
 

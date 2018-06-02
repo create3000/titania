@@ -207,13 +207,15 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 {
 	#define COMMENTS     "\\s+|/\\*[\\s\\S]*?\\*/|//.*?\\n"
 	#define LINE         "#line\\s+.*?\\n"
+	#define IF           "#if\\s+.*?\\n"
+	#define ELIF         "#elif\\s+.*?\\n"
 	#define IFDEF        "#ifdef\\s+.*?\\n"
 	#define IFNDEF       "#ifndef\\s+.*?\\n"
 	#define ELSE         "#else.*?\\n"
 	#define ENDIF        "#endif+.*?\\n"
 	#define DEFINE       "#define\\s+(?:[^\\n\\\\]|\\\\[^\\r\\n]|\\\\\\r?\\n)*\\n"
 	#define PRAGMA       "#pragma\\s+.*?\\n"
-	#define PREPROCESSOR  LINE "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" PRAGMA
+	#define PREPROCESSOR  LINE "|" IF "|" ELIF "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" PRAGMA
 	#define VERSION      "#version\\s+.*?\\n"
 	#define EXTENSION    "#extension\\s+.*?\\n"
 	#define ANY          "[\\s\\S]*"
@@ -269,7 +271,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 		definitions << "#define X3D_SHADOWS\n";
 
 	definitions << "#define x3d_MaxShadows     4\n";
-	definitions << "#define x3d_ShadowSamples  8\n"; // XXX
+	definitions << "#define X3D_PCF_FILTERING\n";
 
 	// Legacy
 
