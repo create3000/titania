@@ -48,7 +48,7 @@ clip ()
 }
 
 float
-getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
+getSpotFactor (const in float cutOffAngle, const in float beamWidth, const in vec3 L, const in vec3 d)
 {
 	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
 	
@@ -85,7 +85,7 @@ getTextureColor ()
 }
 
 vec4
-getMaterialColor (in x3d_MaterialParameters material)
+getMaterialColor (const in x3d_MaterialParameters material)
 {
 	if (x3d_Lighting)
 	{
@@ -224,7 +224,7 @@ getFogInterpolant ()
 }
 
 vec3
-getFogColor (in vec3 color)
+getFogColor (const in vec3 color)
 {
 	return mix (x3d_Fog .color, color, getFogInterpolant ());
 }
