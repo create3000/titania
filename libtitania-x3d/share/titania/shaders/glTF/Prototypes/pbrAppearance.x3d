@@ -5,9 +5,9 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sat, 10 Feb 2018 02:42:59 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.3.0, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Tue, 13 Feb 2018 18:06:29 GMT'/>
+    <meta name='modified' content='Sun, 03 Jun 2018 03:52:27 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -434,7 +434,7 @@ main ()
 		#ifdef HAS_DIFFUSE_MAP
 			vec4 baseColor = SRGBtoLINEAR (texture2D (diffuseTexture, texCoord)) * diffuseFactor;
 		#else
-			vec3 baseColor = diffuseFactor;
+			vec4 baseColor = diffuseFactor;
 		#endif
 		
 		// If a primitive specifies a vertex color using the attribute semantic property COLOR_0,
@@ -442,12 +442,14 @@ main ()
 		#ifdef HAS_COLORS
 			baseColor *= color;
 		#endif
-	
+		
+		specularColor = vec3 (0.0); // XXX
+
 		// Compute reflectance.
 		float reflectance = max (max (specularColor .r, specularColor .g), specularColor .b);
 
 		vec3 diffuseColor = baseColor .rgb;
-		diffuseColor *= 1.0 - reflectance;
+		//diffuseColor *= 1.0 - reflectance;
 	#else
 		vec4  baseColor           = vec4 (1.0);
 		vec3  diffuseColor        = vec3 (1.0);
@@ -741,9 +743,7 @@ function set_extensions (value, time)
               value='false'/>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'>
-            <!-- NULL -->
-          </MetadataSet>
+              reference='http://titania.create3000.de'/>
         </MetadataSet>
         <MetadataSet DEF='Page' containerField='value'
             name='Page'
