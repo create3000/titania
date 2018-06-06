@@ -89,6 +89,9 @@ public:
 	getDepthTextureId () const
 	{ return depthTextureId; }
 
+	void
+	setFiltering (const GLenum filtering);
+
 	///  @name Operations
 
 	void

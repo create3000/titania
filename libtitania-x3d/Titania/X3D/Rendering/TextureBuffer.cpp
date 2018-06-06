@@ -133,6 +133,15 @@ TextureBuffer::unbind ()
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 }
 
+void
+TextureBuffer::setFiltering (const GLenum filtering)
+{
+	glBindTexture    (GL_TEXTURE_2D, depthTextureId);
+	glTexParameteri  (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering);
+	glTexParameteri  (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering);
+	glBindTexture (GL_TEXTURE_2D, 0);
+}
+
 TextureBuffer::~TextureBuffer ()
 {
 	try

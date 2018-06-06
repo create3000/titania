@@ -117,6 +117,21 @@ public:
 		}
 	}
 	
+	///  Creates an perspective projection matrix.
+	///  @param fieldOfView   Specify the field of view angle for both width and height.
+	///  @param nearVal       Specify the distances to the nearer depth clipping plane.
+	///                       This value must be positive.
+	///  @param width         Specify the width of the current viewport.
+	///  @param height        Specify the height of the current viewport.
+	static
+	matrix4 <Type>
+	perspective2 (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const Type & width, const Type & height)
+	{
+		const auto ratio = std::tan (fieldOfView / 2) * nearVal;
+	
+		return frustum (-ratio, ratio, -ratio, ratio, nearVal, farVal);
+	}
+	
 	///  Creates an othographic projection matrix.
 	///  @param left      Specify the coordinates for the left vertical clipping plane.
 	///  @param right     Specify the coordinates for the left vertical clipping plane.

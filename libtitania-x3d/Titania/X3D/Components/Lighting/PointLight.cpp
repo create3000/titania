@@ -193,13 +193,22 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 		// Negated normals of the point light cube.
 
-		static constexpr Vector3d directions [6] = {
-			Vector3d ( 1,  0,  0), // left
-			Vector3d (-1,  0,  0), // right
-			Vector3d ( 0,  0,  1), // back
-			Vector3d ( 0,  0, -1), // front
-			Vector3d ( 0,  1,  0), // bottom
-			Vector3d ( 0, -1,  0), // top
+		static const Matrix4d orientationMatrices [6] = {
+			Matrix4d (Rotation4d (Vector3d ( 1,  0,  0), Vector3d (0, 0, 1))), // left
+			Matrix4d (Rotation4d (Vector3d (-1,  0,  0), Vector3d (0, 0, 1))), // right
+			Matrix4d (Rotation4d (Vector3d ( 0,  0, -1), Vector3d (0, 0, 1))), // front
+			Matrix4d (Rotation4d (Vector3d ( 0,  0,  1), Vector3d (0, 0, 1))), // back
+			Matrix4d (Rotation4d (Vector3d ( 0,  1,  0), Vector3d (0, 0, 1))), // bottom
+			Matrix4d (Rotation4d (Vector3d ( 0, -1,  0), Vector3d (0, 0, 1))), // top
+		};
+
+		static const Vector4d viewports [6] = {
+			Vector4d (0,    0.5, 0.25, 0.5), // left
+			Vector4d (0.5,  0.5, 0.25, 0.5), // right
+			Vector4d (0.75, 0.5, 0.25, 0.5), // front
+			Vector4d (0.25, 0.5, 0.25, 0.5), // back
+			Vector4d (0.0,  0,   0.5,  0.5), // bottom
+			Vector4d (0.5,  0,   0.5,  0.5), // top   
 		};
 
 		const auto modelMatrix         = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
@@ -210,109 +219,44 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();                            
 		const auto   groupNode           = lightContainer -> getGroup ();                                     // Group to be shadowed.
-		const auto   shadowMapSize1_2    = getShadowMapSize () / 2;
-		const auto   shadowMapSize1_3    = getShadowMapSize () / 3;
-		const auto   nearValue           = 0.125;
-		const auto   farValue            = 1'000.0;
-		const auto   projectionMatrix    = camera <double>::perspective (radians (120.0), nearValue, farValue, 1, 1);
+		const auto   shadowMapSize       = getShadowMapSize ();
 		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
 
 		// Render to frame buffer.
 
-		//#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
-		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
-		#ifdef  TITANIA_DEBUG
-		// Disable background in renderer when debug framebuffer.
-		FrameBuffer frameBuffer (renderObject -> getBrowser (), 180, 180, 4);
-
-		frameBuffer .setup ();
-		#endif
-		#endif
-
-//		std::clog << std::endl;	
-//		const auto m = projectionMatrix * getBiasMatrix ();
-//		for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-//			std::clog << SFDouble (v) << ".0, ";
-//		std::clog << std::endl;
-//		std::clog << std::endl;
-
 		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 
-		for (size_t y = 0; y < 2; ++ y)
+		shadowTextureBuffer -> setFiltering (GL_NEAREST);
+
+		for (size_t i = 0; i < 6; ++ i)
 		{
-			for (size_t x = 0; x < 3; ++ x)
-			{
-				const auto rotation = Rotation4d (directions [y * 3 + x], Vector3d (0, 0, 1)); // Inverse rotation.
-				const auto viewport = Vector4i (x * shadowMapSize1_3, y * shadowMapSize1_2, shadowMapSize1_3, shadowMapSize1_2);
+			const auto & v                = viewports [i];
+			const auto   viewport         = Vector4i (v [0] * shadowMapSize, v [1] * shadowMapSize, v [2] * shadowMapSize, v [3] * shadowMapSize);
+			const auto   projectionMatrix = camera <double>::perspective2 (radians (90.0), 0.125, 10000, viewport [2], viewport [3]);
 
-//				const auto m = Matrix4d (inverse (rotation));
-//				for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-//					std::clog << SFDouble (v) << ".0, ";
-//				std::clog << std::endl;
+			shadowTextureBuffer -> bind ();
 
-				shadowTextureBuffer -> bind ();
-	
-				renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
-				renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
-				renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
-				renderObject -> getProjectionMatrix         () .push (projectionMatrix);
+			renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
+			renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
+			renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 
-				renderObject -> getModelViewMatrix  () .push (Matrix4d (rotation));
-				renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-				renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
-				
-				renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1, _2));
-	
-				renderObject -> getModelViewMatrix          () .pop ();
-				renderObject -> getProjectionMatrix         () .pop ();
-				renderObject -> getViewVolumes              () .pop_back ();
-				renderObject -> getInverseCameraSpaceMatrix () .pop ();
-				renderObject -> getCameraSpaceMatrix        () .pop ();
-	
-				shadowTextureBuffer -> unbind ();
-	
-				#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
-				#ifdef TITANIA_DEBUG
-				{
-					const auto viewport = Vector4i (x * 90, y * 60, 90, 60);
-	
-					frameBuffer .bind ();
-	
-					renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
-					renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
-					renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
-					renderObject -> getProjectionMatrix         () .push (projectionMatrix);
+			renderObject -> getModelViewMatrix  () .push (orientationMatrices [i]);
+			renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
+			renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
+			
+			renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1, _2));
 
-					renderObject -> getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
-					renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-					renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
+			renderObject -> getModelViewMatrix          () .pop ();
+			renderObject -> getProjectionMatrix         () .pop ();
+			renderObject -> getViewVolumes              () .pop_back ();
+			renderObject -> getInverseCameraSpaceMatrix () .pop ();
+			renderObject -> getCameraSpaceMatrix        () .pop ();
 
-					renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
-	
-					renderObject -> getModelViewMatrix          () .pop ();
-					renderObject -> getProjectionMatrix         () .pop ();
-					renderObject -> getViewVolumes              () .pop_back ();
-					renderObject -> getInverseCameraSpaceMatrix () .pop ();
-					renderObject -> getCameraSpaceMatrix        () .pop ();
-	
-					frameBuffer .unbind ();
-				}
-				#endif
-				#endif
-			}
+			shadowTextureBuffer -> unbind ();
 		}
 
 		renderObject -> getBrowser () -> getDisplayTools () .pop ();
-
-		#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
-		#ifdef TITANIA_DEBUG
-		frameBuffer .bind ();
-		frameBuffer .readDepth ();
-		frameBuffer .unbind ();
-
-		glDrawPixels (180, 180, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
-		#endif
-		#endif
 
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (modelMatrix));
