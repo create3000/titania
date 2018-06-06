@@ -220,14 +220,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	#define EXTENSION    "#extension\\s+.*?\\n"
 	#define ANY          "[\\s\\S]*"
 
-	static const std::regex version ("^(?:" COMMENTS "|" LINE  ")*" VERSION "");
-
-	std::smatch vmatch;
-
-	if (not std::regex_search (source, vmatch, version))
-		source = "#version 100\n#line 1\n" + source;
-
-	static const std::regex head ("^((?:" COMMENTS "|" PREPROCESSOR  ")*" VERSION "(?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)(" ANY ")$");
+	static const std::regex head ("^((?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)(" ANY ")$");
 
 	std::smatch hmatch;
 
@@ -237,12 +230,15 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	const auto begin    = hmatch .str (1);
 	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
 
+	std::ostringstream constants;
 	std::ostringstream definitions;
 	std::ifstream types (basic::uri (get_data ("shaders/Shaders/Types.h")) .path ());
 
 	definitions .imbue (std::locale::classic ());
 
-	definitions << "#define TITANIA\n";
+	constants << "#version 100\n#line 1\n";
+	constants << "#define TITANIA\n";
+	constants << "#define X3D_LOGARITHMIC_DEPTH_BUFFER\n";
 
 	definitions << "#define x3d_None 0\n";
 
@@ -294,7 +290,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions << "#line " << (numLines - 1)  << "\n";
 
-	return hmatch .str (1) + definitions .str () + hmatch .str (2);
+	return constants .str () + hmatch .str (1) + definitions .str () + hmatch .str (2);
 }
 
 void

@@ -235,6 +235,12 @@ GeoViewpoint::getUpVector () const
 }
 
 double
+GeoViewpoint::getMaxFarValue () const
+{
+	return 1e10;
+}
+
+double
 GeoViewpoint::getSpeedFactor () const
 {
 	return (std::max (elevation, 0.0) + 10) / 10 * speedFactor ();
@@ -296,13 +302,12 @@ GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 Matrix4d
 GeoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit) const
 {
-	if (limit)
-		return camera <double>::perspective (getFieldOfView (), nearValue, farValue, viewport [2], viewport [3]);
+	return camera <double>::perspective (getFieldOfView (), nearValue, farValue, viewport [2], viewport [3]);
 
-	const double geoZNear = std::max (math::lerp (std::min (nearValue, 1e4), 1e4, elevation / 1e7), 1.0);
-	const double geoZFar  = std::max (math::lerp (1e6, std::max (farValue, 1e6),  elevation / 1e7), 1e6);
-
-	return camera <double>::perspective (getFieldOfView (), geoZNear, geoZFar, viewport [2], viewport [3]);
+//	const double geoZNear = std::max (math::lerp (std::min (nearValue, 1e4), 1e4, elevation / 1e7), 1.0);
+//	const double geoZFar  = std::max (math::lerp (1e6, std::max (farValue, 1e6),  elevation / 1e7), 1e6);
+//
+//	return camera <double>::perspective (getFieldOfView (), geoZNear, geoZFar, viewport [2], viewport [3]);
 }
 
 void

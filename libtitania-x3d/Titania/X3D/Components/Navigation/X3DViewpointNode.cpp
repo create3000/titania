@@ -202,6 +202,12 @@ X3DViewpointNode::getUserCenterOfRotation () const
 	return getCenterOfRotation () + centerOfRotationOffset ();
 }
 
+double
+X3DViewpointNode::getMaxFarValue () const
+{
+	return 1e10;
+}
+
 void
 X3DViewpointNode::setUserCenterOfRotation (const Vector3d & userCenterOfRotation)
 {

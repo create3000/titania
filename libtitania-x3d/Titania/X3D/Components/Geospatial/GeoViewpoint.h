@@ -172,8 +172,7 @@ public:
 
 	virtual
 	double
-	getMaxFarValue () const final override
-	{ return 1e9; }
+	getMaxFarValue () const final override;
 
 	virtual
 	double

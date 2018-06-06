@@ -193,8 +193,7 @@ public:
 
 	virtual
 	double
-	getMaxFarValue () const
-	{ return 1e5; }
+	getMaxFarValue () const;
 
 	virtual
 	double

@@ -459,6 +459,8 @@ private:
 
 	///  @name Members
 
+	GLint x3d_FarFactor;
+
 	GLint               x3d_GeometryType;
 	GLint               x3d_NumClipPlanes;
 	std::vector <GLint> x3d_ClipPlane;
