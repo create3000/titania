@@ -156,6 +156,11 @@ public:
 	getMaximumY () const;
 
 	virtual
+	double
+	getMaxFarValue () const final override
+	{ return 1e5; }
+
+	virtual
 	Vector3d
 	getScreenScale (const Vector3d &, const Vector4i &) const final override;
 

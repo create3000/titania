@@ -58,6 +58,7 @@
 
 #include "../EnvironmentalEffects/X3DFogObject.h"
 #include "../Navigation/NavigationInfo.h"
+#include "../Navigation/X3DViewpointNode.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DAppearanceNode.h"
 #include "../Shape/X3DMaterialNode.h"
@@ -1031,7 +1032,14 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 		globalLights [i] -> setShaderUniforms (renderObject, this, i);
 
 	// Logarithmic depth buffer support.
-	glUniform1f (x3d_LogarithmicFarFactor1_2, 1 / std::log2 (renderObject -> getNavigationInfo () -> getFarValue (renderObject -> getViewpoint ()) + 1));
+
+	const auto viewpoint      = renderObject -> getViewpoint ();
+	const auto navigationInfo = renderObject -> getNavigationInfo ();
+
+	if (viewpoint -> getType () .back () == X3DConstants::OrthoViewpoint)
+		glUniform1f (x3d_LogarithmicFarFactor1_2, -1);
+	else
+		glUniform1f (x3d_LogarithmicFarFactor1_2, 1 / std::log2 (navigationInfo -> getFarValue (viewpoint) + 1));
 }
 
 void
