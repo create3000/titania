@@ -74,7 +74,7 @@ static constexpr size_t MAX_TEX_COORD   = 4;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
-	            x3d_FarFactor (-1),
+	 x3d_LogarithmicFarFactor (-1),
 	         x3d_GeometryType (-1),
 	        x3d_NumClipPlanes (-1),
 	            x3d_ClipPlane (getBrowser () -> getMaxClipPlanes (), -1),
@@ -192,7 +192,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	// Get default uniforms.
 
-	x3d_FarFactor = glGetUniformLocation (program, "x3d_FarFactor");
+	x3d_LogarithmicFarFactor = glGetUniformLocation (program, "x3d_LogarithmicFarFactor");
 
 	x3d_GeometryType  = glGetUniformLocation (program, "x3d_GeometryType");
 	x3d_NumClipPlanes = glGetUniformLocation (program, "x3d_NumClipPlanes");
@@ -1031,7 +1031,7 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 		globalLights [i] -> setShaderUniforms (renderObject, this, i);
 
 	// Logarithmic depth buffer support.
-	glUniform1f (x3d_FarFactor, 2 / std::log2 (renderObject -> getNavigationInfo () -> getFarValue (renderObject -> getViewpoint ()) + 1));
+	glUniform1f (x3d_LogarithmicFarFactor, 2 / std::log2 (renderObject -> getNavigationInfo () -> getFarValue (renderObject -> getViewpoint ()) + 1));
 }
 
 void

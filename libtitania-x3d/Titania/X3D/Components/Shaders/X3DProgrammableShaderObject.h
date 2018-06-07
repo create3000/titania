@@ -459,7 +459,7 @@ private:
 
 	///  @name Members
 
-	GLint x3d_FarFactor;
+	GLint x3d_LogarithmicFarFactor;
 
 	GLint               x3d_GeometryType;
 	GLint               x3d_NumClipPlanes;
