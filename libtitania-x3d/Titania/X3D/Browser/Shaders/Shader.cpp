@@ -212,10 +212,11 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	#define IFDEF        "#ifdef\\s+.*?\\n"
 	#define IFNDEF       "#ifndef\\s+.*?\\n"
 	#define ELSE         "#else.*?\\n"
-	#define ENDIF        "#endif+.*?\\n"
+	#define ENDIF        "#endif.*?\\n"
 	#define DEFINE       "#define\\s+(?:[^\\n\\\\]|\\\\[^\\r\\n]|\\\\\\r?\\n)*\\n"
+	#define UNDEF        "#undef\\s+.*?\\n"
 	#define PRAGMA       "#pragma\\s+.*?\\n"
-	#define PREPROCESSOR  LINE "|" IF "|" ELIF "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" PRAGMA
+	#define PREPROCESSOR  LINE "|" IF "|" ELIF "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" UNDEF "|" PRAGMA
 	#define VERSION      "#version\\s+.*?\\n"
 	#define EXTENSION    "#extension\\s+.*?\\n"
 	#define ANY          "[\\s\\S]*"

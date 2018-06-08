@@ -57,6 +57,7 @@
 #include "../../Rendering/X3DRenderObject.h"
 
 #include "../EnvironmentalEffects/X3DFogObject.h"
+#include "../Navigation/OrthoViewpoint.h"
 #include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shape/LineProperties.h"
@@ -71,7 +72,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t MAX_TEX_COORD   = 4;
+static constexpr size_t MAX_TEX_COORD = 4;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                X3DBaseNode (),
@@ -1036,7 +1037,7 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 	const auto viewpoint      = renderObject -> getViewpoint ();
 	const auto navigationInfo = renderObject -> getNavigationInfo ();
 
-	if (viewpoint -> getType () .back () == X3DConstants::OrthoViewpoint)
+	if (dynamic_cast <OrthoViewpoint*> (viewpoint))
 		glUniform1f (x3d_LogarithmicFarFactor1_2, -1);
 	else
 		glUniform1f (x3d_LogarithmicFarFactor1_2, 1 / std::log2 (navigationInfo -> getFarValue (viewpoint) + 1));

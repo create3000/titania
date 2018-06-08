@@ -294,7 +294,7 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 			page -> reparent (*boxes .at (name), getWindow ());
 	}
 
-	getConfig () -> template setItem <int32_t> ("currentPage", int (pageNumber));
+	getConfig () -> template setItem <int32_t> ("currentPage", pageNumber);
 }
 
 template <class Interface>
