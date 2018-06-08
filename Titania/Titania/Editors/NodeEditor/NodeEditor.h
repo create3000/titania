@@ -71,8 +71,7 @@ public:
 
 	virtual
 	Gtk::HeaderBar &
-	getHeaderBar () const
-	{ return getCurrentPage <X3DEditorInterface> () -> getHeaderBar (); }
+	getHeaderBar () const final override;
 
 	///  @name Event handlers
 

@@ -101,6 +101,12 @@ NodeEditor::initialize ()
 	X3DNotebook <X3DNodeEditorInterface>::initialize ();
 }
 
+Gtk::HeaderBar &
+NodeEditor::getHeaderBar () const
+{
+	return getCurrentPage <X3DEditorInterface> () -> getHeaderBar ();
+}
+
 void
 NodeEditor::on_map_window ()
 {

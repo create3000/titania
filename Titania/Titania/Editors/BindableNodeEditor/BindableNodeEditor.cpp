@@ -81,6 +81,12 @@ BindableNodeEditor::initialize ()
 	X3DNotebook <X3DBindableNodeEditorInterface>::initialize ();
 }
 
+Gtk::HeaderBar &
+BindableNodeEditor::getHeaderBar () const
+{
+	return getCurrentPage <X3DEditorInterface> () -> getHeaderBar ();
+}
+
 BindableNodeEditor::~BindableNodeEditor ()
 {
 	X3DNotebook <X3DBindableNodeEditorInterface>::dispose ();
