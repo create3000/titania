@@ -116,8 +116,18 @@ NodeEditor::on_map_window ()
 void
 NodeEditor::on_switch_page (Gtk::Widget* widget, guint pageNumber)
 {
+	getCurrentPage <X3DEditorInterface> () -> headerBar_changed () .removeInterest (&NodeEditor::on_headerBar_changed, this);
+
 	X3DNotebook <X3DNodeEditorInterface>::on_switch_page (widget, pageNumber);
 
+	getCurrentPage <X3DEditorInterface> () -> headerBar_changed () .addInterest (&NodeEditor::on_headerBar_changed, this);
+
+	on_headerBar_changed ();
+}
+
+void
+NodeEditor::on_headerBar_changed ()
+{
 	if (getWindow () .get_visible ())
 		setTitleBar (getHeaderBar ());
 }

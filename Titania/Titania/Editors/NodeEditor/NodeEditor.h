@@ -93,9 +93,14 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	virtual
 	void
 	on_map_window () final override;
+
+	void
+	on_headerBar_changed ();
 
 };
 

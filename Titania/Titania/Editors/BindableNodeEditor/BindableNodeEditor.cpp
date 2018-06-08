@@ -87,6 +87,14 @@ BindableNodeEditor::getHeaderBar () const
 	return getCurrentPage <X3DEditorInterface> () -> getHeaderBar ();
 }
 
+void
+BindableNodeEditor::on_switch_page (Gtk::Widget* widget, guint pageNumber)
+{
+	X3DNotebook <X3DBindableNodeEditorInterface>::on_switch_page (widget, pageNumber);
+
+	headerBar_changed () .processInterests ();
+}
+
 BindableNodeEditor::~BindableNodeEditor ()
 {
 	X3DNotebook <X3DBindableNodeEditorInterface>::dispose ();

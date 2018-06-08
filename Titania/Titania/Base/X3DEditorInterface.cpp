@@ -61,7 +61,8 @@ namespace puck {
 X3DEditorInterface::X3DEditorInterface () :
 	X3DDialogInterface (),
 	   X3DEditorObject (),
-	          titleBar ()
+	          titleBar (),
+	   headerBarOutput ()
 { }
 
 void

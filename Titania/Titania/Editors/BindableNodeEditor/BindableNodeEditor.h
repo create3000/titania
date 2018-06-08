@@ -73,6 +73,12 @@ public:
 	Gtk::HeaderBar &
 	getHeaderBar () const final override;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_switch_page (Gtk::Widget* widget, guint pageNumber) final override;
+
 	///  @name Destruction
 
 	virtual

@@ -86,6 +86,12 @@ public:
 	void
 	present () final override;
 
+	///  @name Signals
+
+	const X3D::Output &
+	headerBar_changed () const
+	{ return headerBarOutput; }
+
 	///  @name Destruction
 
 	virtual
@@ -111,7 +117,8 @@ protected:
 
 	/// @name Members
 
-	Gtk::Box titleBar;
+	Gtk::Box    titleBar;
+	X3D::Output headerBarOutput;
 
 };
 
