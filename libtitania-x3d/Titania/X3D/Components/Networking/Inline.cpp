@@ -78,7 +78,6 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	          buffer (),
 	           scene (executionContext -> getBrowser () -> createScene (false)),
 	           group (new Group (executionContext)),
-	     preventLoad (false),
 	          future ()
 {
 	addType (X3DConstants::Inline);
@@ -108,20 +107,17 @@ Inline::initialize ()
 	getExecutionContext () -> isLive () .addInterest (&Inline::set_live, this);
 	isLive () .addInterest (&Inline::set_live, this);
 
-	load () .addInterest (&Inline::set_load, this);
-	url ()  .addInterest (&Inline::set_url,  this);
-
-	buffer .addInterest (&Inline::set_buffer, this);
+	load () .addInterest (&Inline::set_load,   this);
+	url ()  .addInterest (&Inline::set_url,    this);
+	buffer  .addInterest (&Inline::set_buffer, this);
 
 	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
-	if (load ())
-		buffer .addEvent ();
-
 	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
-
 	group -> setPrivate (true);
 	group -> setup ();
+
+	set_url ();
 }
 
 void
@@ -236,8 +232,6 @@ Inline::requestImmediateLoad ()
 void
 Inline::requestAsyncLoad ()
 {
-	using namespace std::placeholders;
-
 	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
@@ -246,9 +240,7 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new SceneFuture (getExecutionContext (),
-	                                   url (),
-	                                   std::bind (&Inline::setSceneAsync, this, _1)));
+	buffer .addEvent ();
 }
 
 void
@@ -326,8 +318,11 @@ void
 Inline::set_load ()
 {
 	if (load ())
-		buffer .addEvent ();
+	{
+		setLoadState (NOT_STARTED_STATE);
 
+		requestImmediateLoad ();
+	}
 	else
 		requestUnload ();
 }
@@ -335,24 +330,22 @@ Inline::set_load ()
 void
 Inline::set_url ()
 {
-	buffer .addEvent ();
+	if (not load ())
+		return;
+
+	setLoadState (NOT_STARTED_STATE);
+
+	requestAsyncLoad ();
 }
 
 void
 Inline::set_buffer ()
 {
-	if (not load ())
-		return;
+	using namespace std::placeholders;
 
-	if (preventLoad)
-	{
-		preventLoad = false;
-		return;
-	}
-
-	setLoadState (NOT_STARTED_STATE);
-
-	requestImmediateLoad ();
+	future .setValue (new SceneFuture (getExecutionContext (),
+	                                   url (),
+	                                   std::bind (&Inline::setSceneAsync, this, _1)));
 }
 
 void

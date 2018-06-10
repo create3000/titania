@@ -137,6 +137,7 @@ World::set_activeLayer ()
 	activeLayer = layerSet -> getActiveLayer ();
 }
 
+///  Bind first viewpoint and other bindables found.
 void
 World::bind ()
 {

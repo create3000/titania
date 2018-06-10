@@ -920,16 +920,6 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 	if (removeFromSceneGraph)
 		removeNodesFromSceneGraph (executionContext, nodes, undoStep);
 
-	for (const auto & inlineNode : inlineNodes)
-	{
-		undoStep -> addUndoFunction (&Inline::requestImmediateLoad, inlineNode);
-		undoStep -> addUndoFunction (&Inline::preventNextLoad, inlineNode); // Prevent next load from load field event.
-
-		undoStep -> addUndoFunction (&SFBool::setValue, std::ref (inlineNode -> load ()), true);
-		undoStep -> addRedoFunction (&SFBool::setValue, std::ref (inlineNode -> load ()), false);
-		inlineNode -> load () = false;
-	}
-
 	// Hide node
 
 	for (const auto & node : nodes)

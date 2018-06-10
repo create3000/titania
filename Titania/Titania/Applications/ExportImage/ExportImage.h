@@ -54,6 +54,7 @@
 #include "../../Applications/main/CommandOptions.h"
 
 #include <Titania/X3D.h>
+#include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 
 #include <gtkmm/main.h>
@@ -69,7 +70,21 @@ public:
 	void
 	set_initialized (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
 	{
+		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser, std::ref (options), outputFilename);
+
+		set_loadCount (browser, options, outputFilename);
+	}
+
+	void
+	set_loadCount (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
+	{
 		std::clog << "*** Loading " << browser -> getLoadCount () << " files." << std::endl;
+
+		if (browser -> getLoadCount ())
+			return;
+
+		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
+		browser -> getWorld () -> bind ();
 
 		// Constrain options.
 

@@ -123,11 +123,6 @@ public:
 	void
 	requestImmediateLoad () override;
 
-	virtual
-	void
-	preventNextLoad ()
-	{ preventLoad = true; }
-
 	///  @name Root node handling
 
 	virtual
@@ -251,7 +246,6 @@ private:
 	SFTime               buffer;
 	X3DScenePtr          scene;
 	X3DPtr <Group>       group;
-	bool                 preventLoad;
 	X3DPtr <SceneFuture> future;
 
 };

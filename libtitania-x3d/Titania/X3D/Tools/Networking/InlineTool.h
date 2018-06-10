@@ -125,11 +125,6 @@ public:
 	requestImmediateLoad () final override
 	{ return X3DUrlObjectTool::requestImmediateLoad (); }
 
-	virtual
-	void
-	preventNextLoad () final override
-	{ getNode <Inline> () -> preventNextLoad (); }
-
 	///  @name Root node handling
 
 	virtual

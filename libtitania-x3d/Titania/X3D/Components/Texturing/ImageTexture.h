@@ -161,6 +161,9 @@ private:
 	void
 	set_url ();
 
+	void
+	set_buffer ();
+
 	virtual
 	void
 	update () final override;

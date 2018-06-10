@@ -107,7 +107,10 @@ public:
 	getLayer0 () const
 	{ return layer0; }
 
-	///  @name Display
+	///  @name Operations
+
+	void
+	bind ();
 
 	virtual
 	void
@@ -135,9 +138,6 @@ private:
 
 	void
 	set_rootNodes ();
-
-	void
-	bind ();
 
 	///  @name Static members
 
