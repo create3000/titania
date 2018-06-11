@@ -734,7 +734,10 @@ void
 Context::dispose ()
 {
 	if (future)
+	{
+		getBrowser () -> removeLoadCount (future .getValue ());
 		future -> dispose ();
+	}
 
 	X3DJavaScriptContext::dispose ();
 }

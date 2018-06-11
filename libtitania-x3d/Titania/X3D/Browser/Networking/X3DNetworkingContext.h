@@ -108,6 +108,12 @@ public:
 	getMonitorFiles () const
 	{ return monitorFiles; }
 
+	void
+	addLoadCount (const void* const object);
+
+	void
+	removeLoadCount (const void* const object);
+
 	///  @name Destruction
 
 	virtual
@@ -157,12 +163,6 @@ protected:
 
 	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
-
-	void
-	addLoadCount (const void* const);
-
-	void
-	removeLoadCount (const void* const);
 
 	void
 	resetLoadCount ();

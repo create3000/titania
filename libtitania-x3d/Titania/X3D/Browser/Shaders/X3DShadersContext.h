@@ -184,7 +184,6 @@ private:
 	int32_t                 maxVertexAttributes;
 	SFBool                  fixedPipeline;
 	SFBool                  fixedPipelineRequired;
-	bool                    fixedPipelineDriver;
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;
 	X3DPtr <ComposedShader> gouraudShader;
