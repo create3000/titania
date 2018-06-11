@@ -99,8 +99,7 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
-	url () .addInterest (&Script::set_url, this);
-
+	url () .addInterest (&Script::set_url,    this);
 	buffer .addInterest (&Script::set_buffer, this);
 
 	set_url ();
@@ -178,7 +177,21 @@ Script::requestImmediateLoad ()
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
-	
+
+	buffer .addEvent ();	
+}
+
+void
+Script::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
+
+void
+Script::set_buffer ()
+{
 	javaScript .set (nullptr);
 
 	// Find first working script.
@@ -222,20 +235,6 @@ Script::requestImmediateLoad ()
 
 		setLoadState (FAILED_STATE);
 	}
-}
-
-void
-Script::set_url ()
-{
-	buffer .addEvent ();
-}
-
-void
-Script::set_buffer ()
-{
-	setLoadState (NOT_STARTED_STATE);
-
-	requestImmediateLoad ();
 }
 
 } // X3D

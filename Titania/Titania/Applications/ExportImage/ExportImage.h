@@ -84,7 +84,7 @@ public:
 			return;
 
 		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
-		browser -> finished () .addInterest (&ExportImage::set_snapshot, this, browser, std::ref (options), outputFilename);
+		Glib::signal_timeout () .connect_once (sigc::bind (sigc::mem_fun (this, &ExportImage::set_snapshot), browser, std::ref (options), outputFilename), 0, Glib::PRIORITY_DEFAULT_IDLE);
 
 		browser -> getWorld () -> bind ();
 	}
@@ -92,8 +92,6 @@ public:
 	void
 	set_snapshot (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
 	{
-		browser -> finished () .removeInterest (&ExportImage::set_snapshot, this);
-
 		// Constrain options.
 
 		size_t width        = options .width;
