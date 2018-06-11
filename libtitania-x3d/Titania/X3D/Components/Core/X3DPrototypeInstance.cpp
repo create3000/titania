@@ -173,6 +173,8 @@ X3DPrototypeInstance::construct ()
 
 		// Interface
 
+		fieldMappings .clear ();
+
 		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
 		if (not metadata () .isSet ())
@@ -183,6 +185,8 @@ X3DPrototypeInstance::construct ()
 			try
 			{
 				const auto field = getField (protoField -> getName ());
+
+				fieldMappings .emplace (protoField, field);
 
 				// Return if something is wrong.
 				if (field -> getAccessType () not_eq protoField -> getAccessType ())
@@ -247,6 +251,9 @@ X3DPrototypeInstance::update ()
 {
 	try
 	{
+		if (not isInitialized ())
+			return;
+
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 

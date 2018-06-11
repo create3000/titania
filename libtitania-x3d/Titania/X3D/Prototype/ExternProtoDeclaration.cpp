@@ -337,7 +337,6 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 
 	try
 	{
-
 		scene -> isLive () = getExecutionContext () -> isLive () and isLive ();
 		scene -> setPrivate (getScene () -> getPrivate ());
 		scene -> setExecutionContext (getExecutionContext ());
