@@ -102,14 +102,14 @@ public:
 		{
 			width = browser -> getMaxRenderBufferSize ();
 
-			std::clog << "*** Image width to height, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+			std::clog << "*** Image width to high, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
 		}
 
 		if (height > browser -> getMaxRenderBufferSize ())
 		{
 			height = browser -> getMaxRenderBufferSize ();
 
-			std::clog << "*** Image height to height, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+			std::clog << "*** Image height to high, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
 		}
 
 		if (antialiasing > browser -> getMaxSamples ())

@@ -152,7 +152,7 @@ private:
 
 	static
 	void
-	setSceneAsync (const void* const future, const X3D::SFNode & script, const X3D::SFNode &, X3D::MFNode* const, X3D::X3DScenePtr &&);
+	setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene);
 
 	///  @name Static members
 

@@ -100,14 +100,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		fieldMappings .emplace (protoField, field);
 	}
 
-	if (protoNode -> isExternproto ())
-	{
-		if (protoNode -> checkLoadState () == COMPLETE_STATE)
-			construct ();
-		else
-			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
-	}
-	else
+	if (not protoNode -> isExternproto ())
 	{
 		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
@@ -172,6 +165,8 @@ X3DPrototypeInstance::construct ()
 
 		if (protoNode -> isExternproto ())
 		{
+			getBrowser () -> removeLoadCount (this);
+
 			protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::construct, this);
 			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::update, this);
 		}
@@ -362,16 +357,33 @@ X3DPrototypeInstance::initialize ()
 {
 	try
 	{
+		if (protoNode -> isExternproto ())
+			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
+
 		switch (protoNode -> checkLoadState ())
 		{
 			case NOT_STARTED_STATE:
+			{
+				if (protoNode -> isExternproto ())
+					getBrowser () -> addLoadCount (this);
+
 				protoNode -> requestAsyncLoad ();
 				break;
+			}
 			case IN_PROGRESS_STATE:
+			{
+				if (protoNode -> isExternproto ())
+					getBrowser () -> addLoadCount (this);
+
 				break;
+			}
 			case COMPLETE_STATE:
 			{
-				if (not protoNode -> isExternproto ())
+				if (protoNode -> isExternproto ())
+				{
+					construct ();
+				}
+				else
 				{
 					ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 	

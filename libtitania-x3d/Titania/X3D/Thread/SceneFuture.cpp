@@ -79,6 +79,7 @@ SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFS
 
 	getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this);
 	getBrowser () -> addEvent ();
+	getBrowser () -> addLoadCount (this);
 }
 
 X3DBaseNode*
@@ -255,6 +256,8 @@ SceneFuture::set_loadCount (const int32_t loadCount)
 void
 SceneFuture::dispose ()
 {
+	getBrowser () -> removeLoadCount (this);
+
 	stop ();
 
 	loader .stop ();

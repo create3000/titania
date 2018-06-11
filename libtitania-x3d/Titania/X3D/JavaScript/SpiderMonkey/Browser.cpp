@@ -695,7 +695,6 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto   argv    = JS_ARGV (cx, vp);
 		const auto   context = getContext (cx);
 		const auto & script  = context -> getScriptNode ();
-		const auto   browser = script -> getBrowser ();
 		const auto   url     = getArgument <MFString> (cx, argv, 0);
 		const auto   node    = getArgument <SFNode> (cx, argv, 1);
 		const auto   event   = getArgument <std::string> (cx, argv, 2);
@@ -721,13 +720,10 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 			context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
 			                                                         *url,
 			                                                         std::bind (&Browser::setSceneAsync,
-			                                                                    context -> getFuture () .getValue (),
 			                                                                    X3D::SFNode (script),
 			                                                                    *node,
 			                                                                    static_cast <X3D::MFNode*> (field),
 			                                                                    _1)));
-
-			browser -> addLoadCount (context -> getFuture () .getValue ());
 
 			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 			return true;
@@ -745,14 +741,11 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 //  XXX: use FieldPtr here for "X3D::MFNode* const field"
 void
-Browser::setSceneAsync (const void* const future, const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
+Browser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
 {
 	if (scene)
 	{
-		const auto browser          = script -> getBrowser ();
 		const auto executionContext = script -> getExecutionContext ();
-
-		browser -> removeLoadCount (future);
 
 		executionContext -> isLive () .addInterest (scene -> isLive ());
 
