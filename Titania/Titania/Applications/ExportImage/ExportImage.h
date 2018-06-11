@@ -84,7 +84,15 @@ public:
 			return;
 
 		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
+		browser -> finished () .addInterest (&ExportImage::set_snapshot, this, browser, std::ref (options), outputFilename);
+
 		browser -> getWorld () -> bind ();
+	}
+
+	void
+	set_snapshot (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
+	{
+		browser -> finished () .removeInterest (&ExportImage::set_snapshot, this);
 
 		// Constrain options.
 
@@ -96,14 +104,14 @@ public:
 		{
 			width = browser -> getMaxRenderBufferSize ();
 
-			std::clog << "*** Image width to high, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+			std::clog << "*** Image width to height, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
 		}
 
 		if (height > browser -> getMaxRenderBufferSize ())
 		{
 			height = browser -> getMaxRenderBufferSize ();
 
-			std::clog << "*** Image height to high, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+			std::clog << "*** Image height to height, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
 		}
 
 		if (antialiasing > browser -> getMaxSamples ())

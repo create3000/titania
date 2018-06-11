@@ -72,7 +72,6 @@ X3DShadersContext::X3DShadersContext () :
 	      maxVertexAttributes (0),
 	            fixedPipeline (true),
 	    fixedPipelineRequired (true),
-	      fixedPipelineDriver (false),
 	              pointShader (),
 	          wireframeShader (),
 	            gouraudShader (),
@@ -182,6 +181,12 @@ X3DShadersContext::set_loaded ()
 {
 	getBrowser () -> getLoadSensor () -> isLoaded () .removeInterest (&X3DShadersContext::set_loaded,  this);
 
+	if (not phongShader -> isValid ())
+		phongShader = gouraudShader;
+
+	if (not shadowShader -> isValid ())
+		shadowShader = gouraudShader;
+
 	set_shading ();
 }
 
@@ -193,10 +198,7 @@ X3DShadersContext::set_shading ()
 									//not getBackgroundSphereShader () -> isValid () or
 									not pointShader -> isValid () or
 									not wireframeShader -> isValid () or
-									not gouraudShader -> isValid () or
-									not phongShader -> isValid () or
-									not shadowShader -> isValid () or
-	                        fixedPipelineDriver;
+									not gouraudShader -> isValid ();
 
 	if (fixedPipelineRequired)
 	{
