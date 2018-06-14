@@ -81,18 +81,19 @@ const std::string   RenderingProperties::typeName       = "RenderingProperties";
 const std::string   RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	        Enabled (),
-	  CycleInterval (1),
-	         Vendor (new SFString ()),
-	       Renderer (new SFString ()),
-	        Version (new SFString ()),
-	        Shading (new SFString ("GOURAUD")),
-	 MaxTextureSize (new SFInt32 ()),
-	   TextureUnits (new SFInt32 ()),
-	      MaxLights (new SFInt32 ()),
-	    Antialiased (new SFBool ()),
-	     ColorDepth (new SFInt32 ()),
-	  TextureMemory (new SFDouble ())
+	               Enabled (),
+	         CycleInterval (1),
+	                Vendor (new SFString ()),
+	              Renderer (new SFString ()),
+	               Version (new SFString ()),
+	               Shading (new SFString ("GOURAUD")),
+	        MaxTextureSize (new SFInt32 ()),
+	          TextureUnits (new SFInt32 ()),
+	             MaxLights (new SFInt32 ()),
+	           Antialiased (new SFBool ()),
+	            ColorDepth (new SFInt32 ()),
+	         TextureMemory (new SFDouble ()),
+	LogarithmicDepthBuffer (new SFBool ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -104,17 +105,19 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 {
 	addType (X3DConstants::RenderingProperties);
 
-	addField (outputOnly, "Vendor",         Vendor ());
-	addField (outputOnly, "Renderer",       Renderer ());
-	addField (outputOnly, "Version",        Version ());
+	addField (outputOnly, "Vendor",                 Vendor ());
+	addField (outputOnly, "Renderer",               Renderer ());
+	addField (outputOnly, "Version",                Version ());
 
-	addField (outputOnly, "Shading",        Shading ());
-	addField (outputOnly, "MaxTextureSize", MaxTextureSize ());
-	addField (outputOnly, "TextureUnits",   TextureUnits ());
-	addField (outputOnly, "MaxLights",      MaxLights ());
-	addField (outputOnly, "Antialiased",    Antialiased ());
-	addField (outputOnly, "ColorDepth",     ColorDepth ());
-	addField (outputOnly, "TextureMemory",  TextureMemory ());
+	addField (outputOnly, "Shading",                Shading ());
+	addField (outputOnly, "MaxTextureSize",         MaxTextureSize ());
+	addField (outputOnly, "TextureUnits",           TextureUnits ());
+	addField (outputOnly, "MaxLights",              MaxLights ());
+	addField (outputOnly, "Antialiased",            Antialiased ());
+	addField (outputOnly, "ColorDepth",             ColorDepth ());
+	addField (outputOnly, "TextureMemory",          TextureMemory ());
+
+	addField (outputOnly, "LogarithmicDepthBuffer", LogarithmicDepthBuffer ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 

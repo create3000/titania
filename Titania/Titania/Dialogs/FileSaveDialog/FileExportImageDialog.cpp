@@ -312,7 +312,7 @@ FileExportImageDialog::options ()
 	if (getConfig () -> hasItem ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () -> getItem <int32_t> ("imageCompression"));
 
-	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));
+	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> getExtension ("GL_EXT_framebuffer_multisample"));
 
 	// Run image options dialog.
 

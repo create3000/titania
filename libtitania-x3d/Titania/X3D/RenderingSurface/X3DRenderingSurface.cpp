@@ -108,13 +108,16 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 
 	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
 
+	//for (const auto & extension : extensions)
+	//	__LOG__ << extension << std::endl;
+
 	frameBuffer -> setup ();
 
 	timeoutDispatcher -> connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
 }
 
 bool
-X3DRenderingSurface::isExtensionAvailable (const std::string & name) const
+X3DRenderingSurface::getExtension (const std::string & name) const
 {
 	return extensions .count (name);
 }

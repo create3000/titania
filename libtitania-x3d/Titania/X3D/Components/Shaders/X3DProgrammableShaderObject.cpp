@@ -150,7 +150,7 @@ X3DProgrammableShaderObject::setOpenGLES (const bool openGLES)
 	if (openGLES)
 		extensionGPUShaderFP64 = false;
 	else
-		extensionGPUShaderFP64 = getBrowser () -> isExtensionAvailable ("GL_ARB_gpu_shader_fp64");
+		extensionGPUShaderFP64 = getBrowser () -> getExtension ("GL_ARB_gpu_shader_fp64");
 }
 
 void

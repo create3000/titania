@@ -109,7 +109,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	   MotionBlurIntensity (new SFFloat (0.7)),
 	     AnimateStairWalks (new SFBool ()),
 	               Gravity (new SFFloat (gn <float>)),
-	LogarithmicDepthBuffer (new SFBool ())
+	LogarithmicDepthBuffer (new SFBool (true))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -134,6 +134,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlurIntensity",    MotionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      AnimateStairWalks ());
 	addField (inputOutput, "Gravity",                Gravity ());
+	addField (inputOutput, "LogarithmicDepthBuffer", LogarithmicDepthBuffer ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
@@ -151,12 +152,13 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	Antialiased ()         .addInterest (&BrowserOptions::set_Antialiased, this);
-	TextureQuality ()      .addInterest (&BrowserOptions::set_TextureQuality, this);
-	PrimitiveQuality ()    .addInterest (&BrowserOptions::set_PrimitiveQuality, this);
-	Shading ()             .addInterest (&BrowserOptions::set_Shading, this);
-	MotionBlur ()          .addInterest (&BrowserOptions::set_MotionBlur, this);
-	MotionBlurIntensity () .addInterest (&BrowserOptions::set_MotionBlurIntensity, this);
+	Antialiased ()            .addInterest (&BrowserOptions::set_Antialiased,            this);
+	TextureQuality ()         .addInterest (&BrowserOptions::set_TextureQuality,         this);
+	PrimitiveQuality ()       .addInterest (&BrowserOptions::set_PrimitiveQuality,       this);
+	Shading ()                .addInterest (&BrowserOptions::set_Shading,                this);
+	MotionBlur ()             .addInterest (&BrowserOptions::set_MotionBlur,             this);
+	MotionBlurIntensity ()    .addInterest (&BrowserOptions::set_MotionBlurIntensity,    this);
+	LogarithmicDepthBuffer () .addInterest (&BrowserOptions::set_LogarithmicDepthBuffer, this);
 
 	set_Antialiased ();
 	set_TextureQuality ();
@@ -164,6 +166,7 @@ BrowserOptions::initialize ()
 	set_Shading ();
 	set_MotionBlur ();
 	set_MotionBlurIntensity ();
+	set_LogarithmicDepthBuffer ();
 }
 
 void
@@ -401,6 +404,12 @@ void
 BrowserOptions::set_MotionBlurIntensity ()
 {
 	getBrowser () -> getMotionBlur () -> intensity () = MotionBlurIntensity ();
+}
+
+void
+BrowserOptions::set_LogarithmicDepthBuffer ()
+{
+	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
 }
 
 }       // X3D

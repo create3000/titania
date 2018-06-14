@@ -50,7 +50,7 @@
 
 #include "GeoViewpoint.h"
 
-#include "../../Browser/BrowserOptions.h"
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -238,7 +238,7 @@ GeoViewpoint::getUpVector () const
 double
 GeoViewpoint::getMaxFarValue () const
 {
-	return getBrowser () -> getBrowserOptions () -> LogarithmicDepthBuffer () ? 1e10 : 1e9;
+	return getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () ? 1e10 : 1e9;
 }
 
 double
@@ -303,7 +303,7 @@ GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 Matrix4d
 GeoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit) const
 {
-	if (limit or getBrowser () -> getBrowserOptions () -> LogarithmicDepthBuffer ())
+	if (limit or getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer ())
 		return camera <double>::perspective (getFieldOfView (), nearValue, farValue, viewport [2], viewport [3]);
 
 	const double geoZNear = std::max (math::lerp (std::min (nearValue, 1e4), 1e4, elevation / 1e7), 1.0);

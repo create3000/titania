@@ -145,7 +145,7 @@ ShaderProgram::requestImmediateLoad ()
 	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
-	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> getExtension ("GL_ARB_separate_shader_objects"))
 	{
 		setLoadState (FAILED_STATE);
 		return;

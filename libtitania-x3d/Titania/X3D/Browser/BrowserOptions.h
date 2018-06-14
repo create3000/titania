@@ -257,6 +257,9 @@ private:
 	void
 	set_MotionBlurIntensity ();
 
+	void
+	set_LogarithmicDepthBuffer ();
+
 	///  @name Static members
 
 	static const ComponentType component;

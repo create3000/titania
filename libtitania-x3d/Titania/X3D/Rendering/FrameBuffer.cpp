@@ -79,7 +79,7 @@ FrameBuffer::FrameBuffer (X3DRenderingSurface* const renderingSurface, const siz
 void
 FrameBuffer::setup ()
 {
-	if (not renderingSurface -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"))
+	if (not renderingSurface -> getExtension ("GL_EXT_framebuffer_multisample"))
 		samples = 0;
 
 	// Setup frame buffer with no antialiasing for blit.

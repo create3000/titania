@@ -202,6 +202,14 @@ public:
 	TextureMemory () const
 	{ return *fields .TextureMemory; }
 
+	const SFBool &
+	LogarithmicDepthBuffer () const
+	{ return *fields .LogarithmicDepthBuffer; }
+
+	SFBool &
+	LogarithmicDepthBuffer ()
+	{ return *fields .LogarithmicDepthBuffer; }
+
 	///  @name Member access
 
 	const SFEnum <ShadingType> &
@@ -280,7 +288,7 @@ private:
 		SFBool* const Antialiased;
 		SFInt32* const ColorDepth;
 		SFDouble* const TextureMemory;
-
+		SFBool* const LogarithmicDepthBuffer;
 	};
 
 	Fields fields;

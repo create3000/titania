@@ -73,7 +73,7 @@ public:
 
 	///  Returns true if OpenGL @a extensions is available, otherwise false.
 	bool
-	isExtensionAvailable (const std::string & name) const;
+	getExtension (const std::string & name) const;
 
 	///  Sets the number of antialiasing samples, default is 0.
 	void
