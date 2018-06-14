@@ -214,6 +214,14 @@ public:
 	Gravity () const
 	{ return *fields .Gravity; }
 
+	const SFBool &
+	LogarithmicDepthBuffer () const
+	{ return *fields .LogarithmicDepthBuffer; }
+
+	SFBool &
+	LogarithmicDepthBuffer ()
+	{ return *fields .LogarithmicDepthBuffer; }
+
 	///  @name Member access
 
 	const SFEnum <ShadingType> &
@@ -274,6 +282,7 @@ private:
 		SFFloat* const MotionBlurIntensity;
 		SFBool* const AnimateStairWalks;
 		SFFloat* const Gravity;
+		SFBool* const LogarithmicDepthBuffer;
 	};
 
 	Fields fields;

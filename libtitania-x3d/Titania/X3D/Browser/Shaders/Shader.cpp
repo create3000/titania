@@ -50,6 +50,7 @@
 
 #include "Shader.h"
 
+#include "../../Browser/BrowserOptions.h"
 #include "../../Browser/Networking/config.h"
 #include "../../InputOutput/FileLoader.h"
 
@@ -239,7 +240,9 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	constants << "#version 100\n#line 1\n";
 	constants << "#define TITANIA\n";
-	constants << "#define X3D_LOGARITHMIC_DEPTH_BUFFER\n";
+
+	if (browser -> getBrowserOptions () -> LogarithmicDepthBuffer ())
+		constants << "#define X3D_LOGARITHMIC_DEPTH_BUFFER\n";
 
 	definitions << "#define x3d_None 0\n";
 

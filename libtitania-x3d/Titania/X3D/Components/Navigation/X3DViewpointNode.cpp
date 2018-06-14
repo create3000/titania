@@ -50,6 +50,7 @@
 
 #include "X3DViewpointNode.h"
 
+#include "../../Browser/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
@@ -205,7 +206,7 @@ X3DViewpointNode::getUserCenterOfRotation () const
 double
 X3DViewpointNode::getMaxFarValue () const
 {
-	return 1e10;
+	return getBrowser () -> getBrowserOptions () -> LogarithmicDepthBuffer () ? 1e10 : 1e5;
 }
 
 void
