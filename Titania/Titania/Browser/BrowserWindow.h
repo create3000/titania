@@ -98,6 +98,9 @@ private:
 	setPage (const NotebookPagePtr & value) final override;
 
 	void
+	set_masterBrowser ();
+
+	void
 	set_activeLayer ();
 
 	void
@@ -613,6 +616,10 @@ private:
 	virtual
 	void
 	on_cobweb_compatibility_toggled () final override;
+
+	virtual
+	void
+	on_logarithmic_depth_buffer_toggled () final override;
 
 	virtual
 	void

@@ -139,8 +139,9 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 void
 BrowserWindow::store ()
 {
-	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
-	getConfig () -> setItem ("cobwebCompatibility", getX_ITECompatibilityAction () -> get_active ());
+	getConfig () -> setItem ("transformToolMode",      (int32_t) getTransformToolModeAction () -> get_active ());
+	getConfig () -> setItem ("cobwebCompatibility",    getX_ITECompatibilityAction () -> get_active ());
+	getConfig () -> setItem ("logarithmicDepthBuffer", getLogarithmicDepthBufferAction () -> get_active ());
 
 	X3DBrowserWindow::store ();
 }
@@ -149,6 +150,8 @@ void
 BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
+
+	getMasterBrowser () -> initialized () .addInterest (&BrowserWindow::set_masterBrowser, this);
 
 	try
 	{
@@ -256,9 +259,17 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 	
 		getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
-	
+
 		on_transform_tool_mode_toggled ();
 	}
+}
+
+void
+BrowserWindow::set_masterBrowser ()
+{
+	getMasterBrowser () -> initialized () .removeInterest (&BrowserWindow::set_masterBrowser, this);
+
+	getLogarithmicDepthBufferAction () -> set_active (getConfig () -> getItem <bool> ("logarithmicDepthBuffer"));
 }
 
 void
@@ -1872,6 +1883,12 @@ void
 BrowserWindow::on_cobweb_compatibility_toggled ()
 {
 	getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
+}
+
+void
+BrowserWindow::on_logarithmic_depth_buffer_toggled ()
+{
+	getMasterBrowser () -> getBrowserOptions () -> LogarithmicDepthBuffer () = getLogarithmicDepthBufferAction () -> get_active ();
 }
 
 void

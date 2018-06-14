@@ -106,6 +106,10 @@ public:
 	{ return m_GouraudAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getLogarithmicDepthBufferAction () const
+	{ return m_LogarithmicDepthBufferAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getMenubarAction () const
 	{ return m_MenubarAction; }
 
@@ -637,6 +641,10 @@ public:
 	getBrowserX_ITECompatibilityMenuItem () const
 	{ return *m_BrowserX_ITECompatibilityMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getBrowserLogarithmicDepthBufferMenuItem () const
+	{ return *m_BrowserLogarithmicDepthBufferMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
 	{ return *m_BrowserInfoMenuItem; }
@@ -1101,6 +1109,10 @@ public:
 	getX_ITECompatibilityMenuItem () const
 	{ return *m_X_ITECompatibilityMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getLogarithmicDepthBufferMenuItem () const
+	{ return *m_LogarithmicDepthBufferMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
 	{ return *m_InfoMenuItem; }
@@ -1362,6 +1374,10 @@ public:
 	virtual
 	void
 	on_gouraud_toggled () = 0;
+
+	virtual
+	void
+	on_logarithmic_depth_buffer_toggled () = 0;
 
 	virtual
 	void
@@ -1931,6 +1947,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PointsetAction;
@@ -2064,6 +2081,7 @@ private:
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
 	Gtk::CheckMenuItem* m_BrowserX_ITECompatibilityMenuItem;
+	Gtk::CheckMenuItem* m_BrowserLogarithmicDepthBufferMenuItem;
 	Gtk::ImageMenuItem* m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow* m_Window;
 	Gtk::Box* m_Widget;
@@ -2180,6 +2198,7 @@ private:
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;
 	Gtk::CheckMenuItem* m_X_ITECompatibilityMenuItem;
+	Gtk::CheckMenuItem* m_LogarithmicDepthBufferMenuItem;
 	Gtk::ImageMenuItem* m_InfoMenuItem;
 	Gtk::Box* m_Toolbar;
 	Gtk::Toolbar* m_EditToolBar;

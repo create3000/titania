@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkImage" id="FileImportImage">
@@ -44,6 +44,9 @@
         <property name="use_stock">True</property>
       </object>
     </child>
+  </object>
+  <object class="GtkToggleAction" id="LogarithmicDepthBufferAction">
+    <signal name="toggled" handler="on_logarithmic_depth_buffer_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="MenubarAction">
     <property name="label" translatable="yes">Menubar</property>
@@ -1687,6 +1690,14 @@
               </object>
             </child>
             <child>
+              <object class="GtkCheckMenuItem" id="BrowserLogarithmicDepthBufferMenuItem">
+                <property name="related_action">LogarithmicDepthBufferAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Logarithmic Depth Buffer</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserInfoMenuItem">
                 <property name="label">gtk-about</property>
                 <property name="visible">True</property>
@@ -1747,6 +1758,9 @@
     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
     <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="name">BrowserWindow</property>
@@ -3110,6 +3124,14 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="LogarithmicDepthBufferMenuItem">
+                                <property name="related_action">LogarithmicDepthBufferAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Logarithmic Depth Buffer</property>
                               </object>
                             </child>
                             <child>

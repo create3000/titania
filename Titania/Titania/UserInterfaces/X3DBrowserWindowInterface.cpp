@@ -82,6 +82,7 @@ X3DBrowserWindowInterface::create ()
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_GouraudAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
+	m_LogarithmicDepthBufferAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LogarithmicDepthBufferAction"));
 	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
 	m_PhongAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
 	m_PointsetAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
@@ -217,6 +218,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserScenesMenu", m_BrowserScenesMenu);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
 	m_builder -> get_widget ("BrowserX_ITECompatibilityMenuItem", m_BrowserX_ITECompatibilityMenuItem);
+	m_builder -> get_widget ("BrowserLogarithmicDepthBufferMenuItem", m_BrowserLogarithmicDepthBufferMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -333,6 +335,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ScenesMenu", m_ScenesMenu);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
 	m_builder -> get_widget ("X_ITECompatibilityMenuItem", m_X_ITECompatibilityMenuItem);
+	m_builder -> get_widget ("LogarithmicDepthBufferMenuItem", m_LogarithmicDepthBufferMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
 	m_builder -> get_widget ("EditToolBar", m_EditToolBar);
@@ -400,6 +403,7 @@ X3DBrowserWindowInterface::create ()
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_GouraudAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_gouraud_toggled));
+	m_LogarithmicDepthBufferAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_logarithmic_depth_buffer_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_menubar_toggled));
 	m_PhongAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_phong_toggled));
 	m_PointsetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_pointset_toggled));

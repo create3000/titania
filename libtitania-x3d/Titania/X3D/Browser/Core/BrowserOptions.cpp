@@ -423,6 +423,8 @@ BrowserOptions::set_LogarithmicDepthBuffer ()
 {
 	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
 
+	// Recompile shaders.
+
 	getBrowser () -> getPointShader () -> parts () [0] -> getField ("url") -> addEvent ();
 	getBrowser () -> getPointShader () -> parts () [1] -> getField ("url") -> addEvent ();
 
