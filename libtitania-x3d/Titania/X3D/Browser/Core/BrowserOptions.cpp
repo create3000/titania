@@ -159,7 +159,6 @@ BrowserOptions::initialize ()
 	Shading ()                .addInterest (&BrowserOptions::set_Shading,                this);
 	MotionBlur ()             .addInterest (&BrowserOptions::set_MotionBlur,             this);
 	MotionBlurIntensity ()    .addInterest (&BrowserOptions::set_MotionBlurIntensity,    this);
-	LogarithmicDepthBuffer () .addInterest (&BrowserOptions::set_LogarithmicDepthBuffer, this);
 
 	set_Antialiased ();
 	set_TextureQuality ();
@@ -169,9 +168,17 @@ BrowserOptions::initialize ()
 	set_MotionBlurIntensity ();
 
 	if (getBrowser () -> getSharedContext ())
+	{
+		getBrowser () -> getSharedContext () -> getRenderingProperties () -> LogarithmicDepthBuffer () .addInterest (getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer ());
+
 		getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = getBrowser () -> getSharedContext () -> getRenderingProperties () -> LogarithmicDepthBuffer ();
+	}
 	else
+	{
+		LogarithmicDepthBuffer () .addInterest (&BrowserOptions::set_LogarithmicDepthBuffer, this);
+
 		getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
+	}
 }
 
 void
@@ -414,25 +421,22 @@ BrowserOptions::set_MotionBlurIntensity ()
 void
 BrowserOptions::set_LogarithmicDepthBuffer ()
 {
-//	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
-//
-//	if (not getBrowser () -> getSharedContext ())
-//	{
-//		getBrowser () -> getPointShader () -> parts () [0] -> getField ("url") -> addEvent ();
-//		getBrowser () -> getPointShader () -> parts () [1] -> getField ("url") -> addEvent ();
-//	
-//		getBrowser () -> getWireframeShader () -> parts () [0] -> getField ("url") -> addEvent ();
-//		getBrowser () -> getWireframeShader () -> parts () [1] -> getField ("url") -> addEvent ();
-//	
-//		getBrowser () -> getGouraudShader () -> parts () [0] -> getField ("url") -> addEvent ();
-//		getBrowser () -> getGouraudShader () -> parts () [1] -> getField ("url") -> addEvent ();
-//	
-//		getBrowser () -> getPhongShader () -> parts () [0] -> getField ("url") -> addEvent ();
-//		getBrowser () -> getPhongShader () -> parts () [1] -> getField ("url") -> addEvent ();
-//	
-//		getBrowser () -> getShadowShader () -> parts () [0] -> getField ("url") -> addEvent ();
-//		getBrowser () -> getShadowShader () -> parts () [1] -> getField ("url") -> addEvent ();
-//	}
+	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
+
+	getBrowser () -> getPointShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getPointShader () -> parts () [1] -> getField ("url") -> addEvent ();
+
+	getBrowser () -> getWireframeShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getWireframeShader () -> parts () [1] -> getField ("url") -> addEvent ();
+
+	getBrowser () -> getGouraudShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getGouraudShader () -> parts () [1] -> getField ("url") -> addEvent ();
+
+	getBrowser () -> getPhongShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getPhongShader () -> parts () [1] -> getField ("url") -> addEvent ();
+
+	getBrowser () -> getShadowShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getShadowShader () -> parts () [1] -> getField ("url") -> addEvent ();
 }
 
 }       // X3D
