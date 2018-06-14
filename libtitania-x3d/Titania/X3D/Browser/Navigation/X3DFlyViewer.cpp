@@ -54,7 +54,8 @@
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Browser.h"
-#include "../BrowserOptions.h"
+#include "../Core/BrowserOptions.h"
+
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Math/Geometry/Camera.h>

@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_BROWSER_RENDERING_PROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_RENDERING_PROPERTIES_H__
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
-#include "../Types/Pointer.h"
-#include "Shaders/ShadingType.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+#include "../../Types/Pointer.h"
+#include "../Shaders/ShadingType.h"
 
 #include <Titania/Chrono/StopWatch.h>
 #include <set>

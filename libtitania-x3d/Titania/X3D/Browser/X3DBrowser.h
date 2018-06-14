@@ -209,31 +209,6 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	/// @name Browser properties service
-
-	const RenderingPropertiesPtr &
-	getRenderingProperties () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return renderingProperties; }
-
-	const BrowserPropertiesPtr &
-	getBrowserProperties () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return browserProperties; }
-
-	//	bool
-	//	setBrowserOption (SAIString, SAIObject)
-	//	throw (Error <INVALID_OPERATION_TIMING>,
-	//	       Error <DISPOSED>);
-
-	const BrowserOptionsPtr &
-	getBrowserOptions () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return browserOptions; }
-
 	/// @name Change viewpoint service
 
 	void
@@ -363,10 +338,6 @@ private:
 	std::shared_ptr <SupportedNodes>      supportedNodes;
 	std::shared_ptr <SupportedComponents> supportedComponents;
 	std::shared_ptr <SupportedProfiles>   supportedProfiles;
-
-	BrowserOptionsPtr      browserOptions;
-	BrowserPropertiesPtr   browserProperties;
-	RenderingPropertiesPtr renderingProperties;
 
 	X3DExecutionContextPtr executionContext;
 	SFEnum <LoadState>     loadState;

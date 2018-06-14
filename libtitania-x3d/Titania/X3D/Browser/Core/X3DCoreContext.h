@@ -98,12 +98,35 @@ public:
 	size_t
 	getMemoryUsage ();
 
+	/// @name Browser properties service
+
+	const BrowserOptionsPtr &
+	getBrowserOptions () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return browserOptions; }
+
+	const BrowserPropertiesPtr &
+	getBrowserProperties () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return browserProperties; }
+
+	const RenderingPropertiesPtr &
+	getRenderingProperties () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return renderingProperties; }
+
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () override
 	{ }
+
+	virtual
+	~X3DCoreContext () override;
 
 
 protected:
@@ -125,6 +148,10 @@ private:
 	std::string        vendor;
 	std::string        renderer;
 	std::string        version;
+
+	BrowserOptionsPtr      browserOptions;
+	BrowserPropertiesPtr   browserProperties;
+	RenderingPropertiesPtr renderingProperties;
 
 };
 

@@ -50,10 +50,8 @@
 
 #include "X3DBrowser.h"
 
-#include "../Browser/BrowserOptions.h"
-#include "../Browser/BrowserProperties.h"
+#include "../Browser/Core/BrowserOptions.h"
 #include "../Browser/Notification.h"
-#include "../Browser/RenderingProperties.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/LoadSensor.h"
@@ -89,9 +87,6 @@ X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & ur
 	     supportedNodes (sharedBrowser ? sharedBrowser -> supportedNodes      : std::make_shared <SupportedNodes> (this)),
 	supportedComponents (sharedBrowser ? sharedBrowser -> supportedComponents : std::make_shared <SupportedComponents> ()),
 	  supportedProfiles (sharedBrowser ? sharedBrowser -> supportedProfiles   : std::make_shared <SupportedProfiles> (supportedComponents)),
-	     browserOptions (new BrowserOptions (this)),
-	  browserProperties (new BrowserProperties (this)),
-	renderingProperties (new RenderingProperties (this)),
 	   executionContext (createScene (false)),
 	          loadState (NOT_STARTED_STATE),
 	           urlError (),
@@ -106,9 +101,6 @@ X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & ur
 	addType (X3DConstants::X3DBrowser);
 
 	addChildObjects (description,
-	                 browserOptions,
-	                 browserProperties,
-	                 renderingProperties,
 	                 executionContext,
 	                 loadState,
 	                 urlError,
@@ -123,10 +115,6 @@ X3DBrowser::initialize ()
 
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();
-
-	browserOptions      -> setup ();
-	browserProperties   -> setup ();
-	renderingProperties -> setup ();
 
 	// Add necessary routes.
 
@@ -167,7 +155,7 @@ X3DBrowser::set_loaded (const bool loaded)
 	                      "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
 	                      "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
 			                
-	                      renderingProperties, '\n',
+	                      getRenderingProperties (), '\n',
 			                
 			                "\t\tMax vertex uniform vectors: ", getMaxVertexUniformVectors (), "\n",
 			                "\t\tMax fragment uniform vectors: ", getMaxFragmentUniformVectors (), "\n",
@@ -381,7 +369,7 @@ throw (Error <INVALID_SCENE>,
 
 		setDescription ("");
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
-		browserOptions -> assign (browserOptions, true);
+		getBrowserOptions () -> assign (browserOptions, true);
 
 		executionContext = value ? value : createScene (false);
 

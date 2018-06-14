@@ -71,8 +71,8 @@
 #include "../Configuration/config.h"
 #include "../Revealer/GeometryEditor/GeometryEditor.h"
 
-#include <Titania/X3D/Browser/BrowserOptions.h>
-#include <Titania/X3D/Browser/RenderingProperties.h>
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
+#include <Titania/X3D/Browser/Core/RenderingProperties.h>
 #include <Titania/X3D/Browser/Navigation/X3DViewer.h>
 #include <Titania/X3D/Browser/Tools/TransformToolOptions.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>

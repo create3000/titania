@@ -557,9 +557,6 @@
     <None Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.h" />
     <None Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.h" />
-    <None Include="Titania\X3D\Browser\BrowserOptions.h" />
-    <None Include="Titania\X3D\Browser\BrowserProperties.h" />
-    <None Include="Titania\X3D\Browser\RenderingProperties.h" />
     <None Include="share\titania\tools\RenderingProperties.x3dv" />
     <None Include="Titania\X3D\Routing\X3DRouterObject.h" />
     <None Include="Titania\X3D\Base\X3DGarbageCollector.h" />
@@ -1004,6 +1001,9 @@
     <None Include="share\fonts\truetype\titania-fonts\UbuntuMono-RI.ttf" />
     <None Include="share\fonts\truetype\titania-fonts\Ubuntu-R.ttf" />
     <None Include="share\fonts\truetype\titania-fonts\Ubuntu-RI.ttf" />
+    <None Include="Titania\X3D\Browser\Core\BrowserOptions.h" />
+    <None Include="Titania\X3D\Browser\Core\BrowserProperties.h" />
+    <None Include="Titania\X3D\Browser\Core\RenderingProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1382,9 +1382,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DGeometry3DContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometry2DContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\X3DGeometricOptionNode.cpp" />
-    <Compile Include="Titania\X3D\Browser\BrowserOptions.cpp" />
-    <Compile Include="Titania\X3D\Browser\BrowserProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Routing\X3DRouterObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DGarbargeCollector.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DToolObject.cpp" />
@@ -1698,6 +1695,9 @@
     <Compile Include="Titania\X3D\Fields\MFImage.cpp" />
     <Compile Include="Titania\X3D\Parser\MiniParser.cpp" />
     <Compile Include="Titania\X3D\Tools\RigidBodyPhysics\X3DNBodyCollidableNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Browser\Core\BrowserOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Core\BrowserProperties.cpp" />
+    <Compile Include="Titania\X3D\Browser\Core\RenderingProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

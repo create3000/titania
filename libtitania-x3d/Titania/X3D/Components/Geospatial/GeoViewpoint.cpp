@@ -50,7 +50,7 @@
 
 #include "GeoViewpoint.h"
 
-#include "../../Browser/RenderingProperties.h"
+#include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"

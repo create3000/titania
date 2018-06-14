@@ -21,10 +21,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
-	Titania/X3D/Browser/BrowserOptions.cpp \
-	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/Core/BrowserOptions.cpp \
+	Titania/X3D/Browser/Core/BrowserProperties.cpp \
 	Titania/X3D/Browser/Core/Clipboard.cpp \
+	Titania/X3D/Browser/Core/RenderingProperties.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
 	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.cpp \
@@ -72,7 +73,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
-	Titania/X3D/Browser/RenderingProperties.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shaders/Shader.cpp \

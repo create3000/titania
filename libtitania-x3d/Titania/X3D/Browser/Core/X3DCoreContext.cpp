@@ -50,6 +50,9 @@
 
 #include "X3DCoreContext.h"
 
+#include "BrowserOptions.h"
+#include "BrowserProperties.h"
+#include "RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/OpenGL.h"
 
@@ -63,12 +66,19 @@ namespace titania {
 namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
-	 X3DBaseNode (),
-	      strict (true),
-	      vendor (),
-	    renderer (),
-	     version ()
+	        X3DBaseNode (),
+	             strict (true),
+	             vendor (),
+	           renderer (),
+	            version (),
+	     browserOptions (new BrowserOptions (getBrowser ())),
+	  browserProperties (new BrowserProperties (getBrowser ())),
+	renderingProperties (new RenderingProperties (getBrowser ()))
 {
+	addChildObjects (browserOptions,
+	                 browserProperties,
+	                 renderingProperties);
+
 	glibtop_init ();
 }
 
@@ -78,6 +88,10 @@ X3DCoreContext::initialize ()
 	vendor   = (const char*) glGetString (GL_VENDOR);
 	renderer = (const char*) glGetString (GL_RENDERER);
 	version  = (const char*) glGetString (GL_VERSION);
+
+	browserOptions      -> setup ();
+	browserProperties   -> setup ();
+	renderingProperties -> setup ();
 }
 
 size_t
@@ -123,6 +137,9 @@ X3DCoreContext::getMemoryUsage ()
 
 	return memory .rss;
 }
+
+X3DCoreContext::~X3DCoreContext ()
+{ }
 
 } // X3D
 } // titania

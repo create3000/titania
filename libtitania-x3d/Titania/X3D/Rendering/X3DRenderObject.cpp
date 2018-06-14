@@ -50,7 +50,7 @@
 
 #include "X3DRenderObject.h"
 
-#include "../Browser/BrowserOptions.h"
+#include "../Browser/Core/BrowserOptions.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/CubeMapTexturing/GeneratedCubeMapTexture.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"

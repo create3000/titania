@@ -60,7 +60,7 @@
 #include "../Editors/HistoryEditor/History.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
-#include <Titania/X3D/Browser/RenderingProperties.h>
+#include <Titania/X3D/Browser/Core/RenderingProperties.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 

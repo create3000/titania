@@ -113,6 +113,9 @@
     <None Include="..\.bzrignore">
       <Link>.bzrignore</Link>
     </None>
+    <None Include="..\ChangeLog">
+      <Link>ChangeLog</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

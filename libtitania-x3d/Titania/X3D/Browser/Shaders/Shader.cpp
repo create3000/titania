@@ -50,7 +50,7 @@
 
 #include "Shader.h"
 
-#include "../../Browser/RenderingProperties.h"
+#include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/Networking/config.h"
 #include "../../InputOutput/FileLoader.h"
 

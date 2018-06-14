@@ -59,7 +59,7 @@
 #include "../Widgets/Console/Console.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
-#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Components/Core/MetadataDouble.h>
 #include <Titania/X3D/Components/Core/MetadataInteger.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>

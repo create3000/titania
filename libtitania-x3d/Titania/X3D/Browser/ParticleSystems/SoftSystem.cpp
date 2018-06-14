@@ -51,7 +51,7 @@
 #include "SoftSystem.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/BrowserOptions.h"
+#include "../../Browser/Core/BrowserOptions.h"
 #include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/ParticleSystems/BoundedPhysicsModel.h"

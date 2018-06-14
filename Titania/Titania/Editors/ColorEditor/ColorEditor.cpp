@@ -54,7 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>

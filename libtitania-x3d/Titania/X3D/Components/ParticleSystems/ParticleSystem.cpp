@@ -52,7 +52,7 @@
 
 #include "../../Browser/ParticleSystems/SoftSystem.h"
 
-#include "../../Browser/BrowserOptions.h"
+#include "../../Browser/Core/BrowserOptions.h"
 #include "../../Bits/Cast.h"
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"

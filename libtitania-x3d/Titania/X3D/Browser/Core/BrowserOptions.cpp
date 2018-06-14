@@ -50,22 +50,23 @@
 
 #include "BrowserOptions.h"
 
-#include "../Browser/Networking/config.h"
-#include "../Browser/Geometry2D/Arc2DOptions.h"
-#include "../Browser/Geometry2D/ArcClose2DOptions.h"
-#include "../Browser/Geometry2D/Circle2DOptions.h"
-#include "../Browser/Geometry2D/Disk2DOptions.h"
-#include "../Browser/Geometry2D/Rectangle2DOptions.h"
-#include "../Browser/Geometry3D/BoxOptions.h"
-#include "../Browser/Geometry3D/ConeOptions.h"
-#include "../Browser/Geometry3D/CylinderOptions.h"
-#include "../Browser/Geometry3D/QuadSphereOptions.h"
-#include "../Browser/Rendering/MotionBlur.h"
-#include "../Browser/Text/FontStyleOptions.h"
-#include "../Browser/RenderingProperties.h"
-#include "../Browser/X3DBrowser.h"
-#include "../Components/Texturing/TextureProperties.h"
-#include "../Rendering/OpenGL.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/Core/RenderingProperties.h"
+#include "../../Browser/Geometry2D/Arc2DOptions.h"
+#include "../../Browser/Geometry2D/ArcClose2DOptions.h"
+#include "../../Browser/Geometry2D/Circle2DOptions.h"
+#include "../../Browser/Geometry2D/Disk2DOptions.h"
+#include "../../Browser/Geometry2D/Rectangle2DOptions.h"
+#include "../../Browser/Geometry3D/BoxOptions.h"
+#include "../../Browser/Geometry3D/ConeOptions.h"
+#include "../../Browser/Geometry3D/CylinderOptions.h"
+#include "../../Browser/Geometry3D/QuadSphereOptions.h"
+#include "../../Browser/Rendering/MotionBlur.h"
+#include "../../Browser/Text/FontStyleOptions.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Components/Shaders/ComposedShader.h"
+#include "../../Components/Texturing/TextureProperties.h"
+#include "../../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
 
@@ -166,7 +167,11 @@ BrowserOptions::initialize ()
 	set_Shading ();
 	set_MotionBlur ();
 	set_MotionBlurIntensity ();
-	set_LogarithmicDepthBuffer ();
+
+	if (getBrowser () -> getSharedContext ())
+		getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = getBrowser () -> getSharedContext () -> getRenderingProperties () -> LogarithmicDepthBuffer ();
+	else
+		getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
 }
 
 void
@@ -409,7 +414,25 @@ BrowserOptions::set_MotionBlurIntensity ()
 void
 BrowserOptions::set_LogarithmicDepthBuffer ()
 {
-	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
+//	getBrowser () -> getRenderingProperties () -> LogarithmicDepthBuffer () = LogarithmicDepthBuffer () and getBrowser () -> getExtension ("GL_EXT_frag_depth");
+//
+//	if (not getBrowser () -> getSharedContext ())
+//	{
+//		getBrowser () -> getPointShader () -> parts () [0] -> getField ("url") -> addEvent ();
+//		getBrowser () -> getPointShader () -> parts () [1] -> getField ("url") -> addEvent ();
+//	
+//		getBrowser () -> getWireframeShader () -> parts () [0] -> getField ("url") -> addEvent ();
+//		getBrowser () -> getWireframeShader () -> parts () [1] -> getField ("url") -> addEvent ();
+//	
+//		getBrowser () -> getGouraudShader () -> parts () [0] -> getField ("url") -> addEvent ();
+//		getBrowser () -> getGouraudShader () -> parts () [1] -> getField ("url") -> addEvent ();
+//	
+//		getBrowser () -> getPhongShader () -> parts () [0] -> getField ("url") -> addEvent ();
+//		getBrowser () -> getPhongShader () -> parts () [1] -> getField ("url") -> addEvent ();
+//	
+//		getBrowser () -> getShadowShader () -> parts () [0] -> getField ("url") -> addEvent ();
+//		getBrowser () -> getShadowShader () -> parts () [1] -> getField ("url") -> addEvent ();
+//	}
 }
 
 }       // X3D

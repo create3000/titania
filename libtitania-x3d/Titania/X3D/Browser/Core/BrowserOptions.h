@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_BROWSER_BROWSER_OPTIONS_H__
 #define __TITANIA_X3D_BROWSER_BROWSER_OPTIONS_H__
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
-#include "Shaders/ShadingType.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+#include "../Shaders/ShadingType.h"
 
 namespace titania {
 namespace X3D {

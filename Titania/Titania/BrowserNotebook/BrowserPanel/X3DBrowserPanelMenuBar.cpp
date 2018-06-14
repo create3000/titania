@@ -53,7 +53,7 @@
 #include "ViewpointObserver.h"
 #include "../NotebookPage/NotebookPage.h"
 
-#include <Titania/X3D/Browser/BrowserOptions.h>
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DFogObject.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>

@@ -55,9 +55,9 @@
 #include "Fields/SFNode.h"
 #include "value.h"
 
-#include "../../Browser/BrowserOptions.h"
-#include "../../Browser/BrowserProperties.h"
-#include "../../Browser/RenderingProperties.h"
+#include "../../Browser/Core/BrowserOptions.h"
+#include "../../Browser/Core/BrowserProperties.h"
+#include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Thread/SceneFuture.h"

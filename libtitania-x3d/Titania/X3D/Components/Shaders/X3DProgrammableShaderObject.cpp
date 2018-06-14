@@ -51,7 +51,7 @@
 #include "X3DProgrammableShaderObject.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/RenderingProperties.h"
+#include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"

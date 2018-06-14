@@ -50,13 +50,13 @@
 
 #include "RenderingProperties.h"
 
-#include "../Browser/Networking/config.h"
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/World.h"
-#include "../Execution/X3DExecutionContext.h"
-#include "../InputOutput/FileLoader.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/World.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/FileLoader.h"
 
-#include "../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Layering/X3DLayerNode.h"
 
 #include <Titania/String.h>
 
@@ -143,15 +143,30 @@ RenderingProperties::initialize ()
 	Version ()  = getBrowser () -> getGLVersion ();
 
 	GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
+	GLint textureMemory, maxTextureSize, maxTextureUnits;
+
+	if (getBrowser () -> getExtension ("GL_NVX_gpu_memory_info"))
+	{
+		int32_t kbytes = 0;
+
+		glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &kbytes);
+
+		textureMemory = size_t (kbytes) * 1024;
+	}
+	else
+		textureMemory = 0;
+
+	glGetIntegerv (GL_MAX_TEXTURE_SIZE,  &maxTextureSize);
+	glGetIntegerv (GL_MAX_TEXTURE_UNITS, &maxTextureUnits);
 
 	glGetIntegerv (GL_RED_BITS,   &glRedBits);
 	glGetIntegerv (GL_GREEN_BITS, &glGreen);
 	glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
 	glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
 
-	TextureUnits ()   = getBrowser () -> getMaxTextureUnits ();
-	MaxTextureSize () = getBrowser () -> getMaxTextureSize ();
-	TextureMemory ()  = double (getBrowser () -> getTextureMemory ()) / (1 << 20);
+	TextureUnits ()   = maxTextureUnits;
+	MaxTextureSize () = maxTextureSize;
+	TextureMemory ()  = double (textureMemory) / (1 << 20);
 	MaxLights ()      = getBrowser () -> getMaxLights ();
 	ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
@@ -159,7 +174,7 @@ RenderingProperties::initialize ()
 	Shading () .addInterest (&RenderingProperties::set_Shading, this);
 
 	getBrowser () -> initialized () .addInterest (&RenderingProperties::set_Enabled, this);
-	getBrowser () -> getViewport () .addInterest (&RenderingProperties::build, this);
+	getBrowser () -> getViewport () .addInterest (&RenderingProperties::build,       this);
 }
 
 void
