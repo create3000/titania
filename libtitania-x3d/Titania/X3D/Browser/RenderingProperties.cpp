@@ -67,14 +67,15 @@
 namespace titania {
 namespace X3D {
 
-// Property Name     Value data type      Description
-// Shading           String               The type of shading algorithm in use. Typical values are Flat, Gouraud, Phong, Wireframe.
-// MaxTextureSize    String               The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
-// TextureUnits      Integer              The number of texture units supported for doing multitexture.
-// MaxLights         Integer              The maximum number of lights supported.
-// AntiAliased       Boolean              True or false if the rendering is currently anti-aliased or not
-// ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
-// TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
+// Property Name           Value data type      Description
+// Shading                 String               The type of shading algorithm in use. Typical values are Flat, Gouraud, Phong, Wireframe.
+// MaxTextureSize          String               The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
+// TextureUnits            Integer              The number of texture units supported for doing multitexture.
+// MaxLights               Integer              The maximum number of lights supported.
+// AntiAliased             Boolean              True or false if the rendering is currently anti-aliased or not
+// ColorDepth              Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
+// TextureMemory           Float                The amount of memory in megabytes available for textures to be placed on the video card.
+// LogarithmicDepthBuffer  Boolean              True or false if logarithmic depth buffer is currently enabled or not.
 
 const ComponentType RenderingProperties::component      = ComponentType::TITANIA;
 const std::string   RenderingProperties::typeName       = "RenderingProperties";
