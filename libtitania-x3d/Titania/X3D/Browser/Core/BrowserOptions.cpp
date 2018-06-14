@@ -110,7 +110,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	   MotionBlurIntensity (new SFFloat (0.7)),
 	     AnimateStairWalks (new SFBool ()),
 	               Gravity (new SFFloat (gn <float>)),
-	LogarithmicDepthBuffer (new SFBool (true))
+	LogarithmicDepthBuffer (new SFBool (false))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
