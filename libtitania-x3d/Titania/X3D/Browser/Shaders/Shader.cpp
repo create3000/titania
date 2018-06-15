@@ -224,8 +224,6 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	std::smatch hmatch;
 
-__LOG__ << source << std::endl;
-
 	if (not std::regex_search (source, hmatch, head))
 		return source;
 
