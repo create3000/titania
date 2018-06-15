@@ -238,6 +238,17 @@ Parser::rootObject (json_object* const jobj)
 	sceneNumber       (json_object_object_get (jobj, "scene"));
 	animationsObject  (json_object_object_get (jobj, "animations"));
 	//skinsObject       (json_object_object_get (jobj, "skins"));
+
+	// Refine defines.
+
+	for (const auto & appearanceNode : materials)
+	{
+		auto & defines = appearanceNode -> getField <X3D::MFString> ("defines");
+
+		std::sort (defines .begin (), defines .end ());
+
+		defines .erase (std::unique (defines .begin (), defines .end ()), defines .end ());
+	}
 }
 
 void

@@ -149,6 +149,15 @@ private:
 
 };
 
+/// Specializes the std::swap algorithm for member_value.
+template <class Type>
+inline
+void
+swap (member_value <Type> && lhs, member_value <Type> && rhs)
+{
+	lhs .swap (std::move (rhs));
+}
+
 } // basic
 } // titania
 

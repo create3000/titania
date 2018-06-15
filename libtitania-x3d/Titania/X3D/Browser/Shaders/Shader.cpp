@@ -218,13 +218,13 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	#define UNDEF        "#undef\\s+.*?\\n"
 	#define PRAGMA       "#pragma\\s+.*?\\n"
 	#define PREPROCESSOR  LINE "|" IF "|" ELIF "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" UNDEF "|" PRAGMA
-	#define VERSION      "#version\\s+.*?\\n"
 	#define EXTENSION    "#extension\\s+.*?\\n"
-	#define ANY          "[\\s\\S]*"
 
-	static const std::regex head ("^((?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)(" ANY ")$");
+	static const std::regex head ("^((?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)");
 
 	std::smatch hmatch;
+
+__LOG__ << source << std::endl;
 
 	if (not std::regex_search (source, hmatch, head))
 		return source;
@@ -294,7 +294,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions << "#line " << (numLines - 1)  << "\n";
 
-	return constants .str () + hmatch .str (1) + definitions .str () + hmatch .str (2);
+	return constants .str () + begin + definitions .str () + source .substr (begin .size ());
 }
 
 void
