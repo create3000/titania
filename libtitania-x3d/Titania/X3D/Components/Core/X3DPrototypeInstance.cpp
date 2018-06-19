@@ -237,6 +237,8 @@ X3DPrototypeInstance::construct ()
 
 		if (isInitialized ())
 		{
+			getBrowser () -> removeLoadCount (this);
+
 			copyImportedNodes (proto, COPY_OR_CLONE);
 			copyRoutes (proto, COPY_OR_CLONE);
 
@@ -369,10 +371,21 @@ X3DPrototypeInstance::initialize ()
 		switch (protoNode -> checkLoadState ())
 		{
 			case NOT_STARTED_STATE:
+			{
 				protoNode -> requestAsyncLoad ();
+
+				if (protoNode -> isExternproto ())
+					getBrowser () -> addLoadCount (this);
+
 				break;
+			}
 			case IN_PROGRESS_STATE:
+			{
+				if (protoNode -> isExternproto ())
+					getBrowser () -> addLoadCount (this);
+
 				break;
+			}
 			case COMPLETE_STATE:
 			{
 				if (not protoNode -> isExternproto ())
