@@ -130,7 +130,7 @@ X3DLightNodeTool::addTool ()
 		getTransformTool () -> setField <SFBool> ("grouping", selected);
 		getToolNode ()      -> setField <SFBool> ("selected", selected);
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 }
 
@@ -138,8 +138,9 @@ void
 X3DLightNodeTool::removeTool (const bool really)
 {
 	if (really)
+	{
 		X3DChildNodeTool::removeTool ();
-
+	}
 	else
 	{
 		try

@@ -521,8 +521,7 @@ protected:
 	///  Initializes this node.
 	virtual
 	void
-	initialize ()
-	{ }
+	initialize ();
 
 	///  @name Common members
 

@@ -250,6 +250,7 @@ X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 	}
 }
 
+///  Set fields value from proto instance field's value.
 void
 X3DFieldDefinition::updateReferences ()
 {

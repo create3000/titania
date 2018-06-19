@@ -113,16 +113,16 @@ protected:
 	///  @name Member access
 
 	void
-	setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode);
+	setTransformTool (const X3DPtr <X3DTransformNode> & transformNode);
 
 	void
-	setTransformTool2 (const X3DWeakPtr <X3DTransformNode> & transformNode);
+	setTransformTool2 (const X3DPtr <X3DTransformNode> & transformNode);
 
-	const X3DWeakPtr <X3DTransformNodeTool> &
+	const X3DPtr <X3DTransformNodeTool> &
 	getTransformTool () const
 	{ return transformTool1; }
 
-	const X3DWeakPtr <X3DTransformNodeTool> &
+	const X3DPtr <X3DTransformNodeTool> &
 	getTransformTool2 () const
 	{ return transformTool2; }
 
@@ -155,8 +155,8 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtr <X3DTransformNodeTool> transformTool1;
-	X3DWeakPtr <X3DTransformNodeTool> transformTool2;
+	X3DPtr <X3DTransformNodeTool> transformTool1;
+	X3DPtr <X3DTransformNodeTool> transformTool2;
 
 };
 

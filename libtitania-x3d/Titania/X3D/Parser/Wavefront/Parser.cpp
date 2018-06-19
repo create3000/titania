@@ -68,6 +68,8 @@
 #include <Titania/InputOutput/InverseSequence.h>
 #include <Titania/String.h>
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 namespace Wavefront {
@@ -565,6 +567,8 @@ MaterialParser::map_Kd ()
 {
 	//__LOG__ << this << " " << std::endl;
 
+	static const auto backslash = std::regex (R"/(\\)/");
+
 	comments ();
 
 	if (Grammar::map_Kd (istream))
@@ -583,11 +587,12 @@ MaterialParser::map_Kd ()
 				
 				if (not url .empty ())
 				{
-					const auto texture = scene -> createNode <X3D::ImageTexture> ();
+					const auto texture       = scene -> createNode <X3D::ImageTexture> ();
+					const auto normalizedURL = std::regex_replace (url .back (), backslash, "/");
 
 					texture -> url () = {
-						url .back (),
-						scene -> getWorldURL () .transform (url .back ()) .str ()
+						normalizedURL,
+						scene -> getWorldURL () .transform (normalizedURL) .str ()
 					};
 
 					textures [name] = texture;

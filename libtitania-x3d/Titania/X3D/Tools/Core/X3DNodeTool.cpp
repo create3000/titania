@@ -79,22 +79,20 @@ X3DNodeTool::X3DNodeTool () :
 }
 
 void
-X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode1)
+X3DNodeTool::setTransformTool (const X3DPtr <X3DTransformNode> & value)
 {
-	transformNode1 -> addTool ();
+	value -> addTool ();
 
-	transformTool1 = X3DWeakPtr <X3DTransformNodeTool> (transformNode1);
-
+	transformTool1 = value;
 	transformTool1 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
 }
 
 void
-X3DNodeTool::setTransformTool2 (const X3DWeakPtr <X3DTransformNode> & transformNode2)
+X3DNodeTool::setTransformTool2 (const X3DPtr <X3DTransformNode> & value)
 {
-	transformNode2 -> addTool ();
+	value -> addTool ();
 
-	transformTool2 = X3DWeakPtr <X3DTransformNodeTool> (transformNode2);
-
+	transformTool2 = value;
 	transformTool2 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
 }
 

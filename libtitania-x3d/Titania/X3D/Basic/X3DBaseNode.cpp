@@ -171,6 +171,10 @@ X3DBaseNode::setup ()
 	initialize ();
 }
 
+void
+X3DBaseNode::initialize ()
+{ }
+
 /***
  *  Creates copy of this node as specified by @a type.
  *

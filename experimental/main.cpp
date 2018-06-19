@@ -55,28 +55,46 @@
 using namespace titania;
 using namespace titania::X3D;
 
-template <class Type>
-void
-f ()
+using Vector4ui = math::vector4 <uint8_t>;
+
+Vector3f
+fract (const Vector3f & vector)
 {
-	static constexpr size_t N = 10'000'000;
+	return vector - floor (vector);
+}
 
-	const auto t0 = chrono::now ();
+Vector4f
+pack (const float value)
+{
+	const Vector3f bitShifts = Vector3f (255.0,
+	                                     255.0 * 255.0,
+	                                     255.0 * 255.0 * 255.0);
 
-	Type a (N);
+	const Vector3f f = fract (value * bitShifts);
 
-	std::fill (a .begin (), a .end (), typename Type::value_type (1));
+	return Vector4f (value, f .x (), f .y (), f .z ());
+}
 
-	auto y = a [1];
-	auto z = a [1];
+float
+unpack (const Vector4f & color)
+{
+	const Vector3f bitShifts = Vector3f (1.0 / 255.0,
+	                                     1.0 / (255.0 * 255.0),
+	                                     1.0 / (255.0 * 255.0 * 255.0));
 
-	std::swap (y, z);
-	
+	return color .x () + dot (Vector3f (color .y (), color .z (), color .w ()), bitShifts);
+}
 
-	a [1] .swap (a [2]);
-	std::swap (a [1], a [2]);
+Vector4ui
+to_int (const Vector4f & color)
+{
+	return Vector4ui (color * 255.0f);
+}
 
-	std::clog << (chrono::now () - t0) << std::endl;
+Vector4f
+to_float (const Vector4ui & color)
+{
+	return Vector4f (color) * (1 / 255.0f);
 }
 
 int
@@ -100,45 +118,14 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-	
-	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-	
-	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-	
-	btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
-	
-	
-	btCollisionShape* groundShape = new btBoxShape(btVector3(10, 1, 10));
-	
-	btCollisionShape* fallShape = new btSphereShape(1);
-	
-	
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
-	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	dynamicsWorld->addRigidBody(groundRigidBody);
-	
-	
-	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 5, 0)));
-	btScalar mass = 1;
-	btVector3 fallInertia(0, 0, 0);
-	fallShape->calculateLocalInertia(mass, fallInertia);
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
-	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
-	dynamicsWorld->addRigidBody(fallRigidBody);
-	
-	
-	for (int i = 0; i < 300; i++) {
-		dynamicsWorld->stepSimulation(1 / 60.f, 10);
-		
-		btTransform trans;
-		fallRigidBody->getMotionState()->getWorldTransform(trans);
-		
-		std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
+	double d = 0;
+
+	for (int i = 0; i < 300; ++ i, d += 1e-6)
+	{
+		const auto p = to_int (pack (d));
+		const auto u = unpack (to_float (p));
+
+		std::cout << d << " : " << Vector4i (p) << " : " << u << std::endl;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
