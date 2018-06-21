@@ -371,6 +371,8 @@ throw (Error <INVALID_SCENE>,
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		getBrowserOptions () -> assign (browserOptions, true);
 
+		getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
+
 		executionContext = value ? value : createScene (false);
 
 		getConsole () -> log ("\n*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n\n");
@@ -381,6 +383,11 @@ throw (Error <INVALID_SCENE>,
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
+
+		if (not getBrowserOptions () -> EnableInlineViewpoints ())
+			getWorld () -> bind ();
+
+		set_loadCount ();
 	}
 	else
 	{
@@ -389,6 +396,27 @@ throw (Error <INVALID_SCENE>,
 
 	if (initialized ())
 		initialized () = true;
+}
+
+void
+X3DBrowser::set_loadCount ()
+{
+	if (getLoadCount ())
+		return;
+
+	getLoadCount () .removeInterest (&X3DBrowser::set_loadCount, this);
+
+	prepareEvents () .addInterest (&X3DBrowser::bind, this);
+	addEvent ();
+}
+
+void
+X3DBrowser::bind ()
+{
+	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
+
+	if (getBrowserOptions () -> EnableInlineViewpoints ())
+		getWorld () -> bind ();
 }
 
 void

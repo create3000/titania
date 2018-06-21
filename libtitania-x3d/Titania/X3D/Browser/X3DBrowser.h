@@ -311,6 +311,12 @@ private:
 	set_prepareEvents ();
 
 	void
+	set_loadCount ();
+
+	void
+	bind ();
+
+	void
 	set_executionContext ();
 
 	void

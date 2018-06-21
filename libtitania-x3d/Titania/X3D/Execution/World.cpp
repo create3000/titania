@@ -98,8 +98,6 @@ World::initialize ()
 	layer0 -> isLayer0 (true);
 	layer0 -> setPrivate (true);
 	layer0 -> setup ();
-
-	bind ();
 }
 
 void
