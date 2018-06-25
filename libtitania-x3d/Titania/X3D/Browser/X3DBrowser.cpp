@@ -371,6 +371,7 @@ throw (Error <INVALID_SCENE>,
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		getBrowserOptions () -> assign (browserOptions, true);
 
+		resetLoadCount ();
 		getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
 
 		executionContext = value ? value : createScene (false);
