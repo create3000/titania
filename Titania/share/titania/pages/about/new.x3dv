@@ -52,20 +52,6 @@ WorldInfo {
         name "BrowserPanel"
         reference "http://titania.create3000.de"
         value [
-          DEF layerNumber MetadataInteger {
-            name "layerNumber"
-            reference "http://titania.create3000.de"
-            value [
-              -1,
-              0,
-              0,
-              0,
-              0,
-              -1,
-              -1,
-              -1
-            ]
-          }
           DEF type_2 MetadataString {
             name "type"
             reference "http://titania.create3000.de"
