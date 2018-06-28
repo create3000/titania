@@ -268,7 +268,6 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	if (shadow)
 		definitions << "#define X3D_SHADOWS\n";
 
-	definitions << "#define x3d_MaxShadows     4\n";
 	definitions << "#define X3D_PCF_FILTERING\n";
 
 	// Legacy

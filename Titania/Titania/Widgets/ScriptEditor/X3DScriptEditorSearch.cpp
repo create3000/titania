@@ -86,8 +86,8 @@ X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	searchMark     = getTextBuffer () -> get_insert ();
 
 	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_size_allocate));
-	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_press_event),   false);
-	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_release_event), false);
+	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_press_event),    false);
+	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_release_event),  false);
 	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_button_press_event), false);
 
 	// Search & Replace
