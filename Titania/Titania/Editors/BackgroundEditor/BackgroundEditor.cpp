@@ -162,7 +162,7 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 
 	backgroundNode = value;
 
-	const bool inScene = (backgroundNode and backgroundNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
+	const bool inScene = (backgroundNode and backgroundNode -> getScene () == getCurrentScene () and not inPrototypeInstance ());
 	const auto nodes   = backgroundNode ? X3D::MFNode ({ backgroundNode }) : X3D::MFNode ();
 
 	setBackground (backgroundNode);

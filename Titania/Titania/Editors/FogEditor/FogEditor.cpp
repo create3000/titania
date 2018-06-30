@@ -105,7 +105,7 @@ FogEditor::set_fog (const X3D::X3DPtr <X3D::Fog> & value)
 {
 	fogNode = value;
 
-	const bool inScene = (fogNode and fogNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
+	const bool inScene = (fogNode and fogNode -> getScene () == getCurrentScene () and not inPrototypeInstance ());
 	const auto nodes   = fogNode ? X3D::MFNode ({ fogNode }) : X3D::MFNode ();
 
 	getRemoveFogButton () .set_sensitive (inScene and fogNode);

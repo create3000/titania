@@ -125,7 +125,7 @@ NavigationInfoEditor::set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo
 {
 	navigationInfoNode = value;
 
-	const bool inScene = (navigationInfoNode and navigationInfoNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
+	const bool inScene = (navigationInfoNode and navigationInfoNode -> getScene () == getCurrentScene () and not inPrototypeInstance ());
 	const auto nodes   = navigationInfoNode ? X3D::MFNode ({ navigationInfoNode }) : X3D::MFNode ();
 
 	getRemoveNavigationInfoButton () .set_sensitive (inScene and navigationInfoNode);

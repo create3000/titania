@@ -117,7 +117,7 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 	if (viewpointNode)
 		viewpointNode -> isLockedToCamera () .addInterest (&ViewpointEditor::set_lock_to_camera, this);
 
-	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
+	const bool inScene = (viewpointNode and viewpointNode -> getScene () == getCurrentScene () and not inPrototypeInstance ());
 
 	setViewpoint (viewpointNode, inScene);
 	setOrthoViewpoint (viewpointNode, inScene);
