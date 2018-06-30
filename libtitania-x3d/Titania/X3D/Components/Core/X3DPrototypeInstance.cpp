@@ -258,6 +258,8 @@ X3DPrototypeInstance::update ()
 {
 	try
 	{
+		using addRoute = const RoutePtr &(X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
+
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
@@ -266,6 +268,7 @@ X3DPrototypeInstance::update ()
 		const auto proto  = protoNode -> getProtoDeclaration ();
 		const auto fields = FieldArray (getFieldDefinitions () .cbegin (), getFieldDefinitions () .cend ());
 		const auto map    = fieldMappings;
+		auto       routes = std::vector <std::function <void ()>> ();
 
 		for (const auto & fieldPtr : fields)
 			removeField (fieldPtr .getValue () -> getName ());
@@ -299,6 +302,32 @@ X3DPrototypeInstance::update ()
 			for (const auto & pair : map)
 			{
 				const auto currentField = pair .second;
+				const auto inputRoutes  = currentField -> getInputRoutes ();
+				const auto outputRoutes = currentField -> getOutputRoutes ();
+
+				for (const auto inputRoute : inputRoutes)
+				{
+					routes .emplace_back (std::bind ((addRoute) &X3DExecutionContext::addRoute,
+					                                 getExecutionContext (),
+					                                 inputRoute -> getSourceNode (),
+					                                 inputRoute -> getSourceField (),
+					                                 inputRoute -> getDestinationNode (),
+					                                 inputRoute -> getDestinationField ()));
+					
+					getExecutionContext () -> deleteRoute (inputRoute);
+				}
+
+				for (const auto outputRoute : outputRoutes)
+				{
+					routes .emplace_back (std::bind ((addRoute) &X3DExecutionContext::addRoute,
+					                                 getExecutionContext (),
+					                                 outputRoute -> getSourceNode (),
+					                                 outputRoute -> getSourceField (),
+					                                 outputRoute -> getDestinationNode (),
+					                                 outputRoute -> getDestinationField ()));
+					
+					getExecutionContext () -> deleteRoute (outputRoute);
+				}
 
 				if (protoField -> getName () == currentField -> getName ())
 				{
@@ -352,6 +381,16 @@ X3DPrototypeInstance::update ()
 			          *field);
 
 			fieldMappings .emplace (protoField, field);
+		}
+
+		for (const auto & route : routes)
+		{
+			try
+			{
+				route ();
+			}
+			catch (const X3DError & error)
+			{ }
 		}
 
 		construct ();
