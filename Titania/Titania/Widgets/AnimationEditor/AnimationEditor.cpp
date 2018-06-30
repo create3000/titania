@@ -750,16 +750,15 @@ AnimationEditor::on_remove_member ()
 
 			try
 			{
-				const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
-				const auto   executionContext = X3D::MakePtr (animation -> getExecutionContext ());
-				const auto   parent           = selected -> parent ();
-				const auto & node             = nodes .at ((*parent) [columns .id]);
-				const auto   field            = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
-				const auto & interpolator     = interpolatorIndex .at (field);
-					
+				const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
+				const auto executionContext = X3D::MakePtr (animation -> getExecutionContext ());
+				const auto parent           = selected -> parent ();
+				const auto node             = nodes .at ((*parent) [columns .id]);
+				const auto field            = node -> getFieldDefinitions () .at ((*selected) [columns .id]);
+				const auto interpolator     = interpolatorIndex .at (field);
+
 				// We have found the interpolators connected to this node and field.
 				
-
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
 				X3D::X3DEditor::deleteRoute (executionContext, interpolator, "value_changed", node, field -> getName (), undoStep);
 
