@@ -176,8 +176,15 @@ MovieTexture::load ()
 void
 MovieTexture::on_video_changed ()
 {
-	if (isActive () and not isPaused ())
-		getStream () -> play ();
+	if (getLive ())
+	{
+		if (isActive () and not isPaused ())
+			getStream () -> play ();
+	}
+	else
+	{
+		getStream () -> pause ();
+	}
 
 	components () = 3;
 

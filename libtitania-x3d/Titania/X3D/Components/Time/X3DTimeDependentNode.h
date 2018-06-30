@@ -182,6 +182,11 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	bool
+	getLive () const;
 	
 	///  @name Event handling
 
@@ -225,11 +230,6 @@ private:
 	///  @name Member types
 
 	using TimeoutHandler = void (X3DTimeDependentNode::*) ();
-
-	///  @name Member access
-
-	bool
-	getLive () const;
 
 	///  @name Event handling
 

@@ -1074,6 +1074,8 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		}
 		else
 		{
+			// Remap faces to extrude to new points.
+
 			std::map <size_t, int32_t> vertices;
 			
 			for (const auto & face : faces)
