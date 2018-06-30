@@ -1026,7 +1026,7 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	 if (not faces .empty ())
 	 {
-		if (duplicateFaces )
+		if (duplicateFaces)
 		{
 			for (const auto & face : faces)
 			{
@@ -1034,16 +1034,42 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 				for (const auto & vertex : vertices)
 				{
-					const auto iter = points .find (coordIndex () .get1Value (vertex));
-	
+					const auto faceNumber = getFaceSelection () -> getFaceNumber (vertex);
+					const auto iter       = points .find (coordIndex () .get1Value (vertex));
+
+					if (colorIndex () .size ())
+					{
+						if (colorPerVertex ())
+							colorIndex () .emplace_back (colorIndex () .get1Value (vertex));
+						else
+							colorIndex () .emplace_back (colorIndex () .get1Value (faceNumber));
+					}
+
+					if (texCoordIndex () .size ())
+						texCoordIndex () .emplace_back (texCoordIndex () .get1Value (vertex));
+
+					if (normalIndex () .size ())
+					{
+						if (normalPerVertex ())
+							normalIndex () .emplace_back (normalIndex () .get1Value (vertex));
+						else
+							normalIndex () .emplace_back (normalIndex () .get1Value (faceNumber));
+					}
+
 				   if (iter not_eq points .end ())
 						coordIndex () .emplace_back (iter -> second);
 				}
 
-				coordIndex () .emplace_back (-1);
+				if (colorIndex () .size () and colorPerVertex ())
+					colorIndex () .emplace_back (-1);
 
-				for (size_t i = 0, size = vertices .size () / 2; i < size; ++ i)
-					std::swap (coordIndex () [vertices [i]], coordIndex () [vertices [vertices .size () - i - 1]]);
+				if (texCoordIndex () .size ())
+					texCoordIndex () .emplace_back (-1);
+
+				if (normalIndex () .size () and normalPerVertex ())
+					normalIndex () .emplace_back (-1);
+
+				coordIndex () .emplace_back (-1);
 			}
 		}
 		else
