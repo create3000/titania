@@ -308,25 +308,25 @@ X3DPrototypeInstance::update ()
 				for (const auto inputRoute : inputRoutes)
 				{
 					routes .emplace_back (std::bind ((addRoute) &X3DExecutionContext::addRoute,
-					                                 getExecutionContext (),
+					                                 inputRoute -> getExecutionContext (),
 					                                 inputRoute -> getSourceNode (),
 					                                 inputRoute -> getSourceField (),
 					                                 inputRoute -> getDestinationNode (),
 					                                 inputRoute -> getDestinationField ()));
 					
-					getExecutionContext () -> deleteRoute (inputRoute);
+					inputRoute -> getExecutionContext () -> deleteRoute (inputRoute);
 				}
 
 				for (const auto outputRoute : outputRoutes)
 				{
 					routes .emplace_back (std::bind ((addRoute) &X3DExecutionContext::addRoute,
-					                                 getExecutionContext (),
+					                                 outputRoute -> getExecutionContext (),
 					                                 outputRoute -> getSourceNode (),
 					                                 outputRoute -> getSourceField (),
 					                                 outputRoute -> getDestinationNode (),
 					                                 outputRoute -> getDestinationField ()));
 					
-					getExecutionContext () -> deleteRoute (outputRoute);
+					outputRoute -> getExecutionContext () -> deleteRoute (outputRoute);
 				}
 
 				if (protoField -> getName () == currentField -> getName ())
