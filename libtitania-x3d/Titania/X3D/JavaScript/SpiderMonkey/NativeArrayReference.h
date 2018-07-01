@@ -67,11 +67,11 @@ public:
 
 	/// Constructs NativeArrayReference.
 	NativeArrayReference (ArrayType* const array, const size_t index) :
-		SingleType (),
+		SingleType (array -> get1Value (index)),
 		     array (array),
 		     index (index)
 	{
-		array -> addParent (this);
+		array -> disposed () .addInterest (&NativeArrayReference::set_disposed, this);
 	}
 
 	///  @name Operations
@@ -81,7 +81,8 @@ public:
 	const typename SingleType::internal_type &
 	getValue () const final override
 	{
-		const_cast <NativeArrayReference*> (this) -> SingleType::set (array -> get1Value (index));
+		if (array)
+			const_cast <NativeArrayReference*> (this) -> SingleType::set (array -> get1Value (index));
 
 		return SingleType::getValue ();
 	}
@@ -91,20 +92,8 @@ public:
 	void
 	addEvent () final override
 	{
-		array -> set1Value (index, SingleType::getValue ());
-	}
-
-	///  @name Destruction
-
-	///  6.7.8 dispose
-	virtual
-	void
-	dispose () final override
-	{
-		array -> removeParent (this);
-		array .dispose ();
-
-		SingleType::dispose ();
+		if (array)
+			array -> set1Value (index, SingleType::getValue ());
 	}
 
 	/// Destructs NativeArrayReference.
@@ -126,7 +115,8 @@ protected:
 	typename SingleType::internal_type &
 	get () final override
 	{
-		SingleType::set (array -> get1Value (index));
+		if (array)
+			SingleType::set (array -> get1Value (index));
 
 		return SingleType::get ();
 	}
@@ -134,10 +124,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_disposed ()
+	{ array = nullptr; }
+
 	///  @name Members
 
-	X3D::X3DPtr <ArrayType> array;
-	size_t                  index;
+	ArrayType* array;
+	size_t     index;
 
 };
 

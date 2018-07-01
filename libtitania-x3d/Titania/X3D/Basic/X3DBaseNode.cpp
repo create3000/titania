@@ -239,13 +239,13 @@ throw (Error <INVALID_NAME>,
 		return false;
 	};
 
+	const SFNode copy (create (executionContext)); // Never try to optimize this.
+
 	if (getName () .empty () and needsName (this))
 		getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (), SFNode (const_cast <X3DBaseNode*> (this)));
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
-
-	const SFNode copy (create (executionContext)); // Never try to optimize this.
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{
