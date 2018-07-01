@@ -226,10 +226,26 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	const SFNode copy (create (executionContext)); // Never try to optimize this.
+	static const auto needsName = [ ] (const X3DBaseNode* const baseNode)
+	{
+		if (baseNode -> getCloneCount () > 1)
+			return true;
+	
+		if (baseNode -> hasRoutes ())
+			return true;
+
+		// Exported / Imported nodes ???
+
+		return false;
+	};
+
+	if (getName () .empty () and needsName (this))
+		getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (), SFNode (const_cast <X3DBaseNode*> (this)));
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
+
+	const SFNode copy (create (executionContext)); // Never try to optimize this.
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{
