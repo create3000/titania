@@ -192,7 +192,7 @@ private:
 	>::type
 	getReference (JSContext* cx, InternalType* const array, const size_t index, const Class & value)
 	{
-		const auto reference = new NativeArrayReference <InternalType, single_type> (array, index);
+		const auto reference = new NativeArrayReference <InternalType, single_type> (array, index, value);
 
 		return *reference;
 	}

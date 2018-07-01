@@ -66,8 +66,8 @@ public:
 	///  @name Construction
 
 	/// Constructs NativeArrayReference.
-	NativeArrayReference (ArrayType* const array, const size_t index) :
-		SingleType (array -> get1Value (index)),
+	NativeArrayReference (ArrayType* const array, const size_t index, const typename ArrayType::value_type & value) :
+		SingleType (value),
 		     array (array),
 		     index (index)
 	{
