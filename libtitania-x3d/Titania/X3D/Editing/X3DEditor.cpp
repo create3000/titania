@@ -1253,11 +1253,17 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 	if (name .empty ())
 		return;
 
+	// Restore prototypes
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
+
 	// Update prototype
 
 	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, name, prototype);
 	executionContext -> updateProtoDeclaration (name, prototype);
+
+	// Restore prototypes
+	undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
 
 	// Prototype support
 
@@ -1333,8 +1339,10 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	if (name .empty ())
 		return;
 
-	// Update name.
+	// Restore externprotos.
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 
+	// Update name.
 	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, name, externProto);
 	executionContext -> updateExternProtoDeclaration (name, externProto);
@@ -1356,6 +1364,9 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	}
 
 	undoStep -> addRedoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
+
+	// Restore externprotos.
+	undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 
 	// Prototype support
 
