@@ -152,7 +152,7 @@ X3DBoundedObjectTool::traverse (const TraverseType type, X3DRenderObject* const 
 	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
-		X3DBoundedObjectTool::reshape ();
+		reshape ();
 
 	X3DToolObject::traverse (type, renderObject);
 

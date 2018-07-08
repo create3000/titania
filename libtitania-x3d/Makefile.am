@@ -658,6 +658,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Grouping/X3DBoundedObjectTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp \
+	Titania/X3D/Tools/Layout/LayoutGroupTool.cpp \
 	Titania/X3D/Tools/Lighting/DirectionalLightTool.cpp \
 	Titania/X3D/Tools/Lighting/PointLightTool.cpp \
 	Titania/X3D/Tools/Lighting/SpotLightTool.cpp \

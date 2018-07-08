@@ -1698,6 +1698,7 @@
     <Compile Include="Titania\X3D\Browser\Core\BrowserOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\RenderingProperties.cpp" />
+    <Compile Include="Titania\X3D\Tools\Layout\LayoutGroupTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

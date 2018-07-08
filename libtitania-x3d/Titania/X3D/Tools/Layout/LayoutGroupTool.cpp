@@ -48,108 +48,77 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_LAYOUT_LAYOUT_GROUP_H__
-#define __TITANIA_X3D_TOOLS_LAYOUT_LAYOUT_GROUP_H__
-
-#include "../Grouping/X3DGroupingNodeTool.h"
-#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
-#include "../ToolColors.h"
-
-#include "../../Components/Layout/LayoutGroup.h"
+#include "LayoutGroupTool.h"
 
 namespace titania {
 namespace X3D {
 
-class LayoutGroupTool :
-	virtual public LayoutGroup,
-	public X3DGroupingNodeTool,
-	public X3DTransformMatrix3DObjectTool
+LayoutGroupTool::LayoutGroupTool (X3DBaseNode* const node) :
+	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	                   LayoutGroup (node -> getExecutionContext ()),
+	                   X3DBaseTool (node),
+	           X3DGroupingNodeTool (ToolColors::DARK_GREEN),
+	X3DTransformMatrix3DObjectTool ()
 {
-public:
+	addType (X3DConstants::LayoutGroupTool);
+}
 
-	///  @name Construction
+void
+LayoutGroupTool::initialize ()
+{
+	X3DGroupingNodeTool::initialize ();
+	X3DTransformMatrix3DObjectTool::initialize ();
+}
 
-	LayoutGroupTool (X3DBaseNode* const node);
+void
+LayoutGroupTool::realize ()
+{
+	try
+	{
+		const SFNode & tool = getToolNode ();
 
-	///  @name Fields
+		tool -> setField <SFInt32> ("rectangle", 0);
+	}
+	catch (const X3DError & error)
+	{ }
 
-	virtual
-	SFNode &
-	viewport () final override
-	{ return getNode <LayoutGroup> () -> viewport (); }
+	X3DGroupingNodeTool::realize ();
+}
 
-	virtual
-	const SFNode &
-	viewport () const final override
-	{ return getNode <LayoutGroup> () -> viewport (); }
-
-	virtual
-	SFNode &
-	layout () final override
-	{ return getNode <LayoutGroup> () -> layout (); }
-
-	virtual
-	const SFNode &
-	layout () const final override
-	{ return getNode <LayoutGroup> () -> layout (); }
+void
+LayoutGroupTool::reshape ()
+{
+	Box3d bbox = getNode <LayoutGroup> () -> getRectangleBBox ();
 	
-	///  @name Member access
+	try
+	{
+		bbox *= inverse (getMatrix ());
+	}
+	catch (const std::domain_error & error)
+	{
+		bbox = Box3d ();
+	}
 
-	virtual
-	Box3d
-	getBBox () const final override
-	{ return X3DGroupingNodeTool::getBBox (); }
+	try
+	{
+		const SFNode & tool = getToolNode ();
 
-	virtual
-	const Matrix4d &
-	getMatrix () const final override
-	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
+		tool -> setField <SFInt32> ("rectangle", bbox .empty () ? -1 : 0, true);
+		tool -> setField <SFVec3f> ("rectangleBBoxSize",   bbox .size (),   true);
+		tool -> setField <SFVec3f> ("rectangleBBoxCenter", bbox .center (), true);
+	}
+	catch (const X3DError & error)
+	{ }
 
-	virtual
-	Box3d
-	getRectangleBBox () const final override
-	{ return getNode <LayoutGroup> () -> getRectangleBBox (); }
+	X3DGroupingNodeTool::reshape ();
+}
 
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
-
-	///  @name Construction
-
-	virtual
-	void
-	dispose () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	realize () final override;
-
-	///  @name Operations
-
-	virtual
-	void
-	reshape () final override;
-
-};
+void
+LayoutGroupTool::dispose ()
+{
+	X3DTransformMatrix3DObjectTool::dispose ();
+	X3DGroupingNodeTool::dispose ();
+}
 
 } // X3D
 } // titania
-
-#endif
