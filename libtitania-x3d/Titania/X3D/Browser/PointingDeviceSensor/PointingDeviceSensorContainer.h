@@ -79,6 +79,12 @@ public:
 		node -> disposed () .addInterest (&PointingDeviceSensorContainer::set_disposed, this);
 	}
 
+	// Member access
+	
+	X3DPointingDeviceSensorNode*
+	getNode () const
+	{ return node; }
+
 	///  @name Event handlers
 
 	void

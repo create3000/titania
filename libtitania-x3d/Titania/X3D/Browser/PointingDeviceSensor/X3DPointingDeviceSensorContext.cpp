@@ -299,15 +299,20 @@ X3DPointingDeviceSensorContext::motion ()
 	std::vector <PointingDeviceSensorContainerPtr> difference;
 
 	if (getHits () .empty ())
+	{
 		difference .assign (overSensors .cbegin (), overSensors .cend ());
-
+	}
 	else
 	{
 		// overSensors and sensors are always sorted.
 
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     nearestHit -> sensors .begin (), nearestHit -> sensors .end (),
-		                     std::back_inserter (difference));
+		                     std::back_inserter (difference),
+									[ ] (const PointingDeviceSensorContainerPtr & lhs, const PointingDeviceSensorContainerPtr & rhs)
+		{
+			return lhs -> getNode () < rhs -> getNode ();
+		});
 	}
 
 	for (const auto & pointingDeviceSensorNode : difference)
@@ -316,8 +321,9 @@ X3DPointingDeviceSensorContext::motion ()
 	// Set isOver to TRUE for appropriate nodes
 
 	if (getHits () .empty ())
+	{
 		overSensors .clear ();
-
+	}
 	else
 	{
 		overSensors .assign (nearestHit -> sensors .begin (),

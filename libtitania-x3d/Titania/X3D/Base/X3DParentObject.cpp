@@ -138,10 +138,9 @@ void
 X3DParentObject::addChildObject (X3DChildObject & child)
 {
 	child .setTainted (true);
+	child .addParent (this);
 
 	children .emplace (&child);
-
-	child .addParent (this);
 }
 
 /***
@@ -162,12 +161,11 @@ X3DParentObject::removeChildObject (X3DChildObject & child)
 void
 X3DParentObject::addEventObject (X3DChildObject* const object)
 {
-	object -> isSet (true);
-
 	if (object -> getTainted ())
 		return;
 
 	object -> setTainted (true);
+	object -> isSet (true);
 
 	addEventObject (object, std::make_shared <Event> (object));
 }
