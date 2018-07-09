@@ -137,7 +137,7 @@ PrototypeEditor::getProto () const
 	{
 		auto path = getWorldInfo (getCurrentScene ()) -> getMetaData <X3D::MFString> ("/Titania/Prototype/path");
 
-		X3D::X3DProtoDeclarationNode* protoNode = getCurrentContext () -> findProtoDeclaration (path .at (0) .get ());
+		X3D::X3DProtoDeclarationNode* protoNode = getCurrentScene () -> findProtoDeclaration (path .at (0) .get ());
 
 		path .pop_front ();
 
