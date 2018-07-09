@@ -72,10 +72,10 @@ JSFunctionSpec X3DField::functions [ ] = {
 	{ "isReadable",  isReadable,  0, 0 },
 	{ "isWritable",  isWritable,  0, 0 },
 
-	{ "equals",       equals, 1, 0 },
-	{ "assign",       assign, 1, 0 },
+	{ "equals",      equals,      1, 0 },
+	{ "assign",      assign,      1, 0 },
 
-	{ "toString",     toString,     0, 0 },
+	{ "toString",    toString,    0, 0 },
 
 	{ 0 }
 
