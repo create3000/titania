@@ -79,7 +79,7 @@ IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const exe
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (initializeOnly, "index",           index ());
+	addField (inputOutput,    "index",           index ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
