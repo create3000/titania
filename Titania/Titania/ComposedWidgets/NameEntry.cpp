@@ -93,7 +93,9 @@ NameEntry::setNode (const X3D::SFNode & value)
 		set_name ();
 	}
 	else
+	{
 		entry .set_text ("");
+	}
 
 	entry  .set_sensitive (node);
 	button .set_sensitive (node);

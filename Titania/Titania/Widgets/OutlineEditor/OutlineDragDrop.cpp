@@ -54,6 +54,7 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeViewEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Widgets/Sidebar/Sidebar.h"
 
@@ -1477,12 +1478,16 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
 	   {
 			auto & sfnode = *static_cast <X3D::SFNode*> (sourceField);
 
+			getBrowserWindow () -> getSelection () -> removeNodes ({ sfnode }, undoStep);
+		
 			X3D::X3DEditor::replaceNode (sourceContext, *sourceParent, sfnode, nullptr, undoStep);
 	      break;
 	   }
 	   case X3D::X3DConstants::MFNode:
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (sourceField);
+
+			getBrowserWindow () -> getSelection () -> removeNodes ({ mfnode [sourceIndex] }, undoStep);
 
 			X3D::X3DEditor::removeNode (sourceContext, *sourceParent, mfnode, sourceIndex, undoStep);
 			break;

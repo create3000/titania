@@ -232,19 +232,19 @@ private:
 
 	///  @name Members
 
-	X3D::X3DExecutionContextPtr executionContext;
-	X3D::X3DPtr <X3D::X3DProtoDeclarationNode> protoNode;
-	X3D::MFNode nodes;
-	X3D::SFNode node;
-	X3D::SFTime refreshBuffer;
-	IndexType indexType;
-	bool showWidget;
-	bool observeNodes;
-	bool select;
-	bool displayProtoNodes;
-	std::set <X3D::X3DConstants::NodeType> types;
+	X3D::X3DExecutionContextPtr                         executionContext;
+	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>          protoNode;
+	X3D::MFNode                                         nodes;
+	X3D::SFNode                                         node;
+	X3D::SFTime                                         refreshBuffer;
+	IndexType                                           indexType;
+	bool                                                showWidget;
+	bool                                                observeNodes;
+	bool                                                select;
+	bool                                                displayProtoNodes;
+	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
-	std::vector <Glib::RefPtr <Gtk::TreeViewColumn>>  columns;
+	std::vector <Glib::RefPtr <Gtk::TreeViewColumn>>    columns;
 
 	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
