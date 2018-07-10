@@ -257,7 +257,7 @@ SFColorRGBA::getHSVA (JSContext* cx, uint32_t argc, jsval* vp)
 JSBool
 SFColorRGBA::setHSVA (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc not_eq 3)
+	if (argc not_eq 4)
 		return ThrowException (cx, "%s .setHSVA: wrong number of arguments.", getClass () -> name);
 
 	try
