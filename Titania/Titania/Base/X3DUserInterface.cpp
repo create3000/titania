@@ -196,6 +196,9 @@ X3DUserInterface::on_map ()
 void
 X3DUserInterface::on_unmap ()
 {
+	if (not getBrowserWindow () -> getSelection () .get ())
+		return;
+
 	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection_and_check, this);
 
 	set_selection_and_check ({ });

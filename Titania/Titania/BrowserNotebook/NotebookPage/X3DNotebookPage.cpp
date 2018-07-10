@@ -285,9 +285,9 @@ X3DNotebookPage::set_browser ()
 void
 X3DNotebookPage::set_splashScreen ()
 {
-	mainBrowser -> initialized ()     .removeInterest (&X3DNotebookPage::set_splashScreen, this);
-	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,          this);
-	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,     this);
+	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_splashScreen, this);
+	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_loaded,          this);
+	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized,     this);
 
 	mainBrowser -> set_opacity (1);
 	mainBrowser -> setNotifyOnLoad (true);

@@ -113,9 +113,9 @@ WorldInfo {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.0320612526145463,
-                      10.8662109375,
-                      0.0937320149966475
+                      0
+                      10000,
+                      0
                     ]
                   }
                   DEF orientation_7 MetadataDouble {
@@ -152,8 +152,8 @@ WorldInfo {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.00884759203065143,
-                      0.0177734813359099,
+                      0,
+                      0,
                       10000
                     ]
                   }

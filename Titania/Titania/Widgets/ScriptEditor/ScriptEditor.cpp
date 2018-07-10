@@ -164,11 +164,6 @@ ScriptEditor::restore ()
 {
 	try
 	{
-		// Update TextView and thus we can scoll to iter.
-		// Anything can happen now.
-		while (Gtk::Main::events_pending ())
-			Gtk::Main::iteration ();
-
 	   if (not node)
 			return;
 
