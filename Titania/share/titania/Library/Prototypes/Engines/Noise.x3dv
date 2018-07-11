@@ -11,8 +11,8 @@ META "modified" "Sun, 17 Dec 2017 11:21:49 GMT"
 
 EXTERNPROTO Noise [
   inputOutput SFBool  enabled
-  inputOutput SFFloat frequency
   inputOutput SFFloat amplitude
+  inputOutput SFFloat frequency
   inputOutput SFFloat phase
   inputOutput SFTime  startTime
   inputOutput SFTime  stopTime
