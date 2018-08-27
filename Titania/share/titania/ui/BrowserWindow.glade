@@ -25,6 +25,7 @@
   </object>
   <object class="GtkToggleAction" id="FooterAction">
     <property name="label" translatable="yes">Footer</property>
+    <property name="active">True</property>
     <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="GouraudAction">
@@ -104,10 +105,12 @@
   </object>
   <object class="GtkToggleAction" id="SidebarAction">
     <property name="label" translatable="yes">Sidebar</property>
+    <property name="active">True</property>
     <signal name="toggled" handler="on_sidebar_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="TabsAction">
     <property name="label" translatable="yes">Tabs</property>
+    <property name="active">True</property>
     <signal name="toggled" handler="on_tabs_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="TextureQualityHighAction">
@@ -127,6 +130,7 @@
   </object>
   <object class="GtkToggleAction" id="ToolbarAction">
     <property name="label" translatable="yes">Toolbar</property>
+    <property name="active">True</property>
     <signal name="toggled" handler="on_toolbar_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="TransformToolModeAction">
