@@ -209,7 +209,7 @@ X3DOutput::processInterests () const
 void
 X3DOutput::clear ()
 {
-	while (data)
+	if (data)
 	{
 		std::unique_ptr <Data> temp = std::move (data);
 
