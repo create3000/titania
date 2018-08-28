@@ -236,15 +236,13 @@ RecentView::set_url (const X3D::SFString & url)
 
 	try
 	{
-		const auto page          = getBrowserWindow () -> getPage (URL);
-		const auto recentPage    = getBrowserWindow () -> getCurrentPage ();
-		const auto recentBrowser = recentPage -> getBrowser ();
+		const auto page       = getBrowserWindow () -> getPage (URL);
+		const auto recentPage = getBrowserWindow () -> getCurrentPage ();
 
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (page -> getPageNumber ());
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		recentBrowser -> finished () .addInterest (&X3DBrowserNotebook::close, getBrowserWindow (), recentPage);
-		recentBrowser -> addEvent ();
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getBrowserWindow (), &X3DBrowserNotebook::close), recentPage), Glib::PRIORITY_HIGH);
 	}
 	catch (const std::out_of_range &)
 	{

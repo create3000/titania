@@ -91,6 +91,7 @@ static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserNotebook (defaultBrowser),
+	             scene (),
 	  executionContext (defaultBrowser -> getExecutionContext ()),
 	           editing (false),
 	         selection (new BrowserSelection (getBrowserWindow ())),
@@ -99,7 +100,8 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & defaultBrowser) :
 	          undoTime (0),
 	              tool (NUDGE_NONE)
 {
-	addChildObjects (executionContext,
+	addChildObjects (scene,
+	                 executionContext,
 	                 editing,
 	                 clipboard);
 

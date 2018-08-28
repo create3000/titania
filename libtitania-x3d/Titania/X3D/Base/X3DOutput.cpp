@@ -209,14 +209,12 @@ X3DOutput::processInterests () const
 void
 X3DOutput::clear ()
 {
-	if (data)
+	while (data)
 	{
 		std::unique_ptr <Data> temp = std::move (data);
 
 		for (const auto & input : temp -> inputs)
 			input .first -> X3DInput::disposed () .removeDeleter (this, input .first, input .second);
-
-		data .reset ();
 	}
 }
 
