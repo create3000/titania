@@ -564,16 +564,20 @@ Context::setEventHandler ()
 		{
 			case inputOnly   :
 			case inputOutput :
+			{
+				const auto function = field -> getAccessType () == inputOnly
+				                      ? getFunction (field -> getName ())
+											 : getFunction ("set_" + field -> getName ());
+
+				if (not JSVAL_IS_VOID (function))
 				{
-					const auto function = field -> getAccessType () == inputOnly
-					                      ? getFunction (field -> getName ())
-												 : getFunction ("set_" + field -> getName ());
+					const auto iter = functions .emplace (field, function);
 
-					if (not JSVAL_IS_VOID (function))
-						functions .emplace (field, function);
-
-					break;
+					JS_AddValueRoot (cx, &iter .first -> second);
 				}
+
+				break;
+			}
 			default :
 				break;
 		}
@@ -599,7 +603,7 @@ Context::set_live ()
 			case inputOutput:
 			{
 				if (functions .count (field))
-					field -> addInterest (&Context::set_field, this, field, std::ref (functions [field]));
+					field -> addInterest (&Context::set_field, this, field, functions [field]);
 
 				break;
 			}
@@ -653,6 +657,9 @@ Context::set_shutdown ()
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (cx, &field .second);
+
+	for (auto & function : functions)
+		JS_RemoveValueRoot (cx, &function .second);
 
 	for (auto & file : files)
 		JS_RemoveValueRoot (cx, &file .second);
