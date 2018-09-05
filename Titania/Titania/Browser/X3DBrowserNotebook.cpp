@@ -406,7 +406,7 @@ X3DBrowserNotebook::append (const basic::uri & URL)
 bool
 X3DBrowserNotebook::getShowTabs () const
 {
-	const bool showTabs = isFullscreen () ? getConfig () -> getItem <bool> ("tabsFullscreen") : getConfig () -> getItem <bool> ("tabs");
+	const bool showTabs = isFullscreen () ? getConfig () -> getItem <bool> ("tabsFullscreen") : getConfig () -> getItem <bool> ("tabs", true);
 
 	return pages .size () > 1 and showTabs;
 }
