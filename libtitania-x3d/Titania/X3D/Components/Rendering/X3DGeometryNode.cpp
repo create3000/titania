@@ -932,7 +932,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 				glColorPointer (4, GL_FLOAT, 0, 0);
 			}
 	
-			if (browser -> getTexture ())
+			if (browser -> getTexture () and texCoordBufferIds .size ())
 			{
 				texCoordNode -> enable (context, texCoordBufferIds);
 			}
