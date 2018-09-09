@@ -136,7 +136,14 @@ Router::processEvents ()
 		{
 			for (const auto & event : getTaintedChildren ())
 			{
-				event .first -> processEvent (event .second);
+				try
+				{
+					event .first -> processEvent (event .second);
+				}
+				catch (const std::exception & error)
+				{
+					__LOG__ << "Unhandled exception " << event .first -> getName () << std::endl;
+				}
 			}
 		}
 		while (not isEmpty ());
