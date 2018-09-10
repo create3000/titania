@@ -259,6 +259,7 @@ X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 
 	const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
 
+	viewpoint -> setAnimate (true); // VRML
 	viewpoint -> transitionStart (viewpoint);
 }
 

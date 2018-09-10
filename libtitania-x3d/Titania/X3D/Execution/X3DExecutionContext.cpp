@@ -1340,6 +1340,8 @@ throw (Error <INVALID_NAME>,
 		if (not viewpoint)
 			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
 
+		viewpoint -> setAnimate (true);
+
 		if (viewpoint -> isBound ())
 			viewpoint -> transitionStart (viewpoint);
 

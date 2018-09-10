@@ -226,9 +226,11 @@ ViewpointEditor::update (const X3D::UndoStepPtr & undoStep)
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
 	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
+	undoStep -> addUndoFunction (&X3D::X3DViewpointNode::setAnimate,          viewpointNode, true);
 	undoStep -> addUndoFunction (&X3D::SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
 
 	undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
+	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setAnimate,          viewpointNode, true);
 	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setPosition,         viewpointNode, position);
 	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setOrientation,      viewpointNode, orientation);
 	undoStep -> addRedoFunction (&X3D::X3DViewpointNode::setCenterOfRotation, viewpointNode, centerOfRotation);

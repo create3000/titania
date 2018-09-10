@@ -224,6 +224,14 @@ public:
 	Vector3d
 	getScreenScale (const Vector3d & point, const Vector4i & viewport) const = 0;
 
+	void
+	setAnimate (const bool value)
+	{ animate = value; }
+
+	bool
+	getAnimate () const
+	{ return animate; }
+
 	///  @name Operations
 
 	virtual
@@ -403,6 +411,7 @@ private:
 	X3DPtr <ScalarInterpolator>      fieldOfViewInterpolator;
 	
 	SFBool lockToCamera;
+	bool animate;
 
 };
 

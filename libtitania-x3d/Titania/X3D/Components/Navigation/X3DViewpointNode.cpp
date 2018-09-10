@@ -96,7 +96,8 @@ X3DViewpointNode::X3DViewpointNode () :
 	           scaleInterpolator (new PositionInterpolator (getBrowser () -> getPrivateScene ())),
 	scaleOrientationInterpolator (new OrientationInterpolator (getBrowser () -> getPrivateScene ())),
 	     fieldOfViewInterpolator (new ScalarInterpolator (getBrowser () -> getPrivateScene ())),
-	                lockToCamera ()
+	                lockToCamera (),
+	                     animate (false)
 {
 	addType (X3DConstants::X3DViewpointNode);
 
@@ -512,8 +513,19 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 				transitionTime = layer -> getNavigationInfo () -> transitionTime ();
 			}
 
+			// VRML behaviour.
+
 			if (getExecutionContext () -> getSpecificationVersion () == VRML_V2_0)
-				transitionType = TransitionType::TELEPORT;
+			{
+				if (getAnimate ())
+					transitionType = TransitionType::LINEAR;
+				else
+					transitionType = TransitionType::TELEPORT;
+			}
+			
+			setAnimate (false);
+
+			// End VRML behaviour.
 
 			switch (transitionType)
 			{

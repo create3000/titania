@@ -58,6 +58,7 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 #include <Titania/X3D/Execution/BindableNodeList.h>
 #include <Titania/X3D/Parser/Filter.h>
@@ -481,6 +482,11 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 
 	if (not editing)
 	{
+		const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
+
+		if (viewpoint)
+			viewpoint -> setAnimate (true);
+
 		if (node -> isBound ())
 			node -> transitionStart (node);
 
@@ -525,8 +531,12 @@ X3DBindableNodeList <Type>::on_bind_toggled (const Gtk::TreePath & path)
 
 	// Get Node
 
-	const auto index = path [0];
-	const auto node  = getList (activeLayer) -> getList () .at (index);
+	const auto index     = path [0];
+	const auto node      = getList (activeLayer) -> getList () .at (index);
+	const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
+
+	if (viewpoint)
+		viewpoint -> setAnimate (true);
 
 	if (node -> isBound ())
 		node -> transitionStart (node);

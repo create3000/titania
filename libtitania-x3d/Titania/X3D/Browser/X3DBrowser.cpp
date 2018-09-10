@@ -687,6 +687,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DBrowser::bindViewpoint (X3DViewpointNode* const viewpoint)
 {
+	viewpoint -> setAnimate (true);
+
 	if (viewpoint -> isBound ())
 		viewpoint -> transitionStart (viewpoint);
 
