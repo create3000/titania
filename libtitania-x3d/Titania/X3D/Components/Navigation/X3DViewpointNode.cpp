@@ -512,6 +512,9 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 				transitionTime = layer -> getNavigationInfo () -> transitionTime ();
 			}
 
+			if (getExecutionContext () -> getSpecificationVersion () == VRML_V2_0)
+				transitionType = TransitionType::TELEPORT;
+
 			switch (transitionType)
 			{
 				case TransitionType::TELEPORT:
