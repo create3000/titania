@@ -372,38 +372,43 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::set_list ()
 {
-	if (editing)
+	try
 	{
-		for (const auto & node : nodes)
-		   node -> name_changed () .removeInterest (&X3DBindableNodeList::set_stack, this);
-	 
-		nodes .clear ();
-	}
-
-	// Clear
-
-	scrollFreezer -> freeze ();
-
-	getTreeView () .unset_model ();
-	getListStore () -> clear ();
-
-	// Fill the TreeView's model
-
-	if (activeLayer)
-	{
-		const auto & list = getList (activeLayer);
-
-		if (not list -> getList () .empty ())
+		if (editing)
 		{
+			for (const auto & node : nodes)
+			   node -> name_changed () .removeInterest (&X3DBindableNodeList::set_stack, this);
+		 
+			nodes .clear ();
+		}
+	
+		// Clear
+	
+		scrollFreezer -> freeze ();
+	
+		getTreeView () .unset_model ();
+		getListStore () -> clear ();
+	
+		// Fill the TreeView's model
+	
+		if (activeLayer)
+		{
+			const auto & list = getList (activeLayer);
+	
 			for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 			{
 			   X3D::X3DPtr <Type> node (list -> getList () .at (i));
-
+	
 				if (not editing and getDescription (node) .empty ())
 				   continue;
-
+	
+				const auto name = X3D::RemoveTrailingNumber (node -> getName ());
+		
+				if (selectNamedNode and name .empty ())
+					continue;
+	
 				getListStore () -> append () -> set_value (Columns::INDEX, i);
-
+	
 				if (editing)
 				{
 					node -> name_changed () .addInterest (&X3DBindableNodeList::set_stack, this);
@@ -411,59 +416,70 @@ X3DBindableNodeList <Type>::set_list ()
 				}
 			}
 		}
+	
+		getTreeView () .set_model (getListStore ());
+		getTreeView () .set_search_column (Columns::DESCRIPTION);
+	
+		set_stack ();
+	
+		processInterests ();
 	}
-
-	getTreeView () .set_model (getListStore ());
-	getTreeView () .set_search_column (Columns::DESCRIPTION);
-
-	set_stack ();
-
-	processInterests ();
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
 void
 X3DBindableNodeList <Type>::set_stack ()
 {
-	// Update list store
-
-	if (not activeLayer)
-		return;
-
-	const auto & list = getList (activeLayer);
-	auto         row  = getListStore () -> children () .begin ();
-
-	for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
+	try
 	{
-	   const X3D::X3DPtr <Type> node (list -> getList () .at (i));
-
-		if (not editing and getDescription (node) .empty ())
-		   continue;
-
-		const auto name = X3D::RemoveTrailingNumber (node -> getName ());
-
-		if (selectNamedNode and name .empty ())
-		   continue;
-
-		row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
-		row -> set_value (Columns::NAME,        name);
-		row -> set_value (Columns::DESCRIPTION, i ? getDescription (node) : description);
-		row -> set_value (Columns::BIND,        node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
-
-		if ((editing and node == selection) or (not editing and node -> isBound ()))
+		// Update list store
+	
+		if (not activeLayer)
+			return;
+	
+		const auto & list = getList (activeLayer);
+		auto         row  = getListStore () -> children () .begin ();
+	
+		for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 		{
-			row -> set_value (Columns::WEIGHT, Weight::BOLD);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+		   const X3D::X3DPtr <Type> node (list -> getList () .at (i));
+	
+			if (not editing and getDescription (node) .empty ())
+				continue;
+	
+			const auto name = X3D::RemoveTrailingNumber (node -> getName ());
+	
+			if (selectNamedNode and name .empty ())
+				continue;
+	
+			row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
+			row -> set_value (Columns::NAME,        name);
+			row -> set_value (Columns::DESCRIPTION, i ? getDescription (node) : description);
+			row -> set_value (Columns::BIND,        node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
+	
+			if ((editing and node == selection) or (not editing and node -> isBound ()))
+			{
+				row -> set_value (Columns::WEIGHT, Weight::BOLD);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			}
+			else
+			{
+				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			}
+	
+			getListStore () -> row_changed (getListStore () -> get_path (row), row);
+	
+			++ row;
 		}
-		else
-		{
-			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
-		}
-
-		getListStore () -> row_changed (getListStore () -> get_path (row), row);
-
-		++ row;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -471,30 +487,37 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	if (not activeLayer)
-		return;
-
-	guint index = 0;
-
-	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
-
-	const X3D::X3DPtr <Type> node (getList (activeLayer) -> getList () .at (index));
-
-	if (not editing)
+	try
 	{
-		const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
-
-		if (viewpoint)
-			viewpoint -> setAnimate (true);
-
-		if (node -> isBound ())
-			node -> transitionStart (node);
-
-		else
-			node -> set_bind () = true;
+		if (not activeLayer)
+			return;
+	
+		guint index = 0;
+	
+		getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
+	
+		const X3D::X3DPtr <Type> node (getList (activeLayer) -> getList () .at (index));
+	
+		if (not editing)
+		{
+			const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
+	
+			if (viewpoint)
+				viewpoint -> setAnimate (true);
+	
+			if (node -> isBound ())
+				node -> transitionStart (node);
+	
+			else
+				node -> set_bind () = true;
+		}
+	
+		setSelection (node, true);
 	}
-
-	setSelection (node, true);
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
@@ -526,23 +549,33 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_bind_toggled (const Gtk::TreePath & path)
 {
-	if (not activeLayer)
-		return;
-
-	// Get Node
-
-	const auto index     = path [0];
-	const auto node      = getList (activeLayer) -> getList () .at (index);
-	const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
-
-	if (viewpoint)
-		viewpoint -> setAnimate (true);
-
-	if (node -> isBound ())
-		node -> transitionStart (node);
-
-	else
-		node -> set_bind () = true;
+	try
+	{
+		if (not activeLayer)
+			return;
+	
+		// Get Node
+	
+		guint index = 0;
+	
+		getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
+	
+		const auto node      = getList (activeLayer) -> getList () .at (index);
+		const auto viewpoint = X3D::X3DPtr <X3D::X3DViewpointNode> (node);
+	
+		if (viewpoint)
+			viewpoint -> setAnimate (true);
+	
+		if (node -> isBound ())
+			node -> transitionStart (node);
+	
+		else
+			node -> set_bind () = true;
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>

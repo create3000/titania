@@ -344,7 +344,7 @@ X3DSoundSourceNodeEditor::set_elapsedTime ()
 void
 X3DSoundSourceNodeEditor::set_duration ()
 {
-	getSoundSourceDurationLabel () .set_text (strftime (soundSourceNode -> duration_changed (), 3));
+	getSoundSourceDurationLabel () .set_text (strftime (soundSourceNode -> duration_changed () < 0 ? 0 : soundSourceNode -> duration_changed (), 3));
 }
 
 X3DSoundSourceNodeEditor::~X3DSoundSourceNodeEditor ()

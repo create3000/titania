@@ -92,7 +92,7 @@ strftime (const long double value, const size_t fractions)
 
 	size_t time = std::round (value * framesPerSecond);
 
-	const size_t frames = time % framesPerSecond;
+	const size_t milli = time % framesPerSecond;
 	time /= framesPerSecond;
 
 	const size_t seconds = time % 60;
@@ -110,7 +110,7 @@ strftime (const long double value, const size_t fractions)
 		<< std::setw (2) << hours << ":"
 		<< std::setw (2) << minutes << ":" 
 		<< std::setw (2) << seconds << "." 
-		<< std::setw (fractions) << frames;
+		<< std::setw (fractions) << milli;
 
 	return osstream .str ();
 }

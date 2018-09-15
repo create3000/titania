@@ -189,7 +189,7 @@ X3DMovieTextureEditor::set_elapsedTime ()
 void
 X3DMovieTextureEditor::set_duration ()
 {
-	getMovieTextureDurationLabel () .set_text (strftime (movieTexture -> duration_changed (), 3));
+	getMovieTextureDurationLabel () .set_text (strftime (movieTexture -> duration_changed () < 0 ? 0 : movieTexture -> duration_changed (), 3));
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()
