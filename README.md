@@ -18,23 +18,41 @@ For more information and documentation please visit our website at [http://titan
 Installation
 --------------------------------------
 
-### Ubuntu Package
+### Install Titania via FlatPak
 
-Titania is available for all flavours of [Ubuntu](https://www.ubuntu.com/) on Launchpad via ppa. You can install Titania 
-by pasting the following lines into a terminal: 
+[FlatPak](http://flatpak.org/) is a new straightforward packaging format for Linux, which allows the same applications
+to run in a sandboxed environment, across any modern distribution.
+
+We are offering a stable release of Titania as a FlatPak bundle, which runs out of the box.
+
+If not already included within your distribution, first, [install FlatPak for your distribution](http://flatpak.org/getting.html) – make
+sure you have version 0.8.0 or higher.
+
+Then [click here to install](http://code.create3000.de/repos/titania.flatpakref), or paste the following line into a terminal to install Titania:
 
 ```bash
-sudo add-apt-repository ppa:holger-seelig/titania
-sudo apt-get update
-sudo apt-get install titania
+flatpak install --user --from http://code.create3000.de/repos/titania.flatpakref
 ```
 
-### Standalone Debian/Ubuntu Packages
+or update your existing FlatPak installation with:
 
-The latest stable [Debian](https://www.debian.org/) and Ubuntu packages can be found at:
+```bash
+flatpak update --user de.create3000.titania
+```
 
-[https://launchpad.net/titania/+download](https://launchpad.net/titania/+download)
+Don't forget to reboot your system after installation has been completed. You can than run newly installed Titania from terminal using:
 
+```bash
+flatpak run de.create3000.titania
+```
+
+#### Known Issues
+
+If Titania does not run and quits with the error message »locale::facet::_S_create_c_locale name not valid« start Titania using:
+
+```bash
+flatpak install --user gnome org.gnome.Platform.Locale//3.26
+```
 
 ### Arch Linux User Repository
 
