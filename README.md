@@ -48,7 +48,7 @@ flatpak run de.create3000.titania
 
 #### Known Issues
 
-If Titania does not run and quits with the error message »locale::facet::_S_create_c_locale name not valid« start Titania using:
+If Titania does not run and quits with the error message »locale::facet::_S_create_c_locale name not valid« run:
 
 ```bash
 flatpak install --user gnome org.gnome.Platform.Locale//3.26
