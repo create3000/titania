@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkFileFilter" id="FileFilterAll">
@@ -331,6 +331,9 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox1">
         <property name="can_focus">False</property>
@@ -585,7 +588,6 @@
                       <object class="GtkScale" id="scale2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">PNG/JPEG/MIFF compression level</property>
                         <property name="adjustment">ImageAntialiasingAdjustment</property>
                         <property name="round_digits">0</property>
                         <property name="digits">0</property>
