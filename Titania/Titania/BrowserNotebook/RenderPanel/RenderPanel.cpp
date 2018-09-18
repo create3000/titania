@@ -138,6 +138,7 @@ RenderPanel::getViewpointList () const
 	{
 		const_cast <RenderPanel*> (this) -> viewpointList = createDialog <ViewpointList> ("ViewpointList");
 
+		viewpointList -> getHeaderBar () .set_title (_ ("Select Named Viewpoint"));
 		viewpointList -> getWindow () .set_transient_for (getPropertiesDialog ());
 		viewpointList -> getWindow () .set_modal (true);
 		viewpointList -> getLabel ()  .set_visible (false);

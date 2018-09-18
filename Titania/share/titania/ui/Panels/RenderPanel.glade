@@ -723,7 +723,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
-                <property name="label" translatable="yes">Viewpoint Name:</property>
+                <property name="label" translatable="yes">Viewpoint:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -735,6 +735,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Select named viewpoint.</property>
                 <property name="halign">start</property>
                 <signal name="clicked" handler="on_properties_viewpoint_chooser_button_clicked" swapped="no"/>
                 <child>

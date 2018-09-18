@@ -224,6 +224,9 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 
 	addChildObjects (browser, activeLayer, nodes, selection);
 
+	getHeaderBar () .set_title (_ (editorName));
+	getLabel ()     .set_text (_ (editorName));
+
 	setup ();
 }
 
@@ -233,9 +236,7 @@ X3DBindableNodeList <Type>::initialize ()
 {
 	X3DBindableNodeListInterface::initialize ();
 
-	getImage ()     .set (Gtk::StockID (editorName), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
-	getHeaderBar () .set_title (_ (editorName));
-	getLabel ()     .set_text (_ (editorName));
+	getImage () .set (Gtk::StockID (editorName), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
 
 	getNameCellRenderer ()        -> property_weight_set () = true;
 	getDescriptionCellRenderer () -> property_weight_set () = true;
