@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="name">BindableNodeEditor</property>
@@ -28,7 +31,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Background</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -86,7 +88,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Fog</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -146,7 +147,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Navigation Info</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -206,7 +206,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Viewpoint</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>

@@ -185,7 +185,15 @@ X3DNotebook <Interface>::on_idle ()
 		const auto currentPage = getConfig () -> template getItem <int32_t> ("currentPage");
 		const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
 
-		getNotebook () .set_current_page (currentPage);
+		if (pageDependent)
+			getCurrentBrowser () .addInterest (&X3DNotebook::set_browser, this);
+		else
+			getCurrentBrowser () .removeInterest (&X3DNotebook::set_browser, this);
+
+		if (getNotebook () .get_current_page () == currentPage)
+			on_switch_page (nullptr, currentPage);
+		else
+			getNotebook () .set_current_page (currentPage);
 	}
 	catch (const std::out_of_range & error)
 	{ }
@@ -196,12 +204,6 @@ void
 X3DNotebook <Interface>::setPageDependent (const bool value)
 {
 	pageDependent = value;
-
-	if (pageDependent)
-		getCurrentBrowser () .addInterest (&X3DNotebook::set_browser, this);
-
-	else
-		getCurrentBrowser () .removeInterest (&X3DNotebook::set_browser, this);
 }
 
 template <class Interface>
@@ -227,6 +229,7 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 	{
 		page = createDialog (name);
 		page -> setName (getName () + "." + page -> getName ());
+		page -> getWidget () .set_visible (false);
 		page -> reparent (*boxes .at (name), getWindow ());
 	}
 
@@ -245,6 +248,7 @@ X3DNotebook <Interface>::getDependentPage (const std::string & name) const
 	if (not exists)
 	{
 		page -> setName (getName () + "." + page -> getName ());
+		page -> getWidget () .set_visible (false);
 		page -> reparent (*boxes .at (name), getWindow ());
 	}
 
