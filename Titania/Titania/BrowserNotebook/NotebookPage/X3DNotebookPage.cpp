@@ -250,7 +250,7 @@ X3DNotebookPage::getTitle () const
 {
 	auto title = getWorldURL () .basename ();
 
-	if (title .empty () or getScene () -> getWorldURL () .empty ())
+	if (title .empty ())
 		title = _ ("New Scene");
 
 	if (getModified ())
