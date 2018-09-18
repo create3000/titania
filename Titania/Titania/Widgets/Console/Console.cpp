@@ -100,17 +100,20 @@ Console::set_messages (const X3D::MFString & messages)
 {
 	for (size_t i = 0; i < messages .size (); i += 2)
 	{
-		if (messages [i] == "error")
-			error (messages [i + 1]);
+		const auto & type    = messages [i];
+		const auto & message = messages [i + 1];
 
-		else if (messages [i] == "warn")
-			warn (messages [i + 1]);
+		if (type == "error")
+			error (message);
 
-		else if (messages [i] == "log")
-			log (messages [i + 1]);
+		else if (type == "warn")
+			warn (message);
+
+		else if (type == "log")
+			log (message);
 
 		else
-			print (messages [i + 1]);
+			print (message);
 	}
 }
 
