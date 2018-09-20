@@ -106,6 +106,8 @@ X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & ur
 	                 urlError,
 	                 getRootNodes (),
 	                 future);
+
+	set_opacity (0);
 }
 
 void
