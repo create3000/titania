@@ -14,7 +14,12 @@
 	color: #61afef;
 }
 
-.titania-browser-notebook {
+.titania-splash-screen {
+	background-image: url("logo.svg");
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
 }
 
 .titania-console {

@@ -3673,9 +3673,6 @@
                                 <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
                                 <signal name="page-reordered" handler="on_page_reordered" swapped="no"/>
                                 <signal name="switch-page" handler="on_switch_page" swapped="no"/>
-                                <style>
-                                  <class name="titania-browser-notebook"/>
-                                </style>
                               </object>
                               <packing>
                                 <property name="index">-1</property>

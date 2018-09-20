@@ -105,6 +105,7 @@ X3DNotebookPage::initialize ()
 	getExecutionContext () .addInterest (this, &X3DNotebookPage::set_executionContext);
 
 	getBox1 () .remove ();
+	getBox1 () .get_style_context () -> add_class ("titania-splash-screen");
 	getBox1 () .add (*mainBrowser);
 	getBox1 () .show_all ();
 
@@ -276,17 +277,9 @@ X3DNotebookPage::reset ()
 void
 X3DNotebookPage::set_browser ()
 {
-	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser, this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_splashScreen, this);
-	mainBrowser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
-}
-
-void
-X3DNotebookPage::set_splashScreen ()
-{
-	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_splashScreen, this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_loaded,          this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized,     this);
+	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser,  this);
+	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_loaded,      this);
+	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
 
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> setMonitorFiles (true);
@@ -298,6 +291,7 @@ X3DNotebookPage::set_loaded ()
 {
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
 
+	getBox1 () .get_style_context () -> remove_class ("titania-splash-screen");
 	getBox1 () .set_visible (false);
 	getBox1 () .remove ();
 

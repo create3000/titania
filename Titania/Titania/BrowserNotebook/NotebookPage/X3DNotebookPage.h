@@ -176,9 +176,6 @@ private:
 	set_browser ();
 
 	void
-	set_splashScreen ();
-
-	void
 	set_loaded ();
 
 	void

@@ -3179,6 +3179,7 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\RigidBodyCollection" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SingleAxisHingeJoint" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SliderJoint" />
+    <None Include="share\titania\ui\logo.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
