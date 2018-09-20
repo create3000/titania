@@ -156,8 +156,6 @@ TextureMappingEditor::initialize ()
 	right -> setAntialiasing (4);
 	left  -> setPrivateCursor ("ARROW");
 	right -> setPrivateCursor ("ARROW");
-	left  -> set_opacity (0);
-	right -> set_opacity (0);
 	left  -> show ();
 	right -> show ();
 
@@ -182,7 +180,6 @@ void
 TextureMappingEditor::set_left_initialized ()
 {
 	left -> initialized () .removeInterest (&TextureMappingEditor::set_left_initialized, this);
-	left -> set_opacity (1);
 	++ initialized;
 	set_initialized ();
 }
@@ -191,7 +188,6 @@ void
 TextureMappingEditor::set_right_initialized ()
 {
 	right -> initialized () .removeInterest (&TextureMappingEditor::set_left_initialized, this);
-	right -> set_opacity (1);
 	++ initialized;
 	set_initialized ();
 }

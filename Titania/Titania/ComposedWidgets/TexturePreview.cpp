@@ -84,7 +84,6 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &TexturePreview::on_configure_event));
 	preview -> initialized () .addInterest (&TexturePreview::set_initialized, this);
 	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
 	preview -> show ();
 
 	box .pack_start (*preview, true, true, 0);
@@ -168,7 +167,6 @@ TexturePreview::set_initialized ()
 	try
 	{
 		preview -> initialized () .removeInterest (&TexturePreview::set_initialized, this);
-		preview -> set_opacity (1);
 		preview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
 		preview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
 	}

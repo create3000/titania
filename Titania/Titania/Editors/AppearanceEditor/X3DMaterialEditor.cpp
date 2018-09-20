@@ -108,7 +108,6 @@ X3DMaterialEditor::initialize ()
 	preview -> initialized () .addInterest (&X3DMaterialEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
 	preview -> show ();
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
@@ -120,7 +119,6 @@ void
 X3DMaterialEditor::set_initialized ()
 {
 	preview -> initialized () .removeInterest (&X3DMaterialEditor::set_initialized, this);
-	preview -> set_opacity (1);
 
 	try
 	{

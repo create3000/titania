@@ -107,7 +107,6 @@ X3DBrowserNotebook::initialize ()
 
 	masterBrowser -> initialized () .addInterest (&X3DBrowserNotebook::set_masterBrowser, this);
 	masterBrowser -> setAntialiasing (4);
-	masterBrowser -> set_opacity (0);
 	masterBrowser -> show ();
 	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
 
@@ -244,7 +243,6 @@ void
 X3DBrowserNotebook::set_masterBrowser ()
 {
 	masterBrowser -> initialized () .removeInterest (&X3DBrowserNotebook::set_masterBrowser, this);
-	masterBrowser -> set_opacity (1);
 }
 
 void

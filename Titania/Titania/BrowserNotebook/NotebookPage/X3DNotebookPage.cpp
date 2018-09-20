@@ -88,7 +88,6 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	if (not url .empty ())
 	{
 		mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_browser, this);
-		mainBrowser -> set_opacity (0);
 	}
 
 	undoHistory .addInterest (&X3DNotebookPage::updateTitle, this);
@@ -289,7 +288,6 @@ X3DNotebookPage::set_splashScreen ()
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_loaded,          this);
 	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized,     this);
 
-	mainBrowser -> set_opacity (1);
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> setMonitorFiles (true);
 	mainBrowser -> loadURL ({ url .str () }, { });

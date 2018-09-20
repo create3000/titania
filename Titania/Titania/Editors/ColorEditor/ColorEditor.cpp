@@ -118,7 +118,6 @@ ColorEditor::initialize ()
 	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
 	preview -> setAntialiasing (4);
 	preview -> setPrivateCursor ("ARROW");
-	preview -> set_opacity (0);
 	preview -> show ();
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
@@ -171,7 +170,6 @@ void
 ColorEditor::set_initialized ()
 {
 	preview -> initialized () .removeInterest (&ColorEditor::set_initialized, this);
-	preview -> set_opacity (1);
 
 	try
 	{

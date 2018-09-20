@@ -385,6 +385,7 @@ throw (Error <INVALID_SCENE>,
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
 
+		set_opacity (0); // getBrowserOptions () -> SplashScreen ()
 		set_loadCount ();
 	}
 	else
@@ -414,6 +415,7 @@ X3DBrowser::bind ()
 	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
 	getWorld () -> bind ();
+	set_opacity (1);
 }
 
 void
@@ -455,6 +457,8 @@ throw (Error <INVALID_URL>,
 //	}
 
 	using namespace std::placeholders;
+
+	set_opacity (0); // getBrowserOptions () -> SplashScreen ()
 
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 

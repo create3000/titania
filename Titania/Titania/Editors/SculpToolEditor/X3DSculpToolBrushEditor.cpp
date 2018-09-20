@@ -82,7 +82,6 @@ X3DSculpToolBrushEditor::initialize ()
 	preview -> initialized () .addInterest (&X3DSculpToolBrushEditor::set_initalized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
 	preview -> show ();
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
@@ -97,8 +96,6 @@ X3DSculpToolBrushEditor::set_initalized ()
 {
 	try
 	{
-		preview -> set_opacity (1);
-
 		// Create or get brush
 
 		try

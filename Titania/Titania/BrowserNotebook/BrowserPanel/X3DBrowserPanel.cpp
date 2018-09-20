@@ -351,7 +351,6 @@ X3DBrowserPanel::setLocalBrowser (const X3D::BrowserPtr & value)
 	if (type not_eq BrowserPanelType::MAIN_VIEW)
 	{
 		browser -> initialized () .addInterest (&X3DBrowserPanel::set_dependent_browser, this);
-		browser -> set_opacity (0);
 		browser -> setName (names .at (type));
 	}
 
@@ -503,7 +502,6 @@ X3DBrowserPanel::set_dependent_browser ()
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
 		browser -> setSelectable (true);
 		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ()); // here!
-		browser -> set_opacity (1);
 
 		// Setup scene.
 

@@ -97,7 +97,7 @@ const std::string   BrowserOptions::typeName       = "BrowserOptions";
 const std::string   BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
-	          SplashScreen (new SFBool (false)),
+	          SplashScreen (new SFBool (true)),
 	             Dashboard (new SFBool (true)),
 	            RubberBand (new SFBool (true)),
 	EnableInlineViewpoints (new SFBool (true)),

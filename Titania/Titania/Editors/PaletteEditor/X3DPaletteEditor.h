@@ -314,7 +314,6 @@ X3DPaletteEditor <Type>::initialize ()
 	preview -> initialized () .addInterest (&X3DPaletteEditor::set_browser, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
 	preview -> show ();
 
 	this -> getPalettePreviewBox () .pack_start (*preview, true, true, 0);
@@ -354,7 +353,6 @@ X3DPaletteEditor <Type>::set_browser ()
 		// Disconnect.
 
 		preview -> initialized () .removeInterest (&X3DPaletteEditor::set_browser, this);
-		preview -> set_opacity (1);
 	
 		// Get exported nodes.
 
