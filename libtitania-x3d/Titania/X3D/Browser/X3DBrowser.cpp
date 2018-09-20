@@ -78,6 +78,7 @@ const std::string   X3DBrowser::containerField = "browser";
 X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
 	        X3DBaseNode (),
 	  X3DBrowserContext (sharedBrowser),
+	        cssProvider (Gtk::CssProvider::create ()),
 	                url (url),
 	          parameter (parameter),
 	        description (),
@@ -100,14 +101,31 @@ X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & ur
 	setName ("Titania");
 	addType (X3DConstants::X3DBrowser);
 
-	addChildObjects (description,
+	addChildObjects (getRootNodes (),
+	                 description,
 	                 executionContext,
 	                 loadState,
 	                 urlError,
-	                 getRootNodes (),
 	                 future);
 
-	set_opacity (0);
+	try
+	{
+		std::string string;
+
+		string += ".titania-private-invisible {\n";
+		string += "  opacity: 0;\n";
+		string += "}\n";
+
+		cssProvider -> load_from_data (string);
+
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	}
+	catch (const Glib::Error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
+
+	get_style_context () -> add_class ("titania-private-invisible");
 }
 
 void
@@ -389,7 +407,7 @@ throw (Error <INVALID_SCENE>,
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
 
-		set_opacity (0); // getBrowserOptions () -> SplashScreen ()
+		get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 		set_loadCount ();
 	}
 	else
@@ -419,7 +437,7 @@ X3DBrowser::bind ()
 	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
 	getWorld () -> bind ();
-	set_opacity (1);
+	get_style_context () -> remove_class ("titania-private-invisible");
 }
 
 void
@@ -462,7 +480,7 @@ throw (Error <INVALID_URL>,
 
 	using namespace std::placeholders;
 
-	set_opacity (0); // getBrowserOptions () -> SplashScreen ()
+	get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 

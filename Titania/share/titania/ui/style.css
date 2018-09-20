@@ -2,6 +2,8 @@
  * Titania Styles CSS
  */
 
+/* Colors */
+
 .titania-red {
 	color: #e06c75;
 }
@@ -14,6 +16,8 @@
 	color: #61afef;
 }
 
+/* Splash Screen */
+
 .titania-splash-screen {
 	background-image: url("logo.svg");
 	background-color: transparent;
@@ -21,6 +25,8 @@
 	background-size: contain;
 	background-position: center;
 }
+
+/* Console */
 
 .titania-console {
 	font-family: monospace;

@@ -39,6 +39,8 @@
 
 #include <Titania/Stream/InputFileStream.h>
 
+#include <gtkmm/cssprovider.h>
+
 namespace titania {
 namespace X3D {
 
@@ -333,6 +335,8 @@ private:
 	static const std::string   containerField;
 
 	///  @name Members
+
+	Glib::RefPtr <Gtk::CssProvider> cssProvider;
 
 	MFString       url;
 	MFString       parameter;
