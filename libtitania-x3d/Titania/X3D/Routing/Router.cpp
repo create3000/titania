@@ -142,12 +142,12 @@ Router::processEvents ()
 				}
 				catch (const std::exception & error)
 				{
-					__LOG__ << "Unhandled exception in " << event .first -> getTypeName () << " named '" << event .first -> getName () << "'." << std::endl;
-					__LOG__ << error .what () << std::endl;
+					std::clog << "Unhandled exception in " << event .first -> getTypeName () << " named '" << event .first -> getName () << "'." << std::endl;
+					std::clog << error .what () << std::endl;
 				}
 				catch (...)
 				{
-					__LOG__ << "Unhandled exception in " << event .first -> getTypeName () << " named '" << event .first -> getName () << "'." << std::endl;
+					std::clog << "Unhandled exception in " << event .first -> getTypeName () << " named '" << event .first -> getName () << "'." << std::endl;
 				}
 			}
 		}
@@ -171,12 +171,12 @@ Router::eventsProcessed ()
 			}
 			catch (const std::exception & error)
 			{
-				__LOG__ << "Unhandled exception in eventsProcessed." << std::endl;
-				__LOG__ << error .what () << std::endl;
+				std::clog << "Unhandled exception in eventsProcessed." << std::endl;
+				std::clog << error .what () << std::endl;
 			}
 			catch (...)
 			{
-				__LOG__ << "Unhandled exception in eventsProcessed." << std::endl;
+				std::clog << "Unhandled exception in eventsProcessed." << std::endl;
 			}
 		}
 	}

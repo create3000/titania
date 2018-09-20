@@ -394,20 +394,27 @@ X3DBindableNodeList <Type>::set_list ()
 	
 		if (activeLayer)
 		{
-			const auto & list = getList (activeLayer);
+			const auto & list  = getList (activeLayer);
+			auto         names = std::set <std::string> ({ "" });
 	
 			for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 			{
 			   X3D::X3DPtr <Type> node (list -> getList () [i]);
 	
+				// Test if node should be displayed.
+
 				if (not editing and getDescription (node) .empty ())
 				   continue;
-	
+
 				const auto name = X3D::RemoveTrailingNumber (node -> getName ());
-		
-				if (selectNamedNode and name .empty ())
+
+				if (selectNamedNode and names .count (name))
 					continue;
-	
+
+				names .emplace (name);
+
+				// Append row.
+
 				getListStore () -> append () -> set_value (Columns::INDEX, i);
 	
 				if (editing)
@@ -442,20 +449,27 @@ X3DBindableNodeList <Type>::set_stack ()
 		if (not activeLayer)
 			return;
 	
-		const auto & list = getList (activeLayer);
-		auto         row  = getListStore () -> children () .begin ();
+		const auto & list  = getList (activeLayer);
+		auto         row   = getListStore () -> children () .begin ();
+		auto         names = std::set <std::string> ({ "" });
 	
 		for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 		{
 		   const X3D::X3DPtr <Type> node (list -> getList () [i]);
 	
+			// Test if node should be displayed.
+
 			if (not editing and getDescription (node) .empty ())
 				continue;
 	
 			const auto name = X3D::RemoveTrailingNumber (node -> getName ());
 	
-			if (selectNamedNode and name .empty ())
+			if (selectNamedNode and names .count (name))
 				continue;
+
+			names .emplace (name);
+
+			// Fill row.
 	
 			row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
 			row -> set_value (Columns::NAME,        name);

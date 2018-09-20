@@ -118,50 +118,41 @@ public:
 	virtual
 	SFBool &
 	initialized ()
-	noexcept (true)
 	{ return initializedOutput; }
 
 	virtual
 	const SFBool &
 	initialized () const
-	noexcept (true)
 	{ return initializedOutput; }
 
 	const Output &
 	prepareEvents () const
-	noexcept (true)
 	{ return prepareEventsOutput; }
 
 	const Output &
 	timeEvents () const
-	noexcept (true)
 	{ return timeEventsOutput; }
 
 	const Output &
 	sensorEvents () const
-	noexcept (true)
 	{ return sensorEventsOutput; }
 
 	const Output &
 	displayed () const
-	noexcept (true)
 	{ return displayedOutput; }
 
 	const Output &
 	finished () const
-	noexcept (true)
 	{ return finishedOutput; }
 
 	const Output &
 	changed () const
-	noexcept (true)
 	{ return changedOutput; }
 	
 	///  @name Member access
 
 	const X3DBrowserContextPtr &
 	getSharedContext () const
-	noexcept (true)
 	{ return sharedContext; }
 
 	const WorldPtr &
@@ -176,17 +167,14 @@ public:
 
 	const SelectionPtr &
 	getSelection () const
-	noexcept (true)
 	{ return selection; }
 
 	const NotificationPtr &
 	getNotification () const
-	noexcept (true)
 	{ return notification; }
 
 	const ConsolePtr &
 	getConsole () const
-	noexcept (true)
 	{ return console; }
 
 	///  @name Operations
@@ -204,12 +192,10 @@ public:
 
 	const X3DBrowserContextPtr &
 	getDependentContext () const
-	noexcept (true)
 	{ return dependentContext; }
 
 	const std::shared_ptr <Router> &
 	getRouter () const
-	noexcept (true)
 	{ return router; }
 
 	virtual
@@ -255,8 +241,7 @@ protected:
 	///  @name Operations
 
 	void
-	update ()
-	noexcept (true);
+	update ();
 
 	///  @name Event handlers
 

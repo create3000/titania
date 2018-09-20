@@ -106,7 +106,9 @@ FrameBuffer::setup ()
 		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBufferId);
 	}
 	else
+	{
 		glDrawBuffer (GL_NONE); // No color buffer is drawn to.
+	}
 
 	// The depth buffer
 
@@ -213,7 +215,9 @@ FrameBuffer::readPixels (const GLenum format)
 		}
 	}
 	else
+	{
 		glReadPixels (0, 0, width, height, format, GL_UNSIGNED_BYTE, pixels .data ());
+	}
 
 	return pixels;
 }
@@ -234,7 +238,9 @@ FrameBuffer::readDepth ()
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 	}
 	else
+	{
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+	}
 
 	return depth;
 }

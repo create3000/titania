@@ -123,7 +123,7 @@ public:
 	
 			if (not name .empty ())
 			{
-				// Return first viewpoint with name.
+				// Return first viewpoint with @name.
 
 				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 				{

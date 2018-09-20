@@ -329,7 +329,6 @@ X3DBrowserContext::endUpdateForFrame ()
 
 void
 X3DBrowserContext::update ()
-noexcept (true)
 {
 	try
 	{
@@ -391,29 +390,23 @@ noexcept (true)
 	}
 	catch (const Glib::Error & error)
 	{
-		std::clog
+		__LOG__
 		   << getName () << " "
 			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << error .what () << std::endl;
-
-		//throw; // DEBUG
 	}
 	catch (const std::exception & error)
 	{
-		std::clog
+		__LOG__
 		   << getName () << " "
 			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << error .what () << std::endl;
-
-		//throw; // DEBUG
 	}
 	catch (...)
 	{
-		std::clog
+		__LOG__
 		   << getName () << " "
 			<< SFTime (SFTime::now ()) .toUTCString () << " Unhandled unkowm exception." << std::endl;
-
-		//throw; // DEBUG
 	}
 }
 
