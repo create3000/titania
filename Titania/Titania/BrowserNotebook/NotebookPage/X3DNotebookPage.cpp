@@ -67,7 +67,7 @@ namespace puck {
 
 X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
-	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { startUrl .str () })),
 	             masterScene (mainBrowser -> getExecutionContext ()),
 	                   scene (mainBrowser -> getExecutionContext ()),
 	        executionContext (mainBrowser -> getExecutionContext ()),
@@ -84,11 +84,8 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	addChildObjects (mainBrowser, masterScene, scene, executionContext);
 
 	mainBrowser -> isStrict (false);
-
-	if (not url .empty ())
-	{
-		mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_browser, this);
-	}
+	mainBrowser -> setNotifyOnLoad (true);
+	mainBrowser -> setMonitorFiles (true);
 
 	undoHistory .addInterest (&X3DNotebookPage::updateTitle, this);
 }
@@ -98,6 +95,8 @@ X3DNotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
 
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,       this);
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,  this);
 	mainBrowser -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
 	mainBrowser -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
 
@@ -106,7 +105,7 @@ X3DNotebookPage::initialize ()
 
 	getBox1 () .remove ();
 	getBox1 () .get_style_context () -> add_class ("titania-splash-screen");
-	getBox1 () .add (*mainBrowser);
+	getBox1 () .add (*mainBrowser); // Initialized browser if box maps.
 	getBox1 () .show_all ();
 
 	set_soundSources ();
@@ -275,18 +274,6 @@ X3DNotebookPage::reset ()
 }
 
 void
-X3DNotebookPage::set_browser ()
-{
-	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_browser,  this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_loaded,      this);
-	mainBrowser -> initialized () .addInterest (&X3DNotebookPage::set_initialized, this);
-
-	mainBrowser -> setNotifyOnLoad (true);
-	mainBrowser -> setMonitorFiles (true);
-	mainBrowser -> loadURL ({ url .str () }, { });
-}
-
-void
 X3DNotebookPage::set_loaded ()
 {
 	mainBrowser -> initialized () .removeInterest (&X3DNotebookPage::set_loaded, this);
@@ -295,6 +282,7 @@ X3DNotebookPage::set_loaded ()
 	getBox1 () .set_visible (false);
 	getBox1 () .remove ();
 
+	// Load panels.
 	loaded ();
 }
 

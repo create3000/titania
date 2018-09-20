@@ -64,7 +64,7 @@ namespace puck {
 
 X3DMaterialEditor::X3DMaterialEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") }, { })),
+	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") })),
 	                 appearances (),
 	                materialNode (),
 	          materialNodeBuffer (),

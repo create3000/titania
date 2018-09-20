@@ -70,7 +70,7 @@ static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
 
 X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 	X3DTextureEditorInterface (),
-	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
+	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") })),
 	                nodeIndex (new NodeIndex (getBrowserWindow ()))
 {
 	addChildObjects (preview);

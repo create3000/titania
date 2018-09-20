@@ -173,9 +173,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_browser ();
-
-	void
 	set_loaded ();
 
 	void

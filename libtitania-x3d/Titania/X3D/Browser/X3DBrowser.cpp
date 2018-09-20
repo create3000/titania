@@ -139,7 +139,9 @@ X3DBrowser::set_loaded (const bool loaded)
 	// Load initial url or start with empty scene.
 
 	if (url .empty ())
+	{
 	   initialized () = true;
+	}
 	else
 	{
 	   initialized () .set (true);
