@@ -164,7 +164,21 @@ Router::eventsProcessed ()
 	do
 	{
 		for (const auto & parent : getTaintedParents ())
-			parent -> eventsProcessed ();
+		{
+			try
+			{
+				parent -> eventsProcessed ();
+			}
+			catch (const std::exception & error)
+			{
+				__LOG__ << "Unhandled exception in eventsProcessed." << std::endl;
+				__LOG__ << error .what () << std::endl;
+			}
+			catch (...)
+			{
+				__LOG__ << "Unhandled exception in eventsProcessed." << std::endl;
+			}
+		}
 	}
 	while (not parents .empty () and isEmpty ());
 }

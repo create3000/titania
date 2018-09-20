@@ -385,9 +385,6 @@ throw (Error <INVALID_SCENE>,
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
 
-		if (not getBrowserOptions () -> EnableInlineViewpoints ())
-			getWorld () -> bind ();
-
 		set_loadCount ();
 	}
 	else
@@ -416,8 +413,7 @@ X3DBrowser::bind ()
 {
 	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
-	if (getBrowserOptions () -> EnableInlineViewpoints ())
-		getWorld () -> bind ();
+	getWorld () -> bind ();
 }
 
 void

@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_EXECUTION_BINDABLE_NODE_LIST_H__
 
 #include "../Basic/X3DBaseNode.h"
+#include "../Browser/Core/BrowserOptions.h"
+#include "../Browser/X3DBrowser.h"
 
 #include <vector>
 
@@ -114,32 +116,50 @@ public:
 	const pointer_type &
 	getBound (const std::string & name = "") const
 	{
-	   if (not list .empty ())
+	   if (list .size () > 1)
 	   {
+			const bool enableInlineViewpoints = getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints ();
+			const auto masterScene            = getMasterScene ();
+	
 			if (not name .empty ())
 			{
+				// Return first viewpoint with name.
+
 				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 				{
+					if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+						continue;
+
 					if (node -> getName () == name)
 						return node;
 				}
 			}
 
+			// Return first bound viewpoint in scene.
+
 			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
+				if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+					continue;
+
 				if (node -> isBound ())
 					return node;
 			}
+	
+			// Return first viewpoint in scene.
+	
+			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
+			{
+				if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+					continue;
+	
+				return node;
+			}
 		}
 
-		try
-		{
-			return list .at (1);
-		}
-		catch (const std::out_of_range &)
-		{
-			return list .at (0);
-		}
+		// Return default viewpoint.
+
+		return list [0];
 	}
 
 	void

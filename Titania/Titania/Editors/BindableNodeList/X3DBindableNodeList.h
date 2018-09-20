@@ -291,7 +291,7 @@ X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value, cons
 	if (selection)
 		selection -> isLive () .removeInterest (&X3DBindableNodeList::set_live, this);
 
-	if (not editing or (activeLayer and value == getList (activeLayer) -> getList () .at (0)))
+	if (not editing or (activeLayer and (getList (activeLayer) -> getList () .empty () or value == getList (activeLayer) -> getList () [0])))
 	{
 		if (event)
 			selection = nullptr;
@@ -398,7 +398,7 @@ X3DBindableNodeList <Type>::set_list ()
 	
 			for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 			{
-			   X3D::X3DPtr <Type> node (list -> getList () .at (i));
+			   X3D::X3DPtr <Type> node (list -> getList () [i]);
 	
 				if (not editing and getDescription (node) .empty ())
 				   continue;
@@ -447,7 +447,7 @@ X3DBindableNodeList <Type>::set_stack ()
 	
 		for (size_t i = 0, size = list -> getList () .size (); i < size; ++ i)
 		{
-		   const X3D::X3DPtr <Type> node (list -> getList () .at (i));
+		   const X3D::X3DPtr <Type> node (list -> getList () [i]);
 	
 			if (not editing and getDescription (node) .empty ())
 				continue;

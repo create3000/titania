@@ -283,22 +283,29 @@ template <class Interface>
 void
 X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
-	// Show/hide pages
-
-	getCurrentPage <X3DUserInterface> () -> getWidget () .set_visible (false);
-
-	if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
+	try
 	{
-		const auto name = userInterfaces .at (pageNumber);
-		const auto page = getPage <X3DUserInterface> (name);
-
-		page -> getWidget () .set_visible (true);
-
-		if (pageDependent)
-			page -> reparent (*boxes .at (name), getWindow ());
+		// Show/hide pages
+	
+		getCurrentPage <X3DUserInterface> () -> getWidget () .set_visible (false);
+	
+		if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
+		{
+			const auto name = userInterfaces .at (pageNumber);
+			const auto page = getPage <X3DUserInterface> (name);
+	
+			page -> getWidget () .set_visible (true);
+	
+			if (pageDependent)
+				page -> reparent (*boxes .at (name), getWindow ());
+		}
+	
+		getConfig () -> template setItem <int32_t> ("currentPage", pageNumber);
 	}
-
-	getConfig () -> template setItem <int32_t> ("currentPage", pageNumber);
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Interface>
