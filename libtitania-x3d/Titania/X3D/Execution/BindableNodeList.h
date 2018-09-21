@@ -127,7 +127,7 @@ public:
 
 				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 				{
-					if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+					if (not enableInlineViewpoints and node -> getScene () != masterScene)
 						continue;
 
 					if (node -> getName () == name)
@@ -139,7 +139,7 @@ public:
 
 			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
-				if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+				if (not enableInlineViewpoints and node -> getScene () != masterScene)
 					continue;
 
 				if (node -> isBound ())
@@ -150,7 +150,7 @@ public:
 	
 			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
-				if (not enableInlineViewpoints and node -> getExecutionContext () != masterScene)
+				if (not enableInlineViewpoints and node -> getScene () != masterScene)
 					continue;
 	
 				return node;
