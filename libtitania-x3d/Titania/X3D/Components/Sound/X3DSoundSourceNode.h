@@ -148,7 +148,7 @@ protected:
 
 	///  @name Construction
 
-	X3DSoundSourceNode ();
+	X3DSoundSourceNode (const bool video);
 
 	virtual
 	void
@@ -217,6 +217,7 @@ private:
 
 	Fields fields;
 
+	const bool                    video;
 	SFTime                        end;
 	std::unique_ptr <MediaStream> mediaStream;
 

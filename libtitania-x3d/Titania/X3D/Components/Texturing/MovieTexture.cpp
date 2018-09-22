@@ -65,7 +65,7 @@ const std::string   MovieTexture::containerField = "texture";
 MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DTexture2DNode (),
-	X3DSoundSourceNode (),
+	X3DSoundSourceNode (true),
 	      X3DUrlObject (),
 	   sigc::trackable (),
 	            buffer (),
@@ -110,7 +110,6 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> setVideo (true);
 	getStream () -> signal_video_changed ()  .connect (sigc::mem_fun (this, &MovieTexture::on_video_changed));
 	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &MovieTexture::on_error));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));

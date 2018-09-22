@@ -320,7 +320,7 @@ GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 void
 GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	MediaStream mediaStream;
+	MediaStream mediaStream (true);
 
 	mediaStream .setup ();
 	mediaStream .setUri (uri);

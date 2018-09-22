@@ -99,20 +99,12 @@ public:
 
 	///  @name Construction
 
-	MediaStream ();
+	MediaStream (const bool video);
 
 	void
 	setup ();
 
 	///  @name Member access
-
-	void
-	setVideo (const bool value)
-	{ video = value; }
-
-	bool
-	getVideo () const
-	{ return video; }
 
 	bool
 	setUri (const basic::uri & uri);
@@ -195,6 +187,9 @@ public:
 private:
 
 	///  @name Construction
+
+	Display*
+	getDisplay () const;
 
 	Window
 	getWindow () const;

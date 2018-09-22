@@ -64,7 +64,7 @@ const std::string   AudioClip::containerField = "source";
 
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSoundSourceNode (),
+	X3DSoundSourceNode (false),
 	      X3DUrlObject (),
 	            buffer (),
 	          urlStack (),

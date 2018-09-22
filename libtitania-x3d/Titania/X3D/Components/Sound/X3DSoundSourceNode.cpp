@@ -66,11 +66,12 @@ X3DSoundSourceNode::Fields::Fields () :
 	duration_changed (new SFTime (-1))
 { }
 
-X3DSoundSourceNode::X3DSoundSourceNode () :
+X3DSoundSourceNode::X3DSoundSourceNode (const bool video) :
 	X3DTimeDependentNode (),
 	              fields (),
 	                 end (),
-	         mediaStream ()
+	         mediaStream (),
+	               video (video)
 {
 	addType (X3DConstants::X3DSoundSourceNode);
 
@@ -84,7 +85,7 @@ X3DSoundSourceNode::initialize ()
 
 	getBrowser () -> addSoundSource (this);
 
-	mediaStream .reset (new MediaStream ());
+	mediaStream .reset (new MediaStream (video));
 
 	speed () .addInterest (&X3DSoundSourceNode::set_speed, this);
 	pitch () .addInterest (&X3DSoundSourceNode::set_pitch, this);

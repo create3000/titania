@@ -69,9 +69,9 @@ namespace X3D {
  *   https://github.com/GNOME/gstreamermm/blob/master/examples/media_player_gtkmm/player_window.cc
  */
 
-MediaStream::MediaStream () :
-	                    video (false),
-	                 xDisplay (XOpenDisplay (nullptr)),
+MediaStream::MediaStream (const bool video) :
+	                    video (video),
+	                 xDisplay (nullptr),
 	                  xWindow (0),
 	                   player (),
 	                    vsink (),
@@ -103,14 +103,25 @@ MediaStream::MediaStream () :
 	// Construct
 
 	player = Player::create ("player");
-	vsink  = VideoSink::create ("vsink");
+
+	if (video)
+		vsink  = VideoSink::create ("vsink");
+}
+
+Display*
+MediaStream::getDisplay () const
+{
+	if (not xDisplay)
+		const_cast <MediaStream*> (this) -> xDisplay = XOpenDisplay (nullptr);
+
+	return xDisplay;
 }
 
 Window
 MediaStream::getWindow () const
 {
 	if (not xWindow)
-		const_cast <MediaStream*> (this) -> xWindow = createWindow (xDisplay, 16, 16);
+		const_cast <MediaStream*> (this) -> xWindow = createWindow (getDisplay (), 16, 16);
 
 	return xWindow;
 }
@@ -118,6 +129,9 @@ MediaStream::getWindow () const
 Window
 MediaStream::createWindow (Display* const xDisplay, const int32_t width, const int32_t height) const
 {
+	if (not xDisplay)
+		return 0;
+
 	const auto xScreen = DefaultScreen (xDisplay);
 	const auto xBlack  = BlackPixel (xDisplay, xScreen);
 	const auto xWhite  = WhitePixel (xDisplay, xScreen);
@@ -141,8 +155,12 @@ MediaStream::setup ()
 	bus -> add_signal_watch ();
 	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
 
-	vsink -> set_last_sample_enabled (true);
-	player -> property_video_sink () = vsink;
+	if (video)
+	{
+		vsink -> set_last_sample_enabled (true);
+		player -> property_video_sink () = vsink;
+	}
+
 	player -> property_volume ()     = volume;
 	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
 	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
@@ -472,6 +490,10 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 						XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
 						XSync (xDisplay, FALSE);
 					}
+					else
+					{
+						return Gst::PAD_PROBE_OK;
+					}
 				}
 			}
 		}
@@ -538,7 +560,8 @@ MediaStream::~MediaStream ()
 	if (xWindow)
 		XDestroyWindow (xDisplay, xWindow);
 
-	XCloseDisplay (xDisplay);
+	if (xDisplay)
+		XCloseDisplay (xDisplay);
 }
 
 } // X3D
