@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkMenu" id="DragActionMenu">
@@ -56,6 +56,9 @@
     <property name="type_hint">utility</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="name">OutlineEditor</property>
@@ -433,6 +436,15 @@
         <property name="use_stock">True</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_remove_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="CreateCloneMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Create Clone</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_create_clone_activate" swapped="no"/>
       </object>
     </child>
     <child>

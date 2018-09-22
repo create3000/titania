@@ -747,6 +747,64 @@ OutlineEditor::remove (const X3D::UndoStepPtr & undoStep)
 }
 
 void
+OutlineEditor::on_create_clone_activate ()
+{
+	if (nodePath .empty ())
+		return;
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
+		return;
+
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Create Clone"));
+	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
+	auto &       rootNodes        = executionContext -> getRootNodes ();
+
+	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
+	{
+		// Root node
+
+		const auto index = treeView -> get_index (iter);
+
+		X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index + 1, node, undoStep);
+	}
+	else if (nodePath .size () > 2)
+	{
+		// Child node
+
+		const auto fieldIter = iter -> parent ();
+
+		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
+			return;
+
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				X3D::X3DEditor::pushBackIntoArray (executionContext, rootNodes, node, undoStep);
+				break;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto &     mfnode = *static_cast <X3D::MFNode*> (field);
+				const auto index  = treeView -> get_index (iter);
+
+				X3D::X3DEditor::insertIntoArray (executionContext, mfnode, index + 1, node, undoStep);
+				break;
+			}
+			default:
+				break;
+		}
+	}	
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 OutlineEditor::on_unlink_clone_activate ()
 {
 	if (nodePath .empty ())
@@ -796,7 +854,7 @@ OutlineEditor::on_unlink_clone_activate ()
 		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
 		
 		if (exportedNode)
-			parent = exportedNode -> getLocalNode  ();
+			parent = exportedNode -> getLocalNode ();
 
 		switch (field -> getType ())
 		{
@@ -1544,12 +1602,14 @@ OutlineEditor::selectNode (const double x, const double y)
 	// Node Edit
 
 	getRemoveMenuItem ()            .set_visible (isNode or isNull);
+	getCreateCloneMenuItem ()       .set_visible (isNode);
 	getUnlinkCloneMenuItem ()       .set_visible (isNode and isCloned);
 	getDetachFromGroupMenuItem ()   .set_visible (isNode);
 	getCreateParentGroupMenuItem () .set_visible (isNode); // XXX: and is X3DChildNode
 	getRemoveParentMenuItem ()      .set_visible (isNode and nodePath .size () > 1);
 
-	getEditSeparator () .set_visible (getUnlinkCloneMenuItem ()       .get_visible () or
+	getEditSeparator () .set_visible (getCreateCloneMenuItem ()       .get_visible () or
+                                     getUnlinkCloneMenuItem ()       .get_visible () or
                                      getDetachFromGroupMenuItem ()   .get_visible () or
                                      getCreateParentGroupMenuItem () .get_visible () or
                                      getRemoveParentMenuItem ()      .get_visible () or
