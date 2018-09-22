@@ -174,6 +174,7 @@ RenderPanel::getPropertiesDialogResponse ()
 	getWidthAdjustment ()        -> set_value (getWidth     (getId (), 1024));
 	getHeightAdjustment ()       -> set_value (getHeight    (getId (), 576));
 	getAntialiasingAdjustment () -> set_value (std::min (getAntialiasing (getId (), 4), antialiasing));
+	getShadingButton () .set_active_text (getShading  (getId (), "Gouraud"));
 
 	const auto responseId = getPropertiesDialog () .run ();
 
@@ -189,6 +190,7 @@ RenderPanel::getPropertiesDialogResponse ()
 	setWidth        (getId (), getWidthAdjustment ()        -> get_value ());
 	setHeight       (getId (), getHeightAdjustment ()       -> get_value ());
 	setAntialiasing (getId (), getAntialiasingAdjustment () -> get_value ());
+	setShading      (getId (), getShadingButton () .get_active_text ());
 	setViewpoint    (getId (), viewpoint);
 
 	return true;
@@ -209,6 +211,7 @@ RenderPanel::setRendering (const bool value)
 		const size_t width         = getWidthAdjustment ()        -> get_value ();
 		const size_t height        = getHeightAdjustment ()       -> get_value ();
 		const size_t antialiasing  = getAntialiasingAdjustment () -> get_value ();
+		const auto   shading       = getShadingButton () .get_active_text ();
 		const size_t fixedPipeline = getPage () -> getMainBrowser () -> getFixedPipeline ();
 
 		worldURL .fragment (viewpoint);
@@ -230,7 +233,7 @@ RenderPanel::setRendering (const bool value)
 
 		try
 		{
-			renderThread = std::make_unique <RenderThread> (worldURL, duration, frameRate, width, height, antialiasing, fixedPipeline, filename, codec);
+			renderThread = std::make_unique <RenderThread> (worldURL, filename, codec, duration, frameRate, width, height, antialiasing, shading, fixedPipeline);
 			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
 			renderThread -> signal_frame_changed ()      .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 			renderThread -> signal_stdout ()             .connect (sigc::mem_fun (this, &RenderPanel::on_stdout));

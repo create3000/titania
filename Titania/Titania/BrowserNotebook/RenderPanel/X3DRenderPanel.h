@@ -118,6 +118,12 @@ protected:
 	getAntialiasing (const size_t id, const int32_t antialiasing) const;
 
 	void
+	setShading (const size_t id, const std::string & shading);
+
+	std::string
+	getShading (const size_t id, const std::string & shading) const;
+
+	void
 	setViewpoint (const size_t id, const std::string & viewpoint);
 	
 	std::string

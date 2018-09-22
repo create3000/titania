@@ -321,6 +321,41 @@ X3DRenderPanel::setViewpoint (const size_t id, const std::string & viewpoint)
 	}
 }
 
+void
+X3DRenderPanel::setShading (const size_t id, const std::string & shading)
+{
+	auto shadingArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/shading");
+
+	shadingArray .resize (4);
+
+	if (shadingArray [id] not_eq shading)
+	{
+		shadingArray [id] = shading;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/RenderPanel/shading", shadingArray);
+	
+		getPage () -> setModified (true);
+	}
+}
+
+std::string
+X3DRenderPanel::getShading (const size_t id, const std::string & shading) const
+{
+	try
+	{
+		const auto shadingArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/RenderPanel/shading");
+
+		if (shadingArray .at (id) .empty ())
+			return shading;
+
+		return shadingArray .at (id);
+	}
+	catch (const std::exception &)
+	{
+		return shading;
+	}
+}
+
 std::string
 X3DRenderPanel::getViewpoint (const size_t id, const std::string & viewpoint) const
 {

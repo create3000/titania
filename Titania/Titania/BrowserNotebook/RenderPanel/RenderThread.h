@@ -81,14 +81,15 @@ public:
 	///  @name Construction
 
 	RenderThread (const basic::uri & url,
+	              const basic::uri & filename,
+	              const std::string & codec,
 	              const size_t duration,
 	              const size_t frameRate,
 	              const size_t width,
 	              const size_t height,
 	              const size_t antialiasing,
-	              const bool fixedPipeline,
-	              const basic::uri & filename,
-	              const std::string & codec);
+	              const std::string & shading,
+	              const bool fixedPipeline);
 
 	///  @name Member access
 
@@ -184,6 +185,7 @@ private:
 	const std::atomic <size_t>     width;
 	const std::atomic <size_t>     height;
 	const std::atomic <size_t>     antialiasing;
+	const std::string              shading;
 	std::shared_ptr <RenderClock>  clock;
 	RenderThreadFramePtr           currentFrame;
 	size_t                         frameNumber; // Only used for timout version.

@@ -116,6 +116,7 @@ X3DRenderPanelInterface::create ()
 	m_builder -> get_widget ("SizesButton", m_SizesButton);
 	m_builder -> get_widget ("CodecButton", m_CodecButton);
 	m_builder -> get_widget ("FPSSpinButton", m_FPSSpinButton);
+	m_builder -> get_widget ("ShadingButton", m_ShadingButton);
 
 	// Connect object Gtk::Adjustment with id 'DurationAdjustment'.
 	m_DurationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DRenderPanelInterface::on_properties_time_changed));

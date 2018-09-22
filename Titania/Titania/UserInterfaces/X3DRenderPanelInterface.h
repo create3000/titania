@@ -233,6 +233,10 @@ public:
 	getFPSSpinButton () const
 	{ return *m_FPSSpinButton; }
 
+	Gtk::ComboBoxText &
+	getShadingButton () const
+	{ return *m_ShadingButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -323,6 +327,7 @@ private:
 	Gtk::Button* m_SizesButton;
 	Gtk::ComboBoxText* m_CodecButton;
 	Gtk::SpinButton* m_FPSSpinButton;
+	Gtk::ComboBoxText* m_ShadingButton;
 
 };
 

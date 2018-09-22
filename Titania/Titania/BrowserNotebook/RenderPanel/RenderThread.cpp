@@ -53,8 +53,10 @@
 #include "RenderClock.h"
 #include "VideoEncoder.h"
 
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Routing/Router.h>
 
+#include <Titania/String/toupper.h>
 #include <glibmm/main.h>
 #include <regex>
 
@@ -62,14 +64,15 @@ namespace titania {
 namespace puck {
 
 RenderThread::RenderThread (const basic::uri & url,
+                            const basic::uri & filename,
+                            const std::string & codec,
                             const size_t duration,
                             const size_t frameRate,
                             const size_t width,
                             const size_t height,
                             const size_t antialiasing,
-                            const bool fixedPipeline,
-                            const basic::uri & filename,
-                            const std::string & codec) :
+                            const std::string & shading,
+                            const bool fixedPipeline) :
 	X3D::X3DInterruptibleThread (),
 	              X3D::X3DInput (),
 	            sigc::trackable (),
@@ -79,6 +82,7 @@ RenderThread::RenderThread (const basic::uri & url,
 	                      width (width),
 	                     height (height),
 	               antialiasing (antialiasing),
+	                    shading (shading),
 	                      clock (std::make_shared <RenderClock> (X3D::SFTime::now (), 1 / X3D::time_type (frameRate))),
 	               currentFrame (),
 	                frameNumber (0),
@@ -163,6 +167,7 @@ RenderThread::set_loadCount ()
 
 		browser -> getLoadCount () .removeInterest (&RenderThread::set_loadCount, this);
 		browser -> setProcessRenderEvents (false);
+		browser -> getBrowserOptions () -> Shading () = basic::toupper (shading, std::locale::classic ());
 
 		// Start thread or timeout version depending on grafix card driver.
 
