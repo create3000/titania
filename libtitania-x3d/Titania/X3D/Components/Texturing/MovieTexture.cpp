@@ -110,6 +110,7 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	getStream () -> setVideo (true);
 	getStream () -> signal_video_changed ()  .connect (sigc::mem_fun (this, &MovieTexture::on_video_changed));
 	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &MovieTexture::on_error));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));

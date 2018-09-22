@@ -70,8 +70,9 @@ namespace X3D {
  */
 
 MediaStream::MediaStream () :
+	                    video (false),
 	                 xDisplay (XOpenDisplay (nullptr)),
-	                  xWindow (createWindow (xDisplay, 16, 16)),
+	                  xWindow (0),
 	                   player (),
 	                    vsink (),
 	                    width (-1),
@@ -106,6 +107,15 @@ MediaStream::MediaStream () :
 }
 
 Window
+MediaStream::getWindow () const
+{
+	if (not xWindow)
+		const_cast <MediaStream*> (this) -> xWindow = createWindow (xDisplay, 16, 16);
+
+	return xWindow;
+}
+
+Window
 MediaStream::createWindow (Display* const xDisplay, const int32_t width, const int32_t height) const
 {
 	const auto xScreen = DefaultScreen (xDisplay);
@@ -132,7 +142,6 @@ MediaStream::setup ()
 	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
 
 	vsink -> set_last_sample_enabled (true);
-
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = volume;
 	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
@@ -253,7 +262,7 @@ MediaStream::getQueryDuration () const
 {
 	gint64 duration = 0;
 
-	if (vsink -> query_duration (Gst::FORMAT_TIME, duration) and duration >= 0)
+	if ((video ? vsink -> query_duration (Gst::FORMAT_TIME, duration) : player -> query_duration (Gst::FORMAT_TIME, duration)) and duration >= 0)
 		return duration / (long double) Gst::SECOND;
 
 	return -1;
@@ -316,8 +325,13 @@ MediaStream::stop ()
 void
 MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 {
+	if (not video)
+		return;
+
 	if (not gst_is_video_overlay_prepare_window_handle_message (message -> gobj ()))
 		return;
+
+	const auto xWindow = getWindow ();
 
 	if (not xWindow)
 	{
@@ -360,8 +374,8 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 
 			if (emitDuration)
 			{
-				emitDuration = false;
 				duration     = getQueryDuration ();
+				emitDuration = duration == -1;
 				durationChangedDispatcher .emit ();
 			}
 
@@ -405,6 +419,9 @@ MediaStream::on_audio_changed ()
 void
 MediaStream::on_video_changed ()
 {
+	if (not video)
+		return;
+
 	Glib::RefPtr <Gst::Pad> pad = player -> get_video_pad (0);
 
 	if (pad)
@@ -420,6 +437,9 @@ MediaStream::on_video_changed ()
 Gst::PadProbeReturn
 MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
 {
+	if (not video)
+		return Gst::PAD_PROBE_OK;
+
 	// Resize window
 
 	if (pad)
@@ -442,11 +462,16 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 
 				if (w not_eq width or h not_eq height)
 				{
-					width  = w;
-					height = h;
+					const auto xWindow = getWindow ();
+
+					if (xWindow)
+					{
+						width  = w;
+						height = h;
 		
-					XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
-					XSync (xDisplay, FALSE);
+						XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
+						XSync (xDisplay, FALSE);
+					}
 				}
 			}
 		}

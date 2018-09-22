@@ -106,6 +106,14 @@ public:
 
 	///  @name Member access
 
+	void
+	setVideo (const bool value)
+	{ video = value; }
+
+	bool
+	getVideo () const
+	{ return video; }
+
 	bool
 	setUri (const basic::uri & uri);
 
@@ -189,6 +197,9 @@ private:
 	///  @name Construction
 
 	Window
+	getWindow () const;
+
+	Window
 	createWindow (Display* const xDisplay, const int32_t width, const int32_t height) const;
 
 	///  @name Operations
@@ -220,6 +231,8 @@ private:
 	flip (std::vector <uint8_t> & image, const int32_t width, const int32_t height);
 
 	///  @name Member access
+
+	bool video;
 
 	Display* xDisplay;
 	Window   xWindow;
