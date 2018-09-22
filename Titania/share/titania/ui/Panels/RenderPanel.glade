@@ -955,11 +955,11 @@
                 <property name="can_focus">False</property>
                 <property name="active">1</property>
                 <items>
-                  <item translatable="yes">Phong</item>
-                  <item translatable="yes">Gouraud</item>
-                  <item translatable="yes">Flat</item>
-                  <item translatable="yes">Wireframe</item>
-                  <item translatable="yes">Pointset</item>
+                  <item>Phong</item>
+                  <item>Gouraud</item>
+                  <item>Flat</item>
+                  <item>Wireframe</item>
+                  <item>Pointset</item>
                 </items>
               </object>
               <packing>
