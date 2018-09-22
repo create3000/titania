@@ -123,130 +123,22 @@ OutlineSelection::select (const X3D::SFNode & node) const
 void
 OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value)
 {
-	X3D::ChildObjectSet seen;
-
-	select (node, value, seen);
-}
-
-void
-OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value, X3D::ChildObjectSet & seen)
-{
-	if (node)
-	{
-		if (not seen .emplace (node) .second)
-			return;
-
-		// Select node
-
-		select (node -> getUserData <UserData> (), value);
-
-		// Select children
-
-		for (const auto & field : node -> getFieldDefinitions ())
-			select (field, value, seen);
-	}
-}
-
-void
-OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value, X3D::ChildObjectSet & seen)
-{
-	// Select field
-
-	select (field -> getUserData <UserData> (), value);
-
-	// Select children
-
-	switch (field -> getType ())
-	{
-		case X3D::X3DConstants::SFNode:
-		{
-			const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-			select (sfnode -> getValue (), value, seen);
-			break;
-		}
-		case X3D::X3DConstants::MFNode:
-		{
-			const auto mfnode = static_cast <X3D::MFNode*> (field);
-
-			for (auto & sfnode : *mfnode)
-			{
-				select (sfnode .getUserData <UserData> (), value);
-
-				select (sfnode .getValue (), value, seen);
-			}
-
-			break;
-		}
-		default:
-			break;
-	}
-}
-
-void
-OutlineSelection::select (const UserDataPtr & userData, const bool value)
-{
-	userData -> selected .set (OUTLINE_SELECTED, value);
-}
-
-/***
- *  Updates the selection status of a @a node depending on its parent @a field.
- */
-void
-OutlineSelection::update (X3D::X3DFieldDefinition* const field, const X3D::SFNode & node)
-{
 	if (not node)
 		return;
 
-	const auto & selection = node -> getBrowser () -> getSelection ();
-
-	if (node -> getCloneCount () > 1)
-	{
-		if (selection -> isSelected (node))
-			return;
-
-		bool selected = false;
-
-		for (const auto & parent : node -> getParents ())
-		{
-			if (parent -> getUserData <UserData> () -> selected [OUTLINE_SELECTED])
-			{
-				selected = true;
-				break;
-			}
-		}
-
-		if (node -> getUserData <UserData> () -> selected [OUTLINE_SELECTED] == selected)
-			return;
-
-		select (node, selected);
-	}
-	else
-	{
-		const bool selected = field -> getUserData <UserData> () -> selected [OUTLINE_SELECTED]
-		                      or selection -> isSelected (node);
-
-		if (node -> getUserData <UserData> () -> selected [OUTLINE_SELECTED] == selected)
-			return;
-
-		select (node, selected);
-	}
+	for (const auto & iter : treeView -> get_model () -> get_iters (node))
+		select (iter, value);
 }
 
-/***
- *  Updates the selection status of @a field depending on its parent @a node.
- */
 void
-OutlineSelection::update (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field)
+OutlineSelection::select (const Gtk::TreeIter & parent, const bool value)
 {
-	const bool selected = node -> getUserData <UserData> () -> selected [OUTLINE_SELECTED];
+	const auto data = treeView -> get_model () -> get_data (parent);
 
-	if (field -> getUserData <UserData> () -> selected [OUTLINE_SELECTED] == selected)
-		return;
-	
-	X3D::ChildObjectSet seen;
+	data -> setSelected (value);
 
-	select (field, selected, seen);
+	for (const auto & child : parent -> children ())
+		select (child, value);
 }
 
 OutlineSelection::~OutlineSelection ()

@@ -73,18 +73,10 @@ public:
 	///  @name Operations
 
 	void
-	set_select_multiple (const bool);
+	set_select_multiple (const bool value);
 
 	void
-	select (const X3D::SFNode &) const;
-
-	static
-	void
-	update (X3D::X3DFieldDefinition* const field, const X3D::SFNode &);
-
-	static
-	void
-	update (const X3D::SFNode &, X3D::X3DFieldDefinition* const);
+	select (const X3D::SFNode & node) const;
 
 	virtual
 	~OutlineSelection () final override;
@@ -97,27 +89,17 @@ private:
 	void
 	set_nodes (const X3D::MFNode & value);
 
-	static
 	void
-	select (X3D::X3DBaseNode* const, const bool);
+	select (X3D::X3DBaseNode* const node, const bool value);
 
-	static
 	void
-	select (X3D::X3DBaseNode* const, const bool, X3D::ChildObjectSet &);
-
-	static
-	void
-	select (X3D::X3DFieldDefinition* const, const bool, X3D::ChildObjectSet &);
-
-	static
-	void
-	select (const UserDataPtr &, const bool);
+	select (const Gtk::TreeIter & parent, const bool value);
 
 	///  @name Members
 
 	X3DOutlineTreeView* const treeView;
-	bool selectMultiple;
-	X3D::MFNode nodes;
+	bool                      selectMultiple;
+	X3D::MFNode               nodes;
 
 };
 

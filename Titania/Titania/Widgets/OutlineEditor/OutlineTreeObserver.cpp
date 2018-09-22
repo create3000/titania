@@ -430,8 +430,19 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not treeView -> row_expanded (path))
 		return;
 
+	// Determine open paths.
+
+	std::map <size_t, std::pair <size_t, bool>> opened;
+
+	treeView -> get_opened_objects (treeView -> get_model () -> get_iter (path), opened);
+
+	// Collapse path.
+
 	treeView -> collapse_row (path);
-	treeView -> expand_row (path, false);
+
+	// Expand.
+
+	treeView -> reopen_objects (treeView -> get_model () -> get_iter (path), opened);
 }
 
 //bool

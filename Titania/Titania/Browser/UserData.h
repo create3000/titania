@@ -61,12 +61,11 @@ namespace titania {
 namespace puck {
 
 // Selected
-static constexpr size_t OUTLINE_SELECTED        = 0;
-static constexpr size_t OUTLINE_SELECTED_INPUT  = 1;
-static constexpr size_t OUTLINE_SELECTED_OUTPUT = 2;
-static constexpr size_t OUTLINE_OVER_INPUT      = 3;
-static constexpr size_t OUTLINE_OVER_OUTPUT     = 4;
-static constexpr size_t OUTLINE_SPECIAL         = 5;
+static constexpr size_t OUTLINE_SELECTED_INPUT  = 0;
+static constexpr size_t OUTLINE_SELECTED_OUTPUT = 1;
+static constexpr size_t OUTLINE_OVER_INPUT      = 2;
+static constexpr size_t OUTLINE_OVER_OUTPUT     = 3;
+static constexpr size_t OUTLINE_SPECIAL         = 4;
 
 class UserData :
 	public X3D::X3DBase

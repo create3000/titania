@@ -123,18 +123,18 @@ public:
 
 	static
 	OutlineTreeData*
-	get_data (const iterator &);
+	get_data (const Gtk::TreeIter &);
 
 	UserDataPtr
-	get_user_data (const iterator &) const;
+	get_user_data (const Gtk::TreeIter &) const;
 
 	static
 	OutlineIterType
-	get_data_type (const iterator &);
+	get_data_type (const Gtk::TreeIter &);
 
 	static
 	X3D::X3DChildObject*
-	get_object (const iterator &);
+	get_object (const Gtk::TreeIter &);
 
 	///  @name Route handling
 
@@ -163,23 +163,23 @@ public:
 
 	///  @name Operations
 
-	std::vector <Gtk::TreeModel::iterator>
+	std::vector <Gtk::TreeIter>
 	get_iters (X3D::X3DChildObject* const) const;
 
-	iterator
-	append (OutlineIterType type, X3D::X3DChildObject*, const size_t = 0);
+	Gtk::TreeIter
+	append (OutlineIterType type, X3D::X3DChildObject* object, const size_t index, const bool selected);
 
-	iterator
-	append (const iterator &, OutlineIterType type, X3D::X3DChildObject*, const size_t = 0);
+	Gtk::TreeIter
+	append (const Gtk::TreeIter & parent, OutlineIterType type, X3D::X3DChildObject* object, const size_t index, const bool selected);
 
 	void
 	clear ();
 
 	void
-	clear (const iterator &);
+	clear (const Gtk::TreeIter &);
 
 	bool
-	iter_is_valid (const iterator & iter) const;
+	iter_is_valid (const Gtk::TreeIter & iter) const;
 
 	///  @name Destruction
 
@@ -192,13 +192,13 @@ private:
 	OutlineTreeModel (const X3D::X3DExecutionContextPtr &);
 
 	void
-	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path, const size_t) const;
+	set_data (Gtk::TreeIter &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path, const size_t index, const bool selected) const;
 
 	void
-	set_data (iterator &, OutlineTreeData*) const;
+	set_data (Gtk::TreeIter & iter, OutlineTreeData* data) const;
 
 	std::vector <OutlineTreeData*>
-	get_parents (const iterator &) const;
+	get_parents (const Gtk::TreeIter &) const;
 
 	virtual
 	Gtk::TreeModelFlags
@@ -213,15 +213,15 @@ private:
 
 	virtual
 	void
-	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const final override;
+	get_value_vfunc (const Gtk::TreeIter & iter, int column, Glib::ValueBase & value) const final override;
 
 	virtual
 	Path
-	get_path_vfunc (const iterator & iter) const final override;
+	get_path_vfunc (const Gtk::TreeIter & iter) const final override;
 
 	virtual
 	bool
-	get_iter_vfunc (const Path & path, iterator & iter) const;
+	get_iter_vfunc (const Path & path, Gtk::TreeIter & iter) const;
 
 	virtual
 	int
@@ -229,54 +229,54 @@ private:
 
 	virtual
 	bool
-	iter_nth_root_child_vfunc (int n, iterator & iter) const final override;
+	iter_nth_root_child_vfunc (int n, Gtk::TreeIter & iter) const final override;
 
 	virtual
 	bool
-	iter_has_child_vfunc (const iterator & iter) const final override;
+	iter_has_child_vfunc (const Gtk::TreeIter & iter) const final override;
 
 	bool
-	is_in_parents (const X3D::SFNode & sfnode, const iterator &) const;
+	is_in_parents (const X3D::SFNode & sfnode, const Gtk::TreeIter &) const;
 
 	virtual
 	int
-	iter_n_children_vfunc (const iterator & iter) const final override;
+	iter_n_children_vfunc (const Gtk::TreeIter & iter) const final override;
 
 	virtual
 	bool
-	iter_children_vfunc (const iterator & parent, iterator & iter) const final override;
+	iter_children_vfunc (const Gtk::TreeIter & parent, Gtk::TreeIter & iter) const final override;
 
 	virtual
 	bool
-	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const final override;
+	iter_nth_child_vfunc (const Gtk::TreeIter & parent, int n, Gtk::TreeIter & iter) const final override;
 
 	virtual
 	bool
-	iter_next_vfunc (const iterator & iter, iterator & iter_next) const final override;
+	iter_next_vfunc (const Gtk::TreeIter & iter, Gtk::TreeIter & iter_next) const final override;
 
 	virtual
 	bool
-	iter_parent_vfunc (const iterator & child, iterator & iter) const final override;
+	iter_parent_vfunc (const Gtk::TreeIter & child, Gtk::TreeIter & iter) const final override;
 
 	virtual
 	void
-	ref_node_vfunc (const iterator &) const final override;
+	ref_node_vfunc (const Gtk::TreeIter &) const final override;
 
 	virtual
 	void
-	unref_node_vfunc (const iterator &) const final override;
+	unref_node_vfunc (const Gtk::TreeIter &) const final override;
 
 	virtual
 	void
-	on_row_changed (const Path &, const iterator &) final override;
+	on_row_changed (const Path &, const Gtk::TreeIter &) final override;
 
 	virtual
 	void
-	on_row_inserted (const Path & path, const iterator &) final override;
+	on_row_inserted (const Path & path, const Gtk::TreeIter &) final override;
 
 	virtual
 	void
-	on_row_has_child_toggled (const Path &, const iterator &) final override;
+	on_row_has_child_toggled (const Path &, const Gtk::TreeIter &) final override;
 
 	virtual
 	void
@@ -284,7 +284,7 @@ private:
 
 	virtual
 	void
-	on_rows_reordered (const Path &, const iterator &, int*) final override;
+	on_rows_reordered (const Path &, const Gtk::TreeIter &, int*) final override;
 
 	virtual
 	bool

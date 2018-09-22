@@ -85,7 +85,7 @@ public:
 
 	///  @name Construction
 
-	OutlineTreeData (const OutlineIterType, X3D::X3DChildObject* const, const Gtk::TreeModel::Path &, const size_t);
+	OutlineTreeData (const OutlineIterType type_, X3D::X3DChildObject* const object_, const Gtk::TreeModel::Path & path_, const size_t index, const bool selected);
 
 	///  @name Comparision operations
 
@@ -112,6 +112,16 @@ public:
 
 	UserDataPtr
 	get_user_data () const;
+
+	// Selection handling
+
+	void
+	setSelected (const bool value)
+	{ selected = value; }
+
+	bool
+	getSelected () const
+	{ return selected; }
 
 	///  @name Route handling
 
@@ -158,17 +168,19 @@ private:
 
 	///  @name Members
 
-	X3D::SFNode parent;
-	X3D::X3DChildObject* object;
-	const OutlineIterType type;
+	X3D::SFNode                parent;
+	X3D::X3DChildObject*       object;
+	const OutlineIterType      type;
 	const Gtk::TreeModel::Path path;
-	const size_t index;
+	const size_t               index;
+
+	bool selected;
 
 	OutlineRoutes inputs_below;
 	OutlineRoutes inputs_above;
 	OutlineRoutes outputs_below;
 	OutlineRoutes outputs_above;
-	bool self_connection;
+	bool          self_connection;
 	OutlineRoutes connections;
 
 };

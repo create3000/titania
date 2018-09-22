@@ -86,7 +86,7 @@ OutlineTreeModel::create (const X3D::X3DExecutionContextPtr & executionContext)
 }
 
 bool
-OutlineTreeModel::iter_is_valid (const iterator & iter) const
+OutlineTreeModel::iter_is_valid (const Gtk::TreeIter & iter) const
 {
 	if (iter .get_stamp () not_eq stamp)
 		return false;
@@ -95,7 +95,7 @@ OutlineTreeModel::iter_is_valid (const iterator & iter) const
 }
 
 UserDataPtr
-OutlineTreeModel::get_user_data (const iterator & iter) const
+OutlineTreeModel::get_user_data (const Gtk::TreeIter & iter) const
 {
 	if (iter_is_valid (iter))
 		return get_data (iter) -> get_user_data ();
@@ -104,19 +104,19 @@ OutlineTreeModel::get_user_data (const iterator & iter) const
 }
 
 OutlineIterType
-OutlineTreeModel::get_data_type (const iterator & iter)
+OutlineTreeModel::get_data_type (const Gtk::TreeIter & iter)
 {
 	return get_data (iter) -> get_type ();
 }
 
 X3D::X3DChildObject*
-OutlineTreeModel::get_object (const iterator & iter)
+OutlineTreeModel::get_object (const Gtk::TreeIter & iter)
 {
 	return get_data (iter) -> get_object ();
 }
 
 std::vector <OutlineTreeData*>
-OutlineTreeModel::get_parents (const iterator & iter) const
+OutlineTreeModel::get_parents (const Gtk::TreeIter & iter) const
 {
 	return tree .get_parents (get_path (iter));
 }
@@ -193,48 +193,46 @@ OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 }
 
 void
-OutlineTreeModel::set_data (iterator & iter,
+OutlineTreeModel::set_data (Gtk::TreeIter & iter,
                             OutlineIterType type,
                             X3D::X3DChildObject* object,
                             const Path & path,
-                            const size_t index) const
+                            const size_t index,
+                            const bool selected) const
 {
 	auto & node = tree .get_node (path, true);
 
-	node .set_data (new OutlineTreeData (type, object, path, index));
+	node .set_data (new OutlineTreeData (type, object, path, index, selected));
 
 	set_data (iter, node .get_data ());
 }
 
 void
-OutlineTreeModel::set_data (iterator & iter, OutlineTreeData* data) const
+OutlineTreeModel::set_data (Gtk::TreeIter & iter, OutlineTreeData* data) const
 {
 	iter .set_stamp (stamp);
 	iter .gobj () -> user_data = data;
 }
 
 OutlineTreeData*
-OutlineTreeModel::get_data (const iterator & iter)
+OutlineTreeModel::get_data (const Gtk::TreeIter & iter)
 {
 	return static_cast <OutlineTreeData*> (iter .gobj () -> user_data);
 }
 
-std::vector <Gtk::TreeModel::iterator>
+std::vector <Gtk::TreeIter>
 OutlineTreeModel::get_iters (X3D::X3DChildObject* const object) const
 {
-	std::vector <Gtk::TreeModel::iterator> iters;
+	std::vector <Gtk::TreeIter> iters;
 
 	for (const auto & node : tree .find (object))
-	{
-		iters .emplace_back ();
-		set_data (iters .back (), node -> get_data ());
-	}
+		iters .emplace_back (const_cast <OutlineTreeModel*> (this) -> get_iter (node -> get_data () -> get_path ()));
 
 	return iters;
 }
 
-OutlineTreeModel::iterator
-OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object, const size_t index)
+Gtk::TreeIter
+OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object, const size_t index, const bool selected)
 {
 	//__LOG__ << std::endl;
 
@@ -242,8 +240,8 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object, con
 
 	path .push_back (tree .size ());
 
-	iterator iter;
-	set_data (iter, type, object, path, index);
+	Gtk::TreeIter iter;
+	set_data (iter, type, object, path, index, selected);
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);
@@ -251,8 +249,8 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object, con
 	return iter;
 }
 
-OutlineTreeModel::iterator
-OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3DChildObject* object, const size_t index)
+Gtk::TreeIter
+OutlineTreeModel::append (const Gtk::TreeIter & parent, OutlineIterType type, X3D::X3DChildObject* object, const size_t index, const bool selected)
 {
 	//__LOG__ << std::endl;
 
@@ -260,8 +258,8 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 
 	path .push_back (tree .get_node (path) .size ());
 
-	iterator iter;
-	set_data (iter, type, object, path, index);
+	Gtk::TreeIter iter;
+	set_data (iter, type, object, path, index, selected);
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);
@@ -286,7 +284,7 @@ OutlineTreeModel::clear ()
 }
 
 void
-OutlineTreeModel::clear (const iterator & iter)
+OutlineTreeModel::clear (const Gtk::TreeIter & iter)
 {
 	Path         path = get_path (iter);
 	const size_t size = tree .get_node (path) .get_children () .size ();
@@ -334,7 +332,7 @@ OutlineTreeModel::get_column_type_vfunc (int index) const
 }
 
 void
-OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const
+OutlineTreeModel::get_value_vfunc (const Gtk::TreeIter & iter, int column, Glib::ValueBase & value) const
 {
 	//__LOG__ << std::endl;
 
@@ -371,7 +369,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 					break;
 			}
 
-			val .set (userData and userData -> selected [OUTLINE_SELECTED]);
+			val .set (userData and get_data (iter) -> getSelected ());
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;
@@ -387,7 +385,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 }
 
 Gtk::TreeModel::Path
-OutlineTreeModel::get_path_vfunc (const iterator & iter) const
+OutlineTreeModel::get_path_vfunc (const Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -397,7 +395,7 @@ OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 }
 
 bool
-OutlineTreeModel::get_iter_vfunc (const Path & path, iterator & iter) const
+OutlineTreeModel::get_iter_vfunc (const Path & path, Gtk::TreeIter & iter) const
 {
 	//__LOG__ << path .to_string () << std::endl;
 
@@ -420,7 +418,7 @@ OutlineTreeModel::iter_n_root_children_vfunc () const
 }
 
 bool
-OutlineTreeModel::iter_nth_root_child_vfunc (int index, iterator & iter) const
+OutlineTreeModel::iter_nth_root_child_vfunc (int index, Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -439,7 +437,7 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int index, iterator & iter) const
 }
 
 bool
-OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
+OutlineTreeModel::iter_has_child_vfunc (const Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -554,7 +552,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 }
 
 bool
-OutlineTreeModel::is_in_parents (const X3D::SFNode & sfnode, const iterator & iter) const
+OutlineTreeModel::is_in_parents (const X3D::SFNode & sfnode, const Gtk::TreeIter & iter) const
 {
 	for (const auto & parent : get_parents (iter))
 	{
@@ -610,7 +608,7 @@ OutlineTreeModel::is_in_parents (const X3D::SFNode & sfnode, const iterator & it
 }
 
 int
-OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
+OutlineTreeModel::iter_n_children_vfunc (const Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -625,7 +623,7 @@ OutlineTreeModel::iter_n_children_vfunc (const iterator & iter) const
 }
 
 bool
-OutlineTreeModel::iter_children_vfunc (const iterator & parent, iterator & iter) const
+OutlineTreeModel::iter_children_vfunc (const Gtk::TreeIter & parent, Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -633,7 +631,7 @@ OutlineTreeModel::iter_children_vfunc (const iterator & parent, iterator & iter)
 }
 
 bool
-OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iterator & iter) const
+OutlineTreeModel::iter_nth_child_vfunc (const Gtk::TreeIter & parent, int index, Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -652,7 +650,7 @@ OutlineTreeModel::iter_nth_child_vfunc (const iterator & parent, int index, iter
 }
 
 bool
-OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) const
+OutlineTreeModel::iter_next_vfunc (const Gtk::TreeIter & iter, Gtk::TreeIter & iter_next) const
 {
 	//__LOG__ << std::endl;
 
@@ -671,7 +669,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 }
 
 bool
-OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) const
+OutlineTreeModel::iter_parent_vfunc (const Gtk::TreeIter & child, Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 
@@ -687,31 +685,31 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 }
 
 void
-OutlineTreeModel::ref_node_vfunc (const iterator & iter) const
+OutlineTreeModel::ref_node_vfunc (const Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 }
 
 void
-OutlineTreeModel::unref_node_vfunc (const iterator & iter) const
+OutlineTreeModel::unref_node_vfunc (const Gtk::TreeIter & iter) const
 {
 	//__LOG__ << std::endl;
 }
 
 void
-OutlineTreeModel::on_row_changed (const Path & path, const iterator & iter)
+OutlineTreeModel::on_row_changed (const Path & path, const Gtk::TreeIter & iter)
 {
 	//__LOG__ << std::endl;
 }
 
 void
-OutlineTreeModel::on_row_inserted (const Path & path, const iterator & iter)
+OutlineTreeModel::on_row_inserted (const Path & path, const Gtk::TreeIter & iter)
 {
 	//__LOG__ << std::endl;
 }
 
 void
-OutlineTreeModel::on_row_has_child_toggled (const Path & path, const iterator & iter)
+OutlineTreeModel::on_row_has_child_toggled (const Path & path, const Gtk::TreeIter & iter)
 {
 	//__LOG__ << std::endl;
 }
@@ -723,7 +721,7 @@ OutlineTreeModel::on_row_deleted (const Path & path)
 }
 
 void
-OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, int* new_order)
+OutlineTreeModel::on_rows_reordered (const Path & path, const Gtk::TreeIter & iter, int* new_order)
 {
 	//__LOG__ << std::endl;
 }

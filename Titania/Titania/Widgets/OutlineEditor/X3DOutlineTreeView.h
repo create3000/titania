@@ -161,49 +161,49 @@ public:
 
 	///  @name Iter access
 
-	std::vector <Gtk::TreeModel::iterator>
+	std::vector <Gtk::TreeIter>
 	get_iters (X3D::X3DChildObject* const) const;
 
 	UserDataPtr
-	get_user_data (const Gtk::TreeModel::iterator &) const;
+	get_user_data (const Gtk::TreeIter &) const;
 
 	OutlineIterType
-	get_data_type (const Gtk::TreeModel::iterator &) const;
+	get_data_type (const Gtk::TreeIter &) const;
 
 	X3D::X3DChildObject*
-	get_object (const Gtk::TreeModel::iterator &) const;
+	get_object (const Gtk::TreeIter &) const;
 
 	size_t
-	get_index (const Gtk::TreeModel::iterator &) const;
+	get_index (const Gtk::TreeIter &) const;
 
 	void
-	is_expanded (const Gtk::TreeModel::iterator &, const bool);
+	is_expanded (const Gtk::TreeIter &, const bool);
 
 	bool
-	is_expanded (const Gtk::TreeModel::iterator &) const;
+	is_expanded (const Gtk::TreeIter &) const;
 
 	void
-	is_full_expanded (const Gtk::TreeModel::iterator &, const bool);
+	is_full_expanded (const Gtk::TreeIter &, const bool);
 
 	bool
-	is_full_expanded (const Gtk::TreeModel::iterator &) const;
+	is_full_expanded (const Gtk::TreeIter &) const;
 
 	///  @name Operations
 
-	Gtk::TreeModel::Path
+	Gtk::TreePath
 	get_path_at_position (const double, const double) const;
 
-	Gtk::TreeModel::Path
+	Gtk::TreePath
 	get_path_at_position (const double, const double, Gtk::TreeViewColumn* &) const;
 
 	void
 	expand_to (X3D::X3DChildObject* const);
 
 	void
-	expand_row (const Gtk::TreeModel::Path & path, const bool open_all, const bool full_expand);
+	expand_row (const Gtk::TreePath & path, const bool open_all, const bool full_expand);
 
 	void
-	collapse_row (const Gtk::TreeModel::Path & path);
+	collapse_row (const Gtk::TreePath & path);
 
 	void
 	update ();
@@ -215,6 +215,10 @@ public:
 
 
 protected:
+
+	///  @name Friends
+
+	friend class OutlineTreeObserver;
 
 	///  @name Construction
 
@@ -251,6 +255,12 @@ protected:
 	enable_shift_key ()
 	{ -- expandLevel; }
 
+	void
+	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t, std::pair <size_t, bool>> & opened);
+
+	void
+	reopen_objects (const Gtk::TreeIter & parent, std::map <size_t, std::pair <size_t, bool>> & opened);
+
 
 private:
 
@@ -259,7 +269,7 @@ private:
 	///  @name Operations
 
 	bool
-	expand_to (const Gtk::TreeModel::Children &, std::vector <X3D::X3DChildObject*> &, Gtk::TreeModel::Path &);
+	expand_to (const Gtk::TreeModel::Children &, std::vector <X3D::X3DChildObject*> &, Gtk::TreePath &);
 
 	///  @name Member access
 
@@ -267,16 +277,19 @@ private:
 	set_model (const Glib::RefPtr <OutlineTreeModel> &);
 
 	void
-	set_open_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	set_open_path (const Gtk::TreeIter &, const Gtk::TreePath &);
 
-	Gtk::TreeModel::Path
-	get_open_path (const Gtk::TreeModel::iterator &) const;
+	Gtk::TreePath
+	get_open_path (const Gtk::TreeIter &) const;
 	
 	X3D::X3DScene*
 	get_scene (X3D::X3DExecutionContext* const executionContext) const;
 
 	void
-	set_rootNodes ();
+	set_rootNodes (const bool reopen);
+
+	size_t
+	get_reopen_id (const Gtk::TreeIter & iter);
 
 	virtual
 	void
@@ -284,47 +297,47 @@ private:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	on_row_activated (const Gtk::TreePath &, Gtk::TreeViewColumn*) final override;
 
 	void
-	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	select_node (const Gtk::TreeIter &, const Gtk::TreePath &);
 
 	virtual
 	bool
-	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
+	on_test_expand_row (const Gtk::TreeIter &, const Gtk::TreePath &) final override;
 
 	virtual
 	void
-	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
+	on_row_expanded (const Gtk::TreeIter &, const Gtk::TreePath &) final override;
 
 	virtual
 	bool
-	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
+	on_test_collapse_row (const Gtk::TreeIter &, const Gtk::TreePath &) final override;
 
 	virtual
 	void
-	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final override;
+	on_row_collapsed (const Gtk::TreeIter & iter, const Gtk::TreePath & path) final override;
 
 	void
-	collapse_clone (const Gtk::TreeModel::iterator &);
+	collapse_clone (const Gtk::TreeIter &);
 
 	void
-	model_expand_row (const Gtk::TreeModel::iterator &);
+	model_expand_row (const Gtk::TreeIter &);
 
 	void
-	model_expand_node (const X3D::SFNode &, const Gtk::TreeModel::iterator &);
+	model_expand_node (const X3D::SFNode &, const Gtk::TreeIter &);
 
 	X3D::FieldDefinitionArray
 	get_fields (X3D::X3DBaseNode* const) const;
 
 	void
-	expand_routes (const Gtk::TreeModel::iterator &, X3D::X3DFieldDefinition*);
+	expand_routes (const Gtk::TreeIter &, X3D::X3DFieldDefinition*);
 
 	void
-	toggle_expand (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path & path);
+	toggle_expand (const Gtk::TreeIter &, const Gtk::TreePath & path);
 
 	void
-	auto_expand (const Gtk::TreeModel::iterator &);
+	auto_expand (const Gtk::TreeIter &);
 
 	///  @name Members
 

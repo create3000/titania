@@ -1188,7 +1188,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		const auto      data     = property_data () .get_value ();
 		const auto &    selected = data -> get_user_data () -> selected;
-		const Gdk::RGBA color    = selected [OUTLINE_SELECTED] or property_cell_background_set () ? property_foreground_rgba () : property_cell_background_rgba ();
+		const Gdk::RGBA color    = data -> getSelected () or property_cell_background_set () ? property_foreground_rgba () : property_cell_background_rgba ();
 
 		context -> reset_clip ();
 		context -> set_operator (Cairo::OPERATOR_OVER);
@@ -1313,13 +1313,12 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const int32_t height = background_area .get_height ();
 	const int32_t y_pad  = (height - minimum_height) / 2;
 
-	double       input_x  = x;
-	const double input_y  = y + y_pad + ROUTE_Y_PAD;
-	double       input_w  = width;
-	const double output_x = x;
-	const double output_y = y + y_pad + minimum_height - ROUTE_Y_PAD;
-	const double output_w = width;
-
+	double       input_x     = x;
+	const double input_y     = y + y_pad + ROUTE_Y_PAD;
+	double       input_w     = width;
+	const double output_x    = x;
+	const double output_y    = y + y_pad + minimum_height - ROUTE_Y_PAD;
+	const double output_w    = width;
 	const double radius      = ROUTE_RADIUS;
 	const double connector_x = x + width + radius;
 
@@ -1329,13 +1328,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		input_w += ROUTE_INPUT_PAD;
 	}
 
-	const auto data = property_data () .get_value ();
-
+	const auto data                    = property_data () .get_value ();
 	const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-
-	const auto & selected      = data -> get_user_data () -> selected;
-	const auto   selectedColor = selected [OUTLINE_SELECTED] or property_cell_background_set () ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
+	const auto selectedColor           = data -> getSelected () or property_cell_background_set () ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y, width, height);

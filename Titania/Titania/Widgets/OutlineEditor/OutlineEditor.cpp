@@ -1565,8 +1565,6 @@ OutlineEditor::selectField (const double x, const double y)
 	bool       inProtoDeclaration = false;
 	bool       hasReferences      = false;
 
-__LOG__ << isField << std::endl;
-
 	if (isField)
 	{	
 		const auto   iter             = treeView -> get_model () -> get_iter (fieldPath);
