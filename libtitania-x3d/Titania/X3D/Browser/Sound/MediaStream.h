@@ -232,7 +232,7 @@ private:
 
 	///  @name Member access
 
-	bool video;
+	std::atomic <bool> video;
 
 	Display* xDisplay;
 	Window   xWindow;
