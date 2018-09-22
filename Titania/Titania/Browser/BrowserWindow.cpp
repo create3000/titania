@@ -2616,7 +2616,7 @@ BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const 
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("This operation is not clone save!"));
-	dialog -> setText (_ ("You have selected one ore more clones. Use Outline Editor's context menu or drag & drop facility to have a clone safe operation. Proceed anyway?"));
+	dialog -> setText (_ ("You have selected one ore more clones. This operation will affect all clones. Use Outline Editor's context menu or drag & drop facility to have a clone safe operation. Proceed anyway?"));
 
 	return dialog -> run () not_eq Gtk::RESPONSE_OK;
 }
