@@ -363,6 +363,9 @@ protected:
 	addMirrorVertices (const GLenum, const bool);
 
 	void
+	set_live ();
+
+	void
 	set_shading (const ShadingType & value);
 
 	void
@@ -423,6 +426,7 @@ private:
 	GeometryType                         geometryType;
 	bool                                 solid;
 	GLenum                               frontFace;
+	bool                                 flatShading;
 	std::vector <Element>                elements;
 
 	std::vector <GLuint> attribBufferIds;

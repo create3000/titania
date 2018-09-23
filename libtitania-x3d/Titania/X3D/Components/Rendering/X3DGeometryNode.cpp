@@ -50,6 +50,7 @@
 
 #include "X3DGeometryNode.h"
 
+#include "../../Browser/Core/BrowserOptions.h"
 #include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -81,6 +82,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	     geometryType (GeometryType::GEOMETRY_3D),
 	            solid (true),
 	        frontFace (GL_CCW),
+	      flatShading (false),
 	         elements (),
 	  attribBufferIds (),
 	    colorBufferId (0),
@@ -101,15 +103,18 @@ X3DGeometryNode::setup ()
 
 	X3DNode::setup ();
 
+	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
+	isLive () .addInterest (&X3DGeometryNode::set_live, this);
+
+	getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
+
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
 
-	getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
-	getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
-
 	addInterest (&X3DGeometryNode::update, this);
 
+	set_live ();
 	update ();
 }
 
@@ -120,8 +125,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
 		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
+		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
 
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
@@ -131,8 +136,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
 		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
+		set_live ();
 	}
 }
 
@@ -795,8 +800,113 @@ X3DGeometryNode::cut (X3DRenderObject* const renderObject, const Line2d & cutLin
 }
 
 void
+X3DGeometryNode::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+	else
+		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
+}
+
+void
 X3DGeometryNode::set_shading (const ShadingType & shading)
 {
+	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
+		return;
+			
+	const bool flatShading = shading == ShadingType::FLAT;
+
+	if (flatShading == this -> flatShading and faceNormals .size ())
+		return;
+   
+   this -> flatShading = flatShading;
+
+	if (flatShading)
+	{
+		if (faceNormals .empty ())
+		{
+			for (const auto & element : elements)
+			{
+				switch (element .vertexMode ())
+				{
+					case GL_TRIANGLES :
+					{
+						for (size_t i = element .first (), size = element .last (); i < size; i += 3)
+						{
+							const auto n = Triangle3d (vertices [i], vertices [i + 1], vertices [i + 2]) .normal ();
+
+							for (size_t k = 0; k < 3; ++ k)
+								faceNormals .emplace_back (n);
+						}
+		
+						continue;
+					}
+					case GL_QUADS:
+					{
+						for (size_t i = element .first (), size = element .last (); i < size; i += 4)
+						{
+							const auto n = normal (vertices [i], vertices [i + 1], vertices [i + 2], vertices [i + 3]);
+
+							for (size_t k = 0; k < 4; ++ k)
+								faceNormals .emplace_back (n);
+						}
+		
+						continue;
+					}
+					case GL_POLYGON:
+					{
+						const auto first = element .first ();
+
+						// Determine polygon normal.
+						// We use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal here:
+					
+						double x = 0, y = 0, z = 0;
+					
+						auto next = vertices [first];
+					
+						for (size_t i = 0, size = element .last () - first; i < size; ++ i)
+						{
+							auto current = next;
+					
+							next = vertices [first + (i + 1) % size];
+					
+							x += (current .y () - next .y ()) * (current .z () + next .z ());
+							y += (current .z () - next .z ()) * (current .x () + next .x ());
+							z += (current .x () - next .x ()) * (current .y () + next .y ());
+						}
+						
+						const auto n = normalize (Vector3d (x, y, z));
+
+						// Add normal for each vertex.
+
+						for (size_t k = 0, size = element .last () - first; k < size; ++ k)
+							faceNormals .emplace_back (n);
+		
+						continue;
+					}
+					default:
+						continue;
+				}
+			}
+		}
+	}
+
+	if (flatShading)
+	{
+		if (not faceNormals .empty ())
+		{
+			glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
+			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * faceNormals .size (), faceNormals .data (), GL_STATIC_COPY);
+		}
+	}
+	else
+	{
+		if (not normals .empty ())
+		{
+			glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
+			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * normals .size (), normals .data (), GL_STATIC_COPY);
+		}
+	}
 }
 
 void
@@ -826,6 +936,12 @@ X3DGeometryNode::update ()
 		if (texCoords .empty ())
 			buildTexCoords ();
 	}
+
+	// Upload normals or flat normals.
+
+	set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
+
+	// Upload arrays.
 
 	transfer ();
 }
@@ -874,12 +990,6 @@ X3DGeometryNode::transfer ()
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [i]);
 			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4f) * texCoords [i] .size (), texCoords [i] .data (), GL_STATIC_COPY);
 		}
-	}
-
-	if (not normals .empty ())
-	{
-		glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * normals .size (), normals .data (), GL_STATIC_COPY);
 	}
 
 	if (not vertices .empty ())
