@@ -148,7 +148,7 @@ ExternalToolsEditor::on_add_tool_clicked ()
 		setText (id, "#!/bin/sh\n");
 		saveTree ();
 
-		getTreeSelection () -> select (iter);
+		getTreeView () .set_cursor (getTreeStore () -> get_path (iter), *getNameColumn () .operator -> (), true);
 	}
 	catch (const Glib::Error & error)
 	{
