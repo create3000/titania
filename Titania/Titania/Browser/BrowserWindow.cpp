@@ -831,9 +831,9 @@ BrowserWindow::on_delete_activated ()
 	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 	const auto executionContext = X3D::MakePtr (getSelectionContext (selection));
 
-	X3D::X3DEditor::removeNodesFromScene (executionContext, selection, true, undoStep);
-
 	getSelection () -> clearNodes (undoStep);
+
+	X3D::X3DEditor::removeNodesFromScene (executionContext, selection, true, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1652,11 +1652,12 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 		{
 			const auto & masterShape = front ? shapes .front () : shapes .back ();
 
+			getBrowserWindow () -> getSelection () -> setNodes ({ masterShape }, undoStep);
+
 			X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, masterShape, undoStep);
 
 			// Select target
 
-			getBrowserWindow () -> getSelection () -> setNodes ({ masterShape }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
 	}

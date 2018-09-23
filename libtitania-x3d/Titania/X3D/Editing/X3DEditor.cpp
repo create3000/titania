@@ -845,14 +845,13 @@ X3DEditor::removeNodesFromSceneIfNotExistsInSceneGraph (const X3DExecutionContex
 void
 X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool removeFromSceneGraph, const UndoStepPtr & undoStep)
 {
-	// Remove exported nodes
+	// Remove nodes
 
-	if (removeFromSceneGraph)
-		removeNodesFromSceneGraph (executionContext, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), undoStep);
+	removeNodesFromExecutionContext (executionContext, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), removeFromSceneGraph, undoStep);
 
-	// Delete children of node if not in scene graph
+	// Remove children of node if not in scene graph.
 
-	// Collect children
+	// Collect children.
 
 	std::set <SFNode> children;
 
@@ -876,6 +875,7 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 	}
 
 	// Remove rest, these are only nodes that are not in the scene graph anymore.
+
 	removeNodesFromExecutionContext (executionContext, children, false, undoStep);
 
 	// Prototype support

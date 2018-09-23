@@ -685,7 +685,7 @@ OutlineEditor::remove (const X3D::UndoStepPtr & undoStep)
 
 	const auto executionContext = getParentContext (nodePath);
 
-	getBrowserWindow () -> getSelection () -> setNodes ({ }, undoStep);
+	getBrowserWindow () -> getSelection () -> clearNodes (undoStep);
 
 	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
 	{
@@ -1274,7 +1274,7 @@ OutlineEditor::on_remove_parent_activate ()
 	const auto   field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Parent Node %s"), X3D::GetDescription (parentNode) .c_str ()));
 
-	getBrowserWindow () -> getSelection () -> setNodes ({ }, undoStep);
+	getBrowserWindow () -> getSelection () -> clearNodes (undoStep);
 
 	if (nodePath .size () == 3 or (nodePath .size () > 3 and treeView -> get_data_type (parentIter -> parent ()) == OutlineIterType::X3DExecutionContext))
 	{
