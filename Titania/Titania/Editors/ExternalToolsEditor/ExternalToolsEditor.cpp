@@ -142,8 +142,9 @@ ExternalToolsEditor::on_add_tool_clicked ()
 		const auto id   = createTool ();
 		const auto iter = getTreeStore () -> append ();
 	
-		setId   (iter, id);
+		setId (iter, id);
 		setName (iter, _ ("New Tool"));
+		setOutputType (iter, "DISPLAY_IN_CONSOLE");
 		setText (id, "#!/bin/sh\n");
 		saveTree ();
 
