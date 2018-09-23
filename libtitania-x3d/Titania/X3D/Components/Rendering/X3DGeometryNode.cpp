@@ -888,6 +888,9 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 						continue;
 				}
 			}
+
+			if (frontFace == GL_CW)
+				std::for_each (faceNormals .begin (), faceNormals .end (), std::mem_fn (&Vector3f::negate));
 		}
 	}
 
