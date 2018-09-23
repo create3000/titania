@@ -136,17 +136,21 @@ public:
 
 private:
 
+	///  @name Operations
+
 	void
 	loadStream (const basic::uri & uri, basic::ifilestream &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
+	///  @name Members
+
 	X3DExecutionContext* const executionContext;
-	const std::string userAgent;
-	const basic::uri referer;
-	basic::uri worldURL;
-	MFString urlError;
-	basic::ifilestream istream;
+	const std::string          userAgent;
+	const basic::uri           referer;
+	basic::uri                 worldURL;
+	MFString                   urlError;
+	basic::ifilestream         istream;
 
 };
 

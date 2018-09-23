@@ -217,9 +217,9 @@ private:
 
 	Fields fields;
 
-	const bool                    video;
 	SFTime                        end;
 	std::unique_ptr <MediaStream> mediaStream;
+	const bool                    video;
 
 };
 
