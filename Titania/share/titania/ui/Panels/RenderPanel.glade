@@ -371,7 +371,6 @@
     <property name="name">RenderingProperties</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Keyframe Animation Properties</property>
-    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default_width">340</property>
     <property name="destroy_with_parent">True</property>
@@ -624,6 +623,7 @@
               <object class="GtkBox" id="AntialiasingBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
                 <property name="spacing">8</property>
                 <child>
                   <object class="GtkSpinButton" id="spinbutton3">
@@ -791,7 +791,6 @@
               <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -803,7 +802,6 @@
               <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -886,6 +884,7 @@
               <object class="GtkComboBoxText" id="CodecButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
                 <property name="active">0</property>
                 <items>
                   <item>PNG</item>
@@ -953,6 +952,7 @@
               <object class="GtkComboBoxText" id="ShadingButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
                 <property name="active">1</property>
                 <items>
                   <item>Phong</item>
@@ -971,7 +971,6 @@
               <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
