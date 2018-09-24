@@ -106,8 +106,6 @@ X3DGeometryNode::setup ()
 	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
 	isLive () .addInterest (&X3DGeometryNode::set_live, this);
 
-	getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
-
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
@@ -136,7 +134,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
 		set_live ();
 	}
 }
@@ -803,9 +800,25 @@ void
 X3DGeometryNode::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
 		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+	}
 	else
+	{
+		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
 		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
+	}
+}
+
+void
+X3DGeometryNode::set_fixedPipeline ()
+{
+	// If there is a default shader then shader pipeline is enabled and we must rebuild Geometry2D nodes,
+	// to build double face geometry or not.
+
+	if (geometryType == GeometryType::GEOMETRY_2D)
+		update ();
 }
 
 void
@@ -910,16 +923,6 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * normals .size (), normals .data (), GL_STATIC_COPY);
 		}
 	}
-}
-
-void
-X3DGeometryNode::set_fixedPipeline ()
-{
-	// If there is a default shader then shader pipeline is enabled and we must rebuild Geometry2D nodes,
-	// to build double face geometry or not.
-
-	if (geometryType == GeometryType::GEOMETRY_2D)
-		update ();
 }
 
 void

@@ -363,15 +363,6 @@ protected:
 	addMirrorVertices (const GLenum, const bool);
 
 	void
-	set_live ();
-
-	void
-	set_shading (const ShadingType & value);
-
-	void
-	set_fixedPipeline ();
-
-	void
 	update ();
 
 	virtual
@@ -397,6 +388,19 @@ private:
 
 	void
 	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3d>&) const;
+
+	///  @name Event handlers
+
+	void
+	set_fixedPipeline ();
+
+	void
+	set_live ();
+
+	void
+	set_shading (const ShadingType & value);
+
+	///  @name Build
 
 	void
 	clear ();

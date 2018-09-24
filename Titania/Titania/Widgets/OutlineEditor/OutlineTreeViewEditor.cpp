@@ -201,7 +201,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 	if (field -> getAccessType () == X3D::outputOnly)
 		return true;
 
-  // First grab focus to release any previous selected field.
+	// First grab focus to release any previous selected field.
 	grab_focus ();
 
 	getBrowserWindow () -> setAccelerators (false);
