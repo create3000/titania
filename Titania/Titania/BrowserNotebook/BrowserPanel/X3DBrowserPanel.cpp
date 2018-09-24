@@ -159,7 +159,6 @@ X3DBrowserPanel::initialize ()
 	type = getBrowserPanelType (getId ());
 
 	set_type ();
-	setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
 }
 
 X3D::BrowserPtr
@@ -173,9 +172,14 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 	gridTransform      = nullptr;
 
 	if (type == BrowserPanelType::MAIN_VIEW)
+	{
+		set_initialized ();
 		return mainBrowser;
+	}
 
 	const auto browser = X3D::createBrowser (getMasterBrowser (), { get_ui ("Panels/BrowserPanel.x3dv") });
+
+	browser -> initialized () .addInterest (&X3DBrowserPanel::set_initialized, this);
 
 	// Setup dependent browser.
 
@@ -183,6 +187,12 @@ X3DBrowserPanel::createBrowser (const BrowserPanelType type)
 	browser -> setFrameRate (30);
 
 	return browser;
+}
+
+void
+X3DBrowserPanel::set_initialized ()
+{
+	setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
 }
 
 void

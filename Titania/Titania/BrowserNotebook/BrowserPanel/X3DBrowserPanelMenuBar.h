@@ -168,9 +168,6 @@ private:
 	set_shading (const X3D::SFString & value);
 
 	void
-	connectShading (const X3D::SFString & field);
-
-	void
 	set_texturing ();
 
 	virtual

@@ -158,6 +158,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_initialized ();
+
+	void
 	set_type ();
 
 	void

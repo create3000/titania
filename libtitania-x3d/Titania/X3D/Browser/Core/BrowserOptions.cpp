@@ -69,6 +69,7 @@
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
+#include <Titania/String/toupper.h>
 
 namespace titania {
 namespace X3D {
@@ -211,11 +212,12 @@ BrowserOptions::set_TextureQuality ()
 	// We need extra locking here, because the OpenGL commands need the browser context in case of a shared context.
 	ContextLock lock (getBrowser ());
 
+	const auto   textureQuality           = basic::toupper (TextureQuality () .str (), std::locale::classic ());
 	const auto & textureProperties        = getBrowser () -> getDefaultTextureProperties ();
 	const auto & movieTextureProperties   = getBrowser () -> getDefaultMovieTextureProperties ();
 	const auto & cubeMapTextureProperties = getBrowser () -> getDefaultCubeMapTextureProperties ();
 
-	if (TextureQuality () == "HIGH")
+	if (textureQuality == "HIGH")
 	{
 		textureProperties -> minificationFilter  () = "NICEST";
 		textureProperties -> magnificationFilter () = "NICEST";
@@ -235,7 +237,7 @@ BrowserOptions::set_TextureQuality ()
 		return;
 	}
 
-	if (TextureQuality () == "LOW")
+	if (textureQuality == "LOW")
 	{
 		textureProperties -> minificationFilter  () = "AVG_PIXEL_NEAREST_MIPMAP";
 		textureProperties -> magnificationFilter () = "NICEST";
@@ -277,7 +279,9 @@ BrowserOptions::set_TextureQuality ()
 void
 BrowserOptions::set_PrimitiveQuality ()
 {
-	if (PrimitiveQuality () == "HIGH")
+	const auto primitiveQuality = basic::toupper (PrimitiveQuality () .str (), std::locale::classic ());
+
+	if (primitiveQuality == "HIGH")
 	{
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 80;
 		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 80;
@@ -298,7 +302,7 @@ BrowserOptions::set_PrimitiveQuality ()
 		return;
 	}
 
-	if (PrimitiveQuality () == "LOW")
+	if (primitiveQuality == "LOW")
 	{
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 20;
 		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 20;
@@ -358,7 +362,7 @@ BrowserOptions::set_Shading ()
 
 	try
 	{
-		shading = shadings .at (Shading ());
+		shading = shadings .at (basic::toupper (Shading () .str (), std::locale::classic ()));
 	}
 	catch (const std::out_of_range &)
 	{

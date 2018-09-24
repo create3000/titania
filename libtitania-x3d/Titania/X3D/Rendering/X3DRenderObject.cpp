@@ -430,8 +430,9 @@ X3DRenderObject::collide ()
 	std::vector <Collision*> difference;
 
 	if (collisions .empty ())
+	{
 		difference = std::move (activeCollisions);
-
+	}
 	else
 	{
 		std::sort (collisions .begin (), collisions .end ());

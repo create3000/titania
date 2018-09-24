@@ -78,14 +78,10 @@ void
 X3DBrowserWindowInterface::create ()
 {
 	// Get objects.
-	m_FlatAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
-	m_GouraudAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GouraudAction"));
 	m_LogarithmicDepthBufferAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LogarithmicDepthBufferAction"));
 	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
-	m_PhongAction                  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PhongAction"));
-	m_PointsetAction               = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PointsetAction"));
 	m_PrimitiveQualityHighAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
 	m_PrimitiveQualityLowAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityLowAction"));
 	m_PrimitiveQualityMediumAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityMediumAction"));
@@ -99,7 +95,6 @@ X3DBrowserWindowInterface::create ()
 	m_TextureQualityMediumAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
 	m_ToolbarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
 	m_TransformToolModeAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
-	m_WireframeAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
 	m_X_ITECompatibilityAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("X_ITECompatibilityAction"));
 
 	// Get widgets.
@@ -168,12 +163,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserTabsMenuItem", m_BrowserTabsMenuItem);
 	m_builder -> get_widget ("BrowserBrowserOptionsSeparator", m_BrowserBrowserOptionsSeparator);
 	m_builder -> get_widget ("BrowserMotionBlurMenuItem", m_BrowserMotionBlurMenuItem);
-	m_builder -> get_widget ("BrowserShadingMenuItem", m_BrowserShadingMenuItem);
-	m_builder -> get_widget ("BrowserPhongMenuItem", m_BrowserPhongMenuItem);
-	m_builder -> get_widget ("BrowserGouraudMenuItem", m_BrowserGouraudMenuItem);
-	m_builder -> get_widget ("BrowserFlatMenuItem", m_BrowserFlatMenuItem);
-	m_builder -> get_widget ("BrowserWireframeMenuItem", m_BrowserWireframeMenuItem);
-	m_builder -> get_widget ("BrowserPointsetMenuItem", m_BrowserPointsetMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityMenuItem", m_BrowserPrimitiveQualityMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityHighMenuItem", m_BrowserPrimitiveQualityHighMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityMediumMenuItem", m_BrowserPrimitiveQualityMediumMenuItem);
@@ -285,12 +274,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("TabsMenuItem", m_TabsMenuItem);
 	m_builder -> get_widget ("BrowserOptionsSeparator", m_BrowserOptionsSeparator);
 	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
-	m_builder -> get_widget ("ShadingMenuItem", m_ShadingMenuItem);
-	m_builder -> get_widget ("PhongMenuItem", m_PhongMenuItem);
-	m_builder -> get_widget ("GouraudMenuItem", m_GouraudMenuItem);
-	m_builder -> get_widget ("FlatMenuItem", m_FlatMenuItem);
-	m_builder -> get_widget ("WireframeMenuItem", m_WireframeMenuItem);
-	m_builder -> get_widget ("PointsetMenuItem", m_PointsetMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityMenuItem", m_PrimitiveQualityMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityHighMenuItem", m_PrimitiveQualityHighMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityMediumMenuItem", m_PrimitiveQualityMediumMenuItem);
@@ -398,15 +381,11 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("NoneViewerButton", m_NoneViewerButton);
 	m_builder -> get_widget ("OtherViewerButton", m_OtherViewerButton);
 
-	// Connect object Gtk::ToggleAction with id 'FlatAction'.
-	m_FlatAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_flat_toggled));
+	// Connect object Gtk::ToggleAction with id 'FollowPrimarySelectionAction'.
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
-	m_GouraudAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_gouraud_toggled));
 	m_LogarithmicDepthBufferAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_logarithmic_depth_buffer_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_menubar_toggled));
-	m_PhongAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_phong_toggled));
-	m_PointsetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_pointset_toggled));
 	m_PrimitiveQualityHighAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_high_toggled));
 	m_PrimitiveQualityLowAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_low_toggled));
 	m_PrimitiveQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_medium_toggled));
@@ -420,7 +399,6 @@ X3DBrowserWindowInterface::create ()
 	m_TextureQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_medium_toggled));
 	m_ToolbarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_toggled));
 	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
-	m_WireframeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_wireframe_toggled));
 	m_X_ITECompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_cobweb_compatibility_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.

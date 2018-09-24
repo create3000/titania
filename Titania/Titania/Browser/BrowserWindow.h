@@ -379,37 +379,6 @@ private:
 	void
 	on_motion_blur_activated () final override;
 
-	/// @name Shading
-
-	virtual
-	void
-	on_phong_toggled () final override;
-
-	virtual
-	void
-	on_gouraud_toggled () final override;
-
-	virtual
-	void
-	on_flat_toggled () final override;
-
-	virtual
-	void
-	on_wireframe_toggled () final override;
-
-	virtual
-	void
-	on_pointset_toggled () final override;
-
-	void
-	on_shading_changed (const std::string &);
-
-	void
-	set_shading (const X3D::SFString &);
-
-	void
-	connectShading (const X3D::SFString &);
-
 	///  @name Primitive Quality
 
 	virtual
@@ -430,9 +399,6 @@ private:
 	void
 	set_primitiveQuality (const X3D::SFString &);
 
-	void
-	connectPrimitiveQuality (const X3D::SFString &);
-
 	///  @name Primitive Quality
 
 	virtual
@@ -452,9 +418,6 @@ private:
 
 	void
 	set_textureQuality (const X3D::SFString &);
-
-	void
-	connectTextureQuality (const X3D::SFString &);
 
 	virtual
 	void
@@ -798,7 +761,6 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
-	std::vector <Glib::RefPtr <Gtk::ToggleAction>> shadingActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;
 

@@ -97,21 +97,12 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface ({ get_ui ("icons/IconFactory.glade"), get_ui ("BrowserWindow.glade") }),
 	         X3DBrowserWindow (defaultBrowser),
 	              cssProvider (Gtk::CssProvider::create ()),
-	           shadingActions (),
 	  primitiveQualityActions (),
 	    textureQualityActions (),
 	                     hand (true),
 	                   viewer (X3D::X3DConstants::NoneViewer),
 	                 changing (false)
 {
-	shadingActions = {
-		getPhongAction (),
-		getGouraudAction (),
-		getFlatAction (),
-		getWireframeAction (),
-		getPointsetAction ()
-	};
-
 	primitiveQualityActions = {
 		getPrimitiveQualityHighAction (),
 		getPrimitiveQualityMediumAction (),
@@ -200,6 +191,24 @@ BrowserWindow::configure ()
 {
 	X3DBrowserWindow::configure ();
 
+	const auto primitiveQuality = getConfig () -> getItem <std::string> ("primitiveQuality", "MEDIUM");
+
+	if (primitiveQuality == "LOW")
+		getPrimitiveQualityLowAction () -> set_active (true);
+	else if (primitiveQuality == "MEDIUM")
+		getPrimitiveQualityMediumAction () -> set_active (true);
+	else if (primitiveQuality == "HIGH")
+		getPrimitiveQualityHighAction () -> set_active (true);
+
+	const auto textureQuality = getConfig () -> getItem <std::string> ("textureQuality", "MEDIUM");
+
+	if (textureQuality == "LOW")
+		getTextureQualityLowAction () -> set_active (true);
+	else if (textureQuality == "MEDIUM")
+		getTextureQualityMediumAction () -> set_active (true);
+	else if (textureQuality == "HIGH")
+		getTextureQualityHighAction () -> set_active (true);
+
 	getTransformToolModeAction () -> set_active (getConfig () -> getItem <int32_t> ("transformToolMode"));
 
 	if (getConfig () -> hasItem ("cobwebCompatibility"))
@@ -223,8 +232,8 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getStraightenHorizon () .removeInterest (&BrowserWindow::set_straighten_horizon, this);
 	
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
-		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
+		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .removeInterest (&BrowserWindow::set_textureQuality,   this);
 	}
 
 	// Set page.
@@ -242,15 +251,14 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getStraightenHorizon () .addInterest (&BrowserWindow::set_straighten_horizon, this);
 	
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
-		getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
+		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .addInterest (&BrowserWindow::set_textureQuality,   this);
 	
 		// Initialize
 
 		set_activeLayer ();
 		set_viewer ();
 		set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
-		set_shading          (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
 		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 		set_straighten_horizon ();
@@ -1178,105 +1186,6 @@ BrowserWindow::on_motion_blur_activated ()
 	addDialog ("MotionBlurEditor");
 }
 
-// Shading menu
-
-void
-BrowserWindow::on_phong_toggled ()
-{
-	if (getPhongAction () -> get_active ())
-	{
-		toggleActions (getPhongAction (), shadingActions);
-
-		on_shading_changed ("PHONG");
-	}
-}
-
-void
-BrowserWindow::on_gouraud_toggled ()
-{
-	if (getGouraudAction () -> get_active ())
-	{
-		toggleActions (getGouraudAction (), shadingActions);
-
-		on_shading_changed ("GOURAUD");
-	}
-}
-
-void
-BrowserWindow::on_flat_toggled ()
-{
-	if (getFlatAction () -> get_active ())
-	{
-		toggleActions (getFlatAction (), shadingActions);
-	
-		on_shading_changed ("FLAT");
-	}
-}
-
-void
-BrowserWindow::on_wireframe_toggled ()
-{
-	if (getWireframeAction () -> get_active ())
-	{
-		toggleActions (getWireframeAction (), shadingActions);
-
-		on_shading_changed ("WIREFRAME");
-	}
-}
-
-void
-BrowserWindow::on_pointset_toggled ()
-{
-	if (getPointsetAction () -> get_active ())
-	{
-		toggleActions (getPointsetAction (), shadingActions);
-
-		on_shading_changed ("POINTSET");
-	}
-}
-
-void
-BrowserWindow::on_shading_changed (const std::string & value)
-{
-	if (changing)
-		return;
-
-	getCurrentBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&BrowserWindow::set_shading, this);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading () .addInterest (&BrowserWindow::connectShading, this);
-
-	getCurrentBrowser () -> getBrowserOptions () -> Shading () = value;
-}
-
-void
-BrowserWindow::set_shading (const X3D::SFString & value)
-{
-	changing = true;
-
-	if (value == "PHONG")
-		getPhongAction () -> set_active (true);
-
-	else if (value == "FLAT")
-		getFlatAction () -> set_active (true);
-
-	else if (value == "WIREFRAME")
-		getWireframeAction () -> set_active (true);
-
-	else if (value == "POINTSET")
-		getPointsetAction () -> set_active (true);
-
-	else
-		getGouraudAction () -> set_active (true);
-
-	changing = false;
-}
-
-void
-BrowserWindow::connectShading (const X3D::SFString & field)
-{
-	field .removeInterest (&BrowserWindow::connectShading, this);
-	field .addInterest (&BrowserWindow::set_shading, this);
-}
-
 // Primitive Quality
 
 void
@@ -1315,11 +1224,7 @@ BrowserWindow::on_primitive_quality_low_toggled ()
 void
 BrowserWindow::on_primitive_quality_changed (const std::string & value)
 {
-	if (changing)
-		return;
-
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::connectPrimitiveQuality, this);
+	getConfig () -> setItem <std::string> ("primitiveQuality", value);
 
 	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () = value;
 }
@@ -1327,26 +1232,12 @@ BrowserWindow::on_primitive_quality_changed (const std::string & value)
 void
 BrowserWindow::set_primitiveQuality (const X3D::SFString & value)
 {
-	changing = true;
+	const auto primitiveQuality = getConfig () -> getItem <std::string> ("primitiveQuality", "MEDIUM");
 
-	if (value == "HIGH")
-		getPrimitiveQualityHighAction () -> set_active (true);
-
-	else if (value == "LOW")
-		getPrimitiveQualityLowAction () -> set_active (true);
-
-	else
-		getPrimitiveQualityMediumAction () -> set_active (true);
-
-	changing = false;
+	if (value != primitiveQuality)
+		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () = primitiveQuality;
 }
 
-void
-BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
-{
-	field .removeInterest (&BrowserWindow::connectPrimitiveQuality, this);
-	field .addInterest (&BrowserWindow::set_primitiveQuality, this);
-}
 
 // Texture Quality
 
@@ -1386,11 +1277,7 @@ BrowserWindow::on_texture_quality_low_toggled ()
 void
 BrowserWindow::on_texture_quality_changed (const std::string & value)
 {
-	if (changing)
-		return;
-
-	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (&BrowserWindow::set_textureQuality, this);
-	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (&BrowserWindow::connectTextureQuality, this);
+	getConfig () -> setItem <std::string> ("textureQuality", value);
 
 	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () = value;
 }
@@ -1398,25 +1285,10 @@ BrowserWindow::on_texture_quality_changed (const std::string & value)
 void
 BrowserWindow::set_textureQuality (const X3D::SFString & value)
 {
-	changing = true;
+	const auto textureQuality = getConfig () -> getItem <std::string> ("textureQuality");
 
-	if (value == "HIGH")
-		getTextureQualityHighAction () -> set_active (true);
-
-	else if (value == "LOW")
-		getTextureQualityLowAction () -> set_active (true);
-
-	else
-		getTextureQualityMediumAction () -> set_active (true);
-
-	changing = false;
-}
-
-void
-BrowserWindow::connectTextureQuality (const X3D::SFString & field)
-{
-	field .removeInterest (&BrowserWindow::connectPrimitiveQuality, this);
-	field .addInterest (&BrowserWindow::set_primitiveQuality, this);
+	if (value != textureQuality)
+		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () = textureQuality;
 }
 
 void

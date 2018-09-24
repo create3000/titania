@@ -1,5 +1,6 @@
 ; titania GtkAccelMap rc-file         -*- scheme -*-
 ; this file is an automated accelerator map dump
 ;
+; (gtk_accel_path "<Window>/File/New" "<Primary>n")
 ; (gtk_accel_path "<Window>/File/Close" "<Primary>w")
 ; (gtk_accel_path "<Window>/File/Quit" "<Primary>q")

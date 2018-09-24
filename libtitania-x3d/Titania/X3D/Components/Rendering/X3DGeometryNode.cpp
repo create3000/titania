@@ -124,7 +124,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 	{
 		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
-		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
 
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
@@ -802,12 +801,10 @@ X3DGeometryNode::set_live ()
 	if (getExecutionContext () -> isLive () and isLive ())
 	{
 		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
 	}
 	else
 	{
 		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
-		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
 	}
 }
 
@@ -943,10 +940,6 @@ X3DGeometryNode::update ()
 			buildTexCoords ();
 	}
 
-	// Upload normals or flat normals.
-
-	set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
-
 	// Upload arrays.
 
 	transfer ();
@@ -1030,6 +1023,9 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = browser -> getShader ();
+
+		// Upload normals or flat normals.
+		set_shading (browser -> getBrowserOptions () -> getShading ());
 
 		context -> setGeometryType  (geometryType);
 		context -> setColorMaterial (not colors .empty ());
@@ -1184,6 +1180,9 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 		if (not shaderNode)
 			return;
+
+		// Upload normals or flat normals.
+		set_shading (browser -> getBrowserOptions () -> getShading ());
 
 		context -> setGeometryType  (geometryType);
 		context -> setColorMaterial (not colors .empty ());

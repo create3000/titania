@@ -90,10 +90,6 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getFlatAction () const
-	{ return m_FlatAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFollowPrimarySelectionAction () const
 	{ return m_FollowPrimarySelectionAction; }
 
@@ -102,24 +98,12 @@ public:
 	{ return m_FooterAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
-	getGouraudAction () const
-	{ return m_GouraudAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
 	getLogarithmicDepthBufferAction () const
 	{ return m_LogarithmicDepthBufferAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getMenubarAction () const
 	{ return m_MenubarAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getPhongAction () const
-	{ return m_PhongAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getPointsetAction () const
-	{ return m_PointsetAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getPrimitiveQualityHighAction () const
@@ -172,10 +156,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTransformToolModeAction () const
 	{ return m_TransformToolModeAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getWireframeAction () const
-	{ return m_WireframeAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getX_ITECompatibilityAction () const
@@ -440,30 +420,6 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserMotionBlurMenuItem () const
 	{ return *m_BrowserMotionBlurMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getBrowserShadingMenuItem () const
-	{ return *m_BrowserShadingMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserPhongMenuItem () const
-	{ return *m_BrowserPhongMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserGouraudMenuItem () const
-	{ return *m_BrowserGouraudMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserFlatMenuItem () const
-	{ return *m_BrowserFlatMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserWireframeMenuItem () const
-	{ return *m_BrowserWireframeMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserPointsetMenuItem () const
-	{ return *m_BrowserPointsetMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserPrimitiveQualityMenuItem () const
@@ -910,30 +866,6 @@ public:
 	{ return *m_MotionBlurMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getShadingMenuItem () const
-	{ return *m_ShadingMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getPhongMenuItem () const
-	{ return *m_PhongMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getGouraudMenuItem () const
-	{ return *m_GouraudMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getFlatMenuItem () const
-	{ return *m_FlatMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getWireframeMenuItem () const
-	{ return *m_WireframeMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getPointsetMenuItem () const
-	{ return *m_PointsetMenuItem; }
-
-	Gtk::ImageMenuItem &
 	getPrimitiveQualityMenuItem () const
 	{ return *m_PrimitiveQualityMenuItem; }
 
@@ -1361,10 +1293,6 @@ public:
 
 	virtual
 	void
-	on_flat_toggled () = 0;
-
-	virtual
-	void
 	on_follow_primary_selection_toggled () = 0;
 
 	virtual
@@ -1373,23 +1301,11 @@ public:
 
 	virtual
 	void
-	on_gouraud_toggled () = 0;
-
-	virtual
-	void
 	on_logarithmic_depth_buffer_toggled () = 0;
 
 	virtual
 	void
 	on_menubar_toggled () = 0;
-
-	virtual
-	void
-	on_phong_toggled () = 0;
-
-	virtual
-	void
-	on_pointset_toggled () = 0;
 
 	virtual
 	void
@@ -1442,10 +1358,6 @@ public:
 	virtual
 	void
 	on_transform_tool_mode_toggled () = 0;
-
-	virtual
-	void
-	on_wireframe_toggled () = 0;
 
 	virtual
 	void
@@ -1943,14 +1855,10 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_GouraudAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_PhongAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_PointsetAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityHighAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityLowAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityMediumAction;
@@ -1964,7 +1872,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformToolModeAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_X_ITECompatibilityAction;
 	Gtk::Image* m_FileImportImage;
 	Gtk::Image* m_FileImportImage1;
@@ -2031,12 +1938,6 @@ private:
 	Gtk::CheckMenuItem* m_BrowserTabsMenuItem;
 	Gtk::SeparatorMenuItem* m_BrowserBrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_BrowserMotionBlurMenuItem;
-	Gtk::ImageMenuItem* m_BrowserShadingMenuItem;
-	Gtk::CheckMenuItem* m_BrowserPhongMenuItem;
-	Gtk::CheckMenuItem* m_BrowserGouraudMenuItem;
-	Gtk::CheckMenuItem* m_BrowserFlatMenuItem;
-	Gtk::CheckMenuItem* m_BrowserWireframeMenuItem;
-	Gtk::CheckMenuItem* m_BrowserPointsetMenuItem;
 	Gtk::ImageMenuItem* m_BrowserPrimitiveQualityMenuItem;
 	Gtk::CheckMenuItem* m_BrowserPrimitiveQualityHighMenuItem;
 	Gtk::CheckMenuItem* m_BrowserPrimitiveQualityMediumMenuItem;
@@ -2148,12 +2049,6 @@ private:
 	Gtk::CheckMenuItem* m_TabsMenuItem;
 	Gtk::SeparatorMenuItem* m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_MotionBlurMenuItem;
-	Gtk::ImageMenuItem* m_ShadingMenuItem;
-	Gtk::CheckMenuItem* m_PhongMenuItem;
-	Gtk::CheckMenuItem* m_GouraudMenuItem;
-	Gtk::CheckMenuItem* m_FlatMenuItem;
-	Gtk::CheckMenuItem* m_WireframeMenuItem;
-	Gtk::CheckMenuItem* m_PointsetMenuItem;
 	Gtk::ImageMenuItem* m_PrimitiveQualityMenuItem;
 	Gtk::CheckMenuItem* m_PrimitiveQualityHighMenuItem;
 	Gtk::CheckMenuItem* m_PrimitiveQualityMediumMenuItem;

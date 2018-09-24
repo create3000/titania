@@ -101,6 +101,19 @@ X3DBrowserPanelMenuBar::initialize ()
 
 	getStraightenHorizonMenuItem () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 
+	const auto shading = getConfig () -> getItem <std::string> ("shading", "GOURAUD");
+
+	if (shading == "PHONG")
+		getPhongMenuItem () .set_active (true);
+	else if (shading == "GOURAUD")
+		getGouraudMenuItem () .set_active (true);
+	else if (shading == "FLAT")
+		getFlatMenuItem () .set_active (true);
+	else if (shading == "WIREFRAME")
+		getWireframeMenuItem () .set_active (true);
+	else if (shading == "POINTSET")
+		getPointsetMenuItem () .set_active (true);
+
 	set_lightTools            (getPage () -> getMainBrowser () -> getLightTools ());
 	set_proximitySensorTools  (getPage () -> getMainBrowser () -> getProximitySensorTools ());
 	set_soundTools            (getPage () -> getMainBrowser () -> getSoundTools ());
@@ -305,11 +318,7 @@ X3DBrowserPanelMenuBar::on_pointset_toggled ()
 void
 X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 {
-	if (changing)
-		return;
-
-	getLocalBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
-	getLocalBrowser () -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::connectShading, this);
+	getConfig () -> setItem <std::string> ("shading", value);
 
 	getLocalBrowser () -> getBrowserOptions () -> Shading () = value;
 }
@@ -317,31 +326,10 @@ X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 void
 X3DBrowserPanelMenuBar::set_shading (const X3D::SFString & value)
 {
-	changing = true;
+	const auto shading = getConfig () -> getItem <std::string> ("shading", "GOURAUD");
 
-	if (value == "PHONG")
-		getPhongMenuItem () .set_active (true);
-
-	else if (value == "FLAT")
-		getFlatMenuItem () .set_active (true);
-
-	else if (value == "WIREFRAME")
-		getWireframeMenuItem () .set_active (true);
-
-	else if (value == "POINTSET")
-		getPointsetMenuItem () .set_active (true);
-
-	else
-		getGouraudMenuItem () .set_active (true);
-
-	changing = false;
-}
-
-void
-X3DBrowserPanelMenuBar::connectShading (const X3D::SFString & field)
-{
-	field .removeInterest (&X3DBrowserPanelMenuBar::connectShading, this);
-	field .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	if (value != shading)
+		getLocalBrowser () -> getBrowserOptions () -> Shading () = shading;
 }
 
 void

@@ -414,9 +414,6 @@ throw (Error <INVALID_SCENE>,
 	{
 		executionContext = value;
 	}
-
-	if (initialized ())
-		initialized () = true;
 }
 
 void
@@ -438,6 +435,9 @@ X3DBrowser::bind ()
 
 	getWorld () -> bind ();
 	get_style_context () -> remove_class ("titania-private-invisible");
+
+	if (initialized ())
+		initialized () = true;
 }
 
 void
