@@ -121,10 +121,10 @@ protected:
 	{ return layerNode; }
 
 	void
-	setShading (const std::string & shading);
+	setShading (const size_t id, const std::string & shading);
 	
 	std::string
-	getShading (const std::string & shading) const;
+	getShading (const size_t id) const;
 
 	///  @name Event handlers
 

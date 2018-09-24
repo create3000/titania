@@ -496,29 +496,42 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 }
 
 void
-X3DBrowserPanel::setShading (const std::string & shading)
+X3DBrowserPanel::setShading (const size_t id, const std::string & shading)
 {
-	const auto worldInfo = createWorldInfo (getPage () -> getScene ());
-	const auto id        = "BrowserPanel" + basic::to_string (getId (), std::locale::classic ());
+	auto shadingArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/shading");
 
-	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + id + "/shading", shading);
+	shadingArray .resize (4);
 
-	getPage () -> setModified (true);
+	if (shadingArray [id] not_eq shading)
+	{
+		shadingArray [id] = shading;
+	
+		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/shading", shadingArray);
+	
+		getPage () -> setModified (true);
+	}
 }
 
 std::string
-X3DBrowserPanel::getShading (const std::string & shading) const
+X3DBrowserPanel::getShading (const size_t id) const
 {
 	try
 	{
-		const auto worldInfo = getWorldInfo (getPage () -> getScene ());
-		const auto id        = "BrowserPanel" + basic::to_string (getId (), std::locale::classic ());
+		static const std::map <std::string, std::string> shadingTypes = {
+			std::make_pair ("PHONG",     "PHONG"),
+			std::make_pair ("GOURAUD",   "GOURAUD"),
+			std::make_pair ("FLAT",      "FLAT"),
+			std::make_pair ("WIREFRAME", "WIREFRAME"),
+			std::make_pair ("POINTSET",  "POINTSET"),
+		};
 
-		return worldInfo -> getMetaData ("/Titania/BrowserPanel/" + id + "/shading", shading);
+		const auto shadingArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/shading");
+
+		return shadingTypes .at (shadingArray .at (id));
 	}
 	catch (const std::exception &)
 	{
-		return shading;
+		return "GOURAUD";
 	}
 }
 

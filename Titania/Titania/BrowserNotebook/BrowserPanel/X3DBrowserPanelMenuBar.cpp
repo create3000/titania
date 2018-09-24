@@ -152,7 +152,7 @@ X3DBrowserPanelMenuBar::set_initialized ()
 {
 	changing = true;
 
-	const auto shading = getShading ("GOURAUD");
+	const auto shading = getShading (getId ());
 
 	if (shading == "PHONG")
 		getPhongMenuItem () .set_active (true);
@@ -332,7 +332,7 @@ X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 	if (changing)
 		return;
 
-	setShading (value);
+	setShading (getId (), value);
 
 	getLocalBrowser () -> getBrowserOptions () -> Shading () = value;
 }
@@ -340,7 +340,7 @@ X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 void
 X3DBrowserPanelMenuBar::set_shading (const X3D::SFString & value)
 {
-	const auto shading = getShading ("GOURAUD");
+	const auto shading = getShading (getId ());
 
 	if (value != shading)
 		getLocalBrowser () -> getBrowserOptions () -> Shading () = shading;
