@@ -128,16 +128,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 }
 
 void
-BrowserWindow::store ()
-{
-	getConfig () -> setItem ("transformToolMode",      (int32_t) getTransformToolModeAction () -> get_active ());
-	getConfig () -> setItem ("cobwebCompatibility",    getX_ITECompatibilityAction () -> get_active ());
-	getConfig () -> setItem ("logarithmicDepthBuffer", getLogarithmicDepthBufferAction () -> get_active ());
-
-	X3DBrowserWindow::store ();
-}
-
-void
 BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
@@ -1472,6 +1462,8 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 void
 BrowserWindow::on_transform_tool_mode_toggled ()
 {
+	getConfig () -> setItem <int32_t> ("transformToolMode", getTransformToolModeAction () -> get_active ());
+
 	getCurrentBrowser () -> getTransformToolOptions () -> toolMode () = getTransformToolModeAction () -> get_active ();
 }
 
@@ -1755,12 +1747,16 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 void
 BrowserWindow::on_cobweb_compatibility_toggled ()
 {
+	getConfig () -> setItem <bool> ("cobwebCompatibility", getX_ITECompatibilityAction () -> get_active ());
+
 	getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_logarithmic_depth_buffer_toggled ()
 {
+	getConfig () -> setItem <bool> ("logarithmicDepthBuffer", getLogarithmicDepthBufferAction () -> get_active ());
+
 	getMasterBrowser () -> getBrowserOptions () -> LogarithmicDepthBuffer () = getLogarithmicDepthBufferAction () -> get_active ();
 }
 
