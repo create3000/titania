@@ -120,6 +120,12 @@ protected:
 	getLayer () const
 	{ return layerNode; }
 
+	void
+	setShading (const std::string & shading);
+	
+	std::string
+	getShading (const std::string & shading) const;
+
 	///  @name Event handlers
 
 	virtual

@@ -93,6 +93,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_initialized ();
+
+	void
 	set_focus (const bool focus);
 
 	void

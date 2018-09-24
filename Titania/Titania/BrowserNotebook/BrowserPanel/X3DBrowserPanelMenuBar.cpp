@@ -101,19 +101,6 @@ X3DBrowserPanelMenuBar::initialize ()
 
 	getStraightenHorizonMenuItem () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
 
-	const auto shading = getConfig () -> getItem <std::string> ("shading", "GOURAUD");
-
-	if (shading == "PHONG")
-		getPhongMenuItem () .set_active (true);
-	else if (shading == "GOURAUD")
-		getGouraudMenuItem () .set_active (true);
-	else if (shading == "FLAT")
-		getFlatMenuItem () .set_active (true);
-	else if (shading == "WIREFRAME")
-		getWireframeMenuItem () .set_active (true);
-	else if (shading == "POINTSET")
-		getPointsetMenuItem () .set_active (true);
-
 	set_lightTools            (getPage () -> getMainBrowser () -> getLightTools ());
 	set_proximitySensorTools  (getPage () -> getMainBrowser () -> getProximitySensorTools ());
 	set_soundTools            (getPage () -> getMainBrowser () -> getSoundTools ());
@@ -126,6 +113,7 @@ void
 X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 {
 	browser -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	browser -> initialized ()          .removeInterest (&X3DBrowserPanelMenuBar::set_initialized,        this);
 	browser -> getViewer ()            .removeInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
 	browser -> getStraightenHorizon () .removeInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
 	browser -> getTexturing ()         .removeInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
@@ -134,6 +122,7 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	browser = value;
 
 	browser -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
+	browser -> initialized ()          .addInterest (&X3DBrowserPanelMenuBar::set_initialized,       this);
 	browser -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
 	browser -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
 	browser -> getTexturing ()         .addInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
@@ -143,6 +132,7 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
 
 	set_undoHistory ();
+	set_initialized ();
 	set_shading (browser -> getBrowserOptions () -> Shading ());
 	set_viewer ();
 	set_straighten_horizon ();
@@ -155,6 +145,27 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 		getBackgroundsMenuItem ()                  .set_visible (false);
 		getFogsMenuItem ()                         .set_visible (false);
 	}
+}
+
+void
+X3DBrowserPanelMenuBar::set_initialized ()
+{
+	changing = true;
+
+	const auto shading = getShading ("GOURAUD");
+
+	if (shading == "PHONG")
+		getPhongMenuItem () .set_active (true);
+	else if (shading == "GOURAUD")
+		getGouraudMenuItem () .set_active (true);
+	else if (shading == "FLAT")
+		getFlatMenuItem () .set_active (true);
+	else if (shading == "WIREFRAME")
+		getWireframeMenuItem () .set_active (true);
+	else if (shading == "POINTSET")
+		getPointsetMenuItem () .set_active (true);
+
+	changing = false;
 }
 
 void
@@ -318,7 +329,10 @@ X3DBrowserPanelMenuBar::on_pointset_toggled ()
 void
 X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 {
-	getConfig () -> setItem <std::string> ("shading", value);
+	if (changing)
+		return;
+
+	setShading (value);
 
 	getLocalBrowser () -> getBrowserOptions () -> Shading () = value;
 }
@@ -326,7 +340,7 @@ X3DBrowserPanelMenuBar::on_shading_changed (const std::string & value)
 void
 X3DBrowserPanelMenuBar::set_shading (const X3D::SFString & value)
 {
-	const auto shading = getConfig () -> getItem <std::string> ("shading", "GOURAUD");
+	const auto shading = getShading ("GOURAUD");
 
 	if (value != shading)
 		getLocalBrowser () -> getBrowserOptions () -> Shading () = shading;

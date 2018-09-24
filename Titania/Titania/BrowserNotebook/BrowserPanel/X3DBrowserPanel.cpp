@@ -446,7 +446,7 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 	}
 	catch (const X3D::X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 
 	layerNode = value;
@@ -491,7 +491,34 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 	}
 	catch (const X3D::X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserPanel::setShading (const std::string & shading)
+{
+	const auto worldInfo = createWorldInfo (getPage () -> getScene ());
+	const auto id        = "BrowserPanel" + basic::to_string (getId (), std::locale::classic ());
+
+	worldInfo -> setMetaData ("/Titania/BrowserPanel/" + id + "/shading", shading);
+
+	getPage () -> setModified (true);
+}
+
+std::string
+X3DBrowserPanel::getShading (const std::string & shading) const
+{
+	try
+	{
+		const auto worldInfo = getWorldInfo (getPage () -> getScene ());
+		const auto id        = "BrowserPanel" + basic::to_string (getId (), std::locale::classic ());
+
+		return worldInfo -> getMetaData ("/Titania/BrowserPanel/" + id + "/shading", shading);
+	}
+	catch (const std::exception &)
+	{
+		return shading;
 	}
 }
 
