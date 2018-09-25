@@ -78,6 +78,7 @@ void
 X3DBrowserWindowInterface::create ()
 {
 	// Get objects.
+	m_AccelGroup                   = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_LogarithmicDepthBufferAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LogarithmicDepthBufferAction"));
@@ -161,7 +162,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserSidebarMenuItem", m_BrowserSidebarMenuItem);
 	m_builder -> get_widget ("BrowserFooterMenuItem", m_BrowserFooterMenuItem);
 	m_builder -> get_widget ("BrowserTabsMenuItem", m_BrowserTabsMenuItem);
-	m_builder -> get_widget ("BrowserBrowserOptionsSeparator", m_BrowserBrowserOptionsSeparator);
 	m_builder -> get_widget ("BrowserMotionBlurMenuItem", m_BrowserMotionBlurMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityMenuItem", m_BrowserPrimitiveQualityMenuItem);
 	m_builder -> get_widget ("BrowserPrimitiveQualityHighMenuItem", m_BrowserPrimitiveQualityHighMenuItem);
@@ -192,8 +192,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserExclusionMenuItem", m_BrowserExclusionMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
-	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
-	m_builder -> get_widget ("BrowserTextureCoordinateEditorMenuItem", m_BrowserTextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
 	m_builder -> get_widget ("BrowserBrowserSizeMenuItem", m_BrowserBrowserSizeMenuItem);
 	m_builder -> get_widget ("BrowserBackgroundImageMenuItem", m_BrowserBackgroundImageMenuItem);
@@ -272,7 +270,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("SidebarMenuItem", m_SidebarMenuItem);
 	m_builder -> get_widget ("FooterMenuItem", m_FooterMenuItem);
 	m_builder -> get_widget ("TabsMenuItem", m_TabsMenuItem);
-	m_builder -> get_widget ("BrowserOptionsSeparator", m_BrowserOptionsSeparator);
 	m_builder -> get_widget ("MotionBlurMenuItem", m_MotionBlurMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityMenuItem", m_PrimitiveQualityMenuItem);
 	m_builder -> get_widget ("PrimitiveQualityHighMenuItem", m_PrimitiveQualityHighMenuItem);
@@ -303,8 +300,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ExclusionMenuItem", m_ExclusionMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
-	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);
-	m_builder -> get_widget ("TextureCoordinateEditorMenuItem", m_TextureCoordinateEditorMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("BrowserSizeMenuItem", m_BrowserSizeMenuItem);
 	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
@@ -480,8 +475,6 @@ X3DBrowserWindowInterface::create ()
 	m_BrowserExclusionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_exclusion_activated));
 	m_BrowserCombineMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
-	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_BrowserBrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BrowserBackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
 
@@ -595,8 +588,6 @@ X3DBrowserWindowInterface::create ()
 	m_ExclusionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_exclusion_activated));
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_color_editor_clicked));
-	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_BrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
 

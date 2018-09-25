@@ -89,6 +89,8 @@
 
 #include <Titania/String.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -123,6 +125,34 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 
 	getX_ITECompatibilityMenuItem () .set_use_underline (false);
 	getBrowserX_ITECompatibilityMenuItem () .set_use_underline (false);
+
+	// Parse accel map.
+
+	std::ifstream accelerators (get_ui ("Accelerators.rc"));
+	std::string line (512, '\0');
+
+	while (accelerators .getline (&line [0], line .size ()))
+	{
+		static const std::regex accelerator (R"(\(gtk_accel_path\s+\"(.*?)\"\s+\"(.*?)\"\))");
+
+		std::smatch smatch;
+
+		if (std::regex_search (line, smatch, accelerator))
+		{
+			const auto accelPath = smatch .str (1);
+			const auto accelKey  = smatch .str (2);
+
+			guint key;
+			Gdk::ModifierType modifiers;
+
+			Gtk::AccelGroup::parse (accelKey, key, modifiers);
+			Gtk::AccelMap::add_entry (accelPath, key, modifiers);
+		}
+	}
+
+	//Gtk::AccelMap::save (config_dir ("Accelerators.rc"));
+
+	// Setup.
 
 	setup ();
 }

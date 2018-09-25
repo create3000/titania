@@ -89,6 +89,10 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getAccelGroup () const
+	{ return m_AccelGroup; }
+
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFollowPrimarySelectionAction () const
 	{ return m_FollowPrimarySelectionAction; }
@@ -413,10 +417,6 @@ public:
 	getBrowserTabsMenuItem () const
 	{ return *m_BrowserTabsMenuItem; }
 
-	Gtk::SeparatorMenuItem &
-	getBrowserBrowserOptionsSeparator () const
-	{ return *m_BrowserBrowserOptionsSeparator; }
-
 	Gtk::ImageMenuItem &
 	getBrowserMotionBlurMenuItem () const
 	{ return *m_BrowserMotionBlurMenuItem; }
@@ -536,14 +536,6 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserTransformToZeroMenuItem () const
 	{ return *m_BrowserTransformToZeroMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getBrowserColorPerVertexMenuItem () const
-	{ return *m_BrowserColorPerVertexMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getBrowserTextureCoordinateEditorMenuItem () const
-	{ return *m_BrowserTextureCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserLayoutMenuItem () const
@@ -857,10 +849,6 @@ public:
 	getTabsMenuItem () const
 	{ return *m_TabsMenuItem; }
 
-	Gtk::SeparatorMenuItem &
-	getBrowserOptionsSeparator () const
-	{ return *m_BrowserOptionsSeparator; }
-
 	Gtk::ImageMenuItem &
 	getMotionBlurMenuItem () const
 	{ return *m_MotionBlurMenuItem; }
@@ -980,14 +968,6 @@ public:
 	Gtk::ImageMenuItem &
 	getTransformToZeroMenuItem () const
 	{ return *m_TransformToZeroMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getColorPerVertexEditorMenuItem () const
-	{ return *m_ColorPerVertexEditorMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getTextureCoordinateEditorMenuItem () const
-	{ return *m_TextureCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
 	getLayoutMenuItem () const
@@ -1613,14 +1593,6 @@ public:
 
 	virtual
 	void
-	on_color_editor_clicked () = 0;
-
-	virtual
-	void
-	on_texture_mapping_editor_clicked () = 0;
-
-	virtual
-	void
 	on_browser_size_activate () = 0;
 
 	virtual
@@ -1698,6 +1670,14 @@ public:
 	virtual
 	void
 	on_geometry_editor_clicked () = 0;
+
+	virtual
+	void
+	on_color_editor_clicked () = 0;
+
+	virtual
+	void
+	on_texture_mapping_editor_clicked () = 0;
 
 	virtual
 	void
@@ -1855,6 +1835,7 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
@@ -1936,7 +1917,6 @@ private:
 	Gtk::CheckMenuItem* m_BrowserSidebarMenuItem;
 	Gtk::CheckMenuItem* m_BrowserFooterMenuItem;
 	Gtk::CheckMenuItem* m_BrowserTabsMenuItem;
-	Gtk::SeparatorMenuItem* m_BrowserBrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_BrowserMotionBlurMenuItem;
 	Gtk::ImageMenuItem* m_BrowserPrimitiveQualityMenuItem;
 	Gtk::CheckMenuItem* m_BrowserPrimitiveQualityHighMenuItem;
@@ -1967,8 +1947,6 @@ private:
 	Gtk::ImageMenuItem* m_BrowserExclusionMenuItem;
 	Gtk::ImageMenuItem* m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem* m_BrowserTransformToZeroMenuItem;
-	Gtk::ImageMenuItem* m_BrowserColorPerVertexMenuItem;
-	Gtk::ImageMenuItem* m_BrowserTextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_BrowserLayoutMenuItem;
 	Gtk::ImageMenuItem* m_BrowserBrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BrowserBackgroundImageMenuItem;
@@ -2047,7 +2025,6 @@ private:
 	Gtk::CheckMenuItem* m_SidebarMenuItem;
 	Gtk::CheckMenuItem* m_FooterMenuItem;
 	Gtk::CheckMenuItem* m_TabsMenuItem;
-	Gtk::SeparatorMenuItem* m_BrowserOptionsSeparator;
 	Gtk::ImageMenuItem* m_MotionBlurMenuItem;
 	Gtk::ImageMenuItem* m_PrimitiveQualityMenuItem;
 	Gtk::CheckMenuItem* m_PrimitiveQualityHighMenuItem;
@@ -2078,8 +2055,6 @@ private:
 	Gtk::ImageMenuItem* m_ExclusionMenuItem;
 	Gtk::ImageMenuItem* m_CombineMenuItem;
 	Gtk::ImageMenuItem* m_TransformToZeroMenuItem;
-	Gtk::ImageMenuItem* m_ColorPerVertexEditorMenuItem;
-	Gtk::ImageMenuItem* m_TextureCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_LayoutMenuItem;
 	Gtk::ImageMenuItem* m_BrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BackgroundImageMenuItem;

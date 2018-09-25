@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAccelGroup" id="AccelGroup"/>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -149,18 +150,6 @@
     <property name="stock">Combine</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkImage" id="image14">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PaintBrush</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image16">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureCoordinate</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="image17">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -257,18 +246,6 @@
     <property name="stock">TransformToZero</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkImage" id="image32">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TextureCoordinate</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image33">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PaintBrush</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="image34">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -354,16 +331,17 @@
           <object class="GtkMenu" id="menu15">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserNewMenuItem">
                 <property name="label">gtk-new</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/New</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_new_activated" swapped="no"/>
-                <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -371,11 +349,11 @@
                 <property name="label">gtk-open</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Open</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_open_activated" swapped="no"/>
-                <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -383,12 +361,12 @@
                 <property name="label" translatable="yes">Open Recent ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Open Recent</property>
                 <property name="use_underline">True</property>
                 <property name="image">image21</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_open_recent_activated" swapped="no"/>
-                <accelerator key="t" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -396,12 +374,12 @@
                 <property name="label" translatable="yes">Open _Location ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Open Location</property>
                 <property name="use_underline">True</property>
                 <property name="image">OpenLocationImage1</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_open_location_activated" swapped="no"/>
-                <accelerator key="l" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -409,6 +387,7 @@
                 <property name="label" translatable="yes">Import ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Import</property>
                 <property name="use_underline">True</property>
                 <property name="image">FileImportImage1</property>
                 <property name="use_stock">False</property>
@@ -427,11 +406,11 @@
                 <property name="label">gtk-save</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Save</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_save_activated" swapped="no"/>
-                <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -439,17 +418,18 @@
                 <property name="label">gtk-save-as</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Save As</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_save_as_activated" swapped="no"/>
-                <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserSaveACopyMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Save A Copy</property>
                 <property name="label" translatable="yes">Save A Copy ...</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_save_a_copy_activated" swapped="no"/>
@@ -460,12 +440,12 @@
                 <property name="label" translatable="yes">_Export ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Export</property>
                 <property name="use_underline">True</property>
                 <property name="image">image22</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_export_activated" swapped="no"/>
-                <accelerator key="e" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -479,11 +459,11 @@
                 <property name="label">gtk-revert-to-saved</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Revert To Saved</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_revert_to_saved_activated" swapped="no"/>
-                <accelerator key="F5" signal="activate"/>
               </object>
             </child>
             <child>
@@ -497,6 +477,7 @@
                 <property name="label" translatable="yes">Remove Unused Prototypes</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Remove Unused Prototypes</property>
                 <property name="use_underline">True</property>
                 <property name="image">image23</property>
                 <property name="use_stock">False</property>
@@ -515,6 +496,7 @@
                 <property name="label">gtk-properties</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Scene Properties</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
@@ -532,11 +514,11 @@
                 <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Close</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_close_activated" swapped="no"/>
-                <accelerator key="w" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -544,11 +526,11 @@
                 <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/File/Quit</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_quit_activated" swapped="no"/>
-                <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
           </object>
@@ -565,16 +547,17 @@
           <object class="GtkMenu" id="menu16">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserUndoMenuItem">
                 <property name="label">gtk-undo</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Undo</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_undo_activated" swapped="no"/>
-                <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -582,11 +565,11 @@
                 <property name="label">gtk-redo</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Redo</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_redo_activated" swapped="no"/>
-                <accelerator key="z" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -594,6 +577,7 @@
                 <property name="label" translatable="yes">Undo History ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Undo History</property>
                 <property name="use_underline">True</property>
                 <property name="image">image37</property>
                 <property name="use_stock">False</property>
@@ -612,11 +596,11 @@
                 <property name="label">gtk-cut</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Cut</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_cut_activated" swapped="no"/>
-                <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -624,11 +608,11 @@
                 <property name="label">gtk-copy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Copy</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_copy_activated" swapped="no"/>
-                <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -637,11 +621,11 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Paste</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_paste_activated" swapped="no"/>
-                <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -649,11 +633,11 @@
                 <property name="label">gtk-delete</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Delete</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_delete_activated" swapped="no"/>
-                <accelerator key="Delete" signal="activate"/>
               </object>
             </child>
             <child>
@@ -672,10 +656,12 @@
                   <object class="GtkMenu" id="menu17">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkMenuItem" id="BrowserCreateCloneMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Clone/Create Clone</property>
                         <property name="label" translatable="yes">Create Clo_ne</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_create_clone_activated" swapped="no"/>
@@ -685,6 +671,7 @@
                       <object class="GtkMenuItem" id="BrowserUnlinkCloneMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Clone/Unlink Clone</property>
                         <property name="label" translatable="yes">Unlin_k Clone</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_unlink_clone_activated" swapped="no"/>
@@ -705,12 +692,12 @@
                 <property name="label" translatable="yes">Group</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Group</property>
                 <property name="use_underline">True</property>
                 <property name="image">image24</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_group_selected_nodes_activated" swapped="no"/>
-                <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -718,18 +705,19 @@
                 <property name="label" translatable="yes">Ungroup</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Ungroup</property>
                 <property name="use_underline">True</property>
                 <property name="image">image25</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_ungroup_activated" swapped="no"/>
-                <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserAddToGroupMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Add To Group</property>
                 <property name="label" translatable="yes">Add To Group</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_add_to_group_activated" swapped="no"/>
@@ -739,9 +727,9 @@
               <object class="GtkMenuItem" id="BrowserDetachFromGroupMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Edit/Detach From Group</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -758,6 +746,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentTransformMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Transform</property>
                         <property name="label" translatable="yes">Transform</property>
                         <signal name="activate" handler="on_create_parent_transform_activated" swapped="no"/>
                       </object>
@@ -766,6 +755,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentGroupMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Group</property>
                         <property name="label" translatable="yes">Group</property>
                         <signal name="activate" handler="on_create_parent_group_activated" swapped="no"/>
                       </object>
@@ -774,6 +764,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentStaticGroupMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/StaticGroup</property>
                         <property name="label" translatable="yes">StaticGroup</property>
                         <signal name="activate" handler="on_create_parent_static_group_activated" swapped="no"/>
                       </object>
@@ -782,6 +773,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentSwitchMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Switch</property>
                         <property name="label" translatable="yes">Switch</property>
                         <signal name="activate" handler="on_create_parent_switch_activated" swapped="no"/>
                       </object>
@@ -796,6 +788,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentBillboardMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Billboard</property>
                         <property name="label" translatable="yes">Billboard</property>
                         <signal name="activate" handler="on_create_parent_billboard_activated" swapped="no"/>
                       </object>
@@ -804,6 +797,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentCollisionMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Collision</property>
                         <property name="label" translatable="yes">Collision</property>
                         <signal name="activate" handler="on_create_parent_collision_activated" swapped="no"/>
                       </object>
@@ -812,6 +806,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentLODMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LOD</property>
                         <property name="label" translatable="yes">LOD</property>
                         <signal name="activate" handler="on_create_parent_lod_activated" swapped="no"/>
                       </object>
@@ -820,6 +815,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentViewpointGroupMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/ViewpointGroup</property>
                         <property name="label" translatable="yes">ViewpointGroup</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_create_parent_viewpoint_group_activated" swapped="no"/>
@@ -835,6 +831,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentAnchorMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Anchor</property>
                         <property name="label" translatable="yes">Anchor</property>
                         <signal name="activate" handler="on_create_parent_anchor_activated" swapped="no"/>
                       </object>
@@ -849,6 +846,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentLayoutLayerMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayoutLayer</property>
                         <property name="label" translatable="yes">LayoutLayer</property>
                         <signal name="activate" handler="on_create_parent_layout_layer_activated" swapped="no"/>
                       </object>
@@ -857,6 +855,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentScreenGroupMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/ScreenGroup</property>
                         <property name="label" translatable="yes">ScreenGroup</property>
                         <signal name="activate" handler="on_create_parent_screen_group_activated" swapped="no"/>
                       </object>
@@ -865,6 +864,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentLayoutGroupMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayoutGroup</property>
                         <property name="label" translatable="yes">LayoutGroup</property>
                         <signal name="activate" handler="on_create_parent_layout_group_activated" swapped="no"/>
                       </object>
@@ -879,6 +879,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentGeoTransformMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/GeoTransform</property>
                         <property name="label" translatable="yes">GeoTransform</property>
                         <signal name="activate" handler="on_create_parent_geo_transform_activated" swapped="no"/>
                       </object>
@@ -887,6 +888,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentGeoLocationMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/GeoLocation</property>
                         <property name="label" translatable="yes">GeoLocation</property>
                         <signal name="activate" handler="on_create_parent_geo_location_activated" swapped="no"/>
                       </object>
@@ -901,6 +903,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentCADPartMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADPart</property>
                         <property name="label" translatable="yes">CADPart</property>
                         <signal name="activate" handler="on_create_parent_cad_part_activated" swapped="no"/>
                       </object>
@@ -909,6 +912,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentCADAssemblyMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADAssembly</property>
                         <property name="label" translatable="yes">CADAssembly</property>
                         <signal name="activate" handler="on_create_parent_cad_assembly_activated" swapped="no"/>
                       </object>
@@ -917,6 +921,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentCADLayerMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADLayer</property>
                         <property name="label" translatable="yes">CADLayer</property>
                         <signal name="activate" handler="on_create_parent_cad_layer_activated" swapped="no"/>
                       </object>
@@ -931,6 +936,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentLayerSetMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayerSet</property>
                         <property name="label" translatable="yes">LayerSet</property>
                         <signal name="activate" handler="on_create_parent_layer_set_activated" swapped="no"/>
                       </object>
@@ -939,6 +945,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentLayerMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Layer</property>
                         <property name="label" translatable="yes">Layer</property>
                         <signal name="activate" handler="on_create_parent_layer_activated" swapped="no"/>
                       </object>
@@ -947,6 +954,7 @@
                       <object class="GtkMenuItem" id="BrowserCreateParentViewportMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Viewport</property>
                         <property name="label" translatable="yes">Viewport</property>
                         <signal name="activate" handler="on_create_parent_viewport_activated" swapped="no"/>
                       </object>
@@ -969,11 +977,13 @@
           <object class="GtkMenu" id="menu19">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkCheckMenuItem" id="BrowserMenubarMenuItem">
                 <property name="related_action">MenubarAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Menubar</property>
                 <property name="label" translatable="yes">Menubar</property>
                 <property name="use_underline">True</property>
                 <property name="active">True</property>
@@ -984,6 +994,7 @@
                 <property name="related_action">ToolbarAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Toolbar</property>
                 <property name="label" translatable="yes">Toolbar</property>
                 <property name="use_underline">True</property>
               </object>
@@ -993,6 +1004,7 @@
                 <property name="related_action">SidebarAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Sidebar</property>
                 <property name="label" translatable="yes">Sidebar</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1002,6 +1014,7 @@
                 <property name="related_action">FooterAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Footer</property>
                 <property name="label" translatable="yes">Footer</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1011,6 +1024,7 @@
                 <property name="related_action">TabsAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Tabs</property>
                 <property name="label" translatable="yes">Tabs</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1022,15 +1036,10 @@
               </object>
             </child>
             <child>
-              <object class="GtkSeparatorMenuItem" id="BrowserBrowserOptionsSeparator">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-            <child>
               <object class="GtkImageMenuItem" id="BrowserMotionBlurMenuItem">
                 <property name="label" translatable="yes">Motion Blur ...</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Motion Blur</property>
                 <property name="image">image26</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
@@ -1049,15 +1058,16 @@
                   <object class="GtkMenu" id="menu22">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkCheckMenuItem" id="BrowserPrimitiveQualityHighMenuItem">
                         <property name="related_action">PrimitiveQualityHighAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/High</property>
                         <property name="label" translatable="yes">_High</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <accelerator key="F3" signal="activate"/>
                       </object>
                     </child>
                     <child>
@@ -1065,11 +1075,11 @@
                         <property name="related_action">PrimitiveQualityMediumAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/Medium</property>
                         <property name="label" translatable="yes">_Medium</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_as_radio">True</property>
-                        <accelerator key="F2" signal="activate"/>
                       </object>
                     </child>
                     <child>
@@ -1077,10 +1087,10 @@
                         <property name="related_action">PrimitiveQualityLowAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/Low</property>
                         <property name="label" translatable="yes">_Low</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <accelerator key="F1" signal="activate"/>
                       </object>
                     </child>
                   </object>
@@ -1099,11 +1109,13 @@
                   <object class="GtkMenu" id="menu23">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkCheckMenuItem" id="BrowserTextureQualityHighMenuItem">
                         <property name="related_action">TextureQualityHighAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/High</property>
                         <property name="label" translatable="yes">_High</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
@@ -1114,6 +1126,7 @@
                         <property name="related_action">TextureQualityMediumAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/Medium</property>
                         <property name="label" translatable="yes">_Medium</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
@@ -1124,6 +1137,7 @@
                         <property name="related_action">TextureQualityLowAction</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/Low</property>
                         <property name="label" translatable="yes">_Low</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
@@ -1138,6 +1152,7 @@
                 <property name="related_action">RubberbandAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Display Rubberband</property>
                 <property name="label" translatable="yes">Display Rubberband</property>
                 <property name="use_underline">True</property>
                 <property name="active">True</property>
@@ -1154,9 +1169,9 @@
                 <property name="related_action">RenderingPropertiesAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Rendering Properties</property>
                 <property name="label" translatable="yes">_Rendering Properties</property>
                 <property name="use_underline">True</property>
-                <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1170,22 +1185,22 @@
                 <property name="label">gtk-fullscreen</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Fullscreen</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_fullscreen_activated" swapped="no"/>
-                <accelerator key="F11" signal="activate"/>
               </object>
             </child>
             <child>
               <object class="GtkImageMenuItem" id="BrowserUnFullScreenMenuItem">
                 <property name="label">gtk-leave-fullscreen</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/View/Fullscreen</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_unfullscreen_activated" swapped="no"/>
-                <accelerator key="F11" signal="activate"/>
               </object>
             </child>
           </object>
@@ -1202,26 +1217,27 @@
           <object class="GtkMenu" id="menu26">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserSelectAllMenuItem">
                 <property name="label">gtk-select-all</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Select All</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_select_all_activated" swapped="no"/>
-                <accelerator key="a" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserDeselectAllMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Deselect All</property>
                 <property name="label" translatable="yes">_Deselect All</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_deselect_all_activated" swapped="no"/>
-                <accelerator key="a" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1234,38 +1250,38 @@
               <object class="GtkMenuItem" id="BrowserHideSelectedObjectsMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Hide Selected Objects</property>
                 <property name="label" translatable="yes">Hide Selected Objects</property>
                 <signal name="activate" handler="on_hide_selected_objects_activated" swapped="no"/>
-                <accelerator key="h" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserHideUnselectedObjectsMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Hide Unselected Objects</property>
                 <property name="label" translatable="yes">Hide Unselected Objects</property>
                 <signal name="activate" handler="on_hide_unselected_objects_activated" swapped="no"/>
-                <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserShowSelectedObjectsMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Show Selected Objects</property>
                 <property name="label" translatable="yes">Show Selected Objects</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_selected_objects_activated" swapped="no"/>
-                <accelerator key="h" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkMenuItem" id="BrowserShowAllObjectsMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Show All Objects</property>
                 <property name="label" translatable="yes">Show All Objects</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_all_objects_activated" swapped="no"/>
-                <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1279,6 +1295,7 @@
                 <property name="related_action">SelectLowestAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Select Lowest</property>
                 <property name="label" translatable="yes">Select Lowest</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1288,6 +1305,7 @@
                 <property name="related_action">FollowPrimarySelectionAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Follow Primary Selection</property>
                 <property name="label" translatable="yes">Follow Primary Selection</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1297,6 +1315,7 @@
                 <property name="related_action">TransformToolModeAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Selection/Static Transform Tool</property>
                 <property name="label" translatable="yes">Static Transform Tool</property>
                 <property name="use_underline">True</property>
               </object>
@@ -1315,11 +1334,13 @@
           <object class="GtkMenu" id="menu27">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserUnionMenuItem">
                 <property name="label" translatable="yes">_Union</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Union</property>
                 <property name="use_underline">True</property>
                 <property name="image">image12</property>
                 <property name="use_stock">False</property>
@@ -1332,6 +1353,7 @@
                 <property name="label" translatable="yes">_Difference</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Difference</property>
                 <property name="use_underline">True</property>
                 <property name="image">image20</property>
                 <property name="use_stock">False</property>
@@ -1344,6 +1366,7 @@
                 <property name="label" translatable="yes">_Intersection</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Intersection</property>
                 <property name="use_underline">True</property>
                 <property name="image">image35</property>
                 <property name="use_stock">False</property>
@@ -1355,6 +1378,7 @@
               <object class="GtkImageMenuItem" id="BrowserExclusionMenuItem">
                 <property name="label" translatable="yes">_Exclusion</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Exclusion</property>
                 <property name="use_underline">True</property>
                 <property name="image">image36</property>
                 <property name="use_stock">False</property>
@@ -1373,6 +1397,7 @@
                 <property name="label" translatable="yes">_Combine</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Combine</property>
                 <property name="use_underline">True</property>
                 <property name="image">image30</property>
                 <property name="use_stock">False</property>
@@ -1391,37 +1416,12 @@
                 <property name="label" translatable="yes">Transform To _Zero</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Transform To Zero</property>
                 <property name="use_underline">True</property>
                 <property name="image">image31</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_transform_to_zero_activated" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSeparatorMenuItem" id="separatormenuitem38">
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImageMenuItem" id="BrowserColorPerVertexMenuItem">
-                <property name="label" translatable="yes">_Paint Polygons...</property>
-                <property name="can_focus">False</property>
-                <property name="use_underline">True</property>
-                <property name="image">image33</property>
-                <property name="use_stock">False</property>
-                <signal name="activate" handler="on_color_editor_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImageMenuItem" id="BrowserTextureCoordinateEditorMenuItem">
-                <property name="label" translatable="yes">Edit _Texture Mapping...</property>
-                <property name="can_focus">False</property>
-                <property name="use_underline">True</property>
-                <property name="image">image32</property>
-                <property name="use_stock">False</property>
-                <property name="always_show_image">True</property>
-                <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
               </object>
             </child>
           </object>
@@ -1438,11 +1438,13 @@
           <object class="GtkMenu" id="menu28">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserBrowserSizeMenuItem">
                 <property name="label" translatable="yes">Browser Size</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Browser Size</property>
                 <property name="image">image42</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
@@ -1454,6 +1456,7 @@
                 <property name="label" translatable="yes">Background _Image ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Background Image</property>
                 <property name="use_underline">True</property>
                 <property name="image">image40</property>
                 <property name="use_stock">False</property>
@@ -1471,6 +1474,7 @@
               <object class="GtkCheckMenuItem" id="BrowserGridLayoutToolMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Grid Layout Tool</property>
                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                 <property name="use_underline">True</property>
                 <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
@@ -1481,6 +1485,7 @@
               <object class="GtkCheckMenuItem" id="BrowserAngleLayoutToolMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Angle Layout Tool</property>
                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                 <property name="use_underline">True</property>
                 <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
@@ -1491,6 +1496,7 @@
               <object class="GtkCheckMenuItem" id="BrowserAxonometricGridLayoutToolMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Axonometric Layout Tool</property>
                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
                 <property name="use_underline">True</property>
                 <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
@@ -1501,6 +1507,7 @@
                 <property name="label" translatable="yes">Grid _Properties ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Grid Properties</property>
                 <property name="use_underline">True</property>
                 <property name="image">image34</property>
                 <property name="use_stock">False</property>
@@ -1523,11 +1530,13 @@
           <object class="GtkMenu">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkImageMenuItem" id="BrowserManageExternalToolsMenuItem">
                 <property name="label">Manage External Tools ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/External Tools/Manage External Tools</property>
                 <property name="image">image55</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
@@ -1555,6 +1564,7 @@
           <object class="GtkMenu" id="BrowserScenesMenu">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkMenuItem" id="menuitem5">
                 <property name="visible">True</property>
@@ -1577,11 +1587,13 @@
           <object class="GtkMenu" id="menu29">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="accel_group">AccelGroup</property>
             <child>
               <object class="GtkCheckMenuItem" id="BrowserX_ITECompatibilityMenuItem">
                 <property name="related_action">X_ITECompatibilityAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Help/X_ITE Compatibility Mode</property>
                 <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
               </object>
             </child>
@@ -1590,6 +1602,7 @@
                 <property name="related_action">LogarithmicDepthBufferAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Help/Logarithmic Depth Buffer</property>
                 <property name="label" translatable="yes">Logarithmic Depth Buffer</property>
               </object>
             </child>
@@ -1598,6 +1611,7 @@
                 <property name="label">gtk-about</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Help/Info</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
@@ -1651,6 +1665,9 @@
     <property name="default_height">640</property>
     <property name="icon_name">titania</property>
     <property name="startup_id">Titania</property>
+    <accel-groups>
+      <group name="AccelGroup"/>
+    </accel-groups>
     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
     <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
@@ -1702,16 +1719,17 @@
                           <object class="GtkMenu" id="menu1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="NewMenuItem">
                                 <property name="label">gtk-new</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/New</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_new_activated" swapped="no"/>
-                                <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1719,11 +1737,11 @@
                                 <property name="label">gtk-open</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Open</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_open_activated" swapped="no"/>
-                                <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1731,11 +1749,11 @@
                                 <property name="label" translatable="yes">Open Recent ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Open Recent</property>
                                 <property name="image">image9</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_open_recent_activated" swapped="no"/>
-                                <accelerator key="t" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1743,12 +1761,12 @@
                                 <property name="label" translatable="yes">Open _Location ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Open Location</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">OpenLocationImage</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_open_location_activated" swapped="no"/>
-                                <accelerator key="l" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1756,6 +1774,7 @@
                                 <property name="label" translatable="yes">Import ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Import</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">FileImportImage</property>
                                 <property name="use_stock">False</property>
@@ -1774,11 +1793,11 @@
                                 <property name="label">gtk-save</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Save</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_save_activated" swapped="no"/>
-                                <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1786,17 +1805,18 @@
                                 <property name="label">gtk-save-as</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Save As</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_save_as_activated" swapped="no"/>
-                                <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="SaveACopyMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Save A Copy</property>
                                 <property name="label" translatable="yes">Save A Copy ...</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_save_a_copy_activated" swapped="no"/>
@@ -1807,12 +1827,12 @@
                                 <property name="label" translatable="yes">_Export ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Export</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image4</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_export_activated" swapped="no"/>
-                                <accelerator key="e" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1826,11 +1846,11 @@
                                 <property name="label">gtk-revert-to-saved</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Revert To Saved</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_revert_to_saved_activated" swapped="no"/>
-                                <accelerator key="F5" signal="activate"/>
                               </object>
                             </child>
                             <child>
@@ -1844,6 +1864,7 @@
                                 <property name="label" translatable="yes">Remove Unused Prototypes</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Remove Unused Prototypes</property>
                                 <property name="image">image8</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
@@ -1861,6 +1882,7 @@
                                 <property name="label">gtk-properties</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Scene Properties</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
@@ -1878,11 +1900,11 @@
                                 <property name="label">gtk-close</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Close</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_close_activated" swapped="no"/>
-                                <accelerator key="w" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1890,11 +1912,11 @@
                                 <property name="label">gtk-quit</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/File/Quit</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_quit_activated" swapped="no"/>
-                                <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                           </object>
@@ -1911,16 +1933,17 @@
                           <object class="GtkMenu" id="menu2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="UndoMenuItem">
                                 <property name="label">gtk-undo</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Undo</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_undo_activated" swapped="no"/>
-                                <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1928,11 +1951,11 @@
                                 <property name="label">gtk-redo</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Redo</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_redo_activated" swapped="no"/>
-                                <accelerator key="z" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1940,6 +1963,7 @@
                                 <property name="label" translatable="yes">Undo History ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Undo History</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image38</property>
                                 <property name="use_stock">False</property>
@@ -1958,11 +1982,11 @@
                                 <property name="label">gtk-cut</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Cut</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_cut_activated" swapped="no"/>
-                                <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1970,11 +1994,11 @@
                                 <property name="label">gtk-copy</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Copy</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_copy_activated" swapped="no"/>
-                                <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1983,11 +2007,11 @@
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Paste</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_paste_activated" swapped="no"/>
-                                <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -1995,11 +2019,11 @@
                                 <property name="label">gtk-delete</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Delete</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_delete_activated" swapped="no"/>
-                                <accelerator key="Delete" signal="activate"/>
                               </object>
                             </child>
                             <child>
@@ -2018,10 +2042,12 @@
                                   <object class="GtkMenu" id="menu11">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="accel_group">AccelGroup</property>
                                     <child>
                                       <object class="GtkMenuItem" id="CreateCloneMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Clone/Create Clone</property>
                                         <property name="label" translatable="yes">Create Clo_ne</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_clone_activated" swapped="no"/>
@@ -2031,6 +2057,7 @@
                                       <object class="GtkMenuItem" id="UnlinkCloneMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Clone/Unlink Clone</property>
                                         <property name="label" translatable="yes">Unlin_k Clone</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_unlink_clone_activated" swapped="no"/>
@@ -2051,11 +2078,11 @@
                                 <property name="label" translatable="yes">Group</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Group</property>
                                 <property name="image">image6</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_group_selected_nodes_activated" swapped="no"/>
-                                <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2063,17 +2090,18 @@
                                 <property name="label" translatable="yes">Ungroup</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Ungroup</property>
                                 <property name="image">image7</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_ungroup_activated" swapped="no"/>
-                                <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="AddToGroupMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Add To Group</property>
                                 <property name="label" translatable="yes">Add To Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_add_to_group_activated" swapped="no"/>
@@ -2083,10 +2111,10 @@
                               <object class="GtkMenuItem" id="DetachFromGroupMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Edit/Detach From Group</property>
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2103,6 +2131,7 @@
                                       <object class="GtkMenuItem" id="CreateParentTransformMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Transform</property>
                                         <property name="label" translatable="yes">Transform</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_transform_activated" swapped="no"/>
@@ -2112,6 +2141,7 @@
                                       <object class="GtkMenuItem" id="CreateParentGroupMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Group</property>
                                         <property name="label" translatable="yes">Group</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_group_activated" swapped="no"/>
@@ -2121,6 +2151,7 @@
                                       <object class="GtkMenuItem" id="CreateParentStaticGroupMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/StaticGroup</property>
                                         <property name="label" translatable="yes">StaticGroup</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_static_group_activated" swapped="no"/>
@@ -2130,6 +2161,7 @@
                                       <object class="GtkMenuItem" id="CreateParentSwitchMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Switch</property>
                                         <property name="label" translatable="yes">Switch</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_switch_activated" swapped="no"/>
@@ -2145,6 +2177,7 @@
                                       <object class="GtkMenuItem" id="CreateParentBillboardMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Billboard</property>
                                         <property name="label" translatable="yes">Billboard</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_billboard_activated" swapped="no"/>
@@ -2154,6 +2187,7 @@
                                       <object class="GtkMenuItem" id="CreateParentCollisionMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Collision</property>
                                         <property name="label" translatable="yes">Collision</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_collision_activated" swapped="no"/>
@@ -2163,6 +2197,7 @@
                                       <object class="GtkMenuItem" id="CreateParentLODMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LOD</property>
                                         <property name="label" translatable="yes">LOD</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_lod_activated" swapped="no"/>
@@ -2172,6 +2207,7 @@
                                       <object class="GtkMenuItem" id="CreateParentViewpointGroupMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/ViewpointGroup</property>
                                         <property name="label" translatable="yes">ViewpointGroup</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_viewpoint_group_activated" swapped="no"/>
@@ -2187,6 +2223,7 @@
                                       <object class="GtkMenuItem" id="CreateParentAnchorMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Anchor</property>
                                         <property name="label" translatable="yes">Anchor</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_anchor_activated" swapped="no"/>
@@ -2202,6 +2239,7 @@
                                       <object class="GtkMenuItem" id="CreateParentLayoutLayerMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayoutLayer</property>
                                         <property name="label" translatable="yes">LayoutLayer</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_layout_layer_activated" swapped="no"/>
@@ -2211,6 +2249,7 @@
                                       <object class="GtkMenuItem" id="CreateParentScreenGroupMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/ScreenGroup</property>
                                         <property name="label" translatable="yes">ScreenGroup</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_screen_group_activated" swapped="no"/>
@@ -2220,6 +2259,7 @@
                                       <object class="GtkMenuItem" id="CreateParentLayoutGroupMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayoutGroup</property>
                                         <property name="label" translatable="yes">LayoutGroup</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_layout_group_activated" swapped="no"/>
@@ -2235,6 +2275,7 @@
                                       <object class="GtkMenuItem" id="CreateParentGeoTransformMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/GeoTransform</property>
                                         <property name="label" translatable="yes">GeoTransform</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_geo_transform_activated" swapped="no"/>
@@ -2244,6 +2285,7 @@
                                       <object class="GtkMenuItem" id="CreateParentGeoLocationMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/GeoLocation</property>
                                         <property name="label" translatable="yes">GeoLocation</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_geo_location_activated" swapped="no"/>
@@ -2259,6 +2301,7 @@
                                       <object class="GtkMenuItem" id="CreateParentCADPartMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADPart</property>
                                         <property name="label" translatable="yes">CADPart</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_cad_part_activated" swapped="no"/>
@@ -2268,6 +2311,7 @@
                                       <object class="GtkMenuItem" id="CreateParentCADAssemblyMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADAssembly</property>
                                         <property name="label" translatable="yes">CADAssembly</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_cad_assembly_activated" swapped="no"/>
@@ -2277,6 +2321,7 @@
                                       <object class="GtkMenuItem" id="CreateParentCADLayerMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CADLayer</property>
                                         <property name="label" translatable="yes">CADLayer</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_cad_layer_activated" swapped="no"/>
@@ -2292,6 +2337,7 @@
                                       <object class="GtkMenuItem" id="CreateParentLayerSetMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/LayerSet</property>
                                         <property name="label" translatable="yes">LayerSet</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_layer_set_activated" swapped="no"/>
@@ -2301,6 +2347,7 @@
                                       <object class="GtkMenuItem" id="CreateParentLayerMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Layer</property>
                                         <property name="label" translatable="yes">Layer</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_layer_activated" swapped="no"/>
@@ -2310,6 +2357,7 @@
                                       <object class="GtkMenuItem" id="CreateParentViewportMenuItem">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/Viewport</property>
                                         <property name="label" translatable="yes">Viewport</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_viewport_activated" swapped="no"/>
@@ -2333,11 +2381,13 @@
                           <object class="GtkMenu" id="menu5">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkCheckMenuItem" id="MenubarMenuItem">
                                 <property name="related_action">MenubarAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Menubar</property>
                                 <property name="label" translatable="yes">Menubar</property>
                                 <property name="use_underline">True</property>
                                 <property name="active">True</property>
@@ -2348,6 +2398,7 @@
                                 <property name="related_action">ToolbarAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Toolbar</property>
                                 <property name="label" translatable="yes">Toolbar</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2357,6 +2408,7 @@
                                 <property name="related_action">SidebarAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Sidebar</property>
                                 <property name="label" translatable="yes">Sidebar</property>
                               </object>
                             </child>
@@ -2365,6 +2417,7 @@
                                 <property name="related_action">FooterAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Footer</property>
                                 <property name="label" translatable="yes">Footer</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2374,6 +2427,7 @@
                                 <property name="related_action">TabsAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Tabs</property>
                                 <property name="label" translatable="yes">Tabs</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2385,15 +2439,10 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkSeparatorMenuItem" id="BrowserOptionsSeparator">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
                               <object class="GtkImageMenuItem" id="MotionBlurMenuItem">
                                 <property name="label" translatable="yes">Motion _Blur ...</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Motion Blur</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image11</property>
                                 <property name="use_stock">False</property>
@@ -2413,15 +2462,16 @@
                                   <object class="GtkMenu" id="menu8">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="accel_group">AccelGroup</property>
                                     <child>
                                       <object class="GtkCheckMenuItem" id="PrimitiveQualityHighMenuItem">
                                         <property name="related_action">PrimitiveQualityHighAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/High</property>
                                         <property name="label" translatable="yes">_High</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <accelerator key="F3" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
@@ -2429,10 +2479,10 @@
                                         <property name="related_action">PrimitiveQualityMediumAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/Medium</property>
                                         <property name="label" translatable="yes">_Medium</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <accelerator key="F2" signal="activate"/>
                                       </object>
                                     </child>
                                     <child>
@@ -2440,10 +2490,10 @@
                                         <property name="related_action">PrimitiveQualityLowAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Primitive Quality/Low</property>
                                         <property name="label" translatable="yes">_Low</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
-                                        <accelerator key="F1" signal="activate"/>
                                       </object>
                                     </child>
                                   </object>
@@ -2462,11 +2512,13 @@
                                   <object class="GtkMenu" id="menu14">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="accel_group">AccelGroup</property>
                                     <child>
                                       <object class="GtkCheckMenuItem" id="TextureQualityHighMenuItem">
                                         <property name="related_action">TextureQualityHighAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/High</property>
                                         <property name="label" translatable="yes">_High</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
@@ -2477,6 +2529,7 @@
                                         <property name="related_action">TextureQualityMediumAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/Medium</property>
                                         <property name="label" translatable="yes">_Medium</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
@@ -2487,6 +2540,7 @@
                                         <property name="related_action">TextureQualityLowAction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/View/Texture Quality/Low</property>
                                         <property name="label" translatable="yes">_Low</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_as_radio">True</property>
@@ -2501,6 +2555,7 @@
                                 <property name="related_action">RubberbandAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Display Rubberband</property>
                                 <property name="label" translatable="yes">Display Rubberband</property>
                                 <property name="use_underline">True</property>
                                 <property name="active">True</property>
@@ -2517,9 +2572,9 @@
                                 <property name="related_action">RenderingPropertiesAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Rendering Properties</property>
                                 <property name="label" translatable="yes">_Rendering Properties</property>
                                 <property name="use_underline">True</property>
-                                <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2533,22 +2588,22 @@
                                 <property name="label">gtk-fullscreen</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Fullscreen</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_fullscreen_activated" swapped="no"/>
-                                <accelerator key="F11" signal="activate"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkImageMenuItem" id="UnFullScreenMenuItem">
                                 <property name="label">gtk-leave-fullscreen</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/View/Fullscreen</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_unfullscreen_activated" swapped="no"/>
-                                <accelerator key="F11" signal="activate"/>
                               </object>
                             </child>
                           </object>
@@ -2565,26 +2620,27 @@
                           <object class="GtkMenu" id="menu9">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="SelectAllMenuItem">
                                 <property name="label">gtk-select-all</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Select All</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_select_all_activated" swapped="no"/>
-                                <accelerator key="a" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="DeselectAllMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Deselect All</property>
                                 <property name="label" translatable="yes">_Deselect All</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_deselect_all_activated" swapped="no"/>
-                                <accelerator key="a" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2597,40 +2653,40 @@
                               <object class="GtkMenuItem" id="HideSelectedObjectsMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Hide Selected Objects</property>
                                 <property name="label" translatable="yes">Hide Selected Objects</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_hide_selected_objects_activated" swapped="no"/>
-                                <accelerator key="h" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="HideUnselectedObjectsMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Hide Unselected Objects</property>
                                 <property name="label" translatable="yes">Hide Unselected Objects</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_hide_unselected_objects_activated" swapped="no"/>
-                                <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="ShowSelectedObjectsMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Show Selected Objects</property>
                                 <property name="label" translatable="yes">Show Selected Objects</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_show_selected_objects_activated" swapped="no"/>
-                                <accelerator key="h" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="ShowAllObjectsMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Show All Objects</property>
                                 <property name="label" translatable="yes">Show All Objects</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_show_all_objects_activated" swapped="no"/>
-                                <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2644,6 +2700,7 @@
                                 <property name="related_action">SelectLowestAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Select Lowest</property>
                                 <property name="label" translatable="yes">Select Lowest</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2653,6 +2710,7 @@
                                 <property name="related_action">FollowPrimarySelectionAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Follow Primary Selection</property>
                                 <property name="label" translatable="yes">Follow Primary Selection</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2662,6 +2720,7 @@
                                 <property name="related_action">TransformToolModeAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Selection/Static Transform Tool</property>
                                 <property name="label" translatable="yes">Static Transform Tool</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -2680,11 +2739,13 @@
                           <object class="GtkMenu" id="menu4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="UnionMenuItem">
                                 <property name="label" translatable="yes">_Union</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Union</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image1</property>
                                 <property name="use_stock">False</property>
@@ -2697,6 +2758,7 @@
                                 <property name="label" translatable="yes">_Difference</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Difference</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image2</property>
                                 <property name="use_stock">False</property>
@@ -2709,6 +2771,7 @@
                                 <property name="label" translatable="yes">_Intersection</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Intersection</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image3</property>
                                 <property name="use_stock">False</property>
@@ -2720,6 +2783,7 @@
                               <object class="GtkImageMenuItem" id="ExclusionMenuItem">
                                 <property name="label" translatable="yes">_Exclusion</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Exclusion</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image5</property>
                                 <property name="use_stock">False</property>
@@ -2738,6 +2802,7 @@
                                 <property name="label" translatable="yes">_Combine</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Combine</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image13</property>
                                 <property name="use_stock">False</property>
@@ -2756,38 +2821,12 @@
                                 <property name="label" translatable="yes">Transform To _Zero</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Transform To Zero</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image17</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_transform_to_zero_activated" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkSeparatorMenuItem" id="separatormenuitem18">
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="ColorPerVertexEditorMenuItem">
-                                <property name="label" translatable="yes">_Paint Polygons...</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="image">image14</property>
-                                <property name="use_stock">False</property>
-                                <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_color_editor_clicked" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="TextureCoordinateEditorMenuItem">
-                                <property name="label" translatable="yes">Edit _Texture Mapping...</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="image">image16</property>
-                                <property name="use_stock">False</property>
-                                <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -2804,11 +2843,13 @@
                           <object class="GtkMenu" id="menu10">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="BrowserSizeMenuItem">
                                 <property name="label" translatable="yes">Browser Size</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Browser Size</property>
                                 <property name="image">image41</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
@@ -2820,6 +2861,7 @@
                                 <property name="label" translatable="yes">Background _Image ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Background Image</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image39</property>
                                 <property name="use_stock">False</property>
@@ -2837,26 +2879,27 @@
                               <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Grid Layout Tool</property>
                                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
-                                <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AngleLayoutToolMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Angle Layout Tool</property>
                                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
-                                <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AxonometricGridLayoutToolMenuItem">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Axonometric Layout Tool</property>
                                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
                                 <property name="use_underline">True</property>
                                 <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
@@ -2867,6 +2910,7 @@
                                 <property name="label" translatable="yes">Grid _Properties ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Grid Properties</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image10</property>
                                 <property name="use_stock">False</property>
@@ -2889,11 +2933,13 @@
                           <object class="GtkMenu">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkImageMenuItem" id="ManageExternalToolsMenuItem">
                                 <property name="label">Manage External Tools ...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/External Tools/Manage External Tools</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image56</property>
                                 <property name="use_stock">False</property>
@@ -2922,6 +2968,7 @@
                           <object class="GtkMenu" id="ScenesMenu">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkMenuItem" id="menuitem4">
                                 <property name="visible">True</property>
@@ -2944,11 +2991,13 @@
                           <object class="GtkMenu" id="menu3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="accel_group">AccelGroup</property>
                             <child>
                               <object class="GtkCheckMenuItem" id="X_ITECompatibilityMenuItem">
                                 <property name="related_action">X_ITECompatibilityAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Help/X_ITE Compatibility Mode</property>
                                 <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
                               </object>
                             </child>
@@ -2957,6 +3006,7 @@
                                 <property name="related_action">LogarithmicDepthBufferAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Help/Logarithmic Depth Buffer</property>
                                 <property name="label" translatable="yes">Logarithmic Depth Buffer</property>
                               </object>
                             </child>
@@ -2965,6 +3015,7 @@
                                 <property name="label">gtk-about</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Help/Info</property>
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <property name="always_show_image">True</property>

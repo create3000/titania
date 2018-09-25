@@ -114,18 +114,10 @@ X3DBrowserWindow::setAccelerators (const bool value)
 {
 	accelerators = value;
 
-	for (const auto & child : getMenubar () .get_children ())
-	{
-		const auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
-
-		if (menuItem and menuItem -> get_visible ())
-		{
-			const auto menu = menuItem -> get_submenu ();
-
-			if (menu)
-				menu -> set_sensitive (accelerators);
-		}
-	}
+	if (value)
+		getWindow () .add_accel_group (getAccelGroup ());
+	else
+		getWindow () .remove_accel_group (getAccelGroup ());
 }
 
 const std::shared_ptr <OutlineTreeViewEditor> &

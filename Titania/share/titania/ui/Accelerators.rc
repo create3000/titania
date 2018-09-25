@@ -1,6 +1,37 @@
 ; titania GtkAccelMap rc-file         -*- scheme -*-
 ; this file is an automated accelerator map dump
 ;
-; (gtk_accel_path "<Window>/File/New" "<Primary>n")
-; (gtk_accel_path "<Window>/File/Close" "<Primary>w")
-; (gtk_accel_path "<Window>/File/Quit" "<Primary>q")
+; (gtk_accel_path "<Titania>/File/New" "<Primary>n")
+; (gtk_accel_path "<Titania>/File/Open" "<Primary>o")
+; (gtk_accel_path "<Titania>/File/Open Recent" "<Primary>t")
+; (gtk_accel_path "<Titania>/File/Open Location" "<Primary>l")
+; (gtk_accel_path "<Titania>/File/Save" "<Primary>s")
+; (gtk_accel_path "<Titania>/File/Save As" "<Primary><Shift>s")
+; (gtk_accel_path "<Titania>/File/Export" "<Primary>e")
+; (gtk_accel_path "<Titania>/File/Revert To Saved" "F5")
+; (gtk_accel_path "<Titania>/File/Close" "<Primary>w")
+; (gtk_accel_path "<Titania>/File/Quit" "<Primary>q")
+;
+; (gtk_accel_path "<Titania>/Edit/Undo" "<Primary>z")
+; (gtk_accel_path "<Titania>/Edit/Redo" "<Primary><Shift>z")
+; (gtk_accel_path "<Titania>/Edit/Cut" "<Primary>x")
+; (gtk_accel_path "<Titania>/Edit/Copy" "<Primary>c")
+; (gtk_accel_path "<Titania>/Edit/Paste" "<Primary>v")
+; (gtk_accel_path "<Titania>/Edit/Delete" "Delete")
+; (gtk_accel_path "<Titania>/Edit/Group" "<Primary>g")
+; (gtk_accel_path "<Titania>/Edit/Ungroup" "<Primary><Shift>g")
+; (gtk_accel_path "<Titania>/Edit/Detach From Group" "<Primary>d")
+;
+; (gtk_accel_path "<Titania>/View/Primitive Quality/High" "F3")
+; (gtk_accel_path "<Titania>/View/Primitive Quality/Medium" "F2")
+; (gtk_accel_path "<Titania>/View/Primitive Quality/Low" "F1")
+; (gtk_accel_path "<Titania>/View/Rendering Properties" "<Primary>plus")
+; (gtk_accel_path "<Titania>/View/Fullscreen" "F11")
+;
+; (gtk_accel_path "<Titania>/Selection/Select All" "<Primary>a")
+; (gtk_accel_path "<Titania>/Selection/Deselect All" "<Primary><Shift>a")
+; (gtk_accel_path "<Titania>/Selection/Hide Selected Objects" "<Primary>h")
+; (gtk_accel_path "<Titania>/Selection/Show All Objects" "<Primary><Shift>h")
+;
+; (gtk_accel_path "<Titania>/Layout/Grid Layout Tool" "<Primary>numbersign")
+; (gtk_accel_path "<Titania>/Layout/Angle Layout Tool" "<Primary>apostrophe")
