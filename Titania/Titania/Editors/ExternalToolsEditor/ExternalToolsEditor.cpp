@@ -400,7 +400,7 @@ ExternalToolsEditor::on_shortcut_key_press_event (GdkEventKey* event)
 	if (keys .alt ())
 		modifiers |= Gdk::MOD1_MASK;
 
-	if (modifiers == Gdk::ModifierType (0) and event -> keyval == GDK_KEY_BackSpace)
+	if (modifiers == Gdk::ModifierType (0) and event -> keyval == GDK_KEY_Delete)
 	{
 		if (getShortcutKeyEntry () .get_text () == "")
 			return true;
