@@ -73,7 +73,7 @@ X3DBrowserApplication::getBrowserWindow () const
 void
 X3DBrowserApplication::realize ()
 {
-	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
+	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("logo.x3dv") })));
 
 	add_window (browserWindow -> getWindow ());
 

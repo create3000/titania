@@ -1403,7 +1403,6 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-directory.png" />
     <None Include="share\titania\ui\icons\Faenza\README.txt" />
     <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
-    <None Include="share\titania\ui\Logo.x3dv" />
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArc2DEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArcClose2DEditor.h" />
@@ -3180,6 +3179,7 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SingleAxisHingeJoint" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SliderJoint" />
     <None Include="share\titania\ui\logo.svg" />
+    <None Include="share\titania\ui\logo.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
