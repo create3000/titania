@@ -77,6 +77,7 @@ public:
 	static constexpr size_t APPLICABILITY  = 7;
 	static constexpr size_t INPUT_ENCODING = 8;
 	static constexpr size_t EXPANDED       = 9;
+	static constexpr size_t SHORTCUT_KEY   = 10;
 
 };
 
@@ -187,6 +188,22 @@ X3DExternalToolsEditor::getText (const std::string & id)
 }
 
 void
+X3DExternalToolsEditor::setShortcutKey (const Gtk::TreeIter & iter, const std::string & value) const
+{
+	iter -> set_value (Columns::SHORTCUT_KEY, value);
+}
+
+std::string
+X3DExternalToolsEditor::getShortcutKey (const Gtk::TreeIter & iter) const
+{
+	auto value = std::string ();
+
+	iter -> get_value (Columns::SHORTCUT_KEY, value);
+
+	return value;
+}
+
+void
 X3DExternalToolsEditor::setSaveType (const Gtk::TreeIter & iter, const std::string & value) const
 {
 	iter -> set_value (Columns::SAVE_TYPE, value);
@@ -289,6 +306,7 @@ X3DExternalToolsEditor::assignIter (const Gtk::TreeIter & iter, const Gtk::TreeI
 
 	setId                (iter, getId                (other));
 	setName              (iter, getName              (other));
+	setShortcutKey       (iter, getShortcutKey       (other));
 	setSaveType          (iter, getSaveType          (other));
 	setInputType         (iter, getInputType         (other));
 	setInputEncoding     (iter, getInputEncoding     (other));
@@ -360,6 +378,7 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 		auto       path              = Gtk::TreePath (worldInfo -> getMetaData <std::string> (k + "/path"));
 		const auto id                = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto shortcutKey       = worldInfo -> getMetaData <std::string> (k + "/shortcutKey");
 		const auto saveType          = worldInfo -> getMetaData <std::string> (k + "/saveType");
 		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
 		const auto inputEncoding     = worldInfo -> getMetaData <std::string> (k + "/inputEncoding");
@@ -373,6 +392,7 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 
 		setId                (iter, id);
 		setName              (iter, name);
+		setShortcutKey       (iter, shortcutKey);
 		setSaveType          (iter, saveType);
 		setInputType         (iter, inputType);
 		setInputEncoding     (iter, inputEncoding);
@@ -399,6 +419,9 @@ X3DExternalToolsEditor::saveTree ()
 	std::ofstream ofstream (config_dir ("tools.x3d"));
 
 	browser -> getExecutionContext () -> toXMLStream (ofstream);
+
+	createMenu (getBrowserWindow (), getBrowserWindow () -> getExternalToolsMenuItem ());
+	createMenu (getBrowserWindow (), getBrowserWindow () -> getBrowserExternalToolsMenuItem ());
 }
 
 void
@@ -414,6 +437,7 @@ X3DExternalToolsEditor::saveTree (const Gtk::TreeNodeChildren & children, const 
 		worldInfo -> setMetaData <std::string> (key + "/path",              path .to_string ());
 		worldInfo -> setMetaData <std::string> (key + "/id",                getId (child));
 		worldInfo -> setMetaData <std::string> (key + "/name",              getName (child));
+		worldInfo -> setMetaData <std::string> (key + "/shortcutKey",       getShortcutKey (child));
 		worldInfo -> setMetaData <std::string> (key + "/saveType",          getSaveType (child));
 		worldInfo -> setMetaData <std::string> (key + "/inputType",         getInputType (child));
 		worldInfo -> setMetaData <std::string> (key + "/inputEncoding",     getInputEncoding (child));
@@ -468,6 +492,7 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 	{
 		menu = Gtk::manage (new Gtk::Menu ());
 		menuItem -> set_submenu (*menu);
+		menu -> set_accel_group (browserWindow -> getAccelGroup ());
 		menu -> show ();
 	}
 
@@ -482,6 +507,7 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 		const auto k                 = key + "/" + basic::to_string (i, std::locale::classic ());
 		const auto id                = worldInfo -> getMetaData <std::string> (k + "/id");
 		const auto name              = worldInfo -> getMetaData <std::string> (k + "/name");
+		const auto shortcutKey       = worldInfo -> getMetaData <std::string> (k + "/shortcutKey");
 		const auto inputType         = worldInfo -> getMetaData <std::string> (k + "/inputType");
 		const auto outputType        = worldInfo -> getMetaData <std::string> (k + "/outputType");
 		const auto applicabilityType = worldInfo -> getMetaData <std::string> (k + "/applicabilityType");
@@ -527,20 +553,47 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow,
 		}
 
 		const auto separator = std::regex_match (name, separatorMatch, separatorRegex);
-		const auto menuItem  = Gtk::manage (separator ? new Gtk::SeparatorMenuItem () : new Gtk::MenuItem (name));
-
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::on_tool_activate), browserWindow, k));
-		menuItem -> set_name ("X3DExternalToolsEditor");
-		menuItem -> show ();
-
-		menu -> append (*menuItem);
-
-		++ numChildren;
 
 		if (separator)
-			continue;
+		{
+			const auto menuItem = Gtk::manage (new Gtk::SeparatorMenuItem ());
 
-		createMenu (browserWindow, worldInfo, k + "/children", menuItem, nullptr);
+			menuItem -> set_name ("X3DExternalToolsEditor");
+			menuItem -> show ();
+			menu -> append (*menuItem);
+		}
+		else
+		{
+			const auto label    = Gtk::manage (new Gtk::AccelLabel (name));
+			const auto menuItem = Gtk::manage (new Gtk::MenuItem (*label));
+	
+			menuItem -> signal_activate () .connect (sigc::bind (sigc::ptr_fun (&X3DExternalToolsEditor::on_tool_activate), browserWindow, k));
+			menuItem -> set_name ("X3DExternalToolsEditor");
+			menuItem -> show ();
+
+			label -> set_xalign (0);
+			label -> show ();
+	
+			if (not shortcutKey .empty ())
+			{
+				guint key;
+				Gdk::ModifierType modifiers;
+	
+				Gtk::AccelGroup::parse (shortcutKey, key, modifiers);
+	
+				if (key)
+				{
+					label -> set_accel (key, modifiers);
+					menuItem -> add_accelerator ("activate", browserWindow -> getAccelGroup (), key, modifiers, (Gtk::AccelFlags) 0);
+				}
+			}
+	
+			menu -> append (*menuItem);
+
+			createMenu (browserWindow, worldInfo, k + "/children", menuItem, nullptr);
+		}
+
+		++ numChildren;
 	}
 
 	if (numChildren == 0)

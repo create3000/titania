@@ -189,6 +189,9 @@ BrowserWindow::initialize ()
 		Gtk::TargetEntry ("text/uri-list")
 	};
 
+	ExternalToolsEditor::createMenu (this, getExternalToolsMenuItem ());
+	ExternalToolsEditor::createMenu (this, getBrowserExternalToolsMenuItem ());
+
 	getToolbar ()     .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
@@ -1703,18 +1706,6 @@ BrowserWindow::on_grid_properties_activated ()
 }
 
 // Extenal Tools menu
-
-void
-BrowserWindow::on_external_tools_activate ()
-{
-	ExternalToolsEditor::createMenu (this, getExternalToolsMenuItem ());
-}
-
-void
-BrowserWindow::on_browser_external_tools_activate ()
-{
-	ExternalToolsEditor::createMenu (this, getBrowserExternalToolsMenuItem ());
-}
 
 void
 BrowserWindow::on_manage_external_tools_activate ()

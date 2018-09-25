@@ -139,6 +139,12 @@ protected:
 	getText (const std::string & id);
 
 	void
+	setShortcutKey (const Gtk::TreeIter & iter, const std::string & value) const;
+
+	std::string
+	getShortcutKey (const Gtk::TreeIter & iter) const;
+
+	void
 	setSaveType (const Gtk::TreeIter & iter, const std::string & value) const;
 
 	std::string

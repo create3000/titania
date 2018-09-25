@@ -547,14 +547,6 @@ private:
 
 	virtual
 	void
-	on_external_tools_activate () final override;
-	
-	virtual
-	void
-	on_browser_external_tools_activate () final override;
-
-	virtual
-	void
 	on_manage_external_tools_activate () final override;
 
 	///  @name Scenes menu

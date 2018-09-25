@@ -213,6 +213,7 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			const auto iter              = getTreeSelection () -> get_selected ();
 			const auto id                = getId (iter);
 			const auto text              = getText (id);
+			const auto shortcutKey       = getShortcutKey (iter);
 			const auto saveType          = getSaveType (iter);
 			const auto inputType         = getInputType (iter);
 			const auto inputEncoding     = getInputEncoding (iter);
@@ -222,6 +223,20 @@ ExternalToolsEditor::on_tree_selection_changed ()
 			getRemoveToolButton () .set_sensitive (true);
 			getToolBox () .set_sensitive (true);
 			getSourceView () .get_source_buffer () -> set_text (text);
+
+			// Shortcut Key
+
+			guint key;
+			Gdk::ModifierType modifiers;
+
+			Gtk::AccelGroup::parse (shortcutKey, key, modifiers);
+
+			if (key)
+				getShortcutKeyEntry () .set_text (Gtk::AccelGroup::get_label (key, modifiers));
+			else
+				getShortcutKeyEntry () .set_text ("");
+
+			// //
 
 			try { getSaveTypeButton          () .set_active (saveTypes          .at (saveType));          } catch (...) { getSaveTypeButton          () .set_active (0); };
 			try { getInputTypeButton         () .set_active (inputTypes         .at (inputType));         } catch (...) { getInputTypeButton         () .set_active (0); };
@@ -366,32 +381,52 @@ ExternalToolsEditor::on_text_changed ()
 bool
 ExternalToolsEditor::on_shortcut_key_press_event (GdkEventKey* event)
 {
+	if (changing)
+		return true;
+
+	const auto iter = getTreeSelection () -> get_selected ();
+
 	keys .press (event);
 
-	std::string modifiers;
-	std::string character;
-
-	if (keys .shift ())
-		modifiers += "Shift+";
+	Gdk::ModifierType modifiers = Gdk::ModifierType (0);
+	std::string shortcutKey;
 
 	if (keys .control ())
-		modifiers += "Ctrl+";
+		modifiers |= Gdk::CONTROL_MASK;
+
+	if (keys .shift ())
+		modifiers |= Gdk::SHIFT_MASK;
 
 	if (keys .alt ())
-		modifiers += "Alt+";
+		modifiers |= Gdk::MOD1_MASK;
+
+	if (modifiers == Gdk::ModifierType (0) and event -> keyval == GDK_KEY_BackSpace)
+	{
+		if (getShortcutKeyEntry () .get_text () == "")
+			return true;
+
+		getShortcutKeyEntry () .set_text ("");
+		setShortcutKey (iter, "");
+		saveTree ();
+		return true;
+	}
 
 	const auto key = gdk_keyval_to_unicode (event -> keyval);
 
 	if (key)
-		character = Glib::ustring (1, gdk_keyval_to_unicode (event -> keyval));
+		shortcutKey = Gtk::AccelGroup::name (event -> keyval, modifiers);
 
-	if (modifiers .empty ())
+	if (shortcutKey .empty ())
 		return true;
 
-	if (character .empty ())
+	const auto label = Gtk::AccelGroup::get_label (event -> keyval, modifiers);
+
+	if (getShortcutKeyEntry () .get_text () == label)
 		return true;
 
-	getShortcutKeyEntry () .set_text (modifiers + character);
+	getShortcutKeyEntry () .set_text (label);
+	setShortcutKey (iter, shortcutKey);
+	saveTree ();
 	return true;
 }
 
