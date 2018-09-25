@@ -128,6 +128,8 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 
 	// Parse accel map.
 
+	//Gtk::AccelMap::load (get_ui ("Accelerators.rc"));
+
 	std::ifstream accelerators (get_ui ("Accelerators.rc"));
 	std::string line (512, '\0');
 
