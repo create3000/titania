@@ -345,7 +345,7 @@ X3DExternalToolsEditor::restoreTree ()
 {
 	try
 	{
-		const auto browser   = X3D::createBrowser (getMasterBrowser ());
+		const auto browser   = getMasterBrowser ();
 		const auto scene     = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
 		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 	
@@ -407,8 +407,8 @@ X3DExternalToolsEditor::restoreTree (const X3D::X3DPtr <X3D::WorldInfo> & worldI
 void
 X3DExternalToolsEditor::saveTree ()
 {
-	const auto browser   = X3D::createBrowser (getMasterBrowser ());
-	const auto scene     = browser -> getExecutionContext ();
+	const auto browser   = getMasterBrowser ();
+	const auto scene     = browser -> createScene ();
 	const auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
 	
 	scene -> addNamedNode ("Configuration", worldInfo);
@@ -418,7 +418,7 @@ X3DExternalToolsEditor::saveTree ()
 
 	std::ofstream ofstream (config_dir ("tools.x3d"));
 
-	browser -> getExecutionContext () -> toXMLStream (ofstream);
+	scene -> toXMLStream (ofstream);
 
 	createMenu (getBrowserWindow (), getBrowserWindow () -> getExternalToolsMenuItem ());
 	createMenu (getBrowserWindow (), getBrowserWindow () -> getBrowserExternalToolsMenuItem ());
@@ -463,8 +463,11 @@ X3DExternalToolsEditor::createMenu (X3DBrowserWindow* const browserWindow, Gtk::
 	
 			menu -> remove (*widget);
 		}
-	
-		const auto browser   = X3D::createBrowser (browserWindow -> getMasterBrowser ());
+
+		if (not Gio::File::create_for_path (config_dir ("tools.x3d")) -> query_exists ())
+			return;
+
+		const auto browser   = browserWindow -> getMasterBrowser ();
 		const auto scene     = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
 		const auto worldInfo = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 	
@@ -605,7 +608,7 @@ X3DExternalToolsEditor::on_tool_activate (X3DBrowserWindow* const browserWindow,
 {
 	try
 	{
-		const auto browser        = X3D::createBrowser (browserWindow -> getMasterBrowser ());
+		const auto browser        = browserWindow -> getMasterBrowser ();
 		const auto scene          = browser -> createX3DFromString (Glib::file_get_contents (config_dir ("tools.x3d")));
 		const auto worldInfo      = scene -> getNamedNode <X3D::WorldInfo> ("Configuration");
 		const auto id             = worldInfo -> getMetaData <std::string> (k + "/id");
