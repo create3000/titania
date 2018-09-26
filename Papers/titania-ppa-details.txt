@@ -1,0 +1,11 @@
+PPA owner name: Holger Seelig
+Email: holger.seelig@yahoo.de
+Application name: titania
+App PPA location: https://launchpad.net/~create3000/+archive/ubuntu/titania
+
+
+Address:
+Holger Seelig
+Scheffelstraße 31a
+04277 Leipzig
+Germany

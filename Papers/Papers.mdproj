@@ -249,6 +249,8 @@
     <None Include="xxx\Phong.fs" />
     <None Include="xxx\Phong.vs" />
     <None Include="Chapter05-AppearanceMaterialTextures.pdf" />
+    <None Include="javascript - Split one quadratic bezier curve into two - Stack Overflow.html" />
+    <None Include="titania-ppa-details.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -261,6 +263,7 @@
     <Folder Include="GPU Gems 2 Chapter 46 - GPU Sort\" />
     <Folder Include="JavaScript\" />
     <Folder Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\" />
+    <Folder Include="javascript - Split one quadratic bezier curve into two - Stack Overflow_files\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />
