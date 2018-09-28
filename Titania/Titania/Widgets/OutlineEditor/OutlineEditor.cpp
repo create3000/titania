@@ -115,37 +115,15 @@ OutlineEditor::initialize ()
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
-	if (not getConfig () -> hasItem ("showExternProtos"))
-		getConfig () -> setItem ("showExternProtos", true);
+	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getItem <bool> ("showExternProtos",         true));
+	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getItem <bool> ("showPrototypes",           true));
+	getShowImportedNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("showImportedNodes",        true));
+	getShowExportedNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("showExportedNodes",        true));
+	getExpandExternProtosMenuItem ()       .set_active (getConfig () -> getItem <bool> ("expandExternProtos",       true));
+	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () -> getItem <bool> ("expandPrototypeInstances", true));
+	getExpandInlineNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("expandInlineNodes",        true));
 
-	if (not getConfig () -> hasItem ("showPrototypes"))
-		getConfig () -> setItem ("showPrototypes", true);
-
-	if (not getConfig () -> hasItem ("showImportedNodes"))
-		getConfig () -> setItem ("showImportedNodes", true);
-
-	if (not getConfig () -> hasItem ("showExportedNodes"))
-		getConfig () -> setItem ("showExportedNodes", true);
-
-	if (not getConfig () -> hasItem ("expandExternProtos"))
-		getConfig () -> setItem ("expandExternProtos", true);
-
-	if (not getConfig () -> hasItem ("expandPrototypeInstances"))
-		getConfig () -> setItem ("expandPrototypeInstances", true);
-
-	if (not getConfig () -> hasItem ("expandInlineNodes"))
-		getConfig () -> setItem ("expandInlineNodes", true);
-
-	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getItem <bool> ("showExternProtos"));
-	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getItem <bool> ("showPrototypes"));
-	getShowImportedNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("showImportedNodes"));
-	getShowExportedNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("showExportedNodes"));
-	getExpandExternProtosMenuItem ()       .set_active (getConfig () -> getItem <bool> ("expandExternProtos"));
-	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () -> getItem <bool> ("expandPrototypeInstances"));
-	getExpandInlineNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("expandInlineNodes"));
-
-	if (getConfig () -> hasItem ("useLocale"))
-	 getUseLocaleMenuItem () .set_active (getConfig () -> getItem <bool> ("useLocale"));
+	getUseLocaleMenuItem () .set_active (getConfig () -> getItem <bool> ("useLocale", true));
 
 	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene, this);
 	getCurrentContext () .addInterest (&OutlineEditor::set_executionContext, this);
