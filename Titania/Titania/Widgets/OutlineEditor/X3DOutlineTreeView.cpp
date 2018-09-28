@@ -301,7 +301,11 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 void
 X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all, const bool full_expand)
 {
-	const auto iter     = get_model () -> get_iter (path);
+	const auto iter = get_model () -> get_iter (path);
+
+	if (not get_model () -> iter_is_valid (iter))
+		return;
+
 	const auto userData = get_user_data (iter);
 
 	userData -> fullExpanded = full_expand;
