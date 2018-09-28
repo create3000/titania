@@ -229,6 +229,9 @@ private:
 	on_page_reordered (Gtk::Widget* widget, guint pageNumber) final override;
 
 	void
+	set_shutdown ();
+
+	void
 	set_executionContext ();
 
 	void

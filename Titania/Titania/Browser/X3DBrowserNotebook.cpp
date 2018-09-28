@@ -299,8 +299,9 @@ throw (std::out_of_range)
 void
 X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 {
+	browser -> shutdown ()    .removeInterest (&X3DBrowserNotebook::set_shutdown,         this);
 	browser -> initialized () .removeInterest (&X3DBrowserNotebook::set_executionContext, this);
-	browser -> getUrlError () .removeInterest (&X3DBrowserNotebook::set_urlError, this);
+	browser -> getUrlError () .removeInterest (&X3DBrowserNotebook::set_urlError,         this);
 
 	browser -> endUpdate ();
 
@@ -313,8 +314,9 @@ X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 	
 	page -> updateTitle ();
 
+	browser -> shutdown ()    .addInterest (&X3DBrowserNotebook::set_shutdown,         this);
 	browser -> initialized () .addInterest (&X3DBrowserNotebook::set_executionContext, this);
-	browser -> getUrlError () .addInterest (&X3DBrowserNotebook::set_urlError, this);
+	browser -> getUrlError () .addInterest (&X3DBrowserNotebook::set_urlError,         this);
 
 	browser -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
 
@@ -415,7 +417,6 @@ X3DBrowserNotebook::load (const basic::uri & URL)
 	if (URL .empty ())
 		return;
 
-	recentView -> loadPreview (getCurrentBrowser ());
 	getCurrentBrowser () -> loadURL ({ URL .str () }, { });
 }
 
@@ -639,6 +640,12 @@ X3DBrowserNotebook::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 
 	pages .erase (iter);
 	pages .emplace (pages .begin () + pageNumber, std::move (page));
+}
+
+void
+X3DBrowserNotebook::set_shutdown ()
+{
+	recentView -> loadPreview (getCurrentBrowser ());
 }
 
 void
