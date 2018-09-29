@@ -95,8 +95,8 @@ X3DNotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
 
-	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,       this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,  this);
+	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,       this);
 	mainBrowser -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
 	mainBrowser -> getMute ()         .addInterest (&X3DNotebookPage::set_mute,         this);
 

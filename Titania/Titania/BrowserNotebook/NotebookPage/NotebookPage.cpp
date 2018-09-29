@@ -156,6 +156,8 @@ NotebookPage::getPanelType (const size_t id) const
 			std::make_pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
 		};
 
+__LOG__ << getScene () << std::endl;
+
 		const auto panelsArray = getWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");
 
 		return panelTypes .at (panelsArray .at (id));
@@ -177,6 +179,8 @@ NotebookPage::setPanel (const size_t id, const PanelType panelType, Gtk::Viewpor
 void
 NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box)
 {
+__LOG__ << id << " : " << int (panelType) << std::endl;
+
 	auto & panel = panels [id];
 
 	box .remove ();

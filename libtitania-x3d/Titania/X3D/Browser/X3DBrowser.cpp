@@ -394,7 +394,7 @@ throw (Error <INVALID_SCENE>,
 		getBrowserOptions () -> assign (browserOptions, true);
 
 		resetLoadCount ();
-		getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
+		prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
 		executionContext = value ? value : createScene (false);
 
@@ -407,12 +407,12 @@ throw (Error <INVALID_SCENE>,
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
 
-		get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
-		set_loadCount ();
-	}
-	else
-	{
-		executionContext = value;
+		if (initialized ())
+		{
+			get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
+			getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
+			set_loadCount ();
+		}
 	}
 }
 
@@ -423,7 +423,6 @@ X3DBrowser::set_loadCount ()
 		return;
 
 	getLoadCount () .removeInterest (&X3DBrowser::set_loadCount, this);
-
 	prepareEvents () .addInterest (&X3DBrowser::bind, this);
 	addEvent ();
 }
@@ -437,7 +436,11 @@ X3DBrowser::bind ()
 	get_style_context () -> remove_class ("titania-private-invisible");
 
 	if (initialized ())
+	{
 		initialized () = true;
+		__LOG__ << getWorldURL () << std::endl;
+		__LOG__ << getExecutionContext () << std::endl;
+	}
 }
 
 void
@@ -482,6 +485,7 @@ throw (Error <INVALID_URL>,
 
 	get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 
+	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	setLoadState (IN_PROGRESS_STATE);
