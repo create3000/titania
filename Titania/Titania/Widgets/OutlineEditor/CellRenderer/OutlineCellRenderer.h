@@ -131,11 +131,8 @@ private:
 	X3D::X3DChildObject*
 	get_object () const;
 
-	bool
-	is_expanded () const;
-
-	bool
-	is_full_expanded () const;
+	size_t
+	get_expanded () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
 	get_icon () const;

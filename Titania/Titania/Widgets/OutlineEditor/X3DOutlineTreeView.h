@@ -177,16 +177,10 @@ public:
 	get_index (const Gtk::TreeIter &) const;
 
 	void
-	is_expanded (const Gtk::TreeIter &, const bool);
+	set_expanded (const Gtk::TreeIter &, const size_t);
 
-	bool
-	is_expanded (const Gtk::TreeIter &) const;
-
-	void
-	is_full_expanded (const Gtk::TreeIter &, const bool);
-
-	bool
-	is_full_expanded (const Gtk::TreeIter &) const;
+	size_t
+	get_expanded (const Gtk::TreeIter &) const;
 
 	///  @name Operations
 
@@ -200,7 +194,7 @@ public:
 	expand_to (X3D::X3DChildObject* const);
 
 	void
-	expand_row (const Gtk::TreePath & path, const bool open_all, const bool full_expand);
+	expand_row (const Gtk::TreePath & path, const bool open_all, const size_t expanded);
 
 	void
 	collapse_row (const Gtk::TreePath & path);
@@ -256,10 +250,10 @@ protected:
 	{ -- expandLevel; }
 
 	void
-	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t, std::pair <size_t, bool>> & opened);
+	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, size_t>> & opened);
 
 	void
-	reopen_objects (const Gtk::TreeIter & parent, std::map <size_t, std::pair <size_t, bool>> & opened);
+	reopen_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, size_t>> & opened);
 
 
 private:

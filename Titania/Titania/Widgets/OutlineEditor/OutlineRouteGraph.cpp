@@ -132,7 +132,7 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 
 	// Add routes
 
-	if (parentUserData -> fullExpanded)
+	if (parentUserData -> expanded == OUTLINE_EXPANDED_FULL)
 	{
 		remove_routes (parentPath, parentData, field);
 
@@ -246,9 +246,9 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 			const auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
 			auto       sourceData = treeView -> get_model () -> get_data (sourceIter);
 
-			// Connect to output route if field is all expanded
+			// Connect to output route if field is full expanded
 
-			if (sourceData -> get_user_data () -> fullExpanded)
+			if (sourceData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -324,9 +324,9 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 			const auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
 			auto       destinationData = treeView -> get_model () -> get_data (destinationIter);
 
-			// Connect to input route if field is all expanded
+			// Connect to input route if field is full expanded
 
-			if (destinationData -> get_user_data () -> fullExpanded)
+			if (destinationData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{
@@ -491,14 +491,15 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & iter, const 
 	const auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 	if (root)
+	{
 		add_routes (path, data, field);
-
+	}
 	else
 	{
 		field -> getInputRoutes ()  .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
 		field -> getOutputRoutes () .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
 
-		if (not userData -> fullExpanded)
+		if (userData -> expanded != OUTLINE_EXPANDED_FULL)
 		{
 			for (const auto & route : field -> getInputRoutes ())
 				remove_input_route (path, data, route);
@@ -534,7 +535,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 			// Connect to output route if field is all expanded
 
-			if (sourceData -> get_user_data () -> fullExpanded)
+			if (sourceData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -612,7 +613,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 			// Connect to input route if field is all expanded
 
-			if (destinationData -> get_user_data () -> fullExpanded)
+			if (destinationData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{

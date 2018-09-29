@@ -1105,7 +1105,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 		}
 	}
 
-	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER and
+	if ((treeView -> get_expanded (destNodeIter) == OUTLINE_EXPANDED_CHANGED || treeView -> get_expanded (destNodeIter) == OUTLINE_EXPANDED_FULL) and
+	    position == Gtk::TREE_VIEW_DROP_AFTER and
 	    treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::NULL_)
 	   return true;
 

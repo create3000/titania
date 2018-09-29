@@ -75,7 +75,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
-			if (treeView -> is_full_expanded (iter))
+			if (treeView -> get_expanded (iter) == OUTLINE_EXPANDED_FULL)
 			{
 				field -> getInputRoutes ()  .addInterest (&OutlineTreeObserver::toggle_path, this, path);
 				field -> getOutputRoutes () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
@@ -432,7 +432,7 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 
 	// Determine open paths.
 
-	std::map <size_t, std::pair <size_t, bool>> opened;
+	std::map <size_t,  std::tuple <size_t, bool, size_t>> opened;
 
 	treeView -> get_opened_objects (treeView -> get_model () -> get_iter (path), opened);
 
@@ -442,7 +442,11 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 
 	// Expand.
 
+	treeView -> disable_shift_key ();
+
 	treeView -> reopen_objects (treeView -> get_model () -> get_iter (path), opened);
+
+	treeView -> enable_shift_key ();
 }
 
 //bool

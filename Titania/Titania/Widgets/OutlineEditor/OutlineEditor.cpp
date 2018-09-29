@@ -1818,7 +1818,21 @@ OutlineEditor::restoreExpanded ()
 			if (pair .empty ())
 				continue;
 
-			treeView -> expand_row (Gtk::TreePath (pair [0]), false, pair .size () > 1 and pair [1] == "1");
+			size_t expanded = OUTLINE_EXPANDED_UNDEFINED;
+
+			if (pair .size () > 1)
+			{
+				if (pair [1] == "0")
+					expanded = OUTLINE_EXPANDED_UNDEFINED;
+				else if (pair [1] == "1")
+					expanded = OUTLINE_EXPANDED_COLLAPSED;
+				else if (pair [1] == "2")
+					expanded = OUTLINE_EXPANDED_CHANGED;
+				else if (pair [1] == "3")
+					expanded = OUTLINE_EXPANDED_FULL;
+			}
+
+			treeView -> expand_row (Gtk::TreePath (pair [0]), false, expanded);
 		}
 	}
 	catch (const std::exception & error)
@@ -1877,14 +1891,11 @@ OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::dequ
 {
 	for (const auto & child : children)
 	{
-		const auto path     = treeView -> get_model () -> get_path (child);
-		const bool expanded = treeView -> row_expanded (path);
+		const auto   path     = treeView -> get_model () -> get_path (child);
+		const size_t expanded = treeView -> get_expanded (child);
 
-		if (expanded)
-		{
-			paths .emplace_back (path .to_string () + "\t" + (treeView -> is_full_expanded (child) ? "1" : "0"));
-			getExpanded (child -> children (), paths);
-		}
+		paths .emplace_back (path .to_string () + "\t" + basic::to_string (expanded, std::locale::classic ()));
+		getExpanded (child -> children (), paths);
 	}
 }
 
