@@ -166,10 +166,8 @@ X3DOutlineEditorInterface::create ()
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
 	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_button_press_event));
 
-	// Connect object Gtk::MenuItem with id 'RenameMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'RenameMenuItem'.
 	m_RenameMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_rename_activate));
-
-	// Connect object Gtk::ImageMenuItem with id 'CutMenuItem'.
 	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_cut_activate));
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_copy_activate));
 	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_paste_activate));

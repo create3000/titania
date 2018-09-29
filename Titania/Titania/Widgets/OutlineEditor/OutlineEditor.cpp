@@ -1604,7 +1604,7 @@ OutlineEditor::selectField (const double x, const double y)
 	bool       hasReferences      = false;
 
 	if (isField)
-	{	
+	{
 		const auto   iter             = treeView -> get_model () -> get_iter (fieldPath);
 		const auto   field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 		const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter -> parent ()));

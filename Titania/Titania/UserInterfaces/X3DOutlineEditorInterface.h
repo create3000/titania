@@ -169,7 +169,7 @@ public:
 	getContextMenu () const
 	{ return *m_ContextMenu; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getRenameMenuItem () const
 	{ return *m_RenameMenuItem; }
 
@@ -623,7 +623,7 @@ private:
 	Gtk::Entry* m_NameEntry;
 	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_ContextMenu;
-	Gtk::MenuItem* m_RenameMenuItem;
+	Gtk::ImageMenuItem* m_RenameMenuItem;
 	Gtk::SeparatorMenuItem* m_CommonSeparator;
 	Gtk::ImageMenuItem* m_CutMenuItem;
 	Gtk::ImageMenuItem* m_CopyMenuItem;

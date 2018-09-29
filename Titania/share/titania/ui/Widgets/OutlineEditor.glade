@@ -274,14 +274,22 @@
     <property name="can_focus">False</property>
     <property name="stock">X3DBaseNode</property>
   </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+  </object>
   <object class="GtkMenu" id="ContextMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="RenameMenuItem">
+      <object class="GtkImageMenuItem" id="RenameMenuItem">
+        <property name="label" translatable="yes">Rename</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Rename</property>
+        <property name="image">image4</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_rename_activate" swapped="no"/>
       </object>
     </child>
