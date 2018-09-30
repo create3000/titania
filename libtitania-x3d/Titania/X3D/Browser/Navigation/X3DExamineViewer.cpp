@@ -285,11 +285,16 @@ X3DExamineViewer::on_1button1_release_event (GdkEventButton* event)
 {
 	getBrowser () -> setCursor ("ARROW");
 
-	if (std::abs (rotation .angle ()) > SPIN_ANGLE and SFTime::now () - motionTime < SPIN_RELEASE_TIME)
-	{
-		rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
+	const auto & viewpoint = getActiveViewpoint ();
 
-		addSpinning ();
+	if (not (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint })))
+	{
+		if (std::abs (rotation .angle ()) > SPIN_ANGLE and SFTime::now () - motionTime < SPIN_RELEASE_TIME)
+		{
+			rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
+	
+			addSpinning ();
+		}
 	}
 
 	isActive () = false;
