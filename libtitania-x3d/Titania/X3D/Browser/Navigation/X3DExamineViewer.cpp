@@ -65,6 +65,7 @@ static constexpr double    SPIN_ANGLE        = 0.006;
 static constexpr double    SPIN_FACTOR       = 0.6;
 static constexpr double    SCROLL_FACTOR     = 1.0 / 50.0;
 static constexpr time_type FRAME_RATE        = 60;
+static constexpr double    MAX_ANGLE         = 0.97;
 
 const ComponentType X3DExamineViewer::component      = ComponentType::TITANIA;
 const std::string   X3DExamineViewer::typeName       = "X3DExamineViewer";
@@ -351,8 +352,24 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 		if (std::abs (rotation .angle ()) < SPIN_ANGLE and SFTime::now () - pressTime < MOTION_TIME)
 			return false;
 
-		viewpoint -> orientationOffset () = getOrientationOffset ();
-		viewpoint -> positionOffset ()    = getPositionOffset ();
+		try
+		{
+			viewpoint -> orientationOffset () = getOrientationOffset (true);
+			viewpoint -> positionOffset ()    = getPositionOffset ();
+		}
+		catch (const X3DError & error)
+		{
+			// Slide along critical angle.
+
+			const auto V = normalize (Vector3d (0, 0, 1) * rotation);
+			const auto N = normalize (cross (viewpoint -> getUpVector (), V));
+			const auto H = normalize (cross (N, viewpoint -> getUpVector ()));
+
+			rotation = Rotation4d (Vector3d (0, 0, 1), H);
+
+			viewpoint -> orientationOffset () = getOrientationOffset (false);
+			viewpoint -> positionOffset ()    = getPositionOffset ();
+		}
 
 		fromVector = toVector;
 
@@ -380,7 +397,7 @@ X3DExamineViewer::on_motion2_notify_event (GdkEventMotion* event)
 		fromPoint = toPoint;
 		return false;
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
@@ -410,7 +427,7 @@ X3DExamineViewer::on_scroll_event (GdkEventScroll* event)
 
 		scrollTime () = getCurrentTime ();
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
@@ -423,7 +440,7 @@ X3DExamineViewer::spin ()
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
-		viewpoint -> orientationOffset () = getOrientationOffset ();
+		viewpoint -> orientationOffset () = getOrientationOffset (false);
 		viewpoint -> positionOffset ()    = getPositionOffset ();
 
 		return true;
@@ -451,21 +468,32 @@ X3DExamineViewer::getPositionOffset () const
 }
 
 Rotation4d
-X3DExamineViewer::getOrientationOffset ()
+X3DExamineViewer::getOrientationOffset (const bool _throw)
 {
 	const auto & viewpoint = getActiveViewpoint ();
 
 	// Assign last value to global orientationOffset
 	orientationOffset = viewpoint -> orientationOffset ();
 
+	auto orientationOffsetAfter = ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
+
+	if (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
 	{
-		auto orientationOffset = ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
+		orientationOffsetAfter *= viewpoint -> straightenHorizon (viewpoint -> getOrientation () * orientationOffsetAfter);
 
-		if (getBrowser () -> getStraightenHorizon ())
-			orientationOffset *= viewpoint -> straightenHorizon (viewpoint -> getOrientation () * orientationOffset);
+		if (not _throw)
+			return orientationOffsetAfter;
+		
+		const auto userOrientation = viewpoint -> getOrientation () * orientationOffsetAfter;
+		const auto userVector      = Vector3d (0, 0, 1) * userOrientation;
 
-		return orientationOffset;
+		if (std::abs (dot (viewpoint -> getUpVector (), userVector)) < MAX_ANGLE)
+			return orientationOffsetAfter;
+
+		throw Error <NOT_SUPPORTED> ("Critical angle.");
 	}
+
+	return orientationOffsetAfter;
 }
 
 } // X3D

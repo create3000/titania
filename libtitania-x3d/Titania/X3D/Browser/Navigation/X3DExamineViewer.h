@@ -154,7 +154,7 @@ private:
 	getPositionOffset () const;
 
 	Rotation4d
-	getOrientationOffset ();
+	getOrientationOffset (const bool _throw);
 
 	///  @name Static members
 
