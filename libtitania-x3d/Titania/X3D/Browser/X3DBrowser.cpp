@@ -436,11 +436,7 @@ X3DBrowser::bind ()
 	get_style_context () -> remove_class ("titania-private-invisible");
 
 	if (initialized ())
-	{
 		initialized () = true;
-		__LOG__ << getWorldURL () << std::endl;
-		__LOG__ << getExecutionContext () << std::endl;
-	}
 }
 
 void
