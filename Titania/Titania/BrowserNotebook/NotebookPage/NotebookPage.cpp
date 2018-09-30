@@ -156,8 +156,6 @@ NotebookPage::getPanelType (const size_t id) const
 			std::make_pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
 		};
 
-__LOG__ << getScene () << std::endl;
-
 		const auto panelsArray = getWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");
 
 		return panelTypes .at (panelsArray .at (id));
