@@ -83,23 +83,23 @@ protected:
 
 	virtual
 	bool
-	on_1button1_press_event (GdkEventButton*);
+	on_1button1_press_event (GdkEventButton* event);
 
 	virtual
 	bool
-	on_1button2_press_event (GdkEventButton*);
+	on_1button2_press_event (GdkEventButton* event);
 
 	virtual
 	bool
-	on_1button1_release_event (GdkEventButton*);
+	on_1button1_release_event (GdkEventButton* event);
 
 	virtual
 	bool
-	on_motion1_notify_event (GdkEventMotion*);
+	on_motion1_notify_event (GdkEventMotion* event);
 
 	virtual
 	bool
-	on_scroll_event (GdkEventScroll*);
+	on_scroll_event (GdkEventScroll* event);
 
 
 private:
@@ -110,37 +110,37 @@ private:
 	disconnect ();
 
 	bool
-	on_button_press_event (GdkEventButton*);
+	on_button_press_event (GdkEventButton* event);
 
 	bool
-	on_1button_press_event (GdkEventButton*);
+	on_1button_press_event (GdkEventButton* event);
 
 	bool
-	on_2button_press_event (GdkEventButton*);
+	on_2button_press_event (GdkEventButton* event);
 
 	bool
-	on_3button_press_event (GdkEventButton*);
+	on_3button_press_event (GdkEventButton* event);
 
 	bool
-	on_button_release_event (GdkEventButton*);
+	on_button_release_event (GdkEventButton* event);
 
 	bool
-	on_1button_release_event (GdkEventButton*);
+	on_1button_release_event (GdkEventButton* event);
 
 	bool
-	on_1button2_release_event (GdkEventButton*);
+	on_1button2_release_event (GdkEventButton* event);
 
 	bool
-	on_2button_release_event (GdkEventButton*);
+	on_2button_release_event (GdkEventButton* event);
 
 	bool
-	on_3button_release_event (GdkEventButton*);
+	on_3button_release_event (GdkEventButton* event);
 
 	bool
-	on_motion_notify_event (GdkEventMotion*);
+	on_motion_notify_event (GdkEventMotion* event);
 
 	bool
-	on_motion2_notify_event (GdkEventMotion*);
+	on_motion2_notify_event (GdkEventMotion* event);
 
 	///  @name Operations
 
@@ -157,7 +157,7 @@ private:
 	getOrientationOffset (const bool _throw);
 
 	Rotation4d
-	straightenHorizon (const Rotation4d & rotation) const;
+	getHorizonRotation (const Rotation4d & rotation) const;
 
 	///  @name Static members
 

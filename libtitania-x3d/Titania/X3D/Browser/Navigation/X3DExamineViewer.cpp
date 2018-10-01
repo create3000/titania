@@ -292,7 +292,7 @@ X3DExamineViewer::on_1button1_release_event (GdkEventButton* event)
 		rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
 
 		if (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
-			rotation = straightenHorizon (rotation);
+			rotation = getHorizonRotation (rotation);
 
 		addSpinning ();
 	}
@@ -366,7 +366,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 		{
 			// Slide along critical angle.
 
-			rotation = straightenHorizon (rotation);
+			rotation = getHorizonRotation (rotation);
 
 			viewpoint -> orientationOffset () = getOrientationOffset (false);
 			viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -499,7 +499,7 @@ X3DExamineViewer::getOrientationOffset (const bool _throw)
 }
 
 Rotation4d
-X3DExamineViewer::straightenHorizon (const Rotation4d & rotation) const
+X3DExamineViewer::getHorizonRotation (const Rotation4d & rotation) const
 {
 	const auto & viewpoint = getActiveViewpoint ();
 
