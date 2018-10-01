@@ -156,6 +156,9 @@ private:
 	Rotation4d
 	getOrientationOffset (const bool _throw);
 
+	Rotation4d
+	straightenHorizon (const Rotation4d & rotation) const;
+
 	///  @name Static members
 
 	static const ComponentType component;

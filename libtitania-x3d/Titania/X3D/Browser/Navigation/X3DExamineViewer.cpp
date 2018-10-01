@@ -101,7 +101,7 @@ X3DExamineViewer::initialize ()
 		getNavigationInfo () -> transitionStart () .addInterest (&X3DExamineViewer::disconnect, this); // XXX: getNavigationInfo kann sich auch ?ndern, bei allen!!!
 		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::disconnect, this);
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 }
 
@@ -174,7 +174,7 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 				return on_1button2_press_event (event);
 		}
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
@@ -195,7 +195,7 @@ X3DExamineViewer::on_1button1_press_event (GdkEventButton* event)
 		isActive () = true;
 		return false;
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
@@ -216,7 +216,7 @@ X3DExamineViewer::on_1button2_press_event (GdkEventButton* event)
 		isActive () = true;
 		return false;
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
@@ -287,14 +287,14 @@ X3DExamineViewer::on_1button1_release_event (GdkEventButton* event)
 
 	const auto & viewpoint = getActiveViewpoint ();
 
-	if (not (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint })))
+	if (std::abs (rotation .angle ()) > SPIN_ANGLE and SFTime::now () - motionTime < SPIN_RELEASE_TIME)
 	{
-		if (std::abs (rotation .angle ()) > SPIN_ANGLE and SFTime::now () - motionTime < SPIN_RELEASE_TIME)
-		{
-			rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
-	
-			addSpinning ();
-		}
+		rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
+
+		if (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
+			rotation = straightenHorizon (rotation);
+
+		addSpinning ();
 	}
 
 	isActive () = false;
@@ -366,11 +366,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 		{
 			// Slide along critical angle.
 
-			const auto V = normalize (Vector3d (0, 0, 1) * rotation);
-			const auto N = normalize (cross (viewpoint -> getUpVector (), V));
-			const auto H = normalize (cross (N, viewpoint -> getUpVector ()));
-
-			rotation = Rotation4d (Vector3d (0, 0, 1), H);
+			rotation = straightenHorizon (rotation);
 
 			viewpoint -> orientationOffset () = getOrientationOffset (false);
 			viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -382,11 +378,12 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 
 		return false;
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	return false;
 }
+
 bool
 X3DExamineViewer::on_motion2_notify_event (GdkEventMotion* event)
 {
@@ -450,7 +447,7 @@ X3DExamineViewer::spin ()
 
 		return true;
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{
 		return false;
 	}
@@ -499,6 +496,18 @@ X3DExamineViewer::getOrientationOffset (const bool _throw)
 	}
 
 	return orientationOffsetAfter;
+}
+
+Rotation4d
+X3DExamineViewer::straightenHorizon (const Rotation4d & rotation) const
+{
+	const auto & viewpoint = getActiveViewpoint ();
+
+	const auto V = normalize (Vector3d (0, 0, 1) * rotation);
+	const auto N = normalize (cross (viewpoint -> getUpVector (), V));
+	const auto H = normalize (cross (N, viewpoint -> getUpVector ()));
+
+	return Rotation4d (Vector3d (0, 0, 1), H);
 }
 
 } // X3D
