@@ -1014,3 +1014,5 @@ ScrolledWindow::size_allocate
   virtual void on_size_allocate(Gtk::Allocation& allocation);
 TextView::size_allocate
   virtual void on_size_allocate(Gtk::Allocation& allocation);
+RadioAction::toggled
+  virtual void on_toggled();

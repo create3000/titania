@@ -14,7 +14,7 @@ echo "\nUserInterfaces\n";
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -maxdepth 1 -name \*.glade;`
 
-echo "\Applications\n";
+echo "\nApplications\n";
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
 -e \
@@ -51,7 +51,7 @@ echo "\nEditors\n";
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/ -maxdepth 1 -name \*.glade;`
 
-echo "\Panels\n";
+echo "\nPanels\n";
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
 -e \
