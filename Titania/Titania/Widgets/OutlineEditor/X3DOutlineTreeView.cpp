@@ -315,14 +315,14 @@ X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all,
 
 	if (expanded == OutlineExpanded::COLLAPSED)
 	{
+		disable_shift_key ();
 		collapse_row (path);
+		enable_shift_key ();
 		return;
 	}
 
 	disable_shift_key ();
-
 	expand_row (path, open_all);
-
 	enable_shift_key ();
 }
 
