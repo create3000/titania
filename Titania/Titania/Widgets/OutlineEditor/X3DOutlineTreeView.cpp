@@ -299,7 +299,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 }
 
 void
-X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all, const size_t expanded)
+X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all, const OutlineExpanded & expanded)
 {
 	const auto iter = get_model () -> get_iter (path);
 
@@ -310,16 +310,20 @@ X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all,
 
 	userData -> expanded = expanded;
 
-	if (expanded == OUTLINE_EXPANDED_UNDEFINED)
+	if (expanded == OutlineExpanded::UNDEFINED)
 		return;
 
-	if (expanded == OUTLINE_EXPANDED_COLLAPSED)
+	if (expanded == OutlineExpanded::COLLAPSED)
 	{
 		collapse_row (path);
 		return;
 	}
 
+	disable_shift_key ();
+
 	expand_row (path, open_all);
+
+	enable_shift_key ();
 }
 
 void
@@ -398,7 +402,7 @@ X3DOutlineTreeView::get_open_path (const Gtk::TreeIter & iter) const
 }
 
 void
-X3DOutlineTreeView::set_expanded (const Gtk::TreeIter & iter, const size_t value)
+X3DOutlineTreeView::set_expanded (const Gtk::TreeIter & iter, const OutlineExpanded value)
 {
 	const auto userData = get_user_data (iter);
 
@@ -406,7 +410,7 @@ X3DOutlineTreeView::set_expanded (const Gtk::TreeIter & iter, const size_t value
 		userData -> expanded = value;
 }
 
-size_t
+OutlineExpanded
 X3DOutlineTreeView::get_expanded (const Gtk::TreeIter & iter) const
 {
 	const auto userData = get_user_data (iter);
@@ -414,7 +418,7 @@ X3DOutlineTreeView::get_expanded (const Gtk::TreeIter & iter) const
 	if (userData)
 		return userData -> expanded;
 
-	return false;
+	return OutlineExpanded::UNDEFINED;
 }
 
 bool
@@ -504,7 +508,7 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 
 	// Determine open paths.
 
-	std::map <size_t, std::tuple <size_t, bool, size_t>> opened;
+	std::map <size_t, std::tuple <size_t, bool, OutlineExpanded>> opened;
 
 	if (reopen)
 	{
@@ -636,7 +640,7 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 }
 
 void
-X3DOutlineTreeView::get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t, std::tuple <size_t, bool, size_t>> & opened)
+X3DOutlineTreeView::get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t, std::tuple <size_t, bool, OutlineExpanded>> & opened)
 {
 	const auto id    = get_reopen_id (parent);
 	auto &     tuple = opened [id];
@@ -657,7 +661,7 @@ X3DOutlineTreeView::get_opened_objects (const Gtk::TreeIter & parent, std::map <
 }
 
 void
-X3DOutlineTreeView::reopen_objects (const Gtk::TreeIter & parent, std::map <size_t, std::tuple <size_t, bool, size_t>> & opened)
+X3DOutlineTreeView::reopen_objects (const Gtk::TreeIter & parent, std::map <size_t, std::tuple <size_t, bool, OutlineExpanded>> & opened)
 {
 	try
 	{
@@ -798,8 +802,8 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::Tree
 
 	// Set expanded first to prevent loop with clones.
 
-	if (get_expanded (iter) == OUTLINE_EXPANDED_UNDEFINED || get_expanded (iter) == OUTLINE_EXPANDED_COLLAPSED)
-		set_expanded (iter, OUTLINE_EXPANDED_CHANGED);
+	if (get_expanded (iter) == OutlineExpanded::UNDEFINED || get_expanded (iter) == OutlineExpanded::COLLAPSED)
+		set_expanded (iter, OutlineExpanded::CHANGED);
 
 	set_open_path (iter, path);
 
@@ -823,14 +827,16 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeIter & iter, const Gtk::Tre
 {
 	//__LOG__ << path .to_string () << std::endl;
 
-	set_expanded (iter, OUTLINE_EXPANDED_COLLAPSED);
+	const auto expanded = get_expanded (iter);
+
+	set_expanded (iter, OutlineExpanded::COLLAPSED);
 
 	routeGraph -> collapse_tree (iter);
 	treeObserver -> unwatch_tree (iter);
 
 	get_model () -> clear (iter);
 
-	toggle_expand (iter, path);
+	toggle_expand (iter, path, expanded);
 
 	columns_autosize ();
 }
@@ -871,14 +877,14 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeIter & iter)
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-			if (get_shift_key () or get_expanded (iter) == OUTLINE_EXPANDED_FULL)
+			if (get_shift_key () or get_expanded (iter) == OutlineExpanded::FULL)
 			{
 				expand_routes (iter, field);
-				set_expanded (iter, iter -> children () .size () ? OUTLINE_EXPANDED_FULL : OUTLINE_EXPANDED_CHANGED);
+				set_expanded (iter, iter -> children () .size () ? OutlineExpanded::FULL : OutlineExpanded::CHANGED);
 			}
 			else
 			{
-				set_expanded (iter, OUTLINE_EXPANDED_CHANGED);
+				set_expanded (iter, OutlineExpanded::CHANGED);
 			}
 
 			switch (field -> getType ())
@@ -902,10 +908,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeIter & iter)
 				{
 					const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-					if (mfnode -> empty () and get_expanded (iter) != OUTLINE_EXPANDED_FULL)
+					if (mfnode -> empty () and get_expanded (iter) != OutlineExpanded::FULL)
 					{
 						expand_routes (iter, field);
-						set_expanded (iter, iter -> children () .size () ? OUTLINE_EXPANDED_FULL : OUTLINE_EXPANDED_CHANGED);
+						set_expanded (iter, iter -> children () .size () ? OutlineExpanded::FULL : OutlineExpanded::CHANGED);
 					}
 
 					size_t i = 0;
@@ -1183,14 +1189,14 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 
 			const auto fields = get_fields (node);
 
-			if (get_shift_key () or get_expanded (iter) == OUTLINE_EXPANDED_FULL)
+			if (get_shift_key () or get_expanded (iter) == OutlineExpanded::FULL)
 			{
 				for (const auto & field : fields)
 				{
 					get_model () -> append (iter, OutlineIterType::X3DField, field, 0, get_model () -> get_data (iter) -> getSelected ());
 				}
 
-				set_expanded (iter, OUTLINE_EXPANDED_FULL);
+				set_expanded (iter, OutlineExpanded::FULL);
 			}
 			else
 			{
@@ -1227,7 +1233,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 					}
 				}
 
-				set_expanded (iter, OUTLINE_EXPANDED_CHANGED);
+				set_expanded (iter, OutlineExpanded::CHANGED);
 			}
 		}
 	}
@@ -1265,7 +1271,7 @@ X3DOutlineTreeView::expand_routes (const Gtk::TreeIter & iter, X3D::X3DFieldDefi
 }
 
 void
-X3DOutlineTreeView::toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
+X3DOutlineTreeView::toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePath & path, const OutlineExpanded & expanded)
 {
 	switch (get_data_type (iter))
 	{
@@ -1278,7 +1284,7 @@ X3DOutlineTreeView::toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePa
 		case OutlineIterType::ExportedNode:
 		{
 			if (get_shift_key ())
-				expand_row (path, false);
+				expand_row (path, false, expanded == OutlineExpanded::CHANGED ? OutlineExpanded::FULL : OutlineExpanded::CHANGED);
 
 			break;
 		}
@@ -1307,10 +1313,10 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				if (get_expanded (child) == OUTLINE_EXPANDED_UNDEFINED)
+				if (get_expanded (child) == OutlineExpanded::UNDEFINED)
 					continue;
 
-				if (get_expanded (child) == OUTLINE_EXPANDED_COLLAPSED)
+				if (get_expanded (child) == OutlineExpanded::COLLAPSED)
 					continue;
 
 				switch (get_data_type (child))
@@ -1344,7 +1350,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				if (get_expanded (child) == OUTLINE_EXPANDED_COLLAPSED)
+				if (get_expanded (child) == OutlineExpanded::COLLAPSED)
 					continue;
 
 				switch (get_data_type (child))
@@ -1352,7 +1358,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 					case OutlineIterType::X3DExecutionContext:
 					case OutlineIterType::ProtoDeclaration:
 					{
-						if (get_expanded (child) == OUTLINE_EXPANDED_CHANGED)
+						if (get_expanded (child) == OutlineExpanded::CHANGED)
 							expand_row (Gtk::TreePath (child), false);
 
 						break;
@@ -1367,7 +1373,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 							{
 								const auto sfnode = static_cast <X3D::SFNode*> (field);
 
-								if ((field -> isInitializable () and *sfnode) or get_expanded (child) == OUTLINE_EXPANDED_CHANGED)
+								if ((field -> isInitializable () and *sfnode) or get_expanded (child) == OutlineExpanded::CHANGED)
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}
@@ -1378,7 +1384,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 							{
 								const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-								if ((field -> isInitializable () and not mfnode -> empty () and mfnode -> size () < 51) or get_expanded (child) == OUTLINE_EXPANDED_CHANGED)
+								if ((field -> isInitializable () and not mfnode -> empty () and mfnode -> size () < 51) or get_expanded (child) == OutlineExpanded::CHANGED)
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}
@@ -1387,7 +1393,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 							}
 							default:
 							{
-								if (get_expanded (child) == OUTLINE_EXPANDED_CHANGED)
+								if (get_expanded (child) == OutlineExpanded::CHANGED)
 									expand_row (Gtk::TreePath (child), false);
 
 								break;

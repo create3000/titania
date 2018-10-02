@@ -850,7 +850,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		{
 			getScrollFreezer () -> freeze ();
 			collapse_row (path);
-			set_expanded (get_model () -> get_iter (path), OUTLINE_EXPANDED_FULL);
+			set_expanded (get_model () -> get_iter (path), OutlineExpanded::FULL);
 			expand_row (path, false);
 			return;
 		}

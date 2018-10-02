@@ -132,7 +132,7 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 
 	// Add routes
 
-	if (parentUserData -> expanded == OUTLINE_EXPANDED_FULL)
+	if (parentUserData -> expanded == OutlineExpanded::FULL)
 	{
 		remove_routes (parentPath, parentData, field);
 
@@ -248,7 +248,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 
 			// Connect to output route if field is full expanded
 
-			if (sourceData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
+			if (sourceData -> get_user_data () -> expanded == OutlineExpanded::FULL)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -326,7 +326,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 
 			// Connect to input route if field is full expanded
 
-			if (destinationData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
+			if (destinationData -> get_user_data () -> expanded == OutlineExpanded::FULL)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{
@@ -499,7 +499,7 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & iter, const 
 		field -> getInputRoutes ()  .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
 		field -> getOutputRoutes () .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
 
-		if (userData -> expanded != OUTLINE_EXPANDED_FULL)
+		if (userData -> expanded != OutlineExpanded::FULL)
 		{
 			for (const auto & route : field -> getInputRoutes ())
 				remove_input_route (path, data, route);
@@ -535,7 +535,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 			// Connect to output route if field is all expanded
 
-			if (sourceData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
+			if (sourceData -> get_user_data () -> expanded == OutlineExpanded::FULL)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -613,7 +613,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 			// Connect to input route if field is all expanded
 
-			if (destinationData -> get_user_data () -> expanded == OUTLINE_EXPANDED_FULL)
+			if (destinationData -> get_user_data () -> expanded == OutlineExpanded::FULL)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{

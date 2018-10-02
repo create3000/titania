@@ -131,14 +131,14 @@ private:
 	X3D::X3DChildObject*
 	get_object () const;
 
-	size_t
+	OutlineExpanded
 	get_expanded () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
 	get_icon () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
-	get_access_type_icon (X3D::AccessType &) const;
+	get_access_type_icon (X3D::AccessType & accessType) const;
 
 	std::string
 	get_node_name (const X3D::SFNode &, std::string name) const;

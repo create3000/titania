@@ -177,9 +177,9 @@ public:
 	get_index (const Gtk::TreeIter &) const;
 
 	void
-	set_expanded (const Gtk::TreeIter &, const size_t);
+	set_expanded (const Gtk::TreeIter &, const OutlineExpanded);
 
-	size_t
+	OutlineExpanded
 	get_expanded (const Gtk::TreeIter &) const;
 
 	///  @name Operations
@@ -194,7 +194,7 @@ public:
 	expand_to (X3D::X3DChildObject* const);
 
 	void
-	expand_row (const Gtk::TreePath & path, const bool open_all, const size_t expanded);
+	expand_row (const Gtk::TreePath & path, const bool open_all, const OutlineExpanded & expanded);
 
 	void
 	collapse_row (const Gtk::TreePath & path);
@@ -250,10 +250,10 @@ protected:
 	{ -- expandLevel; }
 
 	void
-	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, size_t>> & opened);
+	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, OutlineExpanded>> & opened);
 
 	void
-	reopen_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, size_t>> & opened);
+	reopen_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, OutlineExpanded>> & opened);
 
 
 private:
@@ -325,13 +325,13 @@ private:
 	get_fields (X3D::X3DBaseNode* const) const;
 
 	void
-	expand_routes (const Gtk::TreeIter &, X3D::X3DFieldDefinition*);
+	expand_routes (const Gtk::TreeIter & iter, X3D::X3DFieldDefinition* field);
 
 	void
-	toggle_expand (const Gtk::TreeIter &, const Gtk::TreePath & path);
+	toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePath & path, const OutlineExpanded & expanded);
 
 	void
-	auto_expand (const Gtk::TreeIter &);
+	auto_expand (const Gtk::TreeIter & parent);
 
 	///  @name Members
 

@@ -61,10 +61,12 @@ namespace titania {
 namespace puck {
 
 // Expanded
-static constexpr size_t OUTLINE_EXPANDED_UNDEFINED = 0;
-static constexpr size_t OUTLINE_EXPANDED_COLLAPSED = 1;
-static constexpr size_t OUTLINE_EXPANDED_CHANGED   = 2;
-static constexpr size_t OUTLINE_EXPANDED_FULL      = 3;
+enum class OutlineExpanded {
+	UNDEFINED,
+	COLLAPSED,
+	CHANGED,
+	FULL
+};
 
 // Selected
 static constexpr size_t OUTLINE_SELECTED_INPUT  = 0;
@@ -83,7 +85,7 @@ public:
 	UserData () :
 		    openPath (),
 		       paths (),
-		  expanded (OUTLINE_EXPANDED_UNDEFINED),
+		  expanded (OutlineExpanded::UNDEFINED),
 		    selected (),
 	       userData ()
 	{ }
@@ -100,7 +102,7 @@ public:
 	Gtk::TreeModel::Path            openPath;  // Path of expanded node/clone
 	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
 
-	size_t           expanded;               // Expanded state
+	OutlineExpanded  expanded;                 // Expanded state
 	std::bitset <32> selected;                 // Selected state
 
 	std::shared_ptr <UserData> userData;
