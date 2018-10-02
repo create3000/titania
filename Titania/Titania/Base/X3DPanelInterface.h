@@ -80,8 +80,7 @@ public:
 	{ return panelMenu; }
 
 	void
-	setFocus (const bool value)
-	{ focus = value; }
+	setFocus (const bool value);
 
 	const X3D::SFBool &
 	hasFocus () const

@@ -100,6 +100,15 @@ X3DPanelInterface::getPanelType () const
 }
 
 void
+X3DPanelInterface::setFocus (const bool value)
+{
+	if (value == focus)
+		return;
+
+	focus = value;
+}
+
+void
 X3DPanelInterface::addFocusWidget (Gtk::Widget* const widget)
 {
 	// Be aware that widget must not always be valid, and can only be used as key.
