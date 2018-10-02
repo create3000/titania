@@ -1275,6 +1275,9 @@ X3DOutlineTreeView::expand_routes (const Gtk::TreeIter & iter, X3D::X3DFieldDefi
 void
 X3DOutlineTreeView::toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePath & path, const OutlineExpanded & expanded)
 {
+	if (not get_shift_key ())
+		return;
+
 	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DField:
@@ -1285,9 +1288,7 @@ X3DOutlineTreeView::toggle_expand (const Gtk::TreeIter & iter, const Gtk::TreePa
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
 		{
-			if (get_shift_key ())
-				expand_row (path, false, expanded == OutlineExpanded::CHANGED ? OutlineExpanded::FULL : OutlineExpanded::CHANGED);
-
+			expand_row (path, false, expanded == OutlineExpanded::CHANGED ? OutlineExpanded::FULL : OutlineExpanded::CHANGED);
 			break;
 		}
 		default:
@@ -1315,10 +1316,12 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				if (get_expanded (child) == OutlineExpanded::UNDEFINED)
+				const auto expanded = get_expanded (child);
+
+				if (expanded == OutlineExpanded::UNDEFINED)
 					continue;
 
-				if (get_expanded (child) == OutlineExpanded::COLLAPSED)
+				if (expanded == OutlineExpanded::COLLAPSED)
 					continue;
 
 				switch (get_data_type (child))
@@ -1333,7 +1336,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 						const auto path      = Gtk::TreePath (child);
 
 						if (open_path .empty ())
-							expand_row (path, false, get_expanded (child));
+							expand_row (path, false, expanded);
 
 						break;
 					}
@@ -1352,7 +1355,9 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				if (get_expanded (child) == OutlineExpanded::COLLAPSED)
+				const auto expanded = get_expanded (child);
+
+				if (expanded == OutlineExpanded::COLLAPSED)
 					continue;
 
 				switch (get_data_type (child))
@@ -1360,9 +1365,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 					case OutlineIterType::X3DExecutionContext:
 					case OutlineIterType::ProtoDeclaration:
 					{
-						if (get_expanded (child) == OutlineExpanded::CHANGED)
-							expand_row (Gtk::TreePath (child), false);
-
+						expand_row (Gtk::TreePath (child), false, expanded);
 						break;
 					}
 					default:
@@ -1375,9 +1378,13 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 							{
 								const auto sfnode = static_cast <X3D::SFNode*> (field);
 
-								if ((field -> isInitializable () and *sfnode) or get_expanded (child) == OutlineExpanded::CHANGED)
+								if (expanded == OutlineExpanded::CHANGED or expanded == OutlineExpanded::FULL)
 								{
-									expand_row (Gtk::TreePath (child), false);
+									expand_row (Gtk::TreePath (child), false, expanded);
+								}
+								else if (field -> isInitializable () and *sfnode)
+								{
+									expand_row (Gtk::TreePath (child), false, OutlineExpanded::CHANGED);
 								}
 
 								break;
@@ -1386,17 +1393,21 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeIter & parent)
 							{
 								const auto mfnode = static_cast <X3D::MFNode*> (field);
 
-								if ((field -> isInitializable () and not mfnode -> empty () and mfnode -> size () < 51) or get_expanded (child) == OutlineExpanded::CHANGED)
+								if (expanded == OutlineExpanded::CHANGED or expanded == OutlineExpanded::FULL)
 								{
-									expand_row (Gtk::TreePath (child), false);
+									expand_row (Gtk::TreePath (child), false, expanded);
+								}
+								else if (field -> isInitializable () and not mfnode -> empty () and mfnode -> size () < 51)
+								{
+									expand_row (Gtk::TreePath (child), false, OutlineExpanded::CHANGED);
 								}
 
 								break;
 							}
 							default:
 							{
-								if (get_expanded (child) == OutlineExpanded::CHANGED)
-									expand_row (Gtk::TreePath (child), false);
+								if (expanded == OutlineExpanded::CHANGED or expanded == OutlineExpanded::FULL)
+									expand_row (Gtk::TreePath (child), false, expanded);
 
 								break;
 							}
