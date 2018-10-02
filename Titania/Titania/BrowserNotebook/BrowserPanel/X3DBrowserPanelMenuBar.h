@@ -93,6 +93,9 @@ private:
 	///  @name Event handlers
 
 	void
+	on_menubar_toggled ();
+
+	void
 	set_initialized ();
 
 	void

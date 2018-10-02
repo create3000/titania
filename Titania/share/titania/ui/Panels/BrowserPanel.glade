@@ -61,11 +61,13 @@
                   <object class="GtkMenu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkImageMenuItem" id="UndoViewMenuItem">
                         <property name="label" translatable="yes">_Undo View</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Undo View</property>
                         <property name="use_underline">True</property>
                         <property name="image">image3</property>
                         <property name="use_stock">False</property>
@@ -78,6 +80,7 @@
                         <property name="label" translatable="yes">_Redo View</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Redo View</property>
                         <property name="use_underline">True</property>
                         <property name="image">image4</property>
                         <property name="use_stock">False</property>
@@ -95,6 +98,7 @@
                       <object class="GtkCheckMenuItem" id="StraightenHorizonMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Straighten Horizon</property>
                         <property name="label" translatable="yes">Straighten _Horzion</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_straighten_horizon_toggled" swapped="no"/>
@@ -111,6 +115,7 @@
                         <property name="label" translatable="yes">Look _At Selection</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Look At Selection</property>
                         <property name="use_underline">True</property>
                         <property name="image">image1</property>
                         <property name="use_stock">False</property>
@@ -123,6 +128,7 @@
                         <property name="label" translatable="yes">Look At All _Objects</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Look At All</property>
                         <property name="use_underline">True</property>
                         <property name="image">image2</property>
                         <property name="use_stock">False</property>
@@ -135,6 +141,7 @@
                         <property name="label" translatable="yes">Reset User _Offsets</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/View/Reset User Offsets</property>
                         <property name="use_underline">True</property>
                         <property name="image">image5</property>
                         <property name="use_stock">False</property>
@@ -156,58 +163,59 @@
                   <object class="GtkMenu" id="menu7">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkRadioMenuItem" id="PhongMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Phong</property>
                         <property name="label" translatable="yes">P_hong</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_phong_toggled" swapped="no"/>
-                        <accelerator key="5" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkRadioMenuItem" id="GouraudMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Gouraud</property>
                         <property name="label" translatable="yes">_Gouraud</property>
                         <property name="use_underline">True</property>
                         <property name="group">PhongMenuItem</property>
                         <signal name="toggled" handler="on_gouraud_toggled" swapped="no"/>
-                        <accelerator key="4" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkRadioMenuItem" id="FlatMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Flat</property>
                         <property name="label" translatable="yes">_Flat</property>
                         <property name="use_underline">True</property>
                         <property name="group">PhongMenuItem</property>
                         <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
-                        <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkRadioMenuItem" id="WireframeMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Wireframe</property>
                         <property name="label" translatable="yes">_Wireframe</property>
                         <property name="use_underline">True</property>
                         <property name="group">PhongMenuItem</property>
                         <signal name="toggled" handler="on_wireframe_toggled" swapped="no"/>
-                        <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkRadioMenuItem" id="PointsetMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Pointset</property>
                         <property name="label" translatable="yes">_Pointset</property>
                         <property name="use_underline">True</property>
                         <property name="group">PhongMenuItem</property>
                         <signal name="toggled" handler="on_pointset_toggled" swapped="no"/>
-                        <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -220,6 +228,7 @@
                       <object class="GtkCheckMenuItem" id="TexturesMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Textures</property>
                         <property name="label" translatable="yes">_Textures</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
@@ -230,6 +239,7 @@
                       <object class="GtkCheckMenuItem" id="ShadersMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Shading/Shaders</property>
                         <property name="label" translatable="yes">_Shaders</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
@@ -251,11 +261,13 @@
                   <object class="GtkMenu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkMenuItem" id="ShowHideEnvironmentalEffectsMenuItem">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Show Hide Environmental Effects</property>
                         <property name="label" translatable="yes">Show/Hide Environmental Effects</property>
                         <property name="use_underline">True</property>
                         <style>
@@ -267,6 +279,7 @@
                       <object class="GtkCheckMenuItem" id="BackgroundsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Backgrounds</property>
                         <property name="label" translatable="yes">_Backgrounds</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
@@ -277,6 +290,7 @@
                       <object class="GtkCheckMenuItem" id="FogsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Fogs</property>
                         <property name="label" translatable="yes">_Fogs</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
@@ -288,6 +302,7 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Show Hide Iconic Objects</property>
                         <property name="label" translatable="yes">Show/Hide Iconic Objects</property>
                         <property name="use_underline">True</property>
                         <style>
@@ -299,6 +314,7 @@
                       <object class="GtkCheckMenuItem" id="LightsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Lights</property>
                         <property name="label" translatable="yes">_Lights</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_lights_toggled" swapped="no"/>
@@ -308,6 +324,7 @@
                       <object class="GtkCheckMenuItem" id="ProximitySensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/ProximitySensors</property>
                         <property name="label" translatable="yes">_ProximitySensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_proximity_sensors_toggled" swapped="no"/>
@@ -317,6 +334,7 @@
                       <object class="GtkCheckMenuItem" id="SoundsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Sounds</property>
                         <property name="label" translatable="yes">_Sounds</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_sounds_toggled" swapped="no"/>
@@ -326,6 +344,7 @@
                       <object class="GtkCheckMenuItem" id="TransformSensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/TransformSensor</property>
                         <property name="label" translatable="yes">_TransformSensor</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_transform_sensors_toggled" swapped="no"/>
@@ -335,6 +354,7 @@
                       <object class="GtkCheckMenuItem" id="VisibilitySensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/VisibilitySensors</property>
                         <property name="label" translatable="yes">V_isibilitySensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
@@ -344,6 +364,7 @@
                       <object class="GtkCheckMenuItem" id="ViewpointsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Viewpoints</property>
                         <property name="label" translatable="yes">_Viewpoints</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_viewpoints_toggled" swapped="no"/>
@@ -359,6 +380,7 @@
                       <object class="GtkMenuItem" id="HideAllObjectIconsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Hide All Object Icons</property>
                         <property name="label" translatable="yes">Hide All Object Icons</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
@@ -379,6 +401,7 @@
                   <object class="GtkMenu" id="LayersMenu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkMenuItem">
                         <property name="visible">True</property>
@@ -410,10 +433,12 @@
                   <object class="GtkMenu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">AccelGroup</property>
                     <child>
                       <object class="GtkMenuItem" id="MainViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Main View</property>
                         <property name="label" translatable="yes">_Main View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_main_view_activate" swapped="no"/>
@@ -430,6 +455,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="right_justified">True</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Perspective View</property>
                         <property name="label" translatable="yes">_Perspective View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_perspective_view_activate" swapped="no"/>
@@ -445,6 +471,7 @@
                       <object class="GtkMenuItem" id="TopViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Top View</property>
                         <property name="label" translatable="yes">_Top View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_top_view_activate" swapped="no"/>
@@ -454,6 +481,7 @@
                       <object class="GtkMenuItem" id="RightViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Right View</property>
                         <property name="label" translatable="yes">_Right View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_right_view_activate" swapped="no"/>
@@ -463,6 +491,7 @@
                       <object class="GtkMenuItem" id="FrontViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Front View</property>
                         <property name="label" translatable="yes">_Front View</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_front_view_activate" swapped="no"/>
@@ -478,6 +507,7 @@
                       <object class="GtkMenuItem" id="BottomViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Bottom View</property>
                         <property name="label" translatable="yes">Bottom View</property>
                         <signal name="activate" handler="on_bottom_view_activate" swapped="no"/>
                       </object>
@@ -486,6 +516,7 @@
                       <object class="GtkMenuItem" id="LeftViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Left View</property>
                         <property name="label" translatable="yes">Left View</property>
                         <signal name="activate" handler="on_left_view_activate" swapped="no"/>
                       </object>
@@ -494,6 +525,7 @@
                       <object class="GtkMenuItem" id="BackViewMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Camera/Back View</property>
                         <property name="label" translatable="yes">Back View</property>
                         <signal name="activate" handler="on_back_view_activate" swapped="no"/>
                       </object>

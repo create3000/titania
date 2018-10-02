@@ -35,3 +35,9 @@
 ;
 ; (gtk_accel_path "<Titania>/Layout/Grid Layout Tool" "<Primary>numbersign")
 ; (gtk_accel_path "<Titania>/Layout/Angle Layout Tool" "<Primary>apostrophe")
+;
+; (gtk_accel_path "<BrowserPanel>/Shading/Phong" "<Primary>5")
+; (gtk_accel_path "<BrowserPanel>/Shading/Gouraud" "<Primary>4")
+; (gtk_accel_path "<BrowserPanel>/Shading/Flat" "<Primary>3")
+; (gtk_accel_path "<BrowserPanel>/Shading/Wireframe" "<Primary>2")
+; (gtk_accel_path "<BrowserPanel>/Shading/Pointset" "<Primary>1")

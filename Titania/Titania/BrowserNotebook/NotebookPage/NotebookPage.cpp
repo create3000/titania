@@ -177,8 +177,6 @@ NotebookPage::setPanel (const size_t id, const PanelType panelType, Gtk::Viewpor
 void
 NotebookPage::set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box)
 {
-__LOG__ << id << " : " << int (panelType) << std::endl;
-
 	auto & panel = panels [id];
 
 	box .remove ();

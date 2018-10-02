@@ -152,6 +152,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 		}
 	}
 
+	//Gtk::AccelMap::save ("/home/holger/Accelerators.rc");
 	//Gtk::AccelMap::save (config_dir ("Accelerators.rc"));
 
 	// Setup.

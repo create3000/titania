@@ -329,8 +329,10 @@ X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all,
 void
 X3DOutlineTreeView::collapse_row (const Gtk::TreePath & path)
 {
-	if (row_expanded (path))
-		Gtk::TreeView::collapse_row (path);
+	if (not row_expanded (path))
+		return;
+
+	Gtk::TreeView::collapse_row (path);
 }
 
 void

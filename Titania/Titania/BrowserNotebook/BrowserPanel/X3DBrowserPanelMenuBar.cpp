@@ -72,12 +72,6 @@ X3DBrowserPanelMenuBar::X3DBrowserPanelMenuBar () :
 	 viewpointObserver (),
 	          changing (false)
 {
-	getPhongMenuItem ()     .add_accelerator ("activate", getAccelGroup (), GDK_KEY_5, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
-	getGouraudMenuItem ()   .add_accelerator ("activate", getAccelGroup (), GDK_KEY_4, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
-	getFlatMenuItem ()      .add_accelerator ("activate", getAccelGroup (), GDK_KEY_3, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
-	getWireframeMenuItem () .add_accelerator ("activate", getAccelGroup (), GDK_KEY_2, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
-	getPointsetMenuItem ()  .add_accelerator ("activate", getAccelGroup (), GDK_KEY_1, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
-
 	addChildObjects (browser);
 }
 
@@ -85,6 +79,8 @@ void
 X3DBrowserPanelMenuBar::initialize ()
 {
 	hasFocus () .addInterest (&X3DBrowserPanelMenuBar::set_focus, this);
+
+	getBrowserWindow () -> getMenubarAction () -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_menubar_toggled));
 
 	getPage () -> getMainBrowser () -> signal_hierarchy_changed () .connect (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_main_browser_hierarchy_changed));
 
@@ -97,6 +93,7 @@ X3DBrowserPanelMenuBar::initialize ()
 	getPage () -> getMainBrowser () -> getVisibilitySensorTools () .addInterest (&X3DBrowserPanelMenuBar::set_visibilitySensorTools, this);
 	getPage () -> getMainBrowser () -> getViewpointTools ()        .addInterest (&X3DBrowserPanelMenuBar::set_viewpointTools,        this);
 
+	on_menubar_toggled ();
 	on_main_browser_hierarchy_changed (nullptr);
 
 	getStraightenHorizonMenuItem () .set_active (getConfig () -> getItem <bool> ("straightenHorizon"));
@@ -145,6 +142,12 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 		getBackgroundsMenuItem ()                  .set_visible (false);
 		getFogsMenuItem ()                         .set_visible (false);
 	}
+}
+
+void
+X3DBrowserPanelMenuBar::on_menubar_toggled ()
+{
+	//getMenuBar () .set_visible (getBrowserWindow () -> getMenubarAction () -> get_active ());
 }
 
 void
