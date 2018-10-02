@@ -1820,16 +1820,20 @@ OutlineEditor::restoreExpanded ()
 
 			auto expanded = OutlineExpanded::UNDEFINED;
 
-			if (pair .size () > 1)
+			try
 			{
-				if (pair [1] == "0")
-					expanded = OutlineExpanded::UNDEFINED;
-				else if (pair [1] == "1")
-					expanded = OutlineExpanded::COLLAPSED;
-				else if (pair [1] == "2")
-					expanded = OutlineExpanded::CHANGED;
-				else if (pair [1] == "3")
-					expanded = OutlineExpanded::FULL;
+				static const std::map <std::string, OutlineExpanded> expandedTypes = {
+					std::make_pair ("0", OutlineExpanded::UNDEFINED),
+					std::make_pair ("1", OutlineExpanded::COLLAPSED),
+					std::make_pair ("2", OutlineExpanded::CHANGED),
+					std::make_pair ("3", OutlineExpanded::FULL),
+				};
+
+				expanded = expandedTypes .at (pair .at (1));
+			}
+			catch (const std::out_of_range & error)
+			{
+				expanded = OutlineExpanded::UNDEFINED;
 			}
 
 			treeView -> expand_row (Gtk::TreePath (pair [0]), false, expanded);
