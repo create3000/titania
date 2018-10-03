@@ -746,8 +746,7 @@ Context::error (JSContext* cx, const char* message, JSErrorReport* report)
 void
 Context::dispose ()
 {
-	if (future)
-		future -> dispose ();
+	future .setValue (nullptr);
 
 	X3DJavaScriptContext::dispose ();
 }

@@ -372,8 +372,7 @@ Inline::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 void
 Inline::dispose ()
 {
-	if (future)
-		future -> dispose ();
+	future .setValue (nullptr);
 
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();

@@ -726,8 +726,7 @@ ExternProtoDeclaration::toJSONStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
-	if (future)
-		future -> dispose ();
+	future .setValue (nullptr);
 
 	getScene () -> removeExternProtoLoadCount (this);
 

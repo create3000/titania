@@ -739,8 +739,7 @@ X3DBrowser::dispose ()
 	X3DBrowserContext::dispose ();
 	X3DBaseNode::dispose ();
 
-	if (future)
-		future -> dispose ();
+	future .setValue (nullptr);
 
 	supportedFields     .reset ();
 	supportedNodes      .reset ();
