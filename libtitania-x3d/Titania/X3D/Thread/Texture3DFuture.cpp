@@ -190,7 +190,7 @@ Texture3DFuture::prepareEvents ()
 
 		callback (loader .getWorldURL (), future .get ());
 
-		dispose ();
+		stop ();
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -200,8 +200,18 @@ Texture3DFuture::prepareEvents ()
 	{
 		callback ("", nullptr);
 
-		dispose ();
+		stop ();
 	}
+}
+
+void
+Texture3DFuture::stop ()
+{
+	X3DFuture::stop ();
+
+	loader .stop ();
+
+	callback = [ ] (const basic::uri &, const Texture3DPtr &) { };
 }
 
 void
@@ -209,11 +219,7 @@ Texture3DFuture::dispose ()
 {
 	stop ();
 
-	loader .stop ();
-
 	X3DFuture::dispose ();
-
-	callback = [ ] (const basic::uri &, const Texture3DPtr &) { };
 }
 
 Texture3DFuture::~Texture3DFuture ()

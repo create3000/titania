@@ -133,7 +133,7 @@ SceneFuture::wait ()
 
 		callback (std::move (scene));
 
-		dispose ();
+		stop ();
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -145,7 +145,7 @@ SceneFuture::wait ()
 
 		callback (nullptr);
 
-		dispose ();
+		stop ();
 	}
 }
 
@@ -227,7 +227,7 @@ SceneFuture::set_scene ()
 
 		callback (nullptr);
 
-		dispose ();
+		stop ();
 	}
 }
 
@@ -245,7 +245,7 @@ SceneFuture::set_loadCount (const int32_t loadCount)
 
 		callback (std::move (scene));
 
-		dispose ();
+		stop ();
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -254,18 +254,24 @@ SceneFuture::set_loadCount (const int32_t loadCount)
 }
 
 void
-SceneFuture::dispose ()
+SceneFuture::stop ()
 {
 	getBrowser () -> removeLoadCount (this);
 
-	stop ();
+	X3DFuture::stop ();
 
 	loader .stop ();
 
-	X3DFuture::dispose ();
-
 	// This is very important, otherwise not all nodes do dispose as they could be bound in the callback!
 	callback = [ ] (X3DScenePtr &&) { };
+}
+
+void
+SceneFuture::dispose ()
+{
+	stop ();
+
+	X3DFuture::dispose ();
 }
 
 SceneFuture::~SceneFuture ()

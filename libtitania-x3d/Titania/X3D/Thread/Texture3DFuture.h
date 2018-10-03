@@ -103,6 +103,9 @@ public:
 
 	///  @name Destruction
 
+	void
+	stop ();
+
 	virtual
 	void
 	dispose () final override;
