@@ -61,7 +61,6 @@
 #include <Titania/X3D/Components/Text/Text.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
-#include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
 
 namespace titania {
@@ -189,7 +188,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 		try
 		{
 			const auto number = basic::to_string (i, std::locale::classic ());
-			const auto image  = basic::base64_encode (getBrowserWindow () -> getHistory () -> getPreview (item .at ("id")));
+			const auto image  = Glib::Base64::encode (getBrowserWindow () -> getHistory () -> getPreview (item .at ("id")));
 
 			const auto switchNode  = scene -> getNamedNode <X3D::Switch> ("Switch" + number);
 			const auto texture     = scene -> getNamedNode <X3D::ImageTexture> ("Texture" + number);

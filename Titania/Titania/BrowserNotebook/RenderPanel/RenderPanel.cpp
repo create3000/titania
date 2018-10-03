@@ -234,10 +234,12 @@ RenderPanel::setRendering (const bool value)
 		try
 		{
 			renderThread = std::make_unique <RenderThread> (worldURL, filename, codec, duration, frameRate, width, height, antialiasing, shading, fixedPipeline);
+
 			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
 			renderThread -> signal_frame_changed ()      .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));
 			renderThread -> signal_stdout ()             .connect (sigc::mem_fun (this, &RenderPanel::on_stdout));
 			renderThread -> signal_stderr ()             .connect (sigc::mem_fun (this, &RenderPanel::on_stderr));
+
 			renderThread -> start ();
 		}
 		catch (const std::exception & error)
@@ -423,7 +425,7 @@ RenderPanel::on_frame_changed ()
 		
 			if (imageTexture -> checkLoadState () not_eq X3D::IN_PROGRESS_STATE)
 				imageTexture -> setUrl (frame -> image);
-	
+
 			if (lastFrame)
 				setRendering (false);
 		}

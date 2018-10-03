@@ -46,7 +46,6 @@
     <None Include="Titania\Stream\InputUrlStream.h" />
     <None Include="Titania\Stream\UrlStreamBuf.h" />
     <None Include="Titania\Stream\GZFilterBuf.h" />
-    <None Include="Titania\Stream\Base64.h" />
     <None Include="Makefile.in" />
     <None Include="libtitania-stream.cproj" />
     <None Include="libtitania-stream.pidb" />
@@ -67,7 +66,6 @@
     <Compile Include="Titania\Stream\InputUrlStream.cpp" />
     <Compile Include="Titania\Stream\UrlStreamBuf.cpp" />
     <Compile Include="Titania\Stream\GZFilterBuf.cpp" />
-    <Compile Include="Titania\Stream\Base64.cpp" />
     <Compile Include="Titania\Stream\GZStream.cpp" />
   </ItemGroup>
   <ProjectExtensions>

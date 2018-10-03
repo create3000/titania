@@ -51,7 +51,6 @@
 #include "X3DImageTextureEditor.h"
 
 #include "../../ComposedWidgets/MFStringURLWidget.h"
-#include <Titania/Stream/Base64.h>
 
 namespace titania {
 namespace puck {
@@ -128,7 +127,7 @@ X3DImageTextureEditor::on_embed_image_clicked ()
 			std::string contentType = Gio::content_type_guess (loader .getWorldURL () .path (), (guchar*) image .data (), image .size (), result_uncertain);
 
 			const auto  undoStep = std::make_shared <X3D::UndoStep> (_ ("Embed Image"));
-			std::string data     = "data:" + contentType + ";base64," + basic::base64_encode (image);
+			std::string data     = "data:" + contentType + ";base64," + Glib::Base64::encode (image);
 
 			undoStep -> addObjects (imageTexture);
 			undoStep -> addUndoFunction (&X3D::MFString::setValue, std::ref (imageTexture -> url ()), imageTexture -> url ());

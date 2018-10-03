@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include <Titania/Stream/Base64.h>
-
 #include <sigc++/bind.h>
 
 namespace titania {
@@ -191,7 +189,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	std::string data (static_cast <const char*> (blob .data ()),
 	                  static_cast <const char*> (blob .data ()) + blob .length ());
 
-	url () = { "data:image/png;base64," + basic::base64_encode (data) };
+	url () = { "data:image/png;base64," + Glib::Base64::encode (data) };
 }
 
 void
@@ -203,7 +201,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	surface -> write_to_png_stream (sigc::bind (sigc::mem_fun (this, &ImageTexture::write_to_png_stream), sigc::ref (osstream)));
 
-	url () = { "data:image/png;base64," + basic::base64_encode (osstream .str ()) };
+	url () = { "data:image/png;base64," + Glib::Base64::encode (osstream .str ()) };
 }
 
 Cairo::ErrorStatus

@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-#include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
 #include <Titania/RegEx/regex_escape.h>
 
@@ -130,10 +129,10 @@ X3DScriptEditorSearch::configure ()
 	basic::basic_split <Glib::ustring> (std::back_inserter (recentReplaces), getConfig () -> getItem <Glib::ustring> ("recentReplaces"), ";");
 
 	for (auto search : recentSearches)
-		search = basic::base64_decode (search);
+		search = Glib::Base64::decode (search);
 
 	for (auto replace : recentReplaces)
-		replace = basic::base64_decode (replace);
+		replace = Glib::Base64::decode (replace);
 
 	recentReplaces .resize (recentSearches .size ());
 
@@ -707,10 +706,10 @@ X3DScriptEditorSearch::store ()
 	getConfig () -> setItem ("searchWrapAround",        getWrapAroundMenuItemMenuItem () .get_active ());
 
 	for (auto search : recentSearches)
-		search = basic::base64_encode (search);
+		search = Glib::Base64::encode (search);
 
 	for (auto search : recentReplaces)
-		search = basic::base64_encode (search);
+		search = Glib::Base64::encode (search);
 
 	getConfig () -> setItem ("recentSearches", basic::join (recentSearches, ";"));
 	getConfig () -> setItem ("recentReplaces", basic::join (recentReplaces, ";"));

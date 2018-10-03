@@ -50,8 +50,6 @@
 
 #include "InputFileStream.h"
 
-#include "Base64.h"
-
 #include <Titania/String/to_string.h>
 
 #include <giomm.h>
@@ -166,7 +164,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 					data = std::move (escaped);
 			}
 			else
-				data = base64_decode (data);
+				data = Glib::Base64::decode (data);
 
 			if (not contentType .empty ())
 				file_response_headers .emplace ("Content-Type", contentType);
