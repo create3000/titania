@@ -51,6 +51,7 @@
 #include "RecentView.h"
 
 #include "../Browser/BrowserSelection.h"
+#include "../Browser/IconFactory.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../Configuration/config.h"
@@ -114,7 +115,8 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		if (not browser -> isInitialized ())
 			return;
 
-		auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, 16);
+		const auto worldURL = browser -> getWorldURL ();
+		auto       image    = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, 16);
 
 		image .quality (PREVIEW_QUALITY);
 		image .magick (PREVIEW_TYPE);
@@ -122,10 +124,15 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		Magick::Blob blob;
 		image .write (&blob);
 
-		getBrowserWindow () -> getHistory () -> setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
+		const std::string preview ((char*) blob .data (), blob .length ());
+
+		getBrowserWindow () -> getHistory () -> setPreview (worldURL, preview);
+		getBrowserWindow () -> getIconFactory () -> createIcon (worldURL, preview);
 	}
 	catch (const std::exception & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

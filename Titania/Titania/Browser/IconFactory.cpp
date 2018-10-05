@@ -65,35 +65,6 @@ IconFactory::IconFactory (X3DBrowserWindow* const browserWindow) :
 { }
 
 void
-IconFactory::createIcon (const X3D::X3DScenePtr & scene)
-{
-	const basic::uri & worldURL = scene -> getWorldURL ();
-
-	try
-	{
-		basic::uri uri;
-
-		try
-		{
-			uri = scene -> getMetaData ("icon");
-		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
-		{
-			if (worldURL .is_local ())
-				throw;
-
-			uri = "/favicon.ico";
-		}
-
-		createIcon (worldURL, X3D::FileLoader (scene) .loadDocument (uri));
-	}
-	catch (const std::exception & error)
-	{
-		createIcon (worldURL, "");
-	}
-}
-
-void
 IconFactory::createIcon (const std::string & name, const std::string & document)
 {
 	Glib::RefPtr <Gtk::IconSet> iconSet;

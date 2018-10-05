@@ -73,9 +73,6 @@ public:
 	///  @name Operations
 
 	void
-	createIcon (const X3D::X3DScenePtr & scene);
-
-	void
 	createIcon (const std::string & name, const std::string & document);
 
 	void

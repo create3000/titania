@@ -614,12 +614,12 @@ X3DBrowserNotebook::on_switch_page (Gtk::Widget*, guint pageNumber)
 	try
 	{
 		const auto page = pages .at (pageNumber);
-	
+
 		recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
 		recentPages .emplace_back (page);
-	
+
 		recentView -> loadPreview (getCurrentBrowser ());
-	
+
 		setPage (page);
 	}
 	catch (const std::out_of_range & error)
@@ -684,7 +684,7 @@ X3DBrowserNotebook::set_history ()
 
 	// Update history.
 
-	getHistory () -> setItem (worldURL .basename (), worldURL, getIconFactory () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	getHistory () -> setItem (worldURL .basename (), worldURL);
 }
 
 void

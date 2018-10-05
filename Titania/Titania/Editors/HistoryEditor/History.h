@@ -84,8 +84,9 @@ public:
 	///  @name Operations
 
 	std::string
-	getIcon (const std::string & id) const
-	throw (std::invalid_argument);
+	getId (const std::string & worldURL) const
+	throw (std::out_of_range,
+	       std::invalid_argument);
 
 	void
 	setPreview (const std::string & worldURL, const std::string & image);
@@ -101,7 +102,7 @@ public:
 	getContextPath (const std::string & worldURL) const;
 
 	void
-	setItem (const std::string & title, const std::string & worldURL, const std::string & image);
+	setItem (const std::string & title, const std::string & worldURL);
 
 	sql::sqlite3::assoc_row_type
 	getItem (const std::string & id) const;
@@ -135,11 +136,6 @@ private:
 	on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event);
 
 	///  @name Operations
-
-	std::string
-	getId (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument);
 
 	std::string
 	getOrder (const Columns column, const SortOrder sortOrder) const;

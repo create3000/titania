@@ -88,6 +88,16 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	mainBrowser -> setMonitorFiles (true);
 
 	undoHistory .addInterest (&X3DNotebookPage::updateTitle, this);
+
+	try
+	{
+		const auto id      = getBrowserWindow () -> getHistory () -> getId (url);
+		const auto preview = getBrowserWindow () -> getHistory () -> getPreview (id);
+
+		getBrowserWindow () -> getIconFactory () -> createIcon (url, preview);
+	}
+	catch (const std::exception & error)
+	{ }
 }
 
 void
@@ -338,8 +348,6 @@ X3DNotebookPage::set_initialized ()
 void
 X3DNotebookPage::set_scene ()
 {
-	getBrowserWindow () -> getIconFactory () -> createIcon (getScene ());
-
 	if (getScene () -> getWorldURL () == get_page ("about/new.x3dv"))
 	{
 		url = "";

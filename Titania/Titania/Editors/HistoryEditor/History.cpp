@@ -78,7 +78,6 @@ History::History () :
 	
 		database .query ("CREATE TABLE IF NOT EXISTS History ("
 		                 "id           INTEGER,"
-		                 "icon         BLOB,"
 		                 "title        TEXT,"
 		                 "worldURL     TEXT,"
 		                 "visited      INTEGER DEFAULT 1,"
@@ -88,47 +87,48 @@ History::History () :
 
 		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
 		database .try_query ("ALTER TABLE History ADD contextPath TEXT");
+		database .try_query ("ALTER TABLE History DROP icon");
 
 		if (not have_history)
 		{
-			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Gears/gears.x3d",  "");
-			setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Schacht/index.wrl",  "");
-			setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Appartment/index.wrl",  "");
-			setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LogoPieces/index.x3d",  "");
+			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Gears/gears.x3d");
+			setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Schacht/index.wrl");
+			setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Appartment/index.wrl");
+			setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LogoPieces/index.x3d");
 	
-			setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/anatomy/anatomy.wrl",  "");
-			setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/MovieTruck/stage/index.wrl",  "");
-			setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/index.wrl",  "");
-			setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Dolphin/index.wrl",  "");
-			setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/info.wrl",  "");
-			setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/buero.wrl",  "");
-			setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/building.wrl",  "");
-			setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/index.wrl",  "");
-			setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/jungle/jungle.wrl",  "");
-			setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/ripple.wrl",  "");
-			setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/VRMLBanner/vrmlbanner.wrl",  "");
-			setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/NIST-Logo/index.wrl",  "");
+			setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/anatomy/anatomy.wrl");
+			setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/MovieTruck/stage/index.wrl");
+			setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/index.wrl");
+			setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Dolphin/index.wrl");
+			setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/info.wrl");
+			setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/buero.wrl");
+			setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/building.wrl");
+			setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/index.wrl");
+			setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/jungle/jungle.wrl");
+			setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/ripple.wrl");
+			setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/VRMLBanner/vrmlbanner.wrl");
+			setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/NIST-Logo/index.wrl");
 	
-			setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Mushrooms/index.wrl",  "");
-			setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Rathaus/stage/index.x3d",  "");
-			setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Terrain/index.wrl",  "");
-			setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Approach/stage/index.wrl",  "");
-			setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/huey.wrl",  "");
-			setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Cathedral/stage/index.wrl",  "");
-			setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LustForLife/stage/index.wrl",  "");
-			setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Vattenfall/index.wrl",  "");
-			setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/foldup.wrl",  "");
-			setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Pong/index.wrl",  "");
-			setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Arcadia/stage/index.wrl",  "");
-			setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Astronomy/stage/astrnmy.wrl",  "");
-			setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/soccer.wrl",  "");
-			setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/labyrinth.wrl",  "");
-			setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Boxes/boxes.x3d",  "");
-			setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Chomp/chomp.x3d",  "");
+			setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Mushrooms/index.wrl");
+			setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Rathaus/stage/index.x3d");
+			setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Terrain/index.wrl");
+			setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Approach/stage/index.wrl");
+			setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/huey.wrl");
+			setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Cathedral/stage/index.wrl");
+			setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LustForLife/stage/index.wrl");
+			setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Vattenfall/index.wrl");
+			setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/foldup.wrl");
+			setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Pong/index.wrl");
+			setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Arcadia/stage/index.wrl");
+			setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Astronomy/stage/astrnmy.wrl");
+			setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/soccer.wrl");
+			setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/labyrinth.wrl");
+			setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Boxes/boxes.x3d");
+			setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Chomp/chomp.x3d");
 	
-			setItem ("about:date",  get_page ("about/date.x3dv"),  "");
-			setItem ("about:gears", get_page ("about/gears.x3dv"), "");
-			setItem ("about:home",  get_page ("about/home.x3dv"),  "");
+			setItem ("about:date",  get_page ("about/date.x3dv"));
+			setItem ("about:gears", get_page ("about/gears.x3dv"));
+			setItem ("about:home",  get_page ("about/home.x3dv"));
 		}
 	
 		// Watch for changes
@@ -200,17 +200,6 @@ throw (std::out_of_range,
 //	return index;
 //}
 
-std::string
-History::getIcon (const std::string & id) const
-throw (std::invalid_argument)
-{
-	std::string value;
-
-	database .read_blob ("SELECT icon FROM History WHERE id = " + id, value);
-
-	return value;
-}
-
 void
 History::setPreview (const std::string & worldURL, const std::string & image)
 {
@@ -267,7 +256,7 @@ History::getContextPath (const std::string & worldURL) const
 }
 
 void
-History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)
+History::setItem (const std::string & title, const std::string & worldURL)
 {
 	try
 	{
@@ -279,8 +268,6 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 		{
 			insert (title, worldURL);
 		}
-	
-		database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
 	}
 	catch (const std::exception & error)
 	{
