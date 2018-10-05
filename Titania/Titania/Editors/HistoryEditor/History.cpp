@@ -87,7 +87,7 @@ History::History () :
 
 		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
 		database .try_query ("ALTER TABLE History ADD contextPath TEXT");
-		database .try_query ("ALTER TABLE History DROP icon");
+		database .try_query ("ALTER TABLE History DROP icon"); // sqlite cannot drop columns
 
 		if (not have_history)
 		{
