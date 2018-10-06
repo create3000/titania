@@ -210,6 +210,9 @@ private:
 	void
 	set_executionContext ();
 
+	void
+	set_geometries ();
+
 	///  @name Undo handling
 
 	void

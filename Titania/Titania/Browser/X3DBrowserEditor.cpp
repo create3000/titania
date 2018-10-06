@@ -115,8 +115,7 @@ X3DBrowserEditor::initialize ()
 
 	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
 
-	getBrowserWindow () -> getSelection () -> getNodes ()      .addInterest (&X3DBrowserEditor::set_selection, this);
-	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DBrowserEditor::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DBrowserEditor::set_geometries, this);
 
 	getClipboard () -> string_changed () .addInterest (&X3DBrowserWindow::set_clipboard, this);
 }
@@ -202,11 +201,27 @@ X3DBrowserEditor::set_executionContext ()
 }
 
 void
-X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
+X3DBrowserEditor::set_geometries ()
 {
-	X3DBrowserNotebook::set_selection (selection);
+	const auto & selection = getSelection () -> getNodes ();
 
-	for (const auto & node : getSelection () -> getSelectGeometry () ? getSelection () -> getGeometries () : selection)
+	if (getSelectionContext (selection))
+		set_selection (selection);
+	else
+		set_selection ({ });
+}
+
+void
+X3DBrowserEditor::set_selection (const X3D::MFNode & selection_)
+{
+	X3DBrowserNotebook::set_selection (selection_);
+
+	// Must use unfiltered selection:
+
+	const auto selection  = getSelection () -> getNodes ();
+	const auto geometries = getSelection () -> getGeometries ();
+
+	for (const auto & node : getSelection () -> getSelectGeometry () ? geometries : selection)
 	{
 		for (const auto & type : basic::make_reverse_range (node -> getType ()))
 		{
