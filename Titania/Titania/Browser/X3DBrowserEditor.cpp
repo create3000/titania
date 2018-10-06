@@ -115,7 +115,8 @@ X3DBrowserEditor::initialize ()
 
 	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
 
-	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DBrowserEditor::set_geometries, this);
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DBrowserEditor::set_geometries, this);
+	getBrowserWindow () -> getSelection () -> getGeometries ()     .addInterest (&X3DBrowserEditor::set_geometries, this);
 
 	getClipboard () -> string_changed () .addInterest (&X3DBrowserWindow::set_clipboard, this);
 }
