@@ -78,9 +78,6 @@ public:
 
 	///  @name Construction
 
-	void
-	initialize ();
-
 	///  @name Member access
 
 	const Glib::RefPtr <OutlineTreeModel> &

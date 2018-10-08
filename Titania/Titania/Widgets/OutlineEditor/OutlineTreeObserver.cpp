@@ -222,20 +222,12 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		{
 			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
-			const auto   materialNode  = dynamic_cast <X3D::X3DMaterialNode*> (sfnode .getValue ());
-			const auto   textureNode   = dynamic_cast <X3D::X3DTextureNode*> (sfnode .getValue ());
 
 			if (sfnode)
 				sfnode -> name_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
 
 			if (protoInstance)
 				protoInstance -> typeName_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
-
-			if (materialNode)
-				materialNode -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
-
-			else if (textureNode)
-				textureNode -> checkLoadState () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
 
 			break;
 		}
@@ -358,8 +350,6 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		{
 			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
-			const auto   materialNode  = dynamic_cast <X3D::X3DMaterialNode*> (sfnode .getValue ());
-			const auto   textureNode   = dynamic_cast <X3D::X3DTextureNode*> (sfnode .getValue ());
 			const auto   urlObject     = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
 
 			if (sfnode)
@@ -377,12 +367,6 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 
 			if (protoInstance)
 				protoInstance -> typeName_changed () .removeInterest (&OutlineTreeObserver::on_row_changed, this);
-
-			if (materialNode)
-				materialNode -> removeInterest (&OutlineTreeObserver::on_row_changed, this);
-
-			else if (textureNode)
-				textureNode -> checkLoadState () .removeInterest (&OutlineTreeObserver::on_row_changed, this);
 
 			if (urlObject)
 				urlObject -> checkLoadState () .removeInterest (&OutlineTreeObserver::toggle_path, this);

@@ -58,15 +58,7 @@
 #include "OutlineFields.h"
 #include "TextViewEditable.h"
 
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
-#include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/Material.h>
-#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
-#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
@@ -108,8 +100,6 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOu
 	                     treeView (treeView),
 	                data_property (*this, "tree-data", nullptr),
 	            cellrenderer_icon (),
-	   cellrenderer_material_icon (),
-	    cellrenderer_texture_icon (),
 	cellrenderer_access_type_icon (),
 	                    noneImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/none.png"))),
 	        executionContextImage (Gdk::Pixbuf::create_from_file (get_ui ("icons/Node/X3DExecutionContext.svg"))),
@@ -127,8 +117,6 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOu
 	             accessTypeImages (),
 	                   accessType (),
 	                       routes (),
-	              materialPreview (X3D::createBrowser (browser, { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
-	               texturePreview (X3D::createBrowser (browser, { get_ui ("Editors/TexturePreview.x3dv") }, { })),
 	                     textview ()
 {
 	// Images
@@ -168,63 +156,11 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOu
 	// CellRendererPixbuf
 
 	cellrenderer_icon             .set_alignment (0, 0.5);
-	cellrenderer_material_icon    .set_alignment (0, 0.5);
-	cellrenderer_texture_icon     .set_alignment (0, 0.5);
 	cellrenderer_access_type_icon .set_alignment (0, 0.5);
-
-	cellrenderer_material_icon .property_stock_size () = 1;
-	cellrenderer_texture_icon  .property_stock_size () = 1;
 
 	// Signals
 
 	data_property .get_proxy () .signal_changed () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_data));
-}
-
-void
-OutlineCellRenderer::initialize ()
-{
-	// Off-Screen Browser
-
-	materialPreview -> initialized () .addInterest (&OutlineCellRenderer::set_material_preview, this);
-	materialPreview -> setFixedPipeline (false);
-	materialPreview -> setAntialiasing (4);
-	materialPreview -> setup ();
-
-	texturePreview -> initialized () .addInterest (&OutlineCellRenderer::set_texture_preview, this);
-	texturePreview -> setFixedPipeline (false);
-	texturePreview -> setup ();
-}
-
-void
-OutlineCellRenderer::set_material_preview ()
-{
-	try
-	{
-		materialPreview -> getExecutionContext () -> getNamedNode ("Appearance")     -> setPrivate (true);
-		materialPreview -> getExecutionContext () -> getNamedNode ("LineAppearance") -> setPrivate (true);
-
-		treeView -> queue_draw ();
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-OutlineCellRenderer::set_texture_preview ()
-{
-	try
-	{
-		texturePreview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
-		texturePreview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
-	
-		treeView -> queue_draw ();
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
 }
 
 void
@@ -1335,110 +1271,6 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 				break;
 			}
-			case OutlineIterType::X3DBaseNode:
-			{
-				const auto & sfnode = *static_cast <X3D::SFNode*> (get_object ());
-
-				for (const auto & type : basic::make_reverse_range (sfnode -> getType ()))
-				{
-					switch (type)
-					{
-						case X3D::X3DConstants::X3DMaterialNode:
-						{
-							try
-							{
-								// Configure scene.
-						
-								const X3D::X3DPtr <X3D::Material>         material (sfnode);
-								const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (sfnode);
-								const X3D::X3DPtr <X3D::Appearance>       appearance (materialPreview -> getExecutionContext () -> getNamedNode ("Appearance"));
-						
-								if (not (material or twoSidedMaterial) or not appearance)
-									return;
-
-								if (material)
-									appearance -> material () = material;
-							
-								else if (twoSidedMaterial)
-									appearance -> material () = twoSidedMaterial;
-						
-								const X3D::X3DPtr <X3D::Material> backMaterial (materialPreview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
-						
-								if (backMaterial and twoSidedMaterial)
-								{
-									backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
-									backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
-									backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
-									backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
-									backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
-									backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
-								}
-						
-								const X3D::X3DPtr <X3D::Switch> sphere (materialPreview -> getExecutionContext () -> getNamedNode ("Sphere"));
-						
-								sphere -> whichChoice () = twoSidedMaterial;
-						
-								// Create Icon.
-
-								const auto stockId = treeView -> getName () + basic::to_string (sfnode -> getId ());
-
-								treeView -> getBrowserWindow () -> getIconFactory () -> createIcon (stockId, materialPreview -> getSnapshot (16, 16, false, 8));
-
-								x     += ACCESS_TYPE_X_PAD;
-								width -= ACCESS_TYPE_X_PAD;
-
-								Gdk::Rectangle cell_area (x, y, width, height);
-								cellrenderer_material_icon .property_stock_id () = stockId;
-								cellrenderer_material_icon .render (context, widget, background_area, cell_area, flags);
-							}
-							catch (const std::exception & error)
-							{ 
-								__LOG__ << error .what () << std::endl;
-							}
-	
-							break;
-						}
-						case X3D::X3DConstants::X3DTextureNode:
-						{
-							try
-							{
-								// Configure scene.
-						
-								const auto appearance = texturePreview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
-						
-								appearance -> texture () = sfnode;
-						
-								set_camera (sfnode);
-						
-								// Create Icon.
-					
-								const auto stockId = treeView -> getName () + basic::to_string (sfnode -> getId ());
-
-								treeView -> getBrowserWindow () -> getIconFactory () -> createIcon (stockId, texturePreview -> getSnapshot (16, 16, false, 8));
-
-								x     += ACCESS_TYPE_X_PAD;
-								width -= ACCESS_TYPE_X_PAD;
-
-								Gdk::Rectangle cell_area (x, y, width, height);
-								cellrenderer_texture_icon .property_stock_id () = stockId;
-								cellrenderer_texture_icon .render (context, widget, background_area, cell_area, flags);
-							}
-							catch (const std::exception & error)
-							{ 
-								__LOG__ << error .what () << std::endl;
-							}
-	
-							break;
-						}
-						default:
-							continue;
-					}
-
-					break;
-				}
-
-				break;
-			}
 			default:
 				break;
 		}
@@ -1756,34 +1588,6 @@ OutlineCellRenderer::have_selected_routes (const OutlineRoutes & set)
 	}
 
 	return false;
-}
-
-void
-OutlineCellRenderer::set_camera (const X3D::SFNode & node)
-{
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (node);
-
-	if (texture2DNode)
-		set_camera (texture2DNode -> width (), texture2DNode -> height ());
-
-	else
-		set_camera (16, 16);
-}
-
-void
-OutlineCellRenderer::set_camera (double width, double height)
-{
-	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-	const X3D::X3DPtr <X3D::Transform>      transform (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2D"));
-
-	if (not width or not height)
-	{
-		width  = 1;
-		height = 1;
-	}
-
-	viewpoint -> fieldOfView () = { -width, -height, width, height };
-	transform -> scale ()       = X3D::Vector3f (width, height, 1);
 }
 
 OutlineCellRenderer::~OutlineCellRenderer ()

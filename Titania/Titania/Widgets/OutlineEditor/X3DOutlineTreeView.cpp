@@ -143,12 +143,6 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 }
 
 void
-X3DOutlineTreeView::initialize ()
-{
-	cellrenderer -> initialize ();
-}
-
-void
 X3DOutlineTreeView::on_style_updated ()
 {
 	// Color
