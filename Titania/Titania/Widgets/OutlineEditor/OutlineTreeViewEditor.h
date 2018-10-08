@@ -68,11 +68,24 @@ public:
 
 	OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor);
 
+	void
+	initialize ();
+
+	///  @name Destruction
+
 	virtual
 	~OutlineTreeViewEditor () final override;
 
 
 private:
+
+	///  @name Construction
+	
+	void
+	set_material_preview ();
+	
+	void
+	set_texture_preview ();
 
 	///  @name Operations
 
@@ -91,6 +104,15 @@ private:
 	set_motion_notify_event (GdkEventMotion*);
 
 	bool
+	on_query_tooltip (int x, int y, bool keyboard_tooltip, const Glib::RefPtr <Gtk::Tooltip> & tooltip);
+
+	void
+	set_camera (const X3D::SFNode & node);
+	
+	void
+	set_camera (double width, double height);
+
+	bool
 	select_field_value (const double x, const double y);
 
 	bool
@@ -101,6 +123,9 @@ private:
 
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
+
+	bool
+	hover_icon (const double, const double);
 
 	bool
 	hover_access_type (const double, const double);
@@ -150,6 +175,9 @@ private:
 	std::string destinationField;
 
 	sigc::connection motion_notify_connection;
+
+	const X3D::BrowserPtr materialPreview;
+	const X3D::BrowserPtr texturePreview;
 
 };
 

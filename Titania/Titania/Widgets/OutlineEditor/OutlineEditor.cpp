@@ -89,8 +89,6 @@ OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 {
 	nodeName .name_changed () .addInterest (&OutlineEditor::set_name, this);
 
-	treeView -> signal_query_tooltip () .connect (sigc::mem_fun (this, &OutlineEditor::on_query_tooltip));
-
 	setup ();
 }
 
@@ -116,6 +114,7 @@ OutlineEditor::initialize ()
 
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
+	treeView -> initialize ();
 
 	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getItem <bool> ("showExternProtos",         true));
 	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getItem <bool> ("showPrototypes",           true));

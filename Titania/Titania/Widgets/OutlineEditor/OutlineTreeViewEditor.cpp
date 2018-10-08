@@ -51,7 +51,9 @@
 #include "OutlineTreeViewEditor.h"
 
 #include "../../Base/ScrollFreezer.h"
+#include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineDragDrop.h"
@@ -60,6 +62,14 @@
 #include "OutlineTreeObserver.h"
 
 #include <Titania/X3D/Editing/X3DEditor.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/String.h>
@@ -83,17 +93,65 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	         destinationPath (),
 	         destinationNode (),
 	        destinationField (),
-	motion_notify_connection ()
+	motion_notify_connection (),
+	         materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
+	          texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { }))
 {
 	addChildObjects (sourceNode, destinationNode);
 
 	set_name ("OutlineTreeViewEditor");
 
+	set_has_tooltip (false);
 	watch_motion (true);
+
+	signal_query_tooltip () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_query_tooltip));
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
 	setup ();
+}
+
+void
+OutlineTreeViewEditor::initialize ()
+{
+	// Off-Screen Browser
+
+	materialPreview -> initialized () .addInterest (&OutlineTreeViewEditor::set_material_preview, this);
+	materialPreview -> setFixedPipeline (false);
+	materialPreview -> setAntialiasing (4);
+	materialPreview -> setup ();
+
+	texturePreview -> initialized () .addInterest (&OutlineTreeViewEditor::set_texture_preview, this);
+	texturePreview -> setFixedPipeline (false);
+	texturePreview -> setup ();
+}
+
+void
+OutlineTreeViewEditor::set_material_preview ()
+{
+	try
+	{
+		materialPreview -> getExecutionContext () -> getNamedNode ("Appearance")     -> setPrivate (true);
+		materialPreview -> getExecutionContext () -> getNamedNode ("LineAppearance") -> setPrivate (true);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+OutlineTreeViewEditor::set_texture_preview ()
+{
+	try
+	{
+		texturePreview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
+		texturePreview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -146,10 +204,160 @@ OutlineTreeViewEditor::on_button_release_event (GdkEventButton* event)
 bool
 OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 {
+	if (hover_icon (event -> x, event -> y))
+		return true;
+
 	if (hover_access_type (event -> x, event -> y))
 		return true;
 
 	return false;
+}
+
+bool
+OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, const Glib::RefPtr <Gtk::Tooltip> & tooltip)
+{
+	Gtk::TreeViewColumn*       column = nullptr;
+	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
+
+	if (path .empty ())
+		return false;
+
+	const auto iter = get_model () -> get_iter (path);
+	const auto data = get_model () -> get_data (iter);
+
+	switch (data -> get_type ())
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			const auto & sfnode = *static_cast <X3D::SFNode*> (data -> get_object ());
+
+			for (const auto & type : basic::make_reverse_range (sfnode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DMaterialNode:
+					{
+						try
+						{
+							// Configure scene.
+					
+							const X3D::X3DPtr <X3D::Material>         material (sfnode);
+							const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (sfnode);
+							const X3D::X3DPtr <X3D::Appearance>       appearance (materialPreview -> getExecutionContext () -> getNamedNode ("Appearance"));
+					
+							if (not (material or twoSidedMaterial) or not appearance)
+								return false;
+
+							if (material)
+								appearance -> material () = material;
+						
+							else if (twoSidedMaterial)
+								appearance -> material () = twoSidedMaterial;
+					
+							const X3D::X3DPtr <X3D::Material> backMaterial (materialPreview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
+					
+							if (backMaterial and twoSidedMaterial)
+							{
+								backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
+								backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
+								backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
+								backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
+								backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
+								backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
+							}
+					
+							const X3D::X3DPtr <X3D::Switch> sphere (materialPreview -> getExecutionContext () -> getNamedNode ("Sphere"));
+					
+							sphere -> whichChoice () = twoSidedMaterial;
+					
+							// Create Icon.
+
+							const auto stockId = getName () + basic::to_string (sfnode -> getId ());
+
+							getBrowserWindow () -> getIconFactory () -> createIcon (stockId, materialPreview -> getSnapshot (48, 48, false, 8));
+
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+							return true;
+						}
+						catch (const std::exception & error)
+						{ 
+							__LOG__ << error .what () << std::endl;
+							break;
+						}
+					}
+					case X3D::X3DConstants::X3DTextureNode:
+					{
+						try
+						{
+							// Configure scene.
+					
+							const auto appearance = texturePreview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+					
+							appearance -> texture () = sfnode;
+					
+							set_camera (sfnode);
+					
+							// Create Icon.
+				
+							const auto stockId = getName () + basic::to_string (sfnode -> getId ());
+
+							getBrowserWindow () -> getIconFactory () -> createIcon (stockId, texturePreview -> getSnapshot (48, 48, false, 8));
+
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+
+							return true;
+						}
+						catch (const std::exception & error)
+						{ 
+							__LOG__ << error .what () << std::endl;
+							break;
+						}
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+OutlineTreeViewEditor::set_camera (const X3D::SFNode & node)
+{
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (node);
+
+	if (texture2DNode)
+		set_camera (texture2DNode -> width (), texture2DNode -> height ());
+
+	else
+		set_camera (48, 48);
+}
+
+void
+OutlineTreeViewEditor::set_camera (double width, double height)
+{
+	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+	const X3D::X3DPtr <X3D::Transform>      transform (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2D"));
+
+	if (not width or not height)
+	{
+		width  = 1;
+		height = 1;
+	}
+
+	viewpoint -> fieldOfView () = { -width, -height, width, height };
+	transform -> scale ()       = X3D::Vector3f (width, height, 1);
 }
 
 bool
@@ -253,6 +461,51 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 }
 
 bool
+OutlineTreeViewEditor::hover_icon (const double x, const double y)
+{
+	Gtk::TreeViewColumn*       column = nullptr;
+	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
+
+	if (path .empty ())
+		return false;
+
+	const auto iter = get_model () -> get_iter (path);
+	const auto data = get_model () -> get_data (iter);
+
+	switch (data -> get_type ())
+	{
+		case OutlineIterType::X3DBaseNode:
+		{
+			Gdk::Rectangle cell_area;
+			get_cell_area (path, *column, cell_area);
+			get_cellrenderer () -> property_data () .set_value (data);
+
+			switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+			{
+				case OutlineCellContent::ICON:
+				{
+					set_has_tooltip (true);
+					trigger_tooltip_query ();
+					return true;
+				}
+				default:
+					break;
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	set_has_tooltip (false);
+	return false;
+}
+
+bool
 OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 {
 	if (inPrototypeInstance ())
@@ -274,124 +527,124 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 	// Test for over
 
-	if (path .size ())
+	if (path .empty ())
+		return false;
+
+	const auto iter = get_model () -> get_iter (path);
+	const auto data = get_model () -> get_data (iter);
+
+	switch (data -> get_type ())
 	{
-		const auto iter = get_model () -> get_iter (path);
-		const auto data = get_model () -> get_data (iter);
-
-		switch (data -> get_type ())
+		case OutlineIterType::X3DField:
 		{
-			case OutlineIterType::X3DField:
+			const auto parentIter = iter -> parent ();
+
+			if (not is_node (parentIter))
+				return false;
+
+			const auto context = get_context (parentIter);
+
+			if (context -> getScene () not_eq get_execution_context () -> getScene ())
+				return false;
+
+			if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+				return false;
+
+			if (matchingContext and context not_eq matchingContext)
+				return false;
+
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+
+			overUserData = data -> get_user_data ();
+
+			Gdk::Rectangle cell_area;
+			get_cell_area (path, *column, cell_area);
+			get_cellrenderer () -> property_data () .set_value (data);
+
+			switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
 			{
-				const auto parentIter = iter -> parent ();
-
-				if (not is_node (parentIter))
-					return false;
-
-				const auto context = get_context (parentIter);
-
-				if (context -> getScene () not_eq get_execution_context () -> getScene ())
-					return false;
-
-				if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
-					return false;
-
-				if (matchingContext and context not_eq matchingContext)
-					return false;
-
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
-
-				overUserData = data -> get_user_data ();
-
-				Gdk::Rectangle cell_area;
-				get_cell_area (path, *column, cell_area);
-				get_cellrenderer () -> property_data () .set_value (data);
-
-				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				case OutlineCellContent::INPUT:
 				{
-					case OutlineCellContent::INPUT:
+					if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::inputOnly) and field -> getType () == matchingFieldType))
 					{
-						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::inputOnly) and field -> getType () == matchingFieldType))
-						{
-							overUserData -> selected .set (OUTLINE_OVER_INPUT);
-							get_model () -> row_changed (path, iter);
-							return true;
-						}
-
-						return false;
+						overUserData -> selected .set (OUTLINE_OVER_INPUT);
+						get_model () -> row_changed (path, iter);
+						return true;
 					}
-					case OutlineCellContent::OUTPUT:
-					{
-						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::outputOnly) and field -> getType () == matchingFieldType))
-						{
-							overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
-							get_model () -> row_changed (path, iter);
-							return true;
-						}
 
-						return false;
-					}
-					default:
-						return false;
+					return false;
 				}
-
-				return false;
-			}
-			case OutlineIterType::X3DInputRoute:
-			case OutlineIterType::X3DOutputRoute:
-			{
-				const auto parentIter = iter -> parent () -> parent ();
-
-				if (not is_node (parentIter))
-					return false;
-
-				const auto context = get_context (parentIter);
-
-				if (context -> getScene () not_eq get_execution_context () -> getScene ())
-					return false;
-
-				if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
-					return false;
-
-				overUserData = data -> get_user_data ();
-
-				Gdk::Rectangle cell_area;
-				get_cell_area (path, *column, cell_area);
-				get_cellrenderer () -> property_data () .set_value (data);
-
-				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				case OutlineCellContent::OUTPUT:
 				{
-					case OutlineCellContent::INPUT:
+					if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::outputOnly) and field -> getType () == matchingFieldType))
 					{
-						if (not matchingAccessType)
-						{
-							overUserData -> selected .set (OUTLINE_OVER_INPUT);
-							get_model () -> row_changed (path, iter);
-							return true;
-						}
-
-						return false;
+						overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
+						get_model () -> row_changed (path, iter);
+						return true;
 					}
-					case OutlineCellContent::OUTPUT:
-					{
-						if (not matchingAccessType)
-						{
-							overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
-							get_model () -> row_changed (path, iter);
-							return true;
-						}
 
-						return false;
-					}
-					default:
-						return false;
+					return false;
 				}
-
-				return false;
+				default:
+					return false;
 			}
-			default:
-				return false;
+
+			return false;
 		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			const auto parentIter = iter -> parent () -> parent ();
+
+			if (not is_node (parentIter))
+				return false;
+
+			const auto context = get_context (parentIter);
+
+			if (context -> getScene () not_eq get_execution_context () -> getScene ())
+				return false;
+
+			if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+				return false;
+
+			overUserData = data -> get_user_data ();
+
+			Gdk::Rectangle cell_area;
+			get_cell_area (path, *column, cell_area);
+			get_cellrenderer () -> property_data () .set_value (data);
+
+			switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+			{
+				case OutlineCellContent::INPUT:
+				{
+					if (not matchingAccessType)
+					{
+						overUserData -> selected .set (OUTLINE_OVER_INPUT);
+						get_model () -> row_changed (path, iter);
+						return true;
+					}
+
+					return false;
+				}
+				case OutlineCellContent::OUTPUT:
+				{
+					if (not matchingAccessType)
+					{
+						overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
+						get_model () -> row_changed (path, iter);
+						return true;
+					}
+
+					return false;
+				}
+				default:
+					return false;
+			}
+
+			return false;
+		}
+		default:
+			return false;
 	}
 
 	return false;
