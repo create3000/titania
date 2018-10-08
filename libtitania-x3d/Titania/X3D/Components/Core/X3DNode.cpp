@@ -2145,9 +2145,8 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 		{
 			const auto & field    = static_cast <const SFRotation &> (*fieldDefinition);
 			const auto   metadata = metadataSetNode -> getValue <MetadataDouble> (field .getName (), false);
-			const auto   rotation = field .getValue () .get ();
 
-			metadata -> value () = { rotation .x, rotation .y, rotation .z, rotation .angle };
+			metadata -> value () = { field .getX (), field .getY (), field .getZ (), field .getAngle () };
 			break;
 		}
 		case X3D::X3DConstants::SFString:
@@ -2397,12 +2396,10 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				const auto rotation = value .get ();
-
-				array .emplace_back (rotation .x);
-				array .emplace_back (rotation .y);
-				array .emplace_back (rotation .z);
-				array .emplace_back (rotation .angle);
+				array .emplace_back (value .x ());
+				array .emplace_back (value .y ());
+				array .emplace_back (value .z ());
+				array .emplace_back (value .angle ());
 			}
 
 			break;

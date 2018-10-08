@@ -52,7 +52,6 @@
 #define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
 
 #include "../OutlineTreeData.h"
-#include "TextViewEditable.h"
 
 #include <gtkmm.h>
 #include <memory>
@@ -72,8 +71,9 @@ enum class OutlineCellContent
 
 };
 
-class X3DOutlineTreeView;
 class OutlineTreeModel;
+class TextViewEditable;
+class X3DOutlineTreeView;
 
 class OutlineCellRenderer :
 	public Gtk::CellRendererText
@@ -116,8 +116,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~OutlineCellRenderer ()
-	{ }
+	~OutlineCellRenderer ();
 
 
 private:

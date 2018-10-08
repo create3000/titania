@@ -55,6 +55,7 @@
 #include "../OutlineTreeModel.h"
 #include "../X3DOutlineTreeView.h"
 #include "OutlineFields.h"
+#include "TextViewEditable.h"
 
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
@@ -73,6 +74,7 @@ using math::pi3_2;
 
 static constexpr double ICON_X_PAD         = 3;
 static constexpr double NAME_X_PAD         = 1;
+static constexpr double COLOR_X_PAD        = 2;
 static constexpr double ACCESS_TYPE_X_PAD  = 6;
 static constexpr double ACCESS_TYPE_RADIUS = 5.5;// Depends on image
 
@@ -845,25 +847,29 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 	if (puck::set_field_value_from_string (scene, value, string, treeView -> get_use_locale ()))
 	{
-		if (not value -> equals (*field))
+		const auto vstring = value -> toString ();
+		const auto fstring = field -> toString ();
+
+		if (vstring != fstring)
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 
 			undoStep -> addObjects (node);
 
-			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, field -> toString ());
-			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());
+			undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::fromString, field, fstring);
+			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, vstring);
 			*field = std::move (*value);
 
 			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
-			delete value;
 		}
 
+		delete value;
 		return true;
 	}
 
+	delete value;
 	return false;
 }
 
@@ -921,6 +927,37 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 			return OutlineCellContent::NAME;
 
 		x += minimum_width;
+	}
+
+	// SFColor
+
+	cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
+
+	switch (get_data_type ())
+	{
+		case OutlineIterType::X3DField:
+		{
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+			switch (field -> getType ())
+			{
+				case X3D::X3DConstants::SFColor:
+				case X3D::X3DConstants::SFColorRGBA:
+				{
+					const double r = ACCESS_TYPE_RADIUS;
+
+					x += r + ACCESS_TYPE_X_PAD;
+					x += r + COLOR_X_PAD;
+					break;
+				}
+				default:
+					break;
+			}
+
+			break;
+		}
+		default:
+			break;
 	}
 
 	// Access type and routes
@@ -1101,10 +1138,10 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
                                    const Gdk::Rectangle & cell_area,
                                    Gtk::CellRendererState flags)
 {
-	int32_t x              = cell_area .get_x ();
-	int32_t y              = cell_area .get_y ();
-	int32_t width          = cell_area .get_width ();
-	int32_t height         = cell_area .get_height ();
+	double  x              = cell_area .get_x ();
+	double  y              = cell_area .get_y ();
+	double  width          = cell_area .get_width ();
+	double  height         = cell_area .get_height ();
 	int32_t minimum_width  = 0;
 	int32_t natural_width  = 0;
 	int32_t minimum_height = 0;
@@ -1147,6 +1184,94 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 			x     += minimum_width;
 			width -= minimum_width;
+		}
+
+		// SFColor
+
+		cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
+
+		switch (data_type)
+		{
+			case OutlineIterType::X3DField:
+			{
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+				switch (field -> getType ())
+				{
+					case X3D::X3DConstants::SFColor:
+					{
+						const auto & color = *static_cast <X3D::SFColor*> (field); 
+						const double r     = ACCESS_TYPE_RADIUS;
+						const double xc    = x + ACCESS_TYPE_X_PAD + r;
+						const double yc    = y + (height - minimum_height) / 2 + r;
+
+						const auto data                    = property_data () .get_value ();
+						const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+						const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+						const auto strokeColor             = data -> getSelected () or property_cell_background_set () ? selectedForegroundColor : foregroundColor;
+
+						x     += r + ACCESS_TYPE_X_PAD;
+						width -= r + ACCESS_TYPE_X_PAD;
+
+						context -> reset_clip ();
+						context -> set_operator (Cairo::OPERATOR_OVER);
+
+						context -> begin_new_sub_path ();
+						context -> arc (xc, yc, r, 0.0, 2.0 * math::pi <double>);
+
+						context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), 1);
+						context -> fill ();
+
+						context -> set_line_width (1);
+						context -> set_source_rgba (strokeColor .get_red (), strokeColor .get_green (), strokeColor .get_blue (), strokeColor .get_alpha ());
+						context -> arc (xc, yc, r, 0.0, 2.0 * math::pi <double>);
+						context -> stroke ();
+
+						x     += r + COLOR_X_PAD;
+						width -= r + COLOR_X_PAD;
+						break;
+					}
+					case X3D::X3DConstants::SFColorRGBA:
+					{
+						const auto & color = *static_cast <X3D::SFColorRGBA*> (field); 
+						const double r     = ACCESS_TYPE_RADIUS;
+						const double xc    = x + ACCESS_TYPE_X_PAD + r;
+						const double yc    = y + (height - minimum_height) / 2 + r;
+
+						const auto data                    = property_data () .get_value ();
+						const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+						const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+						const auto strokeColor             = data -> getSelected () or property_cell_background_set () ? selectedForegroundColor : foregroundColor;
+
+						x     += r + ACCESS_TYPE_X_PAD;
+						width -= r + ACCESS_TYPE_X_PAD;
+
+						context -> reset_clip ();
+						context -> set_operator (Cairo::OPERATOR_OVER);
+
+						context -> begin_new_sub_path ();
+						context -> arc (xc, yc, r, 0.0, 2.0 * math::pi <double>);
+
+						context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), color .getAlpha ());
+						context -> fill ();
+
+						context -> set_line_width (1);
+						context -> set_source_rgba (strokeColor .get_red (), strokeColor .get_green (), strokeColor .get_blue (), strokeColor .get_alpha ());
+						context -> arc (xc, yc, r, 0.0, 2.0 * math::pi <double>);
+						context -> stroke ();
+
+						x     += r + COLOR_X_PAD;
+						width -= r + COLOR_X_PAD;
+						break;
+					}
+					default:
+						break;
+				}
+
+				break;
+			}
+			default:
+				break;
 		}
 
 		// Access type padding
@@ -1463,6 +1588,9 @@ OutlineCellRenderer::have_selected_routes (const OutlineRoutes & set)
 
 	return false;
 }
+
+OutlineCellRenderer::~OutlineCellRenderer ()
+{ }
 
 } // puck
 } // titania

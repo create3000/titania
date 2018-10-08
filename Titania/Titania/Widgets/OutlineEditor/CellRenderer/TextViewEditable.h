@@ -51,14 +51,14 @@
 #ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 #define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
+#include "../X3DOutlineTreeView.h"
 #include "X3DTextViewEditable.h"
+#include "OutlineFields.h"
 
 #include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
-
-class X3DOutlineTreeView;
 
 class TextViewEditable :
 	public X3DTextViewEditable
@@ -102,6 +102,14 @@ private:
 	void
 	on_current_time ();
 
+	template <class Type>
+	void
+	on_normalize_vector ();
+
+	template <class Type>
+	void
+	on_normalize_vectors ();
+
 	void
 	on_reset_activate ();
 
@@ -116,6 +124,38 @@ private:
 	const bool useLocale;
 
 };
+
+template <class Type>
+void
+TextViewEditable::on_normalize_vector ()
+{
+	const auto & scene = treeView -> getCurrentScene ();
+	auto         value = Type (static_cast <Type*> (field) -> normalize ());
+
+	value .setUnit (field -> getUnit ());
+
+	set_text (puck::get_field_value (scene, &value, false, treeView -> get_use_locale ()));
+
+	editing_done ();
+}
+
+template <class Type>
+void
+TextViewEditable::on_normalize_vectors ()
+{
+	const auto & scene   = treeView -> getCurrentScene ();
+	const auto & vectors = *static_cast <Type*> (field);
+	auto         value   = Type ();
+
+	value .setUnit (field -> getUnit ());
+
+	for (const auto & vector : vectors)
+		value .emplace_back (normalize (vector));
+
+	set_text (puck::get_field_value (scene, &value, false, treeView -> get_use_locale ()));
+
+	editing_done ();
+}
 
 } // puck
 } // titania

@@ -101,10 +101,10 @@ private:
 	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const bool);
 
 	void
-	on_row_changed (const Gtk::TreeModel::Path &);
+	on_field_value_changed (const Gtk::TreeModel::Path &);
 
-//	void
-//	on_row_changed_impl (const Gtk::TreeModel::Path &);
+	void
+	on_row_changed (const Gtk::TreeModel::Path &);
 
 	void
 	toggle_path (const Gtk::TreeModel::Path &);

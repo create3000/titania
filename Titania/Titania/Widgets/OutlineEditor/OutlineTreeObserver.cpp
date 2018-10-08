@@ -83,6 +83,12 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 
 			switch (field -> getType ())
 			{
+				case X3D::X3DConstants::SFColor:
+				case X3D::X3DConstants::SFColorRGBA:
+				{
+					field -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+					break;
+				}
 				case X3D::X3DConstants::SFNode:
 				case X3D::X3DConstants::MFNode:
 				{
@@ -186,7 +192,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
-			field -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+			field -> addInterest (&OutlineTreeObserver::on_field_value_changed, this, path);
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -198,6 +204,12 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 
 			switch (field -> getType ())
 			{
+				case X3D::X3DConstants::SFColor:
+				case X3D::X3DConstants::SFColorRGBA:
+				{
+					field -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+					break;
+				}
 				case X3D::X3DConstants::MFNode:
 				{
 					field -> getInputRoutes ()  .addInterest (&OutlineTreeObserver::on_row_has_child_toggled, this, path, false);
@@ -254,7 +266,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		{
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
-			field -> removeInterest (&OutlineTreeObserver::on_row_changed, this);
+			field -> removeInterest (&OutlineTreeObserver::on_field_value_changed, this);
 			break;
 		}
 		case OutlineIterType::X3DField:
@@ -272,6 +284,12 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 
 			switch (field -> getType ())
 			{
+				case X3D::X3DConstants::SFColor:
+				case X3D::X3DConstants::SFColorRGBA:
+				{
+					field -> removeInterest (&OutlineTreeObserver::on_row_changed, this);
+					break;
+				}
 				case X3D::X3DConstants::SFNode:
 				{
 					field -> removeInterest (&OutlineTreeObserver::toggle_path, this);
@@ -407,20 +425,16 @@ OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path
 }
 
 void
-OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
+OutlineTreeObserver::on_field_value_changed (const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << " : " << path .to_string () << std::endl;
-
-	treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
-
-	//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &OutlineTreeObserver::on_row_changed_impl), path), Glib::PRIORITY_HIGH_IDLE);
+	on_row_changed (path);
 }
 
-//void
-//OutlineTreeObserver::on_row_changed_impl (const Gtk::TreeModel::Path & path)
-//{
-//	treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
-//}
+void
+OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
+{
+	treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
+}
 
 void
 OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)

@@ -187,6 +187,9 @@ public:
 	multVec (const typename vector_type::internal_type & vector) const;
 
 	InternalType
+	normalize () const;
+
+	InternalType
 	slerp (const InternalType & dest, const value_type & t) const;
 
 	///  @name Input/Output
@@ -401,6 +404,14 @@ typename SFRotation4 <InternalType>::vector_type::internal_type
 SFRotation4 <InternalType>::multVec (const typename vector_type::internal_type &value) const
 {
 	return value * getValue ();
+}
+
+template <class InternalType>
+inline
+InternalType
+SFRotation4 <InternalType>::normalize () const
+{
+	return math::normalize (getValue ());
 }
 
 template <class InternalType>

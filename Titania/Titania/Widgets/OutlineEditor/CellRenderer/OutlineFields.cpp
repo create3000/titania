@@ -55,7 +55,7 @@
 namespace titania {
 namespace puck {
 
-static constexpr int32_t VALUES_MAX       = 64;
+static constexpr int32_t VALUES_MAX       = 32;
 static constexpr size_t  IMAGE_WIDTH_MAX  = 64;
 static constexpr size_t  IMAGE_HEIGHT_MAX = 32;
 
@@ -506,7 +506,7 @@ get_field_value (const X3D::X3DScene* const scene,
 
 		case X3D::X3DConstants::SFRotation:
 		{
-			const auto rotation = static_cast <const X3D::SFRotation*> (fieldDefinition) -> getValue () .get ();
+			const auto & rotation = *static_cast <const X3D::SFRotation*> (fieldDefinition);
 
 			std::ostringstream osstream;
 
@@ -515,13 +515,13 @@ get_field_value (const X3D::X3DScene* const scene,
 
 			osstream
 				<< X3D::Generator::SetPrecision <X3D::SFRotation::value_type>
-				<< rotation .x
+				<< rotation .getX ()
 				<< " "
-				<< rotation .y
+				<< rotation .getY ()
 				<< " "
-				<< rotation .z
+				<< rotation .getZ ()
 				<< " "
-				<< scene -> toUnit (X3D::UnitCategory::ANGLE, rotation .angle);
+				<< scene -> toUnit (X3D::UnitCategory::ANGLE, rotation .getAngle ());
 
 			return osstream .str ();
 		}

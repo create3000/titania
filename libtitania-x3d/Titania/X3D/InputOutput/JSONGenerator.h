@@ -183,20 +183,18 @@ public:
 	void
 	Encode (std::ostream & ostream, const rotation4 <Type> & value, const UnitCategory unitCategory)
 	{
-		const auto r = value .get ();
-	
 		ostream
 			<< Generator::SetPrecision <Type>
-			<< r .x
+			<< value .x ()
 			<< ','
 			<< Generator::TidySpace
-			<< r .y
+			<< value .y ()
 			<< ','
 			<< Generator::TidySpace
-			<< r .z
+			<< value .z ()
 			<< ','
 			<< Generator::TidySpace
-			<< Generator::ToUnit (ostream, UnitCategory::ANGLE, r .angle);
+			<< Generator::ToUnit (ostream, UnitCategory::ANGLE, value .angle ());
 	}
 
 	static

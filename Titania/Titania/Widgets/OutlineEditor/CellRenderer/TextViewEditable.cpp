@@ -50,9 +50,6 @@
 
 #include "TextViewEditable.h"
 
-#include "OutlineFields.h"
-#include "../X3DOutlineTreeView.h"
-
 #include <Titania/LOG.h>
 
 namespace titania {
@@ -92,22 +89,154 @@ TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
 		menu -> append (*toggleMenuItem);
 	}
 
-	if (field -> getType () == X3D::X3DConstants::SFBool)
+	switch (field -> getType ())
 	{
-		const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Toggle Value")));
-
-		toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_toggle_value));
-		toggleMenuItem -> show ();
-		menu -> append (*toggleMenuItem);
-	}
-
-	if (field -> getType () == X3D::X3DConstants::SFTime)
-	{
-		const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Set Current Time")));
-
-		toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_current_time));
-		toggleMenuItem -> show ();
-		menu -> append (*toggleMenuItem);
+		case X3D::X3DConstants::SFBool:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Toggle Value")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_toggle_value));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFRotation:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Rotation")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFRotation>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFTime:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Set Current Time")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_current_time));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec2d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec2d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec2f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec2f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec3d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec3d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec3f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec3f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec4d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec4d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::SFVec4f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vector")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vector <X3D::SFVec4f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFRotation:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Rotations")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFRotation>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec2d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec2d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec2f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec2f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec3d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec3d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec3f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec3f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec4d:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec4d>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		case X3D::X3DConstants::MFVec4f:
+		{
+			const auto toggleMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Normalize Vectors")));
+	
+			toggleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_normalize_vectors <X3D::MFVec4f>));
+			toggleMenuItem -> show ();
+			menu -> append (*toggleMenuItem);
+			break;
+		}
+		default:
+			break;
 	}
 
 	const auto resetMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Reset To Default Value")));
@@ -128,20 +257,26 @@ TextViewEditable::on_trigger_event ()
 void
 TextViewEditable::on_toggle_value ()
 {
-	set_text (*static_cast <X3D::SFBool*> (field) ? "FALSE" : "TRUE");
-		
+	const auto & scene = treeView -> getCurrentScene ();
+	auto         value = X3D::SFBool (not *static_cast <X3D::SFBool*> (field));
+
+	value .setUnit (field -> getUnit ());
+
+	set_text (puck::get_field_value (scene, &value, false, treeView -> get_use_locale ()));
+
 	editing_done ();
 }
 
 void
 TextViewEditable::on_current_time ()
 {
-	std::ostringstream osstream;
+	const auto & scene = treeView -> getCurrentScene ();
+	auto         value = X3D::SFTime (X3D::SFTime::now ());
 
-	osstream << X3D::SFTime (X3D::SFTime::now ());
+	value .setUnit (field -> getUnit ());
 
-	set_text (osstream .str ());
-		
+	set_text (puck::get_field_value (scene, &value, false, treeView -> get_use_locale ()));
+
 	editing_done ();
 }
 
