@@ -51,6 +51,7 @@
 #include "MagicImport.h"
 
 #include "BrowserSelection.h"
+#include "UserData.h"
 #include "X3DBrowserWindow.h"
 
 #include <Titania/X3D/Bits/Cast.h>
@@ -74,8 +75,8 @@ using namespace std::placeholders;
 MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	 importFunctions1 ({
-	                  std::make_pair ("Material",   std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
-	                  std::make_pair ("Texture",    std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)),
+	                  std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
+	                  std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)),
 						                  }),
 	 importFunctions2 ({
 	                  std::make_pair ("Background",     std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
@@ -336,7 +337,12 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 							X3D::X3DEditor::updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
 						}
 						else
+						{
+							if (appearance -> material ())
+								material -> getUserData <UserData> () -> expanded = appearance -> material () -> getUserData <UserData> () -> expanded;
+
 							X3D::X3DEditor::replaceNode (executionContext, node, appearance -> material (), material, undoStep);
+						}
 					}
 				}
 			}
@@ -406,6 +412,9 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 				texture3D -> repeatR ()           = oldTexture3D -> repeatR ();
 				texture3D -> textureProperties () = oldTexture3D -> textureProperties ();
 			}
+
+			if (appearance -> texture ())
+				texture -> getUserData <UserData> () -> expanded = appearance -> texture () -> getUserData <UserData> () -> expanded;
 			
 			X3D::X3DEditor::replaceNode (executionContext, node, appearance -> texture (), texture, undoStep);
 		}

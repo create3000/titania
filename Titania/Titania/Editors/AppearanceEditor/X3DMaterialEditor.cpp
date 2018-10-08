@@ -123,6 +123,7 @@ X3DMaterialEditor::set_initialized ()
 	try
 	{
 		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> setPrivate (true);
+		preview -> getExecutionContext () -> getNamedNode ("LineAppearance") -> setPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }

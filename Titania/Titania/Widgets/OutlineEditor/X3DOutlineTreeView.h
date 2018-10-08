@@ -76,6 +76,11 @@ public:
 
 	using Gtk::TreeView::expand_row;
 
+	///  @name Construction
+
+	void
+	initialize ();
+
 	///  @name Member access
 
 	const Glib::RefPtr <OutlineTreeModel> &

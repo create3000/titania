@@ -56,6 +56,8 @@
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 namespace titania {
@@ -83,12 +85,6 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 
 			switch (field -> getType ())
 			{
-				case X3D::X3DConstants::SFColor:
-				case X3D::X3DConstants::SFColorRGBA:
-				{
-					field -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
-					break;
-				}
 				case X3D::X3DConstants::SFNode:
 				case X3D::X3DConstants::MFNode:
 				{
@@ -120,17 +116,13 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
-			const auto   urlObject  = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
+			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   urlObject = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
 
 			if (sfnode)
 				sfnode -> fields_changed () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
 
-			if (inlineNode)
-				inlineNode -> getInternalScene () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
-
-			else if (urlObject)
+			if (urlObject)
 				urlObject -> checkLoadState () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
 
 			break;
@@ -230,12 +222,20 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		{
 			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
+			const auto   materialNode  = dynamic_cast <X3D::X3DMaterialNode*> (sfnode .getValue ());
+			const auto   textureNode   = dynamic_cast <X3D::X3DTextureNode*> (sfnode .getValue ());
 
 			if (sfnode)
 				sfnode -> name_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
 
 			if (protoInstance)
 				protoInstance -> typeName_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+
+			if (materialNode)
+				materialNode -> addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+
+			else if (textureNode)
+				textureNode -> checkLoadState () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
 
 			break;
 		}
@@ -358,7 +358,8 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		{
 			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
-			const auto   inlineNode    = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+			const auto   materialNode  = dynamic_cast <X3D::X3DMaterialNode*> (sfnode .getValue ());
+			const auto   textureNode   = dynamic_cast <X3D::X3DTextureNode*> (sfnode .getValue ());
 			const auto   urlObject     = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
 
 			if (sfnode)
@@ -377,10 +378,13 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 			if (protoInstance)
 				protoInstance -> typeName_changed () .removeInterest (&OutlineTreeObserver::on_row_changed, this);
 
-			if (inlineNode)
-				inlineNode -> getInternalScene () .removeInterest (&OutlineTreeObserver::toggle_path, this);
+			if (materialNode)
+				materialNode -> removeInterest (&OutlineTreeObserver::on_row_changed, this);
 
-			else if (urlObject)
+			else if (textureNode)
+				textureNode -> checkLoadState () .removeInterest (&OutlineTreeObserver::on_row_changed, this);
+
+			if (urlObject)
 				urlObject -> checkLoadState () .removeInterest (&OutlineTreeObserver::toggle_path, this);
 
 			clear_open_path (iter);
@@ -446,7 +450,7 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 
 	// Determine open paths.
 
-	std::map <size_t,  std::tuple <size_t, bool, OutlineExpanded>> opened;
+	std::map <size_t, std::tuple <size_t, bool, OutlineExpanded>> opened;
 
 	treeView -> get_opened_objects (treeView -> get_model () -> get_iter (path), opened);
 

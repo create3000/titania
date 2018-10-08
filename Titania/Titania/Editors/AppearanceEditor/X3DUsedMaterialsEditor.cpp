@@ -113,8 +113,21 @@ X3DUsedMaterialsEditor::initialize ()
 void
 X3DUsedMaterialsEditor::set_initialized ()
 {
-	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-		nodeIndex -> updateRow (i);
+	try
+	{
+		const X3D::X3DPtr <X3D::Appearance> appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const X3D::X3DPtr <X3D::Appearance> lineAppearance (preview -> getExecutionContext () -> getNamedNode ("LineAppearance"));
+	
+		appearance -> setPrivate (true);
+		lineAppearance -> setPrivate (true);
+	
+		for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+			nodeIndex -> updateRow (i);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 int

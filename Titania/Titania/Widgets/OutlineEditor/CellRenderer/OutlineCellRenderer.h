@@ -82,7 +82,10 @@ public:
 
 	///  @name Construction
 
-	OutlineCellRenderer (X3D::X3DBrowser* const, X3DOutlineTreeView* const);
+	OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOutlineTreeView* const treeView);
+
+	void
+	initialize ();
 
 	///  @name Properties
 
@@ -120,6 +123,12 @@ public:
 
 
 private:
+
+	void
+	set_material_preview ();
+
+	void
+	set_texture_preview ();
 
 	void
 	on_data ();
@@ -191,21 +200,11 @@ private:
 	bool
 	have_selected_routes (const OutlineRoutes &);
 
-	//	virtual
-	//	bool
-	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
-	//
-	//	virtual
-	//	Gtk::CellEditable*
-	//	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
-	//
-	//	// Manage editing_done event for color_cell_edit_ptr_
-	//	void
-	//	on_editing_done ();
-	//
-	//	// Raise the edited event
-	//	void
-	//	edited (const Glib::ustring & path, const Glib::ustring & new_text);
+	void
+	set_camera (const X3D::SFNode & node);
+	
+	void
+	set_camera (double width, double height);
 
 	using FieldTypeImageIndex  = std::map <const X3D::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>;
 	using AccessTypeImageIndex = std::map <const X3D::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>>;
@@ -215,6 +214,8 @@ private:
 	Glib::Property <OutlineTreeData*> data_property;
 
 	mutable Gtk::CellRendererPixbuf cellrenderer_icon;
+	mutable Gtk::CellRendererPixbuf cellrenderer_material_icon;
+	mutable Gtk::CellRendererPixbuf cellrenderer_texture_icon;
 	mutable Gtk::CellRendererPixbuf cellrenderer_access_type_icon;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
@@ -234,6 +235,9 @@ private:
 	X3D::AccessType accessType;
 
 	OutlineRoutes routes;
+
+	const X3D::BrowserPtr materialPreview;
+	const X3D::BrowserPtr texturePreview;
 
 	std::unique_ptr <TextViewEditable> textview;
 

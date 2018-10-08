@@ -83,7 +83,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	                  column (nullptr),
 	            treeObserver (new OutlineTreeObserver (this)),
 	              routeGraph (new OutlineRouteGraph (this)),
-	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getCurrentBrowser (), this))),
+	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getMasterBrowser (), this))),
 				padCellrenderer (Gtk::manage (new Gtk::CellRendererText ())),
 	             expandLevel (0),
 	            externProtos (false),
@@ -140,6 +140,12 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	//
 
 	set_execution_context (executionContext);
+}
+
+void
+X3DOutlineTreeView::initialize ()
+{
+	cellrenderer -> initialize ();
 }
 
 void

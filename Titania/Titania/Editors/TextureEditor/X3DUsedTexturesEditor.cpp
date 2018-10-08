@@ -60,7 +60,6 @@
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
-#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
 
 namespace titania {
 namespace puck {
@@ -111,8 +110,18 @@ X3DUsedTexturesEditor::initialize ()
 void
 X3DUsedTexturesEditor::set_initialized ()
 {
-	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-		nodeIndex -> updateRow (i);
+	try
+	{
+		preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance") -> setPrivate (true);
+		preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("TextureScript") -> setPrivate (true);
+
+		for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+			nodeIndex -> updateRow (i);
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

@@ -114,6 +114,7 @@ OutlineEditor::initialize ()
 
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
+	treeView -> initialize ();
 
 	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getItem <bool> ("showExternProtos",         true));
 	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getItem <bool> ("showPrototypes",           true));

@@ -83,11 +83,11 @@ public:
 	// Construction
 
 	UserData () :
-		    openPath (),
-		       paths (),
-		  expanded (OutlineExpanded::UNDEFINED),
-		    selected (),
-	       userData ()
+		openPath (),
+		   paths (),
+		expanded (OutlineExpanded::UNDEFINED),
+		selected (),
+	   userData ()
 	{ }
 
 	// Destruction
