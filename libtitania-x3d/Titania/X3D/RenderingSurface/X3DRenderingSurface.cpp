@@ -356,15 +356,15 @@ X3DRenderingSurface::dispose ()
 
 	if (container)
 		container -> remove (*this);
+}
 
+X3DRenderingSurface::~X3DRenderingSurface ()
+{
 	// Dispose context.
 
 	frameBuffer .reset ();
 	context     .reset ();
 }
-
-X3DRenderingSurface::~X3DRenderingSurface ()
-{ }
 
 } // X3D
 } // titania
