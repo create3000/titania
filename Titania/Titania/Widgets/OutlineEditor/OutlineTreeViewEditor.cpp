@@ -60,10 +60,12 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
+#include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
 #include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
 #include <Titania/X3D/Components/Text/Text.h>
 #include <Titania/X3D/Components/Text/X3DFontStyleNode.h>
-#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
+#include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
@@ -247,12 +249,24 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							getBrowserWindow () -> getIconFactory () -> createMaterialIcon (stockId, ICON_SIZE, ICON_SIZE, materialNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							// Create Tooltip.
+
+							const auto box   = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL));
+							const auto image = Gtk::manage (new Gtk::Image (Gtk::StockID (stockId), iconSize));
+							const auto label = Gtk::manage (new Gtk::Label ());
+
+							box -> pack_start (*image, false, true);
+							box -> pack_start (*label, false, true);
+							box -> show_all ();
+
+							tooltip -> set_custom (*box);
+
+							// Create Label.
 
 							if (materialNode -> getName () .size ())
-								tooltip -> set_text (materialNode -> getName ());
+								label -> set_text (materialNode -> getName ());
 							else
-								tooltip -> unset_text ();
+								label -> hide ();
 
 							return true;
 						}
@@ -274,12 +288,94 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, ICON_SIZE, ICON_SIZE, textureNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							// Create Tooltip.
 
-							if (textureNode -> getName () .size ())
-								tooltip -> set_text (textureNode -> getName ());
-							else
-								tooltip -> unset_text ();
+							const auto box   = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL));
+							const auto image = Gtk::manage (new Gtk::Image (Gtk::StockID (stockId), iconSize));
+							const auto label = Gtk::manage (new Gtk::Label ());
+
+							box -> pack_start (*image, false, true);
+							box -> pack_start (*label, false, true);
+							box -> show_all ();
+
+							tooltip -> set_custom (*box);
+
+							// Create Label.
+
+							const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+
+							if (texture2DNode)
+							{
+								std::string components;
+							
+								switch (texture2DNode -> components ())
+								{
+									case 1: components = _ ("GRAY");       break;
+									case 2: components = _ ("GRAY ALPHA"); break;
+									case 3: components = _ ("RGB");        break;
+									case 4: components = _ ("RGBA");       break;
+									default:
+										break;
+								}
+							
+								label -> set_text (std::to_string (texture2DNode -> width ()) +
+								                   " × " +
+								                   std::to_string (texture2DNode -> height ()) +
+								                   " (" +
+								                   components +
+								                   ")");
+							}
+						
+							const X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode (textureNode);
+						
+							if (texture3DNode)
+							{
+								std::string components;
+							
+								switch (texture3DNode -> components ())
+								{
+									case 1: components = _ ("GRAY");       break;
+									case 2: components = _ ("GRAY ALPHA"); break;
+									case 3: components = _ ("RGB");        break;
+									case 4: components = _ ("RGBA");       break;
+									default:
+										break;
+								}
+							
+								label -> set_text (std::to_string (texture3DNode -> width ()) +
+								                   " × " +
+								                   std::to_string (texture3DNode -> height ()) +
+								                   " × " +
+								                   std::to_string (texture3DNode -> depth ()) +
+								                   " (" +
+								                   components +
+								                   ")");
+							}
+						
+							const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> environmentTexture (textureNode);
+						
+							if (environmentTexture)
+							{
+								std::string components;
+							
+								switch (environmentTexture -> getComponents ())
+								{
+									case 1: components = _ ("GRAY");       break;
+									case 2: components = _ ("GRAY ALPHA"); break;
+									case 3: components = _ ("RGB");        break;
+									case 4: components = _ ("RGBA");       break;
+									default:
+										break;
+								}
+						
+								label -> set_text (std::to_string (environmentTexture -> getWidth ()) +
+								                   " × " +
+								                   std::to_string (environmentTexture -> getHeight ()) +
+								                   " × 6 " +
+								                   " (" +
+								                   components +
+								                   ")");
+							}
 
 							return true;
 						}

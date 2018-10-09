@@ -297,6 +297,7 @@ IconFactory::createFontIcon (const std::string & stockId, const int32_t width, c
 	const auto h  = textExtents .height;
 
 	// Draw text.
+	// TODO: assume w is geater than h.
 
 	const auto scale = (width - padX * 2) / w;
 	const auto x     = xo * scale + (width - w * scale) / 2;
