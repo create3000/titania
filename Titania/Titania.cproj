@@ -3180,6 +3180,7 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SliderJoint" />
     <None Include="share\titania\ui\logo.svg" />
     <None Include="share\titania\ui\logo.x3dv" />
+    <None Include="share\titania\ui\Editors\FontPreview.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

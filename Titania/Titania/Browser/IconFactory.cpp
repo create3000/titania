@@ -57,11 +57,14 @@
 #include <Titania/X3D/Bits/Error.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
+#include <Titania/X3D/Components/Text/Text.h>
+#include <Titania/X3D/Components/Text/X3DFontStyleNode.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/InputOutput/FileLoader.h>
 
@@ -71,11 +74,12 @@ namespace puck {
 IconFactory::IconFactory (X3DBrowserWindow* const browserWindow) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	      iconFactory (Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (browserWindow -> getBuilder () -> get_object ("IconFactory"))),
-	  materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
-	   texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
+	  materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" })),
+	   texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") })),
 	initializedOutput ()
 {
-	addChildObjects (materialPreview, texturePreview);
+	addChildObjects (materialPreview,
+	                 texturePreview);
 
 	setup ();
 }
@@ -87,7 +91,6 @@ IconFactory::initialize ()
 
 	materialPreview -> initialized () .addInterest (&IconFactory::set_material_preview, this);
 	materialPreview -> setFixedPipeline (false);
-	materialPreview -> setAntialiasing (4);
 	materialPreview -> setup ();
 
 	texturePreview -> initialized () .addInterest (&IconFactory::set_texture_preview, this);
@@ -203,6 +206,24 @@ IconFactory::createIcon (const std::string & name, Magick::Image && image)
 	Gtk::Stock::add (Gtk::StockItem (stockId, name));
 }
 
+void
+IconFactory::createIcon (const std::string & name, const Cairo::RefPtr <Cairo::ImageSurface> & surface)
+{
+	std::ostringstream osstream;
+
+	surface -> write_to_png_stream (sigc::bind (sigc::mem_fun (this, &IconFactory::write_to_png_stream), sigc::ref (osstream)));
+
+	createIcon (name, osstream .str ());
+}
+
+Cairo::ErrorStatus
+IconFactory::write_to_png_stream (const unsigned char* data, unsigned int length, std::ostringstream & osstream)
+{
+	osstream .write (reinterpret_cast <const char*> (data), length);
+
+	return CAIRO_STATUS_SUCCESS;
+}
+
 std::string
 IconFactory::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSize)
 {
@@ -238,13 +259,65 @@ IconFactory::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSiz
 }
 
 void
+IconFactory::createFontIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DFontStyleNode> & fontStyleNode)
+{
+	const auto   fontStyle     = fontStyleNode ? fontStyleNode : getCurrentBrowser () -> getDefaultFontStyle ();
+	const auto   previewString = _ ("The quick brown fox jumps over the lazy dog.");
+	const auto   padX          = 30;
+	const auto   surface       = Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, width, height);
+	const auto   context       = Cairo::Context::create (surface);
+	const auto & font          = fontStyle -> getFont ();
+	const auto   fontFace      = Cairo::FtFontFace::create (font .getPattern () .get ());
+
+	// Set font options.
+
+	context -> set_font_face (fontFace);
+	context -> set_font_size (height / 2);
+
+	Cairo::FontOptions options;
+	options .set_hint_style (Cairo::HINT_STYLE_MEDIUM);
+
+	context -> set_font_options (options);
+
+	// Fill background.
+
+	context -> rectangle (0, 0, width, height);
+	context -> set_source_rgb (1, 1, 1);
+	context -> fill ();
+
+	// Get text extents.
+
+	Cairo::TextExtents textExtents;
+
+	context -> get_text_extents (previewString, textExtents);
+
+	const auto min = X3D::Vector2d (textExtents .x_bearing, -textExtents .y_bearing - textExtents .height);
+	const auto max = min + X3D::Vector2d (textExtents .width, textExtents .height);
+
+	// Draw text.
+
+	const auto scale = (width - padX * 2) / max .x ();
+	const auto x     = padX;
+	const auto y     = max .y () * scale + (height - max .y () * scale) / 2;
+
+	context -> set_source_rgb (0, 0, 0);
+	context -> move_to (x, y);
+	context -> scale (scale, scale);
+	context -> show_text (previewString);
+
+	// Create Icon.
+
+	createIcon (stockId, surface);
+}
+
+void
 IconFactory::createMaterialIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DMaterialNode> & materialNode)
 {
 	// Configure scene.
 
-	const X3D::X3DPtr <X3D::Material>         material (materialNode);
-	const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (materialNode);
-	const X3D::X3DPtr <X3D::Appearance>       appearance (materialPreview -> getExecutionContext () -> getNamedNode ("Appearance"));
+	const auto material         = X3D::X3DPtr <X3D::Material> (materialNode);
+	const auto twoSidedMaterial = X3D::X3DPtr <X3D::TwoSidedMaterial> (materialNode);
+	const auto appearance       = materialPreview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
 	if (not (material or twoSidedMaterial) or not appearance)
 		throw X3D::Error <X3D::INVALID_NODE> ("IconFactory::createMaterialIcon");
@@ -255,7 +328,7 @@ IconFactory::createMaterialIcon (const std::string & stockId, const int32_t widt
 	else if (twoSidedMaterial)
 		appearance -> material () = twoSidedMaterial;
 
-	const X3D::X3DPtr <X3D::Material> backMaterial (materialPreview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
+	const auto backMaterial = materialPreview -> getExecutionContext () -> getNamedNode <X3D::Material> ("BackMaterial");
 
 	if (backMaterial and twoSidedMaterial)
 	{
@@ -267,7 +340,7 @@ IconFactory::createMaterialIcon (const std::string & stockId, const int32_t widt
 		backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
 	}
 
-	const X3D::X3DPtr <X3D::Switch> sphere (materialPreview -> getExecutionContext () -> getNamedNode ("Sphere"));
+	const auto sphere = materialPreview -> getExecutionContext () -> getNamedNode <X3D::Switch> ("Sphere");
 
 	sphere -> whichChoice () = twoSidedMaterial;
 

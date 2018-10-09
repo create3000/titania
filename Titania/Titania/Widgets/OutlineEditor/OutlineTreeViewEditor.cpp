@@ -61,6 +61,8 @@
 #include "OutlineTreeObserver.h"
 
 #include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+#include <Titania/X3D/Components/Text/Text.h>
+#include <Titania/X3D/Components/Text/X3DFontStyleNode.h>
 #include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
@@ -70,7 +72,9 @@
 namespace titania {
 namespace puck {
 
-static constexpr int32_t ICON_SIZE = 256;
+static constexpr size_t ICON_SIZE        = 256;
+static constexpr size_t FONT_ICON_HEIGHT = 96;
+static constexpr size_t FONT_ICON_WIDTH  = FONT_ICON_HEIGHT * 9;
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
@@ -188,6 +192,49 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 			{
 				switch (type)
 				{
+					case X3D::X3DConstants::X3DFontStyleNode:
+					{
+						try
+						{
+							// Create Icon.
+
+							const auto fontStyleNode = X3D::X3DPtr <X3D::X3DFontStyleNode> (sfnode);
+							const auto stockId       = "outline-editor-font-preview";
+							const auto iconSize      = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT);
+
+							getBrowserWindow () -> getIconFactory () -> createFontIcon (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT, fontStyleNode);
+
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							return true;
+						}
+						catch (const std::exception & error)
+						{ 
+							__LOG__ << error .what () << std::endl;
+							break;
+						}
+					}
+					case X3D::X3DConstants::Text:
+					{
+						try
+						{
+							// Create Icon.
+
+							const auto textNode      = X3D::X3DPtr <X3D::Text> (sfnode);
+							const auto fontStyleNode = X3D::X3DPtr <X3D::X3DFontStyleNode> (textNode -> fontStyle ());
+							const auto stockId       = "outline-editor-font-preview";
+							const auto iconSize      = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT);
+
+							getBrowserWindow () -> getIconFactory () -> createFontIcon (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT, fontStyleNode);
+
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							return true;
+						}
+						catch (const std::exception & error)
+						{ 
+							__LOG__ << error .what () << std::endl;
+							break;
+						}
+					}
 					case X3D::X3DConstants::X3DMaterialNode:
 					{
 						try

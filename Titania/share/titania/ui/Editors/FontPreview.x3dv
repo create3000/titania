@@ -1,0 +1,269 @@
+#X3D V3.3 utf8 Titania V4.3.2
+
+PROFILE Full
+
+UNIT angle degree 0.0174532925199432958
+
+META "comment" "World of Titania"
+META "created" "Tue, 09 Oct 2018 11:23:46 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.3.2, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/FontPreview.x3dv"
+META "modified" "Tue, 09 Oct 2018 13:07:55 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF FontPreview Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0 0 0
+                  }
+                }
+                geometry DEF Text Text {
+                  string "The quick brown fox jumps over the lazy dog."
+                  solid TRUE
+                }
+              }
+            }
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF type_2 MetadataString {
+            name "type"
+            reference "http://titania.create3000.de"
+            value [
+              "TOP_VIEW",
+              "MAIN_VIEW",
+              "PERSPECTIVE_VIEW",
+              "FRONT_VIEW"
+            ]
+          }
+          DEF viewpoints MetadataSet {
+            name "viewpoints"
+            reference "http://titania.create3000.de"
+            value [
+              DEF PerspectiveViewpoint MetadataSet {
+                name "PerspectiveViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_3 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      5.87788534164429,
+                      6.46984958648682,
+                      13.8524446487427
+                    ]
+                  }
+                  DEF orientation_4 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.704047462871212,
+                      0.695566762376517,
+                      0.143192350010952,
+                      0.568941727555854
+                    ]
+                  }
+                  DEF centerOfRotation_5 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1
+                  }
+                ]
+              }
+              DEF TopViewpoint MetadataSet {
+                name "TopViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_6 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      10000,
+                      0
+                    ]
+                  }
+                  DEF orientation_7 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      1,
+                      0,
+                      0,
+                      4.71238898038469
+                    ]
+                  }
+                  DEF centerOfRotation_8 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.0320612526145463,
+                      0,
+                      0.0937320149966475
+                    ]
+                  }
+                  DEF fieldOfViewScale_9 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.21023944190259
+                  }
+                ]
+              }
+              DEF FrontViewpoint MetadataSet {
+                name "FrontViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_10 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      10000
+                    ]
+                  }
+                  DEF orientation_11 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                  DEF centerOfRotation_12 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.00884759203065143,
+                      0.0177734813359099,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale_13 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.212467484375
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+          DEF browserRatio MetadataDouble {
+            name "browserRatio"
+            reference "http://titania.create3000.de"
+            value 8.99999999999985
+          }
+        ]
+      }
+    ]
+  }
+}
+
+NavigationInfo {
+  type "NONE"
+}
+
+DEF Viewpoint Viewpoint {
+  position 11.3772 0.275938 3.30334
+  centerOfRotation 11.2267 0.275937 0
+  fieldOfView 45.0001
+}
+
+DEF White Background {
+  skyColor 1 1 1
+}
+
+USE FontPreview
+
+DEF ViewpointScript Script {
+  inputOutput SFVec3f origin 0 0.759844 0
+  inputOutput SFVec2f textBounds 22.7544 0.967812
+  outputOnly  SFVec3f position_changed
+
+  url "ecmascript:
+
+function eventsProcessed ()
+{
+	// Aspect 1 : 9
+	
+	var
+		x = origin .x + textBounds .x / 2,
+		y = origin .y - textBounds .y / 2,
+		h = textBounds .x / 9 / 2,
+		z = h * Math .sin (Math .PI / 2) / Math .sin (Math .PI / 8);
+	
+	position_changed = new SFVec3f (x, y, z);
+}
+"
+}
+
+ROUTE ViewpointScript.position_changed TO Viewpoint.set_position
+ROUTE Text.textBounds TO ViewpointScript.set_textBounds
+ROUTE Text.origin TO ViewpointScript.set_origin

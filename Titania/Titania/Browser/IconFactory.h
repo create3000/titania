@@ -90,8 +90,14 @@ public:
 	void
 	createIcon (const std::string & name, Magick::Image && image);
 
+	void
+	createIcon (const std::string & name, const Cairo::RefPtr <Cairo::ImageSurface> & surface);
+
 	std::string
 	getIcon (const basic::uri & uri, const Gtk::IconSize & iconSize);
+
+	void
+	createFontIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DFontStyleNode> & fontStyleNode);
 
 	void
 	createMaterialIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DMaterialNode> & materialNode);
@@ -122,7 +128,10 @@ private:
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const
 	{ return iconFactory; }
-	
+
+	Cairo::ErrorStatus
+	write_to_png_stream (const unsigned char* data, unsigned int length, std::ostringstream & osstream);
+
 	void
 	set_camera (const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode, const int32_t width, const int32_t height);
 
