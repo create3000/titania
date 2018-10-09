@@ -206,7 +206,21 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							getBrowserWindow () -> getIconFactory () -> createFontIcon (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT, fontStyleNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							// Create Tooltip.
+
+							const auto box   = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL));
+							const auto image = Gtk::manage (new Gtk::Image (Gtk::StockID (stockId), iconSize));
+							const auto label = Gtk::manage (new Gtk::Label ());
+
+							box -> pack_start (*image, false, true);
+							box -> pack_start (*label, false, true);
+							box -> show_all ();
+
+							tooltip -> set_custom (*box);
+
+							// Create Label.
+
+							label -> set_text (fontStyleNode -> getFontFace () .getFamilyName ());
 							return true;
 						}
 						catch (const std::exception & error)
@@ -228,7 +242,21 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							getBrowserWindow () -> getIconFactory () -> createFontIcon (stockId, FONT_ICON_WIDTH, FONT_ICON_HEIGHT, fontStyleNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+							// Create Tooltip.
+
+							const auto box   = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL));
+							const auto image = Gtk::manage (new Gtk::Image (Gtk::StockID (stockId), iconSize));
+							const auto label = Gtk::manage (new Gtk::Label ());
+
+							box -> pack_start (*image, false, true);
+							box -> pack_start (*label, false, true);
+							box -> show_all ();
+
+							tooltip -> set_custom (*box);
+
+							// Create Label.
+
+							label -> set_text (fontStyleNode -> getFontFace () .getFamilyName ());
 							return true;
 						}
 						catch (const std::exception & error)

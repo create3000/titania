@@ -115,6 +115,10 @@ public:
 	const FTFacePtr &
 	getFace () const;
 
+	std::string
+	getFamilyName () const
+	{ return face -> family_name; }
+
 	unsigned short
 	getUnitsPerEm () const
 	{ return face -> units_per_EM; }
