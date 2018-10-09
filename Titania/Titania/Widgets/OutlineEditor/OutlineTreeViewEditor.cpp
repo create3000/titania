@@ -285,9 +285,9 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							const auto texture2DNode = X3D::X3DPtr <X3D::X3DTexture2DNode> (sfnode);
 							const auto textureNode   = X3D::X3DPtr <X3D::X3DTextureNode> (sfnode);
 							const auto stockId       = std::string ("outline-editor-texture-preview");
-							const auto width         = texture2DNode ? std::min <int32_t> (texture2DNode -> width (),  ICON_SIZE) : ICON_SIZE;
-							const auto height        = texture2DNode ? std::min <int32_t> (texture2DNode -> height (), ICON_SIZE) : ICON_SIZE;
-							const auto size          = std::max (width, height);
+							const auto width         = texture2DNode ? texture2DNode -> width ()  : ICON_SIZE;
+							const auto height        = texture2DNode ? texture2DNode -> height () : ICON_SIZE;
+							const auto size          = std::min (std::max (width, height), ICON_SIZE);
 							const auto sizeName      = stockId + "-" + basic::to_string (size, std::locale::classic ());
 							const auto iconSize      = getBrowserWindow () -> getIconFactory () -> getIconSize (sizeName, size, size);
 
