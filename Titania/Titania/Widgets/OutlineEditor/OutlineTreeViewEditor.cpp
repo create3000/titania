@@ -281,12 +281,17 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 						try
 						{
 							// Create Icon.
-				
-							const auto textureNode = X3D::X3DPtr <X3D::X3DTextureNode> (sfnode);
-							const auto stockId     = "outline-editor-texture-preview";
-							const auto iconSize    = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, ICON_SIZE, ICON_SIZE);
 
-							getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, ICON_SIZE, ICON_SIZE, textureNode);
+							const auto texture2DNode = X3D::X3DPtr <X3D::X3DTexture2DNode> (sfnode);
+							const auto textureNode   = X3D::X3DPtr <X3D::X3DTextureNode> (sfnode);
+							const auto stockId       = std::string ("outline-editor-texture-preview");
+							const auto width         = texture2DNode ? std::min <int32_t> (texture2DNode -> width (),  ICON_SIZE) : ICON_SIZE;
+							const auto height        = texture2DNode ? std::min <int32_t> (texture2DNode -> height (), ICON_SIZE) : ICON_SIZE;
+							const auto size          = std::max (width, height);
+							const auto sizeName      = stockId + "-" + basic::to_string (size, std::locale::classic ());
+							const auto iconSize      = getBrowserWindow () -> getIconFactory () -> getIconSize (sizeName, size, size);
+
+							getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, size, size, textureNode);
 
 							// Create Tooltip.
 
@@ -302,7 +307,7 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							// Create Label.
 
-							const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+							//const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
 							if (texture2DNode)
 							{
