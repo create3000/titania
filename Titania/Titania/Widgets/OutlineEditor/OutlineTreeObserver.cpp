@@ -53,6 +53,8 @@
 #include "OutlineTreeModel.h"
 #include "X3DOutlineTreeView.h"
 
+#include "../../Base/ScrollFreezer.h"
+
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
@@ -431,6 +433,8 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 
 	if (not treeView -> row_expanded (path))
 		return;
+
+	treeView -> getScrollFreezer () -> freeze ();
 
 	// Determine open paths.
 
