@@ -119,6 +119,10 @@ public:
 	getFamilyName () const
 	{ return face -> family_name; }
 
+	std::string
+	getStyleName () const
+	{ return face -> style_name; }
+
 	unsigned short
 	getUnitsPerEm () const
 	{ return face -> units_per_EM; }

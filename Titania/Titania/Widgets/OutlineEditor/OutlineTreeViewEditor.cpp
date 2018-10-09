@@ -220,7 +220,9 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							// Create Label.
 
-							label -> set_text (fontStyleNode -> getFontFace () .getFamilyName ());
+							const auto & fontFace = fontStyleNode -> getFontFace ();
+
+							label -> set_text (fontFace .getFamilyName () + " " + fontFace .getStyleName ());
 							return true;
 						}
 						catch (const std::exception & error)
@@ -256,7 +258,9 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 
 							// Create Label.
 
-							label -> set_text (fontStyleNode -> getFontFace () .getFamilyName ());
+							const auto & fontFace = fontStyleNode -> getFontFace ();
+
+							label -> set_text (fontFace .getFamilyName () + " " + fontFace .getStyleName ());
 							return true;
 						}
 						catch (const std::exception & error)
