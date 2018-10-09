@@ -291,14 +291,16 @@ IconFactory::createFontIcon (const std::string & stockId, const int32_t width, c
 
 	context -> get_text_extents (previewString, textExtents);
 
-	const auto min = X3D::Vector2d (textExtents .x_bearing, -textExtents .y_bearing - textExtents .height);
-	const auto max = min + X3D::Vector2d (textExtents .width, textExtents .height);
+	const auto xo = textExtents .x_bearing;
+	const auto yo = -textExtents .y_bearing - textExtents .height;
+	const auto w  = textExtents .width;
+	const auto h  = textExtents .height;
 
 	// Draw text.
 
-	const auto scale = (width - padX * 2) / max .x ();
-	const auto x     = (width - max .x () * scale) / 2;
-	const auto y     = max .y () * scale + (height - max .y () * scale) / 2;
+	const auto scale = (width - padX * 2) / w;
+	const auto x     = xo * scale + (width - w * scale) / 2;
+	const auto y     = (yo + h) * scale + (height - h * scale) / 2;
 
 	context -> set_source_rgb (0, 0, 0);
 	context -> move_to (x, y);
