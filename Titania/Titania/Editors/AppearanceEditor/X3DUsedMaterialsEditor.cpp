@@ -52,40 +52,29 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/IconFactory.h"
-#include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/Material.h>
-#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
+#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
 
 namespace titania {
 namespace puck {
 
-static constexpr size_t IMAGE_SIZE = 48;
-static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
+static constexpr size_t ICON_SIZE = 48; // Gtk::ICON_SIZE_DIALOG
 
 X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
 	                   nodeIndex (new NodeIndex (getBrowserWindow ()))
 {
-	addChildObjects (preview);
-
 	nodeIndex -> setName ("UsedMaterialsEditor." + nodeIndex -> getName ());
 }
 
 void
 X3DUsedMaterialsEditor::initialize ()
 {
-	// Off-Screen Browser
+	// Update NodeIndex when IconFactory ready
 
-	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
-	preview -> setFixedPipeline (false);
-	preview -> setAntialiasing (4);
-	preview -> setup ();
+	getBrowserWindow () -> getIconFactory () -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
 
 	// Selection
 
@@ -102,10 +91,12 @@ X3DUsedMaterialsEditor::initialize ()
 
 	// Tree view column
 
+	const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (nodeIndex -> getName (), ICON_SIZE, ICON_SIZE);
+
 	nodeIndex -> getListStore () -> signal_row_inserted () .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
 	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
 	nodeIndex -> getImageColumn () -> set_visible (true);
-	nodeIndex -> getCellRendererImage () -> property_stock_size () = ICON_SIZE;
+	nodeIndex -> getCellRendererImage () -> property_stock_size () = iconSize;
 
 	nodeIndex -> getTreeModelSort () -> set_sort_func (NodeIndex::Columns::IMAGE, sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_compare_image));
 }
@@ -113,21 +104,8 @@ X3DUsedMaterialsEditor::initialize ()
 void
 X3DUsedMaterialsEditor::set_initialized ()
 {
-	try
-	{
-		const X3D::X3DPtr <X3D::Appearance> appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
-		const X3D::X3DPtr <X3D::Appearance> lineAppearance (preview -> getExecutionContext () -> getNamedNode ("LineAppearance"));
-	
-		appearance -> setPrivate (true);
-		lineAppearance -> setPrivate (true);
-	
-		for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-			nodeIndex -> updateRow (i);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+		nodeIndex -> updateRow (i);
 }
 
 int
@@ -167,48 +145,13 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 {
 	try
 	{
-		// Check.
-
-		if (path .size () > 1)
-			return;
-
-		const auto index = path .back ();
-
-		// Configure scene.
-
-		const X3D::X3DPtr <X3D::Material>         material (nodeIndex -> getNodes () .at (index));
-		const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (nodeIndex -> getNodes () .at (index));
-		const X3D::X3DPtr <X3D::Appearance>       appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
-
-		if (not (material or twoSidedMaterial) or not appearance)
-			return;
-
-		if (material)
-			appearance -> material () = material;
-	
-		else if (twoSidedMaterial)
-			appearance -> material () = twoSidedMaterial;
-
-		const X3D::X3DPtr <X3D::Material> backMaterial (preview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
-
-		if (backMaterial and twoSidedMaterial)
-		{
-			backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
-			backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
-			backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
-			backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
-			backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
-			backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
-		}
-
-		const X3D::X3DPtr <X3D::Switch> sphere (preview -> getExecutionContext () -> getNamedNode ("Sphere"));
-
-		sphere -> whichChoice () = twoSidedMaterial;
-
 		// Create Icon.
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (index),
-		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
+		const auto index        = path .back ();
+		const auto materialNode = X3D::X3DPtr <X3D::X3DMaterialNode> (nodeIndex -> getNodes () .at (index));
+		const auto stockId      = nodeIndex -> getName () + basic::to_string (index);
+
+		getBrowserWindow () -> getIconFactory () -> createMaterialIcon (stockId, ICON_SIZE, ICON_SIZE, materialNode);
 	}
 	catch (const std::exception & error)
 	{ 

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BROWSER_ICON_FACTORY_H__
 #define __TITANIA_BROWSER_ICON_FACTORY_H__
 
+#include "../Base/X3DBaseInterface.h"
 #include "../Browser/X3DBrowserWindow.h"
 
 #include <Titania/X3D/Types/Pointer.h>
@@ -62,7 +63,8 @@
 namespace titania {
 namespace puck {
 
-class IconFactory
+class IconFactory :
+	public X3DBaseInterface
 {
 public:
 
@@ -70,7 +72,17 @@ public:
 
 	IconFactory (X3DBrowserWindow* const browserWindow);
 
+	void
+	initialize ();
+
+	const X3D::Output &
+	initialized () const
+	{ return initializedOutput; }
+
 	///  @name Operations
+
+	Gtk::IconSize
+	getIconSize (const std::string & name, const int32_t width, const int32_t height);
 
 	void
 	createIcon (const std::string & name, const std::string & document);
@@ -81,6 +93,12 @@ public:
 	std::string
 	getIcon (const basic::uri & uri, const Gtk::IconSize & iconSize);
 
+	void
+	createMaterialIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DMaterialNode> & materialNode);
+	
+	void
+	createTextureIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode);
+
 	///  @name Destruction
 
 	~IconFactory ();
@@ -88,20 +106,35 @@ public:
 
 private:
 
-	///  @name Member access
+	///  @name Construction
+	
+	void
+	set_material_preview ();
+	
+	void
+	set_texture_preview ();
+	
+	void
+	set_initialized ();
 
-	X3DBrowserWindow*
-	getBrowserWindow () const
-	{ return browserWindow; }
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const
 	{ return iconFactory; }
+	
+	void
+	set_camera (const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode, const int32_t width, const int32_t height);
+
+	void
+	set_camera (double width, double height);
 
 	///  @name Members
 
-	X3DBrowserWindow* const         browserWindow;
 	Glib::RefPtr <Gtk::IconFactory> iconFactory;
+	X3D::BrowserPtr                 materialPreview;
+	X3D::BrowserPtr                 texturePreview;
+	X3D::Output                     initializedOutput;
 
 };
 

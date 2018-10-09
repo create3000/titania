@@ -54,14 +54,6 @@
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
-namespace X3D {
-
-class BrowserCellRenderer;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class BrowserCellRenderer;
@@ -109,18 +101,11 @@ private:
 	on_row_changed (const Gtk::TreePath & path, const Gtk::TreeIter & iter);
 
 	void
-	set_camera (const size_t index);
-
-	void
-	set_camera (double width, double height);
-
-	void
 	set_node (const X3D::SFNode & value);
 
 	///  @name Members
 
-	X3D::BrowserPtr                 preview;
-	std::unique_ptr <NodeIndex>     nodeIndex;
+	std::unique_ptr <NodeIndex> nodeIndex;
 
 };
 

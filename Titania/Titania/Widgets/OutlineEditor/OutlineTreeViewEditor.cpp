@@ -53,7 +53,6 @@
 #include "../../Base/ScrollFreezer.h"
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
 
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineDragDrop.h"
@@ -61,21 +60,17 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
+#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Navigation/Viewpoint.h>
-#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
-#include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/Material.h>
-#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
-#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/String.h>
 
 namespace titania {
 namespace puck {
+
+static constexpr int32_t ICON_SIZE = 256;
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
@@ -93,9 +88,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	         destinationPath (),
 	         destinationNode (),
 	        destinationField (),
-	motion_notify_connection (),
-	         materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
-	          texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { }))
+	motion_notify_connection ()
 {
 	addChildObjects (sourceNode, destinationNode);
 
@@ -109,49 +102,6 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
 	setup ();
-}
-
-void
-OutlineTreeViewEditor::initialize ()
-{
-	// Off-Screen Browser
-
-	materialPreview -> initialized () .addInterest (&OutlineTreeViewEditor::set_material_preview, this);
-	materialPreview -> setFixedPipeline (false);
-	materialPreview -> setAntialiasing (4);
-	materialPreview -> setup ();
-
-	texturePreview -> initialized () .addInterest (&OutlineTreeViewEditor::set_texture_preview, this);
-	texturePreview -> setFixedPipeline (false);
-	texturePreview -> setup ();
-}
-
-void
-OutlineTreeViewEditor::set_material_preview ()
-{
-	try
-	{
-		materialPreview -> getExecutionContext () -> getNamedNode ("Appearance")     -> setPrivate (true);
-		materialPreview -> getExecutionContext () -> getNamedNode ("LineAppearance") -> setPrivate (true);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-OutlineTreeViewEditor::set_texture_preview ()
-{
-	try
-	{
-		texturePreview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
-		texturePreview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
 }
 
 void
@@ -242,44 +192,15 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 					{
 						try
 						{
-							// Configure scene.
-					
-							const X3D::X3DPtr <X3D::Material>         material (sfnode);
-							const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (sfnode);
-							const X3D::X3DPtr <X3D::Appearance>       appearance (materialPreview -> getExecutionContext () -> getNamedNode ("Appearance"));
-					
-							if (not (material or twoSidedMaterial) or not appearance)
-								return false;
-
-							if (material)
-								appearance -> material () = material;
-						
-							else if (twoSidedMaterial)
-								appearance -> material () = twoSidedMaterial;
-					
-							const X3D::X3DPtr <X3D::Material> backMaterial (materialPreview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
-					
-							if (backMaterial and twoSidedMaterial)
-							{
-								backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
-								backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
-								backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
-								backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
-								backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
-								backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
-							}
-					
-							const X3D::X3DPtr <X3D::Switch> sphere (materialPreview -> getExecutionContext () -> getNamedNode ("Sphere"));
-					
-							sphere -> whichChoice () = twoSidedMaterial;
-					
 							// Create Icon.
 
-							const auto stockId = getName () + basic::to_string (sfnode -> getId ());
+							const auto materialNode = X3D::X3DPtr <X3D::X3DMaterialNode> (sfnode);
+							const auto stockId      = "outline-editor-matrial-preview";
+							const auto iconSize     = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, ICON_SIZE, ICON_SIZE);
 
-							getBrowserWindow () -> getIconFactory () -> createIcon (stockId, materialPreview -> getSnapshot (48, 48, false, 8));
+							getBrowserWindow () -> getIconFactory () -> createMaterialIcon (stockId, ICON_SIZE, ICON_SIZE, materialNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
 							return true;
 						}
 						catch (const std::exception & error)
@@ -292,21 +213,15 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 					{
 						try
 						{
-							// Configure scene.
-					
-							const auto appearance = texturePreview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
-					
-							appearance -> texture () = sfnode;
-					
-							set_camera (sfnode);
-					
 							// Create Icon.
 				
-							const auto stockId = getName () + basic::to_string (sfnode -> getId ());
+							const auto textureNode = X3D::X3DPtr <X3D::X3DTextureNode> (sfnode);
+							const auto stockId     = "outline-editor-texture-preview";
+							const auto iconSize    = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, ICON_SIZE, ICON_SIZE);
 
-							getBrowserWindow () -> getIconFactory () -> createIcon (stockId, texturePreview -> getSnapshot (48, 48, false, 8));
+							getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, ICON_SIZE, ICON_SIZE, textureNode);
 
-							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
 
 							return true;
 						}
@@ -330,34 +245,6 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 	}
 
 	return false;
-}
-
-void
-OutlineTreeViewEditor::set_camera (const X3D::SFNode & node)
-{
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (node);
-
-	if (texture2DNode)
-		set_camera (texture2DNode -> width (), texture2DNode -> height ());
-
-	else
-		set_camera (48, 48);
-}
-
-void
-OutlineTreeViewEditor::set_camera (double width, double height)
-{
-	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-	const X3D::X3DPtr <X3D::Transform>      transform (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2D"));
-
-	if (not width or not height)
-	{
-		width  = 1;
-		height = 1;
-	}
-
-	viewpoint -> fieldOfView () = { -width, -height, width, height };
-	transform -> scale ()       = X3D::Vector3f (width, height, 1);
 }
 
 bool

@@ -68,9 +68,6 @@ public:
 
 	OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor);
 
-	void
-	initialize ();
-
 	///  @name Destruction
 
 	virtual
@@ -78,14 +75,6 @@ public:
 
 
 private:
-
-	///  @name Construction
-	
-	void
-	set_material_preview ();
-	
-	void
-	set_texture_preview ();
 
 	///  @name Operations
 
@@ -175,9 +164,6 @@ private:
 	std::string destinationField;
 
 	sigc::connection motion_notify_connection;
-
-	const X3D::BrowserPtr materialPreview;
-	const X3D::BrowserPtr texturePreview;
 
 };
 

@@ -192,6 +192,10 @@ X3DBrowserNotebook::initialize ()
 	worldURL_changed () .addInterest (&X3DBrowserNotebook::set_history, this);
 
 	getBrowserNotebook () .set_visible (true);
+
+	// Initialize IconFactory
+
+	getIconFactory () -> initialize ();
 }
 
 void

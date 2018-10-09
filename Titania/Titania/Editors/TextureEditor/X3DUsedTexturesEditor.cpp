@@ -52,39 +52,29 @@
 
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/BrowserSelection.h"
-#include "../../Configuration/config.h"
 #include "../../Editors/NodeIndex/NodeIndex.h"
 
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
+#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 
 namespace titania {
 namespace puck {
 
-static constexpr size_t IMAGE_SIZE = 48;
-static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
+static constexpr size_t ICON_SIZE = 48; // Gtk::ICON_SIZE_DIALOG
 
 X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 	X3DTextureEditorInterface (),
-	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") })),
 	                nodeIndex (new NodeIndex (getBrowserWindow ()))
 {
-	addChildObjects (preview);
-
 	nodeIndex -> setName ("UsedTexturesEditor." + nodeIndex -> getName ());
 }
 
 void
 X3DUsedTexturesEditor::initialize ()
 {
-	// Off-Screen Browser
+	// Update NodeIndex when IconFactory ready
 
-	preview -> initialized () .addInterest (&X3DUsedTexturesEditor::set_initialized, this);
-	preview -> setFixedPipeline (false);
-	preview -> setup ();
+	getBrowserWindow () -> getIconFactory () -> initialized () .addInterest (&X3DUsedTexturesEditor::set_initialized, this);
 
 	// Selection
 
@@ -101,27 +91,19 @@ X3DUsedTexturesEditor::initialize ()
 
 	// Tree view column
 
+	const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (nodeIndex -> getName (), ICON_SIZE, ICON_SIZE);
+
 	nodeIndex -> getListStore () -> signal_row_inserted () .connect (sigc::mem_fun (this, &X3DUsedTexturesEditor::on_row_changed));
 	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedTexturesEditor::on_row_changed));
 	nodeIndex -> getImageColumn () -> set_visible (true);
-	nodeIndex -> getCellRendererImage () -> property_stock_size () = ICON_SIZE;
+	nodeIndex -> getCellRendererImage () -> property_stock_size () = iconSize;
 }
 
 void
 X3DUsedTexturesEditor::set_initialized ()
 {
-	try
-	{
-		preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance") -> setPrivate (true);
-		preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("TextureScript") -> setPrivate (true);
-
-		for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-			nodeIndex -> updateRow (i);
-	}
-	catch (const std::exception & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
+	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+		nodeIndex -> updateRow (i);
 }
 
 void
@@ -136,58 +118,18 @@ X3DUsedTexturesEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::Tr
 {
 	try
 	{
-		// Check.
-
-		if (path .size () > 1)
-			return;
-
-		const auto index = path .back ();
-
-		// Configure scene.
-
-		const auto appearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
-
-		appearance -> texture () = nodeIndex -> getNodes () .at (index);
-
-		set_camera (index);
-
 		// Create Icon.
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (index),
-		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
+		const auto index       = path .back ();
+		const auto textureNode = X3D::X3DPtr <X3D::X3DTextureNode> (nodeIndex -> getNodes () .at (index));
+		const auto stockId     = nodeIndex -> getName () + basic::to_string (index);
+
+		getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, ICON_SIZE, ICON_SIZE, textureNode);
 	}
 	catch (const std::exception & error)
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-X3DUsedTexturesEditor::set_camera (const size_t index)
-{
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (nodeIndex -> getNodes () .at (index));
-
-	if (texture2DNode)
-		set_camera (texture2DNode -> width (), texture2DNode -> height ());
-
-	else
-		set_camera (512, 512);
-}
-
-void
-X3DUsedTexturesEditor::set_camera (double width, double height)
-{
-	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-	const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
-
-	if (not width or not height)
-	{
-		width  = 1;
-		height = 1;
-	}
-
-	viewpoint -> fieldOfView () = { -width, -height, width, height };
-	transform -> scale ()       = X3D::Vector3f (width, height, 1);
 }
 
 void

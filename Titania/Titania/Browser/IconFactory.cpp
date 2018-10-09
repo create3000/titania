@@ -54,15 +54,101 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/X3D/Bits/Error.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/InputOutput/FileLoader.h>
 
 namespace titania {
 namespace puck {
 
 IconFactory::IconFactory (X3DBrowserWindow* const browserWindow) :
-	browserWindow (browserWindow),
-	  iconFactory (Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (browserWindow -> getBuilder () -> get_object ("IconFactory")))
-{ }
+	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	      iconFactory (Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (browserWindow -> getBuilder () -> get_object ("IconFactory"))),
+	  materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
+	   texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
+	initializedOutput ()
+{
+	addChildObjects (materialPreview, texturePreview);
+
+	setup ();
+}
+
+void
+IconFactory::initialize ()
+{
+	// Off-Screen Browser
+
+	materialPreview -> initialized () .addInterest (&IconFactory::set_material_preview, this);
+	materialPreview -> setFixedPipeline (false);
+	materialPreview -> setAntialiasing (4);
+	materialPreview -> setup ();
+
+	texturePreview -> initialized () .addInterest (&IconFactory::set_texture_preview, this);
+	texturePreview -> setFixedPipeline (false);
+	texturePreview -> setup ();
+}
+
+void
+IconFactory::set_material_preview ()
+{
+	try
+	{
+		materialPreview -> getExecutionContext () -> getNamedNode ("Appearance")     -> setPrivate (true);
+		materialPreview -> getExecutionContext () -> getNamedNode ("LineAppearance") -> setPrivate (true);
+
+		set_initialized ();
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+IconFactory::set_texture_preview ()
+{
+	try
+	{
+		texturePreview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
+		texturePreview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
+
+		set_initialized ();
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+IconFactory::set_initialized ()
+{
+	if (not materialPreview -> initialized ())
+		return;
+
+	if (not texturePreview -> initialized ())
+		return;
+
+	initializedOutput .processInterests ();
+}
+
+Gtk::IconSize
+IconFactory::getIconSize (const std::string & name, const int32_t width, const int32_t height)
+{
+	const auto iconSize = Gtk::IconSize::from_name (name);
+
+	if (iconSize != Gtk::ICON_SIZE_INVALID)
+		return iconSize;
+
+	return Gtk::IconSize::register_new (name, width, height);
+}
 
 void
 IconFactory::createIcon (const std::string & name, const std::string & document)
@@ -151,8 +237,93 @@ IconFactory::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSiz
 	return image;
 }
 
+void
+IconFactory::createMaterialIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DMaterialNode> & materialNode)
+{
+	// Configure scene.
+
+	const X3D::X3DPtr <X3D::Material>         material (materialNode);
+	const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (materialNode);
+	const X3D::X3DPtr <X3D::Appearance>       appearance (materialPreview -> getExecutionContext () -> getNamedNode ("Appearance"));
+
+	if (not (material or twoSidedMaterial) or not appearance)
+		throw X3D::Error <X3D::INVALID_NODE> ("IconFactory::createMaterialIcon");
+
+	if (material)
+		appearance -> material () = material;
+
+	else if (twoSidedMaterial)
+		appearance -> material () = twoSidedMaterial;
+
+	const X3D::X3DPtr <X3D::Material> backMaterial (materialPreview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
+
+	if (backMaterial and twoSidedMaterial)
+	{
+		backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
+		backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
+		backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
+		backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
+		backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
+		backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
+	}
+
+	const X3D::X3DPtr <X3D::Switch> sphere (materialPreview -> getExecutionContext () -> getNamedNode ("Sphere"));
+
+	sphere -> whichChoice () = twoSidedMaterial;
+
+	// Create Icon.
+
+	createIcon (stockId, materialPreview -> getSnapshot (width, height, false, 8));
+}
+
+void
+IconFactory::createTextureIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode)
+{
+	// Configure scene.
+
+	const auto appearance = texturePreview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+	appearance -> texture () = textureNode;
+
+	set_camera (textureNode, width, height);
+
+	// Create Icon.
+
+	createIcon (stockId, texturePreview -> getSnapshot (width, height, false, 8));
+}
+
+void
+IconFactory::set_camera (const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode, const int32_t width, const int32_t height)
+{
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+
+	if (texture2DNode)
+		set_camera (texture2DNode -> width (), texture2DNode -> height ());
+
+	else
+		set_camera (width, height);
+}
+
+void
+IconFactory::set_camera (double width, double height)
+{
+	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+	const X3D::X3DPtr <X3D::Transform>      transform (texturePreview -> getExecutionContext () -> getNamedNode ("Texture2D"));
+
+	if (not width or not height)
+	{
+		width  = 1;
+		height = 1;
+	}
+
+	viewpoint -> fieldOfView () = { -width, -height, width, height };
+	transform -> scale ()       = X3D::Vector3f (width, height, 1);
+}
+
 IconFactory::~IconFactory ()
-{ }
+{
+	dispose ();
+}
 
 } // puck
 } // titania
