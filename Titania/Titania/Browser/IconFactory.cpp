@@ -297,7 +297,7 @@ IconFactory::createFontIcon (const std::string & stockId, const int32_t width, c
 	// Draw text.
 
 	const auto scale = (width - padX * 2) / max .x ();
-	const auto x     = padX;
+	const auto x     = (width - max .x () * scale) / 2;
 	const auto y     = max .y () * scale + (height - max .y () * scale) / 2;
 
 	context -> set_source_rgb (0, 0, 0);
