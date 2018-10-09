@@ -126,6 +126,24 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	getX_ITECompatibilityMenuItem () .set_use_underline (false);
 	getBrowserX_ITECompatibilityMenuItem () .set_use_underline (false);
 
+	// Load Styles.
+
+	try
+	{
+		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
+
+		fileCssProvider -> load_from_path (get_ui ("style.css"));
+
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider,     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+		on_style_updated ();
+	}
+	catch (const Glib::Error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
+
 	// Parse accel map.
 
 	//Gtk::AccelMap::load (get_ui ("Accelerators.rc"));
@@ -155,6 +173,17 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	//Gtk::AccelMap::save ("/home/holger/Accelerators.rc");
 	//Gtk::AccelMap::save (config_dir ("Accelerators.rc"));
 
+	// Drag & drop targets
+
+	std::vector <Gtk::TargetEntry> targets = {
+		Gtk::TargetEntry ("STRING"),
+		Gtk::TargetEntry ("text/plain"),
+		Gtk::TargetEntry ("text/uri-list")
+	};
+
+	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+
 	// Setup.
 
 	setup ();
@@ -167,38 +196,9 @@ BrowserWindow::initialize ()
 
 	getMasterBrowser () -> initialized () .addInterest (&BrowserWindow::set_masterBrowser, this);
 
-	try
-	{
-		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
-
-		fileCssProvider -> load_from_path (get_ui ("style.css"));
-
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider,     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-		on_style_updated ();
-	}
-	catch (const Glib::Error & error)
-	{
-	   __LOG__ << error .what () << std::endl;
-	}
-
-	// Drag & drop targets
-	std::vector <Gtk::TargetEntry> targets = {
-		Gtk::TargetEntry ("STRING"),
-		Gtk::TargetEntry ("text/plain"),
-		Gtk::TargetEntry ("text/uri-list")
-	};
-
-	ExternalToolsEditor::createMenu (this, getExternalToolsMenuItem ());
-	ExternalToolsEditor::createMenu (this, getBrowserExternalToolsMenuItem ());
-
-	getToolbar ()     .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-
 	// Browser events
-	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
+	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 	getSelection () -> getHierarchy () .addInterest (&BrowserWindow::set_hierarchy, this);
 
 	// Layout Menu
@@ -208,8 +208,14 @@ BrowserWindow::initialize ()
 	getAxonometricGridTool () -> getVisible () .addInterest (&BrowserWindow::set_axonometric_grid_visible, this);
 
 	// Window
+
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getWidget () .grab_focus ();
+
+	// External Tools menu
+
+	ExternalToolsEditor::createMenu (this, getExternalToolsMenuItem ());
+	ExternalToolsEditor::createMenu (this, getBrowserExternalToolsMenuItem ());
 }
 
 void

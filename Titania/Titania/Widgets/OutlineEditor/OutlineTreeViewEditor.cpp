@@ -201,6 +201,12 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							getBrowserWindow () -> getIconFactory () -> createMaterialIcon (stockId, ICON_SIZE, ICON_SIZE, materialNode);
 
 							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+
+							if (materialNode -> getName () .size ())
+								tooltip -> set_text (materialNode -> getName ());
+							else
+								tooltip -> unset_text ();
+
 							return true;
 						}
 						catch (const std::exception & error)
@@ -222,6 +228,11 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							getBrowserWindow () -> getIconFactory () -> createTextureIcon (stockId, ICON_SIZE, ICON_SIZE, textureNode);
 
 							tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+
+							if (textureNode -> getName () .size ())
+								tooltip -> set_text (textureNode -> getName ());
+							else
+								tooltip -> unset_text ();
 
 							return true;
 						}
