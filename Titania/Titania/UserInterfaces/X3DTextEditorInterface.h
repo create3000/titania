@@ -289,10 +289,6 @@ public:
 	getFontStyleBezierDimensionSpinButton () const
 	{ return *m_FontStyleBezierDimensionSpinButton; }
 
-	Gtk::FontChooserDialog &
-	getFamilyChooserDialog () const
-	{ return *m_FamilyChooserDialog; }
-
 	///  @name Signal handlers
 
 	virtual
@@ -393,7 +389,6 @@ private:
 	Gtk::SpinButton* m_FontStylePointSizeSpinButton;
 	Gtk::Grid* m_FontStyleGlobalOptionsBox;
 	Gtk::SpinButton* m_FontStyleBezierDimensionSpinButton;
-	Gtk::FontChooserDialog* m_FamilyChooserDialog;
 
 };
 

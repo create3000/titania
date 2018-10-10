@@ -130,7 +130,6 @@ X3DTextEditorInterface::create ()
 	m_builder -> get_widget ("FontStylePointSizeSpinButton", m_FontStylePointSizeSpinButton);
 	m_builder -> get_widget ("FontStyleGlobalOptionsBox", m_FontStyleGlobalOptionsBox);
 	m_builder -> get_widget ("FontStyleBezierDimensionSpinButton", m_FontStyleBezierDimensionSpinButton);
-	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 
 	// Connect object Gtk::Adjustment with id 'TextCharSpacingAdjustment'.
 	m_TextCharSpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DTextEditorInterface::on_char_spacing_changed));
@@ -155,7 +154,6 @@ X3DTextEditorInterface::create ()
 X3DTextEditorInterface::~X3DTextEditorInterface ()
 {
 	delete m_Window;
-	delete m_FamilyChooserDialog;
 }
 
 } // puck

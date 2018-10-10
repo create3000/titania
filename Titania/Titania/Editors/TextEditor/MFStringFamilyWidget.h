@@ -53,6 +53,7 @@
 
 #include "../../Base/X3DUserInterface.h"
 #include "../../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
+#include "../../Dialogs/FontChooserDialog/FontChooserDialog.h"
 #include "../../ComposedWidgets/MFStringWidget.h"
 
 namespace titania {
@@ -104,7 +105,7 @@ private:
 	X3DUserInterface* const                  userInterface;
 	const Glib::RefPtr <Gtk::TreeViewColumn> fontChooserColumn;
 	const Glib::RefPtr <Gtk::TreeViewColumn> fileChooserColumn;
-	std::unique_ptr <Gtk::FontChooserDialog> fontChooserDialog;
+	std::unique_ptr <FontChooserDialog>      fontChooserDialog;
 	std::unique_ptr <FileOpenFontDialog>     fileOpenDialog;
 
 };
@@ -181,10 +182,10 @@ MFStringFamilyWidget::openFontDialog (const std::string & defaultValue, std::str
 {
 	// Choose new URL
 
-	fontChooserDialog .reset (new Gtk::FontChooserDialog ());
+	fontChooserDialog .reset (new FontChooserDialog (getBrowserWindow ()));
 
-	fontChooserDialog -> set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
-	fontChooserDialog -> set_modal (true);
+	fontChooserDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
+	fontChooserDialog -> getWindow () .set_modal (true);
 
 	// Create font description.
 
@@ -194,18 +195,20 @@ MFStringFamilyWidget::openFontDialog (const std::string & defaultValue, std::str
 
 	// Run Dialog
 
-	fontChooserDialog -> set_font_desc (fontDescription);
+	fontChooserDialog -> getWindow () .set_font_desc (fontDescription);
 
 	const auto response_id = fontChooserDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
 	{
-		const auto fontDescription = fontChooserDialog -> get_font_desc ();
+		const auto fontDescription = fontChooserDialog -> getWindow () .get_font_desc ();
+
 		family = fontDescription .get_family ();
 	}
 
-	fontChooserDialog -> hide ();
+	fontChooserDialog -> quit ();
 	fontChooserDialog .reset ();
+
 	return response_id == Gtk::RESPONSE_OK;
 }
 
@@ -242,7 +245,10 @@ void
 MFStringFamilyWidget::set_buffer ()
 {
 	if (fontChooserDialog)
-		fontChooserDialog -> hide ();
+		fontChooserDialog -> quit ();
+
+	if (fileOpenDialog)
+		fileOpenDialog -> quit ();
 
 	X3DMFStringWidget::set_buffer ();
 }

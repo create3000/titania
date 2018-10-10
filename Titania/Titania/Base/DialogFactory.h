@@ -62,6 +62,7 @@
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveVideoDialog.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
+#include "../Dialogs/FontChooserDialog/FontChooserDialog.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
@@ -141,6 +142,7 @@ public:
 		         std::make_pair ("FileSaveDialog",                constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveVideoDialog",           constructDialog <FileSaveVideoDialog>),
 		         std::make_pair ("FileSaveWarningDialog",         constructDialog <FileSaveWarningDialog>),
+		         std::make_pair ("FontChooserDialog",             constructDialog <FontChooserDialog>),
 		         std::make_pair ("FilesEditor",                   constructDialog <FilesEditor>),
 		         std::make_pair ("FogEditor",                     constructDialog <FogEditor>),
 		         std::make_pair ("FogList",                       constructDialog <FogList>),

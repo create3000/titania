@@ -370,6 +370,8 @@
     <Compile Include="Titania\Applications\BrowserApplication\BrowserApplication.cpp" />
     <Compile Include="Titania\Applications\BrowserApplication\X3DBrowserApplication.cpp" />
     <Compile Include="Titania\Applications\BrowserApplication\X3DDBusInterface.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DFontChooserDialogInterface.cpp" />
+    <Compile Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3180,6 +3182,9 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\SliderJoint" />
     <None Include="share\titania\ui\logo.svg" />
     <None Include="share\titania\ui\logo.x3dv" />
+    <None Include="share\titania\ui\Dialogs\FontChooserDialog.glade" />
+    <None Include="Titania\UserInterfaces\X3DFontChooserDialogInterface.h" />
+    <None Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3351,6 +3356,7 @@
     <Folder Include="Titania\Applications\BrowserApplication\" />
     <Folder Include="share\appdata\" />
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\" />
+    <Folder Include="Titania\Dialogs\FontChooserDialog\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
