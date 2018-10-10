@@ -64,6 +64,7 @@ enum class OutlineCellContent
 	NONE,
 	ICON,
 	NAME,
+	COLOR,
 	INPUT,
 	OUTPUT,
 	INPUT_CONNECTOR,

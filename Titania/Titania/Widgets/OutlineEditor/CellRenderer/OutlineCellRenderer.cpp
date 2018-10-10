@@ -948,6 +948,12 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					const double r = ACCESS_TYPE_RADIUS;
 
 					x += r + ACCESS_TYPE_X_PAD;
+
+					const X3D::Box2f box (X3D::Vector2f (r * 2, r * 2), X3D::Vector2f (x, y + height / 2));
+			
+					if (box .intersects (point))
+						return OutlineCellContent::COLOR;
+
 					x += r + COLOR_X_PAD;
 					break;
 				}
