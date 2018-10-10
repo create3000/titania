@@ -200,8 +200,9 @@ void
 X3DViewpointNodeTool::removeTool (const bool really)
 {
 	if (really)
+	{
 		X3DBindableNodeTool::removeTool ();
-
+	}
 	else
 	{
 		try
