@@ -69,6 +69,10 @@ PanelMenu::PanelMenu (X3DBrowserWindow* const browserWindow, NotebookPage* const
 {
 	addChildObjects (panelType);
 
+	getWidget () .set_accel_group (getBrowserWindow () -> getAccelGroup ());
+
+	Gtk::AccelMap::add_entry ("<PanelMenu>/Multi View", GDK_KEY_space, Gdk::ModifierType (0));
+
 	menuItems .at (panelType) -> get_style_context () -> add_class ("titania-menu-item-selected");
 
 	setup ();
@@ -122,3 +126,4 @@ PanelMenu::~PanelMenu ()
 
 } // puck
 } // titania
+ 

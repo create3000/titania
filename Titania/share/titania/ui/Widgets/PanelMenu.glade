@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkMenu" id="Widget">
@@ -34,14 +34,17 @@
       <object class="GtkCheckMenuItem" id="MultiViewMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="accel_path">&lt;PanelMenu&gt;/Multi View</property>
         <property name="label" translatable="yes">Multi View</property>
         <signal name="toggled" handler="on_multi_view_toggled" swapped="no"/>
-        <accelerator key="space" signal="activate"/>
       </object>
     </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <placeholder/>
     </child>
