@@ -406,7 +406,6 @@ throw (Error <INVALID_SCENE>,
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
-		getWorld () -> bind ();
 
 		if (initialized ())
 		{
