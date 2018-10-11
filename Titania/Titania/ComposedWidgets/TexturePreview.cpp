@@ -50,6 +50,7 @@
 
 #include "TexturePreview.h"
 
+#include "../Bits/String.h"
 #include "../Configuration/config.h"
 
 #include <Titania/X3D/Components/Shape/Appearance.h>
@@ -225,111 +226,8 @@ TexturePreview::set_loadState ()
 
 	// Set label
 
-	formatLabel .set_text ("");
-
-	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
-
-	if (texture2DNode)
-	{
-		std::string components;
-	
-		switch (texture2DNode -> components ())
-		{
-			case 1: components = _ ("GRAY");       break;
-			case 2: components = _ ("GRAY ALPHA"); break;
-			case 3: components = _ ("RGB");        break;
-			case 4: components = _ ("RGBA");       break;
-			default:
-				break;
-		}
-	
-		formatLabel .set_text (std::to_string (texture2DNode -> width ()) +
-		                       " × " +
-		                       std::to_string (texture2DNode -> height ()) +
-		                       " (" +
-		                       components +
-		                       ")");
-	}
-
-	const X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode (textureNode);
-
-	if (texture3DNode)
-	{
-		std::string components;
-	
-		switch (texture3DNode -> components ())
-		{
-			case 1: components = _ ("GRAY");       break;
-			case 2: components = _ ("GRAY ALPHA"); break;
-			case 3: components = _ ("RGB");        break;
-			case 4: components = _ ("RGBA");       break;
-			default:
-				break;
-		}
-	
-		formatLabel .set_text (std::to_string (texture3DNode -> width ()) +
-		                       " × " +
-		                       std::to_string (texture3DNode -> height ()) +
-		                       " × " +
-		                       std::to_string (texture3DNode -> depth ()) +
-		                       " (" +
-		                       components +
-		                       ")");
-	}
-
-	const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> environmentTexture (textureNode);
-
-	if (environmentTexture)
-	{
-		std::string components;
-	
-		switch (environmentTexture -> getComponents ())
-		{
-			case 1: components = _ ("GRAY");       break;
-			case 2: components = _ ("GRAY ALPHA"); break;
-			case 3: components = _ ("RGB");        break;
-			case 4: components = _ ("RGBA");       break;
-			default:
-				break;
-		}
-
-		formatLabel .set_text (std::to_string (environmentTexture -> getWidth ()) +
-		                       " × " +
-		                       std::to_string (environmentTexture -> getHeight ()) +
-		                       " × 6 " +
-		                       " (" +
-		                       components +
-		                       ")");
-	}
-
-	if (textureNode)
-	{
-		switch (textureNode -> checkLoadState ())
-		{
-			case X3D::NOT_STARTED_STATE:
-			{
-				loadStateLabel .set_text (_ ("NOT STARTED"));
-				break;
-			}
-			case X3D::IN_PROGRESS_STATE:
-			{
-				loadStateLabel.set_text (_ ("IN PROGRESS"));
-				break;
-			}
-			case X3D::COMPLETE_STATE:
-			{
-				loadStateLabel .set_text (_ ("COMPLETE"));
-				break;
-			}
-			case X3D::FAILED_STATE:
-			{
-				loadStateLabel .set_text (_ ("FAILED"));
-				break;
-			}
-		}
-	}
-	else
-		loadStateLabel .set_text (_ ("NOT STARTED"));
+	formatLabel    .set_text (textureInfo (textureNode));
+	loadStateLabel .set_text (loadStateInfo (textureNode ? textureNode -> checkLoadState () : X3D::NOT_STARTED_STATE));
 }
 
 bool

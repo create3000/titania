@@ -51,6 +51,7 @@
 #ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DHEIGHT_MAP_EDITOR_H__
 #define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DHEIGHT_MAP_EDITOR_H__
 
+#include "../../../Bits/String.h"
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 #include <Titania/X3D/Components/Core/MetadataString.h>
@@ -546,12 +547,12 @@ template <class NodeType, class FieldType>
 void
 X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
 {
+	loadStateLabel .set_text (loadStateInfo (node -> checkLoadState ()));
+
 	switch (node -> checkLoadState ())
 	{
 		case X3D::NOT_STARTED_STATE:
 		{
-			loadStateLabel .set_text (_ ("NOT STARTED"));
-
 			fileChooser  .set_sensitive (true);
 			reloadButton .set_sensitive (not fileChooser .get_file () -> get_path () .empty ());
 			removeButton .set_sensitive (true);
@@ -559,8 +560,6 @@ X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
 		}
 		case X3D::IN_PROGRESS_STATE:
 		{
-			loadStateLabel .set_text (_ ("IN PROGRESS"));
-
 			fileChooser  .set_sensitive (false);
 			reloadButton .set_sensitive (false);
 			removeButton .set_sensitive (false);
@@ -568,8 +567,6 @@ X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
 		}
 		case X3D::COMPLETE_STATE:
 		{
-			loadStateLabel .set_text (_ ("COMPLETE"));
-
 			fileChooser  .set_sensitive (true);
 			reloadButton .set_sensitive (true);
 			removeButton .set_sensitive (true);
@@ -577,8 +574,6 @@ X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
 		}
 		case X3D::FAILED_STATE:
 		{
-			loadStateLabel .set_text (_ ("FAILED"));
-
 			fileChooser  .set_sensitive (true);
 			reloadButton .set_sensitive (false);
 			removeButton .set_sensitive (true);

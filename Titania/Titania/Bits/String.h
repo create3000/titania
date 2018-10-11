@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BITS_STRING_H__
 #define __TITANIA_BITS_STRING_H__
 
+#include <Titania/X3D.h>
 #include <string>
 
 namespace titania {
@@ -61,6 +62,12 @@ strfframes (const size_t value, const size_t framesPerSecond);
 
 std::string
 strftime (const long double value, const size_t fractions);
+
+std::string
+textureInfo (const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode);
+
+std::string
+loadStateInfo (const X3D::LoadState value);
 
 } // puck
 } // titania

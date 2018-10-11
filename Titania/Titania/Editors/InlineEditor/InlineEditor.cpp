@@ -50,6 +50,7 @@
 
 #include "InlineEditor.h"
 
+#include "../../Bits/String.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Configuration/config.h"
@@ -229,30 +230,10 @@ InlineEditor::set_loadState (const X3D::LoadState loadState)
 {
 	getFoldBackIntoSceneButton () .set_sensitive (false);
 
-	switch (loadState)
-	{
-		case X3D::NOT_STARTED_STATE:
-		{
-			getLoadStateLabel () .set_text (_ ("NOT STARTED"));
-			break;
-		}
-		case X3D::IN_PROGRESS_STATE:
-		{
-			getLoadStateLabel () .set_text (_ ("IN PROGRESS"));
-			break;
-		}
-		case X3D::COMPLETE_STATE:
-		{
-			getFoldBackIntoSceneButton () .set_sensitive (true);
-			getLoadStateLabel () .set_text (_ ("COMPLETE"));
-			break;
-		}
-		case X3D::FAILED_STATE:
-		{
-			getLoadStateLabel () .set_text (_ ("FAILED"));
-			break;
-		}
-	}
+	getLoadStateLabel () .set_text (loadStateInfo (loadState));
+
+	if (loadState == X3D::COMPLETE_STATE)
+		getFoldBackIntoSceneButton () .set_sensitive (true);
 }
 
 InlineEditor::~InlineEditor ()

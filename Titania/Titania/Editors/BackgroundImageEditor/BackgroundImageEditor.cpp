@@ -52,6 +52,7 @@
 
 #include "BackgroundImage.h"
 
+#include "../../Bits/String.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
@@ -123,12 +124,14 @@ BackgroundImageEditor::set_background_image ()
 void
 BackgroundImageEditor::set_loadState ()
 {
-	switch (page -> getBackgroundImage () -> getTexture () -> checkLoadState ())
+	const auto loadState = page -> getBackgroundImage () -> getTexture () -> checkLoadState ();
+
+	getLoadStateLabel () .set_text (loadStateInfo (loadState));
+
+	switch (loadState)
 	{
 		case X3D::NOT_STARTED_STATE:
 		{
-			getLoadStateLabel () .set_text (_ ("NOT STARTED"));
-
 			getImageChooserButton () .set_sensitive (true);
 			getImageReloadButton ()  .set_sensitive (not getImageChooserButton ()  .get_file () -> get_path () .empty ());
 			getImageRemoveButton ()  .set_sensitive (true);
@@ -136,8 +139,6 @@ BackgroundImageEditor::set_loadState ()
 		}
 		case X3D::IN_PROGRESS_STATE:
 		{
-			getLoadStateLabel () .set_text (_ ("IN PROGRESS"));
-
 			getImageChooserButton () .set_sensitive (false);
 			getImageReloadButton ()  .set_sensitive (false);
 			getImageRemoveButton ()  .set_sensitive (false);
@@ -145,8 +146,6 @@ BackgroundImageEditor::set_loadState ()
 		}
 		case X3D::COMPLETE_STATE:
 		{
-			getLoadStateLabel () .set_text (_ ("COMPLETE"));
-
 			getImageChooserButton () .set_sensitive (true);
 			getImageReloadButton ()  .set_sensitive (true);
 			getImageRemoveButton ()  .set_sensitive (true);
@@ -154,8 +153,6 @@ BackgroundImageEditor::set_loadState ()
 		}
 		case X3D::FAILED_STATE:
 		{
-			getLoadStateLabel () .set_text (_ ("FAILED"));
-
 			getImageChooserButton () .set_sensitive (true);
 			getImageReloadButton ()  .set_sensitive (false);
 			getImageRemoveButton ()  .set_sensitive (true);
