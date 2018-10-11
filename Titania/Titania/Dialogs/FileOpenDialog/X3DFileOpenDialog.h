@@ -91,6 +91,21 @@ protected:
 	setFileFilter (const std::string & name)
 	{ }
 
+	void
+	setPreview (const bool value);
+
+
+private:
+
+	///  @name Event handlers
+
+	basic::uri
+	getPreviewUrl () const;
+
+	virtual
+	void
+	on_update_preview () final override;
+
 };
 
 } // puck

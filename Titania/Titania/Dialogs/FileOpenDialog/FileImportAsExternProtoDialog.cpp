@@ -74,6 +74,7 @@ FileImportAsExternProtoDialog::FileImportAsExternProtoDialog (X3DBrowserWindow* 
 	X3DFileOpenDialog ()
 {
 	setName ("FileImportAsExternProtoDialog");
+	setPreview (true);
 
 	getWindow () .set_title (_ ("Import Prototype As Extern Proto …"));
 	getRelativePathBox () .set_visible (true);

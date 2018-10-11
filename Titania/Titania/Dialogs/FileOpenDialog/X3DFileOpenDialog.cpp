@@ -50,6 +50,9 @@
 
 #include "X3DFileOpenDialog.h"
 
+#include "../../Bits/File.h"
+#include "../../Browser/IconFactory.h"
+#include "../../Browser/RecentView.h"
 #include "../../Configuration/config.h"
 
 namespace titania {
@@ -75,6 +78,14 @@ basic::uri
 X3DFileOpenDialog::getUrl () const
 {
 	const basic::uri url = getWindow () .get_file () -> get_path ();
+
+	return url .add_file_scheme ();
+}
+
+basic::uri
+X3DFileOpenDialog::getPreviewUrl () const
+{
+	const basic::uri url = getWindow () .get_preview_file () -> get_path ();
 
 	return url .add_file_scheme ();
 }
@@ -105,6 +116,41 @@ X3DFileOpenDialog::run ()
 		return true;
 
 	return false;
+}
+
+void
+X3DFileOpenDialog::setPreview (const bool value)
+{
+	getWindow () .set_preview_widget_active (value);
+}
+
+void
+X3DFileOpenDialog::on_update_preview ()
+{
+	static constexpr size_t PREVIEW_SIZE = 192;
+	static const auto       stockId      = "file-open-preview";
+
+	try
+	{
+		if (not getWindow () .get_preview_widget_active ())
+			return;
+
+		const auto url      = getPreviewUrl ();
+		const auto id       = getBrowserWindow () -> getHistory () -> getId (url .filename ());
+		const auto preview  = getBrowserWindow () -> getHistory () -> getPreview (id);
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, PREVIEW_SIZE, PREVIEW_SIZE);
+
+		getBrowserWindow () -> getIconFactory () -> createIcon (stockId, preview);
+
+		getPreviewImage () .set (Gtk::StockID (stockId), iconSize);
+	}
+	catch (const std::exception & error)
+	{
+		const auto file     = getWindow () .get_preview_file ();
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, PREVIEW_SIZE, PREVIEW_SIZE);
+
+		getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
+	}
 }
 
 X3DFileOpenDialog::~X3DFileOpenDialog ()

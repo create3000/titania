@@ -98,10 +98,13 @@ X3DFileOpenDialogInterface::create ()
 	m_FileFilterX3DXMLEncoding                   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3DXMLEncoding"));
 
 	// Get widgets.
+	m_builder -> get_widget ("Preview", m_Preview);
+	m_builder -> get_widget ("PreviewImage", m_PreviewImage);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("RelativePathBox", m_RelativePathBox);
 	m_builder -> get_widget ("RelativePathSwitch", m_RelativePathSwitch);
+	m_Window -> signal_update_preview () .connect (sigc::mem_fun (this, &X3DFileOpenDialogInterface::on_update_preview));
 }
 
 X3DFileOpenDialogInterface::~X3DFileOpenDialogInterface ()

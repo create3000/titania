@@ -682,7 +682,7 @@ X3DBrowserNotebook::set_history ()
 
 	// Update history.
 
-	getHistory () -> setItem (worldURL .basename (), worldURL);
+	getHistory () -> setItem (worldURL .basename (), worldURL .filename ());
 }
 
 void

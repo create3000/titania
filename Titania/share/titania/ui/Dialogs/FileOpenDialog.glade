@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkFileFilter" id="FileFilterAll">
@@ -172,6 +172,28 @@
       <pattern>*.x3d</pattern>
     </patterns>
   </object>
+  <object class="GtkBox" id="Preview">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImage" id="PreviewImage">
+        <property name="width_request">192</property>
+        <property name="height_request">192</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="stock">gtk-missing-image</property>
+        <property name="icon_size">6</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkFileChooserDialog" id="Window">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -182,6 +204,9 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="local_only">False</property>
+    <property name="preview_widget">Preview</property>
+    <property name="use_preview_label">False</property>
+    <signal name="update-preview" handler="on_update_preview" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox6">
         <property name="can_focus">False</property>

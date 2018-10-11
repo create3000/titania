@@ -161,6 +161,14 @@ public:
 	getFileFilterX3DXMLEncoding () const
 	{ return m_FileFilterX3DXMLEncoding; }
 
+	Gtk::Box &
+	getPreview () const
+	{ return *m_Preview; }
+
+	Gtk::Image &
+	getPreviewImage () const
+	{ return *m_PreviewImage; }
+
 	Gtk::FileChooserDialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -178,6 +186,10 @@ public:
 	{ return *m_RelativePathSwitch; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_update_preview () = 0;
 
 	///  @name Destruction
 
@@ -221,6 +233,8 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
+	Gtk::Box* m_Preview;
+	Gtk::Image* m_PreviewImage;
 	Gtk::FileChooserDialog* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Box* m_RelativePathBox;

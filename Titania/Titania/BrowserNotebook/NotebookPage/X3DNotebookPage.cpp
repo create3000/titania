@@ -92,7 +92,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 
 	try
 	{
-		const auto id      = getBrowserWindow () -> getHistory () -> getId (url);
+		const auto id      = getBrowserWindow () -> getHistory () -> getId (url .filename ());
 		const auto preview = getBrowserWindow () -> getHistory () -> getPreview (id);
 
 		getBrowserWindow () -> getIconFactory () -> createIcon (url .filename (), preview);
