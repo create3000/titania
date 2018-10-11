@@ -93,6 +93,9 @@ X3DNotebookPageInterface::create ()
 	m_builder -> get_widget ("Box3", m_Box3);
 	m_builder -> get_widget ("Box4", m_Box4);
 
+	// Connect object Gtk::Image with id 'TabImage'.
+	m_TabImage -> signal_query_tooltip () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_tab_image_query_tooltip));
+
 	// Connect object Gtk::ToggleButton with id 'MuteButton'.
 	m_MuteButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_mute_toggled));
 
