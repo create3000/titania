@@ -94,7 +94,7 @@ protected:
 
 private:
 
-	///  @name Event handlers
+	///  @name Preview handling
 
 	basic::uri
 	getPreviewUrl () const;

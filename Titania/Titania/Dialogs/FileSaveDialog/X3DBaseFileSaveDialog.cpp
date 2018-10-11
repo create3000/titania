@@ -50,6 +50,9 @@
 
 #include "X3DBaseFileSaveDialog.h"
 
+#include "../../Bits/File.h"
+#include "../../Browser/IconFactory.h"
+#include "../../Browser/RecentView.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -95,6 +98,19 @@ X3DBaseFileSaveDialog::getUrl () const
 	return url .add_file_scheme ();
 }
 
+basic::uri
+X3DBaseFileSaveDialog::getPreviewUrl () const
+{
+	const auto file = getWindow () .get_preview_file ();
+
+	if (not file)
+		throw std::runtime_error ("X3DFileOpenDialog::getPreviewUrl");
+
+	const basic::uri url = file -> get_path ();
+
+	return url .add_file_scheme ();
+}
+
 void
 X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
 {
@@ -123,6 +139,50 @@ X3DBaseFileSaveDialog::on_response (int responseId)
 	name .suffix (getSuffix ());
 
 	getWindow () .set_current_name (name .str ());
+}
+
+bool
+X3DBaseFileSaveDialog::on_preview_button_press_event (GdkEventButton* event)
+{
+	return true;
+}
+
+void
+X3DBaseFileSaveDialog::on_update_preview ()
+{
+	static constexpr size_t PREVIEW_SIZE = 192;
+	static const auto       STOCK_ID     = "file-open-preview";
+
+	try
+	{
+		const auto url      = getPreviewUrl ();
+		const auto id       = getBrowserWindow () -> getHistory () -> getId (url .filename ());
+		const auto preview  = getBrowserWindow () -> getHistory () -> getPreview (id);
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (STOCK_ID, PREVIEW_SIZE, PREVIEW_SIZE);
+
+		getBrowserWindow () -> getIconFactory () -> createIcon (STOCK_ID, preview);
+
+		getPreviewImage () .set (Gtk::StockID (STOCK_ID), iconSize);
+		getPreviewName () .set_text (url .basename ());
+	}
+	catch (const std::exception & error)
+	{
+		const auto file     = getWindow () .get_preview_file ();
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (STOCK_ID, PREVIEW_SIZE, PREVIEW_SIZE);
+
+		if (file)
+		{
+			const auto url = getPreviewUrl ();
+
+			getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
+			getPreviewName () .set_text (url .basename ());
+		}
+		else
+		{
+			getPreviewImage () .set_from_icon_name ("", iconSize);
+			getPreviewName () .set_text ("");
+		}
+	}
 }
 
 X3DBaseFileSaveDialog::~X3DBaseFileSaveDialog ()
