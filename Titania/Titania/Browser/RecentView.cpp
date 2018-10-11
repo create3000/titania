@@ -122,7 +122,12 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 			return;
 
 		const auto worldURL = browser -> getWorldURL ();
-		auto       image    = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, 16);
+		auto       image    = browser -> getSnapshot (PREVIEW_SIZE * 4, PREVIEW_SIZE * 4, false, 16);
+
+		Magick::Geometry geometry (PREVIEW_SIZE, PREVIEW_SIZE);
+
+		image .filterType (Magick::LanczosFilter);
+		image .zoom (geometry);
 
 		image .quality (PREVIEW_QUALITY);
 		image .magick (PREVIEW_TYPE);
