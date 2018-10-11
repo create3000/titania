@@ -109,9 +109,6 @@ public:
 
 	///  @name Operations
 
-	void
-	bind ();
-
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
@@ -139,6 +136,9 @@ private:
 	void
 	set_rootNodes ();
 
+	void
+	bind ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -147,7 +147,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <LayerSet>    layerSet;
+	X3DPtr <LayerSet>     layerSet;
 	X3DPtr <LayerSet>     defaultLayerSet;
 	X3DPtr <X3DLayerNode> layer0;
 	X3DPtr <X3DLayerNode> activeLayer;

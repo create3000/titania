@@ -68,25 +68,9 @@ class ExportImage :
 public:
 
 	void
-	set_initialized (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
-	{
-		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser, std::ref (options), outputFilename);
-
-		set_loadCount (browser, options, outputFilename);
-	}
-
-	void
-	set_loadCount (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
+	set_loadCount (X3D::X3DBrowser* const browser)
 	{
 		std::clog << "*** Loading " << browser -> getLoadCount () << " files." << std::endl;
-
-		if (browser -> getLoadCount ())
-			return;
-
-		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
-		Glib::signal_timeout () .connect_once (sigc::bind (sigc::mem_fun (this, &ExportImage::set_snapshot), browser, std::ref (options), outputFilename), 0, Glib::PRIORITY_DEFAULT_IDLE);
-
-		browser -> getWorld () -> bind ();
 	}
 
 	void
@@ -162,7 +146,8 @@ public:
 		browser -> setFixedPipeline (options .fixedPipeline);
 		browser -> setup ();
 
-		browser -> initialized () .addInterest (&ExportImage::set_initialized, this, browser .getValue (), std::ref (options), outputFilename);
+		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser .getValue ());
+		browser -> initialized ()  .addInterest (&ExportImage::set_snapshot, this, browser .getValue (), std::ref (options), outputFilename);
 
 		kit .run ();
 		return 0;
