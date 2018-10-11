@@ -127,7 +127,7 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		const std::string preview ((char*) blob .data (), blob .length ());
 
 		getBrowserWindow () -> getHistory () -> setPreview (worldURL, preview);
-		getBrowserWindow () -> getIconFactory () -> createIcon (worldURL, preview);
+		getBrowserWindow () -> getIconFactory () -> createIcon (worldURL .filename (), preview);
 	}
 	catch (const std::exception & error)
 	{

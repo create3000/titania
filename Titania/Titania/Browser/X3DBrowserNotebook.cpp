@@ -392,16 +392,10 @@ X3DBrowserNotebook::append (const basic::uri & URL)
 
 	pages .emplace_back (page);
 
-	const auto text = URL .empty () ? _ ("New Scene") : URL .basename ();
-
-	page -> getTabImage () .set (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-	page -> getTabLabel () .set_text (text);
-	page -> getTabLabel () .set_tooltip_text (URL .filename () .str ());
 	page -> getTabCloseButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserNotebook::on_tab_close_clicked), page .get ()));
 
 	getBrowserNotebook () .append_page (page -> getWidget (), page -> getTabWidget ());
 	getBrowserNotebook () .set_tab_reorderable (page -> getWidget (), true);
-	getBrowserNotebook () .set_menu_label_text (page -> getWidget (), text);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 
 	return page;

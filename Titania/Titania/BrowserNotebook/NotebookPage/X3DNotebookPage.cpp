@@ -94,10 +94,14 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 		const auto id      = getBrowserWindow () -> getHistory () -> getId (url);
 		const auto preview = getBrowserWindow () -> getHistory () -> getPreview (id);
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (url, preview);
+		getBrowserWindow () -> getIconFactory () -> createIcon (url .filename (), preview);
 	}
 	catch (const std::exception & error)
 	{ }
+
+	getTabImage () .set (Gtk::StockID (url .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
+	getTabLabel () .set_text (url .empty () ? _ ("New Scene") : url .basename ());
+	getTabLabel () .set_tooltip_text (url .str ());
 }
 
 void
@@ -239,7 +243,7 @@ X3DNotebookPage::updateTitle ()
 
 	getBrowserWindow () -> getBrowserNotebook () .set_menu_label_text (getWidget (), title);
 
-	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
 	getTabLabel () .set_text (title);
 	getTabLabel () .set_tooltip_text (getMasterSceneURL () .str ());
 
