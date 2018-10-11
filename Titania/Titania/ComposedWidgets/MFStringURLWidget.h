@@ -54,10 +54,11 @@
 #include "../ComposedWidgets/X3DMFStringWidget.h"
 
 #include "../Base/X3DUserInterface.h"
-#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 
 namespace titania {
 namespace puck {
+
+class FileOpenDialog;
 
 class MFStringURLWidget :
 	public X3DMFStringWidget

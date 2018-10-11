@@ -50,6 +50,8 @@
 
 #include "MFStringURLWidget.h"
 
+#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
+
 namespace titania {
 namespace puck {
 

@@ -124,11 +124,17 @@ X3DFileOpenDialog::setPreview (const bool value)
 	getWindow () .set_preview_widget_active (value);
 }
 
+bool
+X3DFileOpenDialog::on_preview_button_press_event (GdkEventButton* event)
+{
+	return true;
+}
+
 void
 X3DFileOpenDialog::on_update_preview ()
 {
 	static constexpr size_t PREVIEW_SIZE = 192;
-	static const auto       stockId      = "file-open-preview";
+	static const auto       STOCK_ID     = "file-open-preview";
 
 	try
 	{
@@ -138,18 +144,21 @@ X3DFileOpenDialog::on_update_preview ()
 		const auto url      = getPreviewUrl ();
 		const auto id       = getBrowserWindow () -> getHistory () -> getId (url .filename ());
 		const auto preview  = getBrowserWindow () -> getHistory () -> getPreview (id);
-		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, PREVIEW_SIZE, PREVIEW_SIZE);
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (STOCK_ID, PREVIEW_SIZE, PREVIEW_SIZE);
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (stockId, preview);
+		getBrowserWindow () -> getIconFactory () -> createIcon (STOCK_ID, preview);
 
-		getPreviewImage () .set (Gtk::StockID (stockId), iconSize);
+		getPreviewImage () .set (Gtk::StockID (STOCK_ID), iconSize);
+		getPreviewName () .set_text (url .basename ());
 	}
 	catch (const std::exception & error)
 	{
+		const auto url      = getPreviewUrl ();
 		const auto file     = getWindow () .get_preview_file ();
-		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (stockId, PREVIEW_SIZE, PREVIEW_SIZE);
+		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (STOCK_ID, PREVIEW_SIZE, PREVIEW_SIZE);
 
 		getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
+		getPreviewName () .set_text (url .basename ());
 	}
 }
 

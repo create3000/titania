@@ -165,9 +165,17 @@ public:
 	getPreview () const
 	{ return *m_Preview; }
 
+	Gtk::Button &
+	getPreviewButton () const
+	{ return *m_PreviewButton; }
+
 	Gtk::Image &
 	getPreviewImage () const
 	{ return *m_PreviewImage; }
+
+	Gtk::Label &
+	getPreviewName () const
+	{ return *m_PreviewName; }
 
 	Gtk::FileChooserDialog &
 	getWindow () const
@@ -186,6 +194,10 @@ public:
 	{ return *m_RelativePathSwitch; }
 
 	///  @name Signal handlers
+
+	virtual
+	bool
+	on_preview_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
 	void
@@ -234,7 +246,9 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
 	Gtk::Box* m_Preview;
+	Gtk::Button* m_PreviewButton;
 	Gtk::Image* m_PreviewImage;
+	Gtk::Label* m_PreviewName;
 	Gtk::FileChooserDialog* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Box* m_RelativePathBox;

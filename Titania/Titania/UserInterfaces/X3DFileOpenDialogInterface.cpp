@@ -99,11 +99,18 @@ X3DFileOpenDialogInterface::create ()
 
 	// Get widgets.
 	m_builder -> get_widget ("Preview", m_Preview);
+	m_builder -> get_widget ("PreviewButton", m_PreviewButton);
 	m_builder -> get_widget ("PreviewImage", m_PreviewImage);
+	m_builder -> get_widget ("PreviewName", m_PreviewName);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("RelativePathBox", m_RelativePathBox);
 	m_builder -> get_widget ("RelativePathSwitch", m_RelativePathSwitch);
+
+	// Connect object Gtk::Button with id 'PreviewButton'.
+	m_PreviewButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DFileOpenDialogInterface::on_preview_button_press_event), false);
+
+	// Connect object Gtk::FileChooserDialog with id 'Window'.
 	m_Window -> signal_update_preview () .connect (sigc::mem_fun (this, &X3DFileOpenDialogInterface::on_update_preview));
 }
 

@@ -52,10 +52,11 @@
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLENTRY_H__
 
 #include "../ComposedWidgets/X3DMFStringEntry.h"
-#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 
 namespace titania {
 namespace puck {
+
+class FileOpenDialog;
 
 class MFStringURLEntry :
 	public X3DMFStringEntry
