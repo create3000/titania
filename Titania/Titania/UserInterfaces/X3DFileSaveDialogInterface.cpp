@@ -104,6 +104,10 @@ X3DFileSaveDialogInterface::create ()
 	m_ImageWidthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("Preview", m_Preview);
+	m_builder -> get_widget ("PreviewButton", m_PreviewButton);
+	m_builder -> get_widget ("PreviewImage", m_PreviewImage);
+	m_builder -> get_widget ("PreviewName", m_PreviewName);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("OkButton", m_OkButton);
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -114,8 +118,12 @@ X3DFileSaveDialogInterface::create ()
 	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
 	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
 
+	// Connect object Gtk::Button with id 'PreviewButton'.
+	m_PreviewButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DFileSaveDialogInterface::on_preview_button_press_event), false);
+
 	// Connect object Gtk::FileChooserDialog with id 'Window'.
 	m_Window -> signal_response () .connect (sigc::mem_fun (this, &X3DFileSaveDialogInterface::on_response), false);
+	m_Window -> signal_update_preview () .connect (sigc::mem_fun (this, &X3DFileSaveDialogInterface::on_update_preview));
 }
 
 X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()

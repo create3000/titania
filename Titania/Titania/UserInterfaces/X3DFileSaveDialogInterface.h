@@ -185,6 +185,22 @@ public:
 	getImageWidthAdjustment () const
 	{ return m_ImageWidthAdjustment; }
 
+	Gtk::Box &
+	getPreview () const
+	{ return *m_Preview; }
+
+	Gtk::Button &
+	getPreviewButton () const
+	{ return *m_PreviewButton; }
+
+	Gtk::Image &
+	getPreviewImage () const
+	{ return *m_PreviewImage; }
+
+	Gtk::Label &
+	getPreviewName () const
+	{ return *m_PreviewName; }
+
 	Gtk::FileChooserDialog &
 	getWindow () const
 	{ return *m_Window; }
@@ -224,8 +240,16 @@ public:
 	///  @name Signal handlers
 
 	virtual
+	bool
+	on_preview_button_press_event (GdkEventButton* button_event) = 0;
+
+	virtual
 	void
 	on_response (int response_id) = 0;
+
+	virtual
+	void
+	on_update_preview () = 0;
 
 	///  @name Destruction
 
@@ -275,6 +299,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
+	Gtk::Box* m_Preview;
+	Gtk::Button* m_PreviewButton;
+	Gtk::Image* m_PreviewImage;
+	Gtk::Label* m_PreviewName;
 	Gtk::FileChooserDialog* m_Window;
 	Gtk::Button* m_OkButton;
 	Gtk::Box* m_Widget;
