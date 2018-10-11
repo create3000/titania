@@ -423,9 +423,10 @@ X3DNotebookPage::on_notebook_switch_page (Gtk::Widget*, guint pageNumber)
 bool
 X3DNotebookPage::on_tab_image_query_tooltip (int x, int y, bool keyboard_tooltip, const Glib::RefPtr <Gtk::Tooltip> & tooltip)
 {
-	const auto previewSize = getBrowserWindow () -> getRecentView () -> getPreviewSize ();
-	const auto iconSize    = getBrowserWindow () -> getIconFactory () -> getIconSize ("tab-tooltip-image", previewSize, previewSize);
-	const auto stockId     = getMasterSceneURL () .filename () .str ();
+	static constexpr size_t PREVIEW_SIZE = 192;
+
+	const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize ("tab-tooltip-image", PREVIEW_SIZE, PREVIEW_SIZE);
+	const auto stockId  = getMasterSceneURL () .filename () .str ();
 
 	tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
 	return true;
