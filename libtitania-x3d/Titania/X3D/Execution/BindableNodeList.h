@@ -118,9 +118,9 @@ public:
 	{
 	   if (list .size () > 1)
 	   {
-			const bool enableInlineViewpoints = getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints ();
+			const bool enableInlineViewpoints = false and getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints (); // Inline files disabled.
 			const auto masterScene            = getMasterScene ();
-	
+
 			if (not name .empty ())
 			{
 				// Return first viewpoint with @name.
