@@ -162,6 +162,10 @@ public:
 	getIconFactory () const
 	{ return iconFactory; }
 
+	const std::unique_ptr <RecentView> &
+	getRecentView () const
+	{ return recentView; }
+
 	const std::unique_ptr <History> &
 	getHistory () const
 	{ return history; }

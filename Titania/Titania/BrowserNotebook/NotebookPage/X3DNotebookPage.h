@@ -192,7 +192,11 @@ private:
 	
 	void
 	on_notebook_switch_page (Gtk::Widget*, guint pageNumber);
-	
+
+	virtual
+	bool
+	on_tab_image_query_tooltip (int x, int y, bool keyboard_tooltip, const Glib::RefPtr <Gtk::Tooltip> & tooltip) final override;
+
 	void
 	on_file_changed ();
 

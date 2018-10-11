@@ -1016,3 +1016,5 @@ TextView::size_allocate
   virtual void on_size_allocate(Gtk::Allocation& allocation);
 RadioAction::toggled
   virtual void on_toggled();
+Image::query_tooltip
+  virtual bool on_query_tooltip(int x, int y, bool keyboard_mode, const Glib::RefPtr<Gtk::Tooltip>& tooltip);

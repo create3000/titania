@@ -140,6 +140,10 @@ public:
 	///  @name Signal handlers
 
 	virtual
+	bool
+	on_tab_image_query_tooltip (int x, int y, bool keyboard_mode, const Glib::RefPtr <Gtk::Tooltip> & tooltip) = 0;
+
+	virtual
 	void
 	on_mute_toggled () = 0;
 

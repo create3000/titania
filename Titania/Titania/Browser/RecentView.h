@@ -79,6 +79,9 @@ public:
 	void
 	loadPreview (X3D::X3DBrowser* const);
 
+	size_t
+	getPreviewSize () const;
+
 	///  @name Configuration handling
 
 	const std::shared_ptr <Configuration> &

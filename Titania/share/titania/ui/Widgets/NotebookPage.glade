@@ -12,6 +12,7 @@
         <property name="can_focus">False</property>
         <property name="stock">gtk-missing-image</property>
         <property name="icon_size">3</property>
+        <signal name="query-tooltip" handler="on_tab_image_query_tooltip" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>

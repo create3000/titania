@@ -51,6 +51,7 @@
 #include "X3DNotebookPage.h"
 
 #include "../../Browser/IconFactory.h"
+#include "../../Browser/RecentView.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
@@ -99,6 +100,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	catch (const std::exception & error)
 	{ }
 
+	getTabImage () .set_has_tooltip (true);
 	getTabImage () .set (Gtk::StockID (url .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
 	getTabLabel () .set_text (url .empty () ? _ ("New Scene") : url .basename ());
 	getTabLabel () .set_tooltip_text (url .str ());
@@ -416,6 +418,17 @@ X3DNotebookPage::on_notebook_switch_page (Gtk::Widget*, guint pageNumber)
 {
 	if (int32_t (pageNumber) == getPageNumber ())
 		on_file_changed ();
+}
+
+bool
+X3DNotebookPage::on_tab_image_query_tooltip (int x, int y, bool keyboard_tooltip, const Glib::RefPtr <Gtk::Tooltip> & tooltip)
+{
+	const auto previewSize = getBrowserWindow () -> getRecentView () -> getPreviewSize ();
+	const auto iconSize    = getBrowserWindow () -> getIconFactory () -> getIconSize ("tab-tooltip-image", previewSize, previewSize);
+	const auto stockId     = getMasterSceneURL () .filename () .str ();
+
+	tooltip -> set_icon_from_stock (Gtk::StockID (stockId), iconSize);
+	return true;
 }
 
 void
