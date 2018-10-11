@@ -85,7 +85,12 @@ X3DFileOpenDialog::getUrl () const
 basic::uri
 X3DFileOpenDialog::getPreviewUrl () const
 {
-	const basic::uri url = getWindow () .get_preview_file () -> get_path ();
+	const auto file = getWindow () .get_preview_file ();
+
+	if (not file)
+		throw std::runtime_error ("X3DFileOpenDialog::getPreviewUrl");
+
+	const basic::uri url = file -> get_path ();
 
 	return url .add_file_scheme ();
 }
@@ -144,12 +149,21 @@ X3DFileOpenDialog::on_update_preview ()
 	}
 	catch (const std::exception & error)
 	{
-		const auto url      = getPreviewUrl ();
 		const auto file     = getWindow () .get_preview_file ();
 		const auto iconSize = getBrowserWindow () -> getIconFactory () -> getIconSize (STOCK_ID, PREVIEW_SIZE, PREVIEW_SIZE);
 
-		getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
-		getPreviewName () .set_text (url .basename ());
+		if (file)
+		{
+			const auto url = getPreviewUrl ();
+
+			getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
+			getPreviewName () .set_text (url .basename ());
+		}
+		else
+		{
+			getPreviewImage () .set_from_icon_name ("", iconSize);
+			getPreviewName () .set_text ("");
+		}
 	}
 }
 
