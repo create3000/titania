@@ -77,7 +77,7 @@ public:
 	open ();
 
 	void
-	loadPreview (X3D::X3DBrowser* const);
+	loadPreview (X3D::X3DBrowser* const browser);
 
 	size_t
 	getPreviewSize () const;
@@ -110,10 +110,10 @@ private:
 	set_scene ();
 
 	void
-	set_page (X3D::X3DExecutionContext* const, const X3D::SFInt32 &);
+	set_page (X3D::X3DExecutionContext* const executionContext, const X3D::SFInt32 & page);
 
 	void
-	set_url (const X3D::SFString &);
+	set_url (const X3D::SFString & url);
 
 	///  @name Members
 
