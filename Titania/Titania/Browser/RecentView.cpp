@@ -121,19 +121,27 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		if (not browser -> isInitialized ())
 			return;
 
+		// Make snapshot.
+
 		const auto worldURL = browser -> getWorldURL ();
 		auto       image    = browser -> getSnapshot (PREVIEW_SIZE * 4, PREVIEW_SIZE * 4, false, 16);
+
+		// Scale image.
 
 		Magick::Geometry geometry (PREVIEW_SIZE, PREVIEW_SIZE);
 
 		image .filterType (Magick::LanczosFilter);
 		image .zoom (geometry);
 
+		// Write to blob.
+
 		image .quality (PREVIEW_QUALITY);
 		image .magick (PREVIEW_TYPE);
 
 		Magick::Blob blob;
 		image .write (&blob);
+
+		// Save to history db and create icon.
 
 		const std::string preview ((char*) blob .data (), blob .length ());
 
