@@ -118,8 +118,8 @@ public:
 	{
 	   if (list .size () > 1)
 	   {
-			const bool enableInlineViewpoints = false and getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints (); // Inline files disabled.
-			const auto masterScene            = getMasterScene ();
+			const bool enableInlineBindables = false;
+			const auto masterScene           = getMasterScene ();
 
 			if (not name .empty ())
 			{
@@ -127,7 +127,7 @@ public:
 
 				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 				{
-					if (not enableInlineViewpoints and node -> getScene () != masterScene)
+					if (not enableInlineBindables and node -> getScene () != masterScene)
 						continue;
 
 					if (node -> getName () == name)
@@ -139,7 +139,7 @@ public:
 
 			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
-				if (not enableInlineViewpoints and node -> getScene () != masterScene)
+				if (not enableInlineBindables and node -> getScene () != masterScene)
 					continue;
 
 				if (node -> isBound ())
@@ -150,7 +150,7 @@ public:
 	
 			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
 			{
-				if (not enableInlineViewpoints and node -> getScene () != masterScene)
+				if (not enableInlineBindables and node -> getScene () != masterScene)
 					continue;
 	
 				return node;
