@@ -91,9 +91,6 @@ protected:
 	setFileFilter (const std::string & name)
 	{ }
 
-	void
-	setPreview (const bool value);
-
 
 private:
 

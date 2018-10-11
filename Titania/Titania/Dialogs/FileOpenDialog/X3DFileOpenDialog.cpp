@@ -118,12 +118,6 @@ X3DFileOpenDialog::run ()
 	return false;
 }
 
-void
-X3DFileOpenDialog::setPreview (const bool value)
-{
-	getWindow () .set_preview_widget_active (value);
-}
-
 bool
 X3DFileOpenDialog::on_preview_button_press_event (GdkEventButton* event)
 {
@@ -138,9 +132,6 @@ X3DFileOpenDialog::on_update_preview ()
 
 	try
 	{
-		if (not getWindow () .get_preview_widget_active ())
-			return;
-
 		const auto url      = getPreviewUrl ();
 		const auto id       = getBrowserWindow () -> getHistory () -> getId (url .filename ());
 		const auto preview  = getBrowserWindow () -> getHistory () -> getPreview (id);

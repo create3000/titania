@@ -80,7 +80,6 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	X3DFileOpenDialog ()
 {
 	setName ("FileOpenDialog");
-	setPreview (true);
 
 	getFileFilterAll   () -> set_name (_ (ALL_FILTER));
 	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
