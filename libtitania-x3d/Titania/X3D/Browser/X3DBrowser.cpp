@@ -406,6 +406,7 @@ throw (Error <INVALID_SCENE>,
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
+		getWorld () -> bind ();
 
 		if (initialized ())
 		{
@@ -432,7 +433,6 @@ X3DBrowser::bind ()
 {
 	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
-	getWorld () -> bind ();
 	get_style_context () -> remove_class ("titania-private-invisible");
 
 	if (initialized ())
