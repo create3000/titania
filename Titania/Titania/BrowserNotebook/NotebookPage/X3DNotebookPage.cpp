@@ -77,6 +77,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                modified (false),
 	           saveConfirmed (false),
 	               savedTime (-1),
+	        recentConnection (),
 	       focusInConnection (),
 	    switchPageConnection (),
 	         backgroundImage (new BackgroundImage (this)),
@@ -88,7 +89,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> setMonitorFiles (true);
 
-	undoHistory .addInterest (&X3DNotebookPage::updateTitle, this);
+	undoHistory .addInterest (&X3DNotebookPage::on_undo_history, this);
 
 	try
 	{
@@ -272,6 +273,26 @@ X3DNotebookPage::getTitle () const
 		title += "*";
 
 	return title;
+}
+
+void
+X3DNotebookPage::on_undo_history ()
+{
+	updateTitle ();
+
+	// Defer update preview image.
+
+	recentConnection .disconnect ();
+
+	recentConnection = Glib::signal_timeout () .connect (sigc::bind (&X3DNotebookPage::on_update_title, this), 1000, Glib::PRIORITY_LOW);
+}
+
+bool
+X3DNotebookPage::on_update_title ()
+{
+	getBrowserWindow () -> getRecentView () -> loadPreview (mainBrowser);
+	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
+	return false;
 }
 
 void
@@ -491,6 +512,10 @@ X3DNotebookPage::on_mute_toggled ()
 void
 X3DNotebookPage::dispose ()
 {
+	recentConnection     .disconnect ();
+	focusInConnection    .disconnect ();
+	switchPageConnection .disconnect ();
+
 	backgroundImage .reset ();
 
 	X3DNotebookPageInterface::dispose ();

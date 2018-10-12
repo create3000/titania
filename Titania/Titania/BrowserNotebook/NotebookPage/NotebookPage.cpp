@@ -78,8 +78,6 @@ void
 NotebookPage::initialize ()
 {
 	X3DNotebookPage::initialize ();
-
-	getScene () .addInterest (this, &NotebookPage::set_scene);
 }
 
 void
@@ -89,6 +87,10 @@ NotebookPage::loaded ()
 	set_panel (1, getPanelType (1), getBox2 ());
 	set_panel (2, getPanelType (2), getBox3 ());
 	set_panel (3, getPanelType (3), getBox4 ());
+
+	getScene () .addInterest (this, &NotebookPage::set_scene);
+
+	set_scene ();
 }
 
 void

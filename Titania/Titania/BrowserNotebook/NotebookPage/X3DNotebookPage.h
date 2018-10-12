@@ -173,6 +173,12 @@ private:
 	///  @name Event handlers
 
 	void
+	on_undo_history ();
+
+	bool
+	on_update_title ();
+
+	void
 	set_loaded ();
 
 	void
@@ -221,6 +227,7 @@ private:
 	bool                              modified;
 	bool                              saveConfirmed;
 	X3D::time_type                    savedTime;
+	sigc::connection                  recentConnection;
 	sigc::connection                  focusInConnection;
 	sigc::connection                  switchPageConnection;
 	std::unique_ptr <BackgroundImage> backgroundImage;
