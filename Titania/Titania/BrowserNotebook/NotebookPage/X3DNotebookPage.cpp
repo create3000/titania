@@ -276,6 +276,21 @@ X3DNotebookPage::getTitle () const
 }
 
 void
+X3DNotebookPage::loaded ()
+{ }
+
+void
+X3DNotebookPage::reset ()
+{
+	// Reset.
+
+	undoHistory .clear ();
+
+	setModified (false);
+	setSaveConfirmed (false);
+}
+
+void
 X3DNotebookPage::on_undo_history ()
 {
 	updateTitle ();
@@ -293,21 +308,6 @@ X3DNotebookPage::on_update_title ()
 	getBrowserWindow () -> getRecentView () -> loadPreview (mainBrowser);
 	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
 	return false;
-}
-
-void
-X3DNotebookPage::loaded ()
-{ }
-
-void
-X3DNotebookPage::reset ()
-{
-	// Reset.
-
-	undoHistory .clear ();
-
-	setModified (false);
-	setSaveConfirmed (false);
 }
 
 void
