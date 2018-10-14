@@ -70,7 +70,7 @@ const std::string   ExternProtoDeclaration::containerField = "externProto";
 
 ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-   X3DProtoDeclarationNode (),
+	X3DProtoDeclarationNode (),
 	           X3DUrlObject (),
 	                  scene (),
 	       protoDeclaration (),
@@ -362,7 +362,7 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 	{
 		setLoadState (FAILED_STATE);
 
-	   getBrowser () -> getConsole () -> error (error .what (), "\n");
+		getBrowser () -> getConsole () -> error (error .what (), "\n");
 
 		scene = getBrowser () -> getPrivateScene ();
 
