@@ -713,7 +713,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	// Scene
 
-	Generator::PushExecutionContext (ostream, this);
+	Generator::PushScene (ostream, this);
 	Generator::EnterScope (ostream);
 	Generator::ExportedNodes (ostream, getExportedNodes ());
 
@@ -740,7 +740,7 @@ X3DScene::toStream (std::ostream & ostream) const
 	}
 
 	Generator::LeaveScope (ostream);
-	Generator::PopExecutionContext (ostream);
+	Generator::PopScene (ostream);
 
 	// ~Scene
 
@@ -862,7 +862,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	// <Scene>
 
-	Generator::PushExecutionContext (ostream, this);
+	Generator::PushScene (ostream, this);
 	Generator::EnterScope (ostream);
 	Generator::ExportedNodes (ostream, getExportedNodes ());
 
@@ -881,7 +881,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	}
 
 	Generator::LeaveScope (ostream);
-	Generator::PopExecutionContext (ostream);
+	Generator::PopScene (ostream);
 
 	// </Scene>
 
@@ -908,7 +908,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 	Generator::SpecificationVersion (ostream, specificationVersion);
 
-	Generator::PushExecutionContext (ostream, this);
+	Generator::PushScene (ostream, this);
 	Generator::EnterScope (ostream);
 	Generator::ExportedNodes (ostream, getExportedNodes ());
 
@@ -1339,7 +1339,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< Generator::TidyBreak;
 
 	Generator::LeaveScope (ostream);
-	Generator::PopExecutionContext (ostream);
+	Generator::PopScene (ostream);
 }
 
 void

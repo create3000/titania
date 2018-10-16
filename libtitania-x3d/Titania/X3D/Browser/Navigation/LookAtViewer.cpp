@@ -130,13 +130,13 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	try
 	{
-		if (event -> button not_eq button)
-			return false;
+		if (event -> button == button)
+		{
+			if (not motion)
+				lookAt (event -> x, event -> y, false, true);
+		}
 
 		button = 0;
-
-		if (not motion)
-			lookAt (event -> x, event -> y, false, true);
 
 		isActive () = false;
 	}

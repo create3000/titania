@@ -90,6 +90,14 @@ public:
 
 	static
 	void
+	PushScene (std::ostream & ostream, const X3DScene* const);
+
+	static
+	void
+	PopScene (std::ostream & ostream);
+
+	static
+	void
 	PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const);
 
 	static

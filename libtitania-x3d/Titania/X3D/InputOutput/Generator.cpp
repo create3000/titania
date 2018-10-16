@@ -111,10 +111,23 @@ Generator::get (std::ostream & ostream)
 }
 
 void
+Generator::PushScene (std::ostream & ostream, const X3DScene* const scene)
+{
+	get (ostream) -> executionContextStack .emplace_back (const_cast <X3DScene*> (scene));
+	get (ostream) -> exportedNodesIndex    .emplace_back ();
+}
+
+void
+Generator::PopScene (std::ostream & ostream)
+{
+	get (ostream) -> executionContextStack .pop_back ();
+	get (ostream) -> exportedNodesIndex    .pop_back ();
+}
+
+void
 Generator::PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const executionContext)
 {
 	get (ostream) -> executionContextStack .emplace_back (const_cast <X3DExecutionContext*> (executionContext));
-	get (ostream) -> exportedNodesIndex    .emplace_back ();
 	get (ostream) -> importedNodesIndex    .emplace_back ();
 }
 
@@ -122,7 +135,6 @@ void
 Generator::PopExecutionContext (std::ostream & ostream)
 {
 	get (ostream) -> executionContextStack .pop_back ();
-	get (ostream) -> exportedNodesIndex    .pop_back ();
 	get (ostream) -> importedNodesIndex    .pop_back ();
 }
 

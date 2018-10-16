@@ -57,7 +57,8 @@ namespace titania {
 namespace X3D {
 
 class X3DSnapTool :
-	public X3DActiveLayerTool
+	public X3DActiveLayerTool,
+	public sigc::trackable
 {
 public:
 
@@ -97,6 +98,11 @@ public:
 
 	///  @name Destruction
 
+	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DSnapTool () override;
 
 
@@ -117,6 +123,23 @@ protected:
 
 private:
 
+	///  @name Events
+
+	bool
+	on_button_press_event (GdkEventButton* event);
+	
+	bool
+	on_button_release_event (GdkEventButton* event);
+
+	bool
+	on_motion_notify_event (GdkEventMotion* event);
+
+	bool
+	touch (const double x, const double y) const;
+
+	void
+	update ();
+
 	///  @name Fields
 
 	struct Fields
@@ -129,6 +152,11 @@ private:
 	};
 
 	Fields fields;
+
+	uint32_t         button;
+	sigc::connection buttonPressConnection;
+	sigc::connection buttonReleaseConnection;
+	sigc::connection motionNotifyConnection;
 
 };
 

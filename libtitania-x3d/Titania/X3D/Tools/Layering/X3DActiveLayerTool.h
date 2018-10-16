@@ -97,7 +97,7 @@ public:
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
 protected:

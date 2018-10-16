@@ -240,7 +240,8 @@ Shape::touch (X3DRenderObject* const renderObject)
 			return;
 
 		// Transform hitNormal to absolute space.
-		(*itersection) -> normal = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> normal));
+		(*itersection) -> normal     = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> normal));
+		(*itersection) -> faceNormal = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> faceNormal));
 
 		browser -> addHit (modelViewMatrix, *itersection, this, renderObject -> getLayer (), renderObject -> getDepthOffset () .top ());
 	}

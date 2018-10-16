@@ -300,13 +300,21 @@ X3DGeometryNode::intersects (const Line3d & line,
 	if (i1 < texCoordSize)
 		texCoord = from_barycentric <float> (uvt, texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3]);
 
-	const auto normal = normalize (from_barycentric <float> (uvt, normals [i1], normals [i2], normals [i3]));
-	const auto point  = from_barycentric (uvt, vertices [i1], vertices [i2], vertices [i3]);
+	const auto normal     = normalize (from_barycentric <float> (uvt, normals [i1], normals [i2], normals [i3]));
+	const auto faceNormal = Triangle3d (vertices [i1], vertices [i2], vertices [i3]) .normal ();
+	const auto point      = from_barycentric (uvt, vertices [i1], vertices [i2], vertices [i3]);
 
 	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;
 
-	intersections .emplace_back (new Intersection { texCoord, normal, point * getMatrix (), std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
+	intersections .emplace_back (new Intersection {
+		texCoord,
+		normal,
+		faceNormal,
+		point * getMatrix (), // multiply by screen scale matrix
+		std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3]
+	}});
+
 	return true;
 }
 

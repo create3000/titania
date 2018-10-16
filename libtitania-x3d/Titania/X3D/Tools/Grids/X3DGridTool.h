@@ -189,6 +189,7 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	~X3DGridTool () override;
 
 protected:

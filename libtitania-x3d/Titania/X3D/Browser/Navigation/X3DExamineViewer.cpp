@@ -241,6 +241,8 @@ X3DExamineViewer::on_button_release_event (GdkEventButton* event)
 	{
 		button = 0;
 		disconnect ();
+		getBrowser () -> setCursor ("ARROW");
+		isActive () = false;
 		return false;
 	}
 

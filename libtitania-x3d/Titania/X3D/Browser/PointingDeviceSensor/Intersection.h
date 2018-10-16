@@ -67,6 +67,7 @@ public:
 
 	Vector4f texCoord;
 	Vector3f normal;
+	Vector3f faceNormal;
 	Vector3d point;
 
 	std::array <Vector3d, 3> triangle;

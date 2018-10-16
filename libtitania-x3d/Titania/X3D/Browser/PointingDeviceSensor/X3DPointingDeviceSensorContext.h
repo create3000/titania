@@ -139,6 +139,7 @@ protected:
 	friend class X3DPointingDeviceSensorNode;
 	friend class X3DSelector;
 	friend class X3DViewer;
+	friend class X3DSnapTool;
 
 	///  @name Construction
 
