@@ -136,6 +136,14 @@ public:
 	grouping () const
 	{ return *fields .grouping; }
 
+	SFBool &
+	isPickable ()
+	{ return *fields .isPickable; }
+
+	const SFBool &
+	isPickable () const
+	{ return *fields .isPickable; }
+
 	/// Available tool.
 	MFString &
 	tools ()
@@ -394,6 +402,7 @@ private:
 		Fields ();
 
 		SFBool* const grouping;
+		SFBool* const isPickable;
 		MFString* const tools;
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;

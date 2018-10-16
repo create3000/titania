@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -127,7 +128,13 @@ X3DSnapTool::realize ()
 bool
 X3DSnapTool::on_button_press_event (GdkEventButton* event)
 {
+	#ifndef TITANIA_DEBUG
 	if (not enabled ())
+		return false;
+	#endif
+
+	// Viewer can always be activated by pressing Ctrl+Shift.
+	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 		return false;
 
 	if (button)
@@ -136,12 +143,26 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 	if (event -> button != 2)
 		return false;
 
-	if (not touch (event -> x, event -> y))
+	if (not getBrowser () -> getSelectable () and not enabled ())
 		return false;
+
+	if (not touch (event -> x, event -> y))
+	{
+		if (enabled ())
+			enabled () = false;
+
+		return false;
+	}
+
+	if (not enabled ())
+		enabled () = true;
 
 	button = event -> button;
 
 	motionNotifyConnection = getBrowser () -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_motion_notify_event), false);
+
+	for (const auto & transformToolNode : getBrowser () -> getTransformTools ())
+		transformToolNode -> isPickable () = false;
 
 	update ();
 
@@ -154,6 +175,9 @@ X3DSnapTool::on_button_release_event (GdkEventButton* event)
 	button = 0;
 
 	motionNotifyConnection  .disconnect ();
+
+	for (const auto & transformToolNode : getBrowser () -> getTransformTools ())
+		transformToolNode -> isPickable () = true;
 
 	return false;
 }

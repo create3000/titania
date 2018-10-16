@@ -69,6 +69,7 @@ namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
 	       grouping (new SFBool (true)),
+	     isPickable (new SFBool (true)),
 	          tools (new MFString ({ "TRANSLATE", "ROTATE", "SCALE" })),
 	     scaleXAxis (new SFBool (true)),
 	     scaleYAxis (new SFBool (true)),
@@ -100,6 +101,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	addType (X3DConstants::X3DTransformNodeTool);
 
 	addField (inputOutput, "grouping",        grouping ());
+	addField (inputOutput, "isPickable",      isPickable ());
 	addField (inputOutput, "tools",           tools ());
 	addField (inputOutput, "scaleXAxis",      scaleXAxis ());
 	addField (inputOutput, "scaleYAxis",      scaleYAxis ());
@@ -180,6 +182,7 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 
+		isPickable ()      .addInterest (getToolNode () -> getField <SFBool>   ("isPickable"));
 		tools ()           .addInterest (getToolNode () -> getField <MFString> ("tools"));
 		scaleXAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
 		scaleYAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
@@ -195,6 +198,7 @@ X3DTransformNodeTool::realize ()
 		displayBBox ()     .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
 		displayCenter ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
 
+		getToolNode () -> setField <SFBool>   ("isPickable",      isPickable ());
 		getToolNode () -> setField <MFString> ("tools",           tools ());
 		getToolNode () -> setField <SFBool>   ("scaleXAxis",      scaleXAxis ());
 		getToolNode () -> setField <SFBool>   ("scaleYAxis",      scaleYAxis ());
