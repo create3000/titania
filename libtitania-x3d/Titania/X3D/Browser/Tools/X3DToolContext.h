@@ -124,6 +124,16 @@ public:
 	getViewpointTools () const
 	{ return viewpointTools; }
 
+	///  @name Snap objects
+
+	const X3DPtr <SnapTargetTool> &
+	getSnapTarget () const;
+
+	const X3DPtr <SnapSourceTool> &
+	getSnapSource () const;
+
+	///  @name Cut
+
 	void
 	setCutLine (const Line2d & value)
 	{ cutLine = value; }
@@ -221,6 +231,9 @@ private:
 	X3DWeakPtrArray <TransformSensorTool>  transformSensorTools;
 	X3DWeakPtrArray <VisibilitySensorTool> visibilitySensorTools;
 	X3DWeakPtrArray <X3DViewpointNodeTool> viewpointTools;
+
+	X3DPtr <SnapTargetTool> snapTarget;
+	X3DPtr <SnapSourceTool> snapSource;
 
 	Line2d cutLine;
 

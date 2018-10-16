@@ -3,6 +3,9 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkAccelGroup" id="AccelGroup"/>
+  <object class="GtkToggleAction" id="ActivateSnapSourceAction">
+    <signal name="toggled" handler="on_activate_snap_source_toggled" swapped="no"/>
+  </object>
   <object class="GtkToggleAction" id="ActivateSnapTargetAction">
     <signal name="toggled" handler="on_activate_snap_target_toggled" swapped="no"/>
   </object>
@@ -1535,6 +1538,16 @@
               </object>
             </child>
             <child>
+              <object class="GtkCheckMenuItem" id="BrowserActivateSnapSourceMenuItem">
+                <property name="related_action">ActivateSnapSourceAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Source</property>
+                <property name="label" translatable="yes">Activate Snap Source</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="BrowserMoveSelectionToSnapTargetMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -2969,6 +2982,16 @@
                                 <property name="can_focus">False</property>
                                 <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Target</property>
                                 <property name="label" translatable="yes">Activate Snap Target</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="ActivateSnapSourceMenuItem">
+                                <property name="related_action">ActivateSnapSourceAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Source</property>
+                                <property name="label" translatable="yes">Activate Snap Source</property>
                                 <property name="use_underline">True</property>
                               </object>
                             </child>

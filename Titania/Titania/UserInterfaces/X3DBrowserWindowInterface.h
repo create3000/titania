@@ -94,6 +94,10 @@ public:
 	{ return m_AccelGroup; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getActivateSnapSourceAction () const
+	{ return m_ActivateSnapSourceAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getActivateSnapTargetAction () const
 	{ return m_ActivateSnapTargetAction; }
 
@@ -577,6 +581,10 @@ public:
 	getBrowserActivateSnapTargetMenuItem () const
 	{ return *m_BrowserActivateSnapTargetMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getBrowserActivateSnapSourceMenuItem () const
+	{ return *m_BrowserActivateSnapSourceMenuItem; }
+
 	Gtk::MenuItem &
 	getBrowserMoveSelectionToSnapTargetMenuItem () const
 	{ return *m_BrowserMoveSelectionToSnapTargetMenuItem; }
@@ -1025,6 +1033,10 @@ public:
 	getActivateSnapTargetMenuItem () const
 	{ return *m_ActivateSnapTargetMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getActivateSnapSourceMenuItem () const
+	{ return *m_ActivateSnapSourceMenuItem; }
+
 	Gtk::MenuItem &
 	getMoveSelectionToSnapTargetMenuItem () const
 	{ return *m_MoveSelectionToSnapTargetMenuItem; }
@@ -1306,6 +1318,10 @@ public:
 	{ return *m_OtherViewerButton; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_activate_snap_source_toggled () = 0;
 
 	virtual
 	void
@@ -1876,6 +1892,7 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapSourceAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapTargetAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
@@ -1997,6 +2014,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
 	Gtk::SeparatorMenuItem* m_SeparatorMenuItem18;
 	Gtk::CheckMenuItem* m_BrowserActivateSnapTargetMenuItem;
+	Gtk::CheckMenuItem* m_BrowserActivateSnapSourceMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionToSnapTargetMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionCenterToSnapTargetMenuItem;
 	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
@@ -2109,6 +2127,7 @@ private:
 	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
 	Gtk::SeparatorMenuItem* m_SeparatorMenuItem38;
 	Gtk::CheckMenuItem* m_ActivateSnapTargetMenuItem;
+	Gtk::CheckMenuItem* m_ActivateSnapSourceMenuItem;
 	Gtk::MenuItem* m_MoveSelectionToSnapTargetMenuItem;
 	Gtk::MenuItem* m_MoveSelectionCenterToSnapTargetMenuItem;
 	Gtk::MenuItem* m_ExternalToolsMenuItem;

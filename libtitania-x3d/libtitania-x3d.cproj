@@ -689,7 +689,6 @@
     <None Include="libtitania-x3d.cproj" />
     <None Include="libtitania-x3d.pidb" />
     <None Include="Titania\X3D\Thread\X3DInterruptibleThread.h" />
-    <None Include="share\titania\tools\SnapTarget.x3dv" />
     <None Include="Titania\X3D\Browser\Sound\MediaStream.h" />
     <None Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.h" />
     <None Include="Titania\X3D\Configuration\UnitCategory.h" />
@@ -1004,8 +1003,10 @@
     <None Include="Titania\X3D\Browser\Core\BrowserOptions.h" />
     <None Include="Titania\X3D\Browser\Core\BrowserProperties.h" />
     <None Include="Titania\X3D\Browser\Core\RenderingProperties.h" />
-    <None Include="Titania\X3D\Tools\SnapObject\X3DSnapObject.h" />
-    <None Include="Titania\X3D\Tools\SnapObject\SnapTarget.h" />
+    <None Include="Titania\X3D\Tools\SnapTool\X3DSnapTool.h" />
+    <None Include="Titania\X3D\Tools\SnapTool\SnapTargetTool.h" />
+    <None Include="share\titania\tools\SnapTool.x3dv" />
+    <None Include="Titania\X3D\Tools\SnapTool\SnapSourceTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1701,8 +1702,9 @@
     <Compile Include="Titania\X3D\Browser\Core\BrowserProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\RenderingProperties.cpp" />
     <Compile Include="Titania\X3D\Tools\Layout\LayoutGroupTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\SnapObject\X3DSnapObject.cpp" />
-    <Compile Include="Titania\X3D\Tools\SnapObject\SnapTarget.cpp" />
+    <Compile Include="Titania\X3D\Tools\SnapTool\X3DSnapTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\SnapTool\SnapTargetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\SnapTool\SnapSourceTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1809,7 +1811,7 @@
     <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
     <Folder Include="Titania\X3D\Tools\RigidBodyPhysics\" />
     <Folder Include="share\mime\packages\" />
-    <Folder Include="Titania\X3D\Tools\SnapObject\" />
+    <Folder Include="Titania\X3D\Tools\SnapTool\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

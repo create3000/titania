@@ -48,91 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_SNAP_OBJECT_X3DSNAP_OBJECT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_SNAP_OBJECT_X3DSNAP_OBJECT_TOOL_H__
+#include "SnapSourceTool.h"
 
-#include "../Layering/X3DActiveLayerTool.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DSnapObject :
-	public X3DActiveLayerTool
+const ComponentType SnapSourceTool::component      = ComponentType::TITANIA;
+const std::string   SnapSourceTool::typeName       = "SnapSourceTool";
+const std::string   SnapSourceTool::containerField = "SnapTool";
+
+SnapSourceTool::SnapSourceTool (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSnapTool ()
 {
-public:
+	addType (X3DConstants::SnapSourceTool);
 
-	///  @name Common members
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "enabled",  enabled ());
+	addField (inputOutput, "position", position ());
+	addField (inputOutput, "normal",   normal ());
+}
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+X3DBaseNode*
+SnapSourceTool::create (X3DExecutionContext* const executionContext) const
+{
+	return new SnapSourceTool (executionContext);
+}
 
-	///  @name Fields
+void
+SnapSourceTool::initialize ()
+{
+	X3DSnapTool::initialize ();
+}
 
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	SFVec3f &
-	position ()
-	{ return *fields .position; }
-
-	const SFVec3f &
-	position () const
-	{ return *fields .position; }
-
-	SFVec3f &
-	normal ()
-	{ return *fields .normal; }
-
-	const SFVec3f &
-	normal () const
-	{ return *fields .normal; }
-
-	///  @name Destruction
-
-	~X3DSnapObject () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DSnapObject ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	realize () override;
-
-
-private:
-
-	///  @name Fields
-
-	struct Fields
+void
+SnapSourceTool::realize ()
+{
+	try
 	{
-		Fields ();
+		X3DSnapTool::realize ();
 
-		SFBool* const enabled;
-		SFVec3f* const position;
-		SFVec3f* const normal;
-	};
-
-	Fields fields;
-
-};
+		getToolNode () -> setField <SFString> ("type", "SNAP_SOURCE");
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,46 +48,91 @@
  *
  ******************************************************************************/
 
-#include "SnapTarget.h"
+#ifndef __TITANIA_X3D_TOOLS_SNAP_TOOL_X3DSNAP_TOOL_H__
+#define __TITANIA_X3D_TOOLS_SNAP_TOOL_X3DSNAP_TOOL_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DActiveLayerTool.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType SnapTarget::component      = ComponentType::TITANIA;
-const std::string   SnapTarget::typeName       = "SnapTarget";
-const std::string   SnapTarget::containerField = "snapObject";
-
-SnapTarget::SnapTarget (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSnapObject ()
+class X3DSnapTool :
+	public X3DActiveLayerTool
 {
-	//addType (X3DConstants::SnapTarget);
+public:
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "position", position ());
-	addField (inputOutput, "normal",   normal ());
-}
+	///  @name Common members
 
-X3DBaseNode*
-SnapTarget::create (X3DExecutionContext* const executionContext) const
-{
-	return new SnapTarget (executionContext);
-}
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
-void
-SnapTarget::initialize ()
-{
-	X3DSnapObject::initialize ();
-}
+	///  @name Fields
 
-void
-SnapTarget::realize ()
-{
-	X3DSnapObject::realize ();
-}
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+	SFVec3f &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFVec3f &
+	normal () const
+	{ return *fields .normal; }
+
+	///  @name Destruction
+
+	~X3DSnapTool () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DSnapTool ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	realize () override;
+
+
+private:
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFVec3f* const position;
+		SFVec3f* const normal;
+	};
+
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

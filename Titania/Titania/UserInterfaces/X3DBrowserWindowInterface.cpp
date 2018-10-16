@@ -79,6 +79,7 @@ X3DBrowserWindowInterface::create ()
 {
 	// Get objects.
 	m_AccelGroup                   = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
+	m_ActivateSnapSourceAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapSourceAction"));
 	m_ActivateSnapTargetAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapTargetAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
@@ -202,6 +203,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
 	m_builder -> get_widget ("SeparatorMenuItem18", m_SeparatorMenuItem18);
 	m_builder -> get_widget ("BrowserActivateSnapTargetMenuItem", m_BrowserActivateSnapTargetMenuItem);
+	m_builder -> get_widget ("BrowserActivateSnapSourceMenuItem", m_BrowserActivateSnapSourceMenuItem);
 	m_builder -> get_widget ("BrowserMoveSelectionToSnapTargetMenuItem", m_BrowserMoveSelectionToSnapTargetMenuItem);
 	m_builder -> get_widget ("BrowserMoveSelectionCenterToSnapTargetMenuItem", m_BrowserMoveSelectionCenterToSnapTargetMenuItem);
 	m_builder -> get_widget ("BrowserExternalToolsMenuItem", m_BrowserExternalToolsMenuItem);
@@ -314,6 +316,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
 	m_builder -> get_widget ("SeparatorMenuItem38", m_SeparatorMenuItem38);
 	m_builder -> get_widget ("ActivateSnapTargetMenuItem", m_ActivateSnapTargetMenuItem);
+	m_builder -> get_widget ("ActivateSnapSourceMenuItem", m_ActivateSnapSourceMenuItem);
 	m_builder -> get_widget ("MoveSelectionToSnapTargetMenuItem", m_MoveSelectionToSnapTargetMenuItem);
 	m_builder -> get_widget ("MoveSelectionCenterToSnapTargetMenuItem", m_MoveSelectionCenterToSnapTargetMenuItem);
 	m_builder -> get_widget ("ExternalToolsMenuItem", m_ExternalToolsMenuItem);
@@ -385,7 +388,8 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("NoneViewerButton", m_NoneViewerButton);
 	m_builder -> get_widget ("OtherViewerButton", m_OtherViewerButton);
 
-	// Connect object Gtk::ToggleAction with id 'ActivateSnapTargetAction'.
+	// Connect object Gtk::ToggleAction with id 'ActivateSnapSourceAction'.
+	m_ActivateSnapSourceAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_source_toggled));
 	m_ActivateSnapTargetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_target_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));

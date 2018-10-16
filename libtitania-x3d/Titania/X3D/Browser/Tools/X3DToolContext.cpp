@@ -52,12 +52,16 @@
 
 #include "TransformToolOptions.h"
 
+#include "../X3DBrowser.h"
+
 #include "../../Tools/EnvironmentalSensor/ProximitySensorTool.h"
 #include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
 #include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
 #include "../../Tools/Lighting/X3DLightNodeTool.h"
 #include "../../Tools/Navigation/X3DViewpointNodeTool.h"
+#include "../../Tools/SnapTool/SnapTargetTool.h"
+#include "../../Tools/SnapTool/SnapSourceTool.h"
 #include "../../Tools/Sound/SoundTool.h"
 
 namespace titania {
@@ -75,6 +79,8 @@ X3DToolContext::X3DToolContext () :
 	 transformSensorTools (),
 	visibilitySensorTools (),
 	       viewpointTools (),
+	           snapTarget (),
+	           snapSource (),
 	              cutLine ()
 {
 	addChildObjects (transformToolOptions,
@@ -84,7 +90,9 @@ X3DToolContext::X3DToolContext () :
 	                 soundTools,
 	                 transformSensorTools,
 	                 visibilitySensorTools,
-	                 viewpointTools);
+	                 viewpointTools,
+	                 snapTarget,
+	                 snapSource);
 }
 
 void
@@ -190,6 +198,34 @@ X3DToolContext::removeViewpointTool (X3DViewpointNodeTool* const node)
 {
 	viewpointTools .remove (X3DWeakPtr <X3DViewpointNodeTool> (node));
 	viewpointTools .remove (nullptr);
+}
+
+const X3DPtr <SnapTargetTool> &
+X3DToolContext::getSnapTarget () const
+{
+	if (not snapTarget)
+	{
+		const_cast <X3DToolContext*> (this) -> snapTarget .setValue (new SnapTargetTool (getExecutionContext ()));
+
+		snapTarget -> enabled () = false;
+		snapTarget -> setup ();
+	}
+
+	return snapTarget;
+}
+
+const X3DPtr <SnapSourceTool> &
+X3DToolContext::getSnapSource () const
+{
+	if (not snapSource)
+	{
+		const_cast <X3DToolContext*> (this) -> snapSource .setValue (new SnapSourceTool (getExecutionContext ()));
+
+		snapSource -> enabled () = false;
+		snapSource -> setup ();
+	}
+
+	return snapSource;
 }
 
 void

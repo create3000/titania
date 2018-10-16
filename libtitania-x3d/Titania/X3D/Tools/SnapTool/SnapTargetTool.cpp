@@ -48,69 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GRIDS_GRID_TOOL_H__
+#include "SnapTargetTool.h"
 
-#include "../SnapObject/X3DSnapObject.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class SnapTarget :
-	public X3DSnapObject
+const ComponentType SnapTargetTool::component      = ComponentType::TITANIA;
+const std::string   SnapTargetTool::typeName       = "SnapTargetTool";
+const std::string   SnapTargetTool::containerField = "SnapTool";
+
+SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSnapTool ()
 {
-public:
+	addType (X3DConstants::SnapTargetTool);
 
-	///  @name Construction
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "enabled",  enabled ());
+	addField (inputOutput, "position", position ());
+	addField (inputOutput, "normal",   normal ());
+}
 
-	SnapTarget (X3DExecutionContext* const executionContext);
+X3DBaseNode*
+SnapTargetTool::create (X3DExecutionContext* const executionContext) const
+{
+	return new SnapTargetTool (executionContext);
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+SnapTargetTool::initialize ()
+{
+	X3DSnapTool::initialize ();
+}
 
-	///  @name Common members
+void
+SnapTargetTool::realize ()
+{
+	try
+	{
+		X3DSnapTool::realize ();
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	realize () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-};
+		getToolNode () -> setField <SFString> ("type", "SNAP_TARGET");
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

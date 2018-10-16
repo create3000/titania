@@ -695,8 +695,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DLineGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/RigidBodyPhysics/X3DNBodyCollidableNodeTool.cpp \
-	Titania/X3D/Tools/SnapObject/SnapTarget.cpp \
-	Titania/X3D/Tools/SnapObject/X3DSnapObject.cpp \
+	Titania/X3D/Tools/SnapTool/SnapSourceTool.cpp \
+	Titania/X3D/Tools/SnapTool/SnapTargetTool.cpp \
+	Titania/X3D/Tools/SnapTool/X3DSnapTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \
 	Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp

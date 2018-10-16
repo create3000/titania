@@ -545,9 +545,19 @@ private:
 
 	///  @name Snap Target
 
+	void
+	set_snapTarget ();
+
+	void
+	set_snapSource ();
+
 	virtual
 	void
 	on_activate_snap_target_toggled () final override;
+
+	virtual
+	void
+	on_activate_snap_source_toggled () final override;
 
 	virtual
 	void

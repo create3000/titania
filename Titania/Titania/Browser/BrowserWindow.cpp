@@ -85,6 +85,8 @@
 #include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
+#include <Titania/X3D/Tools/SnapTool/SnapTargetTool.h>
+#include <Titania/X3D/Tools/SnapTool/SnapSourceTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
 #include <Titania/String.h>
@@ -189,10 +191,12 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	#ifndef TITANIA_DEBUG
 	getSeparatorMenuItem38 ()                            .set_visible (false);
 	getActivateSnapTargetMenuItem ()                     .set_visible (false);
+	getActivateSnapSourceMenuItem ()                     .set_visible (false);
 	getMoveSelectionToSnapTargetMenuItem ()              .set_visible (false);
 	getMoveSelectionCenterToSnapTargetMenuItem ()        .set_visible (false);
 	getBrowserSeparatorMenuItem18 ()                     .set_visible (false);
 	getBrowserActivateSnapTargetMenuItem ()              .set_visible (false);
+	getBrowserActivateSnapSourceMenuItem ()              .set_visible (false);
 	getBrowserMoveSelectionToSnapTargetMenuItem ()       .set_visible (false);
 	getBrowserMoveSelectionCenterToSnapTargetMenuItem () .set_visible (false);
 	#endif
@@ -275,7 +279,10 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getPrivateViewer ()     .removeInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getAvailableViewers ()  .removeInterest (&BrowserWindow::set_available_viewers,  this);
 		getCurrentBrowser () -> getStraightenHorizon () .removeInterest (&BrowserWindow::set_straighten_horizon, this);
-	
+
+		getCurrentBrowser () -> getSnapTarget () -> enabled () .removeInterest (&BrowserWindow::set_snapTarget, this);
+		getCurrentBrowser () -> getSnapSource () -> enabled () .removeInterest (&BrowserWindow::set_snapSource, this);
+
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
 		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .removeInterest (&BrowserWindow::set_textureQuality,   this);
@@ -294,11 +301,14 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getPrivateViewer ()     .addInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getAvailableViewers ()  .addInterest (&BrowserWindow::set_available_viewers,  this);
 		getCurrentBrowser () -> getStraightenHorizon () .addInterest (&BrowserWindow::set_straighten_horizon, this);
+
+		getCurrentBrowser () -> getSnapTarget () -> enabled () .addInterest (&BrowserWindow::set_snapTarget, this);
+		getCurrentBrowser () -> getSnapSource () -> enabled () .addInterest (&BrowserWindow::set_snapSource, this);
 	
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
 		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .addInterest (&BrowserWindow::set_textureQuality,   this);
-	
+
 		// Initialize
 
 		set_activeLayer ();
@@ -306,6 +316,8 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 		set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
 		set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
+		set_snapTarget ();
+		set_snapSource ();
 		set_straighten_horizon ();
 	
 		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
@@ -1726,11 +1738,43 @@ BrowserWindow::on_grid_properties_activated ()
 }
 
 // Snap Target
+	
+void
+BrowserWindow::set_snapTarget ()
+{
+	changing = true;
+
+	getActivateSnapTargetAction () -> set_active (getCurrentBrowser () -> getSnapTarget () -> enabled ());
+
+	changing = false;
+}
+	
+void
+BrowserWindow::set_snapSource ()
+{
+	changing = true;
+
+	getActivateSnapSourceAction () -> set_active (getCurrentBrowser () -> getSnapSource () -> enabled ());
+
+	changing = false;
+}
 
 void
 BrowserWindow::on_activate_snap_target_toggled ()
 {
-	__LOG__ << getActivateSnapTargetAction () -> get_active () << std::endl;
+	if (changing)
+		return;
+
+	getCurrentBrowser () -> getSnapTarget () -> enabled () = getActivateSnapTargetAction () -> get_active ();
+}
+
+void
+BrowserWindow::on_activate_snap_source_toggled ()
+{
+	if (changing)
+		return;
+
+	getCurrentBrowser () -> getSnapSource () -> enabled () = getActivateSnapSourceAction () -> get_active ();
 }
 
 void

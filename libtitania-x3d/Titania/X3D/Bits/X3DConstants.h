@@ -621,6 +621,8 @@ enum NodeType : uint16_t
 	Rectangle2DTool,
 	ScreenGroupTool,
 	ShapeTool,
+	SnapSourceTool,
+	SnapTargetTool,
 	SoundTool,
 	SphereTool,
 	SpotLightTool,
@@ -665,6 +667,7 @@ enum NodeType : uint16_t
 	X3DParametricGeometryNodeTool,
 	X3DProductStructureChildNodeTool,
 	X3DSensorNodeTool,
+	X3DSnapTool,
 	X3DShapeNodeTool,
 	X3DSoundNodeTool,
 	X3DToolObject,
@@ -673,7 +676,6 @@ enum NodeType : uint16_t
 	X3DTransformNodeTool,
 	X3DUrlObjectTool,
 	X3DViewpointNodeTool
-
 
 };
 

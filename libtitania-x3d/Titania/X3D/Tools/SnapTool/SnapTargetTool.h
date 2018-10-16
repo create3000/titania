@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,72 +48,69 @@
  *
  ******************************************************************************/
 
-#include "X3DSnapObject.h"
+#ifndef __TITANIA_X3D_TOOLS_SNAP_TOOL_SNAP_TARGET_TOOL_H__
+#define __TITANIA_X3D_TOOLS_SNAP_TOOL_SNAP_TARGET_TOOL_H__
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../SnapTool/X3DSnapTool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DSnapObject::Fields::Fields () :
-	 enabled (new SFBool (true)),
-	position (new SFVec3f ()),
-	  normal (new SFVec3f ())
-{ }
-
-X3DSnapObject::X3DSnapObject () :
-	X3DActiveLayerTool (),
-	            fields ()
+class SnapTargetTool :
+	public X3DSnapTool
 {
-	//addType (X3DConstants::X3DSnapObject);
+public:
 
-	position () .setUnit (UnitCategory::LENGTH);
-}
+	///  @name Construction
 
-void
-X3DSnapObject::initialize ()
-{
-	X3DActiveLayerTool::initialize ();
+	SnapTargetTool (X3DExecutionContext* const executionContext);
 
-	requestAsyncLoad ({ get_tool ("SnapTarget.x3dv") .str () });
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final override;
 
-void
-X3DSnapObject::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	X3DActiveLayerTool::setExecutionContext (executionContext);
-}
+	///  @name Common members
 
-void
-X3DSnapObject::realize ()
-{
-	try
-	{
-		X3DActiveLayerTool::realize ();
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
-		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
-		enabled () .addInterest (set_enabled);
-		set_enabled = enabled ();
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
 
-		auto & set_position = getToolNode () -> getField <SFVec3f> ("set_position");
-		position () .addInterest (set_position);
-		set_position = position ();
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
-		auto & set_normal = getToolNode () -> getField <SFVec3f> ("set_normal");
-		normal () .addInterest (set_normal);
-		set_normal = normal ();
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
 
-X3DSnapObject::~X3DSnapObject ()
-{ }
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	realize () final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string typeName;
+	static const std::string containerField;
+
+};
 
 } // X3D
 } // titania
+
+#endif

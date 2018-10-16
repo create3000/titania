@@ -93,6 +93,14 @@ throw (Error <INVALID_NAME>,
 	switch (type)
 	{
 		case CLONE:
+		{
+			ProtoDeclaration* const proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
+
+			if (proto)
+				return proto;
+
+			// Proceed with next case:
+		}
 		case COPY_OR_CLONE:
 		{
 			try

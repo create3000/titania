@@ -98,6 +98,14 @@ throw (Error <INVALID_NAME>,
 	switch (type)
 	{
 		case CLONE:
+		{
+			ExternProtoDeclaration* const externproto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
+
+			if (externproto)
+				return externproto;
+
+			// Proceed with next case:
+		}
 		case COPY_OR_CLONE:
 		{
 			try
