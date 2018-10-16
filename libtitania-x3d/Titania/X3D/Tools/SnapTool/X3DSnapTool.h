@@ -121,12 +121,18 @@ protected:
 	realize () override;
 
 
-private:
+protected:
 
 	///  @name Events
 
+	virtual
 	bool
 	on_button_press_event (GdkEventButton* event);
+
+
+private:
+
+	///  @name Events
 	
 	bool
 	on_button_release_event (GdkEventButton* event);

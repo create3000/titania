@@ -102,6 +102,12 @@ private:
 	void
 	realize () final override;
 
+	///  @name Events
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) final override;
+
 	///  @name Static members
 
 	static const ComponentType component;

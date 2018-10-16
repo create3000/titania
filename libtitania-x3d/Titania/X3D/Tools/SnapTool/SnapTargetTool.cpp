@@ -50,6 +50,7 @@
 
 #include "SnapTargetTool.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -96,6 +97,15 @@ SnapTargetTool::realize ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+bool
+SnapTargetTool::on_button_press_event (GdkEventButton* event)
+{
+	if (getBrowser () -> getControlKey ())
+		return false;
+
+	return X3DSnapTool::on_button_press_event (event);
 }
 
 } // X3D
