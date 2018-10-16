@@ -1,10 +1,16 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V4.3.3
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Mon, 12 Oct 2015 14:56:26 GMT"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTarget.x3dv"
+META "modified" "Tue, 16 Oct 2018 06:45:32 GMT"
+
+EXTERNPROTO ToolShader [ ]
+"library/ToolShader.x3dv#ToolShader"
 
 DEF Titania WorldInfo {
   metadata MetadataSet {
@@ -102,211 +108,152 @@ DEF Titania WorldInfo {
           }
         ]
       }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF Prototype MetadataSet {
+        name "Prototype"
+        reference "http://titania.create3000.de"
+        value DEF path MetadataString {
+          name "path"
+          reference "http://titania.create3000.de"
+          value "ToolShader"
+        }
+      }
     ]
   }
 }
 
-Transform {
-  children Collision {
-    enabled FALSE
-    children ScreenGroup {
-      children DEF Vector Transform {
-        rotation 1 0 0 1.5708
-        scale 13 13 13
-        children [
-          DEF Animation Group {
-            metadata MetadataSet {
-              name "Animation"
-              reference "http://titania.create3000.de"
-              value [
-                DEF duration MetadataInteger {
-                  name "duration"
-                  reference "http://titania.create3000.de"
-                  value 66
-                }
-                DEF framesPerSecond MetadataInteger {
-                  name "framesPerSecond"
-                  reference "http://titania.create3000.de"
-                  value 10
-                }
+DEF Vector_2 ScreenGroup {
+  children Transform {
+    rotation 1 0 0 1.5708
+    children [
+      DEF Cone Transform {
+        translation 0 60 0
+        scale 6 9 6
+        children Shape {
+          appearance DEF _3 Appearance {
+            material Material {
+              diffuseColor 0.8 0.8 0.16
+            }
+            shaders ToolShader { }
+          }
+          geometry Cone { }
+        }
+      }
+      DEF Cylinder Transform {
+        translation 0 30 0
+        scale 2 30 2
+        children Shape {
+          appearance USE _3
+          geometry Cylinder { }
+        }
+      }
+      DEF Sphere Transform {
+        scale 6 6 6
+        children Shape {
+          appearance USE _3
+          geometry Sphere { }
+        }
+      }
+      DEF Grid_4 Transform {
+        scale 12 1 12
+        children Shape {
+          geometry IndexedLineSet {
+            colorPerVertex FALSE
+            colorIndex [
+              0,
+              1,
+              2
+            ]
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              0,
+              -1,
+              4,
+              5,
+              -1,
+              6,
+              7,
+              -1,
+              8,
+              9,
+              -1,
+              10,
+              11,
+              -1,
+              12,
+              13,
+              -1,
+              14,
+              15,
+              -1
+            ]
+            color Color {
+              color [
+                1 0.2 0.2,
+                1 0.2 0.2,
+                1 0.2 0.2,
+                1 0.2 0.2,
+                1 0.2 0.2,
+                1 0.2 0.2,
+                1 0.2 0.2
               ]
             }
-            children [
-              DEF _1 TimeSensor {
-                cycleInterval 6.6
-                loop TRUE
-                startTime 1444661784.53202
-                stopTime 1444661784.53202
-              }
-              DEF TranslationInterpolator PositionInterpolator2D {
-                metadata DEF Interpolator_1 MetadataSet {
-                  name "Interpolator"
-                  reference "http://titania.create3000.de"
-                  value [
-                    DEF key MetadataInteger {
-                      name "key"
-                      reference "http://titania.create3000.de"
-                      value [
-                        0,
-                        66
-                      ]
-                    }
-                    DEF keyValue MetadataDouble {
-                      name "keyValue"
-                      reference "http://titania.create3000.de"
-                      value [
-                        0,
-                        0,
-                        0,
-                        1
-                      ]
-                    }
-                    DEF keyType MetadataString {
-                      name "keyType"
-                      reference "http://titania.create3000.de"
-                      value [
-                        "LINEAR",
-                        "LINEAR"
-                      ]
-                    }
-                  ]
-                }
-                key [
-                  0,
-                  1
-                ]
-                keyValue [
-                  0 0,
-                  0 1
-                ]
-              }
-            ]
-          }
-          DEF Grid_1 Transform {
-            scale 1.15 1 1.15
-            children Shape {
-              geometry IndexedLineSet {
-                colorPerVertex FALSE
-                colorIndex [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-                coordIndex [
-                  0,
-                  1,
-                  2,
-                  3,
-                  0,
-                  -1,
-                  4,
-                  5,
-                  -1,
-                  6,
-                  7,
-                  -1,
-                  8,
-                  9,
-                  -1,
-                  10,
-                  11,
-                  -1,
-                  12,
-                  13,
-                  -1,
-                  14,
-                  15,
-                  -1
-                ]
-                color Color {
-                  color 0.7 0.7 0.7
-                }
-                coord Coordinate {
-                  point [
-                    -2 0 2,
-                    2 0 2,
-                    2 0 -2,
-                    -2 0 -2,
-                    -1 0 2,
-                    -1 0 -2,
-                    0 0 2,
-                    0 0 -2,
-                    1 0 2,
-                    1 0 -2,
-                    -2 0 1,
-                    2 0 1,
-                    -2 0 0,
-                    2 0 0,
-                    -2 0 -1,
-                    2 0 -1
-                  ]
-                }
-              }
+            coord Coordinate {
+              point [
+                -2 0 2,
+                2 0 2,
+                2 0 -2,
+                -2 0 -2,
+                -1 0 2,
+                -1 0 -2,
+                0 0 2,
+                0 0 -2,
+                1 0 2,
+                1 0 -2,
+                -2 0 1,
+                2 0 1,
+                -2 0 0,
+                2 0 0,
+                -2 0 -1,
+                2 0 -1
+              ]
             }
           }
-          DEF Sphere_1 Transform {
-            children Shape {
-              appearance Appearance {
-                material DEF _2 Material {
-                  diffuseColor 0.902 0.902 0.902
-                  specularColor 0.65 0.65 0.65
-                  shininess 0.184713
-                }
-                texture DEF _3 PixelTexture {
-                  image 2 2 4
-                    0xffffffff 0xffffffff
-                    0xff0000ff 0xff0000ff
-                }
-                textureTransform DEF _4 TextureTransform {
-                  translation 0 0.501282
-                  scale 4.95 4.95
-                }
-              }
-              geometry Sphere { }
-            }
-          }
-          DEF Cylinder_1 Transform {
-            translation 0 3 0
-            children Shape {
-              appearance Appearance {
-                material USE _2
-                texture USE _3
-                textureTransform DEF _5 TextureTransform {
-                  translation 0 0.501282
-                  scale 9 9
-                }
-              }
-              geometry Cylinder {
-                height 6
-                radius 0.4
-              }
-            }
-          }
-          DEF Cone_1 Transform {
-            translation 0 6.5 0
-            scaleOrientation -0.0133214 0.999909 0.00233769 2.35619
-            children Shape {
-              appearance Appearance {
-                material USE _2
-                texture USE _3
-                textureTransform USE _4
-              }
-              geometry Cone {
-                height 2.5
-                bottomRadius 0.9
-              }
-            }
-          }
-        ]
+        }
       }
-    }
+    ]
   }
 }
-
-ROUTE _1.fraction_changed TO TranslationInterpolator.set_fraction
-ROUTE TranslationInterpolator.value_changed TO _4.set_translation
-ROUTE TranslationInterpolator.value_changed TO _5.set_translation

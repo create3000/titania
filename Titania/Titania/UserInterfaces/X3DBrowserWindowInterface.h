@@ -94,6 +94,10 @@ public:
 	{ return m_AccelGroup; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getActivateSnapTargetAction () const
+	{ return m_ActivateSnapTargetAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFollowPrimarySelectionAction () const
 	{ return m_FollowPrimarySelectionAction; }
 
@@ -565,6 +569,22 @@ public:
 	getBrowserGridPropertiesMenuItem () const
 	{ return *m_BrowserGridPropertiesMenuItem; }
 
+	Gtk::SeparatorMenuItem &
+	getSeparatorMenuItem18 () const
+	{ return *m_SeparatorMenuItem18; }
+
+	Gtk::CheckMenuItem &
+	getBrowserActivateSnapTargetMenuItem () const
+	{ return *m_BrowserActivateSnapTargetMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserMoveSelectionToSnapTargetMenuItem () const
+	{ return *m_BrowserMoveSelectionToSnapTargetMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserMoveSelectionCenterToSnapTargetMenuItem () const
+	{ return *m_BrowserMoveSelectionCenterToSnapTargetMenuItem; }
+
 	Gtk::MenuItem &
 	getBrowserExternalToolsMenuItem () const
 	{ return *m_BrowserExternalToolsMenuItem; }
@@ -997,6 +1017,22 @@ public:
 	getGridPropertiesMenuItem () const
 	{ return *m_GridPropertiesMenuItem; }
 
+	Gtk::SeparatorMenuItem &
+	getSeparatorMenuItem38 () const
+	{ return *m_SeparatorMenuItem38; }
+
+	Gtk::CheckMenuItem &
+	getActivateSnapTargetMenuItem () const
+	{ return *m_ActivateSnapTargetMenuItem; }
+
+	Gtk::MenuItem &
+	getMoveSelectionToSnapTargetMenuItem () const
+	{ return *m_MoveSelectionToSnapTargetMenuItem; }
+
+	Gtk::MenuItem &
+	getMoveSelectionCenterToSnapTargetMenuItem () const
+	{ return *m_MoveSelectionCenterToSnapTargetMenuItem; }
+
 	Gtk::MenuItem &
 	getExternalToolsMenuItem () const
 	{ return *m_ExternalToolsMenuItem; }
@@ -1270,6 +1306,10 @@ public:
 	{ return *m_OtherViewerButton; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_activate_snap_target_toggled () = 0;
 
 	virtual
 	void
@@ -1617,6 +1657,14 @@ public:
 
 	virtual
 	void
+	on_move_selection_to_snap_target_activate () = 0;
+
+	virtual
+	void
+	on_move_selection_center_to_snap_target_activate () = 0;
+
+	virtual
+	void
 	on_manage_external_tools_activate () = 0;
 
 	virtual
@@ -1828,6 +1876,7 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
+	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapTargetAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
@@ -1946,6 +1995,10 @@ private:
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
+	Gtk::SeparatorMenuItem* m_SeparatorMenuItem18;
+	Gtk::CheckMenuItem* m_BrowserActivateSnapTargetMenuItem;
+	Gtk::MenuItem* m_BrowserMoveSelectionToSnapTargetMenuItem;
+	Gtk::MenuItem* m_BrowserMoveSelectionCenterToSnapTargetMenuItem;
 	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
 	Gtk::ImageMenuItem* m_BrowserManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
@@ -2054,6 +2107,10 @@ private:
 	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
+	Gtk::SeparatorMenuItem* m_SeparatorMenuItem38;
+	Gtk::CheckMenuItem* m_ActivateSnapTargetMenuItem;
+	Gtk::MenuItem* m_MoveSelectionToSnapTargetMenuItem;
+	Gtk::MenuItem* m_MoveSelectionCenterToSnapTargetMenuItem;
 	Gtk::MenuItem* m_ExternalToolsMenuItem;
 	Gtk::ImageMenuItem* m_ManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_ScenesMenuItem;

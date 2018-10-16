@@ -1,13 +1,59 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.3.3
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 25 Jul 2017 11:05:44 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Handles/SnapTarget.x3dv"
-META "modified" "Tue, 25 Jul 2017 11:14:52 GMT"
+META "modified" "Tue, 16 Oct 2018 06:40:01 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF _1 Appearance {
+              material Material {
+                diffuseColor 0.8 0.8 0.16
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "SnapTarget"
+}
 
 DEF Vector ScreenGroup {
   children Transform {
@@ -17,11 +63,7 @@ DEF Vector ScreenGroup {
         translation 0 60 0
         scale 6 9 6
         children Shape {
-          appearance Appearance {
-            material DEF _1 Material {
-              diffuseColor 0.8 0.8 0.16
-            }
-          }
+          appearance USE _1
           geometry Cone { }
         }
       }
@@ -29,18 +71,14 @@ DEF Vector ScreenGroup {
         translation 0 30 0
         scale 2 30 2
         children Shape {
-          appearance Appearance {
-            material USE _1
-          }
+          appearance USE _1
           geometry Cylinder { }
         }
       }
       DEF Sphere Transform {
         scale 6 6 6
         children Shape {
-          appearance Appearance {
-            material USE _1
-          }
+          appearance USE _1
           geometry Sphere { }
         }
       }

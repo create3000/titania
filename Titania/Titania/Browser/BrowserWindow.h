@@ -543,6 +543,20 @@ private:
 	void
 	on_grid_properties_activated () final override;
 
+	///  @name Snap Target
+
+	virtual
+	void
+	on_activate_snap_target_toggled () final override;
+
+	virtual
+	void
+	on_move_selection_to_snap_target_activate () final override;
+	
+	virtual
+	void
+	on_move_selection_center_to_snap_target_activate () final override;
+
 	///  @name Extenal Tools menu
 
 	virtual

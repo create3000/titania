@@ -184,6 +184,19 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
+	// Debug
+
+	#ifndef TITANIA_DEBUG
+	getSeparatorMenuItem38 ()                            .set_visible (false);
+	getActivateSnapTargetMenuItem ()                     .set_visible (false);
+	getMoveSelectionToSnapTargetMenuItem ()              .set_visible (false);
+	getMoveSelectionCenterToSnapTargetMenuItem ()        .set_visible (false);
+	getBrowserSeparatorMenuItem18 ()                     .set_visible (false);
+	getBrowserActivateSnapTargetMenuItem ()              .set_visible (false);
+	getBrowserMoveSelectionToSnapTargetMenuItem ()       .set_visible (false);
+	getBrowserMoveSelectionCenterToSnapTargetMenuItem () .set_visible (false);
+	#endif
+
 	// Setup.
 
 	setup ();
@@ -1710,6 +1723,26 @@ void
 BrowserWindow::on_grid_properties_activated ()
 {
 	addDialog ("GridEditor");
+}
+
+// Snap Target
+
+void
+BrowserWindow::on_activate_snap_target_toggled ()
+{
+	__LOG__ << getActivateSnapTargetAction () -> get_active () << std::endl;
+}
+
+void
+BrowserWindow::on_move_selection_to_snap_target_activate ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+BrowserWindow::on_move_selection_center_to_snap_target_activate ()
+{
+	__LOG__ << std::endl;
 }
 
 // Extenal Tools menu

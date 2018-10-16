@@ -3,6 +3,9 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkAccelGroup" id="AccelGroup"/>
+  <object class="GtkToggleAction" id="ActivateSnapTargetAction">
+    <signal name="toggled" handler="on_activate_snap_target_toggled" swapped="no"/>
+  </object>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1515,6 +1518,42 @@
                 <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
               </object>
             </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="SeparatorMenuItem18">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkCheckMenuItem" id="BrowserActivateSnapTargetMenuItem">
+                <property name="related_action">ActivateSnapTargetAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Target</property>
+                <property name="label" translatable="yes">Activate Snap Target</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="BrowserMoveSelectionToSnapTargetMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Move Selection To Snap Target</property>
+                <property name="label" translatable="yes">Move Selection To Snap Target</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_move_selection_to_snap_target_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="BrowserMoveSelectionCenterToSnapTargetMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Move Selection Center To Snap Target</property>
+                <property name="label" translatable="yes">Move Selection Center To Snap Target</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_move_selection_center_to_snap_target_activate" swapped="no"/>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -2915,6 +2954,42 @@
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_grid_properties_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="SeparatorMenuItem38">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="ActivateSnapTargetMenuItem">
+                                <property name="related_action">ActivateSnapTargetAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Target</property>
+                                <property name="label" translatable="yes">Activate Snap Target</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="MoveSelectionToSnapTargetMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Move Selection To Snap Target</property>
+                                <property name="label" translatable="yes">Move Selection To Snap Target</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_move_selection_to_snap_target_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="MoveSelectionCenterToSnapTargetMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Move Selection Center To Snap Target</property>
+                                <property name="label" translatable="yes">Move Selection Center To Snap Target</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_move_selection_center_to_snap_target_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>
