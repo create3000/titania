@@ -84,6 +84,14 @@ public:
 	getToolNode () const
 	throw (Error <DISPOSED>);
 
+	void
+	setIsPickable (const bool value)
+	{ isPickable = value; }
+
+	bool
+	getIsPickable () const
+	{ return isPickable; }
+
 	///  @name Operations
 
 	virtual
@@ -131,6 +139,7 @@ private:
 
 	X3DPtr <Inline> inlineNode;
 	SFNode          toolNode;
+	bool            isPickable;
 
 };
 

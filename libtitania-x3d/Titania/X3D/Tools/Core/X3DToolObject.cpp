@@ -62,9 +62,10 @@ namespace titania {
 namespace X3D {
 
 X3DToolObject::X3DToolObject () :
-	    X3DNode (),
-	 inlineNode (new Inline (getBrowser () -> getPrivateScene ())),
-	   toolNode ()
+	   X3DNode (),
+	inlineNode (new Inline (getBrowser () -> getPrivateScene ())),
+	  toolNode (),
+	isPickable (true)
 {
 	addType (X3DConstants::X3DToolObject);
 
@@ -150,6 +151,9 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 		{
 			try
 			{
+				if (not isPickable)
+					break;
+
 				HierarchyGuard guard (renderObject -> getBrowser (), this);
 			
 				inlineNode -> traverse (type, renderObject);
