@@ -123,6 +123,9 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 bool
 PlaneViewer::on_button_release_event (GdkEventButton* event)
 {
+	if (not button)
+		return false;
+
 	button = 0;
 	getBrowser () -> setCursor ("ARROW");
 

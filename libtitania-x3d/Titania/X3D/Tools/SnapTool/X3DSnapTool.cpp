@@ -171,6 +171,9 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 bool
 X3DSnapTool::on_button_release_event (GdkEventButton* event)
 {
+	if (not button)
+		return false;
+
 	button = 0;
 
 	motionNotifyConnection  .disconnect ();

@@ -188,5 +188,17 @@ UndoHistory::clear ()
 	processInterests ();
 }
 
+void
+UndoHistory::dispose ()
+{
+	undoList .clear ();
+	redoList .clear ();
+
+	X3D::X3DOutput::dispose ();
+}
+
+UndoHistory::~UndoHistory ()
+{ }
+
 } // X3D
 } // titania

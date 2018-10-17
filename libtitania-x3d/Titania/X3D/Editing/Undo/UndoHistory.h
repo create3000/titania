@@ -126,6 +126,15 @@ public:
 	getSize () const
 	{ return undoList .size (); }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~UndoHistory () final override;
+
 
 private:
 

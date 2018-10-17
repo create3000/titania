@@ -97,11 +97,11 @@ UndoHistoryEditor::initialize ()
 void
 UndoHistoryEditor::set_browser ()
 {
-	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () .removeInterest (&X3D::SFTime::setValue, undoBuffer);
+	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () -> removeInterest (&X3D::SFTime::setValue, undoBuffer);
 
 	browser = getCurrentBrowser ();
 
-	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () .addInterest (&X3D::SFTime::setValue, undoBuffer, 1);
+	getBrowserWindow () -> getCurrentPage () -> getUndoHistory () -> addInterest (&X3D::SFTime::setValue, undoBuffer, 1);
 
 	set_undoHistory ();
 }
@@ -120,7 +120,7 @@ UndoHistoryEditor::set_undoHistory ()
 
 	size_t number = 1;
 
-	for (const auto & undoStep : undoHistory .getUndoList ())
+	for (const auto & undoStep : undoHistory -> getUndoList ())
 	{
 		const auto   row  = getListStore () -> append ();
 		const time_t time = undoStep -> getTime ();
@@ -137,7 +137,7 @@ UndoHistoryEditor::set_undoHistory ()
 		++ number;
 	}
 
-	for (const auto & undoStep : undoHistory .getRedoList ())
+	for (const auto & undoStep : undoHistory -> getRedoList ())
 	{
 		const auto   row  = getListStore () -> append ();
 		const time_t time = undoStep -> getTime ();
@@ -157,8 +157,8 @@ UndoHistoryEditor::set_undoHistory ()
 	getTreeView () .set_model (getListStore ());
 	getTreeView () .set_search_column (Columns::DESCRIPTION);
 
-	getUndoButton () .set_sensitive (undoHistory .hasUndo ());
-	getRedoButton () .set_sensitive (undoHistory .hasRedo ());
+	getUndoButton () .set_sensitive (undoHistory -> hasUndo ());
+	getRedoButton () .set_sensitive (undoHistory -> hasRedo ());
 }
 
 void
@@ -179,11 +179,11 @@ UndoHistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::Tre
 	const size_t index       = path .front ();
 	const auto & undoHistory = getBrowserWindow () -> getCurrentPage () -> getUndoHistory ();
 
-	if (index < undoHistory .getUndoList () .size ())
+	if (index < undoHistory -> getUndoList () .size ())
 	{
 		// Undo
 
-		const auto size = undoHistory .getUndoList () .size () - index;
+		const auto size = undoHistory -> getUndoList () .size () - index;
 
 		for (size_t i = 0; i < size; ++ i)
 			getBrowserWindow () -> undo ();
@@ -192,7 +192,7 @@ UndoHistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::Tre
 	{
 		// Redo
 
-		const auto size = index - undoHistory .getUndoList () .size () + 1;
+		const auto size = index - undoHistory -> getUndoList () .size () + 1;
 
 		for (size_t i = 0; i < size; ++ i)
 			getBrowserWindow () -> redo ();

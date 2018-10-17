@@ -92,11 +92,7 @@ public:
 	const basic::uri &
 	getWorldURL () const;
 
-	X3D::UndoHistory &
-	getUndoHistory ()
-	{ return undoHistory; }
-
-	const X3D::UndoHistory &
+	const std::unique_ptr <X3D::UndoHistory> &
 	getUndoHistory () const
 	{ return undoHistory; }
 
@@ -218,20 +214,20 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                   mainBrowser;
-	X3D::X3DScenePtr                  masterScene;
-	X3D::X3DScenePtr                  scene;
-	X3D::X3DExecutionContextPtr       executionContext;
-	basic::uri                        url; // Start URL
-	X3D::UndoHistory                  undoHistory;
-	bool                              modified;
-	bool                              saveConfirmed;
-	X3D::time_type                    savedTime;
-	sigc::connection                  recentConnection;
-	sigc::connection                  focusInConnection;
-	sigc::connection                  switchPageConnection;
-	std::unique_ptr <BackgroundImage> backgroundImage;
-	bool                              changing;
+	X3D::BrowserPtr                    mainBrowser;
+	X3D::X3DScenePtr                   masterScene;
+	X3D::X3DScenePtr                   scene;
+	X3D::X3DExecutionContextPtr        executionContext;
+	basic::uri                         url; // Start URL
+	std::unique_ptr <X3D::UndoHistory> undoHistory;
+	bool                               modified;
+	bool                               saveConfirmed;
+	X3D::time_type                     savedTime;
+	sigc::connection                   recentConnection;
+	sigc::connection                   focusInConnection;
+	sigc::connection                   switchPageConnection;
+	std::unique_ptr <BackgroundImage>  backgroundImage;
+	bool                               changing;
 
 };
 

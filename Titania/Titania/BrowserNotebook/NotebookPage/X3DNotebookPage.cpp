@@ -73,7 +73,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	                   scene (mainBrowser -> getExecutionContext ()),
 	        executionContext (mainBrowser -> getExecutionContext ()),
 	                     url (startUrl),
-	             undoHistory (),
+	             undoHistory (new X3D::UndoHistory ()),
 	                modified (false),
 	           saveConfirmed (false),
 	               savedTime (-1),
@@ -89,7 +89,7 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	mainBrowser -> setNotifyOnLoad (true);
 	mainBrowser -> setMonitorFiles (true);
 
-	undoHistory .addInterest (&X3DNotebookPage::on_undo_history, this);
+	undoHistory -> addInterest (&X3DNotebookPage::on_undo_history, this);
 
 	try
 	{
@@ -169,7 +169,7 @@ X3DNotebookPage::setModified (const bool value)
 	else
 	{
 		setSavedTime (getScene () -> getWorldURL ());
-		getUndoHistory () .setSaved ();
+		getUndoHistory () -> setSaved ();
 	}
 
 	updateTitle ();
@@ -178,7 +178,7 @@ X3DNotebookPage::setModified (const bool value)
 bool
 X3DNotebookPage::getModified () const
 {
-	return undoHistory .getModified () or modified;
+	return undoHistory -> getModified () or modified;
 }
 
 void
@@ -284,7 +284,7 @@ X3DNotebookPage::reset ()
 {
 	// Reset.
 
-	undoHistory .clear ();
+	undoHistory -> clear ();
 
 	setModified (false);
 	setSaveConfirmed (false);
@@ -516,6 +516,7 @@ X3DNotebookPage::dispose ()
 	focusInConnection    .disconnect ();
 	switchPageConnection .disconnect ();
 
+	undoHistory .reset ();
 	backgroundImage .reset ();
 
 	X3DNotebookPageInterface::dispose ();

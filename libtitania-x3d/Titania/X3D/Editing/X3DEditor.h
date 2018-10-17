@@ -392,11 +392,13 @@ public:
 	///  @name Snap Target handling
 
 	static
-	void
+	Matrix4d
 	moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
 	                         const MFNode & nodes,
-	                         const Vector3d & position,
-	                         const Vector3d & normal,
+	                         const Vector3d & targetPosition,
+	                         const Vector3d & targetNormal,
+	                         const Vector3d & sourcePosition,
+	                         const Vector3d & sourceNormal,
 	                         const UndoStepPtr & undoStep);
 
 	///  @name Node handling

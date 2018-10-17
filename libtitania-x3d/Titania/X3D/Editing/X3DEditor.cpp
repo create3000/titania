@@ -3266,12 +3266,14 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
  *
  */
 
-///  Moves nodes center to @a position and y-axis aligned to @a normal.  Where @a position must be in world space.
-void
+///  Moves nodes center to @a targetPosition and @a sourceNormal aligned to @a targetNormal.  All vectors must be in world space.
+Matrix4d
 X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
                                     const MFNode & nodes,
-                                    const Vector3d & position,
-                                    const Vector3d & normal,
+                                    const Vector3d & targetPosition,
+                                    const Vector3d & targetNormal,
+                                    const Vector3d & sourcePosition,
+                                    const Vector3d & sourceNormal,
                                     const UndoStepPtr & undoStep)
 {
 	// Determine bbox of nodes in model space.
@@ -3320,20 +3322,15 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 	// Determine absolute matrix that should be added to nodes.
 
-	auto t  = Vector3d ();
-	auto r  = Rotation4d ();
 	auto s  = Vector3d (1, 1, 1);
 	auto so = Rotation4d ();
 
-	if (nodes .size () == 1)
-		bbox .matrix () .get (t, r);
+	const auto rotation             = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (-sourceNormal, targetNormal);
+	const auto center               = bbox .center ();
+	const auto translation          = targetPosition - center;
+	auto       transformationMatrix = Matrix4d ();
 
-	const auto rotation       = Rotation4d (Vector3d (0, 1, 0) * r, normal);
-	const auto center         = bbox .center ();
-	const auto translation    = position - center;
-	auto       absoluteMatrix = Matrix4d ();
-
-	absoluteMatrix .set (translation, rotation, s, so, center);
+	transformationMatrix .set (translation, rotation, s, so, center);
 
 	// Move nodes to center and align y-axis to normal.
 
@@ -3351,7 +3348,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						const auto center            = Vector3d (transformNode -> center () .getValue ());
 						const auto modelMatrix       = getModelMatrix (executionContext, transformNode);
 						const auto matrix            = transformNode -> getMatrix ();
-						const auto transformedMatrix = matrix * modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
 
 						undoStep -> addObjects (transformNode);
 						undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transformNode, transformNode -> getMatrix (), center);
@@ -3374,6 +3371,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 			__LOG__ << error .what () << std::endl;
 		}
 	}
+
+	return transformationMatrix;
 }
 
 /***

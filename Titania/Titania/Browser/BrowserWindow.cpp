@@ -258,12 +258,13 @@ BrowserWindow::configure ()
 	else if (textureQuality == "HIGH")
 		getTextureQualityHighAction () -> set_active (true);
 
-	getTransformToolModeAction () -> set_active (getConfig () -> getItem <int32_t> ("transformToolMode"));
+	getTransformToolModeAction ()  -> set_active (getConfig () -> getItem <int32_t> ("transformToolMode", 0));
+	getX_ITECompatibilityAction () -> set_active (getConfig () -> getItem <bool> ("cobwebCompatibility", true));
 
-	if (getConfig () -> hasItem ("cobwebCompatibility"))
-		getX_ITECompatibilityAction () -> set_active (getConfig () -> getItem <bool> ("cobwebCompatibility"));
+	if (getConfig () -> getItem <bool> ("hand", true))
+		getHandButton () .set_active (true);
 	else
-		getX_ITECompatibilityAction () -> set_active (true);
+		getArrowButton () .set_active (true);
 }
 
 void
@@ -1795,10 +1796,25 @@ BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Move Selection Center To Snap Target"));
 	const auto & selection        = getSelection () -> getNodes ();
 	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
-	const auto   position         = X3D::Vector3d (getCurrentBrowser () -> getSnapTarget () -> position () .getValue ());
-	const auto   normal           = X3D::Vector3d (getCurrentBrowser () -> getSnapTarget () -> normal () .getValue ());
+	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
+	const auto & snapSource       = getCurrentBrowser () -> getSnapSource ();
+	const auto   targetPosition   = X3D::Vector3d (snapTarget -> position () .getValue ());
+	const auto   targetNormal     = X3D::Vector3d (snapTarget -> normal () .getValue ());
 
-	X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, position, normal, undoStep);
+	if (snapSource -> enabled ())
+	{
+		const auto sourcePosition       = X3D::Vector3d (snapSource -> position () .getValue ());
+		const auto sourceNormal         = X3D::Vector3d (snapSource -> normal () .getValue ());
+		const auto transformationMatrix = X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, sourcePosition, sourceNormal, undoStep);
+		const auto destinationPosition  = X3D::SFVec3f (sourcePosition * transformationMatrix);
+
+		X3D::X3DEditor::setValue (snapSource, snapSource -> position (), destinationPosition, undoStep);
+		X3D::X3DEditor::setValue (snapSource, snapSource -> normal (), snapTarget -> normal (), undoStep);
+	}
+	else
+	{
+		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), undoStep);
+	}
 
 	addUndoStep (undoStep);
 }
@@ -2029,7 +2045,7 @@ BrowserWindow::on_hand_button_toggled ()
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 
-	getConfig () -> setItem ("hand", getHandButton () .get_active ());
+	getConfig () -> setItem <bool> ("hand", getHandButton () .get_active ());
 }
 
 void
@@ -2046,7 +2062,7 @@ BrowserWindow::on_arrow_button_toggled ()
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 
-	getConfig () -> setItem ("arrow", getArrowButton () .get_active ());
+	getConfig () -> setItem <bool> ("arrow", getArrowButton () .get_active ());
 }
 
 void

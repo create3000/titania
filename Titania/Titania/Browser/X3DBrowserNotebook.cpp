@@ -80,7 +80,7 @@ X3DBrowserNotebook::X3DBrowserNotebook (const X3D::BrowserPtr & defaultBrowser) 
 	                    pages (),
 	              recentPages (),
 	            masterBrowser (defaultBrowser),
-	                  browser (X3D::createBrowser (defaultBrowser)),
+	                  browser (defaultBrowser),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
 	           worldURLOutput (),

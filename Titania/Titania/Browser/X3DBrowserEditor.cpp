@@ -148,13 +148,13 @@ void
 X3DBrowserEditor::setPage (const NotebookPagePtr & value)
 {
 	if (getCurrentPage ())
-		getCurrentPage () -> getUndoHistory () .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
+		getCurrentPage () -> getUndoHistory () -> removeInterest (&X3DBrowserEditor::set_undoHistory, this);
 
 	X3DBrowserNotebook::setPage (value);
 
 	if (getCurrentPage ())
 	{
-		getCurrentPage () -> getUndoHistory () .addInterest (&X3DBrowserEditor::set_undoHistory, this);
+		getCurrentPage () -> getUndoHistory () -> addInterest (&X3DBrowserEditor::set_undoHistory, this);
 
 		set_undoHistory ();
 	}
@@ -412,19 +412,19 @@ X3DBrowserEditor::quit ()
 void
 X3DBrowserEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
-	getCurrentPage () -> getUndoHistory () .addUndoStep (undoStep, getCurrentBrowser () -> getCurrentTime ());
+	getCurrentPage () -> getUndoHistory () -> addUndoStep (undoStep, getCurrentBrowser () -> getCurrentTime ());
 }
 
 void
 X3DBrowserEditor::removeUndoStep ()
 {
-	getCurrentPage () -> getUndoHistory () .removeUndoStep ();
+	getCurrentPage () -> getUndoHistory () -> removeUndoStep ();
 }
 
 const X3D::UndoStepPtr &
 X3DBrowserEditor::getUndoStep () const
 {
-	return getCurrentPage () -> getUndoHistory () .getUndoStep ();
+	return getCurrentPage () -> getUndoHistory () -> getUndoStep ();
 }
 
 void
@@ -433,7 +433,7 @@ X3DBrowserEditor::undo ()
 	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
-	getCurrentPage () -> getUndoHistory () .undo ();
+	getCurrentPage () -> getUndoHistory () -> undo ();
 }
 
 void
@@ -442,7 +442,7 @@ X3DBrowserEditor::redo ()
 	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
-	getCurrentPage () -> getUndoHistory ()  .redo ();
+	getCurrentPage () -> getUndoHistory ()  -> redo ();
 }
 
 void
@@ -450,11 +450,11 @@ X3DBrowserEditor::set_undoHistory ()
 {
 	const auto & undoHistory = getCurrentPage () -> getUndoHistory ();
 
-	if (undoHistory .hasUndo ())
+	if (undoHistory -> hasUndo ())
 	{
-		getUndoMenuItem ()        .set_label (undoHistory .getUndoDescription ());
-		getBrowserUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
-		getUndoButton ()          .set_tooltip_text (undoHistory .getUndoDescription ());
+		getUndoMenuItem ()        .set_label (undoHistory -> getUndoDescription ());
+		getBrowserUndoMenuItem () .set_label (undoHistory -> getUndoDescription ());
+		getUndoButton ()          .set_tooltip_text (undoHistory -> getUndoDescription ());
 		getUndoMenuItem ()        .set_sensitive (true);
 		getBrowserUndoMenuItem () .set_sensitive (true);
 		getUndoButton ()          .set_sensitive (true);
@@ -469,11 +469,11 @@ X3DBrowserEditor::set_undoHistory ()
 		getUndoButton ()          .set_sensitive (false);
 	}
 
-	if (undoHistory .hasRedo ())
+	if (undoHistory -> hasRedo ())
 	{
-		getRedoMenuItem ()        .set_label (undoHistory .getRedoDescription ());
-		getBrowserRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
-		getRedoButton ()          .set_tooltip_text (undoHistory .getRedoDescription ());
+		getRedoMenuItem ()        .set_label (undoHistory -> getRedoDescription ());
+		getBrowserRedoMenuItem () .set_label (undoHistory -> getRedoDescription ());
+		getRedoButton ()          .set_tooltip_text (undoHistory -> getRedoDescription ());
 		getRedoMenuItem ()        .set_sensitive (true);
 		getBrowserRedoMenuItem () .set_sensitive (true);
 		getRedoButton ()          .set_sensitive (true);

@@ -69,7 +69,7 @@ public:
 
 	/// @name Member access
 
-	X3D::UndoHistory &
+	const std::unique_ptr <X3D::UndoHistory> &
 	getUndoHistory ()
 	{ return undoHistory; }
 
@@ -109,31 +109,31 @@ private:
 	virtual
 	void
 	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
-	{ undoHistory .addUndoStep (undoStep, X3D::SFTime::now ()); }
+	{ undoHistory -> addUndoStep (undoStep, X3D::SFTime::now ()); }
 
 	virtual
 	void
 	removeUndoStep () final override
-	{ undoHistory .removeUndoStep (); }
+	{ undoHistory -> removeUndoStep (); }
 
 	virtual
 	const X3D::UndoStepPtr &
 	getUndoStep () const final override
-	{ return undoHistory .getUndoStep (); }
+	{ return undoHistory -> getUndoStep (); }
 
 	///  @name Members
 
-	X3D::BrowserPtr                   browser;
-	X3D::X3DPtr <X3D::X3DViewer>      viewerNode;
-	X3D::X3DPtr <X3D::NavigationInfo> navigationInfo;
-	X3D::Vector3d                     positionOffset;
-	X3D::Rotation4d                   orientationOffset;
-	X3D::Vector3d                     centerOfRotationOffset;
-	double                            fieldOfViewScale;
-	X3D::UndoHistory                  undoHistory;
-	X3D::UndoStepPtr                  transitionUndoStep;
-	X3D::UndoStepPtr                  moveUndoStep;
-	X3D::UndoStepPtr                  scrollUndoStep;
+	X3D::BrowserPtr                    browser;
+	X3D::X3DPtr <X3D::X3DViewer>       viewerNode;
+	X3D::X3DPtr <X3D::NavigationInfo>  navigationInfo;
+	X3D::Vector3d                      positionOffset;
+	X3D::Rotation4d                    orientationOffset;
+	X3D::Vector3d                      centerOfRotationOffset;
+	double                             fieldOfViewScale;
+	std::unique_ptr <X3D::UndoHistory> undoHistory;
+	X3D::UndoStepPtr                   transitionUndoStep;
+	X3D::UndoStepPtr                   moveUndoStep;
+	X3D::UndoStepPtr                   scrollUndoStep;
 
 };
 

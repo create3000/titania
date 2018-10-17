@@ -180,6 +180,9 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 bool
 X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
+	if (not button)
+		return false;
+
 	button = 0;
 	disconnect ();
 

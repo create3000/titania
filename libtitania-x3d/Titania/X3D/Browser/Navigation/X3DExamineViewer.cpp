@@ -237,6 +237,9 @@ X3DExamineViewer::on_3button_press_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_button_release_event (GdkEventButton* event)
 {
+	if (not button)
+		return false;
+
 	if (event -> button not_eq button)
 	{
 		button = 0;

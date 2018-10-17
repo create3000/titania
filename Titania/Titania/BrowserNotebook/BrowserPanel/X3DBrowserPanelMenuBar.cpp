@@ -126,7 +126,7 @@ X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 	browser -> getShaders ()           .addInterest (&X3DBrowserPanelMenuBar::set_shaders,            this);
 
 	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), browser));
-	viewpointObserver -> getUndoHistory () .addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
+	viewpointObserver -> getUndoHistory () -> addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
 
 	set_undoHistory ();
 	set_initialized ();
@@ -211,20 +211,20 @@ X3DBrowserPanelMenuBar::set_undoHistory ()
 {
 	const auto & undoHistory = viewpointObserver -> getUndoHistory () ;
 
-	getUndoViewMenuItem () .set_sensitive (undoHistory .hasUndo ());
-	getRedoViewMenuItem () .set_sensitive (undoHistory .hasRedo ());
+	getUndoViewMenuItem () .set_sensitive (undoHistory -> hasUndo ());
+	getRedoViewMenuItem () .set_sensitive (undoHistory -> hasRedo ());
 }
 
 void
 X3DBrowserPanelMenuBar::undo_view_activate ()
 {
-	viewpointObserver -> getUndoHistory () .undo ();
+	viewpointObserver -> getUndoHistory () -> undo ();
 }
 
 void
 X3DBrowserPanelMenuBar::redo_view_activate ()
 {
-	viewpointObserver -> getUndoHistory () .redo ();
+	viewpointObserver -> getUndoHistory () -> redo ();
 }
 
 void

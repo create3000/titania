@@ -70,7 +70,7 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow, con
 	     orientationOffset (),
 	centerOfRotationOffset (),
 	      fieldOfViewScale (),
-	           undoHistory (),
+	           undoHistory (new X3D::UndoHistory ()),
 	    transitionUndoStep (),
 	          moveUndoStep (),
 	        scrollUndoStep ()
