@@ -320,9 +320,9 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 
 	MagicImport magicImport (getBrowserWindow ());
 
-	X3D::MFNode  nodes;
 	auto         selection = getSelection () -> getNodes ();
 	const auto & layerSet  = getCurrentWorld () -> getLayerSet ();
+	X3D::MFNode  nodes;
 
 	for (const auto & worldURL : url)
 	{

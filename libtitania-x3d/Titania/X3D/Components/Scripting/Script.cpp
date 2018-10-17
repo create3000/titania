@@ -141,14 +141,14 @@ throw (Error <DISPOSED>)
 bool
 Script::loadDocument (const std::string & URL, std::string & scheme, std::string & ecmascript)
 {
-	static const std::regex ECMAScript (R"/(\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:([\s\S]*))/");
+	static const std::regex ECMAScript (R"/((^\s*(?:ecmascript|javascript|vrmlscript|v8|peaseblossom)\:))/");
 
 	std::smatch match;
 
-	if (std::regex_match (URL, match, ECMAScript))
+	if (std::regex_search (URL, match, ECMAScript))
 	{
 		scheme     = match .str (1);
-		ecmascript = match .str (2);
+		ecmascript = URL .substr (scheme .size ());
 
 		setWorldURL (getExecutionContext () -> getWorldURL ());
 		return true;
