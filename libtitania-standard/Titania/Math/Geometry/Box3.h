@@ -183,6 +183,11 @@ public:
 	center () const
 	{ return m_matrix .origin (); }
 
+	///  Returns the aabb box of this box.
+	box3 <Type>
+	aabb () const
+	{ return box3 (size (), center ()); }
+
 	///  Returns the transformed points of this box.
 	std::vector <vector3 <Type>> 
 	points () const;

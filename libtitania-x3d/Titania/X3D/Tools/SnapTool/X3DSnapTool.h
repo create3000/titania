@@ -146,9 +146,6 @@ private:
 	void
 	update ();
 
-	void
-	setToolsIsPickable (const bool value);
-
 	///  @name Fields
 
 	struct Fields

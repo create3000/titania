@@ -84,14 +84,6 @@ public:
 	getToolNode () const
 	throw (Error <DISPOSED>);
 
-	void
-	setIsPickable (const bool value)
-	{ isPickable = value; }
-
-	bool
-	getIsPickable () const
-	{ return isPickable; }
-
 	///  @name Operations
 
 	virtual
@@ -107,6 +99,10 @@ public:
 
 
 protected:
+
+	///  @name Friends
+
+	friend class X3DToolContext;
 
 	///  @name Construction
 
@@ -126,6 +122,11 @@ protected:
 	void
 	realize ()
 	{ }
+
+	virtual
+	void
+	setIsPickable (const bool value)
+	{ isPickable = value; }
 
 
 private:

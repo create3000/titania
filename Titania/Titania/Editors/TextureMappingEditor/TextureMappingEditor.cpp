@@ -1349,10 +1349,10 @@ TextureMappingEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 
 		if (shape)
 		{
-			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), shape);
+			const auto transform   = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+			const auto modelMatrix = X3D::X3DEditor::getModelMatrix (getCurrentContext (), shape);
 
-			transform -> setMatrix (modelViewMatrix);
+			transform -> setMatrix (modelMatrix);
 
 			shape -> appearance () .addInterest (&TextureMappingEditor::set_appearance, this);
 			shape -> geometry ()   .addInterest (&TextureMappingEditor::set_geometry, this);

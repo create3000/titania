@@ -51,7 +51,6 @@
 #include "X3DSnapTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
@@ -162,7 +161,7 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 
 	motionNotifyConnection = getBrowser () -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_motion_notify_event), false);
 
-	setToolsIsPickable (false);
+	getBrowser () -> pushToolsPickable (false);
 
 	update ();
 
@@ -176,7 +175,7 @@ X3DSnapTool::on_button_release_event (GdkEventButton* event)
 
 	motionNotifyConnection  .disconnect ();
 
-	setToolsIsPickable (true);
+	getBrowser () -> popToolsPickable ();
 
 	return false;
 }
@@ -222,21 +221,6 @@ X3DSnapTool::update ()
 
 	position () = cameraSpaceMatrix .mult_vec_matrix (nearestHit -> intersection -> point);
 	normal ()   = normalize (inverseCameraSpaceMatrix .mult_matrix_dir (nearestHit -> intersection -> faceNormal));
-}
-
-void
-X3DSnapTool::setToolsIsPickable (const bool value)
-{
-	for (const auto & transformTool : getBrowser () -> getTransformTools ())
-		transformTool -> setIsPickable (value);
-
-	for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-	{
-		const auto toolObject = dynamic_cast <X3DToolObject*> (node .getValue ());
-
-		if (toolObject)
-			toolObject -> setIsPickable (value);
-	}
 }
 
 void

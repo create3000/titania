@@ -931,9 +931,9 @@ OutlineEditor::on_detach_from_group_activated ()
 
 	if (transform)
 	{
-		const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (executionContext, node);
+		const auto modelMatrix = X3D::X3DEditor::getModelMatrix (executionContext, node);
 
-		X3D::X3DEditor::setMatrix (transform, transform -> getMatrix () * modelViewMatrix, undoStep);
+		X3D::X3DEditor::setMatrix (transform, transform -> getMatrix () * modelMatrix, undoStep);
 	}
 
 	// Detach.

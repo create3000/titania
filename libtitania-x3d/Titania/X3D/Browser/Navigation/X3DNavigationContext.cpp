@@ -142,16 +142,16 @@ X3DNavigationContext::lookAtSelection ()
 
 	for (const auto & node : selection)
 	{
-		const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (getBrowser () -> getExecutionContext (), node);
-		const auto boundedObject   = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
+		const auto modelMatrix   = X3D::X3DEditor::getModelMatrix (getBrowser () -> getExecutionContext (), node);
+		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
 
 		if (boundedObject)
-			bbox += boundedObject -> getBBox () * modelViewMatrix;
+			bbox += boundedObject -> getBBox () * modelMatrix;
 
 		const auto geometryNode = X3D::x3d_cast <X3D::X3DGeometryNode*> (node);
 
 		if (geometryNode)
-			bbox += geometryNode -> getBBox () * modelViewMatrix;
+			bbox += geometryNode -> getBBox () * modelMatrix;
 	}
 
 	getActiveLayer () -> getViewpoint () -> lookAt (bbox);

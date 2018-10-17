@@ -231,7 +231,7 @@ throw (Error <INVALID_NODE>,
 		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
-		const auto   targetMatrix   = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
+		const auto   targetMatrix   = inverse (X3DEditor::getModelMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
 	
 		targetGeometry -> coord () = targetCoord;
 	
@@ -259,7 +259,7 @@ throw (Error <INVALID_NODE>,
 
 			// Generate mesh.
 
-			const auto matrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
+			const auto matrix = X3DEditor::getModelMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
 		
 			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
 		}
@@ -327,7 +327,7 @@ throw (Error <INVALID_NODE>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
+	const auto   targetMatrix   = inverse (X3DEditor::getModelMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
 
 	targetGeometry -> coord () = targetCoord;
 
@@ -568,7 +568,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto modelMatrix    = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
+		const auto modelMatrix    = X3DEditor::getModelMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
 		const auto matrix         = modelMatrix * targetMatrix;
 		const auto matrixNegative = determinant (matrix) < 0;
 

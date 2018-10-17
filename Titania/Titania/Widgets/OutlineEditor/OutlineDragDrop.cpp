@@ -825,18 +825,18 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Gdk::Dr
 
 		// Adjust transformation like detach from group of copy.
 
-		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (sourceNode);
+		const auto transform = X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> (sourceNode);
 
 		if (transform)
 		{
-			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, exportedNode);
 
-			modelViewMatrix .mult_left (transform -> getMatrix ());
+			modelMatrix .mult_left (transform -> getMatrix ());
 
 			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransfrom (sourceNode);
 
 			if (sourceTransfrom)
-				sourceTransfrom -> setMatrix (modelViewMatrix);
+				sourceTransfrom -> setMatrix (modelMatrix);
 		}
 	}
 
@@ -861,21 +861,20 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Gdk::Dr
 			{
 				// Get group modelview matrix
 
-				auto groupModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (destContext, destNode);
-
-				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (destNode);
+				auto       groupModelMatrix = X3D::X3DEditor::getModelMatrix (destContext, destNode);
+				const auto groupTransform   = X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> (destNode);
 
 				if (groupTransform)
-					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+					groupModelMatrix .mult_left (groupTransform -> getMatrix ());
 				
 				// Adjust child transformation
 
-				auto childModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, sourceNode);
+				auto childModelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, sourceNode);
 
-				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-				childModelViewMatrix .mult_right (inverse (groupModelViewMatrix));
+				childModelMatrix .mult_left (childTransform -> getMatrix ());
+				childModelMatrix .mult_right (inverse (groupModelMatrix));
 
-				X3D::X3DEditor::setMatrix (childTransform, childModelViewMatrix, undoStep);
+				X3D::X3DEditor::setMatrix (childTransform, childModelMatrix, undoStep);
 			}
 		}
 		catch (const std::domain_error & error)
@@ -1094,14 +1093,14 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 
 		if (transform)
 		{
-			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, exportedNode);
 
-			modelViewMatrix .mult_left (transform -> getMatrix ());
+			modelMatrix .mult_left (transform -> getMatrix ());
 
 			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransfrom (sourceNode);
 
 			if (sourceTransfrom)
-				sourceTransfrom -> setMatrix (modelViewMatrix);
+				sourceTransfrom -> setMatrix (modelMatrix);
 		}
 	}
 
@@ -1131,21 +1130,20 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 			{
 				// Get group modelview matrix
 
-				auto groupModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (destContext, *destNode);
-
-				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (*destNode);
+				auto       groupModelMatrix = X3D::X3DEditor::getModelMatrix (destContext, *destNode);
+				const auto groupTransform   = X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> (*destNode);
 
 				if (groupTransform)
-					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+					groupModelMatrix .mult_left (groupTransform -> getMatrix ());
 				
 				// Adjust child transformation
 
-				auto childModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, sourceNode);
+				auto childModelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, sourceNode);
 
-				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-				childModelViewMatrix .mult_right (inverse (groupModelViewMatrix));
+				childModelMatrix .mult_left (childTransform -> getMatrix ());
+				childModelMatrix .mult_right (inverse (groupModelMatrix));
 
-				X3D::X3DEditor::setMatrix (childTransform, childModelViewMatrix, undoStep);
+				X3D::X3DEditor::setMatrix (childTransform, childModelMatrix, undoStep);
 			}
 		}
 		catch (const std::domain_error & error)
@@ -1356,14 +1354,14 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Gdk::DragAction
 
 		if (transform)
 		{
-			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, exportedNode);
 
-			modelViewMatrix .mult_left (transform -> getMatrix ());
+			modelMatrix .mult_left (transform -> getMatrix ());
 
 			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransfrom (sourceNode);
 
 			if (sourceTransfrom)
-				sourceTransfrom -> setMatrix (modelViewMatrix);
+				sourceTransfrom -> setMatrix (modelMatrix);
 		}
 	}
 
@@ -1388,21 +1386,20 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Gdk::DragAction
 			{
 				// Get group modelview matrix
 
-				auto groupModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (destContext, destNode);
-
-				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (destNode);
+				auto       groupModelMatrix = X3D::X3DEditor::getModelMatrix (destContext, destNode);
+				const auto groupTransform   = X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> (destNode);
 
 				if (groupTransform)
-					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+					groupModelMatrix .mult_left (groupTransform -> getMatrix ());
 				
 				// Adjust child transformation
 
-				auto childModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, sourceNode);
+				auto childModelMatrix = X3D::X3DEditor::getModelMatrix (sourceContext, sourceNode);
 
-				childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-				childModelViewMatrix .mult_right (inverse (groupModelViewMatrix));
+				childModelMatrix .mult_left (childTransform -> getMatrix ());
+				childModelMatrix .mult_right (inverse (groupModelMatrix));
 
-				X3D::X3DEditor::setMatrix (childTransform, childModelViewMatrix, undoStep);
+				X3D::X3DEditor::setMatrix (childTransform, childModelMatrix, undoStep);
 			}
 		}
 		catch (const std::domain_error & error)

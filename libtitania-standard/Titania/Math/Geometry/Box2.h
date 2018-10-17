@@ -178,6 +178,11 @@ public:
 	vector2 <Type>
 	size () const;
 
+	///  Returns the aabb box of this box.
+	box2 <Type>
+	aabb () const
+	{ return box2 (size (), center ()); }
+
 	///  Returns the center of this box.
 	vector2 <Type>
 	center () const

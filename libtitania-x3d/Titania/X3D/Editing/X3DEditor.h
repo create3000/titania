@@ -389,6 +389,16 @@ public:
 	void
 	addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep);
 
+	///  @name Snap Target handling
+
+	static
+	void
+	moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
+	                         const MFNode & nodes,
+	                         const Vector3d & position,
+	                         const Vector3d & normal,
+	                         const UndoStepPtr & undoStep);
+
 	///  @name Node handling
 
 	template <class NodeType>
@@ -413,19 +423,19 @@ public:
 
 	static
 	void
-	transformToZero (const MFNode &, const UndoStepPtr & undoStep);
+	transformToZero (const MFNode & nodes, const UndoStepPtr & undoStep);
 
 	static
 	void
-	storeMatrix (const SFNode &, const UndoStepPtr & undoStep);
+	storeMatrix (const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	setMatrix (const X3DPtr <X3DTransformNode> &, const Matrix4d &, const UndoStepPtr & undoStep);
+	setMatrix (const X3DPtr <X3DTransformNode> & transformNode, const Matrix4d & matrix, const UndoStepPtr & undoStep);
 
 	static
 	Matrix4d
-	getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode &);
+	getModelMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node);
 
 	///  @name Polygon reducing
 

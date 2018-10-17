@@ -2862,14 +2862,14 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 			continue;
 
 		// Adjust transformation
-		Matrix4d                        childModelViewMatrix = getModelViewMatrix (executionContext, child);
-		const X3DPtr <X3DTransformNode> transform (child);
+		auto       childModelMatrix = getModelMatrix (executionContext, child);
+		const auto transform        = X3DPtr <X3DTransformNode> (child);
 
 		if (transform)
 		{
-			childModelViewMatrix .mult_left (transform -> getMatrix ());
+			childModelMatrix .mult_left (transform -> getMatrix ());
 
-			setMatrix (transform, childModelViewMatrix, undoStep);
+			setMatrix (transform, childModelMatrix, undoStep);
 		}
 
 		// Remove child from scene graph
@@ -2925,14 +2925,14 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 
 				// Adjust transformation
 
-				Matrix4d                        childModelViewMatrix = getModelViewMatrix (executionContext, child);
-				const X3DPtr <X3DTransformNode> transform (child);
+				auto       childModelMatrix = getModelMatrix (executionContext, child);
+				const auto transform        = X3DPtr <X3DTransformNode> (child);
 
 				if (transform)
 				{
-					childModelViewMatrix .mult_left (transform -> getMatrix ());
+					childModelMatrix .mult_left (transform -> getMatrix ());
 
-					setMatrix (transform, childModelViewMatrix, undoStep);
+					setMatrix (transform, childModelMatrix, undoStep);
 				}
 
 				// Add to layer
@@ -3000,21 +3000,20 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 				{
 					// Get group modelview matrix
 
-					Matrix4d groupModelViewMatrix (getModelViewMatrix (executionContext, group));
-
-					const X3DPtr <X3DTransformMatrix3DObject> groupTransform (group);
+					auto       groupModelMatrix = getModelMatrix (executionContext, group);
+					const auto groupTransform   = X3DPtr <X3DTransformMatrix3DObject> (group);
 
 					if (groupTransform)
-						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
+						groupModelMatrix .mult_left (groupTransform -> getMatrix ());
 
 					// Adjust child transformation
 
-					Matrix4d childModelViewMatrix = getModelViewMatrix (executionContext, child);
+					auto childModelMatrix = getModelMatrix (executionContext, child);
 
-					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-					childModelViewMatrix .mult_right (inverse (groupModelViewMatrix));
+					childModelMatrix .mult_left (childTransform -> getMatrix ());
+					childModelMatrix .mult_right (inverse (groupModelMatrix));
 
-					setMatrix (childTransform, childModelViewMatrix, undoStep);
+					setMatrix (childTransform, childModelMatrix, undoStep);
 				}
 			}
 			catch (const std::domain_error & error)
@@ -3075,15 +3074,15 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 
 		// Adjust transformation
 
-		const X3DPtr <X3DTransformNode> transform (child);
+		const auto transform = X3DPtr <X3DTransformNode> (child);
 
 		if (transform)
 		{
-			Matrix4d childModelViewMatrix = getModelViewMatrix (executionContext, child);
+			auto childModelMatrix = getModelMatrix (executionContext, child);
 
-			childModelViewMatrix .mult_left (transform -> getMatrix ());
+			childModelMatrix .mult_left (transform -> getMatrix ());
 
-			setMatrix (transform, childModelViewMatrix, undoStep);
+			setMatrix (transform, childModelMatrix, undoStep);
 		}
 
 		// Remove child from scene graph
@@ -3255,6 +3254,126 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
 	// Prototype support
 
 	requestUpdateInstances (executionContext, undoStep);
+}
+
+/***
+ *
+ *
+ *
+ * Snap Target handling
+ *
+ *
+ *
+ */
+
+///  Moves nodes center to @a position and y-axis aligned to @a normal.  Where @a position must be in world space.
+void
+X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
+                                    const MFNode & nodes,
+                                    const Vector3d & position,
+                                    const Vector3d & normal,
+                                    const UndoStepPtr & undoStep)
+{
+	// Determine bbox of nodes in model space.
+
+	auto bbox = Box3d ();
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			{
+				switch (type)
+				{
+					case X3DConstants::X3DTransformNode:
+					{
+						const auto transformNode = X3DPtr <X3DTransformNode> (node);
+						const auto matrix        = transformNode -> getMatrix ();
+						const auto subBBox       = transformNode -> X3DGroupingNode::getBBox () .aabb ();
+
+						bbox += subBBox * matrix * getModelMatrix (executionContext, node);
+						break;
+					}
+					case X3DConstants::X3DBoundedObject:
+					{
+						const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
+						const auto subBBox       = boundedObject -> getBBox () .aabb ();
+
+						bbox += subBBox * getModelMatrix (executionContext, node);
+						break;
+					}
+					default:
+					{
+						continue;
+					}
+				}
+	
+				break;
+			}
+		}
+		catch (const std::exception & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	// Determine absolute matrix that should be added to nodes.
+
+	auto t  = Vector3d ();
+	auto r  = Rotation4d ();
+	auto s  = Vector3d (1, 1, 1);
+	auto so = Rotation4d ();
+
+	if (nodes .size () == 1)
+		bbox .matrix () .get (t, r);
+
+	const auto rotation       = Rotation4d (Vector3d (0, 1, 0) * r, normal);
+	const auto center         = bbox .center ();
+	const auto translation    = position - center;
+	auto       absoluteMatrix = Matrix4d ();
+
+	absoluteMatrix .set (translation, rotation, s, so, center);
+
+	// Move nodes to center and align y-axis to normal.
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			{
+				switch (type)
+				{
+					case X3DConstants::X3DTransformNode:
+					{
+						const auto transformNode     = X3DPtr <X3DTransformNode> (node);
+						const auto center            = Vector3d (transformNode -> center () .getValue ());
+						const auto modelMatrix       = getModelMatrix (executionContext, transformNode);
+						const auto matrix            = transformNode -> getMatrix ();
+						const auto transformedMatrix = matrix * modelMatrix * absoluteMatrix * inverse (modelMatrix);
+
+						undoStep -> addObjects (transformNode);
+						undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transformNode, transformNode -> getMatrix (), center);
+						undoStep -> addRedoFunction (&X3DTransformNode::setMatrixWithCenter, transformNode, transformedMatrix, center);
+
+						transformNode -> setMatrixWithCenter (transformedMatrix, center);
+						break;
+					}
+					default:
+					{
+						continue;
+					}
+				}
+	
+				break;
+			}
+		}
+		catch (const std::exception & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
 }
 
 /***
@@ -3592,7 +3711,7 @@ X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4
 }
 
 Matrix4d
-X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node)
+X3DEditor::getModelMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node)
 {
 	Matrix4d modelViewMatrix;
 

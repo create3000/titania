@@ -152,7 +152,7 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 void
 X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 {
-	const auto modelMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
+	const auto modelMatrix = X3DEditor::getModelMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry    = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
 	geometry -> solid ()           = solid ();
@@ -373,7 +373,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		const auto undoStep     = std::make_shared <UndoStep> (_ ("Paste Faces"));
 		const auto scene        = getBrowser () -> createX3DFromString (pasteGeometry ());
 		auto       geometries   = X3DEditor::getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
-		const auto targetMatrix = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
+		const auto targetMatrix = inverse (X3DEditor::getModelMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
 
 		undoRestoreSelection (undoStep);
 		undoSetColorIndex    (undoStep);

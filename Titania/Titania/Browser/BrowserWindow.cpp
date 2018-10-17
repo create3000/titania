@@ -419,6 +419,9 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	getGeometryMenuItem () .set_sensitive (haveSelection);
 
+	getMoveSelectionToSnapTargetMenuItem ()       .set_sensitive (haveSelection and executionContext);
+	getMoveSelectionCenterToSnapTargetMenuItem () .set_sensitive (haveSelection and executionContext);
+
 	// Browser menu
 
 	getBrowserCutMenuItem ()    .set_sensitive (haveSelection and executionContext);
@@ -439,6 +442,9 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	getBrowserShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
 	getBrowserGeometryMenuItem () .set_sensitive (haveSelection);
+
+	getBrowserMoveSelectionToSnapTargetMenuItem ()       .set_sensitive (haveSelection and executionContext);
+	getBrowserMoveSelectionCenterToSnapTargetMenuItem () .set_sensitive (haveSelection and executionContext);
 
 	// Dashboard
 
@@ -1786,7 +1792,15 @@ BrowserWindow::on_move_selection_to_snap_target_activate ()
 void
 BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 {
-	__LOG__ << std::endl;
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Move Selection Center To Snap Target"));
+	const auto & selection        = getSelection () -> getNodes ();
+	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
+	const auto   position         = X3D::Vector3d (getCurrentBrowser () -> getSnapTarget () -> position () .getValue ());
+	const auto   normal           = X3D::Vector3d (getCurrentBrowser () -> getSnapTarget () -> normal () .getValue ());
+
+	X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, position, normal, undoStep);
+
+	addUndoStep (undoStep);
 }
 
 // Extenal Tools menu

@@ -52,6 +52,7 @@
 
 #include "TransformToolOptions.h"
 
+#include "../Selection.h"
 #include "../X3DBrowser.h"
 
 #include "../../Tools/EnvironmentalSensor/ProximitySensorTool.h"
@@ -79,6 +80,7 @@ X3DToolContext::X3DToolContext () :
 	 transformSensorTools (),
 	visibilitySensorTools (),
 	       viewpointTools (),
+	        toolsPickable ({ true }),
 	           snapTarget (),
 	           snapSource (),
 	              cutLine ()
@@ -198,6 +200,59 @@ X3DToolContext::removeViewpointTool (X3DViewpointNodeTool* const node)
 {
 	viewpointTools .remove (X3DWeakPtr <X3DViewpointNodeTool> (node));
 	viewpointTools .remove (nullptr);
+}
+
+void
+X3DToolContext::pushToolsPickable (const bool value)
+{
+	toolsPickable .push (value);
+
+	setToolsPickable (toolsPickable .top ());
+}
+
+void
+X3DToolContext::popToolsPickable ()
+{
+	toolsPickable .pop ();
+
+	setToolsPickable (toolsPickable .top ());
+}
+
+void
+X3DToolContext::setToolsPickable (const bool value)
+{
+	for (const auto & transformTool : getTransformTools ())
+		transformTool -> setIsPickable (value);
+
+	for (const auto & lightTool : getLightTools ())
+		lightTool -> setIsPickable (value);
+
+	for (const auto & proximitySensorTool : getProximitySensorTools ())
+		proximitySensorTool -> setIsPickable (value);
+
+	for (const auto & soundTool : getSoundTools ())
+		soundTool -> setIsPickable (value);
+
+	for (const auto & transformSensorTool : getTransformSensorTools ())
+		transformSensorTool -> setIsPickable (value);
+
+	for (const auto & visibilitySensorTool : getVisibilitySensorTools ())
+		visibilitySensorTool -> setIsPickable (value);
+
+	for (const auto & viewpointTool : getViewpointTools ())
+		viewpointTool -> setIsPickable (value);
+
+	const auto & selection      = getBrowser () -> getSelection ();
+	const auto & selectGeometry = selection -> getSelectGeometry ();
+	const auto & nodes          = selectGeometry ? selection -> getGeometries () : selection -> getNodes ();
+
+	for (const auto & node : nodes)
+	{
+		const auto toolObject = dynamic_cast <X3DToolObject*> (node .getValue ());
+
+		if (toolObject)
+			toolObject -> setIsPickable (value);
+	}
 }
 
 const X3DPtr <SnapTargetTool> &

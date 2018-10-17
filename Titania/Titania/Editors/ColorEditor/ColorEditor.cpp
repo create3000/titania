@@ -706,10 +706,10 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 
 		if (shape)
 		{
-			const auto transform       = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), shape);
+			const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
+			const auto modelMatrix = X3D::X3DEditor::getModelMatrix (getCurrentContext (), shape);
 
-			transform -> setMatrix (modelViewMatrix);
+			transform -> setMatrix (modelMatrix);
 
 			shape -> appearance () .addInterest (&ColorEditor::set_appearance, this);
 			shape -> geometry ()   .addInterest (&ColorEditor::set_geometry, this);

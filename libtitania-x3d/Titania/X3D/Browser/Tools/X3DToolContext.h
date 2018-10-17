@@ -94,7 +94,7 @@ public:
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
 
-	///  @name Tools
+	///  @name Tools handling
 
 	const X3DWeakPtrArray <X3DTransformNodeTool> &
 	getTransformTools () const
@@ -124,7 +124,17 @@ public:
 	getViewpointTools () const
 	{ return viewpointTools; }
 
-	///  @name Snap objects
+	void
+	pushToolsPickable (const bool value);
+
+	void
+	popToolsPickable ();
+
+	bool
+	getToolsPickable () const
+	{ return toolsPickable .top (); }
+
+	///  @name Snap objects handling
 
 	const X3DPtr <SnapTargetTool> &
 	getSnapTarget () const;
@@ -172,7 +182,7 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
+	///  @name Tools handling
 
 	void
 	addTransformTool (X3DTransformNodeTool* const node);
@@ -219,6 +229,13 @@ protected:
 
 private:
 
+	///  @name Tools handling
+
+	void
+	setToolsPickable (const bool value);
+
+	///  @name Members
+
 	SupportedTools  supportedTools;
 	RenderToolsStack displayTools;
 
@@ -231,6 +248,7 @@ private:
 	X3DWeakPtrArray <TransformSensorTool>  transformSensorTools;
 	X3DWeakPtrArray <VisibilitySensorTool> visibilitySensorTools;
 	X3DWeakPtrArray <X3DViewpointNodeTool> viewpointTools;
+	std::stack <bool>                      toolsPickable;
 
 	X3DPtr <SnapTargetTool> snapTarget;
 	X3DPtr <SnapSourceTool> snapSource;
