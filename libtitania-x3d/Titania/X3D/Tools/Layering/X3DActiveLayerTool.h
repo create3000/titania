@@ -96,8 +96,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () override;
+	~X3DActiveLayerTool () override;
 
 
 protected:
@@ -125,6 +124,12 @@ protected:
 
 	void
 	set_activeLayer ();
+
+	///  @name Destruction
+
+	virtual
+	void
+	processShutdown () override;
 
 
 private:

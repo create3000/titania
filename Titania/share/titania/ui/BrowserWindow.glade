@@ -1567,6 +1567,15 @@
                 <signal name="activate" handler="on_move_selection_center_to_snap_target_activate" swapped="no"/>
               </object>
             </child>
+            <child>
+              <object class="GtkMenuItem" id="BrowserCenterSnapTargetInSelectionMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Center Snap Target In Selection</property>
+                <property name="label" translatable="yes">Center Snap Target In Selection</property>
+                <signal name="activate" handler="on_center_snap_target_in_selection" swapped="no"/>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -2993,6 +3002,16 @@
                                 <property name="accel_path">&lt;Titania&gt;/Layout/Activate Snap Source</property>
                                 <property name="label" translatable="yes">Activate Snap Source</property>
                                 <property name="use_underline">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="CenterSnapTargetInSelectionMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Layout/Center Snap Target In Selection</property>
+                                <property name="label" translatable="yes">Center Snap Target In Selection</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_center_snap_target_in_selection" swapped="no"/>
                               </object>
                             </child>
                             <child>

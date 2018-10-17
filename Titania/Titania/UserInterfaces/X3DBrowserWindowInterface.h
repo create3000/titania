@@ -594,6 +594,10 @@ public:
 	{ return *m_BrowserMoveSelectionCenterToSnapTargetMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserCenterSnapTargetInSelectionMenuItem () const
+	{ return *m_BrowserCenterSnapTargetInSelectionMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserExternalToolsMenuItem () const
 	{ return *m_BrowserExternalToolsMenuItem; }
 
@@ -1036,6 +1040,10 @@ public:
 	Gtk::CheckMenuItem &
 	getActivateSnapSourceMenuItem () const
 	{ return *m_ActivateSnapSourceMenuItem; }
+
+	Gtk::MenuItem &
+	getCenterSnapTargetInSelectionMenuItem () const
+	{ return *m_CenterSnapTargetInSelectionMenuItem; }
 
 	Gtk::MenuItem &
 	getMoveSelectionToSnapTargetMenuItem () const
@@ -1681,6 +1689,10 @@ public:
 
 	virtual
 	void
+	on_center_snap_target_in_selection () = 0;
+
+	virtual
+	void
 	on_manage_external_tools_activate () = 0;
 
 	virtual
@@ -2017,6 +2029,7 @@ private:
 	Gtk::CheckMenuItem* m_BrowserActivateSnapSourceMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionToSnapTargetMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionCenterToSnapTargetMenuItem;
+	Gtk::MenuItem* m_BrowserCenterSnapTargetInSelectionMenuItem;
 	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
 	Gtk::ImageMenuItem* m_BrowserManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
@@ -2128,6 +2141,7 @@ private:
 	Gtk::SeparatorMenuItem* m_SeparatorMenuItem38;
 	Gtk::CheckMenuItem* m_ActivateSnapTargetMenuItem;
 	Gtk::CheckMenuItem* m_ActivateSnapSourceMenuItem;
+	Gtk::MenuItem* m_CenterSnapTargetInSelectionMenuItem;
 	Gtk::MenuItem* m_MoveSelectionToSnapTargetMenuItem;
 	Gtk::MenuItem* m_MoveSelectionCenterToSnapTargetMenuItem;
 	Gtk::MenuItem* m_ExternalToolsMenuItem;

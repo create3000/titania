@@ -129,6 +129,13 @@ protected:
 	///  Constructs new X3DReferenceObject.
 	X3DReferenceObject ();
 
+	///  @name Destruction
+
+	///  Processes all interests of shutdown.
+	virtual
+	void
+	processShutdown () override;
+
 
 private:
 
@@ -148,11 +155,6 @@ private:
 	virtual
 	void
 	clearReferenceCount () final override;
-
-	///  Processes all interests of shutdown.
-	virtual
-	void
-	processShutdown () final override;
 
 	///  @name Members
 

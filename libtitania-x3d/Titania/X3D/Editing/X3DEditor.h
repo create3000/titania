@@ -399,7 +399,14 @@ public:
 	                         const Vector3d & targetNormal,
 	                         const Vector3d & sourcePosition,
 	                         const Vector3d & sourceNormal,
+	                         const bool moveCenter,
 	                         const UndoStepPtr & undoStep);
+
+	///  @name Viewpoint handling
+
+	static
+	void
+	updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode, const UndoStepPtr & undoStep);
 
 	///  @name Node handling
 

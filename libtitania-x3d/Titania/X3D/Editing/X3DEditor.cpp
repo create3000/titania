@@ -63,8 +63,9 @@
 #include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
-#include "../Components/NURBS/CoordinateDouble.h"
+#include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
+#include "../Components/NURBS/CoordinateDouble.h"
 #include "../Components/Rendering/Color.h"
 #include "../Components/Rendering/ColorRGBA.h"
 #include "../Components/Rendering/Coordinate.h"
@@ -577,11 +578,11 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 /***
  *  Creates node @a typeName and adds node to current layer.
  */
-X3D::SFNode
+SFNode
 X3DEditor::createNode (const WorldPtr & world,
                        const X3DExecutionContextPtr & executionContext,
                        const std::string & typeName,
-                       const X3D::UndoStepPtr & undoStep)
+                       const UndoStepPtr & undoStep)
 {
 	const auto node = executionContext -> createNode (typeName);
 
@@ -3274,65 +3275,70 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
                                     const Vector3d & targetNormal,
                                     const Vector3d & sourcePosition,
                                     const Vector3d & sourceNormal,
+                                    const bool moveCenter,
                                     const UndoStepPtr & undoStep)
 {
 	// Determine bbox of nodes in model space.
 
-	auto bbox = Box3d ();
+	const auto & master = nodes .back ();
+	auto         bbox   = Box3d ();
 
-	for (const auto & node : nodes)
+	for (const auto & type : basic::make_reverse_range (master -> getType ()))
 	{
-		try
+		switch (type)
 		{
-			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			case X3DConstants::X3DBoundedObject:
 			{
-				switch (type)
-				{
-					case X3DConstants::X3DTransformNode:
-					{
-						const auto transformNode = X3DPtr <X3DTransformNode> (node);
-						const auto matrix        = transformNode -> getMatrix ();
-						const auto subBBox       = transformNode -> X3DGroupingNode::getBBox () .aabb ();
+				const auto boundedObject = X3DPtr <X3DBoundedObject> (master);
+				const auto subBBox       = boundedObject -> getBBox ();
 
-						bbox += subBBox * matrix * getModelMatrix (executionContext, node);
-						break;
-					}
-					case X3DConstants::X3DBoundedObject:
-					{
-						const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
-						const auto subBBox       = boundedObject -> getBBox () .aabb ();
-
-						bbox += subBBox * getModelMatrix (executionContext, node);
-						break;
-					}
-					default:
-					{
-						continue;
-					}
-				}
-	
+				bbox += subBBox * getModelMatrix (executionContext, master);
 				break;
 			}
+			default:
+			{
+				continue;
+			}
 		}
-		catch (const std::exception & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
+
+		break;
 	}
+
+	const auto nearestPoint = [&bbox, &targetNormal] ()
+	{
+		const auto extents = bbox .extents ();
+		const auto min     = extents .first;
+		const auto max     = extents .second;
+		const auto center  = bbox .center ();
+		auto       centers = std::vector <Vector3d> ();
+		
+		centers .emplace_back (center .x (), min .y (), center .z ()); // bottom
+		centers .emplace_back (center .x (), max .y (), center .z ()); // top
+		centers .emplace_back (min .x (), center .y (), center .z ()); // left
+		centers .emplace_back (max .x (), center .y (), center .z ()); // right
+		centers .emplace_back (center .x (), center .y (), min .z ()); // front
+		centers .emplace_back (center .x (), center .y (), max .z ()); // back
+
+		const auto iter = std::min_element (centers .begin (), centers .end (), [&targetNormal, &center] (const Vector3d & lhs, const Vector3d & rhs)
+		{
+			return dot (normalize (lhs - center), targetNormal) < dot (normalize (rhs - center), targetNormal);
+		});
+
+		return *iter;
+	};
 
 	// Determine absolute matrix that should be added to nodes.
 
-	auto s  = Vector3d (1, 1, 1);
-	auto so = Rotation4d ();
-
-	const auto rotation             = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (-sourceNormal, targetNormal);
-	const auto center               = bbox .center ();
+	const auto rotation             = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (negate (sourceNormal), targetNormal);
+	const auto center               = moveCenter ? bbox .center () : (sourceNormal == Vector3d () ? nearestPoint () : sourcePosition);
 	const auto translation          = targetPosition - center;
+	const auto scale                = Vector3d (1, 1, 1);
+	const auto scaleOrientation     = Rotation4d ();
 	auto       transformationMatrix = Matrix4d ();
 
-	transformationMatrix .set (translation, rotation, s, so, center);
+	transformationMatrix .set (translation, rotation, scale, scaleOrientation, center);
 
-	// Move nodes to center and align y-axis to normal.
+	// Move nodes and maybe align to targetNormal.
 
 	for (const auto & node : nodes)
 	{
@@ -3373,6 +3379,51 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 	}
 
 	return transformationMatrix;
+}
+
+/***
+ *
+ *
+ *
+ * Viewpoint handling
+ *
+ *
+ *
+ */
+
+void
+X3DEditor::updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode, const UndoStepPtr & undoStep)
+{
+	// Make copy, don't use references.
+	const auto position         = viewpointNode -> getUserPosition ();
+	const auto orientation      = viewpointNode -> getUserOrientation ();
+	const auto centerOfRotation = viewpointNode -> getUserCenterOfRotation ();
+
+	undoStep -> addObjects (viewpointNode);
+	undoStep -> addUndoFunction (&X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
+	undoStep -> addUndoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
+	undoStep -> addUndoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
+	undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
+	undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
+	undoStep -> addUndoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
+	undoStep -> addUndoFunction (&SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
+
+	undoStep -> addRedoFunction (&SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
+	undoStep -> addRedoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
+	undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, position);
+	undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, orientation);
+	undoStep -> addRedoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, centerOfRotation);
+	undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
+	undoStep -> addRedoFunction (&X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
+
+	viewpointNode -> setPosition         (position);
+	viewpointNode -> setOrientation      (orientation);
+	viewpointNode -> setCenterOfRotation (centerOfRotation);
+	viewpointNode -> resetUserOffsets ();
+
+	// Proto support
+
+	X3DEditor::requestUpdateInstances (viewpointNode, undoStep);
 }
 
 /***

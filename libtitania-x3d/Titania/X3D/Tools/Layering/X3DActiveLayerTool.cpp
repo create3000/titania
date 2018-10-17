@@ -123,13 +123,16 @@ X3DActiveLayerTool::set_activeLayer ()
 }
 
 void
-X3DActiveLayerTool::dispose ()
+X3DActiveLayerTool::processShutdown ()
 {
 	if (activeLayer)
 		activeLayer -> getFriends () -> children () .remove (tool);
 
-	X3DNode::dispose ();
+	X3DNode::processShutdown ();
 }
+
+X3DActiveLayerTool::~X3DActiveLayerTool ()
+{ }
 
 } // X3D
 } // titania

@@ -561,6 +561,10 @@ private:
 
 	virtual
 	void
+	on_center_snap_target_in_selection () final override;
+
+	virtual
+	void
 	on_move_selection_to_snap_target_activate () final override;
 	
 	virtual
