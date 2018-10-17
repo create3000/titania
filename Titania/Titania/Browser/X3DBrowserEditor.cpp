@@ -66,6 +66,7 @@
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/Collision.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
@@ -75,6 +76,7 @@
 #include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
+#include <Titania/X3D/Tools/SnapTool/SnapTargetTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
 #include <Titania/String.h>
@@ -329,17 +331,6 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 			const auto scene         = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
 			const auto importedNodes = X3D::X3DEditor::importScene (getCurrentContext (), scene, undoStep);
 
-			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-			{
-				for (const auto & node : importedNodes)
-					X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
-			}
-			else
-			{
-				for (const auto & node : importedNodes)
-					X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
-			}
-
 			// Bind bindables
 			magicImport .process (getCurrentContext (), importedNodes, scene, undoStep);
 
@@ -349,6 +340,42 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		{
 			getCurrentBrowser () -> getConsole () -> error (error .what ());
 		}
+	}
+
+	// If more than one nodes create a parent Transform node.
+
+	if (nodes .size () > 1)
+	{
+		const auto transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
+
+		transformNode -> children () = std::move (nodes);
+
+		nodes .emplace_back (transformNode);
+	}
+
+	// Add nodes to root nodes or layer children.
+
+	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+	{
+		for (const auto & node : nodes)
+			X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
+	}
+	else
+	{
+		for (const auto & node : nodes)
+			X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
+	}
+
+	// If Snap Target is enabled place nodes at it.
+
+	const auto & snapTarget = getCurrentBrowser () -> getSnapTarget ();
+
+	if (snapTarget -> enabled ())
+	{
+		const auto targetPosition = X3D::Vector3d (snapTarget -> position () .getValue ());
+		const auto targetNormal   = X3D::Vector3d (snapTarget -> normal () .getValue ());
+	
+		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), true, undoStep);
 	}
 
 	return nodes;
