@@ -192,11 +192,13 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	getSeparatorMenuItem38 ()                            .set_visible (false);
 	getActivateSnapTargetMenuItem ()                     .set_visible (false);
 	getActivateSnapSourceMenuItem ()                     .set_visible (false);
+	getCenterSnapTargetInSelectionMenuItem ()            .set_visible (false);
 	getMoveSelectionToSnapTargetMenuItem ()              .set_visible (false);
 	getMoveSelectionCenterToSnapTargetMenuItem ()        .set_visible (false);
 	getBrowserSeparatorMenuItem18 ()                     .set_visible (false);
 	getBrowserActivateSnapTargetMenuItem ()              .set_visible (false);
 	getBrowserActivateSnapSourceMenuItem ()              .set_visible (false);
+	getBrowserCenterSnapTargetInSelectionMenuItem ()     .set_visible (false);
 	getBrowserMoveSelectionToSnapTargetMenuItem ()       .set_visible (false);
 	getBrowserMoveSelectionCenterToSnapTargetMenuItem () .set_visible (false);
 	#endif
