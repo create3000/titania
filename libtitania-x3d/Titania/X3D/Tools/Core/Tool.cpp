@@ -64,6 +64,7 @@ Tool::Tool (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	 X3DChildNode (),
 	X3DToolObject (),
+	pickingMatrix (),
 	  modelMatrix ()
 {
 	addType (X3DConstants::Tool);
@@ -96,8 +97,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 Tool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type == TraverseType::CAMERA)
-		modelMatrix = renderObject -> getModelViewMatrix () .get ();
+	switch (type)
+	{
+		case TraverseType::POINTER:
+			pickingMatrix = renderObject -> getModelViewMatrix () .get ();
+			break;
+		case TraverseType::CAMERA:
+			modelMatrix = renderObject -> getModelViewMatrix () .get ();
+			break;
+		default:
+			break;
+	}
 
 	X3DToolObject::traverse (type, renderObject);
 }

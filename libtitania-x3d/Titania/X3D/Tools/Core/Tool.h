@@ -97,11 +97,17 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Operations
+	///  @name Member access
+
+	const Matrix4d &
+	getPickingMatrix () const
+	{ return pickingMatrix; }
 
 	const Matrix4d &
 	getModelMatrix () const
 	{ return modelMatrix; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -135,6 +141,7 @@ private:
 
 	///  @name Members
 
+	Matrix4d pickingMatrix;
 	Matrix4d modelMatrix;
 
 };

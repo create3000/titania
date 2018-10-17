@@ -72,7 +72,7 @@ X3DActiveLayerTool::initialize ()
 
 	tool -> setup ();
 
-	getInlineNode () -> checkLoadState () .addInterest (&X3DActiveLayerTool::set_loadState, this);
+	getInlineNode () -> checkLoadState () .addInterest (&X3DActiveLayerTool::set_loadState,   this);
 	getBrowser () -> getActiveLayer ()    .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	set_activeLayer ();

@@ -218,13 +218,19 @@ X3DSnapTool::touch (const double x, const double y) const
 void
 X3DSnapTool::update () 
 {
-	const auto & nearestHit               = getBrowser () -> getNearestHit ();
-	const auto & layer                    = nearestHit -> layer;
-	const auto & cameraSpaceMatrix        = layer -> getViewpoint () -> getCameraSpaceMatrix ();
-	const auto & inverseCameraSpaceMatrix = layer -> getViewpoint () -> getInverseCameraSpaceMatrix ();
-
-	position () = cameraSpaceMatrix .mult_vec_matrix (nearestHit -> intersection -> point);
-	normal ()   = normalize (inverseCameraSpaceMatrix .mult_matrix_dir (nearestHit -> intersection -> faceNormal));
+	try
+	{
+		const auto & nearestHit         = getBrowser () -> getNearestHit ();
+		const auto & modelViewMatrix    = getTool () -> getPickingMatrix ();
+		const auto   invModelViewMatrix = inverse (modelViewMatrix);
+	
+		position () = invModelViewMatrix .mult_vec_matrix (nearestHit -> intersection -> point);
+		normal ()   = normalize (modelViewMatrix .mult_matrix_dir (nearestHit -> intersection -> faceNormal));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

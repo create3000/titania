@@ -62,6 +62,7 @@
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
+#include <Titania/X3D/Parser/Filter.h>
 
 namespace titania {
 namespace puck {
@@ -734,7 +735,7 @@ X3DBrowserPanelMenuBar::on_layers_activate (const X3D::X3DPtr <X3D::X3DLayerNode
 	else if (layer -> getName () .empty ())
 		name = std::to_string (layerNumber);
 	else
-		name = layer -> getName ();
+		name = X3D::GetDisplayName (layer);
 
 	menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserPanelMenuBar::on_layer_activate), layerNumber));
 	menuItem -> set_label (layer -> getTypeName () + " »" +  name  + "«");
