@@ -392,6 +392,11 @@ public:
 	///  @name Snap Target handling
 
 	static
+	Box3d
+	getBoundingBox (const X3DExecutionContextPtr & executionContext,
+	                const MFNode & nodes);
+
+	static
 	Matrix4d
 	moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
 	                         const MFNode & nodes,

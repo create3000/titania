@@ -59,6 +59,7 @@
 #include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/EnvironmentalEffects/Background.h"
+#include "../Components/Geometry3D/Extrusion.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
 #include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
@@ -3268,6 +3269,73 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
  *
  */
 
+///  Returns bounding box of nodes in model space with tool support.
+Box3d
+X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
+                           const MFNode & nodes)
+{
+	auto bbox = Box3d ();
+
+	for (const auto & node : nodes)
+	{
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::Extrusion:
+				{
+					const auto extrusionNode = X3DPtr <Extrusion> (node);
+					const auto subBBox       = extrusionNode -> getBBox ();
+	
+					bbox += subBBox * getModelMatrix (executionContext, node);
+					break;
+				}
+				case X3DConstants::IndexedFaceSetTool:
+				{
+					const auto tool = X3DPtr <IndexedFaceSetTool> (node);
+					
+					if (tool -> getSelectedPoints () .empty ())
+						continue; // Proceed with X3DComposedGeometryNode.
+	
+					auto points = std::vector <Vector3d> ();
+	
+					for (const auto & pair : tool -> getSelectedPoints ())
+						points .emplace_back (pair .second);
+	
+					const auto subBBox = Box3d (points .begin (), points .end (), iterator_type ());
+	
+					bbox += subBBox * getModelMatrix (executionContext, node);
+					break;
+				}
+				case X3DConstants::X3DBoundedObject:
+				{
+					const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
+					const auto subBBox       = boundedObject -> getBBox ();
+	
+					bbox += subBBox * getModelMatrix (executionContext, node);
+					break;
+				}
+				case X3DConstants::X3DComposedGeometryNode:
+				{
+					const auto geometryNode = X3DPtr <X3DComposedGeometryNode> (node);
+					const auto subBBox      = geometryNode -> getBBox ();
+	
+					bbox += subBBox * getModelMatrix (executionContext, node);
+					break;
+				}
+				default:
+				{
+					continue;
+				}
+			}
+	
+			break;
+		}
+	}
+
+	return bbox;
+}
+
 ///  Moves nodes center to @a targetPosition and @a sourceNormal aligned to @a targetNormal.  All vectors must be in world space.
 Matrix4d
 X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
@@ -3279,56 +3347,14 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
                                     const bool moveCenter,
                                     const UndoStepPtr & undoStep)
 {
+	if (nodes .empty ())
+		return Matrix4d ();
+
 	// Determine bbox of nodes in model space.
 
-	const auto & master = nodes .back ();
-	auto         bbox   = Box3d ();
+	const auto bbox = getBoundingBox (executionContext, { nodes .back () });
 
-	for (const auto & type : basic::make_reverse_range (master -> getType ()))
-	{
-		switch (type)
-		{
-			case X3DConstants::IndexedFaceSetTool:
-			{
-				const auto tool = X3DPtr <IndexedFaceSetTool> (master);
-				
-				if (tool -> getSelectedPoints () .empty ())
-					continue;
-
-				auto points = std::vector <Vector3d> ();
-
-				for (const auto & pair : tool -> getSelectedPoints ())
-					points .emplace_back (pair .second);
-
-				const auto subBBox = Box3d (points .begin (), points .end (), iterator_type ());
-
-				bbox += subBBox * getModelMatrix (executionContext, master);
-				break;
-			}
-			case X3DConstants::X3DBoundedObject:
-			{
-				const auto boundedObject = X3DPtr <X3DBoundedObject> (master);
-				const auto subBBox       = boundedObject -> getBBox ();
-
-				bbox += subBBox * getModelMatrix (executionContext, master);
-				break;
-			}
-			case X3DConstants::X3DComposedGeometryNode:
-			{
-				const auto geometryNode = X3DPtr <X3DGeometryNode> (master);
-				const auto subBBox      = geometryNode -> getBBox ();
-
-				bbox += subBBox * getModelMatrix (executionContext, master);
-				break;
-			}
-			default:
-			{
-				continue;
-			}
-		}
-
-		break;
-	}
+	// Determine absolute matrix that should be added to nodes.
 
 	const auto nearestPoint = [&bbox, &targetNormal] ()
 	{
@@ -3345,7 +3371,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 		centers .emplace_back (center .x (), center .y (), min .z ()); // front
 		centers .emplace_back (center .x (), center .y (), max .z ()); // back
 
-		const auto iter = std::min_element (centers .begin (), centers .end (),
+		const auto iter = std::min_element (centers .cbegin (), centers .cend (),
 		[&targetNormal, &center] (const Vector3d & lhs, const Vector3d & rhs)
 		{
 			return dot (normalize (lhs - center), targetNormal) < dot (normalize (rhs - center), targetNormal);
@@ -3353,8 +3379,6 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 		return *iter;
 	};
-
-	// Determine absolute matrix that should be added to nodes.
 
 	const auto rotation             = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (negate (sourceNormal), targetNormal);
 	const auto center               = moveCenter ? bbox .center () : (sourceNormal == Vector3d () ? nearestPoint () : sourcePosition);
@@ -3375,15 +3399,28 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 			{
 				switch (type)
 				{
+					case X3DConstants::Extrusion:
+					{
+						const auto extrusionNode = X3DPtr <Extrusion> (node);
+						const auto modelMatrix   = getModelMatrix (executionContext, node);
+						const auto matrix        = modelMatrix * transformationMatrix * inverse (modelMatrix);
+						auto       spine         = std::vector <Vector3d> (extrusionNode -> spine () .cbegin (), extrusionNode -> spine () .cend ());
+
+						for (auto & point : spine)
+							point = point * matrix;
+
+						X3D::X3DEditor::setValue (extrusionNode, extrusionNode -> spine (), MFVec3f (spine .cbegin (), spine .cend ()), undoStep);
+						break;
+					}
 					case X3DConstants::IndexedFaceSetTool:
 					{
-						const auto tool = X3DPtr <IndexedFaceSetTool> (master);
+						const auto tool = X3DPtr <IndexedFaceSetTool> (node);
 						
 						if (tool -> getSelectedPoints () .empty ())
-							continue;
+							continue; // Proceed with X3DComposedGeometryNode.
 
 						const auto & coordNode   = tool -> getCoord ();
-						const auto   modelMatrix = getModelMatrix (executionContext, tool);
+						const auto   modelMatrix = getModelMatrix (executionContext, node);
 						const auto   matrix      = modelMatrix * transformationMatrix * inverse (modelMatrix);
 
 						undoSetCoord (coordNode, undoStep);
@@ -3398,7 +3435,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					{
 						const auto transformNode     = X3DPtr <X3DTransformNode> (node);
 						const auto center            = Vector3d (transformNode -> center () .getValue ());
-						const auto modelMatrix       = getModelMatrix (executionContext, transformNode);
+						const auto modelMatrix       = getModelMatrix (executionContext, node);
 						const auto matrix            = transformNode -> getMatrix ();
 						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
 
@@ -3413,7 +3450,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					{
 						const auto   geometryNode = X3DPtr <X3DComposedGeometryNode> (node);
 						const auto & coordNode    = geometryNode -> getCoord ();
-						const auto   modelMatrix  = getModelMatrix (executionContext, geometryNode);
+						const auto   modelMatrix  = getModelMatrix (executionContext, node);
 						const auto   matrix       = modelMatrix * transformationMatrix * inverse (modelMatrix);
 
 						undoSetCoord (coordNode, undoStep);

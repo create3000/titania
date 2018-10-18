@@ -1806,34 +1806,8 @@ BrowserWindow::on_center_snap_target_in_selection ()
 	const auto & selection        = getSelection () -> getNodes ();
 	const auto & master           = selection .back ();
 	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
-	const auto   modelMatrix      = X3D::X3DEditor::getModelMatrix (executionContext, master);
 	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
-	auto         bbox             = X3D::Box3d ();
-
-	// Determine bbox of master set_selection.
-
-	for (const auto & type : basic::make_reverse_range (master -> getType ()))
-	{
-		switch (type)
-		{
-			case X3D::X3DConstants::X3DBoundedObject:
-			{
-				const auto boundedObject = X3D::X3DPtr <X3D::X3DBoundedObject> (master);
-				const auto subBBox       = boundedObject -> getBBox ();
-
-				bbox += subBBox;
-				break;
-			}
-			default:
-			{
-				continue;
-			}
-		}
-
-		break;
-	}
-
-	bbox *= modelMatrix;
+	const auto   bbox             = X3D::X3DEditor::getBoundingBox (executionContext, { master });
 
 	// Place Snap Target.
 
