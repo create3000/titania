@@ -563,6 +563,9 @@ private:
 	void
 	on_center_snap_target_in_selection () final override;
 
+	void
+	on_center_snap_target_in_selection (const X3D::MFNode & selection);
+
 	virtual
 	void
 	on_move_selection_to_snap_target_activate () final override;

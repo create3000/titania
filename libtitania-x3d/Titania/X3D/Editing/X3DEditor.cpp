@@ -3285,9 +3285,10 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 				case X3DConstants::Extrusion:
 				{
 					const auto extrusionNode = X3DPtr <Extrusion> (node);
+					const auto modelMatrix   = getModelMatrix (executionContext, node);
 					const auto subBBox       = extrusionNode -> getBBox ();
 	
-					bbox += subBBox * getModelMatrix (executionContext, node);
+					bbox += subBBox * modelMatrix;
 					break;
 				}
 				case X3DConstants::IndexedFaceSetTool:
@@ -3302,25 +3303,28 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					for (const auto & pair : tool -> getSelectedPoints ())
 						points .emplace_back (pair .second);
 	
-					const auto subBBox = Box3d (points .begin (), points .end (), iterator_type ());
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
 	
-					bbox += subBBox * getModelMatrix (executionContext, node);
+					bbox += subBBox * modelMatrix;
 					break;
 				}
 				case X3DConstants::X3DBoundedObject:
 				{
 					const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
+					const auto modelMatrix   = getModelMatrix (executionContext, node);
 					const auto subBBox       = boundedObject -> getBBox ();
 	
-					bbox += subBBox * getModelMatrix (executionContext, node);
+					bbox += subBBox * modelMatrix;
 					break;
 				}
-				case X3DConstants::X3DComposedGeometryNode:
+				case X3DConstants::X3DGeometryNode:
 				{
-					const auto geometryNode = X3DPtr <X3DComposedGeometryNode> (node);
+					const auto geometryNode = X3DPtr <X3DGeometryNode> (node);
+					const auto modelMatrix  = getModelMatrix (executionContext, node);
 					const auto subBBox      = geometryNode -> getBBox ();
 	
-					bbox += subBBox * getModelMatrix (executionContext, node);
+					bbox += subBBox * modelMatrix;
 					break;
 				}
 				default:

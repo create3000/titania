@@ -61,7 +61,7 @@ namespace X3D {
 X3DSnapTool::Fields::Fields () :
 	 enabled (new SFBool (true)),
 	position (new SFVec3f ()),
-	  normal (new SFVec3f (0, 0, 1))
+	  normal (new SFVec3f (0, 1, 0))
 { }
 
 X3DSnapTool::X3DSnapTool () :

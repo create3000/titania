@@ -7,7 +7,7 @@ META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Thu, 18 Oct 2018 03:17:49 GMT"
+META "modified" "Thu, 18 Oct 2018 12:03:14 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
@@ -333,6 +333,8 @@ DEF Titania WorldInfo {
   }
 }
 
-DEF _7 SnapTool { }
+DEF _7 SnapTool {
+  normal 0 1 0
+}
 
 EXPORT _7 AS Tool
