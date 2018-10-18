@@ -263,8 +263,10 @@ X3DBrowserPanelMenuBar::on_straighten_clicked ()
 {
 	const auto & activeLayer = getLocalBrowser () -> getActiveLayer ();
 
-	if (activeLayer)
-		activeLayer -> getViewpoint () -> straighten (getLocalBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+	if (not activeLayer)
+		return;
+
+	activeLayer -> getViewpoint () -> straighten (getLocalBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
 }
 
 void
@@ -282,10 +284,12 @@ X3DBrowserPanelMenuBar::on_look_at_all_activate ()
 void
 X3DBrowserPanelMenuBar::on_reset_user_offsets_activate ()
 {
-	if (not getLocalBrowser () -> getActiveLayer ())
+	const auto & activeLayer = getLocalBrowser () -> getActiveLayer ();
+
+	if (not activeLayer)
 		return;
 
-	const auto viewpoint = getLocalBrowser () -> getActiveLayer () -> getViewpoint ();
+	const auto viewpoint = activeLayer -> getViewpoint ();
 
 	viewpoint -> setAnimate (true); // VRML
 	viewpoint -> transitionStart (viewpoint);

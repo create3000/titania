@@ -242,7 +242,7 @@ X3DGeometryNode::intersects (Line3d line,
 
 					for (size_t i = first, size = element .last (); i < size; i += 3)
 					{
-						intersected |= intersects (line, i, i + 1, i + 2, first, first + 3, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 1, i + 2, i, i + 3, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
