@@ -211,11 +211,11 @@ X3DGeometrySelectionEditor::set_matrix ()
 		tool -> getSelectionTransform () -> removeInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
 		tool -> getSelectionTransform () -> addInterest (&X3DGeometrySelectionEditor::connectToolMatrix, this);
 
-		const auto & coordinateNode         = tool -> getCoord ();
+		const auto & coordNode              = tool -> getCoord ();
 		const auto   relativeTransformation = inverse (lastMatrix) * transformNode -> getMatrix ();
-		const auto   nodes                  = X3D::MFNode ({ coordinateNode });
+		const auto   nodes                  = X3D::MFNode ({ coordNode });
 
-		switch (coordinateNode -> getType () .back ())
+		switch (coordNode -> getType () .back ())
 		{
 			case X3D::X3DConstants::Coordinate:
 				addUndoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
@@ -230,9 +230,9 @@ X3DGeometrySelectionEditor::set_matrix ()
 
 		// Triggers later setMatrix.
 		for (const auto & pair : tool -> getSelectedPoints ())
-			coordinateNode -> set1Point (pair .first, pair .second * relativeTransformation);
+			coordNode -> set1Point (pair .first, pair .second * relativeTransformation);
 
-		switch (coordinateNode -> getType () .back ())
+		switch (coordNode -> getType () .back ())
 		{
 			case X3D::X3DConstants::Coordinate:
 				addRedoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
@@ -328,7 +328,7 @@ X3DGeometrySelectionEditor::on_geometry_selection_uniform_scale_toggled ()
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
 X3DGeometrySelectionEditor::getCurrentTool () const
 {
-	const auto geometryNodes = getNodes <X3D::X3DBaseNode> (getBrowserWindow () -> getSelection () -> getNodes (), { X3D::X3DConstants::IndexedFaceSetTool });
+	const auto geometryNodes = getNodes <X3D::X3DBaseNode> (getBrowserWindow () -> getSelection () -> getGeometries (), { X3D::X3DConstants::IndexedFaceSetTool });
 
 	const auto result = std::max_element (geometryNodes .begin (),
 	                                      geometryNodes .end (),

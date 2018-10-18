@@ -1522,7 +1522,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkSeparatorMenuItem" id="SeparatorMenuItem18">
+              <object class="GtkSeparatorMenuItem" id="BrowserSeparatorMenuItem18">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -1548,6 +1548,15 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="BrowserCenterSnapTargetInSelectionMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Layout/Center Snap Target In Selection</property>
+                <property name="label" translatable="yes">Center Snap Target In Selection</property>
+                <signal name="activate" handler="on_center_snap_target_in_selection" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="BrowserMoveSelectionToSnapTargetMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -1565,15 +1574,6 @@
                 <property name="label" translatable="yes">Move Selection Center To Snap Target</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_move_selection_center_to_snap_target_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="BrowserCenterSnapTargetInSelectionMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="accel_path">&lt;Titania&gt;/Layout/Center Snap Target In Selection</property>
-                <property name="label" translatable="yes">Center Snap Target In Selection</property>
-                <signal name="activate" handler="on_center_snap_target_in_selection" swapped="no"/>
               </object>
             </child>
           </object>

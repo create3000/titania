@@ -574,8 +574,8 @@ public:
 	{ return *m_BrowserGridPropertiesMenuItem; }
 
 	Gtk::SeparatorMenuItem &
-	getSeparatorMenuItem18 () const
-	{ return *m_SeparatorMenuItem18; }
+	getBrowserSeparatorMenuItem18 () const
+	{ return *m_BrowserSeparatorMenuItem18; }
 
 	Gtk::CheckMenuItem &
 	getBrowserActivateSnapTargetMenuItem () const
@@ -586,16 +586,16 @@ public:
 	{ return *m_BrowserActivateSnapSourceMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserCenterSnapTargetInSelectionMenuItem () const
+	{ return *m_BrowserCenterSnapTargetInSelectionMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserMoveSelectionToSnapTargetMenuItem () const
 	{ return *m_BrowserMoveSelectionToSnapTargetMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserMoveSelectionCenterToSnapTargetMenuItem () const
 	{ return *m_BrowserMoveSelectionCenterToSnapTargetMenuItem; }
-
-	Gtk::MenuItem &
-	getBrowserCenterSnapTargetInSelectionMenuItem () const
-	{ return *m_BrowserCenterSnapTargetInSelectionMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserExternalToolsMenuItem () const
@@ -1681,15 +1681,15 @@ public:
 
 	virtual
 	void
+	on_center_snap_target_in_selection () = 0;
+
+	virtual
+	void
 	on_move_selection_to_snap_target_activate () = 0;
 
 	virtual
 	void
 	on_move_selection_center_to_snap_target_activate () = 0;
-
-	virtual
-	void
-	on_center_snap_target_in_selection () = 0;
 
 	virtual
 	void
@@ -2024,12 +2024,12 @@ private:
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
-	Gtk::SeparatorMenuItem* m_SeparatorMenuItem18;
+	Gtk::SeparatorMenuItem* m_BrowserSeparatorMenuItem18;
 	Gtk::CheckMenuItem* m_BrowserActivateSnapTargetMenuItem;
 	Gtk::CheckMenuItem* m_BrowserActivateSnapSourceMenuItem;
+	Gtk::MenuItem* m_BrowserCenterSnapTargetInSelectionMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionToSnapTargetMenuItem;
 	Gtk::MenuItem* m_BrowserMoveSelectionCenterToSnapTargetMenuItem;
-	Gtk::MenuItem* m_BrowserCenterSnapTargetInSelectionMenuItem;
 	Gtk::MenuItem* m_BrowserExternalToolsMenuItem;
 	Gtk::ImageMenuItem* m_BrowserManageExternalToolsMenuItem;
 	Gtk::MenuItem* m_BrowserScenesMenuItem;

@@ -566,10 +566,16 @@ private:
 	virtual
 	void
 	on_move_selection_to_snap_target_activate () final override;
+
+	void
+	on_move_selection_to_snap_target_activate (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 	
 	virtual
 	void
 	on_move_selection_center_to_snap_target_activate () final override;
+
+	void
+	on_move_selection_center_to_snap_target_activate (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	///  @name Extenal Tools menu
 

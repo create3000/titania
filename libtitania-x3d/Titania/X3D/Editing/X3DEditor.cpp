@@ -82,6 +82,7 @@
 #include "../Execution/World.h"
 #include "../Prototype/ExternProtoDeclaration.h"
 #include "../Prototype/ProtoDeclaration.h"
+#include "../Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h"
 
 #include <Titania/Utility/Map.h>
 
@@ -3287,10 +3288,35 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 	{
 		switch (type)
 		{
+			case X3DConstants::IndexedFaceSetTool:
+			{
+				const auto tool = X3DPtr <IndexedFaceSetTool> (master);
+				
+				if (tool -> getSelectedPoints () .empty ())
+					continue;
+
+				auto points = std::vector <Vector3d> ();
+
+				for (const auto & pair : tool -> getSelectedPoints ())
+					points .emplace_back (pair .second);
+
+				const auto subBBox = Box3d (points .begin (), points .end (), iterator_type ());
+
+				bbox += subBBox * getModelMatrix (executionContext, master);
+				break;
+			}
 			case X3DConstants::X3DBoundedObject:
 			{
 				const auto boundedObject = X3DPtr <X3DBoundedObject> (master);
 				const auto subBBox       = boundedObject -> getBBox ();
+
+				bbox += subBBox * getModelMatrix (executionContext, master);
+				break;
+			}
+			case X3DConstants::X3DComposedGeometryNode:
+			{
+				const auto geometryNode = X3DPtr <X3DGeometryNode> (master);
+				const auto subBBox      = geometryNode -> getBBox ();
 
 				bbox += subBBox * getModelMatrix (executionContext, master);
 				break;
@@ -3349,6 +3375,25 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 			{
 				switch (type)
 				{
+					case X3DConstants::IndexedFaceSetTool:
+					{
+						const auto tool = X3DPtr <IndexedFaceSetTool> (master);
+						
+						if (tool -> getSelectedPoints () .empty ())
+							continue;
+
+						const auto & coordNode   = tool -> getCoord ();
+						const auto   modelMatrix = getModelMatrix (executionContext, tool);
+						const auto   matrix      = modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						undoSetCoord (coordNode, undoStep);
+
+						for (const auto & pair : tool -> getSelectedPoints ())
+							coordNode -> set1Point (pair .first, pair .second * matrix);
+
+						redoSetCoord (coordNode, undoStep);
+						break;
+					}
 					case X3DConstants::X3DTransformNode:
 					{
 						const auto transformNode     = X3DPtr <X3DTransformNode> (node);
@@ -3362,6 +3407,21 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						undoStep -> addRedoFunction (&X3DTransformNode::setMatrixWithCenter, transformNode, transformedMatrix, center);
 
 						transformNode -> setMatrixWithCenter (transformedMatrix, center);
+						break;
+					}
+					case X3DConstants::X3DComposedGeometryNode:
+					{
+						const auto   geometryNode = X3DPtr <X3DComposedGeometryNode> (node);
+						const auto & coordNode    = geometryNode -> getCoord ();
+						const auto   modelMatrix  = getModelMatrix (executionContext, geometryNode);
+						const auto   matrix       = modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						undoSetCoord (coordNode, undoStep);
+
+						for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+							coordNode -> set1Point (i, coordNode -> get1Point (i) * matrix);
+
+						redoSetCoord (coordNode, undoStep);
 						break;
 					}
 					default:

@@ -1846,9 +1846,30 @@ BrowserWindow::on_center_snap_target_in_selection ()
 void
 BrowserWindow::on_move_selection_to_snap_target_activate ()
 {
-	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Move Selection To Snap Target"));
-	const auto & selection        = getSelection () -> getNodes ();
-	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
+	if (getSelection () -> getSelectGeometry ())
+	{
+		const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ ("Move Geometry Selection To Snap Target"));
+		const auto & selection = getSelection () -> getGeometries ();
+
+		on_move_selection_to_snap_target_activate (selection, undoStep);
+
+		addUndoStep (undoStep);
+	}
+	else
+	{
+		const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ ("Move Selection To Snap Target"));
+		const auto & selection = getSelection () -> getNodes ();
+	
+		on_move_selection_to_snap_target_activate (selection, undoStep);
+	
+		addUndoStep (undoStep);
+	}
+}
+
+void
+BrowserWindow::on_move_selection_to_snap_target_activate (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
+{
+	const auto   executionContext = X3D::MakePtr (getSelectionContext (nodes));
 	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
 	const auto & snapSource       = getCurrentBrowser () -> getSnapSource ();
 	const auto   targetPosition   = X3D::Vector3d (snapTarget -> position () .getValue ());
@@ -1861,7 +1882,7 @@ BrowserWindow::on_move_selection_to_snap_target_activate ()
 	{
 		const auto sourcePosition       = X3D::Vector3d (snapSource -> position () .getValue ());
 		const auto sourceNormal         = X3D::Vector3d (snapSource -> normal () .getValue ());
-		const auto transformationMatrix = X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, sourcePosition, sourceNormal, false, undoStep);
+		const auto transformationMatrix = X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, sourcePosition, sourceNormal, false, undoStep);
 		const auto destinationPosition  = X3D::SFVec3f (sourcePosition * transformationMatrix);
 		const auto destinationNormal    = X3D::SFVec3f (snapTarget -> normal () .negate ());
 
@@ -1870,18 +1891,38 @@ BrowserWindow::on_move_selection_to_snap_target_activate ()
 	}
 	else
 	{
-		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), false, undoStep);
+		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), false, undoStep);
 	}
 
-	addUndoStep (undoStep);
 }
 
 void
 BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 {
-	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Move Selection Center To Snap Target"));
-	const auto & selection        = getSelection () -> getNodes ();
-	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
+	if (getSelection () -> getSelectGeometry ())
+	{
+		const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ ("Move Geometry Selection Center To Snap Target"));
+		const auto & selection = getSelection () -> getGeometries ();
+
+		on_move_selection_center_to_snap_target_activate (selection, undoStep);
+
+		addUndoStep (undoStep);
+	}
+	else
+	{
+		const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ ("Move Selection Center To Snap Target"));
+		const auto & selection = getSelection () -> getNodes ();
+
+		on_move_selection_center_to_snap_target_activate (selection, undoStep);
+
+		addUndoStep (undoStep);
+	}
+}
+
+void
+BrowserWindow::on_move_selection_center_to_snap_target_activate (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
+{
+	const auto   executionContext = X3D::MakePtr (getSelectionContext (nodes));
 	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
 	const auto & snapSource       = getCurrentBrowser () -> getSnapSource ();
 	const auto   targetPosition   = X3D::Vector3d (snapTarget -> position () .getValue ());
@@ -1894,7 +1935,7 @@ BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 	{
 		const auto sourcePosition       = X3D::Vector3d (snapSource -> position () .getValue ());
 		const auto sourceNormal         = X3D::Vector3d (snapSource -> normal () .getValue ());
-		const auto transformationMatrix = X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, sourcePosition, sourceNormal, true, undoStep);
+		const auto transformationMatrix = X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, sourcePosition, sourceNormal, true, undoStep);
 		const auto destinationPosition  = X3D::SFVec3f (sourcePosition * transformationMatrix);
 		const auto destinationNormal    = X3D::SFVec3f (snapTarget -> normal () .negate ());
 
@@ -1903,10 +1944,8 @@ BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 	}
 	else
 	{
-		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, selection, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), true, undoStep);
+		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), true, undoStep);
 	}
-
-	addUndoStep (undoStep);
 }
 
 // Extenal Tools menu

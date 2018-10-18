@@ -201,12 +201,12 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAxonometricGridLayoutToolMenuItem", m_BrowserAxonometricGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
-	m_builder -> get_widget ("SeparatorMenuItem18", m_SeparatorMenuItem18);
+	m_builder -> get_widget ("BrowserSeparatorMenuItem18", m_BrowserSeparatorMenuItem18);
 	m_builder -> get_widget ("BrowserActivateSnapTargetMenuItem", m_BrowserActivateSnapTargetMenuItem);
 	m_builder -> get_widget ("BrowserActivateSnapSourceMenuItem", m_BrowserActivateSnapSourceMenuItem);
+	m_builder -> get_widget ("BrowserCenterSnapTargetInSelectionMenuItem", m_BrowserCenterSnapTargetInSelectionMenuItem);
 	m_builder -> get_widget ("BrowserMoveSelectionToSnapTargetMenuItem", m_BrowserMoveSelectionToSnapTargetMenuItem);
 	m_builder -> get_widget ("BrowserMoveSelectionCenterToSnapTargetMenuItem", m_BrowserMoveSelectionCenterToSnapTargetMenuItem);
-	m_builder -> get_widget ("BrowserCenterSnapTargetInSelectionMenuItem", m_BrowserCenterSnapTargetInSelectionMenuItem);
 	m_builder -> get_widget ("BrowserExternalToolsMenuItem", m_BrowserExternalToolsMenuItem);
 	m_builder -> get_widget ("BrowserManageExternalToolsMenuItem", m_BrowserManageExternalToolsMenuItem);
 	m_builder -> get_widget ("BrowserScenesMenuItem", m_BrowserScenesMenuItem);
@@ -502,10 +502,10 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ImageMenuItem with id 'BrowserGridPropertiesMenuItem'.
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
-	// Connect object Gtk::MenuItem with id 'BrowserMoveSelectionToSnapTargetMenuItem'.
+	// Connect object Gtk::MenuItem with id 'BrowserCenterSnapTargetInSelectionMenuItem'.
+	m_BrowserCenterSnapTargetInSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_center_snap_target_in_selection));
 	m_BrowserMoveSelectionToSnapTargetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_move_selection_to_snap_target_activate));
 	m_BrowserMoveSelectionCenterToSnapTargetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_move_selection_center_to_snap_target_activate));
-	m_BrowserCenterSnapTargetInSelectionMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_center_snap_target_in_selection));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserManageExternalToolsMenuItem'.
 	m_BrowserManageExternalToolsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_manage_external_tools_activate));
