@@ -209,7 +209,7 @@ X3DSnapTool::touch (const double x, const double y) const
 	if (getBrowser () -> getHits () .empty ())
 		return false;
 
-	if (getBrowser () -> getNearestHit () -> layer != getBrowser () -> getActiveLayer ())
+	if (getBrowser () -> getNearestHit () -> getLayer() != getBrowser () -> getActiveLayer ())
 		return false;
 
 	return true;
@@ -220,12 +220,12 @@ X3DSnapTool::update ()
 {
 	try
 	{
-		const auto & nearestHit         = getBrowser () -> getNearestHit ();
-		const auto & modelViewMatrix    = getTool () -> getPickingMatrix ();
-		const auto   invModelViewMatrix = inverse (modelViewMatrix);
-	
-		position () = invModelViewMatrix .mult_vec_matrix (nearestHit -> intersection -> point);
-		normal ()   = normalize (modelViewMatrix .mult_matrix_dir (nearestHit -> intersection -> faceNormal));
+		const auto & hit              = getBrowser () -> getNearestHit ();
+		const auto & pickingMatrix    = getTool () -> getPickingMatrix ();
+		const auto   invPickingMatrix = inverse (pickingMatrix);
+
+		position () = hit -> getIntersection () -> getPoint () * invPickingMatrix;
+		normal ()   = normalize (pickingMatrix .mult_matrix_dir (hit -> getIntersection () -> getFaceNormal ()));
 	}
 	catch (const std::exception & error)
 	{

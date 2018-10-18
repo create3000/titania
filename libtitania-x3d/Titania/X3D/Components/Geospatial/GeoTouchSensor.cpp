@@ -119,11 +119,11 @@ GeoTouchSensor::set_over (const bool over,
 
 		if (isOver ())
 		{
-			const auto &   intersection    = hit -> intersection;
-			const Vector3d hitPoint        = intersection -> point * inverse (modelViewMatrix);
+			const auto & intersection = hit -> getIntersection ();
+			const auto   hitPoint     = intersection -> getPoint () * inverse (modelViewMatrix);
 
-			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
-			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
+			hitTexCoord_changed () = Vector2f (intersection -> getTexCoord () .x (), intersection -> getTexCoord () .y ());
+			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> getNormal ()));
 			hitPoint_changed ()    = hitPoint;
 			hitGeoCoord_changed () = getGeoCoord (hitPoint);
 		}

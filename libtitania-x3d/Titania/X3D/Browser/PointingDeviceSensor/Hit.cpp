@@ -70,12 +70,18 @@ Hit::Hit (const Vector2d & pointer,
 	modelViewMatrix (modelViewMatrix),    // Shapes model view matrix.
 	         hitRay (hitRay),             // Hit ray in absolute space (null space).
 	   intersection (intersection),       // All values are transform to absolute space (null space), except intersection -> triangle, this isn't transformed.
-	       distance (intersection -> point .z () + depthOffset),
+	       distance (intersection -> getPoint () .z () + depthOffset),
 	        sensors (sensors),
 	          shape (shape),
 	          layer (layer),
 	    layerNumber (layerNumber),
 	      hierarchy (std::move (hierarchy))
+{ }
+
+Hit::Hit (const Vector2d & pointer,
+          const Line3d & hitRay,
+          const X3DPtr <X3DLayerNode> & layer) :
+	Hit (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, layer, 0, 0, { })
 { }
 
 Hit::~Hit ()

@@ -53,10 +53,9 @@
 
 #include "../../Types/Numbers.h"
 
-#include <Titania/Math/Geometry/Triangle3.h>
-
 #include <array>
 #include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -65,12 +64,94 @@ class Intersection
 {
 public:
 
-	Vector4f texCoord;
-	Vector3f normal;
-	Vector3f faceNormal;
-	Vector3d point;
+	///  @name Construction
 
-	std::array <Vector3d, 3> triangle;
+	Intersection (const Vector4f & texCoord,
+	              const Vector3f & normal,
+	              const Vector3f & faceNormal,
+	              const Vector3d & point,
+	              const std::array <Vector3d, 3> & triangle,
+	              std::vector <Vector3d> && face) :
+		  texCoord (texCoord),
+		    normal (normal),
+		faceNormal (faceNormal),
+		     point (point),
+		  triangle (triangle),
+		      face (std::move (face))
+	{ }
+
+	Intersection () :
+		  texCoord (),
+		    normal (),
+		faceNormal (),
+		     point (),
+		  triangle (),
+		      face ()
+	{ }
+
+	///  @name Member access
+
+	const Vector4f &
+	getTexCoord () const
+	{ return texCoord; }
+
+	const Vector3f &
+	getNormal () const
+	{ return normal; }
+
+	const Vector3f &
+	getFaceNormal () const
+	{ return faceNormal; }
+
+	const Vector3d &
+	getPoint () const
+	{ return point; }
+
+	const std::array <Vector3d, 3> &
+	getTriangle () const
+	{ return triangle; }
+
+	const std::vector <Vector3d> &
+	getFace () const
+	{ return face; }
+
+	///  @name Destruction
+
+	~Intersection ()
+	{ }
+
+protected:
+
+	///  @name Friends
+
+	friend class Shape;
+
+	///  @name Member access
+
+	void
+	setNormal (const Vector3f & value)
+	{ normal = value; }
+
+	void
+	setFaceNormal (const Vector3f & value)
+	{ faceNormal = value; }
+
+	void
+	setPoint (const Vector3d & value)
+	{ point = value; }
+	
+
+private:
+
+	///  @name Members
+
+	const Vector4f texCoord;
+	Vector3f       normal;
+	Vector3f       faceNormal;
+	Vector3d       point;
+
+	const std::array <Vector3d, 3> triangle;
+	const std::vector <Vector3d>   face;
 
 };
 

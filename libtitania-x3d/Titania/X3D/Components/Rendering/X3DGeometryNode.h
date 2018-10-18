@@ -379,6 +379,8 @@ private:
 	            const size_t i0,
 	            const size_t i1,
 	            const size_t i2,
+	            const size_t first,
+	            const size_t last,
 	            const ClipPlaneContainerArray & clipPlanes,
 	            const Matrix4d & modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const;

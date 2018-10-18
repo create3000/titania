@@ -205,45 +205,47 @@ Shape::touch (X3DRenderObject* const renderObject)
 {
 	try
 	{
-		std::vector <IntersectionPtr> itersections;
+		std::vector <IntersectionPtr> intersections;
 
 		const auto   browser            = renderObject -> getBrowser ();
 		const auto & modelViewMatrix    = renderObject -> getModelViewMatrix () .get ();
 		const auto   invModelViewMatrix = inverse (modelViewMatrix);
 		const auto   hitRay             = browser -> getHitRay () * invModelViewMatrix;
 
-		if (not getGeometry () -> intersects (hitRay, renderObject -> getClipPlanes (), modelViewMatrix, itersections))
+		if (not getGeometry () -> intersects (hitRay, renderObject -> getClipPlanes (), modelViewMatrix, intersections))
 			return;
 
 		// Finally we have intersections and must now find the closest hit in front of the camera.
 
 		// Transform hitPoints to absolute space.
-		for (auto & itersection : itersections)
-			itersection -> point = itersection -> point * modelViewMatrix;
+		for (auto & intersection : intersections)
+			intersection -> setPoint (intersection -> point * modelViewMatrix);
 	
 		// Sort desc
-		std::sort (itersections .begin (), itersections .end (),
+		std::sort (intersections .begin (), intersections .end (),
 		[ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs)
 		{
-			return lhs -> point .z () > rhs -> point .z ();
+			return lhs -> getPoint () .z () > rhs -> getPoint () .z ();
 		});
 
 		// Find first point that is not greater than near plane;
-		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -renderObject -> getNavigationInfo () -> getNearValue (),
+		const auto nearestIntersection = std::lower_bound (intersections .cbegin (), intersections .cend (), -renderObject -> getNavigationInfo () -> getNearValue (),
 		[ ] (const IntersectionPtr & lhs, const float & rhs)
 		{
-			return lhs -> point .z () > rhs;
+			return lhs -> getPoint () .z () > rhs;
 		});
 
 		// There are only intersections behind the camera.
-		if (itersection == itersections .end ())
+		if (nearestIntersection == intersections .end ())
 			return;
 
-		// Transform hitNormal to absolute space.
-		(*itersection) -> normal     = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> normal));
-		(*itersection) -> faceNormal = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> faceNormal));
+		const auto & intersection = *nearestIntersection;
 
-		browser -> addHit (modelViewMatrix, *itersection, this, renderObject -> getLayer (), renderObject -> getDepthOffset () .top ());
+		// Transform normals to absolute space.
+		intersection -> setNormal     (normalize (invModelViewMatrix .mult_matrix_dir (intersection -> getNormal ())));
+		intersection -> setFaceNormal (normalize (invModelViewMatrix .mult_matrix_dir (intersection -> getFaceNormal ())));
+
+		browser -> addHit (modelViewMatrix, intersection, this, renderObject -> getLayer (), renderObject -> getDepthOffset () .top ());
 	}
 	catch (const std::domain_error &)
 	{
@@ -256,12 +258,12 @@ Shape::lasso (X3DRenderObject* const renderObject)
 {
 	const auto browser = renderObject -> getBrowser ();
 
-	std::vector <IntersectionPtr> itersections;
+	std::vector <IntersectionPtr> intersections;
 
 	getGeometry () -> intersects (renderObject,
 	                              browser -> getSelectionBuffer (),
 	                              browser -> getDepthBuffer (),
-	                              itersections);
+	                              intersections);
 }
 
 void

@@ -436,10 +436,10 @@ Selection::selectNode (X3DBrowser* const browser)
 
 	const auto & nearestHit = browser -> getNearestHit ();
 
-	if (not nearestHit -> sensors .empty ())
+	if (not nearestHit -> getSensors () .empty ())
 		return false;
 
-	const auto node = getSelection (nearestHit -> hierarchy);
+	const auto node = getSelection (nearestHit -> getHierarchy ());
 
 	// Select node or remove from selection.
 
@@ -448,7 +448,7 @@ Selection::selectNode (X3DBrowser* const browser)
 		if (isSelected (node))
 		{
 		   if (selectGeometry)
-		      setHierarchy (node, nearestHit -> hierarchy);
+		      setHierarchy (node, nearestHit -> getHierarchy ());
 
 			else if (selectMultiple)
 				removeNodes ({ node });
@@ -465,7 +465,7 @@ Selection::selectNode (X3DBrowser* const browser)
 			else
 				setNodes ({ node });
 
-			setHierarchy (node, nearestHit -> hierarchy);
+			setHierarchy (node, nearestHit -> getHierarchy ());
 
 			touchTime = getCurrentTime ();
 

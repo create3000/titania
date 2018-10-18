@@ -127,7 +127,7 @@ SphereSensor::set_active (const bool active,
 		{
 			inverseModelViewMatrix = inverse (modelViewMatrix);
 
-			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
+			const auto hitPoint = Vector3d (hit -> getIntersection () -> getPoint ()) * inverseModelViewMatrix;
 			const auto center   = Vector3d ();
 
 			zPlane = Plane3d (center, normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)))); // Screen aligned Z-plane
@@ -135,7 +135,7 @@ SphereSensor::set_active (const bool active,
 			behind = zPlane .distance (hitPoint) < 0;
 
 			fromVector  = hitPoint - sphere .center ();
-			startPoint  = hit -> intersection -> point;
+			startPoint  = hit -> getIntersection () -> getPoint ();
 			startOffset = offset () .getValue ();
 
 			trackPoint_changed () .setValue (hitPoint);
@@ -161,7 +161,7 @@ SphereSensor::set_motion (const HitPtr & hit,
 	{
 		X3DDragSensorNode::set_motion (hit, modelViewMatrix, projectionMatrix, viewport);
 
-		auto       hitRay      = hit -> hitRay * inverseModelViewMatrix;
+		auto       hitRay       = hit -> getHitRay () * inverseModelViewMatrix;
 		const auto startPoint   = this -> startPoint * inverseModelViewMatrix;
 		const auto intersection = getTrackPoint (hitRay, behind);
 

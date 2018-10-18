@@ -162,8 +162,8 @@ CylinderSensor::set_active (const bool active,
 		{
 			inverseModelViewMatrix = inverse (modelViewMatrix);
 
-			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
-			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
+			const auto hitRay   = hit -> getHitRay () * inverseModelViewMatrix;
+			const auto hitPoint = Vector3d (hit -> getIntersection () -> getPoint ()) * inverseModelViewMatrix;
 
 			const auto     yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
 			const Vector3d cameraBack = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)));
@@ -219,7 +219,7 @@ CylinderSensor::set_motion (const HitPtr & hit,
 	{
 		X3DDragSensorNode::set_motion (hit, modelViewMatrix, projectionMatrix, viewport);
 
-		const auto hitRay = hit -> hitRay * inverseModelViewMatrix;
+		const auto hitRay = hit -> getHitRay () * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
 

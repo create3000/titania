@@ -163,14 +163,14 @@ X3DViewer::lookAt (const double x, const double y, const bool straightenHorizon,
 		{
 			// Seek: look at selected point and fly a little closer.
 
-			getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - phi <double>, straightenHorizon);
+			getActiveViewpoint () -> lookAt (hit -> getIntersection () -> getPoint () * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - phi <double>, straightenHorizon);
 		}
 		else
 		{
 			// Look at as specification say.
 
-			const auto modelViewMatrix = hit -> modelViewMatrix * getActiveViewpoint () -> getCameraSpaceMatrix ();
-			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
+			const auto modelViewMatrix = hit -> getModelViewMatrix () * getActiveViewpoint () -> getCameraSpaceMatrix ();
+			const auto bbox            = hit -> getShape () -> getBBox () * modelViewMatrix;
 
 			getActiveViewpoint () -> lookAt (bbox, 2 - phi <double>, straightenHorizon);
 		}

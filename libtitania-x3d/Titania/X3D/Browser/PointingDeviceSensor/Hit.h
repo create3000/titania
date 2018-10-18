@@ -58,7 +58,6 @@
 
 #include <memory>
 #include <tuple>
-#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -72,6 +71,8 @@ class Hit
 {
 public:
 
+	///  @name Construction
+
 	Hit (const Vector2d & pointer,
 	     const Matrix4d & modelViewMatrix,
 	     const Line3d & hitRay,
@@ -81,7 +82,61 @@ public:
 	     const X3DPtr <X3DLayerNode> & layer,
 	     const size_t layerNumber,
 	     const double depthOffset,
-	     MFNode && hierarchy = { });
+	     MFNode && hierarchy);
+
+	Hit (const Vector2d & pointer,
+	     const Line3d & hitRay,
+	     const X3DPtr <X3DLayerNode> & layer);
+
+	///  @name Member access
+
+	const Vector2d &
+	getPointer () const
+	{ return pointer; }
+
+	const Matrix4d &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	const Line3d &
+	getHitRay () const
+	{ return hitRay; }
+
+	const IntersectionPtr &
+	getIntersection () const
+	{ return intersection;   }     
+         
+	const double &
+	getDistance () const
+	{ return distance; }
+
+	const PointingDeviceSensorContainerSet &
+	getSensors () const
+	{ return sensors; }
+
+	const X3DPtr <X3DShapeNode> &
+	getShape () const
+	{ return shape; }
+
+	const X3DPtr <X3DLayerNode> &
+	getLayer () const
+	{ return layer; }
+
+	size_t
+	getLayerNumber () const
+	{ return layerNumber; }
+
+	const MFNode &
+	getHierarchy () const
+	{ return hierarchy; }
+
+	///  @name Destruction
+
+	~Hit ();
+
+private:
+
+	///  @name Members
 
 	const Vector2d                         pointer;
 	const Matrix4d                         modelViewMatrix;
@@ -94,8 +149,6 @@ public:
 	const size_t                           layerNumber;
 	const MFNode                           hierarchy;
 
-	~Hit ();
-
 };
 
 using HitPtr = std::shared_ptr <Hit>;
@@ -107,7 +160,7 @@ public:
 	bool
 	operator () (const HitPtr & lhs, const HitPtr & rhs) const
 	{
-		return std::tie (lhs -> layerNumber, lhs -> distance) < std::tie (rhs -> layerNumber, rhs -> distance);
+		return std::make_tuple (lhs -> getLayerNumber (), lhs -> getDistance ()) < std::make_tuple (rhs -> getLayerNumber (), rhs -> getDistance ());
 	}
 
 };

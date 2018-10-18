@@ -238,19 +238,23 @@ X3DGeometryNode::intersects (Line3d line,
 			{
 				case GL_TRIANGLES:
 				{
-					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
+					const auto first = element .first ();
+
+					for (size_t i = first, size = element .last (); i < size; i += 3)
 					{
-						intersected |= intersects (line, i, i + 1, i + 2, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 1, i + 2, first, size, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
 				}
 				case GL_QUADS:
 				{
-					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
+					const auto first = element .first ();
+
+					for (size_t i = first, size = element .last (); i < size; i += 4)
 					{
-						intersected |= intersects (line, i, i + 1, i + 2, clipPlanes, modelViewMatrix, intersections);
-						intersected |= intersects (line, i, i + 2, i + 3, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 1, i + 2, first, size, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 2, i + 3, first, size, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
@@ -261,7 +265,7 @@ X3DGeometryNode::intersects (Line3d line,
 
 					for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
 					{
-						intersected |= intersects (line, first, i, i + 1, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, first, i, i + 1, first, size, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
@@ -281,12 +285,14 @@ X3DGeometryNode::intersects (Line3d line,
 
 bool
 X3DGeometryNode::intersects (const Line3d & line,
-	                          const size_t i1,
-	                          const size_t i2,
-	                          const size_t i3,
+                             const size_t i1,
+                             const size_t i2,
+                             const size_t i3,
+                             const size_t first,
+                             const size_t last,
                              const ClipPlaneContainerArray & clipPlanes,
-	                          const Matrix4d & modelViewMatrix,
-	                          std::vector <IntersectionPtr> & intersections) const
+                             const Matrix4d & modelViewMatrix,
+                             std::vector <IntersectionPtr> & intersections) const
 {
 	const auto intersection = line .intersects (vertices [i1], vertices [i2], vertices [i3]);
 
@@ -307,13 +313,16 @@ X3DGeometryNode::intersects (const Line3d & line,
 	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;
 
-	intersections .emplace_back (new Intersection {
+	std::vector <Vector3d> face (vertices .begin () + first, vertices .begin () + last);
+
+	intersections .emplace_back (new Intersection (
 		texCoord,
 		normal,
 		faceNormal,
 		point * getMatrix (), // multiply by screen scale matrix
-		std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3]
-	}});
+		std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] },
+		std::move (face)
+	));
 
 	return true;
 }
@@ -521,7 +530,7 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 				const auto iter = std::find_if (intersections .cbegin (), intersections .cend (),
 				[&] (const IntersectionPtr & intersection)
 				{
-					return (intersection -> point * modelViewMatrix) .z () - z > 1e-5;
+					return (intersection -> getPoint () * modelViewMatrix) .z () - z > 1e-5;
 				});
 
 				return iter not_eq intersections .end ();

@@ -99,10 +99,10 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 const Vector3d &
 TouchSensor::getClosestPoint () const
 {
-	return intersection -> triangle [Triangle3d (intersection -> triangle [0],
-	                                             intersection -> triangle [1],
-	                                             intersection -> triangle [2])
-	                                             .closest_point (hitPoint)];
+	const auto & triangle = intersection -> getTriangle ();
+	const auto   index    = Triangle3d (triangle [0], triangle [1], triangle [2]) .closest_point (hitPoint);
+
+	return triangle [index];
 }
 
 void
@@ -118,15 +118,12 @@ TouchSensor::set_over (const bool over,
 
 		if (isOver ())
 		{
-			const Matrix4d invModelViewMatrix = inverse (modelViewMatrix);
+			intersection = hit -> getIntersection ();
+			hitPoint     = intersection -> getPoint () * inverse (hit -> getModelViewMatrix ());
 
-			hitPoint = intersection -> point * inverse (hit -> modelViewMatrix);
-
-			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
-			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
-			hitPoint_changed ()    = intersection -> point * invModelViewMatrix;
-
-			intersection .reset (new Intersection (*hit -> intersection));
+			hitTexCoord_changed () = Vector2f (intersection -> getTexCoord () .x (), intersection -> getTexCoord () .y ());
+			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> getNormal ()));
+			hitPoint_changed ()    = intersection -> getPoint () * inverse (modelViewMatrix);
 		}
 	}
 	catch (const std::exception &)

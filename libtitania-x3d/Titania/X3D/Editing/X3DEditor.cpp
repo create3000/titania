@@ -3319,7 +3319,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 		centers .emplace_back (center .x (), center .y (), min .z ()); // front
 		centers .emplace_back (center .x (), center .y (), max .z ()); // back
 
-		const auto iter = std::min_element (centers .begin (), centers .end (), [&targetNormal, &center] (const Vector3d & lhs, const Vector3d & rhs)
+		const auto iter = std::min_element (centers .begin (), centers .end (),
+		[&targetNormal, &center] (const Vector3d & lhs, const Vector3d & rhs)
 		{
 			return dot (normalize (lhs - center), targetNormal) < dot (normalize (rhs - center), targetNormal);
 		});

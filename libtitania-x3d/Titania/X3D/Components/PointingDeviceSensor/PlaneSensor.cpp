@@ -116,7 +116,7 @@ PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line)
 throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
-	const auto trackPoint1    = screenLine .closest_point (hit -> pointer);
+	const auto trackPoint1    = screenLine .closest_point (hit -> getPointer ());
 	const auto trackPointLine = ViewVolume::unProjectRay (trackPoint1, modelViewMatrix, projectionMatrix, viewport);
 	const auto intersection   = line .closest_point (trackPointLine);
 
@@ -141,8 +141,8 @@ PlaneSensor::set_active (const bool active,
 			this -> viewport               = viewport;
 			this -> inverseModelViewMatrix = inverse (modelViewMatrix);
 
-			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
-			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
+			const auto hitRay   = hit -> getHitRay () * inverseModelViewMatrix;
+			const auto hitPoint = Vector3d (hit -> getIntersection () -> getPoint ()) * inverseModelViewMatrix;
 
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
 
@@ -227,7 +227,7 @@ PlaneSensor::set_motion (const HitPtr & hit,
 
 		if (planeSensor)
 		{
-			const auto hitRay       = hit -> hitRay * inverseModelViewMatrix;
+			const auto hitRay       = hit -> getHitRay () * inverseModelViewMatrix;
 			const auto intersection = plane .intersects (hitRay);
 
 			if (intersection .second)
