@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Thu, 18 Oct 2018 12:27:47 GMT"
+META "modified" "Thu, 18 Oct 2018 15:40:10 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -502,7 +502,6 @@ WorldInfo {
                   }
                 }
               }
-              inputOutput    SFNode     transform NULL
 
               url "peaseblossom:
 
@@ -514,7 +513,6 @@ function initialize ()
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
-	var offset      = bboxSize1_2 .divide (20);
 
 	// BBox
 
@@ -529,16 +527,12 @@ function eventsProcessed ()
 
 	// Position and scale planes
 
-	var x = offset .x;
-	var y = offset .y;
-	var z = offset .z;
-
-	front  .translation = new SFVec3f ( 0,  0,  z + bboxSize1_2 .z);
-	right  .translation = new SFVec3f ( x + bboxSize1_2 .x,  0,  0);
-	back   .translation = new SFVec3f ( 0,  0, -z - bboxSize1_2 .z);
-	left   .translation = new SFVec3f (-x - bboxSize1_2 .x,  0,  0);
-	top    .translation = new SFVec3f ( 0,  y + bboxSize1_2 .y,  0);
-	bottom .translation = new SFVec3f ( 0, -y - bboxSize1_2 .y,  0);
+	front  .translation = new SFVec3f ( 0,  0,  bboxSize1_2 .z);
+	right  .translation = new SFVec3f ( bboxSize1_2 .x,  0,  0);
+	back   .translation = new SFVec3f ( 0,  0, -bboxSize1_2 .z);
+	left   .translation = new SFVec3f (-bboxSize1_2 .x,  0,  0);
+	top    .translation = new SFVec3f ( 0,  bboxSize1_2 .y,  0);
+	bottom .translation = new SFVec3f ( 0, -bboxSize1_2 .y,  0);
 	
 	front  .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
 	right  .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
@@ -2528,7 +2522,6 @@ ROUTE Tool.bboxSize_changed TO ModeScript.set_bboxSize
 ROUTE Tool.cameraSpaceMatrix_changed TO BBoxScript.set_cameraSpaceMatrix
 ROUTE Tool.modelViewMatrix_changed TO BBoxScript.set_modelViewMatrix
 ROUTE Tool.bboxSize_changed TO BBoxScript.set_bboxSize
-ROUTE Tool.transform_changed TO BBoxScript.set_transform
 ROUTE Tool.controlKey_changed TO MoveScript.set_constrainMotion
 ROUTE Tool.bboxSize_changed TO MoveScript.set_bboxSize
 ROUTE Tool.transform_changed TO MoveScript.set_transform
