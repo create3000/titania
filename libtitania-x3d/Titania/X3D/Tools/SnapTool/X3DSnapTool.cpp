@@ -223,9 +223,54 @@ X3DSnapTool::update ()
 		const auto & hit              = getBrowser () -> getNearestHit ();
 		const auto & pickingMatrix    = getTool () -> getPickingMatrix ();
 		const auto   invPickingMatrix = inverse (pickingMatrix);
+		const auto   hitPoint         = hit -> getIntersection () -> getPoint () * invPickingMatrix;
+		const auto   hitNormal        = normalize (pickingMatrix .mult_matrix_dir (hit -> getIntersection () -> getFaceNormal ()));
 
-		position () = hit -> getIntersection () -> getPoint () * invPickingMatrix;
-		normal ()   = normalize (pickingMatrix .mult_matrix_dir (hit -> getIntersection () -> getFaceNormal ()));
+		if (getBrowser () -> getShiftKey ())
+		{
+			const auto & modelViewMatrix = hit -> getModelViewMatrix ();
+			const auto & face            = hit -> getIntersection () -> getFace ();
+			auto         points          = std::vector <Vector3d> ();
+			
+			// Vertices
+
+			for (const auto & vertex : face)
+				points .emplace_back (vertex);
+
+			// Center of edges
+
+			for (size_t i = 0, size = face .size (); i < size; ++ i)
+				points .emplace_back ((face [i] + face [(i + 1) % size]) / 2.0);
+
+			// Center of face.
+
+			points .emplace_back (std::accumulate (face .begin (), face .end (), Vector3d ()) / double (face .size ()));
+
+			// Transform points to model space.
+
+			for (auto & point : points)
+				point = point * modelViewMatrix * invPickingMatrix;
+
+			// Find nearest snapping point to hit point.
+
+			const auto snap = std::min_element (points .begin (), points .end (),
+			[&hitPoint] (const Vector3d & lhs, const Vector3d & rhs)
+			{
+				return abs (hitPoint - lhs) < abs (hitPoint - rhs);
+			});
+
+			// Set values.
+
+			position () = *snap;
+			normal ()   = hitNormal;
+		}
+		else
+		{
+			// Set values.
+
+			position () = hitPoint;
+			normal ()   = hitNormal;
+		}
 	}
 	catch (const std::exception & error)
 	{
