@@ -53,6 +53,8 @@
 
 #include "../Layering/X3DActiveLayerTool.h"
 
+#include "../../Browser/PointingDeviceSensor/Hit.h"
+
 namespace titania {
 namespace X3D {
 
@@ -145,6 +147,9 @@ private:
 
 	void
 	update ();
+
+	Vector3d
+	snapToVerticesAndCenters (const Vector3d & hitPoint, const HitPtr & hit, const Matrix4d & invPickingMatrix) const;
 
 	///  @name Fields
 

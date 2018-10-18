@@ -7,7 +7,7 @@ META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Tue, 16 Oct 2018 13:34:35 GMT"
+META "modified" "Thu, 18 Oct 2018 03:17:49 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
@@ -70,6 +70,7 @@ PROTO SnapTool [
                   }
                 }
                 DEF Grid_5 Transform {
+                  translation 0 1 0
                   scale 12 1 12
                   children Shape {
                     geometry IndexedLineSet {
