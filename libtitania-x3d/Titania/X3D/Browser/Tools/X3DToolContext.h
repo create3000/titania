@@ -62,8 +62,6 @@ namespace X3D {
 
 class TransformToolOptions;
 
-using RenderToolsStack = std::stack <bool, std::vector <bool>>;
-
 class X3DToolContext :
 	virtual public X3DBaseNode
 {
@@ -82,13 +80,21 @@ public:
 	       Error <DISPOSED>)
 	{ return supportedTools; }
 
-	RenderToolsStack &
+	std::stack <bool> &
 	getDisplayTools ()
 	{ return displayTools; }
 
-	const RenderToolsStack &
+	const std::stack <bool> &
 	getDisplayTools () const
 	{ return displayTools; }
+
+	std::stack <bool> &
+	getToolsPickable ()
+	{ return toolsPickable; }
+
+	const std::stack <bool> &
+	getToolsPickable () const
+	{ return toolsPickable; }
 
 	const X3DPtr <TransformToolOptions> &
 	getTransformToolOptions () const
@@ -123,16 +129,6 @@ public:
 	const X3DWeakPtrArray <X3DViewpointNodeTool> &
 	getViewpointTools () const
 	{ return viewpointTools; }
-
-	void
-	pushToolsPickable (const bool value);
-
-	void
-	popToolsPickable ();
-
-	bool
-	getToolsPickable () const
-	{ return toolsPickable .top (); }
 
 	///  @name Snap objects handling
 
@@ -229,15 +225,11 @@ protected:
 
 private:
 
-	///  @name Tools handling
-
-	void
-	setToolsPickable (const bool value);
-
 	///  @name Members
 
-	SupportedTools  supportedTools;
-	RenderToolsStack displayTools;
+	SupportedTools    supportedTools;
+	std::stack <bool> displayTools;
+	std::stack <bool> toolsPickable;
 
 	X3DPtr <TransformToolOptions>          transformToolOptions;
 	X3DWeakPtrArray <X3DTransformNodeTool> transformTools;
@@ -248,7 +240,6 @@ private:
 	X3DWeakPtrArray <TransformSensorTool>  transformSensorTools;
 	X3DWeakPtrArray <VisibilitySensorTool> visibilitySensorTools;
 	X3DWeakPtrArray <X3DViewpointNodeTool> viewpointTools;
-	std::stack <bool>                      toolsPickable;
 
 	X3DPtr <SnapTargetTool> snapTarget;
 	X3DPtr <SnapSourceTool> snapSource;

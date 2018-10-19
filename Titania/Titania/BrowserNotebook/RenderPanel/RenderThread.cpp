@@ -195,6 +195,8 @@ RenderThread::run ()
 			checkForInterrupt ();
 
 			currentFrame = getFrame (frameNumber);
+
+			frameDispatcher .emit ();
 		}
 	}
 	catch (const X3D::InterruptThreadException & error)
@@ -202,6 +204,7 @@ RenderThread::run ()
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
+		frameDispatcher .emit ();
 	}
 }
 
@@ -214,6 +217,8 @@ RenderThread::on_timeout ()
 
 		currentFrame = getFrame (frameNumber);
 
+		frameDispatcher .emit ();
+
 		++ frameNumber;
 
 		return frameNumber < duration;
@@ -225,6 +230,7 @@ RenderThread::on_timeout ()
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
+		frameDispatcher .emit ();
 		return false;
 	}
 }
@@ -241,8 +247,6 @@ RenderThread::getFrame (const int32_t frameNumber)
 	frame -> image .defineValue ("PNG", "color-type", "2"); 
 
 	videoEncoder -> write (frame -> image);
-
-	frameDispatcher .emit ();
 
 	clock -> real_advance ();
 

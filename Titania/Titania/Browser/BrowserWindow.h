@@ -125,19 +125,19 @@ private:
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey*) final override;
+	on_key_press_event (GdkEventKey* event) final override;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey*);
+	on_key_release_event (GdkEventKey* event);
 
 	virtual
 	bool
-	on_menubar_button_press_event (GdkEventButton*) final override;
+	on_menubar_button_press_event (GdkEventButton* event) final override;
 
 	virtual
 	bool
-	on_notebook_button_press_event (GdkEventButton*) final override;
+	on_notebook_button_press_event (GdkEventButton* event) final override;
 
 	/// @name File menu
 
@@ -159,7 +159,11 @@ private:
 
 	virtual
 	void
-	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                               int x, int y,
+	                               const Gtk::SelectionData & selection_data,
+	                               guint info,
+	                               guint time) final override;
 
 	virtual
 	void
@@ -167,11 +171,18 @@ private:
 
 	virtual
 	void
-	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final override;
+	on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                               int x, int y,
+	                               const Gtk::SelectionData & selection_data,
+	                               guint info,
+	                               guint time) final override;
 
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, const guint, const bool);
-
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+	                       const Gtk::SelectionData & selection_data,
+	                       const guint time,
+	                       const bool do_open);
+	
 	virtual
 	void
 	on_save_activated () final override;
@@ -347,7 +358,7 @@ private:
 	on_create_parent_viewport_activated () final override;
 
 	X3D::SFNode
-	on_create_parent (const std::string &, const std::string & = "children");
+	on_create_parent (const std::string & typeName, const std::string & fieldName = "children");
 
 	/// @name Bar view handling
 
@@ -410,7 +421,7 @@ private:
 	on_texture_quality_low_toggled () final override;
 
 	void
-	on_texture_quality_changed (const std::string &);
+	on_texture_quality_changed (const std::string & value);
 
 	void
 	set_textureQuality (const X3D::SFString &);
@@ -437,7 +448,7 @@ private:
 
 	virtual
 	void
-	on_fullscreen (const bool) final override;
+	on_fullscreen (const bool value) final override;
 
 	///  @name Selection
 
@@ -500,7 +511,7 @@ private:
 	on_combine_activated () final override;
 
 	void
-	on_boolean_activated (const std::string &, const BooleanOperation &, const bool);
+	on_boolean_activated (const std::string & description, const BooleanOperation & booleanOperation, const bool front);
 
 	virtual
 	void
@@ -597,13 +608,13 @@ private:
 	on_browser_scenes_activated () final override;
 
 	void
-	on_scenes_activated (Gtk::Menu &);
+	on_scenes_activated (Gtk::Menu & menu);
 
 	///  @name Help menu
 
 	virtual
 	void
-	on_cobweb_compatibility_toggled () final override;
+	on_x_ite_compatibility_toggled () final override;
 
 	virtual
 	void
@@ -715,17 +726,11 @@ private:
 	void
 	on_select_child_button_clicked () final override;
 
-	X3D::MFNode
-	getChildren (const X3D::SFNode &, const bool = false) const;
-
-	X3D::MFNode
-	getChildrenInProtoinstance (const X3D::SFNode &, const std::set <X3D::SFNode> &, std::set <X3D::SFNode> &) const;
-
 	void
 	set_viewer ();
 
 	void
-	set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> &);
+	set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> & availableViewers);
 
 	virtual
 	void
@@ -781,7 +786,8 @@ private:
 	checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last);
 
 	void
-	toggleActions (const Glib::RefPtr <Gtk::ToggleAction> &, const std::vector <Glib::RefPtr <Gtk::ToggleAction>> &);
+	toggleActions (const Glib::RefPtr <Gtk::ToggleAction> & current,
+	               const std::vector <Glib::RefPtr <Gtk::ToggleAction>> & actions);
 
 	///  @name Members
 

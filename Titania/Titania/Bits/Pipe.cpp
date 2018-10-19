@@ -216,6 +216,8 @@ Pipe::write (const char* data, const size_t length)
 
 		if (bytesWritten not_eq bytes)
 		{
+			close ();
+
 			if (bytesWritten < 0)
 				throw std::runtime_error ("Write to pipe failed: " + std::string (strerror (errno)) + ".");
 			else

@@ -100,10 +100,6 @@ public:
 
 protected:
 
-	///  @name Friends
-
-	friend class X3DToolContext;
-
 	///  @name Construction
 
 	X3DToolObject ();
@@ -123,11 +119,6 @@ protected:
 	realize ()
 	{ }
 
-	virtual
-	void
-	setIsPickable (const bool value)
-	{ isPickable = value; }
-
 
 private:
 
@@ -140,7 +131,6 @@ private:
 
 	X3DPtr <Inline> inlineNode;
 	SFNode          toolNode;
-	bool            isPickable;
 
 };
 

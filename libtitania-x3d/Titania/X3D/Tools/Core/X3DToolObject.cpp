@@ -51,8 +51,8 @@
 #include "X3DToolObject.h"
 
 #include "../../Browser/Selection.h"
-#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
 #include "../../Rendering/PolygonModeContainer.h"
@@ -64,8 +64,7 @@ namespace X3D {
 X3DToolObject::X3DToolObject () :
 	   X3DNode (),
 	inlineNode (new Inline (getBrowser () -> getPrivateScene ())),
-	  toolNode (),
-	isPickable (true)
+	  toolNode ()
 {
 	addType (X3DConstants::X3DToolObject);
 
@@ -110,26 +109,26 @@ X3DToolObject::set_loadState (const LoadState loadState)
 {
 	try
 	{
-		if (loadState == COMPLETE_STATE)
+		if (loadState not_eq COMPLETE_STATE)
+			return;
+
+		toolNode = inlineNode -> getExportedNode ("Tool");
+
+		try
 		{
-			toolNode = inlineNode -> getExportedNode ("Tool");
-
-			try
-			{
-				toolNode -> setField <SFBool> ("set_enabled", not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ()));
-			}
-			catch (const X3DError &)
-			{ }
-
-			try
-			{
-				toolNode -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
-			}
-			catch (const X3DError &)
-			{ }
-
-			realize ();
+			toolNode -> setField <SFBool> ("set_enabled", not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ()));
 		}
+		catch (const X3DError &)
+		{ }
+
+		try
+		{
+			toolNode -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
+		}
+		catch (const X3DError &)
+		{ }
+
+		realize ();
 	}
 	catch (const X3DError & error)
 	{
@@ -151,7 +150,7 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 		{
 			try
 			{
-				if (not isPickable)
+				if (not getBrowser () -> getToolsPickable () .top ())
 					break;
 
 				HierarchyGuard guard (renderObject -> getBrowser (), this);

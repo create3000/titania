@@ -146,14 +146,14 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 	if (not getBrowser () -> getSelectable () and not enabled ())
 		return false;
 
-	getBrowser () -> pushToolsPickable (false);
+	getBrowser () -> getToolsPickable () .push (false);
 
 	if (not touch (event -> x, event -> y))
 	{
 		if (enabled ())
 			enabled () = false;
 
-		getBrowser () -> popToolsPickable ();
+		getBrowser () -> getToolsPickable () .pop ();
 		return false;
 	}
 
@@ -179,7 +179,7 @@ X3DSnapTool::on_button_release_event (GdkEventButton* event)
 
 	motionNotifyConnection  .disconnect ();
 
-	getBrowser () -> popToolsPickable ();
+	getBrowser () -> getToolsPickable () .pop ();
 
 	return false;
 }

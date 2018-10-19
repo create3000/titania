@@ -429,6 +429,10 @@ RenderPanel::on_frame_changed ()
 			if (lastFrame)
 				setRendering (false);
 		}
+		else
+		{
+			setRendering (false);
+		}
 	}
 	catch (const std::exception & error)
 	{

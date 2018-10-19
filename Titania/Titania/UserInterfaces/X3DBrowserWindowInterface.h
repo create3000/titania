@@ -1405,7 +1405,7 @@ public:
 
 	virtual
 	void
-	on_cobweb_compatibility_toggled () = 0;
+	on_x_ite_compatibility_toggled () = 0;
 
 	virtual
 	void

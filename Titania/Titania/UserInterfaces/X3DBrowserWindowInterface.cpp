@@ -410,7 +410,7 @@ X3DBrowserWindowInterface::create ()
 	m_TextureQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_medium_toggled));
 	m_ToolbarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_toggled));
 	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
-	m_X_ITECompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_cobweb_compatibility_toggled));
+	m_X_ITECompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_x_ite_compatibility_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
 	m_BrowserNewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_new_activated));
