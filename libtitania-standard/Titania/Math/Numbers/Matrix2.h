@@ -169,13 +169,15 @@ public:
 		          e21, e22 }
 	{ }
 
-	///  Components constructor. Set values to @a v.
-	explicit
-	constexpr
-	matrix2 (const Type & v) :
-		m_array { v, v,
-		          v, v }
-	{ }
+	///  Constructs the matrix to from parameters.
+	matrix2 (const Type & translation) :
+		matrix2 ()
+	{ set (translation); }
+
+	///  Constructs the matrix to from parameters.
+	matrix2 (const Type & translation, const Type & scale) :
+		matrix2 ()
+	{ set (translation, scale); }
 
 	///  @name Assignment operators
 
@@ -249,9 +251,11 @@ public:
 	void
 	set ();
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const Type & translation);
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const Type & translation, const Type & scale);
 

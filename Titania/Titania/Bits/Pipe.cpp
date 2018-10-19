@@ -75,7 +75,7 @@ Pipe::Pipe (const PipeCallback & stdout_callback, const PipeCallback & stderr_ca
 	        m_is_open (false),
 	         m_buffer (buffer_size) 
 {
-	static const bool e = ignoreSigpipe ();
+	const bool e = ignoreSigpipe ();
 
 	if (e)
 		__LOG__ << e << std::endl;

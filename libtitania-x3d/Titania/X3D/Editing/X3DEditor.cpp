@@ -3274,7 +3274,7 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
  *
  */
 
-///  Returns bounding box of nodes in model space with tool support.
+///  Returns bounding box of nodes in world space with tool support.
 Box3d
 X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
                            const MFNode & nodes)
@@ -3401,6 +3401,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 }
 
 ///  Moves nodes center to @a targetPosition and @a sourceNormal aligned to @a targetNormal.  All vectors must be in world space.
+///  Returns transformation matrix in world space.
 Matrix4d
 X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionContext,
                                     const MFNode & nodes,
@@ -3414,7 +3415,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 	if (nodes .empty ())
 		return Matrix4d ();
 
-	// Determine bbox of nodes in model space.
+	// Determine bbox of nodes in world space.
 
 	const auto bbox = getBoundingBox (executionContext, { nodes .back () });
 
@@ -3444,14 +3445,12 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 		return *iter;
 	};
 
-	const auto rotation             = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (negate (sourceNormal), targetNormal);
-	const auto center               = moveCenter ? bbox .center () : (sourceNormal == Vector3d () ? nearestPoint () : sourcePosition);
-	const auto translation          = targetPosition - center;
-	const auto scale                = Vector3d (1, 1, 1);
-	const auto scaleOrientation     = Rotation4d ();
-	auto       transformationMatrix = Matrix4d ();
-
-	transformationMatrix .set (translation, rotation, scale, scaleOrientation, center);
+	const auto rotation         = sourceNormal == Vector3d () ? Rotation4d () : Rotation4d (negate (sourceNormal), targetNormal);
+	const auto center           = moveCenter ? bbox .center () : (sourceNormal == Vector3d () ? nearestPoint () : sourcePosition);
+	const auto translation      = targetPosition - center;
+	const auto scale            = Vector3d (1, 1, 1);
+	const auto scaleOrientation = Rotation4d ();
+	const auto absoluteMatrix   = Matrix4d (translation, rotation, scale, scaleOrientation, center);
 
 	// Move nodes and maybe align to targetNormal.
 
@@ -3465,22 +3464,20 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 				{
 					case X3DConstants::DirectionalLight:
 					{
-						const auto lightNode   = X3DPtr <DirectionalLight> (node);
-						const auto modelMatrix = getModelMatrix (executionContext, node);
-						const auto location    = lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location");
-						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+						const auto lightNode            = X3DPtr <DirectionalLight> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto location             = lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location");
+						const auto rotation             = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+						const auto matrix               = Matrix4d (location, rotation);
+						const auto transformedMatrix    = matrix * transformationMatrix;
 
-						Matrix4d matrix;
-						matrix .set (location, rotation);
+						Vector3d   transformedLocation;
+						Rotation4d transformedRotation;
 
-						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+						transformedMatrix .get (transformedLocation, transformedRotation);
 
-						Vector3d transformedLocation;
-						Rotation4d r;
-
-						transformedMatrix .get (transformedLocation, r);
-
-						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+						const auto transformedDirection = Vector3d (0, 0, 1) * transformedRotation;
 
 						undoStep -> addObjects (lightNode);
 						undoStep -> addUndoFunction (&X3DNode::setMetaData <Vector3f>, lightNode, "/DirectionalLight/location", location);
@@ -3492,13 +3489,13 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					}
 					case X3DConstants::Extrusion:
 					{
-						const auto extrusionNode = X3DPtr <Extrusion> (node);
-						const auto modelMatrix   = getModelMatrix (executionContext, node);
-						const auto matrix        = modelMatrix * transformationMatrix * inverse (modelMatrix);
-						auto       spine         = std::vector <Vector3d> (extrusionNode -> spine () .cbegin (), extrusionNode -> spine () .cend ());
+						const auto extrusionNode        = X3DPtr <Extrusion> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						auto       spine                = std::vector <Vector3d> (extrusionNode -> spine () .cbegin (), extrusionNode -> spine () .cend ());
 
 						for (auto & point : spine)
-							point = point * matrix;
+							point = point * transformationMatrix;
 
 						setValue (extrusionNode, extrusionNode -> spine (), MFVec3f (spine .cbegin (), spine .cend ()), undoStep);
 						break;
@@ -3510,46 +3507,44 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						if (tool -> getSelectedPoints () .empty ())
 							continue; // Proceed with X3DComposedGeometryNode.
 
-						const auto & coordNode   = tool -> getCoord ();
-						const auto   modelMatrix = getModelMatrix (executionContext, node);
-						const auto   matrix      = modelMatrix * transformationMatrix * inverse (modelMatrix);
+						const auto & coordNode            = tool -> getCoord ();
+						const auto   modelMatrix          = getModelMatrix (executionContext, node);
+						const auto   transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
 
 						undoSetCoord (coordNode, undoStep);
 
 						for (const auto & pair : tool -> getSelectedPoints ())
-							coordNode -> set1Point (pair .first, pair .second * matrix);
+							coordNode -> set1Point (pair .first, pair .second * transformationMatrix);
 
 						redoSetCoord (coordNode, undoStep);
 						break;
 					}
 					case X3DConstants::PointLight:
 					{
-						const auto lightNode           = X3DPtr <PointLight> (node);
-						const auto modelMatrix         = getModelMatrix (executionContext, node);
-						const auto matrix              = modelMatrix * transformationMatrix * inverse (modelMatrix);
-						const auto transformedLocation = Vector3d (lightNode -> location () .getValue ()) * matrix;
+						const auto lightNode            = X3DPtr <PointLight> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto transformedLocation  = Vector3d (lightNode -> location () .getValue ()) * transformationMatrix;
 
 						setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
 						break;
 					}
 					case X3DConstants::SpotLight:
 					{
-						const auto lightNode   = X3DPtr <SpotLight> (node);
-						const auto modelMatrix = getModelMatrix (executionContext, node);
-						const auto location    = Vector3d (lightNode -> location () .getValue ());
-						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+						const auto lightNode            = X3DPtr <SpotLight> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto location             = Vector3d (lightNode -> location () .getValue ());
+						const auto rotation             = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+						const auto matrix               = Matrix4d (location, rotation);
+						const auto transformedMatrix    = matrix * transformationMatrix;
 
-						Matrix4d matrix;
-						matrix .set (location, rotation);
+						Vector3d   transformedLocation;
+						Rotation4d transformedRotation;
 
-						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+						transformedMatrix .get (transformedLocation, transformedRotation);
 
-						Vector3d transformedLocation;
-						Rotation4d r;
-
-						transformedMatrix .get (transformedLocation, r);
-
-						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+						const auto transformedDirection = Vector3d (0, 0, 1) * transformedRotation;
 
 						setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
 						setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
@@ -3557,22 +3552,20 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					}
 					case X3DConstants::Sound:
 					{
-						const auto soundNode   = X3DPtr <Sound> (node);
-						const auto modelMatrix = getModelMatrix (executionContext, node);
-						const auto location    = Vector3d (soundNode -> location () .getValue ());
-						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (soundNode -> direction () .getValue ()));
+						const auto soundNode            = X3DPtr <Sound> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto location             = Vector3d (soundNode -> location () .getValue ());
+						const auto rotation             = Rotation4d (Vector3d (0, 0, 1), Vector3d (soundNode -> direction () .getValue ()));
+						const auto matrix               = Matrix4d (location, rotation);
+						const auto transformedMatrix    = matrix * transformationMatrix;
 
-						Matrix4d matrix;
-						matrix .set (location, rotation);
+						Vector3d   transformedLocation;
+						Rotation4d transformedRotation;
 
-						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+						transformedMatrix .get (transformedLocation, transformedRotation);
 
-						Vector3d transformedLocation;
-						Rotation4d r;
-
-						transformedMatrix .get (transformedLocation, r);
-
-						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+						const auto transformedDirection = Vector3d (0, 0, 1) * transformedRotation;
 
 						setValue (soundNode, soundNode -> location (), SFVec3f (transformedLocation), undoStep);
 						setValue (soundNode, soundNode -> direction (), SFVec3f (transformedDirection), undoStep);
@@ -3580,11 +3573,12 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					}
 					case X3DConstants::X3DTransformNode:
 					{
-						const auto transformNode     = X3DPtr <X3DTransformNode> (node);
-						const auto center            = Vector3d (transformNode -> center () .getValue ());
-						const auto modelMatrix       = getModelMatrix (executionContext, node);
-						const auto matrix            = transformNode -> getMatrix ();
-						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+						const auto transformNode        = X3DPtr <X3DTransformNode> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto matrix               = transformNode -> getMatrix ();
+						const auto transformedMatrix    = matrix * transformationMatrix;
+						const auto center               = Vector3d (transformNode -> center () .getValue ());
 
 						undoStep -> addObjects (transformNode);
 						undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transformNode, transformNode -> getMatrix (), center);
@@ -3595,40 +3589,38 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					}
 					case X3DConstants::X3DComposedGeometryNode:
 					{
-						const auto   geometryNode = X3DPtr <X3DComposedGeometryNode> (node);
-						const auto & coordNode    = geometryNode -> getCoord ();
-						const auto   modelMatrix  = getModelMatrix (executionContext, node);
-						const auto   matrix       = modelMatrix * transformationMatrix * inverse (modelMatrix);
+						const auto   geometryNode         = X3DPtr <X3DComposedGeometryNode> (node);
+						const auto & coordNode            = geometryNode -> getCoord ();
+						const auto   modelMatrix          = getModelMatrix (executionContext, node);
+						const auto   transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
 
 						undoSetCoord (coordNode, undoStep);
 
 						for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
-							coordNode -> set1Point (i, coordNode -> get1Point (i) * matrix);
+							coordNode -> set1Point (i, coordNode -> get1Point (i) * transformationMatrix);
 
 						redoSetCoord (coordNode, undoStep);
 						break;
 					}
 					case X3DConstants::X3DEnvironmentalSensorNode:
 					{
-						const auto sensorNode        = X3DPtr <X3DEnvironmentalSensorNode> (node);
-						const auto modelMatrix       = getModelMatrix (executionContext, node);
-						const auto matrix            = modelMatrix * transformationMatrix * inverse (modelMatrix);
-						const auto transformedCenter = Vector3d (sensorNode -> center () .getValue ()) * matrix;
+						const auto sensorNode           = X3DPtr <X3DEnvironmentalSensorNode> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto transformedCenter    = Vector3d (sensorNode -> center () .getValue ()) * transformationMatrix;
 
 						setValue (sensorNode, sensorNode -> center (), SFVec3f (transformedCenter), undoStep);
 						break;
 					}
 					case X3DConstants::X3DViewpointNode:
 					{
-						const auto viewpointNode = X3DPtr <X3DViewpointNode> (node);
-						const auto modelMatrix   = getModelMatrix (executionContext, node);
+						const auto viewpointNode        = X3DPtr <X3DViewpointNode> (node);
+						const auto modelMatrix          = getModelMatrix (executionContext, node);
+						const auto transformationMatrix = modelMatrix * absoluteMatrix * inverse (modelMatrix);
+						const auto matrix               = Matrix4d (viewpointNode -> getPosition (), viewpointNode -> getOrientation ());
+						const auto transformedMatrix    = matrix * transformationMatrix;
 
-						Matrix4d matrix;
-						matrix .set (viewpointNode -> getPosition (), viewpointNode -> getOrientation ());
-
-						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
-
-						Vector3d transformedPosition;
+						Vector3d   transformedPosition;
 						Rotation4d transformedOrientation;
 
 						transformedMatrix .get (transformedPosition, transformedOrientation);
@@ -3653,7 +3645,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 	requestUpdateInstances (executionContext, undoStep);
 
-	return transformationMatrix;
+	return absoluteMatrix;
 }
 
 /***

@@ -183,15 +183,41 @@ public:
 		          e41, e42, e43, e44 }
 	{ }
 
-	///  Components constructor. Set values to @a v.
-	explicit
-	constexpr
-	matrix4 (const Type & v) :
-		m_array { v, v, v, v,
-		          v, v, v, v,
-		          v, v, v, v,
-		          v, v, v, v }
-	{ }
+	///  Constructs the matrix to from parameters.
+	matrix4 (const vector3 <Type> & translation) :
+		matrix4 ()
+	{ set (translation); }
+
+	///  Constructs the matrix to from parameters.
+	matrix4 (const vector3 <Type> & translation,
+	         const rotation4 <Type> & rotation) :
+		matrix4 ()
+	{ set (translation, rotation); }
+
+	///  Constructs the matrix to from parameters.
+	matrix4 (const vector3 <Type> & translation,
+	         const rotation4 <Type> & rotation,
+	         const vector3 <Type> & scale) :
+		matrix4 ()
+	{ set (translation, rotation, scale); }
+
+	///  Constructs the matrix to from parameters.
+	matrix4 (const vector3 <Type> & translation,
+	         const rotation4 <Type> & rotation,
+	         const vector3 <Type> & scale,
+	         const rotation4 <Type> & scaleOrientation) :
+		matrix4 ()
+	{ set (translation, rotation, scale, scaleOrientation); }
+
+	///  Constructs the matrix to from parameters.
+	matrix4 (const vector3 <Type> & translation,
+	         const rotation4 <Type> & rotation,
+	         const vector3 <Type> & scale,
+	         const rotation4 <Type> & scaleOrientation,
+	         const vector3 <Type> & center) :
+		matrix4 ()
+	{ set (translation, rotation, scale, scaleOrientation, center); }
+	
 
 	///  Constructs a matrix4 from a rotation4.
 	explicit
@@ -347,24 +373,29 @@ public:
 	void
 	set ();
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const vector3 <Type> & translation);
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const vector3 <Type> & translation,
 	     const rotation4 <Type> & rotation);
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const vector3 <Type> & translation,
 	     const rotation4 <Type> & rotation,
 	     const vector3 <Type> & scale);
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const vector3 <Type> & translation,
 	     const rotation4 <Type> & rotation,
 	     const vector3 <Type> & scale,
 	     const rotation4 <Type> & scaleOrientation);
 
+	///  Sets the matrix to the new value calculated from the parameters.
 	void
 	set (const vector3 <Type> & translation,
 	     const rotation4 <Type> & rotation,
