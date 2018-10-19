@@ -1853,6 +1853,9 @@ BrowserWindow::on_move_selection_to_snap_target_activate ()
 void
 BrowserWindow::on_move_selection_to_snap_target_activate (const X3D::MFNode & selection, const X3D::UndoStepPtr & undoStep)
 {
+	if (selection .empty ())
+		return;
+
 	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
 	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
 	const auto & snapSource       = getCurrentBrowser () -> getSnapSource ();
@@ -1905,6 +1908,9 @@ BrowserWindow::on_move_selection_center_to_snap_target_activate ()
 void
 BrowserWindow::on_move_selection_center_to_snap_target_activate (const X3D::MFNode & selection, const X3D::UndoStepPtr & undoStep)
 {
+	if (selection .empty ())
+		return;
+
 	const auto   executionContext = X3D::MakePtr (getSelectionContext (selection));
 	const auto & snapTarget       = getCurrentBrowser () -> getSnapTarget ();
 	const auto & snapSource       = getCurrentBrowser () -> getSnapSource ();

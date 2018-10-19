@@ -59,11 +59,15 @@
 #include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/EnvironmentalEffects/Background.h"
+#include "../Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../Components/Geometry3D/Extrusion.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
 #include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Lighting/DirectionalLight.h"
+#include "../Components/Lighting/PointLight.h"
+#include "../Components/Lighting/SpotLight.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
 #include "../Components/NURBS/CoordinateDouble.h"
@@ -72,6 +76,7 @@
 #include "../Components/Rendering/Coordinate.h"
 #include "../Components/Rendering/Normal.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Components/Sound/Sound.h"
 #include "../Components/Text/X3DFontStyleNode.h"
 #include "../Components/Texturing/TextureCoordinate.h"
 #include "../Components/Texturing/MultiTextureCoordinate.h"
@@ -3282,6 +3287,16 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 		{
 			switch (type)
 			{
+				case X3DConstants::DirectionalLight:
+				{
+					const auto lightNode   = X3DPtr <DirectionalLight> (node);
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto points      = std::vector <Vector3d> ({ lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location") });
+					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
 				case X3DConstants::Extrusion:
 				{
 					const auto extrusionNode = X3DPtr <Extrusion> (node);
@@ -3309,6 +3324,36 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					bbox += subBBox * modelMatrix;
 					break;
 				}
+				case X3DConstants::PointLight:
+				{
+					const auto lightNode   = X3DPtr <PointLight> (node);
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto points      = std::vector <Vector3d> ({ lightNode -> location () .getValue () });
+					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
+				case X3DConstants::SpotLight:
+				{
+					const auto lightNode   = X3DPtr <SpotLight> (node);
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto points      = std::vector <Vector3d> ({ lightNode -> location () .getValue () });
+					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
+				case X3DConstants::Sound:
+				{
+					const auto soundNode   = X3DPtr <Sound> (node);
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto points      = std::vector <Vector3d> ({ soundNode -> location () .getValue () });
+					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
 				case X3DConstants::X3DBoundedObject:
 				{
 					const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
@@ -3318,11 +3363,30 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					bbox += subBBox * modelMatrix;
 					break;
 				}
+				case X3DConstants::X3DEnvironmentalSensorNode:
+				{
+					const auto sensorNode  = X3DPtr <X3DEnvironmentalSensorNode> (node);
+					const auto modelMatrix = getModelMatrix (executionContext, node);
+					const auto subBBox     = Box3d (sensorNode -> size () .getValue (), sensorNode -> center () .getValue ());
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
 				case X3DConstants::X3DGeometryNode:
 				{
 					const auto geometryNode = X3DPtr <X3DGeometryNode> (node);
 					const auto modelMatrix  = getModelMatrix (executionContext, node);
 					const auto subBBox      = geometryNode -> getBBox ();
+	
+					bbox += subBBox * modelMatrix;
+					break;
+				}
+				case X3DConstants::X3DViewpointNode:
+				{
+					const auto viewpointNode = X3DPtr <X3DViewpointNode> (node);
+					const auto modelMatrix   = getModelMatrix (executionContext, node);
+					const auto points        = std::vector <Vector3d> ({ viewpointNode -> getPosition () });
+					const auto subBBox       = Box3d (points .begin (), points .end (), iterator_type ());
 	
 					bbox += subBBox * modelMatrix;
 					break;
@@ -3403,6 +3467,33 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 			{
 				switch (type)
 				{
+					case X3DConstants::DirectionalLight:
+					{
+						const auto lightNode   = X3DPtr <DirectionalLight> (node);
+						const auto modelMatrix = getModelMatrix (executionContext, node);
+						const auto location    = lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location");
+						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+
+						Matrix4d matrix;
+						matrix .set (location, rotation);
+
+						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						Vector3d transformedLocation;
+						Rotation4d r;
+
+						transformedMatrix .get (transformedLocation, r);
+
+						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+
+						undoStep -> addObjects (lightNode);
+						undoStep -> addUndoFunction (&X3DNode::setMetaData <Vector3f>, lightNode, "/DirectionalLight/location", location);
+						undoStep -> addRedoFunction (&X3DNode::setMetaData <Vector3f>, lightNode, "/DirectionalLight/location", transformedLocation);
+						lightNode -> setMetaData <Vector3f> ("/DirectionalLight/location", transformedLocation);
+
+						X3D::X3DEditor::setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						break;
+					}
 					case X3DConstants::Extrusion:
 					{
 						const auto extrusionNode = X3DPtr <Extrusion> (node);
@@ -3435,6 +3526,62 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						redoSetCoord (coordNode, undoStep);
 						break;
 					}
+					case X3DConstants::PointLight:
+					{
+						const auto lightNode           = X3DPtr <PointLight> (node);
+						const auto modelMatrix         = getModelMatrix (executionContext, node);
+						const auto matrix              = modelMatrix * transformationMatrix * inverse (modelMatrix);
+						const auto transformedLocation = Vector3d (lightNode -> location () .getValue ()) * matrix;
+
+						X3D::X3DEditor::setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
+						break;
+					}
+					case X3DConstants::SpotLight:
+					{
+						const auto lightNode   = X3DPtr <SpotLight> (node);
+						const auto modelMatrix = getModelMatrix (executionContext, node);
+						const auto location    = Vector3d (lightNode -> location () .getValue ());
+						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (lightNode -> direction () .getValue ()));
+
+						Matrix4d matrix;
+						matrix .set (location, rotation);
+
+						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						Vector3d transformedLocation;
+						Rotation4d r;
+
+						transformedMatrix .get (transformedLocation, r);
+
+						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+
+						X3D::X3DEditor::setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
+						X3D::X3DEditor::setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						break;
+					}
+					case X3DConstants::Sound:
+					{
+						const auto soundNode   = X3DPtr <Sound> (node);
+						const auto modelMatrix = getModelMatrix (executionContext, node);
+						const auto location    = Vector3d (soundNode -> location () .getValue ());
+						const auto rotation    = Rotation4d (Vector3d (0, 0, 1), Vector3d (soundNode -> direction () .getValue ()));
+
+						Matrix4d matrix;
+						matrix .set (location, rotation);
+
+						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						Vector3d transformedLocation;
+						Rotation4d r;
+
+						transformedMatrix .get (transformedLocation, r);
+
+						const auto transformedDirection = Vector3d (0, 0, 1) * r;
+
+						X3D::X3DEditor::setValue (soundNode, soundNode -> location (), SFVec3f (transformedLocation), undoStep);
+						X3D::X3DEditor::setValue (soundNode, soundNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						break;
+					}
 					case X3DConstants::X3DTransformNode:
 					{
 						const auto transformNode     = X3DPtr <X3DTransformNode> (node);
@@ -3465,6 +3612,47 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						redoSetCoord (coordNode, undoStep);
 						break;
 					}
+					case X3DConstants::X3DEnvironmentalSensorNode:
+					{
+						const auto sensorNode        = X3DPtr <X3DEnvironmentalSensorNode> (node);
+						const auto modelMatrix       = getModelMatrix (executionContext, node);
+						const auto matrix            = modelMatrix * transformationMatrix * inverse (modelMatrix);
+						const auto transformedCenter = Vector3d (sensorNode -> center () .getValue ()) * matrix;
+
+						X3D::X3DEditor::setValue (sensorNode, sensorNode -> center (), SFVec3f (transformedCenter), undoStep);
+						break;
+					}
+					case X3DConstants::X3DViewpointNode:
+					{
+						const auto viewpointNode = X3DPtr <X3DViewpointNode> (node);
+						const auto modelMatrix   = getModelMatrix (executionContext, node);
+
+						Matrix4d matrix;
+						matrix .set (viewpointNode -> getPosition (), viewpointNode -> getOrientation ());
+
+						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
+
+						Vector3d position;
+						Rotation4d orientation;
+
+						transformedMatrix .get (position, orientation);
+					
+						undoStep -> addObjects (viewpointNode);
+						undoStep -> addUndoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
+						undoStep -> addUndoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
+						undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
+						undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
+							
+						undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, position);
+						undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, orientation);
+						undoStep -> addRedoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
+						undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
+
+						viewpointNode -> setPosition (position);
+						viewpointNode -> setOrientation (orientation);
+						viewpointNode -> resetUserOffsets ();
+						break;
+					}
 					default:
 					{
 						continue;
@@ -3479,6 +3667,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 			__LOG__ << error .what () << std::endl;
 		}
 	}
+
+	requestUpdateInstances (executionContext, undoStep);
 
 	return transformationMatrix;
 }
@@ -3518,14 +3708,14 @@ X3DEditor::updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode, con
 	undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
 	undoStep -> addRedoFunction (&X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
 
-	viewpointNode -> setPosition         (position);
-	viewpointNode -> setOrientation      (orientation);
+	viewpointNode -> setPosition (position);
+	viewpointNode -> setOrientation (orientation);
 	viewpointNode -> setCenterOfRotation (centerOfRotation);
 	viewpointNode -> resetUserOffsets ();
 
 	// Proto support
 
-	X3DEditor::requestUpdateInstances (viewpointNode, undoStep);
+	requestUpdateInstances (viewpointNode, undoStep);
 }
 
 /***
