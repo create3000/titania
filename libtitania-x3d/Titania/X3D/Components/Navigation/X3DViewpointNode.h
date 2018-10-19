@@ -201,6 +201,7 @@ public:
 	{ return 1; }
 
 	///  Setup projection matrix.
+	virtual
 	Matrix4d
 	getProjectionMatrix (X3DRenderObject* const renderObject) const;
 
@@ -208,14 +209,17 @@ public:
 	Matrix4d
 	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const = 0;
 
+	virtual
 	const Matrix4d &
 	getCameraSpaceMatrix () const
 	{ return cameraSpaceMatrix; }
 
+	virtual
 	const Matrix4d &
 	getInverseCameraSpaceMatrix () const
 	{ return inverseCameraSpaceMatrix; }
 
+	virtual
 	const Matrix4d &
 	getModelMatrix () const
 	{ return modelMatrix; }
@@ -224,10 +228,12 @@ public:
 	Vector3d
 	getScreenScale (const Vector3d & point, const Vector4i & viewport) const = 0;
 
+	virtual
 	void
 	setAnimate (const bool value)
 	{ animate = value; }
 
+	virtual
 	bool
 	getAnimate () const
 	{ return animate; }

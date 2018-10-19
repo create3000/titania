@@ -414,6 +414,14 @@ public:
 	updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
 	                 const UndoStepPtr & undoStep);
 
+	static
+	void
+	animateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
+	                  const Vector3d & position,
+	                  const Rotation4d & orientation,
+	                  const Vector3d & centerOfRotation,
+	                  const UndoStepPtr & undoStep);
+
 	///  @name Node handling
 
 	template <class NodeType>

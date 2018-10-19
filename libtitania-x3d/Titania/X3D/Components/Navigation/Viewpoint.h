@@ -145,11 +145,11 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const Vector3d &, const Vector4i &) const final override;
+	getScreenScale (const Vector3d &, const Vector4i &) const override;
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const final override;
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const override;
 
 
 private:

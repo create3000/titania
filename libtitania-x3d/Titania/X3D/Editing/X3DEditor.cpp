@@ -3487,7 +3487,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						undoStep -> addRedoFunction (&X3DNode::setMetaData <Vector3f>, lightNode, "/DirectionalLight/location", transformedLocation);
 						lightNode -> setMetaData <Vector3f> ("/DirectionalLight/location", transformedLocation);
 
-						X3D::X3DEditor::setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
 						break;
 					}
 					case X3DConstants::Extrusion:
@@ -3500,7 +3500,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						for (auto & point : spine)
 							point = point * matrix;
 
-						X3D::X3DEditor::setValue (extrusionNode, extrusionNode -> spine (), MFVec3f (spine .cbegin (), spine .cend ()), undoStep);
+						setValue (extrusionNode, extrusionNode -> spine (), MFVec3f (spine .cbegin (), spine .cend ()), undoStep);
 						break;
 					}
 					case X3DConstants::IndexedFaceSetTool:
@@ -3529,7 +3529,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						const auto matrix              = modelMatrix * transformationMatrix * inverse (modelMatrix);
 						const auto transformedLocation = Vector3d (lightNode -> location () .getValue ()) * matrix;
 
-						X3D::X3DEditor::setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
+						setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
 						break;
 					}
 					case X3DConstants::SpotLight:
@@ -3551,8 +3551,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 						const auto transformedDirection = Vector3d (0, 0, 1) * r;
 
-						X3D::X3DEditor::setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
-						X3D::X3DEditor::setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						setValue (lightNode, lightNode -> location (), SFVec3f (transformedLocation), undoStep);
+						setValue (lightNode, lightNode -> direction (), SFVec3f (transformedDirection), undoStep);
 						break;
 					}
 					case X3DConstants::Sound:
@@ -3574,8 +3574,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 						const auto transformedDirection = Vector3d (0, 0, 1) * r;
 
-						X3D::X3DEditor::setValue (soundNode, soundNode -> location (), SFVec3f (transformedLocation), undoStep);
-						X3D::X3DEditor::setValue (soundNode, soundNode -> direction (), SFVec3f (transformedDirection), undoStep);
+						setValue (soundNode, soundNode -> location (), SFVec3f (transformedLocation), undoStep);
+						setValue (soundNode, soundNode -> direction (), SFVec3f (transformedDirection), undoStep);
 						break;
 					}
 					case X3DConstants::X3DTransformNode:
@@ -3615,7 +3615,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						const auto matrix            = modelMatrix * transformationMatrix * inverse (modelMatrix);
 						const auto transformedCenter = Vector3d (sensorNode -> center () .getValue ()) * matrix;
 
-						X3D::X3DEditor::setValue (sensorNode, sensorNode -> center (), SFVec3f (transformedCenter), undoStep);
+						setValue (sensorNode, sensorNode -> center (), SFVec3f (transformedCenter), undoStep);
 						break;
 					}
 					case X3DConstants::X3DViewpointNode:
@@ -3633,22 +3633,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 						transformedMatrix .get (transformedPosition, transformedOrientation);
 
-						// Jump or animate if is bound.
-
-						undoStep -> addObjects (viewpointNode);
-						undoStep -> addUndoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
-						undoStep -> addUndoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
-						undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
-						undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
-							
-						undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, transformedPosition);
-						undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, transformedOrientation);
-						undoStep -> addRedoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
-						undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
-
-						viewpointNode -> setPosition (transformedPosition);
-						viewpointNode -> setOrientation (transformedOrientation);
-						viewpointNode -> resetUserOffsets ();
+						animateViewpoint (viewpointNode, transformedPosition, transformedOrientation, viewpointNode -> getCenterOfRotation (), undoStep);
 						break;
 					}
 					default:
@@ -3681,36 +3666,47 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
  *
  */
 
+///  Applies user offsets of @a viewpointNode.
 void
 X3DEditor::updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
                             const UndoStepPtr & undoStep)
 {
-	// Make copy, don't use references.
-	const auto position         = viewpointNode -> getUserPosition ();
-	const auto orientation      = viewpointNode -> getUserOrientation ();
-	const auto centerOfRotation = viewpointNode -> getUserCenterOfRotation ();
+	const auto userPosition         = viewpointNode -> getUserPosition ();
+	const auto userOrientation      = viewpointNode -> getUserOrientation ();
+	const auto userCenterOfRotation = viewpointNode -> getUserCenterOfRotation ();
 
+	animateViewpoint (viewpointNode, userPosition, userOrientation, userCenterOfRotation, undoStep);
+}
+
+///  Animates @a viewpointNode to the @a position and @a orientation or jumps if not bound.
+void
+X3DEditor::animateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
+                             const Vector3d & position,
+                             const Rotation4d & orientation,
+                             const Vector3d & centerOfRotation,
+                             const UndoStepPtr & undoStep)
+{
 	undoStep -> addObjects (viewpointNode);
 	undoStep -> addUndoFunction (&X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
+	undoStep -> addUndoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
 	undoStep -> addUndoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
 	undoStep -> addUndoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
 	undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
 	undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
-	undoStep -> addUndoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
-	undoStep -> addUndoFunction (&SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
 
-	undoStep -> addRedoFunction (&SFBool::setValue, std::ref (viewpointNode -> set_bind ()), true);
-	undoStep -> addRedoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
 	undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, position);
 	undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, orientation);
 	undoStep -> addRedoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, centerOfRotation);
 	undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
+	undoStep -> addRedoFunction (&X3DViewpointNode::setAnimate,          viewpointNode, true);
 	undoStep -> addRedoFunction (&X3DViewpointNode::transitionStart,     viewpointNode, viewpointNode);
 
 	viewpointNode -> setPosition (position);
 	viewpointNode -> setOrientation (orientation);
 	viewpointNode -> setCenterOfRotation (centerOfRotation);
 	viewpointNode -> resetUserOffsets ();
+	viewpointNode -> setAnimate (true);
+	viewpointNode -> transitionStart (viewpointNode);
 
 	// Proto support
 

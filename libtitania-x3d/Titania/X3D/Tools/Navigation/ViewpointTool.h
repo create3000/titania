@@ -100,6 +100,18 @@ public:
 	fieldOfView () const final override
 	{ return getNode <Viewpoint> () -> fieldOfView (); }
 
+	///  @name Member access
+
+	virtual
+	Matrix4d
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const final override
+	{ return getNode <Viewpoint> () -> getProjectionMatrix (nearValue, farValue, viewport, limit); }
+
+	virtual
+	Vector3d
+	getScreenScale (const Vector3d & point, const Vector4i & viewport) const final override
+	{ return getNode <Viewpoint> () -> getScreenScale (point, viewport); }
+
 	///  @name Destruction
 
 	virtual

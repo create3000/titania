@@ -538,15 +538,12 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			timeSensor -> startTime ()     = getCurrentTime ();
 			timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
 
-			Vector3d   relativePosition, relativeScale;
-			Rotation4d relativeOrientation, relativeScaleOrientation;
+			Vector3d   startPosition;
+			Rotation4d startOrientation;
+			Vector3d   startScale;
+			Rotation4d startScaleOrientation;
 
-			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
-
-			const Vector3d   startPosition         = relativePosition;
-			const Rotation4d startOrientation      = relativeOrientation;
-			const Vector3d   startScale            = relativeScale;
-			const Rotation4d startScaleOrientation = relativeScaleOrientation;
+			getRelativeTransformation (fromViewpoint, startPosition, startOrientation, startScale, startScaleOrientation);
 
 			const Vector3d   endPosition         = positionOffset ();
 			const Rotation4d endOrientation      = orientationOffset ();
@@ -568,8 +565,10 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 		}
 		else
 		{
-			Vector3d   relativePosition, relativeScale;
-			Rotation4d relativeOrientation, relativeScaleOrientation;
+			Vector3d   relativePosition;
+			Rotation4d relativeOrientation;
+			Vector3d   relativeScale;
+			Rotation4d relativeScaleOrientation;
 
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -637,18 +636,18 @@ X3DViewpointNode::traverse (const TraverseType type, X3DRenderObject* const rend
 	{
 		case TraverseType::CAMERA:
 		{
-			const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+			const auto & modelMatrix = renderObject -> getModelViewMatrix () .get ();
 
 			renderObject -> getLayer () -> getViewpoints () -> pushBack (this);
 
-			setModelMatrix (modelViewMatrix);
+			setModelMatrix (modelMatrix);
 
 			if (isBound ())
 			{
 				Matrix4d matrix;
 				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
-				setCameraSpaceMatrix (matrix * modelViewMatrix);
+				setCameraSpaceMatrix (matrix * modelMatrix);
 			}
 
 			return;

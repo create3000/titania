@@ -141,6 +141,36 @@ public:
 	Box3d
 	getBBox () const final override;
 
+	virtual
+	Matrix4d
+	getProjectionMatrix (X3DRenderObject* const renderObject) const final override
+	{ return getNode <X3DViewpointNode> () -> getProjectionMatrix (renderObject); }
+
+	virtual
+	const Matrix4d &
+	getCameraSpaceMatrix () const final override
+	{ return getNode <X3DViewpointNode> () -> getCameraSpaceMatrix (); }
+
+	virtual
+	const Matrix4d &
+	getInverseCameraSpaceMatrix () const final override
+	{ return getNode <X3DViewpointNode> () -> getInverseCameraSpaceMatrix (); }
+
+	virtual
+	const Matrix4d &
+	getModelMatrix () const final override
+	{ return getNode <X3DViewpointNode> () -> getModelMatrix (); }
+
+	virtual
+	void
+	setAnimate (const bool value) final override
+	{ getNode <X3DViewpointNode> () -> setAnimate (value); }
+
+	virtual
+	bool
+	getAnimate () const final override
+	{ return getNode <X3DViewpointNode> () -> getAnimate (); }
+
 	///  @name Operations
 	virtual
 	void

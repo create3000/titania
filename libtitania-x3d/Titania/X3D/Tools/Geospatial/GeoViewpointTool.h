@@ -121,6 +121,18 @@ public:
 	speedFactor () const final override
 	{ return getNode <GeoViewpoint> () -> speedFactor (); }
 
+	///  @name Member access
+
+	virtual
+	Matrix4d
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport, const bool limit = false) const final override
+	{ return getNode <GeoViewpoint> () -> getProjectionMatrix (nearValue, farValue, viewport, limit); }
+
+	virtual
+	Vector3d
+	getScreenScale (const Vector3d & point, const Vector4i & viewport) const final override
+	{ return getNode <GeoViewpoint> () -> getScreenScale (point, viewport); }
+
 	///  @name Operations
 
 	virtual
