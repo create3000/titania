@@ -105,7 +105,7 @@ Box3d
 SoundTool::getBBox () const
 {
 	if (getBrowser () -> getDisplayTools () .top ())
-		return Box3d (Vector3d (), Vector3d (location () .getValue ()));
+		return Box3d (Vector3d (1, 1, 1), Vector3d (location () .getValue ()));
 
 	return Box3d ();
 }

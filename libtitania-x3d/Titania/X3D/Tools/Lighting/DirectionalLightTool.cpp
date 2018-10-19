@@ -91,7 +91,7 @@ Box3d
 DirectionalLightTool::getBBox () const
 {
 	if (getBrowser () -> getDisplayTools () .top ())
-		return Box3d (Vector3d (), Vector3d (const_cast <DirectionalLightTool*> (this) -> getMetaData <Vector3f> ("/DirectionalLight/location")));
+		return Box3d (Vector3d (1, 1, 1), Vector3d (const_cast <DirectionalLightTool*> (this) -> getMetaData <Vector3f> ("/DirectionalLight/location")));
 
 	return Box3d ();
 }

@@ -3292,7 +3292,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto lightNode   = X3DPtr <DirectionalLight> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto location    = lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location");
-					const auto subBBox     = Box3d (Vector3d (), Vector3d (location));
+					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (location));
 	
 					bbox += subBBox * modelMatrix;
 					break;
@@ -3328,7 +3328,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 				{
 					const auto lightNode   = X3DPtr <PointLight> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
-					const auto subBBox     = Box3d (Vector3d (), Vector3d (lightNode -> location () .getValue ()) );
+					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (lightNode -> location () .getValue ()) );
 	
 					bbox += subBBox * modelMatrix;
 					break;
@@ -3337,7 +3337,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 				{
 					const auto lightNode   = X3DPtr <SpotLight> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
-					const auto subBBox     = Box3d (Vector3d (), Vector3d (lightNode -> location () .getValue ()) );
+					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (lightNode -> location () .getValue ()) );
 	
 					bbox += subBBox * modelMatrix;
 					break;
@@ -3346,7 +3346,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 				{
 					const auto soundNode   = X3DPtr <Sound> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
-					const auto subBBox     = Box3d (Vector3d (), Vector3d (soundNode -> location () .getValue ()) );
+					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (soundNode -> location () .getValue ()) );
 	
 					bbox += subBBox * modelMatrix;
 					break;
@@ -3382,7 +3382,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 				{
 					const auto viewpointNode = X3DPtr <X3DViewpointNode> (node);
 					const auto modelMatrix   = getModelMatrix (executionContext, node);
-					const auto subBBox       = Box3d (Vector3d (), viewpointNode -> getPosition ());
+					const auto subBBox       = Box3d (Vector3d (1, 1, 1), viewpointNode -> getPosition ());
 	
 					bbox += subBBox * modelMatrix;
 					break;

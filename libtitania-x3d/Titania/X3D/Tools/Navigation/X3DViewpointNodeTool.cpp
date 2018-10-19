@@ -152,7 +152,7 @@ Box3d
 X3DViewpointNodeTool::getBBox () const
 {
 	if (getBrowser () -> getDisplayTools () .top ())
-		return Box3d (Vector3d (), getPosition ());
+		return Box3d (Vector3d (1, 1, 1), getPosition ());
 
 	return Box3d ();
 }
