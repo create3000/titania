@@ -234,21 +234,6 @@ X3DViewpointNode::set_fieldOfViewOffset ()
 	fieldOfViewScale () = fieldOfViewInterpolator -> value_changed () .getValue ();
 }
 
-void
-X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
-                                             Vector3d & relativePosition,
-                                             Rotation4d & relativeOrientation,
-                                             Vector3d & relativeScale,
-                                             Rotation4d & relativeScaleOrientation) const
-{
-	const Matrix4d differenceMatrix = inverse (getModelMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
-
-	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
-
-	relativePosition   -= getPosition ();
-	relativeOrientation = ~getOrientation () * relativeOrientation; // mit gepuffereter location matrix
-}
-
 Matrix4d
 X3DViewpointNode::getProjectionMatrix (X3DRenderObject* const renderObject) const
 {
@@ -601,6 +586,21 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 	{
 		// Catch error from differenceMatrix .inverse ()
 	}
+}
+
+void
+X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
+                                             Vector3d & relativePosition,
+                                             Rotation4d & relativeOrientation,
+                                             Vector3d & relativeScale,
+                                             Rotation4d & relativeScaleOrientation) const
+{
+	const auto fromCameraSpaceMatrix = fromViewpoint -> getCameraSpaceMatrix () * inverse (getModelMatrix ());
+
+	fromCameraSpaceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
+
+	relativePosition   -= getPosition ();
+	relativeOrientation = ~getOrientation () * relativeOrientation;
 }
 
 void

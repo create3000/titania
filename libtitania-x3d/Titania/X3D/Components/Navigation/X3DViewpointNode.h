@@ -359,18 +359,18 @@ private:
 	///  @name Operations
 
 	void
-	getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
-	                           Vector3d & relativePosition,
-	                           Rotation4d & relativeOrientation,
-	                           Vector3d & relativeScale,
-	                           Rotation4d & relativeScaleOrientation) const;
-
-	void
 	lookAt (const Vector3d & point, const std::pair <double, double> & distance, const double factor, const bool straighten, const time_type cycleInterval);
 
 	virtual
 	std::pair <double, double>
 	getLookAtDistance (const Box3d & bbox) const = 0;
+
+	void
+	getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
+	                           Vector3d & relativePosition,
+	                           Rotation4d & relativeOrientation,
+	                           Vector3d & relativeScale,
+	                           Rotation4d & relativeScaleOrientation) const;
 
 	void
 	set_isActive (const bool active);
