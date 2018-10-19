@@ -411,7 +411,8 @@ public:
 
 	static
 	void
-	updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode, const UndoStepPtr & undoStep);
+	updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
+	                 const UndoStepPtr & undoStep);
 
 	///  @name Node handling
 

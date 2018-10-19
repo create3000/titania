@@ -127,14 +127,14 @@ ViewpointObserver::set_navigationInfo ()
 void
 ViewpointObserver::set_transitionStart (const bool value)
 {
-	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
+	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (browser -> getActiveLayer () -> getViewpoint ());
 
 	transitionUndoStep  = std::make_shared <X3D::UndoStep> ("Viewpoint Transition");
-	transitionUndoStep -> addObjects (viewpoint);
-	transitionUndoStep -> addUndoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpoint -> positionOffset ()),         viewpoint -> positionOffset ());
-	transitionUndoStep -> addUndoFunction (&X3D::SFRotation::setValue, std::ref (viewpoint -> orientationOffset ()),      viewpoint -> orientationOffset ());
-	transitionUndoStep -> addUndoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpoint -> centerOfRotationOffset ()), viewpoint -> centerOfRotationOffset ());
-	transitionUndoStep -> addUndoFunction (&X3D::SFDouble::setValue,   std::ref (viewpoint -> fieldOfViewScale ()),       viewpoint -> fieldOfViewScale ());
+	transitionUndoStep -> addObjects (viewpointNode);
+	transitionUndoStep -> addUndoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpointNode -> positionOffset ()),         viewpointNode -> positionOffset ());
+	transitionUndoStep -> addUndoFunction (&X3D::SFRotation::setValue, std::ref (viewpointNode -> orientationOffset ()),      viewpointNode -> orientationOffset ());
+	transitionUndoStep -> addUndoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpointNode -> centerOfRotationOffset ()), viewpointNode -> centerOfRotationOffset ());
+	transitionUndoStep -> addUndoFunction (&X3D::SFDouble::setValue,   std::ref (viewpointNode -> fieldOfViewScale ()),       viewpointNode -> fieldOfViewScale ());
 }
 
 void
@@ -143,13 +143,13 @@ ViewpointObserver::set_transitionComplete (const bool value)
 	if (not transitionUndoStep)
 		return;
 
-	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
+	const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (browser -> getActiveLayer () -> getViewpoint ());
 
-	transitionUndoStep -> addObjects (viewpoint);
-	transitionUndoStep -> addRedoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpoint -> positionOffset ()),         viewpoint -> positionOffset ());
-	transitionUndoStep -> addRedoFunction (&X3D::SFRotation::setValue, std::ref (viewpoint -> orientationOffset ()),      viewpoint -> orientationOffset ());
-	transitionUndoStep -> addRedoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpoint -> centerOfRotationOffset ()), viewpoint -> centerOfRotationOffset ());
-	transitionUndoStep -> addRedoFunction (&X3D::SFDouble::setValue,   std::ref (viewpoint -> fieldOfViewScale ()),       viewpoint -> fieldOfViewScale ());
+	transitionUndoStep -> addObjects (viewpointNode);
+	transitionUndoStep -> addRedoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpointNode -> positionOffset ()),         viewpointNode -> positionOffset ());
+	transitionUndoStep -> addRedoFunction (&X3D::SFRotation::setValue, std::ref (viewpointNode -> orientationOffset ()),      viewpointNode -> orientationOffset ());
+	transitionUndoStep -> addRedoFunction (&X3D::SFVec3d::setValue,    std::ref (viewpointNode -> centerOfRotationOffset ()), viewpointNode -> centerOfRotationOffset ());
+	transitionUndoStep -> addRedoFunction (&X3D::SFDouble::setValue,   std::ref (viewpointNode -> fieldOfViewScale ()),       viewpointNode -> fieldOfViewScale ());
 
 	addUndoStep (transitionUndoStep);
 }
@@ -159,25 +159,25 @@ ViewpointObserver::set_active (const bool value)
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
+		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (browser -> getActiveLayer () -> getViewpoint ());
 
 		if (value)
 		{
 			resetUndoGroup ("positionOffset", moveUndoStep);
 			beginUndoGroup ("positionOffset", moveUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> positionOffset (),         moveUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> orientationOffset (),      moveUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> centerOfRotationOffset (), moveUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> fieldOfViewScale (),       moveUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> positionOffset (),         moveUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> orientationOffset (),      moveUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> centerOfRotationOffset (), moveUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> fieldOfViewScale (),       moveUndoStep);
 			endUndoGroup ("positionOffset", moveUndoStep);
 		}
 		else if (moveUndoStep)
 		{
 			beginRedoGroup ("positionOffset", moveUndoStep);
-			addRedoFunction (viewpoint, viewpoint -> positionOffset (),         moveUndoStep);
-			addRedoFunction (viewpoint, viewpoint -> orientationOffset (),      moveUndoStep);
-			addRedoFunction (viewpoint, viewpoint -> centerOfRotationOffset (), moveUndoStep);
-			addRedoFunction (viewpoint, viewpoint -> fieldOfViewScale (),       moveUndoStep);
+			addRedoFunction (viewpointNode, viewpointNode -> positionOffset (),         moveUndoStep);
+			addRedoFunction (viewpointNode, viewpointNode -> orientationOffset (),      moveUndoStep);
+			addRedoFunction (viewpointNode, viewpointNode -> centerOfRotationOffset (), moveUndoStep);
+			addRedoFunction (viewpointNode, viewpointNode -> fieldOfViewScale (),       moveUndoStep);
 			endRedoGroup ("positionOffset", moveUndoStep);
 	
 			set_offsets ();
@@ -192,38 +192,38 @@ ViewpointObserver::set_scrollTime ()
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
+		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (browser -> getActiveLayer () -> getViewpoint ());
 
 		if (getUndoStep () not_eq scrollUndoStep or not scrollUndoStep)
 		{
-			const X3D::Vector3d   positionAux         = viewpoint -> positionOffset ();
-			const X3D::Rotation4d orientationAux      = viewpoint -> orientationOffset ();
-			const X3D::Vector3d   centerOfRotationAux = viewpoint -> centerOfRotationOffset ();
-			const auto            fieldOfViewAux      = viewpoint -> fieldOfViewScale ();
+			const X3D::Vector3d   positionAux         = viewpointNode -> positionOffset ();
+			const X3D::Rotation4d orientationAux      = viewpointNode -> orientationOffset ();
+			const X3D::Vector3d   centerOfRotationAux = viewpointNode -> centerOfRotationOffset ();
+			const auto            fieldOfViewAux      = viewpointNode -> fieldOfViewScale ();
 	
-			viewpoint -> positionOffset ()         = positionOffset;
-			viewpoint -> orientationOffset ()      = orientationOffset;
-			viewpoint -> centerOfRotationOffset () = centerOfRotationOffset;
-			viewpoint -> fieldOfViewScale ()       = fieldOfViewScale;
+			viewpointNode -> positionOffset ()         = positionOffset;
+			viewpointNode -> orientationOffset ()      = orientationOffset;
+			viewpointNode -> centerOfRotationOffset () = centerOfRotationOffset;
+			viewpointNode -> fieldOfViewScale ()       = fieldOfViewScale;
 	
 			beginUndoGroup ("positionOffset", scrollUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> positionOffset (),         scrollUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> orientationOffset (),      scrollUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> centerOfRotationOffset (), scrollUndoStep);
-			addUndoFunction (viewpoint, viewpoint -> fieldOfViewScale (),       scrollUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> positionOffset (),         scrollUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> orientationOffset (),      scrollUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> centerOfRotationOffset (), scrollUndoStep);
+			addUndoFunction (viewpointNode, viewpointNode -> fieldOfViewScale (),       scrollUndoStep);
 			endUndoGroup ("positionOffset", scrollUndoStep);
 			
-			viewpoint -> positionOffset ()         = positionAux;
-			viewpoint -> orientationOffset ()      = orientationAux;
-			viewpoint -> centerOfRotationOffset () = centerOfRotationAux;
-			viewpoint -> fieldOfViewScale ()       = fieldOfViewAux;
+			viewpointNode -> positionOffset ()         = positionAux;
+			viewpointNode -> orientationOffset ()      = orientationAux;
+			viewpointNode -> centerOfRotationOffset () = centerOfRotationAux;
+			viewpointNode -> fieldOfViewScale ()       = fieldOfViewAux;
 		}
 	
 		beginRedoGroup ("positionOffset", scrollUndoStep);
-		addRedoFunction (viewpoint, viewpoint -> positionOffset (),         scrollUndoStep);
-		addRedoFunction (viewpoint, viewpoint -> orientationOffset (),      scrollUndoStep);
-		addRedoFunction (viewpoint, viewpoint -> centerOfRotationOffset (), scrollUndoStep);
-		addRedoFunction (viewpoint, viewpoint -> fieldOfViewScale (),       scrollUndoStep);
+		addRedoFunction (viewpointNode, viewpointNode -> positionOffset (),         scrollUndoStep);
+		addRedoFunction (viewpointNode, viewpointNode -> orientationOffset (),      scrollUndoStep);
+		addRedoFunction (viewpointNode, viewpointNode -> centerOfRotationOffset (), scrollUndoStep);
+		addRedoFunction (viewpointNode, viewpointNode -> fieldOfViewScale (),       scrollUndoStep);
 		endRedoGroup ("positionOffset", scrollUndoStep);
 	}
 	catch (const X3D::X3DError &)
@@ -235,12 +235,12 @@ ViewpointObserver::set_offsets ()
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint (browser -> getActiveLayer () -> getViewpoint ());
+		const X3D::X3DPtr <X3D::X3DViewpointNode> viewpointNode (browser -> getActiveLayer () -> getViewpoint ());
 	
-		positionOffset         = viewpoint -> positionOffset ();
-		orientationOffset      = viewpoint -> orientationOffset ();
-		centerOfRotationOffset = viewpoint -> centerOfRotationOffset ();
-		fieldOfViewScale       = viewpoint -> fieldOfViewScale ();
+		positionOffset         = viewpointNode -> positionOffset ();
+		orientationOffset      = viewpointNode -> orientationOffset ();
+		centerOfRotationOffset = viewpointNode -> centerOfRotationOffset ();
+		fieldOfViewScale       = viewpointNode -> fieldOfViewScale ();
 
 		resetUndoGroup ("positionOffset", moveUndoStep);
 		resetUndoGroup ("positionOffset", scrollUndoStep);

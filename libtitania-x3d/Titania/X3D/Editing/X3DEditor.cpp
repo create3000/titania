@@ -3684,7 +3684,8 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
  */
 
 void
-X3DEditor::updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode, const UndoStepPtr & undoStep)
+X3DEditor::updateViewpoint (const X3DPtr <X3DViewpointNode> & viewpointNode,
+                            const UndoStepPtr & undoStep)
 {
 	// Make copy, don't use references.
 	const auto position         = viewpointNode -> getUserPosition ();
