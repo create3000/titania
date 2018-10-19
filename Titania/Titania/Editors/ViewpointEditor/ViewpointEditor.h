@@ -125,9 +125,6 @@ private:
 	void
 	set_lock_to_camera ();
 
-	void
-	update (const X3D::UndoStepPtr &);
-
 	///  @name Destruction
 
 	virtual
