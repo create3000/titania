@@ -205,10 +205,6 @@ public:
 	{ return getNode <X3DLightNode> () -> getShadowMapSize (); }
 
 	///  @name Operations
-	
-	virtual
-	Box3d
-	getBBox () const final override;
 
 	virtual
 	void

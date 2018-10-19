@@ -50,6 +50,7 @@
 
 #include "PointLightTool.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
@@ -78,6 +79,15 @@ PointLightTool::realize ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+}
+
+Box3d
+PointLightTool::getBBox () const
+{
+	if (getBrowser () -> getDisplayTools () .top ())
+		return Box3d (Vector3d (), Vector3d (location () .getValue ()));
+
+	return Box3d ();
 }
 
 void

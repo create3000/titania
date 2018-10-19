@@ -81,6 +81,10 @@ public:
 	{ return getNode <DirectionalLight> () -> direction (); }
 
 	///  @name Operations
+	
+	virtual
+	Box3d
+	getBBox () const final override;
 
 	virtual
 	void

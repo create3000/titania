@@ -50,6 +50,7 @@
 
 #include "DirectionalLightTool.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
@@ -76,7 +77,7 @@ DirectionalLightTool::realize ()
 	
 		// Connect tool location
 	
-		getTransformTool () -> translation () = getMetaData <SFVec3f> ("/DirectionalLight/location");
+		getTransformTool () -> translation () = getMetaData <Vector3f> ("/DirectionalLight/location");
 	
 		getTransformTool () -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
 	}
@@ -86,12 +87,21 @@ DirectionalLightTool::realize ()
 	}
 }
 
+Box3d
+DirectionalLightTool::getBBox () const
+{
+	if (getBrowser () -> getDisplayTools () .top ())
+		return Box3d (Vector3d (), Vector3d (const_cast <DirectionalLightTool*> (this) -> getMetaData <Vector3f> ("/DirectionalLight/location")));
+
+	return Box3d ();
+}
+
 void
 DirectionalLightTool::set_translation ()
 {
 	try
 	{
-		setMetaData <SFVec3f> ("/DirectionalLight/location", getTransformTool () -> translation ());
+		setMetaData <Vector3f> ("/DirectionalLight/location", getTransformTool () -> translation ());
 	}
 	catch (const X3DError & error)
 	{

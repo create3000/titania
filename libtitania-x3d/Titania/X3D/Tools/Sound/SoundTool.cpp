@@ -105,22 +105,7 @@ Box3d
 SoundTool::getBBox () const
 {
 	if (getBrowser () -> getDisplayTools () .top ())
-	{
-		const auto a = (maxBack () + maxFront ()) / 2;
-		const auto e = a - maxBack ();
-		const auto b = std::sqrt (a * a - e * e);
-
-		const auto center   = Vector3d (0, 0, e);
-		const auto size     = Vector3d (b, b, a) * 2.0;
-		const auto rotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ()));
-
-		auto bbox = Box3d (size, center);
-
-		bbox .rotate (rotation);
-		bbox .translate (Vector3d (location () .getValue ()));
-
-		return bbox;
-	}
+		return Box3d (Vector3d (), Vector3d (location () .getValue ()));
 
 	return Box3d ();
 }

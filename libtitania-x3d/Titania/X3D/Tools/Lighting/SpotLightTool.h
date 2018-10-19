@@ -148,6 +148,10 @@ public:
 	{ return getNode <SpotLight> () -> getCutOffAngle (); }
 
 	///  @name Operations
+	
+	virtual
+	Box3d
+	getBBox () const final override;
 
 	virtual
 	void

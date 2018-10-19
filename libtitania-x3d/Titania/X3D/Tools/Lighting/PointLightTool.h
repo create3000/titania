@@ -113,6 +113,10 @@ public:
 	{ return getNode <PointLight> () -> getShadowMapSize (); }
 
 	///  @name Operations
+	
+	virtual
+	Box3d
+	getBBox () const final override;
 
 	virtual
 	void
