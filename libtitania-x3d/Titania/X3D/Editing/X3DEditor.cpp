@@ -3628,24 +3628,26 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 
 						const auto transformedMatrix = matrix * modelMatrix * transformationMatrix * inverse (modelMatrix);
 
-						Vector3d position;
-						Rotation4d orientation;
+						Vector3d transformedPosition;
+						Rotation4d transformedOrientation;
 
-						transformedMatrix .get (position, orientation);
-					
+						transformedMatrix .get (transformedPosition, transformedOrientation);
+
+						// Jump or animate if is bound.
+
 						undoStep -> addObjects (viewpointNode);
 						undoStep -> addUndoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
 						undoStep -> addUndoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
 						undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, viewpointNode -> getOrientation ());
 						undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,         viewpointNode, viewpointNode -> getPosition ());
 							
-						undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, position);
-						undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, orientation);
+						undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,         viewpointNode, transformedPosition);
+						undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,      viewpointNode, transformedOrientation);
 						undoStep -> addRedoFunction (&X3DViewpointNode::setCenterOfRotation, viewpointNode, viewpointNode -> getCenterOfRotation ());
 						undoStep -> addRedoFunction (&X3DViewpointNode::resetUserOffsets,    viewpointNode);
 
-						viewpointNode -> setPosition (position);
-						viewpointNode -> setOrientation (orientation);
+						viewpointNode -> setPosition (transformedPosition);
+						viewpointNode -> setOrientation (transformedOrientation);
 						viewpointNode -> resetUserOffsets ();
 						break;
 					}
