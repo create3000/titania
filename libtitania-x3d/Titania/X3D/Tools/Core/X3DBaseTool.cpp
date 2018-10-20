@@ -88,6 +88,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	node -> setExecutionContext (value);
 
 	X3DToolObject::setExecutionContext (value);
+	X3DBaseNode::setExecutionContext (value);
 }
 
 X3DFieldDefinition*
@@ -119,6 +120,13 @@ void
 X3DBaseTool::removeTool (const bool really)
 {
 	X3DBaseNode::removeTool (node);
+}
+
+void
+X3DBaseTool::processShutdown ()
+{
+	X3DToolObject::processShutdown ();
+	X3DBaseNode::processShutdown ();
 }
 
 void

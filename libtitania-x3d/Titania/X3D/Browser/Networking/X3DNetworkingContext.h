@@ -139,9 +139,11 @@ protected:
 	friend class RenderingProperties;
 	friend class X3DEnvironmentalEffectsContext;
 	friend class X3DShadersContext;
-	friend class X3DToolObject;
 	friend class X3DUrlObject;
 	friend class X3DViewpointNode;
+
+	friend class X3DGeometricPropertyNodeTool;
+	friend class X3DToolObject;
 
 	///  @name Construction
 

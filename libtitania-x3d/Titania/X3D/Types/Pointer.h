@@ -477,7 +477,6 @@ class SnapTargetTool;
 class SoundTool;
 class SpotLightTool;
 class SwitchTool;
-class Tool;
 class TouchGroupTool;
 class TransformTool;
 class TransformSensorTool;

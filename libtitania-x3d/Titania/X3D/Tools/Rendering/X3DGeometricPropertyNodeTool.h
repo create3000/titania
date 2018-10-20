@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_TOOL_H__
 
-#include "../Core/Tool.h"
 #include "../../Components/Core/X3DNode.h"
 
 namespace titania {
@@ -76,8 +75,7 @@ public:
 
 	const X3DPtr <Inline> &
 	getInlineNode () const
-	throw (Error <DISPOSED>)
-	{ return tool -> getInlineNode (); }
+	{ return inlineNode; }
 
 	///  @name Operations
 
@@ -115,7 +113,7 @@ private:
 
 	Fields fields;
 
-	X3DPtr <Tool> tool;
+	X3DPtr <Inline> inlineNode;
 	
 };
 

@@ -62,9 +62,9 @@ namespace titania {
 namespace X3D {
 
 X3DToolObject::X3DToolObject () :
-	   X3DNode (),
-	inlineNode (new Inline (getBrowser () -> getPrivateScene ())),
-	  toolNode ()
+	      X3DNode (),
+	   inlineNode (new Inline (getBrowser () -> getPrivateScene ())),
+	     toolNode ()
 {
 	addType (X3DConstants::X3DToolObject);
 
@@ -86,15 +86,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	inlineNode -> setExecutionContext (value -> getBrowser () -> getPrivateScene ());
-
-	X3DNode::setExecutionContext (value);
-}
-
-const SFNode &
-X3DToolObject::getToolNode () const
-throw (Error <DISPOSED>)
-{
-	return toolNode;
 }
 
 void

@@ -78,7 +78,7 @@ protected:
 	///  @name Member access
 
 	void
-	setCameraObject (const bool);
+	setCameraObject (const bool value);
 
 
 private:

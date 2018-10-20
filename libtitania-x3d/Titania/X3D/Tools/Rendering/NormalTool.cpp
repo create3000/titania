@@ -51,6 +51,7 @@
 #include "NormalTool.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Components/Networking/Inline.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../ToolColors.h"
 

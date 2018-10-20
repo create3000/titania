@@ -278,7 +278,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Calculate snap position and apply absolute relative translation.
 	
-		const auto gridMatrix    = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getTool () -> getModelMatrix ();
+		const auto gridMatrix    = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 		const auto snapMatrix    = Matrix4d (getSnapPosition (position * inverse (gridMatrix)) * gridMatrix - position);
 		const auto currentMatrix = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
@@ -328,7 +328,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto y = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
 		const auto z = std::vector <Vector3d> ({ matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }); // Vector to snap, later transformed to grid space
 
-		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getTool () -> getModelMatrix ();
+		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 
 		const auto index1 = (index0 + 1) % y .size ();
 		const auto index2 = (index0 + 2) % y .size ();
@@ -454,7 +454,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 
 	// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
 
-	const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getTool () -> getModelMatrix ();
+	const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 
 	const size_t axis         = tool % 3;
 	const double sgn          = tool < 3 ? 1 : -1;

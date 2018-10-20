@@ -614,7 +614,6 @@
     <None Include="Titania\X3D\Tools\Grids\X3DGridTool.h" />
     <None Include="Titania\X3D\Tools\Grids\GridTool.h" />
     <None Include="share\titania\tools\GridTool.x3dv" />
-    <None Include="Titania\X3D\Tools\Core\Tool.h" />
     <None Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.h" />
     <None Include="Titania\X3D\Tools\Picking\PickableGroupTool.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.h" />
@@ -1400,7 +1399,6 @@
     <Compile Include="Titania\X3D\Rendering\FrameBuffer.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\GridTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\X3DGridTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Core\Tool.cpp" />
     <Compile Include="Titania\X3D\Tools\Layering\X3DActiveLayerTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Picking\PickableGroupTool.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\Hit.cpp" />

@@ -179,7 +179,9 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 				renderObject -> getModelViewMatrix () .pop ();
 			}
 			else
+			{
 				X3DGroupingNode::traverse (type, renderObject);
+			}
 
 			if (viewportNode)
 				viewportNode -> pop (renderObject);

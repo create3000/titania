@@ -51,29 +51,28 @@
 #include "X3DActiveLayerTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
 
 namespace titania {
 namespace X3D {
 
 X3DActiveLayerTool::X3DActiveLayerTool () :
-	    X3DNode (),
-	       tool (new Tool (getBrowser ())),
-	activeLayer ()
+	      X3DNode (),
+	X3DToolObject (),
+	  activeLayer ()
 {
 	addType (X3DConstants::X3DActiveLayerTool);
 
-	addChildObjects (tool, activeLayer);
+	addChildObjects (activeLayer);
 }
 
 void
 X3DActiveLayerTool::initialize ()
 {
 	X3DNode::initialize ();
+	X3DToolObject::initialize ();
 
-	tool -> setup ();
-
-	getInlineNode () -> checkLoadState () .addInterest (&X3DActiveLayerTool::set_loadState,   this);
-	getBrowser () -> getActiveLayer ()    .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
+	getBrowser () -> getActiveLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -86,8 +85,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	getBrowser () -> getActiveLayer () .removeInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
-	tool -> setExecutionContext (value -> getBrowser ());
-
+	X3DToolObject::setExecutionContext (value);
 	X3DNode::setExecutionContext (value);
 
 	if (isInitialized ())
@@ -98,36 +96,43 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
-void
-X3DActiveLayerTool::set_loadState (const LoadState loadState)
+Matrix4d
+X3DActiveLayerTool::getPickingMatrix () const
 {
-	try
-	{
-		if (loadState == COMPLETE_STATE)
-			realize ();
-	}
-	catch (const X3DError &)
-	{ }
+	if (activeLayer)
+		return activeLayer -> getFriends () -> getMatrix () * activeLayer -> getViewpoint () -> getInverseCameraSpaceMatrix ();
+
+	return Matrix4d ();
+}
+
+Matrix4d
+X3DActiveLayerTool::getModelMatrix () const
+{
+	if (activeLayer)
+		return activeLayer -> getFriends () -> getMatrix ();
+
+	return Matrix4d ();
 }
 
 void
 X3DActiveLayerTool::set_activeLayer ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool);
+		activeLayer -> getFriends () -> children () .remove (getInlineNode ());
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .emplace_back (tool);
+		activeLayer -> getFriends () -> children () .emplace_back (getInlineNode ());
 }
 
 void
 X3DActiveLayerTool::processShutdown ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool);
+		activeLayer -> getFriends () -> children () .remove (getInlineNode ());
 
+	X3DToolObject::processShutdown ();
 	X3DNode::processShutdown ();
 }
 

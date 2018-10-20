@@ -220,11 +220,11 @@ X3DSnapTool::update ()
 {
 	try
 	{
-		const auto & hit              = getBrowser () -> getNearestHit ();
-		const auto & pickingMatrix    = getTool () -> getPickingMatrix ();
-		const auto   invPickingMatrix = inverse (pickingMatrix);
-		const auto   hitPoint         = hit -> getIntersection () -> getPoint () * invPickingMatrix;
-		const auto   hitNormal        = normalize (pickingMatrix .mult_matrix_dir (hit -> getIntersection () -> getFaceNormal ()));
+		const auto hit              = getBrowser () -> getNearestHit ();
+		const auto pickingMatrix    = getPickingMatrix ();
+		const auto invPickingMatrix = inverse (pickingMatrix);
+		const auto hitPoint         = hit -> getIntersection () -> getPoint () * invPickingMatrix;
+		const auto hitNormal        = normalize (pickingMatrix .mult_matrix_dir (hit -> getIntersection () -> getFaceNormal ()));
 
 		if (getBrowser () -> getShiftKey ())
 		{

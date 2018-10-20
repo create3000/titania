@@ -51,15 +51,17 @@
 #ifndef __TITANIA_X3D_TOOLS_LAYERING_X3DACTIVE_LAYER_TOOL_H__
 #define __TITANIA_X3D_TOOLS_LAYERING_X3DACTIVE_LAYER_TOOL_H__
 
+#include "../Core/X3DToolObject.h"
+
 #include "../../Components/Core/X3DNode.h"
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../Core/Tool.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DActiveLayerTool :
-	public X3DNode
+	virtual public X3DNode,
+	public X3DToolObject
 {
 public:
 
@@ -73,25 +75,15 @@ public:
 
 	///  @name Member access
 
-	const X3DPtr <Tool> &
-	getTool () const
-	throw (Error <DISPOSED>)
-	{ return tool; }
-
-	const X3DPtr <Inline> &
-	getInlineNode () const
-	throw (Error <DISPOSED>)
-	{ return tool -> getInlineNode (); }
-
-	const SFNode &
-	getToolNode () const
-	throw (Error <DISPOSED>)
-	{ return tool -> getToolNode (); }
-
 	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
-	throw (Error <DISPOSED>)
 	{ return activeLayer; }
+
+	Matrix4d
+	getPickingMatrix () const;
+
+	Matrix4d
+	getModelMatrix () const;
 
 	///  @name Destruction
 
@@ -109,17 +101,6 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	void
-	realize ()
-	{ }
-
-	///  @name Operations
-
-	void
-	requestAsyncLoad (const MFString & url)
-	{ tool -> requestAsyncLoad (url); }
-
 	///  @name Event handlers
 
 	void
@@ -134,14 +115,8 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_loadState (const LoadState);
-
 	///  @name Members
 
-	X3DPtr <Tool>         tool;
 	X3DPtr <X3DLayerNode> activeLayer;
 
 };

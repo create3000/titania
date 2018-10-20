@@ -51,6 +51,7 @@
 #include "X3DGeometricPropertyNodeTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
@@ -60,12 +61,12 @@ X3DGeometricPropertyNodeTool::Fields::Fields () :
 { }
 
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
-	X3DNode (),
-	   tool (new Tool (getBrowser ()))
+	   X3DNode (),
+	inlineNode (new Inline (getBrowser () -> getPrivateScene ()))
 {
 	addType (X3DConstants::X3DGeometricPropertyNodeTool);
 
-	addChildObjects (tool);
+	addChildObjects (inlineNode);
 }
 
 void
@@ -73,22 +74,17 @@ X3DGeometricPropertyNodeTool::initialize ()
 {
 	X3DNode::initialize ();
 
-	tool -> setup ();
+	load () .addInterest (inlineNode -> load ());
 
-	load () .addInterest (getInlineNode () -> load ());
+	inlineNode -> load () = load ();
 
-	getInlineNode () -> load () = load ();
+	inlineNode -> setup ();
 }
 
 void
 X3DGeometricPropertyNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	try
-	{
-		tool -> traverse (type, renderObject);
-	}
-	catch (const X3DError & error)
-	{ }
+	inlineNode -> traverse (type, renderObject);
 }
 
 X3DGeometricPropertyNodeTool::~X3DGeometricPropertyNodeTool ()

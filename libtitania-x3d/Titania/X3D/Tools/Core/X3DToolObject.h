@@ -72,17 +72,13 @@ public:
 
 	///  @name Member access
 
-	X3DPtr <Inline> &
-	getInlineNode ()
-	{ return inlineNode; }
-
 	const X3DPtr <Inline> &
 	getInlineNode () const
 	{ return inlineNode; }
 
 	const SFNode &
 	getToolNode () const
-	throw (Error <DISPOSED>);
+	{ return toolNode; }
 
 	///  @name Operations
 
@@ -112,11 +108,18 @@ protected:
 
 	virtual
 	void
-	requestAsyncLoad (const MFString &);
+	requestAsyncLoad (const MFString & url);
 
 	virtual
 	void
 	realize ()
+	{ }
+
+	///  @name Destruction
+
+	virtual
+	void
+	processShutdown () override
 	{ }
 
 
@@ -125,7 +128,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_loadState (const LoadState);
+	set_loadState (const LoadState loadState);
 
 	///  @name Members
 

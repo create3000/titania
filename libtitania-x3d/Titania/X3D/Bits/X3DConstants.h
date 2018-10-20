@@ -628,7 +628,6 @@ enum NodeType : uint16_t
 	SpotLightTool,
 	SwitchTool,
 	TextTool,
-	Tool,
 	TouchGroupTool,
 	TransformTool,
 	TransformSensorTool,

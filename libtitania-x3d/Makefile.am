@@ -617,7 +617,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/TextureFuture.cpp \
 	Titania/X3D/Tools/CADGeometry/IndexedQuadSetTool.cpp \
 	Titania/X3D/Tools/CADGeometry/QuadSetTool.cpp \
-	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DNodeTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
