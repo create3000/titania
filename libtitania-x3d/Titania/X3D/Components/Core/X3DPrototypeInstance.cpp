@@ -214,7 +214,8 @@ X3DPrototypeInstance::construct ()
 					continue;
 
 				// If default value of protoField is different from field update default value for field.
-				field -> set (*protoField);
+				if (not field -> equals (*protoField))
+					*field = *protoField;
 			}
 			catch (const X3DError &)
 			{

@@ -165,7 +165,6 @@ X3DParentObject::addEventObject (X3DChildObject* const object)
 		return;
 
 	object -> setTainted (true);
-	object -> isSet (true);
 
 	addEventObject (object, std::make_shared <Event> (object));
 }
@@ -183,6 +182,7 @@ X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & 
 //catch (...)
 //{ }
 
+	object -> isSet (true);
 	browser -> addEvent ();
 
 	// Register for processEvent
