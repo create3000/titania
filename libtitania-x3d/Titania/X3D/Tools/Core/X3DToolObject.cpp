@@ -89,9 +89,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 bool
-X3DToolObject::getPickable () const
+X3DToolObject::getPickable (X3DRenderObject* const renderObject) const
 {
-	return getBrowser () -> getToolsPickable () .top ();
+	return renderObject -> getBrowser () -> getToolsPickable () .top ();
 }
 
 void
@@ -145,7 +145,7 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			if (not getPickable ())
+			if (not getPickable (renderObject))
 				break;
 
 			HierarchyGuard guard (renderObject -> getBrowser (), this);

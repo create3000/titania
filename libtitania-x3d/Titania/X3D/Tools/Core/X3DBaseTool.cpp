@@ -123,13 +123,6 @@ X3DBaseTool::removeTool (const bool really)
 }
 
 void
-X3DBaseTool::processShutdown ()
-{
-	X3DToolObject::processShutdown ();
-	X3DBaseNode::processShutdown ();
-}
-
-void
 X3DBaseTool::dispose ()
 {
 	node -> setPrivate (getPrivate ());

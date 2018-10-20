@@ -389,12 +389,6 @@ protected:
 	getNode () const
 	{ return dynamic_cast <const Type*> (node); }
 
-	///  @name Destruction
-
-	virtual
-	void
-	processShutdown () override;
-
 
 private:
 

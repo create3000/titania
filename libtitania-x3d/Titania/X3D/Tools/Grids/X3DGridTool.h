@@ -215,7 +215,7 @@ protected:
 
 	virtual
 	bool
-	getPickable () const final override;
+	getPickable (X3DRenderObject* const renderObject) const final override;
 
 	///  @name Operations
 

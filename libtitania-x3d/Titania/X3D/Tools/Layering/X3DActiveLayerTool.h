@@ -110,12 +110,6 @@ protected:
 	void
 	set_activeLayer ();
 
-	///  @name Destruction
-
-	virtual
-	void
-	processShutdown () override;
-
 
 private:
 

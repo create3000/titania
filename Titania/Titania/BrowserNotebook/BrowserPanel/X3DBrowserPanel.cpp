@@ -77,6 +77,8 @@
 #include <Titania/X3D/Tools/Grids/GridTool.h>
 #include <Titania/X3D/Tools/Grids/AngleGridTool.h>
 #include <Titania/X3D/Tools/Grids/AxonometricGridTool.h>
+#include <Titania/X3D/Tools/SnapTool/SnapTargetTool.h>
+#include <Titania/X3D/Tools/SnapTool/SnapSourceTool.h>
 
 namespace titania {
 namespace puck {
@@ -553,6 +555,34 @@ X3DBrowserPanel::set_dependent_browser ()
 		browser -> setSelectable (true);
 		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ()); // here!
 
+		// Setup Snap Target.
+
+		mainBrowser -> getSnapTarget () -> enabled ()  .addInterest (browser -> getSnapTarget () -> enabled ());
+		mainBrowser -> getSnapTarget () -> position () .addInterest (browser -> getSnapTarget () -> position ());
+		mainBrowser -> getSnapTarget () -> normal ()   .addInterest (browser -> getSnapTarget () -> normal ());
+
+		browser -> getSnapTarget () -> enabled ()  .addInterest (mainBrowser -> getSnapTarget () -> enabled ());
+		browser -> getSnapTarget () -> position () .addInterest (mainBrowser -> getSnapTarget () -> position ());
+		browser -> getSnapTarget () -> normal ()   .addInterest (mainBrowser -> getSnapTarget () -> normal ());
+
+		browser -> getSnapTarget () -> enabled ()  = mainBrowser -> getSnapTarget () -> enabled ();
+		browser -> getSnapTarget () -> position () = mainBrowser -> getSnapTarget () -> position ();
+		browser -> getSnapTarget () -> normal ()   = mainBrowser -> getSnapTarget () -> normal ();
+
+		// Setup Snap Source.
+
+		mainBrowser -> getSnapSource () -> enabled ()  .addInterest (browser -> getSnapSource () -> enabled ());
+		mainBrowser -> getSnapSource () -> position () .addInterest (browser -> getSnapSource () -> position ());
+		mainBrowser -> getSnapSource () -> normal ()   .addInterest (browser -> getSnapSource () -> normal ());
+
+		browser -> getSnapSource () -> enabled ()  .addInterest (mainBrowser -> getSnapSource () -> enabled ());
+		browser -> getSnapSource () -> position () .addInterest (mainBrowser -> getSnapSource () -> position ());
+		browser -> getSnapSource () -> normal ()   .addInterest (mainBrowser -> getSnapSource () -> normal ());
+
+		browser -> getSnapSource () -> enabled ()  = mainBrowser -> getSnapSource () -> enabled ();
+		browser -> getSnapSource () -> position () = mainBrowser -> getSnapSource () -> position ();
+		browser -> getSnapSource () -> normal ()   = mainBrowser -> getSnapSource () -> normal ();
+
 		// Setup scene.
 
 		const auto & executionContext     = browser -> getExecutionContext ();
@@ -577,14 +607,16 @@ X3DBrowserPanel::set_dependent_browser ()
 			viewpoint = executionContext -> getNamedNode <X3D::Viewpoint> ("PerspectiveViewpoint");
 		}
 		else
+		{
 			viewpoint = executionContext -> getNamedNode <X3D::OrthoViewpoint> ("OrthoViewpoint");
+		}
 
 		gridLayer -> getViewpointStack () -> pushOnTop (viewpoint, true);
 		layer     -> getViewpointStack () -> pushOnTop (viewpoint, true);
 
-		gridSwitch -> children () .emplace_back (gridTool            -> getInlineNode ());
-		gridSwitch -> children () .emplace_back (angleGridTool       -> getInlineNode ());
-		gridSwitch -> children () .emplace_back (axonometricGridTool -> getInlineNode ());
+		gridSwitch -> children () .emplace_back (gridTool);
+		gridSwitch -> children () .emplace_back (angleGridTool);
+		gridSwitch -> children () .emplace_back (axonometricGridTool);
 
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));

@@ -166,14 +166,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 bool
-X3DGridTool::getPickable () const
+X3DGridTool::getPickable (X3DRenderObject* const renderObject) const
 {
 	try
 	{
 		const auto gridTouchGroup    = getInlineNode () -> getExportedNode <TouchGroup> ("GridTouchGroup");
 		const auto handlesTouchGroup = getInlineNode () -> getExportedNode <TouchGroup> ("HandlesTouchGroup");
 
-		if (getBrowser () -> getToolsPickable () .top ())
+		if (renderObject -> getBrowser () -> getToolsPickable () .top ())
 		{
 			gridTouchGroup    -> enabled () = false;
 			handlesTouchGroup -> enabled () = true;
@@ -189,7 +189,7 @@ X3DGridTool::getPickable () const
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
-		return getBrowser () -> getToolsPickable () .top ();
+		return renderObject -> getBrowser () -> getToolsPickable () .top ();
 	}
 }
 

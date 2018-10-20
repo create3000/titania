@@ -127,13 +127,6 @@ X3DActiveLayerTool::set_activeLayer ()
 }
 
 void
-X3DActiveLayerTool::processShutdown ()
-{
-	X3DToolObject::processShutdown ();
-	X3DChildNode::processShutdown ();
-}
-
-void
 X3DActiveLayerTool::dispose ()
 {
 	X3DToolObject::dispose ();

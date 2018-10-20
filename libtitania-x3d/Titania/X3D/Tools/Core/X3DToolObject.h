@@ -108,7 +108,7 @@ protected:
 
 	virtual
 	bool
-	getPickable () const;
+	getPickable (X3DRenderObject* const renderObject) const;
 
 	///  @name Operations
 
@@ -119,13 +119,6 @@ protected:
 	virtual
 	void
 	realize ()
-	{ }
-
-	///  @name Destruction
-
-	virtual
-	void
-	processShutdown () override
 	{ }
 
 

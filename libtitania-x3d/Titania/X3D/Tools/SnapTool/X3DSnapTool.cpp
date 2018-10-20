@@ -201,16 +201,14 @@ X3DSnapTool::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DSnapTool::touch (const double x, const double y) const
 {
-	const auto browser = getBrowser ();
+	getBrowser () -> getToolsPickable () .push (false);
+	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
+	getBrowser () -> getToolsPickable () .pop ();
 
-	browser -> getToolsPickable () .push (false);
-	browser -> touch (x, getBrowser () -> get_height () - y);
-	browser -> getToolsPickable () .pop ();
-
-	if (browser -> getHits () .empty ())
+	if (getBrowser () -> getHits () .empty ())
 		return false;
 
-	if (browser -> getNearestHit () -> getLayer() != browser -> getActiveLayer ())
+	if (getBrowser () -> getNearestHit () -> getLayer() != getBrowser () -> getActiveLayer ())
 		return false;
 
 	return true;
