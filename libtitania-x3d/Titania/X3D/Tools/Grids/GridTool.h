@@ -102,17 +102,17 @@ private:
 
 	virtual
 	Vector3d
-	getSnapPosition (const Vector3d &, const bool = true) final override;
+	getSnapPosition (const Vector3d & position, const bool) const final override;
 
 	double
-	getSnapPosition (const size_t, const Vector3d &);
+	getSnapPosition (const size_t axis, const Vector3d & position) const;
 
 	virtual
 	Vector3d
-	getSnapPosition (const Vector3d &, const Vector3d &) final override;
+	getSnapPosition (const Vector3d & position, const Vector3d & direction) const final override;
 
 	Vector3d
-	getSnapPosition (const size_t, const Vector3d &, const Vector3d &);
+	getSnapPosition (const size_t axis, const Vector3d & position, const Vector3d & direction) const;
 
 	///  @name Static members
 

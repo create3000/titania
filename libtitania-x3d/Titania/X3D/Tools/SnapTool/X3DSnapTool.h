@@ -151,6 +151,9 @@ private:
 	Vector3d
 	snapToVerticesAndCenters (const Vector3d & hitPoint, const HitPtr & hit, const Matrix4d & invPickingMatrix) const;
 
+	X3DPtr <X3DGridTool>
+	getGrid (const HitPtr & hit) const;
+
 	///  @name Fields
 
 	struct Fields

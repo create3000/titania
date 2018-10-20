@@ -102,7 +102,7 @@ GridTool::initialize ()
 }
 
 Vector3d
-GridTool::getSnapPosition (const Vector3d & position, const bool)
+GridTool::getSnapPosition (const Vector3d & position, const bool) const
 {
 	auto translation = position;
 
@@ -118,9 +118,9 @@ GridTool::getSnapPosition (const Vector3d & position, const bool)
 }
 
 double
-GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
+GridTool::getSnapPosition (const size_t axis, const Vector3d & position) const
 {
-	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
+	const auto o  = const_cast <GridTool*> (this) -> dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
 	const auto p  = std::round (position [axis]);
 	const auto p1 = p - o;
 	const auto p2 = p + o;
@@ -129,7 +129,7 @@ GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
 }
 
 Vector3d
-GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction) const
 {
 	for (size_t i = 0; i < 3; ++ i)
 	{
@@ -143,7 +143,7 @@ GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction
 }
 
 Vector3d
-GridTool::getSnapPosition (const size_t axis, const Vector3d & position, const Vector3d & direction)
+GridTool::getSnapPosition (const size_t axis, const Vector3d & position, const Vector3d & direction) const
 {
 	const auto value = getSnapPosition (axis, position);
 	const auto t     = (value - position [axis]) / direction [axis];

@@ -187,6 +187,11 @@ public:
 	isActive () const
 	{ return *fields .isActive; }
 
+	///  @name Operatations
+
+	Vector3d
+	getSnapPosition (const Vector3d & position) const;
+
 	///  @name Destruction
 
 	virtual
@@ -216,11 +221,11 @@ protected:
 
 	virtual
 	Vector3d
-	getSnapPosition (const Vector3d &, const bool = true) = 0;
+	getSnapPosition (const Vector3d &, const bool) const = 0;
 
 	virtual
 	Vector3d
-	getSnapPosition (const Vector3d &, const Vector3d &) = 0;
+	getSnapPosition (const Vector3d &, const Vector3d &) const = 0;
 
 
 private:

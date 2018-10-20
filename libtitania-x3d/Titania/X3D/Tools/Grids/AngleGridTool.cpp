@@ -104,7 +104,7 @@ AngleGridTool::initialize ()
 }
 
 Vector3d
-AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
+AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY) const
 {
 	constexpr double offset = pi <double> / 2;
 
@@ -145,15 +145,15 @@ AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 }
 
 Vector3d
-AngleGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+AngleGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction) const
 {
 	return position;
 }
 
 double
-AngleGridTool::getSnapPosition (const double position)
+AngleGridTool::getSnapPosition (const double position) const
 {
-	const auto o  = dimension () .get1Value (2) % 2 * 0.5; // Add a half scale if dimension is odd.
+	const auto o  = const_cast <AngleGridTool*> (this) -> dimension () .get1Value (2) % 2 * 0.5; // Add a half scale if dimension is odd.
 	const auto p  = std::round (position);
 	const auto p1 = p - o;
 	const auto p2 = p + o;

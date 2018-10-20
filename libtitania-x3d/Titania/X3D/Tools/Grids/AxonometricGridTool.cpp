@@ -128,7 +128,7 @@ AxonometricGridTool::realize ()
 }
 
 Vector3d
-AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
+AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snapY) const
 {
 	auto p = position;
 
@@ -186,7 +186,7 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 	{
 		// snapping y-Axis.
 
-		const auto o  = dimension () .get1Value (1) % 2 * 0.5; // Add a half scale if dimension is odd.
+		const auto o  = const_cast <AxonometricGridTool*> (this) -> dimension () .get1Value (1) % 2 * 0.5; // Add a half scale if dimension is odd.
 		const auto yr = std::round (position .y ());
 		const auto p1 = yr - o;
 		const auto p2 = yr + o;
@@ -202,7 +202,7 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 }
 
 Vector3d
-AxonometricGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+AxonometricGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction) const
 {
 	return position;
 }

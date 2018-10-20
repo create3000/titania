@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Tools/Grids/X3DGridTool.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
@@ -146,14 +147,12 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 	if (not getBrowser () -> getSelectable () and not enabled ())
 		return false;
 
-	getBrowser () -> getToolsPickable () .push (false);
-
 	if (not touch (event -> x, event -> y))
 	{
+		// Disable Snap Object if picked in empty space.
 		if (enabled ())
 			enabled () = false;
 
-		getBrowser () -> getToolsPickable () .pop ();
 		return false;
 	}
 
@@ -179,8 +178,6 @@ X3DSnapTool::on_button_release_event (GdkEventButton* event)
 
 	motionNotifyConnection  .disconnect ();
 
-	getBrowser () -> getToolsPickable () .pop ();
-
 	return false;
 }
 
@@ -204,12 +201,16 @@ X3DSnapTool::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DSnapTool::touch (const double x, const double y) const
 {
-	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
+	const auto browser = getBrowser ();
 
-	if (getBrowser () -> getHits () .empty ())
+	browser -> getToolsPickable () .push (false);
+	browser -> touch (x, getBrowser () -> get_height () - y);
+	browser -> getToolsPickable () .pop ();
+
+	if (browser -> getHits () .empty ())
 		return false;
 
-	if (getBrowser () -> getNearestHit () -> getLayer() != getBrowser () -> getActiveLayer ())
+	if (browser -> getNearestHit () -> getLayer() != browser -> getActiveLayer ())
 		return false;
 
 	return true;
@@ -229,13 +230,18 @@ X3DSnapTool::update ()
 		if (getBrowser () -> getShiftKey ())
 		{
 			position () = snapToVerticesAndCenters (hitPoint, hit, invPickingMatrix);
-			normal ()   = hitNormal;
 		}
 		else
 		{
-			position () = hitPoint;
-			normal ()   = hitNormal;
+			const auto gridNode = getGrid (hit);
+
+			if (gridNode)
+				position () = gridNode -> getSnapPosition (hitPoint * getModelMatrix ()) * inverse (getModelMatrix ());
+			else
+				position () = hitPoint;
 		}
+
+		normal () = hitNormal;
 	}
 	catch (const std::exception & error)
 	{
@@ -278,6 +284,20 @@ X3DSnapTool::snapToVerticesAndCenters (const Vector3d & hitPoint, const HitPtr &
 	});
 
 	return *snapPoint;
+}
+
+X3DPtr <X3DGridTool>
+X3DSnapTool::getGrid (const HitPtr & hit) const
+{
+	for (const auto & node : hit -> getHierarchy ())
+	{
+		const auto gridNode = X3DPtr <X3DGridTool> (node);
+
+		if (gridNode)
+			return gridNode;
+	}
+
+	return nullptr;
 }
 
 void

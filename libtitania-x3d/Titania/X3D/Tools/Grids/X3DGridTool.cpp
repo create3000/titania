@@ -193,6 +193,16 @@ X3DGridTool::getPickable () const
 	}
 }
 
+///  Returns snap position from @a position in world space.
+Vector3d
+X3DGridTool::getSnapPosition (const Vector3d & position) const
+{
+	const auto gridMatrix   = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
+	const auto snapPosition = getSnapPosition (position * inverse (gridMatrix), true) * gridMatrix;
+
+	return snapPosition;
+}
+
 void
 X3DGridTool::set_color ()
 {
@@ -310,7 +320,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		// Calculate snapping position and apply absolute relative translation.
 	
 		const auto gridMatrix    = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
-		const auto snapMatrix    = Matrix4d (getSnapPosition (position * inverse (gridMatrix)) * gridMatrix - position);
+		const auto snapMatrix    = Matrix4d (getSnapPosition (position * inverse (gridMatrix), true) * gridMatrix - position);
 		const auto currentMatrix = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
 		if (master -> getKeepCenter ())
@@ -407,7 +417,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 //__LOG__ << vectorToSnap << std::endl;
 //__LOG__ << normalize (vectorToSnap * inverse (rotationPlane)) << std::endl;
 //__LOG__ << vectorOnGrid << std::endl;
-//__LOG__ << getSnapPosition (vectorOnGrid) << std::endl;
+//__LOG__ << getSnapPosition (vectorOnGrid, true) << std::endl;
 //__LOG__ << snapVector << std::endl;
 
 		if (master -> getKeepCenter ())
