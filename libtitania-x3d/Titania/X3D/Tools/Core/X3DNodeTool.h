@@ -113,26 +113,15 @@ protected:
 	///  @name Member access
 
 	void
-	setTransformTool (const X3DPtr <X3DTransformNode> & transformNode);
+	setTransformTool (const size_t index, const X3DPtr <X3DTransformNode> & transformNode);
 
-	void
-	setTransformTool2 (const X3DPtr <X3DTransformNode> & transformNode);
-
-	const X3DPtr <X3DTransformNodeTool> &
-	getTransformTool () const
-	{ return transformTool1; }
-
-	const X3DPtr <X3DTransformNodeTool> &
-	getTransformTool2 () const
-	{ return transformTool2; }
+	const X3DPtrArray <X3DTransformNodeTool> &
+	getTransformTools () const
+	{ return transformTools; }
 
 	static
 	void
-	setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value);
-
-	static
-	void
-	setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value);
+	setChanging (const X3DPtr <X3D::X3DNode> & node, const size_t index, const bool value);
 
 
 private:
@@ -155,8 +144,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DTransformNodeTool> transformTool1;
-	X3DPtr <X3DTransformNodeTool> transformTool2;
+	X3DPtrArray <X3DTransformNodeTool> transformTools;
 
 };
 

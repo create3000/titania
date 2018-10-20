@@ -73,8 +73,10 @@ SpotLightTool::realize ()
 	try
 	{
 		X3DLightNodeTool::realize ();
+
+		const auto & transformTool = getTransformTools () [0];
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
+		transformTool -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
 	}
 	catch (const X3DError & error)
 	{
@@ -106,9 +108,9 @@ SpotLightTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (direction ()), startDirection);
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (location ()), startLocation);
-		undoStep -> addUndoFunction (&SpotLightTool::setChanging, X3DPtr <SpotLight> (this), true);
+		undoStep -> addUndoFunction (&SpotLightTool::setChanging, X3DPtr <SpotLight> (this), 0, true);
 
-		undoStep -> addRedoFunction (&SpotLightTool::setChanging, X3DPtr <SpotLight> (this), true);
+		undoStep -> addRedoFunction (&SpotLightTool::setChanging, X3DPtr <SpotLight> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (location ()), location ());
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (direction ()), direction ());
 	}

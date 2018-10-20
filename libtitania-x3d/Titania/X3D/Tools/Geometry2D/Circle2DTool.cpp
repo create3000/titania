@@ -82,21 +82,23 @@ Circle2DTool::initialize ()
 {
 	X3DLineGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&Circle2DTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&Circle2DTool::set_transform_tools, this);
 }
 
 void
-Circle2DTool::set_transform_tool ()
+Circle2DTool::set_transform_tools ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	radius () .addInterest (&Circle2DTool::set_radius, this);
 
-	getTransformTool () -> scaleXAxis ()     = false;
-	getTransformTool () -> scaleYAxis ()     = false;
-	getTransformTool () -> scaleZAxis ()     = false;
-	getTransformTool () -> scaleXBackAxis () = false;
-	getTransformTool () -> scaleYBackAxis () = false;
-	getTransformTool () -> scaleZBackAxis () = false;
-	getTransformTool () -> scaleFromEdge ()  = false;
+	transformTool -> scaleXAxis ()     = false;
+	transformTool -> scaleYAxis ()     = false;
+	transformTool -> scaleZAxis ()     = false;
+	transformTool -> scaleXBackAxis () = false;
+	transformTool -> scaleYBackAxis () = false;
+	transformTool -> scaleZBackAxis () = false;
+	transformTool -> scaleFromEdge ()  = false;
 
 	set_radius ();
 }
@@ -104,21 +106,25 @@ Circle2DTool::set_transform_tool ()
 void
 Circle2DTool::set_radius ()
 {
-	getTransformTool () -> scale () .removeInterest (&Circle2DTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&Circle2DTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
+
+	transformTool -> scale () .removeInterest (&Circle2DTool::set_scale, this);
+	transformTool -> scale () .addInterest (&Circle2DTool::connectScale, this);
 
 	const float diameter = 2 * radius ();
 
-	getTransformTool () -> scale () = Vector3f (diameter, diameter, 1e-6);
+	transformTool -> scale () = Vector3f (diameter, diameter, 1e-6);
 }
 
 void
 Circle2DTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	radius () .removeInterest (&Circle2DTool::set_radius, this);
 	radius () .addInterest (&Circle2DTool::connectRadius, this);
 
-	radius () = getTransformTool () -> scale () .getX () / 2;
+	radius () = transformTool -> scale () .getX () / 2;
 }
 
 void
@@ -147,9 +153,9 @@ Circle2DTool::endUndo (const UndoStepPtr & undoStep)
 	if (radius () not_eq startRadius)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
-		undoStep -> addUndoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), true);
+		undoStep -> addUndoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), 0, true);
 
-		undoStep -> addRedoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), true);
+		undoStep -> addRedoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
 	}
 }

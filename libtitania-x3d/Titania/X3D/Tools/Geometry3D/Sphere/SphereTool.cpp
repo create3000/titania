@@ -82,21 +82,23 @@ SphereTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&SphereTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&SphereTool::set_transform_tools, this);
 }
 
 void
-SphereTool::set_transform_tool ()
+SphereTool::set_transform_tools ()
 {
 	radius () .addInterest (&SphereTool::set_radius, this);
 
-	getTransformTool () -> scaleXAxis ()     = false;
-	getTransformTool () -> scaleYAxis ()     = false;
-	getTransformTool () -> scaleZAxis ()     = false;
-	getTransformTool () -> scaleXBackAxis () = false;
-	getTransformTool () -> scaleYBackAxis () = false;
-	getTransformTool () -> scaleZBackAxis () = false;
-	getTransformTool () -> scaleFromEdge ()  = false;
+	const auto & transformTool = getTransformTools () [0];
+
+	transformTool -> scaleXAxis ()     = false;
+	transformTool -> scaleYAxis ()     = false;
+	transformTool -> scaleZAxis ()     = false;
+	transformTool -> scaleXBackAxis () = false;
+	transformTool -> scaleYBackAxis () = false;
+	transformTool -> scaleZBackAxis () = false;
+	transformTool -> scaleFromEdge ()  = false;
 
 	set_radius ();
 }
@@ -104,21 +106,25 @@ SphereTool::set_transform_tool ()
 void
 SphereTool::set_radius ()
 {
-	getTransformTool () -> scale () .removeInterest (&SphereTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&SphereTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
+
+	transformTool -> scale () .removeInterest (&SphereTool::set_scale, this);
+	transformTool -> scale () .addInterest (&SphereTool::connectScale, this);
 
 	const float diameter = 2 * radius ();
 
-	getTransformTool () -> scale () = Vector3f (diameter, diameter, diameter);
+	transformTool -> scale () = Vector3f (diameter, diameter, diameter);
 }
 
 void
 SphereTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	radius () .removeInterest (&SphereTool::set_radius, this);
 	radius () .addInterest (&SphereTool::connectRadius, this);
 
-	radius () = getTransformTool () -> scale () .getX () / 2;
+	radius () = transformTool -> scale () .getX () / 2;
 }
 
 void
@@ -147,9 +153,9 @@ SphereTool::endUndo (const UndoStepPtr & undoStep)
 	if (radius () not_eq startRadius)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
-		undoStep -> addUndoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), true);
+		undoStep -> addUndoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), 0, true);
 
-		undoStep -> addRedoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), true);
+		undoStep -> addRedoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
 	}
 }

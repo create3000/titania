@@ -590,9 +590,13 @@ private:
 
 	///  @name Field handling
 
+	///  Process sceneGraph_changed event.
+	void
+	set_sceneGraph ();
+
 	///  Remove field implementation.
 	void
-	removeField (const FieldIndex::iterator & iter, const bool, const bool);
+	removeField (const FieldIndex::iterator & iter, const bool userDefined, const bool removeParent);
 
 	///  Returns the standard field name for @a alias.
 	const std::string &

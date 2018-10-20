@@ -82,18 +82,19 @@ BoxTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&BoxTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&BoxTool::set_transform_tools, this);
 }
 
 void
-BoxTool::set_transform_tool ()
+BoxTool::set_transform_tools ()
 {
-	size () .addInterest (getTransformTool () -> scale ());
-	getTransformTool () -> scale () .addInterest (size ());
+	const auto & transformTool = getTransformTools () [0];
 
-	getTransformTool () -> scale () = size ();
+	size () .addInterest (transformTool -> scale ());
+	transformTool -> scale () .addInterest (size ());
 
-	getTransformTool () -> scaleFromEdge () = false;
+	transformTool -> scale ()         = size ();
+	transformTool -> scaleFromEdge () = false;
 }
 
 void
@@ -108,9 +109,9 @@ BoxTool::endUndo (const UndoStepPtr & undoStep)
 	if (size () not_eq startSize)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (size ()), startSize);
-		undoStep -> addUndoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), true);
+		undoStep -> addUndoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), 0, true);
 
-		undoStep -> addRedoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), true);
+		undoStep -> addRedoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (size ()), size ());
 	}
 }

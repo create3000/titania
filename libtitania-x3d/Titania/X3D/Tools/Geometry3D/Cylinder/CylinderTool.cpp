@@ -83,18 +83,20 @@ CylinderTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&CylinderTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&CylinderTool::set_transform_tools, this);
 }
 
 void
-CylinderTool::set_transform_tool ()
+CylinderTool::set_transform_tools ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	height () .addInterest (&CylinderTool::set_height, this);
 	radius () .addInterest (&CylinderTool::set_radius, this);
 
-	getTransformTool () -> scaleUniform ()  = false;
-	getTransformTool () -> scaleFromEdge () = false;
-	getTransformTool () -> connectedAxes () = { "XZ", "ZX" };
+	transformTool -> scaleUniform ()  = false;
+	transformTool -> scaleFromEdge () = false;
+	transformTool -> connectedAxes () = { "XZ", "ZX" };
 
 	set_height ();
 	set_radius ();
@@ -103,35 +105,41 @@ CylinderTool::set_transform_tool ()
 void
 CylinderTool::set_height ()
 {
-	getTransformTool () -> scale () .removeInterest (&CylinderTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&CylinderTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
 
-	getTransformTool () -> scale () .setY (height ());
+	transformTool -> scale () .removeInterest (&CylinderTool::set_scale, this);
+	transformTool -> scale () .addInterest (&CylinderTool::connectScale, this);
+
+	transformTool -> scale () .setY (height ());
 }
 
 void
 CylinderTool::set_radius ()
 {
-	const float diameter = 2 * radius ();
+	const auto & transformTool = getTransformTools () [0];
 
-	getTransformTool () -> scale () .removeInterest (&CylinderTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&CylinderTool::connectScale, this);
+	transformTool -> scale () .removeInterest (&CylinderTool::set_scale, this);
+	transformTool -> scale () .addInterest (&CylinderTool::connectScale, this);
 
-	getTransformTool () -> scale () .setX (diameter);
-	getTransformTool () -> scale () .setZ (diameter);
+	const float  diameter = 2 * radius ();
+
+	transformTool -> scale () .setX (diameter);
+	transformTool -> scale () .setZ (diameter);
 }
 
 void
 CylinderTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	height () .removeInterest (&CylinderTool::set_height, this);
 	height () .addInterest (&CylinderTool::connectHeight, this);
 
 	radius () .removeInterest (&CylinderTool::set_radius, this);
 	radius () .addInterest (&CylinderTool::connectRadius, this);
 
-	height () = getTransformTool () -> scale () .getY ();
-	radius () = getTransformTool () -> scale () .getX () / 2;
+	height () = transformTool -> scale () .getY ();
+	radius () = transformTool -> scale () .getX () / 2;
 }
 
 void
@@ -170,9 +178,9 @@ CylinderTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (height ()), startHeight);
-		undoStep -> addUndoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), true);
+		undoStep -> addUndoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), 0, true);
 
-		undoStep -> addRedoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), true);
+		undoStep -> addRedoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (height ()), height ());
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
 	}

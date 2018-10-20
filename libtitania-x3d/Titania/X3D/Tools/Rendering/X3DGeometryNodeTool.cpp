@@ -174,12 +174,14 @@ X3DGeometryNodeTool::set_toolType ()
 
 			// Enable TransformTool
 
-			setTransformTool (inlineNode -> getExportedNode <Transform> ("TransformTool"));
+			setTransformTool (0, inlineNode -> getExportedNode <Transform> ("TransformTool"));
 
-			getTransformTool () -> tools ()         = { "SCALE" };
-			getTransformTool () -> displayCenter () = false;
-			getTransformTool () -> displayBBox ()   = false;
-			getTransformTool () -> color ()         = ToolColors::DARK_BLUE;
+			const auto & transformTool = getTransformTools () [0];
+
+			transformTool -> tools ()         = { "SCALE" };
+			transformTool -> displayCenter () = false;
+			transformTool -> displayBBox ()   = false;
+			transformTool -> color ()         = ToolColors::DARK_BLUE;
 		}
 	}
 	catch (const X3DError & error)

@@ -164,8 +164,28 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			const auto executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 		   auto       node             = executionContext -> createNode (getGeometryComboBoxText () .get_active_text ());
 
+			// Setup better default values for node type.
+
+			switch (node -> getType () .back ())
+			{
+				case X3D::X3DConstants::ElevationGrid:
+				{
+					const auto elevationGrid = X3D::X3DPtr <X3D::ElevationGrid> (node);
+
+					elevationGrid -> xDimension () = 10;
+					elevationGrid -> zDimension () = 10;
+					break;
+				}
+				default:
+					break;
+			}
+
+			// If there is a geometry node use this.
+
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
+
+			// Replace geometry node in shape.
 
 			for (const auto & shapeNode : shapeNodes)
 			{

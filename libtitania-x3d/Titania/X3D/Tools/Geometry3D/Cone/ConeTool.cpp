@@ -83,18 +83,20 @@ ConeTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&ConeTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&ConeTool::set_transform_tools, this);
 }
 
 void
-ConeTool::set_transform_tool ()
+ConeTool::set_transform_tools ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	height ()       .addInterest (&ConeTool::set_height, this);
 	bottomRadius () .addInterest (&ConeTool::set_bottomRadius, this);
 
-	getTransformTool () -> scaleUniform ()  = false;
-	getTransformTool () -> scaleFromEdge () = false;
-	getTransformTool () -> connectedAxes () = { "XZ", "ZX" };
+	transformTool -> scaleUniform ()  = false;
+	transformTool -> scaleFromEdge () = false;
+	transformTool -> connectedAxes () = { "XZ", "ZX" };
 
 	set_height ();
 	set_bottomRadius ();
@@ -103,35 +105,40 @@ ConeTool::set_transform_tool ()
 void
 ConeTool::set_height ()
 {
-	getTransformTool () -> scale () .removeInterest (&ConeTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&ConeTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
 
-	getTransformTool () -> scale () .setY (height ());
+	transformTool -> scale () .removeInterest (&ConeTool::set_scale, this);
+	transformTool -> scale () .addInterest (&ConeTool::connectScale, this);
+
+	transformTool -> scale () .setY (height ());
 }
 
 void
 ConeTool::set_bottomRadius ()
 {
-	const float diameter = 2 * bottomRadius ();
+	const auto & transformTool = getTransformTools () [0];
+	const float  diameter      = 2 * bottomRadius ();
 
-	getTransformTool () -> scale () .removeInterest (&ConeTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&ConeTool::connectScale, this);
+	transformTool -> scale () .removeInterest (&ConeTool::set_scale, this);
+	transformTool -> scale () .addInterest (&ConeTool::connectScale, this);
 
-	getTransformTool () -> scale () .setX (diameter);
-	getTransformTool () -> scale () .setZ (diameter);
+	transformTool -> scale () .setX (diameter);
+	transformTool -> scale () .setZ (diameter);
 }
 
 void
 ConeTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	height () .removeInterest (&ConeTool::set_height, this);
 	height () .addInterest (&ConeTool::connectHeight, this);
 
 	bottomRadius () .removeInterest (&ConeTool::set_bottomRadius, this);
 	bottomRadius () .addInterest (&ConeTool::connectBottomRadius, this);
 
-	height ()       = getTransformTool () -> scale () .getY ();
-	bottomRadius () = getTransformTool () -> scale () .getX () / 2;
+	height ()       = transformTool -> scale () .getY ();
+	bottomRadius () = transformTool -> scale () .getX () / 2;
 }
 
 void
@@ -170,9 +177,9 @@ ConeTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (bottomRadius ()), startBottomRadius);
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (height ()), startHeight);
-		undoStep -> addUndoFunction (&ConeTool::setChanging, X3DPtr <Cone> (this), true);
+		undoStep -> addUndoFunction (&ConeTool::setChanging, X3DPtr <Cone> (this), 0, true);
 
-		undoStep -> addRedoFunction (&ConeTool::setChanging, X3DPtr <Cone> (this), true);
+		undoStep -> addRedoFunction (&ConeTool::setChanging, X3DPtr <Cone> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (height ()), height ());
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (bottomRadius ()), bottomRadius ());
 	}

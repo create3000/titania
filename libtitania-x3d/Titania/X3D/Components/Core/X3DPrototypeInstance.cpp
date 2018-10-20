@@ -213,7 +213,8 @@ X3DPrototypeInstance::construct ()
 				if (not field -> getReferences () .empty ()) // hasIsReferences
 					continue;
 
-				*field = *protoField;
+				// If default value of protoField is different from field update default value for field.
+				field -> set (*protoField);
 			}
 			catch (const X3DError &)
 			{

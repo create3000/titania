@@ -77,7 +77,7 @@ GeoViewpointTool::realize ()
 {
 	X3DViewpointNodeTool::realize ();
 
-	const auto transformTool = getTransformTool ();
+	const auto & transformTool = getTransformTools () [0];
 
 	getNode <GeoViewpoint> () -> position ()    .addInterest (&GeoViewpointTool::set_geo_position,    this);
 	getNode <GeoViewpoint> () -> orientation () .addInterest (&GeoViewpointTool::set_geo_orientation, this);
@@ -92,7 +92,7 @@ GeoViewpointTool::realize ()
 void
 GeoViewpointTool::set_geo_position ()
 {
-	const auto transformTool = getTransformTool ();
+	const auto & transformTool = getTransformTools () [0];
 
 	transformTool -> translation () = getNode <GeoViewpoint> () -> getPosition ();
 
@@ -103,7 +103,7 @@ GeoViewpointTool::set_geo_position ()
 void
 GeoViewpointTool::set_geo_orientation ()
 {
-	const auto transformTool = getTransformTool ();
+	const auto & transformTool = getTransformTools () [0];
 
 	transformTool -> rotation () = getNode <GeoViewpoint> () -> getOrientation ();
 
@@ -114,9 +114,10 @@ GeoViewpointTool::set_geo_orientation ()
 void
 GeoViewpointTool::set_translation ()
 {
-	const auto userOrientation = getNode <GeoViewpoint> () -> getUserOrientation ();
+	const auto & transformTool   = getTransformTools () [0];
+	const auto   userOrientation = getNode <GeoViewpoint> () -> getUserOrientation ();
 
-	getNode <GeoViewpoint> () -> setPosition (getTransformTool () -> translation () .getValue ());
+	getNode <GeoViewpoint> () -> setPosition (transformTool -> translation () .getValue ());
 	getNode <GeoViewpoint> () -> setUserOrientation (userOrientation);
 
 	getNode <GeoViewpoint> () -> position () .removeInterest (&GeoViewpointTool::set_geo_position, this);
@@ -129,7 +130,9 @@ GeoViewpointTool::set_translation ()
 void
 GeoViewpointTool::set_rotation ()
 {
-	getNode <GeoViewpoint> () -> setOrientation (getTransformTool () -> rotation ());
+	const auto & transformTool = getTransformTools () [0];
+
+	getNode <GeoViewpoint> () -> setOrientation (transformTool -> rotation ());
 
 	getNode <GeoViewpoint> () -> orientation () .removeInterest (&GeoViewpointTool::set_geo_orientation, this);
 	getNode <GeoViewpoint> () -> orientation () .addInterest (&GeoViewpointTool::connectGeoOrientation,  this);

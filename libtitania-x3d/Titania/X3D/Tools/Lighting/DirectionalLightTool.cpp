@@ -73,13 +73,15 @@ DirectionalLightTool::realize ()
 	{
 		X3DLightNodeTool::realize ();
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
+		const auto & transformTool = getTransformTools () [0];
+	
+		transformTool -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
 	
 		// Connect tool location
 	
-		getTransformTool () -> translation () = getMetaData <Vector3f> ("/DirectionalLight/location");
+		transformTool -> translation () = getMetaData <Vector3f> ("/DirectionalLight/location");
 	
-		getTransformTool () -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
+		transformTool -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
 	}
 	catch (const X3DError & error)
 	{
@@ -101,7 +103,9 @@ DirectionalLightTool::set_translation ()
 {
 	try
 	{
-		setMetaData <Vector3f> ("/DirectionalLight/location", getTransformTool () -> translation ());
+		const auto & transformTool = getTransformTools () [0];
+	
+		setMetaData <Vector3f> ("/DirectionalLight/location", transformTool -> translation ());
 	}
 	catch (const X3DError & error)
 	{
@@ -121,9 +125,9 @@ DirectionalLightTool::endUndo (const UndoStepPtr & undoStep)
 	if (direction () not_eq startDirection)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (direction ()), startDirection);
-		undoStep -> addUndoFunction (&DirectionalLightTool::setChanging, X3DPtr <DirectionalLight> (this), true);
+		undoStep -> addUndoFunction (&DirectionalLightTool::setChanging, X3DPtr <DirectionalLight> (this), 0, true);
 
-		undoStep -> addRedoFunction (&DirectionalLightTool::setChanging, X3DPtr <DirectionalLight> (this), true);
+		undoStep -> addRedoFunction (&DirectionalLightTool::setChanging, X3DPtr <DirectionalLight> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (direction ()), direction ());
 	}
 }

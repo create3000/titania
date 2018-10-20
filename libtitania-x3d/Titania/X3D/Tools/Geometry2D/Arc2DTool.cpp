@@ -81,21 +81,23 @@ Arc2DTool::initialize ()
 {
 	X3DLineGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&Arc2DTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&Arc2DTool::set_transform_tools, this);
 }
 
 void
-Arc2DTool::set_transform_tool ()
+Arc2DTool::set_transform_tools ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	radius () .addInterest (&Arc2DTool::set_radius, this);
 
-	getTransformTool () -> scaleXAxis ()     = false;
-	getTransformTool () -> scaleYAxis ()     = false;
-	getTransformTool () -> scaleZAxis ()     = false;
-	getTransformTool () -> scaleXBackAxis () = false;
-	getTransformTool () -> scaleYBackAxis () = false;
-	getTransformTool () -> scaleZBackAxis () = false;
-	getTransformTool () -> scaleFromEdge ()  = false;
+	transformTool -> scaleXAxis ()     = false;
+	transformTool -> scaleYAxis ()     = false;
+	transformTool -> scaleZAxis ()     = false;
+	transformTool -> scaleXBackAxis () = false;
+	transformTool -> scaleYBackAxis () = false;
+	transformTool -> scaleZBackAxis () = false;
+	transformTool -> scaleFromEdge ()  = false;
 
 	set_radius ();
 }
@@ -103,21 +105,25 @@ Arc2DTool::set_transform_tool ()
 void
 Arc2DTool::set_radius ()
 {
-	getTransformTool () -> scale () .removeInterest (&Arc2DTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&Arc2DTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
+
+	transformTool -> scale () .removeInterest (&Arc2DTool::set_scale, this);
+	transformTool -> scale () .addInterest (&Arc2DTool::connectScale, this);
 
 	const float diameter = 2 * radius ();
 
-	getTransformTool () -> scale () = Vector3f (diameter, diameter, 1e-6);
+	transformTool -> scale () = Vector3f (diameter, diameter, 1e-6);
 }
 
 void
 Arc2DTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	radius () .removeInterest (&Arc2DTool::set_radius, this);
 	radius () .addInterest (&Arc2DTool::connectRadius, this);
 
-	radius () = getTransformTool () -> scale () .getX () / 2;
+	radius () = transformTool -> scale () .getX () / 2;
 }
 
 void
@@ -146,9 +152,9 @@ Arc2DTool::endUndo (const UndoStepPtr & undoStep)
 	if (radius () not_eq startRadius)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
-		undoStep -> addUndoFunction (&Arc2DTool::setChanging, X3DPtr <Arc2D> (this), true);
+		undoStep -> addUndoFunction (&Arc2DTool::setChanging, X3DPtr <Arc2D> (this), 0, true);
 
-		undoStep -> addRedoFunction (&Arc2DTool::setChanging, X3DPtr <Arc2D> (this), true);
+		undoStep -> addRedoFunction (&Arc2DTool::setChanging, X3DPtr <Arc2D> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
 	}
 }

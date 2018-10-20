@@ -1,3 +1,5 @@
 #X3D V3.3 utf8 Titania
 
-TransformSensor { }
+TransformSensor {
+  size 2 2 2
+}

@@ -104,18 +104,21 @@ X3DViewpointNodeTool::realize ()
 {
 	try
 	{
-		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+		setTransformTool (0, getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-		addTool ();
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
 
-		getTransformTool () -> setField <MFString> ("tools",         MFString ({ "TRANSLATE", "ROTATE" }));
-		getTransformTool () -> setField <SFBool>   ("displayCenter", false);
+		transformTool -> setField <MFString> ("tools",         MFString ({ "TRANSLATE", "ROTATE" }));
+		transformTool -> setField <SFBool>   ("displayCenter", false);
 
-		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
+		toolNode -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
 
 		switchNode = getInlineNode () -> getExportedNode <Switch> ("TransformToolSwitch");
 
 		set_positionOffset ();
+
+		addTool ();
 	}
 	catch (const X3DError & error)
 	{
@@ -172,9 +175,9 @@ X3DViewpointNodeTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3DViewpointNode> (this), startOrientation);
 		undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3DViewpointNode> (this), startPosition);
-		undoStep -> addUndoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), true);
+		undoStep -> addUndoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), 0, true);
 
-		undoStep -> addRedoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), true);
+		undoStep -> addRedoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), 0, true);
 		undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3DViewpointNode> (this), getPosition ());
 		undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3DViewpointNode> (this), getOrientation ());
 	}
@@ -185,10 +188,15 @@ X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
-		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		if (getTransformTools () .empty ())
+			return;
 
-		getTransformTool () -> setField <SFBool> ("grouping", selected);
-		getToolNode ()      -> setField <SFBool> ("selected", selected);
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+		const auto   selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+
+		transformTool -> setField <SFBool> ("grouping", selected);
+		toolNode      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError & error)
 	{
@@ -207,8 +215,11 @@ X3DViewpointNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			getTransformTool () -> setField <SFBool> ("grouping", false);
-			getToolNode ()      -> setField <SFBool> ("selected", false);
+			const auto & transformTool = getTransformTools () [0];
+			const auto & toolNode      = getToolNode ();
+
+			transformTool -> setField <SFBool> ("grouping", false);
+			toolNode      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError & error)
 		{

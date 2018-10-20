@@ -69,7 +69,7 @@ OrthoViewpointTool::realize ()
 {
 	X3DViewpointNodeTool::realize ();
 
-	const auto transformTool = getTransformTool ();
+	const auto & transformTool = getTransformTools () [0];
 
 	getNode <OrthoViewpoint> () -> position ()    .addInterest (transformTool -> translation ());
 	getNode <OrthoViewpoint> () -> orientation () .addInterest (transformTool -> rotation ());

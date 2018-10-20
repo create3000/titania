@@ -87,44 +87,56 @@ Disk2DTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&Disk2DTool::set_transform_tool, this);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&Disk2DTool::set_loadState, this);
+
+	getTransformTools () .addInterest (&Disk2DTool::set_transform_tools, this);
 }
 
 void
-Disk2DTool::set_transform_tool ()
+Disk2DTool::set_loadState ()
 {
 	// TransformTool 2
 
-	setTransformTool2 (getCoordinateTool () -> getInlineNode () -> getExportedNode <Transform> ("TransformTool2"));
+	setTransformTool (1, getCoordinateTool () -> getInlineNode () -> getExportedNode <Transform> ("TransformTool2"));
+}
 
-	getTransformTool2 () -> grouping ()      = false;
-	getTransformTool2 () -> tools ()         = { "SCALE" };
-	getTransformTool2 () -> displayCenter () = false;
-	getTransformTool2 () -> displayBBox ()   = false;
-	getTransformTool2 () -> color ()         = ToolColors::DARK_BLUE;
+void
+Disk2DTool::set_transform_tools ()
+{
+	if (getTransformTools () .size () not_eq 2)
+		return;
 
-	getTransformTool () -> color () = ToolColors::BLUE;
+	const auto & transformTool0 = getTransformTools () [0];
+	const auto & transformTool1 = getTransformTools () [1];
+
+	transformTool0 -> color () = ToolColors::BLUE;
+
+	transformTool1 -> grouping ()      = false;
+	transformTool1 -> tools ()         = { "SCALE" };
+	transformTool1 -> displayCenter () = false;
+	transformTool1 -> displayBBox ()   = false;
+	transformTool1 -> color ()         = ToolColors::DARK_BLUE;
 
 	// Fields
 
 	innerRadius () .addInterest (&Disk2DTool::set_innerRadius, this);
 	outerRadius () .addInterest (&Disk2DTool::set_outerRadius, this);
 
-	getTransformTool () -> scaleXAxis ()     = false;
-	getTransformTool () -> scaleYAxis ()     = false;
-	getTransformTool () -> scaleZAxis ()     = false;
-	getTransformTool () -> scaleXBackAxis () = false;
-	getTransformTool () -> scaleYBackAxis () = false;
-	getTransformTool () -> scaleZBackAxis () = false;
-	getTransformTool () -> scaleFromEdge ()  = false;
+	transformTool0 -> scaleXAxis ()     = false;
+	transformTool0 -> scaleYAxis ()     = false;
+	transformTool0 -> scaleZAxis ()     = false;
+	transformTool0 -> scaleXBackAxis () = false;
+	transformTool0 -> scaleYBackAxis () = false;
+	transformTool0 -> scaleZBackAxis () = false;
+	transformTool0 -> scaleFromEdge ()  = false;
 
-	getTransformTool2 () -> scaleXAxis ()     = false;
-	getTransformTool2 () -> scaleYAxis ()     = false;
-	getTransformTool2 () -> scaleZAxis ()     = false;
-	getTransformTool2 () -> scaleXBackAxis () = false;
-	getTransformTool2 () -> scaleYBackAxis () = false;
-	getTransformTool2 () -> scaleZBackAxis () = false;
-	getTransformTool2 () -> scaleFromEdge ()  = false;
+	transformTool1 -> scaleXAxis ()     = false;
+	transformTool1 -> scaleYAxis ()     = false;
+	transformTool1 -> scaleZAxis ()     = false;
+	transformTool1 -> scaleXBackAxis () = false;
+	transformTool1 -> scaleYBackAxis () = false;
+	transformTool1 -> scaleZBackAxis () = false;
+	transformTool1 -> scaleFromEdge ()  = false;
 
 	set_innerRadius ();
 	set_outerRadius ();
@@ -133,41 +145,49 @@ Disk2DTool::set_transform_tool ()
 void
 Disk2DTool::set_innerRadius ()
 {
-	getTransformTool () -> scale () .removeInterest (&Disk2DTool::set_scale1, this);
-	getTransformTool () -> scale () .addInterest (&Disk2DTool::connectScale1, this);
+	const auto & transformTool0 = getTransformTools () [0];
+
+	transformTool0 -> scale () .removeInterest (&Disk2DTool::set_scale1, this);
+	transformTool0 -> scale () .addInterest (&Disk2DTool::connectScale1, this);
 
 	const float diameter = 2 * innerRadius ();
 
-	getTransformTool () -> scale () = Vector3f (diameter, diameter, 1e-6);
+	transformTool0 -> scale () = Vector3f (diameter, diameter, 1e-6);
 }
 
 void
 Disk2DTool::set_outerRadius ()
 {
-	getTransformTool2 () -> scale () .removeInterest (&Disk2DTool::set_scale2, this);
-	getTransformTool2 () -> scale () .addInterest (&Disk2DTool::connectScale2, this);
+	const auto & transformTool1 = getTransformTools () [1];
+
+	transformTool1 -> scale () .removeInterest (&Disk2DTool::set_scale2, this);
+	transformTool1 -> scale () .addInterest (&Disk2DTool::connectScale2, this);
 
 	const float diameter = 2 * outerRadius ();
 
-	getTransformTool2 () -> scale () = Vector3f (diameter, diameter, 1e-6);
+	transformTool1 -> scale () = Vector3f (diameter, diameter, 1e-6);
 }
 
 void
 Disk2DTool::set_scale1 ()
 {
+	const auto & transformTool0 = getTransformTools () [0];
+
 	innerRadius () .removeInterest (&Disk2DTool::set_innerRadius, this);
 	innerRadius () .addInterest (&Disk2DTool::connectInnerRadius, this);
 
-	innerRadius () = getTransformTool () -> scale () .getX () / 2;
+	innerRadius () = transformTool0 -> scale () .getX () / 2;
 }
 
 void
 Disk2DTool::set_scale2 ()
 {
+	const auto & transformTool1 = getTransformTools () [1];
+
 	outerRadius () .removeInterest (&Disk2DTool::set_outerRadius, this);
 	outerRadius () .addInterest (&Disk2DTool::connectOuterRadius, this);
 
-	outerRadius () = getTransformTool2 () -> scale () .getX () / 2;
+	outerRadius () = transformTool1 -> scale () .getX () / 2;
 }
 
 void
@@ -213,11 +233,11 @@ Disk2DTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (outerRadius ()), startOuterRadius);
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (innerRadius ()), startInnerRadius);
-		undoStep -> addUndoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), true);
-		undoStep -> addUndoFunction (&Disk2DTool::setChanging2, X3DPtr <Disk2D> (this), true);
+		undoStep -> addUndoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), 0, true);
+		undoStep -> addUndoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), 1, true);
 
-		undoStep -> addRedoFunction (&Disk2DTool::setChanging2, X3DPtr <Disk2D> (this), true);
-		undoStep -> addRedoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), true);
+		undoStep -> addRedoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), 1, true);
+		undoStep -> addRedoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), 0, true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (innerRadius ()), innerRadius ());
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (outerRadius ()), outerRadius ());
 	}

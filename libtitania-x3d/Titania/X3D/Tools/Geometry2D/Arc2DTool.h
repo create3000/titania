@@ -159,7 +159,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_transform_tool ();
+	set_transform_tools ();
 
 	void
 	set_radius ();

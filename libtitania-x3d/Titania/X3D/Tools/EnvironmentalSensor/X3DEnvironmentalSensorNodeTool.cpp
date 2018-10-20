@@ -88,19 +88,22 @@ X3DEnvironmentalSensorNodeTool::realize ()
 {
 	try
 	{
-		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+		setTransformTool (0, getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-		addTool ();
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+	
+		transformTool -> tools ()         = { "TRANSLATE", "SCALE" };
+		transformTool -> displayCenter () = false;
 
-		getTransformTool () -> tools ()         = { "TRANSLATE", "SCALE" };
-		getTransformTool () -> displayCenter () = false;
-
-		getToolNode () -> setField <SFColor> ("color", color);
-		getToolNode () -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
+		toolNode -> setField <SFColor> ("color", color);
+		toolNode -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
 
 		auto & set_enabled = getToolNode () -> getField <SFBool> ("enabled");
 		enabled () .addInterest (set_enabled);
 		set_enabled = getNode <X3DEnvironmentalSensorNode> () -> enabled ();
+
+		addTool ();
 	}
 	catch (const X3DError & error)
 	{ }
@@ -130,9 +133,9 @@ X3DEnvironmentalSensorNodeTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (center ()), startCenter);
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (size ()), startSize);
-		undoStep -> addUndoFunction (&X3DEnvironmentalSensorNodeTool::setChanging, X3DPtr <X3DEnvironmentalSensorNode> (this), true);
+		undoStep -> addUndoFunction (&X3DEnvironmentalSensorNodeTool::setChanging, X3DPtr <X3DEnvironmentalSensorNode> (this), 0, true);
 
-		undoStep -> addRedoFunction (&X3DEnvironmentalSensorNodeTool::setChanging, X3DPtr <X3DEnvironmentalSensorNode> (this), true);
+		undoStep -> addRedoFunction (&X3DEnvironmentalSensorNodeTool::setChanging, X3DPtr <X3DEnvironmentalSensorNode> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (size ()), size ());
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (center ()), center ());
 	}
@@ -143,10 +146,15 @@ X3DEnvironmentalSensorNodeTool::addTool ()
 {
 	try
 	{
-		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		if (getTransformTools () .empty ())
+			return;
 
-		getTransformTool () -> setField <SFBool> ("grouping", selected);
-		getToolNode ()      -> setField <SFBool> ("selected", selected);
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+		const auto   selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+
+		transformTool -> setField <SFBool> ("grouping", selected);
+		toolNode      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError &)
 	{ }
@@ -156,14 +164,18 @@ void
 X3DEnvironmentalSensorNodeTool::removeTool (const bool really)
 {
 	if (really)
+	{
 		X3DSensorNodeTool::removeTool ();
-	
+	}
 	else
 	{
 		try
 		{
-			getTransformTool () -> setField <SFBool> ("grouping", false);
-			getToolNode ()      -> setField <SFBool> ("selected", false);
+			const auto & transformTool = getTransformTools () [0];
+			const auto & toolNode      = getToolNode ();
+
+			transformTool -> setField <SFBool> ("grouping", false);
+			toolNode      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)
 		{ }

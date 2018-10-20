@@ -73,7 +73,9 @@ PointLightTool::realize ()
 	{
 		X3DLightNodeTool::realize ();
 	
-		getTransformTool () -> setField <MFString> ("tools", MFString ({ "TRANSLATE" }));
+		const auto & transformTool = getTransformTools () [0];
+	
+		transformTool -> setField <MFString> ("tools", MFString ({ "TRANSLATE" }));
 	}
 	catch (const X3DError & error)
 	{
@@ -102,9 +104,9 @@ PointLightTool::endUndo (const UndoStepPtr & undoStep)
 	if (location () not_eq startLocation)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (location ()), startLocation);
-		undoStep -> addUndoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), true);
+		undoStep -> addUndoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), 0, true);
 
-		undoStep -> addRedoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), true);
+		undoStep -> addRedoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (location ()), location ());
 	}
 }

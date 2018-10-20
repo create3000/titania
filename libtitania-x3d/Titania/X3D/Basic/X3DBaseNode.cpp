@@ -569,16 +569,21 @@ throw (Error <INVALID_NAME>,
 
 	// Handle sceneGraph_changed event.
 
-	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
 	switch (field .getType ())
 	{
 		case X3DConstants::SFNode:
 		case X3DConstants::MFNode:
-			field .addInterest (&SFTime::setValue, const_cast <SFTime &> (executionContext -> sceneGraph_changed ()), std::bind (&X3DBaseNode::getCurrentTime, this));
+			field .addInterest (&X3DBaseNode::set_sceneGraph, this);
 			break;
 		default:
 			break;
 	}
+}
+
+void
+X3DBaseNode::set_sceneGraph ()
+{
+	const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 }
 
 /***

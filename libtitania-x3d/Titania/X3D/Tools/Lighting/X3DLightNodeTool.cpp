@@ -98,12 +98,15 @@ X3DLightNodeTool::realize ()
 {
 	try
 	{
-		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+		setTransformTool (0, getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+
+		transformTool -> setField <SFBool> ("displayCenter", false);
+		toolNode      -> setField <SFNode> ("light", getNode <X3DLightNode> ());
 
 		addTool ();
-
-		getTransformTool () -> setField <SFBool> ("displayCenter", false);
-		getToolNode ()      -> setField <SFNode> ("light", getNode <X3DLightNode> ());
 	}
 	catch (const X3DError & error)
 	{
@@ -116,10 +119,15 @@ X3DLightNodeTool::addTool ()
 {
 	try
 	{
-		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		if (getTransformTools () .empty ())
+			return;
 
-		getTransformTool () -> setField <SFBool> ("grouping", selected);
-		getToolNode ()      -> setField <SFBool> ("selected", selected);
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+		const auto   selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+
+		transformTool -> setField <SFBool> ("grouping", selected);
+		toolNode      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError & error)
 	{ }
@@ -136,8 +144,11 @@ X3DLightNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			getTransformTool () -> setField <SFBool> ("grouping", false);
-			getToolNode ()      -> setField <SFBool> ("selected", false);
+			const auto & transformTool = getTransformTools () [0];
+			const auto & toolNode      = getToolNode ();
+
+			transformTool -> setField <SFBool> ("grouping", false);
+			toolNode      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)
 		{ }

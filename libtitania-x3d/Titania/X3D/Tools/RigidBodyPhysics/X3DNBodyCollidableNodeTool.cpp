@@ -83,21 +83,23 @@ X3DNBodyCollidableNodeTool::realize ()
 {
 	// Configure TransformTool.
 
-	setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+	setTransformTool (0, getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-	getTransformTool () -> grouping ()      = false;
-	getTransformTool () -> displayCenter () = false;
-	getTransformTool () -> tools ()         = { "TRANSLATE", "ROTATE" };
-	getTransformTool () -> color ()         = color;
+	const auto & transformTool = getTransformTools () [0];
 
-	translation () .addInterest (getTransformTool () -> translation ());
-	rotation ()    .addInterest (getTransformTool () -> rotation ());
+	transformTool -> grouping ()      = false;
+	transformTool -> displayCenter () = false;
+	transformTool -> tools ()         = { "TRANSLATE", "ROTATE" };
+	transformTool -> color ()         = color;
 
-	getTransformTool () -> translation () .addInterest (translation ());
-	getTransformTool () -> rotation ()    .addInterest (rotation ());
+	translation () .addInterest (transformTool -> translation ());
+	rotation ()    .addInterest (transformTool -> rotation ());
 
-	getTransformTool () -> translation () = translation ();
-	getTransformTool () -> rotation ()    = rotation ();
+	transformTool -> translation () .addInterest (translation ());
+	transformTool -> rotation ()    .addInterest (rotation ());
+
+	transformTool -> translation () = translation ();
+	transformTool -> rotation ()    = rotation ();
 
 	// Enabled
 
@@ -127,9 +129,9 @@ X3DNBodyCollidableNodeTool::endUndo (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (translation ()), startTranslation);
 		undoStep -> addUndoFunction (&SFRotation::setValue, std::ref (rotation ()), startRotation);
-		undoStep -> addUndoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), true);
+		undoStep -> addUndoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), 0, true);
 
-		undoStep -> addRedoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), true);
+		undoStep -> addRedoFunction (&X3DNBodyCollidableNodeTool::setChanging, X3DPtr <X3DNBodyCollidableNodeTool> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (translation ()), translation ());
 		undoStep -> addRedoFunction (&SFRotation::setValue, std::ref (rotation ()), rotation ());
 	}
@@ -140,10 +142,14 @@ X3DNBodyCollidableNodeTool::reshape (X3DRenderObject* const renderObject)
 {
 	try
 	{
-		const auto bbox = getChildBBox ();
+		if (getTransformTools () .empty ())
+			return;
 
-		getTransformTool () -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
-		getTransformTool () -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
+		const auto & transformTool = getTransformTools () [0];
+		const auto   bbox          = getChildBBox ();
+
+		transformTool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
+		transformTool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 	}
 	catch (const X3DError & error)
 	{ }

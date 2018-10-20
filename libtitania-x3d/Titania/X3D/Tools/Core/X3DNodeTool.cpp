@@ -68,57 +68,34 @@ X3DNodeTool::X3DNodeTool () :
           X3DNode (),
 	   X3DBaseTool (),
            fields (),
-	 transformTool1 (),
-	transformTool2 ()
+	transformTools ()
 {
 	addType (X3DConstants::X3DNodeTool);
 
 	addField (outputOnly, "undo_changed", undo_changed ());
 
-	addChildObjects (transformTool1, transformTool2);
+	addChildObjects (transformTools);
 }
 
 void
-X3DNodeTool::setTransformTool (const X3DPtr <X3DTransformNode> & value)
+X3DNodeTool::setTransformTool (const size_t index, const X3DPtr <X3DTransformNode> & value)
 {
 	value -> addTool ();
 
-	transformTool1 = value;
-	transformTool1 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
+	transformTools .set1Value (index, value);
+
+	transformTools [index] -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
 }
 
 void
-X3DNodeTool::setTransformTool2 (const X3DPtr <X3DTransformNode> & value)
-{
-	value -> addTool ();
-
-	transformTool2 = value;
-	transformTool2 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
-}
-
-void
-X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
+X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const size_t index, const bool value)
 {
 	try
 	{
-		const auto   tool           = X3DPtr <X3D::X3DNodeTool> (node);
-		const auto & transformTool1 = tool -> getTransformTool ();
+		const auto   tool          = X3DPtr <X3D::X3DNodeTool> (node);
+		const auto & transformTool = tool -> getTransformTools () [index];
 
-		transformTool1 -> setChanging (value);
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-void
-X3DNodeTool::setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value)
-{
-	try
-	{
-		const auto   tool           = X3DPtr <X3D::X3DNodeTool> (node);
-		const auto & transformTool2 = tool -> getTransformTool2 ();
-
-		transformTool2 -> setChanging (value);
+		transformTool -> setChanging (value);
 	}
 	catch (const X3DError & error)
 	{ }

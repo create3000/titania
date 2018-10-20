@@ -69,7 +69,7 @@ ViewpointTool::realize ()
 {
 	X3DViewpointNodeTool::realize ();
 
-	const auto transformTool = getTransformTool ();
+	const auto & transformTool = getTransformTools () [0];
 
 	getNode <Viewpoint> () -> position ()    .addInterest (transformTool -> translation ());
 	getNode <Viewpoint> () -> orientation () .addInterest (transformTool -> rotation ());

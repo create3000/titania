@@ -82,17 +82,19 @@ Rectangle2DTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
 
-	getTransformTool () .addInterest (&Rectangle2DTool::set_transform_tool, this);
+	getTransformTools () .addInterest (&Rectangle2DTool::set_transform_tools, this);
 }
 
 void
-Rectangle2DTool::set_transform_tool ()
+Rectangle2DTool::set_transform_tools ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	size () .addInterest (&Rectangle2DTool::set_size, this);
 
-	getTransformTool () -> scaleZAxis ()     = false;
-	getTransformTool () -> scaleZBackAxis () = false;
-	getTransformTool () -> scaleFromEdge ()  = false;
+	transformTool -> scaleZAxis ()     = false;
+	transformTool -> scaleZBackAxis () = false;
+	transformTool -> scaleFromEdge ()  = false;
 
 	set_size ();
 }
@@ -100,19 +102,23 @@ Rectangle2DTool::set_transform_tool ()
 void
 Rectangle2DTool::set_size ()
 {
-	getTransformTool () -> scale () .removeInterest (&Rectangle2DTool::set_scale, this);
-	getTransformTool () -> scale () .addInterest (&Rectangle2DTool::connectScale, this);
+	const auto & transformTool = getTransformTools () [0];
 
-	getTransformTool () -> scale () = Vector3f (size () .getX (), size () .getY (), 1e-6);
+	transformTool -> scale () .removeInterest (&Rectangle2DTool::set_scale, this);
+	transformTool -> scale () .addInterest (&Rectangle2DTool::connectScale, this);
+
+	transformTool -> scale () = Vector3f (size () .getX (), size () .getY (), 1e-6);
 }
 
 void
 Rectangle2DTool::set_scale ()
 {
+	const auto & transformTool = getTransformTools () [0];
+
 	size () .removeInterest (&Rectangle2DTool::set_size, this);
 	size () .addInterest (&Rectangle2DTool::connectSize, this);
 
-	size () = Vector2f (getTransformTool () -> scale () .getX (), getTransformTool () -> scale () .getY ());
+	size () = Vector2f (transformTool -> scale () .getX (), transformTool -> scale () .getY ());
 }
 
 void
@@ -141,9 +147,9 @@ Rectangle2DTool::endUndo (const UndoStepPtr & undoStep)
 	if (size () not_eq startSize)
 	{
 		undoStep -> addUndoFunction (&SFVec2f::setValue, std::ref (size ()), startSize);
-		undoStep -> addUndoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), true);
+		undoStep -> addUndoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), 0, true);
 
-		undoStep -> addRedoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), true);
+		undoStep -> addRedoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), 0, true);
 		undoStep -> addRedoFunction (&SFVec2f::setValue, std::ref (size ()), size ());
 	}
 }
