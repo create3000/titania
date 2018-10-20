@@ -114,10 +114,10 @@ AxonometricGridTool::initialize ()
 void
 AxonometricGridTool::realize ()
 {
-	X3DGridTool::realize ();
-
 	try
 	{
+		X3DGridTool::realize ();
+	
 		auto & set_angle = getToolNode () -> getField <SFVec2d> ("set_angle");
 		angle ()  .addInterest (set_angle);
 		set_angle .addInterest (angle ());
@@ -159,8 +159,9 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 	// Test all three vertices of the triangle.
 
 	if (*iter < std::abs (snapDistance ()))
+	{
 		p = vertices [iter - vD .cbegin ()];
-
+	}
 	else
 	{
 		// Test all three edges of the triangle.

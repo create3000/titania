@@ -112,14 +112,13 @@ AngleGridTool::realize ()
 Vector3d
 AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {
+	constexpr double offset = pi <double> / 2;
+
 	auto translation = position;
 
 	// Calculate snap radius and snap angle
 
-	const std::complex <double> complex (translation .x (), translation .z ());
-
-	constexpr double offset = pi <double> / 2;
-
+	const auto complex    = std::complex <double> (translation .x (), translation .z ());
 	const auto phi        = 2 * pi <double> / dimension () [1];
 	const auto radius     = std::abs (complex);
 	const auto angle      = std::arg (complex);
