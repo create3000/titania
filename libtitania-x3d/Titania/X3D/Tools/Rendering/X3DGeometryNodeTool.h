@@ -67,6 +67,14 @@ class X3DGeometryNodeTool :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Construction
 
 	virtual
@@ -101,11 +109,6 @@ public:
 	{ return *fields .coordTool; }
 
 	///  @name Member access
-
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
 
 	virtual
 	bool

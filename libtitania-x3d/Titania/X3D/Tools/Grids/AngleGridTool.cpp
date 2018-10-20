@@ -103,12 +103,6 @@ AngleGridTool::initialize ()
 	requestAsyncLoad ({ get_tool ("AngleGridTool.x3dv") .str () });
 }
 
-void
-AngleGridTool::realize ()
-{
-	X3DGridTool::realize ();
-}
-
 Vector3d
 AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {

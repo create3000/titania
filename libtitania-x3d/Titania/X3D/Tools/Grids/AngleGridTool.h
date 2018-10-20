@@ -98,10 +98,6 @@ private:
 	void
 	initialize () final override;
 
-	virtual
-	void
-	realize () final override;
-
 	///  @name Operations
 
 	virtual

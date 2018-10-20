@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.1.0
+#X3D V3.3 utf8 Titania V4.3.3
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.1.0, http://titania.create3000.de"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleGridTool.x3dv"
-META "modified" "Fri, 29 Sep 2017 09:51:40 GMT"
+META "modified" "Sat, 20 Oct 2018 15:35:46 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -109,6 +109,111 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF _2 TouchGroup {
+              children DEF _3 Transform {
+                children [
+                  DEF Center Transform {
+                    children [
+                      DEF _4 PlaneSensor {
+                        axisRotation 1 0 0 1.5708
+                        autoOffset FALSE
+                      }
+                      DEF _5 Transform {
+                        children ScreenGroup {
+                          children DEF Sphere Transform {
+                            scale 4 4 4
+                            children Shape {
+                              appearance DEF _6 Appearance {
+                                material Material {
+                                  diffuseColor 1 0.7 0
+                                }
+                                shaders ToolShader { }
+                              }
+                              geometry Sphere { }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                  DEF Handles_7 Transform {
+                    children [
+                      DEF AngleHandle Group {
+                        children [
+                          DEF _8 CylinderSensor {
+                            diskAngle 1.2
+                            offset 0.392699
+                          }
+                          DEF Handle Transform {
+                            rotation 0 1 0 0.392699092626572
+                            children DEF _9 Transform {
+                              translation 0 0 4
+                              children ScreenGroup {
+                                children Transform {
+                                  scale 6 6 6
+                                  children Shape {
+                                    appearance USE _6
+                                    geometry Sphere { }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                      DEF DimensionHandle Group {
+                        children [
+                          DEF _10 PlaneSensor {
+                            axisRotation 1 0 0 1.5708
+                            autoOffset FALSE
+                            offset 0 0 5
+                            maxPosition 0 -1
+                          }
+                          DEF _11 Transform {
+                            translation 0 0 5
+                            children ScreenGroup {
+                              children DEF Sphere_12 Transform {
+                                scale 6 3 3
+                                children Shape {
+                                  appearance USE _6
+                                  geometry Box { }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                  DEF ScaleHandle Transform {
+                    children [
+                      DEF _13 PlaneSensor {
+                        axisRotation 1 0 0 1.5708
+                        autoOffset FALSE
+                        offset 3.53553 0 -3.53553
+                      }
+                      DEF _14 Transform {
+                        translation 3.53553 0 -3.53553
+                        children ScreenGroup {
+                          children DEF Box Transform {
+                            scale 3 3 3
+                            children Shape {
+                              appearance Appearance {
+                                material Material {
+                                  diffuseColor 1 0.7 0
+                                }
+                                shaders ToolShader { }
+                              }
+                              geometry Box { }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
           }
         ]
       }
@@ -133,119 +238,17 @@ WorldInfo {
   title "AngleGridTool"
 }
 
-DEF AngleGrid_1 Collision {
+DEF AngleGrid_15 Collision {
   enabled FALSE
-  children TouchGroup {
+  children DEF _16 TouchGroup {
     enabled FALSE
-    children DEF _1 AngleGrid { }
+    children DEF _17 AngleGrid { }
   }
 }
 
 DEF Handles Collision {
   enabled FALSE
-  children DEF _2 Transform {
-    children [
-      DEF Center Transform {
-        children [
-          DEF _3 PlaneSensor {
-            axisRotation 1 0 0 1.5708
-            autoOffset FALSE
-          }
-          DEF _4 Transform {
-            children ScreenGroup {
-              children DEF Sphere Transform {
-                scale 4 4 4
-                children Shape {
-                  appearance DEF _5 Appearance {
-                    material Material {
-                      diffuseColor 1 0.7 0
-                    }
-                    shaders ToolShader { }
-                  }
-                  geometry Sphere { }
-                }
-              }
-            }
-          }
-        ]
-      }
-      DEF Handles_1 Transform {
-        children [
-          DEF AngleHandle Group {
-            children [
-              DEF _6 CylinderSensor {
-                diskAngle 1.2
-                offset 0.392699
-              }
-              DEF Handle Transform {
-                rotation 0 1 0 0.392699092626572
-                children DEF _7 Transform {
-                  translation 0 0 4
-                  children ScreenGroup {
-                    children Transform {
-                      scale 6 6 6
-                      children Shape {
-                        appearance USE _5
-                        geometry Sphere { }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-          DEF DimensionHandle Group {
-            children [
-              DEF _8 PlaneSensor {
-                axisRotation 1 0 0 1.5708
-                autoOffset FALSE
-                offset 0 0 5
-                maxPosition 0 -1
-              }
-              DEF _9 Transform {
-                translation 0 0 5
-                children ScreenGroup {
-                  children DEF Sphere_1 Transform {
-                    scale 6 3 3
-                    children Shape {
-                      appearance USE _5
-                      geometry Box { }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      }
-      DEF ScaleHandle Transform {
-        children [
-          DEF _10 PlaneSensor {
-            axisRotation 1 0 0 1.5708
-            autoOffset FALSE
-            offset 3.53553 0 -3.53553
-          }
-          DEF _11 Transform {
-            translation 3.53553 0 -3.53553
-            children ScreenGroup {
-              children DEF Box Transform {
-                scale 3 3 3
-                children Shape {
-                  appearance Appearance {
-                    material Material {
-                      diffuseColor 1 0.7 0
-                    }
-                    shaders ToolShader { }
-                  }
-                  geometry Box { }
-                }
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
+  children USE _2
 }
 
 DEF AngleScript Script {
@@ -388,46 +391,48 @@ DEF Tool Script {
 }
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
-ROUTE _6.rotation_changed TO AngleScript.set_rotation
-ROUTE Tool.translation_changed TO _4.set_translation
-ROUTE _3.translation_changed TO Tool.set_translation
-ROUTE Tool.translation_changed TO _3.set_offset
-ROUTE Tool.transparency_changed TO _1.set_transparency
-ROUTE Tool.color_changed TO _1.set_color
-ROUTE Tool.lineColor_changed TO _1.set_lineColor
-ROUTE Tool.lineTransparency_changed TO _1.set_lineTransparency
-ROUTE Tool.majorLineColor_changed TO _1.set_majorLineColor
-ROUTE Tool.majorLineTransparency_changed TO _1.set_majorLineTransparency
-ROUTE Tool.majorLineEvery_changed TO _1.set_majorLineEvery
-ROUTE DimensionScript.angleTranslation_changed TO _7.set_translation
-ROUTE _8.translation_changed TO DimensionScript.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _9.set_translation
-ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_offset
-ROUTE Tool.translation_changed TO _1.set_translation
-ROUTE Tool.rotation_changed TO _1.set_rotation
-ROUTE Tool.scale_changed TO _1.set_scale
-ROUTE Tool.scale_changed TO Handles_1.set_scale
-ROUTE AngleScript.angle_changed TO _6.set_offset
+ROUTE _8.rotation_changed TO AngleScript.set_rotation
+ROUTE Tool.translation_changed TO _5.set_translation
+ROUTE _4.translation_changed TO Tool.set_translation
+ROUTE Tool.translation_changed TO _4.set_offset
+ROUTE Tool.transparency_changed TO _17.set_transparency
+ROUTE Tool.color_changed TO _17.set_color
+ROUTE Tool.lineColor_changed TO _17.set_lineColor
+ROUTE Tool.lineTransparency_changed TO _17.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO _17.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO _17.set_majorLineTransparency
+ROUTE Tool.majorLineEvery_changed TO _17.set_majorLineEvery
+ROUTE DimensionScript.angleTranslation_changed TO _9.set_translation
+ROUTE _10.translation_changed TO DimensionScript.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _11.set_translation
+ROUTE DimensionScript.dimensionTranslation_changed TO _10.set_offset
+ROUTE Tool.translation_changed TO _17.set_translation
+ROUTE Tool.rotation_changed TO _17.set_rotation
+ROUTE Tool.scale_changed TO _17.set_scale
+ROUTE Tool.scale_changed TO Handles_7.set_scale
+ROUTE AngleScript.angle_changed TO _8.set_offset
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
 ROUTE Tool.dimension_changed TO AngleScript.set_dimension
 ROUTE AngleScript.dimension_changed TO Tool.set_dimension
-ROUTE Tool.dimension_changed TO _1.set_dimension
-ROUTE Tool.majorLineOffset_changed TO _1.set_majorLineOffset
+ROUTE Tool.dimension_changed TO _17.set_dimension
+ROUTE Tool.majorLineOffset_changed TO _17.set_majorLineOffset
 ROUTE Tool.scale_changed TO ScaleScript.set_scale
 ROUTE ScaleScript.scale_changed TO Tool.set_scale
-ROUTE _10.translation_changed TO ScaleScript.set_translation
+ROUTE _13.translation_changed TO ScaleScript.set_translation
 ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
-ROUTE ScaleScript.translation_changed TO _11.set_translation
-ROUTE ScaleScript.translation_changed TO _10.set_offset
-ROUTE _3.isActive TO Tool.set_isActive
-ROUTE _6.isActive TO Tool.set_isActive
+ROUTE ScaleScript.translation_changed TO _14.set_translation
+ROUTE ScaleScript.translation_changed TO _13.set_offset
+ROUTE _4.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
 ROUTE _10.isActive TO Tool.set_isActive
-ROUTE Tool.rotation_changed TO _2.set_rotation
-ROUTE Tool.translation_changed TO Handles_1.set_translation
+ROUTE _13.isActive TO Tool.set_isActive
+ROUTE Tool.rotation_changed TO _3.set_rotation
+ROUTE Tool.translation_changed TO Handles_7.set_translation
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
-ROUTE Tool.collision_changed TO AngleGrid_1.set_enabled
+ROUTE Tool.collision_changed TO AngleGrid_15.set_enabled
 
-EXPORT _1 AS GridInstance
+EXPORT _17 AS GridInstance
+EXPORT _16 AS GridTouchGroup
+EXPORT _2 AS HandlesTouchGroup
 EXPORT Tool

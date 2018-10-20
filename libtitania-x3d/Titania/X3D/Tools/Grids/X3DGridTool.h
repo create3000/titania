@@ -206,6 +206,12 @@ protected:
 	void
 	realize () override;
 
+	///  @name Member access
+
+	virtual
+	bool
+	getPickable () const final override;
+
 	///  @name Operations
 
 	virtual

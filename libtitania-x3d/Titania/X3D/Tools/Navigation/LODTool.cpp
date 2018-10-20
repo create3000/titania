@@ -69,10 +69,10 @@ LODTool::LODTool (X3DBaseNode* const node) :
 void
 LODTool::realize ()
 {
-	X3DGroupingNodeTool::realize ();
-
 	try
 	{
+		X3DGroupingNodeTool::realize ();
+	
 		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
 		center () .addInterest (set_center);
 		set_center = center ();

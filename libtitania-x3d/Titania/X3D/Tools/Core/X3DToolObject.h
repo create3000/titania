@@ -104,6 +104,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	virtual
+	bool
+	getPickable () const;
+
 	///  @name Operations
 
 	virtual

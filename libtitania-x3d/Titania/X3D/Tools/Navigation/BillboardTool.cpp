@@ -77,10 +77,10 @@ BillboardTool::initialize ()
 void
 BillboardTool::realize ()
 {
-	X3DGroupingNodeTool::realize ();
-
 	try
 	{
+		X3DGroupingNodeTool::realize ();
+	
 		auto & set_axisOfRotation = getToolNode () -> getField <SFVec3f> ("set_axisOfRotation");
 		axisOfRotation () .addInterest (set_axisOfRotation);
 		set_axisOfRotation = axisOfRotation ();

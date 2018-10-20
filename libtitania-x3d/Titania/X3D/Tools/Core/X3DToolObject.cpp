@@ -88,6 +88,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	inlineNode -> setExecutionContext (value -> getBrowser () -> getPrivateScene ());
 }
 
+bool
+X3DToolObject::getPickable () const
+{
+	return getBrowser () -> getToolsPickable () .top ();
+}
+
 void
 X3DToolObject::requestAsyncLoad (const MFString & url)
 {
@@ -139,33 +145,17 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			try
-			{
-				if (not getBrowser () -> getToolsPickable () .top ())
-					break;
+			if (not getPickable ())
+				break;
 
-				HierarchyGuard guard (renderObject -> getBrowser (), this);
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
 			
-				inlineNode -> traverse (type, renderObject);
-			}
-			catch (const X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
-
+			inlineNode -> traverse (type, renderObject);
 			break;
 		}
 		default:
 		{
-			try
-			{
-				inlineNode -> traverse (type, renderObject);
-			}
-			catch (const X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
-
+			inlineNode -> traverse (type, renderObject);
 			break;
 		}
 	}

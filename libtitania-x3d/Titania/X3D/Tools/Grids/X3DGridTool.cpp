@@ -51,6 +51,7 @@
 #include "X3DGridTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/X_ITE/TouchGroup.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
@@ -90,20 +91,6 @@ void
 X3DGridTool::initialize ()
 {
 	X3DActiveLayerTool::initialize ();
-
-	getBrowser () -> getTransformTools () .addInterest (&X3DGridTool::set_transform_tools, this);
-
-	set_transform_tools (getBrowser () -> getTransformTools ());
-}
-
-void
-X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	getBrowser () -> getTransformTools () .removeInterest (&X3DGridTool::set_transform_tools, this);
-
-	X3DActiveLayerTool::setExecutionContext (executionContext);
 
 	getBrowser () -> getTransformTools () .addInterest (&X3DGridTool::set_transform_tools, this);
 
@@ -161,6 +148,48 @@ X3DGridTool::realize ()
 	catch (const X3DError & error)
 	{
 		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getTransformTools () .removeInterest (&X3DGridTool::set_transform_tools, this);
+
+	X3DActiveLayerTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getTransformTools () .addInterest (&X3DGridTool::set_transform_tools, this);
+
+	set_transform_tools (getBrowser () -> getTransformTools ());
+}
+
+bool
+X3DGridTool::getPickable () const
+{
+	try
+	{
+		const auto gridTouchGroup    = getInlineNode () -> getExportedNode <TouchGroup> ("GridTouchGroup");
+		const auto handlesTouchGroup = getInlineNode () -> getExportedNode <TouchGroup> ("HandlesTouchGroup");
+
+		if (getBrowser () -> getToolsPickable () .top ())
+		{
+			gridTouchGroup    -> enabled () = false;
+			handlesTouchGroup -> enabled () = true;
+		}
+		else
+		{
+			gridTouchGroup    -> enabled () = true;
+			handlesTouchGroup -> enabled () = false;
+		}
+
+		return true;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return getBrowser () -> getToolsPickable () .top ();
 	}
 }
 

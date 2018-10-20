@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 X3DActiveLayerTool::X3DActiveLayerTool () :
-	      X3DNode (),
+	 X3DChildNode (),
 	X3DToolObject (),
 	  activeLayer ()
 {
@@ -69,7 +69,7 @@ X3DActiveLayerTool::X3DActiveLayerTool () :
 void
 X3DActiveLayerTool::initialize ()
 {
-	X3DNode::initialize ();
+	X3DChildNode::initialize ();
 	X3DToolObject::initialize ();
 
 	getBrowser () -> getActiveLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
@@ -86,7 +86,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	getBrowser () -> getActiveLayer () .removeInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	X3DToolObject::setExecutionContext (value);
-	X3DNode::setExecutionContext (value);
+	X3DChildNode::setExecutionContext (value);
 
 	if (isInitialized ())
 	{
@@ -118,22 +118,19 @@ void
 X3DActiveLayerTool::set_activeLayer ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (getInlineNode ());
+		activeLayer -> getFriends () -> children () .remove (SFNode (this));
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .emplace_back (getInlineNode ());
+		activeLayer -> getFriends () -> children () .emplace_back (this);
 }
 
 void
 X3DActiveLayerTool::processShutdown ()
 {
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (getInlineNode ());
-
 	X3DToolObject::processShutdown ();
-	X3DNode::processShutdown ();
+	X3DChildNode::processShutdown ();
 }
 
 X3DActiveLayerTool::~X3DActiveLayerTool ()

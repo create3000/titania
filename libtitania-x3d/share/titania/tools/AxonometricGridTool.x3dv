@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V3.1.0
+#X3D V3.3 utf8 Titania V4.3.3
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.1.0, http://titania.create3000.de"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Fri, 29 Sep 2017 10:00:38 GMT"
+META "modified" "Sat, 20 Oct 2018 15:37:09 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -91,21 +91,77 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF MoveScript Script {
-              inputOutput SFVec3f    scale 1 1 1
-              inputOnly   SFVec3f    set_translation
-              inputOutput SFRotation rotation 0 0 1 0
-              outputOnly  SFVec3f    translation_changed
-
-              url "peaseblossom:
-
-function set_translation (value)
-{
-	var translation = rotation .inverse () .multVec (value); 
-
-	translation_changed = rotation .multVec (translation);
-}
-"
+            value DEF _1 TouchGroup {
+              children DEF _2 Transform {
+                children [
+                  DEF Center Transform {
+                    children [
+                      DEF _3 PlaneSensor {
+                        axisRotation 1 0 0 1.5708
+                        autoOffset FALSE
+                      }
+                      DEF _4 Transform {
+                        children ScreenGroup {
+                          children DEF Sphere Transform {
+                            scale 4 4 4
+                            children Shape {
+                              appearance DEF _5 Appearance {
+                                material Material {
+                                  diffuseColor 1 0.7 0
+                                }
+                                shaders ToolShader { }
+                              }
+                              geometry Sphere { }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                  DEF DimensionHandle Transform {
+                    children [
+                      DEF _6 PlaneSensor {
+                        autoOffset FALSE
+                        offset 5 0 0
+                        maxPosition -1 0
+                      }
+                      DEF _7 Transform {
+                        translation 5 0 0
+                        children ScreenGroup {
+                          children DEF Edge Transform {
+                            scale 6 6 6
+                            children Shape {
+                              appearance USE _5
+                              geometry Sphere { }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                  DEF ScaleHandle Transform {
+                    children [
+                      DEF _8 PlaneSensor {
+                        autoOffset FALSE
+                        offset -5 0 0
+                        maxPosition -1 0
+                      }
+                      DEF _9 Transform {
+                        translation -5 0 0
+                        children ScreenGroup {
+                          children DEF Box Transform {
+                            scale 3 3 3
+                            children Shape {
+                              appearance USE _5
+                              geometry Box { }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
             }
           }
           DEF selectGeometry MetadataBoolean {
@@ -148,7 +204,7 @@ function set_translation (value)
         name "Grid"
         reference "http://titania.create3000.de"
         value [
-          DEF enabled_1 MetadataBoolean {
+          DEF enabled_10 MetadataBoolean {
             name "enabled"
             reference "http://titania.create3000.de"
             value FALSE
@@ -167,7 +223,7 @@ function set_translation (value)
       DEF AxonometricGrid MetadataSet {
         name "AxonometricGrid"
         reference "http://titania.create3000.de"
-        value DEF enabled_2 MetadataBoolean {
+        value DEF enabled_11 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value FALSE
@@ -194,11 +250,11 @@ function set_translation (value)
   title "AxonometricGridTool"
 }
 
-DEF AxonometricGrid_1 Collision {
+DEF AxonometricGrid_12 Collision {
   enabled FALSE
-  children TouchGroup {
+  children DEF _13 TouchGroup {
     enabled FALSE
-    children DEF _1 AxonometricGrid {
+    children DEF _14 AxonometricGrid {
       transparency 0.8
     }
   }
@@ -206,76 +262,7 @@ DEF AxonometricGrid_1 Collision {
 
 DEF Handles Collision {
   enabled FALSE
-  children DEF _2 Transform {
-    children [
-      DEF Center Transform {
-        children [
-          DEF _3 PlaneSensor {
-            axisRotation 1 0 0 1.5708
-            autoOffset FALSE
-          }
-          DEF _4 Transform {
-            children ScreenGroup {
-              children DEF Sphere Transform {
-                scale 4 4 4
-                children Shape {
-                  appearance DEF _5 Appearance {
-                    material Material {
-                      diffuseColor 1 0.7 0
-                    }
-                    shaders ToolShader { }
-                  }
-                  geometry Sphere { }
-                }
-              }
-            }
-          }
-        ]
-      }
-      DEF DimensionHandle Transform {
-        children [
-          DEF _6 PlaneSensor {
-            autoOffset FALSE
-            offset 5 0 0
-            maxPosition -1 0
-          }
-          DEF _7 Transform {
-            translation 5 0 0
-            children ScreenGroup {
-              children DEF Edge Transform {
-                scale 6 6 6
-                children Shape {
-                  appearance USE _5
-                  geometry Sphere { }
-                }
-              }
-            }
-          }
-        ]
-      }
-      DEF ScaleHandle Transform {
-        children [
-          DEF _8 PlaneSensor {
-            autoOffset FALSE
-            offset -5 0 0
-            maxPosition -1 0
-          }
-          DEF _9 Transform {
-            translation -5 0 0
-            children ScreenGroup {
-              children DEF Box Transform {
-                scale 3 3 3
-                children Shape {
-                  appearance USE _5
-                  geometry Box { }
-                }
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
+  children USE _1
 }
 
 DEF DimensionScript Script {
@@ -307,7 +294,22 @@ function eventsProcessed ()
 "
 }
 
-USE MoveScript
+DEF MoveScript Script {
+  inputOutput SFVec3f    scale 1 1 1
+  inputOnly   SFVec3f    set_translation
+  inputOutput SFRotation rotation 0 0 1 0
+  outputOnly  SFVec3f    translation_changed
+
+  url "peaseblossom:
+
+function set_translation (value)
+{
+	var translation = rotation .inverse () .multVec (value); 
+
+	translation_changed = rotation .multVec (translation);
+}
+"
+}
 
 DEF ScaleScript Script {
   inputOnly   SFVec3f set_translation
@@ -381,25 +383,25 @@ ROUTE DimensionScript.translation_changed TO _6.set_offset
 ROUTE _3.translation_changed TO MoveScript.set_translation
 ROUTE Tool.translation_changed TO _3.set_offset
 ROUTE MoveScript.translation_changed TO Tool.set_translation
-ROUTE Tool.transparency_changed TO _1.set_transparency
-ROUTE Tool.color_changed TO _1.set_color
+ROUTE Tool.transparency_changed TO _14.set_transparency
+ROUTE Tool.color_changed TO _14.set_color
 ROUTE Tool.translation_changed TO DimensionHandle.set_translation
 ROUTE Tool.translation_changed TO _4.set_translation
 ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
 ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
-ROUTE Tool.dimension_changed TO _1.set_dimension
-ROUTE Tool.majorLineEvery_changed TO _1.set_majorLineEvery
-ROUTE Tool.lineColor_changed TO _1.set_lineColor
-ROUTE Tool.lineTransparency_changed TO _1.set_lineTransparency
-ROUTE Tool.majorLineColor_changed TO _1.set_majorLineColor
-ROUTE Tool.majorLineTransparency_changed TO _1.set_majorLineTransparency
-ROUTE Tool.majorLineOffset_changed TO _1.set_majorLineOffset
+ROUTE Tool.dimension_changed TO _14.set_dimension
+ROUTE Tool.majorLineEvery_changed TO _14.set_majorLineEvery
+ROUTE Tool.lineColor_changed TO _14.set_lineColor
+ROUTE Tool.lineTransparency_changed TO _14.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO _14.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO _14.set_majorLineTransparency
+ROUTE Tool.majorLineOffset_changed TO _14.set_majorLineOffset
 ROUTE Tool.scale_changed TO DimensionScript.set_scale
 ROUTE Tool.scale_changed TO MoveScript.set_scale
-ROUTE Tool.translation_changed TO _1.set_translation
-ROUTE Tool.rotation_changed TO _1.set_rotation
-ROUTE Tool.scale_changed TO _1.set_scale
+ROUTE Tool.translation_changed TO _14.set_translation
+ROUTE Tool.rotation_changed TO _14.set_rotation
+ROUTE Tool.scale_changed TO _14.set_scale
 ROUTE Tool.scale_changed TO DimensionHandle.set_scale
 ROUTE ScaleScript.translation_changed TO _9.set_translation
 ROUTE _8.translation_changed TO ScaleScript.set_translation
@@ -411,8 +413,10 @@ ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE _3.isActive TO Tool.set_isActive
 ROUTE _6.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
-ROUTE Tool.angle_changed TO _1.set_angle
+ROUTE Tool.angle_changed TO _14.set_angle
 ROUTE Tool.rotation_changed TO _2.set_rotation
-ROUTE Tool.collision_changed TO AxonometricGrid_1.set_enabled
+ROUTE Tool.collision_changed TO AxonometricGrid_12.set_enabled
 
+EXPORT _13 AS GridTouchGroup
+EXPORT _1 AS HandlesTouchGroup
 EXPORT Tool

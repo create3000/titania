@@ -101,12 +101,6 @@ GridTool::initialize ()
 	requestAsyncLoad ({ get_tool ("GridTool.x3dv") .str () });
 }
 
-void
-GridTool::realize ()
-{
-	X3DGridTool::realize ();
-}
-
 Vector3d
 GridTool::getSnapPosition (const Vector3d & position, const bool)
 {

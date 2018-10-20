@@ -82,9 +82,33 @@ X3DGeometricPropertyNodeTool::initialize ()
 }
 
 void
+X3DGeometricPropertyNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	inlineNode -> setExecutionContext (executionContext);
+
+	X3DNode::setExecutionContext (executionContext);
+}
+
+void
 X3DGeometricPropertyNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	inlineNode -> traverse (type, renderObject);
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			if (not getBrowser () -> getToolsPickable () .top ())
+				break;
+
+			// Proceed with next case:
+		}
+		default:
+		{
+			inlineNode -> traverse (type, renderObject);
+			break;
+		}
+	}
 }
 
 X3DGeometricPropertyNodeTool::~X3DGeometricPropertyNodeTool ()

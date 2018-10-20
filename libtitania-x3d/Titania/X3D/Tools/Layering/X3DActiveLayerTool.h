@@ -53,14 +53,14 @@
 
 #include "../Core/X3DToolObject.h"
 
-#include "../../Components/Core/X3DNode.h"
+#include "../../Components/Core/X3DChildNode.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DActiveLayerTool :
-	virtual public X3DNode,
+	virtual public X3DChildNode,
 	public X3DToolObject
 {
 public:
