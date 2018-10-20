@@ -65,7 +65,6 @@ static constexpr int INDICES = 3;
 
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
-	               enabled (this, getGridEnableSnappingCheckButton (), "enabled"),
 	           translation (this,
 	                        getGridTranslationXAdjustment (),
 	                        getGridTranslationYAdjustment (),
@@ -102,6 +101,7 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridMajorLineColorAdjustment (),
 	                        getGridMajorLineColorBox (),
 	                        "majorLineColor"),
+	              snapping (this, getGridEnableSnappingCheckButton (), "snapping"),
 	          snapDistance (this, getGridSnapDistanceAdjustment (), getGridSnapDistanceSpinButton (), "snapDistance"),
 	          snapToCenter (this, getGridSnapToCenterCheckButton (), "snapToCenter"),
 	             collision (this, getGridCollisionCheckButton (), "collision"),
@@ -134,7 +134,6 @@ X3DGridEditor::initialize ()
 	const auto &      gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
 	const X3D::MFNode gridTools = { gridTool };
 
-	enabled          .setNodes (gridTools);
 	translation      .setNodes (gridTools);
 	scale            .setNodes (gridTools);
 	dimension0       .setNodes (gridTools);
@@ -149,6 +148,7 @@ X3DGridEditor::initialize ()
 	color            .setNodes (gridTools);
 	lineColor        .setNodes (gridTools);
 	majorLineColor   .setNodes (gridTools);
+	snapping         .setNodes (gridTools);
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 	collision        .setNodes (gridTools);

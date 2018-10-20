@@ -148,6 +148,14 @@ public:
 	{ return *fields .majorLineColor; }
 
 	SFBool &
+	snapping ()
+	{ return *fields .snapping; }
+
+	const SFBool &
+	snapping () const
+	{ return *fields .snapping; }
+
+	SFBool &
 	snapToCenter ()
 	{ return *fields .snapToCenter; }
 
@@ -162,14 +170,6 @@ public:
 	const SFDouble &
 	snapDistance () const
 	{ return *fields .snapDistance; }
-
-	SFBool &
-	snapping ()
-	{ return *fields .snapping; }
-
-	const SFBool &
-	snapping () const
-	{ return *fields .snapping; }
 
 	SFBool &
 	collision ()
@@ -287,9 +287,9 @@ private:
 		SFColorRGBA* const color;
 		SFColorRGBA* const lineColor;
 		SFColorRGBA* const majorLineColor;
+		SFBool* const snapping;
 		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
-		SFBool* const snapping;
 		SFBool* const collision;
 		SFBool* const isActive;
 	};

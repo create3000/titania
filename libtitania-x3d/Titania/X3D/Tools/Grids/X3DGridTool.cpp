@@ -67,9 +67,9 @@ X3DGridTool::Fields::Fields () :
 	          color (new SFColorRGBA (0.5, 0.5, 0.5, 0.2)),
 	      lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
 	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
+	       snapping (new SFBool (true)),
 	   snapToCenter (new SFBool (true)),
 	   snapDistance (new SFDouble (0.25)),
-	       snapping (new SFBool (true)),
 	      collision (new SFBool ()),
 	       isActive (new SFBool (true))
 { }

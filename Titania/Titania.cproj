@@ -3357,6 +3357,7 @@
     <Folder Include="share\appdata\" />
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\" />
     <Folder Include="Titania\Dialogs\FontChooserDialog\" />
+    <Folder Include="share\titania\Library\Primitives\Geospatial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

@@ -176,6 +176,17 @@ GeometryPropertiesEditor::on_geometry_changed ()
 					elevationGrid -> zDimension () = 10;
 					break;
 				}
+				case X3D::X3DConstants::GeoElevationGrid:
+				{
+					const auto geoElevationGrid = X3D::X3DPtr <X3D::GeoElevationGrid> (node);
+
+					geoElevationGrid -> geoGridOrigin () = X3D::Vector3d (-90, 180, 0);
+					geoElevationGrid -> xDimension () = 361;
+					geoElevationGrid -> zDimension () = 181;
+					geoElevationGrid -> creaseAngle () = math::pi <double>;
+					geoElevationGrid -> height () = { };
+					break;
+				}
 				default:
 					break;
 			}

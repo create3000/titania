@@ -1,3 +1,9 @@
 #X3D V3.3 utf8 Titania
 
-GeoElevationGrid { }
+GeoElevationGrid {
+  geoGridOrigin -90 180 0
+  xDimension 361
+  zDimension 181
+  creaseAngle 3.14159
+  height [ ]
+}

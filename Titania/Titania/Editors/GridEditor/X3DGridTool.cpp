@@ -168,9 +168,9 @@ X3DGridTool::set_activeLayer ()
 
 	getTool () -> isActive () .addInterest (&X3DGridTool::set_active, this);
 
+	getTool () -> snapping ()     = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapping",     X3D::SFBool (true));
 	getTool () -> snapDistance () = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapDistance", X3D::SFDouble (0.25));
 	getTool () -> snapToCenter () = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapToCenter", X3D::SFBool (true));
-	getTool () -> snapping ()     = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapping",     X3D::SFBool (true));
 	getTool () -> collision ()    = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/collision",    X3D::SFBool (false));
 
 	fromMetadata ();
@@ -302,6 +302,14 @@ X3DGridTool::set_majorLineColor ()
 }
 
 void
+X3DGridTool::set_snapping ()
+{
+	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapping", getTool () -> snapping ());
+
+	getBrowserWindow () -> getCurrentPage () -> setModified (true);
+}
+
+void
 X3DGridTool::set_snapDistance ()
 {
 	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapDistance", getTool () -> snapDistance ());
@@ -313,14 +321,6 @@ void
 X3DGridTool::set_snapToCenter ()
 {
 	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapToCenter", getTool () -> snapToCenter ());
-
-	getBrowserWindow () -> getCurrentPage () -> setModified (true);
-}
-
-void
-X3DGridTool::set_snapping ()
-{
-	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/snapping", getTool () -> snapping ());
 
 	getBrowserWindow () -> getCurrentPage () -> setModified (true);
 }
@@ -423,6 +423,13 @@ X3DGridTool::connectMajorLineColor (const X3D::SFColorRGBA & field)
 }
 
 void
+X3DGridTool::connectSnapping (const X3D::SFBool & field)
+{
+	field .removeInterest (&X3DGridTool::connectSnapping, this);
+	field .addInterest (&X3DGridTool::set_snapping, this);
+}
+
+void
 X3DGridTool::connectSnapDistance (const X3D::SFDouble & field)
 {
 	field .removeInterest (&X3DGridTool::connectSnapDistance, this);
@@ -434,13 +441,6 @@ X3DGridTool::connectSnapToCenter (const X3D::SFBool & field)
 {
 	field .removeInterest (&X3DGridTool::connectSnapToCenter, this);
 	field .addInterest (&X3DGridTool::set_snapToCenter, this);
-}
-
-void
-X3DGridTool::connectSnapping (const X3D::SFBool & field)
-{
-	field .removeInterest (&X3DGridTool::connectSnapping, this);
-	field .addInterest (&X3DGridTool::set_snapping, this);
 }
 
 void

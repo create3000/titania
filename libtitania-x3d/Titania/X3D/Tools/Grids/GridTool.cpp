@@ -76,9 +76,9 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "lineColor",       lineColor ());
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
+	addField (inputOutput, "snapping",        snapping ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
-	addField (inputOutput, "snapping",        snapping ());
 	addField (inputOutput, "collision",       collision ());
 	addField (outputOnly,  "isActive",        isActive ());
 

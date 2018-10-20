@@ -140,7 +140,6 @@ private:
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> enabled;
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
 	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
 	X3DFieldAdjustment <X3D::MFInt32>  dimension0;
@@ -155,6 +154,7 @@ private:
 	SFColorRGBAButton                  color;
 	SFColorRGBAButton                  lineColor;
 	SFColorRGBAButton                  majorLineColor;
+	X3DFieldToggleButton <X3D::SFBool> snapping;
 	X3DFieldAdjustment <X3D::SFDouble> snapDistance;
 	X3DFieldToggleButton <X3D::SFBool> snapToCenter;
 	X3DFieldToggleButton <X3D::SFBool> collision;

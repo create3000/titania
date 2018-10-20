@@ -148,16 +148,16 @@ protected:
 
 	virtual
 	void
+	set_snapping ();
+	
+	virtual
+	void
 	set_snapDistance ();
 	
 	virtual
 	void
 	set_snapToCenter ();
 
-	virtual
-	void
-	set_snapping ();
-	
 	virtual
 	void
 	set_collision ();
@@ -210,14 +210,14 @@ private:
 	connectMajorLineColor (const X3D::SFColorRGBA &);
 
 	void
+	connectSnapping (const X3D::SFBool &);
+	
+	void
 	connectSnapDistance (const X3D::SFDouble &);
 	
 	void
 	connectSnapToCenter (const X3D::SFBool &);
 
-	void
-	connectSnapping (const X3D::SFBool &);
-	
 	void
 	connectCollision (const X3D::SFBool &);
 
