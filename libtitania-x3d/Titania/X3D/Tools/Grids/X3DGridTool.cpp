@@ -268,7 +268,9 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		Vector3d position;
 	
 		if (snapToCenter () and not master -> getKeepCenter ())
+		{
 			position = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
+		}
 		else
 		{
 			// Snap to bbox center.
