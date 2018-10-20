@@ -88,6 +88,10 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DActiveLayerTool () override;
 
 

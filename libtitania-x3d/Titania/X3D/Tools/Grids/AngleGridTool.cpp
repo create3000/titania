@@ -69,7 +69,6 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::AngleGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -81,6 +80,7 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	addField (inputOutput, "snapping",        snapping ());
 	addField (inputOutput, "collision",       collision ());
 	addField (outputOnly,  "isActive",        isActive ());
 
@@ -110,7 +110,7 @@ AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 
 	auto translation = position;
 
-	// Calculate snap radius and snap angle
+	// Calculate snapping radius and snapping angle
 
 	const auto complex    = std::complex <double> (translation .x (), translation .z ());
 	const auto phi        = 2 * pi <double> / dimension () [1];

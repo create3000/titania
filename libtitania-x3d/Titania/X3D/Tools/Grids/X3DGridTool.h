@@ -75,14 +75,6 @@ public:
 
 	///  @name Fields
 
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
@@ -170,6 +162,14 @@ public:
 	const SFDouble &
 	snapDistance () const
 	{ return *fields .snapDistance; }
+
+	SFBool &
+	snapping ()
+	{ return *fields .snapping; }
+
+	const SFBool &
+	snapping () const
+	{ return *fields .snapping; }
 
 	SFBool &
 	collision ()
@@ -278,7 +278,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
 		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
@@ -290,6 +289,7 @@ private:
 		SFColorRGBA* const majorLineColor;
 		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
+		SFBool* const snapping;
 		SFBool* const collision;
 		SFBool* const isActive;
 	};

@@ -58,7 +58,6 @@ namespace titania {
 namespace X3D {
 
 X3DGridTool::Fields::Fields () :
-	        enabled (new SFBool (true)),
 	    translation (new SFVec3f ()),
 	       rotation (new SFRotation ()),
 	          scale (new SFVec3f (1, 1, 1)),
@@ -70,6 +69,7 @@ X3DGridTool::Fields::Fields () :
 	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
 	   snapToCenter (new SFBool (true)),
 	   snapDistance (new SFDouble (0.25)),
+	       snapping (new SFBool (true)),
 	      collision (new SFBool ()),
 	       isActive (new SFBool (true))
 { }
@@ -278,7 +278,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
-		if (not enabled ())
+		if (not snapping ())
 			return;
 
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
@@ -288,7 +288,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			return;
 
 		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
-		// for easier snap position calculation.
+		// for easier snapping position calculation.
 	
 		// Get absolute position.
 	
@@ -302,12 +302,12 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		}
 		else
 		{
-			// Snap to bbox center.
+			// snapping to bbox center.
 			const auto bbox = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 			position = bbox .center ();
 		}
 	
-		// Calculate snap position and apply absolute relative translation.
+		// Calculate snapping position and apply absolute relative translation.
 	
 		const auto gridMatrix    = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 		const auto snapMatrix    = Matrix4d (getSnapPosition (position * inverse (gridMatrix)) * gridMatrix - position);
@@ -336,7 +336,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
-		if (not enabled ())
+		if (not snapping ())
 			return;
 
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
@@ -357,7 +357,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
 
 		const auto y = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
-		const auto z = std::vector <Vector3d> ({ matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }); // Vector to snap, later transformed to grid space
+		const auto z = std::vector <Vector3d> ({ matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }); // Vector to snapping, later transformed to grid space
 
 		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 
@@ -433,7 +433,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
-		if (not enabled ())
+		if (not snapping ())
 			return;
 
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
@@ -444,7 +444,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (tool < 0)
 			return;
 
-		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+		// All points are first transformed to grid space, then a snapping position is calculated, and then transformed back to absolute space.
 	
 		const auto currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
 	
@@ -469,7 +469,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 Matrix4d
 X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+	// All points are first transformed to grid space, then a snapping position is calculated, and then transformed back to absolute space.
 
 	constexpr double infinity = std::numeric_limits <double>::infinity ();
 	constexpr double eps      = 1e-6;
@@ -483,7 +483,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
 	const auto position       = bbox .center ();                                // Absolute position
 
-	// Calculate snap scale for one axis. The ratio is calculated in transforms sub space.
+	// Calculate snapping scale for one axis. The ratio is calculated in transforms sub space.
 
 	const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 
@@ -512,7 +512,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	//	__LOG__ << delta << std::endl;
 	//	__LOG__ << ratio << std::endl;
 
-	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
+	// We must procced with the original current matrix and a snapping scale of [1 1 1], for correct grouped event handling.
 
 	if (std::abs (delta) < eps or std::abs (ratio) < 1e-3 or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
@@ -553,7 +553,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 Matrix4d
 X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+	// All points are first transformed to grid space, then a snapping position is calculated, and then transformed back to absolute space.
 
 	constexpr double infinity = std::numeric_limits <double>::infinity ();
 
@@ -566,7 +566,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
 	const auto position       = bbox .center ();                                // Absolute position
 
-	// Calculate snap scale and apply absolute relative translation.
+	// Calculate snapping scale and apply absolute relative translation.
 
 	const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 	const auto points     = bbox .points ();
@@ -615,7 +615,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 		}
 	}
 
-	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
+	// We must procced with the original current matrix and a snapping scale of [1 1 1], for correct grouped event handling.
 
 	if (min == 0 or min == infinity)
 		return currentMatrix;

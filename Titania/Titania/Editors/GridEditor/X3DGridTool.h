@@ -112,10 +112,6 @@ protected:
 
 	virtual
 	void
-	set_enabled ();
-
-	virtual
-	void
 	set_translation ();
 
 	virtual
@@ -157,6 +153,10 @@ protected:
 	virtual
 	void
 	set_snapToCenter ();
+
+	virtual
+	void
+	set_snapping ();
 	
 	virtual
 	void
@@ -181,9 +181,6 @@ private:
 	set_activeLayer ();
 
 	///  @name Event handlers
-
-	void
-	connectEnabled (const X3D::SFBool &);
 
 	void
 	connectTranslation (const X3D::SFVec3f &);
@@ -217,6 +214,9 @@ private:
 	
 	void
 	connectSnapToCenter (const X3D::SFBool &);
+
+	void
+	connectSnapping (const X3D::SFBool &);
 	
 	void
 	connectCollision (const X3D::SFBool &);

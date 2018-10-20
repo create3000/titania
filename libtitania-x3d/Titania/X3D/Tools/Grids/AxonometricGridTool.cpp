@@ -74,7 +74,6 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addType (X3DConstants::AxonometricGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -87,6 +86,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	addField (inputOutput, "snapping",        snapping ());
 	addField (inputOutput, "collision",       collision ());
 	addField (outputOnly,  "isActive",        isActive ());
 
@@ -184,7 +184,7 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 	}
 
 	{
-		// Snap y-Axis.
+		// snapping y-Axis.
 
 		const auto o  = dimension () .get1Value (1) % 2 * 0.5; // Add a half scale if dimension is odd.
 		const auto yr = std::round (position .y ());
