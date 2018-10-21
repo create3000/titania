@@ -3185,6 +3185,7 @@
     <None Include="share\titania\ui\Dialogs\FontChooserDialog.glade" />
     <None Include="Titania\UserInterfaces\X3DFontChooserDialogInterface.h" />
     <None Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.h" />
+    <None Include="share\titania\Library\Primitives\Geospatial\GeoElevationGrid.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

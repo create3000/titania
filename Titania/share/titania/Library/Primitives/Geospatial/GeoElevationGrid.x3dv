@@ -1,0 +1,16 @@
+#X3D V3.3 utf8 Titania V4.3.3
+
+DEF GeoElevationGrid Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry GeoElevationGrid {
+      geoGridOrigin -90 180 0
+      xDimension 361
+      zDimension 181
+      creaseAngle 3.14159
+      height [ ]
+    }
+  }
+}
