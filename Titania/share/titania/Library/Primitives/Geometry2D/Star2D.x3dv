@@ -3,11 +3,12 @@
 PROFILE Full
 
 META "comment" "World of Titania"
-META "created" "Fri, 17 Mar 2017 11:46:59 GMT"
+META "created" "Sun, 21 Oct 2018 09:32:24 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Geometry2D/Star2D.x3dv"
-META "modified" "Sun, 21 Oct 2018 09:29:17 GMT"
+META "identifier" ""
+META "modified" "Sun, 21 Oct 2018 09:32:24 GMT"
+META "titania-output-style" "Nicest"
 
 DEF Star2D Transform {
   children Shape {
@@ -100,16 +101,16 @@ DEF Star2D Transform {
       }
       coord Coordinate {
         point [
-          -0.616667 -0.9 0,
-          0 1 0,
           0.616667 -0.9 0,
-          -1 0.275 0,
+          0 1 0,
+          -0.616667 -0.9 0,
           1 0.275 0,
-          -0.381263 -0.174701 0,
-          -0.235307 0.275 0,
-          0 -0.451804 0,
+          -1 0.275 0,
+          0.381263 -0.174701 0,
           0.235307 0.275 0,
-          0.381263 -0.174701 0
+          0 -0.451804 0,
+          -0.235307 0.275 0,
+          -0.381263 -0.174701 0
         ]
       }
     }
