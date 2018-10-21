@@ -129,6 +129,10 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 		return false;
 	#endif
 
+	// If not in editing mode return.
+	if (not getBrowser () -> getSelectable ())
+		return false;
+
 	// Viewer can always be activated by pressing Ctrl+Shift.
 	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 		return false;

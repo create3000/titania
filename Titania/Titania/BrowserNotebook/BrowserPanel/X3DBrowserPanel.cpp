@@ -551,8 +551,10 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Setup dependent browser.
 
 		browser -> initialized () .removeInterest (&X3DBrowserPanel::set_dependent_browser, this);
-		browser -> setSelectable (true);
-		browser -> setSelection (getPage () -> getMainBrowser () -> getSelection ()); // here!
+		browser -> setSelection (mainBrowser -> getSelection ()); // here!
+
+		mainBrowser -> getSelectable () .addInterest (const_cast <X3D::SFBool &> (browser -> getSelectable ()));
+		browser -> setSelectable (mainBrowser -> getSelectable ());
 
 		// Setup Snap Target.
 
