@@ -140,7 +140,7 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 	if (button)
 		return false;
 
-	if (event -> button != 2)
+	if (event -> button not_eq 2)
 		return false;
 
 	if (not getBrowser () -> getSelectable () and not enabled ())
@@ -186,7 +186,7 @@ X3DSnapTool::on_motion_notify_event (GdkEventMotion* event)
 	if (not enabled ())
 		return false;
 
-	if (button != 2)
+	if (button not_eq 2)
 		return false;
 
 	if (not touch (event -> x, event -> y))
@@ -207,10 +207,12 @@ X3DSnapTool::touch (const double x, const double y) const
 	if (getBrowser () -> getHits () .empty ())
 		return false;
 
-	if (getGrid (getBrowser () -> getNearestHit ()))
+	const auto hit = getBrowser () -> getNearestHit ();
+
+	if (getGrid (hit))
 		return true;
 
-	if (getBrowser () -> getNearestHit () -> getLayer () not_eq getBrowser () -> getActiveLayer ())
+	if (hit -> getLayer () not_eq getBrowser () -> getActiveLayer ())
 		return false;
 
 	return true;
