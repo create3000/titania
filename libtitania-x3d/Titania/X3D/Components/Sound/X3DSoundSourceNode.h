@@ -201,6 +201,9 @@ private:
 	void
 	on_duration_changed ();
 
+	void
+	on_error ();
+
 	///  @name Members
 
 	struct Fields

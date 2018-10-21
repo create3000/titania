@@ -93,6 +93,7 @@ X3DSoundSourceNode::initialize ()
 
 	mediaStream -> signal_end ()              .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
 	mediaStream -> signal_duration_changed () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_duration_changed));
+	mediaStream -> signal_error ()            .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_error));
 	mediaStream -> setup ();
 
 	set_speed ();
@@ -205,7 +206,9 @@ X3DSoundSourceNode::set_end ()
 		cycleTime ()   = getCurrentTime ();
 	}
 	else
+	{
 		stop ();
+	}
 }
 
 void
@@ -218,6 +221,13 @@ void
 X3DSoundSourceNode::set_time ()
 {
 	elapsedTime () = getElapsedTime ();
+}
+
+void
+X3DSoundSourceNode::on_error ()
+{
+	stop ();
+	mediaStream -> stop ();
 }
 
 void

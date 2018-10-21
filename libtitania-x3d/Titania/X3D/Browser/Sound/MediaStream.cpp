@@ -406,17 +406,9 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse_debug ()
 				<< std::endl;
 
-			const auto error    = Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse_debug ();
-			const auto uriError = error .find ("gsturidecodebin") not_eq std::string::npos;
-
-			if (uriError)
-			{
-				emitAudio = false;
-				emitVideo = false;
-				errorDispatcher .emit ();
-			}
-
-			stop ();
+			emitAudio = false;
+			emitVideo = false;
+			errorDispatcher .emit ();
 			break;
 		}
 		default:

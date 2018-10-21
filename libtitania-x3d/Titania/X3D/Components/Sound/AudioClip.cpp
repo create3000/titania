@@ -170,6 +170,9 @@ AudioClip::on_audio_changed ()
 void
 AudioClip::on_error ()
 {
+	if (checkLoadState () not_eq IN_PROGRESS_STATE)
+		return;
+
 	load ();
 }
 

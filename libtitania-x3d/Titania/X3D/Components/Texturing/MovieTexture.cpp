@@ -195,6 +195,9 @@ MovieTexture::on_video_changed ()
 void
 MovieTexture::on_error ()
 {
+	if (checkLoadState () not_eq IN_PROGRESS_STATE)
+		return;
+
 	load ();
 }
 

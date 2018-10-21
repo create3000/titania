@@ -7,7 +7,7 @@ META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Sun, 21 Oct 2018 05:28:02 GMT"
+META "modified" "Sun, 21 Oct 2018 07:57:22 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
@@ -16,6 +16,7 @@ PROTO SnapTool [
   inputOutput SFString type "SNAP_TARGET"
   inputOutput SFVec3f  position 0 0 0
   inputOutput SFVec3f  normal 0 0 1
+  inputOutput SFBool   snapped FALSE
 ]
 {
   DEF _1 Transform {
@@ -134,11 +135,15 @@ PROTO SnapTool [
   DEF SnapToolScript Script {
     inputOutput    SFString type IS type
     inputOutput    SFVec3f  normal IS normal
+    inputOutput    SFBool   snapped IS snapped
     initializeOnly SFNode   tool USE _1
     initializeOnly SFNode   appearance USE _3
     initializeOnly SFNode   targetMaterial USE TargetMaterial
     initializeOnly SFNode   sourceMaterial DEF SourceMaterial Material {
       diffuseColor 0.16 0.8 0.377278
+    }
+    initializeOnly SFNode   snapMaterial DEF SnapMaterial Material {
+      diffuseColor 0.8 0.16 0.795555
     }
 
     url "ecmascript:
@@ -153,17 +158,24 @@ function initialize ()
 
 function set_type (value, time)
 {
-	switch (value)
+	if (snapped)
 	{
-		case \"SNAP_SOURCE\":
+		appearance .material = snapMaterial;
+	}
+	else
+	{
+		switch (type)
 		{
-			appearance .material = sourceMaterial;
-			break;
-		}
-		default: // \"SNAP_TARGET\"
-		{
-			appearance .material = targetMaterial;
-			break;
+			case \"SNAP_SOURCE\":
+			{
+				appearance .material = sourceMaterial;
+				break;
+			}
+			default: // \"SNAP_TARGET\"
+			{
+				appearance .material = targetMaterial;
+				break;
+			}
 		}
 	}
 }
@@ -171,6 +183,11 @@ function set_type (value, time)
 function set_normal (value, time)
 {
 	tool .rotation = new SFRotation (zAxis, value);
+}
+
+function set_snapped (value, time)
+{
+	set_type (type);
 }
 "
   }
@@ -300,6 +317,7 @@ DEF Titania WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value NULL
           }
         ]
       }
