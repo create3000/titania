@@ -1984,8 +1984,8 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 
 		menuItem -> set_image (*icon);
 		menuItem -> set_always_show_image (true);
-		menuItem -> set_label (worldURL .basename () + (modified ? "*" : ""));
-		menuItem -> set_tooltip_text (worldURL .filename () .str ());
+		menuItem -> set_label ((worldURL .empty () ? _ ("New Scene") : worldURL .basename ()) + (modified ? "*" : ""));
+		menuItem -> set_tooltip_text (worldURL .empty () ? _ ("New Scene") : worldURL .filename () .str ());
 
 		if (browser == getCurrentBrowser ())
 		   menuItem -> get_style_context () -> add_class ("titania-menu-item-selected");
