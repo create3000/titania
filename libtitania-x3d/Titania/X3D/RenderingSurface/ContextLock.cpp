@@ -97,7 +97,7 @@ throw (Error <INVALID_OPERATION_TIMING>) :
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	const auto & currentContext = renderingSurface -> getContext ();
+	const auto currentContext = renderingSurface -> getContext ();
 
 	previousContext = currentContexts [std::this_thread::get_id ()];
 

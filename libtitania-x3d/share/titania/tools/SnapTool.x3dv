@@ -7,7 +7,7 @@ META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Sun, 21 Oct 2018 04:25:41 GMT"
+META "modified" "Sun, 21 Oct 2018 05:28:02 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
@@ -110,14 +110,14 @@ PROTO SnapTool [
                       -2 0 -2,
                       -1 0 2,
                       -1 0 -2,
-                      0 0 2,
-                      0 0 -2,
+                      0 0 2.6,
+                      0 0 -2.6,
                       1 0 2,
                       1 0 -2,
                       -2 0 1,
                       2 0 1,
-                      -2 0 0,
-                      2 0 0,
+                      -2.6 0 0,
+                      2.6 0 0,
                       -2 0 -1,
                       2 0 -1
                     ]
