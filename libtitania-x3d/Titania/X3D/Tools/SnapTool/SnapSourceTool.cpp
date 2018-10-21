@@ -66,10 +66,11 @@ SnapSourceTool::SnapSourceTool (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::SnapSourceTool);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "position", position ());
-	addField (inputOutput, "normal",   normal ());
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "activeLayer", activeLayer ());
+	addField (inputOutput, "enabled",     enabled ());
+	addField (inputOutput, "position",    position ());
+	addField (inputOutput, "normal",      normal ());
 }
 
 X3DBaseNode*

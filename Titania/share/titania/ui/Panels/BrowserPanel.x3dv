@@ -1,34 +1,13 @@
-#X3D V3.3 utf8 Titania V3.1.0
+#X3D V3.3 utf8 Titania V4.3.3
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.1.0, http://titania.create3000.de"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Thu, 05 Oct 2017 04:40:44 GMT"
-
-EXTERNPROTO Grid [
-  inputOutput    SFVec3f    translation
-  inputOutput    SFRotation rotation
-  inputOutput    SFVec3f    scale
-  inputOutput    MFInt32    dimension
-  inputOutput    MFInt32    majorLineEvery
-  inputOutput    MFInt32    majorLineOffset
-  inputOutput    SFColor    color
-  inputOutput    SFFloat    transparency
-  inputOutput    SFColor    lineColor
-  inputOutput    SFFloat    lineTransparency
-  inputOutput    SFColor    majorLineColor
-  inputOutput    SFFloat    majorLineTransparency
-  initializeOnly SFBool     solid
-]
-[
-  "../../../../../libtitania-x3d/share/titania/tools/library/Grid.x3dv#Grid",
-  "file:///usr/share/titania/tools/library/Grid.x3dv#Grid",
-  "file:///app/share/titania/tools/library/Grid.x3dv#Grid"
-]
+META "modified" "Sun, 21 Oct 2018 03:12:03 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -99,16 +78,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF BackgroundImage Shape {
-              appearance DEF BackgroundImageAppearance Appearance {
-                material DEF BackgroundImageMaterial Material {
-                  diffuseColor 1 1 1
-                }
-              }
-              geometry Rectangle2D {
-                solid TRUE
-              }
-            }
           }
         ]
       }
@@ -182,7 +151,16 @@ LayerSet {
       isPickable FALSE
       children DEF BackgroundImageSwitch Switch {
         children DEF BackgroundImageTransform Transform {
-          children USE BackgroundImage
+          children DEF BackgroundImage Shape {
+            appearance DEF BackgroundImageAppearance Appearance {
+              material DEF BackgroundImageMaterial Material {
+                diffuseColor 1 1 1
+              }
+            }
+            geometry Rectangle2D {
+              solid TRUE
+            }
+          }
         }
       }
     }
@@ -202,17 +180,13 @@ LayerSet {
             5
           ]
         }
-        DEF GridTransform Transform {
-          children DEF GridLayerGridPerspectiveSwitch Switch {
-            children DEF GridSwitch Switch {
-              children DEF Grid Grid { }
-            }
-          }
+        DEF GridLayerGridPerspectiveSwitch Switch {
+          children DEF GridSwitch Switch { }
         }
       ]
     }
     DEF Layer Layer {
-      metadata DEF Titania_1 MetadataSet {
+      metadata DEF Titania_2 MetadataSet {
         name "Titania"
         reference "http://titania.create3000.de"
         value [
@@ -228,16 +202,16 @@ LayerSet {
           DEF AxonometricGrid MetadataSet {
             name "AxonometricGrid"
             reference "http://titania.create3000.de"
-            value DEF enabled_1 MetadataBoolean {
+            value DEF enabled_3 MetadataBoolean {
               name "enabled"
               reference "http://titania.create3000.de"
               value FALSE
             }
           }
-          DEF Grid_1 MetadataSet {
+          DEF Grid_4 MetadataSet {
             name "Grid"
             reference "http://titania.create3000.de"
-            value DEF enabled_2 MetadataBoolean {
+            value DEF enabled_5 MetadataBoolean {
               name "enabled"
               reference "http://titania.create3000.de"
               value FALSE

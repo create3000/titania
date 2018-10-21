@@ -217,7 +217,7 @@ private:
 	X3D::X3DPtr <X3D::X3DLayerNode>     layerNode;
 	X3D::X3DPtr <X3D::NavigationInfo>   navigationInfoNode;
 	X3D::X3DPtr <X3D::X3DViewpointNode> viewpoint;
-	X3D::X3DPtr <X3D::Transform>        gridTransform;
+	X3D::X3DPtr <X3D::GridTool>         gridTool;
 
 	Gtk::AspectFrame* aspectFrame;
 };

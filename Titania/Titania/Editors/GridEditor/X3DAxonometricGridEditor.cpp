@@ -159,7 +159,7 @@ X3DAxonometricGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
-	getBrowserWindow () -> getAxonometricGridTool () -> getVisible () .addInterest (&X3DAxonometricGridEditor::set_axonometric_grid_visible, this);
+	getBrowserWindow () -> getAxonometricGridTool () -> getEnabled () .addInterest (&X3DAxonometricGridEditor::set_axonometric_grid_visible, this);
 
 	gridTool -> rotation ()        .addInterest (&X3DAxonometricGridEditor::set_rotation, this);
 	gridTool -> majorLineEvery ()  .addInterest (&X3DAxonometricGridEditor::set_majorLineEvery, this);
@@ -201,7 +201,7 @@ X3DAxonometricGridEditor::set_axonometric_grid_visible ()
 {
 	changing = true;
 
-	const auto visible = getBrowserWindow () -> getAxonometricGridTool () -> getVisible ();
+	const auto visible = getBrowserWindow () -> getAxonometricGridTool () -> getEnabled ();
 
 	getAxonometricGridTransformBox ()            .set_sensitive (visible);
 	getAxonometricGridMajorLinesBox ()           .set_sensitive (visible);
@@ -219,7 +219,7 @@ X3DAxonometricGridEditor::on_axonometric_grid_toggled ()
 	if (changing)
 		return;
 
-	getBrowserWindow () -> getAxonometricGridTool () -> setVisible (getAxonometricGridCheckButton () .get_active ());
+	getBrowserWindow () -> getAxonometricGridTool () -> setEnabled (getAxonometricGridCheckButton () .get_active ());
 }
 
 void

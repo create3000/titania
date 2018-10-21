@@ -56,14 +56,19 @@
 namespace titania {
 namespace X3D {
 
+X3DActiveLayerTool::Fields::Fields () :
+	activeLayer (new SFBool (true))
+{ }
+
 X3DActiveLayerTool::X3DActiveLayerTool () :
-	 X3DChildNode (),
-	X3DToolObject (),
-	  activeLayer ()
+	   X3DChildNode (),
+	  X3DToolObject (),
+	         fields (),
+	activeLayerNode ()
 {
 	addType (X3DConstants::X3DActiveLayerTool);
 
-	addChildObjects (activeLayer);
+	addChildObjects (activeLayerNode);
 }
 
 void
@@ -73,6 +78,7 @@ X3DActiveLayerTool::initialize ()
 	X3DToolObject::initialize ();
 
 	getBrowser () -> getActiveLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
+	activeLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -99,8 +105,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 Matrix4d
 X3DActiveLayerTool::getPickingMatrix () const
 {
-	if (activeLayer)
-		return activeLayer -> getFriends () -> getMatrix () * activeLayer -> getViewpoint () -> getInverseCameraSpaceMatrix ();
+	if (activeLayerNode)
+		return activeLayerNode -> getFriends () -> getMatrix () * activeLayerNode -> getViewpoint () -> getInverseCameraSpaceMatrix ();
 
 	return Matrix4d ();
 }
@@ -108,8 +114,8 @@ X3DActiveLayerTool::getPickingMatrix () const
 Matrix4d
 X3DActiveLayerTool::getModelMatrix () const
 {
-	if (activeLayer)
-		return activeLayer -> getFriends () -> getMatrix ();
+	if (activeLayerNode)
+		return activeLayerNode -> getFriends () -> getMatrix ();
 
 	return Matrix4d ();
 }
@@ -117,13 +123,13 @@ X3DActiveLayerTool::getModelMatrix () const
 void
 X3DActiveLayerTool::set_activeLayer ()
 {
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (SFNode (this));
+	if (activeLayerNode)
+		activeLayerNode -> getFriends () -> children () .remove (SFNode (this));
 
-	activeLayer = getBrowser () -> getActiveLayer ();
+	activeLayerNode = getBrowser () -> getActiveLayer ();
 
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .emplace_back (this);
+	if (activeLayer () and activeLayerNode)
+		activeLayerNode -> getFriends () -> children () .emplace_back (this);
 }
 
 void

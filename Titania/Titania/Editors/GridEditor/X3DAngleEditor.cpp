@@ -148,7 +148,7 @@ X3DAngleEditor::initialize ()
 	snapDistance     .setNodes (angleTools);
 	snapToCenter     .setNodes (angleTools);
 
-	getBrowserWindow () -> getAngleGridTool () -> getVisible () .addInterest (&X3DAngleEditor::set_angle_grid_visible, this);
+	getBrowserWindow () -> getAngleGridTool () -> getEnabled () .addInterest (&X3DAngleEditor::set_angle_grid_visible, this);
 
 	angleTool -> rotation ()        .addInterest (&X3DAngleEditor::set_rotation,       this);
 	angleTool -> majorLineEvery ()  .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
@@ -172,7 +172,7 @@ X3DAngleEditor::set_angle_grid_visible ()
 {
 	changing = true;
 
-	const auto visible = getBrowserWindow () -> getAngleGridTool () -> getVisible ();
+	const auto visible = getBrowserWindow () -> getAngleGridTool () -> getEnabled ();
 
 	getAngleTransformBox ()            .set_sensitive (visible);
 	getAngleMajorLinesBox ()           .set_sensitive (visible);
@@ -190,7 +190,7 @@ X3DAngleEditor::on_angle_toggled ()
 	if (changing)
 		return;
 
-	getBrowserWindow () -> getAngleGridTool () -> setVisible (getAngleCheckButton () .get_active ());
+	getBrowserWindow () -> getAngleGridTool () -> setEnabled (getAngleCheckButton () .get_active ());
 }
 
 void

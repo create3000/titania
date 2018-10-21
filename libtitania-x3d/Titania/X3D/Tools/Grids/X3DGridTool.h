@@ -180,6 +180,14 @@ public:
 	{ return *fields .collision; }
 
 	SFBool &
+	handles ()
+	{ return *fields .handles; }
+
+	const SFBool &
+	handles () const
+	{ return *fields .handles; }
+
+	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
 
@@ -296,6 +304,7 @@ private:
 		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
 		SFBool* const collision;
+		SFBool* const handles;
 		SFBool* const isActive;
 	};
 

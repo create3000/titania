@@ -76,11 +76,11 @@ public:
 	getTool () const = 0;
 
 	void
-	setVisible (const bool value);
+	setEnabled (const bool value);
 
 	const X3D::SFBool &
-	getVisible () const
-	{ return visible; }
+	getEnabled () const
+	{ return enabled; }
 
 	void
 	setPlane (const int32_t index);
@@ -224,7 +224,7 @@ private:
 	///  @name Members
 
 	X3D::BrowserPtr  browser;
-	X3D::SFBool      visible;
+	X3D::SFBool      enabled;
 	X3D::UndoStepPtr undoStep;
 };
 

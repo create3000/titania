@@ -208,7 +208,10 @@ X3DSnapTool::touch (const double x, const double y) const
 	if (getBrowser () -> getHits () .empty ())
 		return false;
 
-	if (getBrowser () -> getNearestHit () -> getLayer() != getBrowser () -> getActiveLayer ())
+	if (getGrid (getBrowser () -> getNearestHit ()))
+		return true;
+
+	if (getBrowser () -> getNearestHit () -> getLayer () not_eq getBrowser () -> getActiveLayer ())
 		return false;
 
 	return true;

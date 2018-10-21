@@ -153,7 +153,7 @@ X3DGridEditor::initialize ()
 	snapToCenter     .setNodes (gridTools);
 	collision        .setNodes (gridTools);
 
-	getBrowserWindow () -> getGridTool () -> getVisible () .addInterest (&X3DGridEditor::set_grid_visible, this);
+	getBrowserWindow () -> getGridTool () -> getEnabled () .addInterest (&X3DGridEditor::set_grid_visible, this);
 
 	gridTool -> rotation ()        .addInterest (&X3DGridEditor::set_rotation,       this);
 	gridTool -> majorLineEvery ()  .addInterest (&X3DGridEditor::set_majorLineEvery, this);
@@ -177,7 +177,7 @@ X3DGridEditor::set_grid_visible ()
 {
 	changing = true;
 
-	const auto visible = getBrowserWindow () -> getGridTool () -> getVisible ();
+	const auto visible = getBrowserWindow () -> getGridTool () -> getEnabled ();
 
 	getGridCheckButton () .set_active (visible);
 
@@ -195,7 +195,7 @@ X3DGridEditor::on_grid_toggled ()
 	if (changing)
 		return;
 
-	getBrowserWindow () -> getGridTool () -> setVisible (getGridCheckButton () .get_active ());
+	getBrowserWindow () -> getGridTool () -> setEnabled (getGridCheckButton () .get_active ());
 }
 
 void

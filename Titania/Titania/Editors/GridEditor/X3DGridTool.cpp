@@ -73,10 +73,10 @@ X3DGridTool::X3DGridTool () :
 	 X3DBaseInterface (),
 	  X3DEditorObject (),
 	          browser (getCurrentBrowser ()),
-	          visible (),
+	          enabled (),
 	         undoStep ()
 {
-	addChildObjects (browser, visible);
+	addChildObjects (browser, enabled);
 }
 
 void
@@ -91,10 +91,10 @@ X3DGridTool::setup ()
 void
 X3DGridTool::set_browser ()
 {
-	const auto   visible = getVisible ();
-	const auto & value   = visible ? getCurrentBrowser () : getMasterBrowser ();
+	const auto   enabled = getEnabled ();
+	const auto & value   = enabled ? getCurrentBrowser () : getMasterBrowser ();
 
-	if (not visible and not browser)
+	if (not enabled and not browser)
 		return;
 
 	if (browser)
@@ -115,7 +115,7 @@ X3DGridTool::set_browser ()
 void
 X3DGridTool::set_scene ()
 {
-	visible = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", X3D::SFBool (false));
+	enabled = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", X3D::SFBool (false));
 
 	set_browser ();
 }
@@ -123,7 +123,7 @@ X3DGridTool::set_scene ()
 void
 X3DGridTool::set_activeLayer ()
 {
-	visible = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", X3D::SFBool (false));
+	enabled = getMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", X3D::SFBool (false));
 
 	// Set tool fields from meta data.
 
@@ -177,14 +177,14 @@ X3DGridTool::set_activeLayer ()
 }
 
 void
-X3DGridTool::setVisible (const bool value)
+X3DGridTool::setEnabled (const bool value)
 {
-	if (value == visible)
+	if (value == enabled)
 		return;
 
-	visible = value;
+	enabled = value;
 
-	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", visible);
+	setMetaData (getCurrentBrowser (), "/Titania/" + getName () + "/enabled", enabled);
 
 	set_browser ();
 }

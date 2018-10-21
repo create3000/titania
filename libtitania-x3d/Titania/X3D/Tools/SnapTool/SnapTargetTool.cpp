@@ -66,10 +66,11 @@ SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::SnapTargetTool);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "position", position ());
-	addField (inputOutput, "normal",   normal ());
+	addField (inputOutput, "metadata",    metadata ());
+	addField (inputOutput, "activeLayer", activeLayer ());
+	addField (inputOutput, "enabled",     enabled ());
+	addField (inputOutput, "position",    position ());
+	addField (inputOutput, "normal",      normal ());
 }
 
 X3DBaseNode*

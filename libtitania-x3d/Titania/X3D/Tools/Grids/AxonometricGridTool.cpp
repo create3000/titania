@@ -74,6 +74,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addType (X3DConstants::AxonometricGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "activeLayer",     activeLayer ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -88,6 +89,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
 	addField (inputOutput, "collision",       collision ());
+	addField (inputOutput, "handles",         handles ());
 	addField (outputOnly,  "isActive",        isActive ());
 
 	angle () .setUnit (UnitCategory::ANGLE);

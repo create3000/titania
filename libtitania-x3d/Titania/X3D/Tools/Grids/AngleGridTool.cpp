@@ -69,6 +69,7 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::AngleGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "activeLayer",     activeLayer ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -82,6 +83,7 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
 	addField (inputOutput, "collision",       collision ());
+	addField (inputOutput, "handles",         handles ());
 	addField (outputOnly,  "isActive",        isActive ());
 
 	dimension ()       = { 5, 16, 10 };

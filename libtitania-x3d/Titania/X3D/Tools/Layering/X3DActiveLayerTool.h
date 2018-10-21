@@ -73,11 +73,21 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
+	///  @name Fields
+
+	SFBool &
+	activeLayer ()
+	{ return *fields .activeLayer; }
+
+	const SFBool &
+	activeLayer () const
+	{ return *fields .activeLayer; }
+
 	///  @name Member access
 
 	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
-	{ return activeLayer; }
+	{ return activeLayerNode; }
 
 	Matrix4d
 	getPickingMatrix () const;
@@ -113,9 +123,20 @@ protected:
 
 private:
 
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const activeLayer;
+	};
+
+	Fields fields;
+
 	///  @name Members
 
-	X3DPtr <X3DLayerNode> activeLayer;
+	X3DPtr <X3DLayerNode> activeLayerNode;
 
 };
 
