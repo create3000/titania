@@ -1,16 +1,15 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V4.3.3
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 17 Mar 2017 11:46:59 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Geometry2D/Star.x3dv"
-META "modified" "Fri, 17 Mar 2017 12:11:43 GMT"
-META "outputStyle" "Nicest"
+META "generator" "Titania V4.3.3, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Geometry2D/Star2D.x3dv"
+META "modified" "Sun, 21 Oct 2018 09:29:17 GMT"
 
-Transform {
+DEF Star2D Transform {
   children Shape {
     appearance Appearance {
       material Material { }
@@ -101,16 +100,16 @@ Transform {
       }
       coord Coordinate {
         point [
-          -0.616667 -0.95 0,
-          0 0.95 0,
-          0.616667 -0.95 0,
-          -1 0.225 0,
-          1 0.225 0,
-          -0.381263 -0.224701 0,
-          -0.235307 0.225 0,
-          0 -0.501804 0,
-          0.235307 0.225 0,
-          0.381263 -0.224701 0
+          -0.616667 -0.9 0,
+          0 1 0,
+          0.616667 -0.9 0,
+          -1 0.275 0,
+          1 0.275 0,
+          -0.381263 -0.174701 0,
+          -0.235307 0.275 0,
+          0 -0.451804 0,
+          0.235307 0.275 0,
+          0.381263 -0.174701 0
         ]
       }
     }
