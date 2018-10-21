@@ -74,14 +74,6 @@ public:
 
 	///  @name Fields
 
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
 	SFVec3f &
 	position ()
 	{ return *fields .position; }
@@ -160,7 +152,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
 		SFVec3f* const position;
 		SFVec3f* const normal;
 	};

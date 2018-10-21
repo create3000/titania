@@ -74,7 +74,7 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addType (X3DConstants::AxonometricGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "activeLayer",     activeLayer ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());

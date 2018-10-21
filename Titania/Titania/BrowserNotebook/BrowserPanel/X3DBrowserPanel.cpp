@@ -609,8 +609,8 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		gridTool = executionContext -> createNode <X3D::GridTool> ();
 
-		gridTool -> activeLayer () = false;
-		gridTool -> handles ()     = false;
+		gridTool -> enabled () = false;
+		gridTool -> handles () = false;
 
 		gridSwitch -> children () = {
 			gridTool,

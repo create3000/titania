@@ -69,7 +69,7 @@ AngleGridTool::AngleGridTool (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::AngleGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "activeLayer",     activeLayer ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());

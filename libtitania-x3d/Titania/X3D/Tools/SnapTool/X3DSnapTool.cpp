@@ -60,7 +60,6 @@ namespace titania {
 namespace X3D {
 
 X3DSnapTool::Fields::Fields () :
-	 enabled (new SFBool (true)),
 	position (new SFVec3f ()),
 	  normal (new SFVec3f (0, 1, 0))
 { }
@@ -101,10 +100,6 @@ X3DSnapTool::realize ()
 	try
 	{
 		X3DActiveLayerTool::realize ();
-
-		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
-		enabled () .addInterest (set_enabled);
-		set_enabled = enabled ();
 
 		auto & set_position = getToolNode () -> getField <SFVec3f> ("set_position");
 		position () .addInterest (set_position);

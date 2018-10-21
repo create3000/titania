@@ -76,12 +76,12 @@ public:
 	///  @name Fields
 
 	SFBool &
-	activeLayer ()
-	{ return *fields .activeLayer; }
+	enabled ()
+	{ return *fields .enabled; }
 
 	const SFBool &
-	activeLayer () const
-	{ return *fields .activeLayer; }
+	enabled () const
+	{ return *fields .enabled; }
 
 	///  @name Member access
 
@@ -129,7 +129,7 @@ private:
 	{
 		Fields ();
 
-		SFBool* const activeLayer;
+		SFBool* const enabled;
 	};
 
 	Fields fields;

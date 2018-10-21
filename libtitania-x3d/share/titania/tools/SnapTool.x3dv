@@ -7,152 +7,135 @@ META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Thu, 18 Oct 2018 12:03:14 GMT"
+META "modified" "Sun, 21 Oct 2018 04:25:41 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
 
-EXTERNPROTO BooleanSwitch [
-  inputOutput    SFBool  whichChoice
-  initializeOnly SFVec3f bboxSize
-  initializeOnly SFVec3f bboxCenter
-  inputOnly      MFNode  addChildren
-  inputOnly      MFNode  removeChildren
-  inputOutput    MFNode  children
-]
-"library/BooleanSwitch.x3dv#BooleanSwitch"
-
 PROTO SnapTool [
-  inputOutput SFBool   enabled TRUE
   inputOutput SFString type "SNAP_TARGET"
   inputOutput SFVec3f  position 0 0 0
   inputOutput SFVec3f  normal 0 0 1
 ]
 {
-  BooleanSwitch {
-    whichChoice IS enabled
-    children [
-      DEF _1 Group { }
-      DEF _2 Transform {
-        translation IS position
-        children TouchGroup {
-          enabled FALSE
-          children DEF Vector_3 ScreenGroup {
-            children Transform {
-              rotation 1 0 0 1.5708
-              children [
-                DEF Cone Transform {
-                  translation 0 60 0
-                  scale 6 9 6
-                  children Shape {
-                    appearance DEF _4 Appearance {
-                      material DEF TargetMaterial Material {
-                        diffuseColor 0.8 0.8 0.16
-                      }
-                      shaders ToolShader { }
-                    }
-                    geometry Cone { }
+  DEF _1 Transform {
+    translation IS position
+    children TouchGroup {
+      enabled FALSE
+      children DEF Vector_2 ScreenGroup {
+        children Transform {
+          rotation 1 0 0 1.5708
+          children [
+            DEF Cone Transform {
+              translation 0 60 0
+              scale 6 9 6
+              children Shape {
+                appearance DEF _3 Appearance {
+                  material DEF TargetMaterial Material {
+                    diffuseColor 0.8 0.8 0.16
                   }
+                  shaders ToolShader { }
                 }
-                DEF Cylinder Transform {
-                  translation 0 30 0
-                  scale 2 30 2
-                  children Shape {
-                    appearance USE _4
-                    geometry Cylinder { }
-                  }
-                }
-                DEF Sphere Transform {
-                  scale 6 6 6
-                  children Shape {
-                    appearance USE _4
-                    geometry Sphere { }
-                  }
-                }
-                DEF Grid_5 Transform {
-                  translation 0 1 0
-                  scale 12 1 12
-                  children Shape {
-                    geometry IndexedLineSet {
-                      colorPerVertex FALSE
-                      colorIndex [
-                        0,
-                        1,
-                        2
-                      ]
-                      coordIndex [
-                        0,
-                        1,
-                        2,
-                        3,
-                        0,
-                        -1,
-                        4,
-                        5,
-                        -1,
-                        6,
-                        7,
-                        -1,
-                        8,
-                        9,
-                        -1,
-                        10,
-                        11,
-                        -1,
-                        12,
-                        13,
-                        -1,
-                        14,
-                        15,
-                        -1
-                      ]
-                      color Color {
-                        color [
-                          1 0.2 0.2,
-                          1 0.2 0.2,
-                          1 0.2 0.2,
-                          1 0.2 0.2,
-                          1 0.2 0.2,
-                          1 0.2 0.2,
-                          1 0.2 0.2
-                        ]
-                      }
-                      coord Coordinate {
-                        point [
-                          -2 0 2,
-                          2 0 2,
-                          2 0 -2,
-                          -2 0 -2,
-                          -1 0 2,
-                          -1 0 -2,
-                          0 0 2,
-                          0 0 -2,
-                          1 0 2,
-                          1 0 -2,
-                          -2 0 1,
-                          2 0 1,
-                          -2 0 0,
-                          2 0 0,
-                          -2 0 -1,
-                          2 0 -1
-                        ]
-                      }
-                    }
-                  }
-                }
-              ]
+                geometry Cone { }
+              }
             }
-          }
+            DEF Cylinder Transform {
+              translation 0 30 0
+              scale 2 30 2
+              children Shape {
+                appearance USE _3
+                geometry Cylinder { }
+              }
+            }
+            DEF Sphere Transform {
+              scale 6 6 6
+              children Shape {
+                appearance USE _3
+                geometry Sphere { }
+              }
+            }
+            DEF Grid_4 Transform {
+              translation 0 1 0
+              scale 12 1 12
+              children Shape {
+                geometry IndexedLineSet {
+                  colorPerVertex FALSE
+                  colorIndex [
+                    0,
+                    1,
+                    2
+                  ]
+                  coordIndex [
+                    0,
+                    1,
+                    2,
+                    3,
+                    0,
+                    -1,
+                    4,
+                    5,
+                    -1,
+                    6,
+                    7,
+                    -1,
+                    8,
+                    9,
+                    -1,
+                    10,
+                    11,
+                    -1,
+                    12,
+                    13,
+                    -1,
+                    14,
+                    15,
+                    -1
+                  ]
+                  color Color {
+                    color [
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2
+                    ]
+                  }
+                  coord Coordinate {
+                    point [
+                      -2 0 2,
+                      2 0 2,
+                      2 0 -2,
+                      -2 0 -2,
+                      -1 0 2,
+                      -1 0 -2,
+                      0 0 2,
+                      0 0 -2,
+                      1 0 2,
+                      1 0 -2,
+                      -2 0 1,
+                      2 0 1,
+                      -2 0 0,
+                      2 0 0,
+                      -2 0 -1,
+                      2 0 -1
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         }
       }
-    ]
+    }
   }
 
   DEF SnapToolScript Script {
     inputOutput    SFString type IS type
     inputOutput    SFVec3f  normal IS normal
-    initializeOnly SFNode   tool USE _2
-    initializeOnly SFNode   appearance USE _4
+    initializeOnly SFNode   tool USE _1
+    initializeOnly SFNode   appearance USE _3
     initializeOnly SFNode   targetMaterial USE TargetMaterial
     initializeOnly SFNode   sourceMaterial DEF SourceMaterial Material {
       diffuseColor 0.16 0.8 0.377278
@@ -254,7 +237,7 @@ DEF Titania WorldInfo {
         name "Grid"
         reference "http://titania.create3000.de"
         value [
-          DEF enabled_6 MetadataBoolean {
+          DEF enabled_5 MetadataBoolean {
             name "enabled"
             reference "http://titania.create3000.de"
             value TRUE
@@ -333,8 +316,8 @@ DEF Titania WorldInfo {
   }
 }
 
-DEF _7 SnapTool {
+DEF _6 SnapTool {
   normal 0 1 0
 }
 
-EXPORT _7 AS Tool
+EXPORT _6 AS Tool

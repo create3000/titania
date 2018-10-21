@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 X3DActiveLayerTool::Fields::Fields () :
-	activeLayer (new SFBool (true))
+	enabled (new SFBool (true))
 { }
 
 X3DActiveLayerTool::X3DActiveLayerTool () :
@@ -78,7 +78,7 @@ X3DActiveLayerTool::initialize ()
 	X3DToolObject::initialize ();
 
 	getBrowser () -> getActiveLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
-	activeLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
+	enabled () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -128,7 +128,7 @@ X3DActiveLayerTool::set_activeLayer ()
 
 	activeLayerNode = getBrowser () -> getActiveLayer ();
 
-	if (activeLayer () and activeLayerNode)
+	if (enabled () and activeLayerNode)
 		activeLayerNode -> getFriends () -> children () .emplace_back (this);
 }
 
