@@ -330,7 +330,7 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 			<< XMLEncode (Generator::Name (ostream, getInlineNode ()))
 			<< "'"
 			<< Generator::Space
-			<< "exportedDEF='"
+			<< "importedDEF='"
 			<< XMLEncode (exportedName)
 			<< "'";
 

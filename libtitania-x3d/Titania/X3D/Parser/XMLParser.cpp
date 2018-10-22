@@ -867,12 +867,12 @@ XMLParser::importElement (xmlpp::Element* const xmlElement)
 		{
 			std::string exportedDEFCharacters;
 	
-			if (stringAttribute (xmlElement -> get_attribute ("exportedDEF"), exportedDEFCharacters))
+			if (stringAttribute (xmlElement -> get_attribute ("importedDEF"), exportedDEFCharacters) || stringAttribute (xmlElement -> get_attribute ("exportedDEF"), exportedDEFCharacters))
 			{
 				std::string ASCharacters;
-		
+
 				stringAttribute (xmlElement -> get_attribute ("AS"), ASCharacters);
-	
+
 				if (ASCharacters .empty ())
 					ASCharacters = exportedDEFCharacters;
 
