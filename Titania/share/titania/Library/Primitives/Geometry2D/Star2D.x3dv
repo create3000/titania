@@ -6,9 +6,8 @@ META "comment" "World of Titania"
 META "created" "Sun, 21 Oct 2018 09:32:24 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
-META "identifier" ""
-META "modified" "Sun, 21 Oct 2018 09:32:24 GMT"
-META "titania-output-style" "Nicest"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Geometry2D/Star2D.x3dv"
+META "modified" "Mon, 22 Oct 2018 12:15:23 GMT"
 
 DEF Star2D Transform {
   children Shape {
@@ -17,100 +16,46 @@ DEF Star2D Transform {
     }
     geometry IndexedFaceSet {
       solid FALSE
-      texCoordIndex [
-        4,
-        9,
-        8,
-        -1,
-        8,
-        9,
-        7,
-        -1,
-        8,
-        7,
-        6,
-        -1,
-        6,
-        7,
-        5,
-        -1,
-        6,
-        5,
-        3,
-        -1,
-        2,
-        7,
-        9,
-        -1,
-        8,
-        6,
-        1,
-        -1,
-        7,
-        0,
-        5,
-        -1
-      ]
+      convex FALSE
       coordIndex [
-        4,
-        9,
-        8,
-        -1,
-        8,
-        9,
-        7,
-        -1,
-        8,
-        7,
-        6,
-        -1,
-        6,
-        7,
-        5,
-        -1,
-        6,
-        5,
-        3,
-        -1,
-        2,
-        7,
-        9,
-        -1,
-        8,
-        6,
-        1,
-        -1,
-        7,
         0,
+        1,
+        2,
+        3,
+        4,
         5,
+        6,
+        7,
+        8,
+        9,
         -1
       ]
       texCoord TextureCoordinate {
         point [
-          0.191667 0,
           0.5 1,
-          0.808333 0,
-          0 0.618421,
-          1 0.618421,
-          0.309369 0.381736,
-          0.382346 0.618421,
-          0.5 0.235893,
-          0.617654 0.618421,
-          0.690631 0.381736
+          0.381966 0.66246,
+          0.0244717 0.654508,
+          0.309017 0.437946,
+          0.206107 0.0954915,
+          0.5 0.299189,
+          0.793893 0.0954915,
+          0.690983 0.437946,
+          0.975528 0.654508,
+          0.618034 0.66246
         ]
       }
       coord Coordinate {
         point [
-          0.616667 -0.9 0,
           0 1 0,
-          -0.616667 -0.9 0,
-          1 0.275 0,
-          -1 0.275 0,
-          0.381263 -0.174701 0,
-          0.235307 0.275 0,
-          0 -0.451804 0,
-          -0.235307 0.275 0,
-          -0.381263 -0.174701 0
+          -0.236068 0.32492 0,
+          -0.951057 0.309017 0,
+          -0.381966 -0.124108 0,
+          -0.587785 -0.809017 0,
+          -4.91846e-17 -0.401623 0,
+          0.587785 -0.809017 0,
+          0.381966 -0.124108 0,
+          0.951057 0.309017 0,
+          0.236068 0.32492 0
         ]
       }
     }
