@@ -145,17 +145,33 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		case TraverseType::POINTER:
 		{
-			if (not getPickable (renderObject))
-				break;
+			try
+			{
+				if (not getPickable (renderObject))
+					break;
+	
+				HierarchyGuard guard (renderObject -> getBrowser (), this);
+				
+				inlineNode -> traverse (type, renderObject);
+			}
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 
-			HierarchyGuard guard (renderObject -> getBrowser (), this);
-			
-			inlineNode -> traverse (type, renderObject);
 			break;
 		}
 		default:
 		{
-			inlineNode -> traverse (type, renderObject);
+			try
+			{
+				inlineNode -> traverse (type, renderObject);
+			}
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+
 			break;
 		}
 	}
