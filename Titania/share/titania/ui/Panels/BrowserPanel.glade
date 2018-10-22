@@ -344,8 +344,8 @@
                       <object class="GtkCheckMenuItem" id="TransformSensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/TransformSensor</property>
-                        <property name="label" translatable="yes">_TransformSensor</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/TransformSensors</property>
+                        <property name="label" translatable="yes">_TransformSensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_transform_sensors_toggled" swapped="no"/>
                       </object>
