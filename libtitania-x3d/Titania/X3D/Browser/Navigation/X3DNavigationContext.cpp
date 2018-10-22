@@ -246,69 +246,64 @@ X3DNavigationContext::set_viewer ()
 
 	getBrowser () -> setCursor ("ARROW");
 
-	viewerNode .addEvent ();
-
-	if (type not_eq viewerNode -> getType () .back ())
+	switch (type)
 	{
-		switch (type)
+		case X3DConstants::NoneViewer:
 		{
-			case X3DConstants::NoneViewer:
-			{
-				viewerNode .setValue (new NoneViewer (getBrowser ()));
-				break;
-			}
-			case X3DConstants::ExamineViewer:
-			{
-				viewerNode .setValue (new ExamineViewer (getBrowser ()));
-				break;
-			}
-			case X3DConstants::WalkViewer:
-			{
-				viewerNode .setValue (new WalkViewer (getBrowser ()));
-				break;
-			}
-			case X3DConstants::FlyViewer:
-			{
-				viewerNode .setValue (new FlyViewer (getBrowser ()));
-				break;
-			}
-			case X3DConstants::PlaneViewer:
-			{
-				viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer));
-				break;
-			}
-			case X3DConstants::PlaneViewer3D:
-			{
-				viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer3D));
-				break;
-			}
-			case X3DConstants::LookAtViewer:
-			{
-				viewerNode .setValue (new LookAtViewer (getBrowser ()));
-				break;
-			}
-			case X3DConstants::RectangleSelection:
-			{
-				viewerNode .setValue (new RectangleSelection (getBrowser ()));
-				break;
-			}
-			case X3DConstants::LassoSelection:
-			{
-				viewerNode .setValue (new LassoSelection (getBrowser ()));
-				break;
-			}
-			case X3DConstants::LightSaber:
-			{
-				viewerNode .setValue (new LightSaber (getBrowser ()));
-				break;
-			}
-			default:
-				viewerNode .setValue (new NoneViewer (getBrowser ()));
-				break;
+			viewerNode .setValue (new NoneViewer (getBrowser ()));
+			break;
 		}
-
-		viewerNode -> setup ();
+		case X3DConstants::ExamineViewer:
+		{
+			viewerNode .setValue (new ExamineViewer (getBrowser ()));
+			break;
+		}
+		case X3DConstants::WalkViewer:
+		{
+			viewerNode .setValue (new WalkViewer (getBrowser ()));
+			break;
+		}
+		case X3DConstants::FlyViewer:
+		{
+			viewerNode .setValue (new FlyViewer (getBrowser ()));
+			break;
+		}
+		case X3DConstants::PlaneViewer:
+		{
+			viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer));
+			break;
+		}
+		case X3DConstants::PlaneViewer3D:
+		{
+			viewerNode .setValue (new PlaneViewer (getBrowser (), X3DConstants::PlaneViewer3D));
+			break;
+		}
+		case X3DConstants::LookAtViewer:
+		{
+			viewerNode .setValue (new LookAtViewer (getBrowser ()));
+			break;
+		}
+		case X3DConstants::RectangleSelection:
+		{
+			viewerNode .setValue (new RectangleSelection (getBrowser ()));
+			break;
+		}
+		case X3DConstants::LassoSelection:
+		{
+			viewerNode .setValue (new LassoSelection (getBrowser ()));
+			break;
+		}
+		case X3DConstants::LightSaber:
+		{
+			viewerNode .setValue (new LightSaber (getBrowser ()));
+			break;
+		}
+		default:
+			viewerNode .setValue (new NoneViewer (getBrowser ()));
+			break;
 	}
+
+	viewerNode -> setup ();
 }
 
 X3DNavigationContext::~X3DNavigationContext ()
