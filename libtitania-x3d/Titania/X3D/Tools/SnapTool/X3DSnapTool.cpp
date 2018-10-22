@@ -101,6 +101,8 @@ X3DSnapTool::realize ()
 	{
 		X3DActiveLayerTool::realize ();
 
+		enabled () .addInterest (&X3DSnapTool::set_enabled, this);
+
 		auto & set_position = getToolNode () -> getField <SFVec3f> ("set_position");
 		position () .addInterest (set_position);
 		set_position = position ();
@@ -109,17 +111,27 @@ X3DSnapTool::realize ()
 		normal () .addInterest (set_normal);
 		set_normal = normal ();
 
-		buttonPressConnection   .disconnect ();
-		buttonReleaseConnection .disconnect ();
-
-		#ifdef TITANIA_DEBUG
-		buttonPressConnection   = getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_press_event),   false);
-		buttonReleaseConnection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_release_event), false);
-		#endif
+		set_enabled ();
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DSnapTool::set_enabled ()
+{
+	// Always disconnect!
+	buttonPressConnection   .disconnect ();
+	buttonReleaseConnection .disconnect ();
+
+	if (enabled ())
+	{
+		#ifdef TITANIA_DEBUG
+		buttonPressConnection   = getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_press_event),   false);
+		buttonReleaseConnection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_release_event), false);
+		#endif
 	}
 }
 

@@ -127,7 +127,10 @@ protected:
 private:
 
 	///  @name Events
-	
+
+	void
+	set_enabled ();
+
 	bool
 	on_button_release_event (GdkEventButton* event);
 
