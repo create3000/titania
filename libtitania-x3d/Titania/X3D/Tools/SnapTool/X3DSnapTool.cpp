@@ -112,8 +112,10 @@ X3DSnapTool::realize ()
 		buttonPressConnection   .disconnect ();
 		buttonReleaseConnection .disconnect ();
 
+		#ifdef TITANIA_DEBUG
 		buttonPressConnection   = getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_press_event),   false);
 		buttonReleaseConnection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_release_event), false);
+		#endif
 	}
 	catch (const X3DError & error)
 	{
@@ -124,10 +126,8 @@ X3DSnapTool::realize ()
 bool
 X3DSnapTool::on_button_press_event (GdkEventButton* event)
 {
-	#ifndef TITANIA_DEBUG
 	if (not enabled ())
 		return false;
-	#endif
 
 	// If not in editing mode return.
 	if (not getBrowser () -> getSelectable ())
@@ -154,9 +154,6 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 
 		return false;
 	}
-
-	if (not enabled ())
-		enabled () = true;
 
 	button = event -> button;
 
