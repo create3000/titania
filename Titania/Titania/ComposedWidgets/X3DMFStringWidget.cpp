@@ -286,18 +286,21 @@ X3DMFStringWidget::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> 
 
 	// Move value.
 
-	const auto value = string [index];
+	// Insert
+
+	const auto fromIter = string .begin () + index;
+	const auto toIter   = string .begin () + dest;
+
+	string .emplace (toIter, std::move (*fromIter));
+
+	// Erase
 
 	if (index < dest)
-	{
-		string .insert (string .begin () + dest, value);
 		string .erase (string .begin () + index);
-	}
 	else
-	{
-		string .erase (string .begin () + index);
-		string .insert (string .begin () + dest, value);
-	}
+		string .erase (string .begin () + (index + 1));
+
+	// Finish
 
 	on_string_changed ();
 

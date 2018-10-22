@@ -153,8 +153,20 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 				break;
 		}
 
-		soundSourceNode -> enabled () = last -> enabled ();
-		// ...
+		soundSourceNode -> enabled ()     = last -> enabled ();
+		soundSourceNode -> description () = last -> description ();
+		soundSourceNode -> speed ()       = last -> speed ();
+		soundSourceNode -> pitch ()       = last -> pitch ();
+		soundSourceNode -> loop ()        = last -> loop ();
+
+		try
+		{
+			soundSourceNode -> setField <X3D::MFString> ("url", last -> getField <X3D::MFString> ("url"));
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
 	}
 
 	// Set field.
@@ -336,7 +348,7 @@ X3DSoundSourceNodeEditor::set_active ()
 void
 X3DSoundSourceNodeEditor::set_elapsedTime ()
 {
-	const auto time = std::fmod (movieTexture -> elapsedTime (), movieTexture -> duration_changed ());
+	const auto time = std::fmod (soundSourceNode -> elapsedTime (), soundSourceNode -> duration_changed ());
 
 	getSoundSourceElapsedTimeLabel () .set_text (strftime (time, 3));
 }
