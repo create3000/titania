@@ -155,17 +155,8 @@ X3DSnapTool::on_button_press_event (GdkEventButton* event)
 	if (event -> button not_eq 2)
 		return false;
 
-	if (not getBrowser () -> getSelectable () and not enabled ())
-		return false;
-
 	if (not touch (event -> x, event -> y))
-	{
-		// Disable Snap Object if picked in empty space.
-		if (enabled ())
-			enabled () = false;
-
 		return false;
-	}
 
 	button = event -> button;
 
