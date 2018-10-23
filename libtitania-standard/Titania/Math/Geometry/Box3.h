@@ -193,8 +193,12 @@ public:
 	points () const;
 
 	///  Returns the scaled axes of this box.
-	std::array <vector3 <Type>, 3> 
+	vector3 <vector3 <Type>> 
 	axes () const;
+
+	///  Returns the three unique normals of this box.
+	vector3 <vector3 <Type>> 
+	normals () const;
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -276,10 +280,6 @@ public:
 
 private:
 
-	///  Returns the three unnormalized unique normals of this box.
-	std::vector <vector3 <Type>> 
-	normals () const;
-
 	///  Returns the absolute min and max extents of this box.
 	std::pair <vector3 <Type>, vector3 <Type>>
 	absolute_extents () const;
@@ -352,30 +352,29 @@ box3 <Type>::points () const
 }
 
 template <class Type>
-std::array <vector3 <Type>, 3> 
+vector3 <vector3 <Type>> 
 box3 <Type>::axes () const
 {
-	return std::array <vector3 <Type>, 3> ({
+	return vector3 <vector3 <Type>> (
 		matrix () .x_axis (),
 		matrix () .y_axis (),
 		matrix () .z_axis ()
-	});
+	);
 }
 
 template <class Type>
-std::vector <vector3 <Type>> 
+vector3 <vector3 <Type>> 
 box3 <Type>::normals () const
 {
-	std::vector <vector3 <Type>> normals;
-	normals .reserve (3);
+	vector3 <vector3 <Type>> normals;
 
 	const auto x = matrix () .x_axis ();
 	const auto y = matrix () .y_axis ();
 	const auto z = matrix () .z_axis ();
 
-	normals .emplace_back (cross (y, z));
-	normals .emplace_back (cross (z, x));
-	normals .emplace_back (cross (x, y));
+	normals .x (normalize (cross (y, z)));
+	normals .y (normalize (cross (z, x)));
+	normals .z (normalize (cross (x, y)));
 
 	return normals;
 }
@@ -555,12 +554,16 @@ box3 <Type>::intersects (const box3 & other) const
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (sat::separated (normals (), points1, points2))
+	const auto normals1 = normals ();
+
+	if (sat::separated (std::vector <vector3 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
 		return false;
 
 	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
 
-	if (sat::separated (other .normals (), points1, points2))
+	const auto normals2 = other .normals ();
+
+	if (sat::separated (std::vector <vector3 <Type>> (normals2 .begin (), normals2 .end ()), points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of each parallelepiped.
@@ -597,7 +600,9 @@ box3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, con
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
-	if (sat::separated (normals (), points1, points2))
+	const auto normals1 = normals ();
+
+	if (sat::separated (std::vector <vector3 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
 		return false;
 
 	// Test the normal of the triangle.

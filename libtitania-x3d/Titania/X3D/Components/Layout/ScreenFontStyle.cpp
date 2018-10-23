@@ -396,23 +396,16 @@ ScreenText::transform (X3DRenderObject* const renderObject)
 	{
 		// Determine model view matrix and bbox.
 	
-		Vector3d   translation, scale;
-		Rotation4d rotation;
-	
-		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
-	
-		modelViewMatrix .get (translation, rotation, scale);
-	
+		const auto & modelViewMatrix  = renderObject -> getModelViewMatrix () .get ();
 		const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
 		const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
-		const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
-	
-		Matrix4d screenMatrix;
-	
-		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
-	
+		const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (modelViewMatrix .origin (), viewport);
+
+		auto screenMatrix = Matrix4d (normalize (modelViewMatrix .x ()) * screenScale .x (),
+		                              normalize (modelViewMatrix .y ()) * screenScale .y (),
+		                              normalize (modelViewMatrix .z ()) * screenScale .z (),
+		                              modelViewMatrix .w ());
+
 		// Snap to whole pixel
 	
 		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);

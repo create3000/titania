@@ -193,8 +193,12 @@ public:
 	points () const;
 
 	///  Returns the scaled axes of this box.
-	std::array <vector2 <Type>, 2> 
+	vector2 <vector2 <Type>> 
 	axes () const;
+
+	///  Returns the two unique normals of this box.
+	vector2 <vector2 <Type>> 
+	normals () const;
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box2 inplace.
@@ -270,10 +274,6 @@ public:
 	contains (const box2 & box) const;
 
 private:
-
-	///  Returns the three unnormalized unique normals of this box.
-	std::vector <vector2 <Type>> 
-	normals () const;
 
 	///  Returns the absolute min and max extents of this box.
 	std::pair <vector2 <Type>, vector2 <Type>>
@@ -369,27 +369,26 @@ box2 <Type>::points () const
 }
 
 template <class Type>
-std::array <vector2 <Type>, 2> 
+vector2 <vector2 <Type>> 
 box2 <Type>::axes () const
 {
-	return std::array <vector2 <Type>, 2> ({
+	return vector2 <vector2 <Type>> (
 		matrix () .x_axis (),
 		matrix () .y_axis ()
-	});
+	);
 }
 
 template <class Type>
-std::vector <vector2 <Type>> 
+vector2 <vector2 <Type>> 
 box2 <Type>::normals () const
 {
-	std::vector <vector2 <Type>> normals;
-	normals .reserve (2);
+	vector2 <vector2 <Type>> normals;
 
 	const auto x = matrix () .x_axis ();
 	const auto y = matrix () .y_axis ();
 
-	normals .emplace_back (-x .y (), x .x ());
-	normals .emplace_back (-y .y (), y .x ());
+	normals .x (normalize (vector2 <Type> (-x .y (), x .x ())));
+	normals .y (normalize (vector2 <Type> (-y .y (), y .x ())));
 
 	return normals;
 }
@@ -443,13 +442,16 @@ box2 <Type>::intersects (const box2 <Type> & other) const
 
 	// Get points.
 
-	const auto points1 = points ();
-	const auto points2 = other .points ();
+	const auto points1  = points ();
+	const auto points2  = other .points ();
+	const auto normals1 = normals ();
 
-	if (sat::separated (normals (), points1, points2))
+	if (sat::separated (std::vector <vector2 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
 		return false;
 
-	if (sat::separated (other .normals (), points1, points2))
+	const auto normals2 = other .normals ();
+
+	if (sat::separated (std::vector <vector2 <Type>> (normals2 .begin (), normals2 .end ()), points1, points2))
 		return false;
 
 	// Both boxes intersect.

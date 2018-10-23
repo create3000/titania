@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Sat, 20 Oct 2018 14:13:02 GMT"
+META "modified" "Tue, 23 Oct 2018 08:11:22 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -111,133 +111,15 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF ModeScript Script {
-              inputOnly      SFBool   set_active
-              inputOnly      SFTime   set_time
-              inputOutput    MFString tools [
-                "TRANSLATE",
-                "ROTATE",
-                "SCALE"
+            value DEF Axes Coordinate {
+              point [
+                -0.5 0 0,
+                0.5 0 0,
+                0 0.5 0,
+                0 -0.5 0,
+                0 0 -0.5,
+                0 0 0.5
               ]
-              inputOutput    SFBool   scaleXAxis TRUE
-              inputOutput    SFBool   scaleYAxis TRUE
-              inputOutput    SFBool   scaleZAxis TRUE
-              inputOutput    SFBool   scaleXBackAxis TRUE
-              inputOutput    SFBool   scaleYBackAxis TRUE
-              inputOutput    SFBool   scaleZBackAxis TRUE
-              inputOutput    SFBool   scaleUniform TRUE
-              inputOutput    SFVec3f  bboxSize 0 0 0
-              outputOnly     SFTime   touchTime
-              outputOnly     SFBool   move
-              outputOnly     SFBool   rotate
-              outputOnly     SFBool   scale
-              outputOnly     SFBool   scaleX
-              outputOnly     SFBool   scaleY
-              outputOnly     SFBool   scaleZ
-              outputOnly     SFBool   scaleXBack
-              outputOnly     SFBool   scaleYBack
-              outputOnly     SFBool   scaleZBack
-              outputOnly     SFInt32  whichChoice_changed
-              initializeOnly SFInt32  tool 0
-
-              url "peaseblossom:
-
-function initialize ()
-{
-	set_tools ()
-}
-
-function set_tools ()
-{
-	set_tool (0);
-}
-
-function set_scaleXAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleYAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleZAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleXBackAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleYBackAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleZBackAxis ()
-{
-	set_tool (tool)
-}
-
-function set_scaleUniform ()
-{
-	set_tool (tool)
-}
-
-function set_active (value, time)
-{
-	if (! value)
-		touchTime = time;
-}
-
-function set_time (value, time)
-{
-	if (bboxSize .length ())
-		set_tool ((tool + 1) % tools .length);
-	else
-		set_tool (0);
-}
-
-function set_tool (value)
-{
-	tool       = value;
-	move       = false;
-	rotate     = false;
-	scale      = false;
-	scaleX     = false;
-	scaleY     = false;
-	scaleZ     = false;
-	scaleXBack = false;
-	scaleYBack = false;
-	scaleZBack = false;
-
-	switch (tools [value])
-	{
-		case \"TRANSLATE\":
-			move                = true;
-			whichChoice_changed = 0;
-			break;
-		case \"ROTATE\":
-			move                = true;
-			rotate              = true;
-			whichChoice_changed = 1;
-			break;
-		case \"SCALE\":
-			scale               = scaleUniform;
-			scaleX              = scaleXAxis;
-			scaleY              = scaleYAxis;
-			scaleZ              = scaleZAxis;
-			scaleXBack          = scaleXBackAxis;
-			scaleYBack          = scaleYBackAxis;
-			scaleZBack          = scaleZBackAxis;
-			whichChoice_changed = 2;
-			break;
-	}
-}
-"
             }
           }
           DEF selectGeometry MetadataBoolean {
@@ -300,16 +182,7 @@ Collision {
                       0 0 1
                     ]
                   }
-                  coord DEF Axes Coordinate {
-                    point [
-                      -0.5 0 0,
-                      0.5 0 0,
-                      0 0.5 0,
-                      0 -0.5 0,
-                      0 0 -0.5,
-                      0 0 0.5
-                    ]
-                  }
+                  coord USE Axes
                 }
               }
               ScreenGroup {
@@ -1442,7 +1315,134 @@ DEF ModeDoubleClick DoubleClick { }
 
 DEF CenterDoubleClick DoubleClick { }
 
-USE ModeScript
+DEF ModeScript Script {
+  inputOnly      SFBool   set_active
+  inputOnly      SFTime   set_time
+  inputOutput    MFString tools [
+    "TRANSLATE",
+    "ROTATE",
+    "SCALE"
+  ]
+  inputOutput    SFBool   scaleXAxis TRUE
+  inputOutput    SFBool   scaleYAxis TRUE
+  inputOutput    SFBool   scaleZAxis TRUE
+  inputOutput    SFBool   scaleXBackAxis TRUE
+  inputOutput    SFBool   scaleYBackAxis TRUE
+  inputOutput    SFBool   scaleZBackAxis TRUE
+  inputOutput    SFBool   scaleUniform TRUE
+  inputOutput    SFVec3f  bboxSize 0 0 0
+  outputOnly     SFTime   touchTime
+  outputOnly     SFBool   move
+  outputOnly     SFBool   rotate
+  outputOnly     SFBool   scale
+  outputOnly     SFBool   scaleX
+  outputOnly     SFBool   scaleY
+  outputOnly     SFBool   scaleZ
+  outputOnly     SFBool   scaleXBack
+  outputOnly     SFBool   scaleYBack
+  outputOnly     SFBool   scaleZBack
+  outputOnly     SFInt32  whichChoice_changed
+  initializeOnly SFInt32  tool 0
+
+  url "peaseblossom:
+
+function initialize ()
+{
+	set_tools ()
+}
+
+function set_tools ()
+{
+	set_tool (0);
+}
+
+function set_scaleXAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleYAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleZAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleXBackAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleYBackAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleZBackAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleUniform ()
+{
+	set_tool (tool)
+}
+
+function set_active (value, time)
+{
+	if (! value)
+		touchTime = time;
+}
+
+function set_time (value, time)
+{
+	if (bboxSize .length ())
+		set_tool ((tool + 1) % tools .length);
+	else
+		set_tool (0);
+}
+
+function set_tool (value)
+{
+	tool       = value;
+	move       = false;
+	rotate     = false;
+	scale      = false;
+	scaleX     = false;
+	scaleY     = false;
+	scaleZ     = false;
+	scaleXBack = false;
+	scaleYBack = false;
+	scaleZBack = false;
+
+	switch (tools [value])
+	{
+		case \"TRANSLATE\":
+			move                = true;
+			whichChoice_changed = 0;
+			break;
+		case \"ROTATE\":
+			move                = true;
+			rotate              = true;
+			whichChoice_changed = 1;
+			break;
+		case \"SCALE\":
+			scale               = scaleUniform;
+			scaleX              = scaleXAxis;
+			scaleY              = scaleYAxis;
+			scaleZ              = scaleZAxis;
+			scaleXBack          = scaleXBackAxis;
+			scaleYBack          = scaleYBackAxis;
+			scaleZBack          = scaleZBackAxis;
+			whichChoice_changed = 2;
+			break;
+	}
+}
+"
+}
 
 DEF BBoxScript Script {
   inputOutput    SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1

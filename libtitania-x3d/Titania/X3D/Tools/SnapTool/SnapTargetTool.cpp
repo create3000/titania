@@ -186,23 +186,24 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 		const auto center         = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
 		const auto axes           = bbox .axes ();
+		const auto normals        = bbox .normals ();
 
 		const auto xPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normalize (axes [0])),                      // Center X
-			Plane3d (bbox .center () + axes [0], normalize ( axes [0])), // +X
-			Plane3d (bbox .center () - axes [0], normalize (-axes [0])), // -X
+			Plane3d (center, normals .x ()),                        // Center X
+			Plane3d (bbox .center () + axes .x (),  normals .x ()), // +X
+			Plane3d (bbox .center () - axes .x (), -normals .x ()), // -X
 		});
 
 		const auto yPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normalize (axes [1])),                      // Center Y
-			Plane3d (bbox .center () + axes [1], normalize ( axes [1])), // +Y
-			Plane3d (bbox .center () - axes [1], normalize (-axes [1])), // -Y
+			Plane3d (center, normals .y ()),                        // Center Y
+			Plane3d (bbox .center () + axes .y (),  normals .y ()), // +Y
+			Plane3d (bbox .center () - axes .y (), -normals .y ()), // -Y
 		});
 
 		const auto zPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normalize (axes [2])),                      // Center Z
-			Plane3d (bbox .center () + axes [2], normalize ( axes [2])), // +Z
-			Plane3d (bbox .center () - axes [2], normalize (-axes [2])), // -Z
+			Plane3d (center, normals .z ()),                        // Center Z
+			Plane3d (bbox .center () + axes .z (),  normals .z ()), // +Z
+			Plane3d (bbox .center () - axes .z (), -normals .z ()), // -Z
 		});
 
 		const auto translation = getTranslation (xPlanes) +
