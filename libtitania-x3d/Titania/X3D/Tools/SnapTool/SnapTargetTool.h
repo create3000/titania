@@ -107,6 +107,14 @@ public:
 	snapped () const
 	{ return *fields .snapped; }
 
+	SFBool &
+	snapToCenter ()
+	{ return *fields .snapToCenter; }
+
+	const SFBool &
+	snapToCenter () const
+	{ return *fields .snapToCenter; }
+
 	SFDouble &
 	snapDistance ()
 	{ return *fields .snapDistance; }
@@ -169,6 +177,7 @@ private:
 		Fields ();
 
 		SFBool* const snapped;
+		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
 	};
 
