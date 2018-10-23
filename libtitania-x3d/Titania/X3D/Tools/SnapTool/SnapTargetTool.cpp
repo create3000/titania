@@ -186,30 +186,27 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto center         = bbox .center ();
 		const auto axes           = bbox .axes ();
 
-		auto planes = std::vector <Plane3d> ({
+		const auto xPlanes = std::vector <Plane3d> ({
 			Plane3d (center, normalize (axes [0])), // Center X
-			Plane3d (center, normalize (axes [1])), // Center Y
-			Plane3d (center, normalize (axes [2])), // Center Z
 			Plane3d (center + axes [0], normalize ( axes [0])), // +X
 			Plane3d (center - axes [0], normalize (-axes [0])), // -X
+		});
+
+		const auto yPlanes = std::vector <Plane3d> ({
+			Plane3d (center, normalize (axes [1])), // Center Y
 			Plane3d (center + axes [1], normalize ( axes [1])), // +Y
 			Plane3d (center - axes [1], normalize (-axes [1])), // -Y
+		});
+
+		const auto zPlanes = std::vector <Plane3d> ({
+			Plane3d (center, normalize (axes [2])), // Center Z
 			Plane3d (center + axes [2], normalize ( axes [2])), // +Z
 			Plane3d (center - axes [2], normalize (-axes [2])), // -Z
 		});
 
-		auto translation = Vector3d ();
-
-		for (const auto & plane : planes)
-		{
-			const auto distance = plane .distance (position () .getValue ());
-
-			if (std::abs (distance) < snapDistance ())
-			{
-				translation += plane .normal () * distance;
-				break;
-			}
-		}
+		const auto translation = getTranslation (xPlanes) +
+		                         getTranslation (yPlanes) +
+		                         getTranslation (zPlanes);
 
 		snapped () = (translation not_eq Vector3d ());
 
@@ -252,6 +249,25 @@ SnapTargetTool::on_button_release_event (GdkEventButton* event)
 	snapped () = false;
 
 	return X3DSnapTool::on_button_release_event (event);
+}
+
+Vector3d
+SnapTargetTool::getTranslation (const std::vector <Plane3d> & planes) const
+{
+	for (const auto & plane : planes)
+	{
+		const auto distance = plane .distance (position () .getValue ());
+
+		if (distance == 0)
+			continue;
+
+		if (std::abs (distance) > snapDistance ())
+			continue;
+
+		return plane .normal () * distance;
+	}
+
+	return Vector3d ();
 }
 
 /// Apply transformation to transformation group.
