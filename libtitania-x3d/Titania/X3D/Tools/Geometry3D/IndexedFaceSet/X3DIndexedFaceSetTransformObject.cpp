@@ -93,7 +93,7 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	                  selectionCoord (),
 	                    axisRotation (),
 	                          active (false),
-	                         events (0),
+	                          events (0),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	addType (X3DConstants::X3DIndexedFaceSetTransformObject);

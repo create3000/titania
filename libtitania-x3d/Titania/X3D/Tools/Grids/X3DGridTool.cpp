@@ -362,8 +362,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not snapping ())
 			return;
 
-		// If Shift-key is pressed disable snapping.
-		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+		// If Shift-key or Ctrl-key is pressed disable snapping.
+		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ()))
 			return;
 
 		if (master -> getActiveTool () not_eq ToolType::ROTATE)
@@ -462,7 +462,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not snapping ())
 			return;
 
-		// If Shift-key is pressed disable snapping.
+		// If Shift-key or Ctrl+Shift-key is pressed disable snapping.
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
 			return;
 	

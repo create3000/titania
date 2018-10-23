@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 23 Oct 2018 08:11:22 GMT"
+META "modified" "Tue, 23 Oct 2018 10:54:28 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -111,15 +111,83 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF Axes Coordinate {
-              point [
-                -0.5 0 0,
-                0.5 0 0,
-                0 0.5 0,
-                0 -0.5 0,
-                0 0 -0.5,
-                0 0 0.5
-              ]
+            value DEF RotateScript Script {
+              inputOnly      SFBool     set_active
+              inputOnly      SFRotation set_rotation
+              inputOnly      SFRotation set_xRotation
+              inputOnly      SFRotation set_yRotation
+              inputOnly      SFRotation set_zRotation
+              inputOutput    SFDouble   snapAngle 0.19634954
+              inputOutput    SFBool     controlKey FALSE
+              inputOutput    SFBool     shiftKey FALSE
+              outputOnly     SFInt32    activeTool_changed
+              initializeOnly SFRotation rotation 0 0 1 0
+              initializeOnly SFVec3f    scale 1 1 1
+              initializeOnly SFRotation scaleOrientation 0 0 1 0
+              initializeOnly SFInt32    events 0
+              inputOutput    SFNode     transform NULL
+
+              url "peaseblossom:
+function set_active (value)
+{
+	if (value)
+	{
+		activeTool_changed = 2;
+
+		// Normalize scale rotation matrix.
+
+		var scaleRotation = new SFMatrix4f ();
+		scaleRotation .setTransform (new SFVec3f (),
+		                             transform. rotation,
+		                             transform .scale,
+		                             transform .scaleOrientation);
+
+		scaleRotation .getTransform (null, rotation, scale, scaleOrientation);
+
+		transform .rotation         = rotation;
+		transform .scale            = scale;
+		transform .scaleOrientation = scaleOrientation;
+
+		events = 4;
+	}
+	else
+		activeTool_changed = 0;
+}
+
+function set_xRotation (value)
+{
+	rotate (value);
+}
+
+function set_yRotation (value)
+{
+	rotate (value);
+}
+
+function set_zRotation (value)
+{
+	rotate (value);
+}
+
+function rotate (value)
+{
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
+	if (controlKey && ! shiftKey)
+	{
+		var angle = Math .round (value .angle / snapAngle) * snapAngle;
+		value = new SFRotation (value .getAxis (), angle);
+	}
+
+	transform .rotation = value .multiply (rotation);
+}
+"
+              directOutput TRUE
             }
           }
           DEF selectGeometry MetadataBoolean {
@@ -182,7 +250,16 @@ Collision {
                       0 0 1
                     ]
                   }
-                  coord USE Axes
+                  coord DEF Axes Coordinate {
+                    point [
+                      -0.5 0 0,
+                      0.5 0 0,
+                      0 0.5 0,
+                      0 -0.5 0,
+                      0 0 -0.5,
+                      0 0 0.5
+                    ]
+                  }
                 }
               }
               ScreenGroup {
@@ -1813,84 +1890,7 @@ function isActive (sensorA, sensorB, sensorC)
 "
 }
 
-DEF RotateScript Script {
-  inputOnly      SFBool     set_active
-  inputOnly      SFRotation set_rotation
-  inputOnly      SFRotation set_xRotation
-  inputOnly      SFRotation set_yRotation
-  inputOnly      SFRotation set_zRotation
-  inputOutput    SFDouble   snapAngle 0.19634954
-  inputOutput    SFBool     controlKey FALSE
-  inputOutput    SFBool     shiftKey FALSE
-  outputOnly     SFInt32    activeTool_changed
-  initializeOnly SFRotation rotation 0 0 1 0
-  initializeOnly SFVec3f    scale 1 1 1
-  initializeOnly SFRotation scaleOrientation 0 0 1 0
-  initializeOnly SFInt32    events 0
-  inputOutput    SFNode     transform NULL
-
-  url "peaseblossom:
-function set_active (value)
-{
-	if (value)
-	{
-		activeTool_changed = 2;
-
-		// Normalize scale rotation matrix.
-
-		var scaleRotation = new SFMatrix4f ();
-		scaleRotation .setTransform (new SFVec3f (),
-		                             transform. rotation,
-		                             transform .scale,
-		                             transform .scaleOrientation);
-
-		scaleRotation .getTransform (null, rotation, scale, scaleOrientation);
-
-		transform .rotation         = rotation;
-		transform .scale            = scale;
-		transform .scaleOrientation = scaleOrientation;
-
-		events = 4;
-	}
-	else
-		activeTool_changed = 0;
-}
-
-function set_xRotation (value)
-{
-	rotate (value);
-}
-
-function set_yRotation (value)
-{
-	rotate (value);
-}
-
-function set_zRotation (value)
-{
-	rotate (value);
-}
-
-function rotate (value)
-{
-	if (events)
-	{
-		// Prevent accidentially move.
-		-- events;
-		return;
-	}
-
-	if (controlKey && ! shiftKey)
-	{
-		var angle = Math .round (value .angle / snapAngle) * snapAngle;
-		value = new SFRotation (value .getAxis (), angle);
-	}
-
-	transform .rotation = value .multiply (rotation);
-}
-"
-  directOutput TRUE
-}
+USE RotateScript
 
 DEF ScaleHandlesScript Script {
   inputOutput    SFVec3f bboxSize 0 0 0
