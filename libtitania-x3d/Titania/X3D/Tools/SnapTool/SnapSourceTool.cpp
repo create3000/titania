@@ -79,12 +79,6 @@ SnapSourceTool::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-SnapSourceTool::initialize ()
-{
-	X3DSnapTool::initialize ();
-}
-
-void
 SnapSourceTool::realize ()
 {
 	try

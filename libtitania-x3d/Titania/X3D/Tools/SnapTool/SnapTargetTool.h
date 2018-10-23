@@ -72,6 +72,14 @@ public:
 	///  @name Common members
 
 	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
+	///  @name Common members
+
+	virtual
 	ComponentType
 	getComponent () const
 	throw (Error <DISPOSED>) final override
@@ -89,6 +97,24 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	SFBool &
+	snapped ()
+	{ return *fields .snapped; }
+
+	const SFBool &
+	snapped () const
+	{ return *fields .snapped; }
+
+	SFDouble &
+	snapDistance ()
+	{ return *fields .snapDistance; }
+
+	const SFDouble &
+	snapDistance () const
+	{ return *fields .snapDistance; }
+
 
 private:
 
@@ -102,17 +128,52 @@ private:
 	void
 	realize () final override;
 
-	///  @name Events
+	///  @name Event handlers
+
+	void
+	set_enabled ();
+
+	void
+	set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> & value);
+
+	void
+	set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master);
 
 	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) final override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) final override;
+
+	void
+	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
+
+	void
+	connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool);
 
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const snapped;
+		SFDouble* const snapDistance;
+	};
+
+	Fields fields;
+
+	///  @name Members
+	
+	X3DWeakPtrArray <X3DTransformNode> transformNodes;
 
 };
 

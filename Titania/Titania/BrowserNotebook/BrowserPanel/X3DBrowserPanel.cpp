@@ -561,14 +561,17 @@ X3DBrowserPanel::set_dependent_browser ()
 		mainBrowser -> getSnapTarget () -> enabled ()  .addInterest (browser -> getSnapTarget () -> enabled ());
 		mainBrowser -> getSnapTarget () -> position () .addInterest (browser -> getSnapTarget () -> position ());
 		mainBrowser -> getSnapTarget () -> normal ()   .addInterest (browser -> getSnapTarget () -> normal ());
+		mainBrowser -> getSnapTarget () -> snapped ()  .addInterest (browser -> getSnapTarget () -> snapped ());
 
 		browser -> getSnapTarget () -> enabled ()  .addInterest (mainBrowser -> getSnapTarget () -> enabled ());
 		browser -> getSnapTarget () -> position () .addInterest (mainBrowser -> getSnapTarget () -> position ());
 		browser -> getSnapTarget () -> normal ()   .addInterest (mainBrowser -> getSnapTarget () -> normal ());
+		browser -> getSnapTarget () -> snapped ()  .addInterest (mainBrowser -> getSnapTarget () -> snapped ());
 
 		browser -> getSnapTarget () -> enabled ()  = mainBrowser -> getSnapTarget () -> enabled ();
 		browser -> getSnapTarget () -> position () = mainBrowser -> getSnapTarget () -> position ();
 		browser -> getSnapTarget () -> normal ()   = mainBrowser -> getSnapTarget () -> normal ();
+		browser -> getSnapTarget () -> snapped ()  = mainBrowser -> getSnapTarget () -> snapped ();
 
 		// Setup Snap Source.
 

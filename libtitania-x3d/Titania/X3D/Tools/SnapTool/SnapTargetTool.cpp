@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -60,16 +61,27 @@ const ComponentType SnapTargetTool::component      = ComponentType::TITANIA;
 const std::string   SnapTargetTool::typeName       = "SnapTargetTool";
 const std::string   SnapTargetTool::containerField = "SnapTool";
 
+SnapTargetTool::Fields::Fields () :
+	     snapped (new SFBool ()),
+	snapDistance (new SFDouble (0.25))
+{ }
+
 SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSnapTool ()
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DSnapTool (),
+	        fields (),
+	transformNodes ()
 {
 	addType (X3DConstants::SnapTargetTool);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "position", position ());
-	addField (inputOutput, "normal",   normal ());
+	addChildObjects (transformNodes);
+
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "enabled",      enabled ());
+	addField (inputOutput, "position",     position ());
+	addField (inputOutput, "normal",       normal ());
+	addField (inputOutput, "snapped",      snapped ());
+	addField (inputOutput, "snapDistance", snapDistance ());
 }
 
 X3DBaseNode*
@@ -82,6 +94,11 @@ void
 SnapTargetTool::initialize ()
 {
 	X3DSnapTool::initialize ();
+
+	getBrowser () -> getTransformTools () .addInterest (&SnapTargetTool::set_transform_tools, this);
+	enabled () .addInterest (&SnapTargetTool::set_enabled, this);
+
+	set_transform_tools (getBrowser () -> getTransformTools ());
 }
 
 void
@@ -92,8 +109,126 @@ SnapTargetTool::realize ()
 		X3DSnapTool::realize ();
 
 		getToolNode () -> setField <SFString> ("type", "SNAP_TARGET");
+
+		auto & set_snapped = getToolNode () -> getField <SFBool> ("set_snapped");
+		snapped () .addInterest (set_snapped);
+		set_snapped = snapped ();
 	}
 	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+SnapTargetTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getTransformTools () .removeInterest (&SnapTargetTool::set_transform_tools, this);
+
+	X3DSnapTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getTransformTools () .addInterest (&SnapTargetTool::set_transform_tools, this);
+
+	set_transform_tools (getBrowser () -> getTransformTools ());
+}
+
+void
+SnapTargetTool::set_enabled ()
+{
+	set_transform_tools (getBrowser () -> getTransformTools ());
+}
+
+void
+SnapTargetTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> & value)
+{
+	for (const auto & transformNode : transformNodes)
+	{
+		try
+		{
+			transformNode -> translation () .removeInterest (&SnapTargetTool::set_translation, this);
+		}
+		catch (const Error <DISPOSED> &)
+		{ }
+	}
+
+	transformNodes = value;
+
+	if (enabled ())
+	{
+		for (const auto & tool : value)
+		{
+			try
+			{
+				tool -> translation () .addInterest (&SnapTargetTool::set_translation, this, tool);
+			}
+			catch (const Error <DISPOSED> & error)
+			{ }
+		}
+	}
+}
+
+void
+SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
+{
+	try
+	{
+		// If Shift-key is pressed disable snapping.
+		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+			return;
+
+		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
+			return;
+
+		const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getModelMatrix ();
+		const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+		const auto center         = bbox .center ();
+		const auto axes           = bbox .axes ();
+
+		const auto planes = std::vector <Plane3d> ({
+			Plane3d (center, normalize (axes [0])), // Center X
+			Plane3d (center, normalize (axes [1])), // Center Y
+			Plane3d (center, normalize (axes [2])), // Center Z
+			Plane3d (center + axes [0], normalize ( axes [0])), // +X
+			Plane3d (center - axes [0], normalize (-axes [0])), // -X
+			Plane3d (center + axes [1], normalize ( axes [1])), // +Y
+			Plane3d (center - axes [1], normalize (-axes [1])), // -Y
+			Plane3d (center + axes [2], normalize ( axes [2])), // +Z
+			Plane3d (center - axes [2], normalize (-axes [2])), // -Z
+		});
+
+		auto translation = Vector3d ();
+
+		for (const auto & plane : planes)
+		{
+			const auto distance = plane .distance (position () .getValue ());
+
+			if (std::abs (distance) < snapDistance ())
+				translation += plane .normal () * distance;
+		}
+
+		snapped () = (translation not_eq Vector3d ());
+
+		if (not snapped ())
+			return;
+
+		const auto snapMatrix    = Matrix4d (translation);
+		const auto currentMatrix = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
+
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+
+		// Apply transformation to transformation group.
+
+		master -> translation () .removeInterest (&SnapTargetTool::set_translation, this);
+		master -> translation () .addInterest (&SnapTargetTool::connectTranslation, this, master);
+	
+		setTransformGroup (master, absoluteMatrix * snapMatrix);
+	}
+	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
@@ -106,6 +241,59 @@ SnapTargetTool::on_button_press_event (GdkEventButton* event)
 		return false;
 
 	return X3DSnapTool::on_button_press_event (event);
+}
+
+bool
+SnapTargetTool::on_button_release_event (GdkEventButton* event)
+{
+	snapped () = false;
+
+	return X3DSnapTool::on_button_release_event (event);
+}
+
+/// Apply transformation to transformation group.
+void
+SnapTargetTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix)
+{
+	if (not master -> grouping ())
+		return;
+
+	if (not master -> grouped ())
+		return;
+
+	const auto groupMatrix      = master -> getGroupMatrix () * master -> getModelMatrix ();
+	const auto differenceMatrix = inverse (groupMatrix) * snapMatrix;
+
+	for (const auto & tool : getBrowser () -> getTransformTools ())
+	{
+		try
+		{
+			if (tool == master)
+				continue;
+
+			if (not tool -> grouping ())
+				continue;
+
+			if (not tool -> grouped ())
+				continue;
+
+			tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+		}
+		catch (const std::exception &)
+		{ }
+	}
+}
+
+void
+SnapTargetTool::connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool)
+{
+	try
+	{
+		tool -> translation () .removeInterest (&SnapTargetTool::connectTranslation, this);
+		tool -> translation () .addInterest (&SnapTargetTool::set_translation, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
 }
 
 } // X3D

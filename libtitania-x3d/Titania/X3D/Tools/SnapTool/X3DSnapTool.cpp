@@ -92,6 +92,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	X3DActiveLayerTool::setExecutionContext (executionContext);
+
+	set_enabled ();
 }
 
 void

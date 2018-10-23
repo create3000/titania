@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/X_ITE/TouchGroup.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
+#include "../../Tools/SnapTool/SnapTargetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -297,7 +298,11 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not snapping ())
 			return;
 
+		// If Shift-key is pressed disable snapping.
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+			return;
+
+		if (getBrowser () -> getSnapTarget () -> enabled ())
 			return;
 
 		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
@@ -336,15 +341,17 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 
+		// Apply transformation to transformation group.
+
 		master -> translation () .removeInterest (&X3DGridTool::set_translation, this);
 		master -> translation () .addInterest (&X3DGridTool::connectTranslation, this, master);
 	
-		// Apply transformation to transformation group.
-
 		setTransformGroup (master, absoluteMatrix * snapMatrix);
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -355,6 +362,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not snapping ())
 			return;
 
+		// If Shift-key is pressed disable snapping.
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
@@ -433,15 +441,17 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 	
+		// Apply transformation to transformation group.
+
 		master -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
 		master -> rotation () .addInterest (&X3DGridTool::connectRotation, this, master);
 	
-		// Apply transformation to transformation group.
-
 		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -452,6 +462,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not snapping ())
 			return;
 
+		// If Shift-key is pressed disable snapping.
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
 			return;
 	
@@ -471,15 +482,17 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 	
+		// Apply transformation to transformation group.
+
 		master -> scale () .removeInterest (&X3DGridTool::set_scale, this);
 		master -> scale () .addInterest (&X3DGridTool::connectScale, this, master);
 	
-		// Apply transformation to transformation group.
-
 		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 Matrix4d

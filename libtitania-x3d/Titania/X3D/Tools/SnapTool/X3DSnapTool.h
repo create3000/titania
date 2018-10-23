@@ -70,7 +70,7 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
@@ -123,6 +123,10 @@ protected:
 	bool
 	on_button_press_event (GdkEventButton* event);
 
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event);
+
 
 private:
 
@@ -131,8 +135,6 @@ private:
 	void
 	set_enabled ();
 
-	bool
-	on_button_release_event (GdkEventButton* event);
 
 	bool
 	on_motion_notify_event (GdkEventMotion* event);
