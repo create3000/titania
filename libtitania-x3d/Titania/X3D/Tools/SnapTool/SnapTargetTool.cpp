@@ -257,7 +257,7 @@ SnapTargetTool::getTranslation (const std::vector <Plane3d> & planes) const
 {
 	for (const auto & plane : planes)
 	{
-		const auto distance = plane .distance (position () .getValue ());
+		const auto distance = plane .distance (Vector3d (position () .getValue ()) * getModelMatrix ());
 
 		if (std::abs (distance) > snapDistance ())
 			continue;
