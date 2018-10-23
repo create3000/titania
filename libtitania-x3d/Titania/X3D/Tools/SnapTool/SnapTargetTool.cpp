@@ -186,7 +186,7 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto center         = bbox .center ();
 		const auto axes           = bbox .axes ();
 
-		const auto planes = std::vector <Plane3d> ({
+		auto planes = std::vector <Plane3d> ({
 			Plane3d (center, normalize (axes [0])), // Center X
 			Plane3d (center, normalize (axes [1])), // Center Y
 			Plane3d (center, normalize (axes [2])), // Center Z
@@ -205,7 +205,10 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 			const auto distance = plane .distance (position () .getValue ());
 
 			if (std::abs (distance) < snapDistance ())
+			{
 				translation += plane .normal () * distance;
+				break;
+			}
 		}
 
 		snapped () = (translation not_eq Vector3d ());
