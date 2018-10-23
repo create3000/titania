@@ -156,7 +156,7 @@ private:
 	on_button_release_event (GdkEventButton* event) final override;
 
 	Vector3d
-	getTranslation (const std::vector <Plane3d> & planes) const;
+	getTranslation (const Vector3d & position, const std::vector <Vector3d> & centers, const std::vector <Vector3d> & axes, const std::vector <Vector3d> & normals) const;
 
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);

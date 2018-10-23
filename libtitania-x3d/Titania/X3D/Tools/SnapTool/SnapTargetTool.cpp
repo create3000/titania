@@ -182,33 +182,28 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
 			return;
 
-		const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getModelMatrix ();
-		const auto bbox           = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
-		const auto center         = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
-		const auto axes           = bbox .axes ();
-		const auto normals        = bbox .normals ();
+		const auto absolutePosition = Vector3d (position () .getValue ()) * getModelMatrix ();
+		const auto absoluteMatrix   = master -> getCurrentMatrix () * master -> getModelMatrix ();
+		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+		const auto center           = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
+		const auto axes             = bbox .axes ();
+		const auto normals          = bbox .normals ();
 
-		const auto xPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normals .x ()),                        // Center X
-			Plane3d (bbox .center () + axes .x (),  normals .x ()), // +X
-			Plane3d (bbox .center () - axes .x (), -normals .x ()), // -X
-		});
+		const auto xCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .x (), bbox .center () - axes .x () });
+		const auto xAxes    = std::vector <Vector3d> ({ axes .x (), axes .x (), -axes .x () });
+		const auto xNormals = std::vector <Vector3d> ({ normals .x (), normals .x (), -normals .x () });
 
-		const auto yPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normals .y ()),                        // Center Y
-			Plane3d (bbox .center () + axes .y (),  normals .y ()), // +Y
-			Plane3d (bbox .center () - axes .y (), -normals .y ()), // -Y
-		});
+		const auto yCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .y (), bbox .center () - axes .y () });
+		const auto yAxes    = std::vector <Vector3d> ({ axes .y (), axes .y (), -axes .y () });
+		const auto yNormals = std::vector <Vector3d> ({ normals .y (), normals .y (), -normals .y () });
 
-		const auto zPlanes = std::vector <Plane3d> ({
-			Plane3d (center, normals .z ()),                        // Center Z
-			Plane3d (bbox .center () + axes .z (),  normals .z ()), // +Z
-			Plane3d (bbox .center () - axes .z (), -normals .z ()), // -Z
-		});
+		const auto zCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .z (), bbox .center () - axes .z () });
+		const auto zAxes    = std::vector <Vector3d> ({ axes .z (), axes .z (), -axes .z () });
+		const auto zNormals = std::vector <Vector3d> ({ normals .z (), normals .z (), -normals .z () });
 
-		const auto translation = getTranslation (xPlanes) +
-		                         getTranslation (yPlanes) +
-		                         getTranslation (zPlanes);
+		const auto translation = getTranslation (absolutePosition, xCenters, xAxes, xNormals) +
+		                         getTranslation (absolutePosition, yCenters, yAxes, yNormals) +
+		                         getTranslation (absolutePosition, zCenters, zAxes, zNormals);
 
 		snapped () = abs (translation) > 0.0001;
 
@@ -254,16 +249,26 @@ SnapTargetTool::on_button_release_event (GdkEventButton* event)
 }
 
 Vector3d
-SnapTargetTool::getTranslation (const std::vector <Plane3d> & planes) const
+SnapTargetTool::getTranslation (const Vector3d & position, const std::vector <Vector3d> & centers, const std::vector <Vector3d> & axes, const std::vector <Vector3d> & normals) const
 {
-	for (const auto & plane : planes)
+	for (size_t i = 0; i < centers .size (); ++ i)
 	{
-		const auto distance = plane .distance (Vector3d (position () .getValue ()) * getModelMatrix ());
+		const auto & center        = centers [i];
+		const auto & axis          = axes [i];
+		const auto & normal        = normals [i];
+		const auto   positionPlane = Plane3d (position, normal);
+		const auto   axisLine      = Line3d (center, normalize (axis));
+		const auto   intersection  = positionPlane .intersects (axisLine);
 
-		if (std::abs (distance) > snapDistance ())
+		if (not intersection .second)
 			continue;
 
-		return plane .normal () * distance;
+		const auto translation = intersection .first - center;
+
+		if (abs (translation) > snapDistance ())
+			continue;
+
+		return translation;
 	}
 
 	return Vector3d ();
