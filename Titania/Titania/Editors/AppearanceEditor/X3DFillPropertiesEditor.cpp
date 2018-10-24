@@ -90,12 +90,12 @@ X3DFillPropertiesEditor::initialize ()
 }
 
 void
-X3DFillPropertiesEditor::set_selection (const X3D::MFNode & selection)
+X3DFillPropertiesEditor::set_appearance ()
 {
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .removeInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
 
-	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .addInterest (&X3DFillPropertiesEditor::set_fillProperties, this);

@@ -85,12 +85,12 @@ X3DLinePropertiesEditor::initialize ()
 }
 
 void
-X3DLinePropertiesEditor::set_selection (const X3D::MFNode & selection)
+X3DLinePropertiesEditor::set_appearance ()
 {
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .removeInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
 
-	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .addInterest (&X3DLinePropertiesEditor::set_lineProperties, this);

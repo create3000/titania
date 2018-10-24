@@ -110,10 +110,6 @@ void
 AppearanceEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DAppearanceEditorInterface::set_selection (selection);
-	X3DMaterialEditor::set_selection            (selection);
-	X3DFillPropertiesEditor::set_selection      (selection);
-	X3DLinePropertiesEditor::set_selection      (selection);
-	X3DBlendModeEditor::set_selection           (selection);
 
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> appearance () .removeInterest (&AppearanceEditor::set_appearance, this);
@@ -179,6 +175,11 @@ void
 AppearanceEditor::set_node ()
 {
 	undoStep .reset ();
+
+	X3DMaterialEditor::set_appearance ();
+	X3DFillPropertiesEditor::set_appearance ();
+	X3DLinePropertiesEditor::set_appearance ();
+	X3DBlendModeEditor::set_appearance ();
 
 	const auto    executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));
 	auto          tuple            = getSelection <X3D::X3DAppearanceNode> (shapeNodes, "appearance");

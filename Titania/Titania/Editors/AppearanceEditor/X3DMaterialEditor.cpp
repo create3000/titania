@@ -133,12 +133,12 @@ X3DMaterialEditor::set_initialized ()
 }
 
 void
-X3DMaterialEditor::set_selection (const X3D::MFNode & selection)
+X3DMaterialEditor::set_appearance ()
 {
 	for (const auto & appearance : appearances)
 		appearance -> material () .removeInterest (&X3DMaterialEditor::set_material, this);
 
-	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> material () .addInterest (&X3DMaterialEditor::set_material, this);

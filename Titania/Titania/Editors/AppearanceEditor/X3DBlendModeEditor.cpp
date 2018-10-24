@@ -84,12 +84,12 @@ X3DBlendModeEditor::initialize ()
 }
 
 void
-X3DBlendModeEditor::set_selection (const X3D::MFNode & selection)
+X3DBlendModeEditor::set_appearance ()
 {
 	for (const auto & appearance : appearances)
 		appearance -> blendMode () .removeInterest (&X3DBlendModeEditor::set_blendMode, this);
 
-	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
+	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> blendMode () .addInterest (&X3DBlendModeEditor::set_blendMode, this);
