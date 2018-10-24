@@ -302,10 +302,10 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
-		if (getBrowser () -> getSnapTarget () -> enabled ())
+		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
 			return;
 
-		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
+		if (getBrowser () -> getSnapTarget () -> enabled ())
 			return;
 
 		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
@@ -369,6 +369,9 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (master -> getActiveTool () not_eq ToolType::ROTATE)
 			return;
 
+		if (getBrowser () -> getSnapTarget () -> enabled ())
+			return;
+
 //__LOG__ << std::endl;
 
 		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
@@ -413,8 +416,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 //__LOG__ << Y << std::endl;
 //__LOG__ << Z << std::endl;
 
-		const Vector3d vectorToSnap  = z [index0];
-		const Vector3d vectorOnGrid  = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
+		const Vector3d vectorToSnap = z [index0];
+		const Vector3d vectorOnGrid = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
 
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * inverse (gridRotation) * rotationPlane;
 		const auto snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (vectorToSnap),
