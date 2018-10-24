@@ -563,21 +563,18 @@ X3DBrowserPanel::set_dependent_browser ()
 		mainBrowser -> getSnapTarget () -> normal ()       .addInterest (browser -> getSnapTarget () -> normal ());
 		mainBrowser -> getSnapTarget () -> snapped ()      .addInterest (browser -> getSnapTarget () -> snapped ());
 		mainBrowser -> getSnapTarget () -> snapToCenter () .addInterest (browser -> getSnapTarget () -> snapToCenter ());
-		mainBrowser -> getSnapTarget () -> snapDistance () .addInterest (browser -> getSnapTarget () -> snapDistance ());
 
 		browser -> getSnapTarget () -> enabled ()      .addInterest (mainBrowser -> getSnapTarget () -> enabled ());
 		browser -> getSnapTarget () -> position ()     .addInterest (mainBrowser -> getSnapTarget () -> position ());
 		browser -> getSnapTarget () -> normal ()       .addInterest (mainBrowser -> getSnapTarget () -> normal ());
 		browser -> getSnapTarget () -> snapped ()      .addInterest (mainBrowser -> getSnapTarget () -> snapped ());
 		browser -> getSnapTarget () -> snapToCenter () .addInterest (mainBrowser -> getSnapTarget () -> snapToCenter ());
-		browser -> getSnapTarget () -> snapDistance () .addInterest (mainBrowser -> getSnapTarget () -> snapDistance ());
 
 		browser -> getSnapTarget () -> enabled ()      = mainBrowser -> getSnapTarget () -> enabled ();
 		browser -> getSnapTarget () -> position ()     = mainBrowser -> getSnapTarget () -> position ();
 		browser -> getSnapTarget () -> normal ()       = mainBrowser -> getSnapTarget () -> normal ();
 		browser -> getSnapTarget () -> snapped ()      = mainBrowser -> getSnapTarget () -> snapped ();
 		browser -> getSnapTarget () -> snapToCenter () = mainBrowser -> getSnapTarget () -> snapToCenter ();
-		browser -> getSnapTarget () -> snapDistance () = mainBrowser -> getSnapTarget () -> snapDistance ();
 
 		// Setup Snap Source.
 

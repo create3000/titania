@@ -115,14 +115,6 @@ public:
 	snapToCenter () const
 	{ return *fields .snapToCenter; }
 
-	SFDouble &
-	snapDistance ()
-	{ return *fields .snapDistance; }
-
-	const SFDouble &
-	snapDistance () const
-	{ return *fields .snapDistance; }
-
 
 private:
 
@@ -136,6 +128,12 @@ private:
 	void
 	realize () final override;
 
+	///  @name Member access
+
+	void
+	setActiveSnapTarget (const X3DPtr <SnapTargetTool> & value)
+	{ activeSnapTarget = value; }
+
 	///  @name Event handlers
 
 	void
@@ -147,6 +145,9 @@ private:
 	void
 	set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master);
 
+	bool
+	on_focus_in_event (GdkEventFocus* event);
+
 	virtual
 	bool
 	on_button_press_event (GdkEventButton* event) final override;
@@ -155,8 +156,15 @@ private:
 	bool
 	on_button_release_event (GdkEventButton* event) final override;
 
+	double
+	getDynamicSnapDistance () const;
+
 	Vector3d
-	getTranslation (const Vector3d & position, const std::vector <Vector3d> & centers, const std::vector <Vector3d> & axes, const std::vector <Vector3d> & normals) const;
+	getTranslation (const Vector3d & position,
+	                const std::vector <Vector3d> & centers,
+	                const std::vector <Vector3d> & axes,
+	                const std::vector <Vector3d> & normals,
+	                const double snapDistance) const;
 
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
@@ -167,8 +175,8 @@ private:
 	///  @name Static members
 
 	static const ComponentType component;
-	static const std::string typeName;
-	static const std::string containerField;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	///  @name Fields
 
@@ -178,13 +186,13 @@ private:
 
 		SFBool* const snapped;
 		SFBool* const snapToCenter;
-		SFDouble* const snapDistance;
 	};
 
 	Fields fields;
 
 	///  @name Members
 	
+	X3DPtr <SnapTargetTool>            activeSnapTarget;
 	X3DWeakPtrArray <X3DTransformNode> transformNodes;
 
 };

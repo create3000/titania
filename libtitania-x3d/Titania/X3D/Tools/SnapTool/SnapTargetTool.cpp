@@ -51,6 +51,8 @@
 #include "SnapTargetTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
+#include "../../Editing/X3DEditor.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
@@ -63,19 +65,20 @@ const std::string   SnapTargetTool::containerField = "SnapTool";
 
 SnapTargetTool::Fields::Fields () :
 	     snapped (new SFBool ()),
-	snapToCenter (new SFBool (true)),
-	snapDistance (new SFDouble (0.20))
+	snapToCenter (new SFBool (true))
 { }
 
 SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
-	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	   X3DSnapTool (),
-	        fields (),
-	transformNodes ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DSnapTool (),
+	          fields (),
+	activeSnapTarget (this),
+	  transformNodes ()
 {
 	addType (X3DConstants::SnapTargetTool);
 
-	addChildObjects (transformNodes);
+	addChildObjects (activeSnapTarget,
+	                 transformNodes);
 
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "enabled",      enabled ());
@@ -83,7 +86,6 @@ SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "normal",       normal ());
 	addField (inputOutput, "snapped",      snapped ());
 	addField (inputOutput, "snapToCenter", snapToCenter ());
-	addField (inputOutput, "snapDistance", snapDistance ());
 }
 
 X3DBaseNode*
@@ -110,11 +112,16 @@ SnapTargetTool::realize ()
 	{
 		X3DSnapTool::realize ();
 
+		getBrowser () -> signal_focus_in_event () .connect (sigc::mem_fun (this, &SnapTargetTool::on_focus_in_event));
+
 		getToolNode () -> setField <SFString> ("type", "SNAP_TARGET");
 
 		auto & set_snapped = getToolNode () -> getField <SFBool> ("set_snapped");
 		snapped () .addInterest (set_snapped);
 		set_snapped = snapped ();
+
+		if (getBrowser () -> has_focus ())
+			on_focus_in_event (nullptr);
 	}
 	catch (const X3DError & error)
 	{
@@ -183,12 +190,13 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		if (master -> getActiveTool () not_eq ToolType::TRANSLATE)
 			return;
 
-		const auto absolutePosition = Vector3d (position () .getValue ()) * getModelMatrix ();
-		const auto absoluteMatrix   = master -> getCurrentMatrix () * master -> getModelMatrix ();
-		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
-		const auto center           = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
-		const auto axes             = bbox .axes ();
-		const auto normals          = bbox .normals ();
+		const auto dynamicSnapDistance = getDynamicSnapDistance ();
+		const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
+		const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
+		const auto bbox                = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+		const auto center              = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
+		const auto axes                = bbox .axes ();
+		const auto normals             = bbox .normals ();
 
 		const auto xCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .x (), bbox .center () - axes .x () });
 		const auto xAxes    = std::vector <Vector3d> ({ axes .x (), axes .x (), -axes .x () });
@@ -202,9 +210,9 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto zAxes    = std::vector <Vector3d> ({ axes .z (), axes .z (), -axes .z () });
 		const auto zNormals = std::vector <Vector3d> ({ normals .z (), normals .z (), -normals .z () });
 
-		const auto translation = getTranslation (absolutePosition, xCenters, xAxes, xNormals) +
-		                         getTranslation (absolutePosition, yCenters, yAxes, yNormals) +
-		                         getTranslation (absolutePosition, zCenters, zAxes, zNormals);
+		const auto translation = getTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
+		                         getTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +
+		                         getTranslation (absolutePosition, zCenters, zAxes, zNormals, dynamicSnapDistance);
 
 		snapped () = abs (translation) > 0.0001;
 
@@ -233,6 +241,19 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 }
 
 bool
+SnapTargetTool::on_focus_in_event (GdkEventFocus* event)
+{
+	const auto & dependentContext = getBrowser () -> getDependentContext ();
+
+	if (dependentContext)
+		dependentContext -> getSnapTarget () -> setActiveSnapTarget (X3DPtr <SnapTargetTool> (this));
+	else
+		setActiveSnapTarget (X3DPtr <SnapTargetTool> (this));
+
+	return false;
+}
+
+bool
 SnapTargetTool::on_button_press_event (GdkEventButton* event)
 {
 	if (getBrowser () -> getControlKey ())
@@ -249,30 +270,33 @@ SnapTargetTool::on_button_release_event (GdkEventButton* event)
 	return X3DSnapTool::on_button_release_event (event);
 }
 
-//double
-//SnapTargetTool::getDynamicSnapDistance () const
-//{
-//	try
-//	{
-//		const auto executionContext = X3DExecutionContextPtr (getToolNode ());
-//		const auto sphereNode       = executionContext -> getNamedNode <Transform> ("Sphere");
-//		const auto modelMatrix      = X3DEditor::getModelMatrix (executionContext, sphereNode) * getModelMatrix ();
-//		const auto bbox             = sphereNode -> getBBox () * modelMatrix;
-//		
-//		__LOG__ << bbox .size () << std::endl;
-//
-//		return abs (bbox .size ());
-//	}
-//	catch (const X3DError & error)
-//	{
-//		__LOG__ << error .what () << std::endl;
-//
-//		return snapDistance ();
-//	}
-//}
+double
+SnapTargetTool::getDynamicSnapDistance () const
+{
+	try
+	{
+		const auto executionContext    = X3DExecutionContextPtr (activeSnapTarget -> getToolNode ());
+		const auto sphereNode          = executionContext -> getNamedNode <Transform> ("Sphere");
+		const auto modelMatrix         = X3DEditor::getModelMatrix (executionContext, sphereNode) * activeSnapTarget -> getModelMatrix ();
+		const auto bbox                = sphereNode -> getBBox () * modelMatrix;
+		const auto dynamicSnapDistance = abs (bbox .size ()) / 2;
+
+		return dynamicSnapDistance;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		return 0.2;
+	}
+}
 
 Vector3d
-SnapTargetTool::getTranslation (const Vector3d & position, const std::vector <Vector3d> & centers, const std::vector <Vector3d> & axes, const std::vector <Vector3d> & normals) const
+SnapTargetTool::getTranslation (const Vector3d & position,
+                                const std::vector <Vector3d> & centers,
+                                const std::vector <Vector3d> & axes,
+                                const std::vector <Vector3d> & normals,
+                                const double snapDistance) const
 {
 	for (size_t i = 0; i < centers .size (); ++ i)
 	{
@@ -288,7 +312,7 @@ SnapTargetTool::getTranslation (const Vector3d & position, const std::vector <Ve
 
 		const auto translation = intersection .first - center;
 
-		if (abs (translation) > snapDistance ())
+		if (abs (translation) > snapDistance)
 			continue;
 
 		return translation;
