@@ -109,10 +109,10 @@ X3DNavigationContext::X3DNavigationContext () :
 void
 X3DNavigationContext::initialize ()
 {
-	getBrowser () -> initialized () .addInterest (&X3DNavigationContext::set_initialized, this);
+	getBrowser () -> initialized () .addInterest (&X3DNavigationContext::set_initialized,      this);
 	getActiveNavigationInfo () .addInterest (&X3DNavigationContext::set_active_navigationInfo, this);
-	getViewerType ()           .addInterest (&X3DNavigationContext::set_viewer, this);
-	getPrivateViewer ()        .addInterest (&X3DNavigationContext::set_viewer, this);
+	getViewerType ()           .addInterest (&X3DNavigationContext::set_viewer,                this);
+	getPrivateViewer ()        .addInterest (&X3DNavigationContext::set_viewer,                this);
 
 	headlightNode -> setup ();
 	viewerNode    -> setup ();

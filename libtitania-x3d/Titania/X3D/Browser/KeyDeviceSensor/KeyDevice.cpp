@@ -112,7 +112,7 @@ KeyDevice::set_keyDeviceSensor ()
 }
 
 bool
-KeyDevice::on_focus_out_event (GdkEventFocus*)
+KeyDevice::on_focus_out_event (GdkEventFocus* event)
 {
 	keys .clear ();
 

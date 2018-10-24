@@ -64,7 +64,7 @@ const std::string   SnapTargetTool::containerField = "SnapTool";
 SnapTargetTool::Fields::Fields () :
 	     snapped (new SFBool ()),
 	snapToCenter (new SFBool (true)),
-	snapDistance (new SFDouble (0.25))
+	snapDistance (new SFDouble (0.20))
 { }
 
 SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
@@ -82,6 +82,7 @@ SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "position",     position ());
 	addField (inputOutput, "normal",       normal ());
 	addField (inputOutput, "snapped",      snapped ());
+	addField (inputOutput, "snapToCenter", snapToCenter ());
 	addField (inputOutput, "snapDistance", snapDistance ());
 }
 
@@ -247,6 +248,28 @@ SnapTargetTool::on_button_release_event (GdkEventButton* event)
 
 	return X3DSnapTool::on_button_release_event (event);
 }
+
+//double
+//SnapTargetTool::getDynamicSnapDistance () const
+//{
+//	try
+//	{
+//		const auto executionContext = X3DExecutionContextPtr (getToolNode ());
+//		const auto sphereNode       = executionContext -> getNamedNode <Transform> ("Sphere");
+//		const auto modelMatrix      = X3DEditor::getModelMatrix (executionContext, sphereNode) * getModelMatrix ();
+//		const auto bbox             = sphereNode -> getBBox () * modelMatrix;
+//		
+//		__LOG__ << bbox .size () << std::endl;
+//
+//		return abs (bbox .size ());
+//	}
+//	catch (const X3DError & error)
+//	{
+//		__LOG__ << error .what () << std::endl;
+//
+//		return snapDistance ();
+//	}
+//}
 
 Vector3d
 SnapTargetTool::getTranslation (const Vector3d & position, const std::vector <Vector3d> & centers, const std::vector <Vector3d> & axes, const std::vector <Vector3d> & normals) const
