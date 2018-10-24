@@ -131,8 +131,8 @@ private:
 	///  @name Member access
 
 	void
-	setActiveSnapTarget (const X3DPtr <SnapTargetTool> & value)
-	{ activeSnapTarget = value; }
+	setActiveSnapTarget (SnapTargetTool* const value)
+	{ activeSnapTarget .setValue (value); }
 
 	///  @name Event handlers
 
@@ -160,11 +160,11 @@ private:
 	getDynamicSnapDistance () const;
 
 	Vector3d
-	getTranslation (const Vector3d & position,
-	                const std::vector <Vector3d> & centers,
-	                const std::vector <Vector3d> & axes,
-	                const std::vector <Vector3d> & normals,
-	                const double snapDistance) const;
+	getSnapTranslation (const Vector3d & position,
+	                    const std::vector <Vector3d> & centers,
+	                    const std::vector <Vector3d> & axes,
+	                    const std::vector <Vector3d> & normals,
+	                    const double snapDistance) const;
 
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
@@ -192,8 +192,8 @@ private:
 
 	///  @name Members
 	
-	X3DPtr <SnapTargetTool>            activeSnapTarget;
 	X3DWeakPtrArray <X3DTransformNode> transformNodes;
+	X3DWeakPtr <SnapTargetTool>        activeSnapTarget;
 
 };
 

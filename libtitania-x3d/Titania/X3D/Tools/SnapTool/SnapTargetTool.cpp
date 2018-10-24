@@ -72,13 +72,13 @@ SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DSnapTool (),
 	          fields (),
-	activeSnapTarget (this),
-	  transformNodes ()
+	  transformNodes (),
+	activeSnapTarget (this)
 {
 	addType (X3DConstants::SnapTargetTool);
 
-	addChildObjects (activeSnapTarget,
-	                 transformNodes);
+	addChildObjects (transformNodes,
+	                 activeSnapTarget);
 
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOutput, "enabled",      enabled ());
@@ -198,6 +198,8 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto axes                = bbox .axes ();
 		const auto normals             = bbox .normals ();
 
+		// Determine snap translation.
+
 		const auto xCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .x (), bbox .center () - axes .x () });
 		const auto xAxes    = std::vector <Vector3d> ({ axes .x (), axes .x (), -axes .x () });
 		const auto xNormals = std::vector <Vector3d> ({ normals .x (), normals .x (), -normals .x () });
@@ -210,14 +212,16 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto zAxes    = std::vector <Vector3d> ({ axes .z (), axes .z (), -axes .z () });
 		const auto zNormals = std::vector <Vector3d> ({ normals .z (), normals .z (), -normals .z () });
 
-		const auto translation = getTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
-		                         getTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +
-		                         getTranslation (absolutePosition, zCenters, zAxes, zNormals, dynamicSnapDistance);
+		const auto translation = getSnapTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
+		                         getSnapTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +
+		                         getSnapTranslation (absolutePosition, zCenters, zAxes, zNormals, dynamicSnapDistance);
 
 		snapped () = abs (translation) > 0.0001;
 
 		if (translation == Vector3d ())
 			return;
+
+		// Snap master.
 
 		const auto snapMatrix    = Matrix4d (translation);
 		const auto currentMatrix = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
@@ -246,9 +250,9 @@ SnapTargetTool::on_focus_in_event (GdkEventFocus* event)
 	const auto & dependentContext = getBrowser () -> getDependentContext ();
 
 	if (dependentContext)
-		dependentContext -> getSnapTarget () -> setActiveSnapTarget (X3DPtr <SnapTargetTool> (this));
+		dependentContext -> getSnapTarget () -> setActiveSnapTarget (this);
 	else
-		setActiveSnapTarget (X3DPtr <SnapTargetTool> (this));
+		setActiveSnapTarget (this);
 
 	return false;
 }
@@ -279,7 +283,7 @@ SnapTargetTool::getDynamicSnapDistance () const
 		const auto sphereNode          = executionContext -> getNamedNode <Transform> ("Sphere");
 		const auto modelMatrix         = X3DEditor::getModelMatrix (executionContext, sphereNode) * activeSnapTarget -> getModelMatrix ();
 		const auto bbox                = sphereNode -> getBBox () * modelMatrix;
-		const auto dynamicSnapDistance = abs (bbox .size ()) / 2;
+		const auto dynamicSnapDistance = maximum_norm (bbox .size ()) / 2;
 
 		return dynamicSnapDistance;
 	}
@@ -292,12 +296,14 @@ SnapTargetTool::getDynamicSnapDistance () const
 }
 
 Vector3d
-SnapTargetTool::getTranslation (const Vector3d & position,
-                                const std::vector <Vector3d> & centers,
-                                const std::vector <Vector3d> & axes,
-                                const std::vector <Vector3d> & normals,
-                                const double snapDistance) const
+SnapTargetTool::getSnapTranslation (const Vector3d & position,
+                                    const std::vector <Vector3d> & centers,
+                                    const std::vector <Vector3d> & axes,
+                                    const std::vector <Vector3d> & normals,
+                                    const double snapDistance) const
 {
+	// Return first successful snap translation.
+
 	for (size_t i = 0; i < centers .size (); ++ i)
 	{
 		const auto & center        = centers [i];
