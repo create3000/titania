@@ -285,8 +285,9 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto snapAxis1 = normalize (cross (cross (axis0, axis1), axis0));
 		const auto snapAxis2 = normalize (cross (cross (axis0, axis2), axis0));
 
-		// Determine snap vector, from center to position, projected onto plane of rotation axis.
-		// If the angle between normal and rotation axis is very small (>10°) the vector from center to position is used.
+		// Determine snap vector, from center to the position of this SnapTarget, projected onto plane of rotation axis.
+		// If the angle between the normal of this SnapTarget and rotation axis is very small (<10°) the vector from
+		// center to the position of this SnapTarget is used.
 
 		const auto center     = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
 		const auto useNormal  = std::abs (dot (absoluteNormal, axis0)) < std::cos (radians (10.0));
