@@ -388,8 +388,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 
-		const auto index1 = (index0 + 1) % y .size ();
-		const auto index2 = (index0 + 2) % y .size ();
+		const auto index1 = (index0 + 1) % distances .size ();
+		const auto index2 = (index0 + 2) % distances .size ();
 
 		Vector3d   Y             = normalize (cross (y [index1], y [index2]));
 		Vector3d   X             = cross (gridMatrix .y_axis (), Y); // Intersection between both planes

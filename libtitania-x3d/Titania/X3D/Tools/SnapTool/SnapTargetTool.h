@@ -145,6 +145,9 @@ private:
 	void
 	set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master);
 
+	void
+	set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master);
+
 	bool
 	on_focus_in_event (GdkEventFocus* event);
 
@@ -171,6 +174,9 @@ private:
 
 	void
 	connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool);
+
+	void
+	connectRotation (const X3DWeakPtr <X3DTransformNodeTool> & tool);
 
 	///  @name Static members
 

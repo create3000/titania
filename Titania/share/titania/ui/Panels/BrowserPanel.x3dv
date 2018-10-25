@@ -7,7 +7,7 @@ META "created" "Tue, 23 May 2017 23:37:53 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Panels/BrowserPanel.x3dv"
-META "modified" "Sun, 21 Oct 2018 03:12:03 GMT"
+META "modified" "Thu, 25 Oct 2018 06:04:14 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -172,7 +172,7 @@ LayerSet {
         }
         DEF PerspectiveViewpoint Viewpoint { }
         DEF OrthoViewpoint OrthoViewpoint {
-          position 0 0 1000
+          position 0 0 50000
           fieldOfView [
             -5,
             -5,

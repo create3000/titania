@@ -157,6 +157,7 @@ SnapTargetTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool
 		try
 		{
 			transformNode -> translation () .removeInterest (&SnapTargetTool::set_translation, this);
+			transformNode -> rotation ()    .removeInterest (&SnapTargetTool::set_rotation,    this);
 		}
 		catch (const Error <DISPOSED> &)
 		{ }
@@ -171,6 +172,7 @@ SnapTargetTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool
 			try
 			{
 				tool -> translation () .addInterest (&SnapTargetTool::set_translation, this, tool);
+				tool -> rotation ()    .addInterest (&SnapTargetTool::set_rotation,    this, tool);
 			}
 			catch (const Error <DISPOSED> & error)
 			{ }
@@ -212,18 +214,18 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto zAxes    = std::vector <Vector3d> ({ axes .z (), axes .z (), -axes .z () });
 		const auto zNormals = std::vector <Vector3d> ({ normals .z (), normals .z (), -normals .z () });
 
-		const auto translation = getSnapTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
-		                         getSnapTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +
-		                         getSnapTranslation (absolutePosition, zCenters, zAxes, zNormals, dynamicSnapDistance);
+		const auto snapTranslation = getSnapTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
+		                             getSnapTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +
+		                             getSnapTranslation (absolutePosition, zCenters, zAxes, zNormals, dynamicSnapDistance);
 
-		snapped () = abs (translation) > 0.0001;
+		snapped () = abs (snapTranslation) > 0.0001;
 
-		if (translation == Vector3d ())
+		if (snapTranslation == Vector3d ())
 			return;
 
 		// Snap master.
 
-		const auto snapMatrix    = Matrix4d (translation);
+		const auto snapMatrix    = Matrix4d (snapTranslation);
 		const auto currentMatrix = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
 		if (master -> getKeepCenter ())
@@ -241,6 +243,125 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
+{
+	try
+	{
+		// If Shift-key or Ctrl-key is pressed disable snapping.
+		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ()))
+			return;
+
+		if (master -> getActiveTool () not_eq ToolType::ROTATE)
+			return;
+
+		const auto absolutePosition = Vector3d (position () .getValue ()) * getModelMatrix ();
+		const auto absoluteNormal   = normalize (getModelMatrix () .mult_dir_matrix (Vector3d (normal () .getValue ())));
+		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter      = master -> getCurrentMatrix ()     * master -> getModelMatrix (); // Matrix after transformation
+		const auto absoluteMatrix   = matrixAfter;
+
+		// Determine rotation axis and the tho snap axes.
+
+		const auto distances = std::vector <double> ({ dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
+		                                               dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
+		                                               dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) });
+
+		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
+		const auto index1 = (index0 + 1) % distances .size ();
+		const auto index2 = (index0 + 2) % distances .size ();
+
+		const auto axes = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
+
+		const auto axis0 = normalize (axes [index0]); // Rotation axis
+		const auto axis1 = normalize (axes [index1]); // Snap axis 1
+		const auto axis2 = normalize (axes [index2]); // Snap axis 2
+
+		// Project snap axes onto plane of rotation axis.
+
+		const auto snapAxis1 = normalize (cross (cross (axis0, axis1), axis0));
+		const auto snapAxis2 = normalize (cross (cross (axis0, axis2), axis0));
+
+		// Determine snap vector, from center to position, projected onto plane of rotation axis.
+		// If the angle between normal and rotation axis is very small (>10°) the vector from center to position is used.
+
+		const auto center     = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
+		const auto useNormal  = std::abs (dot (absoluteNormal, axis0)) < std::cos (radians (10.0));
+		const auto snapNormal = useNormal ? absoluteNormal : normalize (absolutePosition - center);
+		const auto snapVector = normalize (cross (cross (axis0, snapNormal), axis0));
+
+		// Determine snap point onto plane and axes points onto plane with same distance to center as snap point.
+
+		const auto dynamicSnapDistance = getDynamicSnapDistance ();
+		const auto rotationPlane       = Plane3d (center, axis0);
+		const auto snapPointA          = absolutePosition + rotationPlane .perpendicular_vector (absolutePosition);
+		const auto distance            = abs (snapPointA - center);
+		const auto snapPointB          = center + absoluteNormal * distance;
+		const auto snapPoint           = useNormal ? snapPointB : snapPointA;
+		const auto point1a             = center + snapAxis1 * distance;
+		const auto point1b             = center - snapAxis1 * distance;
+		const auto point2a             = center + snapAxis2 * distance;
+		const auto point2b             = center - snapAxis2 * distance;
+
+		// Determine snap rotation.
+
+		const auto distance1a   = abs (snapPoint - point1a);
+		const auto distance1b   = abs (snapPoint - point1b);
+		const auto distance1    = std::min (distance1a, distance1b);
+		const auto distance2a   = abs (snapPoint - point2a);
+		const auto distance2b   = abs (snapPoint - point2b);
+		const auto distance2    = std::min (distance2a, distance2b);
+		auto       snapRotation = Rotation4d ();
+
+		if (distance1 < distance2)
+		{
+			if (distance1 < dynamicSnapDistance)
+			{
+				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance1a < distance1b ? axis1 : -axis1),
+		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
+			}
+		}
+		else
+		{
+			if (distance2 < dynamicSnapDistance)
+			{
+				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance2a < distance2b ? axis2 : -axis2),
+		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
+			}
+		}
+
+		snapped () = std::abs (snapRotation .angle ()) > 0.0001;
+
+		if (snapRotation == Rotation4d ())
+			return;
+
+		// Snap master.
+
+
+		const auto currentMatrix = Matrix4d (master -> translation ()      .getValue (),
+		                                     master -> rotation ()         .getValue () * snapRotation,
+		                                     master -> scale ()            .getValue (),
+		                                     master -> scaleOrientation () .getValue (),
+		                                     master -> center ()           .getValue ());
+
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+
+		// Apply transformation to transformation group.
+
+		master -> rotation () .removeInterest (&SnapTargetTool::set_rotation, this);
+		master -> rotation () .addInterest (&SnapTargetTool::connectRotation, this, master);
+	
+		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -367,6 +488,18 @@ SnapTargetTool::connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & to
 	{
 		tool -> translation () .removeInterest (&SnapTargetTool::connectTranslation, this);
 		tool -> translation () .addInterest (&SnapTargetTool::set_translation, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
+}
+
+void
+SnapTargetTool::connectRotation (const X3DWeakPtr <X3DTransformNodeTool> & tool)
+{
+	try
+	{
+		tool -> rotation () .removeInterest (&SnapTargetTool::connectRotation, this);
+		tool -> rotation () .addInterest (&SnapTargetTool::set_rotation, this, tool);
 	}
 	catch (const Error <DISPOSED> &)
 	{ }

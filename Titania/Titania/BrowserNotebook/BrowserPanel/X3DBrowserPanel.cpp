@@ -115,12 +115,12 @@ const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::axes = {
 const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::positions = {
 	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
 	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f (8.48219, 12, 8.48219)),
-	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 10000, 0)),
-	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (10000, 0, 0)),
-	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 10000)),
-	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -10000, 0)),
-	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-10000, 0, 0)),
-	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -10000))
+	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 50000, 0)),
+	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (50000, 0, 0)),
+	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 50000)),
+	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -50000, 0)),
+	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-50000, 0, 0)),
+	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -50000))
 };
 
 const std::map <BrowserPanelType, X3D::Rotation4d> X3DBrowserPanel::orientations = {
