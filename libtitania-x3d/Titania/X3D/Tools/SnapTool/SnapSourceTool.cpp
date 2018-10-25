@@ -79,6 +79,31 @@ SnapSourceTool::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+SnapSourceTool::initialize ()
+{
+	X3DSnapTool::initialize ();
+
+	const auto & dependentContext = getBrowser () -> getDependentContext ();
+
+	if (dependentContext)
+	{
+		const auto & snapSource = dependentContext -> getSnapSource ();
+
+		snapSource -> enabled ()  .addInterest (enabled ());
+		snapSource -> position () .addInterest (position ());
+		snapSource -> normal ()   .addInterest (normal ());
+
+		enabled ()  .addInterest (snapSource -> enabled ());
+		position () .addInterest (snapSource -> position ());
+		normal ()   .addInterest (snapSource -> normal ());
+
+		enabled ()  = snapSource -> enabled ();
+		position () = snapSource -> position ();
+		normal ()   = snapSource -> normal ();
+	}
+}
+
+void
 SnapSourceTool::realize ()
 {
 	try

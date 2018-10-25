@@ -99,6 +99,31 @@ SnapTargetTool::initialize ()
 {
 	X3DSnapTool::initialize ();
 
+	const auto & dependentContext = getBrowser () -> getDependentContext ();
+
+	if (dependentContext)
+	{
+		const auto & snapTarget = dependentContext -> getSnapTarget ();
+
+		snapTarget -> enabled ()      .addInterest (enabled ());
+		snapTarget -> position ()     .addInterest (position ());
+		snapTarget -> normal ()       .addInterest (normal ());
+		snapTarget -> snapped ()      .addInterest (snapped ());
+		snapTarget -> snapToCenter () .addInterest (snapToCenter ());
+
+		enabled ()      .addInterest (snapTarget -> enabled ());
+		position ()     .addInterest (snapTarget -> position ());
+		normal ()       .addInterest (snapTarget -> normal ());
+		snapped ()      .addInterest (snapTarget -> snapped ());
+		snapToCenter () .addInterest (snapTarget -> snapToCenter ());
+
+		enabled ()      = snapTarget -> enabled ();
+		position ()     = snapTarget -> position ();
+		normal ()       = snapTarget -> normal ();
+		snapped ()      = snapTarget -> snapped ();
+		snapToCenter () = snapTarget -> snapToCenter ();
+	}
+
 	getBrowser () -> getTransformTools () .addInterest (&SnapTargetTool::set_transform_tools, this);
 	enabled () .addInterest (&SnapTargetTool::set_enabled, this);
 

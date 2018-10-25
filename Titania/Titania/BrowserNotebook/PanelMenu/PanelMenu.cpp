@@ -116,7 +116,7 @@ PanelMenu::on_multi_view_toggled ()
 	if (changing)
 		return;
 
-	page -> setMultiView (getMultiViewMenuItem () .get_active ());
+	page -> setMultiView (getMultiViewMenuItem () .get_active (), true);
 }
 
 PanelMenu::~PanelMenu ()

@@ -102,8 +102,8 @@ NotebookPage::set_scene ()
 	for (int32_t i = 0, size = panels .size (); i < size; ++ i)
 		panels [i] -> setFocus (i == activeView);
 
-	setActiveView (activeView);
-	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1));
+	setActiveView (activeView, false);
+	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1), false);
 
 	set_browser_ratio ();
 }
@@ -115,7 +115,7 @@ NotebookPage::on_key_release_event (GdkEventKey* event)
 	{
 		case GDK_KEY_space:
 		{
-			setMultiView (not getMultiView ());
+			setMultiView (not getMultiView (), true);
 			setModified (true);
 			return true;
 		}
@@ -207,20 +207,29 @@ void
 NotebookPage::set_focus (const size_t id)
 {
 	if (panels [id] -> hasFocus ())
-		setActiveView (id);
+		setActiveView (id, true);
 }
 
 void
-NotebookPage::setActiveView (const size_t value)
+NotebookPage::setActiveView (const size_t value, const bool modify)
 {
+	if (modify and value == activeView)
+		return;
+
 	activeView = value;
 
 	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/activeView", activeView);
+
+	if (modify)
+		setModified (true);
 }
 
 void
-NotebookPage::setMultiView (const bool value)
+NotebookPage::setMultiView (const bool value, const bool modify)
 {
+	if (modify and value == multiView)
+		return;
+
 	multiView = value;
 
 	createWorldInfo (getScene ()) -> setMetaData <int32_t> ("/Titania/Page/multiView", multiView);
@@ -229,6 +238,9 @@ NotebookPage::setMultiView (const bool value)
 	{
 		boxes [i] -> set_visible (multiView or i == getActiveView ());
 	}
+
+	if (modify)
+		setModified (true);
 }
 
 void

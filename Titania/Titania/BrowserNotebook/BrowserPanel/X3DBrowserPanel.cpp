@@ -556,39 +556,10 @@ X3DBrowserPanel::set_dependent_browser ()
 		mainBrowser -> getSelectable () .addInterest (const_cast <X3D::SFBool &> (browser -> getSelectable ()));
 		browser -> setSelectable (mainBrowser -> getSelectable ());
 
-		// Setup Snap Target.
+		// Setup SnapTarget and SnapSource.
 
-		mainBrowser -> getSnapTarget () -> enabled ()      .addInterest (browser -> getSnapTarget () -> enabled ());
-		mainBrowser -> getSnapTarget () -> position ()     .addInterest (browser -> getSnapTarget () -> position ());
-		mainBrowser -> getSnapTarget () -> normal ()       .addInterest (browser -> getSnapTarget () -> normal ());
-		mainBrowser -> getSnapTarget () -> snapped ()      .addInterest (browser -> getSnapTarget () -> snapped ());
-		mainBrowser -> getSnapTarget () -> snapToCenter () .addInterest (browser -> getSnapTarget () -> snapToCenter ());
-
-		browser -> getSnapTarget () -> enabled ()      .addInterest (mainBrowser -> getSnapTarget () -> enabled ());
-		browser -> getSnapTarget () -> position ()     .addInterest (mainBrowser -> getSnapTarget () -> position ());
-		browser -> getSnapTarget () -> normal ()       .addInterest (mainBrowser -> getSnapTarget () -> normal ());
-		browser -> getSnapTarget () -> snapped ()      .addInterest (mainBrowser -> getSnapTarget () -> snapped ());
-		browser -> getSnapTarget () -> snapToCenter () .addInterest (mainBrowser -> getSnapTarget () -> snapToCenter ());
-
-		browser -> getSnapTarget () -> enabled ()      = mainBrowser -> getSnapTarget () -> enabled ();
-		browser -> getSnapTarget () -> position ()     = mainBrowser -> getSnapTarget () -> position ();
-		browser -> getSnapTarget () -> normal ()       = mainBrowser -> getSnapTarget () -> normal ();
-		browser -> getSnapTarget () -> snapped ()      = mainBrowser -> getSnapTarget () -> snapped ();
-		browser -> getSnapTarget () -> snapToCenter () = mainBrowser -> getSnapTarget () -> snapToCenter ();
-
-		// Setup Snap Source.
-
-		mainBrowser -> getSnapSource () -> enabled ()  .addInterest (browser -> getSnapSource () -> enabled ());
-		mainBrowser -> getSnapSource () -> position () .addInterest (browser -> getSnapSource () -> position ());
-		mainBrowser -> getSnapSource () -> normal ()   .addInterest (browser -> getSnapSource () -> normal ());
-
-		browser -> getSnapSource () -> enabled ()  .addInterest (mainBrowser -> getSnapSource () -> enabled ());
-		browser -> getSnapSource () -> position () .addInterest (mainBrowser -> getSnapSource () -> position ());
-		browser -> getSnapSource () -> normal ()   .addInterest (mainBrowser -> getSnapSource () -> normal ());
-
-		browser -> getSnapSource () -> enabled ()  = mainBrowser -> getSnapSource () -> enabled ();
-		browser -> getSnapSource () -> position () = mainBrowser -> getSnapSource () -> position ();
-		browser -> getSnapSource () -> normal ()   = mainBrowser -> getSnapSource () -> normal ();
+		browser -> getSnapTarget () -> enabled () = mainBrowser -> getSnapTarget () -> enabled ();
+		browser -> getSnapSource () -> enabled () = mainBrowser -> getSnapSource () -> enabled ();
 
 		// Setup scene.
 

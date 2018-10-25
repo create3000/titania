@@ -85,7 +85,7 @@ public:
 	{ return panels; }
 
 	void
-	setMultiView (const bool value);
+	setMultiView (const bool value, const bool modify);
 
 	const X3D::SFBool &
 	getMultiView () const
@@ -154,7 +154,7 @@ private:
 	set_focus (const size_t id);
 
 	void
-	setActiveView (const size_t value);
+	setActiveView (const size_t value, const bool modify);
 
 	size_t
 	getActiveView () const
