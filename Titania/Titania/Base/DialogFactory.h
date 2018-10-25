@@ -71,7 +71,6 @@
 #include "../Editors/BackgroundImageEditor/BackgroundImageEditor.h"
 #include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
 #include "../Editors/BindableNodeList/BackgroundList.h"
-#include "../Editors/ColorEditor/ColorEditor.h"
 #include "../Editors/BindableNodeList/FogList.h"
 #include "../Editors/BindableNodeList/NavigationInfoList.h"
 #include "../Editors/BindableNodeList/ViewpointList.h"
@@ -93,6 +92,7 @@
 #include "../Editors/NodeEditor/NodeEditor.h"
 #include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../Editors/PolygonColoringEditor/PolygonColoringEditor.h"
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
 #include "../Editors/ProjectsEditor/ProjectsEditor.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
@@ -129,7 +129,6 @@ public:
 		         std::make_pair ("BackgroundList",                constructDialog <BackgroundList>),
 		         std::make_pair ("BindableNodeEditor",            constructDialog <BindableNodeEditor>),
 		         std::make_pair ("BrowserSizeEditor",             constructDialog <BrowserSizeEditor>),
-		         std::make_pair ("ColorEditor",                   constructDialog <ColorEditor>),
 		         std::make_pair ("Console",                       constructDialog <Console>),
 		         std::make_pair ("ExternalToolsEditor",           constructDialog <ExternalToolsEditor>),
 		         std::make_pair ("FileExportDialog",              constructDialog <FileExportDialog>),
@@ -164,6 +163,7 @@ public:
 		         std::make_pair ("OpenFolderDialog",              constructDialog <OpenFolderDialog>),
 		         std::make_pair ("OpenLocationDialog",            constructDialog <OpenLocationDialog>),
 		         std::make_pair ("OutlineEditor",                 constructDialog <OutlineEditor>),
+		         std::make_pair ("PolygonColoringEditor",         constructDialog <PolygonColoringEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",       constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("ProjectsEditor",                constructDialog <ProjectsEditor>),
 		         std::make_pair ("PrototypeEditor",               constructDialog <PrototypeEditor>),

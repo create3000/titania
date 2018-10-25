@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/ColorEditorPreview.x3dv"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/PolygonColoringEditor.x3dv"
 META "modified" "Sat, 19 Aug 2017 06:12:41 GMT"
 
 DEF LayerSet LayerSet {

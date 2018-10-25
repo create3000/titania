@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#include "X3DColorEditorInterface.h"
+#include "X3DPolygonColoringEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 void
-X3DColorEditorInterface::create (const std::string & filename)
+X3DPolygonColoringEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -63,7 +63,7 @@ X3DColorEditorInterface::create (const std::string & filename)
 }
 
 void
-X3DColorEditorInterface::create (std::initializer_list <std::string> filenames)
+X3DPolygonColoringEditorInterface::create (std::initializer_list <std::string> filenames)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
@@ -75,7 +75,7 @@ X3DColorEditorInterface::create (std::initializer_list <std::string> filenames)
 }
 
 void
-X3DColorEditorInterface::create ()
+X3DPolygonColoringEditorInterface::create ()
 {
 	// Get objects.
 	m_ColorAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
@@ -119,57 +119,57 @@ X3DColorEditorInterface::create ()
 	m_builder -> get_widget ("PointsetButton", m_PointsetButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_undo));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_redo));
-	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_unused_colors_activate));
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_undo));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_redo));
+	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_remove_unused_colors_activate));
 
 	// Connect object Gtk::MenuItem with id 'RemoveDublicateColorsMenuItem'.
-	m_RemoveDublicateColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_dublicate_colors_activate));
+	m_RemoveDublicateColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_remove_dublicate_colors_activate));
 
 	// Connect object Gtk::ToolButton with id 'UndoButton'.
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_undo));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_redo));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_undo));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_redo));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
-	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_hand_toggled));
-	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_arrow_toggled));
+	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_hand_toggled));
+	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_arrow_toggled));
 
 	// Connect object Gtk::ToggleToolButton with id 'VisualizeGeometryButton'.
-	m_VisualizeGeometryButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_visualize_geometry_toggled));
+	m_VisualizeGeometryButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_visualize_geometry_toggled));
 
 	// Connect object Gtk::ToolButton with id 'ShadingButton'.
-	m_ShadingButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_shading_clicked));
+	m_ShadingButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_shading_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'TextureButton'.
-	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_texture_toggled));
-	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_checkerboard_toggled));
-	m_StraightenHorizonButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_straighten_horizon_toggled));
+	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_texture_toggled));
+	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_checkerboard_toggled));
+	m_StraightenHorizonButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_straighten_horizon_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
-	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_look_at_all_clicked));
+	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_look_at_all_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
-	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_look_at_toggled));
+	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_look_at_toggled));
 
 	// Connect object Gtk::RadioButton with id 'SingleVertexButton'.
-	m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_single_vertex_clicked));
-	m_AdjacentVerticesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_adjacent_vertices_clicked));
-	m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_single_face_clicked));
-	m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_whole_object_clicked));
+	m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_single_vertex_clicked));
+	m_AdjacentVerticesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_adjacent_vertices_clicked));
+	m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_single_face_clicked));
+	m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_whole_object_clicked));
 
 	// Connect object Gtk::Button with id 'RemoveButton'.
-	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_clicked));
-	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_apply_clicked));
+	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_remove_clicked));
+	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_apply_clicked));
 
 	// Connect object Gtk::RadioButton with id 'PhongButton'.
-	m_PhongButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_phong_toggled));
-	m_GouraudButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_gouraud_toggled));
-	m_FlatButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_flat_toggled));
-	m_WireframeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_wireframe_toggled));
-	m_PointsetButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_pointset_toggled));
+	m_PhongButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_phong_toggled));
+	m_GouraudButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_gouraud_toggled));
+	m_FlatButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_flat_toggled));
+	m_WireframeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_wireframe_toggled));
+	m_PointsetButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPolygonColoringEditorInterface::on_pointset_toggled));
 }
 
-X3DColorEditorInterface::~X3DColorEditorInterface ()
+X3DPolygonColoringEditorInterface::~X3DPolygonColoringEditorInterface ()
 {
 	delete m_Window;
 }

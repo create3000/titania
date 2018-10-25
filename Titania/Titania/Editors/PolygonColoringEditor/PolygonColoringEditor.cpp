@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "ColorEditor.h"
+#include "PolygonColoringEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
@@ -72,29 +72,29 @@
 namespace titania {
 namespace puck {
 
-ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DColorEditorInterface (get_ui ("Editors/ColorEditor.glade")),
-	                preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/ColorEditorPreview.x3dv") })),
-	            colorButton (this,
-	                         getColorButton (),
-	                         getColorAdjustment (),
-	                         getWidget (),
-	                         getAddColorButton (),
-	                         getRemoveColorButton (),
-	                         getColorsScrolledWindow (),
-	                         "color"),
-	                   mode (SINGLE_VERTEX),
-	                  shape (),
-	             appearance (),
-	                texture (),
-	       textureTransform (),
-	               geometry (),
-	                  coord (),
-	        previewGeometry (),
-	           previewColor (),
-	              selection (new X3D::FaceSelection (getMasterBrowser ())),
-	            undoHistory ()
+PolygonColoringEditor::PolygonColoringEditor (X3DBrowserWindow* const browserWindow) :
+	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DPolygonColoringEditorInterface (get_ui ("Editors/PolygonColoringEditor.glade")),
+	                          preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/PolygonColoringEditorPreview.x3dv") })),
+	                      colorButton (this,
+	                                   getColorButton (),
+	                                   getColorAdjustment (),
+	                                   getWidget (),
+	                                   getAddColorButton (),
+	                                   getRemoveColorButton (),
+	                                   getColorsScrolledWindow (),
+	                                   "color"),
+	                             mode (SINGLE_VERTEX),
+	                            shape (),
+	                       appearance (),
+	                          texture (),
+	                 textureTransform (),
+	                         geometry (),
+	                            coord (),
+	                  previewGeometry (),
+	                     previewColor (),
+	                        selection (new X3D::FaceSelection (getMasterBrowser ())),
+	                      undoHistory ()
 {
 	addChildObjects (preview,
 	                 shape,
@@ -111,11 +111,11 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-ColorEditor::initialize ()
+PolygonColoringEditor::initialize ()
 {
-	X3DColorEditorInterface::initialize ();
+	X3DPolygonColoringEditorInterface::initialize ();
 
-	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
+	preview -> initialized () .addInterest (&PolygonColoringEditor::set_initialized, this);
 	preview -> setAntialiasing (4);
 	preview -> setPrivateCursor ("ARROW");
 	preview -> show ();
@@ -124,15 +124,15 @@ ColorEditor::initialize ()
 
 	selection -> setup ();
 
-	undoHistory .addInterest (&ColorEditor::set_undoHistory, this);
+	undoHistory .addInterest (&PolygonColoringEditor::set_undoHistory, this);
 
 	getGouraudButton () .set_active (true);
 }
 
 void
-ColorEditor::configure ()
+PolygonColoringEditor::configure ()
 {
-	X3DColorEditorInterface::configure ();
+	X3DPolygonColoringEditorInterface::configure ();
 
 	getVisualizeGeometryButton () .set_active (getConfig () -> getItem <bool> ("visualizeGeometry", true));
 	getCheckerBoardButton ()      .set_active (getConfig () -> getItem <bool> ("checkerBoard"));
@@ -167,9 +167,9 @@ ColorEditor::configure ()
 }
 
 void
-ColorEditor::set_initialized ()
+PolygonColoringEditor::set_initialized ()
 {
-	preview -> initialized () .removeInterest (&ColorEditor::set_initialized, this);
+	preview -> initialized () .removeInterest (&PolygonColoringEditor::set_initialized, this);
 
 	try
 	{
@@ -179,9 +179,9 @@ ColorEditor::set_initialized ()
 
 		appearance -> setPrivate (true);
 
-		transform -> addInterest (&ColorEditor::set_viewer, this);
-		touchSensor -> hitPoint_changed () .addInterest (&ColorEditor::set_hitPoint, this);
-		touchSensor -> touchTime ()        .addInterest (&ColorEditor::set_touchTime, this);
+		transform -> addInterest (&PolygonColoringEditor::set_viewer, this);
+		touchSensor -> hitPoint_changed () .addInterest (&PolygonColoringEditor::set_hitPoint, this);
+		touchSensor -> touchTime ()        .addInterest (&PolygonColoringEditor::set_touchTime, this);
 
 		on_texture_toggled ();
 		on_checkerboard_toggled ();
@@ -195,7 +195,7 @@ ColorEditor::set_initialized ()
 }
 
 void
-ColorEditor::set_selection (const X3D::MFNode & selection)
+PolygonColoringEditor::set_selection (const X3D::MFNode & selection)
 {
 	undoHistory .clear ();
 
@@ -216,7 +216,7 @@ ColorEditor::set_selection (const X3D::MFNode & selection)
 // Menubar
 
 void
-ColorEditor::on_undo ()
+PolygonColoringEditor::on_undo ()
 {
 	preview -> grab_focus ();
 
@@ -224,7 +224,7 @@ ColorEditor::on_undo ()
 }
 
 void
-ColorEditor::on_redo ()
+PolygonColoringEditor::on_redo ()
 {
 	preview -> grab_focus ();
 
@@ -232,7 +232,7 @@ ColorEditor::on_redo ()
 }
 
 void
-ColorEditor::set_undoHistory ()
+PolygonColoringEditor::set_undoHistory ()
 {
 	if (undoHistory .hasUndo ())
 	{
@@ -266,7 +266,7 @@ ColorEditor::set_undoHistory ()
 }
 
 void
-ColorEditor::on_remove_unused_colors_activate ()
+PolygonColoringEditor::on_remove_unused_colors_activate ()
 {
 	// Find all used indices.
 
@@ -330,7 +330,7 @@ ColorEditor::on_remove_unused_colors_activate ()
 }
 
 void
-ColorEditor::on_remove_dublicate_colors_activate ()
+PolygonColoringEditor::on_remove_dublicate_colors_activate ()
 {
 	// Find all unique colors.
 
@@ -385,19 +385,19 @@ ColorEditor::on_remove_dublicate_colors_activate ()
 }
 
 void
-ColorEditor::on_hand_toggled ()
+PolygonColoringEditor::on_hand_toggled ()
 {
 	preview -> setPickable (false);
 }
 
 void
-ColorEditor::on_arrow_toggled ()
+PolygonColoringEditor::on_arrow_toggled ()
 {
 	preview -> setPickable (true);
 }
 
 void
-ColorEditor::on_visualize_geometry_toggled ()
+PolygonColoringEditor::on_visualize_geometry_toggled ()
 {
 	try
 	{
@@ -413,55 +413,55 @@ ColorEditor::on_visualize_geometry_toggled ()
 // Shading menu
 
 void
-ColorEditor::on_shading_clicked ()
+PolygonColoringEditor::on_shading_clicked ()
 {
 	getShadingPopover () .popup ();
 }
 
 void
-ColorEditor::on_phong_toggled ()
+PolygonColoringEditor::on_phong_toggled ()
 {
 	if (getPhongButton () .get_active ())
 		on_shading_toggled ("PHONG");
 }
 
 void
-ColorEditor::on_gouraud_toggled ()
+PolygonColoringEditor::on_gouraud_toggled ()
 {
 	if (getGouraudButton () .get_active ())
 		on_shading_toggled ("GOURAUD");
 }
 
 void
-ColorEditor::on_flat_toggled ()
+PolygonColoringEditor::on_flat_toggled ()
 {
 	if (getFlatButton () .get_active ())
 		on_shading_toggled ("FLAT");
 }
 
 void
-ColorEditor::on_wireframe_toggled ()
+PolygonColoringEditor::on_wireframe_toggled ()
 {
 	if (getWireframeButton () .get_active ())
 		on_shading_toggled ("WIREFRAME");
 }
 
 void
-ColorEditor::on_pointset_toggled ()
+PolygonColoringEditor::on_pointset_toggled ()
 {
 	if (getPointsetButton () .get_active ())
 		on_shading_toggled ("POINTSET");
 }
 
 void
-ColorEditor::on_shading_toggled (const std::string & value)
+PolygonColoringEditor::on_shading_toggled (const std::string & value)
 {
 	getShadingPopover () .popdown ();
 	preview -> getBrowserOptions () -> Shading () = value;
 }
 
 void
-ColorEditor::on_texture_toggled ()
+PolygonColoringEditor::on_texture_toggled ()
 {
 	try
 	{
@@ -474,7 +474,7 @@ ColorEditor::on_texture_toggled ()
 }
 
 void
-ColorEditor::on_checkerboard_toggled ()
+PolygonColoringEditor::on_checkerboard_toggled ()
 {
 	try
 	{
@@ -494,7 +494,7 @@ ColorEditor::on_checkerboard_toggled ()
 }
 
 void
-ColorEditor::on_straighten_horizon_toggled ()
+PolygonColoringEditor::on_straighten_horizon_toggled ()
 {
 	preview -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
 
@@ -510,14 +510,14 @@ ColorEditor::on_straighten_horizon_toggled ()
 }
 
 void
-ColorEditor::on_look_at_all_clicked ()
+PolygonColoringEditor::on_look_at_all_clicked ()
 {
 	if (preview -> getActiveLayer ())
 		preview -> getActiveLayer () -> lookAt (1, false, 0.2);
 }
 
 void
-ColorEditor::on_look_at_toggled ()
+PolygonColoringEditor::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
@@ -532,7 +532,7 @@ ColorEditor::on_look_at_toggled ()
 }
 
 void
-ColorEditor::on_single_vertex_clicked ()
+PolygonColoringEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
 
@@ -540,7 +540,7 @@ ColorEditor::on_single_vertex_clicked ()
 }
 
 void
-ColorEditor::on_adjacent_vertices_clicked ()
+PolygonColoringEditor::on_adjacent_vertices_clicked ()
 {
 	mode = ADJACENT_VERTICES;
 
@@ -548,7 +548,7 @@ ColorEditor::on_adjacent_vertices_clicked ()
 }
 
 void
-ColorEditor::on_single_face_clicked ()
+PolygonColoringEditor::on_single_face_clicked ()
 {
 	mode = SINGLE_FACE;
 
@@ -556,7 +556,7 @@ ColorEditor::on_single_face_clicked ()
 }
 
 void
-ColorEditor::on_whole_object_clicked ()
+PolygonColoringEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
 
@@ -564,7 +564,7 @@ ColorEditor::on_whole_object_clicked ()
 }
 
 void
-ColorEditor::on_remove_clicked ()
+PolygonColoringEditor::on_remove_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Polygon Colors"));
 
@@ -584,15 +584,15 @@ ColorEditor::on_remove_clicked ()
 }
 
 void
-ColorEditor::on_apply_clicked ()
+PolygonColoringEditor::on_apply_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
 	const auto colorPerVertex = previewGeometry -> isColorPerVertex ();
 
-	geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);
-	geometry -> colorIndex () .addInterest (&ColorEditor::connectColorIndex, this);
-	geometry -> color ()      .removeInterest (&ColorEditor::set_colorIndex, this);
-	geometry -> color ()      .addInterest (&ColorEditor::connectColor, this);
+	geometry -> colorIndex () .removeInterest (&PolygonColoringEditor::set_colorIndex, this);
+	geometry -> colorIndex () .addInterest (&PolygonColoringEditor::connectColorIndex, this);
+	geometry -> color ()      .removeInterest (&PolygonColoringEditor::set_colorIndex, this);
+	geometry -> color ()      .addInterest (&PolygonColoringEditor::connectColor, this);
 
 	undoStep -> addObjects (geometry);
 
@@ -671,35 +671,35 @@ ColorEditor::on_apply_clicked ()
 }
 
 void
-ColorEditor::connectColorIndex ()
+PolygonColoringEditor::connectColorIndex ()
 {
-	geometry -> colorIndex () .removeInterest (&ColorEditor::connectColorIndex, this);
-	geometry -> colorIndex () .addInterest (&ColorEditor::set_colorIndex, this);
+	geometry -> colorIndex () .removeInterest (&PolygonColoringEditor::connectColorIndex, this);
+	geometry -> colorIndex () .addInterest (&PolygonColoringEditor::set_colorIndex, this);
 }
 
 void
-ColorEditor::connectColor ()
+PolygonColoringEditor::connectColor ()
 {
-	geometry -> color () .removeInterest (&ColorEditor::connectColorIndex, this);
-	geometry -> color () .addInterest (&ColorEditor::set_colorIndex, this);
+	geometry -> color () .removeInterest (&PolygonColoringEditor::connectColorIndex, this);
+	geometry -> color () .addInterest (&PolygonColoringEditor::set_colorIndex, this);
 }
 
 void
-ColorEditor::set_viewer ()
+PolygonColoringEditor::set_viewer ()
 {
 	if (preview -> getActiveLayer ())
 		preview -> getActiveLayer () -> lookAt (1, true, 0);
 }
 
 void
-ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
+PolygonColoringEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 {
 	try
 	{
 		if (shape)
 		{
-			shape -> appearance () .removeInterest (&ColorEditor::set_appearance, this);
-			shape -> geometry ()   .removeInterest (&ColorEditor::set_geometry, this);
+			shape -> appearance () .removeInterest (&PolygonColoringEditor::set_appearance, this);
+			shape -> geometry ()   .removeInterest (&PolygonColoringEditor::set_geometry, this);
 		}
 
 		shape = value;
@@ -711,8 +711,8 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 
 			transform -> setMatrix (modelMatrix);
 
-			shape -> appearance () .addInterest (&ColorEditor::set_appearance, this);
-			shape -> geometry ()   .addInterest (&ColorEditor::set_geometry, this);
+			shape -> appearance () .addInterest (&PolygonColoringEditor::set_appearance, this);
+			shape -> geometry ()   .addInterest (&PolygonColoringEditor::set_geometry, this);
 
 			set_appearance (shape -> appearance ());
 			set_geometry (shape -> geometry ());
@@ -728,13 +728,13 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 }
 
 void
-ColorEditor::set_appearance (const X3D::SFNode & value)
+PolygonColoringEditor::set_appearance (const X3D::SFNode & value)
 {
 	if (appearance)
 	{
-		appearance -> material ()         .removeInterest (&ColorEditor::set_material,         this);
-		appearance -> texture ()          .removeInterest (&ColorEditor::set_texture,          this);
-		appearance -> textureTransform () .removeInterest (&ColorEditor::set_textureTransform, this);
+		appearance -> material ()         .removeInterest (&PolygonColoringEditor::set_material,         this);
+		appearance -> texture ()          .removeInterest (&PolygonColoringEditor::set_texture,          this);
+		appearance -> textureTransform () .removeInterest (&PolygonColoringEditor::set_textureTransform, this);
 		setTexture (false);
 	}
 
@@ -742,9 +742,9 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 
 	if (appearance)
 	{
-		appearance -> material ()         .addInterest (&ColorEditor::set_material,         this);
-		appearance -> texture ()          .addInterest (&ColorEditor::set_texture,          this);
-		appearance -> textureTransform () .addInterest (&ColorEditor::set_textureTransform, this);
+		appearance -> material ()         .addInterest (&PolygonColoringEditor::set_material,         this);
+		appearance -> texture ()          .addInterest (&PolygonColoringEditor::set_texture,          this);
+		appearance -> textureTransform () .addInterest (&PolygonColoringEditor::set_textureTransform, this);
 
 		set_material (appearance -> material ());
 		set_texture (appearance -> texture ());
@@ -760,7 +760,7 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::set_material (const X3D::SFNode & value)
+PolygonColoringEditor::set_material (const X3D::SFNode & value)
 {
 	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
@@ -768,7 +768,7 @@ ColorEditor::set_material (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::set_texture (const X3D::SFNode & value)
+PolygonColoringEditor::set_texture (const X3D::SFNode & value)
 {
 	if (texture)
 		texture -> removeInterest (&X3D::Browser::addEvent, *preview);
@@ -782,7 +782,7 @@ ColorEditor::set_texture (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::set_textureTransform (const X3D::SFNode & value)
+PolygonColoringEditor::set_textureTransform (const X3D::SFNode & value)
 {
 	if (textureTransform)
 		textureTransform -> removeInterest (&X3D::Browser::addEvent, *preview);
@@ -796,14 +796,14 @@ ColorEditor::set_textureTransform (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::setTexture (const bool value)
+PolygonColoringEditor::setTexture (const bool value)
 {
 	try
 	{
 		if (value and appearance)
 		{
-			appearance -> texture ()          .addInterest (&ColorEditor::set_multi_texture, this);
-			appearance -> textureTransform () .addInterest (&ColorEditor::set_multi_textureTransform, this);
+			appearance -> texture ()          .addInterest (&PolygonColoringEditor::set_multi_texture, this);
+			appearance -> textureTransform () .addInterest (&PolygonColoringEditor::set_multi_textureTransform, this);
 
 			set_multi_texture ();
 			set_multi_textureTransform ();
@@ -812,8 +812,8 @@ ColorEditor::setTexture (const bool value)
 		{
 			if (appearance)
 			{
-				appearance -> texture ()          .removeInterest (&ColorEditor::set_multi_texture, this);
-				appearance -> textureTransform () .removeInterest (&ColorEditor::set_multi_textureTransform, this);
+				appearance -> texture ()          .removeInterest (&PolygonColoringEditor::set_multi_texture, this);
+				appearance -> textureTransform () .removeInterest (&PolygonColoringEditor::set_multi_textureTransform, this);
 			}
 
 			const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
@@ -827,7 +827,7 @@ ColorEditor::setTexture (const bool value)
 }
 
 void
-ColorEditor::set_multi_texture ()
+PolygonColoringEditor::set_multi_texture ()
 {
 	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
@@ -844,7 +844,7 @@ ColorEditor::set_multi_texture ()
 }
 
 void
-ColorEditor::set_multi_textureTransform ()
+PolygonColoringEditor::set_multi_textureTransform ()
 {
 	const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
@@ -861,7 +861,7 @@ ColorEditor::set_multi_textureTransform ()
 }
 
 void
-ColorEditor::set_geometry (const X3D::SFNode & value)
+PolygonColoringEditor::set_geometry (const X3D::SFNode & value)
 {
 	undoHistory .clear ();
 
@@ -871,10 +871,10 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 
 		if (geometry)
 		{
-			geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);
-			geometry -> coordIndex () .removeInterest (&ColorEditor::set_coordIndex, this);
-			geometry -> color ()      .removeInterest (&ColorEditor::set_colorIndex, this);
-			geometry -> coord ()      .removeInterest (&ColorEditor::set_coord, this);
+			geometry -> colorIndex () .removeInterest (&PolygonColoringEditor::set_colorIndex, this);
+			geometry -> coordIndex () .removeInterest (&PolygonColoringEditor::set_coordIndex, this);
+			geometry -> color ()      .removeInterest (&PolygonColoringEditor::set_colorIndex, this);
+			geometry -> coord ()      .removeInterest (&PolygonColoringEditor::set_coord, this);
 		}
 
 		geometry = value;
@@ -897,10 +897,10 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
 			geometry -> coord ()           .addInterest (previewGeometry -> coord ());
 
-			geometry -> colorIndex () .addInterest (&ColorEditor::set_colorIndex, this);
-			geometry -> coordIndex () .addInterest (&ColorEditor::set_coordIndex, this);
-			geometry -> color ()      .addInterest (&ColorEditor::set_colorIndex, this);
-			geometry -> coord ()      .addInterest (&ColorEditor::set_coord, this);
+			geometry -> colorIndex () .addInterest (&PolygonColoringEditor::set_colorIndex, this);
+			geometry -> coordIndex () .addInterest (&PolygonColoringEditor::set_coordIndex, this);
+			geometry -> color ()      .addInterest (&PolygonColoringEditor::set_colorIndex, this);
+			geometry -> coord ()      .addInterest (&PolygonColoringEditor::set_coord, this);
 
 			previewShape -> geometry () = previewGeometry;
 			selection    -> geometry () = previewGeometry;
@@ -931,7 +931,7 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::set_colorIndex ()
+PolygonColoringEditor::set_colorIndex ()
 {
 	undoHistory .clear ();
 
@@ -990,19 +990,19 @@ ColorEditor::set_colorIndex ()
 }
 
 void
-ColorEditor::set_coordIndex ()
+PolygonColoringEditor::set_coordIndex ()
 {
 	set_colorIndex ();
 }
 
 void
-ColorEditor::set_coord (const X3D::SFNode & value)
+PolygonColoringEditor::set_coord (const X3D::SFNode & value)
 {
 	coord = value;
 }
 
 void
-ColorEditor::set_hitPoint ()
+PolygonColoringEditor::set_hitPoint ()
 {
 	try
 	{
@@ -1120,7 +1120,7 @@ ColorEditor::set_hitPoint ()
 }
 
 void
-ColorEditor::set_touchTime ()
+PolygonColoringEditor::set_touchTime ()
 {
 	if (getSelectColorButton () .get_active ())
 	{
@@ -1141,7 +1141,7 @@ ColorEditor::set_touchTime ()
 }
 
 void
-ColorEditor::set_triangle (const X3D::X3DFaceSelection::Face & nearestFace)
+PolygonColoringEditor::set_triangle (const X3D::X3DFaceSelection::Face & nearestFace)
 {
 	try
 	{
@@ -1176,7 +1176,7 @@ ColorEditor::set_triangle (const X3D::X3DFaceSelection::Face & nearestFace)
 	{ }
 }
 
-ColorEditor::~ColorEditor ()
+PolygonColoringEditor::~PolygonColoringEditor ()
 {
 	undoHistory .clear ();
 	dispose ();

@@ -52,7 +52,7 @@
 #define __TITANIA_EDITORS_COLOR_EDITOR_COLOR_EDITOR_H__
 
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
-#include "../../UserInterfaces/X3DColorEditorInterface.h"
+#include "../../UserInterfaces/X3DPolygonColoringEditorInterface.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Rendering/ColorRGBA.h>
@@ -70,19 +70,19 @@ class FaceSelection;
 namespace titania {
 namespace puck {
 
-class ColorEditor :
-	public X3DColorEditorInterface
+class PolygonColoringEditor :
+	public X3DPolygonColoringEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	ColorEditor (X3DBrowserWindow* const browserWindow);
+	PolygonColoringEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~ColorEditor () final override;
+	~PolygonColoringEditor () final override;
 
 
 private:

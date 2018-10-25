@@ -170,7 +170,6 @@
     <Compile Include="Titania\UserInterfaces\X3DPrototypeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrototypeEditor\PrototypeEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DColorEditorInterface.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.cpp" />
     <Compile Include="Titania\Editors\BackgroundEditor\BackgroundEditor.cpp" />
@@ -356,7 +355,6 @@
     <Compile Include="Titania\Editors\ModelsPalette\ModelsPalette.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\OpenFolderDialog.cpp" />
     <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
-    <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
     <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ExternalToolsEditor\ExternalToolsEditor.cpp" />
@@ -372,6 +370,8 @@
     <Compile Include="Titania\Applications\BrowserApplication\X3DDBusInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFontChooserDialogInterface.cpp" />
     <Compile Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DPolygonColoringEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\PolygonColoringEditor\PolygonColoringEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1447,7 +1447,6 @@
     <None Include="share\titania\ui\Editors\TextureEditor.glade" />
     <None Include="share\titania\ui\Editors\ViewpointEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.h" />
-    <None Include="Titania\UserInterfaces\X3DColorEditorInterface.h" />
     <None Include="scripts\LibraryURLs.pl" />
     <None Include="share\titania\Library\CubeMapTextures\LostValley.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\CloudySky.x3dv" />
@@ -3139,9 +3138,6 @@
     <None Include="share\titania\ui\Editors\TextureMappingEditorLeftPreview.x3dv" />
     <None Include="share\titania\ui\Editors\TextureMappingEditorRightPreview.x3dv" />
     <None Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.h" />
-    <None Include="share\titania\ui\Editors\ColorEditor.glade" />
-    <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
-    <None Include="Titania\Editors\ColorEditor\ColorEditor.h" />
     <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
     <None Include="share\titania\ui\Editors\ExternalToolsEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DExternalToolsEditorInterface.h" />
@@ -3186,6 +3182,10 @@
     <None Include="Titania\UserInterfaces\X3DFontChooserDialogInterface.h" />
     <None Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.h" />
     <None Include="share\titania\Library\Primitives\Geospatial\GeoElevationGrid.x3dv" />
+    <None Include="share\titania\ui\Editors\PolygonColoringEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DPolygonColoringEditorInterface.h" />
+    <None Include="Titania\Editors\PolygonColoringEditor\PolygonColoringEditor.h" />
+    <None Include="share\titania\ui\Editors\PolygonColoringEditorPreview.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3346,7 +3346,6 @@
     <Folder Include="Titania\Editors\FilesEditor\" />
     <Folder Include="Titania\Editors\ModelsPalette\" />
     <Folder Include="Titania\Editors\TextureMappingEditor\" />
-    <Folder Include="Titania\Editors\ColorEditor\" />
     <Folder Include="Titania\Widgets\Sidebar\" />
     <Folder Include="Titania\Editors\ExternalToolsEditor\" />
     <Folder Include="Titania\Applications\" />
@@ -3359,6 +3358,7 @@
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\" />
     <Folder Include="Titania\Dialogs\FontChooserDialog\" />
     <Folder Include="share\titania\Library\Primitives\Geospatial\" />
+    <Folder Include="Titania\Editors\PolygonColoringEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

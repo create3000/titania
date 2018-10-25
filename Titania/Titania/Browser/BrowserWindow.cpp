@@ -2031,7 +2031,7 @@ BrowserWindow::on_node_index_clicked ()
 void
 BrowserWindow::on_color_editor_clicked ()
 {
-	addDialog ("ColorEditor");
+	addDialog ("PolygonColoringEditor");
 }
 
 void

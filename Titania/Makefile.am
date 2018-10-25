@@ -99,7 +99,6 @@ titania_SOURCES =  \
 	Titania/Editors/BindableNodeList/NavigationInfoList.cpp \
 	Titania/Editors/BindableNodeList/ViewpointList.cpp \
 	Titania/Editors/BrowserSizeEditor/BrowserSizeEditor.cpp \
-	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/ExternalToolsEditor/ExternalTool.cpp \
 	Titania/Editors/ExternalToolsEditor/ExternalToolsEditor.cpp \
 	Titania/Editors/ExternalToolsEditor/X3DExternalToolsEditor.cpp \
@@ -151,6 +150,7 @@ titania_SOURCES =  \
 	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp \
+	Titania/Editors/PolygonColoringEditor/PolygonColoringEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DConeEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DExplosionEmitterEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/ParticleEmitter/X3DPointEmitterEditor.cpp \
@@ -230,7 +230,6 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DBrowserPanelInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserSizeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
-	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DDefaultPhysicsModelEditorInterface.cpp \
 	Titania/UserInterfaces/X3DExternalToolsEditorInterface.cpp \
@@ -261,6 +260,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
+	Titania/UserInterfaces/X3DPolygonColoringEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrecisionPlacementPanelInterface.cpp \
 	Titania/UserInterfaces/X3DProjectsEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \

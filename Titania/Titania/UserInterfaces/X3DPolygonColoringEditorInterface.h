@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TMP_GLAD2CPP_COLOR_EDITOR_H__
-#define __TMP_GLAD2CPP_COLOR_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_POLYGON_COLORING_EDITOR_H__
+#define __TMP_GLAD2CPP_POLYGON_COLORING_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 
@@ -60,26 +60,26 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for ColorEditor.
+ *  Gtk Interface for PolygonColoringEditor.
  */
-class X3DColorEditorInterface :
+class X3DPolygonColoringEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DColorEditorInterface () :
+	X3DPolygonColoringEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DColorEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DPolygonColoringEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
-	X3DColorEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+	X3DPolygonColoringEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
 		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
@@ -338,7 +338,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DColorEditorInterface () override;
+	~X3DPolygonColoringEditorInterface () override;
 
 
 private:
