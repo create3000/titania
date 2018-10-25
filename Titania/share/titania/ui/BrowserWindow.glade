@@ -3327,10 +3327,10 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton" id="ColorPerVertexEditorButton">
+                          <object class="GtkToolButton" id="PolygonColoringEditorButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Paint Polygons</property>
+                            <property name="tooltip_text" translatable="yes">Polygon Coloring Editor</property>
                             <property name="label" translatable="yes">Paint Polygons</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">PaintBrush</property>
@@ -3342,7 +3342,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton" id="TextureCoordinateEditorButton">
+                          <object class="GtkToolButton" id="TextureMappingEditorButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Texture Mapping Editor</property>

@@ -1138,12 +1138,12 @@ public:
 	{ return *m_GeometryEditorButton; }
 
 	Gtk::ToolButton &
-	getColorPerVertexEditorButton () const
-	{ return *m_ColorPerVertexEditorButton; }
+	getPolygonColoringEditorButton () const
+	{ return *m_PolygonColoringEditorButton; }
 
 	Gtk::ToolButton &
-	getTextureCoordinateEditorButton () const
-	{ return *m_TextureCoordinateEditorButton; }
+	getTextureMappingEditorButton () const
+	{ return *m_TextureMappingEditorButton; }
 
 	Gtk::ToolButton &
 	getPrototypeEditorButton () const
@@ -2165,8 +2165,8 @@ private:
 	Gtk::SeparatorToolItem* m_SeparatorToolItem2;
 	Gtk::ToolButton* m_NodeIndexButton;
 	Gtk::ToolButton* m_GeometryEditorButton;
-	Gtk::ToolButton* m_ColorPerVertexEditorButton;
-	Gtk::ToolButton* m_TextureCoordinateEditorButton;
+	Gtk::ToolButton* m_PolygonColoringEditorButton;
+	Gtk::ToolButton* m_TextureMappingEditorButton;
 	Gtk::ToolButton* m_PrototypeEditorButton;
 	Gtk::ToolButton* m_NodeEditorButton;
 	Gtk::Toolbar* m_PrimitivesToolBar;
