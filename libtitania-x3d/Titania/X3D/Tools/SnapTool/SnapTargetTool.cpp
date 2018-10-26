@@ -277,7 +277,7 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
