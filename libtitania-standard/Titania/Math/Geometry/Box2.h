@@ -388,13 +388,23 @@ box2 <Type>::normals () const
 	auto y = matrix () .y_axis ();
 
 	if (abs (x) == 0)
-		x = vector2 <Type> (1, 0);
+	{
+		if (abs (y))
+			x = vector2 <Type> (y .y (), -y .x ());
+		else
+			x = vector2 <Type> (1, 0);
+	}
 
 	if (abs (y) == 0)
-		y = vector2 <Type> (0, 1);
+	{
+		if (abs (x))
+			y = vector2 <Type> (-x .y (), x .x ());
+		else
+			y = vector2 <Type> (0, 1);
+	}
 
-	normals .x (normalize (vector2 <Type> (-x .y (), x .x ())));
-	normals .y (normalize (vector2 <Type> (-y .y (), y .x ())));
+	normals .x (normalize (vector2 <Type> (-x .y (),  x .x ())));
+	normals .y (normalize (vector2 <Type> ( y .y (), -y .x ())));
 
 	return normals;
 }

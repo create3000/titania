@@ -118,15 +118,18 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	double d = 0;
+	auto b = Box3d (Vector3d (0, 0, 0), Vector3d ());
 
-	for (int i = 0; i < 300; ++ i, d += 1e-6)
-	{
-		const auto p = to_int (pack (d));
-		const auto u = unpack (to_float (p));
+	__LOG__ << b .matrix () << std::endl;
 
-		std::cout << d << " : " << Vector4i (p) << " : " << u << std::endl;
-	}
+	b .rotate (Rotation4d (0, 1, 0, pi <double> / 4));
+
+	__LOG__ << b .matrix () << std::endl;
+
+	auto n = b .normals ();
+	
+	for (const auto & v : n)
+		__LOG__ << v << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

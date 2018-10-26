@@ -377,7 +377,14 @@ box3 <Type>::normals () const
 		x = cross (y, z);
 
 		if (abs (x) == 0)
+		{
 			x = vector3 <Type> (1, 0, 0);
+
+			if (abs (y))
+				x = cross (y, cross (x, y));
+			else if (abs (z))
+				x = cross (z, cross (x, z));
+		}
 	}
 
 	if (abs (y) == 0)
@@ -385,7 +392,14 @@ box3 <Type>::normals () const
 		y = cross (z, x);
 
 		if (abs (y) == 0)
+		{
 			y = vector3 <Type> (0, 1, 0);
+
+			if (abs (x))
+				y = cross (x, cross (y, x));
+			else if (abs (z))
+				y = cross (z, cross (y, z));
+		}
 	}
 
 	if (abs (z) == 0)
@@ -393,7 +407,14 @@ box3 <Type>::normals () const
 		z = cross (x, y);
 
 		if (abs (z) == 0)
+		{
 			z = vector3 <Type> (0, 0, 1);
+
+			if (abs (x))
+				z = cross (x, cross (z, x));
+			else if (abs (y))
+				z = cross (y, cross (z, y));
+		}
 	}
 
 	normals .x (normalize (cross (y, z)));

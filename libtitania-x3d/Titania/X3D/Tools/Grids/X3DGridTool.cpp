@@ -513,7 +513,14 @@ X3DGridTool::getRotationAxes (const Matrix4d & matrix) const
 		x = cross (y, z);
 
 		if (abs (x) == 0)
+		{
 			x = Vector3d (1, 0, 0);
+
+			if (abs (y))
+				x = cross (y, cross (x, y));
+			else if (abs (z))
+				x = cross (z, cross (x, z));
+		}
 	}
 
 	if (abs (y) == 0)
@@ -521,7 +528,14 @@ X3DGridTool::getRotationAxes (const Matrix4d & matrix) const
 		y = cross (z, x);
 
 		if (abs (y) == 0)
+		{
 			y = Vector3d (0, 1, 0);
+
+			if (abs (x))
+				y = cross (x, cross (y, x));
+			else if (abs (z))
+				y = cross (z, cross (y, z));
+		}
 	}
 
 	if (abs (z) == 0)
@@ -529,7 +543,14 @@ X3DGridTool::getRotationAxes (const Matrix4d & matrix) const
 		z = cross (x, y);
 
 		if (abs (z) == 0)
+		{
 			z = Vector3d (0, 0, 1);
+
+			if (abs (x))
+				z = cross (x, cross (z, x));
+			else if (abs (y))
+				z = cross (y, cross (z, y));
+		}
 	}
 
 	return vector3 <Vector3d> (x, y, z);

@@ -338,7 +338,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto rotationPlane       = Plane3d (center, axis0);
 		const auto snapPointA          = absolutePosition + rotationPlane .perpendicular_vector (absolutePosition);
 		const auto distance            = abs (snapPointA - center);
-		const auto snapPointB          = center + absoluteNormal * distance;
+		const auto snapPointB          = center + snapVector * distance;
 		const auto snapPoint           = useNormal ? snapPointB : snapPointA;
 		const auto point1a             = center + snapAxis1 * distance;
 		const auto point1b             = center - snapAxis1 * distance;
@@ -499,7 +499,14 @@ SnapTargetTool::getRotationAxes (const Matrix4d & matrix) const
 		x = cross (y, z);
 
 		if (abs (x) == 0)
+		{
 			x = Vector3d (1, 0, 0);
+
+			if (abs (y))
+				x = cross (y, cross (x, y));
+			else if (abs (z))
+				x = cross (z, cross (x, z));
+		}
 	}
 
 	if (abs (y) == 0)
@@ -507,7 +514,14 @@ SnapTargetTool::getRotationAxes (const Matrix4d & matrix) const
 		y = cross (z, x);
 
 		if (abs (y) == 0)
+		{
 			y = Vector3d (0, 1, 0);
+
+			if (abs (x))
+				y = cross (x, cross (y, x));
+			else if (abs (z))
+				y = cross (z, cross (y, z));
+		}
 	}
 
 	if (abs (z) == 0)
@@ -515,7 +529,14 @@ SnapTargetTool::getRotationAxes (const Matrix4d & matrix) const
 		z = cross (x, y);
 
 		if (abs (z) == 0)
+		{
 			z = Vector3d (0, 0, 1);
+
+			if (abs (x))
+				z = cross (x, cross (z, x));
+			else if (abs (y))
+				z = cross (y, cross (z, y));
+		}
 	}
 
 	return vector3 <Vector3d> (x, y, z);
