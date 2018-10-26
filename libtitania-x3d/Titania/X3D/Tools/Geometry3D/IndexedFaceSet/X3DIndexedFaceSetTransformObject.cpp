@@ -467,29 +467,13 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 				{
 					if (getSelectedEdges () .size () == 1)
 					{
-						const auto & edge = *getSelectedEdges () .cbegin ();
-
-						std::set <size_t> faces;
-
-						for (const auto & e : edge .second)
-						{
-							for (const auto & face : getFaceSelection () -> getAdjacentFaces (e))
-								faces. emplace (face);
-
-							break;
-						}
-
-						Vector3d normal;
-
-						for (const auto & face : faces)
-							normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
-
-						const auto point1 = getCoord () -> get1Point (edge .first .first);
-						const auto point2 = getCoord () -> get1Point (edge .first .second);
-						const auto yAxis  = (point2 - point1) / 2.0;
-						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * SIZE_MIN;
-						const auto xAxis  = normalize (cross <double> (zAxis, yAxis))  * SIZE_MIN;
-						const auto center = (point2 + point1) / 2.0;
+						const auto & edge   = *getSelectedEdges () .cbegin ();
+						const auto   point1 = getCoord () -> get1Point (edge .first .first);
+						const auto   point2 = getCoord () -> get1Point (edge .first .second);
+						const auto   yAxis  = (point2 - point1) / 2.0;
+						const auto   zAxis  = normalize (cross <double> (Vector3d (1, 0, 0), yAxis)) * SIZE_MIN;
+						const auto   xAxis  = normalize (cross <double> (zAxis, yAxis))  * SIZE_MIN;
+						const auto   center = (point2 + point1) / 2.0;
 
 						if (abs (xAxis))
 						{
