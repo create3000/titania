@@ -334,7 +334,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		// Determine snap point onto plane and axes points onto plane with same distance to center as snap point.
 
-		const auto dynamicSnapDistance = getDynamicSnapDistance ();
+		const auto dynamicSnapDistance = getDynamicSnapDistance () * 2;
 		const auto rotationPlane       = Plane3d (center, axis0);
 		const auto snapPointA          = absolutePosition + rotationPlane .perpendicular_vector (absolutePosition);
 		const auto distance            = abs (snapPointA - center);

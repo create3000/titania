@@ -1537,7 +1537,15 @@ public:
 
 	virtual
 	void
+	on_geometry_selection_map () = 0;
+
+	virtual
+	void
 	on_map () = 0;
+
+	virtual
+	void
+	on_geometry_selection_unmap () = 0;
 
 	virtual
 	void
@@ -1618,14 +1626,6 @@ public:
 	virtual
 	void
 	on_color_ramp_unlink_clicked () = 0;
-
-	virtual
-	void
-	on_geometry_selection_map () = 0;
-
-	virtual
-	void
-	on_geometry_selection_unmap () = 0;
 
 	virtual
 	bool

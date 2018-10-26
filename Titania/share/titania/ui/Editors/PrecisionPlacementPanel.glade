@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="BBoxCenterXAdjustment">
@@ -549,6 +549,9 @@
   <object class="GtkWindow" id="LODExtraWindow">
     <property name="can_focus">False</property>
     <child>
+      <placeholder/>
+    </child>
+    <child>
       <object class="GtkGrid" id="RangeColorGrid">
         <property name="can_focus">False</property>
         <property name="hexpand">True</property>
@@ -844,6 +847,9 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <child>
+      <placeholder/>
+    </child>
+    <child>
       <object class="GtkBox" id="Widget">
         <property name="name">PrecisionPlacementPanel</property>
         <property name="visible">True</property>
@@ -851,7 +857,9 @@
         <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
+        <signal name="map" handler="on_geometry_selection_map" swapped="no"/>
         <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_geometry_selection_unmap" swapped="no"/>
         <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkHeaderBar" id="HeaderBar">
@@ -6346,8 +6354,6 @@
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
                         <property name="spacing">8</property>
-                        <signal name="map" handler="on_geometry_selection_map" swapped="no"/>
-                        <signal name="unmap" handler="on_geometry_selection_unmap" swapped="no"/>
                         <child>
                           <object class="GtkGrid" id="GeometrySelectionBox">
                             <property name="visible">True</property>

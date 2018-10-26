@@ -71,7 +71,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SIZE_MIN = 0;
+static constexpr double SIZE_MIN = 1e-7;
 static constexpr size_t EVENTS   = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
