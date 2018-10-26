@@ -298,6 +298,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
 		const auto matrixAfter      = master -> getCurrentMatrix ()     * master -> getModelMatrix (); // Matrix after transformation
 		const auto absoluteMatrix   = matrixAfter;
+		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 
 		// Determine rotation axis and the tho snap axes.
 
@@ -329,17 +330,13 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto center     = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
 		const auto useNormal  = std::abs (dot (absoluteNormal, axis0)) < std::cos (radians (10.0));
-		const auto snapNormal = useNormal ? absoluteNormal : normalize (absolutePosition - center);
-		const auto snapVector = normalize (cross (cross (axis0, snapNormal), axis0));
+		const auto snapVector = normalize (cross (cross (axis0, useNormal ? absoluteNormal : absolutePosition - center), axis0));
 
 		// Determine snap point onto plane and axes points onto plane with same distance to center as snap point.
 
 		const auto dynamicSnapDistance = getDynamicSnapDistance () * 2;
-		const auto rotationPlane       = Plane3d (center, axis0);
-		const auto snapPointA          = absolutePosition + rotationPlane .perpendicular_vector (absolutePosition);
-		const auto distance            = abs (snapPointA - center);
-		const auto snapPointB          = center + snapVector * distance;
-		const auto snapPoint           = useNormal ? snapPointB : snapPointA;
+		const auto distance            = std::max (abs (bbox .center () - center), abs (bbox .size ()));
+		const auto snapPoint           = center + snapVector * distance;
 		const auto point1a             = center + snapAxis1 * distance;
 		const auto point1b             = center - snapAxis1 * distance;
 		const auto point2a             = center + snapAxis2 * distance;
