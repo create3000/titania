@@ -130,6 +130,8 @@ GeometryEditor::initialize ()
 	coordEditor  -> setup ();
 
 	normalEnabled .setNodes ({ normalEditor });
+
+	set_selectGeometry ();
 }
 
 void
@@ -825,9 +827,6 @@ void
 GeometryEditor::set_selectGeometry ()
 {
 	const auto & selection = getBrowserWindow () -> getSelection ();
-
-	if (selection -> getSelectGeometry () == getEditToggleButton () .get_active ())
-		return;
 
 	getEditToggleButton () .set_active (selection -> getSelectGeometry ());
 }
