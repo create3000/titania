@@ -160,6 +160,9 @@ private:
 	Box3d
 	getMinimumBBox (const std::vector <Vector3d> &) const;
 
+	Matrix3d
+	getRotationMatrix (const Matrix4d & matrix) const;
+
 	///  @name Fields
 
 	struct Fields

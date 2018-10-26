@@ -71,7 +71,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SIZE_MIN = 1e-7;
+static constexpr double SIZE_MIN = 0;
 static constexpr size_t EVENTS   = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
@@ -211,11 +211,10 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 
 		if (abs (bbox .size ()))
 		{
-			bbox .matrix () .get (center, orientation, size);
-
-			center = center * ~orientation;
-			size  *= 2.0;
-			size   = max (size, -size); // max (v, -v): Componentwise abs.
+			orientation = Rotation4d (getRotationMatrix (bbox .matrix ()));
+			center      = bbox .center () * ~orientation;
+			size        = Vector3d (abs (bbox .matrix () .x_axis ()), abs (bbox .matrix () .y_axis ()), abs (bbox .matrix () .z_axis ())) * 2.0;
+			size        = max (size, -size); // max (v, -v): Componentwise abs.
 		}
 		else
 		{
@@ -224,9 +223,6 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 			size   = bbox .size ();
 		}
 	}
-
-	// Use minimum size to prevent zero matrix.
-	size = max (size, Vector3d (SIZE_MIN, SIZE_MIN, SIZE_MIN));
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = orientation;
@@ -455,43 +451,27 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 	switch (points .size ())
 	{
 		case 0:
+		{
 			break;
+		}
 		case 1:
+		{
 			bbox = Box3d (Vector3d (), points .front ());
 			break;
+		}
 		case 2:
 		{
-			switch (getSelectionType ())
-			{
-				case SelectionType::EDGES:
-				{
-					if (getSelectedEdges () .size () == 1)
-					{
-						const auto & edge   = *getSelectedEdges () .cbegin ();
-						const auto   point1 = getCoord () -> get1Point (edge .first .first);
-						const auto   point2 = getCoord () -> get1Point (edge .first .second);
-						const auto   yAxis  = (point2 - point1) / 2.0;
-						const auto   zAxis  = normalize (cross <double> (Vector3d (1, 0, 0), yAxis)) * SIZE_MIN;
-						const auto   xAxis  = normalize (cross <double> (zAxis, yAxis))  * SIZE_MIN;
-						const auto   center = (point2 + point1) / 2.0;
+			const auto & point1 = points .front ();
+			const auto & point2 = points .back ();
+			const auto   yAxis  = (point2 - point1) / 2.0;
+			const auto   zAxis  = Vector3d ();
+			const auto   xAxis  = Vector3d ();
+			const auto   center = (point2 + point1) / 2.0;
 
-						if (abs (xAxis))
-						{
-							bbox = Box3d (Matrix4d (xAxis .x (), xAxis .y (), xAxis .z (), 0,
-							                        yAxis .x (), yAxis .y (), yAxis .z (), 0,
-							                        zAxis .x (), zAxis .y (), zAxis .z (), 0,
-							                        center .x (), center .y (), center .z (), 1));
-
-							break;
-						}
-					}
-
-					// Proceed with next case:
-				}
-				default:
-					bbox = getMinimumBBox (points);
-					break;
-			}
+			bbox = Box3d (Matrix4d (xAxis .x (), xAxis .y (), xAxis .z (), 0,
+			                        yAxis .x (), yAxis .y (), yAxis .z (), 0,
+			                        zAxis .x (), zAxis .y (), zAxis .z (), 0,
+			                        center .x (), center .y (), center .z (), 1));
 
 			break;
 		}
@@ -513,7 +493,7 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> &
 	auto       axes   = std::vector <X3D::Vector3d> ({ bbox .matrix () .x_axis (), bbox .matrix () .y_axis (), bbox .matrix () .z_axis () });
 	const auto center = bbox .center ();
 
-	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b){ return abs (a) < abs (b); });
+	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b) { return abs (a) < abs (b); });
 
 	if (dot (axes [0], Vector3d (0, 0, 1)) < 0)
 		axes [0] .negate ();
@@ -530,6 +510,63 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> &
 	                        center .x (), center .y (), center .z (), 1));
 
 	return bbox;
+}
+
+Matrix3d
+X3DIndexedFaceSetTransformObject::getRotationMatrix (const Matrix4d & matrix) const
+{
+	auto x = matrix .x_axis ();
+	auto y = matrix .y_axis ();
+	auto z = matrix .z_axis ();
+
+	if (abs (x) == 0)
+	{
+		x = cross (y, z);
+
+		if (abs (x) == 0)
+		{
+			x = Vector3d (1, 0, 0);
+
+			if (abs (y))
+				x = cross (y, cross (x, y));
+			else if (abs (z))
+				x = cross (z, cross (x, z));
+		}
+	}
+
+	if (abs (y) == 0)
+	{
+		y = cross (z, x);
+
+		if (abs (y) == 0)
+		{
+			y = Vector3d (0, 1, 0);
+
+			if (abs (x))
+				y = cross (x, cross (y, x));
+			else if (abs (z))
+				y = cross (z, cross (y, z));
+		}
+	}
+
+	if (abs (z) == 0)
+	{
+		z = cross (x, y);
+
+		if (abs (z) == 0)
+		{
+			z = Vector3d (0, 0, 1);
+
+			if (abs (x))
+				z = cross (x, cross (z, x));
+			else if (abs (y))
+				z = cross (y, cross (z, y));
+		}
+	}
+
+	return Matrix3d (x .x (), x .y (), x .z (),
+	                 y .x (), y .y (), y .z (),
+	                 z .x (), z .y (), z .z ());
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()
