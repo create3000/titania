@@ -64,8 +64,7 @@ public:
 
 	///  @name Construction
 
-	Implementation (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	Implementation (X3DRenderingSurface* const renderingSurface);
 
 	///  @name Destruction
 
@@ -90,8 +89,7 @@ private:
 std::map <std::thread::id, std::shared_ptr <RenderingContext>> ContextLock::Implementation::currentContexts;
 std::mutex ContextLock::Implementation::mutex;
 
-ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface)
-throw (Error <INVALID_OPERATION_TIMING>) :
+ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface) :
 	    surfaceLock (*renderingSurface),
 	previousContext ()
 {
@@ -140,8 +138,13 @@ ContextLock::Implementation::~Implementation ()
  */
 ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface)
 throw (Error <INVALID_OPERATION_TIMING>) :
-	implementation (new Implementation (renderingSurface))
-{ }
+	implementation ()
+{
+	if (not renderingSurface)
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+
+	implementation .reset (new Implementation (renderingSurface));
+}
 
 ContextLock::~ContextLock ()
 { }
