@@ -408,7 +408,9 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 	switch (self -> type)
 	{
 		case GL_TRIANGLE_FAN:
+		{
 		   //__LOG__ << "GL_TRIANGLE_FAN" << std::endl;
+
 		   for (size_t i = 1, size = self -> vertices .size () - 1; i < size; ++ i)
 		   {
 				size_t i1 = 0;
@@ -431,7 +433,9 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 		   }
 
 			break;
+		}
 		case GL_TRIANGLE_STRIP:
+		{
 			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; ++ i)
 			{
 				size_t i1, i2, i3;
@@ -463,9 +467,12 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 
 				self -> numVertices += 3;      			
 			}
+
 		   //__LOG__ << "GL_TRIANGLE_STRIP" << std::endl;
 			break;
+		}
 		case GL_TRIANGLES:
+		{
 		   //__LOG__ << "GL_TRIANGLES" << std::endl;
 			
 			self -> getTexCoords () [0] .insert (self -> getTexCoords () [0] .end (), 
@@ -481,8 +488,8 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 			                                self -> vertices .cend ());
 
 			self -> numVertices += self -> vertices .size ();      
-
 			break;
+		}
 		case GL_QUAD_STRIP:
 		{
 		   //__LOG__ << "GL_QUAD_STRIP" << std::endl;

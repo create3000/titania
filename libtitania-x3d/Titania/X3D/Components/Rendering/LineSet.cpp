@@ -200,7 +200,6 @@ LineSet::build ()
 
 	const size_t size        = coordNode -> getSize ();
 	size_t       index       = 0;
-	size_t       numElements = 0;
 
 	for (int32_t count : vertexCount ())
 	{
@@ -222,14 +221,15 @@ LineSet::build ()
 				coordNode -> addVertex (getVertices (), index);
 			}
 
-			index       += 1;
-			numElements += numVertices;
+			++ index;
 		}
 		else
+		{
 			index += count;
+		}
 	}
 
-	addElements (GL_LINES, numElements);
+	addElements (GL_LINES, getVertices () .size ());
 
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
